@@ -37,7 +37,10 @@ export class ReclamationInvoiceForm extends Component {
 
   onFileLoad = (document_name, document_manager_guid) => {
     this.setState((prevState) => ({
-      uploadedFiles: [{ document_manager_guid, document_name }, ...prevState.uploadedFiles],
+      uploadedFiles: [
+        { document_manager_guid, document_name, mine_guid: this.props.mineGuid },
+        ...prevState.uploadedFiles,
+      ],
     }));
   };
 

@@ -46,6 +46,7 @@ const RenderGroupedSelect = (props) => (
     }
   >
     <Select
+      virtual={false}
       disabled={props.disabled}
       dropdownMatchSelectWidth
       showSearch

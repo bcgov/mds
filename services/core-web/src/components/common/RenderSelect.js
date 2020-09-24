@@ -51,6 +51,7 @@ const RenderSelect = (props) => {
       onChange={props.input.onChange}
     >
       <Select
+        virtual={false}
         disabled={props.disabled}
         allowClear
         dropdownMatchSelectWidth
