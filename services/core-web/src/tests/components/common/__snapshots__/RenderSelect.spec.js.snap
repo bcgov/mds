@@ -25,6 +25,7 @@ exports[`RenderSelect renders properly 1`] = `
     showSearch={true}
     transitionName="slide-up"
     value={null}
+    virtual={false}
   >
     <Option
       disabled={false}
