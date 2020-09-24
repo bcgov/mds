@@ -103,6 +103,7 @@ export class PartyOrgBookForm extends Component {
         <Col span={24}>
           <Form.Item>
             <Select
+              virtual={false}
               showSearch
               showArrow
               labelInValue

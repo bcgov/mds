@@ -33,7 +33,7 @@ const defaultProps = {
 
 const selectAfter = (data, id, isDisabled, input) => {
   return (
-    <Select style={{ width: 80 }} disabled={isDisabled} {...input} id={id}>
+    <Select style={{ width: 80 }} disabled={isDisabled} {...input} id={id} virtual={false}>
       {data.map((d) => (
         <Select.Option value={d.value} key={d.value}>
           {d.label}
