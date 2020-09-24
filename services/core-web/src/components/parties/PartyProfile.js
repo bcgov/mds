@@ -135,6 +135,20 @@ export class PartyProfile extends Component {
           if (record.relationship.party_business_role_code === "INS") {
             return "N/A";
           }
+          if (record.relationship.mine_party_appt_type_code === "AGT") {
+            return (
+              <div title="NoW Number">
+                <Link
+                  to={routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+                    record.relationship.now_application.now_application_guid,
+                    "technical-review"
+                  )}
+                >
+                  {record.relationship.now_application.now_number}
+                </Link>
+              </div>
+            );
+          }
           return (
             <div title="Mine Name">
               <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
@@ -179,6 +193,17 @@ export class PartyProfile extends Component {
         startDate: formatDate(record.start_date) || "Unknown",
         relationship: { party_business_role_code: record.party_business_role_code },
       }));
+
+    const transformNOWRoleRowData = (NOWPartyRecords) => {
+      console.log(NOWPartyRecords);
+      return NOWPartyRecords.map((record) => ({
+        key: record.now_party_appointment_id,
+        role: this.props.partyRelationshipTypeHash[record.mine_party_appt_type_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.now_application.submitted_date) || "Unknown",
+        relationship: record,
+      }));
+    };
 
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
@@ -281,7 +306,9 @@ export class PartyProfile extends Component {
                     pagination={false}
                     columns={columns}
                     dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
-                      transformBusinessRoleRowData(this.props.parties[id].business_role_appts)
+                      transformBusinessRoleRowData(
+                        this.props.parties[id].business_role_appts
+                      ).concat(transformNOWRoleRowData(this.props.parties[id].now_party_appt))
                     )}
                     locale={{ emptyText: "No Data Yet" }}
                   />

@@ -32,6 +32,7 @@ class Party(AuditMixin, Base):
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
     signature = db.Column(db.String, nullable=True)
+    now_party_appt = db.relationship('NOWPartyAppointment', lazy='joined')
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
