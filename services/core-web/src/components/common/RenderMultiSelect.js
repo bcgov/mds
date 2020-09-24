@@ -45,6 +45,7 @@ export const RenderMultiSelect = (props) => (
       }
     >
       <Select
+        virtual={false}
         disabled={!props.data || props.disabled}
         mode="multiple"
         size="small"
