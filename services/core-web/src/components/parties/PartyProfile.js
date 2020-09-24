@@ -195,7 +195,6 @@ export class PartyProfile extends Component {
       }));
 
     const transformNOWRoleRowData = (NOWPartyRecords) => {
-      console.log(NOWPartyRecords);
       return NOWPartyRecords.map((record) => ({
         key: record.now_party_appointment_id,
         role: this.props.partyRelationshipTypeHash[record.mine_party_appt_type_code],
