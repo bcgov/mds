@@ -32,6 +32,7 @@ import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import {
   generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
@@ -62,6 +63,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   reset: PropTypes.func.isRequired,
@@ -523,15 +525,21 @@ export class NoticeOfWorkApplication extends Component {
     this.exportNowDocument(documentType, this.props.noticeOfWork);
   };
 
-  exportNowDocument = (documentType, values) => {
+  exportNowDocument = (documentType) => {
     const documentTypeCode = documentType.now_application_document_type_code;
 
     const payload = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      template_data: values,
+      // template_data: values,
     };
 
-    this.props.generateNoticeOfWorkApplicationDocument(
+    // this.props.generateNoticeOfWorkApplicationDocument(
+    //   documentTypeCode,
+    //   payload,
+    //   `Successfully exported ${documentType.description} for this Notice of Work`
+    // );
+
+    this.props.exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       `Successfully exported ${documentType.description} for this Notice of Work`
@@ -937,6 +945,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
+      exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
       reset,
