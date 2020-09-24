@@ -82,7 +82,7 @@ const SubCondition = (props) => {
         <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
                 <Button
                   ghost
                   className="no-margin"
@@ -96,7 +96,7 @@ const SubCondition = (props) => {
                   <UpOutlined />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
                 <Button
                   ghost
                   className="no-margin"
@@ -110,7 +110,7 @@ const SubCondition = (props) => {
                   <DownOutlined />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
                 <Button
                   ghost
                   className="no-margin"
@@ -130,7 +130,7 @@ const SubCondition = (props) => {
                   />
                 </Button>
               </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMIT}>
                 <Button
                   ghost
                   className="no-margin"
