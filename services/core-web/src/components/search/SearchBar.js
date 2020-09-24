@@ -26,7 +26,7 @@ const defaultProps = {
 };
 
 const defaultPlaceholderText = "Search";
-const selectedPlaceholderText = "Search for mines, contacts, & more";
+const selectedPlaceholderText = "";
 
 export class SearchBar extends Component {
   state = {
@@ -103,7 +103,6 @@ export class SearchBar extends Component {
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
             onSearch={(searchTerm) => this.search(searchTerm)}
             onChange={this.changeSearchTerm}
-            onClick={this.clearSearchBar}
             onFocus={this.clearSearchBar}
             onBlur={() =>
               this.setState({

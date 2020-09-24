@@ -19,7 +19,7 @@ exports[`ReclamationSummary renders properly 1`] = `
           "dataIndex": "total",
           "key": "total",
           "render": [Function],
-          "title": "Total Effected Area (ha)",
+          "title": "Total Affected Area (ha)",
         },
         Object {
           "dataIndex": "cost",

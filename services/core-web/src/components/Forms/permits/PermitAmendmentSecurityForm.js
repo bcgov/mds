@@ -16,6 +16,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export const PermitAmendmentSecurityForm = (props) => (
@@ -57,6 +58,7 @@ export const PermitAmendmentSecurityForm = (props) => (
           okText="Yes"
           cancelText="No"
           disabled={props.submitting}
+          onConfirm={() => props.onCancel()}
         >
           <Button className="full-mobile" type="secondary" disabled={props.submitting}>
             Cancel

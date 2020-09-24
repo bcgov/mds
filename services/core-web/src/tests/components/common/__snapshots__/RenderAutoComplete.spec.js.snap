@@ -51,6 +51,7 @@ exports[`RenderAutoComplete renders properly 1`] = `
       }
     }
     transitionName="slide-up"
+    virtual={false}
   />
 </FormItem>
 `;

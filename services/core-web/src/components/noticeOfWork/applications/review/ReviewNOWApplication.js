@@ -710,16 +710,16 @@ export const ReviewNOWApplication = (props) => {
     <div>
       <Form layout="vertical">
         <div className="side-menu--content">
-          <h2>General Information</h2>
-          {props.noticeOfWork.last_updated_date && (
-            <p className="violet">
-              Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
-            </p>
-          )}
-          {props.noticeOfWork.last_updated_by && (
-            <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
-          )}
-          <Divider />
+          <div className="right" style={{ position: "relative", top: "30px" }}>
+            {props.noticeOfWork.last_updated_date && (
+              <p className="violet">
+                Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
+              </p>
+            )}
+            {props.noticeOfWork.last_updated_by && (
+              <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
+            )}
+          </div>
           <ScrollContentWrapper id="application-info" title="Application Info">
             {renderApplicationInfo()}
           </ScrollContentWrapper>
@@ -749,18 +749,22 @@ export const ReviewNOWApplication = (props) => {
             noticeOfWork={props.initialValues}
             renderOriginalValues={props.renderOriginalValues}
           />
-          <ScrollContentWrapper id="submission-documents" title="Submission Documents (vFCBC/NROS)">
+          <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
             />
           </ScrollContentWrapper>
-          <ScrollContentWrapper id="additional-documents" title="Additional Documents">
+          <ScrollContentWrapper
+            id="additional-application-files"
+            title="Additional Application Files"
+          >
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}
               documents={props.documents}
               isViewMode={props.isViewMode}
+              disclaimerText="Attach any file revisions or new files requested from the proponent here."
             />
           </ScrollContentWrapper>
         </div>
