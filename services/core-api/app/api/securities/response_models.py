@@ -19,7 +19,7 @@ BOND_DOCUMENT_MODEL = api.model(
     })
 
 RECLAMATION_INVOICE_DOCUMENT_MODEL = api.model(
-    'MineDocument', {
+    'ReclamationInvoiceDocument', {
         'mine_document_guid': fields.String,
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,

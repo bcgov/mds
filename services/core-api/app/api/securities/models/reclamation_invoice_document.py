@@ -7,7 +7,7 @@ class ReclamationInvoiceDocument(MineDocument):
     __create_schema__ = True
     __mapper_args__ = {
         'polymorphic_identity': 'reclamation_invoice',
-        'exclude_properties': 'mine_guid'
+        'exclude_properties': ['bond_document_type_code']
     }
 
     reclamation_invoice_id = db.Column(db.Integer, db.ForeignKey('reclamation_invoice.reclamation_invoice_id'))
