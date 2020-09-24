@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState } from "react";
 import { PropTypes } from "prop-types";
-import { Drawer, Button, Table } from "antd";
+import { Drawer, Button, Table, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import { Field, Fields } from "redux-form";
@@ -78,7 +78,24 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170 000", permit_fee: "$50 000" },
 ];
 
+const typeDeterminesFee = (type) => {
+  if (type === PLA) {
+    return adjustmentExceedsFeePlacer();
+  } else if (type === SAG || type === QCA || type === QIM) {
+    return adjustmentExceedsFeePitsQuarries();
+  }
+};
+
+const adjustmentExceedsFeePlacer = () => {
+  console.log("exceeeeding fee");
+};
+
+const adjustmentExceedsFeePitsQuarries = () => {
+  console.log("feee pits");
+};
+
 export const ReviewApplicationFeeContent = (props) => {
+  const [isApplicationFeeValid, setValidation] = useState(true);
   const [isFeeDrawerVisible, setVisible] = useState(false);
 
   const toggleFeeDrawer = () => {
@@ -104,6 +121,15 @@ export const ReviewApplicationFeeContent = (props) => {
         size="small"
         pagination={false}
       />
+      <br />
+      <a
+        href="https://www.bclaws.ca/civix/document/id/complete/statreg/54_2015"
+        target="_blank"
+        className="right"
+        rel="noopener noreferrer"
+      >
+        View Mines Fee Regulation
+      </a>
     </div>
   );
 
@@ -157,31 +183,38 @@ export const ReviewApplicationFeeContent = (props) => {
           validate={[number]}
         />
         <div className="field-title">
-          Proposed Annnual Maximum Tonnage
-          <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
+          Proposed Annual Maximum Tonnage
+          <CoreTooltip title="This amount is found within the application in vFCBC or on the first page of the application form pdf and needs to be entered manually in order to continue processing this application." />
         </div>
         <Fields
-          names={["proposed_annnual_maximum_tonnage", "annnual_maximum_tonnage_unit_type_code"]}
-          id="proposed_annnual_maximum_tonnage"
-          dropdownID="annnual_maximum_tonnage_unit_type_code"
+          names={["proposed_annual_maximum_tonnage", "annual_maximum_tonnage_unit_type_code"]}
+          id="proposed_annual_maximum_tonnage"
+          dropdownID="annual_maximum_tonnage_unit_type_code"
           component={RenderFieldWithDropdown}
           disabled={props.isViewMode}
           validate={[numberWithUnitCode]}
           data={props.unitTypeOptions}
         />
         <div className="field-title">
-          Adjusted Annnual Maximum Tonnage
-          <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
+          Adjusted Annual Maximum Tonnage
+          <CoreTooltip title="This is to be used if the Proposed Maximum Annual Tonnage Extracted amount changes during Technical Review. Please enter the new total for the Maximum Annual Tonnage Extracted that the proponent is proposing. Changing this amount may affect the amount of the Permit Fee assessed. If the amount is over the fee threshold of the next fee amount, the application will need to be rejected and the applicant will need to reapply." />
         </div>
         <Fields
-          names={["adjusted_annnual_maximum_tonnage", "annnual_maximum_tonnage_unit_type_code"]}
-          id="adjusted_annnual_maximum_tonnage"
-          dropdownID="annnual_maximum_tonnage_unit_type_code"
+          names={["adjusted_annual_maximum_tonnage", "annual_maximum_tonnage_unit_type_code"]}
+          id="adjusted_annual_maximum_tonnage"
+          dropdownID="annual_maximum_tonnage_unit_type_code"
           component={RenderFieldWithDropdown}
           disabled={props.isViewMode}
           validate={[numberWithUnitCode]}
           data={props.unitTypeOptions}
         />
+        <div className="error">
+          <Alert
+            message="The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered."
+            type="error"
+            showIcon
+          />
+        </div>
       </div>
     </>
   );
