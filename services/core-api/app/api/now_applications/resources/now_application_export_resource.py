@@ -3,6 +3,8 @@ import json
 from flask import request, current_app
 from flask_restplus import Resource, fields, marshal
 from werkzeug.exceptions import NotFound, BadRequest
+from datetime import datetime
+from app.api.utils.include.user_info import User
 
 from app.extensions import api, cache
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
@@ -29,7 +31,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
         'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to download the document.',
         params={'document_type_code': 'The code indicating the type of document to generate.'})
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
-    # @requires_role_edit_permit
+    @requires_role_edit_permit
     def post(self, document_type_code):
         document_type = NOWApplicationDocumentType.query.get(document_type_code)
         if not document_type:
@@ -40,7 +42,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        # add extra checks
         now_application_identity = NOWApplicationIdentity.find_by_guid(data["now_application_guid"])
 
         if not now_application_identity:
@@ -48,6 +49,16 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         now_application = now_application_identity.now_application
         now_application_json = marshal(now_application, NOW_APPLICATION_MODEL)
+
+        # data transforamtion functions
+        current_app.logger.info("@@@@@@@@@@@@@@@@  DATA TRANSFORMATION  @@@@@@@@@@@@@@@@@@@@@@")
+
+        def is_number(s):
+            try:
+                float(s)
+                return True
+            except ValueError:
+                return False
 
         def transform_contact(contact):
             def get_address(contact):
@@ -87,8 +98,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
             return contact
 
-        for contact in now_application_json.get('contacts', []):
-            contact = transform_contact(contact)
+        def transform_currency(value):
+            return f'$ {float(value):,.2f}' if value and is_number(value) else value
 
         def get_reclamation_summary(now_application):
 
@@ -116,12 +127,10 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         now_application[activity_type.activity_type_code].get(
                             'total_disturbed_area', '-'),
                         'cost':
-                        now_application[activity_type.activity_type_code].get(
-                            'reclamation_cost', '-')
+                        (transform_currency(now_application[activity_type.activity_type_code].get(
+                            'reclamation_cost', None)))
                     })
             return summary
-
-        now_application_json['summary'] = get_reclamation_summary(now_application_json)
 
         def get_render_activities(now_application):
             activity_types = ActivityType.get_all()
@@ -131,7 +140,31 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     render[activity_type.activity_type_code] = True
             return render
 
+        def transform_booleans(prop):
+            return 'Yes' if prop else 'No'
+
+        def transform_data(obj):
+            for key in obj:
+                if key == 'reclamation_cost':
+                    obj[key] = transform_currency(obj[key])
+
+                if obj[key] is None:
+                    obj[key] = '-'
+                elif isinstance(obj[key], (bool)):
+                    obj[key] = transform_booleans(obj[key])
+                elif isinstance(obj[key], (dict)):
+                    transform_data(obj[key])
+            return obj
+
+        # data transformation
+        for contact in now_application_json.get('contacts', []):
+            contact = transform_contact(contact)
+        now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['render'] = get_render_activities(now_application_json)
+        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
+        now_application_json['exported_by_user'] = User().get_user_username()
+
+        now_application_json = transform_data(now_application_json)
 
         #TODO
         # remove contacts section if it is empty
@@ -140,7 +173,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         current_app.logger.info("@@@@@@@@@@@@@@@@  START  @@@@@@@@@@@@@@@@@@@@@@")
         template_data = now_application_json
-
         ##ENFORCE READ-ONLY CONTEXT DATA
         enforced_data = [
             x for x in document_type.document_template._form_spec_with_context(
