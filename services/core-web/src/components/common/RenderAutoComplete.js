@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Select } from "antd";
-import * as Styles from "@/constants/styles";
 
 /**
  * @constant RenderAutoComplete - Ant Design `AutoComplete` component for redux-form.
@@ -14,25 +13,19 @@ const propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSelect: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
-  id: PropTypes.string,
   placeholder: PropTypes.string,
-  defaultValue: PropTypes.string,
-  label: PropTypes.string,
-  iconColor: PropTypes.string,
   disabled: PropTypes.bool,
   meta: PropTypes.objectOf(PropTypes.any),
   input: PropTypes.objectOf(PropTypes.any),
+  selected: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
-  id: "search",
   placeholder: "",
-  defaultValue: "",
-  label: "",
-  iconColor: Styles.COLOR.violet,
   disabled: false,
   meta: {},
   input: null,
+  selected: undefined,
 };
 
 const RenderAutoComplete = (props) => {
@@ -50,6 +43,7 @@ const RenderAutoComplete = (props) => {
     >
       <Select
         showSearch
+        virtual={false}
         defaultActiveFirstOption={false}
         notFoundContent="Not Found"
         allowClear
