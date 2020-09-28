@@ -698,7 +698,7 @@ export class NoticeOfWorkApplication extends Component {
           </Menu.SubMenu>
         )}
         {/* TODO: this is work in progress and subject to review/change */}
-        <Menu.SubMenu key="export-now-documents" title="Export NOW documents">
+        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
           {Object.values(this.props.generatableApplicationDocuments)
             .filter(
               ({ now_application_document_type_code }) =>

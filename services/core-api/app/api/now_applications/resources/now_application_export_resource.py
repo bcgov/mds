@@ -99,7 +99,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             return contact
 
         def transform_currency(value):
-            return f'$ {float(value):,.2f}' if value and is_number(value) else value
+            return f'${float(value):,.2f}' if value and is_number(value) else value
 
         def get_reclamation_summary(now_application):
 
@@ -140,23 +140,22 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     render[activity_type.activity_type_code] = True
             return render
 
-        def transform_booleans(prop):
-            return 'Yes' if prop else 'No'
+        def transform_booleans(value):
+            return 'Yes' if value else 'No'
 
         def transform_data(obj):
             for key in obj:
-                if key == 'reclamation_cost':
-                    obj[key] = transform_currency(obj[key])
-
                 if obj[key] is None:
                     obj[key] = '-'
+                elif key == 'reclamation_cost':
+                    obj[key] = transform_currency(obj[key])
                 elif isinstance(obj[key], (bool)):
                     obj[key] = transform_booleans(obj[key])
                 elif isinstance(obj[key], (dict)):
                     transform_data(obj[key])
             return obj
 
-        # data transformation
+        # Data transformation
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
@@ -166,14 +165,10 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         now_application_json = transform_data(now_application_json)
 
-        #TODO
-        # remove contacts section if it is empty
-        # remove if empty Access Roads, Trails, Helipads, Air Strips, Boat Ramps
-        #
-
         current_app.logger.info("@@@@@@@@@@@@@@@@  START  @@@@@@@@@@@@@@@@@@@@@@")
         template_data = now_application_json
-        ##ENFORCE READ-ONLY CONTEXT DATA
+
+        # ENFORCE READ-ONLY CONTEXT DATA
         enforced_data = [
             x for x in document_type.document_template._form_spec_with_context(
                 data['now_application_guid']) if x.get('read-only', False)
