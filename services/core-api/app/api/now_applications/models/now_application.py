@@ -5,6 +5,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -62,7 +63,6 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    term_of_application = db.Column(db.Integer)
     proposed_annual_maximum_tonnage = db.Column(db.Integer)
     adjusted_annual_maximum_tonnage = db.Column(db.Integer)
     annual_maximum_tonnage_unit_type_code = db.Column(db.String)

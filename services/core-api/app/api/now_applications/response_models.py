@@ -337,7 +337,6 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'type_of_application':
         fields.String,
-        'term_of_application': fields.Integer,
         'proposed_annual_maximum_tonnage': fields.Integer,
         'adjusted_annual_maximum_tonnage': fields.Integer,
         'annual_maximum_tonnage_unit_type_code': fields.String,

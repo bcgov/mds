@@ -785,22 +785,6 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
-              <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains all the information that will appear in the permit when it is
-                    issued. The Conditions sections is pre-populated with conditions based on the
-                    permit type. You can add or remove any condition.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  {this.renderPermitGeneration()}
-                </LoadingWrapper>
-              </>
-            </Tabs.TabPane>
-
             <Tabs.TabPane
               tab="Referral/Consultation"
               key="referral-consultation"
@@ -825,6 +809,22 @@ export class NoticeOfWorkApplication extends Component {
                       noticeOfWork={this.props.noticeOfWork}
                     />
                   </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains all the information that will appear in the permit when it is
+                    issued. The Conditions sections is pre-populated with conditions based on the
+                    permit type. You can add or remove any condition.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  {this.renderPermitGeneration()}
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>

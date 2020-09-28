@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Tooltip } from "antd";
 import { INFO_CIRCLE } from "@/constants/assets";
-import { ExceptionOutlined } from "@ant-design/icons";
+import { WarningOutlined } from "@ant-design/icons";
 
 const propTypes = {
   title: PropTypes.string,
@@ -32,7 +32,7 @@ export const NOWFieldOriginTooltip = () => (
     placement="right"
     mouseEnterDelay={0.3}
   >
-    <ExceptionOutlined className="info-tooltip icon-sm" />
+    <WarningOutlined className="info-tooltip icon-sm" />
   </Tooltip>
 );
 

@@ -1,15 +1,18 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
+import { isNil } from "lodash";
 import { Drawer, Button, Table, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import { Field, Fields } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
-import { number, numberWithUnitCode } from "@common/utils/Validate";
+import { numberWithUnitCode } from "@common/utils/Validate";
+import { getDurationText } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import moment from "moment";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -36,6 +39,7 @@ const tableOneColumns = [
     dataIndex: "permit_fee",
     key: "permit_fee",
     width: 100,
+    className: "right",
   },
 ];
 
@@ -50,6 +54,7 @@ const tableTwoColumns = [
     dataIndex: "permit_fee",
     key: "permit_fee",
     width: 100,
+    className: "right",
   },
 ];
 
@@ -78,25 +83,78 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170 000", permit_fee: "$50 000" },
 ];
 
-const typeDeterminesFee = (type) => {
-  if (type === PLA) {
-    return adjustmentExceedsFeePlacer();
-  } else if (type === SAG || type === QCA || type === QIM) {
-    return adjustmentExceedsFeePitsQuarries();
-  }
-};
-
-const adjustmentExceedsFeePlacer = () => {
-  console.log("exceeeeding fee");
-};
-
-const adjustmentExceedsFeePitsQuarries = () => {
-  console.log("feee pits");
-};
-
 export const ReviewApplicationFeeContent = (props) => {
   const [isApplicationFeeValid, setValidation] = useState(true);
   const [isFeeDrawerVisible, setVisible] = useState(false);
+  const duration = moment.duration(
+    moment(props.initialValues.proposed_end_date).diff(
+      moment(props.initialValues.proposed_start_date)
+    )
+  );
+  const isTermOverFive = duration.years() >= 5 && duration.months() > 0;
+  props.initialValues.term_of_application = getDurationText(duration);
+
+  const typeDeterminesFee = (type) => {
+    // application fees only apply to Placer, S&G, and Q mines
+    if (type === "PLA") {
+      return adjustmentExceedsFeePlacer(
+        isTermOverFive,
+        props.proposedTonnage,
+        props.adjustedTonnage
+      );
+    } else if (type === "SAG" || type === "QCA" || type === "QIM") {
+      return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
+    }
+  };
+
+  // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
+  // Fees need to be readjusted if they move to a higher bracket only
+  const adjustmentExceedsFeePlacer = (isTermOverFive, proposed, adjusted) => {
+    let isFeeValid = true;
+    if (isTermOverFive) {
+      if (proposed < 60000) {
+        isFeeValid = adjusted < 60000;
+      } else if (proposed >= 60000 && proposed < 125000) {
+        isFeeValid = adjusted < 125000;
+      } else if (proposed >= 125000 && proposed < 250000) {
+        isFeeValid = adjusted < 250000;
+      } else if (proposed >= 250000 && proposed < 500000) {
+        isFeeValid = adjusted < 500000;
+      }
+      // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
+    } else {
+      if (proposed < 10000) {
+        isFeeValid = adjusted < 10000;
+      } else if (proposed >= 10000 && proposed < 60000) {
+        isFeeValid = adjusted < 60000;
+      } else if (proposed >= 60000 && proposed < 125000) {
+        isFeeValid = adjusted < 125000;
+      } else if (proposed >= 125000 && proposed < 250000) {
+        isFeeValid = adjusted < 250000;
+      }
+      // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
+    }
+    return setValidation(isFeeValid);
+  };
+
+  const adjustmentExceedsFeePitsQuarries = (proposed, adjusted) => {
+    let isFeeValid = true;
+    if (proposed < 5000) {
+      isFeeValid = adjusted < 5000;
+    } else if (proposed >= 5000 && proposed < 10000) {
+      isFeeValid = adjusted < 10000;
+    } else if (proposed >= 10000 && proposed < 100000) {
+      // CHECK THIS LOGIC MORE
+      const canIncreaseBy = 10000;
+      isFeeValid = adjusted < proposed + canIncreaseBy;
+    } else if (proposed >= 100000 && proposed < 130000) {
+      isFeeValid = adjusted < 130000;
+    } else if (proposed >= 130000 && proposed < 170000) {
+      isFeeValid = adjusted < 170000;
+    }
+    // Anything above 170,000 is valid as the applicatcant alredy paid the max fee.
+    return setValidation(isFeeValid);
+  };
 
   const toggleFeeDrawer = () => {
     setVisible(!isFeeDrawerVisible);
@@ -133,6 +191,13 @@ export const ReviewApplicationFeeContent = (props) => {
     </div>
   );
 
+  useEffect(() => {
+    // props.initialValues.term_of_application = getDurationText(duration);
+    if (!isNil(props.proposedTonnage) && !isNil(props.adjustedTonnage)) {
+      typeDeterminesFee(props.initialValues.notice_of_work_type_code);
+    }
+  });
+
   return (
     <>
       <Drawer
@@ -160,12 +225,7 @@ export const ReviewApplicationFeeContent = (props) => {
           Proposed Start Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
-        <Field
-          id="proposed_start_date"
-          name="proposed_start_date"
-          component={RenderDate}
-          disabled
-        />
+        <Field id="proposed_start_date" name="proposed_start_date" component={RenderDate} />
         <div className="field-title">
           Proposed End Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
@@ -180,7 +240,6 @@ export const ReviewApplicationFeeContent = (props) => {
           name="term_of_application"
           component={RenderField}
           disabled
-          validate={[number]}
         />
         <div className="field-title">
           Proposed Annual Maximum Tonnage
@@ -208,13 +267,15 @@ export const ReviewApplicationFeeContent = (props) => {
           validate={[numberWithUnitCode]}
           data={props.unitTypeOptions}
         />
-        <div className="error">
-          <Alert
-            message="The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered."
-            type="error"
-            showIcon
-          />
-        </div>
+        {!isApplicationFeeValid && (
+          <div className="error">
+            <Alert
+              message="The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered."
+              type="error"
+              showIcon
+            />
+          </div>
+        )}
       </div>
     </>
   );

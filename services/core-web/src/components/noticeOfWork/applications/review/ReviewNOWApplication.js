@@ -56,6 +56,9 @@ const propTypes = {
   applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   permitTypeOptions: CustomPropTypes.options.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
+  proposedTonnage: PropTypes.number.isRequired,
+  adjustedTonnage: PropTypes.number.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -242,6 +245,9 @@ export const ReviewNOWApplication = (props) => {
           <ReviewApplicationFeeContent
             initialValues={props.noticeOfWork}
             isViewMode={props.isViewMode}
+            unitTypeOptions={props.unitTypeOptions}
+            proposedTonnage={props.proposedTonnage}
+            adjustedTonnage={props.adjustedTonnage}
           />
         </Col>
       </Row>
@@ -718,6 +724,8 @@ export default compose(
     mine_guid: selector(state, "mine_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
+    proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
+    adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),

@@ -2,7 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
-import { get } from "lodash";
+import { get, sortBy } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -39,11 +39,17 @@ export const createItemMap = (array, idField) => {
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
 export const createDropDownList = (array, labelField, valueField, isActiveField = false) => {
-  return array.map((item) => ({
+  const options = array.map((item) => ({
     value: item[valueField],
     label: item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
   }));
+
+  return sortBy(options, [
+    (o) => {
+      return o.label;
+    },
+  ]);
 };
 
 // Function to create a hash given an array of values and labels
@@ -285,3 +291,24 @@ export const renderLabel = (options, keyStr) =>
   options && options.length > 0 && keyStr && keyStr.trim().length > 0
     ? options.find((item) => item.value === keyStr).label
     : "";
+
+// given the moment duration between two dates, display the a formatted label of the difference
+export const getDurationText = (duration) => {
+  const years = duration.years();
+  const months = duration.months();
+  const weeks = duration.weeks();
+  const days = duration.subtract(weeks, "w").days();
+
+  const yearsText = getDurationTextOrDefault(years, "Year");
+  const monthsText = getDurationTextOrDefault(months, "Month");
+  const weeksText = getDurationTextOrDefault(weeks, "Week");
+  const daysText = getDurationTextOrDefault(days, "Day");
+
+  return `${yearsText}${monthsText}${weeksText}${daysText}`;
+};
+
+const getDurationTextOrDefault = (duration, unit) => {
+  if (duration <= 0) return "";
+  unit = duration === 1 ? unit : unit + "s";
+  return `${duration} ${unit} `;
+};
