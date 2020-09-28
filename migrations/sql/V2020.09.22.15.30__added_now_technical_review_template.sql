@@ -6,4 +6,4 @@ VALUES
 INSERT INTO now_application_document_type
     (now_application_document_type_code, description, active_ind, create_user, update_user, document_template_code)
 VALUES
-    ('NTR', 'Technical Review', true, 'system-mds', 'system-mds', 'NRT');
+    ('NTR', 'Technical Review', true, 'system-mds', 'system-mds', 'NTR');
