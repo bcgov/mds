@@ -405,6 +405,68 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String
     })
 
+NOW_APPLICATION_MODEL_EXPORT = api.model(
+    'NOWApplication', {
+        'now_application_guid': fields.String,
+        'now_number': fields.String,
+        'mine_guid': fields.String,
+        'mine_name': fields.String,
+        'mine_no': fields.String,
+        'mine_region': fields.String,
+        'lead_inspector_party_guid': fields.String,
+        'lead_inspector': fields.Nested(PARTY),
+        'imported_to_core': fields.Boolean,
+        'notice_of_work_type_code': fields.String,
+        'now_application_status_code': fields.String,
+        'status_updated_date': Date,
+        'submitted_date': Date,
+        'received_date': Date,
+        'latitude': fields.Fixed(decimals=7),
+        'longitude': fields.Fixed(decimals=7),
+        'property_name': fields.String,
+        'tenure_number': fields.String,
+        'description_of_land': fields.String,
+        'application_permit_type_code': fields.String,
+        'proposed_start_date': Date,
+        'proposed_end_date': Date,
+        'directions_to_site': fields.String,
+        'work_plan': fields.String,
+        'type_of_application': fields.String,
+        'crown_grant_or_district_lot_numbers': fields.String,
+        'req_access_authorization_numbers': fields.String,
+        'has_surface_disturbance_outside_tenure': fields.Boolean,
+        'is_access_gated': fields.Boolean,
+        'has_key_for_inspector': fields.Boolean,
+        'has_req_access_authorizations': fields.Boolean,
+        'application_progress': fields.Nested(NOW_APPLICATION_PROGRESS),
+        'state_of_land': fields.Nested(NOW_APPLICATION_STATE_OF_LAND),
+        'first_aid_equipment_on_site': fields.String,
+        'first_aid_cert_level': fields.String,
+        'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION),
+        'camps': fields.Nested(NOW_APPLICATION_CAMP),
+        'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES),
+        'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS),
+        'exploration_surface_drilling': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL),
+        'mechanical_trenching': fields.Nested(NOW_APPLICATION_MECH_TRENCHING),
+        'placer_operation': fields.Nested(NOW_APPLICATION_PLACER_OPS),
+        'sand_and_gravel': fields.Nested(NOW_APPLICATION_SAND_AND_GRAVEL),
+        'settling_pond': fields.Nested(NOW_APPLICATION_SETTLING_POND),
+        'surface_bulk_sample': fields.Nested(NOW_APPLICATION_SURFACE_BULK),
+        'underground_exploration': fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION),
+        'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY),
+        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
+        'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
+        'ready_for_review_date': Date,
+        'referral_closed_on_date': Date,
+        'consultation_closed_on_date': Date,
+        'public_comment_closed_on_date': Date,
+        'security_adjustment': fields.Fixed(decimals=2),
+        'security_received_date': Date,
+        'last_updated_date': Date,
+        'last_updated_by': fields.String
+    })
+
 NOW_VIEW_MODEL = api.model(
     'NOWApplication', {
         'now_application_guid': fields.String,
@@ -441,17 +503,19 @@ NOW_ACTIVITY_TYPES = api.model('ActivityType', {
     'active_ind': fields.Boolean
 })
 
-NOW_APPLICATION_TYPES = api.model('ApplicationType', {
-    'notice_of_work_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+NOW_APPLICATION_TYPES = api.model(
+    'ApplicationType', {
+        'notice_of_work_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-NOW_APPLICATION_STATUS_CODES = api.model('ActivityStatusCodes', {
-    'now_application_status_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+NOW_APPLICATION_STATUS_CODES = api.model(
+    'ActivityStatusCodes', {
+        'now_application_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
     'NOWApplicationStatusUpdatedRecord', {
@@ -460,12 +524,13 @@ NOW_APPLICATION_STATUS_UPDATED_RECORD = api.model(
         'status': fields.Nested(NOW_APPLICATION_STATUS_CODES)
     })
 
-UNIT_TYPES = api.model('UnitTypeCodes', {
-    'short_description': fields.String,
-    'unit_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+UNIT_TYPES = api.model(
+    'UnitTypeCodes', {
+        'short_description': fields.String,
+        'unit_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
 NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
     'ApplicationDocumentTypeModel', {
@@ -475,26 +540,30 @@ NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
-UNDERGROUND_EXPLORATION_TYPES = api.model('UndergroundExplorationTypes', {
-    'underground_exploration_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+UNDERGROUND_EXPLORATION_TYPES = api.model(
+    'UndergroundExplorationTypes', {
+        'underground_exploration_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-APPLICATION_PROGRESS_STATUS_CODES = api.model('ApplicationProgressStatusCodes', {
-    'application_progress_status_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+APPLICATION_PROGRESS_STATUS_CODES = api.model(
+    'ApplicationProgressStatusCodes', {
+        'application_progress_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-NOW_APPLICATION_PERMIT_TYPES = api.model('ApplicationPermitTypes', {
-    'now_application_permit_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+NOW_APPLICATION_PERMIT_TYPES = api.model(
+    'ApplicationPermitTypes', {
+        'now_application_permit_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-NOW_APPLICATION_REVIEW_TYPES = api.model('ApplicationReviewTypes', {
-    'now_application_review_type_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+NOW_APPLICATION_REVIEW_TYPES = api.model(
+    'ApplicationReviewTypes', {
+        'now_application_review_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
