@@ -145,7 +145,7 @@ class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.ExplorationSurfaceDrilling
 
-    reclamation_core_storage = factory.Faker('boolean', chance_of_getting_true=50)
+    reclamation_core_storage = factory.Faker('sentence', chance_of_getting_true=50)
 
     @factory.post_generation
     def details(obj, create, extracted, **kwargs):
