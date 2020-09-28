@@ -1,13 +1,5 @@
 CREATE OR REPLACE FUNCTION transfer_permit_assessments() RETURNS void AS $$
 BEGIN
-DECLARE
-		-- Values for displaying print statements
-		tmp_num_records integer;
-        tmp1 integer;
-        tmp2 integer;
-        tmp3 integer;
-  BEGIN
-
 	DROP TABLE IF EXISTS etl_permit_assessment_info;
 	CREATE TEMPORARY TABLE etl_permit_assessment_info AS
 		select 
@@ -31,6 +23,5 @@ DECLARE
 		FROM etl_permit_assessment_info epai
 		WHERE
 			permit_amendment.permit_amendment_id = epai.permit_amendment_id;
-
 END;
 $$ LANGUAGE PLPGSQL;
