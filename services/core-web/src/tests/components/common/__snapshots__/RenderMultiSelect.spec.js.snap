@@ -22,6 +22,7 @@ exports[`RenderMultiSelect renders properly 1`] = `
       showArrow={true}
       size="small"
       transitionName="slide-up"
+      virtual={false}
     >
       <Option />
       <Option />
