@@ -363,6 +363,75 @@ declare
 	) bond_data
 	where permit.permit_id = bond_data.core_permit_id;
 
+	---------------------- INSERT BOND_HISTORY
+
+	with upserted_bond_histories as (
+	INSERT INTO bond_history (
+		bond_id,
+		amount,
+		bond_type_code,
+		payer_party_guid,
+		bond_status_code,
+		reference_number,
+		create_user,
+		update_timestamp,
+		update_user,
+		institution_name,
+		institution_street,
+		institution_city,
+		institution_province,
+		institution_postal_code,
+		note,
+		issue_date,
+		closed_date,
+		closed_note
+	)
+	select
+		sec_cid,
+		sec_amt,
+		core_bond_type_code,
+		core_payer_party_guid,
+		CASE
+			WHEN "status" = 'E' THEN 'REL'
+			when "status" = 'C' then 'CON'
+			ELSE 'ACT'
+		end as bond_status_code,
+		descript,
+		'bond_etl',
+		etl_update_date,
+		'bond_etl',
+		invloc,
+		iaddr1,
+		CONCAT(iaddr2,iaddr3),
+		null,
+		ipost_cd,
+		"comment",
+		cnt_dt,
+		return_dt,
+		null
+	from ETL_BOND
+	ON CONFLICT (mms_sec_cid)
+	DO
+		UPDATE
+			SET
+				amount=excluded.amount,
+				bond_type_code=excluded.bond_type_code,
+				payer_party_guid=excluded.payer_party_guid,
+				bond_status_code=excluded.bond_status_code,
+				reference_number=excluded.reference_number,
+				update_timestamp=excluded.update_timestamp,
+				update_user=excluded.update_user,
+				institution_name=excluded.institution_name,
+				institution_street=excluded.institution_street,
+				institution_city=excluded.institution_city,
+				institution_province=excluded.institution_province,
+				institution_postal_code=excluded.institution_postal_code,
+				note=excluded.note,
+				issue_date=excluded.issue_date,
+				closed_date=excluded.closed_date
+	returning *
+	)
+
 END;
 END;
 $$ LANGUAGE PLPGSQL;
