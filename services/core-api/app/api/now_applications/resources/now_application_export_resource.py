@@ -16,10 +16,12 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_MODEL
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_MODEL_EXPORT
 
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token': fields.String})
+
+NULL_CHAR = '-'
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
@@ -42,16 +44,18 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(data["now_application_guid"])
+        now_application_identity = NOWApplicationIdentity.find_by_guid(data['now_application_guid'])
 
         if not now_application_identity:
             raise NotFound('Notice of Work not found')
 
         now_application = now_application_identity.now_application
-        now_application_json = marshal(now_application, NOW_APPLICATION_MODEL)
+        now_application_json = marshal(now_application, NOW_APPLICATION_MODEL_EXPORT)
 
         # data transforamtion functions
-        current_app.logger.info("@@@@@@@@@@@@@@@@  DATA TRANSFORMATION  @@@@@@@@@@@@@@@@@@@@@@")
+        current_app.logger.info(
+            '@@@@@@@@@@@@@@@@@@@@@@ DATA TRANSFORMATION  @@@@@@@@@@@@@@@@@@@@@@')
+        current_app.logger.info(json.dumps(now_application_json))
 
         def is_number(s):
             try:
@@ -125,7 +129,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         activity_type.description,
                         'total':
                         now_application[activity_type.activity_type_code].get(
-                            'total_disturbed_area', '-'),
+                            'total_disturbed_area', NULL_CHAR),
                         'cost':
                         (transform_currency(now_application[activity_type.activity_type_code].get(
                             'reclamation_cost', None)))
@@ -140,19 +144,29 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     render[activity_type.activity_type_code] = True
             return render
 
+        def transform_documents(now_application):
+            docs = now_application.get('documents', [])
+            for doc in docs:
+                doc['now_application_document_type_description'] = NOWApplicationDocumentType.query.get(
+                    doc['now_application_document_type_code']).description
+            return docs
+
         def transform_booleans(value):
             return 'Yes' if value else 'No'
 
         def transform_data(obj):
             for key in obj:
                 if obj[key] is None:
-                    obj[key] = '-'
+                    obj[key] = NULL_CHAR
                 elif key == 'reclamation_cost':
                     obj[key] = transform_currency(obj[key])
-                elif isinstance(obj[key], (bool)):
+                elif isinstance(obj[key], bool):
                     obj[key] = transform_booleans(obj[key])
-                elif isinstance(obj[key], (dict)):
+                elif isinstance(obj[key], dict):
                     transform_data(obj[key])
+                elif isinstance(obj[key], list):
+                    for item in obj[key]:
+                        transform_data(item)
             return obj
 
         # Data transformation
@@ -160,6 +174,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['render'] = get_render_activities(now_application_json)
+        now_application_json['documents'] = transform_documents(now_application_json)
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
