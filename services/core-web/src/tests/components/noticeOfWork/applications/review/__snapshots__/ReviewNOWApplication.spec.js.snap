@@ -1135,16 +1135,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 "directions_to_site",
               ],
               Array [
-                "has_community_water_shed",
+                "state_of_land.has_community_water_shed",
               ],
               Array [
-                "has_community_water_shed",
+                "state_of_land.has_community_water_shed",
               ],
               Array [
-                "has_archaeology_sites_affected",
+                "state_of_land.has_archaeology_sites_affected",
               ],
               Array [
-                "has_archaeology_sites_affected",
+                "state_of_land.has_archaeology_sites_affected",
               ],
               Array [
                 "first_aid_equipment_on_site",
