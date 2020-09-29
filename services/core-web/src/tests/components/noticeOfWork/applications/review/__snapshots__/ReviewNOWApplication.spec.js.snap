@@ -54,32 +54,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   ]
                 }
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Permit Status
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -96,32 +70,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 id="mine_no"
                 name="mine_no"
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Individual or Company/Organization?
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -138,37 +86,10 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 id="mine_region"
                 name="mine_region"
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Relationship to Individual or Company/Organization?
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
                 Lat
-                 
                 <NOWOriginalValueTooltip
                   isVisible={true}
                   originalValue="N/A"
@@ -186,41 +107,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   ]
                 }
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Description of Land
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="description_of_land"
-                name="description_of_land"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -242,36 +128,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   ]
                 }
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Type of Application
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="type_of_application"
-                name="type_of_application"
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -293,37 +149,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                   ]
                 }
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Term of Application
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -340,15 +165,10 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 id="application_permit_type_code"
                 name="application_permit_type_code"
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
-                Proposed Start Date
+                Type of Application
                 <NOWOriginalValueTooltip
                   isVisible={true}
                   originalValue="N/A"
@@ -358,18 +178,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id="proposed_start_date"
-                name="proposed_start_date"
+                id="type_of_application"
+                name="type_of_application"
               />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -386,36 +197,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 id="crown_grant_or_district_lot_numbers"
                 name="crown_grant_or_district_lot_numbers"
               />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Proposed End Date
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="proposed_end_date"
-                name="proposed_end_date"
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
               <div
                 className="field-title"
               >
@@ -436,6 +217,127 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                     [Function],
                   ]
                 }
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Permit Status
+                <NOWFieldOriginTooltip />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+              <div
+                className="field-title"
+              >
+                Individual or Company/Organization?
+                <NOWFieldOriginTooltip />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+              <div
+                className="field-title"
+              >
+                Relationship to Individual or Company/Organization?
+                <NOWFieldOriginTooltip />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id=""
+                name=""
+              />
+              <div
+                className="field-title"
+              >
+                Description of Land
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="description_of_land"
+                name="description_of_land"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+              <ReviewApplicationFeeContent
+                initialValues={
+                  Object {
+                    "blasting_operation": Object {},
+                    "camps": Object {
+                      "details": Array [],
+                    },
+                    "contacts": Array [],
+                    "cut_lines_polarization_survey": Object {
+                      "details": Array [],
+                    },
+                    "description_of_land": "",
+                    "documents": Array [],
+                    "exploration_access": Object {
+                      "details": Array [],
+                    },
+                    "exploration_surface_drilling": Object {
+                      "details": Array [],
+                    },
+                    "latitude": "",
+                    "longitude": "",
+                    "mechanical_trenching": Object {
+                      "details": Array [],
+                    },
+                    "mine_guid": "",
+                    "notice_of_work_type_code": "",
+                    "now_application_guid": "",
+                    "now_application_id": "",
+                    "now_message_id": 47284,
+                    "now_tracking_number": 47284,
+                    "placer_operation": Object {
+                      "details": Array [],
+                    },
+                    "property_name": "",
+                    "proposed_end_date": "",
+                    "proposed_start_date": "",
+                    "received_date": "",
+                    "sand_and_gravel": Object {
+                      "details": Array [],
+                    },
+                    "settling_pond": Object {
+                      "details": Array [],
+                    },
+                    "state_of_land": Object {},
+                    "submitted_date": "",
+                    "surface_bulk_sample": Object {
+                      "details": Array [],
+                    },
+                    "tenure_number": "",
+                    "underground_exploration": Object {
+                      "details": Array [],
+                    },
+                    "water_supply": Object {
+                      "details": Array [],
+                    },
+                  }
+                }
+                isViewMode={true}
               />
             </Col>
           </Row>
@@ -935,7 +837,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Proposed First Aid equipment on site
+                Proposed First Aid equipment on-site
                 <NOWOriginalValueTooltip
                   isVisible={true}
                   originalValue="N/A"
@@ -1075,22 +977,10 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 "latitude",
               ],
               Array [
-                "description_of_land",
-              ],
-              Array [
-                "description_of_land",
-              ],
-              Array [
                 "longitude",
               ],
               Array [
                 "longitude",
-              ],
-              Array [
-                "type_of_application",
-              ],
-              Array [
-                "type_of_application",
               ],
               Array [
                 "notice_of_work_type_code",
@@ -1105,28 +995,28 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 "application_permit_type_code",
               ],
               Array [
-                "proposed_start_date",
+                "type_of_application",
               ],
               Array [
-                "proposed_start_date",
-              ],
-              Array [
-                "crown_grant_or_district_lot_numbers",
+                "type_of_application",
               ],
               Array [
                 "crown_grant_or_district_lot_numbers",
               ],
               Array [
-                "proposed_end_date",
-              ],
-              Array [
-                "proposed_end_date",
+                "crown_grant_or_district_lot_numbers",
               ],
               Array [
                 "tenure_number",
               ],
               Array [
                 "tenure_number",
+              ],
+              Array [
+                "description_of_land",
+              ],
+              Array [
+                "description_of_land",
               ],
               Array [
                 "directions_to_site",
@@ -1160,34 +1050,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               ],
             ],
             "results": Array [
-              Object {
-                "type": "return",
-                "value": Object {
-                  "edited": true,
-                  "value": "N/A",
-                },
-              },
-              Object {
-                "type": "return",
-                "value": Object {
-                  "edited": true,
-                  "value": "N/A",
-                },
-              },
-              Object {
-                "type": "return",
-                "value": Object {
-                  "edited": true,
-                  "value": "N/A",
-                },
-              },
-              Object {
-                "type": "return",
-                "value": Object {
-                  "edited": true,
-                  "value": "N/A",
-                },
-              },
               Object {
                 "type": "return",
                 "value": Object {
