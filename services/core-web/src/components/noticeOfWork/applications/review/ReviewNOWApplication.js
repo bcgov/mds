@@ -492,8 +492,12 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Application in a community watershed
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_community_water_shed").value}
-                isVisible={props.renderOriginalValues("has_community_water_shed").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").edited
+                }
               />
             </div>
             <Field
@@ -552,8 +556,12 @@ export const ReviewNOWApplication = (props) => {
               Are you aware of any protected archaeological sites that may be affected by the
               proposed project?
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_archaeology_sites_affected").value}
-                isVisible={props.renderOriginalValues("has_archaeology_sites_affected").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").edited
+                }
               />
             </div>
             <Field
