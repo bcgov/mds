@@ -14,7 +14,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.custom_reqparser import CustomReqparser
-
+from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_MODEL_EXPORT
 
@@ -22,6 +22,41 @@ NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken
                                               {'token': fields.String})
 
 NULL_CHAR = '-'
+
+ORIGINAL_FIELDS = [
+    'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
+    'type_of_application', 'notice_of_work_type_code', 'application_permit_type_code',
+    'proposed_start_date', 'crown_grant_or_district_lot_numbers', 'proposed_end_date',
+    'tenure_number', 'directions_to_site', 'state_of_land.has_community_water_shed',
+    'state_of_land.has_archaeology_sites_affected', 'first_aid_equipment_on_site',
+    'first_aid_cert_level', 'exploration_access.reclamation_description',
+    'exploration_access.reclamation_cost', 'blasting_operation.has_storage_explosive_on_site',
+    'blasting_operation.explosive_permit_issued', 'blasting_operation.explosive_permit_expiry_date',
+    'blasting_operation.explosive_permit_number', 'camps.has_fuel_stored',
+    'camps.volume_fuel_stored', 'camps.has_fuel_stored_in_bulk', 'camps.has_fuel_stored_in_barrels',
+    'camps.reclamation_description', 'camps.reclamation_cost',
+    'cut_lines_polarization_survey.reclamation_description',
+    'cut_lines_polarization_survey.reclamation_cost',
+    'mechanical_trenching.reclamation_description', 'mechanical_trenching.reclamation_cost',
+    'placer_operation.is_underground', 'placer_operation.is_hand_operation',
+    'placer_operation.total_disturbed_area', 'placer_operation.reclamation_description',
+    'placer_operation.reclamation_cost', 'sand_and_gravel.average_overburden_depth',
+    'sand_and_gravel.average_top_soil_depth', 'sand_and_gravel.stability_measures_description',
+    'sand_and_gravel.is_agricultural_land_reserve', 'sand_and_gravel.land_use_zoning',
+    'sand_and_gravel.agri_lnd_rsrv_permit_application_number', 'sand_and_gravel.proposed_land_use',
+    'sand_and_gravel.community_plan', 'sand_and_gravel.has_local_soil_removal_bylaw',
+    'sand_and_gravel.total_mineable_reserves', 'sand_and_gravel.total_annual_extraction',
+    'sand_and_gravel.reclamation_description', 'sand_and_gravel.reclamation_cost',
+    'settling_pond.is_ponds_recycled', 'settling_pond.is_ponds_exfiltrated',
+    'settling_pond.is_ponds_discharged', 'settling_pond.reclamation_description',
+    'settling_pond.reclamation_cost', 'surface_bulk_sample.processing_method_description',
+    'surface_bulk_sample.reclamation_description', 'surface_bulk_sample.reclamation_cost',
+    'exploration_surface_drilling.reclamation_core_storage',
+    'exploration_surface_drilling.reclamation_description',
+    'exploration_surface_drilling.reclamation_cost', 'underground_exploration.total_ore_amount',
+    'underground_exploration.total_waste_amount', 'water_supply.reclamation_description',
+    'water_supply.reclamation_cost'
+]
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
@@ -52,10 +87,16 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application = now_application_identity.now_application
         now_application_json = marshal(now_application, NOW_APPLICATION_MODEL_EXPORT)
 
+        now_application_identity_original = transmogrify_now(now_application_identity)
+        original_now_application_json = marshal(now_application_identity_original,
+                                                NOW_APPLICATION_MODEL_EXPORT)
+
         # data transforamtion functions
-        current_app.logger.info(
-            '@@@@@@@@@@@@@@@@@@@@@@ DATA TRANSFORMATION  @@@@@@@@@@@@@@@@@@@@@@')
-        current_app.logger.info(json.dumps(now_application_json))
+        current_app.logger.info('@@@@@@@@@@@@@@@@@@@@@@ DATA TRANSFORMATION @@@@@@@@@@@@@@@@@@@@@@')
+        current_app.logger.debug('CURRENT NOW')
+        current_app.logger.debug(json.dumps(now_application_json))
+        current_app.logger.debug('ORIGINAL NOW')
+        current_app.logger.debug(json.dumps(original_now_application_json))
 
         def is_number(s):
             try:
@@ -179,6 +220,22 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['exported_by_user'] = User().get_user_username()
 
         now_application_json = transform_data(now_application_json)
+        original_now_application_json = transform_data(original_now_application_json)
+
+        edited_fields = {}
+        for path in ORIGINAL_FIELDS:
+            if '.' in path:
+                paths = path.split('.')
+                if not edited_fields.get(paths[0]):
+                    edited_fields[paths[0]] = {}
+                if now_application_json[paths[0]][paths[1]] != original_now_application_json[
+                        paths[0]][paths[1]]:
+                    edited_fields[paths[0]][paths[1]] = True
+            else:
+                if now_application_json[path] != original_now_application_json[path]:
+                    edited_fields[path] = True
+        now_application_json['edited_fields'] = edited_fields
+        current_app.logger.info(f'******** EDITED FIELDS:{edited_fields}')
 
         current_app.logger.info("@@@@@@@@@@@@@@@@  START  @@@@@@@@@@@@@@@@@@@@@@")
         template_data = now_application_json
