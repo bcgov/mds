@@ -5,7 +5,6 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db

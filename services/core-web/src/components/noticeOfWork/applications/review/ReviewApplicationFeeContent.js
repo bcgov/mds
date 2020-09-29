@@ -91,17 +91,12 @@ export const ReviewApplicationFeeContent = (props) => {
       moment(props.initialValues.proposed_start_date)
     )
   );
-  const isTermOverFive = duration.years() >= 5 && duration.months() > 0;
-  props.initialValues.term_of_application = getDurationText(duration);
+  const isTermOverFive = duration._milliseconds > 157852800000;
 
   const typeDeterminesFee = (type) => {
     // application fees only apply to Placer, S&G, and Q mines
     if (type === "PLA") {
-      return adjustmentExceedsFeePlacer(
-        isTermOverFive,
-        props.proposedTonnage,
-        props.adjustedTonnage
-      );
+      return adjustmentExceedsFeePlacer(true, props.proposedTonnage, props.adjustedTonnage);
     } else if (type === "SAG" || type === "QCA" || type === "QIM") {
       return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
     }
@@ -143,10 +138,24 @@ export const ReviewApplicationFeeContent = (props) => {
       isFeeValid = adjusted < 5000;
     } else if (proposed >= 5000 && proposed < 10000) {
       isFeeValid = adjusted < 10000;
-    } else if (proposed >= 10000 && proposed < 100000) {
-      // CHECK THIS LOGIC MORE
-      const canIncreaseBy = 10000;
-      isFeeValid = adjusted < proposed + canIncreaseBy;
+    } else if (proposed >= 10000 && proposed < 20000) {
+      isFeeValid = adjusted < 20000;
+    } else if (proposed >= 20000 && proposed < 30000) {
+      isFeeValid = adjusted < 30000;
+    } else if (proposed >= 30000 && proposed < 40000) {
+      isFeeValid = adjusted < 40000;
+    } else if (proposed >= 40000 && proposed < 50000) {
+      isFeeValid = adjusted < 50000;
+    } else if (proposed >= 50000 && proposed < 60000) {
+      isFeeValid = adjusted < 60000;
+    } else if (proposed >= 60000 && proposed < 70000) {
+      isFeeValid = adjusted < 70000;
+    } else if (proposed >= 70000 && proposed < 80000) {
+      isFeeValid = adjusted < 80000;
+    } else if (proposed >= 80000 && proposed < 90000) {
+      isFeeValid = adjusted < 90000;
+    } else if (proposed >= 90000 && proposed < 100000) {
+      isFeeValid = adjusted < 100000;
     } else if (proposed >= 100000 && proposed < 130000) {
       isFeeValid = adjusted < 130000;
     } else if (proposed >= 130000 && proposed < 170000) {
@@ -192,7 +201,10 @@ export const ReviewApplicationFeeContent = (props) => {
   );
 
   useEffect(() => {
-    // props.initialValues.term_of_application = getDurationText(duration);
+    props.initialValues.term_of_application = getDurationText(
+      props.initialValues.proposed_start_date,
+      props.initialValues.proposed_end_date
+    );
     if (!isNil(props.proposedTonnage) && !isNil(props.adjustedTonnage)) {
       typeDeterminesFee(props.initialValues.notice_of_work_type_code);
     }
@@ -225,14 +237,19 @@ export const ReviewApplicationFeeContent = (props) => {
           Proposed Start Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
-        <Field id="proposed_start_date" name="proposed_start_date" component={RenderDate} />
+        <Field
+          id="proposed_start_date"
+          name="proposed_start_date"
+          component={RenderDate}
+          disabled
+        />
         <div className="field-title">
           Proposed End Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
         <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
         <div className="field-title">
-          Term of Application
+          Proposed Term of Application
           <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
         <Field

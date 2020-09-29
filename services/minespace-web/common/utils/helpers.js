@@ -292,23 +292,27 @@ export const renderLabel = (options, keyStr) =>
     ? options.find((item) => item.value === keyStr).label
     : "";
 
-// given the moment duration between two dates, display the a formatted label of the difference
-export const getDurationText = (duration) => {
+
+export const getDurationText = (startDate, endDate) => {
+ const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+ if (Math.sign(duration._milliseconds) === -1) {
+   return "Invalid Date Range"
+ }
   const years = duration.years();
   const months = duration.months();
   const weeks = duration.weeks();
   const days = duration.subtract(weeks, "w").days();
- 
+
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");
   const weeksText = getDurationTextOrDefault(weeks, "Week");
   const daysText = getDurationTextOrDefault(days, "Day");
 
   return `${yearsText}${monthsText}${weeksText}${daysText}`;
-}
+};
 
-const getDurationTextOrDefault = (duration, unit)  =>{
+const getDurationTextOrDefault = (duration, unit) => {
   if (duration <= 0) return "";
   unit = duration === 1 ? unit : unit + "s";
   return `${duration} ${unit} `;
-}
+};
