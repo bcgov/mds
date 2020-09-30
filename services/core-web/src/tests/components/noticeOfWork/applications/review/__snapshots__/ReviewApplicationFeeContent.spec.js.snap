@@ -54,29 +54,29 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
         dataSource={
           Array [
             Object {
-              "less_than_5": "< 60 000",
-              "more_than_5": "< 10 000",
+              "less_than_5": "< 60,000",
+              "more_than_5": "< 10,000",
               "permit_fee": "$0",
             },
             Object {
-              "less_than_5": "60 000 – < 125 000",
-              "more_than_5": "10 000 – < 60 000",
-              "permit_fee": "$4 000",
+              "less_than_5": "60,000 – < 125,000",
+              "more_than_5": "10,000 – < 60,000",
+              "permit_fee": "$4,000",
             },
             Object {
-              "less_than_5": "125 000 – < 250 000",
-              "more_than_5": "60 000 – < 125 000",
-              "permit_fee": "$8 000",
+              "less_than_5": "125,000 – < 250,000",
+              "more_than_5": "60,000 – < 125,000",
+              "permit_fee": "$8,000",
             },
             Object {
-              "less_than_5": "250 000 – < 500 000",
-              "more_than_5": "125 000 – < 250 000",
-              "permit_fee": "$16 000",
+              "less_than_5": "250,000 – < 500,000",
+              "more_than_5": "125,000 – < 250,000",
+              "permit_fee": "$16,000",
             },
             Object {
-              "less_than_5": "≥ 500 000",
-              "more_than_5": "≥ 250 000",
-              "permit_fee": "$32 000",
+              "less_than_5": "≥ 500,000",
+              "more_than_5": "≥ 250,000",
+              "permit_fee": "$32,000",
             },
           ]
         }
@@ -110,59 +110,59 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
           Array [
             Object {
               "permit_fee": "$0",
-              "tonnes_per_year": "< 5 000",
+              "tonnes_per_year": "< 5,000",
             },
             Object {
-              "permit_fee": "$1 500",
-              "tonnes_per_year": "5 000 – < 10 000",
+              "permit_fee": "$1,500",
+              "tonnes_per_year": "5,000 – < 10,000",
             },
             Object {
-              "permit_fee": "$3 000",
-              "tonnes_per_year": "10 000 – < 20 000",
+              "permit_fee": "$3,000",
+              "tonnes_per_year": "10,000 – < 20,000",
             },
             Object {
-              "permit_fee": "$6 000",
-              "tonnes_per_year": "20 000 – < 30 000",
+              "permit_fee": "$6,000",
+              "tonnes_per_year": "20,000 – < 30,000",
             },
             Object {
-              "permit_fee": "$9 000",
-              "tonnes_per_year": "30 000 – < 40 000",
+              "permit_fee": "$9,000",
+              "tonnes_per_year": "30,000 – < 40,000",
             },
             Object {
-              "permit_fee": "$12 000",
-              "tonnes_per_year": "40 000 – < 50 000",
+              "permit_fee": "$12,000",
+              "tonnes_per_year": "40,000 – < 50,000",
             },
             Object {
-              "permit_fee": "$15 000",
-              "tonnes_per_year": "50 000 – < 60 000",
+              "permit_fee": "$15,000",
+              "tonnes_per_year": "50,000 – < 60,000",
             },
             Object {
-              "permit_fee": "$18 000",
-              "tonnes_per_year": "60 000 – < 70 000",
+              "permit_fee": "$18,000",
+              "tonnes_per_year": "60,000 – < 70,000",
             },
             Object {
-              "permit_fee": "$21 000",
-              "tonnes_per_year": "70 000 – < 80 000",
+              "permit_fee": "$21,000",
+              "tonnes_per_year": "70,000 – < 80,000",
             },
             Object {
-              "permit_fee": "$24 000",
-              "tonnes_per_year": "80 000 – < 90 000",
+              "permit_fee": "$24,000",
+              "tonnes_per_year": "80,000 – < 90,000",
             },
             Object {
-              "permit_fee": "$27 000",
-              "tonnes_per_year": "90 000 – < 100 000",
+              "permit_fee": "$27,000",
+              "tonnes_per_year": "90,000 – < 100,000",
             },
             Object {
-              "permit_fee": "$30 000",
-              "tonnes_per_year": "100 000 – < 130 000",
+              "permit_fee": "$30,000",
+              "tonnes_per_year": "100,000 – < 130,000",
             },
             Object {
-              "permit_fee": "$40 000",
-              "tonnes_per_year": "130 000 – < 170 000",
+              "permit_fee": "$40,000",
+              "tonnes_per_year": "130,000 – < 170,000",
             },
             Object {
-              "permit_fee": "$50 000",
-              "tonnes_per_year": "≥ 170 000",
+              "permit_fee": "$50,000",
+              "tonnes_per_year": "≥ 170,000",
             },
           ]
         }
@@ -207,7 +207,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Start Date
       <CoreTooltip
-        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work"
+        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work."
       />
     </div>
     <Field
@@ -221,7 +221,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed End Date
       <CoreTooltip
-        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work"
+        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work."
       />
     </div>
     <Field
@@ -235,7 +235,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Term of Application
       <CoreTooltip
-        title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work"
+        title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work."
       />
     </div>
     <Field
