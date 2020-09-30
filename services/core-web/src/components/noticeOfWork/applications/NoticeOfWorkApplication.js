@@ -690,7 +690,7 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
-        {/* TODO: this is work in progress and subject to review/change */}
+        {/* TODO: hide this before merge to test */}
         <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
           {Object.values(this.props.generatableApplicationDocuments)
             .filter(
