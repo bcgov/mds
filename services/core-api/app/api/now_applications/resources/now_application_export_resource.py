@@ -213,7 +213,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if now_application_json[path] != original_now_application_json[path]:
                     edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
-        current_app.logger.debug(f'Edited fields:{edited_fields}')
 
         # Set "export" information
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
