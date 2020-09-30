@@ -770,7 +770,10 @@ export const ReviewNOWApplication = (props) => {
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}
-              documents={props.documents}
+              documents={
+                props.documents &&
+                props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
+              }
               isViewMode={props.isViewMode}
               disclaimerText="Attach any file revisions or new files requested from the proponent here."
             />

@@ -7,6 +7,7 @@ from datetime import datetime
 
 from app.extensions import api, cache
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
+from app.api.now_applications.models.now_application_type import NOWApplicationType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.utils.resources_mixins import UserMixin
@@ -23,6 +24,8 @@ NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken
 EMPTY_FIELD = '-'
 
 CURRENCY_FIELDS = ['reclamation_cost']
+
+EXCLUDED_APPLICATION_DOCUMENT_TYPES = ['NTR']
 
 ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
@@ -66,7 +69,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
     @api.doc(
         description=
-        'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to download the document.',
+        'Generates the specified document for the NoW using the provided template data and issues a one_time token that is used to download the document.',
         params={'document_type_code': 'The code indicating the type of document to generate.'})
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit
@@ -161,19 +164,40 @@ class NOWApplicationExportResource(Resource, UserMixin):
             return summary
 
         def get_applicable_now_activities(now_application):
+            conditional_sections = [
+                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
+                'underground_exploration', 'placer_operation'
+            ]
+            now_type_conditional_sections = {
+                'QCA': ['sand_and_gravel'],
+                'SAG': ['sand_and_gravel'],
+                'QIM': ['sand_and_gravel'],
+                'COL':
+                ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
+                'MIN':
+                ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
+                'PLA':
+                ['placer_operation', 'cut_lines_polarization_survey', 'underground_exploration']
+            }
             applicable = {}
             activity_types = ActivityType.get_all()
+            notice_of_work_type_code = now_application['notice_of_work_type_code']
             for activity_type in activity_types:
-                if now_application.get(activity_type.activity_type_code):
+                if activity_type.activity_type_code in conditional_sections and activity_type.activity_type_code in now_type_conditional_sections[
+                        notice_of_work_type_code]:
                     applicable[activity_type.activity_type_code] = True
             return applicable
 
         def transform_documents(now_application):
+            included_docs = []
             docs = now_application.get('documents', [])
             for doc in docs:
+                if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
+                    continue
                 doc['now_application_document_type_description'] = NOWApplicationDocumentType.query.get(
                     doc['now_application_document_type_code']).description
-            return docs
+                included_docs.append(doc)
+            return included_docs
 
         def transform_data(obj):
             for key in obj:
@@ -194,9 +218,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
-        now_application_json['render'] = get_applicable_now_activities(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
+        now_application_json[
+            'notice_of_work_type_description'] = NOWApplicationType.query.filter_by(
+                notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first(
+                ).description
         now_application_json = transform_data(now_application_json)
+
+        # should be always after transform_data
+        now_application_json['render'] = get_applicable_now_activities(now_application_json)
 
         # Determine what fields have changed from the original application
         original_now_application_json = transform_data(original_now_application_json)
@@ -208,17 +238,17 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     edited_fields[paths[0]] = {}
                 current_value = now_application_json[paths[0]][paths[1]]
                 original_value = original_now_application_json[paths[0]][paths[1]]
-                if current_value != original_value and original_value != None:
+                if current_value != original_value and original_value != EMPTY_FIELD:
                     edited_fields[paths[0]][paths[1]] = True
             else:
                 current_value = now_application_json[path]
                 original_value = original_now_application_json[path]
-                if current_value != original_value and original_value != None:
+                if current_value != original_value and original_value != EMPTY_FIELD:
                     edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
 
         # Set "export" information
-        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
+        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y_%m_%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
         # Enforce that read-only fields do not change
