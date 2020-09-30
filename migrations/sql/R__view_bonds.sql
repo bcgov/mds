@@ -98,6 +98,7 @@ FROM
                   end as bond_status_code, 
                   null, 
                   cnt_dt, 
+                  null, 
                   CONCAT(TRIM(comment1),' ', TRIM(comment2)) as "comment", 
                   null::uuid, 
                   cmp_nm AS "payer_name", 
