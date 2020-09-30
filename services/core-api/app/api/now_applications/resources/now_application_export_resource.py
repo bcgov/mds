@@ -211,7 +211,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if current_value != original_value and original_value != None:
                     edited_fields[paths[0]][paths[1]] = True
             else:
-                if now_application_json[path] != original_now_application_json[path]:
+                current_value = now_application_json[path]
+                original_value = original_now_application_json[path]
+                if current_value != original_value and original_value != None:
                     edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
 
