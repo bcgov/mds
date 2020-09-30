@@ -91,12 +91,16 @@ export const ReviewApplicationFeeContent = (props) => {
       moment(props.initialValues.proposed_start_date)
     )
   );
-  const isTermOverFive = duration._milliseconds > 157852800000;
+  const isTermOverFive = duration._milliseconds > 157626975240;
 
   const typeDeterminesFee = (type) => {
     // application fees only apply to Placer, S&G, and Q mines
     if (type === "PLA") {
-      return adjustmentExceedsFeePlacer(true, props.proposedTonnage, props.adjustedTonnage);
+      return adjustmentExceedsFeePlacer(
+        isTermOverFive,
+        props.proposedTonnage,
+        props.adjustedTonnage
+      );
     } else if (type === "SAG" || type === "QCA" || type === "QIM") {
       return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
     }
@@ -104,9 +108,9 @@ export const ReviewApplicationFeeContent = (props) => {
 
   // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
   // Fees need to be readjusted if they move to a higher bracket only
-  const adjustmentExceedsFeePlacer = (isTermOverFive, proposed, adjusted) => {
+  const adjustmentExceedsFeePlacer = (termOverFive, proposed, adjusted) => {
     let isFeeValid = true;
-    if (isTermOverFive) {
+    if (termOverFive) {
       if (proposed < 60000) {
         isFeeValid = adjusted < 60000;
       } else if (proposed >= 60000 && proposed < 125000) {

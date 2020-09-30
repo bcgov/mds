@@ -292,12 +292,11 @@ export const renderLabel = (options, keyStr) =>
     ? options.find((item) => item.value === keyStr).label
     : "";
 
-
 export const getDurationText = (startDate, endDate) => {
- const duration = moment.duration(moment(endDate).diff(moment(startDate)));
- if (Math.sign(duration._milliseconds) === -1) {
-   return "Invalid Date Range"
- }
+  const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+  if (Math.sign(duration._milliseconds) === -1) {
+    return "Invalid Date Range";
+  }
   const years = duration.years();
   const months = duration.months();
   const weeks = duration.weeks();

@@ -283,6 +283,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <ReviewApplicationFeeContent
                 initialValues={
                   Object {
+                    "adjusted_annual_maximum_tonnage": "",
                     "blasting_operation": Object {},
                     "camps": Object {
                       "details": Array [],
@@ -314,8 +315,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                       "details": Array [],
                     },
                     "property_name": "",
-                    "proposed_end_date": "",
-                    "proposed_start_date": "",
+                    "proposed_annual_maximum_tonnage": 10000,
+                    "proposed_end_date": "2011-03-01",
+                    "proposed_start_date": "2016-03-01",
                     "received_date": "",
                     "sand_and_gravel": Object {
                       "details": Array [],
