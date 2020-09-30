@@ -156,5 +156,23 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       now_application_guid=""
     />
   </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    id="application-export-files"
+    title="Application Export Files"
+  >
+    <Connect(NOWDocuments)
+      addDescriptionColumn={false}
+      categoriesToShow={
+        Array [
+          "NTR",
+        ]
+      }
+      disclaimerText="In this table you can see all exported Notice of Work documents."
+      documents={Array []}
+      isViewMode={true}
+      mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
+      now_application_guid=""
+    />
+  </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;
