@@ -4,7 +4,6 @@ from flask import request, current_app
 from flask_restplus import Resource, fields, marshal
 from werkzeug.exceptions import NotFound, BadRequest
 from datetime import datetime
-from app.api.utils.include.user_info import User
 
 from app.extensions import api, cache
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
@@ -21,9 +20,11 @@ from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TY
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token': fields.String})
 
-NULL_CHAR = '-'
+EMPTY_FIELD = '-'
 
-ORIGINAL_FIELDS = [
+CURRENCY_FIELDS = ['reclamation_cost']
+
+ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
     'type_of_application', 'notice_of_work_type_code', 'application_permit_type_code',
     'proposed_start_date', 'crown_grant_or_district_lot_numbers', 'proposed_end_date',
@@ -91,13 +92,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
         original_now_application_json = marshal(now_application_identity_original,
                                                 NOW_APPLICATION_MODEL_EXPORT)
 
-        # data transforamtion functions
-        current_app.logger.info('@@@@@@@@@@@@@@@@@@@@@@ DATA TRANSFORMATION @@@@@@@@@@@@@@@@@@@@@@')
-        current_app.logger.debug('CURRENT NOW')
-        current_app.logger.debug(json.dumps(now_application_json))
-        current_app.logger.debug('ORIGINAL NOW')
-        current_app.logger.debug(json.dumps(original_now_application_json))
-
         def is_number(s):
             try:
                 float(s)
@@ -143,26 +137,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
             return contact
 
-        def transform_currency(value):
+        def format_currency(value):
             return f'${float(value):,.2f}' if value and is_number(value) else value
 
+        def format_boolean(value):
+            return 'Yes' if value else 'No'
+
         def get_reclamation_summary(now_application):
-
-            # cut_lines_polarization_survey	Cut Lines and Induced Polarization Survey
-            # water_supply	Water Supply
-            # settling_pond	Settling Ponds
-            # exploration_surface_drilling	Exploration Surface Drilling
-            # sand_gravel_quarry_operation	Sand and Gravel / Quarry Operations
-            # exploration_access	Access Roads, Trails, Helipads, Airstrips, Boat Ramps
-            # underground_exploration	Underground Exploration
-            # camp	Camps, Buildings, Staging Area, Fuel/Lubricant Storage
-            # mechanical_trenching	Mechanical Trenching / Test Pits
-            # surface_bulk_sample	Surface Bulk Sample
-            # blasting_operation	Blasting Operations
-            # placer_operation	Placer Operations
-
-            activity_types = ActivityType.get_all()
             summary = []
+            activity_types = ActivityType.get_all()
             for activity_type in activity_types:
                 if now_application.get(activity_type.activity_type_code):
                     summary.append({
@@ -170,20 +153,20 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         activity_type.description,
                         'total':
                         now_application[activity_type.activity_type_code].get(
-                            'total_disturbed_area', NULL_CHAR),
+                            'total_disturbed_area', EMPTY_FIELD),
                         'cost':
-                        (transform_currency(now_application[activity_type.activity_type_code].get(
-                            'reclamation_cost', None)))
+                        format_currency(now_application[activity_type.activity_type_code].get(
+                            'reclamation_cost', None))
                     })
             return summary
 
-        def get_render_activities(now_application):
+        def get_applicable_now_activities(now_application):
+            applicable = {}
             activity_types = ActivityType.get_all()
-            render = {}
             for activity_type in activity_types:
                 if now_application.get(activity_type.activity_type_code):
-                    render[activity_type.activity_type_code] = True
-            return render
+                    applicable[activity_type.activity_type_code] = True
+            return applicable
 
         def transform_documents(now_application):
             docs = now_application.get('documents', [])
@@ -192,17 +175,14 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     doc['now_application_document_type_code']).description
             return docs
 
-        def transform_booleans(value):
-            return 'Yes' if value else 'No'
-
         def transform_data(obj):
             for key in obj:
                 if obj[key] is None:
-                    obj[key] = NULL_CHAR
-                elif key == 'reclamation_cost':
-                    obj[key] = transform_currency(obj[key])
+                    obj[key] = EMPTY_FIELD
+                elif key in CURRENCY_FIELDS:
+                    obj[key] = format_currency(obj[key])
                 elif isinstance(obj[key], bool):
-                    obj[key] = transform_booleans(obj[key])
+                    obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
                     transform_data(obj[key])
                 elif isinstance(obj[key], list):
@@ -210,20 +190,18 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         transform_data(item)
             return obj
 
-        # Data transformation
+        # Transform and format various fields
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
-        now_application_json['render'] = get_render_activities(now_application_json)
+        now_application_json['render'] = get_applicable_now_activities(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
-        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
-        now_application_json['exported_by_user'] = User().get_user_username()
-
         now_application_json = transform_data(now_application_json)
-        original_now_application_json = transform_data(original_now_application_json)
 
+        # Determine what fields have changed from the original application
+        original_now_application_json = transform_data(original_now_application_json)
         edited_fields = {}
-        for path in ORIGINAL_FIELDS:
+        for path in ORIGINAL_NOW_FIELD_PATHS:
             if '.' in path:
                 paths = path.split('.')
                 if not edited_fields.get(paths[0]):
@@ -235,12 +213,14 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if now_application_json[path] != original_now_application_json[path]:
                     edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
-        current_app.logger.info(f'******** EDITED FIELDS:{edited_fields}')
+        current_app.logger.debug(f'Edited fields:{edited_fields}')
 
-        current_app.logger.info("@@@@@@@@@@@@@@@@  START  @@@@@@@@@@@@@@@@@@@@@@")
+        # Set "export" information
+        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
+        now_application_json['exported_by_user'] = User().get_user_username()
+
+        # Enforce that read-only fields do not change
         template_data = now_application_json
-
-        # ENFORCE READ-ONLY CONTEXT DATA
         enforced_data = [
             x for x in document_type.document_template._form_spec_with_context(
                 data['now_application_guid']) if x.get('read-only', False)
@@ -264,8 +244,5 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
-
-        current_app.logger.debug(json.dumps(template_data))
-        current_app.logger.info("@@@@@@@@@@@@@@@@  END  @@@@@@@@@@@@@@@@@@@@@@")
 
         return {'token': token}
