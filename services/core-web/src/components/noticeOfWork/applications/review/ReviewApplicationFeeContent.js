@@ -91,21 +91,11 @@ export const ReviewApplicationFeeContent = (props) => {
       moment(props.initialValues.proposed_start_date)
     )
   );
-  const isExactlyFiveOrUnder =
-    (duration.years() === 5 &&
-      duration.months() === 0 &&
-      duration.weeks() === 0 &&
-      duration.days() === 0) ||
-    duration.years() < 5;
 
   const typeDeterminesFee = (type) => {
     // application fees only apply to Placer, S&G, and Q mines
     if (type === "PLA") {
-      return adjustmentExceedsFeePlacer(
-        !isExactlyFiveOrUnder,
-        props.proposedTonnage,
-        props.adjustedTonnage
-      );
+      return adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
     } else if (type === "SAG" || type === "QCA" || type === "QIM") {
       return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
     }
@@ -113,9 +103,19 @@ export const ReviewApplicationFeeContent = (props) => {
 
   // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
   // Fees need to be readjusted if they move to a higher bracket only
-  const adjustmentExceedsFeePlacer = (termOverFive, proposed, adjusted) => {
+  const adjustmentExceedsFeePlacer = (proposed, adjusted) => {
+    const isExactlyFiveOrUnder =
+      (duration.years() === 5 &&
+        duration.months() === 0 &&
+        duration.weeks() === 0 &&
+        duration.days() === 0) ||
+      duration.years() < 5;
     let isFeeValid = true;
-    if (termOverFive) {
+    if (isDateRangeInvalid) {
+      return setValidation(isFeeValid);
+    }
+
+    if (isExactlyFiveOrUnder) {
       if (proposed < 60000) {
         isFeeValid = adjusted < 60000;
       } else if (proposed >= 60000 && proposed < 125000) {
@@ -218,7 +218,11 @@ export const ReviewApplicationFeeContent = (props) => {
       typeDeterminesFee(props.initialValues.notice_of_work_type_code);
     }
   });
-
+  const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
+  const showCalculationInvalidError =
+    isDateRangeInvalid &&
+    !isNil(props.initialValues.adjusted_annual_maximum_tonnage) &&
+    props.initialValues.notice_of_work_type_code === "PLA";
   return (
     <>
       <Drawer
@@ -256,7 +260,7 @@ export const ReviewApplicationFeeContent = (props) => {
           Proposed End Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
-        <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} />
+        <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
         <div className="field-title">
           Proposed Term of Application
           <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
@@ -293,6 +297,15 @@ export const ReviewApplicationFeeContent = (props) => {
           validate={[numberWithUnitCode]}
           data={props.unitTypeOptions}
         />
+        {showCalculationInvalidError && (
+          <div className="error">
+            <Alert
+              message="Cannot calculate application fee using Adjusted Annual Maximum Tonnage because the proposed dates are invalid."
+              type="error"
+              showIcon
+            />
+          </div>
+        )}
         {!isApplicationFeeValid && (
           <div className="error">
             <Alert
