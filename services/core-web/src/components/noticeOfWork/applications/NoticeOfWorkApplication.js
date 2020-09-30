@@ -818,7 +818,7 @@ export class NoticeOfWorkApplication extends Component {
                 <div className="tab-disclaimer">
                   <p className="center">
                     This page contains all the information that will appear in the permit when it is
-                    issued. The Conditions sections is pre-populated with conditions based on the
+                    issued. The Conditions sections are pre-populated with conditions based on the
                     permit type. You can add or remove any condition.
                   </p>
                 </div>

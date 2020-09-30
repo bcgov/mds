@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { isNil } from "lodash";
@@ -11,13 +10,21 @@ import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown
 import { numberWithUnitCode } from "@common/utils/Validate";
 import { getDurationText } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
+import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import moment from "moment";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
+  initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  adjustedTonnage: PropTypes.number,
+  proposedTonnage: PropTypes.number,
 };
-
+const defaultProps = {
+  adjustedTonnage: null,
+  proposedTonnage: null,
+};
 const tableOneColumns = [
   {
     title: "Tonnes proposed to be moved in highest producing year",
@@ -59,28 +66,28 @@ const tableTwoColumns = [
 ];
 
 const tableOneData = [
-  { more_than_5: "< 10 000", less_than_5: "< 60 000", permit_fee: "$0" },
-  { more_than_5: "10 000 – < 60 000", less_than_5: "60 000 – < 125 000", permit_fee: "$4 000" },
-  { more_than_5: "60 000 – < 125 000", less_than_5: "125 000 – < 250 000", permit_fee: "$8 000" },
-  { more_than_5: "125 000 – < 250 000", less_than_5: "250 000 – < 500 000", permit_fee: "$16 000" },
-  { more_than_5: "≥ 250 000", less_than_5: "≥ 500 000", permit_fee: "$32 000" },
+  { more_than_5: "< 10,000", less_than_5: "< 60,000", permit_fee: "$0" },
+  { more_than_5: "10,000 – < 60,000", less_than_5: "60,000 – < 125,000", permit_fee: "$4,000" },
+  { more_than_5: "60,000 – < 125,000", less_than_5: "125,000 – < 250,000", permit_fee: "$8,000" },
+  { more_than_5: "125,000 – < 250,000", less_than_5: "250,000 – < 500,000", permit_fee: "$16,000" },
+  { more_than_5: "≥ 250,000", less_than_5: "≥ 500,000", permit_fee: "$32,000" },
 ];
 
 const tableTwoData = [
-  { tonnes_per_year: "< 5 000", permit_fee: "$0" },
-  { tonnes_per_year: "5 000 – < 10 000", permit_fee: "$1 500" },
-  { tonnes_per_year: "10 000 – < 20 000", permit_fee: "$3 000" },
-  { tonnes_per_year: "20 000 – < 30 000", permit_fee: "$6 000" },
-  { tonnes_per_year: "30 000 – < 40 000", permit_fee: "$9 000" },
-  { tonnes_per_year: "40 000 – < 50 000", permit_fee: "$12 000" },
-  { tonnes_per_year: "50 000 – < 60 000", permit_fee: "$15 000" },
-  { tonnes_per_year: "60 000 – < 70 000", permit_fee: "$18 000" },
-  { tonnes_per_year: "70 000 – < 80 000", permit_fee: "$21 000" },
-  { tonnes_per_year: "80 000 – < 90 000", permit_fee: "$24 000" },
-  { tonnes_per_year: "90 000 – < 100 000", permit_fee: "$27 000" },
-  { tonnes_per_year: "100 000 – < 130 000", permit_fee: "$30 000" },
-  { tonnes_per_year: "130 000 – < 170 000", permit_fee: "$40 000" },
-  { tonnes_per_year: "≥ 170 000", permit_fee: "$50 000" },
+  { tonnes_per_year: "< 5,000", permit_fee: "$0" },
+  { tonnes_per_year: "5,000 – < 10,000", permit_fee: "$1,500" },
+  { tonnes_per_year: "10,000 – < 20,000", permit_fee: "$3,000" },
+  { tonnes_per_year: "20,000 – < 30,000", permit_fee: "$6,000" },
+  { tonnes_per_year: "30,000 – < 40,000", permit_fee: "$9,000" },
+  { tonnes_per_year: "40,000 – < 50,000", permit_fee: "$12,000" },
+  { tonnes_per_year: "50,000 – < 60,000", permit_fee: "$15,000" },
+  { tonnes_per_year: "60,000 – < 70,000", permit_fee: "$18,000" },
+  { tonnes_per_year: "70,000 – < 80,000", permit_fee: "$21,000" },
+  { tonnes_per_year: "80,000 – < 90,000", permit_fee: "$24,000" },
+  { tonnes_per_year: "90,000 – < 100,000", permit_fee: "$27,000" },
+  { tonnes_per_year: "100,000 – < 130,000", permit_fee: "$30,000" },
+  { tonnes_per_year: "130,000 – < 170,000", permit_fee: "$40,000" },
+  { tonnes_per_year: "≥ 170,000", permit_fee: "$50,000" },
 ];
 
 export const ReviewApplicationFeeContent = (props) => {
@@ -91,15 +98,12 @@ export const ReviewApplicationFeeContent = (props) => {
       moment(props.initialValues.proposed_start_date)
     )
   );
-
-  const typeDeterminesFee = (type) => {
-    // application fees only apply to Placer, S&G, and Q mines
-    if (type === "PLA") {
-      return adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    } else if (type === "SAG" || type === "QCA" || type === "QIM") {
-      return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
-    }
-  };
+  // eslint-disable-next-line no-underscore-dangle
+  const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
+  const showCalculationInvalidError =
+    isDateRangeInvalid &&
+    !isNil(props.adjustedTonnage) &&
+    props.initialValues.notice_of_work_type_code === "PLA";
 
   // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
   // Fees need to be readjusted if they move to a higher bracket only
@@ -124,19 +128,21 @@ export const ReviewApplicationFeeContent = (props) => {
         isFeeValid = adjusted < 250000;
       } else if (proposed >= 250000 && proposed < 500000) {
         isFeeValid = adjusted < 500000;
+      } else {
+        // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
+        isFeeValid = true;
       }
-      // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
+    } else if (proposed < 10000) {
+      isFeeValid = adjusted < 10000;
+    } else if (proposed >= 10000 && proposed < 60000) {
+      isFeeValid = adjusted < 60000;
+    } else if (proposed >= 60000 && proposed < 125000) {
+      isFeeValid = adjusted < 125000;
+    } else if (proposed >= 125000 && proposed < 250000) {
+      isFeeValid = adjusted < 250000;
     } else {
-      if (proposed < 10000) {
-        isFeeValid = adjusted < 10000;
-      } else if (proposed >= 10000 && proposed < 60000) {
-        isFeeValid = adjusted < 60000;
-      } else if (proposed >= 60000 && proposed < 125000) {
-        isFeeValid = adjusted < 125000;
-      } else if (proposed >= 125000 && proposed < 250000) {
-        isFeeValid = adjusted < 250000;
-      }
       // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
+      isFeeValid = true;
     }
     return setValidation(isFeeValid);
   };
@@ -209,6 +215,17 @@ export const ReviewApplicationFeeContent = (props) => {
     </div>
   );
 
+  // eslint-disable-next-line consistent-return
+  const typeDeterminesFee = (type) => {
+    // application fees only apply to Placer, S&G, and Q mines
+    if (type === "PLA") {
+      return adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
+    }
+    if (type === "SAG" || type === "QCA" || type === "QIM") {
+      return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
+    }
+  };
+
   useEffect(() => {
     props.initialValues.term_of_application = getDurationText(
       props.initialValues.proposed_start_date,
@@ -218,11 +235,7 @@ export const ReviewApplicationFeeContent = (props) => {
       typeDeterminesFee(props.initialValues.notice_of_work_type_code);
     }
   });
-  const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
-  const showCalculationInvalidError =
-    isDateRangeInvalid &&
-    !isNil(props.initialValues.adjusted_annual_maximum_tonnage) &&
-    props.initialValues.notice_of_work_type_code === "PLA";
+
   return (
     <>
       <Drawer
@@ -248,7 +261,7 @@ export const ReviewApplicationFeeContent = (props) => {
         <br />
         <div className="field-title">
           Proposed Start Date
-          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
+          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
         </div>
         <Field
           id="proposed_start_date"
@@ -258,12 +271,12 @@ export const ReviewApplicationFeeContent = (props) => {
         />
         <div className="field-title">
           Proposed End Date
-          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
+          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
         </div>
         <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
         <div className="field-title">
           Proposed Term of Application
-          <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />
+          <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
         </div>
         <Field
           id="term_of_application"
@@ -321,5 +334,6 @@ export const ReviewApplicationFeeContent = (props) => {
 };
 
 ReviewApplicationFeeContent.propTypes = propTypes;
+ReviewApplicationFeeContent.defaultProps = defaultProps;
 
 export default ReviewApplicationFeeContent;

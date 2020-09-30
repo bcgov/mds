@@ -23,9 +23,6 @@ describe("ReviewApplicationFeeContent", () => {
   // it("typeDeterminesFee should return isApplicationFeeValid === true if notice_of_work_type_code === MIN", () => {
   //   const component = shallow(<ReviewApplicationFeeContent {...props} />);
   //   const instance = component.instance();
-  //   const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
-  //   instance.typeDeterminesFee("MIN");
-  //   expect(typeDeterminesFeeSpy).toHaveBeenCalledWith("MIN");
-  //   expect(instance.state().toEqual({ isApplicationFeeValid: true }));
+  //   expect((component.isApplicationFeeValid).toEqual(true));
   // });
 });

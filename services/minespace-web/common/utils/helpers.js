@@ -311,7 +311,9 @@ export const getDurationText = (startDate, endDate) => {
 };
 
 const getDurationTextOrDefault = (duration, unit) => {
-  if (duration <= 0) return "";
+  if (duration <= 0) {
+    return "";
+  }
   unit = duration === 1 ? unit : unit + "s";
   return `${duration} ${unit} `;
 };

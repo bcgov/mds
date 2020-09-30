@@ -381,7 +381,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   mine_guid: "",
   now_message_id: 47284,
   now_tracking_number: 47284,
-  notice_of_work_type_code: "",
+  notice_of_work_type_code: "MIN",
   submitted_date: "",
   received_date: "",
   proposed_start_date: "2016-03-01",

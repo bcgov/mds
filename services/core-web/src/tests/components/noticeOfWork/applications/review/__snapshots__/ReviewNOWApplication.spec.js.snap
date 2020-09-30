@@ -306,7 +306,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                       "details": Array [],
                     },
                     "mine_guid": "",
-                    "notice_of_work_type_code": "",
+                    "notice_of_work_type_code": "MIN",
                     "now_application_guid": "",
                     "now_application_id": "",
                     "now_message_id": 47284,
