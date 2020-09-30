@@ -27,7 +27,8 @@ FROM
             reference_number,
             bond.update_timestamp,
             bond.update_user,
-            'Yes' AS "is_current_record"
+            'Yes' AS "is_current_record",
+            'CORE' as "source"
      FROM bond,
           party,
           permit,
@@ -38,8 +39,8 @@ FROM
          AND permit.permit_id = bond_permit_xref.permit_id
          AND bond.bond_id = bond_permit_xref.bond_id
          AND bond.bond_type_code = bond_type.bond_type_code
-         AND bond.bond_status_code = bond_status.bond_status_code 
-    --HISTORY VALUES
+         AND bond.bond_status_code = bond_status.bond_status_code --HISTORY VALUES
+
      UNION ALL SELECT bond_history.bond_id,
                       amount,
                       bond_history.bond_type_code,
@@ -63,7 +64,8 @@ FROM
                       reference_number,
                       bond_history.update_timestamp,
                       bond_history.update_user,
-                      'No' AS "is_current_record"
+                      'No' AS "is_current_record",
+                      'CORE_HIST' as "source"
      FROM bond_history,
           bond_type,
           bond_status,
@@ -72,8 +74,8 @@ FROM
      WHERE bond_history.bond_type_code = bond_type.bond_type_code
          AND bond_history.bond_status_code = bond_status.bond_status_code
          AND permit.permit_id = bond_permit_xref.permit_id
-         AND bond_history.bond_id = bond_permit_xref.bond_id 
-    -- SES RECORDS that couldn't be imported
+         AND bond_history.bond_id = bond_permit_xref.bond_id -- SES RECORDS that couldn't be imported
+ 
      UNION SELECT NULL, 
                   sec_amt, 
                   case 
