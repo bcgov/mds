@@ -91,13 +91,18 @@ export const ReviewApplicationFeeContent = (props) => {
       moment(props.initialValues.proposed_start_date)
     )
   );
-  const isTermOverFive = duration._milliseconds > 157626975240;
+  const isExactlyFiveOrUnder =
+    (duration.years() === 5 &&
+      duration.months() === 0 &&
+      duration.weeks() === 0 &&
+      duration.days() === 0) ||
+    duration.years() < 5;
 
   const typeDeterminesFee = (type) => {
     // application fees only apply to Placer, S&G, and Q mines
     if (type === "PLA") {
       return adjustmentExceedsFeePlacer(
-        isTermOverFive,
+        !isExactlyFiveOrUnder,
         props.proposedTonnage,
         props.adjustedTonnage
       );
@@ -251,7 +256,7 @@ export const ReviewApplicationFeeContent = (props) => {
           Proposed End Date
           <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work" />
         </div>
-        <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
+        <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} />
         <div className="field-title">
           Proposed Term of Application
           <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work" />

@@ -295,7 +295,7 @@ export const renderLabel = (options, keyStr) =>
 export const getDurationText = (startDate, endDate) => {
   const duration = moment.duration(moment(endDate).diff(moment(startDate)));
   if (Math.sign(duration._milliseconds) === -1) {
-    return "Invalid Date Range";
+    return "Invalid - End Date precedes Start Date";
   }
   const years = duration.years();
   const months = duration.months();
