@@ -530,14 +530,7 @@ export class NoticeOfWorkApplication extends Component {
 
     const payload = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      // template_data: values,
     };
-
-    // this.props.generateNoticeOfWorkApplicationDocument(
-    //   documentTypeCode,
-    //   payload,
-    //   `Successfully exported ${documentType.description} for this Notice of Work`
-    // );
 
     this.props.exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
