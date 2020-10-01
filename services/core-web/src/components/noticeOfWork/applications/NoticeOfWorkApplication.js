@@ -190,10 +190,7 @@ export class NoticeOfWorkApplication extends Component {
     // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited
     // prevValue !== currentValue, due to other value changes that are not null or undefined
     const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
-    const isPrevValue =
-      !isUndefined(prevValue) &&
-      !isNull(prevValue) &&
-      (isNull(currentValue) || isUndefined(currentValue));
+    const isPrevValue = !isUndefined(prevValue) && !isNull(prevValue);
     const hasBeenEdited = isNewValue || isPrevValue;
     const edited = hasBeenEdited && prevValue !== currentValue;
     const getValue = () => {
