@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
@@ -15,24 +14,25 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
+  getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, number, requiredRadioButton } from "@common/utils/Validate";
+import { required, lat, lon, maxLength, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
-import RenderDate from "@/components/common/RenderDate";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
-import ReclamationSummary from "./activities/ReclamationSummary";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
-import ReviewNOWContacts from "./ReviewNOWContacts";
 import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
-import { currencyMask, formatDate } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
+import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
+import ReviewNOWContacts from "./ReviewNOWContacts";
+import ReclamationSummary from "./activities/ReclamationSummary";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -49,6 +49,16 @@ const propTypes = {
   regionDropdownOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   noticeOfWorkType: PropTypes.string.isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  permitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  permitTypeOptions: CustomPropTypes.options.isRequired,
+  initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
+  proposedTonnage: PropTypes.number.isRequired,
+  adjustedTonnage: PropTypes.number.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -58,6 +68,7 @@ export const ReviewNOWApplication = (props) => {
     }
     return codeHash[value];
   };
+
   const renderApplicationInfo = () => (
     <div>
       <Row gutter={16}>
@@ -76,17 +87,6 @@ export const ReviewNOWApplication = (props) => {
             disabled={props.isViewMode}
             validate={[required, maxLength(4000)]}
           />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Permit Status
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Mine Number
             <NOWOriginalValueTooltip
@@ -95,17 +95,6 @@ export const ReviewNOWApplication = (props) => {
             />
           </div>
           <Field id="mine_no" name="mine_no" component={RenderField} disabled />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Region
             <NOWOriginalValueTooltip
@@ -123,45 +112,14 @@ export const ReviewNOWApplication = (props) => {
             data={props.regionDropdownOptions}
             disabled
           />
-        </Col>
-        <Col md={12} sm={24}>
           <div className="field-title">
-            Relationship to Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Lat{" "}
+            Lat
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("latitude").value}
               isVisible={props.renderOriginalValues("latitude").edited}
             />
           </div>
           <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Description of Land
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("description_of_land").value}
-              isVisible={props.renderOriginalValues("description_of_land").edited}
-            />
-          </div>
-          <Field
-            id="description_of_land"
-            name="description_of_land"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Long
             <NOWOriginalValueTooltip
@@ -176,25 +134,6 @@ export const ReviewNOWApplication = (props) => {
             disabled
             validate={[lon]}
           />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Type of Application
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("type_of_application").value}
-              isVisible={props.renderOriginalValues("type_of_application").edited}
-            />
-          </div>
-          <Field
-            id="type_of_application"
-            name="type_of_application"
-            component={RenderField}
-            disabled
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Type of Notice of Work
             <NOWOriginalValueTooltip
@@ -213,17 +152,6 @@ export const ReviewNOWApplication = (props) => {
             disabled
             validate={[required]}
           />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Term of Application
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled validate={[number]} />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Permit Type
             <NOWOriginalValueTooltip
@@ -241,25 +169,19 @@ export const ReviewNOWApplication = (props) => {
             data={props.permitTypeOptions}
             disabled={props.isViewMode}
           />
-        </Col>
-        <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed Start Date
+            Type of Application
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_start_date").value}
-              isVisible={props.renderOriginalValues("proposed_start_date").edited}
+              originalValue={props.renderOriginalValues("type_of_application").value}
+              isVisible={props.renderOriginalValues("type_of_application").edited}
             />
           </div>
           <Field
-            id="proposed_start_date"
-            name="proposed_start_date"
-            component={RenderDate}
-            disabled={props.isViewMode}
+            id="type_of_application"
+            name="type_of_application"
+            component={RenderField}
+            disabled
           />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Crown Grant / District Lot Number
             <NOWOriginalValueTooltip
@@ -275,25 +197,6 @@ export const ReviewNOWApplication = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
           />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Proposed End Date
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("proposed_end_date").value}
-              isVisible={props.renderOriginalValues("proposed_end_date").edited}
-            />
-          </div>
-          <Field
-            id="proposed_end_date"
-            name="proposed_end_date"
-            component={RenderDate}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
           <div className="field-title">
             Tenure Number(s)
             <NOWOriginalValueTooltip
@@ -307,6 +210,44 @@ export const ReviewNOWApplication = (props) => {
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
             validate={[maxLength(4000)]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Permit Status
+            <NOWFieldOriginTooltip />
+          </div>
+          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">
+            Individual or Company/Organization?
+            <NOWFieldOriginTooltip />
+          </div>
+          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">
+            Relationship to Individual or Company/Organization?
+            <NOWFieldOriginTooltip />
+          </div>
+          <Field id="" name="" component={RenderField} disabled />
+          <div className="field-title">
+            Description of Land
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("description_of_land").value}
+              isVisible={props.renderOriginalValues("description_of_land").edited}
+            />
+          </div>
+          <Field
+            id="description_of_land"
+            name="description_of_land"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+          <ReviewApplicationFeeContent
+            initialValues={props.noticeOfWork}
+            isViewMode={props.isViewMode}
+            unitTypeOptions={props.unitTypeOptions}
+            proposedTonnage={props.proposedTonnage}
+            adjustedTonnage={props.adjustedTonnage}
           />
         </Col>
       </Row>
@@ -649,7 +590,7 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed First Aid equipment on site
+            Proposed First Aid equipment on-site
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("first_aid_equipment_on_site").value}
               isVisible={props.renderOriginalValues("first_aid_equipment_on_site").edited}
@@ -794,6 +735,8 @@ export default compose(
     mine_guid: selector(state, "mine_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
+    proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
+    adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
@@ -801,6 +744,7 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

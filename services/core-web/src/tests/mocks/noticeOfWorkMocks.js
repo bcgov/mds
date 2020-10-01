@@ -381,16 +381,18 @@ export const IMPORTED_NOTICE_OF_WORK = {
   mine_guid: "",
   now_message_id: 47284,
   now_tracking_number: 47284,
-  notice_of_work_type_code: "",
+  notice_of_work_type_code: "MIN",
   submitted_date: "",
   received_date: "",
+  proposed_start_date: "2016-03-01",
+  proposed_end_date: "2011-03-01",
+  adjusted_annual_maximum_tonnage: "",
+  proposed_annual_maximum_tonnage: 10000,
   latitude: "",
   longitude: "",
   property_name: "",
   tenure_number: "",
   description_of_land: "",
-  proposed_start_date: "",
-  proposed_end_date: "",
   contacts: [],
   blasting_operation: {},
   state_of_land: {},
@@ -516,20 +518,20 @@ export const APPLICATION_TYPES = {
 };
 
 export const DROPDOWN_APPLICATION_TYPES = [
-  {
-    value: "QCA",
-    label: "Quarry - Construction Aggregate",
-    isActive: true,
-  },
   { value: "COL", label: "Coal", isActive: true },
-  { value: "PLA", label: "Placer Operations", isActive: true },
   {
     value: "MIN",
     label: "Mineral",
     isActive: true,
   },
-  { value: "SAG", label: "Sand & Gravel", isActive: true },
+  { value: "PLA", label: "Placer Operations", isActive: true },
+  {
+    value: "QCA",
+    label: "Quarry - Construction Aggregate",
+    isActive: true,
+  },
   { value: "QIM", label: "Quarry - Industrial Mineral", isActive: true },
+  { value: "SAG", label: "Sand & Gravel", isActive: true },
 ];
 
 export const APPLICATION_TYPES_HASH = {
@@ -557,20 +559,20 @@ export const APPLICATION_STATUS_CODES = {
 };
 
 export const DROPDOWN_APPLICATION_STATUS_CODES = [
+  { value: "AIA", label: "Active/Issued/Approved", isActive: true },
+  { value: "CDB", label: "Client Delay Bond", isActive: true },
+  { value: "CDI", label: "Client Delay Info", isActive: true },
+  { value: "CLO", label: "Closed", isActive: true },
+  { value: "CON", label: "Consultation", isActive: true },
+  { value: "GVD", label: "Govt Delay", isActive: true },
+  { value: "REF", label: "Referred", isActive: true },
+  { value: "REJ", label: "Rejected", isActive: true },
   {
     value: "SUB",
     label: "Submitted",
     isActive: true,
   },
-  { value: "REF", label: "Referred", isActive: true },
-  { value: "CDI", label: "Client Delay Info", isActive: true },
-  { value: "CDB", label: "Client Delay Bond", isActive: true },
-  { value: "GVD", label: "Govt Delay", isActive: true },
-  { value: "CON", label: "Consultation", isActive: true },
-  { value: "AIA", label: "Active/Issued/Approved", isActive: true },
   { value: "WDN", label: "Withdrawn", isActive: true },
-  { value: "REJ", label: "Rejected", isActive: true },
-  { value: "CLO", label: "Closed", isActive: true },
 ];
 
 export const APPLICATION_STATUS_CODES_HASH = {
@@ -623,23 +625,8 @@ export const UNIT_TYPES = {
 
 export const DROPDOWN_UNIT_TYPES = [
   {
-    label: "km",
-    value: "KMT",
-    isActive: true,
-  },
-  {
-    label: "t",
-    value: "MTN",
-    isActive: true,
-  },
-  {
-    label: "m3",
-    value: "MEC",
-    isActive: true,
-  },
-  {
-    label: "ha",
-    value: "HA",
+    label: "%",
+    value: "PER",
     isActive: true,
   },
   {
@@ -648,13 +635,28 @@ export const DROPDOWN_UNIT_TYPES = [
     isActive: true,
   },
   {
-    label: "%",
-    value: "PER",
+    label: "ha",
+    value: "HA",
+    isActive: true,
+  },
+  {
+    label: "km",
+    value: "KMT",
     isActive: true,
   },
   {
     label: "m",
     value: "MTR",
+    isActive: true,
+  },
+  {
+    label: "m3",
+    value: "MEC",
+    isActive: true,
+  },
+  {
+    label: "t",
+    value: "MTN",
     isActive: true,
   },
 ];
@@ -732,13 +734,13 @@ export const APPLICATION_PERMIT_TYPES = {
 };
 
 export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
+  { value: "MYP", label: "Multi-Year Permit", isActive: true },
   {
     value: "MY-ABP",
     label: "Multi-Year, Area-Based Permit",
     isActive: true,
   },
   { value: "OYP", label: "One-Year Permit", isActive: true },
-  { value: "MYP", label: "Multi-Year Permit", isActive: true },
 ];
 
 export const NOTICE_OF_WORK_REVIEW_RESPONSE = {

@@ -13,6 +13,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
       noticeOfWork={
         Object {
+          "adjusted_annual_maximum_tonnage": "",
           "blasting_operation": Object {},
           "camps": Object {
             "details": Array [],
@@ -35,7 +36,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "mine_guid": "",
-          "notice_of_work_type_code": "",
+          "notice_of_work_type_code": "MIN",
           "now_application_guid": "",
           "now_application_id": "",
           "now_message_id": 47284,
@@ -44,8 +45,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "property_name": "",
-          "proposed_end_date": "",
-          "proposed_start_date": "",
+          "proposed_annual_maximum_tonnage": 10000,
+          "proposed_end_date": "2011-03-01",
+          "proposed_start_date": "2016-03-01",
           "received_date": "",
           "sand_and_gravel": Object {
             "details": Array [],
@@ -78,6 +80,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
       noticeOfWork={
         Object {
+          "adjusted_annual_maximum_tonnage": "",
           "blasting_operation": Object {},
           "camps": Object {
             "details": Array [],
@@ -100,7 +103,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "mine_guid": "",
-          "notice_of_work_type_code": "",
+          "notice_of_work_type_code": "MIN",
           "now_application_guid": "",
           "now_application_id": "",
           "now_message_id": 47284,
@@ -109,8 +112,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "property_name": "",
-          "proposed_end_date": "",
-          "proposed_start_date": "",
+          "proposed_annual_maximum_tonnage": 10000,
+          "proposed_end_date": "2011-03-01",
+          "proposed_start_date": "2016-03-01",
           "received_date": "",
           "sand_and_gravel": Object {
             "details": Array [],
