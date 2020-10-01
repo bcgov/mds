@@ -197,7 +197,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
                     continue
                 doc['now_application_document_type_description'] = NOWApplicationDocumentType.query.get(
-                    doc['now_application_document_type_code']).description
+                    doc['now_application_document_type_code']
+                ).description or doc['now_application_document_type_code']
                 included_docs.append(doc)
             return included_docs
 
@@ -224,13 +225,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json[
             'notice_of_work_type_description'] = NOWApplicationType.query.filter_by(
                 notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first(
-                ).description
+                ).description or now_application_json['notice_of_work_type_code']
         now_application_json['term_of_application'] = get_duration_text(
             now_application.proposed_start_date, now_application.proposed_end_date)
         now_application_json[
             'application_permit_type_description'] = NOWApplicationPermitType.query.filter_by(
-                now_application_permit_type_code=now_application_json[
-                    'application_permit_type_code']).first().description
+                now_application_permit_type_code=now_application_json['application_permit_type_code']
+            ).first().description or now_application_json['application_permit_type_code']
         now_application_json = transform_data(now_application_json)
 
         # NOTE: This should be always after transform_data

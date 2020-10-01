@@ -48,6 +48,7 @@ export const NOWApplicationAdministrative = (props) => {
           handleAfterUpload={props.handleSaveNOWEdit}
         />
       </ScrollContentWrapper>
+      {/* TODO: hide this before merge to test */}
       <ScrollContentWrapper id="application-export-files" title="Application Export Files">
         <NOWDocuments
           now_application_guid={props.noticeOfWork.now_application_guid}
