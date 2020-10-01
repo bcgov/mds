@@ -38,12 +38,20 @@ describe("ReviewApplicationFeeContent", () => {
     const instance = component.instance();
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePitsQuarries");
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).not.toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
     );
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(instance.state.isApplicationFeeValid).toEqual(true);
     expect(component.find(".error").length).toEqual(0);
   });
@@ -54,8 +62,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePitsQuarries");
     instance.adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
@@ -72,8 +88,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePitsQuarries");
     instance.adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
@@ -90,8 +114,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePitsQuarries");
     instance.adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
@@ -109,8 +141,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
     instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
@@ -129,8 +169,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
     instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
@@ -140,9 +188,10 @@ describe("ReviewApplicationFeeContent", () => {
     expect(component.find(".error").length).toEqual(0);
   });
 
-  it("PLA: isApplicationFeeValid === false if `adjustedTonnage` is set and exceeds proposed tonnage range for PLA < 5 years", () => {
+  it("PLA: isApplicationFeeValid === false if `adjustedTonnage` is set and exceeds proposed tonnage range for PLA > 5 years", () => {
     props.proposedTonnage = 10000;
-    props.adjustedTonnage = 30000;
+    props.adjustedTonnage = 70000;
+    props.initialValues.proposed_start_date = "2019-03-01";
     props.initialValues.proposed_end_date = "2025-03-01";
     props.initialValues.notice_of_work_type_code = "PLA";
     const component = shallow(<ReviewApplicationFeeContent {...props} />);
@@ -150,35 +199,52 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
     instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
     );
-    expect(instance.state.isApplicationFeeValid).toEqual(true);
     expect(instance.state.isExactlyFiveOrUnder).toEqual(false);
-    expect(component.find(".error").length).toEqual(0);
+    expect(instance.state.isApplicationFeeValid).toEqual(false);
+    expect(component.find(".error").length).toEqual(1);
   });
 
-  // it("PLA: isApplicationFeeValid === false if `adjustedTonnage` is set and exceeds proposed tonnage range for PLA > 5 years", () => {
-  //   props.proposedTonnage = 60000;
-  //   props.adjustedTonnage = 135000;
-  //   props.initialValues.proposed_start_date= "2016-03-01";
-  //   props.initialValues.proposed_end_date = "2022-03-01";
-  //   props.initialValues.notice_of_work_type_code= "PLA";
-  //   const component = shallow(<ReviewApplicationFeeContent {...props} />);
-  //   const instance = component.instance();
-  //   const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
-  //   const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
-  //   instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage)
-  //   instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-  //   expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
-  //   expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(props.proposedTonnage, props.adjustedTonnage);
-  //   expect(instance.state.isExactlyFiveOrUnder).toEqual(false);
-  //   expect(instance.state.isApplicationFeeValid).toEqual(false);
-  //   expect(component.find('.error').length).toEqual(1);
-  // });
+  it("PLA: isApplicationFeeValid === false if `adjustedTonnage` is set and exceeds proposed tonnage range for PLA < 5 years", () => {
+    props.proposedTonnage = 60000;
+    props.adjustedTonnage = 135000;
+    props.initialValues.notice_of_work_type_code = "PLA";
+    const component = shallow(<ReviewApplicationFeeContent {...props} />);
+    const instance = component.instance();
+    const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
+    const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
+    instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(instance.state.isExactlyFiveOrUnder).toEqual(true);
+    expect(instance.state.isApplicationFeeValid).toEqual(false);
+    expect(component.find(".error").length).toEqual(1);
+  });
 
   it("PLA: isDateRangeInvalid === true if start_date preceeds end_date PLA", () => {
     props.proposedTonnage = 50000;
@@ -190,8 +256,16 @@ describe("ReviewApplicationFeeContent", () => {
     const typeDeterminesFeeSpy = jest.spyOn(instance, "typeDeterminesFee");
     const adjustmentExceedsFeeSpy = jest.spyOn(instance, "adjustmentExceedsFeePlacer");
     instance.adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    instance.typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(props.initialValues.notice_of_work_type_code);
+    instance.typeDeterminesFee(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
+    expect(typeDeterminesFeeSpy).toHaveBeenCalledWith(
+      props.initialValues.notice_of_work_type_code,
+      props.proposedTonnage,
+      props.adjustedTonnage
+    );
     expect(adjustmentExceedsFeeSpy).toHaveBeenCalledWith(
       props.proposedTonnage,
       props.adjustedTonnage
