@@ -8,6 +8,7 @@ from datetime import datetime
 from app.extensions import api, cache
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.now_applications.models.now_application_type import NOWApplicationType
+from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.utils.resources_mixins import UserMixin
@@ -226,9 +227,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 ).description
         now_application_json['term_of_application'] = get_duration_text(
             now_application.proposed_start_date, now_application.proposed_end_date)
+        now_application_json[
+            'application_permit_type_description'] = NOWApplicationPermitType.query.filter_by(
+                now_application_permit_type_code=now_application_json[
+                    'application_permit_type_code']).first().description
         now_application_json = transform_data(now_application_json)
 
-        # should be always after transform_data
+        # NOTE: This should be always after transform_data
         now_application_json['render'] = get_applicable_now_activities(now_application_json)
 
         # Determine what fields have changed from the original application
