@@ -14,7 +14,6 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
-  getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { required, lat, lon, maxLength, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -56,7 +55,6 @@ const propTypes = {
   applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   permitTypeOptions: CustomPropTypes.options.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
-  unitTypeOptions: CustomPropTypes.options.isRequired,
   proposedTonnage: PropTypes.number.isRequired,
   adjustedTonnage: PropTypes.number.isRequired,
 };
@@ -245,7 +243,6 @@ export const ReviewNOWApplication = (props) => {
           <ReviewApplicationFeeContent
             initialValues={props.noticeOfWork}
             isViewMode={props.isViewMode}
-            unitTypeOptions={props.unitTypeOptions}
             proposedTonnage={props.proposedTonnage}
             adjustedTonnage={props.adjustedTonnage}
           />
@@ -733,7 +730,6 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
-    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

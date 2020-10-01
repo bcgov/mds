@@ -385,7 +385,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   submitted_date: "",
   received_date: "",
   proposed_start_date: "2016-03-01",
-  proposed_end_date: "2011-03-01",
+  proposed_end_date: "2020-03-01",
   adjusted_annual_maximum_tonnage: "",
   proposed_annual_maximum_tonnage: 10000,
   latitude: "",

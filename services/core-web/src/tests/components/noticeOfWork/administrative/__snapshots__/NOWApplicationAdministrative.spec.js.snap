@@ -46,7 +46,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
           "property_name": "",
           "proposed_annual_maximum_tonnage": 10000,
-          "proposed_end_date": "2011-03-01",
+          "proposed_end_date": "2020-03-01",
           "proposed_start_date": "2016-03-01",
           "received_date": "",
           "sand_and_gravel": Object {
@@ -113,7 +113,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
           "property_name": "",
           "proposed_annual_maximum_tonnage": 10000,
-          "proposed_end_date": "2011-03-01",
+          "proposed_end_date": "2020-03-01",
           "proposed_start_date": "2016-03-01",
           "received_date": "",
           "sand_and_gravel": Object {

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { isNil } from "lodash";
 import { Drawer, Button, Table, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
-import { Field, Fields } from "redux-form";
+import { Field } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
-import { numberWithUnitCode } from "@common/utils/Validate";
+import { number } from "@common/utils/Validate";
 import { getDurationText } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
@@ -16,7 +15,6 @@ import moment from "moment";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  unitTypeOptions: CustomPropTypes.options.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
@@ -90,36 +88,70 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170,000", permit_fee: "$50,000" },
 ];
 
-export const ReviewApplicationFeeContent = (props) => {
-  const [isApplicationFeeValid, setValidation] = useState(true);
-  const [isFeeDrawerVisible, setVisible] = useState(false);
-  const duration = moment.duration(
-    moment(props.initialValues.proposed_end_date).diff(
-      moment(props.initialValues.proposed_start_date)
-    )
-  );
-  // eslint-disable-next-line no-underscore-dangle
-  const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
-  const showCalculationInvalidError =
-    isDateRangeInvalid &&
-    !isNil(props.adjustedTonnage) &&
-    props.initialValues.notice_of_work_type_code === "PLA";
+export class ReviewApplicationFeeContent extends Component {
+  state = {
+    isApplicationFeeValid: true,
+    isFeeDrawerVisible: false,
+    isDateRangeInvalid: false,
+    isExactlyFiveOrUnder: false,
+  };
 
-  // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
-  // Fees need to be readjusted if they move to a higher bracket only
-  const adjustmentExceedsFeePlacer = (proposed, adjusted) => {
+  componentDidMount() {
+    const duration = moment.duration(
+      moment(this.props.initialValues.proposed_end_date).diff(
+        moment(this.props.initialValues.proposed_start_date)
+      )
+    );
     const isExactlyFiveOrUnder =
       (duration.years() === 5 &&
         duration.months() === 0 &&
         duration.weeks() === 0 &&
         duration.days() === 0) ||
       duration.years() < 5;
-    let isFeeValid = true;
-    if (isDateRangeInvalid) {
-      return setValidation(isFeeValid);
+    // eslint-disable-next-line no-underscore-dangle
+    const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
+    this.setState({ isDateRangeInvalid, isExactlyFiveOrUnder });
+    if (!isNil(this.props.proposedTonnage) && !isNil(this.props.adjustedTonnage)) {
+      this.typeDeterminesFee(
+        this.props.initialValues.notice_of_work_type_code,
+        this.props.proposedTonnage,
+        this.props.adjustedTonnage
+      );
     }
+  }
 
-    if (isExactlyFiveOrUnder) {
+  componentWillReceiveProps(nextProps) {
+    const adjustedChanged = this.props.adjustedTonnage !== nextProps.adjustedTonnage;
+    const proposedChanged = this.props.proposedTonnage !== nextProps.proposedTonnage;
+    const adjusted = !isNil(nextProps.adjustedTonnage);
+    if ((proposedChanged || adjustedChanged) && adjusted) {
+      this.typeDeterminesFee(
+        this.props.initialValues.notice_of_work_type_code,
+        nextProps.proposedTonnage,
+        nextProps.adjustedTonnage
+      );
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  typeDeterminesFee = (type, proposed, adjusted) => {
+    // application fees only apply to Placer, S&G, and Q mines
+    if (type === "PLA") {
+      return this.adjustmentExceedsFeePlacer(proposed, adjusted);
+    }
+    if (type === "SAG" || type === "QCA" || type === "QIM") {
+      return this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
+    }
+  };
+
+  // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
+  // Fees need to be readjusted if they move to a higher bracket only
+  adjustmentExceedsFeePlacer = (proposed, adjusted) => {
+    let isFeeValid = true;
+    if (this.state.isDateRangeInvalid) {
+      return this.setState({ isApplicationFeeValid: isFeeValid });
+    }
+    if (this.state.isExactlyFiveOrUnder) {
       if (proposed < 60000) {
         isFeeValid = adjusted < 60000;
       } else if (proposed >= 60000 && proposed < 125000) {
@@ -144,10 +176,10 @@ export const ReviewApplicationFeeContent = (props) => {
       // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
       isFeeValid = true;
     }
-    return setValidation(isFeeValid);
+    return this.setState({ isApplicationFeeValid: isFeeValid });
   };
 
-  const adjustmentExceedsFeePitsQuarries = (proposed, adjusted) => {
+  adjustmentExceedsFeePitsQuarries = (proposed, adjusted) => {
     let isFeeValid = true;
     if (proposed < 5000) {
       isFeeValid = adjusted < 5000;
@@ -177,14 +209,15 @@ export const ReviewApplicationFeeContent = (props) => {
       isFeeValid = adjusted < 170000;
     }
     // Anything above 170,000 is valid as the applicatcant alredy paid the max fee.
-    return setValidation(isFeeValid);
+    return this.setState({ isApplicationFeeValid: isFeeValid });
   };
 
-  const toggleFeeDrawer = () => {
-    setVisible(!isFeeDrawerVisible);
-  };
+  toggleFeeDrawer = () =>
+    this.setState((prevState) => ({
+      isFeeDrawerVisible: !prevState.isFeeDrawerVisible,
+    }));
 
-  const DrawerContent = () => (
+  DrawerContent = () => (
     <div>
       <h4>Table 1: Permit Fees for Placer Mines</h4>
       <Table
@@ -215,123 +248,108 @@ export const ReviewApplicationFeeContent = (props) => {
     </div>
   );
 
-  // eslint-disable-next-line consistent-return
-  const typeDeterminesFee = (type) => {
-    // application fees only apply to Placer, S&G, and Q mines
-    if (type === "PLA") {
-      return adjustmentExceedsFeePlacer(props.proposedTonnage, props.adjustedTonnage);
-    }
-    if (type === "SAG" || type === "QCA" || type === "QIM") {
-      return adjustmentExceedsFeePitsQuarries(props.proposedTonnage, props.adjustedTonnage);
-    }
-  };
-
-  useEffect(() => {
-    props.initialValues.term_of_application = getDurationText(
-      props.initialValues.proposed_start_date,
-      props.initialValues.proposed_end_date
+  render() {
+    this.props.initialValues.term_of_application = getDurationText(
+      this.props.initialValues.proposed_start_date,
+      this.props.initialValues.proposed_end_date
     );
-    if (!isNil(props.proposedTonnage) && !isNil(props.adjustedTonnage)) {
-      typeDeterminesFee(props.initialValues.notice_of_work_type_code);
-    }
-  });
-
-  return (
-    <>
-      <Drawer
-        title="Application Fee Calculation Chart"
-        placement="right"
-        closable={false}
-        onClose={toggleFeeDrawer}
-        visible={isFeeDrawerVisible}
-      >
-        <Button ghost className="modal__close" onClick={toggleFeeDrawer}>
-          <CloseOutlined />
-        </Button>
-        {DrawerContent()}
-      </Drawer>
-      <div className="fee-determination--block">
-        <div className="inline-flex between">
-          <h4>
-            Permit Application Fee Assessment
-            <CoreTooltip title="The application fee collected for this application was based on the Term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
-          </h4>
-          <LinkButton onClick={toggleFeeDrawer}>View Fee Chart</LinkButton>
-        </div>
-        <br />
-        <div className="field-title">
-          Proposed Start Date
-          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
-        </div>
-        <Field
-          id="proposed_start_date"
-          name="proposed_start_date"
-          component={RenderDate}
-          disabled
-        />
-        <div className="field-title">
-          Proposed End Date
-          <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
-        </div>
-        <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
-        <div className="field-title">
-          Proposed Term of Application
-          <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
-        </div>
-        <Field
-          id="term_of_application"
-          name="term_of_application"
-          component={RenderField}
-          disabled
-        />
-        <div className="field-title">
-          Proposed Annual Maximum Tonnage
-          <CoreTooltip title="This amount is found within the application in vFCBC or on the first page of the application form pdf and needs to be entered manually in order to continue processing this application." />
-        </div>
-        <Fields
-          names={["proposed_annual_maximum_tonnage", "annual_maximum_tonnage_unit_type_code"]}
-          id="proposed_annual_maximum_tonnage"
-          dropdownID="annual_maximum_tonnage_unit_type_code"
-          component={RenderFieldWithDropdown}
-          disabled={props.isViewMode}
-          validate={[numberWithUnitCode]}
-          data={props.unitTypeOptions}
-        />
-        <div className="field-title">
-          Adjusted Annual Maximum Tonnage
-          <CoreTooltip title="This is to be used if the Proposed Maximum Annual Tonnage Extracted amount changes during Technical Review. Please enter the new total for the Maximum Annual Tonnage Extracted that the proponent is proposing. Changing this amount may affect the amount of the Permit Fee assessed. If the amount is over the fee threshold of the next fee amount, the application will need to be rejected and the applicant will need to reapply." />
-        </div>
-        <Fields
-          names={["adjusted_annual_maximum_tonnage", "annual_maximum_tonnage_unit_type_code"]}
-          id="adjusted_annual_maximum_tonnage"
-          dropdownID="annual_maximum_tonnage_unit_type_code"
-          component={RenderFieldWithDropdown}
-          disabled={props.isViewMode}
-          validate={[numberWithUnitCode]}
-          data={props.unitTypeOptions}
-        />
-        {showCalculationInvalidError && (
-          <div className="error">
-            <Alert
-              message="Cannot calculate application fee using Adjusted Annual Maximum Tonnage because the proposed dates are invalid."
-              type="error"
-              showIcon
-            />
+    const showCalculationInvalidError =
+      this.state.isDateRangeInvalid &&
+      !isNil(this.props.adjustedTonnage) &&
+      this.props.initialValues.notice_of_work_type_code === "PLA";
+    return (
+      <>
+        <Drawer
+          title="Application Fee Calculation Chart"
+          placement="right"
+          closable={false}
+          onClose={this.toggleFeeDrawer}
+          visible={this.state.isFeeDrawerVisible}
+        >
+          <Button ghost className="modal__close" onClick={this.toggleFeeDrawer}>
+            <CloseOutlined />
+          </Button>
+          {this.DrawerContent()}
+        </Drawer>
+        <div className="fee-determination--block">
+          <div className="inline-flex between">
+            <h4>
+              Permit Application Fee Assessment
+              <CoreTooltip title="The application fee collected for this application was based on the Term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
+            </h4>
+            <LinkButton onClick={this.toggleFeeDrawer}>View Fee Chart</LinkButton>
           </div>
-        )}
-        {!isApplicationFeeValid && (
-          <div className="error">
-            <Alert
-              message="The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered."
-              type="error"
-              showIcon
-            />
+          <br />
+          <div className="field-title">
+            Proposed Start Date
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
-        )}
-      </div>
-    </>
-  );
-};
+          <Field
+            id="proposed_start_date"
+            name="proposed_start_date"
+            component={RenderDate}
+            disabled
+          />
+          <div className="field-title">
+            Proposed End Date
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
+          </div>
+          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} />
+          <div className="field-title">
+            Proposed Term of Application
+            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
+          </div>
+          <Field
+            id="term_of_application"
+            name="term_of_application"
+            component={RenderField}
+            disabled
+          />
+          <div className="field-title">
+            Proposed Annual Maximum Tonnage
+            <CoreTooltip title="This amount is found within the application in vFCBC or on the first page of the application form pdf and needs to be entered manually in order to continue processing this application." />
+          </div>
+          <Field
+            id="proposed_annual_maximum_tonnage"
+            name="proposed_annual_maximum_tonnage"
+            component={RenderField}
+            disabled={this.props.isViewMode}
+            validate={[number]}
+          />
+          <div className="field-title">
+            Adjusted Annual Maximum Tonnage
+            <CoreTooltip title="This is to be used if the Proposed Maximum Annual Tonnage Extracted amount changes during Technical Review. Please enter the new total for the Maximum Annual Tonnage Extracted that the proponent is proposing. Changing this amount may affect the amount of the Permit Fee assessed. If the amount is over the fee threshold of the next fee amount, the application will need to be rejected and the applicant will need to reapply." />
+          </div>
+          <Field
+            id="adjusted_annual_maximum_tonnage"
+            name="adjusted_annual_maximum_tonnage"
+            component={RenderField}
+            disabled={this.props.isViewMode}
+            validate={[number]}
+          />
+          {showCalculationInvalidError && (
+            <div className="error">
+              <Alert
+                message="Cannot calculate application fee using Adjusted Annual Maximum Tonnage because the proposed dates are invalid."
+                type="error"
+                showIcon
+              />
+            </div>
+          )}
+          {!this.state.isApplicationFeeValid && (
+            <div className="error">
+              <Alert
+                message="The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered."
+                type="error"
+                showIcon
+              />
+            </div>
+          )}
+        </div>
+      </>
+    );
+  }
+}
 
 ReviewApplicationFeeContent.propTypes = propTypes;
 ReviewApplicationFeeContent.defaultProps = defaultProps;
