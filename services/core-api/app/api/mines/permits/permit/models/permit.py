@@ -17,6 +17,8 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.constants import *
 
+import pprint
+
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
@@ -92,14 +94,18 @@ class Permit(AuditMixin, Base):
 
     @hybrid_property
     def assessed_liability_total(self):
+        total = [pa.security_adjustment for pa in self._all_permit_amendments]
+        pprint.pprint(total)
         return sum([pa.security_adjustment for pa in self._all_permit_amendments])
 
     @hybrid_property
     def confiscated_bond_total(self):
+        pprint.pprint([b.amount for b in self.bonds if b.bond_status_code == "CON"])
         return sum([b.amount for b in self.bonds if b.bond_status_code == "CON"])
 
     @hybrid_property
     def active_bond_total(self):
+        pprint.pprint([b.amount for b in self.bonds if b.bond_status_code == "ACT"])
         return sum([b.amount for b in self.bonds if b.bond_status_code == "ACT"])
 
     def get_amendments_by_mine_guid(self, mine_guid):
