@@ -12,7 +12,8 @@ from app.api.parties.party.models.party import Party
 class NOWPartyAppointment(AuditMixin, Base):
     __tablename__ = "now_party_appointment"
     # Columns
-    now_party_appointment_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
+    now_party_appointment_id = db.Column(
+        db.Integer, primary_key=True, server_default=FetchedValue())
     now_party_appointment_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_party_appt_type_code = db.Column(
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
@@ -22,8 +23,7 @@ class NOWPartyAppointment(AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
-    mine_party_appt_type = db.relationship(
-        'MinePartyAppointmentType',
-        lazy='joined')
+    mine_party_appt_type = db.relationship('MinePartyAppointmentType', lazy='joined')
+    now_application = db.relationship('NOWApplication', lazy='selectin')
 
     mine_party_appt_type_code_description = association_proxy('mine_party_appt_type', 'description')
