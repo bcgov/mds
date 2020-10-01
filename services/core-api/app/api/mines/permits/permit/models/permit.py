@@ -94,19 +94,17 @@ class Permit(AuditMixin, Base):
 
     @hybrid_property
     def assessed_liability_total(self):
-        total = [pa.security_adjustment for pa in self._all_permit_amendments]
-        pprint.pprint(total)
-        return sum([pa.security_adjustment for pa in self._all_permit_amendments])
+        return sum([
+            pa.security_adjustment for pa in self._all_permit_amendments if pa.security_adjustment
+        ])
 
     @hybrid_property
     def confiscated_bond_total(self):
-        pprint.pprint([b.amount for b in self.bonds if b.bond_status_code == "CON"])
-        return sum([b.amount for b in self.bonds if b.bond_status_code == "CON"])
+        return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "CON"])
 
     @hybrid_property
     def active_bond_total(self):
-        pprint.pprint([b.amount for b in self.bonds if b.bond_status_code == "ACT"])
-        return sum([b.amount for b in self.bonds if b.bond_status_code == "ACT"])
+        return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "ACT"])
 
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
