@@ -378,6 +378,7 @@ export class MineSecurityInfo extends Component {
                 activeBondCount={this.activeBondCount}
                 getTotalConfiscatedSum={this.getTotalConfiscatedSum}
                 getTotalAssessedSum={this.getTotalAssessedSum}
+                getTotalHeldSum={this.getTotalHeldSum}
               />
             </div>
           </Tabs.TabPane>

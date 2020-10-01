@@ -73,24 +73,10 @@ export const MineBondTable = (props) => {
       ),
     },
     {
-      title: "Total Confiscated",
-      dataIndex: "amount_confiscated",
-      key: "amount_confiscated",
-      render: (text) => (
-        <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
-      ),
-    },
-    {
       title: "Total Held",
       dataIndex: "amount_held",
       key: "amount_held",
       render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Active Bonds",
-      dataIndex: "total_bonds",
-      key: "total_bonds",
-      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: (
@@ -104,6 +90,12 @@ export const MineBondTable = (props) => {
       render: (text) => (
         <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
+    },
+    {
+      title: "Active Bonds",
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: "",
