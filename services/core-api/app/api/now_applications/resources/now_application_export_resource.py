@@ -17,6 +17,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.constants import TIMEOUT_5_MINUTES, NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_MODEL_EXPORT
+from app.date_time_helper import get_duration_text
 
 NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken',
                                               {'token': fields.String})
@@ -223,6 +224,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
             'notice_of_work_type_description'] = NOWApplicationType.query.filter_by(
                 notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first(
                 ).description
+        now_application_json['term_of_application'] = get_duration_text(
+            now_application.proposed_start_date, now_application.proposed_end_date)
         now_application_json = transform_data(now_application_json)
 
         # should be always after transform_data
