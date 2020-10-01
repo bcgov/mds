@@ -1,6 +1,12 @@
 from app.extensions import api
 from flask_restplus import fields
 
+
+class Date(fields.Raw):
+    def format(self, value):
+        return value.strftime("%Y-%m-%d") if value else None
+
+
 MINE_DOCUMENT = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -39,6 +45,21 @@ MINE_PARTY_APPT = api.model(
         'start_date': fields.Date,
         'end_date': fields.Date,
         'documents': fields.Nested(MINE_DOCUMENT)
+    })
+
+NOW_APPLICATION_MODEL = api.model('NOWApplication', {
+    'now_application_guid': fields.String,
+    'now_number': fields.String,
+    'submitted_date': Date,
+})
+
+NOW_PARTY_APPOINTMENT = api.model(
+    'NOW_PARTY_APPOINTMENT', {
+        'now_party_appointment_id': fields.Integer,
+        'mine_party_appt_type_code': fields.String,
+        'mine_party_appt_type_code_description': fields.String,
+        'party_guid': fields.String,
+        'now_application': fields.Nested(NOW_APPLICATION_MODEL),
     })
 
 ADDRESS = api.model(
@@ -91,7 +112,8 @@ PARTY = api.model(
         'idir_username': fields.String,
         'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
         'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
-        'signature': fields.String
+        'signature': fields.String,
+        'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),
     })
 
 PAGINATED_LIST = api.model(
