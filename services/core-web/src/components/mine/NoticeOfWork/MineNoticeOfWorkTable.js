@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Badge } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
@@ -9,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+// import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
@@ -86,7 +85,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "now_number",
       sortField: "now_number",
       render: (text, record) => (
-        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
+        <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
     },
@@ -129,17 +128,15 @@ export class MineNoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img
+                {/* <img
                   src={EDIT_OUTLINE_VIOLET}
                   alt="Edit NoW"
                   title="Edit"
                   className="padding-large--right"
-                />
+                /> */}
+                <Button type="primary">Open</Button>
               </Link>
             </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <EyeOutlined className="icon-lg icon-svg-filter padding-large--left" />
-            </Link>
           </div>
         ),
     },

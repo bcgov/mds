@@ -30,6 +30,7 @@ import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
+import * as Permission from "@/constants/permissions";
 import {
   generateNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
@@ -49,6 +50,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -619,34 +621,51 @@ export class NoticeOfWorkApplication extends Component {
             </Menu.Item>
           )}
         {isReview && (
-          <Menu.Item key="edit" onClick={this.toggleEditMode}>
-            Edit
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item key="edit" onClick={this.toggleEditMode} className="custom-menu-item">
+              Edit
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
-        <Menu.Item
-          key="transfer-to-a-different-mine"
-          onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-        >
-          Transfer to a Different Mine
-        </Menu.Item>
-        <Menu.Item
-          key="edit-application-lat-long"
-          onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-        >
-          Edit Application Lat/Long
-        </Menu.Item>
-        {!isReview && (
-          <Menu.Item key="edit-application-status" onClick={() => this.openUpdateStatusModal()}>
-            Edit Application Status
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="transfer-to-a-different-mine"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+          >
+            Transfer to a Different Mine
           </Menu.Item>
+        </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="edit-application-lat-long"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+          >
+            Edit Application Lat/Long
+          </Menu.Item>
+        </AuthorizationWrapper>
+        {!isReview && (
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item
+              key="edit-application-status"
+              className="custom-menu-item"
+              onClick={() => this.openUpdateStatusModal()}
+            >
+              Edit Application Status
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
         {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <Menu.Item
-            key="change-the-lead-inspector"
-            onClick={() => this.openUpdateLeadInspectorModal()}
-          >
-            Change the Lead Inspector
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item
+              className="custom-menu-item"
+              key="change-the-lead-inspector"
+              onClick={() => this.openUpdateLeadInspectorModal()}
+            >
+              Change the Lead Inspector
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
@@ -846,17 +865,19 @@ export class NoticeOfWorkApplication extends Component {
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex block-mobile padding-md between">
                       <h2>Administrative</h2>
-                      <Dropdown
-                        overlay={this.menu(false)}
-                        placement="bottomLeft"
-                        onVisibleChange={this.handleAdminVisibleChange}
-                        visible={this.state.adminMenuVisible}
-                      >
-                        <Button type="secondary" className="full-mobile">
-                          Actions
-                          <DownOutlined />
-                        </Button>
-                      </Dropdown>
+                      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                        <Dropdown
+                          overlay={this.menu(false)}
+                          placement="bottomLeft"
+                          onVisibleChange={this.handleAdminVisibleChange}
+                          visible={this.state.adminMenuVisible}
+                        >
+                          <Button type="secondary" className="full-mobile">
+                            Actions
+                            <DownOutlined />
+                          </Button>
+                        </Dropdown>
+                      </AuthorizationWrapper>
                     </div>
                   </div>
                   <div className="page__content">

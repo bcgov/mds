@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
-import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -13,7 +13,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+// import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
@@ -275,17 +275,15 @@ export class NoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img
+                {/* <img
                   src={EDIT_OUTLINE_VIOLET}
                   title="Edit"
                   alt="Edit"
                   className="padding-md--right"
-                />
+                /> */}
+                <Button type="primary">Open</Button>
               </Link>
             </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <EyeOutlined title="View" className="icon-lg icon-svg-filter padding-large--left" />
-            </Link>
           </div>
         ),
     },
