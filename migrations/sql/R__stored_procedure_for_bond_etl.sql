@@ -370,10 +370,12 @@ declare
 		bond_id,
 		amount,
 		bond_type_code,
+		permit_guid,
+		permit_no,
 		payer_party_guid,
+		payer_name,
 		bond_status_code,
 		reference_number,
-		create_user,
 		update_timestamp,
 		update_user,
 		institution_name,
@@ -387,51 +389,32 @@ declare
 		closed_note
 	)
 	select
-		sec_cid,
-		sec_amt,
-		core_bond_type_code,
-		core_payer_party_guid,
-		CASE
-			WHEN "status" = 'E' THEN 'REL'
-			when "status" = 'C' then 'CON'
-			ELSE 'ACT'
-		end as bond_status_code,
-		descript,
+		etl.core_bond_id,
+		etl.sec_amt,
+		etl.core_bond_type_code,
+		per.permit_guid,
+		per.permit_no,
+		etl.core_payer_party_guid,
+		par.party_name,	
+		'ACT', -- NEED COMMENT FOR THIS
+		etl.descript,
+		etl.cnt_dt,
 		'bond_etl',
-		etl_update_date,
-		'bond_etl',
-		invloc,
-		iaddr1,
-		CONCAT(iaddr2,iaddr3),
+		etl.invloc,
+		etl.iaddr1,
+		CONCAT(etl.iaddr2,etl.iaddr3),
 		null,
-		ipost_cd,
-		"comment",
-		cnt_dt,
-		return_dt,
+		etl.ipost_cd,
+		etl.comment,
+		etl.cnt_dt,
+		etl.return_dt,
 		null
-	from ETL_BOND
-	ON CONFLICT (mms_sec_cid)
-	DO
-		UPDATE
-			SET
-				amount=excluded.amount,
-				bond_type_code=excluded.bond_type_code,
-				payer_party_guid=excluded.payer_party_guid,
-				bond_status_code=excluded.bond_status_code,
-				reference_number=excluded.reference_number,
-				update_timestamp=excluded.update_timestamp,
-				update_user=excluded.update_user,
-				institution_name=excluded.institution_name,
-				institution_street=excluded.institution_street,
-				institution_city=excluded.institution_city,
-				institution_province=excluded.institution_province,
-				institution_postal_code=excluded.institution_postal_code,
-				note=excluded.note,
-				issue_date=excluded.issue_date,
-				closed_date=excluded.closed_date
-	returning *
-	)
-
-END;
+	from ETL_BOND etl 
+	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid 
+	INNER JOIN permit per on per.permit_id = etl.core_permit_id
+	where 
+		(etl.status = 'E' OR etl.status = 'C') 
+		AND 
+		etl.core_bond_id not in (select bond_id from bond_history) 
 END;
 $$ LANGUAGE PLPGSQL;
