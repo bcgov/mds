@@ -47,7 +47,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Average Depth of top soil
+        Average Depth of topsoil
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"

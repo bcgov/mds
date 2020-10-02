@@ -19,7 +19,7 @@ export const Blasting = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            On site storage explosives
+            On-site storage explosives
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("blasting_operation.has_storage_explosive_on_site").value
