@@ -193,8 +193,7 @@ export const AccessRoads = (props) => {
             disabled={props.isViewMode}
           />
           <div className="field-title">
-            Describe the changes and reference the locations need on map needed later in the
-            application.
+            Describe the changes and reference the locations needed on the map later.
             <NOWFieldOriginTooltip />
           </div>
           <Field
