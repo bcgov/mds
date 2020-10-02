@@ -396,7 +396,7 @@ declare
 		per.permit_no,
 		etl.core_payer_party_guid,
 		par.party_name,	
-		'ACT', -- NEED COMMENT FOR THIS
+		'ACT', -- Hard coding to 'active' as this is us creating a history for the imported bonds that are confiscated or released.
 		etl.descript,
 		etl.cnt_dt,
 		'bond_etl',
