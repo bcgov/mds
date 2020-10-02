@@ -69,7 +69,7 @@ export const draftPermitMenu = [
       { href: "GEC", title: "A. General" },
       { href: "HSC", title: "B. Healthy and Safety" },
       { href: "GOC", title: "C. Geotechnical" },
-      { href: "ELC", title: "D. Environmantal Land" },
+      { href: "ELC", title: "D. Environmental Land" },
       { href: "RCC", title: "E. Reclamation and Closure" },
       { href: "ADC", title: "F. Additional Conditions" },
     ],
