@@ -40,9 +40,6 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   activeBondCount: PropTypes.func.isRequired,
-  getTotalAssessedSum: PropTypes.func.isRequired,
-  getTotalConfiscatedSum: PropTypes.func.isRequired,
-  getTotalHeldSum: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -284,9 +281,9 @@ export const MineBondTable = (props) => {
       return {
         key: permit.permit_guid,
         total_bonds: props.activeBondCount(permit),
-        amount_confiscated: props.getTotalConfiscatedSum(permit),
-        amount_held: props.getTotalHeldSum(permit),
-        total_assessed: props.getTotalAssessedSum(permit),
+        amount_confiscated: permit.confiscated_bond_total,
+        amount_held: permit.active_bond_total,
+        total_assessed: permit.assessed_liability_total,
         ...permit,
       };
     });

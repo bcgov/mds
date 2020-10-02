@@ -141,9 +141,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           expandedRowKeys={Array []}
-          getTotalAssessedSum={[Function]}
-          getTotalConfiscatedSum={[Function]}
-          getTotalHeldSum={[Function]}
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
@@ -288,7 +285,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
         expandedRowKeys={Array []}
         getAmountSum={[Function]}
         getBalance={[Function]}
-        getTotalConfiscatedSum={[Function]}
         invoices={
           Array [
             Object {
