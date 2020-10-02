@@ -1017,9 +1017,9 @@ export const PERMITS = [
     mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
     permit_no: "C-12345",
     permit_status_code: "O",
-    assessed_liability_total: "8000000",
-    confiscated_bond_total: "500",
-    active_bond_total: "700",
+    assessed_liability_total: 8000000,
+    confiscated_bond_total: 500,
+    active_bond_total: 700,
     permit_amendments: [
       {
         permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
