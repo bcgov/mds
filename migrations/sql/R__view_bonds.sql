@@ -78,49 +78,29 @@ FROM
  
      UNION SELECT NULL, 
                   sec_amt, 
-                  case 
-                      when TRIM(sec_typ) = 'Asset Security Agreement' then 'ASA' 
-                      when TRIM(sec_typ) = 'Cash' then 'CAS' 
-                      when TRIM(sec_typ) = 'Confiscation' then 'CAS' 
-                      when TRIM(sec_typ) = 'Letter of Credit' then 'ILC' 
-                      when TRIM(sec_typ) = 'Qualified Env. Trust' then 'QET' 
-                      when TRIM(sec_typ) = 'Safekeeping Agreement' then 'SAG' 
-                      when TRIM(sec_typ) = 'Receipt and Agreement' then 'SAG' 
-                      when TRIM(sec_typ) = 'Surety Bond' then 'SBO' 
-                      when TRIM(sec_typ) = 'Recl. Fund' then 'STR' 
-                      when TRIM(sec_typ) = 'Performance Bond' then 'PFB' 
-                  end as bond_type_code, 
-                  TRIM(descript) as "bond_type_description", 
-                  CASE 
-                      WHEN "status" = 'E' THEN 'REL' 
-                      when "status" = 'C' then 'CON' 
-                      ELSE 'ACT' 
-                  end as bond_status_code, 
+                  bond_type_code, 
+                  null, 
+                  bond_status_code, 
                   null, 
                   cnt_dt, 
-                  CONCAT(TRIM(comment1),' ', TRIM(comment2)) as "comment", 
+                  "comment", 
                   null, 
                   null, 
                   null::uuid, 
-                  cmp_nm AS "payer_name", 
-                  CONCAT(iaddr2,iaddr3) as institution_city, 
-                  invloc as institution_name, 
-                  null as institution_province, 
-                  iaddr1 as institution_street, 
-                  ipost_cd as institution_postal_code, 
+                  cmp_nm, 
+                  institution_city, 
+                  institution_name, 
+                  institution_province, 
+                  institution_street, 
+                  institution_postal_code, 
                   null, 
                   permit_no, 
                   project_no, 
-                  "descript" as reference_number, 
+                  reference_number, 
                   null as "update_timestamp", 
                   null as "update_user", 
                   'Yes' AS "is_current_record", 
                   'MMS_FDW' as "source"
-     FROM mms.secsec
-     where sec_cid not in
-             (select mms_sec_cid
-              from bond
-              where mms_sec_cid is not null)
-         and sec_cid is not null) AS bond_data
+     FROM SES_BOND_STAGING) AS bond_data
 ORDER BY bond_id,
          is_current_record DESC;
