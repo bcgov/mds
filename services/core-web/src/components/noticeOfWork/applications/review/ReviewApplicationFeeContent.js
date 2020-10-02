@@ -294,7 +294,7 @@ export class ReviewApplicationFeeContent extends Component {
             Proposed End Date
             <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
-          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} />
+          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
           <div className="field-title">
             Proposed Term of Application
             <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
