@@ -14,7 +14,6 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
-  getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { required, lat, lon, maxLength, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -742,7 +741,6 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
-    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
