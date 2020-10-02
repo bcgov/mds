@@ -1,0 +1,2 @@
+ALTER TABLE now_application ADD COLUMN proposed_annual_maximum_tonnage integer,
+ADD COLUMN adjusted_annual_maximum_tonnage integer;

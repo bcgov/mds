@@ -78,7 +78,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <div
         className="field-title"
       >
-        Bed rock expansion
+        Bedrock expansion
         <NOWFieldOriginTooltip />
       </div>
       <Field
