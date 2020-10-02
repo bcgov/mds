@@ -8,24 +8,24 @@ exports[`MineRecordModal renders properly 1`] = `
     mineRegionOptions={
       Array [
         Object {
-          "label": "South West",
-          "value": "SW",
-        },
-        Object {
-          "label": "South Central",
-          "value": "SC",
+          "label": "North East",
+          "value": "NE",
         },
         Object {
           "label": "North West",
           "value": "NW",
         },
         Object {
-          "label": "North East",
-          "value": "NE",
+          "label": "South Central",
+          "value": "SC",
         },
         Object {
           "label": "South East",
           "value": "SE",
+        },
+        Object {
+          "label": "South West",
+          "value": "SW",
         },
       ]
     }
