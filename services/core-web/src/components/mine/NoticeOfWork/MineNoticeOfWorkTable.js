@@ -8,7 +8,6 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-// import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 
 /**
@@ -128,12 +127,6 @@ export class MineNoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                {/* <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  alt="Edit NoW"
-                  title="Edit"
-                  className="padding-large--right"
-                /> */}
                 <Button type="primary">Open</Button>
               </Link>
             </AuthorizationWrapper>
