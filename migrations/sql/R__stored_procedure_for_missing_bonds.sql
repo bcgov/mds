@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION refresh_ses_staging() RETURNS void AS $$
         BEGIN
             RAISE NOTICE 're-creating staging table:';
             -- This is the intermediary table that will be used to store valid mine status data from MMS
-            TRUNCATE TABLE IF EXISTS SES_BOND_STAGING;
+            TRUNCATE TABLE SES_BOND_STAGING;
             CREATE TABLE IF NOT EXISTS SES_BOND_STAGING (
                 sec_cid varchar,
                 sec_amt numeric(12,2),
