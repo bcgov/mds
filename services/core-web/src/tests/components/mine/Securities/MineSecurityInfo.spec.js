@@ -40,22 +40,31 @@ describe("MineSecurityInfo", () => {
     expect(component).toMatchSnapshot();
   });
 
-  it("GetSum is called for confiscated bonds", () => {
+  it("getTotalAssessedSum is called for permit assessment bonds", () => {
     const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
     const instance = component.instance();
-    const getSumSpy = jest.spyOn(instance, "getSum");
-    instance.getSum("CON", props.permits[0]);
-    expect(getSumSpy).toHaveBeenCalledWith("CON", props.permits[0]);
-    expect(instance.getSum("CON", props.permits[0])).toEqual(1000);
+    const getSumSpy = jest.spyOn(instance, "getTotalAssessedSum");
+    instance.getTotalAssessedSum(props.permits[0]);
+    expect(getSumSpy).toHaveBeenCalledWith(props.permits[0]);
+    expect(instance.getTotalAssessedSum(props.permits[0])).toEqual(8000000);
   });
 
-  it("GetSum is called for active bonds", () => {
+  it("getTotalHeldSum is called for active bonds held", () => {
     const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
     const instance = component.instance();
-    const getSumSpy = jest.spyOn(instance, "getSum");
-    instance.getSum("ACT", props.permits[0]);
-    expect(getSumSpy).toHaveBeenCalledWith("ACT", props.permits[0]);
-    expect(instance.getSum("ACT", props.permits[0])).toEqual(1200);
+    const getSumSpy = jest.spyOn(instance, "getTotalHeldSum");
+    instance.getTotalHeldSum(props.permits[0]);
+    expect(getSumSpy).toHaveBeenCalledWith(props.permits[0]);
+    expect(instance.getTotalHeldSum(props.permits[0])).toEqual(700);
+  });
+
+  it("getTotalConfiscatedSum is called for confiscated bond total", () => {
+    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
+    const instance = component.instance();
+    const getSumSpy = jest.spyOn(instance, "getTotalConfiscatedSum");
+    instance.getTotalConfiscatedSum(props.permits[0]);
+    expect(getSumSpy).toHaveBeenCalledWith(props.permits[0]);
+    expect(instance.getTotalConfiscatedSum(props.permits[0])).toEqual(500);
   });
 
   it("getAmountSum is called for invoice amounts", () => {
@@ -65,25 +74,5 @@ describe("MineSecurityInfo", () => {
     instance.getAmountSum(props.permits[0]);
     expect(getAmountSumSpy).toHaveBeenCalledWith(props.permits[0]);
     expect(instance.getAmountSum(props.permits[0])).toEqual(1451);
-  });
-
-  it("getTotalAssessedSum is called for the Total Assessed value", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
-    const instance = component.instance();
-    const getTotalAssessedSumSpy = jest.spyOn(instance, "getTotalAssessedSum");
-    instance.getTotalAssessedSum(props.permits[0]);
-    expect(getTotalAssessedSumSpy).toHaveBeenCalledWith(props.permits[0]);
-    expect(instance.getTotalAssessedSum(props.permits[0])).toEqual(8000000);
-  });
-
-  it("getBalance is called to calculate the amount remaining from the confiscated total", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
-    const instance = component.instance();
-    const getBalanceSpy = jest.spyOn(instance, "getBalance");
-    instance.getBalance(props.permits[0]);
-    instance.getSum("CON", props.permits[0]);
-    instance.getAmountSum(props.permits[0]);
-    expect(getBalanceSpy).toHaveBeenCalledWith(props.permits[0]);
-    expect(instance.getBalance(props.permits[0])).toEqual(-451);
   });
 });

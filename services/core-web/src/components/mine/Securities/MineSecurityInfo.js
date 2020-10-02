@@ -94,14 +94,6 @@ export class MineSecurityInfo extends Component {
         permit_guid === permit.permit_guid && bond_status_code === "ACT"
     ).length;
 
-  // getSum = (status, permit) =>
-  //   this.props.bonds
-  //     .filter(
-  //       ({ bond_status_code, permit_guid }) =>
-  //         bond_status_code === status && permit_guid === permit.permit_guid
-  //     )
-  //     .reduce((sum, bond) => +sum + +bond.amount, 0);
-
   getTotalAssessedSum = (permit) => permit.assessed_liability_total;
 
   getTotalHeldSum = (permit) => permit.active_bond_total;
