@@ -265,7 +265,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['edited_fields'] = edited_fields
 
         # Set "export" information
-        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y_%m_%d %H:%M')
+        now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
         # Enforce that read-only fields do not change
