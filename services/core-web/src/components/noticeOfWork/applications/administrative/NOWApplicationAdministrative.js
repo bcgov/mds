@@ -5,6 +5,7 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 import NOWSecurities from "@/components/noticeOfWork/applications/administrative/NOWSecurities";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
@@ -48,20 +49,23 @@ export const NOWApplicationAdministrative = (props) => {
           handleAfterUpload={props.handleSaveNOWEdit}
         />
       </ScrollContentWrapper>
-      {/* TODO: hide this before merge to test */}
-      <ScrollContentWrapper id="application-export-files" title="Application Export Files">
-        <NOWDocuments
-          now_application_guid={props.noticeOfWork.now_application_guid}
-          mine_guid={props.mineGuid}
-          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
-            exportedDocuments.includes(now_application_document_type_code)
-          )}
-          isViewMode
-          disclaimerText="In this table you can see all exported Notice of Work documents."
-          categoriesToShow={exportedDocuments}
-          addDescriptionColumn={false}
-        />
-      </ScrollContentWrapper>
+      {/* Remove this once the Document Generation API has been updated */}
+      <AuthorizationWrapper inDevelopment>
+        <ScrollContentWrapper id="application-export-files" title="Application Export Files">
+          <NOWDocuments
+            now_application_guid={props.noticeOfWork.now_application_guid}
+            mine_guid={props.mineGuid}
+            documents={props.noticeOfWork.documents.filter(
+              ({ now_application_document_type_code }) =>
+                exportedDocuments.includes(now_application_document_type_code)
+            )}
+            isViewMode
+            disclaimerText="In this table you can see all exported Notice of Work documents."
+            categoriesToShow={exportedDocuments}
+            addDescriptionColumn={false}
+          />
+        </ScrollContentWrapper>
+      </AuthorizationWrapper>
     </div>
   );
 };

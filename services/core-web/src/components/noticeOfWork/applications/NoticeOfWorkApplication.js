@@ -50,6 +50,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -687,22 +688,24 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
-        {/* TODO: hide this before merge to test */}
-        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
-          {Object.values(this.props.generatableApplicationDocuments)
-            .filter(
-              ({ now_application_document_type_code }) =>
-                now_application_document_type_code === "NTR"
-            )
-            .map((document) => (
-              <Menu.Item
-                key={document.now_application_document_type_code}
-                onClick={this.handleExportDocument}
-              >
-                {document.description}
-              </Menu.Item>
-            ))}
-        </Menu.SubMenu>
+        {/* Remove this AuthorizationWrapper once the Document Generation API has been updated */}
+        <AuthorizationWrapper inDevelopment>
+          <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
+            {Object.values(this.props.generatableApplicationDocuments)
+              .filter(
+                ({ now_application_document_type_code }) =>
+                  now_application_document_type_code === "NTR"
+              )
+              .map((document) => (
+                <Menu.Item
+                  key={document.now_application_document_type_code}
+                  onClick={this.handleExportDocument}
+                >
+                  {document.description}
+                </Menu.Item>
+              ))}
+          </Menu.SubMenu>
+        </AuthorizationWrapper>
       </Menu>
     );
   };
