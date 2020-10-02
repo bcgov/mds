@@ -17,8 +17,6 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.constants import *
 
-import pprint
-
 
 class Permit(AuditMixin, Base):
     __tablename__ = 'permit'
