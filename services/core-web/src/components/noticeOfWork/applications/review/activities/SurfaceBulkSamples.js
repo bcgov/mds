@@ -204,7 +204,7 @@ export const SurfaceBulkSamples = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Bed rock expansion
+            Bedrock expansion
             <NOWFieldOriginTooltip />
           </div>
           <Field
