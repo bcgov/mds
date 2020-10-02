@@ -168,7 +168,7 @@ def _transmogrify_clients(now_app, now_sub, mms_now_sub):
             mine_party_appt_type_code=now_party_appt_type.mine_party_appt_type_code,
             mine_party_appt_type=now_party_appt_type,
             party=now_party)
-    if agent.type == 'Organization' and agent.contacttype and agent.org_legalname and agent.dayphonenumber:
+    if agent.type == 'Organization' and agent.org_legalname and agent.dayphonenumber:
         now_party = Party(
             party_name=agent.org_legalname,
             party_type_code='ORG',
