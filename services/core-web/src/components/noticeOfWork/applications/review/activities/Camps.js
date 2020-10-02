@@ -213,7 +213,7 @@ export const Camps = (props) => {
             <Field
               label={
                 <span>
-                  Barrell
+                  Barrel
                   <NOWOriginalValueTooltip
                     style={{ marginLeft: "20%" }}
                     originalValue={

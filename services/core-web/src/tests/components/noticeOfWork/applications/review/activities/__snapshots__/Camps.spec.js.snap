@@ -147,7 +147,7 @@ exports[`Camps renders properly 1`] = `
           id="has_fuel_stored_in_barrels"
           label={
             <span>
-              Barrell
+              Barrel
               <NOWOriginalValueTooltip
                 isVisible={true}
                 originalValue="N/A"
