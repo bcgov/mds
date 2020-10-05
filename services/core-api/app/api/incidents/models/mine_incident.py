@@ -10,14 +10,14 @@ from app.extensions import db
 
 from .mine_incident_followup_investigation_type import MineIncidentFollowupInvestigationType
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.incidents.models.mine_incident_determination_type import MineIncidentDeterminationType
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.compliance.models.compliance_article import ComplianceArticle
 
 
-class MineIncident(AuditMixin, Base):
+class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_incident'
 
     mine_incident_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -30,7 +30,6 @@ class MineIncident(AuditMixin, Base):
 
     incident_timestamp = db.Column(db.DateTime, nullable=False)
     incident_description = db.Column(db.String, nullable=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     reported_timestamp = db.Column(db.DateTime)
     reported_by_name = db.Column(db.String)
@@ -96,7 +95,7 @@ class MineIncident(AuditMixin, Base):
         "and_(MineIncidentRecommendation.mine_incident_id == MineIncident.mine_incident_id, MineIncidentRecommendation.deleted_ind==False)",
         lazy='selectin')
 
-    # please note there is a dependency on deleted_ind in mine_documents
+    # Note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('MineIncidentDocumentXref', lazy='joined')
     mine_documents = db.relationship(
         'MineDocument',
