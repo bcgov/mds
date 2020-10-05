@@ -364,8 +364,6 @@ declare
 	where permit.permit_id = bond_data.core_permit_id;
 
 	---------------------- INSERT BOND_HISTORY
-
-	with upserted_bond_histories as (
 	INSERT INTO bond_history (
 		bond_id,
 		amount,
@@ -413,8 +411,9 @@ declare
 	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid 
 	INNER JOIN permit per on per.permit_id = etl.core_permit_id
 	where 
-		(etl.status = 'E' OR etl.status = 'C') 
+		etl.status in ('E', 'C') 
 		AND 
-		etl.core_bond_id not in (select bond_id from bond_history) 
+		etl.core_bond_id not in (select bond_id from bond_history);
+END;
 END;
 $$ LANGUAGE PLPGSQL;
