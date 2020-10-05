@@ -94,23 +94,12 @@ export class MineSecurityInfo extends Component {
         permit_guid === permit.permit_guid && bond_status_code === "ACT"
     ).length;
 
-  getSum = (status, permit) =>
-    this.props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permit.permit_guid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-
-  getTotalAssessedSum = (permit) =>
-    permit.permit_amendments.reduce((sum, amendment) => +sum + +amendment.security_adjustment, 0);
-
   getAmountSum = (permit) =>
     this.props.invoices
       .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
       .reduce((sum, invoice) => +sum + +invoice.amount, 0);
 
-  getBalance = (permit) => this.getSum("CON", permit) - this.getAmountSum(permit);
+  getBalance = (permit) => permit.confiscated_bond_total - this.getAmountSum(permit);
 
   openAddBondModal = (event, permitGuid) => {
     event.preventDefault();
@@ -373,8 +362,6 @@ export class MineSecurityInfo extends Component {
                 openCloseBondModal={this.openCloseBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
-                getSum={this.getSum}
-                getTotalAssessedSum={this.getTotalAssessedSum}
               />
             </div>
           </Tabs.TabPane>
@@ -397,7 +384,6 @@ export class MineSecurityInfo extends Component {
               openEditReclamationInvoiceModal={this.openEditReclamationInvoiceModal}
               recordsByPermit={this.recordsByPermit}
               getBalance={this.getBalance}
-              getSum={this.getSum}
               getAmountSum={this.getAmountSum}
             />
           </Tabs.TabPane>

@@ -88,17 +88,21 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
         Cancel
       </Button>
     </ForwardRef>
-    <Button
-      block={false}
-      className="full-mobile"
-      disabled={false}
-      ghost={false}
-      htmlType="submit"
-      loading={false}
-      type="primary"
+    <Connect(AuthorizationWrapper)
+      permission="role_edit_permits"
     >
-      mockTitle
-    </Button>
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="submit"
+        loading={false}
+        type="primary"
+      >
+        mockTitle
+      </Button>
+    </Connect(AuthorizationWrapper)>
   </div>
 </Form>
 `;

@@ -423,6 +423,7 @@ NOW_VIEW_MODEL = api.model(
         'now_application_status_description': fields.String,
         'received_date': Date,
         'originating_system': fields.String,
+        'application_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
     })
 
 PAGINATED_LIST = api.model(
