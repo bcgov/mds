@@ -102,5 +102,3 @@ export const exportNoticeOfWorkApplicationDocument = (
     .catch(() => dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
     .finally(() => dispatch(hideLoading("modal")));
 };
-
-export default generateNoticeOfWorkApplicationDocument;
