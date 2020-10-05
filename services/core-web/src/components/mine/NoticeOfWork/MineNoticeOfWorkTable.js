@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Badge } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
+import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
@@ -9,8 +8,10 @@ import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
+import { isEmpty } from "lodash";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -60,6 +61,8 @@ const transformRowData = (applications) =>
       application.now_application_status_description || Strings.EMPTY_FIELD,
     received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
+    document:
+      application.application_documents.length >= 1 ? application.application_documents[0] : {},
   }));
 
 const pageTitle = (mineName, isMajorMine) => {
@@ -86,7 +89,7 @@ export class MineNoticeOfWorkTable extends Component {
       dataIndex: "now_number",
       sortField: "now_number",
       render: (text, record) => (
-        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
+        <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
       ),
       sorter: true,
     },
@@ -123,23 +126,30 @@ export class MineNoticeOfWorkTable extends Component {
       sorter: true,
     },
     {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
+    },
+    {
       dataIndex: "operations",
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  alt="Edit NoW"
-                  title="Edit"
-                  className="padding-large--right"
-                />
+                <Button type="primary">Open</Button>
               </Link>
             </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <EyeOutlined className="icon-lg icon-svg-filter padding-large--left" />
-            </Link>
           </div>
         ),
     },

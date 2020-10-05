@@ -2684,6 +2684,7 @@ export const NOW = {
       now_number: 44,
       now_application_status_description: "Approved",
       received_date: "2019-08-14",
+      application_documents: [],
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
@@ -2694,6 +2695,7 @@ export const NOW = {
       now_number: 52,
       now_application_status_description: "Approved",
       received_date: "2019-07-21",
+      application_documents: [],
     },
   ],
 };

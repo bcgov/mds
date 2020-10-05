@@ -6,6 +6,8 @@ import { getFormValues } from "redux-form";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import UpdateNOWLeadInspectorForm from "@/components/Forms/noticeOfWork/UpdateNOWLeadInspectorForm";
 
 const propTypes = {
@@ -42,14 +44,18 @@ const AssignLeadInspector = (props) => {
                     setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
                   />
                 </div>
-                <Button
-                  type="primary"
-                  className="no-margin center-mobile"
-                  onClick={props.handleUpdateLeadInspector}
-                  disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
-                >
-                  Assign Lead Inspector
-                </Button>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button
+                    type="primary"
+                    className="no-margin center-mobile"
+                    onClick={props.handleUpdateLeadInspector}
+                    disabled={invalidUpdateLeadInspectorPayload(
+                      props.updateLeadInspectorFormValues
+                    )}
+                  >
+                    Assign Lead Inspector
+                  </Button>
+                </AuthorizationWrapper>
               </>,
             ]}
           />

@@ -145,15 +145,8 @@
     @include tablet {
       display: none;
     }
-
-    &.view-only {
-      top: 180px;
-    }
   }
 
-  &.view-only {
-    top: 180px;
-  }
 
   ul {
     list-style: none;
@@ -168,10 +161,6 @@
     @include tablet {
       position: inherit;
       width: 100%;
-    }
-
-    &--view {
-      top: 50px;
     }
   }
 

@@ -15,6 +15,8 @@ import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -178,23 +180,25 @@ export const NOWDocuments = (props) => {
         <>
           <div className="inline-flex between">
             <p>{props.disclaimerText}</p>
-            <AddButton
-              disabled={props.isViewMode}
-              onClick={(event) =>
-                openAddDocumentModal(
-                  event,
-                  props.openModal,
-                  props.closeModal,
-                  props.arrayPush,
-                  props.now_application_guid,
-                  props.mine_guid,
-                  props.categoriesToShow,
-                  props.handleAfterUpload
-                )
-              }
-            >
-              Add Document
-            </AddButton>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <AddButton
+                disabled={props.isViewMode}
+                onClick={(event) =>
+                  openAddDocumentModal(
+                    event,
+                    props.openModal,
+                    props.closeModal,
+                    props.arrayPush,
+                    props.now_application_guid,
+                    props.mine_guid,
+                    props.categoriesToShow,
+                    props.handleAfterUpload
+                  )
+                }
+              >
+                Add Document
+              </AddButton>
+            </AuthorizationWrapper>
           </div>
         </>
       )}
