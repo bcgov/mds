@@ -9,6 +9,9 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
+import { isEmpty } from "lodash";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -58,6 +61,8 @@ const transformRowData = (applications) =>
       application.now_application_status_description || Strings.EMPTY_FIELD,
     received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
+    document:
+      application.application_documents.length >= 1 ? application.application_documents[0] : {},
   }));
 
 const pageTitle = (mineName, isMajorMine) => {
@@ -119,6 +124,21 @@ export class MineNoticeOfWorkTable extends Component {
       sortField: "originating_system",
       render: (text) => <div title="Source">{text}</div>,
       sorter: true,
+    },
+    {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
     },
     {
       dataIndex: "operations",

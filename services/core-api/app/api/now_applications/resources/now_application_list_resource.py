@@ -66,8 +66,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
-            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'],
-            submission_documents=request.args.getlist('submission_documents', type=str))
+            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
 
         data = records.all()
 
@@ -93,7 +92,7 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       mine_search=None,
                                       now_application_status_description=[],
                                       originating_system=[],
-                                      submissions_only=None, submission_documents=[]):
+                                      submissions_only=None):
         filters = []
         base_query = NoticeOfWorkView.query
 

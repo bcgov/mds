@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
+import { isEmpty } from "lodash";
 import { SearchOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
 import {
   formatDate,
@@ -14,6 +16,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -110,6 +113,8 @@ export class NoticeOfWorkTable extends Component {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       originating_system: application.originating_system || Strings.EMPTY_FIELD,
+      document:
+        application.application_documents.length >= 1 ? application.application_documents[0] : {},
     }));
 
   filterProperties = (name, field) => ({
@@ -266,6 +271,21 @@ export class NoticeOfWorkTable extends Component {
         { text: "MMS", value: "MMS" },
       ],
       render: (text) => <div title="Source">{text}</div>,
+    },
+    {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
     },
     {
       key: "operations",
