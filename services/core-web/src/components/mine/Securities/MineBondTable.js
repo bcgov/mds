@@ -40,8 +40,6 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   activeBondCount: PropTypes.func.isRequired,
-  getSum: PropTypes.func.isRequired,
-  getTotalAssessedSum: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -63,16 +61,12 @@ export const MineBondTable = (props) => {
       key: "total_assessed",
       title: (
         <span>
-          Total Assessed
-          <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit." />
+          Assessed Liability
+          <CoreTooltip title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit." />
         </span>
       ),
-      render: (text, record) => (
-        <div title="Total Assessed">
-          {record.permit_amendments && record.permit_amendments.length > 0
-            ? formatMoney(text)
-            : Strings.EMPTY_FIELD}
-        </div>
+      render: (text) => (
+        <div title="Assessed Liability">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
     },
     {
@@ -80,12 +74,6 @@ export const MineBondTable = (props) => {
       dataIndex: "amount_held",
       key: "amount_held",
       render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Active Bonds",
-      dataIndex: "total_bonds",
-      key: "total_bonds",
-      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: (
@@ -99,6 +87,12 @@ export const MineBondTable = (props) => {
       render: (text) => (
         <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
+    },
+    {
+      title: "Active Bonds",
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: "",
@@ -287,9 +281,9 @@ export const MineBondTable = (props) => {
       return {
         key: permit.permit_guid,
         total_bonds: props.activeBondCount(permit),
-        amount_confiscated: props.getSum("CON", permit),
-        amount_held: props.getSum("ACT", permit),
-        total_assessed: props.getTotalAssessedSum(permit),
+        amount_confiscated: permit.confiscated_bond_total,
+        amount_held: permit.active_bond_total,
+        total_assessed: permit.assessed_liability_total,
         ...permit,
       };
     });
