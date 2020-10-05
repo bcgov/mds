@@ -16,8 +16,7 @@ const propTypes = {
   handleSaveNOWEdit: PropTypes.func.isRequired,
 };
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
-/* TODO: uncomment this after carbone update */
-// const exportedDocuments = ["NTR"];
+const exportedDocuments = ["NTR"];
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div className="page__content">
@@ -49,8 +48,7 @@ export const NOWApplicationAdministrative = (props) => {
           handleAfterUpload={props.handleSaveNOWEdit}
         />
       </ScrollContentWrapper>
-      {/* TODO: uncomment this after carbone update */}
-      {/* <ScrollContentWrapper id="application-export-files" title="Application Export Files">
+      <ScrollContentWrapper id="application-export-files" title="Application Export Files">
         <NOWDocuments
           now_application_guid={props.noticeOfWork.now_application_guid}
           mine_guid={props.mineGuid}
@@ -62,7 +60,7 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={exportedDocuments}
           addDescriptionColumn={false}
         />
-      </ScrollContentWrapper> */}
+      </ScrollContentWrapper>
     </div>
   );
 };

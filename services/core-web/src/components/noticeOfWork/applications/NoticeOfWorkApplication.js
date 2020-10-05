@@ -706,8 +706,7 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
-        {/* TODO: uncomment this after carbone update */}
-        {/* <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
+        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
           {Object.values(this.props.generatableApplicationDocuments)
             .filter(
               ({ now_application_document_type_code }) =>
@@ -721,7 +720,7 @@ export class NoticeOfWorkApplication extends Component {
                 {document.description}
               </Menu.Item>
             ))}
-        </Menu.SubMenu> */}
+        </Menu.SubMenu>
       </Menu>
     );
   };
