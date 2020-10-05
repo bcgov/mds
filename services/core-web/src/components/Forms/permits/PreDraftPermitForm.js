@@ -9,6 +9,8 @@ import { resetForm, createDropDownList } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -66,9 +68,16 @@ export const PreDraftPermitForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          Start Draft Permit
-        </Button>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+          >
+            Start Draft Permit
+          </Button>
+        </AuthorizationWrapper>
       </div>
     </Form>
   );

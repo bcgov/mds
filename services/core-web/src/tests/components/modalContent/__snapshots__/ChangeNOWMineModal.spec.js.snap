@@ -38,6 +38,7 @@ exports[`ChangeNOWMineModal renders properly 1`] = `
     }
     noticeOfWork={
       Object {
+        "application_documents": Array [],
         "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
         "mine_name": "Hamilton, Herrera and Mccormick",
         "mine_no": "brother",

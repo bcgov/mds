@@ -3,8 +3,12 @@ import uuid
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
+
+from .now_application_identity import NOWApplicationIdentity
+from app.api.now_submissions.models.document import Document
 
 
 class NoticeOfWorkView(Base):
@@ -30,5 +34,19 @@ class NoticeOfWorkView(Base):
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
 
+    submission_documents = db.relationship(
+        'Document',
+        lazy='selectin',
+        secondary=
+        "join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
+        primaryjoin=
+        'and_(NoticeOfWorkView.now_application_guid==NOWApplicationIdentity.now_application_guid, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
+        viewonly=True)
+
     def __repr__(self):
         return '<NoticeOfWorkView>'
+
+    @hybrid_property
+    def application_documents(self):
+        return [doc for doc in self.submission_documents if doc.filename == "ApplicationForm.pdf"]
