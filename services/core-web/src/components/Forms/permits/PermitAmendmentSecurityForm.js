@@ -24,8 +24,8 @@ export const PermitAmendmentSecurityForm = (props) => (
     <Row gutter={16}>
       <Col md={12} sm={24}>
         <div className="field-title">
-          Security Assessment
-          <CoreTooltip title="Amount assessed for this application will be added to the total assessed amount on the permit." />
+          Assessed Liability
+          <CoreTooltip title="Amount assessed for this application will be added to the total assessed liability amount on the permit." />
         </div>
         <Field
           id="security_adjustment"

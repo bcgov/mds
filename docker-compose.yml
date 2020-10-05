@@ -149,8 +149,8 @@ services:
     container_name: tusd
     build:
       context: services/tusd
-    ports:
-      - 1080:1080
+    expose:
+      - 1080
     env_file: ./services/tusd/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################

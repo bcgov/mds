@@ -226,6 +226,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     </div>
     <Field
       component={[Function]}
+      disabled={true}
       id="proposed_end_date"
       name="proposed_end_date"
     />
