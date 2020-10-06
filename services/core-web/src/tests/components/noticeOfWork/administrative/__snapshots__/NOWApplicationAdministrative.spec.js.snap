@@ -14,6 +14,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       noticeOfWork={
         Object {
           "adjusted_annual_maximum_tonnage": "",
+          "application_documents": Array [],
           "blasting_operation": Object {},
           "camps": Object {
             "details": Array [],
@@ -81,6 +82,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       noticeOfWork={
         Object {
           "adjusted_annual_maximum_tonnage": "",
+          "application_documents": Array [],
           "blasting_operation": Object {},
           "camps": Object {
             "details": Array [],
