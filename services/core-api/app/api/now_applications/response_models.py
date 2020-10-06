@@ -404,7 +404,16 @@ NOW_APPLICATION_MODEL = api.model(
         'last_updated_date':
         Date,
         'last_updated_by':
-        fields.String
+        fields.String,
+        'permit_status':
+        fields.String,
+        'term_of_application': fields.Integer,
+        'is_applicant_individual_or_company': fields.Boolean,
+        'relationship_to_applicant':
+        fields.String,
+        'merchantable_timber_volume': fields.Fixed(decimals=2),
+        'merchantable_timber_volume_unit_type_code':
+        fields.String,
     })
 
 NOW_VIEW_MODEL = api.model(
