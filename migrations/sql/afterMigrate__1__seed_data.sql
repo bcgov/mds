@@ -1216,8 +1216,7 @@ VALUES
     ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
     ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
     ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110),
-    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120),
-    ('BAL', 'Bank Acknowledgement Letter', true, 'system-mds', 'system-mds', 130)
+    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
