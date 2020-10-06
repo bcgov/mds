@@ -1210,7 +1210,7 @@ VALUES
     ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
     ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
     ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
-    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds', 60),
+    ('NIA', 'No Interest Payable Form', true, 'system-mds', 'system-mds', 60),
     ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
     ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
     ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
