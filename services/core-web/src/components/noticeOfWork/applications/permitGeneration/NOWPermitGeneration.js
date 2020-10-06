@@ -22,6 +22,7 @@ import {
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
@@ -29,6 +30,7 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -273,12 +275,14 @@ export class NOWPermitGeneration extends Component {
       <div className="inline-flex block-mobile padding-md between">
         <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
-          <Dropdown overlay={this.menu()} placement="bottomLeft">
-            <Button type="secondary" className="full-mobile">
-              Actions
-              <DownOutlined />
-            </Button>
-          </Dropdown>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Dropdown overlay={this.menu()} placement="bottomLeft">
+              <Button type="secondary" className="full-mobile">
+                Actions
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         )}
       </div>
     ) : (
@@ -360,7 +364,9 @@ export class NOWPermitGeneration extends Component {
                     ) : (
                       <>
                         <NullScreen type="draft-permit" />
-                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                        </AuthorizationWrapper>
                       </>
                     )}
                   </div>

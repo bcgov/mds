@@ -28,27 +28,31 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         />
         Download All
       </Button>
-      <Button
-        block={false}
-        className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        onClick={[Function]}
-        type="secondary"
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_permits"
       >
-        <img
-          alt="Edit"
-          className="padding-md--right"
-          src={
-            Object {
-              "process": [Function],
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="secondary"
+        >
+          <img
+            alt="Edit"
+            className="padding-md--right"
+            src={
+              Object {
+                "process": [Function],
+              }
             }
-          }
-          title="Edit"
-        />
-        Edit
-      </Button>
+            title="Edit"
+          />
+          Edit
+        </Button>
+      </Connect(AuthorizationWrapper)>
     </div>
   </div>
   <br />

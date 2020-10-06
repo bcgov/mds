@@ -121,10 +121,10 @@ export class PermitAmendmentForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item label="Security Assessment">
+            <Form.Item label="Assessed Liability">
               <p className="p-light">
-                This amount will be added to the Total Assessed amount for this permit. Changes to
-                this value in CORE will not be updated in MMS.
+                This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in CORE will not be updated in MMS.
               </p>
               <Field
                 id="security_adjustment"

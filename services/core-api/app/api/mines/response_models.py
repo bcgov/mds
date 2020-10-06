@@ -8,6 +8,7 @@ class DateTime(fields.Raw):
     def format(self, value):
         return value.strftime("%Y-%m-%d %H:%M") if value else None
 
+
 class PermitCondition(fields.Raw):
     def format(self, value):
         return marshal(value, PERMIT_CONDITION_MODEL)
@@ -116,8 +117,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
 PERMIT_MODEL = api.model(
-    'Permit',
-    {
+    'Permit', {
         'permit_id': fields.Integer,
         'permit_guid': fields.String,
         'permit_no': fields.String,
@@ -125,6 +125,9 @@ PERMIT_MODEL = api.model(
         'current_permittee': fields.String,
         'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+        'assessed_liability_total': fields.Float,
+        'confiscated_bond_total': fields.Float,
+        'active_bond_total': fields.Float,
         'bonds': fields.List(fields.Nested(BOND_MODEL))
     })
 
