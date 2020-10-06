@@ -16,6 +16,8 @@ import AddButton from "@/components/common/AddButton";
 import Section from "@/components/Forms/permits/conditions/Section";
 import SubCondition from "@/components/Forms/permits/conditions/SubCondition";
 import ListItem from "@/components/Forms/permits/conditions/ListItem";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -63,20 +65,24 @@ export class AddCondition extends Component {
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
-          <AddButton type="secondary" disabled>
-            {ButtonText(this.props.initialValues.condition_type_code)}
-          </AddButton>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <AddButton type="secondary" disabled>
+              {ButtonText(this.props.initialValues.condition_type_code)}
+            </AddButton>
+          </AuthorizationWrapper>
         )}
         {!this.props.editingConditionFlag && (
-          <AddButton
-            type="secondary"
-            onClick={() => {
-              this.props.setEditingConditionFlag(true);
-              this.setState({ isEditing: true });
-            }}
-          >
-            {ButtonText(this.props.initialValues.condition_type_code)}
-          </AddButton>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <AddButton
+              type="secondary"
+              onClick={() => {
+                this.props.setEditingConditionFlag(true);
+                this.setState({ isEditing: true });
+              }}
+            >
+              {ButtonText(this.props.initialValues.condition_type_code)}
+            </AddButton>
+          </AuthorizationWrapper>
         )}
         {this.state.isEditing && (
           <ConditionComponent

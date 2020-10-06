@@ -16,7 +16,9 @@ import { EDIT_OUTLINE } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import * as Permission from "@/constants/permissions";
+import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class FinalPermitDocuments- call logic surrounding adding or removing documents in the final Permit document list
@@ -200,14 +202,16 @@ export class FinalPermitDocuments extends Component {
               <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
-            <Button
-              type="secondary"
-              className="full-mobile"
-              onClick={this.openFinalDocumentPackageModal}
-            >
-              <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-              Edit
-            </Button>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openFinalDocumentPackageModal}
+              >
+                <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                Edit
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <br />
