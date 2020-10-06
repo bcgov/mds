@@ -363,6 +363,57 @@ declare
 	) bond_data
 	where permit.permit_id = bond_data.core_permit_id;
 
+	---------------------- INSERT BOND_HISTORY
+	INSERT INTO bond_history (
+		bond_id,
+		amount,
+		bond_type_code,
+		permit_guid,
+		permit_no,
+		payer_party_guid,
+		payer_name,
+		bond_status_code,
+		reference_number,
+		update_timestamp,
+		update_user,
+		institution_name,
+		institution_street,
+		institution_city,
+		institution_province,
+		institution_postal_code,
+		note,
+		issue_date,
+		closed_date,
+		closed_note
+	)
+	select
+		etl.core_bond_id,
+		etl.sec_amt,
+		etl.core_bond_type_code,
+		per.permit_guid,
+		per.permit_no,
+		etl.core_payer_party_guid,
+		par.party_name,	
+		'ACT', -- Hard coding to 'active' as this is us creating a history for the imported bonds that are confiscated or released.
+		etl.descript,
+		etl.cnt_dt,
+		'bond_etl',
+		etl.invloc,
+		etl.iaddr1,
+		CONCAT(etl.iaddr2,etl.iaddr3),
+		null,
+		etl.ipost_cd,
+		etl.comment,
+		etl.cnt_dt,
+		etl.return_dt,
+		null
+	from ETL_BOND etl 
+	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid 
+	INNER JOIN permit per on per.permit_id = etl.core_permit_id
+	where 
+		etl.status in ('E', 'C') 
+		AND 
+		etl.core_bond_id not in (select bond_id from bond_history);
 END;
 END;
 $$ LANGUAGE PLPGSQL;

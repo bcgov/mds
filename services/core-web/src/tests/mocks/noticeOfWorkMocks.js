@@ -408,6 +408,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   water_supply: { details: [] },
   placer_operation: { details: [] },
   documents: [],
+  application_documents: [],
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
