@@ -22,6 +22,7 @@ import {
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
@@ -29,6 +30,7 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -59,14 +61,20 @@ const propTypes = {
 const defaultProps = {};
 
 const originalPermit = "OGP";
-const draft = "DFT";
+
+const regionHash = {
+  SE: "Cranbrook",
+  SC: "Kamloops",
+  NE: "Prince George",
+  NW: "Smithers",
+  SW: "Victoria",
+};
 
 export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
     isDraft: false,
     permittee: {},
-    draftAmendment: {},
     permitGenObj: {},
     isLoaded: false,
   };
@@ -126,7 +134,7 @@ export class NOWPermitGeneration extends Component {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
       auth_end_date: "",
-      regional_office: "",
+      regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
@@ -158,7 +166,9 @@ export class NOWPermitGeneration extends Component {
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
-    permitGenObject.regional_office = isEmpty(amendment) ? "" : amendment.regional_office;
+    permitGenObject.regional_office = !amendment.regional_office
+      ? regionHash[noticeOfWork.mine_region]
+      : amendment.regional_office;
 
     return permitGenObject;
   };
@@ -265,12 +275,14 @@ export class NOWPermitGeneration extends Component {
       <div className="inline-flex block-mobile padding-md between">
         <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
-          <Dropdown overlay={this.menu()} placement="bottomLeft">
-            <Button type="secondary" className="full-mobile">
-              Actions
-              <DownOutlined />
-            </Button>
-          </Dropdown>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Dropdown overlay={this.menu()} placement="bottomLeft">
+              <Button type="secondary" className="full-mobile">
+                Actions
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         )}
       </div>
     ) : (
@@ -352,7 +364,9 @@ export class NOWPermitGeneration extends Component {
                     ) : (
                       <>
                         <NullScreen type="draft-permit" />
-                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                        </AuthorizationWrapper>
                       </>
                     )}
                   </div>

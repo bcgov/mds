@@ -8,6 +8,7 @@ exports[`RenderSelect renders properly 1`] = `
   label=""
   onSelect={[Function]}
   validateStatus=""
+  value={null}
 >
   <Select
     allowClear={true}
@@ -20,9 +21,11 @@ exports[`RenderSelect renders properly 1`] = `
     id="1"
     onSelect={[Function]}
     optionFilterProp="children"
-    placeholder=""
+    placeholder="Please select"
     showSearch={true}
     transitionName="slide-up"
+    value={null}
+    virtual={false}
   >
     <Option
       disabled={false}

@@ -141,8 +141,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           expandedRowKeys={Array []}
-          getSum={[Function]}
-          getTotalAssessedSum={[Function]}
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
@@ -153,6 +151,9 @@ exports[`MineSecurityInfo renders properly 1`] = `
           permits={
             Array [
               Object {
+                "active_bond_total": 700,
+                "assessed_liability_total": 8000000,
+                "confiscated_bond_total": 500,
                 "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                 "permit_amendments": Array [
                   Object {
@@ -284,7 +285,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
         expandedRowKeys={Array []}
         getAmountSum={[Function]}
         getBalance={[Function]}
-        getSum={[Function]}
         invoices={
           Array [
             Object {
@@ -309,6 +309,9 @@ exports[`MineSecurityInfo renders properly 1`] = `
         permits={
           Array [
             Object {
+              "active_bond_total": 700,
+              "assessed_liability_total": 8000000,
+              "confiscated_bond_total": 500,
               "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
               "permit_amendments": Array [
                 Object {

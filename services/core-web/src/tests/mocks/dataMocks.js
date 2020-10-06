@@ -897,24 +897,24 @@ export const REGION_OPTIONS = {
 
 export const REGION_DROPDOWN_OPTIONS = [
   {
-    value: "SW",
-    label: "South West",
-  },
-  {
-    value: "SC",
-    label: "South Central",
+    value: "NE",
+    label: "North East",
   },
   {
     value: "NW",
     label: "North West",
   },
   {
-    value: "NE",
-    label: "North East",
+    value: "SC",
+    label: "South Central",
   },
   {
     value: "SE",
     label: "South East",
+  },
+  {
+    value: "SW",
+    label: "South West",
   },
 ];
 
@@ -927,10 +927,10 @@ export const REGION_HASH = {
 };
 
 export const TENURE_TYPES_DROPDOWN_OPTIONS = [
+  { value: "BCL", label: "BC Land", isActive: true },
   { value: "COL", label: "Coal", isActive: true },
   { value: "MIN", label: "Mineral", isActive: true },
   { value: "PLR", label: "Placer", isActive: true },
-  { value: "BCL", label: "BC Land", isActive: true },
 ];
 
 export const TENURE_TYPES_RESPONSE = {
@@ -1017,6 +1017,9 @@ export const PERMITS = [
     mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
     permit_no: "C-12345",
     permit_status_code: "O",
+    assessed_liability_total: 8000000,
+    confiscated_bond_total: 500,
+    active_bond_total: 700,
     permit_amendments: [
       {
         permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
@@ -1132,27 +1135,6 @@ export const COMMODITY_OPTIONS = {
 
 export const DROPDOWN_COMMODITY_OPTIONS = [
   {
-    value: "TO",
-    label: "Thermal Coal",
-    isActive: true,
-  },
-  {
-    value: "MC",
-    label: "Metallurgic",
-    isActive: true,
-  },
-  {
-    value: "CG",
-    label: "Construction Aggregate",
-    isActive: true,
-  },
-
-  {
-    value: "SA",
-    label: "Sand and Gravel",
-    isActive: true,
-  },
-  {
     value: "AE",
     label: "Agate",
     isActive: true,
@@ -1195,6 +1177,26 @@ export const DROPDOWN_COMMODITY_OPTIONS = [
   {
     value: "SB",
     label: "Antimony",
+    isActive: true,
+  },
+  {
+    value: "CG",
+    label: "Construction Aggregate",
+    isActive: true,
+  },
+  {
+    value: "MC",
+    label: "Metallurgic",
+    isActive: true,
+  },
+  {
+    value: "SA",
+    label: "Sand and Gravel",
+    isActive: true,
+  },
+  {
+    value: "TO",
+    label: "Thermal Coal",
     isActive: true,
   },
 ];
@@ -2543,12 +2545,12 @@ export const MINE_DOCUMENT_SEARCH_RESULTS = [
 ];
 
 export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
-  { value: "RFD", label: "Ready for Decision", isActive: true },
-  { value: "WIT", label: "Withdrawn", isActive: true },
-  { value: "REV", label: "In Review", isActive: true },
-  { value: "NAP", label: "Not Applicable", isActive: true },
   { value: "APP", label: "Approved", isActive: true },
   { value: "DEN", label: "Denied", isActive: true },
+  { value: "REV", label: "In Review", isActive: true },
+  { value: "NAP", label: "Not Applicable", isActive: true },
+  { value: "RFD", label: "Ready for Decision", isActive: true },
+  { value: "WIT", label: "Withdrawn", isActive: true },
 ];
 
 export const VARIANCE_STATUS_OPTIONS_HASH = {
@@ -2563,16 +2565,16 @@ export const VARIANCE_STATUS_OPTIONS_HASH = {
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = {
   records: [
     {
-      variance_document_category_code: "REQ",
-      description: "Request",
+      variance_document_category_code: "DEC",
+      description: "Decision",
     },
     {
       variance_document_category_code: "REC",
       description: "Recommendation",
     },
     {
-      variance_document_category_code: "DEC",
-      description: "Decision",
+      variance_document_category_code: "REQ",
+      description: "Request",
     },
   ],
 };
@@ -2682,6 +2684,7 @@ export const NOW = {
       now_number: 44,
       now_application_status_description: "Approved",
       received_date: "2019-08-14",
+      application_documents: [],
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
@@ -2692,6 +2695,7 @@ export const NOW = {
       now_number: 52,
       now_application_status_description: "Approved",
       received_date: "2019-07-21",
+      application_documents: [],
     },
   ],
 };
@@ -4378,13 +4382,13 @@ export const MINE_REPORT_DEFINITION_HASH = {
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
-  { value: "CEC", label: "Certified Cheque", isActive: true },
+  { value: "BDA", label: "Bank Draft", isActive: true },
   { value: "CAS", label: "Cash", isActive: true },
+  { value: "CEC", label: "Certified Cheque", isActive: true },
   { value: "ILC", label: "Irrevocable Letter of Credit", isActive: true },
   { value: "MOR", label: "Money Order", isActive: true },
-  { value: "BDA", label: "Bank Draft", isActive: true },
-  { value: "SBO", label: "Surety Bond", isActive: true },
   { value: "SAG", label: "Safekeeping Agreement", isActive: true },
+  { value: "SBO", label: "Surety Bond", isActive: true },
 ];
 
 export const BOND_TYPE_OPTIONS_HASH = {
@@ -4398,9 +4402,9 @@ export const BOND_TYPE_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_STATUS_OPTIONS = [
-  { value: "REL", label: "Released", isActive: true },
-  { value: "CON", label: "Confiscated", isActive: true },
   { value: "ACT", label: "Active", isActive: true },
+  { value: "CON", label: "Confiscated", isActive: true },
+  { value: "REL", label: "Released", isActive: true },
 ];
 
 export const BOND_STATUS_OPTIONS_HASH = {
@@ -4410,13 +4414,13 @@ export const BOND_STATUS_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
-  { value: "SRB", label: "Scan of Reclamation Security Bond", isActive: true },
-  { value: "RSF", label: "Release of Security Form", isActive: true },
-  { value: "RSL", label: "Release of Security Letter", isActive: true },
+  { value: "AKL", label: "Acknowledgement Letter", isActive: true },
   { value: "CSF", label: "Confiscation of Security Form", isActive: true },
   { value: "CSL", label: "Confiscation of Security Letter", isActive: true },
+  { value: "RSF", label: "Release of Security Form", isActive: true },
+  { value: "RSL", label: "Release of Security Letter", isActive: true },
   { value: "REL", label: "Reminder Letter", isActive: true },
-  { value: "AKL", label: "Acknowledgement Letter", isActive: true },
+  { value: "SRB", label: "Scan of Reclamation Security Bond", isActive: true },
 ];
 
 export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {

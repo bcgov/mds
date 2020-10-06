@@ -23,7 +23,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  placeholder: "",
+  placeholder: "Please select",
   label: "",
   data: [],
   disabled: false,
@@ -47,10 +47,11 @@ const RenderSelect = (props) => {
       id={props.id}
       onSelect={props.onSelect}
       defaultValue={props.input.value}
-      value={props.input.value ? props.input.value : undefined}
+      value={props.input.value ? props.input.value : null}
       onChange={props.input.onChange}
     >
       <Select
+        virtual={false}
         disabled={props.disabled}
         allowClear
         dropdownMatchSelectWidth
@@ -63,7 +64,7 @@ const RenderSelect = (props) => {
         }
         id={props.id}
         defaultValue={props.input.value}
-        value={props.input.value ? props.input.value : undefined}
+        value={props.input.value ? props.input.value : null}
         onChange={props.input.onChange}
         onSelect={props.onSelect}
       >

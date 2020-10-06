@@ -17,9 +17,9 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       <div
         className="field-title"
       >
-        Security Assessment
+        Assessed Liability
         <CoreTooltip
-          title="Amount assessed for this application will be added to the total assessed amount on the permit."
+          title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
         />
       </div>
       <Field
@@ -69,6 +69,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
+      onConfirm={[Function]}
       placement="topRight"
       title="Are you sure you want to cancel?"
       transitionName="zoom-big"

@@ -46,8 +46,12 @@ export const activitiesMenu = [
   { href: "sand-and-gravel", title: "Sand and Gravel / Quarry Operations", alwaysVisible: false },
   { href: "placer-operation", title: "Placer Operations", alwaysVisible: false },
   { href: "water-supply", title: "Water Supply", alwaysVisible: true },
-  { href: "submission-documents", title: "Submission Documents", alwaysVisible: true },
-  { href: "additional-documents", title: "Additional Documents", alwaysVisible: true },
+  { href: "application-files", title: "Application Files", alwaysVisible: true },
+  {
+    href: "additional-application-files",
+    title: "Additional Application Files",
+    alwaysVisible: true,
+  },
 ];
 
 export const renderActivities = (type, activity) => {
@@ -65,7 +69,7 @@ export const draftPermitMenu = [
       { href: "GEC", title: "A. General" },
       { href: "HSC", title: "B. Healthy and Safety" },
       { href: "GOC", title: "C. Geotechnical" },
-      { href: "ELC", title: "D. Environmantal Land" },
+      { href: "ELC", title: "D. Environmental Land" },
       { href: "RCC", title: "E. Reclamation and Closure" },
       { href: "ADC", title: "F. Additional Conditions" },
     ],

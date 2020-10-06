@@ -129,7 +129,8 @@ INSERT INTO mine_party_appt_type_code (
     grouping_level
     )
 VALUES
-    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2)
+    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('AGT', 'Agent', 14, 'system-mds', 'system-mds', 'true', 'true', 1)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
@@ -554,7 +555,7 @@ VALUES
     ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
     ('surface_bulk_sample', 'Surface Bulk Sample', 'system-mds', 'system-mds'),
     ('blasting_operation', 'Blasting Operations', 'system-mds', 'system-mds'),
-    ('placer_operation', 'Placer Opertations', 'system-mds', 'system-mds')
+    ('placer_operation', 'Placer Operations', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO underground_exploration_type (

@@ -28,7 +28,7 @@ const propTypes = {
   handleSelect: PropTypes.func,
 };
 
-const doNothing = () => { };
+const doNothing = () => {};
 const defaultProps = {
   label: "",
   placeholder: "",
@@ -49,6 +49,7 @@ const RenderLargeSelect = (props) => (
     }
   >
     <Select
+      virtual={false}
       showSearch
       id={props.id}
       defaultActiveFirstOption={false}

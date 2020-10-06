@@ -3,5 +3,19 @@
 exports[`NullScreen renders properly 1`] = `
 <div
   className="null-screen fade-in"
-/>
+>
+  <div>
+    <img
+      alt="mine_img"
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+    />
+    <h3>
+      No data available
+    </h3>
+  </div>
+</div>
 `;

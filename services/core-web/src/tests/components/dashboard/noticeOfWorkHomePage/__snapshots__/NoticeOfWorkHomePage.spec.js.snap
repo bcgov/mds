@@ -72,6 +72,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             noticeOfWorkApplications={
               Array [
                 Object {
+                  "application_documents": Array [],
                   "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
                   "mine_name": "Hamilton, Herrera and Mccormick",
                   "mine_no": "brother",
@@ -82,6 +83,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                   "received_date": "2019-08-14",
                 },
                 Object {
+                  "application_documents": Array [],
                   "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
                   "mine_name": "Thompson-Sullivan",
                   "mine_no": "other",

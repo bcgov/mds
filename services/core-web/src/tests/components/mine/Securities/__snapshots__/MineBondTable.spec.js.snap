@@ -21,9 +21,9 @@ exports[`MineBondTable renders properly 1`] = `
         "key": "total_assessed",
         "render": [Function],
         "title": <span>
-          Total Assessed
+          Assessed Liability
           <CoreTooltip
-            title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
+            title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
           />
         </span>,
       },
@@ -32,12 +32,6 @@ exports[`MineBondTable renders properly 1`] = `
         "key": "amount_held",
         "render": [Function],
         "title": "Total Held",
-      },
-      Object {
-        "dataIndex": "total_bonds",
-        "key": "total_bonds",
-        "render": [Function],
-        "title": "Active Bonds",
       },
       Object {
         "dataIndex": "amount_confiscated",
@@ -49,6 +43,12 @@ exports[`MineBondTable renders properly 1`] = `
             title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit"
           />
         </div>,
+      },
+      Object {
+        "dataIndex": "total_bonds",
+        "key": "total_bonds",
+        "render": [Function],
+        "title": "Active Bonds",
       },
       Object {
         "align": "right",

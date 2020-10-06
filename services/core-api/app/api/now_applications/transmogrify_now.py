@@ -36,6 +36,7 @@ def transmogrify_now(now_application_identity):
     _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
     _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
     _transmogrify_contacts(now_app, now_sub, mms_now_sub)
+    _transmogrify_clients(now_app, now_sub, mms_now_sub)
 
     #Activities
     _transmogrify_camp_activities(now_app, now_sub, mms_now_sub)
@@ -146,6 +147,57 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
                     address_type_code='CAN' if c.mailingaddresscountry == 'Canada' else 'USA')
                 now_party_appt.party.address.append(now_address)
             now_app.contacts.append(now_party_appt)
+    return
+
+
+def _transmogrify_clients(now_app, now_sub, mms_now_sub):
+    agent = now_sub.submitter
+    emailValidator = re.compile(r'[^@]+@[^@]+\.[^@]+')
+    now_party_appt = None
+    if agent.type == 'Individual' and agent.ind_lastname and agent.ind_firstname and agent.ind_phonenumber:
+        now_party = Party(
+            party_name=agent.ind_lastname,
+            first_name=agent.ind_firstname,
+            party_type_code='PER',
+            phone_no=agent.ind_phonenumber[:3] + "-" + agent.ind_phonenumber[3:6] + "-" +
+            agent.ind_phonenumber[6:],
+            email=agent.email if agent.email and emailValidator.match(agent.email) else None,
+        )
+        now_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code('AGT')
+        now_party_appt = app_models.NOWPartyAppointment(
+            mine_party_appt_type_code=now_party_appt_type.mine_party_appt_type_code,
+            mine_party_appt_type=now_party_appt_type,
+            party=now_party)
+    if agent.type == 'Organization' and agent.org_legalname and agent.dayphonenumber:
+        now_party = Party(
+            party_name=agent.org_legalname,
+            party_type_code='ORG',
+            phone_no=agent.dayphonenumber[:3] + "-" + agent.dayphonenumber[3:6] + "-" +
+            agent.dayphonenumber[6:],
+            phone_ext=agent.dayphonenumberext,
+            email=agent.email if agent.email and emailValidator.match(agent.email) else None,
+        )
+        now_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code('AGT')
+        now_party_appt = app_models.NOWPartyAppointment(
+            mine_party_appt_type_code=now_party_appt_type.mine_party_appt_type_code,
+            mine_party_appt_type=now_party_appt_type,
+            party=now_party)
+
+    if now_party_appt:
+        validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+        post_code = agent.mailingaddresspostalzip.replace(
+            " ", "") if agent.mailingaddresspostalzip and validPostalCode.match(
+                agent.mailingaddresspostalzip.replace(" ", "")) else None
+        if agent.mailingaddressline1 and agent.mailingaddresscity and agent.mailingaddressprovstate and agent.mailingaddresscountry:
+            now_address = Address(
+                address_line_1=agent.mailingaddressline1,
+                address_line_2=agent.mailingaddressline2,
+                city=agent.mailingaddresscity,
+                sub_division_code=agent.mailingaddressprovstate.replace(" ", ""),
+                post_code=post_code,
+                address_type_code='CAN' if agent.mailingaddresscountry == 'Canada' else 'USA')
+            now_party_appt.party.address.append(now_address)
+        now_app.contacts.append(now_party_appt)
     return
 
 

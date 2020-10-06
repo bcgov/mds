@@ -14,6 +14,8 @@ import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import RenderField from "@/components/common/RenderField";
 import * as Styles from "@/constants/styles";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -36,10 +38,12 @@ const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
 // eslint-disable-next-line react/prefer-stateless-function
 export class ChangeNOWLocationForm extends Component {
   state = { submitting: false };
+
   handleFormSubmit = (values) => {
     this.setState({ submitting: true });
     this.props.handleSubmit(values);
   };
+
   render() {
     const additionalPin =
       this.props.latitude && this.props.longitude
@@ -91,14 +95,16 @@ export class ChangeNOWLocationForm extends Component {
               </Button>
             </Popconfirm>
           )}
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.state.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Button
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              disabled={this.state.submitting}
+            >
+              {this.props.title}
+            </Button>
+          </AuthorizationWrapper>
         </div>
       </Form>
     );

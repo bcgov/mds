@@ -6,6 +6,8 @@ import { getFormValues } from "redux-form";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import UpdateNOWLeadInspectorForm from "@/components/Forms/noticeOfWork/UpdateNOWLeadInspectorForm";
 
 const propTypes = {
@@ -31,22 +33,32 @@ const AssignLeadInspector = (props) => {
             icon={<LikeOutlined />}
             title="You're almost done..."
             subTitle="Please assign a Lead Inspector to continue to Technical Review."
+            extra={[
+              <>
+                <div className="left">
+                  <UpdateNOWLeadInspectorForm
+                    initialValues={{
+                      lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
+                    }}
+                    inspectors={props.inspectors}
+                    setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
+                  />
+                </div>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button
+                    type="primary"
+                    className="no-margin center-mobile"
+                    onClick={props.handleUpdateLeadInspector}
+                    disabled={invalidUpdateLeadInspectorPayload(
+                      props.updateLeadInspectorFormValues
+                    )}
+                  >
+                    Assign Lead Inspector
+                  </Button>
+                </AuthorizationWrapper>
+              </>,
+            ]}
           />
-          <UpdateNOWLeadInspectorForm
-            initialValues={{
-              lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
-            }}
-            inspectors={props.inspectors}
-            setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-          />
-          <Button
-            type="primary"
-            className="no-margin center-mobile"
-            onClick={props.handleUpdateLeadInspector}
-            disabled={invalidUpdateLeadInspectorPayload(props.updateLeadInspectorFormValues)}
-          >
-            Assign Lead Inspector
-          </Button>
         </Col>
       </Row>
     </div>
