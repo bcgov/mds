@@ -76,11 +76,11 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.first_aid_equipment_on_site = mms_now_sub.firstaidequipmentonsite or now_sub.firstaidequipmentonsite
     now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
     now_app.submission_documents = now_sub.documents
-    
+
     now_app.permit_status = now_sub.permitstatus
     now_app.is_applicant_individual_or_company = now_sub.applicantindividualorcompany
     now_app.relationship_to_applicant = now_sub.applicantrelationship
-    now_app.term_of_application = now_sub.
+    now_app.term_of_application = now_sub.termofapplication
     now_app.has_req_access_authorizations = now_sub.hasaccessauthorizations == 'Yes'
     now_app.req_access_authorization_numbers = now_sub.accessauthorizationsdetails
     now_app.has_key_for_inspector = now_sub.accessauthorizationskeyprovided == 'Yes'
@@ -99,7 +99,6 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
 def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     landcommunitywatershed = mms_now_sub.landcommunitywatershed or now_sub.landcommunitywatershed
     archsitesaffected = mms_now_sub.archsitesaffected or now_sub.archsitesaffected
-
     present_land_condition_description = now_sub.landpresentcondition
     means_of_access_description = now_sub.currentmeansofaccess
     physiography_description = now_sub.physiography
@@ -115,28 +114,25 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description 
-    or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description
-    or has_activity_in_park or is_on_private_land or has_auth_lieutenant_gov_council or arch_site_protection_plan
-    or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or is_on_private_land or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes',
-            present_land_condition_description = present_land_condition_description,
-            means_of_access_description = means_of_access_description,
-            physiography_description = physiography_description,
-            old_equipment_description = old_equipment_description,
-            type_of_vegetation_description = type_of_vegetation_description,
-            recreational_trail_use_description = recreational_trail_use_description,
-            has_activity_in_park = has_activity_in_park,
-            is_on_private_land = is_on_private_land,
-            has_auth_lieutenant_gov_council = has_auth_lieutenant_gov_council,
-            arch_site_protection_plan = arch_site_protection_plan,
-            has_shared_info_with_fn = has_shared_info_with_fn,
-            has_fn_cultural_heritage_sites_in_area = has_fn_cultural_heritage_sites_in_area,
-            fn_engagement_activities = fn_engagement_activities,
-            cultural_heritage_description = cultural_heritage_description)
-    
+            present_land_condition_description=present_land_condition_description,
+            means_of_access_description=means_of_access_description,
+            physiography_description=physiography_description,
+            old_equipment_description=old_equipment_description,
+            type_of_vegetation_description=type_of_vegetation_description,
+            recreational_trail_use_description=recreational_trail_use_description,
+            has_activity_in_park=has_activity_in_park,
+            is_on_private_land=is_on_private_land,
+            has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
+            arch_site_protection_plan=arch_site_protection_plan,
+            has_shared_info_with_fn=has_shared_info_with_fn,
+            has_fn_cultural_heritage_sites_in_area=has_fn_cultural_heritage_sites_in_area,
+            fn_engagement_activities=fn_engagement_activities,
+            cultural_heritage_description=cultural_heritage_description)
+
     return
 
 
@@ -407,8 +403,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
     hasproposedcrossings = now_sub.hasproposedcrossings
     proposedcrossingschanges = now_sub.proposedcrossingschanges
 
-    if expaccessreclamation or expaccessreclamationcost or expaccesstotaldistarea or hasproposedcrossings 
-    or proposedcrossingschanges:
+    if expaccessreclamation or expaccessreclamationcost or expaccesstotaldistarea or hasproposedcrossings or proposedcrossingschanges:
         exploration_access = app_models.ExplorationAccess(
             reclamation_description=expaccessreclamation,
             reclamation_cost=expaccessreclamationcost,
@@ -519,8 +514,7 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
     wastewaterplan = now_sub.wastewaterplan
     cleanoutdisposalplan = now_sub.cleanoutdisposalplan
 
-    if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv
-    or wastewaterplan or cleanoutdisposalplan:
+    if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv or wastewaterplan or cleanoutdisposalplan:
         settling_pond = app_models.SettlingPond(
             reclamation_description=pondsreclamation,
             reclamation_cost=pondsreclamationcost,
@@ -745,7 +739,8 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     proposedactivites = now_sub.proposedactivites
 
     if (underexptotalore or underexptotaloreunits or underexpreclamation or underexpreclamationcost
-            or underexptotalwaste or underexptotalwasteunits or underexptotaldistarea or proposedactivites):
+            or underexptotalwaste or underexptotalwasteunits or underexptotaldistarea
+            or proposedactivites):
         now_app.underground_exploration = app_models.UndergroundExploration(
             reclamation_description=underexpreclamation,
             reclamation_cost=underexpreclamationcost,

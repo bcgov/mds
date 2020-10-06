@@ -86,7 +86,7 @@ class NOWApplication(Base, AuditMixin):
 
     permit_status = db.Column(db.String)
     term_of_application = db.Column(db.Numeric(14, 0))
-    is_applicant_individual_or_company boolean;
+    is_applicant_individual_or_company = db.Column(db.Boolean, nullable=True)
     relationship_to_applicant = db.Column(db.String)
     merchantable_timber_volume = db.Column(db.Numeric(14, 2))
     merchantable_timber_volume_unit_type_code = db.Column(db.String,
