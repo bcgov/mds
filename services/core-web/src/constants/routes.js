@@ -29,7 +29,6 @@ import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplicati
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
-import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -249,14 +248,6 @@ export const NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/notice-of-work/application/${guid}/verification`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
-};
-
-export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/view-application/:id/:tab",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}/technical-review`,
-  hashRoute: (guid, tab, link) =>
-    `/dashboard/notice-of-work/view-application/${guid}/${tab}/${link}`,
-  component: ViewNoticeOfWorkApplication,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
