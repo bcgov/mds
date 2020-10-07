@@ -33,6 +33,7 @@ import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import {
   generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
@@ -64,6 +65,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   reset: PropTypes.func.isRequired,
@@ -190,10 +192,7 @@ export class NoticeOfWorkApplication extends Component {
     // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited
     // prevValue !== currentValue, due to other value changes that are not null or undefined
     const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
-    const isPrevValue =
-      !isUndefined(prevValue) &&
-      !isNull(prevValue) &&
-      (isNull(currentValue) || isUndefined(currentValue));
+    const isPrevValue = !isUndefined(prevValue) && !isNull(prevValue);
     const hasBeenEdited = isNewValue || isPrevValue;
     const edited = hasBeenEdited && prevValue !== currentValue;
     const getValue = () => {
@@ -518,6 +517,27 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
+  handleExportDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+
+    this.exportNowDocument(documentType, this.props.noticeOfWork);
+  };
+
+  exportNowDocument = (documentType) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+    };
+
+    this.props.exportNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      `Successfully exported ${documentType.description} for this Notice of Work`
+    );
+  };
+
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     return (
@@ -673,7 +693,8 @@ export class NoticeOfWorkApplication extends Component {
               .filter(
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT"
+                  now_application_document_type_code !== "PMT" &&
+                  now_application_document_type_code !== "NTR"
               )
               .map((document) => (
                 <Menu.Item
@@ -685,6 +706,21 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
+        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
+          {Object.values(this.props.generatableApplicationDocuments)
+            .filter(
+              ({ now_application_document_type_code }) =>
+                now_application_document_type_code === "NTR"
+            )
+            .map((document) => (
+              <Menu.Item
+                key={document.now_application_document_type_code}
+                onClick={this.handleExportDocument}
+              >
+                {document.description}
+              </Menu.Item>
+            ))}
+        </Menu.SubMenu>
       </Menu>
     );
   };
@@ -919,6 +955,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
+      exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
       reset,
