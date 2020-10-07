@@ -46,7 +46,7 @@
               "kind": "DockerImage",
               "name": "bcgovimages/doc-gen-api:v2.1.1"
             },
-            "generation": 1,
+            "generation": 2,
             "importPolicy": {},
             "referencePolicy": {
               "type": "Local"
