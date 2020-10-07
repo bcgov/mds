@@ -9,6 +9,7 @@
 @import "./settings/themeOverride.scss";
 // TOOLS - globally used mixins and functions. (ie gradient mixins, font-sizing mixins)
 @import "./tools/mixins.scss";
+@import "./tools/syncfusion_material.scss";
 // GENERIC - Very high level, far-reaching styles. Contains Normalize.css, Box-sizing rules, CSS resets etc.
 @import "./generic/Normalize.scss";
 @import "./generic/layout.scss";
