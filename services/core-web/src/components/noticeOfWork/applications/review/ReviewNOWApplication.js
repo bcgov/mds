@@ -215,17 +215,27 @@ export const ReviewNOWApplication = (props) => {
             Permit Status
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field id="permit_status" name="permit_status" component={RenderField} disabled />
           <div className="field-title">
             Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="is_applicant_individual_or_company"
+            name="is_applicant_individual_or_company"
+            component={RenderField}
+            disabled
+          />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="relationship_to_applicant"
+            name="relationship_to_applicant"
+            component={RenderField}
+            disabled
+          />
           <div className="field-title">
             Description of Land
             <NOWOriginalValueTooltip
@@ -636,7 +646,12 @@ export const ReviewNOWApplication = (props) => {
             Total merchantable timber volume
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="merchantable_timber_volume"
+            name="merchantable_timber_volume"
+            component={RenderField}
+            disabled
+          />
         </Col>
       </Row>
       <br />
