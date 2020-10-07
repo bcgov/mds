@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
-import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -18,7 +17,6 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
-    const isProd = detectProdEnvironment();
     const isMajorMine = this.props.mine.major_mine_ind;
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     return (
@@ -117,6 +115,23 @@ export class MineNavigation extends Component {
                 </Link>
               </Menu.Item>
             )}
+          </Menu>
+        </Menu.SubMenu>
+        <Menu.SubMenu
+          id={this.ifActiveButton("documents")}
+          title={
+            <span>
+              Archived Files
+              <DownOutlined className="padding-small--left" />
+            </span>
+          }
+        >
+          <Menu className="sub-menu">
+            <Menu.Item key="documents">
+              <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Archived Files
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
       </Menu>

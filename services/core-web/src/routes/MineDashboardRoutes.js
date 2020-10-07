@@ -24,6 +24,7 @@ const MineDashboardRoutes = () => (
     />
     <Route exact path={routes.MINE_REPORTS.route} component={routes.MINE_REPORTS.component} />
     <Route exact path={routes.MINE_TAILINGS.route} component={routes.MINE_TAILINGS.component} />
+    <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
 
     <Route component={PageNotFound} />
   </Switch>
