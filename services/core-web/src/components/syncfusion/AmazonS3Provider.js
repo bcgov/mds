@@ -1,6 +1,4 @@
-import { render } from "react-dom";
-import "./index.css";
-import * as React from "react";
+import React from "react";
 import { SampleBase } from "./sample-base";
 import {
   FileManagerComponent,
