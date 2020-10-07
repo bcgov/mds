@@ -430,8 +430,12 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Application in a community watershed
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_community_water_shed").value}
-                isVisible={props.renderOriginalValues("has_community_water_shed").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").edited
+                }
               />
             </div>
             <Field
@@ -490,8 +494,12 @@ export const ReviewNOWApplication = (props) => {
               Are you aware of any protected archaeological sites that may be affected by the
               proposed project?
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_archaeology_sites_affected").value}
-                isVisible={props.renderOriginalValues("has_archaeology_sites_affected").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").edited
+                }
               />
             </div>
             <Field
@@ -700,7 +708,10 @@ export const ReviewNOWApplication = (props) => {
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}
-              documents={props.documents}
+              documents={
+                props.documents &&
+                props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
+              }
               isViewMode={props.isViewMode}
               disclaimerText="Attach any file revisions or new files requested from the proponent here."
             />

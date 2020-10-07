@@ -15,6 +15,7 @@ from app.api.now_applications.resources.now_application_document_resource import
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
+from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
@@ -43,3 +44,4 @@ api.add_resource(UndergroundExplorationTypeResource, '/underground-exploration-t
 api.add_resource(NOWApplicationProgressStatusResource, '/application-progress-status-codes')
 api.add_resource(NOWApplicationPermitTypeResource, '/application-permit-types')
 api.add_resource(NOWApplicationReviewTypeResource, '/review-types')
+api.add_resource(NOWApplicationExportResource, '/application-export/<string:document_type_code>')

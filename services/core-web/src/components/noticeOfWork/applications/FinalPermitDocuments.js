@@ -156,7 +156,12 @@ export class FinalPermitDocuments extends Component {
         mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
-        documents: this.props.noticeOfWork.documents,
+        documents:
+          this.props.noticeOfWork &&
+          this.props.noticeOfWork.documents &&
+          this.props.noticeOfWork.documents.filter(
+            (doc) => doc.now_application_document_type_code !== "NTR"
+          ),
         finalDocuments,
         onSubmit: this.createFinalDocumentPackage,
         title: `Create Final Application Package`,
