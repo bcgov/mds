@@ -14,11 +14,11 @@ from app.api.mines.permits.permit.models.permit_status_code import PermitStatusC
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.constants import *
 
 
-class Permit(AuditMixin, Base):
+class Permit(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit'
     _edit_groups = [PERMIT_EDIT_GROUP]
     _edit_key = PERMIT_EDIT_GROUP
@@ -50,7 +50,6 @@ class Permit(AuditMixin, Base):
     bonds = db.relationship(
         'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     _mine_associations = db.relationship('MinePermitXref')
 

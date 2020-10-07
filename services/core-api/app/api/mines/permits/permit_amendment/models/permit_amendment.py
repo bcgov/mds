@@ -12,11 +12,11 @@ from app.extensions import db
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 from . import permit_amendment_status_code, permit_amendment_type_code
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.constants import *
 
 
-class PermitAmendment(AuditMixin, Base):
+class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit_amendment'
     _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP]
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
@@ -33,7 +33,6 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     lead_inspector_title = db.Column(db.String, nullable=True)
     regional_office = db.Column(db.String, nullable=True)
 

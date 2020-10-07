@@ -83,7 +83,7 @@ class Base(db.Model):
     def delete(self, commit=True):
         if hasattr(self, 'deleted_ind'):
             raise Exception("Not implemented for soft deletion.")
-            ##DeletableMixin.delete() should have overridden this.
+            ##SoftDeleteMixin.delete() should have overridden this.
         db.session.delete(self)
         current_app.logger.warn(f'Deleting object: {self}')
         if commit:
@@ -288,7 +288,7 @@ class AuditMixin(object):
 
 
 class SoftDeleteMixin(object):
-    deleted_ind = db.Column(db.Boolean, nullable=False, default=FetchedValue())
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     #TODO https://blog.miguelgrinberg.com/post/implementing-the-soft-delete-pattern-with-flask-and-sqlalchemy
     #This model can choose it's query class (one that respects the deleted ind!!!)
@@ -300,14 +300,16 @@ class SoftDeleteMixin(object):
             mapper = inspect(self.__class__)
             related_models = [rel.entity.class_ for rel in mapper.relationships]
 
-            for model in related_models: 
+            for model in related_models:
                 related_mapper = inspect(model)
-                if mapper.primary_key.__name__ in [c.name for c in model.primary_key.columns if c.nullable=false]:
+                if mapper.primary_key.__name__ in [
+                        c.name for c in model.primary_key.columns if c.nullable == False
+                ]:
                     #source object is non_nullable fk on related object
                     #cascade deleted indicator
-                    related = getattr(self,model.relationship)
+                    related = getattr(self, model.relationship)
                     if type(related) == list:
-                        [r.delete() for r in related] 
+                        [r.delete() for r in related]
                     else:
                         related.delete()
 
