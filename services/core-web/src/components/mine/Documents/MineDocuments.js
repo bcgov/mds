@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 
 /**
  * @class  MineDocuments - All documents pulled from MMS backdoor file system.
