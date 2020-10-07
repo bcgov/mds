@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Divider } from "antd";
+import AmazonS3Provider from "@/components/syncfusion/AmazonS3Provider";
 
 /**
  * @class  MineDocuments - All documents pulled from MMS backdoor file system.
@@ -35,6 +36,7 @@ export class MineDocuments extends Component {
           <h2>Archived Files</h2>
           <p>MMS archived files are available on this page. These documents are read-only.</p>
           <Divider />
+          <AmazonS3Provider />
         </div>
       </div>
     );

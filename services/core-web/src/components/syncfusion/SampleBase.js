@@ -1,8 +1,8 @@
-import * as React from "react";
+import React, { PureComponent } from "react";
 import { enableRipple } from "@syncfusion/ej2-base";
 enableRipple(true);
 
-export class SampleBase extends React.PureComponent {
+export class SampleBase extends PureComponent {
   rendereComplete() {
     /**custom render complete function */
   }
@@ -12,3 +12,5 @@ export class SampleBase extends React.PureComponent {
     });
   }
 }
+
+export default SampleBase;

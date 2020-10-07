@@ -1,5 +1,5 @@
 import React from "react";
-import { SampleBase } from "./sample-base";
+import { SampleBase } from "@/components/syncfusion/SampleBase";
 import {
   FileManagerComponent,
   Inject,
@@ -39,3 +39,5 @@ export class AmazonS3Provider extends SampleBase {
     );
   }
 }
+
+export default AmazonS3Provider;
