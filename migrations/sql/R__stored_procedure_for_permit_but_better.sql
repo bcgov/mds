@@ -651,11 +651,12 @@ DECLARE
 	    mine_party_appt_type_code = 'PMT'
 	    -- Only on mines in ETL process
 	AND
-	    mine_guid IN (
-	        SELECT mine_guid
-	        FROM ETL_MINE
-	        WHERE major_mine_ind = 'f'
-	        AND mine_guid in (select mine_guid from ETL_PERMIT)
+	    permit_id IN (
+	        SELECT p.permit_id
+	        FROM permit p 
+			inner join ETL_PERMIT etlp on p.permit_guid = etlp.permit_guid
+			inner join ETL_MINE etlm on etlp.mine_guid = etlm.mine_guid
+	        WHERE etlm.major_mine_ind = 'f'
 	    );
 
 
