@@ -1,7 +1,6 @@
 #!/bin/sh
 
-ls -la
 cd /src
+dotnet restore
+dotnet build
 dotnet run
-
-# tail -f /dev/null

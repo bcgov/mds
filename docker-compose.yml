@@ -159,8 +159,8 @@ services:
     container_name: syncfusion_filesystem_provider
     build:
       context: services/syncfusion-filesystem-provider
-    expose:
-      - 1080
+    ports:
+      - 62870:62870
     env_file: ./services/syncfusion-filesystem-provider/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
