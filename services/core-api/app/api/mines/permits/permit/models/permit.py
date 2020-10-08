@@ -106,14 +106,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 
-    def soft_delete(self):
+    def delete(self):
         if self.bonds:
             raise Exception('Unable to delete permit with attached bonds.')
         if self.permit_amendments:
             for amendment in self.permit_amendments:
-                amendment.soft_delete(True)
-        self.deleted_ind = True
-        self.save()
+                amendment.delete()
+        super(Permit, self).delete()
 
     @classmethod
     def find_by_permit_guid(cls, _id, mine_guid=None):

@@ -126,5 +126,5 @@ class MineVarianceResource(Resource, UserMixin):
         variance = Variance.find_by_mine_guid_and_variance_guid(mine_guid, variance_guid)
         if variance is None:
             raise NotFound('Mine variance not found')
-        variance.soft_delete()
+        variance.delete()
         return None, 204

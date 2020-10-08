@@ -113,13 +113,11 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     mine_region = association_proxy('mine_table', 'mine_region')
     major_mine_ind = association_proxy('mine_table', 'major_mine_ind')
 
-    def soft_delete(self):
+    def delete(self):
         if self.mine_documents:
             for document in self.mine_documents:
-                document.deleted_ind = True
-
-        self.deleted_ind = True
-        self.save()
+                document.delete()
+        super(MineIncident, self).delete()
 
     @hybrid_property
     def mine_incident_report_no(self):

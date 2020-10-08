@@ -232,7 +232,7 @@ class PermitResource(Resource, UserMixin):
             raise NotFound('Permit not found.')
 
         try:
-            permit.soft_delete()
+            permit.delete()
         except Exception as e:
             raise BadRequest(e)
 

@@ -69,7 +69,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
-    def soft_delete(self, is_force_delete=False):
+    def delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
             raise Exception(
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
@@ -79,10 +79,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
         if permit_amendment_documents:
             for document in permit_amendment_documents:
-                document.soft_delete()
+                document.delete()
 
-        self.deleted_ind = True
-        self.save()
+        super(PermitAmendment, self).delete()
 
     @classmethod
     def create(cls,
