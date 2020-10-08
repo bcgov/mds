@@ -125,9 +125,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     address_string += '\n'
                     if address['city']:
                         address_string += address['city']
-                    if address.sub_division_code:
+                    if address['sub_division_code']:
                         address_string += f' {address["sub_division_code"]}'
-                    if address.post_code:
+                    if address['post_code']:
                         address_string += f' {address["post_code"]}'
 
                 return address_string.strip()
@@ -170,13 +170,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def get_applicable_now_activities(now_application):
             conditional_sections = [
-                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
-                'underground_exploration', 'placer_operation'
+                'sand_gravel_quarry_operation', 'surface_bulk_sample',
+                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
             ]
             now_type_conditional_sections = {
-                'QCA': ['sand_and_gravel'],
-                'SAG': ['sand_and_gravel'],
-                'QIM': ['sand_and_gravel'],
+                'QCA': ['sand_gravel_quarry_operation'],
+                'SAG': ['sand_gravel_quarry_operation'],
+                'QIM': ['sand_gravel_quarry_operation'],
                 'COL':
                 ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
                 'MIN':
