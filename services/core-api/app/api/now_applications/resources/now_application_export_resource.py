@@ -170,13 +170,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def get_applicable_now_activities(now_application):
             conditional_sections = [
-                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
-                'underground_exploration', 'placer_operation'
+                'sand_gravel_quarry_operation', 'surface_bulk_sample',
+                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
             ]
             now_type_conditional_sections = {
-                'QCA': ['sand_and_gravel'],
-                'SAG': ['sand_and_gravel'],
-                'QIM': ['sand_and_gravel'],
+                'QCA': ['sand_gravel_quarry_operation'],
+                'SAG': ['sand_gravel_quarry_operation'],
+                'QIM': ['sand_gravel_quarry_operation'],
                 'COL':
                 ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
                 'MIN':
