@@ -3,7 +3,7 @@ DELETE FROM bond_document_type WHERE bond_document_type_code = 'BAL';
 
 CREATE TABLE IF NOT EXISTS bond_document_xref
 (
-    mine_document_id            uuid        PRIMARY KEY       NOT NULL,
+    mine_document_id            integer       PRIMARY KEY       NOT NULL,
     bond_document_type_code     varchar(3)                    NOT NULL,
     bond_id                     integer                       NOT NULL,                                           
 
@@ -27,10 +27,10 @@ CREATE TABLE IF NOT EXISTS reclamation_invoice_document_xref
 COMMENT ON TABLE reclamation_invoice_document_xref is 'Links a mine document to reclamation invoice document.';
 ALTER TABLE reclamation_invoice_document_xref OWNER TO mds;
 
--- ALTER TABLE mine_document
--- DROP CONSTRAINT mine_document_bond_document_type_fk,
--- DROP CONSTRAINT mine_document_bond_id_fk,
--- DROP COLUMN bond_id,
--- DROP COLUMN bond_document_type_code,
--- DROP CONSTRAINT reclamation_invoice_id_fk,
--- DROP COLUMN reclamation_invoice_id;
+ALTER TABLE mine_document
+DROP CONSTRAINT mine_document_bond_document_type_fk,
+DROP CONSTRAINT mine_document_bond_id_fk,
+DROP COLUMN bond_id,
+DROP COLUMN bond_document_type_code,
+DROP CONSTRAINT reclamation_invoice_id_fk,
+DROP COLUMN reclamation_invoice_id;
