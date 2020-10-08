@@ -125,9 +125,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     address_string += '\n'
                     if address['city']:
                         address_string += address['city']
-                    if address.sub_division_code:
+                    if address['sub_division_code']:
                         address_string += f' {address["sub_division_code"]}'
-                    if address.post_code:
+                    if address['post_code']:
                         address_string += f' {address["post_code"]}'
 
                 return address_string.strip()
