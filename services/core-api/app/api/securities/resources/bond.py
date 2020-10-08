@@ -50,13 +50,14 @@ class BondListResource(Resource, UserMixin):
         project_id = request.json['bond'].get('project_id')
         if 'project_id' in request.json['bond'].keys():
             del request.json['bond']['project_id']
-
         try:
             bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
             raise BadRequest(e)
 
-        permit = Permit.find_by_permit_guid(request.json['permit_guid'])
+        current_app.logger.debug(bond.__dict__)
+        current_app.logger.debug(bond.documents[0].__dict__)
+        permit = Permit.find_by_permit_guid('3328c845-cafa-4b3d-8f56-bede6d707e91')
 
         if permit is None:
             raise BadRequest('No permit was found with the guid provided.')

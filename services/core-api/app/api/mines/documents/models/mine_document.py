@@ -47,7 +47,6 @@ class MineDocument(AuditMixin, Base):
     def json(self):
         return {
             'mine_document_guid': str(self.mine_document_guid),
-            'mine_document_id': str(self.mine_document_id),
             'mine_guid': str(self.mine_guid),
             'document_manager_guid': str(self.document_manager_guid),
             'document_name': self.document_name
