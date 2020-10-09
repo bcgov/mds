@@ -19,7 +19,7 @@ class BondDocument(MineDocument):
 
     mine_document_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_document.mine_document_guid'), primary_key=True)
-    bond_id = db.Column(db.Integer, db.ForeignKey('bond.bond_id'))
+    bond_id = db.Column(db.Integer, db.ForeignKey('bond.bond_id'), nullable=False)
     bond_document_type_code = db.Column(
         db.String, db.ForeignKey('bond_document_type.bond_document_type_code'), nullable=False)
 

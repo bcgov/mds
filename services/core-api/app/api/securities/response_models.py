@@ -15,7 +15,8 @@ BOND_DOCUMENT_MODEL = api.model(
         'document_name': fields.String,
         'document_date': fields.DateTime,
         'upload_date': fields.Date,
-        'bond_document_type_code': fields.String
+        'bond_document_type_code': fields.String,
+        'bond_id': fields.Integer
     })
 
 RECLAMATION_INVOICE_DOCUMENT_MODEL = api.model(

@@ -1,5 +1,5 @@
 from flask_restplus import Resource, marshal
-from flask import request
+from flask import request, current_app
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 
@@ -104,12 +104,15 @@ class BondResource(Resource, UserMixin):
         del request.json['project_id']
 
         try:
+            # TO DO
+            # documents are creating a new document instead of fetching the existing document
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
             history.delete()
             raise BadRequest(e)
-
+        current_app.logger.debug(bond.documents[0])
         for doc in bond.documents:
+            doc.bond_id = bond.bond_id
             doc.mine_guid = bond.permit._all_mines[0].mine_guid
 
         #update the permits project ID if needed.

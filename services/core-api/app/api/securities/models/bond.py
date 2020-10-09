@@ -57,7 +57,7 @@ class Bond(Base, AuditMixin):
         bond_json['update_timestamp'] = str(self.update_timestamp)
         bond_json['update_user'] = self.update_user
 
-        current_app.logger.debug(bond_json)
+        # current_app.logger.debug(bond_json)
         bond_hist = BondHistory._schema().load(bond_json)
         bond_hist.save()
         return bond_hist
