@@ -226,18 +226,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Status
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="permit_status"
-                name="permit_status"
-              />
-              <div
-                className="field-title"
-              >
                 Individual or Company/Organization?
                 <NOWFieldOriginTooltip />
               </div>
