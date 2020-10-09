@@ -24,7 +24,9 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         {
             this.basePath = hostingEnvironment.ContentRootPath;
             this.operation = new AmazonS3FileProvider();
-            // this.operation.RegisterAmazonS3("<---bucketName--->", "<---awsAccessKeyId--->", "<---awsSecretAccessKey--->", "<---region--->");
+
+            // TODO: Add valid parameters!
+            this.operation.RegisterAmazonS3("<---bucketName--->", "<---awsAccessKeyId--->", "<---awsSecretAccessKey--->", "<---serviceName--->");
         }
 
         [Route("AmazonS3FileOperations")]

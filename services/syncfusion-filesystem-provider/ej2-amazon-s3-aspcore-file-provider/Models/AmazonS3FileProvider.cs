@@ -28,7 +28,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         TransferUtility fileTransferUtility = new TransferUtility(client);
 
         // Register the amazon client details
-        public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string region)
+        public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string serviceName)
         {
             bucketName = name;
 
@@ -36,7 +36,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
 
             AmazonS3Config config = new AmazonS3Config
             {
-                ServiceURL = "https://nrs.objectstore.gov.bc.ca",
+                ServiceURL = "https://" + serviceName,
                 ForcePathStyle = true,
                 //DisableLogging = false,
                 //LogResponse = true,
