@@ -189,12 +189,12 @@ export class MinePermitInfo extends Component {
           permit_guid: permit.permit_guid,
           permit_amendment_type_code: type,
           amendments: permit.permit_amendments,
-          isHistoricalAmendment: true,
+          is_historical_amendment: true,
           userRoles: this.props.userRoles,
         },
         onSubmit,
         title,
-        isHistoricalAmendment: true,
+        is_historical_amendment: true,
         mine_guid: this.props.mineGuid,
         amendments: permit.permit_amendments,
       },
@@ -214,7 +214,7 @@ export class MinePermitInfo extends Component {
           ...permit_amendment,
           amendments: permit.permit_amendments,
           userRoles: this.props.userRoles,
-          isHistoricalAmendment:
+          is_historical_amendment:
             originalPermitAmendment &&
             originalPermitAmendment.issue_date > permit_amendment.issue_date,
         },

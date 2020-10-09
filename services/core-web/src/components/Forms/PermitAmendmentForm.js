@@ -33,7 +33,7 @@ const propTypes = {
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
-  isHistoricalAmendment: PropTypes.bool.isRequired,
+  is_historical_amendment: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
@@ -50,7 +50,7 @@ const validateBusinessRules = (values) => {
     )[0];
     const mostRecentAmendment = values.amendments[0];
     const isHistoricalAmendmentsAllowed =
-      values.isHistoricalAmendment &&
+      values.is_historical_amendment &&
       values.userRoles &&
       values.userRoles.some((role) => ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS.includes(role));
     if (
@@ -62,7 +62,7 @@ const validateBusinessRules = (values) => {
     }
     if (
       !isHistoricalAmendmentsAllowed &&
-      values.isHistoricalAmendment &&
+      values.is_historical_amendment &&
       mostRecentAmendment &&
       values.issue_date < mostRecentAmendment.issue_date
     ) {
@@ -122,18 +122,19 @@ export class PermitAmendmentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
-            {!this.props.isHistoricalAmendment && !this.props.initialValues.permit_amendment_guid && (
-              <Form.Item>
-                <PartySelectField
-                  id="permittee_party_guid"
-                  name="permittee_party_guid"
-                  label="Permittee*"
-                  partyLabel="permittee"
-                  validate={[required]}
-                  allowAddingParties
-                />
-              </Form.Item>
-            )}
+            {!this.props.is_historical_amendment &&
+              !this.props.initialValues.permit_amendment_guid && (
+                <Form.Item>
+                  <PartySelectField
+                    id="permittee_party_guid"
+                    name="permittee_party_guid"
+                    label="Permittee*"
+                    partyLabel="permittee"
+                    validate={[required]}
+                    allowAddingParties
+                  />
+                </Form.Item>
+              )}
             <Form.Item>
               <Field
                 id="issue_date"

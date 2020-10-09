@@ -72,6 +72,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         help='Title of the lead inspector for this permit.')
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
+    parser.add_argument(
+        'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -99,7 +101,10 @@ class PermitAmendmentListResource(Resource, UserMixin):
         validate_issue_date(
             data.get('issue_date'), data.get('permit_amendment_type_code'), permit.permit_guid)
 
-        permittee_party_guid = data.get('permittee_party_guid')
+        permittee_party_guid = None
+        if not data.get('is_historical_amendment', False):
+            permittee_party_guid = data.get('permittee_party_guid', None)
+
         permittee_end_date = None
         if permittee_party_guid:
             party = Party.find_by_party_guid(data.get('permittee_party_guid'))
