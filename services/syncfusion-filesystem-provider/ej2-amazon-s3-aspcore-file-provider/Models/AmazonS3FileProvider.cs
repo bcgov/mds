@@ -1,5 +1,4 @@
-﻿using Amazon;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
+using Amazon.Runtime;
 
 namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
 {
@@ -30,23 +30,30 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         // Register the amazon client details
         public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string region)
         {
-            Console.WriteLine("********************* RegisterAmazonS3 *********************");
             bucketName = name;
 
-            // RegionEndpoint bucketRegion = RegionEndpoint.GetBySystemName(region);
-            // client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-            // Console.WriteLine(bucketRegion);
+            AWSCredentials creds = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
 
-            string serviceUrl = "https://nr-core-dlv@nrs.objectstore.gov.bc.ca/awlvru";
-            AmazonS3Config config = new AmazonS3Config { ServiceURL = serviceUrl };
-            client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, config);
+            AmazonS3Config config = new AmazonS3Config
+            {
+                ServiceURL = "https://nrs.objectstore.gov.bc.ca",
+                ForcePathStyle = true,
+                //DisableLogging = false,
+                //LogResponse = true,
+                //Timeout = TimeSpan.FromSeconds(5)
+            };
+
+            client = new AmazonS3Client(creds, config);
         }
 
         //Define the root directory to the file manager
         public void GetBucketList()
         {
-            ListingObjectsAsync("", "", false).Wait();
-            RootName = response.S3Objects.First().Key;
+            // NOTE: This is commented intentionally. This was their method of determining the "root name", but it didn't work.
+            // ListingObjectsAsync("", "", false).Wait();
+            // RootName = response.S3Objects.First().Key;
+
+            RootName = "dsrp-applications/";
         }
 
         // Reads the file(s) and folder(s)
