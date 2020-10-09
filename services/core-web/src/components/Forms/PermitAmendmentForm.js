@@ -16,6 +16,13 @@ import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentF
 const originalPermit = "OGP";
 const amalgamtedPermit = "ALG";
 
+const ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [
+  "core_admin",
+  "mds_data_cleanup",
+  "mds_major_mines",
+  "mds_regional_mines",
+];
+
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -26,6 +33,8 @@ const propTypes = {
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
+  isHistoricalAmendment: PropTypes.bool.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -40,10 +49,23 @@ const validateBusinessRules = (values) => {
       (x) => x.permit_amendment_type_code === originalPermit
     )[0];
     const mostRecentAmendment = values.amendments[0];
-    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date) {
+    const isHistoricalAmendmentsAllowed =
+      values.userRoles.some((role) =>
+        ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS.includes(role)
+      ) && values.isHistoricalAmendment;
+    if (
+      !isHistoricalAmendmentsAllowed &&
+      originalPermitAmendment &&
+      values.issue_date < originalPermitAmendment.issue_date
+    ) {
       errors.issue_date = "Date cannot be before the permit's first issue date";
     }
-    if (mostRecentAmendment && values.issue_date < mostRecentAmendment.issue_date) {
+    if (
+      !isHistoricalAmendmentsAllowed &&
+      values.isHistoricalAmendment &&
+      mostRecentAmendment &&
+      values.issue_date < mostRecentAmendment.issue_date
+    ) {
       errors.issue_date = "Date cannot be before the last amendment's issue date";
     }
   }
@@ -100,7 +122,7 @@ export class PermitAmendmentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
-            {!this.props.initialValues.permit_amendment_guid && (
+            {!this.props.isHistoricalAmendment && !this.props.initialValues.permit_amendment_guid && (
               <Form.Item>
                 <PartySelectField
                   id="permittee_party_guid"

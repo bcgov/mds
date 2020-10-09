@@ -30,6 +30,7 @@ const propTypes = {
   openEditPermitModal: PropTypes.func.isRequired,
   openAddPermitAmendmentModal: PropTypes.func.isRequired,
   openAddAmalgamatedPermitModal: PropTypes.func.isRequired,
+  openAddPermitHistoricalAmendmentModal: PropTypes.func.isRequired,
   // This prop is used. Linting issue is unclear
   openEditAmendmentModal: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -161,6 +162,23 @@ const columns = [
               </button>
             </Menu.Item>
           )}
+          {/* TODO add permission here data clean-up? */}
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  record.openAddPermitHistoricalAmendmentModal(event, record.permit)
+                }
+              >
+                <div>
+                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                  Add Permit Historical Amendment
+                </div>
+              </button>
+            </div>
+          </AuthorizationWrapper>
           <Menu.Item key="2">
             <button
               type="button"
@@ -335,7 +353,8 @@ const transformRowData = (
   handleAddPermitAmendmentApplication,
   permitStatusOptionsHash,
   handleDeletePermit,
-  handleDeletePermitAmendment
+  handleDeletePermitAmendment,
+  openAddPermitHistoricalAmendmentModal
 ) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -367,6 +386,7 @@ const transformRowData = (
     permit,
     handleDeletePermit,
     handleDeletePermitAmendment,
+    openAddPermitHistoricalAmendmentModal,
   };
 };
 
@@ -444,7 +464,8 @@ export const MinePermitTable = (props) => {
       props.handleAddPermitAmendmentApplication,
       props.permitStatusOptionsHash,
       props.handleDeletePermit,
-      props.handleDeletePermitAmendment
+      props.handleDeletePermitAmendment,
+      props.openAddPermitHistoricalAmendmentModal
     )
   );
 

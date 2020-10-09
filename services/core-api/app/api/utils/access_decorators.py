@@ -15,6 +15,9 @@ EDIT_VARIANCE = "core_edit_variances"
 EDIT_SECURITIES = "core_edit_securities"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 EDIT_SUBMISSIONS = "core_edit_submissions"
+DATA_CLEANUP = "mds_data_cleanup"
+MAJOR_MINES = "mds_major_mines"
+REGIONAL_MINES = "mds_regional_mines"
 
 
 def requires_role_view_all(func):
