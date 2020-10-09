@@ -55,7 +55,7 @@ class BondListResource(Resource, UserMixin):
         except MarshmallowError as e:
             raise BadRequest(e)
 
-        permit = Permit.find_by_permit_guid('3328c845-cafa-4b3d-8f56-bede6d707e91')
+        permit = Permit.find_by_permit_guid(request.json['permit_guid'])
 
         if permit is None:
             raise BadRequest('No permit was found with the guid provided.')
