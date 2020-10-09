@@ -30,9 +30,16 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         // Register the amazon client details
         public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string region)
         {
+            Console.WriteLine("********************* RegisterAmazonS3 *********************");
             bucketName = name;
-            RegionEndpoint bucketRegion = RegionEndpoint.GetBySystemName(region);
-            client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+
+            // RegionEndpoint bucketRegion = RegionEndpoint.GetBySystemName(region);
+            // client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            // Console.WriteLine(bucketRegion);
+
+            string serviceUrl = "https://nr-core-dlv@nrs.objectstore.gov.bc.ca/awlvru";
+            AmazonS3Config config = new AmazonS3Config { ServiceURL = serviceUrl };
+            client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, config);
         }
 
         //Define the root directory to the file manager
@@ -52,7 +59,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             GetBucketList();
             try
             {
-                if (path == "/") ListingObjectsAsync("/", RootName , false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
+                if (path == "/") ListingObjectsAsync("/", RootName, false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
                 if (path == "/")
                 {
                     FileManagerDirectoryContent[] s = response.S3Objects.Where(x => x.Key == RootName).Select(y => CreateDirectoryContentInstance(y.Key.ToString().Replace("/", ""), true, "png", y.Size, new DateTime(), new DateTime(), this.checkChild(y.Key), null)).ToArray();
@@ -108,7 +115,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             {
                 List<FileManagerDirectoryContent> files = new List<FileManagerDirectoryContent>();
                 GetBucketList();
-                if (path == "/") ListingObjectsAsync("/", RootName , false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
+                if (path == "/") ListingObjectsAsync("/", RootName, false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
                 foreach (string name in names)
                 {
                     if (response.CommonPrefixes.Count > 1)
@@ -172,7 +179,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                         path = "/" + name.Substring(0, name.Length - name.Split("/")[name.Split("/").Length - (name.EndsWith("/") ? 0 : 1)].Length);
                         string n = "";
                         n = name.EndsWith("/") ? name.Split("/")[name.Split("/").Length - 2] : name.Split("/").Last();
-                        if (path == "/") ListingObjectsAsync("/", RootName , false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
+                        if (path == "/") ListingObjectsAsync("/", RootName, false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
                         if (response.CommonPrefixes.Count > 0)
                         {
                             foreach (string commonPrefix in response.CommonPrefixes)
@@ -193,7 +200,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                 }
                 else
                 {
-                    if (path == "/") ListingObjectsAsync("/", RootName , false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
+                    if (path == "/") ListingObjectsAsync("/", RootName, false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
                     if (response.CommonPrefixes.Count > 1)
                     {
                         foreach (string commonPrefix in response.CommonPrefixes)
@@ -505,7 +512,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
                 {
                     GetBucketList();
                     FileManagerResponse readResponse = new FileManagerResponse();
-                    if (path == "/") ListingObjectsAsync("/", RootName , false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
+                    if (path == "/") ListingObjectsAsync("/", RootName, false).Wait(); else ListingObjectsAsync("/", this.RootName.Replace("/", "") + path, false).Wait();
                     if (path == "/")
                         cwd = response.S3Objects.Where(x => x.Key == RootName).Select(y => CreateDirectoryContentInstance(y.Key.ToString().Replace("/", ""), true, "folder", y.Size, new DateTime(), new DateTime(), false, "")).ToArray()[0];
                     else if (response.CommonPrefixes.Count > 0)

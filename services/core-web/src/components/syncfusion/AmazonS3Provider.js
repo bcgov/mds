@@ -15,7 +15,8 @@ import {
 export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
-    this.hostUrl = "https://amazons3.azurewebsites.net/api/AmazonS3Provider/";
+    // this.hostUrl = "https://amazons3.azurewebsites.net/api/AmazonS3Provider/";
+    this.hostUrl = "http://localhost:62870/api/AmazonS3Provider/";
   }
 
   render() {
