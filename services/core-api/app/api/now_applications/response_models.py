@@ -415,8 +415,6 @@ NOW_APPLICATION_MODEL = api.model(
         'relationship_to_applicant':
         fields.String,
         'merchantable_timber_volume': fields.Fixed(decimals=2),
-        'merchantable_timber_volume_unit_type_code':
-        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

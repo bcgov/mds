@@ -212,11 +212,6 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Permit Status
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="permit_status" name="permit_status" component={RenderField} disabled />
-          <div className="field-title">
             Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>

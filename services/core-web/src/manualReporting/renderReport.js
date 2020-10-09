@@ -127,6 +127,7 @@ const simpleRender = () => {
       has_fn_cultural_heritage_sites_in_area: true,
       has_activity_in_park: false,
       has_auth_lieutenant_gov_council: true,
+      is_on_private_land: false,
     },
     first_aid_equipment_on_site: "34324234",
     first_aid_cert_level: "324234234",
@@ -445,6 +446,11 @@ const simpleRender = () => {
     security_received_date: null,
     last_updated_date: "2020-09-23",
     last_updated_by: "idir\\lumitche",
+    is_applicant_individual_or_company: "Individual",
+    relationship_to_applicant: "Agent",
+    term_of_application: 7,
+    merchantable_timber_volume: "30000.20",
+    proposed_annual_maximum_tonnage: "777777.77",
   };
 
   renderPdf(data);

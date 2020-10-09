@@ -77,18 +77,14 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.first_aid_cert_level = mms_now_sub.firstaidcertlevel or now_sub.firstaidcertlevel
     now_app.submission_documents = now_sub.documents
 
-    now_app.permit_status = now_sub.permitstatus
     now_app.is_applicant_individual_or_company = now_sub.applicantindividualorcompany
     now_app.relationship_to_applicant = now_sub.applicantrelationship
     now_app.term_of_application = now_sub.termofapplication
     now_app.has_req_access_authorizations = now_sub.hasaccessauthorizations == 'Yes'
     now_app.req_access_authorization_numbers = now_sub.accessauthorizationsdetails
     now_app.has_key_for_inspector = now_sub.accessauthorizationskeyprovided == 'Yes'
-    now_app.work_plan = now_sub.descriptionofwork
-    now_app.merchantable_timber_volume = now_sub.timbermerchantablevolume
-    #TODO: What units?
-    #if now_sub.timbermerchantablevolume:
-    #    now_app.merchantable_timber_volume_unit_type_code = 'HA'
+    now_app.work_plan = now_sub.descexplorationprogram
+    now_app.merchantable_timber_volume = now_sub.timbertotalvolume
     now_app.proposed_annual_maximum_tonnage = now_sub.maxannualtonnage
     now_app.is_access_gated = now_sub.isaccessgated
     now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure
@@ -511,10 +507,10 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
     pondsexfiltratedtoground = mms_now_sub.pondsexfiltratedtoground or now_sub.pondsexfiltratedtoground
     pondsrecycled = mms_now_sub.pondsrecycled or now_sub.pondsrecycled
     pondsdischargedtoenv = mms_now_sub.pondsdischargedtoenv or now_sub.pondsdischargedtoenv
-    wastewaterplan = now_sub.wastewaterplan
+    pondswastewatertreatfacility = now_sub.pondswastewatertreatfacility
     cleanoutdisposalplan = now_sub.cleanoutdisposalplan
 
-    if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv or wastewaterplan or cleanoutdisposalplan:
+    if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv or pondswastewatertreatfacility or cleanoutdisposalplan:
         settling_pond = app_models.SettlingPond(
             reclamation_description=pondsreclamation,
             reclamation_cost=pondsreclamationcost,
@@ -523,7 +519,7 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
             is_ponds_exfiltrated=pondsexfiltratedtoground == 'Yes',
             is_ponds_recycled=pondsrecycled == 'Yes',
             is_ponds_discharged=pondsdischargedtoenv == 'Yes',
-            wastewater_facility_description=wastewaterplan,
+            wastewater_facility_description=pondswastewatertreatfacility,
             disposal_from_clean_out=cleanoutdisposalplan)
 
         proposed_settling_pond = now_sub.proposed_settling_pond
@@ -706,7 +702,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             processing_method_description=surfacebulksampleprocmethods,
             handling_instructions=surfacebulksamplereclsephandl,
             drainage_mitigation_description=surfacebulksamplerecldrainmiti,
-            has_bedrock_expansion=bedrockexpansion,
+            has_bedrock_expansion=bedrockexpansion == 'Yes',
             surface_water_damage=suracewaterdamage,
             spontaneous_combustion_handling=spontaneouscombustionhandling)
 

@@ -1,4 +1,4 @@
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS permitstatus varchar;
+
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS applicantindividualorcompany varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS applicantrelationship varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS termofapplication numeric(14,0);
@@ -19,11 +19,8 @@ ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hasengagedfirst
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hasculturalheritageresources varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS firstnationsactivities varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS curturalheritageresources varchar;
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS descriptionofwork varchar;
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS timbermerchantablevolume numeric(14,2);
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hasproposedcrossings varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS proposedcrossingschanges varchar;
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS wastewaterplan varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS cleanoutdisposalplan varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS maxannualtonnage numeric(14,0);
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS proposedproduction numeric(14,0);
@@ -40,4 +37,3 @@ ALTER TABLE now_application ADD COLUMN IF NOT EXISTS term_of_application numeric
 ALTER TABLE now_application ADD COLUMN IF NOT EXISTS is_applicant_individual_or_company boolean;
 ALTER TABLE now_application ADD COLUMN IF NOT EXISTS relationship_to_applicant varchar;
 ALTER TABLE now_application ADD COLUMN IF NOT EXISTS merchantable_timber_volume numeric(14,2);
-ALTER TABLE now_application ADD COLUMN IF NOT EXISTS merchantable_timber_volume_unit_type_code varchar references unit_type(unit_type_code);
