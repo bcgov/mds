@@ -214,7 +214,9 @@ export class MinePermitInfo extends Component {
           ...permit_amendment,
           amendments: permit.permit_amendments,
           userRoles: this.props.userRoles,
-          isHistoricalAmendment: originalPermitAmendment.issue_date > permit_amendment.issue_date,
+          isHistoricalAmendment:
+            originalPermitAmendment &&
+            originalPermitAmendment.issue_date > permit_amendment.issue_date,
         },
         onSubmit: this.handleEditPermitAmendment,
         title:

@@ -50,9 +50,9 @@ const validateBusinessRules = (values) => {
     )[0];
     const mostRecentAmendment = values.amendments[0];
     const isHistoricalAmendmentsAllowed =
-      values.userRoles.some((role) =>
-        ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS.includes(role)
-      ) && values.isHistoricalAmendment;
+      values.isHistoricalAmendment &&
+      values.userRoles &&
+      values.userRoles.some((role) => ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS.includes(role));
     if (
       !isHistoricalAmendmentsAllowed &&
       originalPermitAmendment &&
