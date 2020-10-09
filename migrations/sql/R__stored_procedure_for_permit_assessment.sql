@@ -4,7 +4,7 @@ BEGIN
 	CREATE TEMPORARY TABLE etl_permit_assessment_info AS
 		select 
 			p.permit_id as permit_id,
-			(select pa.permit_amendment_id from permit_amendment pa where pa.permit_id = p.permit_id order by pa.permit_amendment_id desc limit 1) as permit_amendment_id,
+			(select pa.permit_amendment_id from permit_amendment pa where pa.permit_id = p.permit_id order by pa.authorization_end_date desc limit 1) as permit_amendment_id,
 			sum(b.amount) as security_adjustment
 		from bond b
 		join bond_permit_xref bpx on b.bond_id = bpx.bond_id
@@ -13,12 +13,14 @@ BEGIN
 		group by p.permit_id;
 
 	UPDATE permit_amendment
-	set security_adjustment = 0;
+	set security_adjustment = 0,
+		update_user = 'mms_migration',
+		update_timestamp = now();
 
 	UPDATE permit_amendment
 		SET
-			security_adjustment    = epai.security_adjustment,
-			update_user      = 'mms_migration',
+			security_adjustment = epai.security_adjustment,
+			update_user = 'mms_migration',
 			update_timestamp = now()                     
 		FROM etl_permit_assessment_info epai
 		WHERE
