@@ -15,7 +15,7 @@ exports[`SearchBarDropdown renders properly 1`] = `
       <ForwardRef(FileSearchOutlined)
         className="icon-lg icon-svg-filter"
       />
-      See search results...
+      See All
     </p>
   </MenuItem>
   <Divider
