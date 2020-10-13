@@ -260,7 +260,7 @@ class PermitAmendmentResource(Resource, UserMixin):
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         try:
-            permit_amendment.soft_delete()
+            permit_amendment.delete()
         except Exception as e:
             raise BadRequest(e)
 

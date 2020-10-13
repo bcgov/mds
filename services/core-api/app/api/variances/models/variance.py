@@ -8,7 +8,7 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 
 from .variance_application_status_code import VarianceApplicationStatusCode
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.variances.models.variance_document_xref import VarianceDocumentXref
 
 INVALID_GUID = 'Invalid guid.'
@@ -18,7 +18,7 @@ INVALID_VARIANCE_GUID = 'Invalid variance_guid.'
 MISSING_MINE_GUID = 'Missing mine_guid.'
 
 
-class Variance(AuditMixin, Base):
+class Variance(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "variance"
     variance_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     variance_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
@@ -41,7 +41,6 @@ class Variance(AuditMixin, Base):
     issue_date = db.Column(db.DateTime)
     received_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     expiry_date = db.Column(db.DateTime)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     # please note there is a dependency on deleted_ind in mine_documents
     documents = db.relationship('VarianceDocumentXref', lazy='joined')
@@ -60,29 +59,27 @@ class Variance(AuditMixin, Base):
     def __repr__(self):
         return '<Variance %r>' % self.variance_id
 
-    def soft_delete(self):
+    def delete(self):
         if self.mine_documents:
             for document in self.mine_documents:
                 document.deleted_ind = True
-
-        self.deleted_ind = True
-        self.save()
+        super(Variance, self).delete()
 
     @classmethod
     def create(
-            cls,
-            compliance_article_id,
-            mine_guid,
-            received_date,
+        cls,
+        compliance_article_id,
+        mine_guid,
+        received_date,
                                                                                # Optional Params
-            applicant_guid=None,
-            variance_application_status_code=None,
-            inspector_party_guid=None,
-            note=None,
-            parties_notified_ind=None,
-            issue_date=None,
-            expiry_date=None,
-            add_to_session=True):
+        applicant_guid=None,
+        variance_application_status_code=None,
+        inspector_party_guid=None,
+        note=None,
+        parties_notified_ind=None,
+        issue_date=None,
+        expiry_date=None,
+        add_to_session=True):
         new_variance = cls(
             compliance_article_id=compliance_article_id,
             mine_guid=mine_guid,
