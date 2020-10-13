@@ -25,9 +25,9 @@ def validate_issue_date(issue_date, permit_amendment_type_code, permit_guid, min
     original_permit_amendment = PermitAmendment.find_original_permit_amendment_by_permit_guid(
         permit_guid, mine_guid)
 
-    issue_date = datetime.date(issue_date)
-    if jwt.validate_roles(ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS
-                          ) and original_permit_amendment and original_permit_amendment.issue_date:
+    if not jwt.validate_roles(
+            ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS
+    ) and original_permit_amendment and original_permit_amendment.issue_date:
         if issue_date and original_permit_amendment.issue_date > issue_date.date():
             raise AssertionError(
                 'Permit amendment issue date cannot be before the permits First Issued date.')
