@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
@@ -25,26 +25,15 @@ export const PermitResultsTable = (props) => {
       dataIndex: "permit_guid",
       key: "permit_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={6}>
-            <p>Permittee</p>
-          </Col>
-          <Col xs={24} md={18}>
-            <p>
-              <Highlight search={props.highlightRegex}>
-                {record.current_permittee || Strings.NOT_APPLICABLE}
-              </Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={6}>
-            <p>Mine(s)</p>
-          </Col>
-          <Col xs={24} md={18}>
+        <Descriptions
+          title={<Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>}
+        >
+          <Descriptions.Item label="Permittee">
+            <Highlight search={props.highlightRegex}>
+              {record.current_permittee || Strings.NOT_APPLICABLE}
+            </Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Mine(s)">
             {record.mine.map((mine) => (
               <p>
                 <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>
@@ -52,8 +41,8 @@ export const PermitResultsTable = (props) => {
                 </Link>
               </p>
             ))}
-          </Col>
-        </Row>,
+          </Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];
