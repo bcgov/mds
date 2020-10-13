@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
@@ -43,18 +43,15 @@ export const ContactResultsTable = (props) => {
       dataIndex: "party_guid",
       key: "party_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
+        <Descriptions
+          column={{ sm: 1, md: 2 }}
+          title={
             <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
               <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
-          </Col>
-        </Row>,
-        <Row className="padding-small--top">
-          <Col xs={24} md={8} lg={4}>
-            <p>Roles</p>
-          </Col>
-          <Col xs={24} md={16} lg={8}>
+          }
+        >
+          <Descriptions.Item label="Roles">
             {props.partyRelationshipTypeHash.PMT &&
               record.mine_party_appt.map((pr) => (
                 <p>
@@ -64,25 +61,15 @@ export const ContactResultsTable = (props) => {
                   </span>
                 </p>
               ))}
-          </Col>
-          <Col xs={24} md={8} lg={6} xxl={4}>
-            <p>Email</p>
-          </Col>
-          <Col xs={24} md={16} lg={12} xxl={8}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.email}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={8} lg={6} xxl={4}>
-            <p>Phone</p>
-          </Col>
-          <Col xs={24} md={16} lg={12} xxl={8}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
-              {record.phone_ext}
-            </p>
-          </Col>
-        </Row>,
+          </Descriptions.Item>
+          <Descriptions.Item label="Email">
+            <Highlight search={props.highlightRegex}>{record.email}</Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Phone">
+            <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
+            {record.phone_ext}
+          </Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];
