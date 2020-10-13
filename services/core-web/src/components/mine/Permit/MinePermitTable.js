@@ -162,7 +162,6 @@ const columns = [
               </button>
             </Menu.Item>
           )}
-          {/* TODO add permission here data clean-up? */}
           <AuthorizationWrapper permission={Permission.ADMIN}>
             <div className="custom-menu-item">
               <button

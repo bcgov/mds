@@ -137,7 +137,7 @@ class PermitAmendment(AuditMixin, Base):
         return cls.query.filter_by(now_application_guid=_id).first()
 
     @classmethod
-    def find_original_permit_amendment_by_permit_guid(cls, _guid):
+    def find_original_permit_amendment_by_permit_guid(cls, _guid, mine_guid):
         return cls.query.filter_by(permit_guid=_guid).filter_by(
             permit_amendment_type_code='OGP').first()
 

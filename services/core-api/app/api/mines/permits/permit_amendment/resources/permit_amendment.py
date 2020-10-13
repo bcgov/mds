@@ -13,19 +13,17 @@ from app.extensions import api, jwt
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
-from app.api.utils.access_decorators import MINE_ADMIN, DATA_CLEANUP, REGIONAL_MINES, MAJOR_MINES
+from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS
 
-ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [
-    MINE_ADMIN, DATA_CLEANUP, REGIONAL_MINES, MAJOR_MINES
-]
+ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
 
-def validate_issue_date(issue_date, permit_amendment_type_code, permit_guid):
+def validate_issue_date(issue_date, permit_amendment_type_code, permit_guid, mine_guid):
     if permit_amendment_type_code == 'OGP':
         return
 
     original_permit_amendment = PermitAmendment.find_original_permit_amendment_by_permit_guid(
-        permit_guid)
+        permit_guid, mine_guid)
 
     issue_date = datetime.date(issue_date)
     if jwt.validate_roles(ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS
@@ -99,7 +97,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         current_app.logger.info(f'creating permit_amendment with >> {data}')
 
         validate_issue_date(
-            data.get('issue_date'), data.get('permit_amendment_type_code'), permit.permit_guid)
+            data.get('issue_date'), data.get('permit_amendment_type_code'), permit.permit_guid,
+            mine_guid)
 
         permittee_party_guid = None
         if not data.get('is_historical_amendment', False):
@@ -260,7 +259,7 @@ class PermitAmendmentResource(Resource, UserMixin):
 
         validate_issue_date(
             data.get('issue_date'), data.get('permit_amendment_type_code'),
-            permit_amendment.permit_guid)
+            permit_amendment.permit_guid, mine_guid)
 
         for key, value in data.items():
             if key == 'uploadedFiles':

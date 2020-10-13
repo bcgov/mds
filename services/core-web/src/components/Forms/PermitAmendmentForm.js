@@ -12,16 +12,10 @@ import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import { USER_ROLES } from "@common/constants/environment";
 
 const originalPermit = "OGP";
 const amalgamtedPermit = "ALG";
-
-const ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [
-  "core_admin",
-  "mds_data_cleanup",
-  "mds_major_mines",
-  "mds_regional_mines",
-];
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -52,7 +46,7 @@ const validateBusinessRules = (values) => {
     const isHistoricalAmendmentsAllowed =
       values.is_historical_amendment &&
       values.userRoles &&
-      values.userRoles.some((role) => ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS.includes(role));
+      values.userRoles.some((role) => USER_ROLES.role_edit_historical_amendments === role);
     if (
       !isHistoricalAmendmentsAllowed &&
       originalPermitAmendment &&
