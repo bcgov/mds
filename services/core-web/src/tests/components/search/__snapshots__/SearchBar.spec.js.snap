@@ -60,7 +60,6 @@ exports[`SearchBar renders properly 1`] = `
       enterButton={false}
       onBlur={[Function]}
       onChange={[Function]}
-      onFocus={[Function]}
       onSearch={[Function]}
       placeholder="Search"
       size="large"
