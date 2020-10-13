@@ -10,11 +10,11 @@ from marshmallow import fields, validate
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.field_template import FieldTemplate
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 
 
-class PermitConditions(AuditMixin, Base):
+class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit_conditions'
 
     class _ModelSchema(Base._ModelSchema):
@@ -36,7 +36,6 @@ class PermitConditions(AuditMixin, Base):
         nullable=False)
     condition_type_code = db.Column(
         db.String, db.ForeignKey('permit_condition_type.condition_type_code'), nullable=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     parent_permit_condition_id = db.Column(db.Integer,
                                            db.ForeignKey('permit_conditions.permit_condition_id'))
     display_order = db.Column(db.Integer, nullable=False)

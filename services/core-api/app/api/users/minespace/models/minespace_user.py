@@ -6,17 +6,16 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, Base
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 
 
-class MinespaceUser(Base):
+class MinespaceUser(SoftDeleteMixin, Base):
     __tablename__ = 'minespace_user'
 
     user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     keycloak_guid = db.Column(UUID(as_uuid=True))
     email_or_username = db.Column(db.String(100), nullable=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     minespace_user_mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 

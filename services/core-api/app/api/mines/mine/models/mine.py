@@ -8,7 +8,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from geoalchemy2 import Geometry
 from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
@@ -20,7 +20,7 @@ from app.api.constants import *
 # that may be best in different situations: https://docs.sqlalchemy.org/en/latest/orm/loading_relationships.html
 
 
-class Mine(AuditMixin, Base):
+class Mine(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine'
     _edit_key = MINE_EDIT_GROUP
 
@@ -30,7 +30,6 @@ class Mine(AuditMixin, Base):
     mine_note = db.Column(db.String(300), default='')
     legacy_mms_mine_status = db.Column(db.String(50))
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())

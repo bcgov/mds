@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -24,24 +24,18 @@ export const DocumentResultsTable = (props) => {
       dataIndex: "document_guid",
       key: "document_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
+        <Descriptions
+          title={
             <LinkButton
               key={record.mine_document_guid || record.permit_amendment_document_guid}
               onClick={() => downloadFileFromDocumentManager(record)}
             >
               <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
             </LinkButton>
-          </Col>
-        </Row>,
-        <Row className="padding-small--top">
-          <Col xs={24} md={6}>
-            <p>Mine</p>
-          </Col>
-          <Col xs={24} md={18}>
-            <p>{record.mine_name}</p>
-          </Col>
-        </Row>,
+          }
+        >
+          <Descriptions.Item label="Mine">{record.mine_name}</Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];
