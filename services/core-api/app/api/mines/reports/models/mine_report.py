@@ -10,11 +10,11 @@ from app.api.mines.reports.models.mine_report_submission import MineReportSubmis
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 
 from app.extensions import db
-from app.api.utils.models_mixins import Base, AuditMixin
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
 
 
-class MineReport(Base, AuditMixin):
+class MineReport(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_report"
     mine_report_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_report_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue(), nullable=False)
@@ -41,8 +41,6 @@ class MineReport(Base, AuditMixin):
     received_date = db.Column(db.DateTime)
     due_date = db.Column(db.DateTime)
     submission_year = db.Column(db.Integer)
-
-    deleted_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
 
     mine_report_submissions = db.relationship(
         'MineReportSubmission',
