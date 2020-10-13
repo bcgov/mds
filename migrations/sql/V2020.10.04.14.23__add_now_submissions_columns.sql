@@ -26,8 +26,7 @@ ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS maxannualtonnag
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS proposedproduction numeric(14,0);
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS isaccessgated varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hassurfacedisturbanceoutsidetenure varchar;
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS bedrockexpansion varchar;
-ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS suracewaterdamage varchar;
+ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS bedrockexcavation varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS spontaneouscombustionhandling varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hassurfacedisturbanceoutsidetenure varchar;
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS proposedactivites varchar;

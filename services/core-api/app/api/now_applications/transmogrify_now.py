@@ -687,7 +687,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     surfacebulksamplerecldrainmiti = mms_now_sub.surfacebulksamplerecldrainmiti or now_sub.surfacebulksamplerecldrainmiti
     surfacebulksamplereclcost = mms_now_sub.surfacebulksamplereclcost or now_sub.surfacebulksamplereclcost
     surfacebulksampletotaldistarea = now_sub.surfacebulksampletotaldistarea
-    bedrockexpansion = now_sub.bedrockexpansion
+    bedrockexcavation = now_sub.bedrockexcavation
     suracewaterdamage = now_sub.suracewaterdamage
     spontaneouscombustionhandling = now_sub.spontaneouscombustionhandling
 
@@ -702,8 +702,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             processing_method_description=surfacebulksampleprocmethods,
             handling_instructions=surfacebulksamplereclsephandl,
             drainage_mitigation_description=surfacebulksamplerecldrainmiti,
-            has_bedrock_expansion=bedrockexpansion == 'Yes',
-            surface_water_damage=suracewaterdamage,
+            has_bedrock_excavation=bedrockexcavation == 'Yes',
             spontaneous_combustion_handling=spontaneouscombustionhandling)
 
         if (len(mms_now_sub.surface_bulk_sample_activity) > 0):

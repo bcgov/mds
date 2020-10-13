@@ -260,7 +260,7 @@ class Application(Base):
     proposedproduction = db.Column(db.Numeric(14, 0))
     isaccessgated = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
-    bedrockexpansion = db.Column(db.String)
+    bedrockexcavation = db.Column(db.String)
     suracewaterdamage = db.Column(db.String)
     spontaneouscombustionhandling = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)

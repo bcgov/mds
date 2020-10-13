@@ -342,7 +342,7 @@ APPLICATION = api.model(
         'proposedproduction': fields.Arbitrary,
         'isaccessgated': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
-        'bedrockexpansion': fields.String,
+        'bedrockexcavation': fields.String,
         'suracewaterdamage': fields.String,
         'spontaneouscombustionhandling': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
