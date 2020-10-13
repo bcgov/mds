@@ -7,10 +7,10 @@ from datetime import datetime
 from marshmallow import fields
 
 from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
-class MineDocument(AuditMixin, Base):
+class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_document'
 
     class _ModelSchema(Base._ModelSchema):
@@ -27,7 +27,6 @@ class MineDocument(AuditMixin, Base):
     document_date = db.Column(db.DateTime)
     document_class = db.Column(db.String)
 
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')

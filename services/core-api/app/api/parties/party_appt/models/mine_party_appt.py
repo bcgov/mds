@@ -9,13 +9,13 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 
 
-class MinePartyAppointment(AuditMixin, Base):
+class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_party_appt"
     # Columns
     mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -35,7 +35,6 @@ class MinePartyAppointment(AuditMixin, Base):
         db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='select')
-    deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
@@ -171,7 +170,7 @@ class MinePartyAppointment(AuditMixin, Base):
             built_query = built_query.filter(
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
         results = built_query.all()
-        
+
         if include_permittees and mine_guid:
             #avoid circular imports.
             from app.api.mines.mine.models.mine import Mine
