@@ -131,6 +131,7 @@ export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/applic
 export const NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS =
   "/now-applications/application-status-codes";
 export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-document-types";
+export const NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-export";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
 export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>

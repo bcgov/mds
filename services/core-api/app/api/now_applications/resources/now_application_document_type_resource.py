@@ -56,7 +56,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         data = self.parser.parse_args()
         template_data = data['template_data']
 
-        ##ENFORCE READ-ONLY CONTEXT DATA
+        # Enforce that read-only fields do not change
         enforced_data = [
             x for x in document_type.document_template._form_spec_with_context(
                 data['now_application_guid']) if x.get('read-only', False)
