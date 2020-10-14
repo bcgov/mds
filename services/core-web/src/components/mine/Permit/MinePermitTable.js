@@ -162,7 +162,7 @@ const columns = [
               </button>
             </Menu.Item>
           )}
-          <AuthorizationWrapper permission={Permission.ADMIN}>
+          <AuthorizationWrapper permission={Permission.EDIT_HISTORICAL_AMENDMENTS}>
             <div className="custom-menu-item">
               <button
                 type="button"
