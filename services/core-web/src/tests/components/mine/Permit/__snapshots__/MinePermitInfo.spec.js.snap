@@ -42,6 +42,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     onExpand={[Function]}
     openAddAmalgamatedPermitModal={[Function]}
     openAddPermitAmendmentModal={[Function]}
+    openAddPermitHistoricalAmendmentModal={[Function]}
     openEditAmendmentModal={[Function]}
     openEditPermitModal={[Function]}
     partyRelationships={Array []}
