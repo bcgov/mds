@@ -12,6 +12,7 @@ import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import { USER_ROLES } from "@common/constants/environment";
 
 const originalPermit = "OGP";
 const amalgamtedPermit = "ALG";
@@ -26,6 +27,8 @@ const propTypes = {
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
+  is_historical_amendment: PropTypes.bool.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -40,10 +43,23 @@ const validateBusinessRules = (values) => {
       (x) => x.permit_amendment_type_code === originalPermit
     )[0];
     const mostRecentAmendment = values.amendments[0];
-    if (originalPermitAmendment && values.issue_date < originalPermitAmendment.issue_date) {
+    const isHistoricalAmendmentsAllowed =
+      values.is_historical_amendment &&
+      values.userRoles &&
+      values.userRoles.some((role) => USER_ROLES.role_edit_historical_amendments === role);
+    if (
+      !isHistoricalAmendmentsAllowed &&
+      originalPermitAmendment &&
+      values.issue_date < originalPermitAmendment.issue_date
+    ) {
       errors.issue_date = "Date cannot be before the permit's first issue date";
     }
-    if (mostRecentAmendment && values.issue_date < mostRecentAmendment.issue_date) {
+    if (
+      !isHistoricalAmendmentsAllowed &&
+      values.is_historical_amendment &&
+      mostRecentAmendment &&
+      values.issue_date < mostRecentAmendment.issue_date
+    ) {
       errors.issue_date = "Date cannot be before the last amendment's issue date";
     }
   }
@@ -100,18 +116,19 @@ export class PermitAmendmentForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
-            {!this.props.initialValues.permit_amendment_guid && (
-              <Form.Item>
-                <PartySelectField
-                  id="permittee_party_guid"
-                  name="permittee_party_guid"
-                  label="Permittee*"
-                  partyLabel="permittee"
-                  validate={[required]}
-                  allowAddingParties
-                />
-              </Form.Item>
-            )}
+            {!this.props.is_historical_amendment &&
+              !this.props.initialValues.permit_amendment_guid && (
+                <Form.Item>
+                  <PartySelectField
+                    id="permittee_party_guid"
+                    name="permittee_party_guid"
+                    label="Permittee*"
+                    partyLabel="permittee"
+                    validate={[required]}
+                    allowAddingParties
+                  />
+                </Form.Item>
+              )}
             <Form.Item>
               <Field
                 id="issue_date"
