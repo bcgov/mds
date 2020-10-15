@@ -17,7 +17,7 @@ const propTypes = {
   childProps: PropTypes.objectOf(PropTypes.any),
   content: PropTypes.func,
   clearOnSubmit: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
   createParty: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   // addPartyFormState is selected from the partiesReducer
@@ -29,6 +29,7 @@ const defaultProps = {
   childProps: {
     title: "",
   },
+  closeModal: () => {},
   content: () => {},
   initialValues: {},
 };
