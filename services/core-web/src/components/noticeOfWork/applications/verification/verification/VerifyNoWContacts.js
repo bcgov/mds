@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
 import AddPartyComponentWrapper from "@/components/common/wrappers/AddPartyComponentWrapper";
+import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {};
 
@@ -28,4 +30,8 @@ export class VerifyNoWContacts extends Component {
 VerifyNoWContacts.propTypes = propTypes;
 VerifyNoWContacts.defaultProps = defaultProps;
 
-export default VerifyNoWContacts;
+const mapStateToProps = (state) => ({
+  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
+});
+
+export default connect(mapStateToProps)(VerifyNoWContacts);

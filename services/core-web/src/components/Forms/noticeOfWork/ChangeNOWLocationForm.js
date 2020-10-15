@@ -83,28 +83,30 @@ export class ChangeNOWLocationForm extends Component {
         )}
         <div className="right center-mobile">
           {this.props.locationOnly && (
-            <Popconfirm
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              onConfirm={this.props.closeModal}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="full-mobile" type="secondary">
-                Cancel
-              </Button>
-            </Popconfirm>
+            <>
+              <Popconfirm
+                placement="topRight"
+                title="Are you sure you want to cancel?"
+                onConfirm={this.props.closeModal}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="full-mobile" type="secondary">
+                  Cancel
+                </Button>
+              </Popconfirm>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <Button
+                  className="full-mobile"
+                  type="primary"
+                  htmlType="submit"
+                  disabled={this.state.submitting}
+                >
+                  {this.props.title}
+                </Button>
+              </AuthorizationWrapper>
+            </>
           )}
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Button
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              disabled={this.state.submitting}
-            >
-              {this.props.title}
-            </Button>
-          </AuthorizationWrapper>
         </div>
       </Form>
     );

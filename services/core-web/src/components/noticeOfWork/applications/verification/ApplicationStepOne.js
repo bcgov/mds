@@ -1,8 +1,11 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import { getFormValues } from "redux-form";
 import { connect } from "react-redux";
-import { Result, Alert, Row } from "antd";
+import { Result, Alert, Row, Button } from "antd";
 import PropTypes from "prop-types";
+import * as FORM from "@/constants/forms";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -14,6 +17,8 @@ import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/ver
 import CustomPropTypes from "@/customPropTypes";
 import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
 import VerifyNoWContacts from "@/components/noticeOfWork/applications/verification/verification/VerifyNoWContacts";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -49,7 +54,11 @@ export class ApplicationStepOne extends Component {
     }
   }
 
-  handleNOWImport = (values) => {
+  handleNOWImport = () => {
+    const values = {
+      ...this.props.verifyMineFormValues,
+      ...this.props.verifyContactFormValues,
+    };
     this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
@@ -114,6 +123,13 @@ export class ApplicationStepOne extends Component {
       <>
         <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />
         <VerifyNoWContacts initialValues={this.props.originalNoticeOfWork} />
+        <div className="right center-mobile">
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Button onClick={this.handleNOWImport} type="primary" htmlType="submit">
+              Verify Application
+            </Button>
+          </AuthorizationWrapper>
+        </div>
       </>
     );
   };
@@ -136,6 +152,8 @@ export class ApplicationStepOne extends Component {
 
 const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
+  verifyMineFormValues: getFormValues(FORM.CHANGE_NOW_LOCATION)(state) || {},
+  verifyContactFormValues: getFormValues(FORM.NOW_CONTACT_FORM)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>

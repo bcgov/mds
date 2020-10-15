@@ -1,5 +1,6 @@
+/* eslint-disable */
 import React from "react";
-import { reduxForm, FieldArray } from "redux-form";
+import { reduxForm, FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
@@ -11,15 +12,16 @@ import CustomPropTypes from "@/customPropTypes";
 import { PROFILE_NOCIRCLE } from "@/constants/assets";
 
 import PartySelectField from "@/components/common/PartySelectField";
+import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
-const renderContacts = ({ fields, contacts }) => {
+const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   return fields.map((contact, index) => {
     return (
-      <Col span={12}>
+      <Col span={12} key={index}>
         <div className="inline-flex">
           <img
             className="icon-sm padding-small--right"
@@ -31,11 +33,19 @@ const renderContacts = ({ fields, contacts }) => {
           <p className="field-title">{`NoW ${contacts[index].mine_party_appt_type_code_description} Contact Information`}</p>
           <p>{startCase(contacts[index].party.name)}</p>
         </div>
-
+        <Form.Item label="Role">
+          <Field
+            id={`${contact}.mine_party_appt_type_code`}
+            name={`${contact}.mine_party_appt_type_code`}
+            component={RenderSelect}
+            data={partyRelationshipTypes}
+            validate={[required]}
+          />
+        </Form.Item>
         <Form.Item>
           <PartySelectField
-            id={`${contact}.party.party_guid`}
-            name={`${contact}.party.party_guid`}
+            name={`${contact}.party_guid`}
+            name={`${contact}.party_guid`}
             label={contacts[index].mine_party_appt_type_code_description}
             partyLabel={contacts[index].mine_party_appt_type_code_description}
             validate={[required]}
@@ -56,6 +66,7 @@ export const NOWContactForm = (props) => (
         name="contacts"
         component={renderContacts}
         contacts={props.initialValues.contacts}
+        partyRelationshipTypes={props.partyRelationshipTypesList}
       />
     </Row>
   </Form>
