@@ -37,7 +37,7 @@ def transmogrify_now(now_application_identity, include_contacts=False):
     _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
     _transmogrify_clients(now_app, now_sub, mms_now_sub)
 
-    if include_contacts:
+    if include_contacts == True:
         _transmogrify_contacts(now_app, now_sub, mms_now_sub)
 
     #Activities
