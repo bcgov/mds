@@ -70,15 +70,15 @@ class NOWApplicationImportResource(Resource, UserMixin):
         if contacts is not None:
             for contact in contacts:
 
-                now_party = Party.find_by_party_guid(contact.party_guid)
+                now_party = Party.find_by_party_guid(contact['party_guid'])
                 if not now_party:
-                    raise NotFound('No party found for party with guid ' + contact.party_guid)
+                    raise NotFound('No party found for party with guid ' + contact['party_guid'])
 
                 mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
-                    contact.mine_party_appt_type_code)
+                    contact['mine_party_appt_type_code'])
                 if not mine_party_appt_type:
                     raise NotFound('No mine party appointment type found for type with code ' +
-                                   contact.mine_party_appt_type_code)
+                                   contact['mine_party_appt_type_code'])
 
                 now_party_appt = NOWPartyAppointment(
                     mine_party_appt_type_code=mine_party_appt_type.mine_party_appt_type_code,
