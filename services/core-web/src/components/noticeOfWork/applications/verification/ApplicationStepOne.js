@@ -113,7 +113,7 @@ export class ApplicationStepOne extends Component {
     return (
       <>
         <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />
-        <VerifyNoWContacts originalNoticeOfWork={this.props.originalNoticeOfWork} />
+        <VerifyNoWContacts initialValues={this.props.originalNoticeOfWork} />
       </>
     );
   };
