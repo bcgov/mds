@@ -27,16 +27,14 @@ class NOWApplicationResource(Resource, UserMixin):
     @api.doc(
         description='Get a notice of work application.',
         params={
-            'original':
-            f'Retrieve the original version of the application. Default: false ',
+            'original': f'Retrieve the original version of the application. Default: false ',
         })
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(
-            application_guid)
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
@@ -44,7 +42,7 @@ class NOWApplicationResource(Resource, UserMixin):
             application = now_application_identity.now_application
             application.imported_to_core = True
         else:
-            application = transmogrify_now(now_application_identity)
+            application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
         return application
@@ -56,8 +54,7 @@ class NOWApplicationResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def put(self, application_guid):
-        now_application_identity = NOWApplicationIdentity.find_by_guid(
-            application_guid)
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
@@ -70,18 +67,15 @@ class NOWApplicationResource(Resource, UserMixin):
         if lead_inspector_party_guid is not None:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
 
-        now_application_status_code = data.get('now_application_status_code',
-                                               None)
+        now_application_status_code = data.get('now_application_status_code', None)
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
-            now_application_identity.now_application.status_updated_date = datetime.today(
-            )
+            now_application_identity.now_application.status_updated_date = datetime.today()
 
         if data.get('mine_guid', None):
             mine = Mine.find_by_mine_guid(data['mine_guid'])
             if not mine:
                 raise BadRequest('mine not found')
-            current_app.logger.info(
-                f'Assigning {now_application_identity} to {mine}')
+            current_app.logger.info(f'Assigning {now_application_identity} to {mine}')
             now_application_identity.mine = mine
         now_application_identity.save()
 
@@ -89,7 +83,7 @@ class NOWApplicationResource(Resource, UserMixin):
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,
             now_application_identity.now_application.status.description,
-            now_application_identity.now_application.status_updated_date.
-            strftime("%Y-%m-%dT%H:%M:%S"))
+            now_application_identity.now_application.status_updated_date.strftime(
+                "%Y-%m-%dT%H:%M:%S"))
 
         return now_application_identity.now_application
