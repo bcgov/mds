@@ -55,10 +55,17 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = () => {
+    const contacts = this.props.verifyContactFormValues.contacts.map((contact) => {
+      return {
+        mine_party_appt_type_code: contact.mine_party_appt_type_code,
+        party_guid: contact.party_guid,
+      };
+    });
     const values = {
       ...this.props.verifyMineFormValues,
-      ...this.props.verifyContactFormValues,
+      contacts,
     };
+    console.log(values);
     this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
@@ -122,7 +129,10 @@ export class ApplicationStepOne extends Component {
     return (
       <>
         <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />
-        <VerifyNoWContacts initialValues={this.props.originalNoticeOfWork} />
+        <VerifyNoWContacts
+          initialValues={this.props.originalNoticeOfWork}
+          contacts={this.props.originalNoticeOfWork.contacts}
+        />
         <div className="right center-mobile">
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <Button onClick={this.handleNOWImport} type="primary" htmlType="submit">

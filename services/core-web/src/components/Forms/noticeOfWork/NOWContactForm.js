@@ -65,7 +65,7 @@ export const NOWContactForm = (props) => (
         id="contacts"
         name="contacts"
         component={renderContacts}
-        contacts={props.initialValues.contacts}
+        contacts={props.contacts}
         partyRelationshipTypes={props.partyRelationshipTypesList}
       />
     </Row>
