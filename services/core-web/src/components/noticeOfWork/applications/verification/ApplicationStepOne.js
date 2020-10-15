@@ -13,10 +13,12 @@ import AssignLeadInspector from "@/components/noticeOfWork/applications/verifica
 import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/verification/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
+import VerifyNoWContacts from "@/components/noticeOfWork/applications/verification/verification/VerifyNoWContacts";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   importNoticeOfWorkApplication: PropTypes.func.isRequired,
+  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   handleUpdateLeadInspector: PropTypes.func.isRequired,
@@ -108,7 +110,12 @@ export class ApplicationStepOne extends Component {
         />
       );
     }
-    return <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />;
+    return (
+      <>
+        <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />
+        <VerifyNoWContacts originalNoticeOfWork={this.props.originalNoticeOfWork} />
+      </>
+    );
   };
 
   render() {

@@ -793,6 +793,7 @@ export class NoticeOfWorkApplication extends Component {
                 handleUpdateLeadInspector={this.handleUpdateLeadInspector}
                 loadNoticeOfWork={this.loadNoticeOfWork}
                 initialPermitGuid={this.state.initialPermitGuid}
+                originalNoticeOfWork={this.props.originalNoticeOfWork}
               />
             </Tabs.TabPane>
 
