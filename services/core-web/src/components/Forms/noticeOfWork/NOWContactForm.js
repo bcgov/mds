@@ -98,22 +98,23 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
 };
 
 export const NOWContactForm = (props) => (
-  <Form layout="vertical">
-    <FieldArray
-      id="contacts"
-      name="contacts"
-      component={renderContacts}
-      contacts={props.contacts}
-      partyRelationshipTypes={props.partyRelationshipTypesList}
-    />
-  </Form>
+  // <Form layout="vertical">
+  <FieldArray
+    id="contacts"
+    name="contacts"
+    component={renderContacts}
+    contacts={props.contacts}
+    partyRelationshipTypes={props.partyRelationshipTypesList}
+  />
+  // </Form>
 );
 
 NOWContactForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.NOW_CONTACT_FORM,
-  onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
-  // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
-  onSubmit: () => {},
-})(NOWContactForm);
+export default NOWContactForm;
+// export default reduxForm({
+//   form: FORM.NOW_CONTACT_FORM,
+//   onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
+//   // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
+//   onSubmit: () => {},
+// })(NOWContactForm);
