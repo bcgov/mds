@@ -33,6 +33,7 @@ const defaultProps = {
 };
 
 const RenderSelect = (props) => {
+  console.log(props.data);
   return (
     <Form.Item
       label={props.label}
