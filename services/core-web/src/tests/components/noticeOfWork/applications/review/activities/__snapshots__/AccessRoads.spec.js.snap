@@ -3,9 +3,11 @@
 exports[`AccessRoads renders properly 1`] = `
 <div>
   <FieldArray
+    callback={[Function]}
     component={[Function]}
     isViewMode={true}
     name="details"
+    rerenderOnEveryChange={true}
   />
   <br />
   <h4>
