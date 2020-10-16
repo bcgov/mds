@@ -688,7 +688,6 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     surfacebulksamplereclcost = mms_now_sub.surfacebulksamplereclcost or now_sub.surfacebulksamplereclcost
     surfacebulksampletotaldistarea = now_sub.surfacebulksampletotaldistarea
     bedrockexcavation = now_sub.bedrockexcavation
-    suracewaterdamage = now_sub.suracewaterdamage
     spontaneouscombustionhandling = now_sub.spontaneouscombustionhandling
 
     if (surfacebulksampleprocmethods or surfacebulksamplereclsephandl

@@ -261,7 +261,6 @@ class Application(Base):
     isaccessgated = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     bedrockexcavation = db.Column(db.String)
-    suracewaterdamage = db.Column(db.String)
     spontaneouscombustionhandling = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     proposedactivites = db.Column(db.String)

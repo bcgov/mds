@@ -344,7 +344,6 @@ APPLICATION = api.model(
         'isaccessgated': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'bedrockexcavation': fields.String,
-        'suracewaterdamage': fields.String,
         'spontaneouscombustionhandling': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'proposedactivites': fields.String,
