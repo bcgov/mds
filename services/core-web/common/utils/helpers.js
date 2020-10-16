@@ -2,7 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
-import { get, sortBy } from "lodash";
+import { get, sortBy, isEmpty } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -261,12 +261,12 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 
 // function to flatten an object for nested items in redux form
 // eslint-disable-snippets
-export const flattenObject = (ob) => {
+const _flattenObject = (ob) => {
   const toReturn = {};
   let flatObject;
   for (const i in ob) {
     if (typeof ob[i] === "object") {
-      flatObject = flattenObject(ob[i]);
+      flatObject = _flattenObject(ob[i]);
       for (const x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) {
           continue;
@@ -278,6 +278,23 @@ export const flattenObject = (ob) => {
     }
   }
   return toReturn;
+};
+
+const clean = (obj) => {
+  for (var propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+};
+
+export const flattenObject = (ob) => {
+  const obj = _flattenObject(ob);
+  if (!isEmpty(obj)) {
+    clean(obj);
+  }
+
+  return obj;
 };
 
 export const formatMoney = (value) => {
