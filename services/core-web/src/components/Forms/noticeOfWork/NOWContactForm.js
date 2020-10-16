@@ -27,58 +27,60 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   );
   return (
     <>
-      <Row gutter={32}>
+      <Row gutter={24}>
         {fields.map((contact, index) => (
           <Col lg={12} sm={24} key={index}>
-            <div className="inline-flex">
-              <img
-                className="icon-sm padding-small--right"
-                src={PROFILE_NOCIRCLE}
-                alt="user"
-                height={25}
-                style={{ width: "initial" }}
-              />
-              <p className="field-title">{`NoW ${
-                contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
-              } Contact Information:`}</p>
-              <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
-              <Button
-                ghost
-                onClick={() => fields.remove(index)}
-                className="position-right"
-                style={{ margin: "0" }}
-              >
-                <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-              </Button>
+            <div className="grey-background">
+              <div className="inline-flex">
+                <img
+                  className="icon-sm padding-small--right"
+                  src={PROFILE_NOCIRCLE}
+                  alt="user"
+                  height={25}
+                  style={{ width: "initial" }}
+                />
+                <p className="field-title">{`NoW ${
+                  contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
+                } Contact Information:`}</p>
+                <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
+                <Button
+                  ghost
+                  onClick={() => fields.remove(index)}
+                  className="position-right"
+                  style={{ margin: "0 30px 20px 0" }}
+                >
+                  <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                </Button>
+              </div>
+              <Form.Item label="Role">
+                <Field
+                  id={`${contact}.mine_party_appt_type_code`}
+                  name={`${contact}.mine_party_appt_type_code`}
+                  component={RenderSelect}
+                  data={filteredRelationships}
+                  validate={[required]}
+                />
+              </Form.Item>
+              <Form.Item>
+                <PartySelectField
+                  name={`${contact}.party_guid`}
+                  name={`${contact}.party_guid`}
+                  label={
+                    contacts[index]
+                      ? `${contacts[index].mine_party_appt_type_code_description} Name`
+                      : "Contact Name"
+                  }
+                  partyLabel={
+                    contacts[index]
+                      ? contacts[index].mine_party_appt_type_code_description
+                      : "Contact Name"
+                  }
+                  validate={[required]}
+                  allowAddingParties
+                />
+              </Form.Item>
+              <br />
             </div>
-            <Form.Item label="Role">
-              <Field
-                id={`${contact}.mine_party_appt_type_code`}
-                name={`${contact}.mine_party_appt_type_code`}
-                component={RenderSelect}
-                data={filteredRelationships}
-                validate={[required]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <PartySelectField
-                name={`${contact}.party_guid`}
-                name={`${contact}.party_guid`}
-                label={
-                  contacts[index]
-                    ? `${contacts[index].mine_party_appt_type_code_description} Name`
-                    : "Contact Name"
-                }
-                partyLabel={
-                  contacts[index]
-                    ? contacts[index].mine_party_appt_type_code_description
-                    : "Contact Name"
-                }
-                validate={[required]}
-                allowAddingParties
-              />
-            </Form.Item>
-            <br />
           </Col>
         ))}
       </Row>

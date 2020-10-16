@@ -21,6 +21,12 @@ body {
   }
 }
 
+.grey-background {
+  background-color: $lightest-grey;
+  padding: 20px;
+  margin: 20px;
+}
+
 .footer {
   height: 45px;
   background-color: $nav-color;
