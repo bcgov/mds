@@ -1,11 +1,12 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { getFormValues } from "redux-form";
+import { getFormValues, submit, getFormSyncErrors } from "redux-form";
 import { connect } from "react-redux";
 import { Result, Alert, Row, Button, Divider } from "antd";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
+import { flattenObject } from "@common/utils/helpers";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -55,26 +56,30 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = () => {
-    const contacts = this.props.verifyContactFormValues.contacts.map((contact) => {
-      return {
-        mine_party_appt_type_code: contact.mine_party_appt_type_code,
-        party_guid: contact.party_guid,
-      };
-    });
-    const values = {
-      ...this.props.verifyMineFormValues,
-      contacts,
-    };
-    this.props
-      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
-      .then(() => {
-        return this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(({ data }) => {
-            this.props.loadMineData(values.mine_guid);
-            this.setState({ isImported: data.imported_to_core });
-          });
+    this.props.submit(FORM.NOW_CONTACT_FORM);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length === 0) {
+      const contacts = this.props.verifyContactFormValues.contacts.map((contact) => {
+        return {
+          mine_party_appt_type_code: contact.mine_party_appt_type_code,
+          party_guid: contact.party_guid,
+        };
       });
+      const values = {
+        ...this.props.verifyMineFormValues,
+        contacts,
+      };
+      this.props
+        .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
+        .then(() => {
+          return this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(({ data }) => {
+              this.props.loadMineData(values.mine_guid);
+              this.setState({ isImported: data.imported_to_core });
+            });
+        });
+    }
   };
 
   renderInspectorAssignment = () => {
@@ -164,6 +169,7 @@ const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
   verifyMineFormValues: getFormValues(FORM.CHANGE_NOW_LOCATION)(state) || {},
   verifyContactFormValues: getFormValues(FORM.NOW_CONTACT_FORM)(state) || {},
+  formErrors: getFormSyncErrors(FORM.NOW_CONTACT_FORM)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -172,6 +178,7 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       importNoticeOfWorkApplication,
+      submit,
     },
     dispatch
   );

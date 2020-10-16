@@ -23,7 +23,7 @@ const propTypes = {
 
 const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
-    ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "STO"].includes(pr.value)
+    ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "STO", "MOR"].includes(pr.value)
   );
   return (
     <>
@@ -113,6 +113,7 @@ NOWContactForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.NOW_CONTACT_FORM,
-  touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
+  // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
+  onSubmit: () => {},
 })(NOWContactForm);

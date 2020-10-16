@@ -124,5 +124,6 @@ export default compose(
   reduxForm({
     form: FORM.CHANGE_NOW_LOCATION,
     onSubmitSuccess: resetForm(FORM.CHANGE_NOW_LOCATION),
+    onSubmit: () => {},
   })
 )(ChangeNOWLocationForm);
