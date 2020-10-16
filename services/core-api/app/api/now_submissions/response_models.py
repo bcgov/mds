@@ -333,6 +333,7 @@ APPLICATION = api.model(
         'isonprivateland': fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
+        'archaeologicalprotectionplan': fields.String,
         'firstnationsactivities': fields.String,
         'curturalheritageresources': fields.String,
         'hasproposedcrossings': fields.String,

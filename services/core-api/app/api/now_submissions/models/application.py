@@ -265,6 +265,7 @@ class Application(Base):
     spontaneouscombustionhandling = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     proposedactivites = db.Column(db.String)
+    archaeologicalprotectionplan = db.Column(db.String)
 
     mine = db.relationship(
         'Mine',

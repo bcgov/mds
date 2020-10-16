@@ -219,7 +219,7 @@ export const ReviewNOWApplication = (props) => {
             id="is_applicant_individual_or_company"
             name="is_applicant_individual_or_company"
             component={RenderField}
-            disabled
+            disabled={props.isViewMode}
           />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
@@ -229,7 +229,7 @@ export const ReviewNOWApplication = (props) => {
             id="relationship_to_applicant"
             name="relationship_to_applicant"
             component={RenderField}
-            disabled
+            disabled={props.isViewMode}
           />
           <div className="field-title">
             Description of Land
@@ -653,7 +653,7 @@ export const ReviewNOWApplication = (props) => {
             id="merchantable_timber_volume"
             name="merchantable_timber_volume"
             component={RenderField}
-            disabled
+            disabled={props.isViewMode}
           />
         </Col>
       </Row>
