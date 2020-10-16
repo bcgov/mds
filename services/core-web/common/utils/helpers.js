@@ -261,17 +261,17 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 
 // function to flatten an object for nested items in redux form
 // eslint-disable-snippets
-const _flattenObject = (ob) => {
+const _flattenObject = (ob, isArrayItem = false) => {
   const toReturn = {};
   let flatObject;
   for (const i in ob) {
     if (typeof ob[i] === "object") {
-      flatObject = _flattenObject(ob[i]);
+      flatObject = _flattenObject(ob[i], Array.isArray(ob[i]));
       for (const x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) {
           continue;
         }
-        toReturn[i + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
+        toReturn[(isArrayItem ? `[${i}]` : i) + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
       }
     } else {
       toReturn[i] = ob[i];
@@ -288,10 +288,26 @@ const clean = (obj) => {
   }
 };
 
+const normalizeFlattenedArrayProperties = (obj) => {
+  for (var propName in obj) {
+    if (propName.includes(".[")) {
+      const newKey = propName.replace(".[", "[");
+      Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, propName));
+      delete obj[propName];
+    }
+    if (propName) propName.replace(".[", "[");
+  }
+};
+
 export const flattenObject = (ob) => {
   const obj = _flattenObject(ob);
   if (!isEmpty(obj)) {
     clean(obj);
+
+    // check if object is not an empty object after cleaning
+    if (!isEmpty(obj)) {
+      normalizeFlattenedArrayProperties(obj);
+    }
   }
 
   return obj;
