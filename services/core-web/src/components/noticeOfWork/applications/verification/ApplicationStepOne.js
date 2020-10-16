@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { getFormValues } from "redux-form";
 import { connect } from "react-redux";
-import { Result, Alert, Row, Button } from "antd";
+import { Result, Alert, Row, Button, Divider } from "antd";
 import PropTypes from "prop-types";
 import * as FORM from "@/constants/forms";
 import {
@@ -128,6 +128,7 @@ export class ApplicationStepOne extends Component {
     return (
       <>
         <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />
+        <Divider />
         <VerifyNoWContacts
           initialValues={this.props.originalNoticeOfWork}
           contacts={this.props.originalNoticeOfWork.contacts}
