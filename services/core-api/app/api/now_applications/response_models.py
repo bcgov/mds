@@ -182,8 +182,7 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'processing_method_description': fields.String,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'has_bedrock_expansion': fields.Boolean,
-        'surface_water_damage': fields.String,
+        'has_bedrock_excavation': fields.Boolean,
         'spontaneous_combustion_handling': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
@@ -407,7 +406,17 @@ NOW_APPLICATION_MODEL = api.model(
         'last_updated_date':
         Date,
         'last_updated_by':
-        fields.String
+        fields.String,
+        'permit_status':
+        fields.String,
+        'term_of_application':
+        fields.Integer,
+        'is_applicant_individual_or_company':
+        fields.Boolean,
+        'relationship_to_applicant':
+        fields.String,
+        'merchantable_timber_volume':
+        fields.Fixed(decimals=2),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -490,7 +499,8 @@ NOW_VIEW_MODEL = api.model(
         'now_application_status_description': fields.String,
         'received_date': Date,
         'originating_system': fields.String,
-        'application_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'application_documents': fields.List(
+            fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
     })
 
 PAGINATED_LIST = api.model(

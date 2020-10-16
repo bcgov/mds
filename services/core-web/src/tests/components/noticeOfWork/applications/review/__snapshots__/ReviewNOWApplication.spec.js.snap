@@ -226,26 +226,14 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Status
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-              />
-              <div
-                className="field-title"
-              >
                 Individual or Company/Organization?
                 <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="is_applicant_individual_or_company"
+                name="is_applicant_individual_or_company"
               />
               <div
                 className="field-title"
@@ -256,8 +244,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="relationship_to_applicant"
+                name="relationship_to_applicant"
               />
               <div
                 className="field-title"
@@ -928,8 +916,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="merchantable_timber_volume"
+                name="merchantable_timber_volume"
               />
             </Col>
           </Row>
