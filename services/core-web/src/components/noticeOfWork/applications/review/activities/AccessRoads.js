@@ -28,14 +28,16 @@ const addActivity = (fields) => {
   fields.push({});
 };
 
-const removeActivityRedux = (fields, index) => {
+const removeActivity = (fields, index) => {
   if (fields.get(index) && fields.get(index).activity_detail_id) {
     // add state_modified and set to "delete" for backend
     fields.get(index).state_modified = "delete";
 
     // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
+    // eslint-disable-next-line no-constant-condition
     setTimeout(() => {
-      fields.move(index, (index = 0 ? index + 1 : index - 1));
+      const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
+      return res;
     }, 1);
   } else {
     fields.remove(index);
@@ -48,7 +50,7 @@ const renderActivities = ({ fields, isViewMode }) => {
   // debugger;
   if (isViewMode) {
     fields.getAll().forEach((activity) => {
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-prototype-builtins
       if (activity && activity.hasOwnProperty("state_modified")) {
         delete activity.state_modified;
       }
@@ -131,7 +133,7 @@ const renderActivities = ({ fields, isViewMode }) => {
                                 <Button
                                   type="primary"
                                   size="small"
-                                  onClick={() => removeActivityRedux(fields, index)}
+                                  onClick={() => removeActivity(fields, index)}
                                   ghost
                                 >
                                   <img name="remove" src={TRASHCAN} alt="Remove Activity" />
