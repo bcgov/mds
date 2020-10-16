@@ -57,6 +57,12 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Project ID">{text}</div>,
     },
     {
+      title: "Active Bonds",
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
+    },
+    {
       dataIndex: "total_assessed",
       key: "total_assessed",
       title: (
@@ -87,12 +93,6 @@ export const MineBondTable = (props) => {
       render: (text) => (
         <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
-    },
-    {
-      title: "Active Bonds",
-      dataIndex: "total_bonds",
-      key: "total_bonds",
-      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
     },
     {
       title: "",
@@ -131,12 +131,6 @@ export const MineBondTable = (props) => {
       dataIndex: "payer_party_guid",
       key: "payer_party_guid",
       render: (text, record) => <div title="Payer">{record.payer.name || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Institution",
-      dataIndex: "institution_name",
-      key: "institution_name",
-      render: (text) => <div title="Institution">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Type",
