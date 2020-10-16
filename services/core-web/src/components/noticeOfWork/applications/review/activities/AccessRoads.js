@@ -47,7 +47,6 @@ const removeActivity = (fields, index) => {
 const renderActivities = ({ fields, isViewMode }) => {
   // resets deleted state if users decided to cancel their changes
 
-  // debugger;
   if (isViewMode) {
     fields.getAll().forEach((activity) => {
       // eslint-disable-next-line no-prototype-builtins
