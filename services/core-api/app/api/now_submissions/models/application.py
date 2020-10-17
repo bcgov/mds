@@ -79,6 +79,14 @@ class Application(Base):
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestwells = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hassurfacedisturbanceoutsidetenure = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        isaccessgated = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        accessauthorizationskeyprovided = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hasaccessauthorizations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         status = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSION_STATUS), allow_none=True)
 
@@ -233,6 +241,37 @@ class Application(Base):
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
+
+    applicantindividualorcompany = db.Column(db.String)
+    applicantrelationship = db.Column(db.String)
+    termofapplication = db.Column(db.Numeric(14, 0))
+    hasaccessauthorizations = db.Column(db.String)
+    accessauthorizationsdetails = db.Column(db.String)
+    accessauthorizationskeyprovided = db.Column(db.String)
+    landpresentcondition = db.Column(db.String)
+    currentmeansofaccess = db.Column(db.String)
+    physiography = db.Column(db.String)
+    oldequipment = db.Column(db.String)
+    typeofvegetation = db.Column(db.String)
+    recreationuse = db.Column(db.String)
+    isparkactivities = db.Column(db.String)
+    hasltgovauthorization = db.Column(db.String)
+    isonprivateland = db.Column(db.String)
+    hasengagedfirstnations = db.Column(db.String)
+    hasculturalheritageresources = db.Column(db.String)
+    firstnationsactivities = db.Column(db.String)
+    curturalheritageresources = db.Column(db.String)
+    hasproposedcrossings = db.Column(db.String)
+    proposedcrossingschanges = db.Column(db.String)
+    cleanoutdisposalplan = db.Column(db.String)
+    maxannualtonnage = db.Column(db.Numeric(14, 0))
+    proposedproduction = db.Column(db.Numeric(14, 0))
+    isaccessgated = db.Column(db.String)
+    hassurfacedisturbanceoutsidetenure = db.Column(db.String)
+    bedrockexcavation = db.Column(db.String)
+    spontaneouscombustionhandling = db.Column(db.String)
+    proposedactivites = db.Column(db.String)
+    archaeologicalprotectionplan = db.Column(db.String)
 
     mine = db.relationship(
         'Mine',

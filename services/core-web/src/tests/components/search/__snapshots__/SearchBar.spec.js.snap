@@ -51,7 +51,7 @@ exports[`SearchBar renders properly 1`] = `
     }
     trigger={
       Array [
-        "",
+        "focus",
       ]
     }
     visible={false}

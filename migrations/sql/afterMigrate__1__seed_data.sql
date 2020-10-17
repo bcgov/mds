@@ -1211,14 +1211,13 @@ VALUES
     ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
     ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
     ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
-    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds', 60),
+    ('NIA', 'No Interest Payable Form', true, 'system-mds', 'system-mds', 60),
     ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
     ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
     ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
     ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
     ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110),
-    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120),
-    ('BAL', 'Bank Acknowledgement Letter', true, 'system-mds', 'system-mds', 130)
+    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
