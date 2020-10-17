@@ -88,8 +88,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.work_plan = now_sub.descexplorationprogram
     now_app.merchantable_timber_volume = now_sub.timbertotalvolume
     now_app.proposed_annual_maximum_tonnage = now_sub.maxannualtonnage
-    now_app.is_access_gated = now_sub.isaccessgated
-    now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure
+    now_app.is_access_gated = now_sub.isaccessgated == 'Yes'
+    now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure == 'Yes'
 
     return
 
