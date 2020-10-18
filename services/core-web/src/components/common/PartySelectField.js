@@ -32,6 +32,8 @@ const propTypes = {
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
   initialValue: PropTypes.objectOf(PropTypes.string),
+  initialValues: PropTypes.objectOf(PropTypes.any),
+  initialSearch: PropTypes.string,
 };
 
 const defaultProps = {
@@ -45,6 +47,8 @@ const defaultProps = {
   validate: [],
   searchResults: [],
   initialValue: "",
+  initialValues: undefined,
+  initialSearch: undefined,
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -71,7 +75,12 @@ const transformData = (data, options, footer) => {
 };
 
 export class PartySelectField extends Component {
-  state = { selectedOption: { value: "", label: "" }, partyDataSource: [] };
+  state = {
+    selectedOption: { value: "", label: "" },
+    partyDataSource: [],
+    showingAddPartyForm: false,
+    initialSearch: this.props.initialSearch,
+  };
 
   constructor(props) {
     super(props);
@@ -91,11 +100,15 @@ export class PartySelectField extends Component {
   }
 
   showAddPartyForm = () => {
+    this.setState({
+      showingAddPartyForm: true,
+    });
     this.props.setAddPartyFormState({
       showingAddPartyForm: true,
       person: !this.props.person,
       organization: !this.props.organization,
       partyLabel: this.props.partyLabel,
+      initialValues: this.props.initialValues,
     });
   };
 
@@ -118,7 +131,7 @@ export class PartySelectField extends Component {
       }
 
       // If a new party was just added, add that party to the list of search results.
-      if (lastCreatedPartyUpdated) {
+      if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
 
@@ -134,14 +147,22 @@ export class PartySelectField extends Component {
     }
 
     // If a new party was just added, detect this and set the selected party to the newly created party.
-    if (lastCreatedPartyUpdated) {
+    if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
       this.setState({
         selectedOption: {
           value: nextProps.lastCreatedParty.party_guid,
           label: nextProps.lastCreatedParty.name,
         },
+        showingAddPartyForm: false,
       });
     }
+  };
+
+  handleFocus = () => {
+    if (this.state.initialSearch) {
+      this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
+    }
+    this.setState({ initialSearch: null });
   };
 
   handleSearch = (value) => {
@@ -174,6 +195,7 @@ export class PartySelectField extends Component {
         component={RenderLargeSelect}
         handleSearch={this.handleSearch}
         handleSelect={this.handleSelect}
+        handleFocus={this.handleFocus}
         validate={this.props.validate.concat(this.validOption)}
         dataSource={this.state.partyDataSource}
         selectedOption={this.state.selectedOption}
