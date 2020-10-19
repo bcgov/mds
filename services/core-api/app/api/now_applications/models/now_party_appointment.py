@@ -13,7 +13,7 @@ class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "now_party_appointment"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
-    
+
     # Columns
     now_party_appointment_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
