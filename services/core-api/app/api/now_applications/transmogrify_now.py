@@ -35,10 +35,10 @@ def transmogrify_now(now_application_identity, include_contacts=False):
     _transmogrify_now_details(now_app, now_sub, mms_now_sub)
     _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub)
     _transmogrify_state_of_land(now_app, now_sub, mms_now_sub)
-    _transmogrify_clients(now_app, now_sub, mms_now_sub)
 
     if include_contacts == True:
         _transmogrify_contacts(now_app, now_sub, mms_now_sub)
+        _transmogrify_clients(now_app, now_sub, mms_now_sub)
 
     #Activities
     _transmogrify_camp_activities(now_app, now_sub, mms_now_sub)
