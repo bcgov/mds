@@ -97,7 +97,7 @@ const renderActivities = ({ fields, isViewMode }) => {
                             <div title="Length(km)">
                               <Field
                                 name={`${activity}.length`}
-                                value={parseFloat(activity.length)}
+                                value={activity.length}
                                 component={RenderField}
                                 disabled={isViewMode}
                                 validate={[required, number]}
@@ -108,7 +108,7 @@ const renderActivities = ({ fields, isViewMode }) => {
                             <div title="Disturbed Area (ha)">
                               <Field
                                 name={`${activity}.disturbed_area`}
-                                value={parseFloat(activity.disturbed_area)}
+                                value={activity.disturbed_area}
                                 component={RenderField}
                                 disabled={isViewMode}
                                 validate={[required, number]}
@@ -119,7 +119,7 @@ const renderActivities = ({ fields, isViewMode }) => {
                             <div title="Merchantable timber volume (m3)">
                               <Field
                                 name={`${activity}.timber_volume`}
-                                value={parseFloat(activity.timber_volume)}
+                                value={activity.timber_volume}
                                 component={RenderField}
                                 disabled={isViewMode}
                                 validate={[required, number]}
