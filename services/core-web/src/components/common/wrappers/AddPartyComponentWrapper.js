@@ -42,19 +42,21 @@ const defaultAddPartyFormState = {
 };
 
 export class AddPartyComponentWrapper extends Component {
-  state = { isPerson: true, addingParty: false };
+  state = { isPerson: true, addingParty: this.props.addPartyFormState.showingAddPartyForm };
 
-  componentWillMount = () => {
+  componentWillUnmount = () => {
     // Form values are reset to default when mounted as the modal may have been closed with the form showing.
     this.resetAddPartyForm();
   };
 
+  componentDidMount = () => {
+    if (this.props.addPartyFormState.showingAddPartyForm) {
+      this.showAddPartyForm();
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
-    if (
-      nextProps.addPartyFormState.showingAddPartyForm &&
-      this.props.addPartyFormState.showingAddPartyForm !==
-        nextProps.addPartyFormState.showingAddPartyForm
-    ) {
+    if (nextProps.addPartyFormState.showingAddPartyForm) {
       this.showAddPartyForm();
     } else {
       this.hideAddPartyForm();

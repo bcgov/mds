@@ -16,6 +16,7 @@ import { PROFILE_NOCIRCLE } from "@/constants/assets";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
+import RenderField from "@/components/common/RenderField";
 
 const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
@@ -28,7 +29,7 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   return (
     <>
       <Row gutter={24}>
-        {fields.map((contact, index) => (
+        {fields.map((field, index) => (
           <Col lg={12} sm={24} key={index}>
             <div className="grey-background">
               <div className="inline-flex">
@@ -54,17 +55,26 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
               </div>
               <Form.Item label="Role">
                 <Field
-                  id={`${contact}.mine_party_appt_type_code`}
-                  name={`${contact}.mine_party_appt_type_code`}
+                  id={`${field}.mine_party_appt_type_code`}
+                  name={`${field}.mine_party_appt_type_code`}
                   component={RenderSelect}
                   data={filteredRelationships}
                   validate={[required]}
                 />
+                <Form.Item label="Role">
+                  <Field
+                    id={`${field}.party.party_guid`}
+                    name={`${field}.party.party_guid`}
+                    component={RenderField}
+                    // data={filteredRelationships}
+                    validate={[required]}
+                  />
+                </Form.Item>
               </Form.Item>
               <Form.Item>
                 <PartySelectField
-                  name={`${contact}.party_guid`}
-                  name={`${contact}.party_guid`}
+                  id={`${field}.party_guid`}
+                  name={`${field}.party_guid`}
                   label={
                     contacts[index]
                       ? `${contacts[index].mine_party_appt_type_code_description} Name`
@@ -97,17 +107,22 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   );
 };
 
-export const NOWContactForm = (props) => (
-  // <Form layout="vertical">
-  <FieldArray
-    id="contacts"
-    name="contacts"
-    component={renderContacts}
-    contacts={props.contacts}
-    partyRelationshipTypes={props.partyRelationshipTypesList}
-  />
-  // </Form>
-);
+export const NOWContactForm = (props) => {
+  console.log(props.initialValues);
+  console.log(props.initialValues.contacts);
+  console.log(props.initialValues.contacts[0].party_guid);
+  return (
+    // <Form layout="vertical">
+    <FieldArray
+      id="contacts"
+      name="contacts"
+      component={renderContacts}
+      contacts={props.contacts}
+      partyRelationshipTypes={props.partyRelationshipTypesList}
+    />
+    // </Form>
+  );
+};
 
 NOWContactForm.propTypes = propTypes;
 

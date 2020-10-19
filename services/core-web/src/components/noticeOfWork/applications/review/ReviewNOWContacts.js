@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Card } from "antd";
@@ -8,6 +9,7 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
+import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
 
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
@@ -59,7 +61,18 @@ const NOWContact = (contact) => (
 export const ReviewNOWContacts = (props) => (
   <div>
     {props.contacts && props.contacts.length >= 1 ? (
-      <Row gutter={16}>{props.contacts.map((contact) => NOWContact(contact))}</Row>
+      <>
+        {props.isViewMode ? (
+          <Row gutter={16}>{props.contacts.map((contact) => NOWContact(contact))}</Row>
+        ) : (
+          <NOWContactForm
+            clearOnSubmit={() => {}}
+            initialValues={props.noticeOfWork}
+            contacts={props.contacts}
+            partyRelationshipTypesList={props.partyRelationshipTypesList}
+          />
+        )}
+      </>
     ) : (
       <NullScreen type="now-contacts" />
     )}
