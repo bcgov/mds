@@ -30,15 +30,11 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip && \
     rm -rf /var/lib/apt/lists/*
 
-# Create wallet and config files
+# Oracle config files
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
-
-# NRIS certificates
-COPY certs /etc/pki/ca-trust/source/anchors
-RUN update-ca-trust extract
 
 # Create "test connection" script
 RUN mkdir -p $APP_ROOT/src/testUtils
