@@ -340,7 +340,9 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="contacts"
         title="Contacts"
       >
-        <ReviewNOWContacts />
+        <ReviewNOWContacts
+          isViewMode={true}
+        />
       </withRouter(Connect(ScrollContentWrapper))>
       <withRouter(Connect(ScrollContentWrapper))
         id="access"
