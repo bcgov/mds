@@ -31,7 +31,6 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
     rm -rf /var/lib/apt/lists/*
 
 # Create wallet and config files
-# TODO: Remove chmod commands once confirmed working
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
@@ -41,7 +40,7 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 COPY certs /etc/pki/ca-trust/source/anchors
 RUN update-ca-trust extract
 
-# TODO: Remove and delete this "test connection" script
+# Create "test connection" script
 RUN mkdir -p $APP_ROOT/src/testUtils
 COPY test_connection.py $APP_ROOT/src/testUtils
 RUN chmod 777 $APP_ROOT/src/testUtils/test_connection.py
