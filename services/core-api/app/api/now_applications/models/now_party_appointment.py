@@ -7,6 +7,7 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
+from app.api.constants import *
 
 
 class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
