@@ -69,18 +69,6 @@ export class VerifyNoWContacts extends Component {
 VerifyNoWContacts.propTypes = propTypes;
 VerifyNoWContacts.defaultProps = defaultProps;
 
-// const mapStateToProps = (state) => ({
-//   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
-// });
-
-// export default reduxForm({
-//   form: FORM.NOW_CONTACT_FORM,
-//   onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
-//   // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
-//   onSubmit: () => {},
-// })(NOWContactForm);
-// export default connect(mapStateToProps)(VerifyNoWContacts);
-
 const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
   addPartyFormState: getAddPartyFormState(state),
@@ -104,5 +92,3 @@ export default compose(
     onSubmit: () => {},
   })
 )(VerifyNoWContacts);
-
-// export default connect(mapStateToProps, mapDispatchToProps)(VerifyNoWContacts);

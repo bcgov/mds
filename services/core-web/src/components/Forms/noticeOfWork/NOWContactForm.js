@@ -61,20 +61,15 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                   data={filteredRelationships}
                   validate={[required]}
                 />
-                <Form.Item label="Role">
-                  <Field
-                    id={`${field}.party.party_guid`}
-                    name={`${field}.party.party_guid`}
-                    component={RenderField}
-                    // data={filteredRelationships}
-                    validate={[required]}
-                  />
-                </Form.Item>
               </Form.Item>
               <Form.Item>
                 <PartySelectField
                   id={`${field}.party_guid`}
                   name={`${field}.party_guid`}
+                  initialValue={{
+                    label: contacts[index].party.name,
+                    value: contacts[index].party_guid,
+                  }}
                   label={
                     contacts[index]
                       ? `${contacts[index].mine_party_appt_type_code_description} Name`
