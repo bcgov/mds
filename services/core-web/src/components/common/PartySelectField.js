@@ -160,7 +160,6 @@ export class PartySelectField extends Component {
 
   handleFocus = () => {
     if (this.state.initialSearch) {
-      console.log(this.state.initialSearch);
       this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
     }
     this.setState({ initialSearch: null });
@@ -182,7 +181,11 @@ export class PartySelectField extends Component {
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
-    if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
+    if (
+      this.props.initialValue !== undefined &&
+      this.props.initialValue.value !== this.state.selectedOption.value
+    ) {
+      console.log("why did i make it inside the loop??");
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;
