@@ -79,6 +79,14 @@ class Application(Base):
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestwells = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hassurfacedisturbanceoutsidetenure = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        isaccessgated = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        accessauthorizationskeyprovided = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hasaccessauthorizations = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         status = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSION_STATUS), allow_none=True)
 
@@ -262,7 +270,6 @@ class Application(Base):
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     bedrockexcavation = db.Column(db.String)
     spontaneouscombustionhandling = db.Column(db.String)
-    hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     proposedactivites = db.Column(db.String)
     archaeologicalprotectionplan = db.Column(db.String)
 
