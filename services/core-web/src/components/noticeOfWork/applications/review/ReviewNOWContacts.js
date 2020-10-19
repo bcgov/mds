@@ -70,6 +70,7 @@ export const ReviewNOWContacts = (props) => (
             initialValues={props.noticeOfWork}
             contacts={props.contacts}
             partyRelationshipTypesList={props.partyRelationshipTypesList}
+            isEditView
           />
         )}
       </>

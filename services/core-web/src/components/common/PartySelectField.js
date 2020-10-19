@@ -182,7 +182,7 @@ export class PartySelectField extends Component {
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
     if (
-      this.props.initialValue !== undefined &&
+      this.props.initialValue &&
       this.props.initialValue.value !== this.state.selectedOption.value
     ) {
       return this.state.partyDataSource.find((opt) => opt.value === value)

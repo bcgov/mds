@@ -3,6 +3,7 @@ import React from "react";
 import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
+import PropTypes from "prop-types";
 import { Col, Row, Button, Card } from "antd";
 import { startCase } from "lodash";
 import { required } from "@common/utils/Validate";
@@ -20,9 +21,14 @@ import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  isEditView: PropTypes.bool,
 };
 
-const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
+const defaultProps = {
+  isEditView: false,
+};
+
+const renderContacts = ({ fields, contacts, partyRelationshipTypes, isEditView }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "STO", "MOR"].includes(pr.value)
   );
@@ -81,7 +87,7 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                   id={`${field}.party_guid`}
                   name={`${field}.party_guid`}
                   initialValue={
-                    contacts[index]
+                    isEditView && contacts[index]
                       ? {
                           label: contacts[index].party.name,
                           value: contacts[index].party_guid,
@@ -143,6 +149,7 @@ export const NOWContactForm = (props) => {
       component={renderContacts}
       contacts={props.contacts}
       partyRelationshipTypes={props.partyRelationshipTypesList}
+      isEditView={props.isEditView}
     />
   );
 };
