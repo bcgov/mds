@@ -60,22 +60,22 @@ const NOWContact = (contact) => (
 
 export const ReviewNOWContacts = (props) => (
   <div>
-    {props.contacts && props.contacts.length >= 1 ? (
+    {props.isViewMode ? (
       <>
-        {props.isViewMode ? (
+        {props.contacts && props.contacts.length >= 1 ? (
           <Row gutter={16}>{props.contacts.map((contact) => NOWContact(contact))}</Row>
         ) : (
-          <NOWContactForm
-            clearOnSubmit={() => {}}
-            initialValues={props.noticeOfWork}
-            contacts={props.noticeOfWork.contacts}
-            partyRelationshipTypesList={props.partyRelationshipTypesList}
-            isEditView
-          />
+          <NullScreen type="now-contacts" />
         )}
       </>
     ) : (
-      <NullScreen type="now-contacts" />
+      <NOWContactForm
+        clearOnSubmit={() => {}}
+        initialValues={props.noticeOfWork}
+        contacts={props.noticeOfWork.contacts}
+        partyRelationshipTypesList={props.partyRelationshipTypesList}
+        isEditView
+      />
     )}
   </div>
 );

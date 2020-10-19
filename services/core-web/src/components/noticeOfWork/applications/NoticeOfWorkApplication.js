@@ -285,6 +285,9 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleSaveNOWEdit = () => {
+    const contacts = this.props.formValues.contacts.map((contact) => {
+      return { state_modified: "delete", ...contact };
+    });
     this.setState({ submitting: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length > 0) {
@@ -293,7 +296,7 @@ export class NoticeOfWorkApplication extends Component {
       const { id } = this.props.match.params;
       this.props
         .updateNoticeOfWorkApplication(
-          this.props.formValues,
+          { ...this.props.formValues, contacts },
           this.props.noticeOfWork.now_application_guid
         )
         .then(() => {

@@ -299,12 +299,7 @@ export class ReviewApplicationFeeContent extends Component {
             Proposed Term of Application
             <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
-          <Field
-            id="term_of_application"
-            name="term_of_application"
-            component={RenderField}
-            disabled
-          />
+          <Field id="term_of_" name="term_of_" component={RenderField} disabled />
           <div className="field-title">
             Proposed Annual Maximum Tonnage
             <CoreTooltip title="This amount is found within the application in vFCBC or on the first page of the application form pdf and needs to be entered manually in order to continue processing this application." />
