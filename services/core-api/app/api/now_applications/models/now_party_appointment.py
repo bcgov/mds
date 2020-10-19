@@ -7,13 +7,14 @@ from app.extensions import db
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.party import Party
+from app.api.constants import *
 
 
 class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "now_party_appointment"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
-    
+
     # Columns
     now_party_appointment_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
