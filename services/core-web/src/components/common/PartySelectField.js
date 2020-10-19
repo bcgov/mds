@@ -160,6 +160,7 @@ export class PartySelectField extends Component {
 
   handleFocus = () => {
     if (this.state.initialSearch) {
+      console.log(this.state.initialSearch);
       this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
     }
     this.setState({ initialSearch: null });

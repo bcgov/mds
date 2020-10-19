@@ -66,10 +66,14 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                 <PartySelectField
                   id={`${field}.party_guid`}
                   name={`${field}.party_guid`}
-                  initialValue={{
-                    label: contacts[index].party.name,
-                    value: contacts[index].party_guid,
-                  }}
+                  initialValue={
+                    contacts[index]
+                      ? {
+                          label: contacts[index].party.name,
+                          value: contacts[index].party_guid,
+                        }
+                      : undefined
+                  }
                   label={
                     contacts[index]
                       ? `${contacts[index].mine_party_appt_type_code_description} Name`
@@ -82,13 +86,17 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                   }
                   validate={[required]}
                   allowAddingParties
-                  initialValues={{
-                    ...contacts[index].party,
-                    ...(contacts[index].party.address.length > 0
-                      ? contacts[index].party.address[0]
-                      : {}),
-                  }}
-                  initialSearch={contacts[index].party.name}
+                  initialValues={
+                    contacts[index]
+                      ? {
+                          ...contacts[index].party,
+                          ...(contacts[index].party.address.length > 0
+                            ? contacts[index].party.address[0]
+                            : {}),
+                        }
+                      : {}
+                  }
+                  initialSearch={contacts[index] ? contacts[index].party.name : undefined}
                 />
               </Form.Item>
               <br />
