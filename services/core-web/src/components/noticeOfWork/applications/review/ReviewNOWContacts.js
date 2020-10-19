@@ -14,11 +14,11 @@ import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
     .isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 const NOWContact = (contact) => (
   <Col key={contact.now_party_appointment_id} xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
-    {" "}
     <Card
       title={
         <div className="inline-flex between wrap">

@@ -56,30 +56,30 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = () => {
-    this.props.submit(FORM.NOW_CONTACT_FORM);
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    if (errors.length === 0) {
-      const contacts = this.props.verifyContactFormValues.contacts.map((contact) => {
-        return {
-          mine_party_appt_type_code: contact.mine_party_appt_type_code,
-          party_guid: contact.party_guid,
-        };
-      });
-      const values = {
-        ...this.props.verifyMineFormValues,
-        contacts,
+    // this.props.submit(FORM.NOW_CONTACT_FORM);
+    // const errors = Object.keys(flattenObject(this.props.formErrors));
+    // if (errors.length === 0) {
+    const contacts = this.props.verifyContactFormValues.contacts.map((contact) => {
+      return {
+        mine_party_appt_type_code: contact.mine_party_appt_type_code,
+        party_guid: contact.party_guid,
       };
-      this.props
-        .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
-        .then(() => {
-          return this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(({ data }) => {
-              this.props.loadMineData(values.mine_guid);
-              this.setState({ isImported: data.imported_to_core });
-            });
-        });
-    }
+    });
+    const values = {
+      ...this.props.verifyMineFormValues,
+      contacts,
+    };
+    this.props
+      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
+      .then(() => {
+        return this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(({ data }) => {
+            this.props.loadMineData(values.mine_guid);
+            this.setState({ isImported: data.imported_to_core });
+          });
+      });
+    // }
   };
 
   renderInspectorAssignment = () => {
