@@ -296,7 +296,7 @@ class SoftDeleteMixin(object):
     #TODO https://blog.miguelgrinberg.com/post/implementing-the-soft-delete-pattern-with-flask-and-sqlalchemy
     #This model can choose it's query class (one that respects the deleted ind!!!)
 
-    def delete(self):
+    def delete(self, commit=True):
         if False:
             #experimental code
             #cascading smart delete (soft/hard, only on children, not parents)
@@ -312,9 +312,9 @@ class SoftDeleteMixin(object):
                     #cascade deleted indicator
                     related = getattr(self, model.relationship)
                     if type(related) == list:
-                        [r.delete() for r in related]
+                        [r.delete(commit=commit) for r in related]
                     else:
-                        related.delete()
+                        related.delete(commit=commit)
 
         #TODO, handle children, or let model override this.
         self.deleted_ind = True
