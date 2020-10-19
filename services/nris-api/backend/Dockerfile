@@ -36,9 +36,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY sqlnet.ora /opt/oracle/instantclient/network/admin
 COPY tnsnames.ora /opt/oracle/instantclient/network/admin
 
-COPY fix-uid.sh /usr/local/bin/
-RUN chmod 777 /usr/local/bin/fix-uid.sh
-
 # TODO: Remove and delete this "test connection" script
 COPY test_connection.py /app
 RUN chmod 777 /app/test_connection.py
