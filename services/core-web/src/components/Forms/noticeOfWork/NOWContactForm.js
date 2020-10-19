@@ -6,6 +6,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Button, Card } from "antd";
 import { startCase } from "lodash";
 import { required } from "@common/utils/Validate";
+import { PlusOutlined } from "@ant-design/icons";
 import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
@@ -27,14 +28,17 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   );
   return (
     <>
-      <div className="right">
+      {/* <div className="right">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <AddButton onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}>
+          <AddButton
+            type="secondary"
+            onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
+          >
             Add New Contact
           </AddButton>
         </AuthorizationWrapper>
       </div>
-      <br />
+      <br /> */}
 
       <Row gutter={24}>
         {fields.map((field, index) => (
@@ -113,6 +117,19 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
             </Card>
           </Col>
         ))}
+        <Col lg={12} sm={24}>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <div
+              className="add-content-block"
+              onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
+            >
+              <div className="inline-flex flex-center">
+                <PlusOutlined className="icon-sm padding-small--right" />
+                <p>Add New Contact</p>
+              </div>
+            </div>
+          </AuthorizationWrapper>
+        </Col>
       </Row>
     </>
   );

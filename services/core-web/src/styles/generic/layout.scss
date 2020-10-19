@@ -416,3 +416,16 @@ body {
 .no-margin {
   margin: 0;
 }
+
+.add-content-block {
+  background-color: #f3f0f0;
+  margin: 50px;
+  padding: 90px;
+  text-align: center;
+  box-shadow: $default-box-shadow;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken(#f3f0f0, 2%);
+  }
+}
