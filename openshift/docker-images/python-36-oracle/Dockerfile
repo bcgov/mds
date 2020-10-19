@@ -61,10 +61,6 @@ RUN mkdir -p $APP_ROOT/src/testUtils
 COPY test_connection.py $APP_ROOT/src/testUtils
 RUN chmod 777 $APP_ROOT/src/testUtils/test_connection.py
 
-
-COPY fix-uid.sh /usr/local/bin
-RUN chmod 777 /usr/local/bin/fix-uid.sh
-
 USER 1001
 
 # Install sonar-scanner
