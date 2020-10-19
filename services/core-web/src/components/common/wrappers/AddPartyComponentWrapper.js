@@ -11,6 +11,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { createParty, setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "../LinkButton";
 
 const propTypes = {
@@ -23,6 +25,7 @@ const propTypes = {
   // addPartyFormState is selected from the partiesReducer
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
@@ -42,21 +45,19 @@ const defaultAddPartyFormState = {
 };
 
 export class AddPartyComponentWrapper extends Component {
-  state = { isPerson: true, addingParty: this.props.addPartyFormState.showingAddPartyForm };
+  state = { isPerson: true, addingParty: false };
 
-  componentWillUnmount = () => {
+  componentWillMount = () => {
     // Form values are reset to default when mounted as the modal may have been closed with the form showing.
     this.resetAddPartyForm();
   };
 
-  componentDidMount = () => {
-    if (this.props.addPartyFormState.showingAddPartyForm) {
-      this.showAddPartyForm();
-    }
-  };
-
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps.addPartyFormState.showingAddPartyForm) {
+    if (
+      nextProps.addPartyFormState.showingAddPartyForm &&
+      this.props.addPartyFormState.showingAddPartyForm !==
+        nextProps.addPartyFormState.showingAddPartyForm
+    ) {
       this.showAddPartyForm();
     } else {
       this.hideAddPartyForm();
@@ -64,7 +65,10 @@ export class AddPartyComponentWrapper extends Component {
   };
 
   resetAddPartyForm = () => {
-    this.props.setAddPartyFormState(defaultAddPartyFormState);
+    this.props.setAddPartyFormState({
+      ...this.props.addPartyFormState,
+      ...defaultAddPartyFormState,
+    });
   };
 
   showAddPartyForm = () => {
@@ -111,7 +115,11 @@ export class AddPartyComponentWrapper extends Component {
             <Radio.Button value={false}>Company</Radio.Button>
           </Radio.Group>
         )}
-        <AddQuickPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
+        <AddQuickPartyForm
+          onSubmit={this.handlePartySubmit}
+          isPerson={this.state.isPerson}
+          provinceOptions={this.props.provinceOptions}
+        />
       </div>
     </div>
   );
@@ -153,6 +161,7 @@ export class AddPartyComponentWrapper extends Component {
 
 const mapStateToProps = (state) => ({
   addPartyFormState: getAddPartyFormState(state),
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

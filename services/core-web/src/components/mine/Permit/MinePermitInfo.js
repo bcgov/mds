@@ -75,9 +75,11 @@ export class MinePermitInfo extends Component {
 
   componentWillMount = () => {
     const { id } = this.props.match.params;
-    this.props.fetchPermits(id).then(() => {
+    if (this.props.permits === []) {
+      this.props.fetchPermits(id).then(() => {});
+    } else {
       this.setState({ isLoaded: true });
-    });
+    }
   };
 
   componentWillReceiveProps = (nextProps) => {

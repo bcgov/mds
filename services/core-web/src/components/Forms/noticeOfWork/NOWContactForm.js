@@ -87,6 +87,13 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                   }
                   validate={[required]}
                   allowAddingParties
+                  initialValues={{
+                    ...contacts[index].party,
+                    ...(contacts[index].party.address.length > 0
+                      ? contacts[index].party.address[0]
+                      : {}),
+                  }}
+                  initialSearch={contacts[index].party.name}
                 />
               </Form.Item>
               <br />

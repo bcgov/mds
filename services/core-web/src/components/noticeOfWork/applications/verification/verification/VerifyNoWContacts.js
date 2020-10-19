@@ -22,6 +22,7 @@ const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -32,6 +33,7 @@ export class VerifyNoWContacts extends Component {
       props: {
         title: ModalContent.ADD_CONTACT,
         partyRelationshipTypesList: this.props.partyRelationshipTypesList,
+        closeModal: this.props.closeModal,
       },
       content: modalConfig.ADD_QUICK_PARTY,
     });

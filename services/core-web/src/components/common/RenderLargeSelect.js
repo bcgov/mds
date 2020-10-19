@@ -18,7 +18,11 @@ const propTypes = {
     label: PropTypes.label,
     value: PropTypes.string,
   }).isRequired,
-  input: PropTypes.shape({ value: PropTypes.string, onChange: PropTypes.func }).isRequired,
+  input: PropTypes.shape({
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+  }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.string,
@@ -26,6 +30,7 @@ const propTypes = {
   }).isRequired,
   handleSearch: PropTypes.func,
   handleSelect: PropTypes.func,
+  handleFocus: PropTypes.func,
 };
 
 const doNothing = () => {};
@@ -34,6 +39,7 @@ const defaultProps = {
   placeholder: "",
   handleSelect: doNothing,
   handleSearch: doNothing,
+  handleFocus: doNothing,
 };
 
 const RenderLargeSelect = (props) => (
@@ -65,6 +71,10 @@ const RenderLargeSelect = (props) => (
       onChange={props.input.onChange}
       onBlur={props.input.onChange(props.selectedOption.value)}
       {...props.input}
+      onFocus={(event) => {
+        props.handleFocus();
+        props.input.onFocus(event);
+      }}
     />
   </Form.Item>
 );
