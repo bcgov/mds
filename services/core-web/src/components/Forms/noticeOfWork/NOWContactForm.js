@@ -1,22 +1,19 @@
 /* eslint-disable */
 import React from "react";
-import { reduxForm, FieldArray, Field } from "redux-form";
+import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { PlusOutlined } from "@ant-design/icons";
-import { Col, Row, Button } from "antd";
+import { Col, Row, Button, Card } from "antd";
 import { startCase } from "lodash";
-import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
 import * as Styles from "@/constants/styles";
-import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import { PROFILE_NOCIRCLE } from "@/constants/assets";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
-import RenderField from "@/components/common/RenderField";
 
 const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
@@ -31,28 +28,30 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
       <Row gutter={24}>
         {fields.map((field, index) => (
           <Col lg={12} sm={24} key={index}>
-            <div className="grey-background">
-              <div className="inline-flex">
-                <img
-                  className="icon-sm padding-small--right"
-                  src={PROFILE_NOCIRCLE}
-                  alt="user"
-                  height={25}
-                  style={{ width: "initial" }}
-                />
-                <p className="field-title">{`NoW ${
-                  contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
-                } Contact Information:`}</p>
-                <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
-                <Button
-                  ghost
-                  onClick={() => fields.remove(index)}
-                  className="position-right"
-                  style={{ margin: "0 30px 20px 0" }}
-                >
-                  <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                </Button>
-              </div>
+            <Card
+              title={
+                <div className="inline-flex padding-md--top">
+                  <img
+                    className="icon-sm padding-md--right"
+                    src={PROFILE_NOCIRCLE}
+                    alt="user"
+                    height={25}
+                  />
+                  <p className="field-title">{`NoW ${
+                    contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
+                  } Contact Information:`}</p>
+                  <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
+                  <Button
+                    ghost
+                    onClick={() => fields.remove(index)}
+                    className="position-right no-margin"
+                  >
+                    <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                  </Button>
+                </div>
+              }
+              bordered={false}
+            >
               <Form.Item label="Role">
                 <Field
                   id={`${field}.mine_party_appt_type_code`}
@@ -100,7 +99,7 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
                 />
               </Form.Item>
               <br />
-            </div>
+            </Card>
           </Col>
         ))}
       </Row>
@@ -118,11 +117,7 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
 };
 
 export const NOWContactForm = (props) => {
-  console.log(props.initialValues);
-  console.log(props.initialValues.contacts);
-  console.log(props.initialValues.contacts[0].party_guid);
   return (
-    // <Form layout="vertical">
     <FieldArray
       id="contacts"
       name="contacts"
@@ -130,16 +125,9 @@ export const NOWContactForm = (props) => {
       contacts={props.contacts}
       partyRelationshipTypes={props.partyRelationshipTypesList}
     />
-    // </Form>
   );
 };
 
 NOWContactForm.propTypes = propTypes;
 
 export default NOWContactForm;
-// export default reduxForm({
-//   form: FORM.NOW_CONTACT_FORM,
-//   onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
-//   // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
-//   onSubmit: () => {},
-// })(NOWContactForm);
