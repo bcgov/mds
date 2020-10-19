@@ -3,7 +3,6 @@ import React from "react";
 import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { PlusOutlined } from "@ant-design/icons";
 import { Col, Row, Button, Card } from "antd";
 import { startCase } from "lodash";
 import { required } from "@common/utils/Validate";
@@ -11,6 +10,9 @@ import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import { PROFILE_NOCIRCLE } from "@/constants/assets";
+import AddButton from "@/components/common/AddButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -25,6 +27,15 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
   );
   return (
     <>
+      <div className="right">
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <AddButton onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}>
+            Add New Contact
+          </AddButton>
+        </AuthorizationWrapper>
+      </div>
+      <br />
+
       <Row gutter={24}>
         {fields.map((field, index) => (
           <Col lg={12} sm={24} key={index}>
@@ -102,15 +113,6 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes }) => {
             </Card>
           </Col>
         ))}
-      </Row>
-      <Row gutter={16}>
-        <Button
-          className="btn--dropdown"
-          onClick={(event) => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
-        >
-          <PlusOutlined style={{ color: Styles.COLOR.violet }} />
-          Add New Contact
-        </Button>
       </Row>
     </>
   );
