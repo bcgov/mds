@@ -68,7 +68,7 @@ export const ReviewNOWContacts = (props) => (
           <NOWContactForm
             clearOnSubmit={() => {}}
             initialValues={props.noticeOfWork}
-            contacts={props.contacts}
+            contacts={props.noticeOfWork.contacts}
             partyRelationshipTypesList={props.partyRelationshipTypesList}
             isEditView
           />

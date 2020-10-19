@@ -32,20 +32,9 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes, isEditView }
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "STO", "MOR"].includes(pr.value)
   );
+  console.log(contacts);
   return (
     <>
-      {/* <div className="right">
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <AddButton
-            type="secondary"
-            onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
-          >
-            Add New Contact
-          </AddButton>
-        </AuthorizationWrapper>
-      </div>
-      <br /> */}
-
       <Row gutter={24}>
         {fields.map((field, index) => (
           <Col lg={12} sm={24} key={index}>
