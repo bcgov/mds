@@ -32,29 +32,14 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
 
 # Create wallet and config files
 # TODO: Remove chmod commands once confirmed working
-# RUN mkdir -p $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
-# COPY wallet $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
-# RUN chmod 777 -R $APP_ROOT/oracle_bin/instantclient/network/admin/wallet
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
-
-# NOTE: These commands cause the build to fail
-# RUN mkdir -p $APP_ROOT/src/app/db/wallet
-# COPY test_connection.py $APP_ROOT/src/app/db
-# COPY wallet $APP_ROOT/src/app/db/wallet
-# COPY sqlnet.ora $APP_ROOT/src/app/db
-# COPY tnsnames.ora $APP_ROOT/src/app/db
-# RUN chmod 777 $APP_ROOT/src/app/db/test_connection.py
-# RUN chmod 777 -R $APP_ROOT/src/app/db/wallet
-# RUN chmod 777 $APP_ROOT/src/app/db/sqlnet.ora
-# RUN chmod 777 $APP_ROOT/src/app/db/tnsnames.ora
 
 # NRIS certificates
 COPY certs /etc/pki/ca-trust/source/anchors
 RUN update-ca-trust extract
-
 
 # TODO: Remove and delete this "test connection" script
 RUN mkdir -p $APP_ROOT/src/testUtils
@@ -70,7 +55,6 @@ RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/Sona
     rm -rf ${APP_ROOT}/_sonar-scanner-cli \
     rm /tmp/sonar-scanner-cli.zip && \
     chmod -R 755 ${APP_ROOT}/sonar-scanner-cli
-
 
 # Install project dependencies
 COPY requirements.txt ${APP_ROOT}/src
