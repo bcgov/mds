@@ -4,7 +4,7 @@ import cx_Oracle
 
 print('test_connection.py')
 
-dsn = 'mds_nris_test_1'
+dsn = 'mds_nris_test'
 oracle_db = cx_Oracle.connect(user='luke_test', password='luketest12#', dsn=dsn, encoding="UTF-8")
 
 print('connected')
