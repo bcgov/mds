@@ -145,15 +145,8 @@
     @include tablet {
       display: none;
     }
-
-    &.view-only {
-      top: 180px;
-    }
   }
 
-  &.view-only {
-    top: 180px;
-  }
 
   ul {
     list-style: none;
@@ -163,16 +156,11 @@
     position: relative;
     padding-right: 20px;
     left: 250px;
-    top: 30px;
     width: calc(100vw - 270px);
 
     @include tablet {
       position: inherit;
       width: 100%;
-    }
-
-    &--view {
-      top: 50px;
     }
   }
 
@@ -205,4 +193,29 @@
   padding-bottom: 5px;
   width: 25px;
   height: 25px;
+}
+
+.tab-disclaimer {
+  width: 800px;
+  position: relative;
+  top: -10px;
+  margin: auto;
+
+  &.draft {
+    left: -120px;
+  }
+
+  @include mobile {
+    display: none;
+  }
+
+  @include tablet {
+    width: 400px;
+  }
+}
+
+.fee-determination--block {
+  border: 2px solid #a09495;
+  border-radius: 5px;
+  padding: 10px;
 }

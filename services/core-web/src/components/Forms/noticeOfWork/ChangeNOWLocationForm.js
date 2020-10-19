@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, Badge } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm, Badge } from "antd";
 import { required, lat, lon } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
@@ -12,6 +14,8 @@ import MineCard from "@/components/mine/NoticeOfWork/MineCard";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import RenderField from "@/components/common/RenderField";
 import * as Styles from "@/constants/styles";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -34,10 +38,12 @@ const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
 // eslint-disable-next-line react/prefer-stateless-function
 export class ChangeNOWLocationForm extends Component {
   state = { submitting: false };
+
   handleFormSubmit = (values) => {
     this.setState({ submitting: true });
     this.props.handleSubmit(values);
   };
+
   render() {
     const additionalPin =
       this.props.latitude && this.props.longitude
@@ -49,13 +55,12 @@ export class ChangeNOWLocationForm extends Component {
         <Row gutter={16}>
           {!this.props.locationOnly && (
             <Col md={12} s={24}>
-              <Form.Item>
+              <Form.Item label="Mine Name">
                 <Field
                   id="mine_guid"
                   name="mine_guid"
                   component={RenderMineSelect}
                   validate={[required]}
-                  showCard
                   fullWidth
                   additionalPin={additionalPin}
                 />
@@ -90,14 +95,16 @@ export class ChangeNOWLocationForm extends Component {
               </Button>
             </Popconfirm>
           )}
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            disabled={this.state.submitting}
-          >
-            {this.props.title}
-          </Button>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Button
+              className="full-mobile"
+              type="primary"
+              htmlType="submit"
+              disabled={this.state.submitting}
+            >
+              {this.props.title}
+            </Button>
+          </AuthorizationWrapper>
         </div>
       </Form>
     );

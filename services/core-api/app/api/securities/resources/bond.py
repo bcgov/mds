@@ -46,6 +46,11 @@ class BondListResource(Resource, UserMixin):
     @api.marshal_with(BOND, code=201)
     def post(self):
 
+        #remove the project_id from the object as it lives on the permit
+        project_id = request.json['bond'].get('project_id')
+        if 'project_id' in request.json['bond'].keys():
+            del request.json['bond']['project_id']
+
         try:
             bond = Bond._schema().load(request.json['bond'])
         except MarshmallowError as e:
@@ -60,6 +65,9 @@ class BondListResource(Resource, UserMixin):
 
         for doc in bond.documents:
             doc.mine_guid = permit._all_mines[0].mine_guid
+
+        if project_id:
+            bond.permit.project_id = project_id
 
         bond.save()
 
@@ -92,6 +100,10 @@ class BondResource(Resource, UserMixin):
         history = temp_bond.save_bond_history()
         request.json['amount'] = temp_bond.amount
 
+        #remove the project_id from the object as it lives on the permit
+        project_id = request.json['project_id']
+        del request.json['project_id']
+
         try:
             bond = Bond._schema().load(request.json, instance=Bond.find_by_bond_guid(bond_guid))
         except MarshmallowError as e:
@@ -100,6 +112,11 @@ class BondResource(Resource, UserMixin):
 
         for doc in bond.documents:
             doc.mine_guid = bond.permit._all_mines[0].mine_guid
+
+        #update the permits project ID if needed.
+        if project_id != bond.permit.project_id:
+            bond.permit.project_id = project_id
+
         try:
             bond.save()
         except:
@@ -128,7 +145,7 @@ class BondTransferResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         if not permit:
             raise BadRequest('No permit was found with the permit_guid provided.')
-        if permit.permit_guid == bond.permit.permit_guid:
+        if permit.permit_id in [ma.permit_id for ma in bond.permit._mine_associations]:
             raise BadRequest('This bond is already associated with this permit.')
         if bond.permit.mine_guid not in [m.mine_guid for m in permit._all_mines]:
             raise BadRequest('You can only transfer to a permit on the same mine.')

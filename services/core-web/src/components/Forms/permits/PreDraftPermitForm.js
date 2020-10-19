@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required } from "@common/utils/Validate";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -21,20 +25,22 @@ export const PreDraftPermitForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
-        <Col>
+        <Col span={24}>
           {props.isAmendment ? (
-            <Form.Item>
-              <Field
-                id="permit_guid"
-                name="permit_guid"
-                label="Permit *"
-                placeholder="Select a Permit"
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                data={permitDropdown}
-                validate={[required]}
-              />
-            </Form.Item>
+            <div className="left">
+              <Form.Item>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  label="Permit *"
+                  placeholder="Select a Permit"
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  validate={[required]}
+                />
+              </Form.Item>
+            </div>
           ) : (
             <div className="left">
               <Form.Item>
@@ -62,9 +68,16 @@ export const PreDraftPermitForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          Start Draft Permit
-        </Button>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+          >
+            Start Draft Permit
+          </Button>
+        </AuthorizationWrapper>
       </div>
     </Form>
   );

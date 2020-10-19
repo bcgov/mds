@@ -15,13 +15,13 @@ const propTypes = {
 export class UsersPage extends Component {
   state = { isLoaded: true };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     return (
       (this.state.isLoaded && (
         <Row>
-          <Col>
+          <Col span={24}>
             <Title>My Users</Title>
             <Divider />
             <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>

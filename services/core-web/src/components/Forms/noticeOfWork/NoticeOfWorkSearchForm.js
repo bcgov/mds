@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import PropTypes from "prop-types";
-import { Form, Button, Col, Row, Icon } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
@@ -30,7 +33,7 @@ export class NoticeOfWorkSearchForm extends Component {
         </Row>
         <div className="right center-mobile">
           <Button className="full-mobile" type="primary" htmlType="submit">
-            <Icon type="search" />
+            <SearchOutlined />
           </Button>
         </div>
       </Form>

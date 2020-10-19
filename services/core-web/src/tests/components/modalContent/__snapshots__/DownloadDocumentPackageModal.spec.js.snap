@@ -3,7 +3,7 @@
 exports[`DownloadDocumentPackageModal renders properly 1`] = `
 <div>
   <h4>
-    Submission Documents (vFCBC/NROS)
+    vFCBC/NROS Application Files
   </h4>
   <NOWSubmissionDocuments
     documents={Array []}
@@ -35,15 +35,10 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <div
     className="right center-mobile padding-md--top"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       placement="topRight"
@@ -60,7 +55,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"
@@ -70,10 +65,8 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       onClick={[Function]}
       type="primary"
     >
-      <Icon
+      <ForwardRef(DownloadOutlined)
         className="padding-small--right icon-sm"
-        theme="outlined"
-        type="download"
       />
       Download Referral Package
     </Button>

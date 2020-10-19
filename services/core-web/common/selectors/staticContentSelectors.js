@@ -32,6 +32,7 @@ export const {
   getNoticeOfWorkApplicationPermitTypeOptions,
   getNoticeOfWorkApplicationReviewOptions,
   getPartyRelationshipTypes,
+  getPartyBusinessRoleOptions,
   getBondStatusOptions,
   getBondTypeOptions,
   getBondDocumentTypeOptions,
@@ -184,6 +185,11 @@ export const getDropdownProvinceOptions = createSelectorWrapper(
 // no need for wrapper, does not have a 'active_ind'
 export const getDropdownPermitStatusOptions = createSelector([getPermitStatusOptions], (options) =>
   createDropDownList(options, "description", "permit_status_code")
+);
+
+export const getDropdownPermitStatusOptionsHash = createSelector(
+  getDropdownPermitStatusOptions,
+  createLabelHash
 );
 
 export const getDropdownIncidentDocumentTypeOptions = createSelectorWrapper(
@@ -562,6 +568,17 @@ export const getPartyRelationshipTypesList = createSelectorWrapper(
 
 export const getPartyRelationshipTypeHash = createSelector(
   [getPartyRelationshipTypesList],
+  createLabelHash
+);
+
+export const getPartyBusinessRoleDropDownOptions = createSelectorWrapper(
+  getPartyBusinessRoleOptions,
+  createDropDownList,
+  ["description", "party_business_role_code", "active_ind"]
+);
+
+export const getPartyBusinessRoleOptionsHash = createSelector(
+  [getPartyBusinessRoleDropDownOptions],
   createLabelHash
 );
 

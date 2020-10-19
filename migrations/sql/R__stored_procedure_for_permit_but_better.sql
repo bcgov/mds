@@ -52,14 +52,20 @@ DECLARE
 	    email                  character varying(254),
 	    effective_date         date
 	);
+
+	-- Add security adjustment
+	ALTER TABLE ETL_PERMIT
+    ADD COLUMN IF NOT EXISTS security_adjustment numeric;
+
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
-	    mine_no||permit_no||recv_dt||iss_dt AS combo_id,
+	    mine_no||permit_no||recv_dt||COALESCE(iss_dt::varchar,
+                                             ' null_issue_dt') AS combo_id,
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
 	WHERE
-	    (sta_cd ~* 'z'  OR sta_cd ~* 'a')
+	    (sta_cd ~* 'z'  OR sta_cd ~* 'a' OR sta_cd ~* 'r' or sta_cd ~* 'c')
 	    AND
 	    ((permit_no !~ '^ *$' AND mmspmt.permit_no IS NOT NULL))
 	GROUP BY combo_id;
@@ -67,6 +73,9 @@ DECLARE
 
 	SELECT COUNT(*) FROM etl_valid_permits INTO tmp_num_records;
     RAISE NOTICE '# of valid permits found in mms: %', tmp_num_records;
+
+--Open - 'A','C','N','S','X'
+--Closed - 'R','Z'
 
 
     DROP TABLE IF EXISTS etl_permit_info;
@@ -84,6 +93,7 @@ DECLARE
         ) AS permit_expiry_dt                                    ,
         CASE mmspmt.sta_cd
             WHEN 'Z' THEN 'C' --closed
+            WHEN 'R' THEN 'C' --closed
             ELSE 'O' --open
         END AS sta_cd                                            ,
         mmspmt.upd_no
@@ -329,9 +339,9 @@ DECLARE
 	    WHERE
 	    ETL_PERMIT.mine_guid = info.mine_guid
 	    AND
-	    ETL_PERMIT.party_guid = info.party_guid
+	    ETL_PERMIT.party_combo_id = info.party_combo_id
 	    AND
-	    ETL_PERMIT.permit_guid = info.permit_guid;
+	    ETL_PERMIT.permit_no = info.permit_no;
 
 	-- ################################################################
 	-- # Insert new records into ETL_PERMIT
@@ -383,11 +393,11 @@ DECLARE
 	    info.party_type            ,
 	    info.phone_no              ,
 	    info.email                 ,
-	    info.effective_date
+	    info.effective_date        
 	FROM etl_all_permit_info info
 	WHERE
 	    info.new_permit = TRUE
-	    AND
+	    OR
 	    info.new_permittee = TRUE;
 
 
@@ -403,7 +413,10 @@ DECLARE
 	FROM ETL_PERMIT etl
 		INNER JOIN mine_permit_xref mpx on etl.mine_guid=mpx.mine_guid
 	WHERE permit.permit_guid = etl.permit_guid
-		AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no);
+	AND
+		(issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+		OR
+		received_date = (select max(received_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no));
 
 
 	-- ################################################################
@@ -434,7 +447,11 @@ DECLARE
 	        SELECT permit_no
 	        FROM permit
 	    )
-	    AND issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+	    AND
+		(issue_date = (select max(issue_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no)
+		OR
+		received_date = (select max(received_date) from ETL_PERMIT where etl.permit_no = ETL_PERMIT.permit_no))
+
 	    GROUP BY permit_no
 	)
 	INSERT INTO permit (
@@ -534,11 +551,11 @@ DECLARE
 	)
 	SELECT
 	    permit.permit_id				         	,
-	    new_permit_amendments.permit_amendment_guid  ,
-	    new_permit_amendments.mine_guid 					,
+	    new_permit_amendments.permit_amendment_guid ,
+	    new_permit_amendments.mine_guid 			,
 	    new_permit_amendments.received_date       	,
 	    new_permit_amendments.issue_date          	,
-	    new_permit_amendments.authorization_end_date	,
+	    new_permit_amendments.authorization_end_date,
 	    CASE WHEN original_permits.permit_amendment_guid IS NOT NULL THEN 'OGP' ELSE 'AMD' END,
 	    'ACT'										,
 	    'mms_migration'                				,
@@ -561,8 +578,6 @@ DECLARE
 	    party_name       = etl.party_name            ,
 	    phone_no         = etl.phone_no              ,
 	    email            = etl.email                 ,
-	    effective_date   = etl.effective_date        ,
-	    expiry_date      = authorization_end_date    ,
 	    update_user      = 'mms_migration'           ,
 	    update_timestamp = now()                     ,
 	    party_type_code  = etl.party_type
@@ -573,7 +588,6 @@ DECLARE
 	    OR party.party_name != etl.party_name
 	    OR party.phone_no != etl.phone_no
 	    OR party.email != etl.email
-	    OR party.effective_date != etl.effective_date
 	    OR party.party_type_code != etl.party_type
 	   );
 
@@ -605,8 +619,6 @@ DECLARE
 	    party_name                          ,
 	    phone_no                            ,
 	    email                               ,
-	    effective_date                      ,
-	    expiry_date                         ,
 	    create_user                         ,
 	    create_timestamp                    ,
 	    update_user                         ,
@@ -619,8 +631,6 @@ DECLARE
 	    party_name                           ,
 	    phone_no                             ,
 	    email                                ,
-	    COALESCE(effective_date , now()) AS effective_date,
-	    authorization_end_date as expiry_date,
 	    'mms_migration'                      ,
 	    now()                                ,
 	    'mms_migration'                      ,
@@ -641,11 +651,12 @@ DECLARE
 	    mine_party_appt_type_code = 'PMT'
 	    -- Only on mines in ETL process
 	AND
-	    mine_guid IN (
-	        SELECT mine_guid
-	        FROM ETL_MINE
-	        WHERE major_mine_ind = 'f'
-	        AND mine_guid in (select mine_guid from ETL_PERMIT)
+	    permit_id IN (
+	        SELECT p.permit_id
+	        FROM permit p 
+			inner join ETL_PERMIT etlp on p.permit_guid = etlp.permit_guid
+			inner join ETL_MINE etlm on etlp.mine_guid = etlm.mine_guid
+	        WHERE etlm.major_mine_ind = 'f'
 	    );
 
 

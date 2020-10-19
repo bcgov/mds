@@ -48,14 +48,19 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       </FormItem>
       <FormItem
         hasFeedback={false}
+        label="Assessed Liability"
       >
+        <p
+          className="p-light"
+        >
+          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in CORE will not be updated in MMS.
+        </p>
         <Field
           autoComplete="off"
           component={[Function]}
           format={[Function]}
-          id="security_total"
-          label="Security Assessment"
-          name="security_total"
+          id="security_adjustment"
+          name="security_adjustment"
           normalize={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
@@ -64,6 +69,16 @@ exports[`PermitAmendmentForm renders properly 1`] = `
               [Function],
             ]
           }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="security_received_date"
+          label="Security Received"
+          name="security_received_date"
         />
       </FormItem>
       <FormItem
@@ -111,15 +126,10 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       }
     }
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -138,7 +148,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"

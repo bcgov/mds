@@ -10,7 +10,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -33,7 +35,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -57,13 +61,14 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
         label="Is this a historic mine status?"
       >
-        <RadioGroup
-          buttonStyle="outline"
+        <Memo(RadioGroup)
           defaultValue={false}
           onChange={[Function]}
           value={false}
@@ -80,7 +85,7 @@ exports[`MineRecordForm renders properly 1`] = `
           >
             No
           </Radio>
-        </RadioGroup>
+        </Memo(RadioGroup)>
       </FormItem>
     </Col>
   </Row>
@@ -98,24 +103,24 @@ exports[`MineRecordForm renders properly 1`] = `
           data={
             Array [
               Object {
-                "label": "South West",
-                "value": "SW",
-              },
-              Object {
-                "label": "South Central",
-                "value": "SC",
+                "label": "North East",
+                "value": "NE",
               },
               Object {
                 "label": "North West",
                 "value": "NW",
               },
               Object {
-                "label": "North East",
-                "value": "NE",
+                "label": "South Central",
+                "value": "SC",
               },
               Object {
                 "label": "South East",
                 "value": "SE",
+              },
+              Object {
+                "label": "South West",
+                "value": "SW",
               },
             ]
           }
@@ -191,7 +196,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -212,7 +219,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -234,7 +243,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -251,7 +262,9 @@ exports[`MineRecordForm renders properly 1`] = `
   <Row
     gutter={16}
   >
-    <Col>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -272,15 +285,10 @@ exports[`MineRecordForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -298,7 +306,7 @@ exports[`MineRecordForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"

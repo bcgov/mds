@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@common/constants/API";
@@ -35,7 +37,10 @@ export class ReclamationInvoiceForm extends Component {
 
   onFileLoad = (document_name, document_manager_guid) => {
     this.setState((prevState) => ({
-      uploadedFiles: [{ document_manager_guid, document_name }, ...prevState.uploadedFiles],
+      uploadedFiles: [
+        { document_manager_guid, document_name, mine_guid: this.props.mineGuid },
+        ...prevState.uploadedFiles,
+      ],
     }));
   };
 
@@ -101,6 +106,7 @@ export class ReclamationInvoiceForm extends Component {
                 label="Project ID*"
                 component={RenderField}
                 validate={[required]}
+                disabled
               />
             </Form.Item>
           </Col>

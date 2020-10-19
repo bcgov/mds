@@ -1,6 +1,7 @@
 import React from "react";
-import { Icon, Button } from "antd";
+import { Button } from "antd";
 import PropTypes from "prop-types";
+import { PlusOutlined } from "@ant-design/icons";
 
 /**
  * @constant AddButton  - Globally styled add button
@@ -17,7 +18,7 @@ const defaultProps = {
 
 const AddButton = (props) => (
   <Button type="primary" className="full-mobile btn--middle" {...props}>
-    <Icon type="plus" theme="outlined" className="padding-small--right icon-sm" />
+    <PlusOutlined />
     {props.children}
   </Button>
 );

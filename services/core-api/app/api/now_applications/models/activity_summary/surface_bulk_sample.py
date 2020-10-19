@@ -21,8 +21,7 @@ class SurfaceBulkSample(ActivitySummaryBase):
     handling_instructions = db.Column(db.String)
     drainage_mitigation_description = db.Column(db.String)
 
-    has_bedrock_expansion = db.Column(db.Boolean, nullable=True)
-    surface_water_damage = db.Column(db.String)
+    has_bedrock_excavation = db.Column(db.Boolean, nullable=True)
     spontaneous_combustion_handling = db.Column(db.String)
 
     details = db.relationship(

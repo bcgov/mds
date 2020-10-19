@@ -93,6 +93,7 @@ export const AuthorizationWrapper = (props) => {
         title={isAdmin ? title() : ""}
         placement="left"
         mouseEnterDelay={1}
+        mouseLeaveDelay={0}
         arrowPointAtCenter
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}

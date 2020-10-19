@@ -166,7 +166,7 @@ export const SandGravelQuarry = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Average Depth of top soil
+            Average Depth of topsoil
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").value
@@ -376,7 +376,7 @@ export const SandGravelQuarry = (props) => {
         columns={columns(props.isViewMode)}
         dataSource={transformData(props.details || [])}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
       {!props.isViewMode && (

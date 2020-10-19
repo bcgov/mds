@@ -255,7 +255,7 @@ export const SettlingPonds = (props) => {
         columns={columns(props.isViewMode)}
         dataSource={transformData(props.details || [])}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data yet",
         }}
       />
       {!props.isViewMode && (
@@ -267,7 +267,7 @@ export const SettlingPonds = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Disposal of fines from clean out (i.e. use as a subsoil material)
+            Disposal of fines from cleanout (i.e. use as a subsoil material)
             <NOWFieldOriginTooltip />
           </div>
           <Field

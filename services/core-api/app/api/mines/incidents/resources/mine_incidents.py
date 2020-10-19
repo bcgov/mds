@@ -253,7 +253,7 @@ class MineIncidentResource(Resource, UserMixin):
         if not incident:
             raise NotFound('Mine incident not found')
 
-        incident.soft_delete()
+        incident.delete()
         return None, 204
 
     @api.expect(parser)

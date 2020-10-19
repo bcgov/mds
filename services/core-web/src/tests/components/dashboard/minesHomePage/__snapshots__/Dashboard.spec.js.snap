@@ -46,15 +46,12 @@ exports[`Dashboard renders properly 1`] = `
             "tabPane": false,
           }
         }
-        className="center-tabs"
-        hideAdd={false}
+        centered={true}
         onTabClick={[Function]}
         size="large"
-        tabPosition="top"
       >
         <TabPane
           key="list"
-          placeholder={null}
           tab="List"
         >
           <Connect(MineSearch)
@@ -172,24 +169,24 @@ exports[`Dashboard renders properly 1`] = `
             mineRegionOptions={
               Array [
                 Object {
-                  "label": "South West",
-                  "value": "SW",
-                },
-                Object {
-                  "label": "South Central",
-                  "value": "SC",
+                  "label": "North East",
+                  "value": "NE",
                 },
                 Object {
                   "label": "North West",
                   "value": "NW",
                 },
                 Object {
-                  "label": "North East",
-                  "value": "NE",
+                  "label": "South Central",
+                  "value": "SC",
                 },
                 Object {
                   "label": "South East",
                   "value": "SE",
+                },
+                Object {
+                  "label": "South West",
+                  "value": "SW",
                 },
               ]
             }
@@ -475,6 +472,11 @@ exports[`Dashboard renders properly 1`] = `
               Array [
                 Object {
                   "isActive": true,
+                  "label": "BC Land",
+                  "value": "BCL",
+                },
+                Object {
+                  "isActive": true,
                   "label": "Coal",
                   "value": "COL",
                 },
@@ -487,11 +489,6 @@ exports[`Dashboard renders properly 1`] = `
                   "isActive": true,
                   "label": "Placer",
                   "value": "PLR",
-                },
-                Object {
-                  "isActive": true,
-                  "label": "BC Land",
-                  "value": "BCL",
                 },
               ]
             }
@@ -773,7 +770,6 @@ exports[`Dashboard renders properly 1`] = `
         </TabPane>
         <TabPane
           key="map"
-          placeholder={null}
           tab="Map"
         >
           <div>

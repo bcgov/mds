@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
-import { Button, Dropdown, Menu, Icon, Popconfirm, Alert, Tabs } from "antd";
+import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -29,8 +30,10 @@ import { formatDate, flattenObject } from "@common/utils/helpers";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
+import * as Permission from "@/constants/permissions";
 import {
   generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
@@ -48,8 +51,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
-
-const { TabPane } = Tabs;
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -63,6 +65,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   reset: PropTypes.func.isRequired,
@@ -189,10 +192,7 @@ export class NoticeOfWorkApplication extends Component {
     // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited
     // prevValue !== currentValue, due to other value changes that are not null or undefined
     const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
-    const isPrevValue =
-      !isUndefined(prevValue) &&
-      !isNull(prevValue) &&
-      (isNull(currentValue) || isUndefined(currentValue));
+    const isPrevValue = !isUndefined(prevValue) && !isNull(prevValue);
     const hasBeenEdited = isNewValue || isPrevValue;
     const edited = hasBeenEdited && prevValue !== currentValue;
     const getValue = () => {
@@ -226,6 +226,13 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+        if (
+          data.imported_to_core &&
+          data.lead_inspector_party_guid &&
+          this.props.match.params.tab === "verification"
+        ) {
+          this.handleTabChange("technical-review");
+        }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
     ]);
@@ -291,8 +298,8 @@ export class NoticeOfWorkApplication extends Component {
         )
         .then(() => {
           this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-            this.setState((prevState) => ({
-              isViewMode: !prevState.isViewMode,
+            this.setState(() => ({
+              isViewMode: true,
               submitting: false,
             }));
           });
@@ -510,6 +517,27 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
+  handleExportDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+
+    this.exportNowDocument(documentType, this.props.noticeOfWork);
+  };
+
+  exportNowDocument = (documentType) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+    };
+
+    this.props.exportNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      `Successfully exported ${documentType.description} for this Notice of Work`
+    );
+  };
+
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     return (
@@ -552,7 +580,7 @@ export class NoticeOfWorkApplication extends Component {
         >
           <Button type="secondary" className="full-mobile">
             Actions
-            <Icon type="down" />
+            <DownOutlined />
           </Button>
         </Dropdown>
       </div>
@@ -591,6 +619,7 @@ export class NoticeOfWorkApplication extends Component {
               } that must be fixed before proceeding`}
               type="error"
               showIcon
+              style={{ width: "50vw", margin: "auto", top: "8px" }}
             />
           </div>
         )}
@@ -612,34 +641,51 @@ export class NoticeOfWorkApplication extends Component {
             </Menu.Item>
           )}
         {isReview && (
-          <Menu.Item key="edit" onClick={this.toggleEditMode}>
-            Edit
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item key="edit" onClick={this.toggleEditMode} className="custom-menu-item">
+              Edit
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
-        <Menu.Item
-          key="transfer-to-a-different-mine"
-          onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-        >
-          Transfer to a Different Mine
-        </Menu.Item>
-        <Menu.Item
-          key="edit-application-lat-long"
-          onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-        >
-          Edit Application Lat/Long
-        </Menu.Item>
-        {!isReview && (
-          <Menu.Item key="edit-application-status" onClick={() => this.openUpdateStatusModal()}>
-            Edit Application Status
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="transfer-to-a-different-mine"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+          >
+            Transfer to a Different Mine
           </Menu.Item>
+        </AuthorizationWrapper>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="edit-application-lat-long"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+          >
+            Edit Application Lat/Long
+          </Menu.Item>
+        </AuthorizationWrapper>
+        {!isReview && (
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item
+              key="edit-application-status"
+              className="custom-menu-item"
+              onClick={() => this.openUpdateStatusModal()}
+            >
+              Edit Application Status
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
         {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <Menu.Item
-            key="change-the-lead-inspector"
-            onClick={() => this.openUpdateLeadInspectorModal()}
-          >
-            Change the Lead Inspector
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item
+              className="custom-menu-item"
+              key="change-the-lead-inspector"
+              onClick={() => this.openUpdateLeadInspectorModal()}
+            >
+              Change the Lead Inspector
+            </Menu.Item>
+          </AuthorizationWrapper>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
@@ -647,7 +693,8 @@ export class NoticeOfWorkApplication extends Component {
               .filter(
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT"
+                  now_application_document_type_code !== "PMT" &&
+                  now_application_document_type_code !== "NTR"
               )
               .map((document) => (
                 <Menu.Item
@@ -659,6 +706,21 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
+        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
+          {Object.values(this.props.generatableApplicationDocuments)
+            .filter(
+              ({ now_application_document_type_code }) =>
+                now_application_document_type_code === "NTR"
+            )
+            .map((document) => (
+              <Menu.Item
+                key={document.now_application_document_type_code}
+                onClick={this.handleExportDocument}
+              >
+                {document.description}
+              </Menu.Item>
+            ))}
+        </Menu.SubMenu>
       </Menu>
     );
   };
@@ -673,9 +735,8 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return <Loading />;
     }
-    const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
-    const showErrors = errorsLength > 0 && this.state.submitting;
     const isImported = this.props.noticeOfWork.imported_to_core;
+    const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
     return (
       <React.Fragment>
         <Prompt
@@ -719,11 +780,12 @@ export class NoticeOfWorkApplication extends Component {
             className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
             onTabClick={this.handleTabChange}
             style={{ margin: "0" }}
+            centered
           >
-            <TabPane tab="Verification" key="verification">
+            <Tabs.TabPane tab="Verification" key="verification">
               <ApplicationStepOne
                 isNewApplication={this.state.isNewApplication}
-                loadMineData={this.loadMineData}
+                loadMineData={this.loadMineInfo}
                 isMajorMine={this.state.isMajorMine}
                 noticeOfWork={this.props.noticeOfWork}
                 mineGuid={this.state.mineGuid}
@@ -732,91 +794,138 @@ export class NoticeOfWorkApplication extends Component {
                 loadNoticeOfWork={this.loadNoticeOfWork}
                 initialPermitGuid={this.state.initialPermitGuid}
               />
-            </TabPane>
+            </Tabs.TabPane>
 
-            <TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div>
-                  <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
-                  <div
-                    className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}
-                    //  lower fixNav to account for error message
-                    style={showErrors && this.state.fixedTop ? { top: "170px" } : {}}
-                  >
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="technical-review"
-                    />
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
-                    }
-                  >
-                    <ReviewNOWApplication
-                      reclamationSummary={this.props.reclamationSummary}
-                      isViewMode={this.state.isViewMode}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      initialValues={
-                        this.state.showOriginalValues
-                          ? this.props.originalNoticeOfWork
-                          : this.props.noticeOfWork
+            <Tabs.TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page is for reviewing and editing the information and documents sent in
+                    with a Notice of Work. All information provided by the proponent, and any
+                    additional files requested during the application review live here. Use the
+                    Actions button to update information about this application.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div>
+                    <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
+                    <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                      <NOWSideMenu
+                        route={routes.NOTICE_OF_WORK_APPLICATION}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        tabSection="technical-review"
+                      />
+                    </div>
+                    <div
+                      className={
+                        this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
                       }
+                    >
+                      <ReviewNOWApplication
+                        reclamationSummary={this.props.reclamationSummary}
+                        isViewMode={this.state.isViewMode}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        initialValues={
+                          this.state.showOriginalValues
+                            ? this.props.originalNoticeOfWork
+                            : this.props.noticeOfWork
+                        }
+                        noticeOfWork={this.props.noticeOfWork}
+                        renderOriginalValues={this.renderOriginalValues}
+                      />
+                    </div>
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
+              tab="Referral/Consultation"
+              key="referral-consultation"
+              disabled={!verificationComplete}
+            >
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains basic information about any referrals or consultations
+                    related to this application. You can create document packages for reviewers and
+                    attach any responses that reviewers send back.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Referral/Consultation</h2>
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
-                      renderOriginalValues={this.renderOriginalValues}
                     />
                   </div>
-                </div>
-              </LoadingWrapper>
-            </TabPane>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
 
-            <TabPane tab="Draft Permit" key="draft-permit" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                {this.renderPermitGeneration()}
-              </LoadingWrapper>
-            </TabPane>
-
-            <TabPane tab="Referral/Consultation" key="referral-consultation" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className={this.renderFixedHeaderClass()}>
-                  <h2 className="padding-md">Referral/Consultation</h2>
+            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains all the information that will appear in the permit when it is
+                    issued. The Conditions sections are pre-populated with conditions based on the
+                    permit type. You can add or remove any condition.
+                  </p>
                 </div>
-                <div className="page__content">
-                  <NOWApplicationReviews
-                    mineGuid={this.props.noticeOfWork.mine_guid}
-                    noticeOfWork={this.props.noticeOfWork}
-                  />
-                </div>
-              </LoadingWrapper>
-            </TabPane>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  {this.renderPermitGeneration()}
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
 
-            <TabPane tab="Administrative" key="administrative" disabled={!isImported}>
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <div className={this.renderFixedHeaderClass()}>
-                  <div className="inline-flex block-mobile padding-md between">
-                    <h2>Administrative</h2>
-                    <Dropdown
-                      overlay={this.menu(false)}
-                      placement="bottomLeft"
-                      onVisibleChange={this.handleAdminVisibleChange}
-                      visible={this.state.adminMenuVisible}
-                    >
-                      <Button type="secondary" className="full-mobile">
-                        Actions
-                        <Icon type="down" />
-                      </Button>
-                    </Dropdown>
+            <Tabs.TabPane
+              tab="Administrative"
+              key="administrative"
+              disabled={!verificationComplete}
+            >
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    This page contains information about securities and any internal files relevant
+                    to processing the application. It is also where the permit is issued.
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <div className="inline-flex block-mobile padding-md between">
+                      <h2>Administrative</h2>
+                      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                        <Dropdown
+                          overlay={this.menu(false)}
+                          placement="bottomLeft"
+                          onVisibleChange={this.handleAdminVisibleChange}
+                          visible={this.state.adminMenuVisible}
+                        >
+                          <Button type="secondary" className="full-mobile">
+                            Actions
+                            <DownOutlined />
+                          </Button>
+                        </Dropdown>
+                      </AuthorizationWrapper>
+                    </div>
                   </div>
-                </div>
-                <div className="page__content">
-                  <NOWApplicationAdministrative
-                    mineGuid={this.props.noticeOfWork.mine_guid}
-                    noticeOfWork={this.props.noticeOfWork}
-                  />
-                </div>
-              </LoadingWrapper>
-            </TabPane>
+                  <div className="page__content">
+                    <NOWApplicationAdministrative
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      handleSaveNOWEdit={this.handleSaveNOWEdit}
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
           </Tabs>
         </div>
       </React.Fragment>
@@ -846,6 +955,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
+      exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
       reset,

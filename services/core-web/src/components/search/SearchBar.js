@@ -13,8 +13,6 @@ import {
 import * as router from "@/constants/routes";
 import { SearchBarDropdown } from "@/components/search/SearchBarDropdown";
 
-const { Search } = Input;
-
 const propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   fetchSearchBarResults: PropTypes.func.isRequired,
@@ -28,7 +26,7 @@ const defaultProps = {
 };
 
 const defaultPlaceholderText = "Search";
-const selectedPlaceholderText = "Search for mines, contacts, & more";
+const selectedPlaceholderText = "";
 
 export class SearchBar extends Component {
   state = {
@@ -96,17 +94,20 @@ export class SearchBar extends Component {
           getPopupContainer={
             this.props.containerId ? () => document.getElementById(this.props.containerId) : ""
           }
-          trigger={[""]}
+          trigger={["focus"]}
           visible={this.state.isSelected}
         >
-          <Search
+          <Input.Search
             size="large"
             value={this.state.searchTerm}
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
             onSearch={(searchTerm) => this.search(searchTerm)}
             onChange={this.changeSearchTerm}
-            onClick={this.clearSearchBar}
-            onFocus={this.clearSearchBar}
+            onFocus={() =>
+              this.setState({
+                isSelected: true,
+              })
+            }
             onBlur={() =>
               this.setState({
                 isSelected: false,
@@ -135,7 +136,4 @@ const mapDispatchToProps = (dispatch) =>
 SearchBar.propTypes = propTypes;
 SearchBar.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(SearchBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SearchBar));

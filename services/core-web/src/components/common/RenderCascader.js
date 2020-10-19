@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Cascader } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Cascader } from "antd";
 
 /**
  * @constant RenderCascader - Ant Design `Cascader` component for redux-form.

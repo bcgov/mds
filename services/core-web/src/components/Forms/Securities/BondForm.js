@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import {
   required,
   number,
@@ -90,6 +92,7 @@ export class BondForm extends Component {
           mine_document_guid: doc.mine_document_guid,
           document_manager_guid: doc.document_manager_guid,
           name: doc.document_name,
+          date: doc.document_date,
           category: this.props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
           uploaded: doc.upload_date,
         },
@@ -110,13 +113,18 @@ export class BondForm extends Component {
         onSubmit={this.props.handleSubmit((values) => {
           // Set the bond document type code for each uploaded document to the selected value.
           this.state.uploadedFiles.map(
-            // eslint-disable-next-line no-return-assign, no-param-reassign
-            (doc) => (doc.bond_document_type_code = values.bond_document_type_code)
+            // eslint-disable-next-line array-callback-return
+            (doc) => {
+              doc.bond_document_type_code = values.bond_document_type_code;
+              doc.document_date = values.document_date;
+              doc.mine_guid = this.props.mineGuid;
+            }
           );
 
           // Delete this value from the bond, as it's not a valid property.
           // eslint-disable-next-line no-param-reassign
           delete values.bond_document_type_code;
+          delete values.document_date;
 
           // Create the bond's new document list by removing deleted documents and adding uploaded documents.
           const currentDocuments = this.props.bond.documents || [];
@@ -153,6 +161,7 @@ export class BondForm extends Component {
                 name="bond_type_code"
                 label="Bond Type*"
                 component={RenderSelect}
+                placeholder="Please select bond type"
                 data={this.props.bondTypeDropDownOptions}
                 validate={[required]}
                 disabled={this.props.bond.bond_status_code === "CON"}
@@ -295,6 +304,7 @@ export class BondForm extends Component {
                 id="institution_province"
                 name="institution_province"
                 label="Province"
+                placeholder="Please select province"
                 component={RenderSelect}
                 data={this.props.provinceOptions}
               />
@@ -338,17 +348,33 @@ export class BondForm extends Component {
           add a different category of document, please submit and re-open the form.
         </p>
         <br />
-        <Form.Item>
-          <Field
-            id="bond_document_type_code"
-            name="bond_document_type_code"
-            label={filesUploaded ? "Document Category*" : "Document Category"}
-            placeholder="Please select category"
-            component={RenderSelect}
-            validate={filesUploaded ? [required] : []}
-            data={this.props.bondDocumentTypeDropDownOptions}
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="document_date"
+                name="document_date"
+                label="Document Date"
+                showTime
+                component={RenderDate}
+                validate={[date, dateNotInFuture]}
+              />
+            </Form.Item>
+          </Col>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="bond_document_type_code"
+                name="bond_document_type_code"
+                label={filesUploaded ? "Document Category*" : "Document Category"}
+                placeholder="Please select category"
+                component={RenderSelect}
+                validate={filesUploaded ? [required] : []}
+                data={this.props.bondDocumentTypeDropDownOptions}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.Item>
           <Field
             id="documents"

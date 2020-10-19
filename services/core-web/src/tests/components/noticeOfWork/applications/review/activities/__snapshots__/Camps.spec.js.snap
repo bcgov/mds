@@ -2,7 +2,7 @@
 
 exports[`Camps renders properly 1`] = `
 <div>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -29,10 +29,11 @@ exports[`Camps renders properly 1`] = `
     dataSource={Array []}
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <h4>
@@ -146,7 +147,7 @@ exports[`Camps renders properly 1`] = `
           id="has_fuel_stored_in_barrels"
           label={
             <span>
-              Barrell
+              Barrel
               <NOWOriginalValueTooltip
                 isVisible={true}
                 originalValue="N/A"

@@ -14,11 +14,11 @@ from app.api.mines.permits.permit.models.permit_status_code import PermitStatusC
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.constants import *
 
 
-class Permit(AuditMixin, Base):
+class Permit(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit'
     _edit_groups = [PERMIT_EDIT_GROUP]
     _edit_key = PERMIT_EDIT_GROUP
@@ -28,6 +28,7 @@ class Permit(AuditMixin, Base):
     permit_no = db.Column(db.String(16), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
+    project_id = db.Column(db.String)
     _all_permit_amendments = db.relationship(
         'PermitAmendment',
         backref='permit',
@@ -36,7 +37,7 @@ class Permit(AuditMixin, Base):
         order_by='desc(PermitAmendment.issue_date), desc(PermitAmendment.permit_amendment_id)',
         lazy='select')
 
-    _all_mines = db.relationship('Mine', lazy='selectin', secondary='mine_permit_xref')
+    _all_mines = db.relationship('Mine', lazy='select', secondary='mine_permit_xref')
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
@@ -46,9 +47,9 @@ class Permit(AuditMixin, Base):
     permit_status = db.relationship('PermitStatusCode', lazy='select')
     permit_status_code_description = association_proxy('permit_status', 'description')
 
-    bonds = db.relationship('Bond', lazy='select', secondary='bond_permit_xref')
+    bonds = db.relationship(
+        'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     _mine_associations = db.relationship('MinePermitXref')
 
@@ -88,17 +89,30 @@ class Permit(AuditMixin, Base):
             raise Exception('this getter is only available if _context_mine has been set')
         return self._context_mine
 
+    @hybrid_property
+    def assessed_liability_total(self):
+        return sum([
+            pa.security_adjustment for pa in self._all_permit_amendments if pa.security_adjustment
+        ])
+
+    @hybrid_property
+    def confiscated_bond_total(self):
+        return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "CON"])
+
+    @hybrid_property
+    def active_bond_total(self):
+        return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "ACT"])
+
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 
-    def soft_delete(self):
+    def delete(self):
         if self.bonds:
             raise Exception('Unable to delete permit with attached bonds.')
         if self.permit_amendments:
             for amendment in self.permit_amendments:
-                amendment.soft_delete(True)
-        self.deleted_ind = True
-        self.save()
+                amendment.delete()
+        super(Permit, self).delete()
 
     @classmethod
     def find_by_permit_guid(cls, _id, mine_guid=None):
@@ -113,15 +127,18 @@ class Permit(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, _id):
-        return cls.query.filter_by(mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
+        return cls.query.filter_by(
+            mine_guid=_id, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_no(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
+        return cls.query.filter_by(
+            permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
-        return cls.query.filter_by(permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
+        return cls.query.filter_by(
+            permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').all()
 
     @classmethod
     def find_by_permit_guid_or_no(cls, _permit_guid_or_no):
@@ -133,9 +150,11 @@ class Permit(AuditMixin, Base):
     @classmethod
     def find_by_now_application_guid(cls, _now_application_guid):
         permit_amendment = PermitAmendment.find_by_now_application_guid(_now_application_guid)
-        permit = permit_amendment.permit
-        permit._context_mine = permit_amendment.mine
-        return permit
+        if permit_amendment is not None:
+            permit = permit_amendment.permit
+            permit._context_mine = permit_amendment.mine
+            return permit
+        return None
 
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, add_to_session=True):

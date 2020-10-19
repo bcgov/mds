@@ -64,7 +64,7 @@ const IncidentField = (props) => (
 );
 const InitialReport = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Initial Report</Title>
       <IncidentField
         title="Incident type(s)"
@@ -120,7 +120,7 @@ const InitialReport = (props) => (
 const Details = (props) => (
   <React.Fragment>
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Incident Details</Title>
 
         <IncidentField
@@ -150,7 +150,7 @@ const Details = (props) => (
     </Row>
 
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Dangerous Occurrence Determination</Title>
         <IncidentField
           title="Inspector's determination"
@@ -203,7 +203,7 @@ const Details = (props) => (
 );
 const InitialDocuments = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Preliminary Documents</Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(
@@ -219,7 +219,7 @@ const FollowupInformation = (props) => {
 
   return (
     <Row>
-      <Col>
+      <Col span={24}>
         <Title level={4}>Follow-up Information</Title>
         <IncidentField
           title="Was there a follow-up inspection?"
@@ -272,7 +272,7 @@ const FollowupInformation = (props) => {
 
 const FinalDocuments = (props) => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Title level={4}>Final Documents</Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(

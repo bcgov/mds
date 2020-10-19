@@ -5,9 +5,14 @@ exports[`FinalPermitDocuments renders properly 1`] = `
   <div
     className="inline-flex between"
   >
-    <h4>
-      Final Application Package
-    </h4>
+    <div>
+      <h4>
+        Final Application Package
+      </h4>
+      <p>
+        All files in this list will appear in the Preamble on the permit
+      </p>
+    </div>
     <div>
       <Button
         block={false}
@@ -18,34 +23,36 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         onClick={[Function]}
         type="secondary"
       >
-        <Icon
+        <ForwardRef(DownloadOutlined)
           className="padding-small--right icon-sm"
-          theme="outlined"
-          type="download"
         />
         Download All
       </Button>
-      <Button
-        block={false}
-        className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        onClick={[Function]}
-        type="secondary"
+      <Connect(AuthorizationWrapper)
+        permission="role_edit_permits"
       >
-        <img
-          alt="Edit"
-          className="padding-md--right"
-          src={
-            Object {
-              "process": [Function],
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="secondary"
+        >
+          <img
+            alt="Edit"
+            className="padding-md--right"
+            src={
+              Object {
+                "process": [Function],
+              }
             }
-          }
-          title="Edit"
-        />
-        Edit
-      </Button>
+            title="Edit"
+          />
+          Edit
+        </Button>
+      </Connect(AuthorizationWrapper)>
     </div>
   </div>
   <br />

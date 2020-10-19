@@ -4,8 +4,6 @@ import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
 import { activitiesMenu, renderActivities, draftPermitMenu } from "@/constants/NOWConditions";
 
-const { Link } = Anchor;
-
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
  */
@@ -101,13 +99,17 @@ export class NOWSideMenu extends Component {
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
             )
             .map(({ href, title, children }) => (
-              <Link href={`#${href}`} title={title} className="now-menu-link">
+              <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
                 {children &&
                   children.length > 1 &&
                   children.map((child) => (
-                    <Link href={`#${child.href}`} title={child.title} className="now-menu-link-" />
+                    <Anchor.Link
+                      href={`#${child.href}`}
+                      title={child.title}
+                      className="now-menu-link-"
+                    />
                   ))}
-              </Link>
+              </Anchor.Link>
             ))}
         </Anchor>
       </div>

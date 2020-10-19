@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { Icon, Input, Button, Badge } from "antd";
+import { Input, Button, Badge } from "antd";
+import { isEmpty } from "lodash";
+import { SearchOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
 import {
   formatDate,
@@ -10,11 +13,10 @@ import {
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -48,6 +50,14 @@ const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters,
   const params = {
     ...tableFilters,
     ...filters,
+    now_application_status_description: filters.now_application_status_description
+      ? filters.now_application_status_description
+      : [],
+    mine_region: filters.mine_region ? filters.mine_region : [],
+    originating_system: filters.originating_system ? filters.originating_system : [],
+    notice_of_work_type_description: filters.notice_of_work_type_description
+      ? filters.notice_of_work_type_description
+      : [],
     sort_field: sorter.order ? sorter.field : undefined,
     sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
   };
@@ -103,6 +113,8 @@ export class NoticeOfWorkTable extends Component {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       originating_system: application.originating_system || Strings.EMPTY_FIELD,
+      document:
+        application.application_documents.length >= 1 ? application.application_documents[0] : {},
     }));
 
   filterProperties = (name, field) => ({
@@ -128,7 +140,7 @@ export class NoticeOfWorkTable extends Component {
             onClick={() => {
               this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
-            icon="search"
+            icon={<SearchOutlined />}
             size="small"
             style={{ width: 90, marginRight: 8 }}
           >
@@ -150,7 +162,7 @@ export class NoticeOfWorkTable extends Component {
       );
     },
     filterIcon: (filtered) => (
-      <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
 
@@ -184,7 +196,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "mine_region",
       sortField: "mine_region",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.mine_region),
       filters: optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
@@ -197,7 +208,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "notice_of_work_type_description",
       sortField: "notice_of_work_type_description",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.notice_of_work_type_description),
       filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
@@ -227,7 +237,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "now_application_status_description",
       sortField: "now_application_status_description",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(
         this.props.searchParams.now_application_status_description
       ),
@@ -254,7 +263,6 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "originating_system",
       sortField: "originating_system",
       sorter: true,
-      filtered: true,
       filteredValue: this.ensureListValue(this.props.searchParams.originating_system),
       filters: [
         { text: "Core", value: "Core" },
@@ -265,27 +273,30 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Source">{text}</div>,
     },
     {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
+    },
+    {
       key: "operations",
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  title="Edit"
-                  alt="Edit"
-                  className="padding-md--right"
-                />
+                <Button type="primary">Open</Button>
               </Link>
             </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon
-                type="eye"
-                title="View"
-                className="icon-lg icon-svg-filter padding-large--left"
-              />
-            </Link>
           </div>
         ),
     },
@@ -304,7 +315,6 @@ export class NoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: <NullScreen type="no-results" /> },
           onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
         }}
       />

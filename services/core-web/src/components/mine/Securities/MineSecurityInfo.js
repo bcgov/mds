@@ -33,8 +33,6 @@ import MineDashboardContentCard from "@/components/mine/MineDashboardContentCard
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { modalConfig } from "@/components/modalContent/config";
 
-const { TabPane } = Tabs;
-
 /**
  * @class  MineSecurityInfo - contains all information relating to bonds and securities
  */
@@ -96,20 +94,12 @@ export class MineSecurityInfo extends Component {
         permit_guid === permit.permit_guid && bond_status_code === "ACT"
     ).length;
 
-  getSum = (status, permit) =>
-    this.props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permit.permit_guid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-
   getAmountSum = (permit) =>
     this.props.invoices
       .filter(({ permit_guid }) => permit_guid === permit.permit_guid)
       .reduce((sum, invoice) => +sum + +invoice.amount, 0);
 
-  getBalance = (permit) => this.getSum("CON", permit) - this.getAmountSum(permit);
+  getBalance = (permit) => permit.confiscated_bond_total - this.getAmountSum(permit);
 
   openAddBondModal = (event, permitGuid) => {
     event.preventDefault();
@@ -196,6 +186,7 @@ export class MineSecurityInfo extends Component {
         bondStatusOptionsHash: this.props.bondStatusOptionsHash,
         permitGuid: bond.permit_guid,
         mineGuid: this.props.mineGuid,
+        initialValues: { project_id: bond.project_id },
       },
       width: "50vw",
       content: modalConfig.CLOSE_BOND_MODAL,
@@ -212,6 +203,7 @@ export class MineSecurityInfo extends Component {
       .updateBond(payload, bondGuid)
       .then(() => {
         this.setState({ isBondLoaded: false });
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -222,10 +214,9 @@ export class MineSecurityInfo extends Component {
   closeBond = (bondStatusCode, values, bond) => {
     const payload = {
       ...bond,
+      ...values,
       bond_status_code: bondStatusCode,
       bond_type_code: bondStatusCode === "CON" ? "CAS" : bond.bond_type_code,
-      closed_date: values.closed_date,
-      closed_note: values.closed_note,
     };
     return this.editBond(payload, bond.bond_guid);
   };
@@ -242,6 +233,7 @@ export class MineSecurityInfo extends Component {
       .createBond(payload)
       .then(() => {
         this.setState({ isBondLoaded: false });
+        this.props.fetchPermits(this.props.mineGuid);
         this.props
           .fetchMineBonds(this.props.mineGuid)
           .finally(() => this.setState({ isBondLoaded: true }));
@@ -267,6 +259,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .createReclamationInvoice(payload)
       .then(() => {
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
@@ -282,6 +275,7 @@ export class MineSecurityInfo extends Component {
     return this.props
       .updateReclamationInvoice(payload, invoiceGuid)
       .then(() => {
+        this.props.fetchPermits(this.props.mineGuid);
         this.props.fetchMineReclamationInvoices(this.props.mineGuid).then(() => {
           this.setState({ isInvoicesLoaded: true });
         });
@@ -289,13 +283,14 @@ export class MineSecurityInfo extends Component {
       .then(() => this.props.closeModal());
   };
 
-  openAddReclamationInvoiceModal = (event, permitGuid, balance) => {
+  openAddReclamationInvoiceModal = (event, permit, balance) => {
     event.preventDefault();
     this.props.openModal({
       props: {
         title: "Add Reclamation Invoice",
         onSubmit: this.handleAddReclamationInvoice,
-        permitGuid,
+        permitGuid: permit.permit_guid,
+        invoice: { project_id: permit.project_id },
         mineGuid: this.props.mineGuid,
         balance,
       },
@@ -326,7 +321,7 @@ export class MineSecurityInfo extends Component {
         <h2>Securities</h2>
         <br />
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <TabPane tab="Bonds" key="1">
+          <Tabs.TabPane tab="Bonds" key="1">
             <div>
               <div className="dashboard--cards">
                 <MineDashboardContentCard
@@ -367,11 +362,11 @@ export class MineSecurityInfo extends Component {
                 openCloseBondModal={this.openCloseBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
-                getSum={this.getSum}
               />
             </div>
-          </TabPane>
-          <TabPane tab="Reclamation Invoices" key="2">
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Reclamation Invoices" key="2">
+            <br />
             <h4 className="uppercase">Reclamation Invoices</h4>
             <p>
               Record invoices for reclamation activities paid for with funds from confiscated bonds.
@@ -389,10 +384,9 @@ export class MineSecurityInfo extends Component {
               openEditReclamationInvoiceModal={this.openEditReclamationInvoiceModal}
               recordsByPermit={this.recordsByPermit}
               getBalance={this.getBalance}
-              getSum={this.getSum}
               getAmountSum={this.getAmountSum}
             />
-          </TabPane>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

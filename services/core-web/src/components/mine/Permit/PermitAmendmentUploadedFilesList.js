@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Icon } from "antd";
+import { Col, Row, Popconfirm } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -37,7 +38,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
               }}
             >
               <button type="button">
-                <Icon type="close" />
+                <CloseOutlined />
               </button>
             </Popconfirm>
           </Col>

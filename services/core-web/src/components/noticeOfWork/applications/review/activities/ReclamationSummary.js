@@ -15,10 +15,10 @@ export const ReclamationSummary = (props) => {
       render: (text) => <div title="Activity">{text}</div>,
     },
     {
-      title: "Total Effected Area (ha)",
+      title: "Total Affected Area (ha)",
       dataIndex: "total",
       key: "total",
-      render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
+      render: (text) => <div title="Total Affected Area (ha)">{text}</div>,
     },
     {
       title: "Estimated Cost of Reclamation",
@@ -37,7 +37,7 @@ export const ReclamationSummary = (props) => {
         columns={columns}
         dataSource={props.summary}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
     </div>

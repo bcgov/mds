@@ -141,7 +141,7 @@ export const Camps = (props) => {
         columns={columns(props.isViewMode)}
         dataSource={transformData(props.details || [])}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
       {!props.isViewMode && (
@@ -213,7 +213,7 @@ export const Camps = (props) => {
             <Field
               label={
                 <span>
-                  Barrell
+                  Barrel
                   <NOWOriginalValueTooltip
                     style={{ marginLeft: "20%" }}
                     originalValue={

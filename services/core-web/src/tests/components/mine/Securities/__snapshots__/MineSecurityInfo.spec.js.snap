@@ -9,18 +9,15 @@ exports[`MineSecurityInfo renders properly 1`] = `
   </h2>
   <br />
   <Tabs
-    hideAdd={false}
     style={
       Object {
         "textAlign": "left !important",
       }
     }
-    tabPosition="top"
     type="card"
   >
     <TabPane
       key="1"
-      placeholder={null}
       tab="Bonds"
     >
       <div>
@@ -144,7 +141,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           expandedRowKeys={Array []}
-          getSum={[Function]}
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
@@ -155,7 +151,11 @@ exports[`MineSecurityInfo renders properly 1`] = `
           permits={
             Array [
               Object {
-                "amendments": Array [
+                "active_bond_total": 700,
+                "assessed_liability_total": 8000000,
+                "confiscated_bond_total": 500,
+                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                "permit_amendments": Array [
                   Object {
                     "authorization_end_date": null,
                     "description": "Initial permit issued.",
@@ -173,10 +173,28 @@ exports[`MineSecurityInfo renders properly 1`] = `
                         "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                       },
                     ],
-                    "security_total": "1000000",
+                    "security_adjustment": "1000000",
+                  },
+                  Object {
+                    "authorization_end_date": null,
+                    "description": "Amendment",
+                    "issue_date": "2020-04-01",
+                    "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+                    "permit_amendment_status_code": "ACT",
+                    "permit_amendment_type_code": "AMD",
+                    "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                    "received_date": null,
+                    "related_documents": Array [
+                      Object {
+                        "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                        "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                        "document_name": "Adams_amendment_1.pdf",
+                        "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                      },
+                    ],
+                    "security_adjustment": "7000000",
                   },
                 ],
-                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                 "permit_guid": "1628847c-060b-45f2-990f-815877174801",
                 "permit_id": "283",
                 "permit_no": "C-12345",
@@ -190,9 +208,9 @@ exports[`MineSecurityInfo renders properly 1`] = `
     </TabPane>
     <TabPane
       key="2"
-      placeholder={null}
       tab="Reclamation Invoices"
     >
+      <br />
       <h4
         className="uppercase"
       >
@@ -267,7 +285,6 @@ exports[`MineSecurityInfo renders properly 1`] = `
         expandedRowKeys={Array []}
         getAmountSum={[Function]}
         getBalance={[Function]}
-        getSum={[Function]}
         invoices={
           Array [
             Object {
@@ -292,7 +309,11 @@ exports[`MineSecurityInfo renders properly 1`] = `
         permits={
           Array [
             Object {
-              "amendments": Array [
+              "active_bond_total": 700,
+              "assessed_liability_total": 8000000,
+              "confiscated_bond_total": 500,
+              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              "permit_amendments": Array [
                 Object {
                   "authorization_end_date": null,
                   "description": "Initial permit issued.",
@@ -310,10 +331,28 @@ exports[`MineSecurityInfo renders properly 1`] = `
                       "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                     },
                   ],
-                  "security_total": "1000000",
+                  "security_adjustment": "1000000",
+                },
+                Object {
+                  "authorization_end_date": null,
+                  "description": "Amendment",
+                  "issue_date": "2020-04-01",
+                  "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+                  "permit_amendment_status_code": "ACT",
+                  "permit_amendment_type_code": "AMD",
+                  "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                  "received_date": null,
+                  "related_documents": Array [
+                    Object {
+                      "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                      "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                      "document_name": "Adams_amendment_1.pdf",
+                      "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                    },
+                  ],
+                  "security_adjustment": "7000000",
                 },
               ],
-              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
               "permit_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_id": "283",
               "permit_no": "C-12345",

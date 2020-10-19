@@ -58,12 +58,6 @@ exports[`MinePermitTable renders properly 1`] = `
       "expandRowByClick": true,
       "expandedRowKeys": undefined,
       "expandedRowRender": [Function],
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="permit"
-        />,
-      },
       "onExpand": undefined,
       "pagination": false,
       "rowClassName": "table-row-align-middle pointer fade-in",

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Menu, Icon } from "antd";
+import { Menu } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import { detectProdEnvironment } from "@common/utils/environmentUtils";
 import * as routes from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-
-const { SubMenu } = Menu;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
@@ -24,12 +23,12 @@ export class MineNavigation extends Component {
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
-        <SubMenu
+        <Menu.SubMenu
           id={this.ifActiveButton("mine-information")}
           title={
             <span>
               Mine Information
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -43,13 +42,13 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("permits-and-approvals")}
           title={
             <span>
               Permits & Approvals
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -57,13 +56,11 @@ export class MineNavigation extends Component {
             <Menu.Item key="permits">
               <Link to={routes.MINE_PERMITS.dynamicRoute(this.props.mine.mine_guid)}>Permits</Link>
             </Menu.Item>
-            {!isProd && (
-              <Menu.Item key="securities">
-                <Link to={routes.MINE_SECURITIES.dynamicRoute(this.props.mine.mine_guid)}>
-                  Securities
-                </Link>
-              </Menu.Item>
-            )}
+            <Menu.Item key="securities">
+              <Link to={routes.MINE_SECURITIES.dynamicRoute(this.props.mine.mine_guid)}>
+                Securities
+              </Link>
+            </Menu.Item>
             <Menu.Item key="variances">
               <Link to={routes.MINE_VARIANCES.dynamicRoute(this.props.mine.mine_guid)}>
                 Variances
@@ -75,13 +72,13 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("oversight")}
           title={
             <span>
               Oversight
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -97,13 +94,13 @@ export class MineNavigation extends Component {
               </Link>
             </Menu.Item>
           </Menu>
-        </SubMenu>
-        <SubMenu
+        </Menu.SubMenu>
+        <Menu.SubMenu
           id={this.ifActiveButton("reports")}
           title={
             <span>
               Reports
-              <Icon className="padding-small--left" type="down" />
+              <DownOutlined className="padding-small--left" />
             </span>
           }
         >
@@ -121,7 +118,7 @@ export class MineNavigation extends Component {
               </Menu.Item>
             )}
           </Menu>
-        </SubMenu>
+        </Menu.SubMenu>
       </Menu>
     );
   }

@@ -9,7 +9,7 @@
   padding: 0 $default-padding-lg 0 $default-padding-md;
 
   &--search {
-    margin-top: 6px;
+    margin-top: 3px;
     padding: $default-padding-sm;
   }
 
@@ -49,7 +49,7 @@
 
 #menu__dropdown {
   background-color: $nav-color;
-  text-align: right;
+  text-align: left;
 
   button,
   a {

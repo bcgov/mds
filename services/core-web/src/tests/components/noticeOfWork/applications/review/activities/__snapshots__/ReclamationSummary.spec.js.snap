@@ -5,7 +5,7 @@ exports[`ReclamationSummary renders properly 1`] = `
   <h3>
     Reclamation Summary
   </h3>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -19,7 +19,7 @@ exports[`ReclamationSummary renders properly 1`] = `
           "dataIndex": "total",
           "key": "total",
           "render": [Function],
-          "title": "Total Effected Area (ha)",
+          "title": "Total Affected Area (ha)",
         },
         Object {
           "dataIndex": "cost",
@@ -31,10 +31,11 @@ exports[`ReclamationSummary renders properly 1`] = `
     }
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
 </div>
 `;

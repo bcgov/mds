@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitAmendmentSecurityForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Assessed Liability
+        <CoreTooltip
+          title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
+        />
+      </div>
+      <Field
+        allowClear={true}
+        autoComplete="off"
+        component={[Function]}
+        disabled={false}
+        format={[Function]}
+        id="security_adjustment"
+        name="security_adjustment"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Security Received
+        <CoreTooltip
+          title="Do not mark as received until the security amount is paid in full."
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={false}
+        id="security_received_date"
+        name="security_received_date"
+      />
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[Function]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Save
+    </Button>
+  </div>
+</Form>
+`;

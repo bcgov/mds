@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Icon, Progress, notification } from "antd";
+import { Button, Progress, notification } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -15,7 +16,9 @@ import { EDIT_OUTLINE } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import * as Permission from "@/constants/permissions";
+import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class FinalPermitDocuments- call logic surrounding adding or removing documents in the final Permit document list
@@ -30,6 +33,11 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
+  adminView: PropTypes.bool,
+};
+
+const defaultProps = {
+  adminView: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -148,7 +156,12 @@ export class FinalPermitDocuments extends Component {
         mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
-        documents: this.props.noticeOfWork.documents,
+        documents:
+          this.props.noticeOfWork &&
+          this.props.noticeOfWork.documents &&
+          this.props.noticeOfWork.documents.filter(
+            (doc) => doc.now_application_document_type_code !== "NTR"
+          ),
         finalDocuments,
         onSubmit: this.createFinalDocumentPackage,
         title: `Create Final Application Package`,
@@ -181,24 +194,29 @@ export class FinalPermitDocuments extends Component {
     ) : (
       <div>
         <div className="inline-flex between">
-          <h4>Final Application Package</h4>
+          <div>
+            {!this.props.adminView && <h4>Final Application Package</h4>}
+            <p>All files in this list will appear in the Preamble on the permit</p>
+          </div>
           <div>
             <Button
               type="secondary"
               className="full-mobile"
               onClick={() => this.downloadDocumentPackage()}
             >
-              <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+              <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
-            <Button
-              type="secondary"
-              className="full-mobile"
-              onClick={this.openFinalDocumentPackageModal}
-            >
-              <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-              Edit
-            </Button>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openFinalDocumentPackageModal}
+              >
+                <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                Edit
+              </Button>
+            </AuthorizationWrapper>
           </div>
         </div>
         <br />
@@ -230,5 +248,6 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 FinalPermitDocuments.propTypes = propTypes;
+FinalPermitDocuments.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(FinalPermitDocuments);

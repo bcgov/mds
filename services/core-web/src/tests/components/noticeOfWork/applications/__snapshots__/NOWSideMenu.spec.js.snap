@@ -4,7 +4,6 @@ exports[`NOWSideMenu renders properly 1`] = `
 <div>
   <Anchor
     affix={false}
-    getContainer={[Function]}
     offsetTop={120}
     onChange={[Function]}
     onClick={[Function]}
@@ -27,32 +26,32 @@ exports[`NOWSideMenu renders properly 1`] = `
     >
       <AnchorLink
         className="now-menu-link-"
-        href="#general"
+        href="#GEC"
         title="A. General"
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#health-safety"
+        href="#HSC"
         title="B. Healthy and Safety"
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#geotechnical"
+        href="#GOC"
         title="C. Geotechnical"
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#environmental-land"
-        title="D. Environmantal Land"
+        href="#ELC"
+        title="D. Environmental Land"
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#reclamation-closure"
+        href="#RCC"
         title="E. Reclamation and Closure"
       />
       <AnchorLink
         className="now-menu-link-"
-        href="#additional-conditions"
+        href="#ADC"
         title="F. Additional Conditions"
       />
     </AnchorLink>

@@ -11,22 +11,33 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
-        "dataIndex": "security_total",
-        "key": "security_total",
+        "dataIndex": "project_id",
+        "key": "project_id",
         "render": [Function],
-        "title": "Total Assessed",
-      },
-      Object {
-        "dataIndex": "amount_held",
-        "key": "amount_held",
-        "render": [Function],
-        "title": "Total Held",
+        "title": "Project ID",
       },
       Object {
         "dataIndex": "total_bonds",
         "key": "total_bonds",
         "render": [Function],
         "title": "Active Bonds",
+      },
+      Object {
+        "dataIndex": "total_assessed",
+        "key": "total_assessed",
+        "render": [Function],
+        "title": <span>
+          Assessed Liability
+          <CoreTooltip
+            title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
+          />
+        </span>,
+      },
+      Object {
+        "dataIndex": "amount_held",
+        "key": "amount_held",
+        "render": [Function],
+        "title": "Total Held",
       },
       Object {
         "dataIndex": "amount_confiscated",
@@ -58,12 +69,6 @@ exports[`MineBondTable renders properly 1`] = `
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="securities"
-        />,
-      },
       "onExpand": [MockFunction],
       "pagination": false,
       "rowClassName": "table-row-align-middle pointer fade-in",

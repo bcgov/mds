@@ -104,7 +104,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'received_date': fields.DateTime(dt_format='iso8601'),
         'issue_date': fields.DateTime(dt_format='iso8601'),
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
-        'security_total': fields.Fixed(description='Currency', decimals=2),
+        'security_adjustment': fields.Fixed(description='Currency', decimals=2),
+        'security_received_date': fields.DateTime(dt_format='iso8601'),
                                                                                          # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'lead_inspector_title': fields.String,
@@ -116,15 +117,17 @@ PERMIT_AMENDMENT_MODEL = api.model(
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
 PERMIT_MODEL = api.model(
-    'Permit',
-    {
+    'Permit', {
         'permit_id': fields.Integer,
         'permit_guid': fields.String,
         'permit_no': fields.String,
         'permit_status_code': fields.String,
         'current_permittee': fields.String,
-                                                                                 # 'permit_status_code_description': fields.String,
+        'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+        'assessed_liability_total': fields.Float,
+        'confiscated_bond_total': fields.Float,
+        'active_bond_total': fields.Float,
         'bonds': fields.List(fields.Nested(BOND_MODEL))
     })
 

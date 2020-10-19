@@ -4,11 +4,15 @@ exports[`Reports renders properly 1`] = `
 <Row
   gutter={0}
 >
-  <Col>
+  <Col
+    span={24}
+  >
     <Row
       gutter={0}
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Title
           level={4}
         >
@@ -45,17 +49,19 @@ exports[`Reports renders properly 1`] = `
         ]
       }
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Connect(AuthorizationWrapper)>
           <Button
             block={false}
+            className="float-right"
             ghost={false}
             htmlType="button"
             loading={false}
             onClick={[Function]}
             style={
               Object {
-                "float": "right",
                 "zIndex": 1,
               }
             }
@@ -78,7 +84,9 @@ exports[`Reports renders properly 1`] = `
         ]
       }
     >
-      <Col>
+      <Col
+        span={24}
+      >
         <Connect(ReportsTable)
           isLoaded={false}
           openEditReportModal={[Function]}

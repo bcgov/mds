@@ -19,13 +19,10 @@ import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types
  */
-
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -217,22 +214,22 @@ export class RelationshipProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content">
                   <Table
                     align="left"
                     pagination={false}
                     columns={columns}
                     dataSource={transformRowData(filteredRelationships)}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>

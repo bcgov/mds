@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
-import { Icon, Divider, AutoComplete } from "antd";
+import { Divider } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
 import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
@@ -11,9 +12,9 @@ import { fetchSearchResults } from "@common/actionCreators/searchActionCreator";
 import { setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
-import RenderLargeSelect from "./RenderLargeSelect";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
+import RenderLargeSelect from "./RenderLargeSelect";
 
 const propTypes = {
   id: PropTypes.string,
@@ -51,33 +52,26 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
     <Divider style={{ margin: "0" }} />
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <LinkButton onClick={showAddParty}>
-      <Icon type="plus" style={{ paddingRight: "5px" }} />
+      <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
   </div>
 );
 
 const transformData = (data, options, footer) => {
-  const transformedData = data.map((opt) => (
-    <AutoComplete.Option key={opt} value={opt}>
-      {`${options[opt].name}, ${
-        Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
-      }`}
-    </AutoComplete.Option>
-  ));
+  const transformedData = data.map((opt) => ({
+    value: options[opt].party_guid,
+    label: `${options[opt].name}, ${
+      Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
+    }`,
+  }));
 
   // Display footer only if desired (Add new party behavior is enabled.)
-  return footer
-    ? transformedData.concat(
-        <AutoComplete.Option disabled key="footer" value="footer">
-          {footer}
-        </AutoComplete.Option>
-      )
-    : transformedData;
+  return footer ? transformedData.concat({ value: "footer", label: footer }) : transformedData;
 };
 
 export class PartySelectField extends Component {
-  state = { selectedOption: { key: "", label: "" }, partyDataSource: [] };
+  state = { selectedOption: { value: "", label: "" }, partyDataSource: [] };
 
   constructor(props) {
     super(props);
@@ -143,7 +137,7 @@ export class PartySelectField extends Component {
     if (lastCreatedPartyUpdated) {
       this.setState({
         selectedOption: {
-          key: nextProps.lastCreatedParty.party_guid,
+          value: nextProps.lastCreatedParty.party_guid,
           label: nextProps.lastCreatedParty.name,
         },
       });
@@ -154,7 +148,7 @@ export class PartySelectField extends Component {
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
-    this.setState({ selectedOption: { key: value, label: value } });
+    this.setState({ selectedOption: { value, label: value } });
   };
 
   handleSelect = (value, option) => {
@@ -167,7 +161,7 @@ export class PartySelectField extends Component {
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
     if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
-      return this.state.partyDataSource.find((opt) => opt.key === value)
+      return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;
     }

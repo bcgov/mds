@@ -15,7 +15,8 @@ INSERT INTO permit_status_code
     )
 VALUES
     ('O', 'Open', 10, 'system-mds', 'system-mds'),
-    ('C', 'Closed', 20, 'system-mds', 'system-mds')
+    ('C', 'Closed', 20, 'system-mds', 'system-mds'),
+    ('D', 'Draft', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -128,7 +129,8 @@ INSERT INTO mine_party_appt_type_code (
     grouping_level
     )
 VALUES
-    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2)
+    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('AGT', 'Agent', 14, 'system-mds', 'system-mds', 'true', 'true', 1)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
@@ -553,7 +555,7 @@ VALUES
     ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
     ('surface_bulk_sample', 'Surface Bulk Sample', 'system-mds', 'system-mds'),
     ('blasting_operation', 'Blasting Operations', 'system-mds', 'system-mds'),
-    ('placer_operation', 'Placer Opertations', 'system-mds', 'system-mds')
+    ('placer_operation', 'Placer Operations', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO underground_exploration_type (
@@ -615,7 +617,10 @@ VALUES
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
     ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
     ('PMT','Working Permit', true, 'system-mds','system-mds'),
-    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds')
+    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds'),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds','system-mds'),
+    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds','system-mds'),
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds','system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -643,7 +648,8 @@ VALUES
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
   ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
-  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
+  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds'),
+  ('NTR', '[]', 'templates/now/NOW Technical Review.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 UPDATE document_template SET form_spec_json = '[
@@ -1160,7 +1166,7 @@ INSERT INTO bond_type(
     )
 VALUES
     ('CAS', 'Cash', 'system-mds', 'system-mds'),
-    ('ILC', 'Irrevocable Letter of Credit', 'system-mds', 'system-mds'),
+    ('ILC', 'Letter of Credit', 'system-mds', 'system-mds'),
     ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
     ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds'),
     ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
@@ -1205,12 +1211,13 @@ VALUES
     ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
     ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
     ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
-    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds', 'system-mds', 60),
+    ('NIA', 'No Interest Payable Form', true, 'system-mds', 'system-mds', 60),
     ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
     ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
     ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
     ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
-    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110)
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110),
+    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type

@@ -60,9 +60,16 @@ declare
 -- columns with no source
 -- bond.closed_note
 
+	DROP TABLE IF EXISTS convert_permit_no;
+	CREATE TEMPORARY TABLE convert_permit_no as
+	select distinct
+		mms_permit_no_to_ses_convert(permit_no) as conv,
+		permit_no as org
+	from mms.mmspmt;
 
 	------------------- UPSERT RECORDS
 	SELECT count(*) FROM ETL_BOND into tmp1;
+
 
 	with upserted_etl_bond as (
 	INSERT INTO ETL_BOND (
@@ -87,9 +94,9 @@ declare
 		cnt_dt,
 		etl_create_date,
 		etl_update_date)
-	SELECT
+	SELECT DISTINCT
 		sec_cid,
-		replace(REPLACE(permit_no,' ',''),'--','-'),
+		conv.org,
 		CONCAT_WS(' ', TRIM(addr1),TRIM(addr2),TRIM(addr3), TRIM(post_cd)),
 		RTRIM(coalesce(nullif(TRIM(cmp_nm),''),TRIM(last_nm)),','),-- 1 record ends with a comma
 		TRIM(note1),
@@ -121,18 +128,19 @@ declare
 		now(),
 		now()
 	from mms.secsec sec
+	inner join convert_permit_no conv on sec.permit_no = conv.conv
 	where TRIM(sec.sec_cid) != ''
-	and replace(REPLACE(permit_no,' ',''),'--','-') in (select permit_no from permit)
+	and conv.org in (select permit_no from permit)
 	and sec_typ not in ('ALC', '')
 	ON CONFLICT (sec_cid)
 	DO
 		UPDATE
 			SET
 				sec_amt=excluded.sec_amt,
-				core_payer_party_guid = case
-					when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
-					else ETL_BOND.core_payer_party_guid
-					end,
+				-- core_payer_party_guid = case
+				-- 	when ETL_BOND.cmp_nm != EXCLUDED.cmp_nm then null
+				-- 	else ETL_BOND.core_payer_party_guid
+				-- 	end,
 				core_bond_type_code=excluded.core_bond_type_code,
 				descript= TRIM(excluded.descript),
 				etl_update_date=excluded.etl_update_date,
@@ -179,22 +187,17 @@ declare
 	where core_party_type = 'PER'
 	and (core_party_name = '' or core_party_name is null);
 
-
-
-
 	----------------- PAYERS AS PARTIES
 
 	with inserted_org_parties as (
 	INSERT INTO party (
 	    party_name         ,
-	    effective_date     ,
 	    party_type_code,
 	    create_user,
 	    update_user
 	 )
 	select distinct
 	    core_party_name,
-		now(),
 	    core_party_type	  ,
 	   	'bond_etl'        ,
 	   	'bond_etl'
@@ -207,7 +210,6 @@ declare
 	INSERT INTO party (
 		first_name,
 	    party_name,
-	    effective_date,
 	    party_type_code,
 	    create_user,
 	    update_user
@@ -215,7 +217,6 @@ declare
 	select distinct
 		core_first_name,
 	    core_party_name,
-		now()    ,
 	    core_party_type	  ,
 	   	'bond_etl'        ,
 	   	'bond_etl'
@@ -275,7 +276,6 @@ declare
 		institution_postal_code,
 		note,
 		issue_date,
-		project_id,
 		closed_date,
 		closed_note
 	)
@@ -298,9 +298,8 @@ declare
 		CONCAT(iaddr2,iaddr3),
 		null,
 		ipost_cd,
-		note1,
+		"comment",
 		cnt_dt,
-		project_no,
 		return_dt,
 		null
 	from ETL_BOND
@@ -322,7 +321,6 @@ declare
 				institution_postal_code=excluded.institution_postal_code,
 				note=excluded.note,
 				issue_date=excluded.issue_date,
-				project_id=excluded.project_id,
 				closed_date=excluded.closed_date
 	returning *
 	)
@@ -335,7 +333,6 @@ declare
 	where
 		ub.mms_sec_cid = e.sec_cid
 	and e.core_bond_id is null;
-
 
 	---------------------- INSERT BOND_permit_xref
 
@@ -351,6 +348,72 @@ declare
 	where core_bond_id is not null
 	on conflict do nothing;
 
+	UPDATE permit
+	set
+		project_id = bond_data.project_no
+	from (
+		SELECT project_no, core_permit_id
+		FROM (
+      		SELECT permit_no, MAX(cnt_dt) as max_cnt_dt
+      		FROM ETL_BOND
+      		GROUP BY permit_no
+			) mbd
+		INNER JOIN ETL_BOND e
+		ON e.permit_no = mbd.permit_no AND e.cnt_dt = mbd.max_cnt_dt
+	) bond_data
+	where permit.permit_id = bond_data.core_permit_id;
+
+	---------------------- INSERT BOND_HISTORY
+	INSERT INTO bond_history (
+		bond_id,
+		amount,
+		bond_type_code,
+		permit_guid,
+		permit_no,
+		payer_party_guid,
+		payer_name,
+		bond_status_code,
+		reference_number,
+		update_timestamp,
+		update_user,
+		institution_name,
+		institution_street,
+		institution_city,
+		institution_province,
+		institution_postal_code,
+		note,
+		issue_date,
+		closed_date,
+		closed_note
+	)
+	select
+		etl.core_bond_id,
+		etl.sec_amt,
+		etl.core_bond_type_code,
+		per.permit_guid,
+		per.permit_no,
+		etl.core_payer_party_guid,
+		par.party_name,	
+		'ACT', -- Hard coding to 'active' as this is us creating a history for the imported bonds that are confiscated or released.
+		etl.descript,
+		etl.cnt_dt,
+		'bond_etl',
+		etl.invloc,
+		etl.iaddr1,
+		CONCAT(etl.iaddr2,etl.iaddr3),
+		null,
+		etl.ipost_cd,
+		etl.comment,
+		etl.cnt_dt,
+		etl.return_dt,
+		null
+	from ETL_BOND etl 
+	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid 
+	INNER JOIN permit per on per.permit_id = etl.core_permit_id
+	where 
+		etl.status in ('E', 'C') 
+		AND 
+		etl.core_bond_id not in (select bond_id from bond_history);
 END;
 END;
 $$ LANGUAGE PLPGSQL;

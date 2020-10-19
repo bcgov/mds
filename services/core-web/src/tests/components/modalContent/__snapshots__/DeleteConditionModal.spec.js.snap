@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteConditionModal renders properly 1`] = `
+<div>
+  <Result
+    status="warning"
+    style={
+      Object {
+        "padding": "0px",
+      }
+    }
+    title="Are you sure you want to delete the following undefined"
+  />
+  <br />
+  <Condition
+    condition={Object {}}
+    isViewOnly={true}
+  />
+  <div
+    className="right center-mobile"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      onClick={[Function]}
+      type="primary"
+    >
+      mockTitle
+    </Button>
+  </div>
+</div>
+`;

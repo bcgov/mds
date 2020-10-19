@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Icon, Result, Row, Col } from "antd";
+import { Button, Menu, Popconfirm, Dropdown, Result, Row, Col } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
@@ -15,8 +16,13 @@ import {
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { getPermits, getDraftPermitForNOW, getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import {
+  getPermits,
+  getDraftPermitForNOW,
+  getDraftPermitAmendmentForNOW,
+} from "@common/selectors/permitSelectors";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
@@ -24,6 +30,7 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -54,14 +61,20 @@ const propTypes = {
 const defaultProps = {};
 
 const originalPermit = "OGP";
-const draft = "DFT";
+
+const regionHash = {
+  SE: "Cranbrook",
+  SC: "Kamloops",
+  NE: "Prince George",
+  NW: "Smithers",
+  SW: "Victoria",
+};
 
 export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
     isDraft: false,
     permittee: {},
-    draftAmendment: {},
     permitGenObj: {},
     isLoaded: false,
   };
@@ -121,7 +134,7 @@ export class NOWPermitGeneration extends Component {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
       auth_end_date: "",
-      regional_office: "",
+      regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
@@ -153,7 +166,9 @@ export class NOWPermitGeneration extends Component {
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
-    permitGenObject.regional_office = isEmpty(amendment) ? "" : amendment.regional_office;
+    permitGenObject.regional_office = !amendment.regional_office
+      ? regionHash[noticeOfWork.mine_region]
+      : amendment.regional_office;
 
     return permitGenObject;
   };
@@ -260,37 +275,39 @@ export class NOWPermitGeneration extends Component {
       <div className="inline-flex block-mobile padding-md between">
         <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
-          <Dropdown overlay={this.menu()} placement="bottomLeft">
-            <Button type="secondary" className="full-mobile">
-              Actions
-              <Icon type="down" />
-            </Button>
-          </Dropdown>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Dropdown overlay={this.menu()} placement="bottomLeft">
+              <Button type="secondary" className="full-mobile">
+                Actions
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </AuthorizationWrapper>
         )}
       </div>
     ) : (
-        <div className="center padding-md">
-          <div className="inline-flex flex-center block-mobile">
-            <Popconfirm
-              placement="bottomRight"
-              title="You have unsaved changes, Are you sure you want to cancel?"
-              onConfirm={this.handleCancelDraftEdit}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="secondary" className="full-mobile">
-                Cancel
+      <div className="center padding-md">
+        <div className="inline-flex flex-center block-mobile">
+          <Popconfirm
+            placement="bottomRight"
+            title="You have unsaved changes, Are you sure you want to cancel?"
+            onConfirm={this.handleCancelDraftEdit}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="secondary" className="full-mobile">
+              Cancel
             </Button>
-            </Popconfirm>
-            <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
-              Preview
+          </Popconfirm>
+          <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
+            Preview
           </Button>
-            <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
-              Save
+          <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
+            Save
           </Button>
-          </div>
         </div>
-      );
+      </div>
+    );
   };
 
   render() {
@@ -345,26 +362,28 @@ export class NOWPermitGeneration extends Component {
                         ]}
                       />
                     ) : (
-                        <>
-                          <NullScreen type="draft-permit" />
+                      <>
+                        <NullScreen type="draft-permit" />
+                        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                           <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </>
-                      )}
+                        </AuthorizationWrapper>
+                      </>
+                    )}
                   </div>
                 ) : (
-                    <GeneratePermitForm
-                      initialValues={this.state.permitGenObj}
-                      isAmendment={this.props.isAmendment}
-                      noticeOfWork={this.props.noticeOfWork}
-                      isViewMode={this.props.isViewMode}
-                    />
-                  )}
+                  <GeneratePermitForm
+                    initialValues={this.state.permitGenObj}
+                    isAmendment={this.props.isAmendment}
+                    noticeOfWork={this.props.noticeOfWork}
+                    isViewMode={this.props.isViewMode}
+                  />
+                )}
               </LoadingWrapper>
             </div>
           </>
         ) : (
-            <NullScreen type="no-permittee" />
-          )}
+          <NullScreen type="no-permittee" />
+        )}
       </div>
     );
   }

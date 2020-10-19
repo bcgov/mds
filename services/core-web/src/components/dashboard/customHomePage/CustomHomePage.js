@@ -88,7 +88,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CustomHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomHomePage);

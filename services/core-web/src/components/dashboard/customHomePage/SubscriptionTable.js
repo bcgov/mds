@@ -5,7 +5,6 @@ import { Popconfirm, Tooltip } from "antd";
 import { uniqBy, flattenDeep } from "lodash";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { UNSUBSCRIBE } from "@/constants/assets";
@@ -40,7 +39,7 @@ export class SubscriptionTable extends Component {
           : [],
       region: mine.mine_region ? mineRegionHash[mine.mine_region] : Strings.EMPTY_FIELD,
       commodity:
-        mine.mine_type && mine.mine_type.length > 0
+        mine.mine_type && mine.mine_type.detail && mine.mine_type.detail.length > 0
           ? uniqBy(
               flattenDeep(
                 mine.mine_type.map(
@@ -169,7 +168,6 @@ export class SubscriptionTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: <NullScreen type="subscription" /> },
         }}
       />
     );

@@ -2,7 +2,7 @@
 
 exports[`SurfaceBulkSamples renders properly 1`] = `
 <div>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [
@@ -35,10 +35,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
     dataSource={Array []}
     locale={
       Object {
-        "emptyText": "No data",
+        "emptyText": "No Data Yet",
       }
     }
     pagination={false}
+    rowKey="key"
   />
   <br />
   <Row
@@ -77,37 +78,20 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <div
         className="field-title"
       >
-        Bed rock expansion
+        Bedrock excavation
         <NOWFieldOriginTooltip />
       </div>
       <Field
         component={[Function]}
         disabled={true}
-        id="has_bedrock_expansion"
-        name="has_bedrock_expansion"
+        id="has_bedrock_excavation"
+        name="has_bedrock_excavation"
       />
     </Col>
   </Row>
   <Row
     gutter={16}
   >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Surface water damage
-        <NOWFieldOriginTooltip />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="surface_water_damage"
-        name="surface_water_damage"
-      />
-    </Col>
     <Col
       md={12}
       sm={24}

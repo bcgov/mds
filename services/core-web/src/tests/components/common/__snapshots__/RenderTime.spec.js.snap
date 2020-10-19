@@ -8,24 +8,12 @@ exports[`RenderTime renders properly 1`] = `
   validateStatus=""
 >
   <TimePicker
-    align={
-      Object {
-        "offset": Array [
-          0,
-          -2,
-        ],
-      }
-    }
     className={false}
     defaultOpenValue={"2019-08-27T07:00:00.000Z"}
-    focusOnOpen={true}
     format="HH:mm"
-    hideDisabledOptions={false}
     id={1}
     onBlur={[Function]}
     placeholder="Select a time"
-    placement="bottomLeft"
-    transitionName="slide-up"
     value={"2019-08-27T07:00:00.000Z"}
   />
 </FormItem>

@@ -35,6 +35,11 @@ def run_ETL():
 
         db.session.execute('select transfer_mine_status_information();')
         db.session.commit()
+
+        # TODO: Disable security ETL after feature release run nightly for now.
+        db.session.execute('select mms_etl_bond_data();')
+        db.session.execute('select refresh_ses_staging();')
+        db.session.commit()
     finally:
         connection.close()
 

@@ -74,11 +74,9 @@ exports[`NavBar renders properly 1`] = `
               <span
                 className="padding-small--right"
               >
-                Provincial Reporting
+                Browse...
               </span>
-              <Icon
-                type="down"
-              />
+              <ForwardRef(DownOutlined) />
             </button>
           </Dropdown>
           <Link
@@ -138,16 +136,13 @@ exports[`NavBar renders properly 1`] = `
               id=""
               type="button"
             >
-              <Icon
+              <ForwardRef(UserOutlined)
                 className="padding-small--right icon-sm"
-                type="user"
               />
               <span
                 className="padding-small--right"
               />
-              <Icon
-                type="down"
-              />
+              <ForwardRef(DownOutlined) />
             </button>
           </Dropdown>
           <a
@@ -172,9 +167,8 @@ exports[`NavBar renders properly 1`] = `
                 loading={false}
                 type="link"
               >
-                <Icon
+                <ForwardRef(MessageOutlined)
                   className="icon-sm"
-                  type="message"
                 />
               </Button>
             </Tooltip>

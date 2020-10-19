@@ -13,9 +13,10 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
-import NullScreen from "@/components/common/NullScreen";
 import { modalConfig } from "@/components/modalContent/config";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -27,10 +28,22 @@ const propTypes = {
   arrayPush: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
+  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
+  disclaimerText: PropTypes.string,
+  isAdminView: PropTypes.bool,
+  handleAfterUpload: PropTypes.func,
+  addDescriptionColumn: PropTypes.bool,
 };
-const defaultProps = { selectedRows: null };
+const defaultProps = {
+  selectedRows: null,
+  categoriesToShow: [],
+  disclaimerText: "",
+  isAdminView: false,
+  addDescriptionColumn: true,
+  handleAfterUpload: () => {},
+};
 
-const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
+const handleAddDocument = (closeDocumentModal, addDocument, handleAfterUpload) => (values) => {
   const document = {
     now_application_document_type_code: values.now_application_document_type_code,
     description: values.description,
@@ -43,6 +56,7 @@ const handleAddDocument = (closeDocumentModal, addDocument) => (values) => {
   };
   addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", document);
   closeDocumentModal();
+  handleAfterUpload();
 };
 
 const openAddDocumentModal = (
@@ -51,28 +65,38 @@ const openAddDocumentModal = (
   closeDocumentModal,
   addDocument,
   now_application_guid,
-  mine_guid
+  mine_guid,
+  categoriesToShow,
+  handleAfterUpload
 ) => {
   event.preventDefault();
   openDocumentModal({
     props: {
-      onSubmit: debounce(handleAddDocument(closeDocumentModal, addDocument), 2000),
+      onSubmit: debounce(
+        handleAddDocument(closeDocumentModal, addDocument, handleAfterUpload),
+        2000
+      ),
       title: `Add Notice of Work document`,
       now_application_guid,
       mine_guid,
+      categoriesToShow,
     },
     content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
   });
 };
 
 export const NOWDocuments = (props) => {
-  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash) => {
-    const categoryFilters = Object.values(noticeOfWorkApplicationDocumentTypeOptionsHash).map(
-      (dt) => ({
-        text: dt,
-        value: dt,
-      })
-    );
+  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash, categoriesToShow) => {
+    const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
+      .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
+      .reduce((obj, key) => {
+        obj[key] = noticeOfWorkApplicationDocumentTypeOptionsHash[key];
+        return obj;
+      }, {});
+    const categoryFilters = Object.values(filtered).map((dt) => ({
+      text: dt,
+      value: dt,
+    }));
     const fileNameColumn = props.selectedRows
       ? {
           title: "File Name",
@@ -101,7 +125,16 @@ export const NOWDocuments = (props) => {
             </div>
           ),
         };
-    return [
+
+    const descriptionColumn = {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      sorter: (a, b) => (a.description > b.description ? -1 : 1),
+      render: (text) => <div title="Proponent Description">{text}</div>,
+    };
+
+    const tableColumns = [
       fileNameColumn,
       {
         title: "Category",
@@ -113,13 +146,6 @@ export const NOWDocuments = (props) => {
         render: (text) => <div title="Category">{text}</div>,
       },
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
-        sorter: (a, b) => (a.description > b.description ? -1 : 1),
-        render: (text) => <div title="Proponent Description">{text}</div>,
-      },
-      {
         title: "Upload Date/Time",
         dataIndex: "upload_date",
         key: "upload_date",
@@ -129,6 +155,12 @@ export const NOWDocuments = (props) => {
         ),
       },
     ];
+
+    if (props.addDescriptionColumn) {
+      tableColumns.splice(2, 0, descriptionColumn);
+    }
+
+    return tableColumns;
   };
 
   const transformDocuments = (
@@ -136,6 +168,7 @@ export const NOWDocuments = (props) => {
     now_application_guid,
     noticeOfWorkApplicationDocumentTypeOptionsHash
   ) =>
+    documents &&
     documents.map((document) => ({
       key: document.now_application_document_xref_guid,
       now_application_guid,
@@ -153,34 +186,62 @@ export const NOWDocuments = (props) => {
 
   return (
     <div>
-      {props.documents && props.documents.length >= 1 ? (
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns(props.noticeOfWorkApplicationDocumentTypeOptionsHash)}
-          dataSource={transformDocuments(
-            props.documents,
-            props.now_application_guid,
-            props.noticeOfWorkApplicationDocumentTypeOptionsHash
-          )}
-          locale={{
-            emptyText: "There are no additional documents associated with this Notice of Work",
-          }}
-          rowSelection={
-            props.selectedRows
-              ? {
-                  selectedRowKeys: props.selectedRows.selectedCoreRows,
-                  onChange: (selectedRowKeys) => {
-                    props.selectedRows.setSelectedCoreRows(selectedRowKeys);
-                  },
+      {props.isAdminView && (
+        <>
+          <div className="inline-flex between">
+            <p>{props.disclaimerText}</p>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <AddButton
+                disabled={props.isViewMode}
+                onClick={(event) =>
+                  openAddDocumentModal(
+                    event,
+                    props.openModal,
+                    props.closeModal,
+                    props.arrayPush,
+                    props.now_application_guid,
+                    props.mine_guid,
+                    props.categoriesToShow,
+                    props.handleAfterUpload
+                  )
                 }
-              : null
-          }
-        />
-      ) : (
-        <NullScreen type="documents" />
+              >
+                Add Document
+              </AddButton>
+            </AuthorizationWrapper>
+          </div>
+        </>
       )}
-      {!props.selectedRows && !props.isViewMode && (
+      {!props.isAdminView && <p>{props.disclaimerText}</p>}
+      <br />
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns(
+          props.noticeOfWorkApplicationDocumentTypeOptionsHash,
+          props.categoriesToShow
+        )}
+        dataSource={transformDocuments(
+          props.documents,
+          props.now_application_guid,
+          props.noticeOfWorkApplicationDocumentTypeOptionsHash
+        )}
+        locale={{
+          emptyText: "No Data Yet",
+        }}
+        rowSelection={
+          props.selectedRows
+            ? {
+                selectedRowKeys: props.selectedRows.selectedCoreRows,
+                onChange: (selectedRowKeys) => {
+                  props.selectedRows.setSelectedCoreRows(selectedRowKeys);
+                },
+              }
+            : null
+        }
+      />
+
+      {!props.selectedRows && !props.isViewMode && !props.isAdminView && (
         <AddButton
           disabled={props.isViewMode}
           onClick={(event) =>
@@ -190,7 +251,9 @@ export const NOWDocuments = (props) => {
               props.closeModal,
               props.arrayPush,
               props.now_application_guid,
-              props.mine_guid
+              props.mine_guid,
+              props.categoriesToShow,
+              props.handleAfterUpload
             )
           }
         >

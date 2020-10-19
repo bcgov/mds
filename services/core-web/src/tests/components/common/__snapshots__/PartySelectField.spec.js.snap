@@ -18,8 +18,8 @@ exports[`PartySelectField renders properly 1`] = `
   searchResults={Array []}
   selectedOption={
     Object {
-      "key": "",
       "label": "",
+      "value": "",
     }
   }
   validate={
