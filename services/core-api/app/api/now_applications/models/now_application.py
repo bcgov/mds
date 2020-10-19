@@ -135,7 +135,8 @@ class NOWApplication(Base, AuditMixin):
         viewonly=True)
 
     # Contacts
-    contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
+    contacts = db.relationship('NOWPartyAppointment', lazy='selectin', 
+        primaryjoin="and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)")
 
     #status
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
