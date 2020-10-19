@@ -185,7 +185,6 @@ export class PartySelectField extends Component {
       this.props.initialValue !== undefined &&
       this.props.initialValue.value !== this.state.selectedOption.value
     ) {
-      console.log("why did i make it inside the loop??");
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;
