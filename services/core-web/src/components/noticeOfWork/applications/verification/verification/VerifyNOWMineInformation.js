@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import { Form } from "@ant-design/compatible";
 import { Field, reduxForm } from "redux-form";
 import { resetForm } from "@common/utils/helpers";
@@ -36,11 +37,8 @@ export const VerifyNOWMineInformation = (props) => (
         // onSubmit={props.handleNOWImport}
         title="Confirm Location"
       />
-      {/* <Divider /> */}
-      {/* <VerifyNoWContacts
-        initialValues={props.originalNoticeOfWork}
-        contacts={props.originalNoticeOfWork.contacts}
-      />
+      {/* <Divider />
+      <VerifyNoWContacts initialValues={props.originalNoticeOfWork} contacts={props.contacts} />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Button type="primary" htmlType="submit">

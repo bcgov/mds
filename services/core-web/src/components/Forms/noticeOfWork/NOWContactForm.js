@@ -30,7 +30,7 @@ const renderContacts = ({ fields, contacts, partyRelationshipTypes, isEditView }
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
-  console.log(contacts);
+
   return (
     <>
       <Row gutter={24}>

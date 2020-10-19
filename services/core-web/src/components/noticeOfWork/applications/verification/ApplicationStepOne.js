@@ -134,7 +134,8 @@ export class ApplicationStepOne extends Component {
       <>
         <VerifyNOWMineInformation
           values={values}
-          initialValues={this.props.originalNoticeOfWork}
+          // initialValues={this.props.originalNoticeOfWork}
+          originalNoticeOfWork={this.props.originalNoticeOfWork}
           onSubmit={this.handleNOWImport}
           contacts={this.props.originalNoticeOfWork.contacts}
         />
