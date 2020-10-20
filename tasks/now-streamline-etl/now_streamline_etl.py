@@ -119,7 +119,7 @@ def now_streamline_etl():
             fuellubstoremethodbulk) VALUES %s""", processed_results)
 
         print('Updating records the now_submissions schema')
-        update_statement = """update mms_now_submissions.applications a
+        update_statement = """update mms_now_submissions.application a
         set
             typeofapplication = ts.typeofapplication,
             descexplorationprogram = ts.descexplorationprogram,
@@ -136,10 +136,13 @@ def now_streamline_etl():
             fuellubstoremethodbarrel = ts.fuellubstoremethodbarrel,
             fuellubstoremethodbulk = ts.fuellubstoremethodbulk
         from temp_streamline ts
-        where applications.mms_cid = temp_streamline.mms_cid
+        where a.mms_cid = ts.mms_cid
         """
+        cursor.execute(update_statement)
+        updated_rows = cursor.rowcount
+        connection.commit()
 
-        print('Update complete!')
+        print('Update complete -  %s records', updated_rows)
     finally:
         connection.close()
 
