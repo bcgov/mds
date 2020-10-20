@@ -24,7 +24,7 @@ RUN yum -y install libaio
 RUN unzip /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
     unzip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
     unzip /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip -d ${APP_ROOT}/oracle_bin && \
-    mv ${APP_ROOT}/oracle_bin/instantclient_19_6 ${APP_ROOT}/oracle_bin/instantclient 
+    mv ${APP_ROOT}/oracle_bin/instantclient_19_6 ${APP_ROOT}/oracle_bin/instantclient
 
 RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/oracle_instant_client.conf && ldconfig && \
     rm -rf /tmp/oracle/instantclient-basic-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip /tmp/oracle/instantclient-sqlplus-linux.x64-19.6.0.0.0dbru.zip && \

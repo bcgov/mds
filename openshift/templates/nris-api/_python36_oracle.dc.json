@@ -285,6 +285,15 @@
                     "value": "1521"
                   },
                   {
+                    "name": "NRIS_SERVER_CERT_DN",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-server-cert-dn"
+                      }
+                    }
+                  },
+                  {
                     "name": "UWSGI_PROCESSES",
                     "value": "${UWSGI_PROCESSES}"
                   },
