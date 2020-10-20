@@ -419,10 +419,11 @@ body {
 
 .add-content-block {
   background-color: #f3f0f0;
+  border-radius: 5px;
+  border: 2px dashed gray;
   margin: 50px;
   padding: 90px;
   text-align: center;
-  box-shadow: $default-box-shadow;
   cursor: pointer;
 
   &:hover {

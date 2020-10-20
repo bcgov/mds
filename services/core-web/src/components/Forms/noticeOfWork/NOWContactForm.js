@@ -10,11 +10,9 @@ import { Col, Row, Button, Card } from "antd";
 import { startCase } from "lodash";
 import { required } from "@common/utils/Validate";
 import { PlusOutlined } from "@ant-design/icons";
-import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import { TRASHCAN } from "@/constants/assets";
-import { PROFILE_NOCIRCLE } from "@/constants/assets";
-import AddButton from "@/components/common/AddButton";
+import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
+
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
@@ -42,9 +40,9 @@ const renderContacts = ({
   arrayRemove2,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
-    ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "STO", "MOR"].includes(pr.value)
+    ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
-  console.log(contacts);
+
   return (
     <>
       <Row gutter={24}>
