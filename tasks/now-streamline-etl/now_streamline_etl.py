@@ -90,7 +90,7 @@ def now_streamline_etl():
             landlegaldesc varchar,
             landprivate varchar,
             landcommunitywatershed varchar,
-            archsiteaffected varchar,
+            archsitesaffected varchar,
             fuellubstoreonsite varchar,
             fuellubstored int4,
             fuellubstoremethodbarrel varchar,
