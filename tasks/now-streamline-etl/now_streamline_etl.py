@@ -29,9 +29,9 @@ TGT_DB_PORT = os.environ.get('TGT_DB_PORT')
 TGT_DB_NAME = os.environ.get('TGT_DB_NAME')
 
 
-def etl_streamline_now():
+def now_streamline_etl():
 
-    print('Beginning mmsstream_now import')
+    print('Beginning mmsstream_now import...')
     import_complete = False
 
     try:
@@ -68,10 +68,11 @@ def etl_streamline_now():
 
         cursor.execute(select_statement)
         results = cursor.fetchall()
+        import_complete = True
     finally:
         oracle_db.close()
 
-    if results is None:
+    if import_complete is False or results is None:
         raise Exception("No values retrieved from mmsstream_now table")
 
     print(f'Retrieved {len(results)} records.')
@@ -85,11 +86,46 @@ def etl_streamline_now():
     try:
         cursor = connection.cursor()
 
-        print('Creating temporary table')
-        cursor.execute("CREATE TEMP TABLE temp_streamline")
+        print('Creating temporary table and inserting records...')
+        cursor.execute("""
+        CREATE TEMP TABLE IF NOT EXISTS temp_streamline (
+            mms_cid bigint,
+            typeofapplication varchar, 
+            descexplorationprogram varchar,
+            firstaidequipmentonsite varchar,
+            firstaidcertlevel varchar,
+            tenurenumbers varchar,
+            crowngrantlotnumbers varchar,
+            landlegaldesc varchar,
+            landprivate varchar,
+            landcommunitywatershed varchar,
+            archsiteaffected varchar,
+            fuellubstoreonsite varchar,
+            fuellubstored int4,
+            fuellubstoremethodbarrel varchar,
+            fuellubstoremethodbulk varchar
+            )
+        """)
+
+        cursor.execute("TRUNCATE TABLE temp_streamline")
 
         from psycopg2.extras import execute_values
-        execute_values(cursor, "INSERT INTO temp (id) VALUES %s", results)
+        execute_values(
+            cursor, """INSERT INTO temp_streamline (mms_cid,
+            typeofapplication, 
+            descexplorationprogram,
+            firstaidequipmentonsite,
+            firstaidcertlevel,
+            tenurenumbers,
+            crowngrantlotnumbers,
+            landlegaldesc,
+            landprivate,
+            landcommunitywatershed,
+            archsiteaffected,
+            fuellubstoreonsite,
+            fuellubstored,
+            fuellubstoremethodbarrel,
+            fuellubstoremethodbulk) VALUES %s""", results)
 
         print('Updating records the now_submissions schema')
         update_statement = """
@@ -113,12 +149,10 @@ def etl_streamline_now():
         where applications.mms_cid = temp_streamline.mms_cid
         """
 
-        for record in results:
-            cur.execute(update_statement)
-
+        print('Update complete!')
     finally:
         connection.close()
 
 
 if __name__ == '__main__':
-    etl_streamline_now()
+    now_streamline_etl()

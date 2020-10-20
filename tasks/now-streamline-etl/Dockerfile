@@ -29,6 +29,4 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the server
-EXPOSE 5500
-CMD ["python","streamline_now_import.py"]
+CMD ["python","now_streamline_etl.py"]
