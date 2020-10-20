@@ -30,7 +30,6 @@ const defaultProps = {
 };
 
 const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
-// eslint-disable-next-line react/prefer-stateless-function
 export class ChangeNOWLocationForm extends Component {
   state = { submitting: false };
 
