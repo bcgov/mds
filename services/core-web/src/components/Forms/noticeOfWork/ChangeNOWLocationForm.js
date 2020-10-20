@@ -2,20 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { reduxForm, Field, formValueSelector } from "redux-form";
+import { reduxForm, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Badge } from "antd";
-import { required, lat, lon } from "@common/utils/Validate";
+import { Button, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import MineCard from "@/components/mine/NoticeOfWork/MineCard";
-import RenderMineSelect from "@/components/common/RenderMineSelect";
-import RenderField from "@/components/common/RenderField";
-import * as Styles from "@/constants/styles";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -23,15 +20,13 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   locationOnly: PropTypes.bool,
   mine: CustomPropTypes.mine,
-  latitude: PropTypes.string,
-  longitude: PropTypes.string,
+  latitude: PropTypes.string.isRequired,
+  longitude: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
   locationOnly: false,
   mine: {},
-  latitude: "",
-  longitude: "",
 };
 
 const selector = formValueSelector(FORM.CHANGE_NOW_LOCATION);
@@ -49,35 +44,13 @@ export class ChangeNOWLocationForm extends Component {
       this.props.latitude && this.props.longitude
         ? [this.props.latitude, this.props.longitude]
         : [];
-    const span = this.props.locationOnly ? 12 : 6;
     return (
       <Form layout="vertical" onSubmit={this.handleFormSubmit}>
-        <Row gutter={16}>
-          {!this.props.locationOnly && (
-            <Col md={12} s={24}>
-              <Form.Item label="Mine Name">
-                <Field
-                  id="mine_guid"
-                  name="mine_guid"
-                  component={RenderMineSelect}
-                  validate={[required]}
-                  fullWidth
-                  additionalPin={additionalPin}
-                />
-              </Form.Item>
-            </Col>
-          )}
-          <Col md={span} s={12}>
-            <Form.Item label={[<Badge color={Styles.COLOR.yellow} />, "NoW Latitude"]}>
-              <Field id="latitude" name="latitude" component={RenderField} validate={[lat]} />
-            </Form.Item>
-          </Col>
-          <Col md={span} s={12}>
-            <Form.Item label="NoW Longitude">
-              <Field id="longitude" name="longitude" component={RenderField} validate={[lon]} />
-            </Form.Item>
-          </Col>
-        </Row>
+        <EditNOWMineAndLocation
+          locationOnly
+          latitude={this.props.latitude}
+          longitude={this.props.longitude}
+        />
         {this.props.locationOnly && (
           <MineCard mine={this.props.mine} additionalPin={additionalPin} />
         )}

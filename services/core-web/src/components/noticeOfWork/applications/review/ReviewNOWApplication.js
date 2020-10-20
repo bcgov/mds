@@ -14,7 +14,6 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
-  getPartyRelationshipTypesList,
 } from "@common/selectors/staticContentSelectors";
 import { required, lat, lon, maxLength, requiredRadioButton } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
@@ -54,7 +53,6 @@ const propTypes = {
   permitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   permitTypeOptions: CustomPropTypes.options.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   proposedTonnage: PropTypes.number.isRequired,
@@ -686,7 +684,6 @@ export const ReviewNOWApplication = (props) => {
               contacts={props.contacts}
               isViewMode={props.isViewMode}
               noticeOfWork={props.initialValues}
-              partyRelationshipTypesList={props.partyRelationshipTypesList}
             />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
@@ -758,7 +755,6 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
-    partyRelationshipTypesList: getPartyRelationshipTypesList(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

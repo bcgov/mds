@@ -1,27 +1,33 @@
-/* eslint-disable */
-import React from "react";
+import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { FieldArray, Field, arrayPush, arrayRemove } from "redux-form";
-import { Form } from "@ant-design/compatible";
-import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
-import { startCase } from "lodash";
-import { required } from "@common/utils/Validate";
 import { PlusOutlined } from "@ant-design/icons";
-import CustomPropTypes from "@/customPropTypes";
+import { FieldArray, Field, arrayPush, arrayRemove } from "redux-form";
+import { startCase } from "lodash";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
+import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
+import * as ModalContent from "@/constants/modalContent";
+import { required } from "@common/utils/Validate";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
-
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
+import * as Permission from "@/constants/permissions";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
-  initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   isEditView: PropTypes.bool,
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
@@ -48,6 +54,7 @@ const renderContacts = ({
       <Row gutter={24}>
         {fields
           .map((field, index) => (
+            // eslint-disable-next-line react/no-array-index-key
             <Col lg={12} sm={24} key={index}>
               <Card
                 style={{ height: "300px" }}
@@ -153,7 +160,10 @@ const renderContacts = ({
         <Col lg={12} sm={24}>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <div
+              role="button"
               className="add-content-block"
+              tabIndex="0"
+              onKeyPress={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
               onClick={() => fields.push({ mine_party_appt_type_code: "", party_guid: "" })}
             >
               <div className="inline-flex flex-center">
@@ -168,30 +178,61 @@ const renderContacts = ({
   );
 };
 
-export const NOWContactForm = (props) => {
-  return (
-    <FieldArray
-      id="contacts"
-      name="contacts"
-      component={renderContacts}
-      contacts={props.contacts}
-      partyRelationshipTypes={props.partyRelationshipTypesList}
-      isEditView={props.isEditView}
-      arrayPushReduxForms={props.arrayPush}
-      arrayRemoveReduxForms={props.arrayRemove}
-    />
-  );
-};
+export class EditNoWContacts extends Component {
+  showAddPartyModal = () => {
+    this.props.openModal({
+      props: {
+        title: ModalContent.ADD_CONTACT,
+        partyRelationshipTypesList: this.props.partyRelationshipTypesList,
+        closeModal: this.props.closeModal,
+      },
+      content: modalConfig.ADD_QUICK_PARTY,
+    });
+  };
 
-NOWContactForm.propTypes = propTypes;
+  componentWillReceiveProps = (nextProps) => {
+    if (
+      nextProps.addPartyFormState.showingAddPartyForm &&
+      this.props.addPartyFormState.showingAddPartyForm !==
+        nextProps.addPartyFormState.showingAddPartyForm
+    ) {
+      this.showAddPartyModal();
+    }
+  };
+
+  render() {
+    return (
+      <FieldArray
+        id="contacts"
+        name="contacts"
+        component={renderContacts}
+        contacts={this.props.contacts}
+        partyRelationshipTypes={this.props.partyRelationshipTypesList}
+        isEditView={this.props.isEditView}
+        arrayPushReduxForms={this.props.arrayPush}
+        arrayRemoveReduxForms={this.props.arrayRemove}
+      />
+    );
+  }
+}
+
+EditNoWContacts.propTypes = propTypes;
+EditNoWContacts.defaultProps = defaultProps;
+
+const mapStateToProps = (state) => ({
+  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
+  addPartyFormState: getAddPartyFormState(state),
+});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      openModal,
+      closeModal,
       arrayPush,
       arrayRemove,
     },
     dispatch
   );
 
-export default connect(null, mapDispatchToProps)(NOWContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(EditNoWContacts);

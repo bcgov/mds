@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Card } from "antd";
@@ -9,12 +8,13 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
-import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
+import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
 
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
     .isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
 };
 
 const NOWContact = (contact) => (
@@ -69,11 +69,9 @@ export const ReviewNOWContacts = (props) => (
         )}
       </>
     ) : (
-      <NOWContactForm
-        clearOnSubmit={() => {}}
+      <EditNoWContacts
         initialValues={props.noticeOfWork}
         contacts={props.noticeOfWork.contacts}
-        partyRelationshipTypesList={props.partyRelationshipTypesList}
         isEditView
       />
     )}

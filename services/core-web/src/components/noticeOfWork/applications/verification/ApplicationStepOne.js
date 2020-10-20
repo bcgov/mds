@@ -1,11 +1,9 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { getFormValues, submit } from "redux-form";
+import { submit } from "redux-form";
 import { connect } from "react-redux";
-import { Result, Alert, Row, Button, Divider } from "antd";
+import { Result, Alert, Row } from "antd";
 import PropTypes from "prop-types";
-import * as FORM from "@/constants/forms";
 import {
   createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -13,12 +11,9 @@ import {
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
-import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/verification/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
-import VerifyNoWContacts from "@/components/noticeOfWork/applications/verification/verification/VerifyNoWContacts";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
+import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/verification/VerifyApplicationInformationForm";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -42,6 +37,7 @@ const defaultProps = {
 export class ApplicationStepOne extends Component {
   state = {
     isImported: false,
+    submitting: false,
   };
 
   componentDidMount() {
@@ -55,6 +51,7 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
+    this.setState({ submitting: true });
     const contacts = values.contacts.map((contact) => {
       return {
         mine_party_appt_type_code: contact.mine_party_appt_type_code,
@@ -62,17 +59,17 @@ export class ApplicationStepOne extends Component {
       };
     });
     const payload = {
-      ...this.props.verifyMineFormValues,
+      ...values,
       contacts,
     };
-    this.props
+    return this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(({ data }) => {
             this.props.loadMineData(values.mine_guid);
-            this.setState({ isImported: data.imported_to_core });
+            this.setState({ isImported: data.imported_to_core, submitting: false });
           });
       });
   };
@@ -111,11 +108,6 @@ export class ApplicationStepOne extends Component {
   };
 
   renderContent = () => {
-    const values = {
-      mine_guid: this.props.mineGuid,
-      longitude: this.props.noticeOfWork.longitude,
-      latitude: this.props.noticeOfWork.latitude,
-    };
     if (this.props.isNewApplication) {
       return (
         <MajorMinePermitApplicationCreate
@@ -127,16 +119,13 @@ export class ApplicationStepOne extends Component {
     }
     return (
       <>
-        <VerifyNOWMineInformation
-          values={values}
-          handleNOWImport={this.handleNOWImport}
-          contacts={this.props.originalNoticeOfWork.contacts}
-        />
-        <Divider />
-        <VerifyNoWContacts
-          initialValues={this.props.originalNoticeOfWork}
-          contacts={this.props.originalNoticeOfWork.contacts}
+        <VerifyApplicationInformationForm
+          submitting={this.state.submitting}
+          originalNoticeOfWork={this.props.originalNoticeOfWork}
+          noticeOfWork={this.props.noticeOfWork}
+          mineGuid={this.props.mineGuid}
           onSubmit={this.handleNOWImport}
+          initialValues={this.props.originalNoticeOfWork}
         />
       </>
     );
@@ -160,8 +149,6 @@ export class ApplicationStepOne extends Component {
 
 const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
-  verifyMineFormValues: getFormValues(FORM.CHANGE_NOW_LOCATION)(state) || {},
-  verifyContactFormValues: getFormValues(FORM.VERIFY_NOW_APPLICATION_FORM)(state) || {},
 });
 
 const mapDispatchToProps = (dispatch) =>
