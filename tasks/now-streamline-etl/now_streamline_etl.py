@@ -31,8 +31,7 @@ def now_streamline_etl():
 
         cursor = oracle_db.cursor()
 
-        select_statement = """
-        select 
+        select_statement = """select 
             cid as mms_cid,
             case when pmt_typ = 'N' then 'New Permit' else 'Amendment' end as typeofapplication,
             exp_desc as descexplorationprogram,
@@ -48,7 +47,7 @@ def now_streamline_etl():
             ltr_amt as fuellubstored,
             case when barrel_ind = 1 then 'Yes' else 'No' end as fuellubstoremethodbarrel,
             case when bulk_ind = 1 then 'Yes' else 'No' end as fuellubstoremethodbulk
-        from mmsadmin.mmsstream_now mn;
+        from mmsadmin.mmsstream_now mn
         """
 
         cursor.execute(select_statement)
@@ -72,8 +71,7 @@ def now_streamline_etl():
         cursor = connection.cursor()
 
         print('Creating temporary table and inserting records...')
-        cursor.execute("""
-        CREATE TEMP TABLE IF NOT EXISTS temp_streamline (
+        cursor.execute("""CREATE TEMP TABLE IF NOT EXISTS temp_streamline (
             mms_cid bigint,
             typeofapplication varchar, 
             descexplorationprogram varchar,
@@ -113,8 +111,7 @@ def now_streamline_etl():
             fuellubstoremethodbulk) VALUES %s""", results)
 
         print('Updating records the now_submissions schema')
-        update_statement = """
-        update mms_now_submissions.applications a
+        update_statement = """update mms_now_submissions.applications a
         set
             typeofapplication = ts.typeofapplication,
             descexplorationprogram = ts.descexplorationprogram,

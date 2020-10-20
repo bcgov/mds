@@ -8,4 +8,4 @@
 
 
 #  docker network create -d bridge --subnet 10.0.0.0/24 --gateway 10.0.0.1 mynet
- docker build -t now_streamline_etl . && docker run --env-file .env --network=default now_streamline_etl 
+docker build -t now_streamline_etl . && docker run --env-file .env --net=host now_streamline_etl 
