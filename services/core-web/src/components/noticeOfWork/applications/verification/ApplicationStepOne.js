@@ -57,29 +57,29 @@ export class ApplicationStepOne extends Component {
 
   handleNOWImport = (values) => {
     // this.props.submit(FORM.NOW_CONTACT_FORM);
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    if (errors.length === 0) {
-      const contacts = values.contacts.map((contact) => {
-        return {
-          mine_party_appt_type_code: contact.mine_party_appt_type_code,
-          party_guid: contact.party_guid,
-        };
-      });
-      const payload = {
-        ...values,
-        contacts,
+    // const errors = Object.keys(flattenObject(this.props.formErrors));
+    // if (errors.length === 0) {
+    const contacts = values.contacts.map((contact) => {
+      return {
+        mine_party_appt_type_code: contact.mine_party_appt_type_code,
+        party_guid: contact.party_guid,
       };
-      this.props
-        .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
-        .then(() => {
-          return this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(({ data }) => {
-              this.props.loadMineData(values.mine_guid);
-              this.setState({ isImported: data.imported_to_core });
-            });
-        });
-    }
+    });
+    const payload = {
+      ...this.props.verifyMineFormValues,
+      contacts,
+    };
+    this.props
+      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
+      .then(() => {
+        return this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(({ data }) => {
+            this.props.loadMineData(values.mine_guid);
+            this.setState({ isImported: data.imported_to_core });
+          });
+      });
+    // }
   };
 
   renderInspectorAssignment = () => {
@@ -134,23 +134,15 @@ export class ApplicationStepOne extends Component {
       <>
         <VerifyNOWMineInformation
           values={values}
-          // initialValues={this.props.originalNoticeOfWork}
-          originalNoticeOfWork={this.props.originalNoticeOfWork}
-          onSubmit={this.handleNOWImport}
+          handleNOWImport={this.handleNOWImport}
           contacts={this.props.originalNoticeOfWork.contacts}
         />
         <Divider />
-        {/* <VerifyNoWContacts
+        <VerifyNoWContacts
           initialValues={this.props.originalNoticeOfWork}
           contacts={this.props.originalNoticeOfWork.contacts}
+          onSubmit={this.handleNOWImport}
         />
-        <div className="right center-mobile">
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Button onClick={this.handleNOWImport} type="primary" htmlType="submit">
-              Verify Application
-            </Button>
-          </AuthorizationWrapper>
-        </div> */}
       </>
     );
   };
@@ -173,8 +165,8 @@ export class ApplicationStepOne extends Component {
 
 const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
-  // verifyMineFormValues: getFormValues(FORM.CHANGE_NOW_LOCATION)(state) || {},
-  // verifyContactFormValues: getFormValues(FORM.VERIFY_NOW_APPLICATION_FORM)(state) || {},
+  verifyMineFormValues: getFormValues(FORM.CHANGE_NOW_LOCATION)(state) || {},
+  verifyContactFormValues: getFormValues(FORM.VERIFY_NOW_APPLICATION_FORM)(state) || {},
   formErrors: getFormSyncErrors(FORM.VERIFY_NOW_APPLICATION_FORM)(state),
 });
 

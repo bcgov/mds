@@ -249,7 +249,7 @@ export class ReviewApplicationFeeContent extends Component {
   );
 
   render() {
-    this.props.initialValues.term_of_application = getDurationText(
+    this.props.initialValues.calculated_term_of_application = getDurationText(
       this.props.initialValues.proposed_start_date,
       this.props.initialValues.proposed_end_date
     );
@@ -300,8 +300,8 @@ export class ReviewApplicationFeeContent extends Component {
             <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
           <Field
-            id="term_of_application"
-            name="term_of_application"
+            id="calculated_term_of_application"
+            name="calculated_term_of_application"
             component={RenderField}
             disabled
           />

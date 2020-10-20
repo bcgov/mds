@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { reduxForm, Field, formValueSelector } from "redux-form";
+import { Button } from "antd";
 import { Form } from "@ant-design/compatible";
 import { resetForm } from "@common/utils/helpers";
 import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
@@ -15,6 +16,8 @@ import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSe
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -26,7 +29,6 @@ const propTypes = {
 };
 
 const defaultProps = {};
-// eslint-disable-next-line react/prefer-stateless-function
 export class VerifyNoWContacts extends Component {
   showAddPartyModal = () => {
     this.props.openModal({
@@ -51,7 +53,7 @@ export class VerifyNoWContacts extends Component {
 
   render() {
     return (
-      <Form layout="vertical">
+      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <h4>Verify Contacts</h4>
         <p>Choose contacts from CORE for the roles provided by the Notice Of Work.</p>
         <br />
@@ -61,6 +63,13 @@ export class VerifyNoWContacts extends Component {
           contacts={this.props.contacts}
           partyRelationshipTypesList={this.props.partyRelationshipTypesList}
         />
+        <div className="right center-mobile">
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Button type="primary" htmlType="submit">
+              Verify Application
+            </Button>
+          </AuthorizationWrapper>
+        </div>
       </Form>
     );
   }
@@ -87,8 +96,5 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.NOW_CONTACT_FORM,
-    onSubmitSuccess: resetForm(FORM.NOW_CONTACT_FORM),
-    // calling "this.props.submit" outside the form, needs an onSubmit handler to force validations
-    onSubmit: () => {},
   })
 )(VerifyNoWContacts);
