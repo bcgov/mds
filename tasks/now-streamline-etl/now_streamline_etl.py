@@ -1,17 +1,7 @@
-import re
-
-from flask import current_app
-
-from xml.etree import ElementTree as ET
-from app.extensions import db
-
-import os
 from dotenv import load_dotenv, find_dotenv
 import psycopg2
+import cx_Oracle
 
-from NOW_import import NOW_submissions_ETL
-from mms_now_import import mms_now_submissions_ETL
-from create_now_identities import create_and_update_now_identities
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
