@@ -36,8 +36,8 @@ const renderContacts = ({
   contacts,
   partyRelationshipTypes,
   isEditView,
-  arrayPush2,
-  arrayRemove2,
+  arrayPushReduxForms,
+  arrayRemoveReduxForms,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
@@ -46,98 +46,94 @@ const renderContacts = ({
   return (
     <>
       <Row gutter={24}>
-        {fields.map(
-          (field, index) =>
-            !(contacts[index] && contacts[index].state_modified) && (
-              <Col lg={12} sm={24} key={index}>
-                <Card
-                  title={
-                    <div className="inline-flex padding-md--top">
-                      <img
-                        className="icon-sm padding-md--right"
-                        src={PROFILE_NOCIRCLE}
-                        alt="user"
-                        height={25}
-                      />
-                      <p className="field-title">{`NoW ${
-                        contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
-                      } Contact Information:`}</p>
-                      <p>
-                        {contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}
-                      </p>
-                      <Button
-                        ghost
-                        onClick={() => {
-                          if (contacts[index].now_party_appointment_id) {
-                            const contactData = contacts[index];
-                            arrayRemove2(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
-                            arrayPush2(FORM.EDIT_NOTICE_OF_WORK, "contacts", {
-                              ...contactData,
-                              state_modified: "delete",
-                            });
-                          } else {
-                            fields.remove(index);
+        {fields
+          .map((field, index) => (
+            <Col lg={12} sm={24} key={index}>
+              <Card
+                title={
+                  <div className="inline-flex padding-md--top">
+                    <img
+                      className="icon-sm padding-md--right"
+                      src={PROFILE_NOCIRCLE}
+                      alt="user"
+                      height={25}
+                    />
+                    <p className="field-title">{`NoW ${
+                      contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
+                    } Contact Information:`}</p>
+                    <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
+                    <Button
+                      ghost
+                      onClick={() => {
+                        if (contacts[index] && contacts[index].now_party_appointment_id) {
+                          const updatedContact = contacts[index];
+                          updatedContact.state_modified = "delete";
+
+                          arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
+                          arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
+                        } else {
+                          fields.remove(index);
+                        }
+                      }}
+                      className="position-right no-margin"
+                    >
+                      <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                    </Button>
+                  </div>
+                }
+                bordered={false}
+              >
+                <Form.Item label="Role">
+                  <Field
+                    id={`${field}.mine_party_appt_type_code`}
+                    name={`${field}.mine_party_appt_type_code`}
+                    component={RenderSelect}
+                    data={filteredRelationships}
+                    validate={[required]}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <PartySelectField
+                    id={`${field}.party_guid`}
+                    name={`${field}.party_guid`}
+                    initialValue={
+                      isEditView && contacts[index]
+                        ? {
+                            label: contacts[index].party.name,
+                            value: contacts[index].party_guid,
                           }
-                        }}
-                        className="position-right no-margin"
-                      >
-                        <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                      </Button>
-                    </div>
-                  }
-                  bordered={false}
-                >
-                  <Form.Item label="Role">
-                    <Field
-                      id={`${field}.mine_party_appt_type_code`}
-                      name={`${field}.mine_party_appt_type_code`}
-                      component={RenderSelect}
-                      data={filteredRelationships}
-                      validate={[required]}
-                    />
-                  </Form.Item>
-                  <Form.Item>
-                    <PartySelectField
-                      id={`${field}.party_guid`}
-                      name={`${field}.party_guid`}
-                      initialValue={
-                        isEditView && contacts[index]
-                          ? {
-                              label: contacts[index].party.name,
-                              value: contacts[index].party_guid,
-                            }
-                          : undefined
-                      }
-                      label={
-                        contacts[index]
-                          ? `${contacts[index].mine_party_appt_type_code_description} Name`
-                          : "Contact Name"
-                      }
-                      partyLabel={
-                        contacts[index]
-                          ? contacts[index].mine_party_appt_type_code_description
-                          : "Contact Name"
-                      }
-                      validate={[required]}
-                      allowAddingParties
-                      initialValues={
-                        contacts[index]
-                          ? {
-                              ...contacts[index].party,
-                              ...(contacts[index].party.address.length > 0
-                                ? contacts[index].party.address[0]
-                                : {}),
-                            }
-                          : {}
-                      }
-                      initialSearch={contacts[index] ? contacts[index].party.name : undefined}
-                    />
-                  </Form.Item>
-                  <br />
-                </Card>
-              </Col>
-            )
-        )}
+                        : undefined
+                    }
+                    label={
+                      contacts[index]
+                        ? `${contacts[index].mine_party_appt_type_code_description} Name`
+                        : "Contact Name"
+                    }
+                    partyLabel={
+                      contacts[index]
+                        ? contacts[index].mine_party_appt_type_code_description
+                        : "Contact Name"
+                    }
+                    validate={[required]}
+                    allowAddingParties
+                    initialValues={
+                      contacts[index]
+                        ? {
+                            ...contacts[index].party,
+                            ...(contacts[index].party.address.length > 0
+                              ? contacts[index].party.address[0]
+                              : {}),
+                          }
+                        : {}
+                    }
+                    initialSearch={contacts[index] ? contacts[index].party.name : undefined}
+                  />
+                </Form.Item>
+                <br />
+              </Card>
+            </Col>
+          ))
+          .filter((field, index) => !contacts[index] || !contacts[index].state_modified)}
         <Col lg={12} sm={24}>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <div
@@ -165,8 +161,8 @@ export const NOWContactForm = (props) => {
       contacts={props.contacts}
       partyRelationshipTypes={props.partyRelationshipTypesList}
       isEditView={props.isEditView}
-      arrayPush2={props.arrayPush}
-      arrayRemove2={props.arrayRemove}
+      arrayPushReduxForms={props.arrayPush}
+      arrayRemoveReduxForms={props.arrayRemove}
     />
   );
 };
