@@ -286,7 +286,7 @@ NOW_PARTY_APPOINTMENT = api.model(
     })
 
 NOW_APPLICATION_MODEL = api.model(
-    'NOWApplication', {
+    'NOW_APPLICATION_MODEL', {
         'now_application_guid':
         fields.String,
         'now_number':
@@ -420,7 +420,7 @@ NOW_APPLICATION_MODEL = api.model(
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
-    'NOWApplication', {
+    'NOW_APPLICATION_MODEL_EXPORT', {
         'now_application_guid': fields.String,
         'now_number': fields.String,
         'mine_guid': fields.String,
@@ -484,7 +484,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
     })
 
 NOW_VIEW_MODEL = api.model(
-    'NOWApplication', {
+    'NOW_VIEW_MODEL', {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_no': fields.String,
