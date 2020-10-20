@@ -1,2 +1,0 @@
-mds_nris_prod=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=nrkdb03.bcgov)(PORT=1543))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=enfprod1.nrs.bcgov))(SECURITY=(ssl_server_cert_dn="CN=csnrdbaProd@gov.bc.ca")))
-mds_nris_test=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=nrcdb01.bcgov)(PORT=1543))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=enfdlvr1.nrs.bcgov))(SECURITY=(ssl_server_cert_dn="CN=csnrdba@gov.bc.ca")))
