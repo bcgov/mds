@@ -56,7 +56,7 @@ def run_streamline_job():
         key='SRC_DB_USER',
         secret_name='template.mds-postgresql-mms-fdw-secret',
         secret_key='oracle-fdw-user')
-    builder.add_value(key='SRC_DB_SERVICENAME', value='memprd.env.gov.bc.ca')
+    builder.add_value(key='SRC_DB_NAME', value='memprd.env.gov.bc.ca')
     builder.add_secret(
         key='SRC_DB_PASS',
         secret_name=f'template.mds-postgresql-mms-fdw-secret',
