@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv, find_dotenv
 import psycopg2
 import cx_Oracle
@@ -25,14 +26,8 @@ def now_streamline_etl():
     import_complete = False
 
     try:
-        dsn_tns = cx_Oracle.makedsn(
-            current_app.config['SRC_DB_HOST'],
-            current_app.config['SRC_DB_PORT'],
-            service_name=current_app.config['SRC_DB_NAME'])
-        oracle_db = cx_Oracle.connect(
-            user=current_app.config['SRC_DB_USER'],
-            password=current_app.config['SRC_DB_PASS'],
-            dsn=dsn_tns)
+        dsn_tns = cx_Oracle.makedsn(SRC_DB_HOST, SRC_DB_PORT, service_name=SRC_DB_NAME)
+        oracle_db = cx_Oracle.connect(user=SRC_DB_USER, password=SRC_DB_PASS, dsn=dsn_tns)
 
         cursor = oracle_db.cursor()
 
