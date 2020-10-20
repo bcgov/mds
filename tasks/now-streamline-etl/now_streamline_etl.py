@@ -1,4 +1,5 @@
 import os
+import re
 from dotenv import load_dotenv, find_dotenv
 import psycopg2
 import cx_Oracle
@@ -61,6 +62,13 @@ def now_streamline_etl():
 
     print(f'Retrieved {len(results)} records.')
 
+    print('Stripping null bytes')
+
+    processed_results = []
+    for record in results:
+        processed_results.append(
+            tuple(i.replace("\00", "") if isinstance(i, str) else i for i in record))
+
     connection = psycopg2.connect(
         host=TGT_DB_HOST,
         port=TGT_DB_PORT,
@@ -108,7 +116,7 @@ def now_streamline_etl():
             fuellubstoreonsite,
             fuellubstored,
             fuellubstoremethodbarrel,
-            fuellubstoremethodbulk) VALUES %s""", results)
+            fuellubstoremethodbulk) VALUES %s""", processed_results)
 
         print('Updating records the now_submissions schema')
         update_statement = """update mms_now_submissions.applications a
