@@ -413,7 +413,7 @@ NOW_APPLICATION_MODEL = api.model(
         'term_of_application':
         fields.Integer,
         'is_applicant_individual_or_company':
-        fields.Boolean,
+        fields.String,
         'relationship_to_applicant':
         fields.String,
         'merchantable_timber_volume':
