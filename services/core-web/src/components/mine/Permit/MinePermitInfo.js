@@ -26,6 +26,7 @@ import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
  */
@@ -56,6 +57,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   deletePermit: PropTypes.func.isRequired,
   deletePermitAmendment: PropTypes.func.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -73,9 +75,11 @@ export class MinePermitInfo extends Component {
 
   componentWillMount = () => {
     const { id } = this.props.match.params;
-    this.props.fetchPermits(id).then(() => {
+    if (this.props.permits === []) {
+      this.props.fetchPermits(id).then(() => {});
+    } else {
       this.setState({ isLoaded: true });
-    });
+    }
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -178,13 +182,43 @@ export class MinePermitInfo extends Component {
     });
   };
 
+  openAddHistoricalAmendmentModal = (event, onSubmit, title, permit, type) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: this.props.mineGuid,
+          permit_guid: permit.permit_guid,
+          permit_amendment_type_code: type,
+          amendments: permit.permit_amendments,
+          is_historical_amendment: true,
+          userRoles: this.props.userRoles,
+        },
+        onSubmit,
+        title,
+        is_historical_amendment: true,
+        mine_guid: this.props.mineGuid,
+        amendments: permit.permit_amendments,
+      },
+      width: "50vw",
+      content: modalConfig.PERMIT_AMENDMENT,
+    });
+  };
+
   openEditAmendmentModal = (event, permit_amendment, permit) => {
     event.preventDefault();
+    const originalPermitAmendment = permit.permit_amendments.filter(
+      (x) => x.permit_amendment_type_code === originalPermit
+    )[0];
     this.props.openModal({
       props: {
         initialValues: {
           ...permit_amendment,
           amendments: permit.permit_amendments,
+          userRoles: this.props.userRoles,
+          is_historical_amendment:
+            originalPermitAmendment &&
+            originalPermitAmendment.issue_date > permit_amendment.issue_date,
         },
         onSubmit: this.handleEditPermitAmendment,
         title:
@@ -215,6 +249,14 @@ export class MinePermitInfo extends Component {
       event,
       this.handleAddPermitAmendment,
       `Add Permit Amendment to ${permit.permit_no}`,
+      permit
+    );
+
+  openAddPermitHistoricalAmendmentModal = (event, permit) =>
+    this.openAddHistoricalAmendmentModal(
+      event,
+      this.handleAddPermitAmendment,
+      `Add Permit Historical Amendment to ${permit.permit_no}`,
       permit
     );
 
@@ -322,6 +364,7 @@ export class MinePermitInfo extends Component {
           openEditPermitModal={this.openEditPermitModal}
           openEditAmendmentModal={this.openEditAmendmentModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
+          openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
           handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
           expandedRowKeys={this.state.expandedRowKeys}
@@ -338,6 +381,7 @@ const mapStateToProps = (state) => ({
   permits: getPermits(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

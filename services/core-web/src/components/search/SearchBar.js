@@ -94,7 +94,7 @@ export class SearchBar extends Component {
           getPopupContainer={
             this.props.containerId ? () => document.getElementById(this.props.containerId) : ""
           }
-          trigger={[""]}
+          trigger={["focus"]}
           visible={this.state.isSelected}
         >
           <Input.Search
@@ -103,7 +103,11 @@ export class SearchBar extends Component {
             placeholder={this.state.isSelected ? selectedPlaceholderText : defaultPlaceholderText}
             onSearch={(searchTerm) => this.search(searchTerm)}
             onChange={this.changeSearchTerm}
-            onFocus={this.clearSearchBar}
+            onFocus={() =>
+              this.setState({
+                isSelected: true,
+              })
+            }
             onBlur={() =>
               this.setState({
                 isSelected: false,

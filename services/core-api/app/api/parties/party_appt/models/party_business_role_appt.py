@@ -10,10 +10,10 @@ from app.extensions import db
 
 from app.api.parties.party_appt.models.party_business_role import PartyBusinessRole
 from app.api.parties.party.models.party import Party
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
-class PartyBusinessRoleAppointment(AuditMixin, Base):
+class PartyBusinessRoleAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "party_business_role_appt"
     # Columns
     party_business_role_appt_id = db.Column(
@@ -23,7 +23,6 @@ class PartyBusinessRoleAppointment(AuditMixin, Base):
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     start_date = db.Column(db.Date)
     end_date = db.Column(db.Date)
-    deleted_ind = db.Column(db.Boolean, server_default=FetchedValue())
 
     # Relationships
     party = db.relationship('Party', lazy='joined')

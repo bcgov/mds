@@ -109,35 +109,35 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_contact(contact):
             def get_address(contact):
-                if not contact.party and not contact.party.address:
+                if not contact.get('party', None) and not contact['party'].get('address', None):
                     return ''
-                address = contact.party.address[0]
+                address = contact['party']['address'][0]
                 address_string = ''
-                if address.suite_no:
-                    address_string += f'{address.suite_no} '
-                if address.address_line_1:
-                    address_string += f'{address.address_line_1} '
-                if address.address_line_2:
-                    address_string += f'{address.address_line_2} '
+                if address.get('suite_no', None):
+                    address_string += f'{address["suite_no"]} '
+                if address.get('address_line_1', None):
+                    address_string += f'{address["address_line_1"]} '
+                if address.get('address_line_2', None):
+                    address_string += f'{address["address_line_2"]} '
                 address_string = address_string.strip()
 
-                if address.city or address.sub_division_code or address.post_code:
+                if address['city'] or address['sub_division_code'] or address['post_code']:
                     address_string += '\n'
-                    if address.city:
-                        address_string += address.city
-                    if address.sub_division_code:
-                        address_string += f' {address.sub_division_code}'
-                    if address.post_code:
-                        address_string += f' {address.post_code}'
+                    if address['city']:
+                        address_string += address['city']
+                    if address['sub_division_code']:
+                        address_string += f' {address["sub_division_code"]}'
+                    if address['post_code']:
+                        address_string += f' {address["post_code"]}'
 
                 return address_string.strip()
 
             def get_phone(contact):
-                if not contact.party:
+                if not contact.get('party', None):
                     return ''
-                phone_string = contact.party.phone_no
-                if contact.party.phone_ext:
-                    phone_string += f' x{contact.party.phone_ext}'
+                phone_string = contact['party']['phone_no']
+                if contact['party'].get('phone_ext', None):
+                    phone_string += f' x{contact["party"]["phone_ext"]}'
                 return phone_string
 
             contact['address'] = get_address(contact)
@@ -170,13 +170,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def get_applicable_now_activities(now_application):
             conditional_sections = [
-                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
-                'underground_exploration', 'placer_operation'
+                'sand_gravel_quarry_operation', 'surface_bulk_sample',
+                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
             ]
             now_type_conditional_sections = {
-                'QCA': ['sand_and_gravel'],
-                'SAG': ['sand_and_gravel'],
-                'QIM': ['sand_and_gravel'],
+                'QCA': ['sand_gravel_quarry_operation'],
+                'SAG': ['sand_gravel_quarry_operation'],
+                'QIM': ['sand_gravel_quarry_operation'],
                 'COL':
                 ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
                 'MIN':

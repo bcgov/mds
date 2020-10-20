@@ -127,6 +127,7 @@ const simpleRender = () => {
       has_fn_cultural_heritage_sites_in_area: true,
       has_activity_in_park: false,
       has_auth_lieutenant_gov_council: true,
+      is_on_private_land: false,
     },
     first_aid_equipment_on_site: "34324234",
     first_aid_cert_level: "324234234",
@@ -355,8 +356,7 @@ const simpleRender = () => {
         "Skill property start soon billion ball two pass population cover mission spend serve still American call executive office maintain often decision begin interesting especially arrive however consider radio itself together middle light moment common white scientist start boy different fight their contain day.",
       drainage_mitigation_description:
         "Glass participant as peace political part vote week party tree remember social above act front him individual wife deep ask ground production remain move sure law loss feeling American space mean country the would myself tell senior computer myself dream upon early paper theory eye your road inside toward.",
-      has_bedrock_expansion: false,
-      surface_water_damage: "123123",
+      has_bedrock_excavation: false,
       spontaneous_combustion_handling: "123123",
       details: [
         {
@@ -445,6 +445,11 @@ const simpleRender = () => {
     security_received_date: null,
     last_updated_date: "2020-09-23",
     last_updated_by: "idir\\lumitche",
+    is_applicant_individual_or_company: "Individual",
+    relationship_to_applicant: "Agent",
+    term_of_application: 7,
+    merchantable_timber_volume: "30000.20",
+    proposed_annual_maximum_tonnage: "777777.77",
   };
 
   renderPdf(data);
