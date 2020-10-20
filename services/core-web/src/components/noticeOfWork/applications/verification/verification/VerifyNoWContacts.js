@@ -9,7 +9,6 @@ import { resetForm } from "@common/utils/helpers";
 import NOWContactForm from "@/components/Forms/noticeOfWork/NOWContactForm";
 import { compose } from "redux";
 import * as FORM from "@/constants/forms";
-import AddPartyComponentWrapper from "@/components/common/wrappers/AddPartyComponentWrapper";
 import PropTypes from "prop-types";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";

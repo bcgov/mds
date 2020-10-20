@@ -6,7 +6,7 @@ import { FieldArray, Field, arrayPush, arrayRemove } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
-import { Col, Row, Button, Card } from "antd";
+import { Col, Row, Button, Card, Popconfirm } from "antd";
 import { startCase } from "lodash";
 import { required } from "@common/utils/Validate";
 import { PlusOutlined } from "@ant-design/icons";
@@ -50,6 +50,7 @@ const renderContacts = ({
           .map((field, index) => (
             <Col lg={12} sm={24} key={index}>
               <Card
+                style={{ height: "300px" }}
                 title={
                   <div className="inline-flex padding-md--top">
                     <img
@@ -62,23 +63,38 @@ const renderContacts = ({
                       contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
                     } Contact Information:`}</p>
                     <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
-                    <Button
-                      ghost
-                      onClick={() => {
-                        if (contacts[index] && contacts[index].now_party_appointment_id) {
+                    {contacts[index] && contacts[index].now_party_appointment_id ? (
+                      <Popconfirm
+                        className="position-right no-margin"
+                        placement="topLeft"
+                        title={`Are you sure you want to remove ${startCase(
+                          contacts[index].party.name
+                        )} as a contact on this Notice of Work?`}
+                        onConfirm={() => {
                           const updatedContact = contacts[index];
                           updatedContact.state_modified = "delete";
 
                           arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
                           arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
-                        } else {
+                        }}
+                        okText="Delete"
+                        cancelText="Cancel"
+                      >
+                        <Button className="full-mobile" ghost type="primary">
+                          <img name="remove" src={TRASHCAN} alt="Remove User" />
+                        </Button>
+                      </Popconfirm>
+                    ) : (
+                      <Button
+                        ghost
+                        onClick={() => {
                           fields.remove(index);
-                        }
-                      }}
-                      className="position-right no-margin"
-                    >
-                      <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                    </Button>
+                        }}
+                        className="position-right no-margin"
+                      >
+                        <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                      </Button>
+                    )}
                   </div>
                 }
                 bordered={false}

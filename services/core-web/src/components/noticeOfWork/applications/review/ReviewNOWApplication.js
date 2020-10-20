@@ -762,7 +762,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
-    touchOnChange: true,
+    touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
   })
