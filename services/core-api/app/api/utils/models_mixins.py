@@ -318,4 +318,6 @@ class SoftDeleteMixin(object):
 
         #TODO, handle children, or let model override this.
         self.deleted_ind = True
-        self.save()
+
+        if commit == True:
+            self.save()
