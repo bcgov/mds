@@ -46,8 +46,7 @@ const removeActivity = (fields, index) => {
 
 const renderActivities = ({ fields, isViewMode }) => {
   // resets deleted state if users decided to cancel their changes
-
-  if (isViewMode) {
+  if (isViewMode && fields.length !== 0) {
     fields.getAll().forEach((activity) => {
       // eslint-disable-next-line no-prototype-builtins
       if (activity && activity.hasOwnProperty("state_modified")) {
@@ -56,8 +55,8 @@ const renderActivities = ({ fields, isViewMode }) => {
     });
   }
 
-  // !fields || fields.length <= 0
-  const activeRecordsCount = fields.getAll().filter((activity) => !activity.state_modified).length;
+  const activeRecordsCount =
+    fields.length !== 0 ? fields.getAll().filter((activity) => !activity.state_modified).length : 0;
 
   return (
     <div>
