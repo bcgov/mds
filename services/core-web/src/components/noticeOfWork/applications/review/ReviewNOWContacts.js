@@ -8,15 +8,20 @@ import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
+import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
 
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
     .isRequired,
+  contactFormValues: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  ).isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
 };
 
 const NOWContact = (contact) => (
-  <Col key={contact.now_party_appointment_id} xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
-    {" "}
+  <Col key={contact.now_party_appointment_id} sm={24} lg={12} xxl={8}>
     <Card
       title={
         <div className="inline-flex between wrap">
@@ -58,10 +63,21 @@ const NOWContact = (contact) => (
 
 export const ReviewNOWContacts = (props) => (
   <div>
-    {props.contacts && props.contacts.length >= 1 ? (
-      <Row gutter={16}>{props.contacts.map((contact) => NOWContact(contact))}</Row>
+    {props.isViewMode ? (
+      <>
+        {props.contacts && props.contacts.length >= 1 ? (
+          <Row gutter={16}>{props.contacts.map((contact) => NOWContact(contact))}</Row>
+        ) : (
+          <NullScreen type="now-contacts" />
+        )}
+      </>
     ) : (
-      <NullScreen type="now-contacts" />
+      <EditNoWContacts
+        initialValues={props.noticeOfWork}
+        contacts={props.noticeOfWork.contacts}
+        isEditView
+        contactFormValues={props.contactFormValues}
+      />
     )}
   </div>
 );
