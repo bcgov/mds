@@ -242,10 +242,7 @@ class Base(db.Model):
                             setattr(self, k, None)
                         else:
                             #if Decimal column, cast whatever you get to Decimal
-                            try:
-                                dec = decimal.Decimal(v)
-                            except:
-                                raise Exception('Value: ' + v)
+                            dec = decimal.Decimal(v)
                             #don't care about anything more precise, protection if incoming data is float
                             setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
