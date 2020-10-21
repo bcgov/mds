@@ -18,7 +18,7 @@ const propTypes = {
 };
 
 const NOWContact = (contact) => (
-  <Col key={contact.now_party_appointment_id} sm={24} lg={12} xl={8}>
+  <Col key={contact.now_party_appointment_id} sm={24} lg={12} xxl={8}>
     <Card
       title={
         <div className="inline-flex between wrap">

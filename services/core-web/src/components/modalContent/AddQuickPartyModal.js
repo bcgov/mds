@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Radio } from "antd";
+import { isEmpty } from "lodash";
 import { createParty } from "@common/actionCreators/partiesActionCreator";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
@@ -26,12 +27,18 @@ const defaultProps = {
 
 export class AddQuickPartyModal extends Component {
   state = {
-    isPerson:
-      !this.props.initialValues ||
-      (this.props.initialValues && this.props.initialValues.party_type_code !== "ORG"),
+    isPerson: true,
     person: true,
     organization: true,
   };
+
+  componentDidMount() {
+    this.setState({
+      isPerson:
+        !isEmpty(this.props.addPartyFormState.initialValues) &&
+        this.props.addPartyFormState.initialValues.party_type_code !== "ORG",
+    });
+  }
 
   handlePartySubmit = (values) => {
     const party_type_code = this.state.isPerson ? "PER" : "ORG";

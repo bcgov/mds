@@ -92,11 +92,12 @@ export const AuthorizationWrapper = (props) => {
       <Tooltip
         title={isAdmin ? title() : ""}
         placement="left"
-        mouseEnterDelay={1}
+        mouseEnterDelay={1.7}
         mouseLeaveDelay={0}
         arrowPointAtCenter
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
+        trigger={["hover"]}
       >
         {React.createElement("span", null, props.children)}
       </Tooltip>

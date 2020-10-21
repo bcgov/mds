@@ -106,7 +106,7 @@ const renderContacts = ({
                 }
                 bordered={false}
               >
-                <Form.Item label="Role">
+                <Form.Item label="Role*">
                   <Field
                     id={`${field}.mine_party_appt_type_code`}
                     name={`${field}.mine_party_appt_type_code`}
@@ -130,12 +130,12 @@ const renderContacts = ({
                     label={
                       contacts[index]
                         ? `${contacts[index].mine_party_appt_type_code_description} Name`
-                        : "Contact Name"
+                        : "Contact Name*"
                     }
                     partyLabel={
                       contacts[index]
                         ? contacts[index].mine_party_appt_type_code_description
-                        : "Contact Name"
+                        : "Contact Name*"
                     }
                     validate={[required]}
                     allowAddingParties

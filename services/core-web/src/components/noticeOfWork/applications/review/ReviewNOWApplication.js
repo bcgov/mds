@@ -683,7 +683,7 @@ export const ReviewNOWApplication = (props) => {
             <ReviewNOWContacts
               contacts={props.contacts}
               isViewMode={props.isViewMode}
-              noticeOfWork={props.initialValues}
+              noticeOfWork={props.noticeOfWork}
             />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
