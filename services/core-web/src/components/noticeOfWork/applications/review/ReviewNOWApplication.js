@@ -681,8 +681,9 @@ export const ReviewNOWApplication = (props) => {
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
             <ReviewNOWContacts
-              contacts={props.contacts}
+              contacts={props.noticeOfWork.contacts}
               isViewMode={props.isViewMode}
+              contactFormValues={props.contacts}
               noticeOfWork={props.noticeOfWork}
             />
           </ScrollContentWrapper>

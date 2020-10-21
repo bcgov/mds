@@ -98,6 +98,7 @@ export const AuthorizationWrapper = (props) => {
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
         trigger={["hover"]}
+        destroyTooltipOnHide
       >
         {React.createElement("span", null, props.children)}
       </Tooltip>

@@ -18,6 +18,7 @@ import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
+import CustomPropTypes from "@/customPropTypes";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -31,6 +32,9 @@ const propTypes = {
   isEditView: PropTypes.bool,
   arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
+  contactFormValues: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  ).isRequired,
 };
 
 const defaultProps = {
@@ -44,6 +48,7 @@ const renderContacts = ({
   isEditView,
   arrayPushReduxForms,
   arrayRemoveReduxForms,
+  rolesUsedOnce,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
@@ -81,8 +86,8 @@ const renderContacts = ({
                           const updatedContact = contacts[index];
                           updatedContact.state_modified = "delete";
 
-                          arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
                           arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
+                          arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
                         }}
                         okText="Delete"
                         cancelText="Cancel"
@@ -108,6 +113,7 @@ const renderContacts = ({
               >
                 <Form.Item label="Role*">
                   <Field
+                    usedOptions={rolesUsedOnce}
                     id={`${field}.mine_party_appt_type_code`}
                     name={`${field}.mine_party_appt_type_code`}
                     component={RenderSelect}
@@ -179,6 +185,12 @@ const renderContacts = ({
 };
 
 export class EditNoWContacts extends Component {
+  state = { rolesUsedOnce: [] };
+
+  componentDidMount() {
+    this.handleRoles(this.props.contactFormValues);
+  }
+
   showAddPartyModal = () => {
     this.props.openModal({
       props: {
@@ -190,13 +202,27 @@ export class EditNoWContacts extends Component {
     });
   };
 
+  handleRoles = (contacts) => {
+    const usedRoles = [];
+    if (contacts.length > 0) {
+      contacts.map(({ mine_party_appt_type_code }) => usedRoles.push(mine_party_appt_type_code));
+    }
+    const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
+    return this.setState({ rolesUsedOnce });
+  };
+
   componentWillReceiveProps = (nextProps) => {
+    const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
     if (
       nextProps.addPartyFormState.showingAddPartyForm &&
       this.props.addPartyFormState.showingAddPartyForm !==
         nextProps.addPartyFormState.showingAddPartyForm
     ) {
       this.showAddPartyModal();
+    }
+
+    if (contactsChanged) {
+      this.handleRoles(nextProps.contactFormValues);
     }
   };
 
@@ -211,6 +237,7 @@ export class EditNoWContacts extends Component {
         isEditView={this.props.isEditView}
         arrayPushReduxForms={this.props.arrayPush}
         arrayRemoveReduxForms={this.props.arrayRemove}
+        rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );
   }

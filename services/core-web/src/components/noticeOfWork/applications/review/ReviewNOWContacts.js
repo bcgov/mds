@@ -13,6 +13,9 @@ import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
     .isRequired,
+  contactFormValues: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  ).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
 };
@@ -73,6 +76,7 @@ export const ReviewNOWContacts = (props) => (
         initialValues={props.noticeOfWork}
         contacts={props.noticeOfWork.contacts}
         isEditView
+        contactFormValues={props.contactFormValues}
       />
     )}
   </div>

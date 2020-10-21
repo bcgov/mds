@@ -125,7 +125,6 @@ export class ApplicationStepOne extends Component {
           noticeOfWork={this.props.noticeOfWork}
           mineGuid={this.props.mineGuid}
           onSubmit={this.handleNOWImport}
-          initialValues={this.props.originalNoticeOfWork}
         />
       </>
     );
