@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { FieldArray, Field, arrayPush, arrayRemove } from "redux-form";
-import { startCase } from "lodash";
+import { FieldArray, Field, arrayPush } from "redux-form";
+import { startCase, deepClone } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
@@ -30,7 +30,6 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   isEditView: PropTypes.bool,
-  arrayRemove: PropTypes.func.isRequired,
   arrayPush: PropTypes.func.isRequired,
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
@@ -47,7 +46,6 @@ const renderContacts = ({
   partyRelationshipTypes,
   isEditView,
   arrayPushReduxForms,
-  arrayRemoveReduxForms,
   rolesUsedOnce,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
@@ -57,112 +55,115 @@ const renderContacts = ({
   return (
     <>
       <Row gutter={24}>
-        {fields
-          .map((field, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Col lg={12} sm={24} key={index}>
-              <Card
-                style={{ height: "300px" }}
-                title={
-                  <div className="inline-flex padding-md--top">
-                    <img
-                      className="icon-sm padding-md--right"
-                      src={PROFILE_NOCIRCLE}
-                      alt="user"
-                      height={25}
-                    />
-                    <p className="field-title">{`NoW ${
+        {fields.map((field, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Col lg={12} sm={24} key={index}>
+            <Card
+              style={{ height: "300px" }}
+              title={
+                <div className="inline-flex padding-md--top">
+                  <img
+                    className="icon-sm padding-md--right"
+                    src={PROFILE_NOCIRCLE}
+                    alt="user"
+                    height={25}
+                  />
+                  <div>
+                    <span>
+                      {contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}
+                    </span>
+                    <br />
+                    <span className="field-title">{`${
                       contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
-                    } Contact Information:`}</p>
-                    <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
-                    {contacts[index] && contacts[index].now_party_appointment_id ? (
-                      <Popconfirm
-                        className="position-right no-margin"
-                        placement="topLeft"
-                        title={`Are you sure you want to remove ${startCase(
-                          contacts[index].party.name
-                        )} as a contact on this Notice of Work?`}
-                        onConfirm={() => {
-                          const updatedContact = contacts[index];
-                          updatedContact.state_modified = "delete";
-
-                          arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
-                          arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
-                        }}
-                        okText="Delete"
-                        cancelText="Cancel"
-                      >
-                        <Button className="full-mobile" ghost type="primary">
-                          <img name="remove" src={TRASHCAN} alt="Remove User" />
-                        </Button>
-                      </Popconfirm>
-                    ) : (
-                      <Button
-                        ghost
-                        onClick={() => {
-                          fields.remove(index);
-                        }}
-                        className="position-right no-margin"
-                      >
-                        <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                      </Button>
-                    )}
+                    }`}</span>
                   </div>
-                }
-                bordered={false}
-              >
-                <Form.Item label="Role*">
-                  <Field
-                    usedOptions={rolesUsedOnce}
-                    id={`${field}.mine_party_appt_type_code`}
-                    name={`${field}.mine_party_appt_type_code`}
-                    component={RenderSelect}
-                    data={filteredRelationships}
-                    validate={[required]}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <PartySelectField
-                    id={`${field}.party_guid`}
-                    name={`${field}.party_guid`}
-                    initialValue={
-                      isEditView && contacts[index]
-                        ? {
-                            label: contacts[index].party.name,
-                            value: contacts[index].party_guid,
-                          }
-                        : undefined
-                    }
-                    label={
-                      contacts[index]
-                        ? `${contacts[index].mine_party_appt_type_code_description} Name`
-                        : "Contact Name*"
-                    }
-                    partyLabel={
-                      contacts[index]
-                        ? contacts[index].mine_party_appt_type_code_description
-                        : "Contact Name*"
-                    }
-                    validate={[required]}
-                    allowAddingParties
-                    initialValues={
-                      contacts[index]
-                        ? {
-                            ...contacts[index].party,
-                            ...(contacts[index].party.address.length > 0
-                              ? contacts[index].party.address[0]
-                              : {}),
-                          }
-                        : {}
-                    }
-                    initialSearch={contacts[index] ? contacts[index].party.name : undefined}
-                  />
-                </Form.Item>
-                <br />
-              </Card>
-            </Col>
-          ))
-          .filter((field, index) => !contacts[index] || !contacts[index].state_modified)}
+                  {contacts[index] && contacts[index].now_party_appointment_id ? (
+                    <Popconfirm
+                      className="position-right no-margin"
+                      placement="topLeft"
+                      title={`Are you sure you want to remove ${startCase(
+                        contacts[index].party.name
+                      )} as a contact on this Notice of Work?`}
+                      onConfirm={() => {
+                        const updatedContact = deepClone(contacts[index]);
+                        updatedContact.state_modified = "delete";
+
+                        arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
+                        fields.remove(index);
+                      }}
+                      okText="Delete"
+                      cancelText="Cancel"
+                    >
+                      <Button className="full-mobile" ghost type="primary">
+                        <img name="remove" src={TRASHCAN} alt="Remove User" />
+                      </Button>
+                    </Popconfirm>
+                  ) : (
+                    <Button
+                      ghost
+                      onClick={() => {
+                        fields.remove(index);
+                      }}
+                      className="position-right no-margin"
+                    >
+                      <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                    </Button>
+                  )}
+                </div>
+              }
+              bordered={false}
+            >
+              <Form.Item label="Role*">
+                <Field
+                  usedOptions={rolesUsedOnce}
+                  id={`${field}.mine_party_appt_type_code`}
+                  name={`${field}.mine_party_appt_type_code`}
+                  component={RenderSelect}
+                  data={filteredRelationships}
+                  validate={[required]}
+                />
+              </Form.Item>
+              <Form.Item>
+                <PartySelectField
+                  id={`${field}.party_guid`}
+                  name={`${field}.party_guid`}
+                  initialValue={
+                    isEditView && contacts[index]
+                      ? {
+                          label: contacts[index].party.name,
+                          value: contacts[index].party_guid,
+                        }
+                      : undefined
+                  }
+                  label={
+                    contacts[index]
+                      ? `${contacts[index].mine_party_appt_type_code_description} Name`
+                      : "Contact Name*"
+                  }
+                  partyLabel={
+                    contacts[index]
+                      ? contacts[index].mine_party_appt_type_code_description
+                      : "Contact Name*"
+                  }
+                  validate={[required]}
+                  allowAddingParties
+                  initialValues={
+                    contacts[index]
+                      ? {
+                          ...contacts[index].party,
+                          ...(contacts[index].party.address.length > 0
+                            ? contacts[index].party.address[0]
+                            : {}),
+                        }
+                      : {}
+                  }
+                  initialSearch={contacts[index] ? contacts[index].party.name : undefined}
+                />
+              </Form.Item>
+              <br />
+            </Card>
+          </Col>
+        ))}
         <Col lg={12} sm={24}>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <div
@@ -236,7 +237,6 @@ export class EditNoWContacts extends Component {
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         isEditView={this.props.isEditView}
         arrayPushReduxForms={this.props.arrayPush}
-        arrayRemoveReduxForms={this.props.arrayRemove}
         rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );
@@ -257,7 +257,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       arrayPush,
-      arrayRemove,
     },
     dispatch
   );
