@@ -18,6 +18,7 @@ const setupProps = () => {
   props.addPartyFormState = {};
   props.partyRelationshipTypesList = [];
   props.contacts = NOW_MOCK.NOTICE_OF_WORK.contacts;
+  props.contactFormValues = [];
 };
 
 beforeEach(() => {

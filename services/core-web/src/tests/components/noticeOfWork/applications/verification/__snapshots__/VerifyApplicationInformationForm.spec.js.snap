@@ -39,6 +39,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <br />
   <Divider />
   <Connect(EditNoWContacts)
+    contactFormValues={Array []}
     contacts={
       Array [
         Object {
