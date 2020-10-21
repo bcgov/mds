@@ -33,9 +33,7 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
 # Create wallet and config files
 COPY wallet $APP_ROOT/src/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
-COPY tnsnames.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
-RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/tnsnames.ora
 
 # NRIS certificates
 COPY certs /etc/pki/ca-trust/source/anchors

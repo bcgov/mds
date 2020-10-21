@@ -34,7 +34,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Oracle config files
 COPY wallet /opt/oracle/instantclient/network/wallet
 COPY sqlnet.ora /opt/oracle/instantclient/network/admin
-COPY tnsnames.ora /opt/oracle/instantclient/network/admin
 
 # Create "test connection" script
 COPY test_connection.py /app
