@@ -17,10 +17,9 @@ from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.transmogrify_now import transmogrify_now
-
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
-
 from app.api.services.nros_now_status_service import NROSNOWStatusService
+from app.api.services.document_manager_service import DocumentManagerService
 
 
 class NOWApplicationResource(Resource, UserMixin):
@@ -87,3 +86,14 @@ class NOWApplicationResource(Resource, UserMixin):
                 "%Y-%m-%dT%H:%M:%S"))
 
         return now_application_identity.now_application
+
+    # NOTE: Temporary method to test importing a Notice of Work's submission documents
+    def patch(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
+        if not now_application_identity:
+            raise NotFound('No identity record for this application guid.')
+
+        if now_application_identity.now_application_id:
+            application = now_application_identity.now_application
+            DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
+                request, application.now_application_id)

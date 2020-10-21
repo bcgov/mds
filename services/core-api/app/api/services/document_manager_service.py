@@ -11,7 +11,7 @@ ALLOWED_DOCUMENT_CATEGORIES = [
 
 
 class DocumentManagerService():
-    document_manager_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
+    document_manager_document_resource_url = f'{Config.DOCUMENT_MANAGER_URL}/documents'
 
     @classmethod
     def initializeFileUploadWithDocumentManager(cls, request, mine, document_category):
@@ -27,11 +27,31 @@ class DocumentManagerService():
         }
 
         resp = requests.post(
-            url=cls.document_manager_url,
+            url=cls.document_manager_document_resource_url,
             headers={key: value
                      for (key, value) in request.headers if key != 'Host'},
             data=data,
             cookies=request.cookies,
+        )
+
+        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+
+    @classmethod
+    def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
+        data = {
+            'now_application_id': now_application.now_application_id,
+                                                                         # 'submission_documents': marshal(..., now_application.submission_documents)
+            'submission_documents': now_application.submission_documents
+        }
+
+        resp = requests.post(
+            url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
+            data=data)
+
+        current_app.logger.info(
+            f'importNoticeOfWorkSubmissionDocuments resp: {resp}\nresp.content: {str(resp.content)}'
         )
 
         return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
@@ -47,7 +67,7 @@ class DocumentManagerService():
             'authorization': authorization_header
         }
 
-        my_client = client.TusClient(cls.document_manager_url, headers=data)
+        my_client = client.TusClient(cls.document_manager_document_resource_url, headers=data)
         uploader = my_client.uploader(
             file_stream=io.BytesIO(file_content),
             chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)

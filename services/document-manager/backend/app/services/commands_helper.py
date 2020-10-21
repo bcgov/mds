@@ -11,6 +11,7 @@ from app.tasks.celery import doc_job_result
 from app.tasks.transfer import transfer_docs
 from app.tasks.verify import verify_docs
 from app.tasks.reorganize import reorganize_docs
+from app.tasks.import_now_submission_documents import import_now_submission_documents
 
 
 def create_transfer_files_job(wait):
@@ -39,6 +40,11 @@ def create_reorganize_files_job(wait):
     if (len(docs) == 0):
         return 'No documents need to be reorganized'
     return start_job(wait, 'reorganize', docs, reorganize_docs)
+
+
+def create_import_now_submission_documents(wait):
+    """..."""
+    # return start_job(wait, 'import_now_submission_documents', ...)
 
 
 def get_untransferred_files(path):
@@ -80,6 +86,11 @@ def get_unregistered_files(path):
         if (not doc):
             unregistered.append(file)
     return unregistered
+
+
+def import_now_submission_documents():
+    """..."""
+    return
 
 
 def start_job(wait, job_type, docs, task):
