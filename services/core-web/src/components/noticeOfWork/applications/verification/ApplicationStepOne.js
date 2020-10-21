@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { submit } from "redux-form";
 import { connect } from "react-redux";
 import { Result, Alert, Row } from "antd";
 import PropTypes from "prop-types";
@@ -157,7 +156,6 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       importNoticeOfWorkApplication,
-      submit,
     },
     dispatch
   );
