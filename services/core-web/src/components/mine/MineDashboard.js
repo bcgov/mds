@@ -78,11 +78,6 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
-    this.props.fetchPartyRelationships({
-      mine_guid: id,
-      relationships: "party",
-      include_permittees: "true",
-    });
     this.props.fetchSubscribedMinesByUser();
   }
 

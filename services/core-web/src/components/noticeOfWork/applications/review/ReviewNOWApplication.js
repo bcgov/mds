@@ -212,20 +212,25 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Permit Status
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
-          <div className="field-title">
             Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="is_applicant_individual_or_company"
+            name="is_applicant_individual_or_company"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="relationship_to_applicant"
+            name="relationship_to_applicant"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
           <div className="field-title">
             Description of Land
             <NOWOriginalValueTooltip
@@ -644,7 +649,12 @@ export const ReviewNOWApplication = (props) => {
             Total merchantable timber volume
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="merchantable_timber_volume"
+            name="merchantable_timber_volume"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />
@@ -747,5 +757,6 @@ export default compose(
     touchOnChange: true,
     touchOnBlur: true,
     enableReinitialize: true,
+    onSubmit: () => {},
   })
 )(ReviewNOWApplication);

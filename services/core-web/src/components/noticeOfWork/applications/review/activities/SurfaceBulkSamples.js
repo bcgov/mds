@@ -204,30 +204,18 @@ export const SurfaceBulkSamples = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Bedrock expansion
+            Bedrock excavation
             <NOWFieldOriginTooltip />
           </div>
           <Field
-            id="has_bedrock_expansion"
-            name="has_bedrock_expansion"
+            id="has_bedrock_excavation"
+            name="has_bedrock_excavation"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
           />
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Surface water damage
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field
-            id="surface_water_damage"
-            name="surface_water_damage"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-        </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
