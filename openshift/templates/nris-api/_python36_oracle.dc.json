@@ -282,7 +282,12 @@
                   },
                   {
                     "name": "NRIS_DB_PORT",
-                    "value": "1521"
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-port"
+                      }
+                    }
                   },
                   {
                     "name": "NRIS_SERVER_CERT_DN",

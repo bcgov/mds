@@ -278,10 +278,6 @@
                     }
                   },
                   {
-                    "name": "NRIS_DB_PORT",
-                    "value": "1521"
-                  },
-                  {
                     "name": "UWSGI_PROCESSES",
                     "value": "${UWSGI_PROCESSES}"
                   },
