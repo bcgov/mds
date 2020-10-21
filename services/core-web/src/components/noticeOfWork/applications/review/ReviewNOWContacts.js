@@ -13,12 +13,15 @@ import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
 const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
     .isRequired,
+  contactFormValues: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  ).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
 };
 
 const NOWContact = (contact) => (
-  <Col key={contact.now_party_appointment_id} sm={24} lg={12} xl={8}>
+  <Col key={contact.now_party_appointment_id} sm={24} lg={12} xxl={8}>
     <Card
       title={
         <div className="inline-flex between wrap">
@@ -73,6 +76,7 @@ export const ReviewNOWContacts = (props) => (
         initialValues={props.noticeOfWork}
         contacts={props.noticeOfWork.contacts}
         isEditView
+        contactFormValues={props.contactFormValues}
       />
     )}
   </div>

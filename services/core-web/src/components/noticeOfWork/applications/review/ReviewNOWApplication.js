@@ -681,9 +681,10 @@ export const ReviewNOWApplication = (props) => {
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
             <ReviewNOWContacts
-              contacts={props.contacts}
+              contacts={props.noticeOfWork.contacts}
               isViewMode={props.isViewMode}
-              noticeOfWork={props.initialValues}
+              contactFormValues={props.contacts}
+              noticeOfWork={props.noticeOfWork}
             />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
@@ -761,5 +762,6 @@ export default compose(
     touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
+    onSubmit: () => {},
   })
 )(ReviewNOWApplication);

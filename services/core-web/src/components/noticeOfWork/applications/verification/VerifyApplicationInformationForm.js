@@ -14,24 +14,29 @@ import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineA
 import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
 
 const propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  initialValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  contactFormValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  longitude: PropTypes.string.isRequired,
-  latitude: PropTypes.string.isRequired,
+  longitude: PropTypes.string,
+  latitude: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  latitude: "",
+  longitude: "",
+  contactFormValues: [],
+};
+
 export const VerifyApplicationInformationForm = (props) => {
   const values = {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
     latitude: props.noticeOfWork.latitude,
   };
+
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <h4>Verify Mine</h4>
@@ -52,12 +57,16 @@ export const VerifyApplicationInformationForm = (props) => {
         longitude={props.longitude}
       />
       <h4>Verify Contacts</h4>
-      <p>Choose contacts from CORE for the roles provided by the Notice Of Work.</p>
+      <p>
+        Select a Core Role and Contact for each person shown. The list below comes from the NoW
+        application.
+      </p>
       <br />
       <Divider />
       <EditNoWContacts
-        initialValues={props.initialValues}
+        initialValues={props.originalNoticeOfWork}
         contacts={props.originalNoticeOfWork.contacts}
+        contactFormValues={props.contactFormValues}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -76,6 +85,7 @@ const selector = formValueSelector(FORM.VERIFY_NOW_APPLICATION_FORM);
 const mapStateToProps = (state) => ({
   latitude: selector(state, "latitude"),
   longitude: selector(state, "longitude"),
+  contactFormValues: selector(state, "contacts"),
 });
 
 export default compose(

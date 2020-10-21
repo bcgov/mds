@@ -3,7 +3,7 @@ import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, focus, submit } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined, kebabCase } from "lodash";
@@ -99,6 +99,7 @@ const propTypes = {
   formErrors: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
   ),
+  submit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -308,6 +309,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   focusErrorInput = (skip = false) => {
+    this.props.submit(FORM.EDIT_NOTICE_OF_WORK);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (skip) {
       if (this.count < errors.length) {
@@ -327,6 +329,10 @@ export class NoticeOfWorkApplication extends Component {
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
     }));
+  };
+
+  handleResetNOWForm = () => {
+    this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
   };
 
   handleScroll = () => {
@@ -752,6 +758,7 @@ export class NoticeOfWorkApplication extends Component {
             // handle user navigating away from technical review/draft permit while in editMode
             if (action === "REPLACE" && !hasEditMode) {
               this.toggleEditMode();
+              this.handleResetNOWForm();
             }
             // if the pathname changes while still on the technicalReview/draftPermit tab (via side navigation), don't prompt user
             return this.props.location.pathname === location.pathname || hasEditMode
@@ -964,6 +971,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       clearNoticeOfWorkApplication,
       focus,
+      submit,
     },
     dispatch
   );
