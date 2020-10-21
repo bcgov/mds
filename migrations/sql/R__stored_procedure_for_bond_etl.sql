@@ -285,7 +285,7 @@ declare
 		core_bond_type_code,
 		core_payer_party_guid,
 		CASE
-			WHEN "status" = 'E' THEN 'REL'
+			WHEN "status" = 'R' THEN 'REL' --status = R only exists from mms.sechst
 			when "status" = 'C' then 'CON'
 			ELSE 'ACT'
 		end as bond_status_code,
@@ -393,7 +393,7 @@ declare
 		per.permit_guid,
 		per.permit_no,
 		etl.core_payer_party_guid,
-		par.party_name,	
+		par.party_name,
 		'ACT', -- Hard coding to 'active' as this is us creating a history for the imported bonds that are confiscated or released.
 		etl.descript,
 		etl.cnt_dt,
@@ -407,12 +407,12 @@ declare
 		etl.cnt_dt,
 		etl.return_dt,
 		null
-	from ETL_BOND etl 
-	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid 
+	from ETL_BOND etl
+	INNER JOIN party par on par.party_guid = etl.core_payer_party_guid
 	INNER JOIN permit per on per.permit_id = etl.core_permit_id
-	where 
-		etl.status in ('E', 'C') 
-		AND 
+	where
+		etl.status in ('R', 'C')
+		AND
 		etl.core_bond_id not in (select bond_id from bond_history);
 END;
 END;
