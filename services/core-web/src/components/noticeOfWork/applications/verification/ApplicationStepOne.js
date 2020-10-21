@@ -13,7 +13,7 @@ import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
-import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/verification/VerifyApplicationInformationForm";
+import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/VerifyApplicationInformationForm";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,

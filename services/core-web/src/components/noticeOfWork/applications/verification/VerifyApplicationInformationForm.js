@@ -52,7 +52,10 @@ export const VerifyApplicationInformationForm = (props) => {
         longitude={props.longitude}
       />
       <h4>Verify Contacts</h4>
-      <p>Choose contacts from CORE for the roles provided by the Notice Of Work.</p>
+      <p>
+        Select a Core Role and Contact for each person shown. The list below comes from the NoW
+        application.
+      </p>
       <br />
       <Divider />
       <EditNoWContacts
