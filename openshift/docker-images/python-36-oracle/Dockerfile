@@ -35,10 +35,6 @@ COPY wallet $APP_ROOT/src/wallet
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 
-# NRIS certificates
-COPY certs /etc/pki/ca-trust/source/anchors
-RUN update-ca-trust extract
-
 # Create "test connection" script
 RUN mkdir -p $APP_ROOT/src/testUtils
 COPY test_connection.py $APP_ROOT/src/testUtils
