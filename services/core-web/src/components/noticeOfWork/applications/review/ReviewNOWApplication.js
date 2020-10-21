@@ -761,5 +761,6 @@ export default compose(
     touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
+    onSubmit: () => {},
   })
 )(ReviewNOWApplication);
