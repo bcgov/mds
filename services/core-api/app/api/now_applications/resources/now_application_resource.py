@@ -94,6 +94,5 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         if now_application_identity.now_application_id:
-            application = now_application_identity.now_application
-            DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
-                request, application.now_application_id)
+            now_application = now_application_identity.now_application
+            DocumentManagerService.importNoticeOfWorkSubmissionDocuments(request, now_application)

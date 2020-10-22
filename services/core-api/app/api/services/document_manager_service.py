@@ -38,9 +38,9 @@ class DocumentManagerService():
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
+        # TODO: Marshal the submission_documents with a trimmed-down model.
         data = {
             'now_application_id': now_application.now_application_id,
-                                                                         # 'submission_documents': marshal(..., now_application.submission_documents)
             'submission_documents': now_application.submission_documents
         }
 
