@@ -58,7 +58,7 @@ def import_nris_xml():
     #     current_app.config['NRIS_DB_HOSTNAME'],
     #     current_app.config['NRIS_DB_PORT'],
     #     service_name=current_app.config['NRIS_DB_SERVICENAME'])
-    dsn = f'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=nrc{os.getenv("NRIS_DB_HOSTNAME")})(PORT={os.getenv("NRIS_DB_PORT")}))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={os.getenv("NRIS_DB_SERVICENAME")}))(SECURITY=(ssl_server_cert_dn="{os.getenv("NRIS_SERVER_CERT_DN")}")))'
+    dsn = f'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST={os.getenv("NRIS_DB_HOSTNAME")})(PORT={os.getenv("NRIS_DB_PORT")}))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={os.getenv("NRIS_DB_SERVICENAME")}))(SECURITY=(ssl_server_cert_dn="{os.getenv("NRIS_SERVER_CERT_DN")}")))'
     oracle_db = cx_Oracle.connect(
         user=current_app.config['NRIS_DB_USER'],
         password=current_app.config['NRIS_DB_PASSWORD'],
