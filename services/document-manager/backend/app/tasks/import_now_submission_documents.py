@@ -11,4 +11,4 @@ from app.config import Config
 
 @celery.task()
 def import_now_submission_documents(import_id, doc_ids, chunk_index):
-    pass
+    return

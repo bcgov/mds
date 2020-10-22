@@ -1,4 +1,4 @@
-import requests, base64, io
+import requests, base64, io, json
 from tusclient import client
 
 from flask import Response, current_app
@@ -39,10 +39,11 @@ class DocumentManagerService():
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
         # TODO: Marshal the submission_documents with a trimmed-down model.
-        data = {
-            'now_application_id': now_application.now_application_id,
-            'submission_documents': now_application.submission_documents
-        }
+        data = {'folder': 'fdsfasd'}
+        # data = {
+        #     'now_application_id': now_application.now_application_id,
+        #     'submission_documents': 'fdsfasd'
+        # }
 
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',
@@ -50,11 +51,12 @@ class DocumentManagerService():
                      for (key, value) in request.headers if key != 'Host'},
             data=data)
 
+        current_app.logger.info(f'*********************************************************')
         current_app.logger.info(
             f'importNoticeOfWorkSubmissionDocuments resp: {resp}\nresp.content: {str(resp.content)}'
         )
 
-        return Response(str(resp.content), resp.status_code, resp.raw.headers.items())
+        return json.loads(resp.content), 200
 
     @classmethod
     def pushFileToDocumentManager(cls, file_content, filename, mine, document_category,

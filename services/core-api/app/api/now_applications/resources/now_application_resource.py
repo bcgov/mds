@@ -95,4 +95,11 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if now_application_identity.now_application_id:
             now_application = now_application_identity.now_application
-            DocumentManagerService.importNoticeOfWorkSubmissionDocuments(request, now_application)
+            resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
+                request, now_application)
+
+            current_app.logger.info(f'*******************************************')
+            current_app.logger.info(
+                f'patch resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments:\n{resp}'
+            )
+            return resp

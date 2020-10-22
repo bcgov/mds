@@ -44,6 +44,7 @@ def create_reorganize_files_job(wait):
 
 def create_import_now_submission_documents(wait):
     """..."""
+    return
     # return start_job(wait, 'import_now_submission_documents', ...)
 
 
