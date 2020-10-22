@@ -7,8 +7,7 @@ class ImportNowSubmissionDocument(Base):
 
     import_now_submission_document_id = db.Column(db.Integer, primary_key=True)
 
-    # TODO: Change to nullable=True
-    document_id = db.Column(db.Integer, db.ForeignKey('document.document_id'), nullable=False)
+    document_id = db.Column(db.Integer, db.ForeignKey('document.document_id'))
 
     import_now_submission_documents_job_id = db.Column(
         db.Integer,

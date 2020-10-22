@@ -26,8 +26,8 @@ def upgrade():
     op.create_table(
         'import_now_submission_documents_job',
         sa.Column('import_now_submission_documents_job_id', sa.Integer(), nullable=False),
-        sa.Column('start_timestamp', sa.DateTime(), nullable=False),
-        sa.Column('end_timestamp', sa.DateTime(), nullable=False),
+        sa.Column('start_timestamp', sa.DateTime(), nullable=True),
+        sa.Column('end_timestamp', sa.DateTime(), nullable=True),
         sa.Column(
             'import_now_submission_documents_job_status_code',
             sa.String(),
@@ -42,7 +42,7 @@ def upgrade():
         'import_now_submission_document',
         sa.Column('import_now_submission_document_id', sa.Integer(), nullable=False),
         sa.Column(
-            'document_id', sa.Integer(), sa.ForeignKey('document.document_id'), nullable=False),
+            'document_id', sa.Integer(), sa.ForeignKey('document.document_id'), nullable=True),
         sa.Column(
             'import_now_submission_documents_job_id',
             sa.Integer(),

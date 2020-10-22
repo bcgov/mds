@@ -7,8 +7,7 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     import_now_submission_documents_job_id = db.Column(db.Integer, primary_key=True)
 
-    # Set nullable to True
-    start_timestamp = db.Column(db.DateTime, nullable=False)
+    start_timestamp = db.Column(db.DateTime)
     end_timestamp = db.Column(db.DateTime)
 
     now_application_id = db.Column(db.Integer, nullable=False)
