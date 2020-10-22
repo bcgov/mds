@@ -2,8 +2,6 @@
 
 exports[`EditNoWContacts renders properly 1`] = `
 <FieldArray
-  arrayPushReduxForms={[MockFunction]}
-  arrayRemoveReduxForms={[MockFunction]}
   component={[Function]}
   contacts={
     Array [
