@@ -18,7 +18,7 @@ DO $$
         update bond
         set bond_status_code = 'ACT'
         where bond_status_code = 'REL'
-            and sec_cid in
+            and mms_sec_cid in
                 (select sec_cid
                 from etl_bond
                 where "status" = 'E');
