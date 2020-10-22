@@ -17,3 +17,8 @@ api = Api(
     doc='{}/'.format(Config.BASE_PATH),
     default='mds',
     default_label='MDS related operations')
+
+if Config.FLASK_LOGGING_LEVEL == 'DEBUG':
+    # Have engine logs included at INFO level when pod debug set to DEBUG
+    logging.basicConfig()
+    logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
