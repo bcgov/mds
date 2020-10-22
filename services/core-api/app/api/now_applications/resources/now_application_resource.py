@@ -98,8 +98,6 @@ class NOWApplicationResource(Resource, UserMixin):
             resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
                 request, now_application)
 
-            current_app.logger.info(f'*******************************************')
-            current_app.logger.info(
-                f'patch resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments:\n{resp}'
-            )
+            current_app.logger.info(f'NOWApplicationResource patch resp.__dict__:\n{resp.__dict__}')
+
             return resp
