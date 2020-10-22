@@ -137,7 +137,7 @@ class Base(db.Model):
                     current_app.logger.debug(
                         f'COMBOBREAKER!!! {_edit_key} not in {rel_class} edit groups {rel_class._edit_groups}'
                     )
-                    continue
+                    #continue
                 current_app.logger.debug(depth * ' ' + f'recursively updating {k}')
                 existing_obj = getattr(self, k)
                 if existing_obj is None:
