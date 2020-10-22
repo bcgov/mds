@@ -19,9 +19,8 @@ def upgrade():
 
     submission_status_codes = op.create_table(
         'import_now_submission_document_status',
-        sa.Column(
-            'import_now_submission_document_status_code', sa.String(length=3), nullable=False),
-        sa.Column('description', sa.String(length=100), nullable=False),
+        sa.Column('import_now_submission_document_status_code', sa.String(), nullable=False),
+        sa.Column('description', sa.String(), nullable=False),
         sa.PrimaryKeyConstraint('import_now_submission_document_status_code'))
 
     op.create_table(
@@ -31,11 +30,11 @@ def upgrade():
         sa.Column('end_timestamp', sa.DateTime(), nullable=False),
         sa.Column(
             'import_now_submission_document_status_code',
-            sa.String(length=3),
+            sa.String(),
             sa.ForeignKey(
                 'import_now_submission_document_status.import_now_submission_document_status_code'),
             nullable=False), sa.Column('now_application_id', sa.Integer(), nullable=False),
-        sa.Column('create_user', sa.String(length=60), nullable=False),
+        sa.Column('create_user', sa.String(), nullable=False),
         sa.PrimaryKeyConstraint('import_document_job_id'))
 
     op.create_table(
@@ -47,7 +46,7 @@ def upgrade():
             nullable=False), sa.Column('import_document_id', sa.Integer(), nullable=False),
         sa.Column('document_id', sa.Integer(), nullable=False),
         sa.Column('submission_document_id', sa.Integer(), nullable=False),
-        sa.Column('error', sa.String(), nullable=False),
+        sa.Column('error', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('import_document_id'))
 
     op.bulk_insert(submission_status_codes, [
