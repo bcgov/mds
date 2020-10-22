@@ -21,7 +21,7 @@ def upgrade():
         'import_now_submission_documents_job_status',
         sa.Column('import_now_submission_documents_job_status_code', sa.String(), nullable=False),
         sa.Column('description', sa.String(), nullable=False),
-        sa.PrimaryKeyConstraint('import_now_submission_document_status_code'))
+        sa.PrimaryKeyConstraint('import_now_submission_documents_job_status_code'))
 
     op.create_table(
         'import_now_submission_documents_job',
@@ -29,38 +29,42 @@ def upgrade():
         sa.Column('start_timestamp', sa.DateTime(), nullable=False),
         sa.Column('end_timestamp', sa.DateTime(), nullable=False),
         sa.Column(
-            'import_now_submission_document_status_code',
+            'import_now_submission_documents_job_status_code',
             sa.String(),
             sa.ForeignKey(
-                'import_now_submission_document_status.import_now_submission_document_status_code'),
-            nullable=False), sa.Column('now_application_id', sa.Integer(), nullable=False),
-        sa.Column('create_user', sa.String(), nullable=False),
+                'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
+            ),
+            nullable=False), sa.Column('create_user', sa.String(), nullable=False),
         sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint('import_now_submission_documents_job_id'))
 
     op.create_table(
         'import_now_submission_document',
-        sa.Column(
-            'import_document_job_id',
-            sa.Integer(),
-            sa.ForeignKey('import_now_submission_documents_job.import_document_job_id'),
-            nullable=False), sa.Column('import_document_id', sa.Integer(), nullable=False),
-        sa.Column('document_id', sa.Integer(), nullable=False),
         sa.Column('import_now_submission_document_id', sa.Integer(), nullable=False),
+        sa.Column(
+            'document_id', sa.Integer(), sa.ForeignKey('document.document_id'), nullable=False),
+        sa.Column(
+            'import_now_submission_documents_job_id',
+            sa.Integer(),
+            sa.ForeignKey(
+                'import_now_submission_documents_job.import_now_submission_documents_job_id'),
+            nullable=False), sa.Column('submission_document_id', sa.Integer, nullable=False),
+        sa.Column('submission_document_url', sa.String(), nullable=False),
+        sa.Column('submission_document_file_name', sa.String(), nullable=False),
         sa.Column('error', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('import_now_submission_document_id'))
 
     op.bulk_insert(submission_status_codes, [
         {
-            'import_now_submission_document_status_code': 'INP',
+            'import_now_submission_documents_job_status_code': 'INP',
             'description': 'In Progress',
         },
         {
-            'import_now_submission_document_status_code': 'SUC',
+            'import_now_submission_documents_job_status_code': 'SUC',
             'description': 'Success',
         },
         {
-            'import_now_submission_document_status_code': 'FAL',
+            'import_now_submission_documents_job_status_code': 'FAL',
             'description': 'Failure',
         },
     ])
@@ -69,4 +73,4 @@ def upgrade():
 def downgrade():
     op.drop_table('import_now_submission_document')
     op.drop_table('import_now_submission_documents_job')
-    op.drop_table('import_now_submission_document_status_code')
+    op.drop_table('import_now_submission_documents_job_status')
