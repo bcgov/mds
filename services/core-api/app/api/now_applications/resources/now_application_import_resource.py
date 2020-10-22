@@ -12,7 +12,10 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.mines.mine.models.mine import Mine
+from app.api.parties.party.models.party import Party
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.activity_summary.exploration_access import ExplorationAccess
@@ -38,6 +41,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         type=lambda x: Decimal(x) if x else None,
         help='Latitude point for the Notice of Work.',
         location='json')
+    parser.add_argument('contacts', type=list, location='json', store_missing=False)
 
     @requires_role_edit_permit
     @api.expect(parser)
@@ -46,6 +50,8 @@ class NOWApplicationImportResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         latitude = data.get('latitude')
         longitude = data.get('longitude')
+        contacts = data.get('contacts')
+
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
@@ -60,6 +66,26 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.latitude = latitude
         application.longitude = longitude
         application.now_application_guid = application_guid
+
+        if contacts is not None:
+            for contact in contacts:
+
+                now_party = Party.find_by_party_guid(contact['party_guid'])
+                if not now_party:
+                    raise NotFound('No party found for party with guid ' + contact['party_guid'])
+
+                mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
+                    contact['mine_party_appt_type_code'])
+                if not mine_party_appt_type:
+                    raise NotFound('No mine party appointment type found for type with code ' +
+                                   contact['mine_party_appt_type_code'])
+
+                now_party_appt = NOWPartyAppointment(
+                    mine_party_appt_type_code=mine_party_appt_type.mine_party_appt_type_code,
+                    mine_party_appt_type=mine_party_appt_type,
+                    party=now_party)
+
+                application.contacts.append(now_party_appt)
 
         # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
         # In the event of multiple requests being fired simultaneously this can still sometimes fail.

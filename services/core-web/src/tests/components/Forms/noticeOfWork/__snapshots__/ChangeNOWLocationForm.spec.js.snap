@@ -7,57 +7,11 @@ exports[`ChangeNOWLocationForm renders properly 1`] = `
   layout="vertical"
   onSubmit={[Function]}
 >
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      s={12}
-    >
-      <FormItem
-        hasFeedback={false}
-        label={
-          Array [
-            <Badge
-              color="#fcba05"
-            />,
-            "NoW Latitude",
-          ]
-        }
-      >
-        <Field
-          component={[Function]}
-          id="latitude"
-          name="latitude"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-    </Col>
-    <Col
-      md={12}
-      s={12}
-    >
-      <FormItem
-        hasFeedback={false}
-        label="NoW Longitude"
-      >
-        <Field
-          component={[Function]}
-          id="longitude"
-          name="longitude"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-    </Col>
-  </Row>
+  <EditNOWMineAndLocation
+    latitude=""
+    locationOnly={true}
+    longitude=""
+  />
   <Connect(MineCard)
     additionalPin={Array []}
     mine={Object {}}

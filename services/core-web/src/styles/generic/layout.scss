@@ -21,6 +21,12 @@ body {
   }
 }
 
+.grey-background {
+  background-color: $lightest-grey;
+  padding: 20px;
+  margin: 20px;
+}
+
 .footer {
   height: 45px;
   background-color: $nav-color;
@@ -409,4 +415,18 @@ body {
 
 .no-margin {
   margin: 0;
+}
+
+.add-content-block {
+  background-color: #f3f0f0;
+  border-radius: 5px;
+  border: 2px dashed gray;
+  margin: 50px;
+  padding: 90px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken(#f3f0f0, 2%);
+  }
 }

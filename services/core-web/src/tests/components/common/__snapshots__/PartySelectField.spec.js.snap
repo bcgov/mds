@@ -6,6 +6,7 @@ exports[`PartySelectField renders properly 1`] = `
   component={[Function]}
   dataSource={Array []}
   fetchSearchResults={[MockFunction]}
+  handleFocus={[Function]}
   handleSearch={[Function]}
   handleSelect={[Function]}
   id="party_guid"
