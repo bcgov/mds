@@ -61,12 +61,13 @@ def import_nris_xml():
         dsn=dsn)
 
     # TODO: Remove this block once we can confirm the connection is using TCPS
+    current_app.logger.info('NRIS DB connection type:')
     cursor = oracle_db.cursor()
     cursor.execute(
         "SELECT sys_context('USERENV', 'NETWORK_PROTOCOL') as network_protocol FROM dual")
     results = cursor.fetchall()
     for result in results:
-        print(result)
+        current_app.logger.info(result)
     cursor.close()
 
     cursor = oracle_db.cursor()
