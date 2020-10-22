@@ -7,6 +7,7 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     import_now_submission_documents_job_id = db.Column(db.Integer, primary_key=True)
 
+    # Set nullable to True
     start_timestamp = db.Column(db.DateTime, nullable=False)
     end_timestamp = db.Column(db.DateTime)
 
@@ -18,6 +19,9 @@ class ImportNowSubmissionDocumentsJob(Base):
             'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
         ),
         nullable=False)
+
+    import_now_submission_documents = db.relationship(
+        'ImportNowSubmissionDocument', lazy='selectin')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.import_now_submission_documents_job_id}>'

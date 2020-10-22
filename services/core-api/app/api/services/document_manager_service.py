@@ -2,7 +2,9 @@ import requests, base64, io, json
 from tusclient import client
 
 from flask import Response, current_app
+from flask_restplus import marshal, fields
 from app.config import Config
+from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -39,15 +41,22 @@ class DocumentManagerService():
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
         # TODO: Marshal the submission_documents with a trimmed-down model.
         data = {
-            'now_application_id': now_application.now_application_id,
-            'submission_documents': []                                #now_application.submission_documents
+            'now_application_id':
+            now_application.now_application_id,
+            'submission_documents':
+            marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT)
         }
 
+        headers = {key: value for (key, value) in request.headers if key != 'Host'}
+
+        current_app.logger.info(
+            f'DocumentManagerService importNoticeOfWorkSubmissionDocuments data:\n{data}')
+        current_app.logger.info(
+            f'DocumentManagerService importNoticeOfWorkSubmissionDocuments headers:\n{headers}')
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',
-            headers={key: value
-                     for (key, value) in request.headers if key != 'Host'},
-            data=data)
+            headers=headers,
+            data=json.dumps(data))
 
         current_app.logger.info(
             f'DocumentManagerService importNoticeOfWorkSubmissionDocuments resp.__dict__:\n{resp.__dict__}'
