@@ -18,14 +18,14 @@ depends_on = None
 def upgrade():
 
     submission_status_codes = op.create_table(
-        'import_now_submission_document_status',
-        sa.Column('import_now_submission_document_status_code', sa.String(), nullable=False),
+        'import_now_submission_documents_job_status',
+        sa.Column('import_now_submission_documents_job_status_code', sa.String(), nullable=False),
         sa.Column('description', sa.String(), nullable=False),
         sa.PrimaryKeyConstraint('import_now_submission_document_status_code'))
 
     op.create_table(
         'import_now_submission_documents_job',
-        sa.Column('import_document_job_id', sa.Integer(), nullable=False),
+        sa.Column('import_now_submission_documents_job_id', sa.Integer(), nullable=False),
         sa.Column('start_timestamp', sa.DateTime(), nullable=False),
         sa.Column('end_timestamp', sa.DateTime(), nullable=False),
         sa.Column(
@@ -35,6 +35,7 @@ def upgrade():
                 'import_now_submission_document_status.import_now_submission_document_status_code'),
             nullable=False), sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.Column('create_user', sa.String(), nullable=False),
+        sa.Column('now_application_id', sa.Integer(), nullable=False)
         sa.PrimaryKeyConstraint('import_document_job_id'))
 
     op.create_table(
@@ -45,9 +46,9 @@ def upgrade():
             sa.ForeignKey('import_now_submission_documents_job.import_document_job_id'),
             nullable=False), sa.Column('import_document_id', sa.Integer(), nullable=False),
         sa.Column('document_id', sa.Integer(), nullable=False),
-        sa.Column('submission_document_id', sa.Integer(), nullable=False),
+        sa.Column('import_now_submission_document_id', sa.Integer(), nullable=False),
         sa.Column('error', sa.String(), nullable=True),
-        sa.PrimaryKeyConstraint('import_document_id'))
+        sa.PrimaryKeyConstraint('import_now_submission_document_id'))
 
     op.bulk_insert(submission_status_codes, [
         {

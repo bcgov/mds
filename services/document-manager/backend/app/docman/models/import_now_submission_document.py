@@ -6,6 +6,14 @@ class ImportNowSubmissionDocument(Base):
     __tablename__ = 'import_now_submission_document'
 
     import_now_submission_document_id = db.Column(db.Integer, primary_key=True)
+    import_document_id = db.Column(db.Integer, nullable=False)
+    document_id = db.Column(db.Integer, nullable=False)
+    import_document_job_id = db.Column(
+        db.Integer,
+        db.ForeignKey('import_now_submission_documents_job.import_document_job_id'),
+        nullable=False)
+    submission_document_id = db.Column(db.Integer, nullable=False)
+    error = db.Column(db.String, nullable=True)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.import_now_submission_document_id}>'
