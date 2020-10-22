@@ -421,8 +421,8 @@
             "volumes": [
               {
                 "name": "odb-credentials",
-                "secret": {
-                  "secretName": "template.mds-nris-odb-credentials"
+                "configMap": {
+                  "name": "odb-wallet"
                 }
               }
             ],
