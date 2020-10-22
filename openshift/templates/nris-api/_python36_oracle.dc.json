@@ -155,11 +155,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
+                "command": ["bash", "-c", "cd /opt/app-root/src && flask db upgrade"]
               }
             },
             "maxSurge": "50%",
@@ -405,9 +401,29 @@
                     "scheme": "HTTP"
                   }
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/cwallet.sso",
+                    "name": "odb-credentials",
+                    "subPath": "cwallet.sso"
+                  },
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/ewallet.p12",
+                    "name": "odb-credentials",
+                    "subPath": "ewallet.p12"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "Always"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "odb-credentials",
+                "secret": {
+                  "secretName": "template.mds-nris-odb-credentials"
+                }
               }
             ],
             "restartPolicy": "Always",
