@@ -29,3 +29,4 @@ class ImportNowSubmissionDocumentsResource(Resource):
         # Else, create a new job
         else:
             # create_import_now_submission_documents()
+            pass

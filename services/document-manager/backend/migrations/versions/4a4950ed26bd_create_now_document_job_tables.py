@@ -35,8 +35,8 @@ def upgrade():
                 'import_now_submission_document_status.import_now_submission_document_status_code'),
             nullable=False), sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.Column('create_user', sa.String(), nullable=False),
-        sa.Column('now_application_id', sa.Integer(), nullable=False)
-        sa.PrimaryKeyConstraint('import_document_job_id'))
+        sa.Column('now_application_id', sa.Integer(), nullable=False),
+        sa.PrimaryKeyConstraint('import_now_submission_documents_job_id'))
 
     op.create_table(
         'import_now_submission_document',
