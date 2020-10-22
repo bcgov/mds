@@ -42,10 +42,10 @@ def create_reorganize_files_job(wait):
     return start_job(wait, 'reorganize', docs, reorganize_docs)
 
 
-def create_import_now_submission_documents(wait):
+def create_import_now_submission_documents(import_now_submission_documents_job_id):
     """..."""
     return
-    # return start_job(wait, 'import_now_submission_documents', ...)
+    # return start_job()
 
 
 def get_untransferred_files(path):

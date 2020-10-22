@@ -10,6 +10,8 @@ class ImportNowSubmissionDocumentsJob(Base):
     start_timestamp = db.Column(db.DateTime)
     end_timestamp = db.Column(db.DateTime)
 
+    create_user = db.Column(db.String)
+
     now_application_id = db.Column(db.Integer, nullable=False)
 
     import_now_submission_documents_job_status_code = db.Column(
