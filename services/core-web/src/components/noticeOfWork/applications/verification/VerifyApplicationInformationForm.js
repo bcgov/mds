@@ -56,17 +56,16 @@ export const VerifyApplicationInformationForm = (props) => {
         latitude={props.latitude}
         longitude={props.longitude}
       />
-      <h4>Verify Contacts</h4>
-      <p>
-        Select a Core Role and Contact for each person shown. The list below comes from the NoW
-        application.
-      </p>
       <br />
+      <br />
+      <h4>Match Application Contacts to Core Contacts</h4>
+      <p>Select a Contact from Core for each person shown, or update the Roles if required.</p>
       <Divider />
       <EditNoWContacts
         initialValues={props.originalNoticeOfWork}
         contacts={props.originalNoticeOfWork.contacts}
         contactFormValues={props.contactFormValues}
+        isVerifying
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
