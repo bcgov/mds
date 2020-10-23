@@ -1,5 +1,7 @@
 import json
+import uuid
 
+from datetime import datetime
 from celery.utils.log import get_task_logger
 
 from app.extensions import db
@@ -34,7 +36,7 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
             import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
         # Get the documents to import
-        docs = [
+        import_documents = [
             doc for doc in import_job.import_now_submission_documents
             if doc.submission_document_id in doc_ids
         ]
@@ -42,30 +44,49 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
         # Transfer the documents
         errors = []
         success_imports = []
-        for i, doc in enumerate(docs):
-            doc_prefix = f'[Chunk {chunk_index}, Doc {i + 1}/{len(docs)}, ID {doc.submission_document_id}]:'
+        for i, import_doc in enumerate(import_documents):
+            doc_prefix = f'[Chunk {chunk_index}, Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
             logger.info(f'{doc_prefix} Importing...')
             try:
                 # Import the file to the filesystem
-                originating_system = get_originating_system(doc)
+                originating_system = get_originating_system(import_doc)
                 file_stream = None
                 if originating_system == 'VFCBC':
-                    file_stream = VFCBCDownloadService.download(doc.submission_document_url)
+                    file_stream = VFCBCDownloadService.download(import_doc.submission_document_url)
                 elif originating_system == 'NROS':
-                    # file_stream = NROSDownloadService.download(doc.submission_document_url)
+                    pass
+                    # file_stream = NROSDownloadService.download(import_doc.submission_document_url)
                     continue
                 # Upload the file to the object store
+                filename = import_doc.submission_document_file_name
+                bucket_filename = f'{import_job.now_application_guid}/{filename}'
                 uploaded, key = ObjectStoreStorageService().upload_fileobj(
-                    filename=doc.submission_document_file_name, fileobj=file_stream)
+                    filename=bucket_filename, fileobj=file_stream)
 
                 # Update the document's object store path
+                date = datetime.utcnow()
+                guid = str(uuid.uuid4())
+                doc = Document(
+                    document_guid=guid,
+                    full_storage_path=f'.../{guid}',
+                    upload_started_date=date,
+                    upload_completed_date=date,
+                    path_display_name=f'.../{filename}',
+                    file_display_name=filename,
+                    object_store_path=key,
+                    create_user='mds')
+
+                doc.save()
+
+                # NOTE: Not sure if something like this will be needed...
                 # db.session.rollback()
                 # db.session.add(doc)
                 # doc.object_store_path = key
                 # doc.update_user = 'mds'
                 # db.session.commit()
-                # success_imports.append(doc.submission_document_id) ####
-                # logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
+
+                success_imports.append(import_doc.submission_document_id)
+                logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
             except Exception as e:
                 logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
                 errors.append({'exception': str(e), 'document': doc.task_json()})
