@@ -3,8 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { FieldArray, Field, arrayPush, arrayRemove } from "redux-form";
+import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { FieldArray, Field, change } from "redux-form";
 import { startCase } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -19,6 +19,9 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
+
+import Address from "@/components/common/Address";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -30,8 +33,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   isEditView: PropTypes.bool,
-  arrayRemove: PropTypes.func.isRequired,
-  arrayPush: PropTypes.func.isRequired,
+  isVerifying: PropTypes.bool,
+  change: PropTypes.func.isRequired,
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
@@ -39,6 +42,7 @@ const propTypes = {
 
 const defaultProps = {
   isEditView: false,
+  isVerifying: false,
 };
 
 const renderContacts = ({
@@ -46,9 +50,9 @@ const renderContacts = ({
   contacts,
   partyRelationshipTypes,
   isEditView,
-  arrayPushReduxForms,
-  arrayRemoveReduxForms,
+  changeArray,
   rolesUsedOnce,
+  isVerifying,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
@@ -62,19 +66,25 @@ const renderContacts = ({
             // eslint-disable-next-line react/no-array-index-key
             <Col lg={12} sm={24} key={index}>
               <Card
-                style={{ height: "300px" }}
+                className="ant-card-now"
                 title={
-                  <div className="inline-flex padding-md--top">
+                  <div
+                    className="inline-flex"
+                    style={{
+                      alignItems: "center",
+                      height: "55px",
+                    }}
+                  >
                     <img
                       className="icon-sm padding-md--right"
                       src={PROFILE_NOCIRCLE}
                       alt="user"
                       height={25}
                     />
-                    <p className="field-title">{`NoW ${
+                    <span className="field-title">{`Application ${
                       contacts[index] ? contacts[index].mine_party_appt_type_code_description : ""
-                    } Contact Information:`}</p>
-                    <p>{contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}</p>
+                    }`}</span>
+
                     {contacts[index] && contacts[index].now_party_appointment_id ? (
                       <Popconfirm
                         className="position-right no-margin"
@@ -83,11 +93,19 @@ const renderContacts = ({
                           contacts[index].party.name
                         )} as a contact on this Notice of Work?`}
                         onConfirm={() => {
-                          const updatedContact = contacts[index];
-                          updatedContact.state_modified = "delete";
+                          if (fields.get(index)) {
+                            // add state_modified and set to "delete" for backend
+                            contacts[index].state_modified = "delete";
 
-                          arrayPushReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", updatedContact);
-                          arrayRemoveReduxForms(FORM.EDIT_NOTICE_OF_WORK, "contacts", index);
+                            changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
+
+                            // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
+                            setTimeout(() => {
+                              // eslint-disable-next-line no-constant-condition
+                              const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
+                              return res;
+                            }, 1);
+                          }
                         }}
                         okText="Delete"
                         cancelText="Cancel"
@@ -101,6 +119,8 @@ const renderContacts = ({
                         ghost
                         onClick={() => {
                           fields.remove(index);
+                          contacts.splice(index, 1);
+                          changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
                         }}
                         className="position-right no-margin"
                       >
@@ -111,54 +131,85 @@ const renderContacts = ({
                 }
                 bordered={false}
               >
-                <Form.Item label="Role*">
-                  <Field
-                    usedOptions={rolesUsedOnce}
-                    id={`${field}.mine_party_appt_type_code`}
-                    name={`${field}.mine_party_appt_type_code`}
-                    component={RenderSelect}
-                    data={filteredRelationships}
-                    validate={[required]}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <PartySelectField
-                    id={`${field}.party_guid`}
-                    name={`${field}.party_guid`}
-                    initialValue={
-                      isEditView && contacts[index]
-                        ? {
-                            label: contacts[index].party.name,
-                            value: contacts[index].party_guid,
-                          }
-                        : undefined
-                    }
-                    label={
-                      contacts[index]
-                        ? `${contacts[index].mine_party_appt_type_code_description} Name`
-                        : "Contact Name*"
-                    }
-                    partyLabel={
-                      contacts[index]
-                        ? contacts[index].mine_party_appt_type_code_description
-                        : "Contact Name*"
-                    }
-                    validate={[required]}
-                    allowAddingParties
-                    initialValues={
-                      contacts[index]
-                        ? {
-                            ...contacts[index].party,
-                            ...(contacts[index].party.address.length > 0
-                              ? contacts[index].party.address[0]
-                              : {}),
-                          }
-                        : {}
-                    }
-                    initialSearch={contacts[index] ? contacts[index].party.name : undefined}
-                  />
-                </Form.Item>
-                <br />
+                <Row>
+                  {isVerifying && (
+                    <Col span={12}>
+                      <h4>
+                        {contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}
+                      </h4>
+                      {contacts[index] && (
+                        <div>
+                          <div className="inline-flex">
+                            <div className="padding-right">
+                              <MailOutlined className="icon-sm" />
+                            </div>
+                            {contacts[index].party.email &&
+                            contacts[index].party.email !== "Unknown" ? (
+                              <a href={`mailto:${contacts[index].party.email}`}>
+                                {contacts[index].party.email}
+                              </a>
+                            ) : (
+                              <p>{Strings.EMPTY_FIELD}</p>
+                            )}
+                          </div>
+                          <div className="inline-flex">
+                            <div className="padding-right">
+                              <PhoneOutlined className="icon-sm" />
+                            </div>
+                            <p>
+                              {contacts[index].party.phone_no}{" "}
+                              {contacts[index].party.phone_ext
+                                ? `x${contacts[index].party.phone_ext}`
+                                : ""}
+                            </p>
+                          </div>
+                          <Address address={contacts[index].party.address[0] || {}} />
+                        </div>
+                      )}
+                    </Col>
+                  )}
+                  <Col span={isVerifying ? 12 : 24}>
+                    <Form.Item label="Role*">
+                      <Field
+                        usedOptions={rolesUsedOnce}
+                        id={`${field}.mine_party_appt_type_code`}
+                        name={`${field}.mine_party_appt_type_code`}
+                        component={RenderSelect}
+                        data={filteredRelationships}
+                        validate={[required]}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <PartySelectField
+                        id={`${field}.party_guid`}
+                        name={`${field}.party_guid`}
+                        initialValue={
+                          isEditView && contacts[index]
+                            ? {
+                                label: contacts[index].party.name,
+                                value: contacts[index].party_guid,
+                              }
+                            : undefined
+                        }
+                        label={`${isVerifying ? "Matching Core " : ""}Contact*`}
+                        partyLabel="Contact"
+                        validate={[required]}
+                        allowAddingParties
+                        initialValues={
+                          contacts[index]
+                            ? {
+                                ...contacts[index].party,
+                                ...(contacts[index].party.address.length > 0
+                                  ? contacts[index].party.address[0]
+                                  : {}),
+                              }
+                            : {}
+                        }
+                        initialSearch={contacts[index] ? contacts[index].party.name : undefined}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Card>
             </Col>
           ))
@@ -235,8 +286,8 @@ export class EditNoWContacts extends Component {
         contacts={this.props.contacts}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         isEditView={this.props.isEditView}
-        arrayPushReduxForms={this.props.arrayPush}
-        arrayRemoveReduxForms={this.props.arrayRemove}
+        isVerifying={this.props.isVerifying}
+        changeArray={this.props.change}
         rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );
@@ -256,8 +307,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
-      arrayPush,
-      arrayRemove,
+      change,
     },
     dispatch
   );
