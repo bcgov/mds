@@ -66,6 +66,7 @@ const renderContacts = ({
             // eslint-disable-next-line react/no-array-index-key
             <Col lg={12} sm={24} key={index}>
               <Card
+                style={contacts[index] ? {} : { boxShadow: "0px 4px 4px #7c66ad" }}
                 className="ant-card-now"
                 title={
                   <div
