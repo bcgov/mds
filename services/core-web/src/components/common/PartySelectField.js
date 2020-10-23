@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
 import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
@@ -51,27 +51,49 @@ const defaultProps = {
   initialSearch: undefined,
 };
 
-const renderAddPartyFooter = (showAddParty, partyLabel) => (
+const renderAddPartyHeader = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
-    <Divider style={{ margin: "0" }} />
-    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
+    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? `}</p>
     <LinkButton onClick={showAddParty}>
       <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
+    <Divider style={{ margin: "0" }} />
   </div>
 );
 
-const transformData = (data, options, footer) => {
+const transformData = (data, options, header) => {
   const transformedData = data.map((opt) => ({
     value: options[opt].party_guid,
-    label: `${options[opt].name}, ${
-      Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
-    }`,
+    label: (
+      <div>
+        <span>{options[opt].name}</span>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <MailOutlined className="icon-xs" />
+          </div>
+          <span>
+            {Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"}
+          </span>
+        </div>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <PhoneOutlined className="icon-xs" />
+          </div>
+          <span>
+            {options[opt].phone_no} {options[opt].phone_ext ? `x${options[opt].phone_ext}` : ""}
+          </span>
+        </div>
+      </div>
+    ),
   }));
 
-  // Display footer only if desired (Add new party behavior is enabled.)
-  return footer ? transformedData.concat({ value: "footer", label: footer }) : transformedData;
+  // Display header only if desired (Add new party behavior is enabled.)
+  if (header) {
+    transformedData.unshift({ value: "header", label: header });
+  }
+
+  return transformedData;
 };
 
 export class PartySelectField extends Component {
@@ -140,7 +162,7 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
