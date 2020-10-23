@@ -53,6 +53,7 @@ class ObjectStoreStorageService():
             })
         return resp
 
+    # TODO: Make method more general
     def upload_file(self, filename, progress=False):
         key = f'{Config.S3_PREFIX}{filename[1:]}'
 
@@ -84,18 +85,19 @@ class ObjectStoreStorageService():
 
         return True, key
 
+    # TODO: Make method more general
     def upload_fileobj(self, filename, fileobj, progress=False):
-        key = f'{Config.S3_PREFIX}{filename[1:]}'
+        key = f'{Config.S3_PREFIX}{filename}'
 
         # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
-        # s3_etag = self.s3_etag(key)
-        # fs_etag = None
-        # if s3_etag is not None:
-        #     fs_etag = self.calculate_s3_etag(filename)
+        s3_etag = self.s3_etag(key)
+        fs_etag = None
+        if s3_etag is not None:
+            fs_etag = self.calculate_s3_etag(filename)
 
-        #     # If the ETags are the same, the files are identical and there is no reason to re-upload.
-        #     if (s3_etag == fs_etag):
-        #         return False, key
+            # If the ETags are the same, the files are identical and there is no reason to re-upload.
+            if (s3_etag == fs_etag):
+                return False, key
 
         # Upload the file
         try:

@@ -1,9 +1,9 @@
-import requests
-from flask import Response, stream_with_context, request, current_app
-from urllib.parse import urlparse, quote
+import requests, io
+from flask import current_app
+from urllib.parse import urlparse
+
 from app.extensions import cache
 from app.constants import VFCBC_COOKIES, TIMEOUT_60_MINUTES
-from app.config import Config
 
 
 def vfcbc_login(download_session):
@@ -44,7 +44,7 @@ def vfcbc_login(download_session):
 
 
 class VFCBCDownloadService():
-    def download(file_url, file_name):
+    def download(file_url):
         download_session = requests.session()
 
         _vfcbc_cookies = cache.get(VFCBC_COOKIES)
@@ -56,28 +56,4 @@ class VFCBCDownloadService():
 
         file_download_req = download_session.get(file_url, stream=True)
 
-        file_download_resp = Response(
-            stream_with_context(
-                file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)))
-
-        file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
-        file_download_resp.headers[
-            'Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
-
-        return file_download_resp
-
-    def download_file(file_url, file_name):
-        download_session = requests.session()
-
-        _vfcbc_cookies = cache.get(VFCBC_COOKIES)
-        if _vfcbc_cookies is None:
-            vfcbc_login(download_session)
-            cache.set(VFCBC_COOKIES, download_session.cookies, timeout=TIMEOUT_60_MINUTES)
-        else:
-            download_session.cookies = _vfcbc_cookies
-
-        file_download_req = download_session.get(file_url, stream=True)
-        return file_download_req
-        # return stream_with_context(
-        #     file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES))
-        # return file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)
+        return io.BytesIO(file_download_req.content)

@@ -1,6 +1,9 @@
 from app.extensions import db
 from app.utils.models_mixins import Base
 
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.schema import FetchedValue
+
 
 class ImportNowSubmissionDocumentsJob(Base):
     __tablename__ = 'import_now_submission_documents_job'
@@ -13,6 +16,7 @@ class ImportNowSubmissionDocumentsJob(Base):
     create_user = db.Column(db.String)
 
     now_application_id = db.Column(db.Integer, nullable=False)
+    now_application_guid = db.Column(UUID(as_uuid=True), nullable=False)
 
     import_now_submission_documents_job_status_code = db.Column(
         db.String,
@@ -20,7 +24,7 @@ class ImportNowSubmissionDocumentsJob(Base):
             'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
         ),
         nullable=False,
-        server_default='INP')
+        server_default=FetchedValue())
 
     import_now_submission_documents = db.relationship(
         'ImportNowSubmissionDocument', lazy='selectin')
@@ -40,6 +44,8 @@ class ImportNowSubmissionDocumentsJob(Base):
             self.create_user,
             'now_application_id':
             self.now_application_id,
+            'now_application_guid':
+            self.now_application_guid,
             'import_now_submission_documents_job_status_code':
             self.import_now_submission_documents_job_status_code
         }
@@ -56,6 +62,8 @@ class ImportNowSubmissionDocumentsJob(Base):
             self.create_user,
             'now_application_id':
             self.now_application_id,
+            'now_application_guid':
+            self.now_application_guid,
             'import_now_submission_documents_job_status_code':
             self.import_now_submission_documents_job_status_code
         }

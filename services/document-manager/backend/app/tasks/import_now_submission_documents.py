@@ -28,9 +28,6 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
     result = None
     try:
         logger = get_task_logger(import_id)
-        logger.info(
-            f'..........................import_now_submission_documents..............................'
-        )
 
         # Get the NoW Submission Documents Import job
         import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
@@ -41,7 +38,6 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
             doc for doc in import_job.import_now_submission_documents
             if doc.submission_document_id in doc_ids
         ]
-        logger.info(f'docs:\n{docs}')
 
         # Transfer the documents
         errors = []
@@ -54,17 +50,8 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
                 originating_system = get_originating_system(doc)
                 file_stream = None
                 if originating_system == 'VFCBC':
-                    logger.info(f'VFCBC')
-                    try:
-                        file_stream = VFCBCDownloadService.download_file(
-                            doc.submission_document_url, doc.submission_document_file_name)
-                    except Exception as e:
-                        logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
-                        errors.append({'exception': str(e), 'document': doc.task_json()})
-                        continue
-
+                    file_stream = VFCBCDownloadService.download(doc.submission_document_url)
                 elif originating_system == 'NROS':
-                    pass
                     # file_stream = NROSDownloadService.download(doc.submission_document_url)
 
                 # Upload the file to the object store
