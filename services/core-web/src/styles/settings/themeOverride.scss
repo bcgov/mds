@@ -176,6 +176,13 @@
 }
 
 // CARDS
+.ant-card-now {
+  height: 300px;
+  .ant-card-head {
+    height: 70px;
+  }
+}
+
 .ant-card {
   margin-bottom: 20px;
   text-align: left;

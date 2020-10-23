@@ -365,6 +365,10 @@ body {
   }
 }
 
+.icon-xs {
+  font-size: 14px !important;
+}
+
 .icon-lg {
   font-size: 24px !important;
   &--grey {
@@ -381,6 +385,9 @@ body {
 .vertical-align {
   &-sm {
     vertical-align: -0.125em;
+  }
+  &-middle {
+    vertical-align: middle;
   }
 }
 

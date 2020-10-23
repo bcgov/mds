@@ -30,13 +30,14 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     locationOnly={false}
     longitude=""
   />
+  <br />
+  <br />
   <h4>
-    Verify Contacts
+    Match Application Contacts to Core Contacts
   </h4>
   <p>
-    Select a Core Role and Contact for each person shown. The list below comes from the NoW application.
+    Select a Contact from Core for each person shown, or update the Roles if required.
   </p>
-  <br />
   <Divider />
   <Connect(EditNoWContacts)
     contactFormValues={Array []}
@@ -470,6 +471,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
+    isVerifying={true}
   />
   <div
     className="right center-mobile"
