@@ -64,6 +64,7 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
                     filename=bucket_filename, fileobj=file_stream)
 
                 # Update the document's object store path
+                db.session.rollback()
                 date = datetime.utcnow()
                 guid = str(uuid.uuid4())
                 doc = Document(
@@ -76,20 +77,15 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
                     object_store_path=key,
                     create_user='mds')
 
-                doc.save()
-
-                # NOTE: Not sure if something like this will be needed...
-                # db.session.rollback()
-                # db.session.add(doc)
-                # doc.object_store_path = key
-                # doc.update_user = 'mds'
-                # db.session.commit()
+                db.session.add(doc)
+                # doc.save()
+                db.session.commit()
 
                 success_imports.append(import_doc.submission_document_id)
                 logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
             except Exception as e:
                 logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
-                errors.append({'exception': str(e), 'document': doc.task_json()})
+                errors.append({'exception': str(e), 'document': import_doc.task_json()})
 
         # Determine the result of the import
         success = len(errors) == 0
