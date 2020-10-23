@@ -64,7 +64,7 @@ const renderContacts = ({
         {fields
           .map((field, index) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Col lg={12} sm={24} key={`${index}_${fields.length}`}>
+            <Col lg={12} sm={24} key={index}>
               <Card
                 className="ant-card-now"
                 title={
