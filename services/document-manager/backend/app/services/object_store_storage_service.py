@@ -109,12 +109,6 @@ class ObjectStoreStorageService():
         except ClientError as e:
             raise Exception(f'Failed to upload the file: {e}')
 
-        # Ensure that the ETag of the uploaded file and local file are equal.
-        # s3_etag = self.s3_etag(key)
-        # fs_etag = fs_etag if fs_etag else self.calculate_s3_etag(filename)
-        # if (s3_etag != fs_etag):
-        #     raise Exception('ETag of the uploaded file and local file do not match!')
-
         return True, key
 
     def compare_etag(self, filename, key):

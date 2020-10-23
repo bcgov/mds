@@ -14,7 +14,6 @@ class ImportNowSubmissionDocumentsResource(Resource):
     parser.add_argument('now_application_id', type=int, required=True, help='')
     parser.add_argument('now_application_guid', type=str, required=True, help='')
     parser.add_argument('submission_documents', type=list, location='json', required=True, help='')
-    parser.add_argument('now_application_guid', type=str, location='json', required=True)
 
     # TODO: Determine required role(s).
     # @requires_any_of()
