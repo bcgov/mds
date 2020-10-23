@@ -39,7 +39,6 @@ class DocumentManagerService():
 
     @classmethod
     def importNoticeOfWorkSubmissionDocuments(cls, request, now_application):
-        # TODO: Marshal the submission_documents with a trimmed-down model.
         data = {
             'now_application_id':
             now_application.now_application_id,
@@ -47,20 +46,11 @@ class DocumentManagerService():
             marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT)
         }
 
-        headers = {key: value for (key, value) in request.headers if key != 'Host'}
-
-        current_app.logger.info(
-            f'DocumentManagerService importNoticeOfWorkSubmissionDocuments data:\n{data}')
-        current_app.logger.info(
-            f'DocumentManagerService importNoticeOfWorkSubmissionDocuments headers:\n{headers}')
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',
-            headers=headers,
+            headers={key: value
+                     for (key, value) in request.headers if key != 'Host'},
             data=json.dumps(data))
-
-        current_app.logger.info(
-            f'DocumentManagerService importNoticeOfWorkSubmissionDocuments resp.__dict__:\n{resp.__dict__}'
-        )
 
         return Response(resp.content, resp.status_code, resp.raw.headers.items())
 

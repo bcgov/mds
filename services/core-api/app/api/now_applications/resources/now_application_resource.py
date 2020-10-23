@@ -47,7 +47,8 @@ class NOWApplicationResource(Resource, UserMixin):
         return application
 
     @api.doc(
-        description='Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
+        description=
+        'Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
     )
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
@@ -96,7 +97,4 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application = now_application_identity.now_application
             resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
                 request, now_application)
-
-            current_app.logger.info(f'NOWApplicationResource patch resp.__dict__:\n{resp.__dict__}')
-
             return resp

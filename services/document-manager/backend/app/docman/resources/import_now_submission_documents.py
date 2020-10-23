@@ -4,6 +4,7 @@ from flask_restplus import Resource, reqparse
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
 from app.docman.models.import_now_submission_document import ImportNowSubmissionDocument
+from app.utils.include.user_info import User
 
 
 @api.route('/import-now-submission-documents')
@@ -25,7 +26,7 @@ class ImportNowSubmissionDocumentsResource(Resource):
 
         # Create the Import NoW Submission Documents job record.
         import_job = ImportNowSubmissionDocumentsJob(
-            now_application_id=now_application_id, create_user='foo')
+            now_application_id=now_application_id, create_user=User().get_user_username())
         for doc in submission_documents:
             import_job.import_now_submission_documents.append(
                 ImportNowSubmissionDocument(
