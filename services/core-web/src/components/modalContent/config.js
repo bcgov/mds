@@ -28,11 +28,13 @@ import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
+import AddQuickPartyModal from "./AddQuickPartyModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
+  ADD_QUICK_PARTY: AddQuickPartyModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,

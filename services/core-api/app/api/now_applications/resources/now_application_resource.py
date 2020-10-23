@@ -41,14 +41,13 @@ class NOWApplicationResource(Resource, UserMixin):
             application = now_application_identity.now_application
             application.imported_to_core = True
         else:
-            application = transmogrify_now(now_application_identity)
+            application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
         return application
 
     @api.doc(
-        description=
-        'Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
+        description='Updates a now application and nested objects, this endpoint is not idempotent, nested objects without primary keys will be treated as new objects.'
     )
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
