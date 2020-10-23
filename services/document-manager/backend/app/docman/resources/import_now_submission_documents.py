@@ -13,6 +13,7 @@ class ImportNowSubmissionDocumentsResource(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('now_application_id', type=int, required=True, help='')
     parser.add_argument('submission_documents', type=list, location='json', required=True, help='')
+    parser.add_argument('now_application_guid', type=str, location='json', required=True)
 
     # TODO: Determine required role(s).
     # @requires_any_of()
@@ -23,10 +24,13 @@ class ImportNowSubmissionDocumentsResource(Resource):
         data = self.parser.parse_args()
         now_application_id = data.get('now_application_id', None)
         submission_documents = data.get('submission_documents', [])
+        now_application_guid = data.get('now_application_guid', None)
 
         # Create the Import NoW Submission Documents job record.
         import_job = ImportNowSubmissionDocumentsJob(
-            now_application_id=now_application_id, create_user=User().get_user_username())
+            now_application_id=now_application_id,
+            create_user=User().get_user_username(),
+            now_application_guid=now_application_guid)
         for doc in submission_documents:
             import_job.import_now_submission_documents.append(
                 ImportNowSubmissionDocument(

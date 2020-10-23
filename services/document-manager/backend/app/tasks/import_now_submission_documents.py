@@ -53,7 +53,7 @@ def import_now_submission_documents(import_id, doc_ids, chunk_index,
                     file_stream = VFCBCDownloadService.download(doc.submission_document_url)
                 elif originating_system == 'NROS':
                     # file_stream = NROSDownloadService.download(doc.submission_document_url)
-
+                    continue
                 # Upload the file to the object store
                 uploaded, key = ObjectStoreStorageService().upload_fileobj(
                     filename=doc.submission_document_file_name, fileobj=file_stream)

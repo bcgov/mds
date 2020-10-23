@@ -7,6 +7,7 @@ Create Date: 2020-10-21 14:31:24.780205
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = '4a4950ed26bd'
@@ -37,6 +38,7 @@ def upgrade():
             nullable=False,
             server_default='INP'), sa.Column('create_user', sa.String(), nullable=False),
         sa.Column('now_application_id', sa.Integer(), nullable=False),
+        sa.Column('now_application_guid', UUID(as_uuid=True), nullable=False),
         sa.PrimaryKeyConstraint('import_now_submission_documents_job_id'))
 
     op.create_table(

@@ -43,7 +43,9 @@ class DocumentManagerService():
             'now_application_id':
             now_application.now_application_id,
             'submission_documents':
-            marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT)
+            marshal(now_application.submission_documents, NOW_SUBMISSION_DOCUMENT),
+            'now_application_guid':
+            str(now_application.now_application_guid)
         }
 
         resp = requests.post(
