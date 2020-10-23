@@ -88,9 +88,7 @@ export class MineNoticeOfWorkTable extends Component {
       title: "Number",
       dataIndex: "now_number",
       sortField: "now_number",
-      render: (text, record) => (
-        <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
-      ),
+      render: (text) => <div title="Number">{text}</div>,
       sorter: true,
     },
     {

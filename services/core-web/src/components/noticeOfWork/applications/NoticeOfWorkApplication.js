@@ -325,6 +325,11 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleCancelNOWEdit = () => {
+    if (this.props.formValues.contacts.length > 0) {
+      // eslint-disable-next-line array-callback-return
+      this.props.formValues.contacts.map((contact) => delete contact.state_modified);
+    }
+
     this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
