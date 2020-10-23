@@ -19,7 +19,8 @@ class ImportNowSubmissionDocumentsJob(Base):
         db.ForeignKey(
             'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
         ),
-        nullable=False)
+        nullable=False,
+        server_default='INP')
 
     import_now_submission_documents = db.relationship(
         'ImportNowSubmissionDocument', lazy='selectin')

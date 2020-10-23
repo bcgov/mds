@@ -34,7 +34,8 @@ def upgrade():
             sa.ForeignKey(
                 'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
             ),
-            nullable=False), sa.Column('create_user', sa.String(), nullable=False),
+            nullable=False,
+            server_default='INP'), sa.Column('create_user', sa.String(), nullable=False),
         sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint('import_now_submission_documents_job_id'))
 
