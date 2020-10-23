@@ -11,8 +11,8 @@ from app.utils.include.user_info import User
 class ImportNowSubmissionDocumentsResource(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('now_application_id', type=int, required=False, help='')
-    parser.add_argument('submission_documents', type=list, location='json', required=False, help='')
+    parser.add_argument('now_application_id', type=int, required=True, help='')
+    parser.add_argument('submission_documents', type=list, location='json', required=True, help='')
 
     # TODO: Determine required role(s).
     # @requires_any_of()
@@ -36,13 +36,11 @@ class ImportNowSubmissionDocumentsResource(Resource):
         import_job.save()
 
         # Create the Import NoW Submission Documents job.
-        # create_import_now_submission_documents(import_job.import_now_submission_documents_job_id)
+        result = create_import_now_submission_documents(
+            import_job.import_now_submission_documents_job_id)
+        current_app.logger.info(f'******result:\n{result}')
 
         # Return a response indicating that the job has started.
         message = f'Successfuly created Import NoW Submission Documents job with ID {None}'
         resp = make_response(jsonify(message=message), 201)
-
-        current_app.logger.info(
-            f'ImportNowSubmissionDocumentsResource post resp.__dict__:{resp.__dict__}')
-
         return resp

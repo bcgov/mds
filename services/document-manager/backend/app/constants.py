@@ -16,3 +16,14 @@ def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_
 TUS_API_VERSION = '1.0.0'
 TUS_API_SUPPORTED_VERSIONS = '1.0.0'
 FORBIDDEN_FILETYPES = ('js', 'php', 'pl', 'py', 'rb', 'sh', 'so', 'exe', 'dll')
+
+# Cache prefixes
+NROS_TOKEN = "nros:token"
+VFCBC_COOKIES = "vdcbc_cookies"
+
+
+# Cache Timeouts
+TIMEOUT_5_MINUTES = 300
+TIMEOUT_60_MINUTES = 3600
+TIMEOUT_24_HOURS = 86340
+TIMEOUT_12_HOURS = 43140

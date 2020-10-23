@@ -84,6 +84,37 @@ class ObjectStoreStorageService():
 
         return True, key
 
+    def upload_fileobj(self, filename, fileobj, progress=False):
+        key = f'{Config.S3_PREFIX}{filename[1:]}'
+
+        # If an object already exists with this key, compare its ETag with the calculated ETag of the local file.
+        # s3_etag = self.s3_etag(key)
+        # fs_etag = None
+        # if s3_etag is not None:
+        #     fs_etag = self.calculate_s3_etag(filename)
+
+        #     # If the ETags are the same, the files are identical and there is no reason to re-upload.
+        #     if (s3_etag == fs_etag):
+        #         return False, key
+
+        # Upload the file
+        try:
+            self._client.upload_fileobj(
+                Fileobj=fileobj,
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                Callback=ProgressPercentage(filename) if progress else None)
+        except ClientError as e:
+            raise Exception(f'Failed to upload the file: {e}')
+
+        # Ensure that the ETag of the uploaded file and local file are equal.
+        # s3_etag = self.s3_etag(key)
+        # fs_etag = fs_etag if fs_etag else self.calculate_s3_etag(filename)
+        # if (s3_etag != fs_etag):
+        #     raise Exception('ETag of the uploaded file and local file do not match!')
+
+        return True, key
+
     def compare_etag(self, filename, key):
         s3_etag = self.s3_etag(key)
         fs_etag = self.calculate_s3_etag(filename)

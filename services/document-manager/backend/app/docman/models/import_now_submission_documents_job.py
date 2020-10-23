@@ -42,3 +42,19 @@ class ImportNowSubmissionDocumentsJob(Base):
             'import_now_submission_documents_job_status_code':
             self.import_now_submission_documents_job_status_code
         }
+
+    def task_json(self):
+        return {
+            'import_now_submission_documents_job_id':
+            self.import_now_submission_documents_job_id,
+            'start_timestamp':
+            self.start_timestamp,
+            'end_timestamp':
+            self.end_timestamp,
+            'create_user':
+            self.create_user,
+            'now_application_id':
+            self.now_application_id,
+            'import_now_submission_documents_job_status_code':
+            self.import_now_submission_documents_job_status_code
+        }

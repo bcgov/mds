@@ -59,6 +59,18 @@ class Config(object):
 
     TUSD_URL = os.environ.get('TUSD_URL', 'http://tusd:1080/files/')
 
+    DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES = int(
+        os.environ.get('DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES', '1048576'))
+
+    # NROS
+    NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
+    NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
+    NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
+
+    # vFCBC
+    VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
+    VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
+
     # Document hosting settings
     OBJECT_STORE_ENABLED = bool(int(os.environ.get('OBJECT_STORE_ENABLED', '0')))
     OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')
