@@ -93,8 +93,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 if originating_system == 'VFCBC':
                     file_stream = VFCBCDownloadService.download(import_doc.submission_document_url)
                 elif originating_system == 'NROS':
-                    # file_stream = NROSDownloadService.download(import_doc.submission_document_url)
-                    continue
+                    file_stream = NROSDownloadService.download(import_doc.submission_document_url)
 
                 # Upload the file (using the file stream) to the object store
                 # TODO: Figure out what bucket_filename should be.

@@ -56,4 +56,5 @@ class VFCBCDownloadService():
 
         file_download_req = download_session.get(file_url, stream=True)
 
+        # TODO: Ensure that this is the actual file.
         return io.BytesIO(file_download_req.content)
