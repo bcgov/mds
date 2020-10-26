@@ -20,6 +20,8 @@ class ImportNowSubmissionDocument(Base):
 
     error = db.Column(db.String)
 
+    document = db.relationship('Document')
+
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.import_now_submission_document_id}>'
 

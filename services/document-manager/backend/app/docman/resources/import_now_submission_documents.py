@@ -25,7 +25,6 @@ class ImportNowSubmissionDocumentsResource(Resource):
         now_application_id = data.get('now_application_id', None)
         now_application_guid = data.get('now_application_guid', None)
         submission_documents = data.get('submission_documents', [])
-        now_application_guid = data.get('now_application_guid', None)
 
         # Create the Import NoW Submission Documents job record.
         import_job = ImportNowSubmissionDocumentsJob(

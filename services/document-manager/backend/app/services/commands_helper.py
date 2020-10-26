@@ -50,38 +50,12 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
-    # Split the list of documents into chunks to perform on in parallel
-    docs = import_job.import_now_submission_documents
-    current_app.logger.info(f'********************************************')
-    current_app.logger.info(f'{docs}')
-
-    # chunks = numpy.array_split(docs, 8)
-    # chunks = [x.tolist() for x in chunks if len(x) > 0]
-    chunks = [docs]
-
-    # Create a task for each chunk
-    task = import_now_submission_documents
-    tasks = []
-    job_id = str(uuid.uuid4())
-    for i, chunk in enumerate(chunks):
-        doc_ids = [doc.submission_document_id for doc in chunk]
-        tasks.append(task.subtask((job_id, doc_ids, i, import_now_submission_documents_job_id)))
-
-    # Create and start a job using the tasks
-    job_type = 'import_now_submission_documents'
-    callback = doc_job_result.subtask(kwargs={'job_type': job_type, 'job_id': job_id})
-    job = chord(tasks)(callback)
+    # Create the task
+    import_now_submission_documents.delay(import_now_submission_documents_job_id)
 
     # Create the response message
-    message = f'Added a {job_type} job with ID {job_id} to the task queue: {len(docs)} docs will be performed on in {len(chunks)} chunks of size {len(chunks[0])}'
+    message = f'Added a Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(docs)} docs will be imported'
     current_app.logger.info(message)
-
-    # If desired, wait for the job to finish and return its result
-    wait = False
-    if (wait):
-        current_app.logger.info('Waiting for job to finish...')
-        result = job.get()
-        return result
 
     return message
 
