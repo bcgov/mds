@@ -43,6 +43,7 @@ BOND = api.model(
         'institution_province': fields.String,
         'institution_postal_code': fields.String,
         'note': fields.String,
+        'paid_date': fields.Date,
         'closed_date': fields.DateTime,
         'closed_note': fields.String,
         'payer': fields.Nested(BOND_PARTY),
