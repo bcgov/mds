@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
 import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
@@ -32,6 +32,8 @@ const propTypes = {
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
   initialValue: PropTypes.objectOf(PropTypes.string),
+  initialValues: PropTypes.objectOf(PropTypes.any),
+  initialSearch: PropTypes.string,
 };
 
 const defaultProps = {
@@ -45,33 +47,62 @@ const defaultProps = {
   validate: [],
   searchResults: [],
   initialValue: "",
+  initialValues: undefined,
+  initialSearch: undefined,
 };
 
-const renderAddPartyFooter = (showAddParty, partyLabel) => (
+const renderAddPartyHeader = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
-    <Divider style={{ margin: "0" }} />
-    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
+    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? `}</p>
     <LinkButton onClick={showAddParty}>
       <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
+    <Divider style={{ margin: "0" }} />
   </div>
 );
 
-const transformData = (data, options, footer) => {
+const transformData = (data, options, header) => {
   const transformedData = data.map((opt) => ({
     value: options[opt].party_guid,
-    label: `${options[opt].name}, ${
-      Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
-    }`,
+    label: (
+      <div>
+        <span>{options[opt].name}</span>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <MailOutlined className="icon-xs" />
+          </div>
+          <span>
+            {Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"}
+          </span>
+        </div>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <PhoneOutlined className="icon-xs" />
+          </div>
+          <span>
+            {options[opt].phone_no} {options[opt].phone_ext ? `x${options[opt].phone_ext}` : ""}
+          </span>
+        </div>
+      </div>
+    ),
   }));
 
-  // Display footer only if desired (Add new party behavior is enabled.)
-  return footer ? transformedData.concat({ value: "footer", label: footer }) : transformedData;
+  // Display header only if desired (Add new party behavior is enabled.)
+  if (header) {
+    transformedData.unshift({ value: "header", label: header });
+  }
+
+  return transformedData;
 };
 
 export class PartySelectField extends Component {
-  state = { selectedOption: { value: "", label: "" }, partyDataSource: [] };
+  state = {
+    selectedOption: { value: "", label: "" },
+    partyDataSource: [],
+    showingAddPartyForm: false,
+    initialSearch: this.props.initialSearch,
+  };
 
   constructor(props) {
     super(props);
@@ -91,11 +122,15 @@ export class PartySelectField extends Component {
   }
 
   showAddPartyForm = () => {
+    this.setState({
+      showingAddPartyForm: true,
+    });
     this.props.setAddPartyFormState({
       showingAddPartyForm: true,
       person: !this.props.person,
       organization: !this.props.organization,
       partyLabel: this.props.partyLabel,
+      initialValues: this.props.initialValues,
     });
   };
 
@@ -118,7 +153,7 @@ export class PartySelectField extends Component {
       }
 
       // If a new party was just added, add that party to the list of search results.
-      if (lastCreatedPartyUpdated) {
+      if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
 
@@ -127,21 +162,29 @@ export class PartySelectField extends Component {
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
+            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
     }
 
     // If a new party was just added, detect this and set the selected party to the newly created party.
-    if (lastCreatedPartyUpdated) {
+    if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
       this.setState({
         selectedOption: {
           value: nextProps.lastCreatedParty.party_guid,
           label: nextProps.lastCreatedParty.name,
         },
+        showingAddPartyForm: false,
       });
     }
+  };
+
+  handleFocus = () => {
+    if (this.state.initialSearch) {
+      this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
+    }
+    this.setState({ initialSearch: null });
   };
 
   handleSearch = (value) => {
@@ -160,7 +203,10 @@ export class PartySelectField extends Component {
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
-    if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
+    if (
+      this.props.initialValue &&
+      this.props.initialValue.value !== this.state.selectedOption.value
+    ) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;
@@ -174,6 +220,7 @@ export class PartySelectField extends Component {
         component={RenderLargeSelect}
         handleSearch={this.handleSearch}
         handleSelect={this.handleSelect}
+        handleFocus={this.handleFocus}
         validate={this.props.validate.concat(this.validOption)}
         dataSource={this.state.partyDataSource}
         selectedOption={this.state.selectedOption}

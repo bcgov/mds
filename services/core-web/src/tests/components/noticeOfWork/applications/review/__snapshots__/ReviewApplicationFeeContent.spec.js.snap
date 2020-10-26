@@ -241,8 +241,8 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     <Field
       component={[Function]}
       disabled={true}
-      id="term_of_application"
-      name="term_of_application"
+      id="calculated_term_of_application"
+      name="calculated_term_of_application"
     />
     <div
       className="field-title"

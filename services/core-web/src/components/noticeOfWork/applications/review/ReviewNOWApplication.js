@@ -680,7 +680,12 @@ export const ReviewNOWApplication = (props) => {
             {renderApplicationInfo()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
-            <ReviewNOWContacts contacts={props.contacts} />
+            <ReviewNOWContacts
+              contacts={props.noticeOfWork.contacts}
+              isViewMode={props.isViewMode}
+              contactFormValues={props.contacts}
+              noticeOfWork={props.noticeOfWork}
+            />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
             {renderAccess()}
@@ -754,7 +759,7 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
-    touchOnChange: true,
+    touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
     onSubmit: () => {},

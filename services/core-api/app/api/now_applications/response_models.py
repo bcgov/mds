@@ -282,7 +282,9 @@ NOW_PARTY_APPOINTMENT = api.model(
         'now_party_appointment_id': fields.Integer,
         'mine_party_appt_type_code': fields.String,
         'mine_party_appt_type_code_description': fields.String,
+        'party_guid': fields.String,
         'party': fields.Nested(PARTY),
+        'state_modified': fields.String,
     })
 
 NOW_APPLICATION_MODEL = api.model(

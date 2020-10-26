@@ -10,13 +10,14 @@ import {
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
-import VerifyNOWMineInformation from "@/components/noticeOfWork/applications/verification/verification/VerifyNOWMineInformation";
 import CustomPropTypes from "@/customPropTypes";
 import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
+import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/VerifyApplicationInformationForm";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   importNoticeOfWorkApplication: PropTypes.func.isRequired,
+  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   handleUpdateLeadInspector: PropTypes.func.isRequired,
@@ -35,6 +36,7 @@ const defaultProps = {
 export class ApplicationStepOne extends Component {
   state = {
     isImported: false,
+    submitting: false,
   };
 
   componentDidMount() {
@@ -48,14 +50,25 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    this.props
-      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, values)
+    this.setState({ submitting: true });
+    const contacts = values.contacts.map((contact) => {
+      return {
+        mine_party_appt_type_code: contact.mine_party_appt_type_code,
+        party_guid: contact.party_guid,
+      };
+    });
+    const payload = {
+      ...values,
+      contacts,
+    };
+    return this.props
+      .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
       .then(() => {
         return this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(({ data }) => {
             this.props.loadMineData(values.mine_guid);
-            this.setState({ isImported: data.imported_to_core });
+            this.setState({ isImported: data.imported_to_core, submitting: false });
           });
       });
   };
@@ -82,10 +95,10 @@ export class ApplicationStepOne extends Component {
           <Row gutter={48} justify="center">
             <Alert
               message="Need to change something?"
-              description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab"
+              description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab. You can update contacts under Technical Review."
               type="info"
               showIcon
-              style={{ textAlign: "left", height: "100px" }}
+              style={{ textAlign: "left", width: "600px" }}
             />
           </Row>,
         ]}
@@ -94,11 +107,6 @@ export class ApplicationStepOne extends Component {
   };
 
   renderContent = () => {
-    const values = {
-      mine_guid: this.props.mineGuid,
-      longitude: this.props.noticeOfWork.longitude,
-      latitude: this.props.noticeOfWork.latitude,
-    };
     if (this.props.isNewApplication) {
       return (
         <MajorMinePermitApplicationCreate
@@ -108,7 +116,18 @@ export class ApplicationStepOne extends Component {
         />
       );
     }
-    return <VerifyNOWMineInformation values={values} handleNOWImport={this.handleNOWImport} />;
+    return (
+      <>
+        <VerifyApplicationInformationForm
+          submitting={this.state.submitting}
+          originalNoticeOfWork={this.props.originalNoticeOfWork}
+          noticeOfWork={this.props.noticeOfWork}
+          mineGuid={this.props.mineGuid}
+          onSubmit={this.handleNOWImport}
+          initialValues={this.props.originalNoticeOfWork}
+        />
+      </>
+    );
   };
 
   render() {

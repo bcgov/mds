@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNoWContacts renders properly 1`] = `
+<FieldArray
+  component={[Function]}
+  contacts={
+    Array [
+      Object {
+        "contactcertificationid": null,
+        "contactcertificationtype": null,
+        "contacttype": null,
+        "dayphonenumber": null,
+        "dayphonenumberext": null,
+        "email": null,
+        "faxnumber": null,
+        "ind_firstname": null,
+        "ind_lastname": null,
+        "ind_middlename": null,
+        "ind_phonenumber": null,
+        "mailingaddresscity": null,
+        "mailingaddresscountry": null,
+        "mailingaddressline1": null,
+        "mailingaddressline2": null,
+        "mailingaddresspostalzip": null,
+        "mailingaddressprovstate": null,
+        "org_bcfedincorpnumber": null,
+        "org_bcregnumber": null,
+        "org_contactname": null,
+        "org_doingbusinessas": null,
+        "org_hstregnumber": null,
+        "org_legalname": null,
+        "org_societynumber": null,
+        "seq_no": null,
+        "type": null,
+      },
+      Object {
+        "contactcertificationid": null,
+        "contactcertificationtype": null,
+        "contacttype": null,
+        "dayphonenumber": null,
+        "dayphonenumberext": null,
+        "email": null,
+        "faxnumber": null,
+        "ind_firstname": null,
+        "ind_lastname": null,
+        "ind_middlename": null,
+        "ind_phonenumber": null,
+        "mailingaddresscity": null,
+        "mailingaddresscountry": null,
+        "mailingaddressline1": null,
+        "mailingaddressline2": null,
+        "mailingaddresspostalzip": null,
+        "mailingaddressprovstate": null,
+        "org_bcfedincorpnumber": null,
+        "org_bcregnumber": null,
+        "org_contactname": null,
+        "org_doingbusinessas": null,
+        "org_hstregnumber": null,
+        "org_legalname": null,
+        "org_societynumber": null,
+        "seq_no": null,
+        "type": null,
+      },
+    ]
+  }
+  id="contacts"
+  isEditView={false}
+  isVerifying={false}
+  name="contacts"
+  partyRelationshipTypes={Array []}
+  rolesUsedOnce={Array []}
+/>
+`;
