@@ -1,5 +1,6 @@
 from flask import current_app, make_response, jsonify
 from flask_restplus import Resource, reqparse
+from sqlalchemy import and_
 
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -32,6 +33,11 @@ class ImportNowSubmissionDocumentsResource(Resource):
             now_application_guid=now_application_guid,
             create_user=User().get_user_username())
         for doc in submission_documents:
+            already_imported = ImportNowSubmissionDocument.query.filter(
+                and_(ImportNowSubmissionDocument.submission_document_id == doc['id'],
+                     ImportNowSubmissionDocument.document_id != None)).one_or_none()
+            if already_imported:
+                continue
             import_job.import_now_submission_documents.append(
                 ImportNowSubmissionDocument(
                     submission_document_id=doc['id'],

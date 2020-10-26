@@ -11,10 +11,17 @@ from app.docman.models.import_now_submission_documents_job import ImportNowSubmi
 from app.docman.models.import_now_submission_document import ImportNowSubmissionDocument
 from app.tasks.celery import celery, doc_task_result
 from app.config import Config
+from app.constants import TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_24_HOURS
 from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
-MAX_RETRIES = 10
+RETRY_DELAYS = [15, 15, 15, 15]
+MAX_RETRIES = len(RETRY_DELAYS)
+# RETRY_DELAYS = [
+#     TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES,
+#     TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS,
+#     TIMEOUT_12_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS
+# ]
 
 
 def get_originating_system(import_now_submission_document):
@@ -39,7 +46,7 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
-@celery.task(bind=True, max_retries=MAX_RETRIES)
+@celery.task(bind=True)
 # TODO: Check performance of opening many db sessions in the loop.
 # 1 min, 10 min, 30 min, 1 hour, 1 day, 3 day
 def import_now_submission_documents(self, import_now_submission_documents_job_id):
@@ -47,6 +54,8 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
     success = False
     errors = []
     success_imports = []
+    import_documents = []
+    doc_ids = []
     try:
         logger = get_task_logger(str(import_now_submission_documents_job_id))
 
@@ -55,25 +64,28 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
         # Update job-start information
+        import_job.attempt += 1
         current_timestamp = datetime.utcnow()
         import_job.start_timestamp = current_timestamp
         if not import_job.create_timestamp:
             import_job.create_timestamp = current_timestamp
+        import_job.save()
 
         # Get the documents to import
         import_documents = [
-            doc for doc in import_job.import_now_submission_documents if not doc.document_id
+            doc for doc in import_job.import_now_submission_documents if doc.document_id is None
         ]
+        logger.info(f'import_documents length: {len(import_documents)}')
         doc_ids = [doc.submission_document_id for doc in import_documents]
 
         # Import the documents
         for i, import_doc in enumerate(import_documents):
             doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
-            logger.info(f'{doc_prefix} Importing...')
+            logger.info(f'{doc_prefix} Importing attempt {import_job.attempt}/{MAX_RETRIES}...')
             try:
-                # TODO: Remove me before publishing.
-                if import_doc.submission_document_id >= 70:
-                    raise Exception('ERROR!')
+                # # TODO: Remove me before publishing.
+                # if import_doc.submission_document_id % import_job.attempt == 0:
+                #     raise Exception('ERROR!')
 
                 # Stream the file from its hosted location
                 originating_system = get_originating_system(import_doc)
@@ -114,16 +126,16 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 db.session.commit()
 
                 success_imports.append(import_doc.submission_document_id)
-                logger.info(f'{doc_prefix} Transfer {"COMPLETE" if uploaded else "UNNECESSARY"}')
+                logger.info(f'{doc_prefix} Import {"COMPLETE" if uploaded else "UNNECESSARY"}')
             except Exception as e:
                 import_doc.error = str(e)
                 import_doc.save()
-                logger.error(f'{doc_prefix} Transfer ERROR\n{e}')
+                logger.error(f'{doc_prefix} Import ERROR\n{e}')
                 errors.append({'exception': str(e), 'document': import_doc.task_json()})
 
         # Determine the result of the import
         success = len(errors) == 0
-        message = 'All required documents were imported' if success else 'Transfer finished with errors'
+        message = 'All required documents were imported' if success else 'Import finished with errors'
         result = task_result(
             job_id=import_now_submission_documents_job_id,
             task_id=import_now_submission_documents.request.id,
@@ -150,17 +162,17 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
     import_job.end_timestamp = current_timestamp
 
     # Return the result of the import
-    if success:
+    if success or len(import_documents) == 0:
         import_job.complete_timestamp = current_timestamp
-        import_job.import_now_submission_documents_job_status_code = 'SUCCESS'
+        import_job.import_now_submission_documents_job_status_code = 'SUC'
         import_job.save()
         return result
     else:
         import_job.error = result
         if import_job.attempt == MAX_RETRIES:
             import_job.complete_timestamp = current_timestamp
-            import_job.import_now_submission_documents_job_status_code = 'FAILURE'
-        else:
-            import_job.attempt += 1
+            import_job.import_now_submission_documents_job_status_code = 'FAL'
+            import_job.save()
+            raise Exception(result)
         import_job.save()
-        raise Exception(result)
+        self.retry(exc=result, countdown=RETRY_DELAYS[import_job.attempt - 1])
