@@ -135,6 +135,17 @@ export class ReclamationInvoiceForm extends Component {
               />
             </Form.Item>
           </Col>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="paid_date"
+                name="paid_date"
+                label="Paid Date*"
+                component={RenderDate}
+                validate={[required]}
+              />
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
