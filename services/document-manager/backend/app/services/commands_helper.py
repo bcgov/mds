@@ -50,11 +50,11 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
-    # Create the task
+    # Create the task for this job
     import_now_submission_documents.delay(import_now_submission_documents_job_id)
 
     # Create the response message
-    message = f'Added a Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(docs)} docs will be imported'
+    message = f'Added a Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported'
     current_app.logger.info(message)
 
     return message

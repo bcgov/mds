@@ -14,6 +14,8 @@ from app.config import Config
 from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
+MAX_RETRIES = 10
+
 
 def get_originating_system(import_now_submission_document):
     url = import_now_submission_document.submission_document_url
@@ -37,9 +39,9 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
-@celery.task(bind=True, max_retries=10)
+@celery.task(bind=True, max_retries=MAX_RETRIES)
 # TODO: Check performance of opening many db sessions in the loop.
-# 1 min, 10 min, 30 min, 1 hour, 1 day, 3 da
+# 1 min, 10 min, 30 min, 1 hour, 1 day, 3 day
 def import_now_submission_documents(import_now_submission_documents_job_id):
     result = None
     success = False
@@ -52,15 +54,15 @@ def import_now_submission_documents(import_now_submission_documents_job_id):
         import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
             import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
-        # Update job meta information
+        # Update job-start information
         current_timestamp = datetime.utcnow()
-        if not import_job.create_timestamp:
-            import_job.create_timestamp
         import_job.start_timestamp = current_timestamp
+        if not import_job.create_timestamp:
+            import_job.create_timestamp = current_timestamp
 
         # Get the documents to import
         import_documents = [
-            doc for doc in import_job.import_now_submission_documents if not doc.error
+            doc for doc in import_job.import_now_submission_documents if not doc.document_id
         ]
         doc_ids = [doc.submission_document_id for doc in import_documents]
 
@@ -69,10 +71,11 @@ def import_now_submission_documents(import_now_submission_documents_job_id):
             doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
             logger.info(f'{doc_prefix} Importing...')
             try:
+                # TODO: Remove me before publishing.
                 if import_doc.submission_document_id >= 70:
                     raise Exception('ERROR!')
 
-                # Import the file to the object store
+                # Stream the file from its hosted location
                 originating_system = get_originating_system(import_doc)
                 file_stream = None
                 if originating_system == 'VFCBC':
@@ -81,27 +84,30 @@ def import_now_submission_documents(import_now_submission_documents_job_id):
                     # file_stream = NROSDownloadService.download(import_doc.submission_document_url)
                     continue
 
-                # Upload the file to the object store
-                # TODO: Figure out what full_storage_path and path_display_name should be.
+                # Upload the file (using the file stream) to the object store
+                # TODO: Figure out what bucket_filename should be.
                 filename = import_doc.submission_document_file_name
                 bucket_filename = f'{import_job.now_application_guid}/{originating_system}/{filename}'
                 uploaded, key = ObjectStoreStorageService().upload_fileobj(
                     filename=bucket_filename, fileobj=file_stream)
 
-                # Update the document's object store path
-                date = datetime.utcnow()
+                # Create the document record
+                current_timestamp = datetime.utcnow()
                 guid = str(uuid.uuid4())
                 db.session.rollback()
+                # TODO: Figure out what full_storage_path and path_display_name should be.
                 doc = Document(
                     document_guid=guid,
                     full_storage_path=f'.../{guid}',
-                    upload_started_date=date,
-                    upload_completed_date=date,
+                    upload_started_date=current_timestamp,
+                    upload_completed_date=current_timestamp,
                     path_display_name=f'.../{filename}',
                     file_display_name=filename,
                     object_store_path=key,
                     create_user=import_job.create_user,
-                    update_user=import_job.create_user)
+                    create_timestamp=current_timestamp,
+                    update_user=import_job.create_user,
+                    update_timestamp=current_timestamp)
                 import_doc.document = doc
                 import_doc.error = None
                 db.session.add(doc)
@@ -138,18 +144,23 @@ def import_now_submission_documents(import_now_submission_documents_job_id):
             success_docs=success_imports,
             errors=errors,
             doc_ids=doc_ids)
-        import_job.error = message
-        import_job.save()
-        error = f'{message}\nresult:\n{result}'
-        raise Exception(error)
-        raise Retry()
 
-    if not success:
-        import_job.error = result
-    else:
-        import_job.end_timestamp = datetime.utcnow()
-
-    import_job.save()
+    # Update job-end information
+    current_timestamp = datetime.utcnow()
+    import_job.end_timestamp = current_timestamp
 
     # Return the result of the import
-    return result
+    if success:
+        import_job.complete_timestamp = current_timestamp
+        import_job.import_now_submission_documents_job_status_code = 'SUCCESS'
+        import_job.save()
+        return result
+    else:
+        import_job.error = result
+        if import_job.attempt == MAX_RETRIES:
+            import_job.complete_timestamp = current_timestamp
+            import_job.import_now_submission_documents_job_status_code = 'FAILURE'
+        else:
+            import_job.attempt += 1
+        import_job.save()
+        raise Exception(result)
