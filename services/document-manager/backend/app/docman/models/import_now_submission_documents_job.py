@@ -12,6 +12,9 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     start_timestamp = db.Column(db.DateTime)
     end_timestamp = db.Column(db.DateTime)
+    create_timestamp = db.Column(db.DateTime)
+    complete_timestamp = db.Column(db.DateTime)
+    attempt = db.Column(db.Integer, nullable=False, server_default=FetchedValue())
 
     create_user = db.Column(db.String)
 
