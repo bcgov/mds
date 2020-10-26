@@ -7,6 +7,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@common/constants/API";
+import RenderDate from "@/components/common/RenderDate";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
