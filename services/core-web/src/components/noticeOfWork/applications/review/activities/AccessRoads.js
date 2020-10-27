@@ -26,7 +26,8 @@ export const AccessRoads = (props) => {
           {
             title: "Access Type",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {

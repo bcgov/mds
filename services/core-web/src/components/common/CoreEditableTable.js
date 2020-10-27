@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
 import { TRASHCAN } from "@/constants/assets";
+import "@ant-design/compatible/assets/index.css";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -82,6 +83,7 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
                                   disabled={isViewMode}
                                   validate={content.validate}
                                   data={content.data || []}
+                                  minRows={content.minRows}
                                 />
                               </div>
                             </td>

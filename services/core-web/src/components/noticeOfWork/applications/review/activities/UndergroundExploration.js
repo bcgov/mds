@@ -9,6 +9,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { numberWithUnitCode, required, number } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
@@ -41,7 +42,8 @@ export const UndergroundExploration = (props) => {
           {
             title: "Activity",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {

@@ -24,19 +24,22 @@ export const WaterSupply = (props) => {
           {
             title: "Source",
             value: "supply_source_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {
             title: "Activity",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {
             title: "Water Use",
             value: "water_use_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {

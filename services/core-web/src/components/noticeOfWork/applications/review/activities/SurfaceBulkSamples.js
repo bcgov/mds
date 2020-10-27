@@ -27,7 +27,7 @@ export const SurfaceBulkSamples = (props) => {
           {
             title: "Activity",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
             validate: [required],
           },
           {

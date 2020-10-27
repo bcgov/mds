@@ -41,7 +41,8 @@ export const SettlingPonds = (props) => {
           {
             title: "Pond ID",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {
@@ -77,13 +78,13 @@ export const SettlingPonds = (props) => {
           {
             title: "Water Source",
             value: "water_source_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
             validate: [required],
           },
           {
             title: "Construction Method",
             value: "construction_plan",
-            component: RenderField,
+            component: RenderAutoSizeField,
             validate: [required],
           },
         ]}
@@ -103,9 +104,9 @@ export const SettlingPonds = (props) => {
           />
         </Col>
       </Row>
+      <div className="field-title">Water from Ponds will be:</div>
       <Row gutter={16}>
-        <div className="field-title">Water from Ponds will be</div>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
             label={
               <span>
@@ -126,7 +127,7 @@ export const SettlingPonds = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
             label={
               <span>
@@ -149,7 +150,7 @@ export const SettlingPonds = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
             label={
               <span>

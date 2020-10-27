@@ -25,7 +25,8 @@ export const MechanicalTrenching = (props) => {
           {
             title: "Activity",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {

@@ -25,7 +25,8 @@ export const Camps = (props) => {
           {
             title: "Name",
             value: "activity_type_description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
             validate: [required],
           },
           {
