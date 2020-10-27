@@ -47,8 +47,6 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
 
 
 @celery.task(bind=True)
-# TODO: Check performance of opening many db sessions in the loop.
-# 1 min, 10 min, 30 min, 1 hour, 1 day, 3 day
 def import_now_submission_documents(self, import_now_submission_documents_job_id):
     result = None
     success = False
