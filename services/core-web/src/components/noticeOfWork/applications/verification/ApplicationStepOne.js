@@ -95,10 +95,10 @@ export class ApplicationStepOne extends Component {
           <Row gutter={48} justify="center">
             <Alert
               message="Need to change something?"
-              description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab"
+              description="You can transfer the Notice of Work to a different mine or change its Lead Inspector on the Administrative tab. You can update contacts under Technical Review."
               type="info"
               showIcon
-              style={{ textAlign: "left", height: "100px" }}
+              style={{ textAlign: "left", width: "600px" }}
             />
           </Row>,
         ]}
