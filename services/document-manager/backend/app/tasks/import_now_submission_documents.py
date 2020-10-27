@@ -16,12 +16,12 @@ from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
 RETRY_DELAYS = [15, 15, 15, 15]
-MAX_RETRIES = len(RETRY_DELAYS)
 # RETRY_DELAYS = [
 #     TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES,
 #     TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS,
 #     TIMEOUT_12_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS
 # ]
+MAX_RETRIES = len(RETRY_DELAYS)
 
 
 def get_originating_system(import_now_submission_document):
