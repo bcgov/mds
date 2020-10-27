@@ -12,27 +12,27 @@ declare
 		permit_id,
 		amount,
 		vendor,
-		paid_date
-		note
+		paid_date,
+		note,
 		create_user,
-		update_user,
+		update_user
 		)
 	select
-		inv.inv_cid
+		inv.inv_cid,
 		bpx.permit_id,
 		inv.paid_amt,
 		inv.contractor_nm,
 		inv.paid_dt,
 		inv.descript,
 		'bond_etl',
-		'bond_etl',
+		'bond_etl'
 	FROM mms.secinv inv
 	inner join bond b on b.sec_cid = inv.sec_cid
-	inner join bond_permit_xref bpx on bpx.bond_id = b.bond_id;
+	inner join bond_permit_xref bpx on bpx.bond_id = b.bond_id
 	WHERE
 		inv.paid_amt != 0
 		AND
-		inv.mms_inv_cid not in (select distinct mms_inv_cid from reclamation_invoices and mms_inv_cid is not null);
+		inv.mms_inv_cid not in (select distinct mms_inv_cid from reclamation_invoices where mms_inv_cid is not null);
 
 END;
 END;
