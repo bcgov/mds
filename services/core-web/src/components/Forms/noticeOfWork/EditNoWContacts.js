@@ -255,9 +255,11 @@ export class EditNoWContacts extends Component {
   };
 
   handleRoles = (contacts) => {
-    const usedRoles = [];
+    let usedRoles = [];
     if (contacts.length > 0) {
-      contacts.map(({ mine_party_appt_type_code }) => usedRoles.push(mine_party_appt_type_code));
+      usedRoles = contacts
+        .filter((contact) => !contact.state_modified)
+        .map(({ mine_party_appt_type_code }) => mine_party_appt_type_code);
     }
     const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
     return this.setState({ rolesUsedOnce });
