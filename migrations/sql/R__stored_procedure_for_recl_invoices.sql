@@ -7,8 +7,10 @@ declare
         tmp2 integer;
         tmp3 integer;
   begin
+
+	DELETE FROM reclamation_invoices where create_user = 'etl_bond';
+
 	INSERT INTO reclamation_invoices (
-		mms_inv_cid,
 		permit_id,
 		amount,
 		vendor,
@@ -18,7 +20,6 @@ declare
 		update_user
 		)
 	select
-		inv.inv_cid,
 		bpx.permit_id,
 		inv.paid_amt,
 		inv.contractor_nm,
@@ -30,9 +31,7 @@ declare
 	inner join bond b on b.sec_cid = inv.sec_cid
 	inner join bond_permit_xref bpx on bpx.bond_id = b.bond_id
 	WHERE
-		inv.paid_amt != 0
-		AND
-		inv.mms_inv_cid not in (select distinct mms_inv_cid from reclamation_invoices where mms_inv_cid is not null);
+		inv.paid_amt != 0;
 
 END;
 END;
