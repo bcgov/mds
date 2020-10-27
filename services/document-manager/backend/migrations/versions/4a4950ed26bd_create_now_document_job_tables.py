@@ -76,7 +76,7 @@ def upgrade():
         },
         {
             'import_now_submission_documents_job_status_code': 'CAN',
-            'description': 'Canceled',
+            'description': 'Cancelled',
         },
     ])
 
