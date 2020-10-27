@@ -19,6 +19,7 @@ exports[`UndergroundExploration renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Activity",
           "validate": Array [
             [Function],

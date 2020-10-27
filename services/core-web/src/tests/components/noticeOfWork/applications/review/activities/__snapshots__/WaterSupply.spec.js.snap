@@ -10,6 +10,7 @@ exports[`WaterSupply renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Source",
           "validate": Array [
             [Function],
@@ -18,6 +19,7 @@ exports[`WaterSupply renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Activity",
           "validate": Array [
             [Function],
@@ -26,6 +28,7 @@ exports[`WaterSupply renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Water Use",
           "validate": Array [
             [Function],

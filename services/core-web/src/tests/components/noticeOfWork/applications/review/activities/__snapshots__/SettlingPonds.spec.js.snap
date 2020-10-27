@@ -32,6 +32,7 @@ exports[`SettlingPonds renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Pond ID",
           "validate": Array [
             [Function],
@@ -125,17 +126,17 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
   </Row>
+  <div
+    className="field-title"
+  >
+    Water from Ponds will be:
+  </div>
   <Row
     gutter={16}
   >
-    <div
-      className="field-title"
-    >
-      Water from Ponds will be
-    </div>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}
@@ -164,8 +165,8 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}
@@ -194,8 +195,8 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}

@@ -10,6 +10,7 @@ exports[`Camps renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Name",
           "validate": Array [
             [Function],

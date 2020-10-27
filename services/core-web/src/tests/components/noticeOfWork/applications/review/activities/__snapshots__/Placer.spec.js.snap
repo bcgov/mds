@@ -57,6 +57,7 @@ exports[`Placer renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Activity",
           "validate": Array [
             [Function],

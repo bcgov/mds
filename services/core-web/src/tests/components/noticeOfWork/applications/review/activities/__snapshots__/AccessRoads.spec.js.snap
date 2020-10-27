@@ -10,6 +10,7 @@ exports[`AccessRoads renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Access Type",
           "validate": Array [
             [Function],
