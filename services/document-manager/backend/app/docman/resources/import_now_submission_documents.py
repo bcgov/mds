@@ -46,11 +46,9 @@ class ImportNowSubmissionDocumentsResource(Resource):
         import_job.save()
 
         # Create the Import NoW Submission Documents job.
-        result = create_import_now_submission_documents(
+        message = create_import_now_submission_documents(
             import_job.import_now_submission_documents_job_id)
-        current_app.logger.info(f'******result:\n{result}')
 
         # Return a response indicating that the job has started.
-        message = f'Successfuly created Import NoW Submission Documents job with ID {None}'
         resp = make_response(jsonify(message=message), 201)
         return resp

@@ -54,7 +54,7 @@ class VFCBCDownloadService():
         else:
             download_session.cookies = _vfcbc_cookies
 
+        # TODO: Check the response code and for errors to ensure the actual file was retrieved!
         file_download_req = download_session.get(file_url, stream=True)
 
-        # TODO: Ensure that this is the actual file.
         return io.BytesIO(file_download_req.content)

@@ -18,6 +18,7 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     create_user = db.Column(db.String)
 
+    # TODO: Remove now_application_id as it is not needed.
     now_application_id = db.Column(db.Integer, nullable=False)
     now_application_guid = db.Column(UUID(as_uuid=True), nullable=False)
 

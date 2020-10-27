@@ -43,23 +43,6 @@ def create_reorganize_files_job(wait):
     return start_job(wait, 'reorganize', docs, reorganize_docs)
 
 
-def create_import_now_submission_documents(import_now_submission_documents_job_id):
-    """Creates a job that imports a Notice of Work's submission documents to the object store."""
-
-    # Get the Import NoW Document Job
-    import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
-        import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
-
-    # Create the task for this job
-    import_now_submission_documents.delay(import_now_submission_documents_job_id)
-
-    # Create the response message
-    message = f'Added a Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported'
-    current_app.logger.info(message)
-
-    return message
-
-
 def get_untransferred_files(path):
     """Returns a list of documents that have no object_store_path set."""
     docs = Document.query.filter_by(object_store_path=None).all()
@@ -126,5 +109,21 @@ def start_job(wait, job_type, docs, task):
         current_app.logger.info('Waiting for job to finish...')
         result = job.get()
         return result
+
+    return message
+
+
+def create_import_now_submission_documents(import_now_submission_documents_job_id):
+    """Creates a job that imports a Notice of Work's submission documents to the object store."""
+
+    # Get the Import NoW Document Job
+    import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
+        import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
+
+    # Create the task for this job
+    import_now_submission_documents.delay(import_now_submission_documents_job_id)
+
+    # Create the response message
+    message = f'Added a Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported'
 
     return message
