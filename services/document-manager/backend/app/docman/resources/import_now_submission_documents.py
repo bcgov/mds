@@ -1,6 +1,8 @@
 from flask import current_app, make_response, jsonify
 from flask_restplus import Resource, reqparse
 from sqlalchemy import and_
+from celery.task.control import revoke
+from celery.result import AsyncResult
 
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -26,6 +28,21 @@ class ImportNowSubmissionDocumentsResource(Resource):
         now_application_id = data.get('now_application_id', None)
         now_application_guid = data.get('now_application_guid', None)
         submission_documents = data.get('submission_documents', [])
+
+        # If any jobs for this Notice of Work are in progress, cancel them.
+        in_progress_jobs = ImportNowSubmissionDocumentsJob.query.filter(
+            and_(
+                ImportNowSubmissionDocumentsJob.now_application_id == now_application_id,
+                ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code ==
+                'INP')).all()
+        current_app.logger.info(f'in_progress_jobs: {in_progress_jobs}')
+        for job in in_progress_jobs:
+            job.import_now_submission_documents_job_status_code = 'CAN'
+            # revoke(job.celery_task_id)
+            res = AsyncResult(job.celery_task_id)
+            res.revoke(terminate=True, signal='SIGKILL')
+            job.save()
+            current_app.logger.info(f'cancelled job: {job.import_now_submission_documents_job_id}')
 
         # Create the Import NoW Submission Documents job record.
         import_job = ImportNowSubmissionDocumentsJob(

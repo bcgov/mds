@@ -5,7 +5,6 @@ import os
 from flask import current_app
 from sqlalchemy import and_
 from celery import chord
-from celery.task.control import revoke
 
 from app.docman.models.document import Document
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -120,19 +119,6 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
     # Get the Import NoW Document Job
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
-
-    # If any jobs for this Notice of Work are in progress, cancel them
-    in_progress_jobs = ImportNowSubmissionDocumentsJob.query.filter_by(
-        and_(
-            ImportNowSubmissionDocumentsJob.now_application_id == import_job.now_application_id,
-            import_job.import_now_submission_documents_job_id !=
-            import_now_submission_documents_job_id,
-            ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code ==
-            'INP'))
-    for job in in_progress_jobs:
-        job.import_now_submission_documents_job_status_code = 'CAN'
-        revoke(job.celery_task_id, terminate=True)
-        job.save()
 
     # Create the task for this job
     try:
