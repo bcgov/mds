@@ -1,4 +1,5 @@
 import uuid
+import requests
 from datetime import datetime
 
 from flask import request, current_app
@@ -77,6 +78,15 @@ class NOWApplicationResource(Resource, UserMixin):
             current_app.logger.info(f'Assigning {now_application_identity} to {mine}')
             now_application_identity.mine = mine
         now_application_identity.save()
+
+        # fire NOW documents import
+        if not now_application_identity.is_document_import_requested:
+            now_application = now_application_identity.now_application
+            resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
+                request, now_application)
+
+            now_application_identity.is_document_import_requested = resp and resp.status_code == requests.codes.created
+            now_application_identity.save()
 
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(

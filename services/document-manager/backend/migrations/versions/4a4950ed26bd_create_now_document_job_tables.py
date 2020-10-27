@@ -42,6 +42,7 @@ def upgrade():
             server_default='INP'), sa.Column('create_user', sa.String(), nullable=False),
         sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.Column('now_application_guid', UUID(as_uuid=True), nullable=False),
+        sa.Column('celery_task_id', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('import_now_submission_documents_job_id'))
 
     op.create_table(
@@ -72,6 +73,10 @@ def upgrade():
         {
             'import_now_submission_documents_job_status_code': 'FAL',
             'description': 'Failure',
+        },
+        {
+            'import_now_submission_documents_job_status_code': 'CAN',
+            'description': 'Canceled',
         },
     ])
 
