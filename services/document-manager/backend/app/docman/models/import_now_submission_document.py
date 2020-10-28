@@ -37,4 +37,4 @@ class ImportNowSubmissionDocument(Base):
         }
 
     def task_json(self):
-        return self.json
+        return self.json()
