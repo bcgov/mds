@@ -46,7 +46,7 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
-@celery.task(bind=True)
+@celery.task(bind=True, acks_late=True)
 def import_now_submission_documents(self, import_now_submission_documents_job_id):
     result = None
     success = False
@@ -73,7 +73,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         import_documents = [
             doc for doc in import_job.import_now_submission_documents if doc.document_id is None
         ]
-        logger.info(f'import_documents length: {len(import_documents)}')
         doc_ids = [doc.submission_document_id for doc in import_documents]
 
         # Import the documents
@@ -81,10 +80,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
             logger.info(f'{doc_prefix} Importing attempt {import_job.attempt}/{MAX_RETRIES}...')
             try:
-                # # TODO: Remove me before publishing.
-                # if import_doc.submission_document_id % import_job.attempt == 0:
-                #     raise Exception('ERROR!')
-
                 # Stream the file from its hosted location
                 originating_system = get_originating_system(import_doc)
                 file_stream = None
