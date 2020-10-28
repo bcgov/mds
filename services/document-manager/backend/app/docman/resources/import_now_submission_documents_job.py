@@ -1,20 +1,22 @@
-from flask import current_app, make_response, jsonify
+from flask import current_app, make_response, jsonify, request
 from flask_restplus import Resource, reqparse
+from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
 
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
 from app.docman.models.import_now_submission_document import ImportNowSubmissionDocument
 from app.utils.include.user_info import User
+from app.docman.response_models import IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB
 
 
 @api.route('/import-now-submission-documents')
-class ImportNowSubmissionDocumentsResource(Resource):
+class ImportNowSubmissionDocumentsJobListResource(Resource):
 
     parser = reqparse.RequestParser()
-    parser.add_argument('now_application_id', type=int, required=True, help='')
-    parser.add_argument('now_application_guid', type=str, required=True, help='')
-    parser.add_argument('submission_documents', type=list, location='json', required=True, help='')
+    parser.add_argument('now_application_id', type=int, required=True)
+    parser.add_argument('now_application_guid', type=str, required=True)
+    parser.add_argument('submission_documents', type=list, location='json', required=True)
 
     # TODO: Determine required role(s).
     # @requires_any_of()
@@ -65,3 +67,20 @@ class ImportNowSubmissionDocumentsResource(Resource):
         # Return a response indicating that the job has started.
         resp = make_response(jsonify(message=message), 201)
         return resp
+
+    # TODO: Determine required role(s).
+    @api.marshal_with(IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB, code=200)
+    # @requires_any_of()
+    def get(self):
+        now_application_guid = request.args.get('now_application_guid', None)
+        if not now_application_guid:
+            raise BadRequest('now_application_guid is required')
+
+        import_jobs = ImportNowSubmissionDocumentsJob.find_by_now_application_guid(
+            now_application_guid)
+
+        most_recent_only = request.args.get('most_recent_only', False)
+        if most_recent_only:
+            return import_jobs[-1]
+
+        return import_jobs

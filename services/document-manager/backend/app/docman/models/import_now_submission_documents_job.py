@@ -1,6 +1,5 @@
 from app.extensions import db
 from app.utils.models_mixins import Base
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
@@ -32,3 +31,8 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.import_now_submission_documents_job_id}>'
+
+    @classmethod
+    def find_by_now_application_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).order_by(
+            cls.import_now_submission_documents_job_id).all()
