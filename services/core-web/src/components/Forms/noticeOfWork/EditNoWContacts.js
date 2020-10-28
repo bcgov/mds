@@ -1,13 +1,13 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { isEmpty, startCase } from "lodash";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined, DoubleRightOutlined } from "@ant-design/icons";
-import { FieldArray, Field, change } from "redux-form";
-import { startCase } from "lodash";
+import { FieldArray, Field } from "redux-form";
+
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
@@ -18,7 +18,6 @@ import * as ModalContent from "@/constants/modalContent";
 import { required } from "@common/utils/Validate";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
@@ -27,17 +26,14 @@ import Address from "@/components/common/Address";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
-import RenderField from "@/components/common/RenderField";
 
 const propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   isEditView: PropTypes.bool,
   isVerifying: PropTypes.bool,
-  change: PropTypes.func.isRequired,
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
@@ -49,11 +45,9 @@ const defaultProps = {
 };
 
 const handleRemove = (fields, index) => {
-  const promise = new Promise(function(resolve, reject) {
+  const promise = new Promise(function(resolve) {
     resolve(fields.push({ ...fields.get(index), state_modified: "delete" }));
   });
-  // fields.push({ ...fields.get(index), state_modified: "delete" });
-
   return promise.then(() => {
     fields.remove(index);
   });
@@ -61,10 +55,8 @@ const handleRemove = (fields, index) => {
 
 const renderContacts = ({
   fields,
-  contacts,
   partyRelationshipTypes,
   isEditView,
-  changeArray,
   rolesUsedOnce,
   isVerifying,
 }) => {
@@ -72,28 +64,16 @@ const renderContacts = ({
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
 
-  // const removeActivity = (fields, index) => {
-  //   if (fields.get(index) && fields.get(index).activity_detail_id) {
-  //     // add state_modified and set to "delete" for backend
-  //     fields.get(index).state_modified = "delete";
-
-  //     // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
-  //     // eslint-disable-next-line no-constant-condition
-  //     setTimeout(() => {
-  //       const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
-  //       return res;
-  //     }, 1);
-  //   } else {
-  //     fields.remove(index);
-  //   }
-  // };
-
   return (
     <>
       <Row gutter={24}>
         {fields
+          .map((field, index) => ({
+            id: uuidv4(),
+            ...fields.get(index),
+          }))
           .map((field, index) => {
-            const contactExists = fields.get(index) && fields.get(index).now_party_appointment_id;
+            const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
             const initialParty =
               isEditView && contactExists
                 ? {
@@ -102,14 +82,9 @@ const renderContacts = ({
                   }
                 : undefined;
             return (
-              // eslint-disable-next-line react/no-array-index-key
               <Col lg={12} sm={24} key={fields.get(index).id}>
                 <Card
-                  style={
-                    contactExists
-                      ? { height: "500px" }
-                      : { boxShadow: "0px 4px 4px #7c66ad", height: "500px" }
-                  }
+                  style={contactExists ? {} : { boxShadow: "0px 4px 4px #7c66ad" }}
                   className="ant-card-now"
                   title={
                     <div
@@ -139,36 +114,7 @@ const renderContacts = ({
                           okText="Delete"
                           cancelText="Cancel"
                           onConfirm={() => {
-                            // if (fields.get(index)) {
-                            //   // add state_modified and set to "delete" for backend
-                            //   fields.get(index).state_modified = "delete";
-
-                            //   changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", fields.getAll());
-
-                            //   // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
-                            //   setTimeout(() => {
-                            //     // eslint-disable-next-line no-constant-condition
-                            //     const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
-                            //     return res;
-                            //   }, 1);
-                            // console.log(fields.get(index));
-                            // // console.log(fields.get(index));
-                            // console.log("are we deleting?? orrr");
-                            // // add state_modified and set to "delete" for backend
-                            // // fields.get(index) = { state_modified: "delete", ...fields.get(index) };
-                            // // fields.push({ ...fields.get(index), state_modified: "delete" });
                             handleRemove(fields, index);
-                            // // fields.remove(index);
-
-                            // // changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
-
-                            // // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
-                            // setTimeout(() => {
-                            //   // eslint-disable-next-line no-constant-condition
-                            //   const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
-                            //   return res;
-                            // }, 1);
-                            // }
                           }}
                         >
                           <Button className="full-mobile" ghost type="primary">
@@ -179,10 +125,7 @@ const renderContacts = ({
                         <Button
                           ghost
                           onClick={() => {
-                            console.log(" why why why why why why");
                             fields.remove(index);
-                            // contacts.splice(index, 1);
-                            // changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
                           }}
                           className="position-right no-margin"
                         >
@@ -193,42 +136,49 @@ const renderContacts = ({
                   }
                   bordered={false}
                 >
-                  <Row>
+                  <Row align="middle" justify="center">
                     {isVerifying && (
-                      <Col span={12}>
-                        <h4>
-                          {contactExists ? startCase(fields.get(index).party.name) : "New Contact"}
-                        </h4>
-                        {contactExists && (
-                          <div>
-                            <div className="inline-flex">
-                              <div className="padding-right">
-                                <MailOutlined className="icon-sm" />
+                      <>
+                        <Col span={9}>
+                          <h4>
+                            {contactExists
+                              ? startCase(fields.get(index).party.name)
+                              : "New Contact"}
+                          </h4>
+                          {contactExists && (
+                            <div>
+                              <div className="inline-flex">
+                                <div className="padding-right">
+                                  <MailOutlined className="icon-sm" />
+                                </div>
+                                {fields.get(index).party.email &&
+                                fields.get(index).party.email !== "Unknown" ? (
+                                  <a href={`mailto:${fields.get(index).party.email}`}>
+                                    {fields.get(index).party.email}
+                                  </a>
+                                ) : (
+                                  <p>{Strings.EMPTY_FIELD}</p>
+                                )}
                               </div>
-                              {fields.get(index).party.email &&
-                              fields.get(index).party.email !== "Unknown" ? (
-                                <a href={`mailto:${fields.get(index).party.email}`}>
-                                  {fields.get(index).party.email}
-                                </a>
-                              ) : (
-                                <p>{Strings.EMPTY_FIELD}</p>
-                              )}
-                            </div>
-                            <div className="inline-flex">
-                              <div className="padding-right">
-                                <PhoneOutlined className="icon-sm" />
+                              <div className="inline-flex">
+                                <div className="padding-right">
+                                  <PhoneOutlined className="icon-sm" />
+                                </div>
+                                <p>
+                                  {fields.get(index).party.phone_no}{" "}
+                                  {fields.get(index).party.phone_ext
+                                    ? `x${fields.get(index).party.phone_ext}`
+                                    : ""}
+                                </p>
                               </div>
-                              <p>
-                                {fields.get(index).party.phone_no}{" "}
-                                {fields.get(index).party.phone_ext
-                                  ? `x${fields.get(index).party.phone_ext}`
-                                  : ""}
-                              </p>
+                              <Address address={fields.get(index).party.address[0] || {}} />
                             </div>
-                            <Address address={fields.get(index).party.address[0] || {}} />
-                          </div>
-                        )}
-                      </Col>
+                          )}
+                        </Col>
+                        <Col span={3}>
+                          <DoubleRightOutlined className="icon-xxl--lightgrey" />
+                        </Col>
+                      </>
                     )}
                     <Col span={isVerifying ? 12 : 24}>
                       <Form.Item label="Role*">
@@ -241,26 +191,10 @@ const renderContacts = ({
                           validate={[required]}
                         />
                       </Form.Item>
-                      <Form.Item label="Role*">
-                        <Field
-                          id={`${field}.party.name`}
-                          name={`${field}.party.name`}
-                          component={RenderField}
-                          validate={[required]}
-                        />
-                      </Form.Item>
-                      <p> {isEditView && contactExists && fields.get(index).party.name}</p>
-                      <p>
-                        {" "}
-                        {`PARENT:${isEditView &&
-                          contactExists &&
-                          fields.get(index).party.party_guid}`}
-                      </p>
                       <Form.Item>
                         <PartySelectField
                           id={`${field}.party_guid`}
                           name={`${field}.party_guid`}
-                          initialValue={initialParty}
                           label={`${isVerifying ? "Matching Core " : ""}Contact*`}
                           partyLabel="Contact"
                           validate={[required]}
@@ -270,7 +204,7 @@ const renderContacts = ({
                               ? {
                                   ...fields.get(index).party,
                                   ...(fields.get(index).party.address.length > 0
-                                    ? fields.get(index).party.address[0]
+                                    ? { ...fields.get(index).party.address[0], ...initialParty }
                                     : {}),
                                 }
                               : {}
@@ -358,15 +292,9 @@ export class EditNoWContacts extends Component {
         id="contacts"
         name="contacts"
         component={renderContacts}
-        contacts={this.props.contacts
-          .filter(({ state_modified }) => state_modified !== "delete")
-          .map((contact) => {
-            return { id: uuidv4(), ...contact };
-          })}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         isEditView={this.props.isEditView}
         isVerifying={this.props.isVerifying}
-        changeArray={this.props.change}
         rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );
@@ -386,7 +314,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
-      change,
     },
     dispatch
   );

@@ -74,7 +74,6 @@ export const ReviewNOWContacts = (props) => (
     ) : (
       <EditNoWContacts
         initialValues={props.noticeOfWork}
-        contacts={props.noticeOfWork.contacts}
         isEditView
         contactFormValues={props.contactFormValues}
       />
