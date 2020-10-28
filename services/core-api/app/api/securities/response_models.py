@@ -94,6 +94,7 @@ RECLAMATION_INVOICE = api.model(
         'project_id': fields.String,
         'amount': fields.Fixed(decimals=2),
         'vendor': fields.String,
+        'paid_date': fields.Date,
         'note': fields.String,
         'project_id': fields.String(attribute='permit.project_id'),
         'permit_guid': fields.String(attribute='permit.permit_guid'),

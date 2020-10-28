@@ -7,6 +7,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@common/constants/API";
+import RenderDate from "@/components/common/RenderDate";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
@@ -132,6 +133,17 @@ export class ReclamationInvoiceForm extends Component {
                 component={RenderField}
                 {...currencyMask}
                 validate={[required, number, currency]}
+              />
+            </Form.Item>
+          </Col>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="paid_date"
+                name="paid_date"
+                label="Paid Date*"
+                component={RenderDate}
+                validate={[required]}
               />
             </Form.Item>
           </Col>
