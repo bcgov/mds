@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
-import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { PlusOutlined, PhoneOutlined, MailOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "redux-form";
 import { startCase } from "lodash";
 import { Form } from "@ant-design/compatible";
@@ -49,7 +49,6 @@ const defaultProps = {
 };
 
 const handleRemove = (fields, index) => {
-  console.log(index);
   const promise = new Promise(function(resolve, reject) {
     resolve(fields.push({ ...fields.get(index), state_modified: "delete" }));
   });
@@ -140,36 +139,36 @@ const renderContacts = ({
                           okText="Delete"
                           cancelText="Cancel"
                           onConfirm={() => {
-                            if (fields.get(index)) {
-                              // add state_modified and set to "delete" for backend
-                              fields.get(index).state_modified = "delete";
+                            // if (fields.get(index)) {
+                            //   // add state_modified and set to "delete" for backend
+                            //   fields.get(index).state_modified = "delete";
 
-                              changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", fields.getAll());
+                            //   changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", fields.getAll());
 
-                              // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
-                              setTimeout(() => {
-                                // eslint-disable-next-line no-constant-condition
-                                const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
-                                return res;
-                              }, 1);
-                              // console.log(fields.get(index));
-                              // // console.log(fields.get(index));
-                              // console.log("are we deleting?? orrr");
-                              // // add state_modified and set to "delete" for backend
-                              // // fields.get(index) = { state_modified: "delete", ...fields.get(index) };
-                              // // fields.push({ ...fields.get(index), state_modified: "delete" });
-                              // // handleRemove(fields, index);
-                              // // fields.remove(index);
+                            //   // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
+                            //   setTimeout(() => {
+                            //     // eslint-disable-next-line no-constant-condition
+                            //     const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
+                            //     return res;
+                            //   }, 1);
+                            // console.log(fields.get(index));
+                            // // console.log(fields.get(index));
+                            // console.log("are we deleting?? orrr");
+                            // // add state_modified and set to "delete" for backend
+                            // // fields.get(index) = { state_modified: "delete", ...fields.get(index) };
+                            // // fields.push({ ...fields.get(index), state_modified: "delete" });
+                            handleRemove(fields, index);
+                            // // fields.remove(index);
 
-                              // // changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
+                            // // changeArray(FORM.EDIT_NOTICE_OF_WORK, "contacts", contacts);
 
-                              // // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
-                              // setTimeout(() => {
-                              //   // eslint-disable-next-line no-constant-condition
-                              //   const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
-                              //   return res;
-                              // }, 1);
-                            }
+                            // // move updated object, this will cause rerendering of the react component, setTimeout is required to bypass react optimization
+                            // setTimeout(() => {
+                            //   // eslint-disable-next-line no-constant-condition
+                            //   const res = fields.move(index, (index = 0 ? index + 1 : index - 1));
+                            //   return res;
+                            // }, 1);
+                            // }
                           }}
                         >
                           <Button className="full-mobile" ghost type="primary">

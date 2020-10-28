@@ -2,11 +2,51 @@
 
 exports[`AccessRoads renders properly 1`] = `
 <div>
-  <FieldArray
-    component={[Function]}
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
     isViewMode={true}
-    name="details"
-    rerenderOnEveryChange={true}
+    tableContent={
+      Array [
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Access Type",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "title": "Length(km)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "length",
+        },
+        Object {
+          "component": [Function],
+          "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
+        },
+        Object {
+          "component": [Function],
+          "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
+        },
+      ]
+    }
+    type="Activity"
   />
   <br />
   <h4>
@@ -47,10 +87,6 @@ exports[`AccessRoads renders properly 1`] = `
   </Row>
   <br />
   <Equipment
-    activity="exploration_access"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
     isViewMode={true}
   />
   <br />

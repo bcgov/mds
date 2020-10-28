@@ -64,7 +64,7 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tasks/now_etl.bc.json',
+                    'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
                             'NAME':"mds-now-streamline-etl",
                             'SUFFIX': "${app.build.suffix}",

@@ -15,12 +15,14 @@ const propTypes = {
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
+  minRows: PropTypes.number,
 };
 
 const defaultProps = {
   placeholder: "",
   label: "",
   disabled: false,
+  minRows: 4,
 };
 
 const RenderAutoSizeField = (props) => (
@@ -40,7 +42,7 @@ const RenderAutoSizeField = (props) => (
       disabled={props.disabled}
       id={props.id}
       {...props.input}
-      autoSize={{ minRows: 4 }}
+      autoSize={{ minRows: props.minRows }}
       placeholder={props.placeholder}
     />
   </Form.Item>
