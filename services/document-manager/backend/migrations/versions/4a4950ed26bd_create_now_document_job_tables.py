@@ -71,12 +71,12 @@ def upgrade():
             'description': 'Success',
         },
         {
-            'import_now_submission_documents_job_status_code': 'FAL',
+            'import_now_submission_documents_job_status_code': 'FAI',
             'description': 'Failure',
         },
         {
-            'import_now_submission_documents_job_status_code': 'CAN',
-            'description': 'Cancelled',
+            'import_now_submission_documents_job_status_code': 'REV',
+            'description': 'Revoked',
         },
     ])
 

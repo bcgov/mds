@@ -168,7 +168,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         import_job.error = result
         if import_job.attempt == MAX_RETRIES:
             import_job.complete_timestamp = current_timestamp
-            import_job.import_now_submission_documents_job_status_code = 'FAL'
+            import_job.import_now_submission_documents_job_status_code = 'FAI'
             import_job.save()
             raise Exception(result)
         import_job.save()

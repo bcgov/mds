@@ -35,7 +35,7 @@ class ImportNowSubmissionDocumentsResource(Resource):
                 ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code ==
                 'INP')).all()
         for job in in_progress_jobs:
-            job.import_now_submission_documents_job_status_code = 'CAN'
+            job.import_now_submission_documents_job_status_code = 'REV'
             celery.control.revoke(job.celery_task_id, terminate=True)
             job.save()
 
