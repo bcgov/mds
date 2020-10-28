@@ -37,12 +37,4 @@ class ImportNowSubmissionDocument(Base):
         }
 
     def task_json(self):
-        return {
-            'import_now_submission_document_id': self.import_now_submission_document_id,
-            'import_now_submission_documents_job_id': self.import_now_submission_documents_job_id,
-            'document_id': self.document_id,
-            'submission_document_id': self.submission_document_id,
-            'submission_document_url': self.submission_document_url,
-            'submission_document_file_name': self.submission_document_file_name,
-            'error': self.error
-        }
+        return self.json

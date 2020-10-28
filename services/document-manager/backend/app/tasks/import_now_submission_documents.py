@@ -89,23 +89,23 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     file_stream = NROSDownloadService.download(import_doc.submission_document_url)
 
                 # Upload the file (using the file stream) to the object store
-                # TODO: Figure out what bucket_filename should be.
+                # TODO: Figure out what object_store_path should be.
                 filename = import_doc.submission_document_file_name
-                bucket_filename = f'{import_job.now_application_guid}/{originating_system}/{filename}'
+                object_store_path = f'{import_job.now_application_guid}/{originating_system}/{filename}'
                 uploaded, key = ObjectStoreStorageService().upload_fileobj(
-                    filename=bucket_filename, fileobj=file_stream)
+                    filename=object_store_path, fileobj=file_stream)
 
                 # Create the document record
                 current_timestamp = datetime.utcnow()
                 guid = str(uuid.uuid4())
                 db.session.rollback()
-                # TODO: Figure out what full_storage_path and path_display_name should be.
+                # TODO: Should full_storage_path and path_display_name be empty, since they were never stored on the filesystem?
                 doc = Document(
                     document_guid=guid,
-                    full_storage_path=f'.../{guid}',
+                    full_storage_path='',
                     upload_started_date=current_timestamp,
                     upload_completed_date=current_timestamp,
-                    path_display_name=f'.../{filename}',
+                    path_display_name='',
                     file_display_name=filename,
                     object_store_path=key,
                     create_user=import_job.create_user,
