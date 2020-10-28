@@ -53,7 +53,7 @@ const defaultProps = {
 
 const renderAddPartyHeader = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
-    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? `}</p>
+    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? Try typing a different search. If needed, click the link to create a new contact. `}</p>
     <LinkButton onClick={showAddParty}>
       <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}

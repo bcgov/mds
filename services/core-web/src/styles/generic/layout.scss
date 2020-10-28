@@ -377,6 +377,14 @@ body {
   }
 }
 
+.icon-xxl {
+  font-size: 48px !important;
+  &--lightgrey {
+    @extend .icon-xxl;
+    color: $light-grey;
+  }
+}
+
 .img-lg {
   height: 30px;
   font-size: 26px;
