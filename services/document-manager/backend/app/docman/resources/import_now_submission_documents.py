@@ -1,8 +1,6 @@
 from flask import current_app, make_response, jsonify
 from flask_restplus import Resource, reqparse
 from sqlalchemy import and_
-from celery.task.control import revoke
-from celery.result import AsyncResult
 
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -22,6 +20,7 @@ class ImportNowSubmissionDocumentsResource(Resource):
     # @requires_any_of()
     def post(self):
         from app.services.commands_helper import create_import_now_submission_documents
+        from app.tasks.celery import celery
 
         # Get the NoW Application ID and its submission documents to transfer.
         data = self.parser.parse_args()
@@ -35,14 +34,10 @@ class ImportNowSubmissionDocumentsResource(Resource):
                 ImportNowSubmissionDocumentsJob.now_application_id == now_application_id,
                 ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code ==
                 'INP')).all()
-        current_app.logger.info(f'in_progress_jobs: {in_progress_jobs}')
         for job in in_progress_jobs:
             job.import_now_submission_documents_job_status_code = 'CAN'
-            # revoke(job.celery_task_id)
-            res = AsyncResult(job.celery_task_id)
-            res.revoke(terminate=True, signal='SIGKILL')
+            celery.control.revoke(job.celery_task_id, terminate=True)
             job.save()
-            current_app.logger.info(f'cancelled job: {job.import_now_submission_documents_job_id}')
 
         # Create the Import NoW Submission Documents job record.
         import_job = ImportNowSubmissionDocumentsJob(
@@ -63,6 +58,7 @@ class ImportNowSubmissionDocumentsResource(Resource):
         import_job.save()
 
         # Create the Import NoW Submission Documents job.
+        # TODO: Handle case where this returns an error.
         message = create_import_now_submission_documents(
             import_job.import_now_submission_documents_job_id)
 
