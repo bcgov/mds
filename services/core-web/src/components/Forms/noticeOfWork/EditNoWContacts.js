@@ -68,10 +68,6 @@ const renderContacts = ({
     <>
       <Row gutter={24}>
         {fields
-          .map((field, index) => ({
-            id: uuidv4(),
-            ...fields.get(index),
-          }))
           .map((field, index) => {
             const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
             const initialParty =
