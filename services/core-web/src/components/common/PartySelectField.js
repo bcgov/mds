@@ -32,7 +32,6 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.string),
   initialValues: PropTypes.objectOf(PropTypes.any),
   initialSearch: PropTypes.string,
 };
