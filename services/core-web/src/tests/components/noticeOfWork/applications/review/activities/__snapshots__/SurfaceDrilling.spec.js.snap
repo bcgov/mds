@@ -6,44 +6,51 @@ exports[`SurfaceDrilling renders properly 1`] = `
   <h4>
     Drilling
   </h4>
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Activity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
         },
         Object {
-          "dataIndex": "number_of_sites",
-          "key": "number_of_sites",
-          "render": [Function],
+          "component": [Function],
           "title": "Number of Sites",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "number_of_sites",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
+          "component": [Function],
           "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Activity"
   />
   <br />
   <h4>

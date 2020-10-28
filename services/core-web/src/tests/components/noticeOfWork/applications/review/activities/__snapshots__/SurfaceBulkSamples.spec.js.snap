@@ -2,45 +2,52 @@
 
 exports[`SurfaceBulkSamples renders properly 1`] = `
 <div>
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
           "title": "Activity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
         },
         Object {
-          "dataIndex": "quantity",
-          "key": "quantity",
-          "render": [Function],
+          "component": [Function],
           "title": "Quantity",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "quantity",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
+          "component": [Function],
           "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Activity"
   />
+  <br />
   <br />
   <Row
     gutter={16}
@@ -52,7 +59,7 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <div
         className="field-title"
       >
-        Processing Methods
+        Processing Methods*
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
@@ -112,10 +119,6 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
   </Row>
   <br />
   <Equipment
-    activity="surface_bulk_sample"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
     isViewMode={true}
   />
   <br />
