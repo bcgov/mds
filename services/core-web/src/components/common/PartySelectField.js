@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -135,6 +136,7 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const initialValueChanged = this.props.initialValue !== nextProps.initialValue;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
 
@@ -214,17 +216,21 @@ export class PartySelectField extends Component {
   };
 
   render = () => {
+    console.loh(this.props.initialValues);
     return (
-      <Field
-        {...this.props}
-        component={RenderLargeSelect}
-        handleSearch={this.handleSearch}
-        handleSelect={this.handleSelect}
-        handleFocus={this.handleFocus}
-        validate={this.props.validate.concat(this.validOption)}
-        dataSource={this.state.partyDataSource}
-        selectedOption={this.state.selectedOption}
-      />
+      <>
+        <p>{`PARTY SELECT: ${this.props.initialValue.value}`}</p>
+        <Field
+          {...this.props}
+          component={RenderLargeSelect}
+          handleSearch={this.handleSearch}
+          handleSelect={this.handleSelect}
+          handleFocus={this.handleFocus}
+          validate={this.props.validate.concat(this.validOption)}
+          dataSource={this.state.partyDataSource}
+          selectedOption={this.state.selectedOption}
+        />
+      </>
     );
   };
 }

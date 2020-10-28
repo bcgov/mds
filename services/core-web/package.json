@@ -68,7 +68,8 @@
     "string-similarity": "^3.0.0",
     "styled-components": "^5.2.0",
     "test-reducer-package": "^1.0.14",
-    "tus-js-client": "^1.7.1"
+    "tus-js-client": "^1.7.1",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
