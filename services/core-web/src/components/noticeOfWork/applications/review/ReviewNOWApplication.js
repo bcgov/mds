@@ -212,20 +212,25 @@ export const ReviewNOWApplication = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Permit Status
-            <NOWFieldOriginTooltip />
-          </div>
-          <Field id="" name="" component={RenderField} disabled />
-          <div className="field-title">
             Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="is_applicant_individual_or_company"
+            name="is_applicant_individual_or_company"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="relationship_to_applicant"
+            name="relationship_to_applicant"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
           <div className="field-title">
             Description of Land
             <NOWOriginalValueTooltip
@@ -430,8 +435,12 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Application in a community watershed
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_community_water_shed").value}
-                isVisible={props.renderOriginalValues("has_community_water_shed").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_community_water_shed").edited
+                }
               />
             </div>
             <Field
@@ -490,8 +499,12 @@ export const ReviewNOWApplication = (props) => {
               Are you aware of any protected archaeological sites that may be affected by the
               proposed project?
               <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("has_archaeology_sites_affected").value}
-                isVisible={props.renderOriginalValues("has_archaeology_sites_affected").edited}
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").edited
+                }
               />
             </div>
             <Field
@@ -636,7 +649,12 @@ export const ReviewNOWApplication = (props) => {
             Total merchantable timber volume
             <NOWFieldOriginTooltip />
           </div>
-          <Field id="" name="" component={RenderField} disabled />
+          <Field
+            id="merchantable_timber_volume"
+            name="merchantable_timber_volume"
+            component={RenderField}
+            disabled={props.isViewMode}
+          />
         </Col>
       </Row>
       <br />
@@ -662,7 +680,12 @@ export const ReviewNOWApplication = (props) => {
             {renderApplicationInfo()}
           </ScrollContentWrapper>
           <ScrollContentWrapper id="contacts" title="Contacts">
-            <ReviewNOWContacts contacts={props.contacts} />
+            <ReviewNOWContacts
+              contacts={props.noticeOfWork.contacts}
+              isViewMode={props.isViewMode}
+              contactFormValues={props.contacts}
+              noticeOfWork={props.noticeOfWork}
+            />
           </ScrollContentWrapper>
           <ScrollContentWrapper id="access" title="Access">
             {renderAccess()}
@@ -700,7 +723,10 @@ export const ReviewNOWApplication = (props) => {
             <NOWDocuments
               now_application_guid={props.now_application_guid}
               mine_guid={props.mine_guid}
-              documents={props.documents}
+              documents={
+                props.documents &&
+                props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
+              }
               isViewMode={props.isViewMode}
               disclaimerText="Attach any file revisions or new files requested from the proponent here."
             />
@@ -733,8 +759,9 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
-    touchOnChange: true,
+    touchOnChange: false,
     touchOnBlur: true,
     enableReinitialize: true,
+    onSubmit: () => {},
   })
 )(ReviewNOWApplication);

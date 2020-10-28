@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.schema import FetchedValue
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from app.extensions import db
@@ -82,21 +83,15 @@ class Base(db.Model):
     def delete(self, commit=True):
         if hasattr(self, 'deleted_ind'):
             raise Exception("Not implemented for soft deletion.")
+            ##SoftDeleteMixin.delete() should have overridden this.
         db.session.delete(self)
-        current_app.logger.debug(f'Deleting object: {self}')
+        current_app.logger.warn(f'Deleting object: {self}')
         if commit:
             try:
                 db.session.commit()
             except SQLAlchemyError as e:
                 db.session.rollback()
                 raise e
-
-    def soft_delete(self):
-        if not (hasattr(self, 'deleted_ind')):
-            raise Exception("Provided entity does not have deleted_ind field.")
-
-        self.deleted_ind = True
-        self.save()
 
     def _deep_update_from_dict(self, data_dict, depth=0, _edit_key=None):
         """
@@ -225,6 +220,7 @@ class Base(db.Model):
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
                     assert isinstance(v, (UUID, str))
+                    setattr(self, k, v)
                 else:
                     py_type = col.type.python_type
 
@@ -290,3 +286,36 @@ class AuditMixin(object):
         onupdate=User().get_user_username)
     update_timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class SoftDeleteMixin(object):
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
+    #TODO https://blog.miguelgrinberg.com/post/implementing-the-soft-delete-pattern-with-flask-and-sqlalchemy
+    #This model can choose it's query class (one that respects the deleted ind!!!)
+
+    def delete(self, commit=True):
+        if False:
+            #experimental code
+            #cascading smart delete (soft/hard, only on children, not parents)
+            mapper = inspect(self.__class__)
+            related_models = [rel.entity.class_ for rel in mapper.relationships]
+
+            for model in related_models:
+                related_mapper = inspect(model)
+                if mapper.primary_key.__name__ in [
+                        c.name for c in model.primary_key.columns if c.nullable == False
+                ]:
+                    #source object is non_nullable fk on related object
+                    #cascade deleted indicator
+                    related = getattr(self, model.relationship)
+                    if type(related) == list:
+                        [r.delete(commit=commit) for r in related]
+                    else:
+                        related.delete(commit=commit)
+
+        #TODO, handle children, or let model override this.
+        self.deleted_ind = True
+
+        if commit == True:
+            self.save()

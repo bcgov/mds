@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
@@ -27,49 +27,27 @@ export const MineResultsTable = (props) => {
       dataIndex: "mine_guid",
       key: "mine_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
+        <Descriptions
+          title={
             <Link to={router.MINE_SUMMARY.dynamicRoute(record.mine_guid)}>
               <Highlight search={props.highlightRegex}>{record.mine_name}</Highlight>
             </Link>
-          </Col>
-        </Row>,
-        <Row className="padding-small--top">
-          <Col xs={24} md={4}>
-            <p>Legacy Alias</p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.mms_alias}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>Mine No.</p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>Permit No.</p>
-          </Col>
-          <Col xs={24} md={12}>
-            <p>{record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}</p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>Region</p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>{record.mine_region}</p>
-          </Col>
-          <Col xs={24} md={4}>
-            <p>Status</p>
-          </Col>
-          <Col xs={24} md={12}>
-            <p>{record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}</p>
-          </Col>
-        </Row>,
+          }
+        >
+          <Descriptions.Item label="Legacy Alias">
+            <Highlight search={props.highlightRegex}>{record.mms_alias}</Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Mine No.">
+            <Highlight search={props.highlightRegex}>{record.mine_no}</Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Permit No.">
+            {record.mine_permit.map((permit) => [<span>{permit.permit_no}</span>, <br />])}
+          </Descriptions.Item>
+          <Descriptions.Item label="Region">{record.mine_region}</Descriptions.Item>
+          <Descriptions.Item label="Status">
+            {record.mine_status[0] && record.mine_status[0].status_labels.join(", ")}
+          </Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];

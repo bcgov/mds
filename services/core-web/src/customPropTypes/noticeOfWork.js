@@ -143,7 +143,7 @@ export const importedNOWApplication = shape({
 
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  blasting_operation: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  blasting_operation: PropTypes.objectOf(PropTypes.any),
   state_of_land: statueOfLand,
   camps,
   cut_lines_polarization_survey: defaultActivity,

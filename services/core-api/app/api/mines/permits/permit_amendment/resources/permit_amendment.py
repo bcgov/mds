@@ -9,10 +9,28 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import api
+from app.extensions import api, jwt
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
+from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS
+
+ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
+
+
+def validate_issue_date(issue_date, permit_amendment_type_code, permit_guid, mine_guid):
+    if permit_amendment_type_code == 'OGP':
+        return
+
+    original_permit_amendment = PermitAmendment.find_original_permit_amendment_by_permit_guid(
+        permit_guid, mine_guid)
+
+    if not jwt.validate_roles(
+            ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS
+    ) and original_permit_amendment and original_permit_amendment.issue_date:
+        if issue_date and original_permit_amendment.issue_date > issue_date.date():
+            raise AssertionError(
+                'Permit amendment issue date cannot be before the permits First Issued date.')
 
 
 class PermitAmendmentListResource(Resource, UserMixin):
@@ -52,6 +70,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         help='Title of the lead inspector for this permit.')
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
+    parser.add_argument(
+        'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -76,7 +96,14 @@ class PermitAmendmentListResource(Resource, UserMixin):
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
 
-        permittee_party_guid = data.get('permittee_party_guid')
+        validate_issue_date(
+            data.get('issue_date'), data.get('permit_amendment_type_code'), permit.permit_guid,
+            mine_guid)
+
+        permittee_party_guid = None
+        if not data.get('is_historical_amendment', False):
+            permittee_party_guid = data.get('permittee_party_guid', None)
+
         permittee_end_date = None
         if permittee_party_guid:
             party = Party.find_by_party_guid(data.get('permittee_party_guid'))
@@ -230,6 +257,10 @@ class PermitAmendmentResource(Resource, UserMixin):
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {permit_amendment} with >> {data}')
 
+        validate_issue_date(
+            data.get('issue_date'), data.get('permit_amendment_type_code'),
+            permit_amendment.permit_guid, mine_guid)
+
         for key, value in data.items():
             if key == 'uploadedFiles':
                 for newFile in value:
@@ -260,7 +291,7 @@ class PermitAmendmentResource(Resource, UserMixin):
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         try:
-            permit_amendment.soft_delete()
+            permit_amendment.delete()
         except Exception as e:
             raise BadRequest(e)
 

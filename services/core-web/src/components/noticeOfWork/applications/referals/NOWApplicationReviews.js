@@ -320,7 +320,7 @@ export class NOWApplicationReviews extends Component {
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
-        title: `Download Referral Package`,
+        title: "Download Referral Package",
       },
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });

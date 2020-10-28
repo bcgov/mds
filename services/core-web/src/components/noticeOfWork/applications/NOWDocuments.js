@@ -32,12 +32,14 @@ const propTypes = {
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
   handleAfterUpload: PropTypes.func,
+  addDescriptionColumn: PropTypes.bool,
 };
 const defaultProps = {
   selectedRows: null,
   categoriesToShow: [],
   disclaimerText: "",
   isAdminView: false,
+  addDescriptionColumn: true,
   handleAfterUpload: () => {},
 };
 
@@ -123,7 +125,16 @@ export const NOWDocuments = (props) => {
             </div>
           ),
         };
-    return [
+
+    const descriptionColumn = {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      sorter: (a, b) => (a.description > b.description ? -1 : 1),
+      render: (text) => <div title="Proponent Description">{text}</div>,
+    };
+
+    const tableColumns = [
       fileNameColumn,
       {
         title: "Category",
@@ -135,13 +146,6 @@ export const NOWDocuments = (props) => {
         render: (text) => <div title="Category">{text}</div>,
       },
       {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
-        sorter: (a, b) => (a.description > b.description ? -1 : 1),
-        render: (text) => <div title="Proponent Description">{text}</div>,
-      },
-      {
         title: "Upload Date/Time",
         dataIndex: "upload_date",
         key: "upload_date",
@@ -151,6 +155,12 @@ export const NOWDocuments = (props) => {
         ),
       },
     ];
+
+    if (props.addDescriptionColumn) {
+      tableColumns.splice(2, 0, descriptionColumn);
+    }
+
+    return tableColumns;
   };
 
   const transformDocuments = (

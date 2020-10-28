@@ -122,6 +122,122 @@ exports[`AddQuickPartyForm renders properly 1`] = `
         </FormItem>
       </Col>
     </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={6}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="suite_no"
+            label="Suite No."
+            name="suite_no"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        span={18}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="address_line_1"
+            label="Street Address 1"
+            name="address_line_1"
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={18}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="address_line_2"
+            label="Street Address 2"
+            name="address_line_2"
+          />
+        </FormItem>
+      </Col>
+      <Col
+        span={6}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="sub_division_code"
+            label="Province"
+            name="sub_division_code"
+          />
+        </FormItem>
+      </Col>
+    </Row>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="city"
+            label="City"
+            name="city"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+      <Col
+        md={12}
+        xs={24}
+      >
+        <FormItem
+          hasFeedback={false}
+        >
+          <Field
+            component={[Function]}
+            id="post_code"
+            label="Postal Code"
+            name="post_code"
+            normalize={[Function]}
+            placeholder="e.g xxxxxx"
+            validate={
+              Array [
+                [Function],
+                [Function],
+              ]
+            }
+          />
+        </FormItem>
+      </Col>
+    </Row>
     <div
       className="right center-mobile"
     >

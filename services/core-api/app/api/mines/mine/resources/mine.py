@@ -9,7 +9,6 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 #app imports
 from app.extensions import api, cache, db
-from app.api.utils.random import generate_mine_no
 from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
@@ -121,7 +120,6 @@ class MineListResource(Resource, UserMixin):
         # query the mine tables and check if that mine name exists
         _throw_error_if_mine_exists(data.get('mine_name'))
         mine = Mine(
-            mine_no=generate_mine_no(),
             mine_name=data.get('mine_name'),
             mine_note=data.get('mine_note'),
             major_mine_ind=data.get('major_mine_ind'),

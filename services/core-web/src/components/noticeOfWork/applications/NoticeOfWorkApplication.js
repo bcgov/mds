@@ -3,7 +3,7 @@ import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus } from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, focus, submit } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined, kebabCase } from "lodash";
@@ -33,6 +33,7 @@ import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import {
   generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
@@ -64,6 +65,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   reset: PropTypes.func.isRequired,
@@ -97,6 +99,7 @@ const propTypes = {
   formErrors: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
   ),
+  submit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -190,10 +193,7 @@ export class NoticeOfWorkApplication extends Component {
     // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited
     // prevValue !== currentValue, due to other value changes that are not null or undefined
     const isNewValue = isUndefined(prevValue) && !isNull(currentValue);
-    const isPrevValue =
-      !isUndefined(prevValue) &&
-      !isNull(prevValue) &&
-      (isNull(currentValue) || isUndefined(currentValue));
+    const isPrevValue = !isUndefined(prevValue) && !isNull(prevValue);
     const hasBeenEdited = isNewValue || isPrevValue;
     const edited = hasBeenEdited && prevValue !== currentValue;
     const getValue = () => {
@@ -309,6 +309,7 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   focusErrorInput = (skip = false) => {
+    this.props.submit(FORM.EDIT_NOTICE_OF_WORK);
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (skip) {
       if (this.count < errors.length) {
@@ -324,10 +325,19 @@ export class NoticeOfWorkApplication extends Component {
   };
 
   handleCancelNOWEdit = () => {
+    if (this.props.formValues.contacts.length > 0) {
+      // eslint-disable-next-line array-callback-return
+      this.props.formValues.contacts.map((contact) => delete contact.state_modified);
+    }
+
     this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
     this.setState((prevState) => ({
       isViewMode: !prevState.isViewMode,
     }));
+  };
+
+  handleResetNOWForm = () => {
+    this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
   };
 
   handleScroll = () => {
@@ -518,6 +528,27 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
+  handleExportDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+
+    this.exportNowDocument(documentType, this.props.noticeOfWork);
+  };
+
+  exportNowDocument = (documentType) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+    };
+
+    this.props.exportNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      `Successfully exported ${documentType.description} for this Notice of Work`
+    );
+  };
+
   renderPermitGeneration = () => {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     return (
@@ -673,7 +704,8 @@ export class NoticeOfWorkApplication extends Component {
               .filter(
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT"
+                  now_application_document_type_code !== "PMT" &&
+                  now_application_document_type_code !== "NTR"
               )
               .map((document) => (
                 <Menu.Item
@@ -685,6 +717,21 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
+        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
+          {Object.values(this.props.generatableApplicationDocuments)
+            .filter(
+              ({ now_application_document_type_code }) =>
+                now_application_document_type_code === "NTR"
+            )
+            .map((document) => (
+              <Menu.Item
+                key={document.now_application_document_type_code}
+                onClick={this.handleExportDocument}
+              >
+                {document.description}
+              </Menu.Item>
+            ))}
+        </Menu.SubMenu>
       </Menu>
     );
   };
@@ -716,6 +763,7 @@ export class NoticeOfWorkApplication extends Component {
             // handle user navigating away from technical review/draft permit while in editMode
             if (action === "REPLACE" && !hasEditMode) {
               this.toggleEditMode();
+              this.handleResetNOWForm();
             }
             // if the pathname changes while still on the technicalReview/draftPermit tab (via side navigation), don't prompt user
             return this.props.location.pathname === location.pathname || hasEditMode
@@ -757,6 +805,7 @@ export class NoticeOfWorkApplication extends Component {
                 handleUpdateLeadInspector={this.handleUpdateLeadInspector}
                 loadNoticeOfWork={this.loadNoticeOfWork}
                 initialPermitGuid={this.state.initialPermitGuid}
+                originalNoticeOfWork={this.props.originalNoticeOfWork}
               />
             </Tabs.TabPane>
 
@@ -919,6 +968,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
+      exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
       fetchMineRecordById,
       reset,
@@ -926,6 +976,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       clearNoticeOfWorkApplication,
       focus,
+      submit,
     },
     dispatch
   );

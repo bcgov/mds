@@ -11,24 +11,28 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { createParty, setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "../LinkButton";
 
 const propTypes = {
   childProps: PropTypes.objectOf(PropTypes.any),
   content: PropTypes.func,
   clearOnSubmit: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
   createParty: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   // addPartyFormState is selected from the partiesReducer
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
   childProps: {
     title: "",
   },
+  closeModal: () => {},
   content: () => {},
   initialValues: {},
 };
@@ -61,7 +65,10 @@ export class AddPartyComponentWrapper extends Component {
   };
 
   resetAddPartyForm = () => {
-    this.props.setAddPartyFormState(defaultAddPartyFormState);
+    this.props.setAddPartyFormState({
+      ...this.props.addPartyFormState,
+      ...defaultAddPartyFormState,
+    });
   };
 
   showAddPartyForm = () => {
@@ -108,7 +115,11 @@ export class AddPartyComponentWrapper extends Component {
             <Radio.Button value={false}>Company</Radio.Button>
           </Radio.Group>
         )}
-        <AddQuickPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
+        <AddQuickPartyForm
+          onSubmit={this.handlePartySubmit}
+          isPerson={this.state.isPerson}
+          provinceOptions={this.props.provinceOptions}
+        />
       </div>
     </div>
   );
@@ -150,6 +161,7 @@ export class AddPartyComponentWrapper extends Component {
 
 const mapStateToProps = (state) => ({
   addPartyFormState: getAddPartyFormState(state),
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -226,26 +226,14 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Permit Status
-                <NOWFieldOriginTooltip />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id=""
-                name=""
-              />
-              <div
-                className="field-title"
-              >
                 Individual or Company/Organization?
                 <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="is_applicant_individual_or_company"
+                name="is_applicant_individual_or_company"
               />
               <div
                 className="field-title"
@@ -256,8 +244,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="relationship_to_applicant"
+                name="relationship_to_applicant"
               />
               <div
                 className="field-title"
@@ -352,7 +340,69 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         id="contacts"
         title="Contacts"
       >
-        <ReviewNOWContacts />
+        <ReviewNOWContacts
+          contacts={Array []}
+          isViewMode={true}
+          noticeOfWork={
+            Object {
+              "adjusted_annual_maximum_tonnage": "",
+              "application_documents": Array [],
+              "blasting_operation": Object {},
+              "camps": Object {
+                "details": Array [],
+              },
+              "contacts": Array [],
+              "cut_lines_polarization_survey": Object {
+                "details": Array [],
+              },
+              "description_of_land": "",
+              "documents": Array [],
+              "exploration_access": Object {
+                "details": Array [],
+              },
+              "exploration_surface_drilling": Object {
+                "details": Array [],
+              },
+              "latitude": "",
+              "longitude": "",
+              "mechanical_trenching": Object {
+                "details": Array [],
+              },
+              "mine_guid": "",
+              "notice_of_work_type_code": "MIN",
+              "now_application_guid": "",
+              "now_application_id": "",
+              "now_message_id": 47284,
+              "now_tracking_number": 47284,
+              "placer_operation": Object {
+                "details": Array [],
+              },
+              "property_name": "",
+              "proposed_annual_maximum_tonnage": 10000,
+              "proposed_end_date": "2020-03-01",
+              "proposed_start_date": "2016-03-01",
+              "received_date": "",
+              "sand_and_gravel": Object {
+                "details": Array [],
+              },
+              "settling_pond": Object {
+                "details": Array [],
+              },
+              "state_of_land": Object {},
+              "submitted_date": "",
+              "surface_bulk_sample": Object {
+                "details": Array [],
+              },
+              "tenure_number": "",
+              "underground_exploration": Object {
+                "details": Array [],
+              },
+              "water_supply": Object {
+                "details": Array [],
+              },
+            }
+          }
+        />
       </withRouter(Connect(ScrollContentWrapper))>
       <withRouter(Connect(ScrollContentWrapper))
         id="access"
@@ -928,8 +978,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <Field
                 component={[Function]}
                 disabled={true}
-                id=""
-                name=""
+                id="merchantable_timber_volume"
+                name="merchantable_timber_volume"
               />
             </Col>
           </Row>
@@ -952,7 +1002,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           />
         </div>
       </withRouter(Connect(ScrollContentWrapper))>
-      <Connect(ReviewActivities)
+      <ReviewActivities
         isViewMode={true}
         renderOriginalValues={
           [MockFunction] {
@@ -1030,16 +1080,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 "directions_to_site",
               ],
               Array [
-                "has_community_water_shed",
+                "state_of_land.has_community_water_shed",
               ],
               Array [
-                "has_community_water_shed",
+                "state_of_land.has_community_water_shed",
               ],
               Array [
-                "has_archaeology_sites_affected",
+                "state_of_land.has_archaeology_sites_affected",
               ],
               Array [
-                "has_archaeology_sites_affected",
+                "state_of_land.has_archaeology_sites_affected",
               ],
               Array [
                 "first_aid_equipment_on_site",

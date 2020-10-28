@@ -12,11 +12,11 @@ from app.extensions import db
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 from . import permit_amendment_status_code, permit_amendment_type_code
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.constants import *
 
 
-class PermitAmendment(AuditMixin, Base):
+class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'permit_amendment'
     _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP]
     _edit_key = PERMIT_AMENDMENT_EDIT_GROUP
@@ -33,7 +33,6 @@ class PermitAmendment(AuditMixin, Base):
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
     description = db.Column(db.String, nullable=True)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     lead_inspector_title = db.Column(db.String, nullable=True)
     regional_office = db.Column(db.String, nullable=True)
 
@@ -70,7 +69,7 @@ class PermitAmendment(AuditMixin, Base):
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
-    def soft_delete(self, is_force_delete=False):
+    def delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
             raise Exception(
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
@@ -80,10 +79,9 @@ class PermitAmendment(AuditMixin, Base):
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
         if permit_amendment_documents:
             for document in permit_amendment_documents:
-                document.soft_delete()
+                document.delete()
 
-        self.deleted_ind = True
-        self.save()
+        super(PermitAmendment, self).delete()
 
     @classmethod
     def create(cls,
@@ -136,6 +134,11 @@ class PermitAmendment(AuditMixin, Base):
     def find_by_now_application_guid(cls, _id):
         return cls.query.filter_by(now_application_guid=_id).first()
 
+    @classmethod
+    def find_original_permit_amendment_by_permit_guid(cls, _guid, mine_guid):
+        return cls.query.filter_by(permit_guid=_guid).filter_by(
+            permit_amendment_type_code='OGP', mine_guid=mine_guid).first()
+
     @validates('permit_amendment_status_code')
     def validate_status_code(self, key, permit_amendment_status_code):
         if not permit_amendment_status_code:
@@ -160,14 +163,12 @@ class PermitAmendment(AuditMixin, Base):
 
     @validates('issue_date')
     def validate_issue_date(self, key, issue_date):
-        if self.permit_amendment_type_code != 'OGP':
-            original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
-                permit_amendment_type_code='OGP').first()
-            if original_permit_amendment and original_permit_amendment.issue_date:
-                if issue_date and original_permit_amendment.issue_date > issue_date.date():
-                    raise AssertionError(
-                        'Permit amendment issue date cannot be before the permits First Issued date.'
-                    )
+        # TODO DO NOT REMOVE NEXT LINE. If this validation removed then exception will be thrown on permit creation/editing:
+        # "permit_amendment" violates foreign key constraint "permit_amendment_mine_permit_xref_mine_guid_permit_no_fk"
+        # DETAIL:  Key (mine_guid, permit_id)=(28966bf7-8e65-4cc4-b077-b248b6a136ef, 212) is not present in table "mine_permit_xref".
+        original_permit_amendment = self.query.filter_by(permit_id=self.permit_id).filter_by(
+            permit_amendment_type_code='OGP').first()
+
         if issue_date:
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
