@@ -16,6 +16,12 @@ exports[`RenderSelect renders properly 1`] = `
     choiceTransitionName=""
     disabled={false}
     dropdownMatchSelectWidth={true}
+    dropdownStyle={
+      Object {
+        "position": "relative",
+        "zIndex": "10000",
+      }
+    }
     filterOption={[Function]}
     getPopupContainer={[Function]}
     id="1"
@@ -29,9 +35,19 @@ exports[`RenderSelect renders properly 1`] = `
   >
     <Option
       disabled={false}
+      style={
+        Object {
+          "zIndex": "10000",
+        }
+      }
     />
     <Option
       disabled={false}
+      style={
+        Object {
+          "zIndex": "10000",
+        }
+      }
     />
   </Select>
 </FormItem>

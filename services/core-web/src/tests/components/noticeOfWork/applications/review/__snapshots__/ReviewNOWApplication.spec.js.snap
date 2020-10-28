@@ -1002,7 +1002,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           />
         </div>
       </withRouter(Connect(ScrollContentWrapper))>
-      <Connect(ReviewActivities)
+      <ReviewActivities
         isViewMode={true}
         renderOriginalValues={
           [MockFunction] {

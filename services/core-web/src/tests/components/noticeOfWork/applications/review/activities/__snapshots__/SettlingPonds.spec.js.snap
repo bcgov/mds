@@ -24,68 +24,85 @@ exports[`SettlingPonds renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Pond ID",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
         },
         Object {
-          "dataIndex": "width",
-          "key": "width",
-          "render": [Function],
+          "component": [Function],
           "title": "Width(m)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "width",
         },
         Object {
-          "dataIndex": "length",
-          "key": "length",
-          "render": [Function],
+          "component": [Function],
           "title": "Length(km)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "length",
         },
         Object {
-          "dataIndex": "depth",
-          "key": "depth",
-          "render": [Function],
+          "component": [Function],
           "title": "Depth(m)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "depth",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
+          "component": [Function],
           "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
         },
         Object {
-          "dataIndex": "water_source_description",
-          "key": "water_source_description",
-          "render": [Function],
+          "component": [Function],
           "title": "Water Source",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "water_source_description",
         },
         Object {
-          "dataIndex": "construction_plan",
-          "key": "construction_plan",
-          "render": [Function],
+          "component": [Function],
           "title": "Construction Method",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "construction_plan",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No Data yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Activity"
   />
   <br />
   <Row
@@ -98,7 +115,7 @@ exports[`SettlingPonds renders properly 1`] = `
       <div
         className="field-title"
       >
-        Disposal of fines from cleanout (i.e. use as a subsoil material)
+        Disposal of fines from clean out (i.e. use as a subsoil material)
         <NOWFieldOriginTooltip />
       </div>
       <Field
@@ -109,17 +126,17 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
   </Row>
+  <div
+    className="field-title"
+  >
+    Water from Ponds will be:
+  </div>
   <Row
     gutter={16}
   >
-    <div
-      className="field-title"
-    >
-      Water from Ponds will be
-    </div>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}
@@ -148,8 +165,8 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}
@@ -178,8 +195,8 @@ exports[`SettlingPonds renders properly 1`] = `
       />
     </Col>
     <Col
-      md={8}
-      sm={24}
+      lg={8}
+      md={24}
     >
       <Field
         component={[Function]}

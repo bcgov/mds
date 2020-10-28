@@ -6,38 +6,42 @@ exports[`CutLines renders properly 1`] = `
   <h4>
     Exploration Grid
   </h4>
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "cut_line_length",
-          "key": "cut_line_length",
-          "render": [Function],
+          "component": [Function],
           "title": "Total Line(km)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "cut_line_length",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
+          "component": [Function],
           "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Activity"
   />
   <br />
   <h4>
