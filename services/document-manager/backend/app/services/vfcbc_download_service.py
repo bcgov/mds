@@ -54,7 +54,7 @@ class VFCBCDownloadService():
         else:
             download_session.cookies = _vfcbc_cookies
 
-        # TODO: Check the response code and for errors to ensure the actual file was retrieved!
-        file_download_req = download_session.get(file_url, stream=True)
-
-        return io.BytesIO(file_download_req.content)
+        resp = download_session.get(file_url, stream=True)
+        if resp.status_code != requests.codes.ok:
+            raise Exception(f'vFCBC file download failed! Error {resp.status_code}: {resp.content}')
+        return io.BytesIO(resp.content)
