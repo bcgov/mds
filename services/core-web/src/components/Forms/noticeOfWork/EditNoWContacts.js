@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
-import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { PlusOutlined, PhoneOutlined, MailOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "redux-form";
 import { startCase } from "lodash";
 import { Form } from "@ant-design/compatible";
@@ -132,42 +132,47 @@ const renderContacts = ({
                 }
                 bordered={false}
               >
-                <Row>
+                <Row align="middle" justify="center">
                   {isVerifying && (
-                    <Col span={12}>
-                      <h4>
-                        {contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}
-                      </h4>
-                      {contacts[index] && (
-                        <div>
-                          <div className="inline-flex">
-                            <div className="padding-right">
-                              <MailOutlined className="icon-sm" />
+                    <>
+                      <Col span={9}>
+                        <h4>
+                          {contacts[index] ? startCase(contacts[index].party.name) : "New Contact"}
+                        </h4>
+                        {contacts[index] && (
+                          <div>
+                            <div className="inline-flex">
+                              <div className="padding-right">
+                                <MailOutlined className="icon-sm" />
+                              </div>
+                              {contacts[index].party.email &&
+                              contacts[index].party.email !== "Unknown" ? (
+                                <a href={`mailto:${contacts[index].party.email}`}>
+                                  {contacts[index].party.email}
+                                </a>
+                              ) : (
+                                <p>{Strings.EMPTY_FIELD}</p>
+                              )}
                             </div>
-                            {contacts[index].party.email &&
-                            contacts[index].party.email !== "Unknown" ? (
-                              <a href={`mailto:${contacts[index].party.email}`}>
-                                {contacts[index].party.email}
-                              </a>
-                            ) : (
-                              <p>{Strings.EMPTY_FIELD}</p>
-                            )}
-                          </div>
-                          <div className="inline-flex">
-                            <div className="padding-right">
-                              <PhoneOutlined className="icon-sm" />
+                            <div className="inline-flex">
+                              <div className="padding-right">
+                                <PhoneOutlined className="icon-sm" />
+                              </div>
+                              <p>
+                                {contacts[index].party.phone_no}{" "}
+                                {contacts[index].party.phone_ext
+                                  ? `x${contacts[index].party.phone_ext}`
+                                  : ""}
+                              </p>
                             </div>
-                            <p>
-                              {contacts[index].party.phone_no}{" "}
-                              {contacts[index].party.phone_ext
-                                ? `x${contacts[index].party.phone_ext}`
-                                : ""}
-                            </p>
+                            <Address address={contacts[index].party.address[0] || {}} />
                           </div>
-                          <Address address={contacts[index].party.address[0] || {}} />
-                        </div>
-                      )}
-                    </Col>
+                        )}
+                      </Col>
+                      <Col span={3}>
+                        <DoubleRightOutlined className="icon-xxl--lightgrey" />
+                      </Col>
+                    </>
                   )}
                   <Col span={isVerifying ? 12 : 24}>
                     <Form.Item label="Role*">

@@ -66,6 +66,16 @@ app {
                 [
                     'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
+                            'NAME':"mds-now-streamline-etl",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tasks/now-streamline-etl",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
+                    'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
