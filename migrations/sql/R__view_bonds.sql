@@ -84,7 +84,7 @@ FROM
                   null, 
                   cnt_dt, 
                   "comment", 
-                  null, 
+                  CASE WHEN bond_type_code IN ('REL', 'CON') THEN cnt_dt ELSE null END as "closed_date", 
                   null, 
                   null::uuid, 
                   cmp_nm, 
