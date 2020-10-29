@@ -55,6 +55,10 @@ class VFCBCDownloadService():
             download_session.cookies = _vfcbc_cookies
 
         file_download_req = download_session.get(file_url, stream=True)
+        if file_download_req.status_code != requests.codes.ok:
+            raise Exception(
+                f'vFCBC file download request failed! Error {file_download_req.status_code}: {file_download_req.content}'
+            )
 
         file_download_resp = Response(
             stream_with_context(
@@ -65,19 +69,3 @@ class VFCBCDownloadService():
             'Content-Disposition'] = f'attachment; filename="{quote(file_name)}"'
 
         return file_download_resp
-
-    def download_file(file_url, file_name):
-        download_session = requests.session()
-
-        _vfcbc_cookies = cache.get(VFCBC_COOKIES)
-        if _vfcbc_cookies is None:
-            vfcbc_login(download_session)
-            cache.set(VFCBC_COOKIES, download_session.cookies, timeout=TIMEOUT_60_MINUTES)
-        else:
-            download_session.cookies = _vfcbc_cookies
-
-        file_download_req = download_session.get(file_url, stream=True)
-        # return file_download_req
-        return stream_with_context(
-            file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES))
-        # return file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)
