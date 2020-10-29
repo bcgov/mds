@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -31,7 +32,6 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
-  initialValue: PropTypes.objectOf(PropTypes.string),
   initialValues: PropTypes.objectOf(PropTypes.any),
   initialSearch: PropTypes.string,
 };
@@ -46,7 +46,6 @@ const defaultProps = {
   allowAddingParties: false,
   validate: [],
   searchResults: [],
-  initialValue: "",
   initialValues: undefined,
   initialSearch: undefined,
 };
@@ -101,6 +100,7 @@ export class PartySelectField extends Component {
     selectedOption: { value: "", label: "" },
     partyDataSource: [],
     showingAddPartyForm: false,
+    userSelected: false,
     initialSearch: this.props.initialSearch,
   };
 
@@ -113,10 +113,13 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (this.props.initialValue) {
-      this.handleSearch(this.props.initialValue.label);
+    if (this.props.initialValues.label && this.props.initialValues.value) {
+      this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: this.props.initialValue,
+        selectedOption: {
+          value: this.props.initialValues.value,
+          label: this.props.initialValues.label,
+        },
       });
     }
   }
@@ -135,8 +138,21 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const initialValuesChangedNotByUser =
+      !this.state.userSelected &&
+      this.state.selectedOption.value &&
+      this.props.initialValues.value !== nextProps.initialValues.value;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
+    if (initialValuesChangedNotByUser) {
+      this.handleSearch(nextProps.initialValues.label);
+      this.setState({
+        selectedOption: {
+          value: nextProps.initialValues.value,
+          label: nextProps.initialValues.label,
+        },
+      });
+    }
 
     // If new search results have been returned, transform the results and store them in component state.
     if (searchResultsUpdated || lastCreatedPartyUpdated) {
@@ -188,6 +204,7 @@ export class PartySelectField extends Component {
   };
 
   handleSearch = (value) => {
+    this.setState({ userSelected: false });
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
@@ -195,17 +212,18 @@ export class PartySelectField extends Component {
   };
 
   handleSelect = (value, option) => {
-    this.setState({ selectedOption: option });
+    this.setState({ selectedOption: option, userSelected: true });
   };
 
   // Validator to ensure the selected option is in the collection of available options.
   // This validator is appened to any validators passed in from the form in the render function below.
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
-    // ignore this validation if an initialValue is passed in
+    // ignore this validation if an initialValues is passed in
     if (
-      this.props.initialValue &&
-      this.props.initialValue.value !== this.state.selectedOption.value
+      this.props.initialValues.label &&
+      this.props.initialValues.value &&
+      this.props.initialValues.value !== this.state.selectedOption.value
     ) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
@@ -213,20 +231,18 @@ export class PartySelectField extends Component {
     }
   };
 
-  render = () => {
-    return (
-      <Field
-        {...this.props}
-        component={RenderLargeSelect}
-        handleSearch={this.handleSearch}
-        handleSelect={this.handleSelect}
-        handleFocus={this.handleFocus}
-        validate={this.props.validate.concat(this.validOption)}
-        dataSource={this.state.partyDataSource}
-        selectedOption={this.state.selectedOption}
-      />
-    );
-  };
+  render = () => (
+    <Field
+      {...this.props}
+      component={RenderLargeSelect}
+      handleSearch={this.handleSearch}
+      handleSelect={this.handleSelect}
+      handleFocus={this.handleFocus}
+      validate={this.props.validate.concat(this.validOption)}
+      dataSource={this.state.partyDataSource}
+      selectedOption={this.state.selectedOption}
+    />
+  );
 }
 
 const mapStateToProps = (state) => ({
