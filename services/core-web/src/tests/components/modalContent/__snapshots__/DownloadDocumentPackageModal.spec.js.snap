@@ -7,6 +7,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   </h4>
   <NOWSubmissionDocuments
     documents={Array []}
+    importNowSubmissionDocumentsJob={Object {}}
     now_application_guid=""
     selectedRows={
       Object {
