@@ -81,6 +81,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
 
         most_recent_only = request.args.get('most_recent_only', False)
         if most_recent_only:
-            return import_jobs[-1]
+            return import_jobs[-1] if import_jobs else {}
 
         return import_jobs

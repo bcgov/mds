@@ -1,6 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Table } from "antd";
+import { Table, Badge } from "antd";
+import { isEmpty } from "lodash";
 import {
   downloadNowDocument,
   downloadFileFromDocumentManager,
@@ -11,24 +12,36 @@ import LinkButton from "@/components/common/LinkButton";
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   selectedRows: PropTypes.objectOf(PropTypes.any),
 };
-const defaultProps = { selectedRows: null };
 
-const transformDocuments = (documents, now_application_guid) =>
+const defaultProps = { selectedRows: null, importNowSubmissionDocumentsJob: {} };
+
+const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
   documents &&
-  documents.map((document) => ({
-    key: document.id,
-    now_application_guid,
-    filename: document.filename || Strings.EMPTY_FIELD,
-    url: document.documenturl,
-    category: document.documenttype || Strings.EMPTY_FIELD,
-    description: document.description || Strings.EMPTY_FIELD,
-    document_manager_guid: record.document_manager_document_guid,
-  }));
+  documents.map((document) => {
+    const importNowSubmissionDocument =
+      !isEmpty(importNowSubmissionDocumentsJob) &&
+      !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
+        ? importNowSubmissionDocumentsJob.import_now_submission_documents.find(
+            (doc) => doc.submission_document_id === document.id
+          )
+        : null;
+    return {
+      key: document.id,
+      now_application_guid,
+      filename: document.filename || Strings.EMPTY_FIELD,
+      url: document.documenturl,
+      category: document.documenttype || Strings.EMPTY_FIELD,
+      description: document.description || Strings.EMPTY_FIELD,
+      document_manager_guid: document.document_manager_document_guid,
+      importNowSubmissionDocument,
+    };
+  });
 
 export const NOWSubmissionDocuments = (props) => {
-  const fileNameColum = props.selectedRows
+  const fileNameColumn = props.selectedRows
     ? {
         title: "File Name",
         dataIndex: "filename",
@@ -43,7 +56,7 @@ export const NOWSubmissionDocuments = (props) => {
           <div title="File Name">
             <LinkButton
               onClick={() =>
-                record.document_manager_document_guid
+                record.document_manager_guid
                   ? downloadFileFromDocumentManager({
                       document_manager_guid: record.document_manager_guid,
                       document_name: record.filename,
@@ -56,6 +69,7 @@ export const NOWSubmissionDocuments = (props) => {
           </div>
         ),
       };
+
   const otherColumns = [
     {
       title: "Category",
@@ -71,20 +85,51 @@ export const NOWSubmissionDocuments = (props) => {
       key: "description",
       render: (text) => <div title="Proponent Description">{text}</div>,
     },
+    {
+      title: "Import Status",
+      key: "import_status",
+      render: (text, record) => {
+        let statusBadgeType = "warning";
+        let statusText = "Not Started";
+        if (record.document_manager_guid) {
+          statusBadgeType = "success";
+          statusText = "Success";
+        } else if (record.importNowSubmissionDocument) {
+          if (record.importNowSubmissionDocument.error) {
+            statusBadgeType = "error";
+            statusText = "Error";
+          } else {
+            statusBadgeType = "processing";
+            statusText = "In Progress";
+          }
+        }
+
+        return (
+          <div title="Import Status">
+            <Badge status={statusBadgeType} text={statusText} />
+          </div>
+        );
+      },
+    },
   ];
 
-  const columns = [fileNameColum, ...otherColumns];
+  const columns = [fileNameColumn, ...otherColumns];
+  const dataSource = transformDocuments(
+    props.documents,
+    props.importNowSubmissionDocumentsJob,
+    props.now_application_guid
+  );
 
   return (
     <div>
       <div>
-        <p>These files were included in the original application from the proponent</p>
+        <p>These files were included in the original application from the proponent.</p>
         <br />
         <Table
           align="left"
           pagination={false}
           columns={columns}
-          dataSource={transformDocuments(props.documents, props.now_application_guid)}
+          dataSource={dataSource}
           locale={{
             emptyText: "No Data Yet",
           }}

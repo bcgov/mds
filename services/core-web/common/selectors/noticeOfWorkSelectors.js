@@ -8,6 +8,7 @@ export const {
   getNoticeOfWorkPageData,
   getNoticeOfWork,
   getOriginalNoticeOfWork,
+  getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
 } = noticeOfWorkReducer;

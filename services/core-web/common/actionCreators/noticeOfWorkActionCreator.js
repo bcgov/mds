@@ -26,6 +26,25 @@ export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchImportNoticeOfWorkSubmissionDocumentsJob = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.docManUrl}${API.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB(
+        applicationGuid
+      )}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+      dispatch(noticeOfWorkActions.storeImportNoticeOfWorkSubmissionDocumentsJob(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
