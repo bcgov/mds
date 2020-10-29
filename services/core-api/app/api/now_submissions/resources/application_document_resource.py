@@ -68,7 +68,7 @@ class ApplicationDocumentResource(Resource, UserMixin):
         document_info = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
         if not document_info:
-            raise BadRequest('Valid token requred for download')
+            raise BadRequest('Valid token required for download')
 
         if document_info["originating_system"] == "VFCBC":
             return VFCBCDownloadService.download(document_info["documenturl"],
