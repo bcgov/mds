@@ -57,7 +57,7 @@ export const Validate = new Validator();
 export const required = (value) => (value || value === 0 ? undefined : "This is a required field");
 
 export const requiredRadioButton = (value) =>
-  value !== null ? undefined : "This is a required field";
+  value !== null && value !== undefined ? undefined : "This is a required field";
 
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
@@ -145,9 +145,8 @@ export const validateSelectOptions = memoize((data) => (value) => {
     return data.find((opt) => opt.value === value)
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
-  } 
-    return undefined;
-  
+  }
+  return undefined;
 });
 
 export const validateDateRanges = (

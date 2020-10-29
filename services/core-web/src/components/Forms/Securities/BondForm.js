@@ -178,7 +178,7 @@ export class BondForm extends Component {
                 name="payer_party_guid"
                 label="Payer*"
                 partyLabel="payee"
-                initialValue={this.props.initialPartyValue}
+                initialValues={this.props.initialPartyValue}
                 validate={[required]}
                 allowAddingParties
               />

@@ -33,7 +33,6 @@ exports[`Equipment renders edit properly 1`] = `
           "title": "Capacity",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "capacity",
         },
@@ -77,7 +76,6 @@ exports[`Equipment renders view properly 1`] = `
           "component": [Function],
           "title": "Capacity",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "capacity",

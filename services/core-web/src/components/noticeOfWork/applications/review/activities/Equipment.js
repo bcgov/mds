@@ -34,7 +34,7 @@ export const Equipment = (props) => {
             title: "Capacity",
             value: "capacity",
             component: RenderField,
-            validate: [required, number],
+            validate: [required],
           },
         ]}
       />
