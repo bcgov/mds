@@ -45,6 +45,7 @@ const propTypes = {
   mine_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   noticeOfWorkType: PropTypes.string.isRequired,
@@ -714,6 +715,7 @@ export const ReviewNOWApplication = (props) => {
             <NOWSubmissionDocuments
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
+              importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
             />
           </ScrollContentWrapper>
           <ScrollContentWrapper

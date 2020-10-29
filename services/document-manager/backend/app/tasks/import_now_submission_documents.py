@@ -131,13 +131,11 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     data=json.dumps(data))
 
                 # TODO check this
-                if resp and resp.status_code != requests.codes.ok:
+                if resp.status_code != requests.codes.ok:
                     db.session.rollback()
                     db.session.delete(doc)
                     db.session.commit()
-                    raise Exception(
-                        f'Request to update now_submission.document failed for document_guid: {guid}'
-                    )
+                    raise Exception(f'Request to update now_submission.document failed!')
 
                 success_imports.append(import_doc.submission_document_id)
                 logger.info(f'{doc_prefix} Import {"COMPLETE" if uploaded else "UNNECESSARY"}')
