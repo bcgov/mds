@@ -1,6 +1,7 @@
 from sqlalchemy.schema import FetchedValue
 from app.api.utils.models_mixins import Base
 from app.extensions import db
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class Document(Base):
@@ -12,6 +13,11 @@ class Document(Base):
     filename = db.Column(db.String)
     documenttype = db.Column(db.String)
     description = db.Column(db.String)
+    document_manager_document_guid = db.Column(UUID(as_uuid=True), nullable=True)
 
     def __repr__(self):
         return '<Document %r>' % self.id
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).one()

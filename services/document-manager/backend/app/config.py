@@ -78,6 +78,7 @@ class Config(object):
     OBJECT_STORE_ACCESS_KEY = os.environ.get('OBJECT_STORE_ACCESS_KEY', '')
     OBJECT_STORE_BUCKET = os.environ.get('OBJECT_STORE_BUCKET', '')
     S3_PREFIX = os.environ.get('S3_PREFIX', 'mds-files-local/')
+    CORE_API_URL = os.environ.get('CORE_API_URL', 'http://mds_backend:5000')
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
