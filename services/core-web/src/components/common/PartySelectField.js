@@ -113,7 +113,11 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (this.props.initialValues.label && this.props.initialValues.value) {
+    if (
+      this.props.initialValues &&
+      this.props.initialValues.label &&
+      this.props.initialValues.value
+    ) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
         selectedOption: {
@@ -139,6 +143,7 @@ export class PartySelectField extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const initialValuesChangedNotByUser =
+      this.props.initialValues &&
       !this.state.userSelected &&
       this.state.selectedOption.value &&
       this.props.initialValues.value !== nextProps.initialValues.value;
@@ -221,6 +226,7 @@ export class PartySelectField extends Component {
   validOption = (value) => {
     // ignore this validation if an initialValues is passed in
     if (
+      this.props.initialValues &&
       this.props.initialValues.label &&
       this.props.initialValues.value &&
       this.props.initialValues.value !== this.state.selectedOption.value
