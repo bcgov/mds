@@ -24,7 +24,7 @@ const transformDocuments = (documents, now_application_guid) =>
     url: document.documenturl,
     category: document.documenttype || Strings.EMPTY_FIELD,
     description: document.description || Strings.EMPTY_FIELD,
-    document_manager_guid: record.document_manager_document_guid,
+    document_manager_guid: document.document_manager_document_guid,
   }));
 
 export const NOWSubmissionDocuments = (props) => {
@@ -43,7 +43,7 @@ export const NOWSubmissionDocuments = (props) => {
           <div title="File Name">
             <LinkButton
               onClick={() =>
-                record.document_manager_document_guid
+                record.document_manager_guid
                   ? downloadFileFromDocumentManager({
                       document_manager_guid: record.document_manager_guid,
                       document_name: record.filename,
