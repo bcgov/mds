@@ -255,6 +255,7 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                             'OBJECT_STORE_ENABLED': '0',
                             'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/"
+                            'CORE_API_URL': "https://${vars.modules.'mds-python-backend'.HOST_CORE}"
                     ]
                 ],
                 [

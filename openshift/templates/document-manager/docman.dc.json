@@ -63,6 +63,14 @@
       "value": "object-store-credentials"
     },
     {
+      "name":"CORE_API_AUTHORIZATION", 
+      "value":"core-api-authorization"
+    },
+    {
+      "name":"CORE_API_URL",
+      "required":true
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
@@ -401,6 +409,46 @@
                       "secretKeyRef": {
                         "name": "${OBJECT_STORE_SECRET_NAME}",
                         "key": "endpoint"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CORE_API_URL",
+                    "value": "${CORE_API_URL}"
+                  },
+                  {
+                    "name": "AUTHENTICATION_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "authentication-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "GRANT_TYPE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "grant-type"
                       }
                     }
                   },
