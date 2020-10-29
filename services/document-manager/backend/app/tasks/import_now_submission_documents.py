@@ -22,7 +22,6 @@ RETRY_DELAYS = [15, 15, 15, 15]
 #     TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS,
 #     TIMEOUT_12_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS
 # ]
-MAX_RETRIES = len(RETRY_DELAYS)
 
 
 def get_originating_system(import_now_submission_document):
@@ -47,7 +46,7 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
-@celery.task(bind=True, acks_late=True)
+@celery.task(bind=True, acks_late=True, max_retries=None)
 def import_now_submission_documents(self, import_now_submission_documents_job_id):
     result = None
     success = False
@@ -81,7 +80,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         # Import the documents
         for i, import_doc in enumerate(import_documents):
             doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
-            logger.info(f'{doc_prefix} Importing attempt {import_job.attempt}/{MAX_RETRIES}...')
+            logger.info(f'{doc_prefix} Importing attempt #{import_job.attempt}...')
             try:
                 # Stream the file from its hosted location
                 originating_system = get_originating_system(import_doc)
@@ -172,16 +171,15 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         import_job.import_now_submission_documents_job_status_code = 'SUC'
         import_job.save()
         return result
+
+    import_job.error = result
+    if import_job.attempt >= len(RETRY_DELAYS):
+        import_job.import_now_submission_documents_job_status_code = 'FAI'
     else:
-        import_job.error = result
-        if import_job.attempt == MAX_RETRIES:
-            import_job.complete_timestamp = current_timestamp
-            import_job.import_now_submission_documents_job_status_code = 'FAI'
-            import_job.save()
-            raise Exception(result)
         import_job.import_now_submission_documents_job_status_code = 'DEL'
-        import_job.save()
-        self.retry(exc=result, countdown=RETRY_DELAYS[import_job.attempt - 1])
+    import_job.save()
+    index = min(import_job.attempt - 1, len(RETRY_DELAYS) - 1)
+    self.retry(exc=result, countdown=RETRY_DELAYS[index])
 
 
 def link_now_submission_document_to_document_manager_document(guid,

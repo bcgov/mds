@@ -148,8 +148,10 @@ export const NOWSubmissionDocuments = (props) => {
       jobStatusMessage = "All submission documents have been successfully imported into Core.";
     } else if (jobStatus === "FAI") {
       jobStatusDescription = "Failure";
-      jobStatusMessage =
-        "The import job has failed and the maximum number of attempts to automatically retry has been reached. Please contact us for assistance.";
+      jobStatusMessage = `The import job has failed ${props.importNowSubmissionDocumentsJob
+        .attempt - 1} times. The next attempt will be performed on ${formatDateTime(
+        props.importNowSubmissionDocumentsJob.next_attempt_timestamp
+      )}.`;
     } else if (jobStatus === "INP") {
       jobStatusDescription = "In Progress";
       jobStatusMessage = "An import job is currently in progress.";

@@ -36,8 +36,10 @@ class ImportNowSubmissionDocumentsJob(Base):
     @hybrid_property
     def next_attempt_timestamp(self):
         from app.tasks.import_now_submission_documents import RETRY_DELAYS
-        if self.import_now_submission_documents_job_status_code == "DEL":
-            return self.end_timestamp + datetime.timedelta(seconds=RETRY_DELAYS[self.attempt - 1])
+        if self.import_now_submission_documents_job_status_code in ('DEL', 'FAI'):
+            return self.end_timestamp + datetime.timedelta(
+                seconds=RETRY_DELAYS[min(self.attempt - 1,
+                                         len(RETRY_DELAYS) - 1)])
         return None
 
     def __repr__(self):
