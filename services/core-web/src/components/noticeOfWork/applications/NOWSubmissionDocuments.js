@@ -1,7 +1,10 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
-import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import {
+  downloadNowDocument,
+  downloadFileFromDocumentManager,
+} from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 
@@ -21,6 +24,7 @@ const transformDocuments = (documents, now_application_guid) =>
     url: document.documenturl,
     category: document.documenttype || Strings.EMPTY_FIELD,
     description: document.description || Strings.EMPTY_FIELD,
+    document_manager_guid: record.document_manager_document_guid,
   }));
 
 export const NOWSubmissionDocuments = (props) => {
@@ -39,7 +43,12 @@ export const NOWSubmissionDocuments = (props) => {
           <div title="File Name">
             <LinkButton
               onClick={() =>
-                downloadNowDocument(record.key, record.now_application_guid, record.filename)
+                record.document_manager_document_guid
+                  ? downloadFileFromDocumentManager({
+                      document_manager_guid: record.document_manager_guid,
+                      document_name: record.filename,
+                    })
+                  : downloadNowDocument(record.key, record.now_application_guid, record.filename)
               }
             >
               <span>{text}</span>
