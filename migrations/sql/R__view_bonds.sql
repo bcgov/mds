@@ -107,7 +107,7 @@ FROM
                   sec_amt, 
                   bond_type_code, 
                   null, 
-                  'ACT' bond_status_code, 
+                  'ACT' as bond_status_code, 
                   null, 
                   cnt_dt, 
                   "comment", 
