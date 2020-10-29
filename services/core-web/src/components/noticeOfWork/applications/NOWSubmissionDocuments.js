@@ -148,8 +148,7 @@ export const NOWSubmissionDocuments = (props) => {
       jobStatusMessage = "All submission documents have been successfully imported into Core.";
     } else if (jobStatus === "FAI") {
       jobStatusDescription = "Failure";
-      jobStatusMessage = `The import job has failed ${props.importNowSubmissionDocumentsJob
-        .attempt - 1} times. The next attempt will be performed on ${formatDateTime(
+      jobStatusMessage = `The import job has failed. The next attempt will be performed on ${formatDateTime(
         props.importNowSubmissionDocumentsJob.next_attempt_timestamp
       )}.`;
     } else if (jobStatus === "INP") {
@@ -190,6 +189,8 @@ export const NOWSubmissionDocuments = (props) => {
             <b>End time:</b> {jobEndTime ? formatDateTime(jobEndTime) : Strings.EMPTY_FIELD}
             <br />
             <b>Progress:</b> {amountImported}/{amountToImport} imported
+            <br />
+            <b>Attempt:</b> {props.importNowSubmissionDocumentsJob.attempt}
             <br />
           </p>
         </div>
