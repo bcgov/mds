@@ -142,7 +142,7 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
 
 export const validateSelectOptions = memoize((data) => (value) => {
   if (value && data.length > 0) {
-    return data.find((opt) => opt.value === value)
+    return data.find((opt) => opt.value === value) !== undefined
       ? undefined
       : "Invalid. Select an option provided in the dropdown.";
   }

@@ -9,7 +9,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form, Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required, yearNotInFuture, validateSelectOptions } from "@common/utils/Validate";
+import { required, yearNotInFuture } from "@common/utils/Validate";
 import {
   resetForm,
   createDropDownList,
@@ -138,10 +138,7 @@ export class AddReportForm extends Component {
             data={this.props.dropdownMineReportCategoryOptions}
             doNotPinDropdown
             component={renderConfig.SELECT}
-            validate={[
-              required,
-              validateSelectOptions(this.props.dropdownMineReportCategoryOptions),
-            ]}
+            validate={[required]}
           />
         )}
 
@@ -153,10 +150,7 @@ export class AddReportForm extends Component {
           data={this.state.dropdownMineReportDefinitionOptionsFiltered}
           doNotPinDropdown
           component={renderConfig.SELECT}
-          validate={[
-            required,
-            validateSelectOptions(this.state.dropdownMineReportDefinitionOptionsFiltered),
-          ]}
+          validate={[required]}
           onChange={this.updateDueDateWithDefaultDueDate}
           props={{ disabled: !this.props.selectedMineReportCategory }}
         />
