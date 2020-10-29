@@ -29,5 +29,6 @@ IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB = api.model(
         'now_application_guid': fields.String,
         'import_now_submission_documents_job_status_code': fields.String,
         'import_now_submission_documents': fields.List(
-            fields.Nested(IMPORT_NOW_SUBMISSION_DOCUMENT))
+            fields.Nested(IMPORT_NOW_SUBMISSION_DOCUMENT)),
+        'next_attempt_timestamp': fields.DateTime
     })

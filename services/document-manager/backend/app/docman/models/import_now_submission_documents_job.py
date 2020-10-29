@@ -1,7 +1,11 @@
+import datetime
+
 from app.extensions import db
 from app.utils.models_mixins import Base
+
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class ImportNowSubmissionDocumentsJob(Base):
@@ -28,6 +32,13 @@ class ImportNowSubmissionDocumentsJob(Base):
 
     import_now_submission_documents = db.relationship(
         'ImportNowSubmissionDocument', lazy='selectin')
+
+    @hybrid_property
+    def next_attempt_timestamp(self):
+        from app.tasks.import_now_submission_documents import RETRY_DELAYS
+        if self.import_now_submission_documents_job_status_code == "DEL":
+            return self.end_timestamp + datetime.timedelta(seconds=RETRY_DELAYS[self.attempt - 1])
+        return None
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.import_now_submission_documents_job_id}>'

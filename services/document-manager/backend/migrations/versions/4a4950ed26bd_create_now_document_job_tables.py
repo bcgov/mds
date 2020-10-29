@@ -39,7 +39,7 @@ def upgrade():
                 'import_now_submission_documents_job_status.import_now_submission_documents_job_status_code'
             ),
             nullable=False,
-            server_default='INP'), sa.Column('create_user', sa.String(), nullable=False),
+            server_default='NOT'), sa.Column('create_user', sa.String(), nullable=False),
         sa.Column('now_application_id', sa.Integer(), nullable=False),
         sa.Column('now_application_guid', UUID(as_uuid=True), nullable=False),
         sa.Column('celery_task_id', sa.String(), nullable=True),
@@ -77,6 +77,14 @@ def upgrade():
         {
             'import_now_submission_documents_job_status_code': 'REV',
             'description': 'Revoked',
+        },
+        {
+            'import_now_submission_documents_job_status_code': 'NOT',
+            'description': 'Not Started',
+        },
+        {
+            'import_now_submission_documents_job_status_code': 'DEL',
+            'description': 'Delayed',
         },
     ])
 

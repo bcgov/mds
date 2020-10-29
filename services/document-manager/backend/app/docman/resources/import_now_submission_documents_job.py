@@ -34,8 +34,8 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         in_progress_jobs = ImportNowSubmissionDocumentsJob.query.filter(
             and_(
                 ImportNowSubmissionDocumentsJob.now_application_id == now_application_id,
-                ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code ==
-                'INP')).all()
+                ImportNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code.in_(
+                    ['NOT', 'INP', 'DEL']))).all()
         for job in in_progress_jobs:
             job.import_now_submission_documents_job_status_code = 'REV'
             celery.control.revoke(job.celery_task_id, terminate=True)

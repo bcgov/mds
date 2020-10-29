@@ -65,6 +65,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
 
         # Update job-start information
         import_job.attempt += 1
+        import_job.import_now_submission_documents_job_status_code = 'INP'
         current_timestamp = datetime.utcnow()
         import_job.start_timestamp = current_timestamp
         if not import_job.create_timestamp:
@@ -178,6 +179,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             import_job.import_now_submission_documents_job_status_code = 'FAI'
             import_job.save()
             raise Exception(result)
+        import_job.import_now_submission_documents_job_status_code = 'DEL'
         import_job.save()
         self.retry(exc=result, countdown=RETRY_DELAYS[import_job.attempt - 1])
 

@@ -1,6 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Table, Badge } from "antd";
+import { Table, Badge, Typography } from "antd";
+import { ImportOutlined } from "@ant-design/icons";
+import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import {
   downloadNowDocument,
@@ -11,12 +13,14 @@ import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
-  documents: PropTypes.arrayOf(PropTypes.any).isRequired,
+  documents: PropTypes.arrayOf(PropTypes.any),
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   selectedRows: PropTypes.objectOf(PropTypes.any),
 };
 
-const defaultProps = { selectedRows: null, importNowSubmissionDocumentsJob: {} };
+const defaultProps = { selectedRows: null, importNowSubmissionDocumentsJob: {}, documents: [] };
+
+const { Title, Paragraph, Text } = Typography;
 
 const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
   documents &&
@@ -120,9 +124,81 @@ export const NOWSubmissionDocuments = (props) => {
     props.now_application_guid
   );
 
+  const renderImportJobStatus = () => {
+    const jobStatus = props.importNowSubmissionDocumentsJob
+      ? props.importNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code
+      : null;
+
+    const jobStartTime = props.importNowSubmissionDocumentsJob
+      ? props.importNowSubmissionDocumentsJob.start_timestamp
+      : null;
+    const jobEndTime = props.importNowSubmissionDocumentsJob
+      ? props.importNowSubmissionDocumentsJob.end_timestamp
+      : null;
+
+    // TODO: Bring over the status codes as static content and create a hash lookup for getting the descriptions.
+    let jobStatusDescription = "Not Applicable";
+    let jobStatusMessage =
+      "An import job will be started once the Notice of Work has been verified.";
+    if (jobStatus === "NOT") {
+      jobStatusDescription = "Not Started";
+      jobStatusMessage = "An import job has been created but hasn't started.";
+    } else if (jobStatus === "SUC") {
+      jobStatusDescription = "Success";
+      jobStatusMessage = "All submission documents have been successfully imported into Core.";
+    } else if (jobStatus === "FAI") {
+      jobStatusDescription = "Failure";
+      jobStatusMessage =
+        "The import job has failed and the maximum number of attempts to automatically retry has been reached. Please contact us for assistance.";
+    } else if (jobStatus === "INP") {
+      jobStatusDescription = "In Progress";
+      jobStatusMessage = "An import job is currently in progress.";
+    } else if (jobStatus === "DEL") {
+      jobStatusDescription = "Delayed";
+      jobStatusMessage = `The previous job to import the documents failed. The next attempt will be performed on ${formatDateTime(
+        props.importNowSubmissionDocumentsJob.next_attempt_timestamp
+      )}.`;
+    }
+
+    const amountToImport = props.documents.length;
+    const amountImported = props.documents.filter((doc) => doc.document_manager_document_guid)
+      .length;
+
+    return (
+      <div
+        style={{
+          display: "inline-block",
+          backgroundColor: "#f4f0f0",
+          padding: 16,
+          borderRadius: 5,
+          marginBottom: 24,
+        }}
+      >
+        <p style={{ fontWeight: "bold" }}>
+          <ImportOutlined style={{ marginRight: 8 }} />
+          Submission Documents Import Job
+        </p>
+        <div style={{ marginLeft: 24 }}>
+          <p>{jobStatusMessage}</p>
+          <p>
+            <b>Status:</b> {jobStatusDescription}
+            <br />
+            <b>Start time:</b> {jobStartTime ? formatDateTime(jobStartTime) : Strings.EMPTY_FIELD}
+            <br />
+            <b>End time:</b> {jobEndTime ? formatDateTime(jobEndTime) : Strings.EMPTY_FIELD}
+            <br />
+            <b>Progress:</b> {amountImported}/{amountToImport} imported
+            <br />
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
       <div>
+        {renderImportJobStatus()}
         <p>These files were included in the original application from the proponent.</p>
         <br />
         <Table
