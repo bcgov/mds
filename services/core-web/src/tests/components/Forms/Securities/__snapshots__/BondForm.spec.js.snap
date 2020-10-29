@@ -74,7 +74,7 @@ exports[`BondForm renders properly 1`] = `
         <Connect(PartySelectField)
           allowAddingParties={true}
           id="payer_party_guid"
-          initialValue={Object {}}
+          initialValues={Object {}}
           label="Payer*"
           name="payer_party_guid"
           partyLabel="payee"
