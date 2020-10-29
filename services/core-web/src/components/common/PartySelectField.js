@@ -100,6 +100,7 @@ export class PartySelectField extends Component {
     selectedOption: { value: "", label: "" },
     partyDataSource: [],
     showingAddPartyForm: false,
+    userSelected: false,
     initialSearch: this.props.initialSearch,
   };
 
@@ -137,12 +138,13 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const initialValuesChanged =
+    const initialValuesChangedNotByUser =
+      !this.state.userSelected &&
       this.state.selectedOption.value &&
       this.props.initialValues.value !== nextProps.initialValues.value;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
-    if (initialValuesChanged) {
+    if (initialValuesChangedNotByUser) {
       this.handleSearch(nextProps.initialValues.label);
       this.setState({
         selectedOption: {
@@ -202,6 +204,7 @@ export class PartySelectField extends Component {
   };
 
   handleSearch = (value) => {
+    this.setState({ userSelected: false });
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
@@ -209,7 +212,7 @@ export class PartySelectField extends Component {
   };
 
   handleSelect = (value, option) => {
-    this.setState({ selectedOption: option });
+    this.setState({ selectedOption: option, userSelected: true });
   };
 
   // Validator to ensure the selected option is in the collection of available options.
