@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 from celery.utils.log import get_task_logger
 
-from app.extensions import db
+from app.extensions import db, cache
 from app.services.object_store_storage_service import ObjectStoreStorageService
 from app.docman.models.document import Document
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -55,6 +55,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
     success_imports = []
     import_documents = []
     doc_ids = []
+    import_job = None
     try:
         logger = get_task_logger(str(import_now_submission_documents_job_id))
 
@@ -118,21 +119,12 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 db.session.add(doc)
                 db.session.commit()
 
-                data = {'document_manager_document_guid': str(guid)}
-                resp = requests.put(
-                    url=
-                    f'{Config.CORE_API_URL}/now-submissions/applications/{import_job.now_application_guid}/document/{import_doc.submission_document_id}',
-                    headers={
-                        'Content-Type':
-                        'application/json',
-                        'Authorization':
-                        'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyT1BJR0VrQ2JBTzFHZHZHcEE1dC1KTTRpamEwWmlFYzZLaXZzYlJSM3dnIn0.eyJleHAiOjE2MDM5Nzc1NTYsImlhdCI6MTYwMzkxOTk1NiwiYXV0aF90aW1lIjoxNjAzOTA3OTI4LCJqdGkiOiJhZjAzMTZjYi02ZmVjLTRlZTAtYTE4ZC04YmQ0MmRlN2FiNWIiLCJpc3MiOiJodHRwczovL3Nzby10ZXN0LnBhdGhmaW5kZXIuZ292LmJjLmNhL2F1dGgvcmVhbG1zL21kcyIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYWNjb3VudCIsImNlbnRyYWwtc2NoZWR1bGVyIl0sInN1YiI6ImVlNDUyMTM0LWMzOWEtNDU2Mi05MjI2LTdmNTliYzdjYjkyNSIsInR5cCI6IkJlYXJlciIsImF6cCI6Im1pbmVzLWFwcGxpY2F0aW9uLWxvY2FsIiwibm9uY2UiOiI5YjA5MDM0NS1hYTQzLTRjZjQtODIxOC1jMDViYWQyMzA1OGYiLCJzZXNzaW9uX3N0YXRlIjoiM2QzYjM1MjItNDUwZi00MmI2LTg0YjMtZGM1NzA1ODJlNmYwIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL2xvY2FsaG9zdDozMDAwIiwiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJjb3JlX2VkaXRfdmFyaWFuY2VzIiwiY29yZV9lZGl0X2ludmVzdGlnYXRpb25zIiwiZGlnZGFnX2FkbWluIiwiYWRtaW4iLCJjb3JlX2VkaXRfcmVwb3J0cyIsImNvcmVfY29udGFjdF9hZG1pbiIsImNvcmVfZWRpdF9wZXJtaXRzIiwibWRzX3VzZXJzIiwiY29yZV92aWV3X2FsbCIsIm1kc19hcHBsaWNhdGlvbl9hZG1pbnMiLCJvZmZsaW5lX2FjY2VzcyIsImNvcmVfY2xvc2VfcGVybWl0cyIsImNvcmVfZWRpdF9kbyIsInVtYV9hdXRob3JpemF0aW9uIiwibnJpc192aWV3X2FsbCIsImNvcmVfZWRpdF9zZWN1cml0aWVzIiwibWRzX3JlZ2lvbmFsX21pbmVzIiwiY29yZV9lZGl0X2FsbCIsImNvcmVfZWRpdF9taW5lcyIsImNvcmVfZ2Vvc3BhdGlhbCIsImNvcmVfZWRpdF9oaXN0b3JpY2FsX2FtZW5kbWVudHMiLCJjb3JlX2VkaXRfcGFydGllcyIsInRlc3RfZnVsbF9wZXJtaXNzaW9ucyIsImNvcmVfZWRpdF9zdWJtaXNzaW9ucyIsImNvcmVfZXhlY3V0aXZlX3ZpZXciLCJjb3JlX2FiYW5kb25lZF9taW5lcyIsImlkaXIiLCJjb3JlX2Vudmlyb25tZW50YWxfcmVwb3J0cyIsImNvcmVfYWRtaW4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctaWRlbnRpdHktcHJvdmlkZXJzIiwidmlldy1yZWFsbSIsIm1hbmFnZS1pZGVudGl0eS1wcm92aWRlcnMiLCJpbXBlcnNvbmF0aW9uIiwicmVhbG0tYWRtaW4iLCJjcmVhdGUtY2xpZW50IiwibWFuYWdlLXVzZXJzIiwicXVlcnktcmVhbG1zIiwidmlldy1hdXRob3JpemF0aW9uIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LXVzZXJzIiwibWFuYWdlLWV2ZW50cyIsIm1hbmFnZS1yZWFsbSIsInZpZXctZXZlbnRzIiwidmlldy11c2VycyIsInZpZXctY2xpZW50cyIsIm1hbmFnZS1hdXRob3JpemF0aW9uIiwibWFuYWdlLWNsaWVudHMiLCJxdWVyeS1ncm91cHMiXX0sImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfSwiY2VudHJhbC1zY2hlZHVsZXIiOnsicm9sZXMiOlsiYWRtaW4iXX19LCJzY29wZSI6Im9wZW5pZCIsImF1ZCI6Im1pbmVzLWFwcGxpY2F0aW9uLWxvY2FsIiwibmFtZSI6Ikh1c2Vpbm92LCBNZWtodGkgWCBFTVBSOkVYIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibWh1c2Vpbm8iLCJnaXZlbl9uYW1lIjoiSHVzZWlub3YsIE1la2h0aSBYIEVNUFI6RVgifQ.ebHOgra7Dj8WlfWpYbKENyc0XVbADdFUmV9sUo7lmAHsFAut3LLm2QwCIH8lIDuDg0-S2ISfYyNR1Q1CTrIGnO5pbELxvpZB7FFUnc1a7FAzFb0pEUciUWL1j5dyKEmx5h3lK0qugDu0sFj50AO-IBxiO8wuFG9dyf1bpadQhvQ0L-D23q-UNxZI6S6ERwvI_Iik7QqFV65hJvy9HgNayXhDjUATkF4B6QKyRNU5BP5VAAeYwgaiZ0Lcam5qnddtRg9oxsYc63KlhVYbYwfoLrA7yJ0PewGhXY16j1Pm_9sF93Mxz3DyYGQOnLlqInqlZc2egNfe6lUc_XLfFtAYdA'
-                    },
-                    data=json.dumps(data))
+                is_document_linked = link_now_submission_document_to_document_manager_document(
+                    guid, import_job, import_doc, import_now_submission_documents_job_id)
 
-                # TODO check this
-                if resp and resp.status_code != requests.codes.ok:
+                if not is_document_linked:
                     db.session.rollback()
+                    import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
                     raise Exception(
@@ -190,3 +182,62 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             raise Exception(result)
         import_job.save()
         self.retry(exc=result, countdown=RETRY_DELAYS[import_job.attempt - 1])
+
+
+def link_now_submission_document_to_document_manager_document(guid,
+                                                              import_job,
+                                                              import_doc,
+                                                              import_now_submission_documents_job_id,
+                                                              attempt=0):
+    authorization_token = get_core_authorization_token(import_now_submission_documents_job_id)
+    data = {'document_manager_document_guid': str(guid)}
+    resp = requests.put(
+        url=
+        f'{Config.CORE_API_URL}/now-submissions/applications/{import_job.now_application_guid}/document/{import_doc.submission_document_id}',
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': authorization_token
+        },
+        data=json.dumps(data))
+
+    # TODO check this
+    if resp.status_code != requests.codes.ok:
+        if attempt < 5:
+            attempt += 1
+            link_now_submission_document_to_document_manager_document(guid, import_job, import_doc,
+                                                                      attempt)
+        else:
+            return False
+
+    return True
+
+
+def get_core_authorization_token(import_now_submission_documents_job_id, attempt=0):
+    logger = get_task_logger(str(import_now_submission_documents_job_id))
+    CORE_API_AUTHORIZATION_TOKEN = 'core_api_authorization_token'
+    token = cache.get(CORE_API_AUTHORIZATION_TOKEN)
+    # token = None
+    if not token:
+        data = {
+            'grant_type': Config.GRANT_TYPE,
+            'client_id': Config.CLIENT_ID,
+            'client_secret': Config.CLIENT_SECRET
+        }
+
+        resp = requests.post(
+            url=Config.AUTHENTICATION_URL,
+            headers={'Content-Type': 'application/x-www-form-urlencoded'},
+            data=data)
+
+        if resp.status_code != requests.codes.ok:
+            if attempt < 5:
+                attempt += 1
+                get_core_authorization_token(import_now_submission_documents_job_id, attempt)
+            else:
+                raise Exception('Failed to authorize to Core API')
+
+        resp_content = json.loads(resp.content)
+        token = f'{resp_content["token_type"]} {resp_content["access_token"]}'
+        cache.set(CORE_API_AUTHORIZATION_TOKEN, token, resp_content['expires_in'])
+
+    return token
