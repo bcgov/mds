@@ -13,7 +13,7 @@ import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSe
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { required } from "@common/utils/Validate";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
@@ -182,7 +182,7 @@ const renderContacts = ({
                         name={`${field}.mine_party_appt_type_code`}
                         component={RenderSelect}
                         data={filteredRelationships}
-                        validate={[required]}
+                        validate={[required, validateSelectOptions(filteredRelationships)]}
                       />
                     </Form.Item>
                     <Form.Item>

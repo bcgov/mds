@@ -6,7 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
@@ -33,7 +33,7 @@ export const EditPermitForm = (props) => (
             placeholder="Select a permit status"
             component={RenderSelect}
             data={props.permitStatusOptions}
-            validate={[required]}
+            validate={[required, validateSelectOptions(props.permitStatusOptions)]}
           />
         </Form.Item>
       </Col>

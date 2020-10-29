@@ -15,7 +15,14 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { required, lat, lon, maxLength, requiredRadioButton } from "@common/utils/Validate";
+import {
+  required,
+  lat,
+  lon,
+  maxLength,
+  requiredRadioButton,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -108,6 +115,7 @@ export const ReviewNOWApplication = (props) => {
             name="mine_region"
             component={RenderSelect}
             data={props.regionDropdownOptions}
+            validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
           <div className="field-title">
@@ -148,7 +156,7 @@ export const ReviewNOWApplication = (props) => {
             component={RenderSelect}
             data={props.applicationTypeOptions}
             disabled
-            validate={[required]}
+            validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
           />
           <div className="field-title">
             Permit Type
@@ -166,6 +174,7 @@ export const ReviewNOWApplication = (props) => {
             component={RenderSelect}
             data={props.permitTypeOptions}
             disabled={props.isViewMode}
+            validate={[validateSelectOptions(props.permitTypeOptions)]}
           />
           <div className="field-title">
             Type of Application

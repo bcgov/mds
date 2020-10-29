@@ -6,7 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength } from "@common/utils/Validate";
+import { required, maxLength, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
@@ -49,7 +49,7 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
               placeholder="Select a document type"
               component={renderConfig.SELECT}
               data={filteredDropDownOptions}
-              validate={[required]}
+              validate={[required, validateSelectOptions(filteredDropDownOptions)]}
             />
           </Form.Item>
           <Form.Item>

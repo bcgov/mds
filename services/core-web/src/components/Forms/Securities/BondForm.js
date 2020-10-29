@@ -14,6 +14,7 @@ import {
   date,
   dateNotBeforeOther,
   dateNotAfterOther,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { resetForm, upperCase, currencyMask } from "@common/utils/helpers";
 import { BOND_DOCUMENTS } from "@common/constants/API";
@@ -163,7 +164,7 @@ export class BondForm extends Component {
                 component={RenderSelect}
                 placeholder="Please select bond type"
                 data={this.props.bondTypeDropDownOptions}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.bondTypeDropDownOptions)]}
                 disabled={this.props.bond.bond_status_code === "CON"}
               />
             </Form.Item>
@@ -306,6 +307,7 @@ export class BondForm extends Component {
                 label="Province"
                 placeholder="Please select province"
                 component={RenderSelect}
+                validate={[validateSelectOptions(this.props.provinceOptions)]}
                 data={this.props.provinceOptions}
               />
             </Form.Item>
@@ -369,7 +371,11 @@ export class BondForm extends Component {
                 label={filesUploaded ? "Document Category*" : "Document Category"}
                 placeholder="Please select category"
                 component={RenderSelect}
-                validate={filesUploaded ? [required] : []}
+                validate={
+                  filesUploaded
+                    ? [required, validateSelectOptions(this.props.bondDocumentTypeDropDownOptions)]
+                    : [validateSelectOptions(this.props.bondDocumentTypeDropDownOptions)]
+                }
                 data={this.props.bondDocumentTypeDropDownOptions}
               />
             </Form.Item>
