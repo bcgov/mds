@@ -101,7 +101,7 @@ FROM
                   null as "update_user", 
                   'Yes' AS "is_current_record", 
                   'MMS_FDW' as "source"
-     FROM SES_BOND_STAGING) AS bond_data
+     FROM SES_BOND_STAGING
 	 
      UNION SELECT NULL, 
                   sec_amt, 
@@ -129,7 +129,7 @@ FROM
                   'No' AS "is_current_record", 
                   'MMS_FDW_HIST' as "source"
      FROM SES_BOND_STAGING
-	 WHERE bond_status_code IN ('REL','CON') AS bond_data
+	 WHERE bond_status_code IN ('REL','CON')) AS bond_data
 	 
 ORDER BY bond_id,
          is_current_record DESC;
