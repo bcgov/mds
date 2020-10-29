@@ -60,7 +60,7 @@ DECLARE
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS
 	SELECT
-	    mine_no||permit_no||recv_dt||COALESCE(iss_dt::varchar,
+	    mine_no||permit_no||recv_dt||COALESCE(iss_dt::varchar, appr_dt::varchar,
                                              ' null_issue_dt') AS combo_id,
 	    max(cid) permit_cid
 	FROM mms.mmspmt mmspmt
@@ -87,6 +87,7 @@ DECLARE
         mmspmt.cid AS permit_cid                            ,
         mmspmt.recv_dt AS recv_dt                           ,
         mmspmt.iss_dt AS iss_dt                             ,
+		mmspmt.appr_dt as appr_dt                           ,
         (SELECT end_dt
                 FROM mms.mmsnow
                 WHERE mms.mmsnow.cid = mmspmt.cid
@@ -270,7 +271,7 @@ DECLARE
 	    etl_permit_info.permit_no,
 	    etl_permit_info.permit_cid,
 	    etl_permit_info.recv_dt as received_date,
-	    etl_permit_info.iss_dt as issue_date,
+	    COALESCE(etl_permit_info.iss_dt, etl_permit_info.appr_dt) as issue_date,
 	    etl_permit_info.permit_expiry_dt as authorization_end_date,
 	    etl_permit_info.sta_cd as permit_status_code,
 	    --permittee info

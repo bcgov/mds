@@ -5,64 +5,42 @@ exports[`Equipment renders edit properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="equipment_id"
+    fieldName="equipment"
+    isViewMode={false}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "quantity",
-          "key": "quantity",
-          "render": [Function],
+          "component": [Function],
           "title": "Quantity",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "quantity",
         },
         Object {
-          "dataIndex": "description",
-          "key": "description",
-          "render": [Function],
+          "component": [Function],
           "title": "Description",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "description",
         },
         Object {
-          "dataIndex": "capacity",
-          "key": "capacity",
-          "render": [Function],
+          "component": [Function],
           "title": "Capacity",
-        },
-        Object {
-          "dataIndex": "remove",
-          "key": "remove",
-          "render": [Function],
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "capacity": "John Deere 690",
-          "description": "Excavator",
-          "index": 0,
-          "quantity": 1,
-          "state_modified": "",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "capacity",
         },
       ]
     }
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Equipment"
   />
-  <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
-    onClick={[Function]}
-    type="primary"
-  >
-    Add Equipment
-  </Button>
   <br />
 </div>
 `;
@@ -72,64 +50,42 @@ exports[`Equipment renders view properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <Table
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="equipment_id"
+    fieldName="equipment"
+    isViewMode={false}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "quantity",
-          "key": "quantity",
-          "render": [Function],
+          "component": [Function],
           "title": "Quantity",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "quantity",
         },
         Object {
-          "dataIndex": "description",
-          "key": "description",
-          "render": [Function],
+          "component": [Function],
           "title": "Description",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "description",
         },
         Object {
-          "dataIndex": "capacity",
-          "key": "capacity",
-          "render": [Function],
+          "component": [Function],
           "title": "Capacity",
-        },
-        Object {
-          "dataIndex": "remove",
-          "key": "remove",
-          "render": [Function],
-        },
-      ]
-    }
-    dataSource={
-      Array [
-        Object {
-          "capacity": "John Deere 690",
-          "description": "Excavator",
-          "index": 0,
-          "quantity": 1,
-          "state_modified": "",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "capacity",
         },
       ]
     }
-    locale={
-      Object {
-        "emptyText": "No Data Yet",
-      }
-    }
-    pagination={false}
-    rowKey="key"
+    type="Equipment"
   />
-  <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
-    onClick={[Function]}
-    type="primary"
-  >
-    Add Equipment
-  </Button>
   <br />
 </div>
 `;
