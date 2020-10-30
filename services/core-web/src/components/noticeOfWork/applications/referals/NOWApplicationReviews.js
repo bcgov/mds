@@ -41,7 +41,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
-
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
@@ -54,7 +54,9 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+};
 
 const ReviewerLabels = {
   FNC: "First Nations Advisor",
@@ -317,6 +319,7 @@ export class NOWApplicationReviews extends Component {
         mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
+        importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
@@ -341,6 +344,7 @@ export class NOWApplicationReviews extends Component {
       readyForReview: this.props.noticeOfWork.ready_for_review_date,
       noticeOfWorkReviews: this.props.noticeOfWorkReviews,
       noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
+      importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
       handleDelete: this.handleDeleteReview,
       openEditModal: this.openEditReviewModal,
       handleEdit: this.handleEditReview,

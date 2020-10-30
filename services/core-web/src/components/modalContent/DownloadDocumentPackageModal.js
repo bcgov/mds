@@ -12,6 +12,7 @@ import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   mineGuid: PropTypes.string.isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -19,6 +20,11 @@ const propTypes = {
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
+
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+};
+
 export const DownloadDocumentPackageModal = (props) => {
   const [selectedCoreRows, setSelectedCoreRows] = useState([]);
   const [selectedSubmissionRows, setSelectedSubmissionRows] = useState([]);
@@ -43,6 +49,7 @@ export const DownloadDocumentPackageModal = (props) => {
       <NOWSubmissionDocuments
         now_application_guid={props.noticeOfWorkGuid}
         documents={props.submissionDocuments}
+        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
         selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
       />
       <br />
@@ -83,4 +90,6 @@ const mapStateToProps = (state) => ({
 });
 
 DownloadDocumentPackageModal.propTypes = propTypes;
+DownloadDocumentPackageModal.defaultProps = defaultProps;
+
 export default connect(mapStateToProps)(DownloadDocumentPackageModal);

@@ -882,6 +882,7 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                     />
                   </div>
                 </LoadingWrapper>
