@@ -5,7 +5,7 @@ from flask_restplus.apidoc import apidoc
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, apm, migrate
+from app.extensions import api, cache, db, jwt, migrate
 
 from app.nris.models import *
 from app.nris.resources import *
