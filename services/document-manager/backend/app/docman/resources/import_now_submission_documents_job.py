@@ -7,6 +7,7 @@ from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
 from app.docman.models.import_now_submission_document import ImportNowSubmissionDocument
 from app.utils.include.user_info import User
+from app.utils.access_decorators import requires_role_edit_permit, requires_role_view_all
 from app.docman.response_models import IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB
 
 
@@ -18,8 +19,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
     parser.add_argument('now_application_guid', type=str, required=True)
     parser.add_argument('submission_documents', type=list, location='json', required=True)
 
-    # TODO: Determine required role(s).
-    # @requires_any_of()
+    @requires_role_edit_permit
     def post(self):
         from app.services.commands_helper import create_import_now_submission_documents
         from app.tasks.celery import celery
@@ -60,7 +60,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         import_job.save()
 
         # Create the Import NoW Submission Documents job.
-        # TODO: Handle case where this returns an error.
         message = create_import_now_submission_documents(
             import_job.import_now_submission_documents_job_id)
 
@@ -68,9 +67,8 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         resp = make_response(jsonify(message=message), 201)
         return resp
 
-    # TODO: Determine required role(s).
     @api.marshal_with(IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB, code=200)
-    # @requires_any_of()
+    @requires_role_view_all
     def get(self):
         now_application_guid = request.args.get('now_application_guid', None)
         if not now_application_guid:

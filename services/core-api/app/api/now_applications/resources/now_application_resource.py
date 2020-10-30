@@ -97,7 +97,7 @@ class NOWApplicationResource(Resource, UserMixin):
 
         return now_application_identity.now_application
 
-    # NOTE: Temporary method to test importing a Notice of Work's submission documents
+    # TODO: Remove me before publishing.
     def patch(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:

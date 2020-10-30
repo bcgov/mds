@@ -91,7 +91,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     file_stream = NROSDownloadService.download(import_doc.submission_document_url)
 
                 # Upload the file (using the file stream) to the object store
-                # TODO: Figure out what object_store_path should be.
                 filename = import_doc.submission_document_file_name
                 object_store_path = f'{import_job.now_application_guid}/{originating_system}/{filename}'
                 uploaded, key = ObjectStoreStorageService().upload_fileobj(
@@ -101,7 +100,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 current_timestamp = datetime.utcnow()
                 guid = str(uuid.uuid4())
                 db.session.rollback()
-                # TODO: Should full_storage_path and path_display_name be empty, since they were never stored on the filesystem?
                 doc = Document(
                     document_guid=guid,
                     full_storage_path='',
@@ -119,15 +117,15 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 db.session.add(doc)
                 db.session.commit()
 
-                is_document_linked = link_now_submission_document_to_document_manager_document(
+                # Associate the submission document record with the document record
+                is_associated, message = associate_now_submissions_document_with_document(
                     guid, import_job, import_doc, import_now_submission_documents_job_id)
-
-                if not is_document_linked:
+                if not is_associated:
                     db.session.rollback()
                     import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
-                    raise Exception(f'Request to update now_submission.document failed!')
+                    raise Exception(message)
 
                 success_imports.append(import_doc.submission_document_id)
                 logger.info(f'{doc_prefix} Import {"COMPLETE" if uploaded else "UNNECESSARY"}')
@@ -182,11 +180,11 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
     self.retry(exc=result, countdown=RETRY_DELAYS[index])
 
 
-def link_now_submission_document_to_document_manager_document(guid,
-                                                              import_job,
-                                                              import_doc,
-                                                              import_now_submission_documents_job_id,
-                                                              attempt=0):
+def associate_now_submissions_document_with_document(guid,
+                                                     import_job,
+                                                     import_doc,
+                                                     import_now_submission_documents_job_id,
+                                                     attempt=0):
     authorization_token = get_core_authorization_token(import_now_submission_documents_job_id)
     data = {'document_manager_document_guid': str(guid)}
     resp = requests.put(
@@ -198,23 +196,21 @@ def link_now_submission_document_to_document_manager_document(guid,
         },
         data=json.dumps(data))
 
-    # TODO check this
     if resp.status_code != requests.codes.ok:
         if attempt < 5:
             attempt += 1
-            link_now_submission_document_to_document_manager_document(guid, import_job, import_doc,
-                                                                      attempt)
+            associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)
         else:
-            return False
+            return False, f'Request to associate submission document with document record failed! Error {resp.status_code}: {resp.content}'
 
-    return True
+    return True, 'Request to associate submission document with document record succeeded.'
 
 
 def get_core_authorization_token(import_now_submission_documents_job_id, attempt=0):
     logger = get_task_logger(str(import_now_submission_documents_job_id))
+
     CORE_API_AUTHORIZATION_TOKEN = 'core_api_authorization_token'
     token = cache.get(CORE_API_AUTHORIZATION_TOKEN)
-    # token = None
     if not token:
         data = {
             'grant_type': Config.GRANT_TYPE,
