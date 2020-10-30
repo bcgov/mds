@@ -231,12 +231,15 @@ export class NOWApplicationReviews extends Component {
 
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
+
+    // TODO: Since the submission documents are now imported, we don't need to download them from external URL.
     const submissionDocs = this.props.noticeOfWork.submission_documents
       .map((document) => ({
         key: document.id,
         filename: document.filename,
       }))
       .filter((item) => selectedSubmissionRows.includes(item.key));
+
     const coreDocs = this.props.noticeOfWork.documents
       .map((document) => ({
         key: document.now_application_document_xref_guid,
@@ -247,7 +250,9 @@ export class NOWApplicationReviews extends Component {
 
     let currentFile = 0;
     const totalFiles = submissionDocs.length + coreDocs.length;
-    if (totalFiles === 0) return;
+    if (totalFiles === 0) {
+      return;
+    }
 
     submissionDocs.forEach((doc) =>
       getNowDocumentDownloadToken(
@@ -257,6 +262,7 @@ export class NOWApplicationReviews extends Component {
         docURLS
       )
     );
+
     coreDocs.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );

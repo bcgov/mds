@@ -16,6 +16,7 @@ from app.constants import TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTE
 from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
+# TODO: Use real delays before publishing.
 RETRY_DELAYS = [15, 15, 15, 15]
 # RETRY_DELAYS = [
 #     TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES,

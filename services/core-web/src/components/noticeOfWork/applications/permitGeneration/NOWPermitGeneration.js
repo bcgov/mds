@@ -38,6 +38,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   handleGenerateDocumentFormSubmit: PropTypes.func.isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -58,7 +59,7 @@ const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
 const originalPermit = "OGP";
 

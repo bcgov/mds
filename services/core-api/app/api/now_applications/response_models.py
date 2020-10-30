@@ -275,7 +275,8 @@ NOW_SUBMISSION_DOCUMENT = api.model(
         'filename': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
-        'document_manager_document_guid': fields.String
+        'document_manager_document_guid': fields.String,
+        'is_final_package': fields.Boolean
     })
 
 NOW_PARTY_APPOINTMENT = api.model(

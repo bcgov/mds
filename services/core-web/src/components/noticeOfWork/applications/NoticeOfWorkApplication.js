@@ -563,6 +563,7 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         isAmendment={isAmendment}
         documentType={
           isAmendment
@@ -941,6 +942,7 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationAdministrative
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />
                   </div>

@@ -200,7 +200,11 @@ export const NOWSubmissionDocuments = (props) => {
   return (
     <div>
       {renderImportJobStatus()}
-      <p>These files were included in the original application from the proponent.</p>
+      <p>
+        These files were included in the original application from the proponent.
+        {props.selectedRows &&
+          " You cannot select documents that have not been successfully imported into Core."}
+      </p>
       <br />
       <Table
         align="left"
@@ -217,6 +221,9 @@ export const NOWSubmissionDocuments = (props) => {
                 onChange: (selectedRowKeys) => {
                   props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
                 },
+                getCheckboxProps: (record) => ({
+                  disabled: record && !record.document_manager_guid,
+                }),
               }
             : null
         }

@@ -65,6 +65,8 @@ DOCUMENT = api.model(
         'filename': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
+        'document_manager_document_guid': fields.String,
+        'is_final_package': fields.Boolean
     })
 
 PLACER_ACTIVITY = api.model(

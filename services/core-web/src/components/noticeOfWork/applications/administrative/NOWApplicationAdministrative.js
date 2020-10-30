@@ -13,10 +13,16 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   handleSaveNOWEdit: PropTypes.func.isRequired,
 };
+
+const defaultProps = { importNowSubmissionDocumentsJob: {} };
+
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
+
 const exportedDocuments = ["NTR"];
+
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div className="page__content">
@@ -24,6 +30,7 @@ export const NOWApplicationAdministrative = (props) => {
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
+          importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           adminView
         />
       </ScrollContentWrapper>
@@ -66,5 +73,6 @@ export const NOWApplicationAdministrative = (props) => {
 };
 
 NOWApplicationAdministrative.propTypes = propTypes;
+NOWApplicationAdministrative.defaultProps = defaultProps;
 
 export default NOWApplicationAdministrative;
