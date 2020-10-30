@@ -1,7 +1,8 @@
+/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { arrayPush } from "redux-form";
+import { arrayPush, formValueSelector } from "redux-form";
 import { debounce } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
@@ -10,6 +11,10 @@ import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import {
+  fetchImportedNoticeOfWorkApplication,
+  updateNoticeOfWorkApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
@@ -33,6 +38,8 @@ const propTypes = {
   isAdminView: PropTypes.bool,
   handleAfterUpload: PropTypes.func,
   addDescriptionColumn: PropTypes.bool,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 const defaultProps = {
   selectedRows: null,
@@ -43,7 +50,13 @@ const defaultProps = {
   handleAfterUpload: () => {},
 };
 
-const handleAddDocument = (closeDocumentModal, addDocument, handleAfterUpload) => (values) => {
+const handleAddDocument = (
+  closeDocumentModal,
+  addDocument,
+  updateNoticeOfWorkApplication,
+  nowGuid,
+  fetchImportedNoticeOfWorkApplication
+) => (values) => {
   const document = {
     now_application_document_type_code: values.now_application_document_type_code,
     description: values.description,
@@ -54,9 +67,14 @@ const handleAddDocument = (closeDocumentModal, addDocument, handleAfterUpload) =
       mine_guid: values.mine_guid,
     },
   };
-  addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", document);
-  closeDocumentModal();
-  handleAfterUpload();
+  return updateNoticeOfWorkApplication(
+    { documents: [document] },
+    nowGuid,
+    "Successfully added documents to this application."
+  ).then(() => {
+    fetchImportedNoticeOfWorkApplication(nowGuid);
+    closeDocumentModal();
+  });
 };
 
 const openAddDocumentModal = (
@@ -67,13 +85,20 @@ const openAddDocumentModal = (
   now_application_guid,
   mine_guid,
   categoriesToShow,
-  handleAfterUpload
+  updateNoticeOfWorkApplication,
+  fetchImportedNoticeOfWorkApplication
 ) => {
   event.preventDefault();
   openDocumentModal({
     props: {
       onSubmit: debounce(
-        handleAddDocument(closeDocumentModal, addDocument, handleAfterUpload),
+        handleAddDocument(
+          closeDocumentModal,
+          addDocument,
+          updateNoticeOfWorkApplication,
+          now_application_guid,
+          fetchImportedNoticeOfWorkApplication
+        ),
         2000
       ),
       title: `Add Notice of Work document`,
@@ -150,9 +175,14 @@ export const NOWDocuments = (props) => {
         dataIndex: "upload_date",
         key: "upload_date",
         sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-        render: (text, record) => (
-          <div title="Due">{formatDateTime(record.upload_date) || "Pending"}</div>
-        ),
+        render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
+      },
+      {
+        title: "Part of Permit",
+        dataIndex: "is_final_package",
+        key: "is_final_package",
+        sorter: (a, b) => (a.is_final_package > b.is_final_package ? -1 : 1),
+        render: (text, record) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
       },
     ];
 
@@ -182,6 +212,7 @@ export const NOWDocuments = (props) => {
           ]) ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
+      is_final_package: document.is_final_package || false,
     }));
 
   return (
@@ -202,7 +233,8 @@ export const NOWDocuments = (props) => {
                     props.now_application_guid,
                     props.mine_guid,
                     props.categoriesToShow,
-                    props.handleAfterUpload
+                    props.handleAfterUpload,
+                    props.fetchImportedNoticeOfWorkApplication
                   )
                 }
               >
@@ -240,25 +272,29 @@ export const NOWDocuments = (props) => {
             : null
         }
       />
+      <br />
 
-      {!props.selectedRows && !props.isViewMode && !props.isAdminView && (
-        <AddButton
-          disabled={props.isViewMode}
-          onClick={(event) =>
-            openAddDocumentModal(
-              event,
-              props.openModal,
-              props.closeModal,
-              props.arrayPush,
-              props.now_application_guid,
-              props.mine_guid,
-              props.categoriesToShow,
-              props.handleAfterUpload
-            )
-          }
-        >
-          Add Document
-        </AddButton>
+      {!props.selectedRows && !props.isViewMode && (
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <AddButton
+            disabled={props.isViewMode}
+            onClick={(event) =>
+              openAddDocumentModal(
+                event,
+                props.openModal,
+                props.closeModal,
+                props.arrayPush,
+                props.now_application_guid,
+                props.mine_guid,
+                props.categoriesToShow,
+                props.updateNoticeOfWorkApplication,
+                props.fetchImportedNoticeOfWorkApplication
+              )
+            }
+          >
+            Add Document
+          </AddButton>
+        </AuthorizationWrapper>
       )}
     </div>
   );
@@ -266,11 +302,12 @@ export const NOWDocuments = (props) => {
 
 NOWDocuments.propTypes = propTypes;
 NOWDocuments.defaultProps = defaultProps;
-
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
     state
   ),
+  documents: selector(state, "documents"),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -279,6 +316,8 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       arrayPush,
+      updateNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
     },
     dispatch
   );

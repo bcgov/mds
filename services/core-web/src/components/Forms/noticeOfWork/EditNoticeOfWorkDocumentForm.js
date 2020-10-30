@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -26,10 +26,12 @@ const propTypes = {
   ).isRequired,
   change: PropTypes.func.isRequired,
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
+  document_manager_guid: PropTypes.string,
 };
 
 const defaultProps = {
   categoriesToShow: [],
+  document_manager_guid: "",
 };
 
 export const EditNoticeOfWorkDocumentForm = (props) => {
@@ -45,11 +47,14 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
             <Field
               id="now_application_document_type_code"
               name="now_application_document_type_code"
-              label="Document type*"
+              label="Document Category*"
               placeholder="Select a document type"
               component={renderConfig.SELECT}
               data={filteredDropDownOptions}
-              validate={[required, validateSelectOptions(filteredDropDownOptions)]}
+              validate={[
+                required,
+                validateSelectOptions(props.dropdownNoticeOfWorkApplicationDocumentTypeOptions),
+              ]}
             />
           </Form.Item>
           <Form.Item>
@@ -70,6 +75,12 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
               component={renderConfig.CHECKBOX}
             />
           </Form.Item>
+          <h5>Document Upload*</h5>
+          <p className="p-light">
+            All files uploaded will be classified using the selected Category. To upload other file
+            types, re-open this form after submitting the current files.
+          </p>
+          <br />
           <Form.Item>
             <Form.Item>
               <Field
@@ -81,7 +92,8 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
                 }}
                 component={FileUpload}
                 uploadUrl={NOTICE_OF_WORK_DOCUMENT(props.now_application_guid)}
-                allowMultiple={false}
+                allowMultiple
+                allowRevert
               />
             </Form.Item>
           </Form.Item>
@@ -99,7 +111,13 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
+        <Button
+          className="full-mobile"
+          type="primary"
+          htmlType="submit"
+          loading={props.submitting}
+          disabled={!props.document_manager_guid}
+        >
           {props.title}
         </Button>
       </div>
@@ -110,11 +128,13 @@ export const EditNoticeOfWorkDocumentForm = (props) => {
 EditNoticeOfWorkDocumentForm.propTypes = propTypes;
 EditNoticeOfWorkDocumentForm.defaultProps = defaultProps;
 
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM);
 export default compose(
   connect((state) => ({
     dropdownNoticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
       state
     ),
+    document_manager_guid: selector(state, "document_manager_guid"),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK_DOCUMENT_FORM,

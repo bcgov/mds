@@ -71,7 +71,7 @@
 
   &--title {
     border-bottom: 1px solid $non-textual-grey;
-    width: 60vw;
+    width: 80vw;
 
     h3 {
       margin-left: 20px;
@@ -81,6 +81,7 @@
 
   &--body {
     padding: 20px;
+    padding-bottom: 50px;
   }
 }
 
@@ -146,7 +147,6 @@
       display: none;
     }
   }
-
 
   ul {
     list-style: none;

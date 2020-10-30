@@ -140,6 +140,15 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
+export const validateSelectOptions = memoize((data) => (value) => {
+  if (value && data.length > 0) {
+    return data.find((opt) => opt.value === value) !== undefined
+      ? undefined
+      : "Invalid. Select an option provided in the dropdown.";
+  }
+  return undefined;
+});
+
 export const validateDateRanges = (
   existingAppointments,
   newAppt,
