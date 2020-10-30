@@ -315,6 +315,7 @@ export class NOWApplicationReviews extends Component {
   openDownloadPackageModal = (event) => {
     event.preventDefault();
     this.props.openModal({
+      width: 910,
       props: {
         mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,

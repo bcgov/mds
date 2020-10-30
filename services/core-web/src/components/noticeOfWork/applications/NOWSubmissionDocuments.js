@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Table, Badge, Typography } from "antd";
+import { Table, Badge } from "antd";
 import { ImportOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
@@ -19,8 +19,6 @@ const propTypes = {
 };
 
 const defaultProps = { selectedRows: null, importNowSubmissionDocumentsJob: {}, documents: [] };
-
-const { Title, Paragraph, Text } = Typography;
 
 const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
   documents &&
@@ -109,7 +107,7 @@ export const NOWSubmissionDocuments = (props) => {
         }
 
         return (
-          <div title="Import Status">
+          <div title="Import Status" style={{ minWidth: 100 }}>
             <Badge status={statusBadgeType} text={statusText} />
           </div>
         );
@@ -173,6 +171,7 @@ export const NOWSubmissionDocuments = (props) => {
           padding: 16,
           borderRadius: 5,
           marginBottom: 24,
+          marginTop: 12,
         }}
       >
         <p style={{ fontWeight: "bold" }}>
@@ -200,30 +199,28 @@ export const NOWSubmissionDocuments = (props) => {
 
   return (
     <div>
-      <div>
-        {renderImportJobStatus()}
-        <p>These files were included in the original application from the proponent.</p>
-        <br />
-        <Table
-          align="left"
-          pagination={false}
-          columns={columns}
-          dataSource={dataSource}
-          locale={{
-            emptyText: "No Data Yet",
-          }}
-          rowSelection={
-            props.selectedRows
-              ? {
-                  selectedRowKeys: props.selectedRows.selectedSubmissionRows,
-                  onChange: (selectedRowKeys) => {
-                    props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
-                  },
-                }
-              : null
-          }
-        />
-      </div>
+      {renderImportJobStatus()}
+      <p>These files were included in the original application from the proponent.</p>
+      <br />
+      <Table
+        align="left"
+        pagination={false}
+        columns={columns}
+        dataSource={dataSource}
+        locale={{
+          emptyText: "No Data Yet",
+        }}
+        rowSelection={
+          props.selectedRows
+            ? {
+                selectedRowKeys: props.selectedRows.selectedSubmissionRows,
+                onChange: (selectedRowKeys) => {
+                  props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
+                },
+              }
+            : null
+        }
+      />
     </div>
   );
 };
