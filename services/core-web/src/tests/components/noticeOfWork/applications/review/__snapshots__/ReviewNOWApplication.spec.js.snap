@@ -1338,6 +1338,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         title="vFCBC/NROS Application Files"
       >
         <NOWSubmissionDocuments
+          documents={Array []}
           importNowSubmissionDocumentsJob={Object {}}
           selectedRows={null}
         />
