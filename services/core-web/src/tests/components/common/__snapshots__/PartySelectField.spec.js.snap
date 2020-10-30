@@ -5,12 +5,32 @@ exports[`PartySelectField renders properly 1`] = `
   allowAddingParties={false}
   component={[Function]}
   dataSource={Array []}
-  fetchSearchResults={[MockFunction]}
+  fetchSearchResults={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          "Mock Party",
+          "party",
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
   handleFocus={[Function]}
   handleSearch={[Function]}
   handleSelect={[Function]}
   id="party_guid"
-  initialValue=""
+  initialValues={
+    Object {
+      "label": "Mock Party",
+      "value": "29489218432",
+    }
+  }
   label="Name*"
   name="party_guid"
   organization={false}
@@ -19,8 +39,8 @@ exports[`PartySelectField renders properly 1`] = `
   searchResults={Array []}
   selectedOption={
     Object {
-      "label": "",
-      "value": "",
+      "label": "Mock Party",
+      "value": "29489218432",
     }
   }
   validate={
