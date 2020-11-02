@@ -303,6 +303,7 @@ declare
 		return_dt,
 		null
 	from ETL_BOND
+	where etl_update_date > (now() - interval '30 second') --only update with records seen this run.
 	ON CONFLICT (mms_sec_cid)
 	DO
 		UPDATE
@@ -322,7 +323,6 @@ declare
 				note=excluded.note,
 				issue_date=excluded.issue_date,
 				closed_date=excluded.closed_date
-		where excluded.update_timestamp > (now() - interval '30 second') --only update with records seen this run.
 	returning *
 	)
 
