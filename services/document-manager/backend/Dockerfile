@@ -15,5 +15,12 @@ COPY . .
 
 # Run the server
 EXPOSE 5001
+# RUN mkdir -p /var/log/celery /var/run/celery
+USER 0
 RUN mkdir -p /var/log/celery /var/run/celery
+RUN chmod -R ugo+rwx /var/log/celery
+RUN chmod -R ugo+rwx /var/run/celery
+RUN celery multi start worker1 --pidfile="/var/run/celery/celery.pid" --logfile="/var/log/celery/celery.log"
+
+USER 1001
 ENTRYPOINT [ "./init.sh" ]
