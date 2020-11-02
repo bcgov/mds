@@ -716,6 +716,7 @@ export const ReviewNOWApplication = (props) => {
               now_application_guid={props.now_application_guid}
               documents={props.submission_documents}
               importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+              displayTableDescription
             />
           </ScrollContentWrapper>
           <ScrollContentWrapper

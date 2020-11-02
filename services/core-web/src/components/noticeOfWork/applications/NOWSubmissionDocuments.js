@@ -16,9 +16,19 @@ const propTypes = {
   documents: PropTypes.arrayOf(PropTypes.any),
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   selectedRows: PropTypes.objectOf(PropTypes.any),
+  displayTableDescription: PropTypes.bool,
+  hideImportStatusColumn: PropTypes.bool,
+  hideJobStatusColumn: PropTypes.bool,
 };
 
-const defaultProps = { selectedRows: null, importNowSubmissionDocumentsJob: {}, documents: [] };
+const defaultProps = {
+  selectedRows: null,
+  importNowSubmissionDocumentsJob: {},
+  documents: [],
+  displayTableDescription: false,
+  hideImportStatusColumn: false,
+  hideJobStatusColumn: false,
+};
 
 const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
   documents &&
@@ -72,7 +82,7 @@ export const NOWSubmissionDocuments = (props) => {
         ),
       };
 
-  const otherColumns = [
+  let otherColumns = [
     {
       title: "Category",
       dataIndex: "category",
@@ -87,37 +97,43 @@ export const NOWSubmissionDocuments = (props) => {
       key: "description",
       render: (text) => <div title="Proponent Description">{text}</div>,
     },
-    {
-      title: "Import Status",
-      key: "import_status",
-      render: (text, record) => {
-        let statusBadgeType = "warning";
-        let statusText = "Not Started";
-        let error = null;
-        if (record.document_manager_guid) {
-          statusBadgeType = "success";
-          statusText = "Success";
-        } else if (record.importNowSubmissionDocument) {
-          if (record.importNowSubmissionDocument.error) {
-            error = record.importNowSubmissionDocument.error;
-            statusBadgeType = "error";
-            statusText = "Error";
-          } else {
-            statusBadgeType = "processing";
-            statusText = "In Progress";
-          }
-        }
-
-        return (
-          <Tooltip title={error || null} placement="right">
-            <div title="Import Status" style={{ minWidth: 100 }}>
-              <Badge status={statusBadgeType} text={statusText} />
-            </div>
-          </Tooltip>
-        );
-      },
-    },
   ];
+
+  if (!props.hideImportStatusColumn) {
+    otherColumns = [
+      ...otherColumns,
+      {
+        title: "Import Status",
+        key: "import_status",
+        render: (text, record) => {
+          let statusBadgeType = "warning";
+          let statusText = "Not Started";
+          let error = null;
+          if (record.document_manager_guid) {
+            statusBadgeType = "success";
+            statusText = "Success";
+          } else if (record.importNowSubmissionDocument) {
+            if (record.importNowSubmissionDocument.error) {
+              error = record.importNowSubmissionDocument.error;
+              statusBadgeType = "error";
+              statusText = "Error";
+            } else {
+              statusBadgeType = "processing";
+              statusText = "In Progress";
+            }
+          }
+
+          return (
+            <Tooltip title={error || null} placement="right">
+              <div title="Import Status" style={{ minWidth: 100 }}>
+                <Badge status={statusBadgeType} text={statusText} />
+              </div>
+            </Tooltip>
+          );
+        },
+      },
+    ];
+  }
 
   const columns = [fileNameColumn, ...otherColumns];
   const dataSource = transformDocuments(
@@ -138,7 +154,6 @@ export const NOWSubmissionDocuments = (props) => {
       ? props.importNowSubmissionDocumentsJob.end_timestamp
       : null;
 
-    // TODO: Bring over the status codes as static content and create a hash lookup for getting the descriptions.
     let jobStatusDescription = "Not Applicable";
     let jobStatusMessage =
       "An import job will be started once the Notice of Work has been verified.";
@@ -204,13 +219,17 @@ export const NOWSubmissionDocuments = (props) => {
 
   return (
     <div>
-      {renderImportJobStatus()}
-      <p>
-        These files were included in the original application from the proponent.
-        {props.selectedRows &&
-          " You cannot select documents that have not been successfully imported into Core."}
-      </p>
-      <br />
+      {!props.hideJobStatusColumn && renderImportJobStatus()}
+      {props.displayTableDescription && (
+        <>
+          <p>
+            These files were included in the original application from the proponent.
+            {props.selectedRows &&
+              " You cannot select documents that have not been successfully imported into Core."}
+          </p>
+          <br />
+        </>
+      )}
       <Table
         align="left"
         pagination={false}
