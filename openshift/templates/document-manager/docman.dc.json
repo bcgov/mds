@@ -504,7 +504,7 @@
                 "command": "cd /opt/app-root/src && celery worker -A app.tasks.celery --loglevel=info --concurrency=1",
                 "ports": [
                   {
-                    "containerPort": 5001,
+                    "containerPort": 5002,
                     "protocol": "TCP"
                   }
                 ],
@@ -733,7 +733,7 @@
                 "livenessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": 5001,
+                    "port": 5002,
                     "scheme": "HTTP"
                   },
                   "initialDelaySeconds": 15,
@@ -743,7 +743,7 @@
                 "readinessProbe": {
                   "httpGet": {
                     "path": "${BASE_PATH}/health",
-                    "port": 5001,
+                    "port": 5002,
                     "scheme": "HTTP"
                   }
                 },
