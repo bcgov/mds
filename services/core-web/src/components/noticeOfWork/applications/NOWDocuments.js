@@ -46,19 +46,21 @@ const defaultProps = {
 
 export const NOWDocuments = (props) => {
   const handleAddDocument = (values) => {
-    const document = {
-      now_application_document_type_code: values.now_application_document_type_code,
-      description: values.description,
-      is_final_package: values.is_final_package,
-      mine_document: {
-        document_manager_guid: values.document_manager_guid,
-        document_name: values.document_name,
-        mine_guid: props.noticeOfWork.mine_guid,
-      },
-    };
+    const documents = values.uploadedFiles.map((file) => {
+      return {
+        now_application_document_type_code: values.now_application_document_type_code,
+        description: values.description,
+        is_final_package: values.is_final_package,
+        mine_document: {
+          document_manager_guid: file[0],
+          document_name: file[1],
+          mine_guid: props.noticeOfWork.mine_guid,
+        },
+      };
+    });
     return props
       .updateNoticeOfWorkApplication(
-        { documents: [document] },
+        { documents },
         props.noticeOfWork.now_application_guid,
         "Successfully added documents to this application."
       )
