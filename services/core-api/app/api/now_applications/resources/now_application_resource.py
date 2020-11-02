@@ -79,13 +79,12 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.mine = mine
         now_application_identity.save()
 
-        # fire NOW documents import
+        # If not already requested, create the job to import this NoW's submission documents.
         if not now_application_identity.is_document_import_requested:
             now_application = now_application_identity.now_application
             resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
                 request, now_application)
-
-            now_application_identity.is_document_import_requested = resp and resp.status_code == requests.codes.created
+            now_application_identity.is_document_import_requested = resp.status_code == requests.codes.created
             now_application_identity.save()
 
         now_application_identity.now_application.deep_update_from_dict(data)
@@ -98,13 +97,14 @@ class NOWApplicationResource(Resource, UserMixin):
         return now_application_identity.now_application
 
     # TODO: Remove me before publishing.
+    # @requires_role_edit_permit
     def post(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
-        if now_application_identity.now_application_id:
-            now_application = now_application_identity.now_application
+        now_application = now_application_identity.now_application
+        if now_application:
             resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
                 request, now_application)
             return resp

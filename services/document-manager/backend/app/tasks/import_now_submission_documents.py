@@ -47,7 +47,7 @@ def task_result(job_id, task_id, success, message, success_docs, errors, doc_ids
     return json.dumps(result)
 
 
-@celery.task(bind=True, acks_late=True, max_retries=None)
+@celery.task(bind=True, max_retries=None, acks_late=True, task_reject_on_worker_lost=True)
 def import_now_submission_documents(self, import_now_submission_documents_job_id):
     result = None
     success = False
