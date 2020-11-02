@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Table, Badge } from "antd";
+import { Table, Badge, Tooltip } from "antd";
 import { ImportOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
@@ -93,11 +93,13 @@ export const NOWSubmissionDocuments = (props) => {
       render: (text, record) => {
         let statusBadgeType = "warning";
         let statusText = "Not Started";
+        let error = null;
         if (record.document_manager_guid) {
           statusBadgeType = "success";
           statusText = "Success";
         } else if (record.importNowSubmissionDocument) {
           if (record.importNowSubmissionDocument.error) {
+            error = record.importNowSubmissionDocument.error;
             statusBadgeType = "error";
             statusText = "Error";
           } else {
@@ -107,9 +109,11 @@ export const NOWSubmissionDocuments = (props) => {
         }
 
         return (
-          <div title="Import Status" style={{ minWidth: 100 }}>
-            <Badge status={statusBadgeType} text={statusText} />
-          </div>
+          <Tooltip title={error || null} placement="right">
+            <div title="Import Status" style={{ minWidth: 100 }}>
+              <Badge status={statusBadgeType} text={statusText} />
+            </div>
+          </Tooltip>
         );
       },
     },
