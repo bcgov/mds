@@ -25,13 +25,10 @@ RUN source /opt/app-root/etc/scl_enable && \
 #     chmod -R ugo+rwx celery
 #     cd /opt/app-root/src
     # celery worker -A app.tasks.celery --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=1\\
+USER 0
+RUN mkdir -p /var/log/celery /var/run/celery
+RUN chmod -R ugo+rwx /var/log/celery
+RUN chmod -R ugo+rwx /var/run/celery
+RUN celery multi start worker1 --pidfile="/var/run/celery/celery.pid" --logfile="/var/log/celery/celery.log"
 
-RUN cd /var/log \
-    mkdir celery \
-    chmod -R ugo+rwx celery \
-    cd /var/run \
-    mkdir celery \
-    chmod -R ugo+rwx celery \
-    celery multi start worker1 \
-    --pidfile="/var/run/celery/celery.pid" \
-    --logfile="/var/log/celery/celery.log"
+USER 1001
