@@ -212,7 +212,9 @@ export class NOWPermitGeneration extends Component {
 
   startDraftPermit = () => {
     this.setState({ isLoaded: false });
+    console.log(this.props.preDraftFormValues);
     if (this.props.preDraftFormValues.permit_guid) {
+      console.log("inside the if");
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
@@ -227,6 +229,7 @@ export class NOWPermitGeneration extends Component {
           this.handleDraftPermit();
         });
     } else {
+      console.log("inside the else");
       this.createPermit(this.props.preDraftFormValues.is_exploration);
     }
   };
@@ -342,6 +345,7 @@ export class NOWPermitGeneration extends Component {
                               sm={{ span: 12, offset: 6 }}
                             >
                               <PreDraftPermitForm
+                                initialValues={{ is_exploration: false }}
                                 cancelPreDraft={this.cancelPreDraft}
                                 permits={this.props.permits}
                                 isAmendment={this.props.isAmendment}
