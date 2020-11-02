@@ -322,6 +322,7 @@ declare
 				note=excluded.note,
 				issue_date=excluded.issue_date,
 				closed_date=excluded.closed_date
+		where excluded.update_timestamp > (now() - interval '30 second') --only update with records seen this run.
 	returning *
 	)
 
