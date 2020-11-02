@@ -63,7 +63,6 @@ export const VerifyApplicationInformationForm = (props) => {
       <Divider />
       <EditNoWContacts
         initialValues={props.originalNoticeOfWork}
-        contacts={props.originalNoticeOfWork.contacts}
         contactFormValues={props.contactFormValues}
         isVerifying
       />

@@ -84,7 +84,7 @@ FROM
                   null, 
                   cnt_dt, 
                   "comment", 
-                  null, 
+                  CASE WHEN bond_type_code IN ('REL', 'CON') THEN cnt_dt ELSE null END as "closed_date", 
                   null, 
                   null::uuid, 
                   cmp_nm, 
@@ -101,6 +101,35 @@ FROM
                   null as "update_user", 
                   'Yes' AS "is_current_record", 
                   'MMS_FDW' as "source"
-     FROM SES_BOND_STAGING) AS bond_data
+     FROM SES_BOND_STAGING
+	 
+     UNION SELECT NULL, 
+                  sec_amt, 
+                  bond_type_code, 
+                  null, 
+                  'ACT' as "bond_status_code", 
+                  null, 
+                  cnt_dt, 
+                  "comment", 
+                  null, 
+                  null, 
+                  null::uuid, 
+                  cmp_nm, 
+                  institution_city, 
+                  institution_name, 
+                  institution_province, 
+                  institution_street, 
+                  institution_postal_code, 
+                  null, 
+                  permit_no, 
+                  project_no, 
+                  reference_number, 
+                  null as "update_timestamp", 
+                  null as "update_user", 
+                  'No' AS "is_current_record", 
+                  'MMS_FDW_HIST' as "source"
+     FROM SES_BOND_STAGING
+	 WHERE bond_status_code IN ('REL','CON')) AS bond_data
+	 
 ORDER BY bond_id,
          is_current_record DESC;

@@ -9,7 +9,9 @@ const setupDispatchProps = () => {
   dispatchProps.fetchSearchResults = jest.fn();
 };
 
-const setupProps = () => {};
+const setupProps = () => {
+  props.initialValues = { label: "Mock Party", value: "29489218432" };
+};
 
 beforeEach(() => {
   setupDispatchProps();

@@ -21,7 +21,7 @@ const defaultProps = {
 };
 
 class RenderRadioButtons extends Component {
-  state = { value: false };
+  state = { value: null };
 
   render() {
     const options = [
@@ -30,7 +30,16 @@ class RenderRadioButtons extends Component {
     ];
     return (
       <Form.Item
-        validateStatus={this.props.meta.touched ? this.props.meta.error && "error" : ""}
+        validateStatus={
+          this.props.meta.touched
+            ? (this.props.meta.error && "error") || (this.props.meta.warning && "warning")
+            : ""
+        }
+        help={
+          this.props.meta.touched &&
+          ((this.props.meta.error && <span>{this.props.meta.error}</span>) ||
+            (this.props.meta.warning && <span>{this.props.meta.warning}</span>))
+        }
         label={this.props.label}
       >
         <Radio.Group
