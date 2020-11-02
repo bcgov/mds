@@ -8,6 +8,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
@@ -57,6 +58,8 @@ class PermitListResource(Resource, UserMixin):
         help='Title of the lead inspector for this permit.')
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
+    parser.add_argument(
+        'permit_is_exploration', type=bool, location='json', help='Wether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -79,6 +82,8 @@ class PermitListResource(Resource, UserMixin):
     @api.marshal_with(PERMIT_MODEL, code=201)
     def post(self, mine_guid):
         data = self.parser.parse_args()
+        permit_no = data.get('permit_no')
+        permit_prefix = None
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -90,13 +95,25 @@ class PermitListResource(Resource, UserMixin):
             if not party:
                 raise NotFound('Permittee party not found')
 
-        permit = Permit.find_by_permit_no(data.get('permit_no'))
+        if not permit_no:
+            now_application_guid = data.get('now_application_guid')
+            if not now_application_guid:
+                raise NotFound('There was no Notice of Work found with the provided guid.')
+            now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+            now_application = now_application_identity.now_application
+            permit_is_exploration = data.get('permit_is_exploration')
+            permit_prefix = now_application.notice_of_work_type_code[0] if now_application.notice_of_work_type_code[0] != 'S' else 'G'
+            if permit_prefix in ['M', 'C'] and permit_is_exploration:
+               permit_prefix = permit_prefix + 'X'
+            permit_prefix = permit_prefix + '-'
+        
+        permit = Permit.find_by_permit_no(permit_no)
         if permit:
             raise BadRequest("That permit number is already in use.")
-
+            
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine, data.get('permit_no'), data.get('permit_status_code'))
+        permit = Permit.create(mine, permit_no, data.get('permit_status_code'), permit_prefix)
 
         amendment = PermitAmendment.create(
             permit,

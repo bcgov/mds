@@ -109,19 +109,9 @@ export class NOWPermitGeneration extends Component {
 
   createPermit = (isExploration) => {
     this.setState({ isLoaded: false });
-    // this logic will be moved to the BE when we generate Permit #
-    const randomNumber = Math.floor(100000 + Math.random() * 900000);
-    const correctPermitType =
-      this.props.noticeOfWork.notice_of_work_type_code[0] === "S"
-        ? "G"
-        : this.props.noticeOfWork.notice_of_work_type_code[0];
-    const permitNo = isExploration
-      ? `${correctPermitType}X-${randomNumber}`
-      : `${correctPermitType}-${randomNumber}`;
     const payload = {
       permit_status_code: "D",
       permit_is_exploration: isExploration,
-      permit_no: permitNo,
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
     this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
