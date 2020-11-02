@@ -31,7 +31,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
-import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 import { formatDate } from "@common/utils/helpers";
@@ -49,7 +49,6 @@ const propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
-  mine_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
@@ -730,8 +729,6 @@ export const ReviewNOWApplication = (props) => {
             title="Additional Application Files"
           >
             <NOWDocuments
-              now_application_guid={props.now_application_guid}
-              mine_guid={props.mine_guid}
               documents={
                 props.documents &&
                 props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
@@ -753,7 +750,6 @@ export default compose(
   connect((state) => ({
     contacts: selector(state, "contacts"),
     now_application_guid: selector(state, "now_application_guid"),
-    mine_guid: selector(state, "mine_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),

@@ -12,7 +12,6 @@ import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  mineGuid: PropTypes.string.isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,
@@ -48,8 +47,6 @@ export const DownloadDocumentPackageModal = (props) => {
       <br />
       <h4>Additional Documents</h4>
       <NOWDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        mine_guid={props.mineGuid}
         documents={props.coreDocuments}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
