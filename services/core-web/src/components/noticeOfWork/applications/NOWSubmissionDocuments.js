@@ -154,14 +154,15 @@ export const NOWSubmissionDocuments = (props) => {
       jobStatusMessage = "An import job is currently in progress.";
     } else if (jobStatus === "DEL") {
       jobStatusDescription = "Delayed";
-      jobStatusMessage = `The previous job to import the documents failed. The next attempt will be performed on ${formatDateTime(
+      jobStatusMessage = `The previous attempt to import the remaining documents failed. The next attempt will be performed on ${formatDateTime(
         props.importNowSubmissionDocumentsJob.next_attempt_timestamp
       )}.`;
     }
-
-    const amountToImport = props.documents.length;
-    const amountImported = props.documents.filter((doc) => doc.document_manager_document_guid)
-      .length;
+    const importDocuments = props.importNowSubmissionDocumentsJob
+      ? props.importNowSubmissionDocumentsJob.import_now_submission_documents
+      : [];
+    const amountToImport = importDocuments.length;
+    const amountImported = importDocuments.filter((doc) => doc.document_id).length;
 
     return (
       <div
