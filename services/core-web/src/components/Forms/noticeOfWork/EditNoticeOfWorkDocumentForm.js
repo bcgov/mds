@@ -35,12 +35,22 @@ const defaultProps = {
 export class EditNoticeOfWorkDocumentForm extends Component {
   state = {
     uploadedFiles: [],
+    disabled: false,
+  };
+
+  toggleDisabled = () => {
+    this.setState((prevState) => ({
+      disabled: !prevState.disabled,
+    }));
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
-    this.setState((prevState) => ({
-      uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
-    }));
+    this.setState(
+      (prevState) => ({
+        uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
+      }),
+      () => this.toggleDisabled()
+    );
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
@@ -110,6 +120,7 @@ export class EditNoticeOfWorkDocumentForm extends Component {
                   onFileLoad={this.onFileLoad}
                   onRemoveFile={this.onRemoveFile}
                   component={FileUpload}
+                  addFileStart={() => this.toggleDisabled()}
                   uploadUrl={NOTICE_OF_WORK_DOCUMENT(this.props.now_application_guid)}
                   allowMultiple
                   allowRevert
@@ -135,7 +146,9 @@ export class EditNoticeOfWorkDocumentForm extends Component {
             type="primary"
             htmlType="submit"
             loading={this.props.submitting}
-            disabled={this.state.uploadedFiles.length === 0 || this.props.submitting}
+            disabled={
+              this.state.uploadedFiles.length === 0 || this.props.submitting || this.state.disabled
+            }
           >
             {this.props.title}
           </Button>
