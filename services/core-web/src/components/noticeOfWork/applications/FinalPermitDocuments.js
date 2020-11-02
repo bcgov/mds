@@ -138,43 +138,45 @@ export class FinalPermitDocuments extends Component {
     );
 
     let currentFile = 0;
-    this.waitFor(() => docURLS.length === totalFiles.length).then(async () => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
+    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
+      async () => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const url of docURLS) {
+          if (this.state.cancelDownload) {
+            this.setState({ cancelDownload: false });
+            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+              downloading: false,
+              currentFile: 0,
+              totalFiles: 1,
+            });
+            notification.success({
+              message: "Cancelled file downloads.",
+              duration: 10,
+            });
+            return;
+          }
+          currentFile += 1;
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
+            downloading: true,
+            currentFile,
+            totalFiles,
           });
-          notification.success({
-            message: "Cancelled file downloads.",
-            duration: 10,
-          });
-          return;
+          this.downloadDocument(url);
+          // eslint-disable-next-line
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
-        currentFile += 1;
-        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
+        notification.success({
+          message: `Successfully Downloaded: ${totalFiles} files.`,
+          duration: 10,
         });
-        this.downloadDocument(url);
-        // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
 
-      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
-      });
-    });
+        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+          downloading: false,
+          currentFile: 1,
+          totalFiles: 1,
+        });
+      }
+    );
   };
 
   openFinalDocumentPackageModal = (event) => {
@@ -262,15 +264,22 @@ export class FinalPermitDocuments extends Component {
             </AuthorizationWrapper>
           </div>
         </div>
-        <h4>vFCBC/NROS Application Files</h4>
+        <h4>Original Documents</h4>
+        <p>These documents came in with the original application.</p>
         <NOWSubmissionDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
           mine_guid={this.props.mineGuid}
           documents={permitSubmissionDocuments}
           importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+          hideImportStatusColumn
+          hideJobStatusColumn
         />
         <br />
-        <h4>Additional Documents</h4>
+        <h4>Requested Documents</h4>
+        <p>
+          These documents were added after the original application but were provided by the
+          proponent.
+        </p>
         <NOWDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
           mine_guid={this.props.mineGuid}

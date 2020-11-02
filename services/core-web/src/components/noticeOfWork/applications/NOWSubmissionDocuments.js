@@ -227,9 +227,9 @@ export const NOWSubmissionDocuments = (props) => {
             {props.selectedRows &&
               " You cannot select documents that have not been successfully imported into Core."}
           </p>
-          <br />
         </>
       )}
+      <br />
       <Table
         align="left"
         pagination={false}
