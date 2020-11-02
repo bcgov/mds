@@ -69,9 +69,6 @@ export class FinalPermitDocuments extends Component {
       submission_documents: submissionDocumentsPayload,
     };
 
-    console.log(documentsPayload);
-    console.log(submissionDocumentsPayload);
-
     const message = "Successfully updated the final application package.";
 
     this.props
@@ -110,22 +107,38 @@ export class FinalPermitDocuments extends Component {
 
   downloadDocumentPackage = () => {
     const docURLS = [];
-    const permitDocuments = this.props.noticeOfWork.documents.filter(
-      ({ is_final_package }) => is_final_package
+
+    const submissionDocs = this.props.noticeOfWork.submission_documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        key: doc.id,
+        documentManagerGuid: doc.document_manager_document_guid,
+        filename: doc.filename,
+      }));
+
+    const coreDocs = this.props.noticeOfWork.documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        key: doc.now_application_document_xref_guid,
+        documentManagerGuid: doc.mine_document.document_manager_guid,
+        filename: doc.mine_document.document_name,
+      }));
+
+    const totalFiles = submissionDocs.length + coreDocs.length;
+    if (totalFiles === 0) {
+      return;
+    }
+
+    submissionDocs.forEach((doc) =>
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
+
+    coreDocs.forEach((doc) =>
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
+    );
+
     let currentFile = 0;
-    const totalFiles = permitDocuments.length;
-    if (totalFiles === 0) return;
-
-    permitDocuments.forEach((doc) =>
-      getDocumentDownloadToken(
-        doc.mine_document.document_manager_guid,
-        doc.mine_document.document_name,
-        docURLS
-      )
-    );
-
-    this.waitFor(() => docURLS.length === permitDocuments.length).then(async () => {
+    this.waitFor(() => docURLS.length === totalFiles.length).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
         if (this.state.cancelDownload) {
@@ -136,7 +149,7 @@ export class FinalPermitDocuments extends Component {
             totalFiles: 1,
           });
           notification.success({
-            message: `Cancelled file downloads.`,
+            message: "Cancelled file downloads.",
             duration: 10,
           });
           return;
@@ -151,7 +164,6 @@ export class FinalPermitDocuments extends Component {
         // eslint-disable-next-line
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
-      // dispatch toast message
       notification.success({
         message: `Successfully Downloaded: ${totalFiles} files.`,
         duration: 10,
@@ -175,9 +187,6 @@ export class FinalPermitDocuments extends Component {
     const finalSubmissionDocuments = this.props.noticeOfWork.submission_documents
       .filter(({ is_final_package }) => is_final_package)
       .map(({ id }) => id);
-
-    console.log(this.props.noticeOfWork.submission_documents);
-    console.log(finalSubmissionDocuments);
 
     this.props.openModal({
       width: 910,
@@ -253,7 +262,6 @@ export class FinalPermitDocuments extends Component {
             </AuthorizationWrapper>
           </div>
         </div>
-        <br />
         <h4>vFCBC/NROS Application Files</h4>
         <NOWSubmissionDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}

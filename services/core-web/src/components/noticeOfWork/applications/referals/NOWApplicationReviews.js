@@ -8,10 +8,7 @@ import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-
 import { formatDate } from "@common/utils/helpers";
 
 import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  getNowDocumentDownloadToken,
-  getDocumentDownloadToken,
-} from "@common/utils/actionlessNetworkCalls";
+import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -232,90 +229,82 @@ export class NOWApplicationReviews extends Component {
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
 
-    // TODO: Since the submission documents are now imported, we don't need to download them from external URL.
     const submissionDocs = this.props.noticeOfWork.submission_documents
-      .map((document) => ({
-        key: document.id,
-        filename: document.filename,
+      .map((doc) => ({
+        key: doc.id,
+        documentManagerGuid: doc.document_manager_document_guid,
+        filename: doc.filename,
       }))
-      .filter((item) => selectedSubmissionRows.includes(item.key));
+      .filter((doc) => selectedSubmissionRows.includes(doc.key));
 
     const coreDocs = this.props.noticeOfWork.documents
-      .map((document) => ({
-        key: document.now_application_document_xref_guid,
-        documentManagerGuid: document.mine_document.document_manager_guid,
-        filename: document.mine_document.document_name,
+      .map((doc) => ({
+        key: doc.now_application_document_xref_guid,
+        documentManagerGuid: doc.mine_document.document_manager_guid,
+        filename: doc.mine_document.document_name,
       }))
-      .filter((item) => selectedCoreRows.includes(item.key));
+      .filter((doc) => selectedCoreRows.includes(doc.key));
 
-    let currentFile = 0;
     const totalFiles = submissionDocs.length + coreDocs.length;
     if (totalFiles === 0) {
       return;
     }
 
     submissionDocs.forEach((doc) =>
-      getNowDocumentDownloadToken(
-        doc.key,
-        this.props.noticeOfWork.now_application_guid,
-        doc.filename,
-        docURLS
-      )
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
     coreDocs.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
-    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
-      async () => {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const url of docURLS) {
-          if (this.state.cancelDownload) {
-            this.setState({ cancelDownload: false });
-            this.props.closeModal();
-            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-              downloading: false,
-              currentFile: 0,
-              totalFiles: 1,
-            });
-            notification.success({
-              message: `Cancelled file downloads.`,
-              duration: 10,
-            });
-            return;
-          }
-          currentFile += 1;
+    let currentFile = 0;
+    this.waitFor(() => docURLS.length === totalFiles).then(async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const url of docURLS) {
+        if (this.state.cancelDownload) {
+          this.setState({ cancelDownload: false });
+          this.props.closeModal();
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: true,
-            currentFile,
-            totalFiles,
+            downloading: false,
+            currentFile: 0,
+            totalFiles: 1,
           });
-          this.downloadDocument(url);
-          // eslint-disable-next-line
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        }
-        // dispatch toast message
-        notification.success({
-          message: `Successfully Downloaded: ${submissionDocs.length + coreDocs.length} files.`,
-          duration: 10,
-        });
-
-        if (!this.props.noticeOfWork.ready_for_review_date) {
-          this.updateNoticeOfWork({
-            ...this.props.noticeOfWork,
-            ready_for_review_date: new Date(),
+          notification.success({
+            message: "Cancelled file downloads.",
+            duration: 10,
           });
+          return;
         }
-
-        this.props.closeModal();
+        currentFile += 1;
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: false,
-          currentFile: 1,
-          totalFiles: 1,
+          downloading: true,
+          currentFile,
+          totalFiles,
+        });
+        this.downloadDocument(url);
+        // eslint-disable-next-line
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+      notification.success({
+        message: `Successfully Downloaded: ${totalFiles} files.`,
+        duration: 10,
+      });
+
+      if (!this.props.noticeOfWork.ready_for_review_date) {
+        this.updateNoticeOfWork({
+          ...this.props.noticeOfWork,
+          ready_for_review_date: new Date(),
         });
       }
-    );
+
+      this.props.closeModal();
+      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+        downloading: false,
+        currentFile: 1,
+        totalFiles: 1,
+      });
+    });
   };
 
   openDownloadPackageModal = (event) => {
@@ -357,6 +346,7 @@ export class NOWApplicationReviews extends Component {
       handleEdit: this.handleEditReview,
       handleDocumentDelete: this.handleDocumentDelete,
     };
+
     return (
       <div>
         <Row type="flex" justify="center">
