@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -18,13 +17,10 @@ const propTypes = {
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  handleUpdateLeadInspector: PropTypes.func.isRequired,
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
+  handleTabChange: PropTypes.func.isRequired,
   loadNoticeOfWork: PropTypes.func.isRequired,
   initialPermitGuid: PropTypes.string,
   loadMineData: PropTypes.func.isRequired,
-  isMajorMine: PropTypes.bool.isRequired,
   isNewApplication: PropTypes.bool.isRequired,
 };
 

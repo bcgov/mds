@@ -390,19 +390,6 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => finalAction());
   };
 
-  openUpdateLeadInspectorModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Lead Inspector",
-        inspectors: this.props.inspectors,
-        lead_inspector_party_guid: this.props.noticeOfWork.lead_inspector_party_guid,
-        setLeadInspectorPartyGuid: this.setLeadInspectorPartyGuid,
-        handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
-    });
-  };
-
   handleUpdateStatus = (finalAction) => {
     if (
       !this.state.associatedStatus ||
@@ -691,17 +678,6 @@ export class NoticeOfWorkApplication extends Component {
             </Menu.Item>
           </AuthorizationWrapper>
         )}
-        {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item
-              className="custom-menu-item"
-              key="change-the-lead-inspector"
-              onClick={() => this.openUpdateLeadInspectorModal()}
-            >
-              Change the Lead Inspector
-            </Menu.Item>
-          </AuthorizationWrapper>
-        )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
             {Object.values(this.props.generatableApplicationDocuments)
@@ -854,6 +830,8 @@ export class NoticeOfWorkApplication extends Component {
                               noticeOfWork={this.props.noticeOfWork}
                               setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
                               handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                              title="Assign Lead Inspector"
+                              isEditMode
                             />
                           </ScrollContentWrapper>
                           <Divider />
@@ -957,6 +935,9 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationAdministrative
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      inspectors={this.props.inspectors}
+                      setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                      handleUpdateLeadInspector={this.handleUpdateLeadInspector}
                     />
                   </div>
                 </LoadingWrapper>

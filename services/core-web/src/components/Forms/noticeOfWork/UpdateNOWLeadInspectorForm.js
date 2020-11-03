@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { Button, Popconfirm } from "antd";
@@ -16,13 +15,10 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  isModal: PropTypes.bool,
-  closeModal: PropTypes.func,
-};
-
-const defaultProps = {
-  isModal: false,
-  closeModal: () => {},
+  isAdminView: PropTypes.bool.isRequired,
+  isEditMode: PropTypes.bool.isRequired,
+  setEditMode: PropTypes.func.isRequired,
+  title: PropTypes.bool.isRequired,
 };
 
 const UpdateNOWLeadInspectorForm = (props) => {
@@ -34,34 +30,41 @@ const UpdateNOWLeadInspectorForm = (props) => {
           <Field
             id="lead_inspector_party_guid"
             name="lead_inspector_party_guid"
-            label="Assign a lead inspector before continuing. This assignment can be updated later under the Administrative tab."
+            label={
+              !props.isAdminView
+                ? "Assign a lead inspector before continuing. This assignment can be updated later under the Administrative tab."
+                : ""
+            }
             component={renderConfig.GROUPED_SELECT}
             placeholder="Start typing lead inspectors name"
             validate={[required]}
             data={props.inspectors}
+            disabled={!props.isEditMode}
             onSelect={props.setLeadInspectorPartyGuid}
           />
         </Form.Item>
-        <div className="right center-mobile">
-          {props.isModal && (
-            <Popconfirm
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              onConfirm={props.closeModal}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="full-mobile" type="secondary">
-                Cancel
+        {props.isEditMode && (
+          <div className="right center-mobile">
+            {props.isAdminView && (
+              <Popconfirm
+                placement="topRight"
+                title="Are you sure you want to cancel?"
+                onConfirm={() => props.setEditMode(false)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="full-mobile" type="secondary">
+                  Cancel
+                </Button>
+              </Popconfirm>
+            )}
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Button htmlType="submit" type="primary">
+                {props.title}
               </Button>
-            </Popconfirm>
-          )}
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Button htmlType="submit" type="primary">
-              Assign Lead Inspector
-            </Button>
-          </AuthorizationWrapper>
-        </div>
+            </AuthorizationWrapper>
+          </div>
+        )}
       </Form>
     </div>
   );

@@ -39,7 +39,6 @@ import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
-// import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
