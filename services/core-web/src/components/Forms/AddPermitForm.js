@@ -7,7 +7,12 @@ import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
+import {
+  required,
+  dateNotInFuture,
+  maxLength,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { renderConfig } from "@/components/common/config";
@@ -105,7 +110,7 @@ export class AddPermitForm extends Component {
                 label="Permit type*"
                 placeholder="Select a permit type"
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={[required, validateSelectOptions(permitTypes)]}
                 data={permitTypes}
               />
             </Form.Item>
@@ -143,7 +148,7 @@ export class AddPermitForm extends Component {
                 placeholder="Select a permit status"
                 component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.permitStatusOptions)]}
               />
             </Form.Item>
             <Form.Item>

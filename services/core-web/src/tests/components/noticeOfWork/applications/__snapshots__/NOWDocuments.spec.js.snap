@@ -49,6 +49,13 @@ exports[`NOWDocuments renders properly 1`] = `
           "sorter": [Function],
           "title": "Upload Date/Time",
         },
+        Object {
+          "dataIndex": "is_final_package",
+          "key": "is_final_package",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Part of Permit",
+        },
       ]
     }
     dataSource={Array []}
@@ -61,11 +68,18 @@ exports[`NOWDocuments renders properly 1`] = `
     rowKey="key"
     rowSelection={null}
   />
-  <AddButton
-    disabled={false}
-    onClick={[Function]}
+  <br />
+  <Connect(AuthorizationWrapper)
+    permission="role_edit_permits"
   >
-    Add Document
-  </AddButton>
+    <AddButton
+      className=""
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+    >
+      Add Document
+    </AddButton>
+  </Connect(AuthorizationWrapper)>
 </div>
 `;
