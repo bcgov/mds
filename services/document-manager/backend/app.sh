@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir -p /var/log/celery /var/run/celery
+
 cat > /var/log/celery/celery.log
 cat > /var/run/celery/celery.pid
 
