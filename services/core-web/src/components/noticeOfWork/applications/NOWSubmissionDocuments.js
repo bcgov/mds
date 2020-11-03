@@ -143,16 +143,16 @@ export const NOWSubmissionDocuments = (props) => {
   );
 
   const renderImportJobStatus = () => {
-    const jobStatus = props.importNowSubmissionDocumentsJob
+    const importJobExists = !isEmpty(props.importNowSubmissionDocumentsJob);
+
+    const jobStatus = importJobExists
       ? props.importNowSubmissionDocumentsJob.import_now_submission_documents_job_status_code
       : null;
 
-    const jobStartTime = props.importNowSubmissionDocumentsJob
+    const jobStartTime = importJobExists
       ? props.importNowSubmissionDocumentsJob.start_timestamp
       : null;
-    const jobEndTime = props.importNowSubmissionDocumentsJob
-      ? props.importNowSubmissionDocumentsJob.end_timestamp
-      : null;
+    const jobEndTime = importJobExists ? props.importNowSubmissionDocumentsJob.end_timestamp : null;
 
     let jobStatusDescription = "Not Applicable";
     let jobStatusMessage =
@@ -177,11 +177,15 @@ export const NOWSubmissionDocuments = (props) => {
         props.importNowSubmissionDocumentsJob.next_attempt_timestamp
       )}.`;
     }
-    const importDocuments = props.importNowSubmissionDocumentsJob
-      ? props.importNowSubmissionDocumentsJob.import_now_submission_documents
-      : [];
+    const importDocuments =
+      importJobExists &&
+      !isEmpty(props.importNowSubmissionDocumentsJob.import_now_submission_documents)
+        ? props.importNowSubmissionDocumentsJob.import_now_submission_documents
+        : [];
     const amountToImport = importDocuments.length;
     const amountImported = importDocuments.filter((doc) => doc.document_id).length;
+
+    console.log(props);
 
     return (
       <div
@@ -201,15 +205,20 @@ export const NOWSubmissionDocuments = (props) => {
         <div style={{ marginLeft: 24 }}>
           <p>{jobStatusMessage}</p>
           <p>
-            <b>Status:</b> {jobStatusDescription}
+            <b>Status: </b>
+            {jobStatusDescription}
             <br />
-            <b>Start time:</b> {jobStartTime ? formatDateTime(jobStartTime) : Strings.EMPTY_FIELD}
+            <b>Start time: </b>
+            {jobStartTime ? formatDateTime(jobStartTime) : Strings.EMPTY_FIELD}
             <br />
-            <b>End time:</b> {jobEndTime ? formatDateTime(jobEndTime) : Strings.EMPTY_FIELD}
+            <b>End time: </b>
+            {jobEndTime ? formatDateTime(jobEndTime) : Strings.EMPTY_FIELD}
             <br />
-            <b>Progress:</b> {amountImported}/{amountToImport} imported
+            <b>Progress: </b>
+            {importJobExists ? `${amountImported}/${amountToImport} imported` : Strings.EMPTY_FIELD}
             <br />
-            <b>Attempt:</b> {props.importNowSubmissionDocumentsJob.attempt}
+            <b>Attempt: </b>
+            {importJobExists ? props.importNowSubmissionDocumentsJob.attempt : Strings.EMPTY_FIELD}
             <br />
           </p>
         </div>
