@@ -1,15 +1,7 @@
 #!/bin/bash
+# next line works for couple of minutes and then pod gets killed: Crash Loop Back-off
+# celery worker -A app.tasks.celery --detach --loglevel=info --concurrency=1
 
-# mkdir -p /var/log/celery /var/run/celery
-
-# cat > /var/log/celery/celery.log
-# cat > /var/run/celery/celery.pid
-
-# chmod -R ugo+rwx /var/log/celery
-# chmod -R ugo+rwx /var/run/celery
-
-# cd /opt/app-root/src
-
-celery worker -A app.tasks.celery --detach --loglevel=info --pool=solo
+python celery_start.py &
 
 uwsgi uwsgi.ini
