@@ -10,7 +10,6 @@ const propTypes = {
   finalDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
   finalSubmissionDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  mineGuid: PropTypes.string.isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,

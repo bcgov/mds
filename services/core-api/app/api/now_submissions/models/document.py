@@ -25,4 +25,4 @@ class Document(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).one()
+        return cls.query.filter_by(id=id).one_or_none()

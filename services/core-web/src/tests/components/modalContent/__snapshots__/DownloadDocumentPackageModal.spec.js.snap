@@ -6,7 +6,10 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
     vFCBC/NROS Application Files
   </h4>
   <NOWSubmissionDocuments
+    displayTableDescription={false}
     documents={Array []}
+    hideImportStatusColumn={false}
+    hideJobStatusColumn={false}
     importNowSubmissionDocumentsJob={Object {}}
     now_application_guid=""
     selectedRows={

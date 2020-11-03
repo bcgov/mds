@@ -49,11 +49,6 @@ class NOWApplicationIdentity(Base, AuditMixin):
     def mms_now_submission(self):
         return MMSApplication.query.filter_by(mms_cid=self.mms_cid).first()
 
-    # TODO check if possible
-    # @hybrid_property
-    # def is_document_import_requested(self):
-    #     return self.now_application and self.now_application.import_now_submission_documents_jobs
-
     @classmethod
     def find_by_guid(cls, _id):
         try:

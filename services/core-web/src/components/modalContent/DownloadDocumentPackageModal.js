@@ -13,7 +13,6 @@ const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  mineGuid: PropTypes.string.isRequired,
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,

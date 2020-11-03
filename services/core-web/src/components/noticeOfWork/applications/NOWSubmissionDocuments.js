@@ -185,8 +185,6 @@ export const NOWSubmissionDocuments = (props) => {
     const amountToImport = importDocuments.length;
     const amountImported = importDocuments.filter((doc) => doc.document_id).length;
 
-    console.log(props);
-
     return (
       <div
         style={{

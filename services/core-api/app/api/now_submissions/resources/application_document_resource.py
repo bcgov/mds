@@ -83,8 +83,10 @@ class ApplicationDocumentResource(Resource, UserMixin):
         document_manager_document_guid = data.get('document_manager_document_guid', None)
 
         document = Document.find_by_id(id)
+        if not document:
+            raise NotFound('Document not found')
+
         document.document_manager_document_guid = document_manager_document_guid
-        current_app.logger.info(f'{document}')
         document.save()
 
         return requests.codes.ok
