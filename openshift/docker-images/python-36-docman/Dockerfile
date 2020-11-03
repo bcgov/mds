@@ -16,23 +16,5 @@ RUN source /opt/app-root/etc/scl_enable && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
-# celery
-# RUN cd /var/log
-#     mkdir celery
-#     chmod -R ugo+rwx celery
-#     cd /var/run
-#     mkdir celery
-#     chmod -R ugo+rwx celery
-#     cd /opt/app-root/src
-    # celery worker -A app.tasks.celery --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=1\\
-# USER 0
+# # celery
 # RUN mkdir -p /var/log/celery /var/run/celery
-# RUN cd /var/log/celery \
-#     cat >> celery.log
-# RUN cd /var/run/celery \
-#     cat >> celery.pid
-# RUN chmod -R ugo+rwx /var/log/celery
-# RUN chmod -R ugo+rwx /var/run/celery
-# WORKDIR ${APP_ROOT}/src
-# RUN celery worker -A app.tasks.celery --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=1
-# RUN celery multi start worker1 --pidfile="/var/run/celery/celery.pid" --logfile="/var/log/celery/celery.log"
