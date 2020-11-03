@@ -72,35 +72,35 @@
     },
     {
       "name": "CPU_LIMIT",
-      "value": "400m"
+      "value": "200m"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "2Gi"
+      "value": "1Gi"
     },
     {
       "name": "CPU_REQUEST",
-      "value": "300m"
+      "value": "150m"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "1536Mi"
+      "value": "768Mi"
     },
     {
       "name": "UWSGI_PROCESSES",
-      "value": "4"
+      "value": "2"
     },
     {
       "name": "UWSGI_THREADS",
-      "value": "8"
+      "value": "3"
     },
     {
       "name": "REPLICA_MIN",
-      "value": "4"
+      "value": "2"
     },
     {
       "name": "REPLICA_MAX",
-      "value": "8"
+      "value": "4"
     },
     {
       "name": "MDS_ELASTIC_SECRET",
