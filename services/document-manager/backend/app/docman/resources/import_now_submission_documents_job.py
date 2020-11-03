@@ -67,7 +67,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         resp = make_response(jsonify(message=message), 201)
         return resp
 
-    @api.marshal_with(IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB, code=200)
+    @api.marshal_with(IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB, code=200, skip_none=True)
     @requires_role_view_all
     def get(self):
         now_application_guid = request.args.get('now_application_guid', None)
