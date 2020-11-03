@@ -7,7 +7,7 @@ import { compose } from "redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Row, Col } from "antd";
-import { required } from "@common/utils/Validate";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -108,7 +108,7 @@ export class EditVarianceForm extends Component {
                 label="Application Status"
                 placeholder="Select a status"
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.varianceStatusOptions)]}
                 data={this.props.varianceStatusOptions}
               />
             </Form.Item>
@@ -153,7 +153,11 @@ export class EditVarianceForm extends Component {
             label={filesUploaded ? "Document Category*" : "Document Category"}
             placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={filesUploaded ? [required] : []}
+            validate={
+              filesUploaded
+                ? [required, validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+                : [validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+            }
             data={this.props.varianceDocumentCategoryOptions}
           />
         </Form.Item>

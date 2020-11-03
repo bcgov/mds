@@ -8,9 +8,9 @@ declare
         tmp3 integer;
   begin
 
-	DELETE FROM reclamation_invoices where create_user = 'etl_bond';
+	DELETE FROM reclamation_invoice where create_user = 'bond_etl';
 
-	INSERT INTO reclamation_invoices (
+INSERT INTO reclamation_invoice (
 		permit_id,
 		amount,
 		vendor,
@@ -28,7 +28,7 @@ declare
 		'bond_etl',
 		'bond_etl'
 	FROM mms.secinv inv
-	inner join bond b on b.sec_cid = inv.sec_cid
+	inner join bond b on b.mms_sec_cid = inv.sec_cid
 	inner join bond_permit_xref bpx on bpx.bond_id = b.bond_id
 	WHERE
 		inv.paid_amt != 0;
