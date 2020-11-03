@@ -8,7 +8,7 @@
 # chmod -R ugo+rwx /var/log/celery
 # chmod -R ugo+rwx /var/run/celery
 
-cd /opt/app-root/src
+# cd /opt/app-root/src
 
 celery worker -A app.tasks.celery --detach --loglevel=info --concurrency=1
 
