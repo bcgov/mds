@@ -377,7 +377,7 @@ export const NOTICE_OF_WORK_LIST = {
 
 export const IMPORTED_NOTICE_OF_WORK = {
   now_application_id: "",
-  now_application_guid: "",
+  now_application_guid: "1346wesrt22",
   mine_guid: "",
   now_message_id: 47284,
   now_tracking_number: 47284,

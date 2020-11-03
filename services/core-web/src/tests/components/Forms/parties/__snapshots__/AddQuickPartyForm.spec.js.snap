@@ -187,6 +187,11 @@ exports[`AddQuickPartyForm renders properly 1`] = `
             id="sub_division_code"
             label="Province"
             name="sub_division_code"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
       </Col>

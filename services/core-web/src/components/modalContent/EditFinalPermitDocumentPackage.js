@@ -7,8 +7,6 @@ import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 const propTypes = {
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   finalDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
-  mineGuid: PropTypes.string.isRequired,
-  noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -18,8 +16,6 @@ export const EditFinalPermitDocumentPackage = (props) => {
   return (
     <div>
       <NOWDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        mine_guid={props.mineGuid}
         documents={props.documents}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
