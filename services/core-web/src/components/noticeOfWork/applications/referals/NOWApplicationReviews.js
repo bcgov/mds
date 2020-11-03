@@ -314,7 +314,6 @@ export class NOWApplicationReviews extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
         coreDocuments: this.props.noticeOfWork.documents,

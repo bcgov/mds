@@ -14,6 +14,7 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Exploration Type",
           "validate": Array [
             [Function],
+            [Function],
           ],
           "value": "underground_exploration_type_code",
         },

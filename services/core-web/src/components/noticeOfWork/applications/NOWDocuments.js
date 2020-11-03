@@ -1,38 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { arrayPush } from "redux-form";
-import { debounce } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table } from "antd";
 import moment from "moment";
+import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  fetchImportedNoticeOfWorkApplication,
+  updateNoticeOfWorkApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
-import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  now_application_guid: PropTypes.string.isRequired,
-  mine_guid: PropTypes.string.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
-  arrayPush: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
-  handleAfterUpload: PropTypes.func,
   addDescriptionColumn: PropTypes.bool,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 const defaultProps = {
   selectedRows: null,
@@ -40,52 +42,46 @@ const defaultProps = {
   disclaimerText: "",
   isAdminView: false,
   addDescriptionColumn: true,
-  handleAfterUpload: () => {},
-};
-
-const handleAddDocument = (closeDocumentModal, addDocument, handleAfterUpload) => (values) => {
-  const document = {
-    now_application_document_type_code: values.now_application_document_type_code,
-    description: values.description,
-    is_final_package: values.is_final_package,
-    mine_document: {
-      document_manager_guid: values.document_manager_guid,
-      document_name: values.document_name,
-      mine_guid: values.mine_guid,
-    },
-  };
-  addDocument(FORM.EDIT_NOTICE_OF_WORK, "documents", document);
-  closeDocumentModal();
-  handleAfterUpload();
-};
-
-const openAddDocumentModal = (
-  event,
-  openDocumentModal,
-  closeDocumentModal,
-  addDocument,
-  now_application_guid,
-  mine_guid,
-  categoriesToShow,
-  handleAfterUpload
-) => {
-  event.preventDefault();
-  openDocumentModal({
-    props: {
-      onSubmit: debounce(
-        handleAddDocument(closeDocumentModal, addDocument, handleAfterUpload),
-        2000
-      ),
-      title: `Add Notice of Work document`,
-      now_application_guid,
-      mine_guid,
-      categoriesToShow,
-    },
-    content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
-  });
 };
 
 export const NOWDocuments = (props) => {
+  const handleAddDocument = (values) => {
+    const documents = values.uploadedFiles.map((file) => {
+      return {
+        now_application_document_type_code: values.now_application_document_type_code,
+        description: values.description,
+        is_final_package: values.is_final_package,
+        mine_document: {
+          document_manager_guid: file[0],
+          document_name: file[1],
+          mine_guid: props.noticeOfWork.mine_guid,
+        },
+      };
+    });
+    return props
+      .updateNoticeOfWorkApplication(
+        { documents },
+        props.noticeOfWork.now_application_guid,
+        "Successfully added documents to this application."
+      )
+      .then(() => {
+        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+        props.closeModal();
+      });
+  };
+
+  const openAddDocumentModal = () => {
+    props.openModal({
+      props: {
+        onSubmit: handleAddDocument,
+        now_application_guid: props.noticeOfWork.now_application_guid,
+        title: `Add Notice of Work document`,
+        categoriesToShow: props.categoriesToShow,
+      },
+      content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
+    });
+  };
+
   const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash, categoriesToShow) => {
     const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
       .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
@@ -150,9 +146,14 @@ export const NOWDocuments = (props) => {
         dataIndex: "upload_date",
         key: "upload_date",
         sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-        render: (text, record) => (
-          <div title="Due">{formatDateTime(record.upload_date) || "Pending"}</div>
-        ),
+        render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
+      },
+      {
+        title: "Part of Permit",
+        dataIndex: "is_final_package",
+        key: "is_final_package",
+        sorter: (a, b) => (a.is_final_package > b.is_final_package ? -1 : 1),
+        render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
       },
     ];
 
@@ -182,37 +183,12 @@ export const NOWDocuments = (props) => {
           ]) ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
+      is_final_package: document.is_final_package || false,
     }));
 
   return (
     <div>
-      {props.isAdminView && (
-        <>
-          <div className="inline-flex between">
-            <p>{props.disclaimerText}</p>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <AddButton
-                disabled={props.isViewMode}
-                onClick={(event) =>
-                  openAddDocumentModal(
-                    event,
-                    props.openModal,
-                    props.closeModal,
-                    props.arrayPush,
-                    props.now_application_guid,
-                    props.mine_guid,
-                    props.categoriesToShow,
-                    props.handleAfterUpload
-                  )
-                }
-              >
-                Add Document
-              </AddButton>
-            </AuthorizationWrapper>
-          </div>
-        </>
-      )}
-      {!props.isAdminView && <p>{props.disclaimerText}</p>}
+      <p>{props.disclaimerText}</p>
       <br />
       <Table
         align="left"
@@ -223,7 +199,7 @@ export const NOWDocuments = (props) => {
         )}
         dataSource={transformDocuments(
           props.documents,
-          props.now_application_guid,
+          props.noticeOfWork.now_application_guid,
           props.noticeOfWorkApplicationDocumentTypeOptionsHash
         )}
         locale={{
@@ -240,25 +216,19 @@ export const NOWDocuments = (props) => {
             : null
         }
       />
+      <br />
 
-      {!props.selectedRows && !props.isViewMode && !props.isAdminView && (
-        <AddButton
-          disabled={props.isViewMode}
-          onClick={(event) =>
-            openAddDocumentModal(
-              event,
-              props.openModal,
-              props.closeModal,
-              props.arrayPush,
-              props.now_application_guid,
-              props.mine_guid,
-              props.categoriesToShow,
-              props.handleAfterUpload
-            )
-          }
-        >
-          Add Document
-        </AddButton>
+      {!props.selectedRows && !props.isViewMode && (
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <AddButton
+            className={props.isAdminView ? "position-right" : ""}
+            disabled={props.isViewMode}
+            style={props.isAdminView ? { marginRight: "100px" } : {}}
+            onClick={openAddDocumentModal}
+          >
+            Add Document
+          </AddButton>
+        </AuthorizationWrapper>
       )}
     </div>
   );
@@ -266,11 +236,11 @@ export const NOWDocuments = (props) => {
 
 NOWDocuments.propTypes = propTypes;
 NOWDocuments.defaultProps = defaultProps;
-
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
     state
   ),
+  noticeOfWork: getNoticeOfWork(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -278,7 +248,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
-      arrayPush,
+      updateNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
     },
     dispatch
   );
