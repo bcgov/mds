@@ -1,6 +1,7 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Col, Row } from "antd";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import * as FORM from "@/constants/forms";
@@ -45,32 +46,13 @@ export class UpdateNOWLeadInspectorModal extends Component {
               }}
               inspectors={this.props.inspectors}
               setLeadInspectorPartyGuid={this.props.setLeadInspectorPartyGuid}
+              onSubmit={this.props.handleUpdateLeadInspector}
+              closeModal={this.props.closeModal}
+              isModal
+              title="Update Lead Inspector"
             />
           </Col>
         </Row>
-        <div className="right center-mobile">
-          <Popconfirm
-            placement="topRight"
-            title="Are you sure you want to cancel?"
-            onConfirm={this.props.closeModal}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button className="full-mobile" type="secondary">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button
-            className="full-mobile"
-            type="primary"
-            onClick={this.handleUpdateLeadInspector}
-            disabled={this.invalidUpdateLeadInspectorPayload(
-              this.props.updateLeadInspectorFormValues
-            )}
-          >
-            {this.props.title}
-          </Button>
-        </div>
       </div>
     );
   }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -81,7 +82,7 @@ export class NOWSideMenu extends Component {
   };
 
   render() {
-    const menu = this.props.tabSection === "technical-review" ? activitiesMenu : draftPermitMenu;
+    const menu = this.props.tabSection === "application" ? activitiesMenu : draftPermitMenu;
     return (
       <div>
         <Anchor

@@ -32,6 +32,7 @@ import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
+// import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -665,7 +666,7 @@ export const ReviewNOWApplication = (props) => {
   return (
     <div>
       <Form layout="vertical">
-        <div className="side-menu--content">
+        <div>
           <div className="right" style={{ position: "relative", top: "30px" }}>
             {props.noticeOfWork.last_updated_date && (
               <p className="violet">
