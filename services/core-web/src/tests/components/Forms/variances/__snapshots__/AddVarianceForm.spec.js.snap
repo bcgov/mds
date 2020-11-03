@@ -53,6 +53,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       validate={
         Array [
           [Function],
+          [Function],
         ]
       }
     />
@@ -130,7 +131,11 @@ exports[`AddVarianceForm renders properly 1`] = `
       label="Document Category"
       name="variance_document_category_code"
       placeholder="Please select category"
-      validate={Array []}
+      validate={
+        Array [
+          [Function],
+        ]
+      }
     />
   </FormItem>
   <FormItem

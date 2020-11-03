@@ -153,8 +153,6 @@ export class FinalPermitDocuments extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineGuid: this.props.mineGuid,
-        noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
         documents:
           this.props.noticeOfWork &&

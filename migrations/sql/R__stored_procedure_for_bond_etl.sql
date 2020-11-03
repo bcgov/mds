@@ -303,6 +303,7 @@ declare
 		return_dt,
 		null
 	from ETL_BOND
+	where etl_update_date > (now() - interval '30 second') --only update with records seen this run.
 	ON CONFLICT (mms_sec_cid)
 	DO
 		UPDATE

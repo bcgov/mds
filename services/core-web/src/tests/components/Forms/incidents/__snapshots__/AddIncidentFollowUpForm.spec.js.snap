@@ -52,6 +52,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
             validate={
               Array [
                 [Function],
+                [Function],
               ]
             }
           />
@@ -83,6 +84,11 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
             id="status_code"
             label="Incident status*"
             name="status_code"
+            validate={
+              Array [
+                [Function],
+              ]
+            }
           />
         </FormItem>
       </Col>
