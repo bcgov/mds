@@ -12,4 +12,4 @@
 
 celery worker -A app.tasks.celery --detach --loglevel=info --concurrency=1
 
-uwsgi ../uwsgi.ini
+uwsgi uwsgi.ini
