@@ -59,7 +59,7 @@ class PermitListResource(Resource, UserMixin):
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
-        'permit_is_exploration', type=bool, location='json', help='Wether the permit is an exploration permit or not.')
+        'permit_is_exploration', type=bool, location='json', help='Whether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 

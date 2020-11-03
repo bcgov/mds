@@ -162,12 +162,11 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def create(cls, mine, permit_no, permit_status_code, permit_prefix, add_to_session=True):
         permit = cls.find_by_permit_no(permit_no)
-        number_value = None
+        next_permit_no_sequence = None
         if not permit:
             if not permit_no:
-                number_value = db.session.execute(cls.permit_no_seq)
-                permit_no = permit_prefix + str(number_value) 
-                current_app.logger.debug(permit_no)
+                next_permit_no_sequence = db.session.execute(cls.permit_no_seq)
+                permit_no = permit_prefix + str(next_permit_no_sequence) 
             permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
         permit.permit_no_sequence = number_value
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
