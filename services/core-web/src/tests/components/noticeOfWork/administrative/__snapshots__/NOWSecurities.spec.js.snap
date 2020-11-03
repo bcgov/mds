@@ -82,24 +82,5 @@ exports[`NOWSecurities renders properly 1`] = `
       />
     </div>
   </LoadingWrapper>
-  <br />
-  <br />
-  <Connect(NOWDocuments)
-    categoriesToShow={
-      Array [
-        "SRB",
-        "NIA",
-        "AKL",
-        "SCD",
-      ]
-    }
-    disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
-    documents={Array []}
-    handleAfterUpload={[MockFunction]}
-    isAdminView={true}
-    isViewMode={false}
-    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    now_application_guid=""
-  />
 </div>
 `;
