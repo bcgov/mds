@@ -1,5 +1,11 @@
 #!/bin/bash
 
+cat > /var/log/celery/celery.log
+cat > /var/run/celery/celery.pid
+
+chmod -R ugo+rwx /var/log/celery
+chmod -R ugo+rwx /var/run/celery
+
 cd /opt/app-root/src
 
 celery worker -A app.tasks.celery --detach --loglevel=info --logfile=/var/log/celery/celery.log --pidfile=/var/run/celery/celery.pid --concurrency=1
