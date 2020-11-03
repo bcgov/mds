@@ -20,8 +20,8 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
-
 const exportedDocuments = ["NTR"];
+const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 
 export const NOWApplicationAdministrative = (props) => {
   return (
@@ -35,16 +35,21 @@ export const NOWApplicationAdministrative = (props) => {
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-files" title="Reclamation Securities">
-        <NOWSecurities
-          mineGuid={props.mineGuid}
-          noticeOfWork={props.noticeOfWork}
-          handleSaveNOWEdit={props.handleSaveNOWEdit}
+        <NOWSecurities mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+        <br />
+        <br />
+        <NOWDocuments
+          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
+            securityDocuments.includes(now_application_document_type_code)
+          )}
+          isViewMode={false}
+          isAdminView
+          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+          categoriesToShow={securityDocuments}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-files" title="Government Documents">
         <NOWDocuments
-          now_application_guid={props.noticeOfWork.now_application_guid}
-          mine_guid={props.mineGuid}
           documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
             governmentDocuments.includes(now_application_document_type_code)
           )}
@@ -52,13 +57,10 @@ export const NOWApplicationAdministrative = (props) => {
           isAdminView
           disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={governmentDocuments}
-          handleAfterUpload={props.handleSaveNOWEdit}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-export-files" title="Application Export Files">
         <NOWDocuments
-          now_application_guid={props.noticeOfWork.now_application_guid}
-          mine_guid={props.mineGuid}
           documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
             exportedDocuments.includes(now_application_document_type_code)
           )}

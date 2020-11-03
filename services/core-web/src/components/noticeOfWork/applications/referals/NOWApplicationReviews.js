@@ -312,7 +312,6 @@ export class NOWApplicationReviews extends Component {
     this.props.openModal({
       width: 910,
       props: {
-        mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,

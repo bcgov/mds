@@ -37,8 +37,6 @@ export const EditFinalPermitDocumentPackage = (props) => {
       <br />
       <h4>Additional Documents</h4>
       <NOWDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        mine_guid={props.mineGuid}
         documents={props.documents}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}

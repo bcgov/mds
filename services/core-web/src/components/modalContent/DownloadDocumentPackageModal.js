@@ -55,8 +55,6 @@ export const DownloadDocumentPackageModal = (props) => {
       <br />
       <h4>Additional Documents</h4>
       <NOWDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        mine_guid={props.mineGuid}
         documents={props.coreDocuments}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}

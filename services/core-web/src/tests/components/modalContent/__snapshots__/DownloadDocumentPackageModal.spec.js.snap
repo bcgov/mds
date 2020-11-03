@@ -23,8 +23,6 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <Connect(NOWDocuments)
     documents={Array []}
     isViewMode={true}
-    mine_guid=""
-    now_application_guid=""
     selectedRows={
       Object {
         "selectedCoreRows": Array [],

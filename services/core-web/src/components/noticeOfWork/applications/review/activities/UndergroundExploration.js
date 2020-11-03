@@ -7,7 +7,12 @@ import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { numberWithUnitCode, required, number } from "@common/utils/Validate";
+import {
+  numberWithUnitCode,
+  required,
+  number,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -36,7 +41,7 @@ export const UndergroundExploration = (props) => {
             title: "Exploration Type",
             value: "underground_exploration_type_code",
             component: RenderSelect,
-            validate: [required],
+            validate: [required, validateSelectOptions(props.undergroundExplorationTypeOptions)],
             data: props.undergroundExplorationTypeOptions,
           },
           {

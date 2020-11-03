@@ -38,7 +38,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
           "mine_guid": "",
           "notice_of_work_type_code": "MIN",
-          "now_application_guid": "",
+          "now_application_guid": "1346wesrt22",
           "now_application_id": "",
           "now_message_id": 47284,
           "now_tracking_number": 47284,
@@ -77,7 +77,6 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     title="Reclamation Securities"
   >
     <Connect(NOWSecurities)
-      handleSaveNOWEdit={[MockFunction]}
       mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
       noticeOfWork={
         Object {
@@ -106,7 +105,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
           "mine_guid": "",
           "notice_of_work_type_code": "MIN",
-          "now_application_guid": "",
+          "now_application_guid": "1346wesrt22",
           "now_application_id": "",
           "now_message_id": 47284,
           "now_tracking_number": 47284,
@@ -139,6 +138,22 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
         }
       }
     />
+    <br />
+    <br />
+    <Connect(NOWDocuments)
+      categoriesToShow={
+        Array [
+          "SRB",
+          "NIA",
+          "AKL",
+          "SCD",
+        ]
+      }
+      disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+      documents={Array []}
+      isAdminView={true}
+      isViewMode={false}
+    />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
     id="application-files"
@@ -155,11 +170,8 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       }
       disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
       documents={Array []}
-      handleAfterUpload={[MockFunction]}
       isAdminView={true}
       isViewMode={false}
-      mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-      now_application_guid=""
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
@@ -176,8 +188,6 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       disclaimerText="In this table you can see all exported Notice of Work documents."
       documents={Array []}
       isViewMode={true}
-      mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-      now_application_guid=""
     />
   </withRouter(Connect(ScrollContentWrapper))>
 </div>
