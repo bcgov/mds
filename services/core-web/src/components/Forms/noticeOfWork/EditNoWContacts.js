@@ -100,7 +100,7 @@ const renderContacts = ({
                         contactExists ? fields.get(index).mine_party_appt_type_code_description : ""
                       }`}</span>
 
-                      {contactExists ? (
+                      {contactExists && fields.get(index).now_party_appointment_id ? (
                         <Popconfirm
                           className="position-right no-margin"
                           placement="topLeft"
