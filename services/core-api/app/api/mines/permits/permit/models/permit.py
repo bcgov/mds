@@ -168,7 +168,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                 next_permit_no_sequence = db.session.execute(cls.permit_no_seq)
                 permit_no = permit_prefix + str(next_permit_no_sequence) 
             permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
-        permit.permit_no_sequence = number_value
+        permit.permit_no_sequence = next_permit_no_sequence
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
             permit.save(commit=False)
