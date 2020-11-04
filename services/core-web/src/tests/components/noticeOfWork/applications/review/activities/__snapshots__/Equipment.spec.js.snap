@@ -16,24 +16,17 @@ exports[`Equipment renders edit properly 1`] = `
           "title": "Quantity",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "quantity",
         },
         Object {
           "component": [Function],
           "title": "Description",
-          "validate": Array [
-            [Function],
-          ],
           "value": "description",
         },
         Object {
           "component": [Function],
           "title": "Capacity",
-          "validate": Array [
-            [Function],
-          ],
           "value": "capacity",
         },
       ]
@@ -60,24 +53,17 @@ exports[`Equipment renders view properly 1`] = `
           "title": "Quantity",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "quantity",
         },
         Object {
           "component": [Function],
           "title": "Description",
-          "validate": Array [
-            [Function],
-          ],
           "value": "description",
         },
         Object {
           "component": [Function],
           "title": "Capacity",
-          "validate": Array [
-            [Function],
-          ],
           "value": "capacity",
         },
       ]

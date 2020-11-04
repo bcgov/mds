@@ -44,7 +44,6 @@ exports[`SettlingPonds renders properly 1`] = `
           "title": "Width(m)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "width",
         },
@@ -52,7 +51,6 @@ exports[`SettlingPonds renders properly 1`] = `
           "component": [Function],
           "title": "Length(km)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "length",
@@ -62,7 +60,6 @@ exports[`SettlingPonds renders properly 1`] = `
           "title": "Depth(m)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "depth",
         },
@@ -70,7 +67,6 @@ exports[`SettlingPonds renders properly 1`] = `
           "component": [Function],
           "title": "Disturbed Area (ha)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "disturbed_area",
@@ -80,24 +76,17 @@ exports[`SettlingPonds renders properly 1`] = `
           "title": "Merchantable timber volume (m3)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "timber_volume",
         },
         Object {
           "component": [Function],
           "title": "Water Source",
-          "validate": Array [
-            [Function],
-          ],
           "value": "water_source_description",
         },
         Object {
           "component": [Function],
           "title": "Construction Method",
-          "validate": Array [
-            [Function],
-          ],
           "value": "construction_plan",
         },
       ]

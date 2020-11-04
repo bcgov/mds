@@ -69,7 +69,6 @@ exports[`Placer renders properly 1`] = `
           "title": "Quantity",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "quantity",
         },
@@ -77,7 +76,6 @@ exports[`Placer renders properly 1`] = `
           "component": [Function],
           "title": "Width(m)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "width",
@@ -87,7 +85,6 @@ exports[`Placer renders properly 1`] = `
           "title": "Length(km)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "length",
         },
@@ -96,7 +93,6 @@ exports[`Placer renders properly 1`] = `
           "title": "Disturbed Area (ha)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "disturbed_area",
         },
@@ -104,7 +100,6 @@ exports[`Placer renders properly 1`] = `
           "component": [Function],
           "title": "Merchantable timber volume (m3)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "timber_volume",
