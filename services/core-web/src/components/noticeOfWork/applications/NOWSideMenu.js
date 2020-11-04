@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -28,6 +27,7 @@ const propTypes = {
 };
 
 export class NOWSideMenu extends Component {
+  // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
   componentDidMount() {
