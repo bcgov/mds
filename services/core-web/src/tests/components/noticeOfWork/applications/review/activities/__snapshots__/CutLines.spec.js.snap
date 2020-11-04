@@ -17,7 +17,6 @@ exports[`CutLines renders properly 1`] = `
           "title": "Total Line(km)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "cut_line_length",
         },
@@ -26,7 +25,6 @@ exports[`CutLines renders properly 1`] = `
           "title": "Disturbed Area (ha)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "disturbed_area",
         },
@@ -34,7 +32,6 @@ exports[`CutLines renders properly 1`] = `
           "component": [Function],
           "title": "Merchantable timber volume (m3)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "timber_volume",
