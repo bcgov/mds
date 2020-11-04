@@ -16,7 +16,7 @@ from app.docman.resources import *
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, apm, migrate
+from app.extensions import api, cache, db, jwt, migrate
 
 from .config import Config
 
@@ -53,9 +53,6 @@ def register_extensions(app):
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
-
-    if app.config['ELASTIC_ENABLED'] == '1':
-        apm.init_app(app)
 
     cache.init_app(app)
     db.init_app(app)
