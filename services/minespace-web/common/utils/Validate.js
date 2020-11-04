@@ -140,10 +140,13 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     : undefined
 );
 
+// eslint-disable-next-line consistent-return
 export const validateSelectOptions = memoize((data) => (value) => {
-  return value && data.length > 0 && data.find((opt) => opt.value === value) !== undefined
-    ? undefined
-    : "Invalid. Select an option provided in the dropdown.";
+  if (value && data.length > 0) {
+    return data.find((opt) => opt.value === value) !== undefined
+      ? undefined
+      : "Invalid. Select an option provided in the dropdown.";
+  }
 });
 
 export const validateDateRanges = (
