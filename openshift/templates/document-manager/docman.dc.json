@@ -76,31 +76,31 @@
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1Gi"
+      "value": "1.5Gi"
     },
     {
       "name": "CPU_REQUEST",
-      "value": "150m"
+      "value": "225m"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "768Mi"
+      "value": "1152Mi"
     },
     {
       "name": "UWSGI_PROCESSES",
-      "value": "2"
+      "value": "4"
     },
     {
       "name": "UWSGI_THREADS",
-      "value": "3"
+      "value": "6"
     },
     {
       "name": "REPLICA_MIN",
-      "value": "2"
+      "value": "4"
     },
     {
       "name": "REPLICA_MAX",
-      "value": "4"
+      "value": "8"
     },
     {
       "name": "MDS_ELASTIC_SECRET",
