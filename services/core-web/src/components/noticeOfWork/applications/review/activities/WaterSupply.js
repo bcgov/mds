@@ -33,20 +33,18 @@ export const WaterSupply = (props) => {
             value: "activity_type_description",
             component: RenderAutoSizeField,
             minRows: 1,
-            validate: [required],
           },
           {
             title: "Water Use",
             value: "water_use_description",
             component: RenderAutoSizeField,
             minRows: 1,
-            validate: [required],
           },
           {
             title: "Estimate(m/s)",
             value: "estimate_rate",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
         ]}
       />
