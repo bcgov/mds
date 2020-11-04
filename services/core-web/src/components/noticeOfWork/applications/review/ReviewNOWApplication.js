@@ -673,7 +673,7 @@ export const ReviewNOWApplication = (props) => {
   return (
     <div>
       <Form layout="vertical">
-        <div className="side-menu--content">
+        <div>
           <div className="right" style={{ position: "relative", top: "30px" }}>
             {props.noticeOfWork.last_updated_date && (
               <p className="violet">
