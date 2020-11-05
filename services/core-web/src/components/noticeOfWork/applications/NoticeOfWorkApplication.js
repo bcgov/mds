@@ -12,6 +12,7 @@ import {
   fetchOriginalNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
@@ -27,7 +28,7 @@ import {
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, flattenObject } from "@common/utils/helpers";
-import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
+
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -51,7 +52,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 
@@ -643,13 +644,13 @@ export class NoticeOfWorkApplication extends Component {
             </Menu.Item>
           )}
         {isReview && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Menu.Item key="edit" onClick={this.toggleEditMode} className="custom-menu-item">
               Edit
             </Menu.Item>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
           <Menu.Item
             key="transfer-to-a-different-mine"
             className="custom-menu-item"
@@ -657,8 +658,8 @@ export class NoticeOfWorkApplication extends Component {
           >
             Transfer to a Different Mine
           </Menu.Item>
-        </AuthorizationWrapper>
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+        </NOWActionWrapper>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
           <Menu.Item
             key="edit-application-lat-long"
             className="custom-menu-item"
@@ -666,9 +667,9 @@ export class NoticeOfWorkApplication extends Component {
           >
             Edit Application Lat/Long
           </Menu.Item>
-        </AuthorizationWrapper>
+        </NOWActionWrapper>
         {!isReview && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Menu.Item
               key="edit-application-status"
               className="custom-menu-item"
@@ -676,7 +677,7 @@ export class NoticeOfWorkApplication extends Component {
             >
               Edit Application Status
             </Menu.Item>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
@@ -916,7 +917,7 @@ export class NoticeOfWorkApplication extends Component {
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex block-mobile padding-md between">
                       <h2>Administrative</h2>
-                      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                      <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown
                           overlay={this.menu(false)}
                           placement="bottomLeft"
@@ -928,7 +929,7 @@ export class NoticeOfWorkApplication extends Component {
                             <DownOutlined />
                           </Button>
                         </Dropdown>
-                      </AuthorizationWrapper>
+                      </NOWActionWrapper>
                     </div>
                   </div>
                   <div className="page__content">

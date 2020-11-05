@@ -3,7 +3,7 @@ import { Col, Row, Button } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import UpdateNOWLeadInspectorForm from "@/components/Forms/noticeOfWork/UpdateNOWLeadInspectorForm";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
@@ -28,12 +28,12 @@ const AssignLeadInspector = (props) => {
     <div>
       {!isEditMode && props.isAdminView && (
         <div className="right">
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Button type="secondary" onClick={() => setEditMode(true)}>
               <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
               Edit
             </Button>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         </div>
       )}
       <Row gutter={16}>
