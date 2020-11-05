@@ -16,6 +16,7 @@ from app.api.constants import *
 from app.api.utils.include.user_info import User
 
 from app.api.now_submissions.models.document import Document
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
 
 class NOWApplication(Base, AuditMixin):
@@ -124,6 +125,7 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
     )
+
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
@@ -134,12 +136,23 @@ class NOWApplication(Base, AuditMixin):
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
-    # Contacts
-    contacts = db.relationship('NOWPartyAppointment', lazy='selectin', 
-        primaryjoin="and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)")
+    contacts = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+    )
 
-    #status
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
+
+    def __repr__(self):
+        return '<NOWApplication %r>' % self.now_application_guid
+
+    @hybrid_property
+    def draft_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='DFT').one_or_none()
 
     @hybrid_property
     def permittee_name(self):
@@ -148,12 +161,13 @@ class NOWApplication(Base, AuditMixin):
             if contact.mine_party_appt_type_code == 'PMT'
         ][0]
 
-    def __repr__(self):
-        return '<NOWApplication %r>' % self.now_application_guid
-
     @classmethod
     def find_by_application_id(cls, now_application_id):
-        return cls.query.filter_by(now_application_id=now_application_id).first()
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
+
+    @classmethod
+    def find_by_application_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):
