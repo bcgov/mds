@@ -53,6 +53,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import NOWStatusBanner from "@/components/noticeOfWork/NOWStatusBanner";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 
@@ -804,7 +805,10 @@ export class NoticeOfWorkApplication extends Component {
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div>
-                    <div className={this.renderFixedHeaderClass()}>{this.renderEditModeNav()}</div>
+                    <div className={this.renderFixedHeaderClass()}>
+                      {this.renderEditModeNav()}
+                      <NOWStatusBanner />
+                    </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
                         route={routes.NOTICE_OF_WORK_APPLICATION}
@@ -873,6 +877,7 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <h2 className="padding-md">Referral/Consultation</h2>
+                    <NOWStatusBanner />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -931,6 +936,7 @@ export class NoticeOfWorkApplication extends Component {
                         </Dropdown>
                       </NOWActionWrapper>
                     </div>
+                    <NOWStatusBanner />
                   </div>
                   <div className="page__content">
                     <NOWApplicationAdministrative
