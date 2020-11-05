@@ -12,7 +12,7 @@ import {
   getDraftPermitAmendmentForNOW,
   getDraftPermitForNOW,
 } from "@common/selectors/permitSelectors";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
@@ -69,7 +69,7 @@ export class NOWSecurities extends Component {
         <div className="right">
           <div>
             {!this.state.isEditMode && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 {isEmpty(this.props.draftAmendment) ? (
                   <Popconfirm
                     placement="topLeft"
@@ -93,7 +93,7 @@ export class NOWSecurities extends Component {
                     Edit
                   </Button>
                 )}
-              </AuthorizationWrapper>
+              </NOWActionWrapper>
             )}
           </div>
         </div>
