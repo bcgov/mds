@@ -115,51 +115,30 @@ def start_job(wait, job_type, docs, task):
 
     return message
 
-
 def create_import_now_submission_documents(import_now_submission_documents_job_id):
     """Creates a job that imports a Notice of Work's submission documents to the object store."""
 
+    response = None
     # Get the Import NoW Document Job
     import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
         import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
 
     # Create the task for this job
     try:
-        result = import_now_submission_documents.delay(import_now_submission_documents_job_id)
-        import_job.celery_task_id = result.id
+        data = {"args": [import_job.import_now_submission_documents_job_id]}
+        response = apply_task_async(
+            'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
+        import_job.celery_task_id = response['task-id']
         import_job.save()
     except Exception as e:
         message = f'Failed to add an Import Notice of Work Submission Documents job to the task queue: {str(e)}'
 
     # Create the response message
-    message = f'Added an Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported'
-    return message
-
-
-def set_import_job_task_id(import_now_submission_documents_job_id, task_id):
-    """Creates a job that imports a Notice of Work's submission documents to the object store."""
-
-    # Get the Import NoW Document Job
-    import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
-        import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
-
-    # Create the task for this job
-    try:
-        import_job.celery_task_id = task_id
-        import_job.save()
-    except Exception as e:
-        message = f'Failed to add an Import Notice of Work Submission Documents job to the task queue: {str(e)}'
-
-    # Create the response message
-    message = f'Added an Import Notice of Work Submission Documents job with ID {import_now_submission_documents_job_id} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.  Task-id: {task_id}'
+    message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {response['task-id']} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
     return message
 
 
 def apply_task_async(task_name, data):
-    # data = {"args": [import_job.import_now_submission_documents_job_id]}
-
-    current_app.logger.debug(json.dumps(data))
-
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
         headers={'Content-Type': 'application/json'},

@@ -2,7 +2,6 @@ from flask import current_app, make_response, jsonify, request
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
-import requests
 import json
 import time
 
@@ -24,7 +23,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
 
     @requires_role_edit_permit
     def post(self):
-        from app.services.commands_helper import set_import_job_task_id, apply_task_async, abort_task
+        from app.services.commands_helper import create_import_now_submission_documents, abort_task
         from app.tasks.celery import celery
 
         # Get the NoW Application ID and its submission documents to transfer.
@@ -41,8 +40,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
                     ['NOT', 'INP', 'DEL']))).all()
         for job in in_progress_jobs:
             job.import_now_submission_documents_job_status_code = 'REV'
-            # TODO call REST API instead
-            # celery.control.revoke(job.celery_task_id, terminate=True)
             abort_task(job.celery_task_id)
             job.save()
 
@@ -65,22 +62,10 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         import_job.save()
 
         # Create the Import NoW Submission Documents job.
+        message = create_import_now_submission_documents(
+            import_job.import_now_submission_documents_job_id)
 
-        # TODO instead call a rest client for to start the task
-        # message = create_import_now_submission_documents(
-        #     import_job.import_now_submission_documents_job_id)
-
-        data = {"args": [import_job.import_now_submission_documents_job_id]}
-
-        current_app.logger.debug(json.dumps(data))
-
-        response = apply_task_async(
-            'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
-
-        message = set_import_job_task_id(import_job.import_now_submission_documents_job_id,
-                                         response['task-id'])
-
-        # Return a response indicating that the job has started.
+        # Return a response indicating that the task has started.
         result = make_response(jsonify(message=message), 201)
         return result
 
