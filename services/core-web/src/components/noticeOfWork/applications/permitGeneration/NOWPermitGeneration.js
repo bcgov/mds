@@ -30,7 +30,7 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -270,14 +270,14 @@ export class NOWPermitGeneration extends Component {
       <div className="inline-flex block-mobile padding-md between">
         <h2>{`Draft Permit ${nowType}`}</h2>
         {this.state.isDraft && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown overlay={this.menu()} placement="bottomLeft">
               <Button type="secondary" className="full-mobile">
                 Actions
                 <DownOutlined />
               </Button>
             </Dropdown>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
       </div>
     ) : (
@@ -360,9 +360,9 @@ export class NOWPermitGeneration extends Component {
                     ) : (
                       <>
                         <NullScreen type="draft-permit" />
-                        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                           <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </AuthorizationWrapper>
+                        </NOWActionWrapper>
                       </>
                     )}
                   </div>

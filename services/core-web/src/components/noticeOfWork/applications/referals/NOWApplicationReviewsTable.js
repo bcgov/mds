@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
@@ -71,7 +71,7 @@ const columns = (reviewerLabel) => [
     key: "editDeleteButtons",
     align: "right",
     render: (text, record) => (
-      <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+      <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
         <div>
           <Button
             ghost
@@ -95,7 +95,7 @@ const columns = (reviewerLabel) => [
             </Button>
           </Popconfirm>
         </div>
-      </AuthorizationWrapper>
+      </NOWActionWrapper>
     ),
   },
 ];

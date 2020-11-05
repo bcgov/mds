@@ -15,7 +15,7 @@ import {
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AddButton from "@/components/common/AddButton";
 import {
   createNoticeOfWorkApplicationReview,
@@ -86,7 +86,7 @@ const ApplicationReview = (props) => (
       />
       {props.readyForReview && !props.completeDate && (
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Popconfirm
               placement="topRight"
               title={`Are you sure you want to complete ${props.reviewType.label}?`}
@@ -96,7 +96,7 @@ const ApplicationReview = (props) => (
             >
               <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
             </Popconfirm>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         </div>
       )}
     </ScrollContentWrapper>
@@ -393,13 +393,13 @@ export class NOWApplicationReviews extends Component {
                     </Button>
                   )}
 
-                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                     <AddButton
                       onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                     >
                       Add Reviewer
                     </AddButton>
-                  </AuthorizationWrapper>
+                  </NOWActionWrapper>
                 </div>
               </div>
             </div>
