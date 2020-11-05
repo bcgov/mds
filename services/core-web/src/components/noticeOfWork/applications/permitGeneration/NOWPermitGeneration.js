@@ -141,9 +141,14 @@ export class NOWPermitGeneration extends Component {
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
+    const addressLineOne = permittee.party.address[0].address_line_1
+      ? `${permittee.party.address[0].address_line_1}\n`
+      : "";
+    const mailingAddress = `${addressLineOne}${permittee.party.address[0].city || ""} ${permittee
+      .party.address[0].sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`;
     permitGenObject.permittee = permittee.party.name;
     permitGenObject.permittee_email = permittee.party.email;
-    permitGenObject.permittee_mailing_address = `${permittee.party.address[0].address_line_1}\n${permittee.party.address[0].city} ${permittee.party.address[0].sub_division_code} ${permittee.party.address[0].post_code}`;
+    permitGenObject.permittee_mailing_address = mailingAddress;
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
