@@ -87,6 +87,9 @@ class Config(object):
     CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '')
     GRANT_TYPE = os.environ.get('GRANT_TYPE', 'client_credentials')
 
+    # celery REST API
+    CELERY_REST_API_URL = os.environ.get('CELERY_REST_API_URL', '')
+
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
 

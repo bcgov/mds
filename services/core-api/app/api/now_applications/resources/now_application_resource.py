@@ -97,7 +97,7 @@ class NOWApplicationResource(Resource, UserMixin):
         return now_application_identity.now_application
 
     # TODO: Remove me before publishing.
-    # @requires_role_edit_permit
+    @requires_role_edit_permit
     def post(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
