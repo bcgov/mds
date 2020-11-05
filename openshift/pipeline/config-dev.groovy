@@ -353,8 +353,8 @@ environments {
                 resource = "mines-application-dev"
                 idpHint_core = "dev"
                 idpHint_minespace = "dev"
-                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                url = "https://test.oidc.gov.bc.ca/auth"
+                known_config_url = "https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
