@@ -33,8 +33,7 @@ export class NOWActionWrapper extends Component {
   // }
 
   render() {
-    // testing logic with "Permit Closed status"
-    const disabled = this.props.noticeOfWork.now_application_status_code === "PCO";
+    const disabled = false;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
