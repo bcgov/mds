@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
-import { maxLength, number, required } from "@common/utils/Validate";
+import { maxLength, number } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
@@ -27,19 +27,19 @@ export const CutLines = (props) => {
             title: "Total Line(km)",
             value: "cut_line_length",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Disturbed Area (ha)",
             value: "disturbed_area",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Merchantable timber volume (m3)",
             value: "timber_volume",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
         ]}
       />

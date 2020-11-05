@@ -27,6 +27,7 @@ const propTypes = {
 };
 
 export class NOWSideMenu extends Component {
+  // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
   componentDidMount() {
@@ -81,7 +82,7 @@ export class NOWSideMenu extends Component {
   };
 
   render() {
-    const menu = this.props.tabSection === "technical-review" ? activitiesMenu : draftPermitMenu;
+    const menu = this.props.tabSection === "application" ? activitiesMenu : draftPermitMenu;
     return (
       <div>
         <Anchor

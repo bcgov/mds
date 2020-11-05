@@ -54,6 +54,8 @@ import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
+import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -237,7 +239,7 @@ export class NoticeOfWorkApplication extends Component {
           data.lead_inspector_party_guid &&
           this.props.match.params.tab === "verification"
         ) {
-          this.handleTabChange("technical-review");
+          this.handleTabChange("application");
         }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
@@ -392,19 +394,6 @@ export class NoticeOfWorkApplication extends Component {
           .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
-  };
-
-  openUpdateLeadInspectorModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Lead Inspector",
-        inspectors: this.props.inspectors,
-        lead_inspector_party_guid: this.props.noticeOfWork.lead_inspector_party_guid,
-        setLeadInspectorPartyGuid: this.setLeadInspectorPartyGuid,
-        handleUpdateLeadInspector: (e) => this.handleUpdateLeadInspector(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_LEAD_INSPECTOR,
-    });
   };
 
   handleUpdateStatus = (finalAction) => {
@@ -589,18 +578,20 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md between">
-        <h2>Technical Review</h2>
-        <Dropdown
-          overlay={this.menu(true)}
-          placement="bottomLeft"
-          onVisibleChange={this.handleVisibleChange}
-          visible={this.state.menuVisible}
-        >
-          <Button type="secondary" className="full-mobile">
-            Actions
-            <DownOutlined />
-          </Button>
-        </Dropdown>
+        <h2>Application</h2>
+        {this.props.noticeOfWork.lead_inspector_party_guid && (
+          <Dropdown
+            overlay={this.menu(true)}
+            placement="bottomLeft"
+            onVisibleChange={this.handleVisibleChange}
+            visible={this.state.menuVisible}
+          >
+            <Button type="secondary" className="full-mobile">
+              Actions
+              <DownOutlined />
+            </Button>
+          </Dropdown>
+        )}
       </div>
     ) : (
       <div className="center padding-md">
@@ -694,17 +685,6 @@ export class NoticeOfWorkApplication extends Component {
             </Menu.Item>
           </AuthorizationWrapper>
         )}
-        {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item
-              className="custom-menu-item"
-              key="change-the-lead-inspector"
-              onClick={() => this.openUpdateLeadInspectorModal()}
-            >
-              Change the Lead Inspector
-            </Menu.Item>
-          </AuthorizationWrapper>
-        )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
             {Object.values(this.props.generatableApplicationDocuments)
@@ -761,8 +741,8 @@ export class NoticeOfWorkApplication extends Component {
           when={!this.state.isViewMode}
           message={(location, action) => {
             const onTechnicalReview =
-              location.pathname.includes("technical-review") &&
-              this.props.location.pathname.includes("technical-review");
+              location.pathname.includes("application") &&
+              this.props.location.pathname.includes("application");
             const onDraftPermit =
               location.pathname.includes("draft-permit") &&
               this.props.location.pathname.includes("draft-permit");
@@ -801,22 +781,23 @@ export class NoticeOfWorkApplication extends Component {
             style={{ margin: "0" }}
             centered
           >
-            <Tabs.TabPane tab="Verification" key="verification">
-              <ApplicationStepOne
-                isNewApplication={this.state.isNewApplication}
-                loadMineData={this.loadMineInfo}
-                isMajorMine={this.state.isMajorMine}
-                noticeOfWork={this.props.noticeOfWork}
-                mineGuid={this.state.mineGuid}
-                setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                handleUpdateLeadInspector={this.handleUpdateLeadInspector}
-                loadNoticeOfWork={this.loadNoticeOfWork}
-                initialPermitGuid={this.state.initialPermitGuid}
-                originalNoticeOfWork={this.props.originalNoticeOfWork}
-              />
-            </Tabs.TabPane>
+            {!isImported && (
+              <Tabs.TabPane tab="Verification" key="verification">
+                <ApplicationStepOne
+                  isNewApplication={this.state.isNewApplication}
+                  loadMineData={this.loadMineInfo}
+                  isMajorMine={this.state.isMajorMine}
+                  noticeOfWork={this.props.noticeOfWork}
+                  mineGuid={this.state.mineGuid}
+                  loadNoticeOfWork={this.loadNoticeOfWork}
+                  initialPermitGuid={this.state.initialPermitGuid}
+                  originalNoticeOfWork={this.props.originalNoticeOfWork}
+                  handleTabChange={this.handleTabChange}
+                />
+              </Tabs.TabPane>
+            )}
 
-            <Tabs.TabPane tab="Technical Review" key="technical-review" disabled={!isImported}>
+            <Tabs.TabPane tab="Application" key="application" disabled={!isImported}>
               <>
                 <div className="tab-disclaimer">
                   <p className="center">
@@ -834,14 +815,35 @@ export class NoticeOfWorkApplication extends Component {
                       <NOWSideMenu
                         route={routes.NOTICE_OF_WORK_APPLICATION}
                         noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                        tabSection="technical-review"
+                        tabSection="application"
                       />
                     </div>
                     <div
                       className={
-                        this.state.fixedTop ? "view--content with-fixed-top" : "view--content"
+                        this.state.fixedTop
+                          ? "side-menu--content with-fixed-top"
+                          : "side-menu--content"
                       }
                     >
+                      {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
+                        <>
+                          <ScrollContentWrapper
+                            id="lead-inspector"
+                            title="Assign Lead Inspector"
+                            isActive
+                          >
+                            <AssignLeadInspector
+                              inspectors={this.props.inspectors}
+                              noticeOfWork={this.props.noticeOfWork}
+                              setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                              handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                              title="Assign Lead Inspector"
+                              isEditMode
+                            />
+                          </ScrollContentWrapper>
+                          <Divider />
+                        </>
+                      )}
                       <ReviewNOWApplication
                         reclamationSummary={this.props.reclamationSummary}
                         isViewMode={this.state.isViewMode}
@@ -942,6 +944,9 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationAdministrative
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      inspectors={this.props.inspectors}
+                      setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                      handleUpdateLeadInspector={this.handleUpdateLeadInspector}
                       importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />

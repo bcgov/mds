@@ -8,9 +8,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     layout="vertical"
     onSubmit={[Function]}
   >
-    <div
-      className="side-menu--content"
-    >
+    <div>
       <div
         className="right"
         style={

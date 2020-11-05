@@ -26,7 +26,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache, apm
+from app.extensions import db, jwt, api, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
@@ -58,12 +58,6 @@ def register_extensions(app):
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
     api.init_app(app)
-    if app.config['ELASTIC_ENABLED'] == '1':
-        pass
-        #apm.init_app(app)
-        #logging.getLogger('elasticapm').setLevel(30)
-    else:
-        app.logger.info('ELASTIC_ENABLED: FALSE, set ELASTIC_ENABLED=1 to enable')
 
     try:
         jwt.init_app(app)

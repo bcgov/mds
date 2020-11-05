@@ -141,7 +141,7 @@ export class PartyProfile extends Component {
                 <Link
                   to={routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
                     record.relationship.now_application.now_application_guid,
-                    "technical-review"
+                    "application"
                   )}
                 >
                   {record.relationship.now_application.now_number}
