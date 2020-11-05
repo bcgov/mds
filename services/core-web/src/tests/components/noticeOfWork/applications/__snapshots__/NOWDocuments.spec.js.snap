@@ -69,7 +69,7 @@ exports[`NOWDocuments renders properly 1`] = `
     rowSelection={null}
   />
   <br />
-  <Connect(AuthorizationWrapper)
+  <withRouter(Connect(NOWActionWrapper))
     permission="role_edit_permits"
   >
     <AddButton
@@ -80,6 +80,6 @@ exports[`NOWDocuments renders properly 1`] = `
     >
       Add Document
     </AddButton>
-  </Connect(AuthorizationWrapper)>
+  </withRouter(Connect(NOWActionWrapper))>
 </div>
 `;
