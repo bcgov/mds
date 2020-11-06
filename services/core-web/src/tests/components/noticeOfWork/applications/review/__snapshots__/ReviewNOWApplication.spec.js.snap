@@ -8,9 +8,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     layout="vertical"
     onSubmit={[Function]}
   >
-    <div
-      className="side-menu--content"
-    >
+    <div>
       <div
         className="right"
         style={
@@ -85,6 +83,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="mine_region"
                 name="mine_region"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
               <div
                 className="field-title"
@@ -146,6 +149,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 validate={
                   Array [
                     [Function],
+                    [Function],
                   ]
                 }
               />
@@ -164,6 +168,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="application_permit_type_code"
                 name="application_permit_type_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
               <div
                 className="field-title"
@@ -297,7 +306,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                     },
                     "mine_guid": "",
                     "notice_of_work_type_code": "MIN",
-                    "now_application_guid": "",
+                    "now_application_guid": "1346wesrt22",
                     "now_application_id": "",
                     "now_message_id": 47284,
                     "now_tracking_number": 47284,
@@ -370,7 +379,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               },
               "mine_guid": "",
               "notice_of_work_type_code": "MIN",
-              "now_application_guid": "",
+              "now_application_guid": "1346wesrt22",
               "now_application_id": "",
               "now_message_id": 47284,
               "now_tracking_number": 47284,

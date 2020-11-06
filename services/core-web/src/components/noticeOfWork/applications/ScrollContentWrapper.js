@@ -28,12 +28,14 @@ const propTypes = {
   isViewMode: PropTypes.bool,
   change: PropTypes.func.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
+  isActive: PropTypes.bool,
 };
 
 const defaultProps = {
   showContent: true,
   data: undefined,
   isViewMode: true,
+  isActive: false,
 };
 
 export class ScrollContentWrapper extends Component {
@@ -96,7 +98,7 @@ export class ScrollContentWrapper extends Component {
         this.props.history && this.props.history.location && this.props.history.location.state
           ? this.props.history.location.state.currentActiveLink
           : undefined;
-      const isActiveLink = includes(currentActiveLink, this.props.id);
+      const isActiveLink = includes(currentActiveLink, this.props.id) || this.props.isActive;
       return isActiveLink ? "circle purple" : "circle grey";
     };
 

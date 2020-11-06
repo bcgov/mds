@@ -597,6 +597,9 @@ DECLARE
 	-- # Add new parties from ETL_PERMIT
 	-- ################################################################
 
+	-- Ensure there is only one party_guid per party_combo_id
+	UPDATE etl_permit SET party_guid=uuid(distinct_parties.party_guid) FROM (select DISTINCT count(*), party_combo_id, MAX(party_guid::text) as party_guid FROM etl_permit GROUP BY party_combo_id) AS distinct_parties 
+	WHERE etl_permit.party_combo_id IS NOT NULL AND etl_permit.party_combo_id != '' and etl_permit.party_combo_id = distinct_parties.party_combo_id;
 
 	WITH new_parties AS (
 	    SELECT DISTINCT ON (party_guid)

@@ -14,6 +14,7 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Exploration Type",
           "validate": Array [
             [Function],
+            [Function],
           ],
           "value": "underground_exploration_type_code",
         },
@@ -31,7 +32,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Quantity",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "quantity",
         },
@@ -39,7 +39,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "component": [Function],
           "title": "Incline",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "incline",
@@ -49,7 +48,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Width(m)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "width",
         },
@@ -57,7 +55,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "component": [Function],
           "title": "Length(km)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "length",
@@ -67,7 +64,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Height(m)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "height",
         },
@@ -76,7 +72,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "title": "Disturbed Area (ha)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "disturbed_area",
         },
@@ -84,7 +79,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "component": [Function],
           "title": "Merchantable timber volume (m3)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "timber_volume",

@@ -28,7 +28,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         />
         Download All
       </Button>
-      <Connect(AuthorizationWrapper)
+      <withRouter(Connect(NOWActionWrapper))
         permission="role_edit_permits"
       >
         <Button
@@ -52,7 +52,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
           />
           Edit
         </Button>
-      </Connect(AuthorizationWrapper)>
+      </withRouter(Connect(NOWActionWrapper))>
     </div>
   </div>
   <br />
@@ -60,7 +60,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
     documents={Array []}
     isViewMode={true}
     mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    now_application_guid=""
+    now_application_guid="1346wesrt22"
   />
 </div>
 `;

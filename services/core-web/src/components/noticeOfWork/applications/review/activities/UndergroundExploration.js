@@ -7,7 +7,12 @@ import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { numberWithUnitCode, required, number } from "@common/utils/Validate";
+import {
+  numberWithUnitCode,
+  required,
+  number,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -36,7 +41,7 @@ export const UndergroundExploration = (props) => {
             title: "Exploration Type",
             value: "underground_exploration_type_code",
             component: RenderSelect,
-            validate: [required],
+            validate: [required, validateSelectOptions(props.undergroundExplorationTypeOptions)],
             data: props.undergroundExplorationTypeOptions,
           },
           {
@@ -50,43 +55,43 @@ export const UndergroundExploration = (props) => {
             title: "Quantity",
             value: "quantity",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Incline",
             value: "incline",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Width(m)",
             value: "width",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Length(km)",
             value: "length",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Height(m)",
             value: "height",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Disturbed Area (ha)",
             value: "disturbed_area",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Merchantable timber volume (m3)",
             value: "timber_volume",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
         ]}
       />

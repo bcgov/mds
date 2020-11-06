@@ -24,6 +24,7 @@ const propTypes = {
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
+  addFileStart: PropTypes.func,
 };
 
 const defaultProps = {
@@ -31,6 +32,7 @@ const defaultProps = {
   acceptedFileTypesMap: {},
   onFileLoad: () => {},
   onRemoveFile: () => {},
+  addFileStart: () => {},
   chunkSize: 1048576, // 1MB
   allowRevert: false,
   allowMultiple: true,
@@ -119,6 +121,7 @@ class FileUpload extends React.Component {
           allowRevert={this.props.allowRevert}
           onremovefile={this.props.onRemoveFile}
           allowMultiple={this.props.allowMultiple}
+          onaddfilestart={this.props.addFileStart}
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}

@@ -1,10 +1,8 @@
-from app.nris.utils.apm import register_apm
 from app.nris.etl.nris_etl import import_nris_xml, clean_nris_xml_import, etl_nris_data, clean_nris_etl_data
 from flask import current_app
 import cx_Oracle
 
 
-@register_apm("NRIS ETL Job")
 def run_nris_etl():
 
     current_app.logger.info('Starting ETL process')
@@ -21,10 +19,8 @@ def run_nris_etl():
         current_app.logger.info('NRIS ETL Completed!')
 
     except cx_Oracle.DatabaseError as e:
-        current_app.logger.error(
-            "Error establishing connection to NRIS database: " + str(e))
+        current_app.logger.error("Error establishing connection to NRIS database: " + str(e))
         raise
     except Exception as e:
-        current_app.logger.error(
-            "Unexpected error with NRIS XML import: " + str(e))
+        current_app.logger.error("Unexpected error with NRIS XML import: " + str(e))
         raise
