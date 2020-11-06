@@ -23,7 +23,8 @@ class NOWApplicationDelay(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     now_application = db.relationship('NOWApplication')
 
-    delay_reason_code = db.Column(db.String, nullable=False)
+    delay_type_code = db.Column(
+        db.String, db.ForeignKey('now_application_delay_type.delay_type_code'), nullable=False)
     delay_comment = db.Column(db.String, nullable=False)
     delay_start_date = db.Column(db.Date, nullable=False)
     delay_end_date = db.Column(db.Date)
