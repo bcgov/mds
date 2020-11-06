@@ -219,3 +219,10 @@
   border-radius: 5px;
   padding: 10px;
 }
+
+.status-banner {
+  position: relative;
+  top: -12px;
+  height: 10px;
+  z-index: 100;
+}
