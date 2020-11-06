@@ -13,7 +13,7 @@ import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
  * Colors: Complete = green
  * Rejected/WithDrawn = red
  * client delay = gold
- * editMode = purple
+ * editMode = linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%)
  * permit issued = green?
  *
  */
@@ -27,14 +27,17 @@ const propTypes = {
 const defaultProps = { isComplete: "", isEditMode: false };
 
 export const NOWStatusBanner = (props) => {
-  const message = "";
+  const message = "Edit Mode";
   return (
     <Alert
       showIcon={false}
       message={message}
       banner
       // hiding it for now until the logic gets added
-      style={{ backgroundColor: "#faad14", display: "none" }}
+      style={{
+        background: "linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%)",
+        color: "white",
+      }}
       className="status-banner"
     />
   );

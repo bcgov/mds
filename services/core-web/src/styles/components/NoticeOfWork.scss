@@ -139,7 +139,7 @@
   }
 
   &--fixed {
-    top: 130px;
+    top: 133px;
     position: fixed;
     width: 240px;
 
@@ -222,7 +222,13 @@
 
 .status-banner {
   position: relative;
-  top: -12px;
-  height: 10px;
+  top: -11px;
+  height: 11px;
   z-index: 100;
+  .ant-alert-message {
+    top: -10px;
+    position: relative;
+    left: 150px;
+    color: white;
+  }
 }
