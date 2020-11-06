@@ -14,6 +14,11 @@ class PermitCondition(fields.Raw):
         return marshal(value, PERMIT_CONDITION_MODEL)
 
 
+class PermitConditionTemplate(fields.Raw):
+    def format(self, value):
+        return marshal(value, PERMIT_CONDITION_TEMPLATE_MODEL)
+
+
 BASIC_MINE_LOCATION_MODEL = api.model(
     'BasicMineLocation', {
         'latitude': fields.String,
@@ -497,6 +502,11 @@ PERMIT_CONDITION_MODEL = api.model(
         'step': fields.String,
         'display_order': fields.Integer,
     })
+
+PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {
+    'condition': fields.String,
+    'sub_conditions': fields.List(PermitConditionTemplate),
+})
 
 PERMIT_CONDITION_CATEGORY_MODEL = api.model(
     'PermitConditionCategory', {

@@ -4,7 +4,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from flask import current_app
 from flask_restplus import marshal
-from app.api.mines.response_models import PERMIT_CONDITION_MODEL
+from app.api.mines.response_models import PERMIT_CONDITION_MODEL, PERMIT_CONDITION_TEMPLATE_MODEL
 import json
 
 
@@ -41,9 +41,17 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         if not now_application.draft_permit:
             raise Exception(f'Notice of Work has no draft permit')
 
-        current_app.logger.info(f'now_application.draft_permit:\n{now_application.draft_permit}')
-        current_app.logger.info(
-            f'now_application.draft_permit.conditions:\n{json.dumps(marshal(now_application.draft_permit.conditions, PERMIT_CONDITION_MODEL))}'
-        )
+        # current_app.logger.info(f'now_application.draft_permit:\n{now_application.draft_permit}')
+        conditions = now_application.draft_permit.conditions
+        conditions_template_data = {}
+        for section in conditions:
+            category = section.condition_category_code
+            if not conditions_template_data.get(category):
+                conditions_template_data[category] = []
+            section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
+            conditions_template_data[category].append(section_data)
+
+        current_app.logger.info(f'conditions AFTER:\n{json.dumps(conditions_template_data)}')
+        template_data['conditions'] = conditions_template_data
 
         return template_data
