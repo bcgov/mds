@@ -5,7 +5,12 @@ import { fromPairs } from "lodash";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Popconfirm, Radio } from "antd";
-import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
+import {
+  required,
+  dateNotInFuture,
+  maxLength,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
@@ -74,7 +79,7 @@ export class AddVarianceForm extends Component {
             label="Part of Code*"
             placeholder="Select a part of the code"
             component={renderConfig.SELECT}
-            validate={[required]}
+            validate={[required, validateSelectOptions(this.props.complianceCodes)]}
             data={this.props.complianceCodes}
           />
         </Form.Item>
@@ -146,7 +151,11 @@ export class AddVarianceForm extends Component {
             label={filesUploaded ? "Document Category*" : "Document Category"}
             placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={filesUploaded ? [required] : []}
+            validate={
+              filesUploaded
+                ? [required, validateSelectOptions(this.props.documentCategoryOptions)]
+                : [validateSelectOptions(this.props.documentCategoryOptions)]
+            }
             data={this.props.documentCategoryOptions}
           />
         </Form.Item>

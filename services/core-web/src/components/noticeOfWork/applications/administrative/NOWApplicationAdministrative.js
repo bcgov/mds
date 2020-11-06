@@ -5,6 +5,7 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 import NOWSecurities from "@/components/noticeOfWork/applications/administrative/NOWSecurities";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 
 /**
  * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
@@ -13,10 +14,14 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  handleSaveNOWEdit: PropTypes.func.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
+  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
+  handleUpdateLeadInspector: PropTypes.func.isRequired,
 };
+
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
 const exportedDocuments = ["NTR"];
+const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div className="page__content">
@@ -28,16 +33,21 @@ export const NOWApplicationAdministrative = (props) => {
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-files" title="Reclamation Securities">
-        <NOWSecurities
-          mineGuid={props.mineGuid}
-          noticeOfWork={props.noticeOfWork}
-          handleSaveNOWEdit={props.handleSaveNOWEdit}
+        <NOWSecurities mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+        <br />
+        <br />
+        <NOWDocuments
+          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
+            securityDocuments.includes(now_application_document_type_code)
+          )}
+          isViewMode={false}
+          isAdminView
+          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+          categoriesToShow={securityDocuments}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-files" title="Government Documents">
         <NOWDocuments
-          now_application_guid={props.noticeOfWork.now_application_guid}
-          mine_guid={props.mineGuid}
           documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
             governmentDocuments.includes(now_application_document_type_code)
           )}
@@ -45,13 +55,10 @@ export const NOWApplicationAdministrative = (props) => {
           isAdminView
           disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={governmentDocuments}
-          handleAfterUpload={props.handleSaveNOWEdit}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-export-files" title="Application Export Files">
         <NOWDocuments
-          now_application_guid={props.noticeOfWork.now_application_guid}
-          mine_guid={props.mineGuid}
           documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
             exportedDocuments.includes(now_application_document_type_code)
           )}
@@ -59,6 +66,16 @@ export const NOWApplicationAdministrative = (props) => {
           disclaimerText="In this table you can see all exported Notice of Work documents."
           categoriesToShow={exportedDocuments}
           addDescriptionColumn={false}
+        />
+      </ScrollContentWrapper>
+      <ScrollContentWrapper id="lead-inspector" title="Lead Inspector">
+        <AssignLeadInspector
+          inspectors={props.inspectors}
+          noticeOfWork={props.noticeOfWork}
+          setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
+          handleUpdateLeadInspector={props.handleUpdateLeadInspector}
+          title="Update Lead Inspector"
+          isAdminView
         />
       </ScrollContentWrapper>
     </div>

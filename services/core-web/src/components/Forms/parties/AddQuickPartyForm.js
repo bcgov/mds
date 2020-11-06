@@ -11,6 +11,7 @@ import {
   maxLength,
   number,
   postalCode,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -147,6 +148,7 @@ export const AddQuickPartyForm = (props) => (
               id="sub_division_code"
               name="sub_division_code"
               label="Province"
+              validate={[validateSelectOptions(props.provinceOptions)]}
               component={renderConfig.SELECT}
               data={props.provinceOptions}
             />

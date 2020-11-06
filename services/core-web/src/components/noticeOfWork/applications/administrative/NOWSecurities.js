@@ -12,8 +12,7 @@ import {
   getDraftPermitAmendmentForNOW,
   getDraftPermitForNOW,
 } from "@common/selectors/permitSelectors";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
@@ -31,10 +30,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   draftPermits: CustomPropTypes.permit.isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
-  handleSaveNOWEdit: PropTypes.func.isRequired,
 };
-
-const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 
 export class NOWSecurities extends Component {
   state = { isEditMode: false, isLoaded: false };
@@ -73,7 +69,7 @@ export class NOWSecurities extends Component {
         <div className="right">
           <div>
             {!this.state.isEditMode && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 {isEmpty(this.props.draftAmendment) ? (
                   <Popconfirm
                     placement="topLeft"
@@ -97,7 +93,7 @@ export class NOWSecurities extends Component {
                     Edit
                   </Button>
                 )}
-              </AuthorizationWrapper>
+              </NOWActionWrapper>
             )}
           </div>
         </div>
@@ -111,21 +107,6 @@ export class NOWSecurities extends Component {
             />
           </div>
         </LoadingWrapper>
-        <br />
-        <br />
-        <NOWDocuments
-          now_application_guid={this.props.noticeOfWork.now_application_guid}
-          mine_guid={this.props.mineGuid}
-          documents={this.props.noticeOfWork.documents.filter(
-            ({ now_application_document_type_code }) =>
-              securityDocuments.includes(now_application_document_type_code)
-          )}
-          isViewMode={false}
-          isAdminView
-          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
-          categoriesToShow={securityDocuments}
-          handleAfterUpload={this.props.handleSaveNOWEdit}
-        />
       </div>
     );
   }

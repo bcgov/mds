@@ -16,7 +16,7 @@ import AddButton from "@/components/common/AddButton";
 import Section from "@/components/Forms/permits/conditions/Section";
 import SubCondition from "@/components/Forms/permits/conditions/SubCondition";
 import ListItem from "@/components/Forms/permits/conditions/ListItem";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
@@ -65,14 +65,14 @@ export class AddCondition extends Component {
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <AddButton type="secondary" disabled>
               {ButtonText(this.props.initialValues.condition_type_code)}
             </AddButton>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
         {!this.props.editingConditionFlag && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <AddButton
               type="secondary"
               onClick={() => {
@@ -82,7 +82,7 @@ export class AddCondition extends Component {
             >
               {ButtonText(this.props.initialValues.condition_type_code)}
             </AddButton>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
         {this.state.isEditing && (
           <ConditionComponent

@@ -269,13 +269,13 @@ export const SandGravelQuarry = (props) => {
             title: "Disturbed Area (ha)",
             value: "disturbed_area",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Merchantable timber volume (m3)",
             value: "timber_volume",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
         ]}
       />

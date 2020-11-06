@@ -18,7 +18,7 @@ import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 /**
  * @class FinalPermitDocuments- call logic surrounding adding or removing documents in the final Permit document list
@@ -153,8 +153,6 @@ export class FinalPermitDocuments extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        mineGuid: this.props.mineGuid,
-        noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         submissionDocuments: this.props.noticeOfWork.submission_documents,
         documents:
           this.props.noticeOfWork &&
@@ -207,7 +205,7 @@ export class FinalPermitDocuments extends Component {
               <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
               <Button
                 type="secondary"
                 className="full-mobile"
@@ -216,7 +214,7 @@ export class FinalPermitDocuments extends Component {
                 <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
                 Edit
               </Button>
-            </AuthorizationWrapper>
+            </NOWActionWrapper>
           </div>
         </div>
         <br />
