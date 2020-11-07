@@ -10,11 +10,11 @@ import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 /**
  * @constant NOWStatusBanner conditionally show a status banner on all tabs based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
  * persists permissions using authWrapper - These actions are not visible to admin if disabled.
- * Colors: Complete = green
- * Rejected/WithDrawn = red
- * client delay = gold
- * editMode = purple
- * permit issued = green?
+ * Colors: Complete =  linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
+ * Rejected/WithDrawn =  linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%);
+ * client delay =  linear-gradient(90deg, #FDBC00 0%, #FDBC00 28.89%, #FFF1A7 100%);
+ * editMode =  linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%);
+ * permit issued = linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
  *
  */
 
@@ -27,14 +27,17 @@ const propTypes = {
 const defaultProps = { isComplete: "", isEditMode: false };
 
 export const NOWStatusBanner = (props) => {
-  const message = "";
+  const message = "Complete";
   return (
     <Alert
       showIcon={false}
       message={message}
       banner
       // hiding it for now until the logic gets added
-      style={{ backgroundColor: "#faad14", display: "none" }}
+      style={{
+        background: "linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%)",
+        display: "none",
+      }}
       className="status-banner"
     />
   );
