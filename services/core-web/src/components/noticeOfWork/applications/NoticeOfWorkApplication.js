@@ -860,11 +860,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane
-              tab="Referral/Consultation"
-              key="referral-consultation"
-              disabled={!verificationComplete}
-            >
+            <Tabs.TabPane tab="Referral" key="referral" disabled={!verificationComplete}>
               <>
                 <div className="tab-disclaimer">
                   <p className="center">
@@ -883,6 +879,45 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      type="REF"
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Consultation" key="consultation" disabled={!verificationComplete}>
+              <>
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Consultation</h2>
+                    <NOWStatusBanner />
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      type="FNC"
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab="Public Comment"
+              key="public-comment"
+              disabled={!verificationComplete}
+            >
+              <>
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Public Comment</h2>
+                    <NOWStatusBanner />
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      type="PUB"
                     />
                   </div>
                 </LoadingWrapper>

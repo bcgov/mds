@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
- * @constant NOWStatusBanner conditionally show a status banner on all tabs based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
+ * @constant NOWStatusIndicator conditionally show a status banner on all tabs based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
 
  * Colors:
  * Complete =  linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
@@ -27,7 +27,7 @@ const propTypes = {
 
 const defaultProps = { isComplete: "", isEditMode: false };
 
-export const NOWStatusBanner = (props) => {
+export const NOWStatusIndicator = (props) => {
   const message = "Complete";
   return (
     <Alert
@@ -44,12 +44,12 @@ export const NOWStatusBanner = (props) => {
   );
 };
 
-NOWStatusBanner.propTypes = propTypes;
-NOWStatusBanner.defaultProps = defaultProps;
+NOWStatusIndicator.propTypes = propTypes;
+NOWStatusIndicator.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   // can update color and message based on 'complete' state
   noticeOfWork: getNoticeOfWork(state),
 });
 
-export default withRouter(connect(mapStateToProps)(NOWStatusBanner));
+export default withRouter(connect(mapStateToProps)(NOWStatusIndicator));
