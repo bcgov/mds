@@ -23,8 +23,8 @@ export class NOWProgressActions extends Component {
   render() {
     return (
       <div className="inline-flex">
-        <Button type="primary">Start {this.props.progressStatusHash[tab]}</Button>
-        <Button type="primary"> Complete {this.props.progressStatusHash[tab]}</Button>
+        <Button type="primary">Start {this.props.progressStatusHash[this.props.tab]}</Button>
+        <Button type="primary"> Complete {this.props.progressStatusHash[this.props.tab]}</Button>
         <Button type="primary"> Manage Delay </Button>
         <Button type="primary"> View Reason for Delay </Button>
       </div>

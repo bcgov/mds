@@ -882,18 +882,12 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains basic information about any referrals or consultations
-                    related to this application. You can create document packages for reviewers and
-                    attach any responses that reviewers send back.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Referral</h2>
-                    <NOWProgressActions tab="REF" />
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Referral</h2>
+                      <NOWProgressActions tab="REF" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -919,7 +913,10 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Consultation</h2>
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Consultation</h2>
+                      <NOWProgressActions tab="CON" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -945,7 +942,10 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Public Comment</h2>
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Public Comment</h2>
+                      <NOWProgressActions tab="CON" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -999,8 +999,9 @@ export class NoticeOfWorkApplication extends Component {
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex block-mobile padding-md between">
+                    <div className="inline-flex block-mobile padding-md">
                       <h2>Administrative</h2>
+                      <NOWProgressActions tab="ADMIN" />
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown
                           overlay={this.menu(false)}
