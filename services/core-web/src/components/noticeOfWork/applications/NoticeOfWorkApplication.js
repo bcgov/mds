@@ -880,17 +880,9 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains basic information about any referrals or consultations
-                    related to this application. You can create document packages for reviewers and
-                    attach any responses that reviewers send back.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Referral/Consultation</h2>
+                    <h2 className="padding-md">Referral</h2>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
