@@ -62,11 +62,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
             raise NotFound('Notice of Work not found')
 
         template_data = data['template_data']
-
-        current_app.logger.info(f'****************************************')
-        current_app.logger.info(f'BEFORE TRANSFORM template_data:\n{template_data}')
         template_data = document_type.transform_template_data(template_data, now_application)
-        current_app.logger.info(f'AFTER TRANSFORM template_data:\n{template_data}')
 
         # Enforce that read-only fields do not change
         enforced_data = [
