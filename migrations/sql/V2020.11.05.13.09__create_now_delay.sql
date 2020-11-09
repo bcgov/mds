@@ -1,6 +1,6 @@
 
     CREATE TABLE IF NOT EXISTS now_application_delay_type ( 
-        delay_type_code varchar,
+        delay_type_code varchar PRIMARY KEY,
         description varchar,
         display_order integer,
         active_ind boolean NOT NULL default 'True',

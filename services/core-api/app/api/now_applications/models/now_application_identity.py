@@ -30,7 +30,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='select')
-
+    application_delays = db.relationship('NOWApplicationDelay')
     now_application = db.relationship('NOWApplication')
 
     def __repr__(self):

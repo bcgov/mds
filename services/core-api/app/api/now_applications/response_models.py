@@ -587,3 +587,11 @@ NOW_APPLICATION_REVIEW_TYPES = api.model(
         'description': fields.String,
         'active_ind': fields.Boolean
     })
+
+NOW_APPLICATION_DELAY_TYPE = api.model(
+    'ApplicationDelayTypes', {
+        'delay_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
+    })

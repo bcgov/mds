@@ -5,6 +5,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
+from app.api.now_applications.resources.now_application_delay_resource import NOWApplicationDelayResource, NOWApplicationDelayListResource, NOWApplicationDelayTypeResource
 from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
 from app.api.now_applications.resources.unit_type_resource import UnitTypeResource
 from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource, NOWApplicationDocumentTypeListResource, NOWApplicationDocumentGenerateResource
@@ -35,6 +36,9 @@ api.add_resource(NOWApplicationDocumentGenerateResource,
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
 api.add_resource(NOWApplicationTypeResource, '/application-types')
+api.add_resource(NOWApplicationDelayTypeResource, '/delay-reasons')
+api.add_resource(NOWApplicationDelayListResource, '/delay')
+api.add_resource(NOWApplicationDelayResource, '/delay/<string:now_application_delay_guid> ')
 api.add_resource(NOWApplicationStatusCodeResource, '/application-status-codes')
 api.add_resource(UnitTypeResource, '/unit-types')
 api.add_resource(NOWApplicationDocumentTypeListResource, '/application-document-types')
