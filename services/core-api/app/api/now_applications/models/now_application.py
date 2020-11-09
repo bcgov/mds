@@ -155,6 +155,10 @@ class NOWApplication(Base, AuditMixin):
             permit_amendment_status_code='DFT').one_or_none()
 
     @hybrid_property
+    def is_new_permit(self):
+        return self.type_of_application == 'New Permit'
+
+    @hybrid_property
     def permittee_name(self):
         return [
             contact.party.name for contact in self.contacts

@@ -1,11 +1,9 @@
 from sqlalchemy.schema import FetchedValue
+from flask_restplus import marshal
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-from flask import current_app
-from flask_restplus import marshal
-from app.api.mines.response_models import PERMIT_CONDITION_MODEL, PERMIT_CONDITION_TEMPLATE_MODEL
-import json
+from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
 
 
 class NOWApplicationDocumentType(AuditMixin, Base):
@@ -30,28 +28,27 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
     def transform_template_data(self, template_data, now_application):
 
-        # Transform template data for "Working Permit for Amendment" documents
-        if self.now_application_document_type_code == 'PMA':
-            return self.transform_pma(template_data, now_application)
-        return template_data
+        # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA) documents
+        def transform_permit(template_data, now_application):
+            if not now_application.draft_permit:
+                raise Exception(f'Notice of Work has no draft permit')
 
-    def transform_pma(self, template_data, now_application):
-        current_app.logger.info(f'***transform_pma***')
+            template_data['is_amendment'] = not now_application.is_new_permit
 
-        if not now_application.draft_permit:
-            raise Exception(f'Notice of Work has no draft permit')
+            conditions = now_application.draft_permit.conditions
+            conditions_template_data = {}
+            for section in conditions:
+                category_code = section.condition_category_code
+                if not conditions_template_data.get(category_code):
+                    conditions_template_data[category_code] = []
+                section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
+                conditions_template_data[category_code].append(section_data)
+            template_data['conditions'] = conditions_template_data
 
-        # current_app.logger.info(f'now_application.draft_permit:\n{now_application.draft_permit}')
-        conditions = now_application.draft_permit.conditions
-        conditions_template_data = {}
-        for section in conditions:
-            category = section.condition_category_code
-            if not conditions_template_data.get(category):
-                conditions_template_data[category] = []
-            section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
-            conditions_template_data[category].append(section_data)
+            return template_data
 
-        current_app.logger.info(f'conditions AFTER:\n{json.dumps(conditions_template_data)}')
-        template_data['conditions'] = conditions_template_data
+        # Transform the template data according to the document type
+        if self.now_application_document_type_code in ('PMT', 'PMA'):
+            return transform_permit(template_data, now_application)
 
         return template_data
