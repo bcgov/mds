@@ -24,6 +24,7 @@ class NOWApplicationDelay(Base, AuditMixin):
                                      db.ForeignKey('now_application_identity.now_application_guid'))
     now_application = db.relationship('NOWApplicationIdentity')
 
+    #Reason for delay (behaves like type tables)
     delay_type_code = db.Column(
         db.String, db.ForeignKey('now_application_delay_type.delay_type_code'), nullable=False)
     delay_comment = db.Column(db.String, nullable=False)

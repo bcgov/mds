@@ -23,7 +23,8 @@ api = Namespace('now-applications', description='Core Notice of Work operations'
 api.add_resource(NOWApplicationListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
-api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/progress')
+api.add_resource(NOWApplicationProgressResource,
+                 '/<string:application_guid>/progress/<string:application_progress_status_code>')
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
 api.add_resource(NOWApplicationReviewResource,
                  '/<string:application_guid>/reviews/<int:now_application_review_id>')

@@ -254,6 +254,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress', {
         'start_date': fields.Date,
+        'end_date':fields.Date,
         'created_by': fields.String,
         'application_progress_status_code': fields.String
     })
