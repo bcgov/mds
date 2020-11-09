@@ -31,7 +31,7 @@ import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import NOWStatusBanner from "@/components/noticeOfWork/NOWStatusBanner";
+import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -311,7 +311,7 @@ export class NOWPermitGeneration extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
-          <NOWStatusBanner />
+          <NOWStatusIndicator type="banner" />
         </div>
         {!isEmpty(this.state.permittee) ? (
           <>
