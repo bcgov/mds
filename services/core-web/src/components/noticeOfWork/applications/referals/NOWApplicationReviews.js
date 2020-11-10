@@ -52,6 +52,7 @@ const propTypes = {
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  type: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -193,7 +194,10 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    const initialValues = { now_application_guid: this.props.noticeOfWork.now_application_guid };
+    const initialValues = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      now_application_review_type_code: this.props.type,
+    };
     this.props.openModal({
       props: {
         initialValues,
@@ -407,57 +411,60 @@ export class NOWApplicationReviews extends Component {
         </Row>
         {this.props.noticeOfWorkReviews && (
           <div className="page__content">
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "REF"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "REF"
-                )}
-                completeDate={this.props.noticeOfWork.referral_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    referral_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "FNC"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "FNC"
-                )}
-                completeDate={this.props.noticeOfWork.consultation_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    consultation_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "PUB"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "PUB"
-                )}
-                completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    public_comment_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
+            {this.props.type === "REF" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "REF"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "REF"
+                  )}
+                  completeDate={this.props.noticeOfWork.referral_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      referral_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
+            {this.props.type === "FNC" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "FNC"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "FNC"
+                  )}
+                  completeDate={this.props.noticeOfWork.consultation_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      consultation_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
+            {this.props.type === "PUB" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "PUB"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "PUB"
+                  )}
+                  completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      public_comment_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
           </div>
         )}
       </div>
