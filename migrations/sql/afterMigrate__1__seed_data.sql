@@ -594,7 +594,7 @@ INSERT INTO now_application_delay_type (
 VALUES 
     ('INF', 'Missing Information from Proponent', 'system-mds', 'system-mds'),
     ('SEC', 'Waiting for Security', 'system-mds', 'system-mds'),
-    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds'),
+    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
