@@ -14,7 +14,7 @@ import {
   createApplicationDelay,
   fetchApplicationDelay,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -67,7 +67,6 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    console.log(values);
     const payLoad = {
       delay_type_code: "OAB",
       start_date: new Date(),
@@ -128,18 +127,26 @@ export class NOWProgressActions extends Component {
       <div className="inline-flex">
         {true && this.props.tab !== "ADMIN" && (
           <>
-            <Button type="primary" onClick={() => this.openProgressModal("Start")}>
-              <ClockCircleOutlined />
-              Start {this.props.progressStatusHash[this.props.tab]}
-            </Button>
-            <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
-              <ClockCircleOutlined />
-              Complete {this.props.progressStatusHash[this.props.tab]}
-            </Button>
-            <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
-              <ClockCircleOutlined />
-              Resume {this.props.progressStatusHash[this.props.tab]}
-            </Button>
+            {!this.props.progress[this.props.tab] && (
+              <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                <ClockCircleOutlined />
+                Start {this.props.progressStatusHash[this.props.tab]}
+              </Button>
+            )}
+            {this.props.progress[this.props.tab] &&
+              this.props.progress[this.props.tab].start_date &&
+              !this.props.progress[this.props.tab].end_date && (
+                <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
+                  <ClockCircleOutlined />
+                  Complete {this.props.progressStatusHash[this.props.tab]}
+                </Button>
+              )}
+            {this.props.progress[this.props.tab] && this.props.progress[this.props.tab].end_date && (
+              <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
+                <ClockCircleOutlined />
+                Resume {this.props.progressStatusHash[this.props.tab]}
+              </Button>
+            )}
           </>
         )}
         {this.props.tab === "ADMIN" && (
@@ -152,7 +159,7 @@ export class NOWProgressActions extends Component {
             </Dropdown>
           </AuthorizationWrapper>
         )}
-        {true && (
+        {false && (
           <Button type="primary" onClick={this.openReasonForDelay}>
             <EyeOutlined /> View Reason for Delay
           </Button>
@@ -168,6 +175,7 @@ NOWProgressActions.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   progressStatusHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
+  progress: getNOWProgress(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
