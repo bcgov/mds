@@ -31,9 +31,9 @@ class NOWApplicationDelay(Base, AuditMixin):
     delay_type_code = db.Column(
         db.String, db.ForeignKey('now_application_delay_type.delay_type_code'), nullable=False)
     start_comment = db.Column(db.String, nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
     end_comment = db.Column(db.String)
-    end_date = db.Column(db.Date)
+    end_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return '<NOWApplicationDelay %r>' % self.now_application_delay_id
