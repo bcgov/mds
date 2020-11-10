@@ -4,12 +4,12 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
@@ -37,7 +37,7 @@ export const PreDraftPermitForm = (props) => {
                   doNotPinDropdown
                   component={renderConfig.SELECT}
                   data={permitDropdown}
-                  validate={[required, validateSelectOptions(permitDropdown)]}
+                  validate={[required]}
                 />
               </Form.Item>
             </div>
@@ -49,7 +49,6 @@ export const PreDraftPermitForm = (props) => {
                   name="is_exploration"
                   label="Exploration Permit"
                   component={renderConfig.CHECKBOX}
-                  validate={[required]}
                 />
               </Form.Item>
             </div>
@@ -68,7 +67,7 @@ export const PreDraftPermitForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
           <Button
             className="full-mobile"
             type="primary"
@@ -77,7 +76,7 @@ export const PreDraftPermitForm = (props) => {
           >
             Start Draft Permit
           </Button>
-        </AuthorizationWrapper>
+        </NOWActionWrapper>
       </div>
     </Form>
   );

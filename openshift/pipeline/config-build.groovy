@@ -196,16 +196,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tools/logstash.bc.json',
-                    'params':[
-                            'NAME':"mds-logstash",
-                            'SUFFIX': "${app.build.suffix}",
-                            'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/elastic/logstash",
-                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
-                    ]
-                ],
-                [
                     'file':'openshift/templates/tusd.bc.json',
                     'params':[
                             'NAME':"tusd",

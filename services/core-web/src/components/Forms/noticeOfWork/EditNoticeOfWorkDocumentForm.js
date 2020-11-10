@@ -38,10 +38,10 @@ export class EditNoticeOfWorkDocumentForm extends Component {
     disabled: false,
   };
 
-  toggleDisabled = () => {
-    this.setState((prevState) => ({
-      disabled: !prevState.disabled,
-    }));
+  toggleDisabled = (value) => {
+    this.setState({
+      disabled: value,
+    });
   };
 
   onFileLoad = (documentName, document_manager_guid) => {
@@ -49,7 +49,7 @@ export class EditNoticeOfWorkDocumentForm extends Component {
       (prevState) => ({
         uploadedFiles: [[document_manager_guid, documentName], ...prevState.uploadedFiles],
       }),
-      () => this.toggleDisabled()
+      () => this.toggleDisabled(false)
     );
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
@@ -120,7 +120,7 @@ export class EditNoticeOfWorkDocumentForm extends Component {
                   onFileLoad={this.onFileLoad}
                   onRemoveFile={this.onRemoveFile}
                   component={FileUpload}
-                  addFileStart={() => this.toggleDisabled()}
+                  addFileStart={() => this.toggleDisabled(true)}
                   uploadUrl={NOTICE_OF_WORK_DOCUMENT(this.props.now_application_guid)}
                   allowMultiple
                   allowRevert

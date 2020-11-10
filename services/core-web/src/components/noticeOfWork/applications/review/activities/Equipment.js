@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import RenderField from "@/components/common/RenderField";
-import { number, required } from "@common/utils/Validate";
+import { number } from "@common/utils/Validate";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 
 const propTypes = {
@@ -22,19 +22,17 @@ export const Equipment = (props) => {
             title: "Quantity",
             value: "quantity",
             component: RenderField,
-            validate: [required, number],
+            validate: [number],
           },
           {
             title: "Description",
             value: "description",
             component: RenderField,
-            validate: [required],
           },
           {
             title: "Capacity",
             value: "capacity",
             component: RenderField,
-            validate: [required],
           },
         ]}
       />

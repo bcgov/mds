@@ -19,7 +19,7 @@ import LinkButton from "@/components/common/LinkButton";
 import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -219,7 +219,7 @@ export const NOWDocuments = (props) => {
       <br />
 
       {!props.selectedRows && !props.isViewMode && (
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
           <AddButton
             className={props.isAdminView ? "position-right" : ""}
             disabled={props.isViewMode}
@@ -228,7 +228,7 @@ export const NOWDocuments = (props) => {
           >
             Add Document
           </AddButton>
-        </AuthorizationWrapper>
+        </NOWActionWrapper>
       )}
     </div>
   );

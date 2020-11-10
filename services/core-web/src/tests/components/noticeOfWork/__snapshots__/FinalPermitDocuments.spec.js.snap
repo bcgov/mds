@@ -28,7 +28,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         />
         Download All
       </Button>
-      <Connect(AuthorizationWrapper)
+      <withRouter(Connect(NOWActionWrapper))
         permission="role_edit_permits"
       >
         <Button
@@ -52,7 +52,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
           />
           Edit
         </Button>
-      </Connect(AuthorizationWrapper)>
+      </withRouter(Connect(NOWActionWrapper))>
     </div>
   </div>
   <br />

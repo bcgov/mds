@@ -22,7 +22,6 @@ exports[`AccessRoads renders properly 1`] = `
           "title": "Length(km)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "length",
         },
@@ -31,7 +30,6 @@ exports[`AccessRoads renders properly 1`] = `
           "title": "Disturbed Area (ha)",
           "validate": Array [
             [Function],
-            [Function],
           ],
           "value": "disturbed_area",
         },
@@ -39,7 +37,6 @@ exports[`AccessRoads renders properly 1`] = `
           "component": [Function],
           "title": "Merchantable timber volume (m3)",
           "validate": Array [
-            [Function],
             [Function],
           ],
           "value": "timber_volume",

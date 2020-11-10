@@ -259,7 +259,6 @@ export class MineRecordForm extends Component {
                     label="Tenure"
                     placeholder="Please Select Tenure"
                     component={renderConfig.SELECT}
-                    validate={[validateSelectOptions(this.props.mineTenureTypes)]}
                     data={this.props.mineTenureTypes}
                   />
                 </Col>

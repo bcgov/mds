@@ -19,18 +19,6 @@ def run_job():
     builder.add_secret(
         key='DB_PASS', secret_name=f'mds-postgresql{suffix}', secret_key='database-password')
 
-    # Add elastic config
-    builder.add_value(key='ELASTIC_ENABLED', value='0')
-    builder.add_value(key='ELASTIC_SERVICE_NAME', value='NOW ETL')
-    builder.add_secret(
-        key='ELASTIC_SECRET_TOKEN',
-        secret_name='template.mds-elastic-secret',
-        secret_key='secret-token')
-    builder.add_secret(
-        key='ELASTIC_SERVER_URL',
-        secret_name='template.mds-elastic-secret',
-        secret_key='server-url')
-
     env = builder.to_json()
 
     pod = POD(

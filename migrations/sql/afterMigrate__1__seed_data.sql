@@ -661,8 +661,8 @@ VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
-  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds'),
+  ('PMT', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
+  ('PMA', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
   ('NTR', '[]', 'templates/now/NOW Technical Review.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
