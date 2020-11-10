@@ -3,7 +3,7 @@ import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -27,7 +27,7 @@ export const PermitteeOptions = (props) => {
             doNotPinDropdown
             component={renderConfig.SELECT}
             data={permitDropdown}
-            validate={[required, validateSelectOptions(permitDropdown)]}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
