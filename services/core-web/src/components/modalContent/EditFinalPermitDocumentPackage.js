@@ -13,10 +13,12 @@ const propTypes = {
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  submissionDocuments: PropTypes.arrayOf(PropTypes.strings),
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
+  submissionDocuments: [],
 };
 
 export const EditFinalPermitDocumentPackage = (props) => {

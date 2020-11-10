@@ -1,8 +1,9 @@
 import requests
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+import json
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
@@ -13,7 +14,9 @@ from app.api.services.document_manager_service import DocumentManagerService
 from app.api.mines.documents.models.mine_document import MineDocument
 
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 
 
 class NOWApplicationDocumentUploadResource(Resource, UserMixin):
@@ -84,3 +87,50 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         variance.save()
         return variance
 """
+
+
+class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
+
+    parser.add_argument('document_manager_document_guid', type=str, location='json')
+    parser.add_argument('messageid', type=int, location='json')
+    parser.add_argument('documenturl', type=str, location='json')
+    parser.add_argument('filename', type=str, location='json')
+    parser.add_argument('documenttype', type=str, location='json')
+    parser.add_argument('description', type=str, location='json')
+
+    @api.response(200, 'Successfully linked document.')
+    # TODO revisit this
+    # @requires_role_edit_permit
+    def post(self, application_guid):
+        data = self.parser.parse_args()
+        document_manager_document_guid = data.get('document_manager_document_guid', None)
+        message_id = data.get('messageid', None)
+        document_url = data.get('documenturl', None)
+        file_name = data.get('filename', None)
+        document_type = data.get('documenttype', None)
+        description = data.get('description', None)
+
+        current_app.logger.debug('!!!!!!!!!!!!!!!!!!!!!!!!')
+        current_app.logger.debug(json.dumps(data))
+
+        document = None
+        document = NOWApplicationDocumentIdentityXref.query.filter_by(
+            messageid=message_id, documenturl=document_url, documenttype=document_type).first()
+
+        if document:
+            raise BadRequest('Document already exists')
+
+        now_application_identity = NOWApplicationIdentity.query.filter_by(
+            messageid=message_id).first()
+
+        if not now_application_identity:
+            raise BadRequest(f'Application not found by message_id {message_id}')
+
+        # create imported document record in core
+        NOWApplicationDocumentIdentityXref.create(now_application_identity.mine_guid,
+                                                  now_application_identity.now_application_id,
+                                                  document_manager_document_guid, message_id,
+                                                  document_url, file_name, document_type,
+                                                  description)
+        return requests.codes.ok

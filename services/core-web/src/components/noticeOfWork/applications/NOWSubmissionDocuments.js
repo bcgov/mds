@@ -37,17 +37,18 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
       !isEmpty(importNowSubmissionDocumentsJob) &&
       !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
         ? importNowSubmissionDocumentsJob.import_now_submission_documents.find(
-            (doc) => doc.submission_document_id === document.id
+            (doc) => doc.filename === document.filename && doc.documenturl === document.documenturl
           )
         : null;
     return {
-      key: document.id,
+      key: document.mine_document_guid,
       now_application_guid,
       filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,
       category: document.documenttype || Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
-      document_manager_guid: document.document_manager_document_guid,
+      document_manager_guid: document.document_manager_guid,
+      mine_document_guid: document.mine_document_guid,
       importNowSubmissionDocument,
     };
   });
@@ -108,13 +109,13 @@ export const NOWSubmissionDocuments = (props) => {
         render: (text, record) => {
           let statusBadgeType = "warning";
           let statusText = "Not Started";
-          let error = null;
-          if (record.document_manager_guid) {
+          let { error } = null;
+          if (record.mine_document_guid) {
             statusBadgeType = "success";
             statusText = "Success";
           } else if (record.importNowSubmissionDocument) {
             if (record.importNowSubmissionDocument.error) {
-              error = record.importNowSubmissionDocument.error;
+              ({ error } = record.importNowSubmissionDocument.error);
               statusBadgeType = "error";
               statusText = "Error";
             } else {
@@ -253,7 +254,7 @@ export const NOWSubmissionDocuments = (props) => {
                   props.selectedRows.setSelectedSubmissionRows(selectedRowKeys);
                 },
                 getCheckboxProps: (record) => ({
-                  disabled: record && !record.document_manager_guid,
+                  disabled: record && !record.mine_document_guid,
                 }),
               }
             : null

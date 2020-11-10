@@ -134,9 +134,20 @@ class NOWApplication(Base, AuditMixin):
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
+    imported_submission_documents = db.relationship(
+        'NOWApplicationDocumentIdentityXref',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
+    )
+
     # Contacts
-    contacts = db.relationship('NOWPartyAppointment', lazy='selectin', 
-        primaryjoin="and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)")
+    contacts = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+    )
 
     #status
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
@@ -147,6 +158,57 @@ class NOWApplication(Base, AuditMixin):
             contact.party.name for contact in self.contacts
             if contact.mine_party_appt_type_code == 'PMT'
         ][0]
+
+    @hybrid_property
+    def filtered_submission_documents(self):
+        docs = []
+
+        for doc in self.imported_submission_documents:
+            docs.append({
+                "messageid":
+                doc.messageid,
+                "now_application_document_xref_guid":
+                str(doc.now_application_document_xref_guid),
+                "mine_document_guid":
+                str(doc.mine_document_guid),
+                "documenturl":
+                doc.documenturl,
+                "documenttype":
+                doc.documenttype,
+                "description":
+                doc.description,
+                "is_final_package":
+                doc.is_final_package,
+                "filename":
+                doc.filename,
+                "now_application_id":
+                doc.now_application_id,
+                "document_manager_guid":
+                doc.document_manager_guid
+            })
+
+        for doc in self.submission_documents:
+            imported = any(
+                (imported_doc.messageid == doc.messageid and imported_doc.filename == doc.filename
+                 and imported_doc.documenturl == doc.documenturl
+                 for imported_doc in self.imported_submission_documents))
+            if imported:
+                continue
+            else:
+                docs.append({
+                    "now_application_document_xref_guid": None,
+                    "mine_document_guid": None,
+                    "messageid": doc.messageid,
+                    "documenturl": doc.documenturl,
+                    "documenttype": doc.documenttype,
+                    "description": doc.description,
+                    "is_final_package": False,
+                    "filename": doc.filename,
+                    "now_application_id": self.now_application_id,
+                    "document_manager_guid": None
+                })
+
+        return docs
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

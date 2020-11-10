@@ -3,7 +3,6 @@ from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest
 from sqlalchemy import and_
 import json
-import time
 
 from app.extensions import api
 from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
@@ -58,7 +57,10 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
                 ImportNowSubmissionDocument(
                     submission_document_id=doc['id'],
                     submission_document_url=doc['documenturl'],
-                    submission_document_file_name=doc['filename']))
+                    submission_document_file_name=doc['filename'],
+                    submission_document_message_id=doc['messageid'],
+                    submission_document_type=doc['documenttype'],
+                    submission_document_description=doc['description']))
         import_job.save()
 
         # Create the Import NoW Submission Documents job.

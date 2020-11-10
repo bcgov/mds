@@ -17,6 +17,9 @@ class ImportNowSubmissionDocument(Base):
     submission_document_id = db.Column(db.Integer, nullable=False)
     submission_document_url = db.Column(db.String, nullable=False)
     submission_document_file_name = db.Column(db.String, nullable=False)
+    submission_document_message_id = db.Column(db.Integer, nullable=False)
+    submission_document_type = db.Column(db.String, nullable=False)
+    submission_document_description = db.Column(db.String, nullable=False)
 
     error = db.Column(db.String)
 
@@ -33,6 +36,9 @@ class ImportNowSubmissionDocument(Base):
             'submission_document_id': self.submission_document_id,
             'submission_document_url': self.submission_document_url,
             'submission_document_file_name': self.submission_document_file_name,
+            'submission_document_message_id': self.submission_document_message_id,
+            'submission_document_type': self.submission_document_type,
+            'submission_document_description': self.submission_document_description,
             'error': self.error
         }
 

@@ -246,6 +246,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "state_of_land": Object {},
+          "submission_documents": Array [],
           "submitted_date": "",
           "surface_bulk_sample": Object {
             "details": Array [],

@@ -1,9 +1,10 @@
 import uuid
 import requests
 from datetime import datetime
+import json
 
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, NotImplemented
 
 from app.extensions import api, db
@@ -18,7 +19,7 @@ from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.transmogrify_now import transmogrify_now
-from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
+from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT
 from app.api.services.nros_now_status_service import NROSNOWStatusService
 from app.api.services.document_manager_service import DocumentManagerService
 
@@ -86,6 +87,28 @@ class NOWApplicationResource(Resource, UserMixin):
                 request, now_application)
             now_application_identity.is_document_import_requested = resp.status_code == requests.codes.created
             now_application_identity.save()
+
+        # prepare imported submissions documents
+        filtered_submission_documents = data.get('filtered_submission_documents', None)
+        del data['imported_submission_documents']
+        del data['filtered_submission_documents']
+
+        if filtered_submission_documents:
+            imported_documents = now_application_identity.now_application.imported_submission_documents
+            for doc in imported_documents:
+                filtered_doc = next(
+                    (x
+                     for x in filtered_submission_documents if x['documenturl'] == doc.documenturl),
+                    None)
+                if filtered_doc:
+                    # doc.is_final_package = True
+                    doc.is_final_package = filtered_doc['is_final_package']
+
+            current_app.logger.debug(
+                marshal(now_application_identity.now_application.imported_submission_documents,
+                        IMPORTED_NOW_SUBMISSION_DOCUMENT))
+            data['imported_submission_documents'] = marshal(imported_documents,
+                                                            IMPORTED_NOW_SUBMISSION_DOCUMENT)
 
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(

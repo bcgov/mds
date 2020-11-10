@@ -271,6 +271,7 @@ NOW_APPLICATION_REVIEW_MDOEL = api.model(
 NOW_SUBMISSION_DOCUMENT = api.model(
     'SUBMISSION_DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,
@@ -287,6 +288,20 @@ NOW_PARTY_APPOINTMENT = api.model(
         'party_guid': fields.String,
         'party': fields.Nested(PARTY),
         'state_modified': fields.String,
+    })
+
+IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'messageid': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'is_final_package': fields.Boolean,
+        'now_application_document_xref_guid': fields.String,
+        'now_application_id': fields.Integer,
     })
 
 NOW_APPLICATION_MODEL = api.model(
@@ -421,6 +436,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'merchantable_timber_volume':
         fields.Fixed(decimals=2),
+        'imported_submission_documents':
+        fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
+        'filtered_submission_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

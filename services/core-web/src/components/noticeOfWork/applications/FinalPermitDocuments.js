@@ -56,9 +56,9 @@ export class FinalPermitDocuments extends Component {
       return document;
     });
 
-    const submissionDocumentsPayload = this.props.noticeOfWork.submission_documents.map(
+    const submissionDocumentsPayload = this.props.noticeOfWork.filtered_submission_documents.map(
       (document) => {
-        document.is_final_package = selectedSubmissionRows.includes(document.id);
+        document.is_final_package = selectedSubmissionRows.includes(document.mine_document_guid);
         return document;
       }
     );
@@ -108,11 +108,11 @@ export class FinalPermitDocuments extends Component {
   downloadDocumentPackage = () => {
     const docURLS = [];
 
-    const submissionDocs = this.props.noticeOfWork.submission_documents
+    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
       .filter(({ is_final_package }) => is_final_package)
       .map((doc) => ({
-        key: doc.id,
-        documentManagerGuid: doc.document_manager_document_guid,
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
         filename: doc.filename,
       }));
 
@@ -186,9 +186,9 @@ export class FinalPermitDocuments extends Component {
       .filter(({ is_final_package }) => is_final_package)
       .map(({ now_application_document_xref_guid }) => now_application_document_xref_guid);
 
-    const finalSubmissionDocuments = this.props.noticeOfWork.submission_documents
+    const finalSubmissionDocuments = this.props.noticeOfWork.filtered_submission_documents
       .filter(({ is_final_package }) => is_final_package)
-      .map(({ id }) => id);
+      .map(({ mine_document_guid }) => mine_document_guid);
 
     this.props.openModal({
       width: 910,
@@ -196,7 +196,7 @@ export class FinalPermitDocuments extends Component {
         mineGuid: this.props.mineGuid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
-        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
         documents:
           this.props.noticeOfWork &&
           this.props.noticeOfWork.documents &&
@@ -216,9 +216,13 @@ export class FinalPermitDocuments extends Component {
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
     );
-    const permitSubmissionDocuments = this.props.noticeOfWork.submission_documents.filter(
-      ({ is_final_package }) => is_final_package
-    );
+
+    const permitSubmissionDocuments =
+      this.props.noticeOfWork.filtered_submission_documents &&
+      this.props.noticeOfWork.filtered_submission_documents.filter(
+        ({ is_final_package }) => is_final_package
+      );
+
     return this.props.documentDownloadState.downloading ? (
       <div className="inline-flex flex-flow-column horizontal-center">
         <h4>Downloading Selected Files...</h4>

@@ -61,6 +61,7 @@ CONTACT = api.model(
 DOCUMENT = api.model(
     'DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,

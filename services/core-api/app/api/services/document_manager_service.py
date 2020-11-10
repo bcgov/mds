@@ -5,6 +5,7 @@ from flask import Response, current_app
 from flask_restplus import marshal, fields
 from app.config import Config
 from app.api.now_applications.response_models import NOW_SUBMISSION_DOCUMENT
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 
 ALLOWED_DOCUMENT_CATEGORIES = [
     'tailings', 'permits', 'variances', 'incidents', 'reports', 'mine_party_appts', 'noticeofwork',
@@ -47,6 +48,10 @@ class DocumentManagerService():
             'now_application_guid':
             str(now_application.now_application_guid)
         }
+
+        # TODO remove this
+        current_app.logger.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        current_app.logger.debug(data)
 
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',

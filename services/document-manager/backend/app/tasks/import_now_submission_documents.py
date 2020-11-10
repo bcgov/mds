@@ -194,10 +194,19 @@ def associate_now_submissions_document_with_document(guid,
                                                      import_now_submission_documents_job_id,
                                                      attempt=0):
     authorization_token = get_core_authorization_token(import_now_submission_documents_job_id)
-    data = {'document_manager_document_guid': str(guid)}
-    resp = requests.put(
+
+    data = {
+        "document_manager_document_guid": str(guid),
+        "messageid": import_doc.submission_document_message_id,
+        "documenturl": import_doc.submission_document_url,
+        "filename": import_doc.submission_document_file_name,
+        "documenttype": import_doc.submission_document_type,
+        "description": import_doc.submission_document_description
+    }
+
+    resp = requests.post(
         url=
-        f'{Config.CORE_API_URL}/now-submissions/applications/{import_job.now_application_guid}/document/{import_doc.submission_document_id}',
+        f'{Config.CORE_API_URL}/now-applications/{import_job.now_application_guid}/document-identity',
         headers={
             'Content-Type': 'application/json',
             'Authorization': authorization_token

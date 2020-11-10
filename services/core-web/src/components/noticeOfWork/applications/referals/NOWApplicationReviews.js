@@ -229,10 +229,10 @@ export class NOWApplicationReviews extends Component {
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
 
-    const submissionDocs = this.props.noticeOfWork.submission_documents
+    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
       .map((doc) => ({
-        key: doc.id,
-        documentManagerGuid: doc.document_manager_document_guid,
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
         filename: doc.filename,
       }))
       .filter((doc) => selectedSubmissionRows.includes(doc.key));
@@ -313,7 +313,7 @@ export class NOWApplicationReviews extends Component {
       width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,

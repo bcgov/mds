@@ -11,7 +11,7 @@ from app.api.now_applications.resources.now_application_document_type_resource i
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
-from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource, NOWApplicationDocumentIdentityResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
@@ -29,6 +29,8 @@ api.add_resource(NOWApplicationReviewResource,
 api.add_resource(NOWApplicationDocumentUploadResource, '/<string:application_guid>/document')
 api.add_resource(NOWApplicationDocumentResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>')
+api.add_resource(NOWApplicationDocumentIdentityResource,
+                 '/<string:application_guid>/document-identity')
 api.add_resource(NOWApplicationDocumentGenerateResource,
                  '/application-document-types/<string:document_type_code>/generate')
 
