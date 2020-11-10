@@ -179,6 +179,7 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
         applicationGuid,
         progressCode
       )}`,
+      {},
       createRequestHeader()
     )
     .then((response) => {
@@ -356,7 +357,7 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -376,7 +377,7 @@ export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) =
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -396,7 +397,7 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid)}`,
       createRequestHeader()
     )
     .then((response) => {

@@ -42,8 +42,8 @@ const NOWDelayForm = (props) => {
           <Col span={24}>
             <Form.Item>
               <Field
-                id="now_application_document_type_code"
-                name="now_application_document_type_code"
+                id="delay_type_code"
+                name="delay_type_code"
                 label="Reason for Delay*"
                 placeholder="Select a document type"
                 component={renderConfig.SELECT}
@@ -55,8 +55,8 @@ const NOWDelayForm = (props) => {
           <Col span={24}>
             <Form.Item>
               <Field
-                id="description"
-                name="description"
+                id="start_comment"
+                name="start_comment"
                 label="Comment"
                 component={renderConfig.AUTO_SIZE_FIELD}
               />

@@ -68,8 +68,13 @@ export class NOWProgressActions extends Component {
 
   handleStartDelay = (values) => {
     console.log(values);
+    const payLoad = {
+      delay_type_code: "OAB",
+      start_date: new Date(),
+      ...values,
+    };
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payLoad)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();

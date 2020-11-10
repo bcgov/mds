@@ -144,6 +144,10 @@ export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
 export const NOTICE_OF_WORK_DOCUMENT = (now_document_guid) =>
   `/now-applications/${now_document_guid}/document`;
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
+export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
+  delayGuid
+    ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
+    : `/now-applications/${applicationGuid}/delays`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
