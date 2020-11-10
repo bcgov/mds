@@ -718,6 +718,13 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderTabTitle = (title) => (
+    <span>
+      <NOWStatusIndicator type="badge" />
+      {title}
+    </span>
+  );
+
   renderFixedHeaderClass = () =>
     this.state.fixedTop ? "view--header fixed-scroll" : "view--header";
 
@@ -793,12 +800,7 @@ export class NoticeOfWorkApplication extends Component {
             )}
 
             <Tabs.TabPane
-              tab={
-                <span>
-                  <NOWStatusIndicator type="badge" />
-                  Application
-                </span>
-              }
+              tab={this.renderTabTitle("Application")}
               key="application"
               disabled={!isImported}
             >
@@ -816,7 +818,7 @@ export class NoticeOfWorkApplication extends Component {
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
                       {this.renderEditModeNav()}
-                      <NOWStatusIndicator />
+                      <NOWStatusIndicator type="banner" />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -870,12 +872,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={
-                <span>
-                  <NOWStatusIndicator type="badge" />
-                  Referral
-                </span>
-              }
+              tab={this.renderTabTitle("Referral")}
               key="referral"
               disabled={!verificationComplete}
             >
@@ -896,12 +893,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
             <Tabs.TabPane
-              tab={
-                <span>
-                  <NOWStatusIndicator type="badge" />
-                  Consultation
-                </span>
-              }
+              tab={this.renderTabTitle("Consultation")}
               key="consultation"
               disabled={!verificationComplete}
             >
@@ -922,12 +914,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
             <Tabs.TabPane
-              tab={
-                <span>
-                  <NOWStatusIndicator type="badge" />
-                  Public Comment
-                </span>
-              }
+              tab={this.renderTabTitle("Public Comment")}
               key="public-comment"
               disabled={!verificationComplete}
             >
@@ -949,12 +936,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={
-                <span>
-                  <NOWStatusIndicator type="badge" />
-                  Draft Permit
-                </span>
-              }
+              tab={this.renderTabTitle("Draft Permit")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
@@ -1004,7 +986,7 @@ export class NoticeOfWorkApplication extends Component {
                         </Dropdown>
                       </NOWActionWrapper>
                     </div>
-                    <NOWStatusIndicator />
+                    <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationAdministrative
