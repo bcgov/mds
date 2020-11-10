@@ -897,6 +897,7 @@ export class NoticeOfWorkApplication extends Component {
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>
+
             <Tabs.TabPane
               tab={this.renderTabTitle("Consultation")}
               key="consultation"
