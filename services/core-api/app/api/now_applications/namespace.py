@@ -33,12 +33,12 @@ api.add_resource(NOWApplicationDocumentResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>')
 api.add_resource(NOWApplicationDocumentGenerateResource,
                  '/application-document-types/<string:document_type_code>/generate')
+api.add_resource(NOWApplicationDelayListResource, '/<string:now_application_guid>/delays')
 
 # now static content
 api.add_resource(NOWActivityTypeResource, '/activity-types')
 api.add_resource(NOWApplicationTypeResource, '/application-types')
 api.add_resource(NOWApplicationDelayTypeResource, '/delay-reasons')
-api.add_resource(NOWApplicationDelayListResource, '/delay')
 api.add_resource(NOWApplicationDelayResource, '/delay/<string:now_application_delay_guid> ')
 api.add_resource(NOWApplicationStatusCodeResource, '/application-status-codes')
 api.add_resource(UnitTypeResource, '/unit-types')

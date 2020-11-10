@@ -21,7 +21,6 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def post(self, application_guid, application_progress_status_code):
-        data = self.parser.parse_args()
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not identity.now_application:
             raise NotFound(

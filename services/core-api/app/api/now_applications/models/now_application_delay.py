@@ -27,9 +27,27 @@ class NOWApplicationDelay(Base, AuditMixin):
     #Reason for delay (behaves like type tables)
     delay_type_code = db.Column(
         db.String, db.ForeignKey('now_application_delay_type.delay_type_code'), nullable=False)
-    delay_comment = db.Column(db.String, nullable=False)
-    delay_start_date = db.Column(db.Date, nullable=False)
-    delay_end_date = db.Column(db.Date)
+    comment = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date)
 
     def __repr__(self):
         return '<NOWApplicationDelay %r>' % self.now_application_delay_id
+
+    @classmethod
+    def create(cls,
+               now_application,
+               delay_type_code,
+               delay_comment,
+               delay_start_date,
+               add_to_session=True):
+        new_now_delay = cls(
+            delay_type_code=delay_type_code,
+            comment=delay_comment,
+            start_date=delay_start_date,
+        )
+
+        now_application.application_delays.append(new_now_delay)
+        if add_to_session:
+            new_now_delay.save(commit=False)
+        return new_now_delay
