@@ -944,7 +944,7 @@ export class NoticeOfWorkApplication extends Component {
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
                       <h2 className="padding-md">Public Comment</h2>
-                      <NOWProgressActions tab="CON" />
+                      <NOWProgressActions tab="PUB" />
                     </div>
                     <NOWStatusIndicator type="banner" />
                   </div>

@@ -134,8 +134,8 @@ export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/applicat
 export const NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-export";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
-export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
-  `/now-applications/${applicationGuid}/progress`;
+export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid, progressCode) =>
+  `/now-applications/${applicationGuid}/progress/${progressCode}`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW = (applicationGuid) =>
   `/now-applications/${applicationGuid}/reviews`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES = `/now-applications/review-types`;

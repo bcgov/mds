@@ -168,13 +168,17 @@ export const updateNoticeOfWorkApplication = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) => (dispatch) => {
+export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressCode) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
-      payload,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(
+        applicationGuid,
+        progressCode
+      )}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -183,6 +187,31 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, payload) 
     })
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateNoticeOfWorkApplicationProgress = (applicationGuid, progressCode, payload) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(
+        applicationGuid,
+        progressCode
+      )}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
@@ -320,4 +349,63 @@ export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, min
 
 export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dispatch) => {
   dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDocumentDownloadState(payload));
+};
+
+export const createApplicationDelay = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
