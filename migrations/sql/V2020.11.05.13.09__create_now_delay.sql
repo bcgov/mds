@@ -12,6 +12,7 @@
 
     CREATE TABLE IF NOT EXISTS now_application_delay (
         now_application_delay_id SERIAL primary key, 
+        now_application_delay_guid   uuid DEFAULT gen_random_uuid()   UNIQUE NOT NULL ,
         now_application_guid uuid, 
         delay_type_code varchar,
         comment varchar,

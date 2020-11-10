@@ -20,6 +20,9 @@ class NOWApplicationDelay(Base, AuditMixin):
 
     now_application_delay_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
+    now_application_delay_guid = db.Column(
+        UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
+
     now_application_guid = db.Column(db.Integer,
                                      db.ForeignKey('now_application_identity.now_application_guid'))
     now_application = db.relationship('NOWApplicationIdentity')
