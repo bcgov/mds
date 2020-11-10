@@ -62,5 +62,5 @@ class NOWApplicationDelayResource(Resource, UserMixin):
     @api.doc(description='Get a list of all Notice of Work Delay Reasons.', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY_TYPE, code=200, envelope='records')
-    def put(self, now_application_guid):
+    def put(self, now_application_guid, now_application_delay_guid):
         return {}
