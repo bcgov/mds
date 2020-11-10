@@ -25,8 +25,8 @@ class NOWApplicationDelayTypeResource(Resource, UserMixin):
 class NOWApplicationDelayListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('delay_type_code', type=str, location='json', required=True)
-    parser.add_argument('delay_comment', type=str, location='json', required=True)
-    parser.add_argument('delay_start_date', location='json', required=True)
+    parser.add_argument('start_comment', type=str, location='json', required=True)
+    parser.add_argument('start_date', location='json', required=True)
 
     @api.doc(description='Get a list of all Notice of Work Delay Reasons.', params={})
     @requires_role_view_all
