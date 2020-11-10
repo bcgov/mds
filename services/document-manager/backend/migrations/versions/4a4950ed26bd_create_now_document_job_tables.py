@@ -55,9 +55,11 @@ def upgrade():
             sa.Integer(),
             sa.ForeignKey(
                 'import_now_submission_documents_job.import_now_submission_documents_job_id'),
-            nullable=False), sa.Column('submission_document_id', sa.Integer, nullable=False),
-        sa.Column('submission_document_url', sa.String(), nullable=False),
+            nullable=False), sa.Column('submission_document_url', sa.String(), nullable=False),
         sa.Column('submission_document_file_name', sa.String(), nullable=False),
+        sa.Column('submission_document_message_id', sa.Integer(), nullable=False),
+        sa.Column('submission_document_type', sa.String(), nullable=False),
+        sa.Column('submission_document_description', sa.String(), nullable=False),
         sa.Column('error', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('import_now_submission_document_id'))
 

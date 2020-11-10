@@ -17,8 +17,6 @@ class Document(Base):
     filename = db.Column(db.String)
     documenttype = db.Column(db.String)
     description = db.Column(db.String)
-    document_manager_document_guid = db.Column(db.String)
-    is_final_package = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<Document %r>' % self.id

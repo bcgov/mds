@@ -36,9 +36,14 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
     const importNowSubmissionDocument =
       !isEmpty(importNowSubmissionDocumentsJob) &&
       !isEmpty(importNowSubmissionDocumentsJob.import_now_submission_documents)
-        ? importNowSubmissionDocumentsJob.import_now_submission_documents.find(
-            (doc) => doc.filename === document.filename && doc.documenturl === document.documenturl
-          )
+        ? importNowSubmissionDocumentsJob.import_now_submission_documents.find((doc) => {
+            return (
+              doc.submission_document_file_name === document.filename &&
+              doc.submission_document_url === document.documenturl &&
+              doc.submission_document_type === document.documenttype &&
+              doc.submission_document_message_id === document.messageid
+            );
+          })
         : null;
     return {
       key: document.mine_document_guid,
@@ -109,13 +114,14 @@ export const NOWSubmissionDocuments = (props) => {
         render: (text, record) => {
           let statusBadgeType = "warning";
           let statusText = "Not Started";
-          let { error } = null;
+          let error = null;
           if (record.mine_document_guid) {
             statusBadgeType = "success";
             statusText = "Success";
           } else if (record.importNowSubmissionDocument) {
             if (record.importNowSubmissionDocument.error) {
-              ({ error } = record.importNowSubmissionDocument.error);
+              // eslint-disable-next-line prefer-destructuring
+              error = record.importNowSubmissionDocument.error;
               statusBadgeType = "error";
               statusText = "Error";
             } else {

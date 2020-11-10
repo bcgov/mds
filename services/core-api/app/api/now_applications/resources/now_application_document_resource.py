@@ -1,6 +1,6 @@
 import requests
 import json
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, Conflict
 
 from flask import request, current_app
 from flask_restplus import Resource, reqparse
@@ -99,7 +99,7 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
     parser.add_argument('documenttype', type=str, location='json')
     parser.add_argument('description', type=str, location='json')
 
-    @api.response(200, 'Successfully linked document.')
+    @api.response(201, 'Successfully linked document.')
     # TODO revisit this
     # @requires_role_edit_permit
     def post(self, application_guid):
@@ -111,18 +111,17 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
         document_type = data.get('documenttype', None)
         description = data.get('description', None)
 
-        current_app.logger.debug('!!!!!!!!!!!!!!!!!!!!!!!!')
-        current_app.logger.debug(json.dumps(data))
-
-        document = None
         document = NOWApplicationDocumentIdentityXref.query.filter_by(
-            messageid=message_id, documenturl=document_url, documenttype=document_type).first()
+            messageid=message_id,
+            documenturl=document_url,
+            documenttype=document_type,
+            filename=file_name).one_or_none()
 
         if document:
-            raise BadRequest('Document already exists')
+            raise Conflict('Document already exists')
 
         now_application_identity = NOWApplicationIdentity.query.filter_by(
-            messageid=message_id).first()
+            messageid=message_id).one_or_none()
 
         if not now_application_identity:
             raise BadRequest(f'Application not found by message_id {message_id}')
@@ -133,4 +132,4 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
                                                   document_manager_document_guid, message_id,
                                                   document_url, file_name, document_type,
                                                   description)
-        return requests.codes.ok
+        return requests.codes.created

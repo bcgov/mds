@@ -89,24 +89,24 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.save()
 
         # prepare imported submissions documents
+        if 'imported_submission_documents' in data:
+            del data['imported_submission_documents']
+
         filtered_submission_documents = data.get('filtered_submission_documents', None)
-        del data['imported_submission_documents']
-        del data['filtered_submission_documents']
+        if 'filtered_submission_documents' in data:
+            del data['filtered_submission_documents']
 
         if filtered_submission_documents:
             imported_documents = now_application_identity.now_application.imported_submission_documents
             for doc in imported_documents:
                 filtered_doc = next(
-                    (x
-                     for x in filtered_submission_documents if x['documenturl'] == doc.documenturl),
+                    (x for x in filtered_submission_documents
+                     if x['documenturl'] == doc.documenturl and x['messageid'] == doc.messageid
+                     and x['filename'] == doc.filename and x['documenttype'] == doc.documenttype),
                     None)
                 if filtered_doc:
-                    # doc.is_final_package = True
                     doc.is_final_package = filtered_doc['is_final_package']
 
-            current_app.logger.debug(
-                marshal(now_application_identity.now_application.imported_submission_documents,
-                        IMPORTED_NOW_SUBMISSION_DOCUMENT))
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)
 
@@ -119,7 +119,6 @@ class NOWApplicationResource(Resource, UserMixin):
 
         return now_application_identity.now_application
 
-    # TODO: Remove me before publishing.
     @requires_role_edit_permit
     def post(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)

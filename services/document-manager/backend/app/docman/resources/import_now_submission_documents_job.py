@@ -49,13 +49,15 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             create_user=User().get_user_username())
         for doc in submission_documents:
             already_imported = ImportNowSubmissionDocument.query.filter(
-                and_(ImportNowSubmissionDocument.submission_document_id == doc['id'],
-                     ImportNowSubmissionDocument.document_id != None)).one_or_none()
+                and_(ImportNowSubmissionDocument.submission_document_url == doc['documenturl'],
+                     ImportNowSubmissionDocument.submission_document_file_name == doc['filename'],
+                     ImportNowSubmissionDocument.submission_document_message_id == doc['messageid'],
+                     ImportNowSubmissionDocument.submission_document_type ==
+                     doc['documenttype'])).one_or_none()
             if already_imported:
                 continue
             import_job.import_now_submission_documents.append(
                 ImportNowSubmissionDocument(
-                    submission_document_id=doc['id'],
                     submission_document_url=doc['documenturl'],
                     submission_document_file_name=doc['filename'],
                     submission_document_message_id=doc['messageid'],
@@ -69,6 +71,7 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
 
         # Return a response indicating that the task has started.
         result = make_response(jsonify(message=message), 201)
+
         return result
 
     @api.marshal_with(IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB, code=200, skip_none=True)

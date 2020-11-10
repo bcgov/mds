@@ -49,10 +49,6 @@ class DocumentManagerService():
             str(now_application.now_application_guid)
         }
 
-        # TODO remove this
-        current_app.logger.debug('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        current_app.logger.debug(data)
-
         resp = requests.post(
             url=f'{Config.DOCUMENT_MANAGER_URL}/import-now-submission-documents',
             headers={key: value

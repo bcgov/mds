@@ -81,11 +81,11 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
         import_documents = [
             doc for doc in import_job.import_now_submission_documents if doc.document_id is None
         ]
-        doc_ids = [doc.submission_document_id for doc in import_documents]
+        doc_ids = [doc.import_now_submission_document_id for doc in import_documents]
 
         # Import the documents
         for i, import_doc in enumerate(import_documents):
-            doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.submission_document_id}]:'
+            doc_prefix = f'[Doc {i + 1}/{len(import_documents)}, ID {import_doc.import_now_submission_document_id}]:'
             logger.info(f'{doc_prefix} Importing attempt #{import_job.attempt}...')
             try:
                 # Stream the file from its hosted location
@@ -135,7 +135,13 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     db.session.delete(doc)
                     db.session.commit()
 
-                success_imports.append(import_doc.submission_document_id)
+                success_imports.append({
+                    import_doc.submission_document_file_name,
+                    import_doc.submission_document_url,
+                    import_doc.submission_document_message_id,
+                    import_doc.submission_document_type,
+                })
+
                 logger.info(f'{doc_prefix} Import {"COMPLETE" if uploaded else "UNNECESSARY"}')
             except Exception as e:
                 import_doc.error = str(e)
@@ -213,7 +219,7 @@ def associate_now_submissions_document_with_document(guid,
         },
         data=json.dumps(data))
 
-    if resp.status_code != requests.codes.ok:
+    if resp.status_code != requests.codes.created and resp.status_code != requests.codes.conflict:
         if attempt < 5:
             attempt += 1
             associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)

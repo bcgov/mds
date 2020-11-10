@@ -191,6 +191,7 @@ class NOWApplication(Base, AuditMixin):
             imported = any(
                 (imported_doc.messageid == doc.messageid and imported_doc.filename == doc.filename
                  and imported_doc.documenturl == doc.documenturl
+                 and imported_doc.documenttype == doc.documenttype
                  for imported_doc in self.imported_submission_documents))
             if imported:
                 continue

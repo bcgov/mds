@@ -2,16 +2,14 @@ from app.extensions import api
 from flask_restplus import fields
 
 IMPORT_NOW_SUBMISSION_DOCUMENT = api.model(
-    'ImportNowSubmissionDocument',
-    {
-        'import_now_submission_document_id': fields.Integer,
+    'ImportNowSubmissionDocument', {
         'import_now_submission_documents_job_id': fields.Integer,
         'document_id': fields.Integer,
-        'submission_document_id': fields.Integer,
         'submission_document_url': fields.String,
         'submission_document_file_name': fields.String,
+        'submission_document_type': fields.String,
+        'submission_document_message_id': fields.Integer,
         'error': fields.String
-                                                                  # 'document': fields.Nested(DOCUMENT)
     })
 
 IMPORT_NOW_SUBMISSION_DOCUMENTS_JOB = api.model(

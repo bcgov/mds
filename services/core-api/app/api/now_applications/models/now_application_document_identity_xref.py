@@ -15,16 +15,17 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     now_application_document_xref_guid = db.Column(
-        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+        UUID(as_uuid=True), server_default=FetchedValue())
     mine_document_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('mine_document.mine_document_guid'))
 
-    messageid = db.Column(db.Integer)
-    documenturl = db.Column(db.String)
-    documenttype = db.Column(db.String)
+    filename = db.Column(db.String, primary_key=True)
+    messageid = db.Column(db.Integer, primary_key=True)
+    documenturl = db.Column(db.String, primary_key=True)
+    documenttype = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
     is_final_package = db.Column(db.Boolean, server_default=FetchedValue())
-    filename = db.Column(db.String)
+
     now_application_id = db.Column(
         db.Integer,
         db.ForeignKey('now_application.now_application_id'),
@@ -61,11 +62,3 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
 
         new_document_identity_xref.save()
         return new_document_identity_xref
-
-    # now_application_document_xref_guid uuid NOT NULL DEFAULT gen_random_uuid(),
-    # messageid int4 NULL,
-    # documenturl varchar NULL,
-    # # filename varchar NULL, -- this maybe not required, but we will see
-    # documenttype varchar NULL,
-    # # description varchar NULL, -- this maybe not required, but we will see
-    # is_final_package bool NULL,
