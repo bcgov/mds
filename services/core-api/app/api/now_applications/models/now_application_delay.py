@@ -30,8 +30,9 @@ class NOWApplicationDelay(Base, AuditMixin):
     #Reason for delay (behaves like type tables)
     delay_type_code = db.Column(
         db.String, db.ForeignKey('now_application_delay_type.delay_type_code'), nullable=False)
-    comment = db.Column(db.String, nullable=False)
+    start_comment = db.Column(db.String, nullable=False)
     start_date = db.Column(db.Date, nullable=False)
+    end_comment = db.Column(db.String)
     end_date = db.Column(db.Date)
 
     def __repr__(self):
@@ -41,12 +42,12 @@ class NOWApplicationDelay(Base, AuditMixin):
     def create(cls,
                now_application,
                delay_type_code,
-               delay_comment,
+               start_comment,
                delay_start_date,
                add_to_session=True):
         new_now_delay = cls(
             delay_type_code=delay_type_code,
-            comment=delay_comment,
+            comment=start_comment,
             start_date=delay_start_date,
         )
 

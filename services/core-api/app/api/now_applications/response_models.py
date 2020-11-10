@@ -262,8 +262,9 @@ NOW_APPLICATION_PROGRESS = api.model(
 NOW_APPLICATION_DELAY = api.model(
     'NOWApplicationDelay', {
         'delay_type_code': fields.String,
-        'comment': fields.String,
+        'start_comment': fields.String,
         'start_date': fields.Date,
+        'end_comment': fields.String,
         'end_date': fields.Date
     })
 
