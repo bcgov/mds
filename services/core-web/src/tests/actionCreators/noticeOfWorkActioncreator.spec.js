@@ -159,14 +159,15 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
 
 describe("`createNoticeOfWorkApplicationProgress` action creator", () => {
   const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
-  const payload = {};
-  const url = ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid);
+  const progressCode = "REV";
+  const url =
+    ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_PROGRESS(applicationGuid, progressCode);
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPost(url).reply(200, mockResponse);
     return createNoticeOfWorkApplicationProgress(
       applicationGuid,
-      payload
+      progressCode
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
@@ -178,7 +179,7 @@ describe("`createNoticeOfWorkApplicationProgress` action creator", () => {
     mockAxios.onPost(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return createNoticeOfWorkApplicationProgress(
       applicationGuid,
-      payload
+      progressCode
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

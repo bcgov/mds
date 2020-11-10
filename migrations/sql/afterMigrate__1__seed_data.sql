@@ -577,10 +577,11 @@ INSERT INTO now_application_progress_status (
     update_user
     )
 VALUES 
-    ('VER', 'Verification', 'system-mds', 'system-mds'),
     ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
-    ('DEC', 'Decision', 'system-mds', 'system-mds')
+    ('REF', 'Referral', 'system-mds', 'system-mds'),
+    ('CON', 'Consultation', 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 'system-mds', 'system-mds'),
+    ('DFT', 'Draft Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
