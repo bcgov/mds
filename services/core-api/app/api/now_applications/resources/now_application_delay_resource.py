@@ -1,11 +1,12 @@
 from flask_restplus import Resource
-from flask import request
+from flask import request, current_app
 
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.resources_mixins import UserMixin
+from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.api.now_applications.models.now_application_delay_type import NOWApplicationDelayType
 from app.api.now_applications.models.now_application_delay import NOWApplicationDelay
@@ -43,9 +44,12 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
 
         ##date math to ensure this starts after most recent edit
         ##ensure no nothers are already open
-        assert len([d for d in now_app.application_delays if d.end_date == None]) < 1
+        if len([d for d in now_app.application_delays if d.end_date == None]) > 0:
+            raise BadRequest("Close existing 'open' delay before opening a new one")
 
         now_delay = NOWApplicationDelay._schema().load(request.json)
+        now_app.application_delays.append(now_delay)
+        now_app.save()
 
         return now_delay
 

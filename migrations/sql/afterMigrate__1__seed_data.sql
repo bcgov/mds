@@ -583,6 +583,20 @@ VALUES
     ('DEC', 'Decision', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
+
+INSERT INTO now_application_delay_type (
+    delay_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES 
+    ('INF', 'Missing Information from Proponent', 'system-mds', 'system-mds'),
+    ('SEC', 'Waiting for Security', 'system-mds', 'system-mds'),
+    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds'),
+ON CONFLICT DO NOTHING;
+
+
 INSERT INTO now_application_permit_type(
     now_application_permit_type_code,
     description,
