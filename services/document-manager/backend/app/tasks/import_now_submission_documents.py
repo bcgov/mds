@@ -17,6 +17,7 @@ from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
 # TODO: Use real delays before publishing.
+MAX_ATTEMPTS = 5
 RETRY_DELAYS = [15, 15, 15, 15]
 # RETRY_DELAYS = [
 #     TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES,
@@ -220,7 +221,7 @@ def associate_now_submissions_document_with_document(guid,
         data=json.dumps(data))
 
     if resp.status_code != requests.codes.created and resp.status_code != requests.codes.conflict:
-        if attempt < 5:
+        if attempt < MAX_ATTEMPTS:
             attempt += 1
             associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)
         else:
@@ -247,7 +248,7 @@ def get_core_authorization_token(import_now_submission_documents_job_id, attempt
             data=data)
 
         if resp.status_code != requests.codes.ok:
-            if attempt < 5:
+            if attempt < MAX_ATTEMPTS:
                 attempt += 1
                 get_core_authorization_token(import_now_submission_documents_job_id, attempt)
             else:

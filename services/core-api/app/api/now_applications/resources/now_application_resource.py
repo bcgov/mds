@@ -88,7 +88,7 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.is_document_import_requested = resp.status_code == requests.codes.created
             now_application_identity.save()
 
-        # prepare imported submissions documents
+        # prepare imported submissions documents. This required for the deep update because filtered_submission_documents is hybrid property and deep update will fail trying to process it
         if 'imported_submission_documents' in data:
             del data['imported_submission_documents']
 
