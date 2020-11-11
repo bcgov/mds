@@ -10,6 +10,7 @@ export const {
   getOriginalNoticeOfWork,
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
+  getApplictionDelay,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(

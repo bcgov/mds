@@ -353,7 +353,7 @@ export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dis
 };
 
 export const createApplicationDelay = (applicationGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .post(
@@ -362,18 +362,18 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .put(
@@ -382,18 +382,18 @@ export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) =
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+  dispatch(request(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .get(
@@ -401,11 +401,12 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
       createRequestHeader()
     )
     .then((response) => {
-      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(success(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
+      dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDelay(response.data));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
+      dispatch(error(reducerTypes.FETCH_NOTICE_OF_WORK_APPLICATION_DELAY));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));

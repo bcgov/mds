@@ -14,7 +14,11 @@ import {
   createApplicationDelay,
   fetchApplicationDelay,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getNOWProgress,
+  getApplictionDelay,
+} from "@common/selectors/noticeOfWorkSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -99,6 +103,7 @@ export class NOWProgressActions extends Component {
       props: {
         title: "Reason for delay",
         closeModal: this.props.closeModal,
+        applicationDelay: this.props.applicationDelay,
       },
       isViewOnly: true,
       content: modalConfig.NOW_REASON_FOR_DELAY_MODAL,
@@ -116,6 +121,7 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const menu = (
       <Menu>
         <Menu.Item onClick={this.openHandleDelayModal}> Start Delay</Menu.Item>
@@ -159,7 +165,7 @@ export class NOWProgressActions extends Component {
             </Dropdown>
           </AuthorizationWrapper>
         )}
-        {false && (
+        {true && (
           <Button type="primary" onClick={this.openReasonForDelay}>
             <EyeOutlined /> View Reason for Delay
           </Button>
@@ -176,6 +182,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   progressStatusHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
   progress: getNOWProgress(state),
+  applicationDelay: getApplictionDelay(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
