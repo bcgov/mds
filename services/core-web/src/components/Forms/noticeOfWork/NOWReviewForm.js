@@ -74,6 +74,7 @@ export class NOWReviewForm extends Component {
                 component={renderConfig.SELECT}
                 data={this.props.reviewTypes}
                 validate={[required, validateSelectOptions(this.props.reviewTypes)]}
+                disabled
               />
             </Form.Item>
             <Form.Item>
