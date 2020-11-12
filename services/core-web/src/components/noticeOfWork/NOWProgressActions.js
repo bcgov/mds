@@ -53,11 +53,17 @@ export class NOWProgressActions extends Component {
   }
 
   handleProgress = (tab, trigger) => {
+    const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
     if (trigger === "Complete") {
       this.props
-        .updateNoticeOfWorkApplicationProgress(this.props.noticeOfWork.now_application_guid, tab, {
-          end_date: new Date(),
-        })
+        .updateNoticeOfWorkApplicationProgress(
+          this.props.noticeOfWork.now_application_guid,
+          tab,
+          {
+            end_date: new Date(),
+          },
+          message
+        )
         .then(() => {
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
@@ -66,7 +72,11 @@ export class NOWProgressActions extends Component {
         });
     } else {
       this.props
-        .createNoticeOfWorkApplicationProgress(this.props.noticeOfWork.now_application_guid, tab)
+        .createNoticeOfWorkApplicationProgress(
+          this.props.noticeOfWork.now_application_guid,
+          tab,
+          message
+        )
         .then(() => {
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
@@ -148,7 +158,6 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
-    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const menu = (
       <Menu>
