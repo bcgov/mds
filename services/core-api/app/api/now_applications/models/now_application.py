@@ -20,7 +20,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 
 
 class NOWApplication(Base, AuditMixin):
-    __tablename__ = "now_application"
+    __tablename__ = 'now_application'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
 
@@ -122,28 +122,33 @@ class NOWApplication(Base, AuditMixin):
     documents = db.relationship(
         'NOWApplicationDocumentXref',
         lazy='selectin',
-        primaryjoin='and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
+        primaryjoin=
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
     )
 
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary="join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
-        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        secondary=
+        'join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        primaryjoin=
+        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
     imported_submission_documents = db.relationship(
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
-        primaryjoin='and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
+        primaryjoin=
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
     )
 
     # Contacts
     contacts = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
-        primaryjoin="and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+        primaryjoin=
+        'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
 
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
@@ -174,25 +179,25 @@ class NOWApplication(Base, AuditMixin):
 
         for doc in self.imported_submission_documents:
             docs.append({
-                "messageid":
+                'messageid':
                 doc.messageid,
-                "now_application_document_xref_guid":
+                'now_application_document_xref_guid':
                 str(doc.now_application_document_xref_guid),
-                "mine_document_guid":
+                'mine_document_guid':
                 str(doc.mine_document_guid),
-                "documenturl":
+                'documenturl':
                 doc.documenturl,
-                "documenttype":
+                'documenttype':
                 doc.documenttype,
-                "description":
+                'description':
                 doc.description,
-                "is_final_package":
+                'is_final_package':
                 doc.is_final_package,
-                "filename":
+                'filename':
                 doc.filename,
-                "now_application_id":
+                'now_application_id':
                 doc.now_application_id,
-                "document_manager_guid":
+                'document_manager_guid':
                 doc.document_manager_guid
             })
 
@@ -206,22 +211,19 @@ class NOWApplication(Base, AuditMixin):
                 continue
             else:
                 docs.append({
-                    "now_application_document_xref_guid": None,
-                    "mine_document_guid": None,
-                    "messageid": doc.messageid,
-                    "documenturl": doc.documenturl,
-                    "documenttype": doc.documenttype,
-                    "description": doc.description,
-                    "is_final_package": False,
-                    "filename": doc.filename,
-                    "now_application_id": self.now_application_id,
-                    "document_manager_guid": None
+                    'now_application_document_xref_guid': None,
+                    'mine_document_guid': None,
+                    'messageid': doc.messageid,
+                    'documenturl': doc.documenturl,
+                    'documenttype': doc.documenttype,
+                    'description': doc.description,
+                    'is_final_package': False,
+                    'filename': doc.filename,
+                    'now_application_id': self.now_application_id,
+                    'document_manager_guid': None
                 })
 
         return docs
-
-    def __repr__(self):
-        return '<NOWApplication %r>' % self.now_application_guid
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
