@@ -264,9 +264,9 @@ NOW_APPLICATION_DELAY = api.model(
         'now_application_delay_guid': fields.String,
         'delay_type_code': fields.String,
         'start_comment': fields.String,
-        'start_date': fields.Date,
+        'start_date': fields.DateTime,
         'end_comment': fields.String,
-        'end_date': fields.Date
+        'end_date': fields.DateTime
     })
 
 NOW_APPLICATION_REVIEW_MDOEL = api.model(

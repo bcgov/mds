@@ -55,3 +55,7 @@ class NOWApplicationDelay(Base, AuditMixin):
         if add_to_session:
             new_now_delay.save(commit=False)
         return new_now_delay
+
+    @classmethod
+    def find_by_guid(cls, guid):
+        return cls.query.filter_by(now_application_delay_guid=guid).first()
