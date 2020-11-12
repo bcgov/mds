@@ -183,8 +183,8 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
       createRequestHeader()
     )
     .then((response) => {
-       notification.success({
-        message: message,
+      notification.success({
+        message,
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
@@ -197,9 +197,12 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateNoticeOfWorkApplicationProgress = (applicationGuid, progressCode, payload, message) => (
-  dispatch
-) => {
+export const updateNoticeOfWorkApplicationProgress = (
+  applicationGuid,
+  progressCode,
+  payload,
+  message
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
@@ -212,8 +215,8 @@ export const updateNoticeOfWorkApplicationProgress = (applicationGuid, progressC
       createRequestHeader()
     )
     .then((response) => {
-       notification.success({
-        message: message,
+      notification.success({
+        message,
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
@@ -370,7 +373,7 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
       createRequestHeader()
     )
     .then((response) => {
-       notification.success({
+      notification.success({
         message: "Successfully started a delay.",
         duration: 10,
       });
@@ -394,10 +397,10 @@ export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (
       createRequestHeader()
     )
     .then((response) => {
-       notification.success({
+      notification.success({
         message: "Successfully stopped the delay.",
-        duration: 10
-       })
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
