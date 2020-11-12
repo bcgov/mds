@@ -143,7 +143,6 @@ class NOWApplication(Base, AuditMixin):
         'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
     )
 
-    # Contacts
     contacts = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',

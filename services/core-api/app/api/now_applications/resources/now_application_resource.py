@@ -1,11 +1,9 @@
-import uuid
 import requests
 from datetime import datetime
-import json
 
 from flask import request, current_app
 from flask_restplus import Resource, marshal
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, NotImplemented
+from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -88,13 +86,13 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.is_document_import_requested = resp.status_code == requests.codes.created
             now_application_identity.save()
 
-        # prepare imported submissions documents. This required for the deep update because filtered_submission_documents is hybrid property and deep update will fail trying to process it
-        if 'imported_submission_documents' in data:
-            del data['imported_submission_documents']
-
         filtered_submission_documents = data.get('filtered_submission_documents', None)
+
+        # Remove these so deep_update_from_dict doesn't try to process them.
         if 'filtered_submission_documents' in data:
             del data['filtered_submission_documents']
+        if 'imported_submission_documents' in data:
+            del data['imported_submission_documents']
 
         if filtered_submission_documents:
             imported_documents = now_application_identity.now_application.imported_submission_documents
@@ -119,6 +117,7 @@ class NOWApplicationResource(Resource, UserMixin):
 
         return now_application_identity.now_application
 
+    # NOTE: This is a method created for testing purposes and isn't used by our application.
     @requires_role_edit_permit
     def post(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)

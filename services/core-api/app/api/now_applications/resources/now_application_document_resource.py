@@ -1,7 +1,6 @@
 import requests
-import json
-from werkzeug.exceptions import BadRequest, InternalServerError, Conflict
 
+from werkzeug.exceptions import BadRequest, NotFound, Conflict
 from flask import request, current_app
 from flask_restplus import Resource, reqparse
 
@@ -9,10 +8,8 @@ from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.mines.documents.models.mine_document import MineDocument
-
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -100,33 +97,30 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
     parser.add_argument('description', type=str, location='json')
 
     @api.response(201, 'Successfully linked document.')
-    # TODO revisit this
+    # TODO: Determine what authorization is required for our Document Manager to call this resource.
     # @requires_role_edit_permit
     def post(self, application_guid):
         data = self.parser.parse_args()
-        document_manager_document_guid = data.get('document_manager_document_guid', None)
-        message_id = data.get('messageid', None)
-        document_url = data.get('documenturl', None)
-        file_name = data.get('filename', None)
-        document_type = data.get('documenttype', None)
-        description = data.get('description', None)
+        document_manager_document_guid = data.get('document_manager_document_guid')
+        message_id = data.get('messageid')
+        document_url = data.get('documenturl')
+        file_name = data.get('filename')
+        document_type = data.get('documenttype')
+        description = data.get('description')
 
         document = NOWApplicationDocumentIdentityXref.query.filter_by(
             messageid=message_id,
             documenturl=document_url,
             documenttype=document_type,
             filename=file_name).one_or_none()
-
         if document:
             raise Conflict('Document already exists')
 
         now_application_identity = NOWApplicationIdentity.query.filter_by(
             messageid=message_id).one_or_none()
-
         if not now_application_identity:
-            raise BadRequest(f'Application not found by message_id {message_id}')
+            raise NotFound('Notice of Work identity not found')
 
-        # create imported document record in core
         NOWApplicationDocumentIdentityXref.create(now_application_identity.mine_guid,
                                                   now_application_identity.now_application_id,
                                                   document_manager_document_guid, message_id,

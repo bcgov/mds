@@ -11,7 +11,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 
 
 class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
-    __tablename__ = "now_application_document_identity_xref"
+    __tablename__ = 'now_application_document_identity_xref'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     now_application_document_xref_guid = db.Column(
@@ -31,7 +31,6 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
         db.ForeignKey('now_application.now_application_id'),
         server_default=FetchedValue())
 
-    # MineDocument
     mine_document = db.relationship(
         'MineDocument',
         lazy='joined',
