@@ -16,6 +16,7 @@ from app.api.constants import *
 from app.api.utils.include.user_info import User
 
 from app.api.now_submissions.models.document import Document
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 
 
 class NOWApplication(Base, AuditMixin):
@@ -121,36 +122,44 @@ class NOWApplication(Base, AuditMixin):
     documents = db.relationship(
         'NOWApplicationDocumentXref',
         lazy='selectin',
-        primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
+        primaryjoin='and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
     )
+
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
-        secondary=
-        "join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
-        primaryjoin=
-        'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        secondary="join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
+        primaryjoin='and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
     imported_submission_documents = db.relationship(
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
-        primaryjoin=
-        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
+        primaryjoin='and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
     )
 
     # Contacts
     contacts = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
-        primaryjoin=
-        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+        primaryjoin="and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
     )
 
-    #status
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
+
+    def __repr__(self):
+        return '<NOWApplication %r>' % self.now_application_guid
+
+    @hybrid_property
+    def draft_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='DFT').one_or_none()
+
+    @hybrid_property
+    def is_new_permit(self):
+        return self.type_of_application == 'New Permit'
 
     @hybrid_property
     def permittee_name(self):
@@ -216,7 +225,11 @@ class NOWApplication(Base, AuditMixin):
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
-        return cls.query.filter_by(now_application_id=now_application_id).first()
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
+
+    @classmethod
+    def find_by_application_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):
