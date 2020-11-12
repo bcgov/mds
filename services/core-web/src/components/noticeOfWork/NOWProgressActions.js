@@ -136,24 +136,30 @@ export class NOWProgressActions extends Component {
         {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
           <>
             {!this.props.progress[this.props.tab] && (
-              <Button type="primary" onClick={() => this.openProgressModal("Start")}>
-                <ClockCircleOutlined />
-                Start {this.props.progressStatusHash[this.props.tab]}
-              </Button>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                  <ClockCircleOutlined />
+                  Start {this.props.progressStatusHash[this.props.tab]}
+                </Button>
+              </AuthorizationWrapper>
             )}
             {this.props.progress[this.props.tab] &&
               this.props.progress[this.props.tab].start_date &&
               !this.props.progress[this.props.tab].end_date && (
-                <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
-                  <ClockCircleOutlined />
-                  Complete {this.props.progressStatusHash[this.props.tab]}
-                </Button>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
+                    <ClockCircleOutlined />
+                    Complete {this.props.progressStatusHash[this.props.tab]}
+                  </Button>
+                </AuthorizationWrapper>
               )}
             {this.props.progress[this.props.tab] && this.props.progress[this.props.tab].end_date && (
-              <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
-                <ClockCircleOutlined />
-                Resume {this.props.progressStatusHash[this.props.tab]}
-              </Button>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
+                  <ClockCircleOutlined />
+                  Resume {this.props.progressStatusHash[this.props.tab]}
+                </Button>
+              </AuthorizationWrapper>
             )}
           </>
         )}
