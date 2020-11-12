@@ -46,6 +46,7 @@ export class NOWProgressActions extends Component {
   componentDidMount() {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
   }
+
   handleProgress = (tab, trigger) => {
     if (trigger === "Complete") {
       this.props
@@ -121,7 +122,8 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
-    console.log(this.props.applicationDelay);
+    const isApplicationDelayed =
+      this.props.applicationDelay.length > 0 && this.props.applicationDelay[0].end_date === null;
     const menu = (
       <Menu>
         <Menu.Item onClick={this.openHandleDelayModal}> Start Delay</Menu.Item>
@@ -131,7 +133,7 @@ export class NOWProgressActions extends Component {
 
     return (
       <div className="inline-flex">
-        {true && this.props.tab !== "ADMIN" && (
+        {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
           <>
             {!this.props.progress[this.props.tab] && (
               <Button type="primary" onClick={() => this.openProgressModal("Start")}>
@@ -165,7 +167,7 @@ export class NOWProgressActions extends Component {
             </Dropdown>
           </AuthorizationWrapper>
         )}
-        {true && (
+        {isApplicationDelayed && (
           <Button type="primary" onClick={this.openReasonForDelay}>
             <EyeOutlined /> View Reason for Delay
           </Button>

@@ -46,7 +46,7 @@ export const getNOWProgress = createSelector([getNoticeOfWork], (noticeOfWork) =
   let progress = {};
   if (noticeOfWork.application_progress.length > 0) {
     progress = noticeOfWork.application_progress.reduce(
-      (map, obj) => ({ [progress.application_progress_status_code]: { ...obj }, ...map }),
+      (map, obj) => ({ [obj.application_progress_status_code]: { ...obj }, ...map }),
       {}
     );
   }

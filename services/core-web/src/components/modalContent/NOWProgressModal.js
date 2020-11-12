@@ -21,34 +21,53 @@ export const NOWProgressModal = (props) => (
   <div>
     {props.trigger === "Start" && (
       <>
-        <p className="p-light">
+        <p>
           Starting <Highlight search={props.tab}>{props.tab}</Highlight> allows you to begin the{" "}
           <Highlight search={props.tab}>{props.tab}</Highlight> process.
         </p>
         <br />
-        <p className="p-light">
+        <p>
           While in progress, You can make any necessary changes to this section of the application.
         </p>
         <br />
-        <p className="p-light">
+        <p>
           Click "Complete {props.tab}" when you are finished. If you need to make any changes later,
           click "Resume {props.tab}".
         </p>
         <br />
-        <p className="p-light">
+        <p>
           Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
         </p>
         <br />
       </>
     )}
     {props.trigger === "Complete" && (
-      <Alert
-        message="Do not Click on COMPLETE if you are waiting to receive additional documentation."
-        type="warning"
-        showIcon
-      />
+      <>
+        <Alert
+          message={`If you need to make changes or add documentation later, click 'Resume ${props.tab}'.`}
+          type="info"
+          showIcon
+        />
+        <br />
+        <p>
+          Are you sure you would like to complete the{" "}
+          <Highlight search={props.tab}>{props.tab}</Highlight> process?
+        </p>
+        <br />
+      </>
     )}
-    <div className="right center-mobile">
+    {props.trigger === "Resume" && (
+      <>
+        <p>
+          Are you sure you would like to resume the{" "}
+          <Highlight search={props.tab}>{props.tab}</Highlight> process?
+        </p>
+        <br />
+      </>
+    )}
+    <br />
+    <br />
+    <div className="right center-mobile bottom">
       <Popconfirm
         placement="topRight"
         title="Are you sure you want to cancel?"

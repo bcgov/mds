@@ -576,19 +576,21 @@ export class NoticeOfWorkApplication extends Component {
       <div className="inline-flex block-mobile padding-md">
         <h2>Application</h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <Dropdown
-            overlay={this.menu(true)}
-            placement="bottomLeft"
-            onVisibleChange={this.handleVisibleChange}
-            visible={this.state.menuVisible}
-          >
-            <Button type="secondary" className="full-mobile">
-              Actions
-              <DownOutlined />
-            </Button>
-          </Dropdown>
+          <>
+            <NOWProgressActions tab="REV" />
+            <Dropdown
+              overlay={this.menu(true)}
+              placement="bottomLeft"
+              onVisibleChange={this.handleVisibleChange}
+              visible={this.state.menuVisible}
+            >
+              <Button type="secondary" className="full-mobile">
+                Actions
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </>
         )}
-        <NOWProgressActions tab="REV" />
       </div>
     ) : (
       <div className="center padding-md">
