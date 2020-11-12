@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
+import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import {
   createNoticeOfWorkApplicationProgress,
@@ -19,6 +20,10 @@ import {
   getNOWProgress,
   getApplictionDelay,
 } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getDelayTypeDropDownOptions,
+  getDelayTypeOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -72,13 +77,29 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    const payLoad = {
-      delay_type_code: "OAB",
-      start_date: new Date(),
+    const payload = {
       ...values,
+      start_date: new Date(this.props.noticeOfWork.last_updated_date),
     };
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payLoad)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
+      .then(() => {
+        this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.closeModal();
+      });
+  };
+
+  handleStopDelay = (values) => {
+    const payload = {
+      ...values,
+      end_date: new Date(),
+    };
+    this.props
+      .updateApplicationDelay(
+        this.props.noticeOfWork.now_application_guid,
+        this.props.applicationDelay.now_application_delay_guid,
+        payload
+      )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();
@@ -111,23 +132,38 @@ export class NOWProgressActions extends Component {
     });
   };
 
-  openHandleDelayModal = () => {
+  openHandleDelayModal = (stage) => {
+    const submit = stage === "Start" ? this.handleStartDelay : this.handleStopDelay;
     this.props.openModal({
       props: {
-        title: "Start Delay",
-        onSubmit: this.handleStartDelay,
+        title: `${stage} Delay`,
+        onSubmit: submit,
+        delayTypeOptions: this.props.delayTypeOptions,
+        initialValues: stage === "Stop" ? this.props.applicationDelay : {},
+        stage,
+        closeModal: this.props.closeModal,
       },
       content: modalConfig.NOW_DELAY_MODAL,
     });
   };
 
   render() {
-    const isApplicationDelayed =
-      this.props.applicationDelay.length > 0 && this.props.applicationDelay[0].end_date === null;
+    console.log(this.props.applicationDelay);
+    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const menu = (
       <Menu>
-        <Menu.Item onClick={this.openHandleDelayModal}> Start Delay</Menu.Item>
-        <Menu.Item>Stop Delay</Menu.Item>
+        <Menu.Item
+          onClick={() => this.openHandleDelayModal("Start")}
+          disabled={isApplicationDelayed}
+        >
+          Start Delay
+        </Menu.Item>
+        <Menu.Item
+          disabled={!isApplicationDelayed}
+          onClick={() => this.openHandleDelayModal("Stop")}
+        >
+          Stop Delay
+        </Menu.Item>
       </Menu>
     );
 
@@ -191,6 +227,8 @@ const mapStateToProps = (state) => ({
   progressStatusHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
   progress: getNOWProgress(state),
   applicationDelay: getApplictionDelay(state),
+  delayTypeOptions: getDelayTypeDropDownOptions(state),
+  delayTypeOptionsHash: getDelayTypeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

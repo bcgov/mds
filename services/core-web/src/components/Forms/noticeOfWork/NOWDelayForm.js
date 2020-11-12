@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { Button, Popconfirm, Row, Col } from "antd";
@@ -15,59 +14,75 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
-  inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  isAdminView: PropTypes.bool.isRequired,
-  isEditMode: PropTypes.bool.isRequired,
-  setEditMode: PropTypes.func.isRequired,
   title: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  delayTypeOptions: CustomPropTypes.options.isRequired,
+  stage: PropTypes.string.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const NOWDelayForm = (props) => {
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
-        <p className="p-light">
-          Setting this application to <Highlight search="Delayed">Delayed</Highlight> means that no
-          work can proceed until the issue is resolved.
-        </p>
-        <br />
-        <p className="p-light">
-          No changes or additions to the application can be made while it is{" "}
-          <Highlight search="Delayed">Delayed</Highlight>.
-        </p>
-        <br />
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item>
-              <Field
-                id="delay_type_code"
-                name="delay_type_code"
-                label="Reason for Delay*"
-                placeholder="Select a document type"
-                component={renderConfig.SELECT}
-                data={[]}
-                // validate={[required, validateSelectOptions([])]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item>
-              <Field
-                id="start_comment"
-                name="start_comment"
-                label="Comment"
-                component={renderConfig.AUTO_SIZE_FIELD}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {props.stage === "Start" ? (
+          <>
+            <p>
+              Setting this application to <Highlight search="Delayed">Delayed</Highlight> means that
+              no work can proceed until the issue is resolved.
+            </p>
+            <br />
+            <p>
+              No changes or additions to the application can be made while it is{" "}
+              <Highlight search="Delayed">Delayed</Highlight>.
+            </p>
+            <br />
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item>
+                  <Field
+                    id="delay_type_code"
+                    name="delay_type_code"
+                    label="Reason for Delay*"
+                    placeholder="Select a document type"
+                    component={renderConfig.SELECT}
+                    data={props.delayTypeOptions}
+                    validate={[required, validateSelectOptions(props.delayTypeOptions)]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item>
+                  <Field
+                    id="start_comment"
+                    name="start_comment"
+                    label="Comment"
+                    component={renderConfig.AUTO_SIZE_FIELD}
+                    validate={[required]}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        ) : (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="end_comment"
+                  name="end_comment"
+                  label="Comment"
+                  component={renderConfig.AUTO_SIZE_FIELD}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
             title="Are you sure you want to cancel?"
-            onConfirm={() => console.log("logigng")}
+            onConfirm={props.closeModal}
             okText="Yes"
             cancelText="No"
           >

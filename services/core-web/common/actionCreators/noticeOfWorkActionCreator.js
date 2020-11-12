@@ -372,12 +372,12 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) => {
+export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid, delayGuid)}`,
       payload,
       createRequestHeader()
     )
