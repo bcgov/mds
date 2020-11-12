@@ -39,6 +39,7 @@ export const {
   getExemptionFeeStatusOptions,
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
+  getDelayTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;

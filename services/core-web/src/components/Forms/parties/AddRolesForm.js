@@ -5,7 +5,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Collapse, Button, Popconfirm, Col, Row } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import { TRASHCAN } from "@/constants/assets";
@@ -67,7 +67,7 @@ export const AddRolesForm = (props) => (
                     component={renderConfig.SELECT}
                     doNotPinDropdown
                     data={simpleRelationships(props.partyRelationshipTypesList)}
-                    validate={[required, validateSelectOptions(props.partyRelationshipTypesList)]}
+                    validate={[required]}
                   />
                 </Form.Item>
               </Col>

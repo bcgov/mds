@@ -223,19 +223,19 @@
   color: $primary-color;
 }
 
-// ALERTS
-.ant-alert-info {
-  background-color: $primary-color;
-  border: 1px solid $primary-color;
-}
+// // ALERTS
+// .ant-alert-info {
+//   background-color: $primary-color;
+//   border: 1px solid $primary-color;
+// }
 
-.ant-alert-info .ant-alert-icon,
-.ant-alert-with-description .ant-alert-message,
-.ant-alert-description,
-.ant-alert-close-icon .anticon-close {
-  color: $pure-white;
-  line-height: 2rem;
-}
+// .ant-alert-info .ant-alert-icon,
+// .ant-alert-with-description .ant-alert-message,
+// .ant-alert-description,
+// .ant-alert-close-icon .anticon-close {
+//   color: $pure-white;
+//   line-height: 2rem;
+// }
 
 .ant-alert-close-icon .anticon-close:hover {
   color: darken($pure-white, 20%);
