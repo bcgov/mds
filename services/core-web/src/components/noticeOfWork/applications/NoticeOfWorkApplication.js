@@ -53,7 +53,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import NOWStatusBanner from "@/components/noticeOfWork/NOWStatusBanner";
+import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 
@@ -718,6 +718,13 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
+  renderTabTitle = (title) => (
+    <span>
+      <NOWStatusIndicator type="badge" />
+      {title}
+    </span>
+  );
+
   renderFixedHeaderClass = () =>
     this.state.fixedTop ? "view--header fixed-scroll" : "view--header";
 
@@ -792,7 +799,11 @@ export class NoticeOfWorkApplication extends Component {
               </Tabs.TabPane>
             )}
 
-            <Tabs.TabPane tab="Application" key="application" disabled={!isImported}>
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Application")}
+              key="application"
+              disabled={!isImported}
+            >
               <>
                 <div className="tab-disclaimer">
                   <p className="center">
@@ -807,7 +818,7 @@ export class NoticeOfWorkApplication extends Component {
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
                       {this.renderEditModeNav()}
-                      <NOWStatusBanner />
+                      <NOWStatusIndicator type="banner" />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -861,35 +872,74 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab="Referral/Consultation"
-              key="referral-consultation"
+              tab={this.renderTabTitle("Referral")}
+              key="referral"
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains basic information about any referrals or consultations
-                    related to this application. You can create document packages for reviewers and
-                    attach any responses that reviewers send back.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Referral/Consultation</h2>
-                    <NOWStatusBanner />
+                    <h2 className="padding-md">Referral</h2>
+                    <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      type="REF"
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Consultation")}
+              key="consultation"
+              disabled={!verificationComplete}
+            >
+              <>
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Consultation</h2>
+                    <NOWStatusIndicator type="banner" />
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      type="FNC"
+                    />
+                  </div>
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Public Comment")}
+              key="public-comment"
+              disabled={!verificationComplete}
+            >
+              <>
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <div className={this.renderFixedHeaderClass()}>
+                    <h2 className="padding-md">Public Comment</h2>
+                    <NOWStatusIndicator type="banner" />
+                  </div>
+                  <div className="page__content">
+                    <NOWApplicationReviews
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      type="PUB"
                     />
                   </div>
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane tab="Draft Permit" key="draft-permit" disabled={!verificationComplete}>
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Draft Permit")}
+              key="draft-permit"
+              disabled={!verificationComplete}
+            >
               <>
                 <div className="tab-disclaimer">
                   <p className="center">
@@ -936,7 +986,7 @@ export class NoticeOfWorkApplication extends Component {
                         </Dropdown>
                       </NOWActionWrapper>
                     </div>
-                    <NOWStatusBanner />
+                    <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationAdministrative
