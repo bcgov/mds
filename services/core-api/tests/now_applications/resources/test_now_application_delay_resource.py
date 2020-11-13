@@ -23,7 +23,6 @@ class TestApplicationResource:
             f'/now-applications/{uuid.uuid4()}/delays', headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 404, get_resp.response
         get_data = json.loads(get_resp.data.decode())
-        assert len(get_data['records']) == 1
 
     """POST /now-applications/<guid>/delays"""
 
