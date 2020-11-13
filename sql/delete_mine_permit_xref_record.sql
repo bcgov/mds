@@ -24,7 +24,7 @@
 --
 
 -- Create the function
-CREATE OR REPLACE FUNCTION delete_mine_permit_xref (_permit_no varchar, _mine_no varchar) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION delete_mine_permit_xref(_permit_no varchar, _mine_no varchar) RETURNS VOID AS $$
 
 DECLARE
 	_permit_id integer;
@@ -154,7 +154,8 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 -- Call the function.
-SELECT delete_mine_permit_xref('&1', '&2');
+SELECT delete_mine_permit_xref('MX-1-113', '0100086');
+SELECT delete_mine_permit_xref('MX-1-134', '0100138');
 
 -- Drop the function.
-DROP FUNCTION delete_mine_permit_xref (varchar, varchar);
+DROP FUNCTION delete_mine_permit_xref(varchar, varchar);
