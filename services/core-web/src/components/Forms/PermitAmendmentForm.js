@@ -159,6 +159,14 @@ export class PermitAmendmentForm extends Component {
                 component={renderConfig.DATE}
               />
             </Form.Item>
+            <Form.Item>
+              <Field
+                label="Security Not Required"
+                id="security_not_required"
+                name="security_not_required"
+                component={renderConfig.CHECKBOX}
+              />
+            </Form.Item>
             {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
               <Form.Item>
                 <Field

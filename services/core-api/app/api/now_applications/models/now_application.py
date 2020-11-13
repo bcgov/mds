@@ -99,6 +99,7 @@ class NOWApplication(Base, AuditMixin):
     # Securities
     security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
+    security_not_required = db.Column(db.Boolean)
 
     # Activities
     camps = db.relationship('Camp', lazy='selectin', uselist=False)

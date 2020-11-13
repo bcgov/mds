@@ -46,6 +46,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     # This value is added to previous amendments to create the new total assessment for the permit
     security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
+    security_not_required = db.Column(db.Boolean)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')

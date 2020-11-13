@@ -216,6 +216,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
+    parser.add_argument('security_not_required', location='json', type=bool, store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
         'lead_inspector_title',

@@ -113,7 +113,7 @@ export class NOWPermitGeneration extends Component {
     this.setState({ isLoaded: false });
     const payload = {
       permit_status_code: "D",
-      permit_is_exploration: isExploration,
+      is_exploration: isExploration,
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
     this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {

@@ -416,6 +416,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
+        'security_not_required': fields.Boolean,
         'last_updated_date':
         Date,
         'last_updated_by':
@@ -492,6 +493,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'public_comment_closed_on_date': Date,
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
+        'security_not_required': fields.Boolean,
         'last_updated_date': Date,
         'last_updated_by': fields.String
     })

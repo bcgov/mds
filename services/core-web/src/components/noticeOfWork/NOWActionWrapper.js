@@ -53,7 +53,9 @@ export class NOWActionWrapper extends Component {
     //   !this.props.progress[currentTabCode].end_date;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
-      this.props.noticeOfWork.now_application_status_code === "AIA" || "WDN" || "REJ";
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
     const disabled = isApplicationDelayed || isApplicationComplete;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
