@@ -8,7 +8,7 @@ const initialState = {
   noticeOfWorkPageData: {},
   noticeOfWorkReviews: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
-  applictionDelays: [],
+  applicationDelays: [],
 };
 
 export const noticeOfWorkReducer = (state = initialState, action) => {
