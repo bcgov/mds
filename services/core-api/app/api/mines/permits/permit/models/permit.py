@@ -160,15 +160,15 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return permit
         return None
 
-    @classmethod
-    def assign_permit_no(cls, notice_of_work_type_code):
+    def assign_permit_no(self, notice_of_work_type_code):
         permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
-        if permit_prefix in ['M', 'C'] and cls.is_exploration:
+        if permit_prefix in ['M', 'C'] and self.is_exploration:
             permit_prefix = permit_prefix + 'X'
         permit_prefix = permit_prefix + '-'
-        next_permit_no_sequence = db.session.execute(cls.permit_no_seq)
-        cls.permit_no = permit_prefix + str(next_permit_no_sequence)
-        cls.permit_no_sequence = next_permit_no_sequence
+        next_permit_no_sequence = db.session.execute(self.permit_no_seq)
+        self.permit_no = permit_prefix + str(next_permit_no_sequence)
+        self.permit_no_sequence = next_permit_no_sequence
+        self.save()
         return
 
     @classmethod

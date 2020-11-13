@@ -237,6 +237,7 @@
   }
   .ant-alert-description {
     color: black !important;
+    line-height: 2rem;
   }
   .ant-alert-icon {
     margin-top:4px
@@ -551,4 +552,14 @@ select {
 
 .modal__close {
   font-size: inherit !important;
+}
+
+.ant-timeline-item-head {
+  margin-top: 14px;
+}
+ 
+.ant-timeline > li:last-child {
+  .ant-timeline-item-tail {
+    display: none;
+  }
 }

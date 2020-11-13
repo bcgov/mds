@@ -634,3 +634,6 @@ export const getDelayTypeOptionsHash = createSelector(
   [getDelayTypeDropDownOptions],
   createLabelHash
 );
+
+export const getDropdownNticeOfWorkApplicationStatusCodes = (...params) =>
+  getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);

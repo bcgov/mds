@@ -582,7 +582,8 @@ APPLICATION_PROGRESS_STATUS_CODES = api.model(
     'ApplicationProgressStatusCodes', {
         'application_progress_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model(

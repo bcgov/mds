@@ -59,7 +59,10 @@ class PermitListResource(Resource, UserMixin):
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
-        'permit_is_exploration', type=bool, location='json', help='Whether the permit is an exploration permit or not.')
+        'permit_is_exploration',
+        type=bool,
+        location='json',
+        help='Whether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -100,14 +103,20 @@ class PermitListResource(Resource, UserMixin):
                 raise NotFound('There was no Notice of Work found with the provided guid.')
             now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             now_application = now_application_identity.now_application
-        
+            notice_of_work_type_code = now_application.notice_of_work_type_code[0]
+            permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
+            if permit_prefix in ['M', 'C'] and cls.is_exploration:
+                permit_prefix = permit_prefix + 'X'
+            permit_no = permit_prefix + '-DRAFT'
+
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
             raise BadRequest("That permit number is already in use.")
-            
+
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine, permit_no, data.get('permit_status_code'))
+        permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
+                               data.get('permit_is_exploration'))
 
         amendment = PermitAmendment.create(
             permit,
