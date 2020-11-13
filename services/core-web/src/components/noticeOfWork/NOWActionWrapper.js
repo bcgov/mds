@@ -51,7 +51,7 @@ export class NOWActionWrapper extends Component {
     // const tabInProgress =
     //   !isEmpty(this.props.progress[currentTabCode]) &&
     //   !this.props.progress[currentTabCode].end_date;
-    // const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
+    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     // const disabled = isApplicationDelayed || !tabInProgress;
     const disabled = isApplicationDelayed;
     return !disabled ? (
