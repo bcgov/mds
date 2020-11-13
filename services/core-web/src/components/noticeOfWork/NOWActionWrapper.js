@@ -1,10 +1,12 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { withRouter } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork, getApplictionDelay } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @constant NOWActionWrapper conditionally renders NoW actions based on various conditions (ie, Rejected, Permit issued, client delay, stages not started, etc)
@@ -33,7 +35,8 @@ export class NOWActionWrapper extends Component {
   // }
 
   render() {
-    const disabled = false;
+    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
+    const disabled = isApplicationDelayed;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -52,6 +55,7 @@ const mapStateToProps = (state) => ({
   // can disable all based if permit is issued
   // can disable all based off client delay
   noticeOfWork: getNoticeOfWork(state),
+  applicationDelay: getApplictionDelay(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWActionWrapper));
