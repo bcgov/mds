@@ -12,7 +12,7 @@ const baseExpectedValue = {
   noticeOfWorkPageData: {},
   originalNoticeOfWork: {},
   noticeOfWorkReviews: [],
-  applictionDelays: [],
+  applicationDelays: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
