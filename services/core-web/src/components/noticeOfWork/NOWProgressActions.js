@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -7,7 +6,6 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@common/utils/helpers";
 import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplicationProgress,
@@ -23,7 +21,6 @@ import {
 } from "@common/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeDropDownOptions,
-  getDelayTypeOptionsHash,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
@@ -37,7 +34,13 @@ import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  progressStatusHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
+  delayTypeOptions: CustomPropTypes.options.isRequired,
   tab: PropTypes.string.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -238,7 +241,6 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplictionDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
-  delayTypeOptionsHash: getDelayTypeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

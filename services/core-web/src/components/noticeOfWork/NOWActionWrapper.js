@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
@@ -31,10 +30,11 @@ const propTypes = {
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
   ]).isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {};
-// eslint-disable-next-line react/prefer-stateless-function
 export class NOWActionWrapper extends Component {
   state = { currentTab: "" };
 
