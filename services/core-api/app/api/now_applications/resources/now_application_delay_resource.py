@@ -31,7 +31,7 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
 
     @api.doc(description='Start a delay on a notice of work application', params={})
     @requires_role_view_all
-    @api.marshal_with(NOW_APPLICATION_DELAY, code=200)
+    @api.marshal_with(NOW_APPLICATION_DELAY, code=201)
     def post(self, now_application_guid):
         now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
@@ -47,7 +47,7 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         now_app.application_delays.append(now_delay)
         now_app.save()
 
-        return now_delay
+        return now_delay, 201
 
 
 class NOWApplicationDelayResource(Resource, UserMixin):
