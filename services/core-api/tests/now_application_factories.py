@@ -362,7 +362,6 @@ class NOWApplicationProgressFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    #application_progress_id = factory.Sequence(lambda n: n)
     application_progress_status_code = 'REV'
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
@@ -377,7 +376,6 @@ class NOWApplicationDelayFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
 
     now_application_guid = factory.SelfAttribute('now_application.now_application_guid')
-    #application_progress_id = factory.Sequence(lambda n: n)
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
