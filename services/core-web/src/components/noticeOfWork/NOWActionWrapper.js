@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   getNoticeOfWork,
-  getApplictionDelay,
+  getApplicationDelay,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
 
@@ -46,15 +46,19 @@ export class NOWActionWrapper extends Component {
   }
 
   render() {
-    // commenting out until this is implemented in the follow up PR
-    // const currentTabCode = TabCodes[this.state.currentTab];
-    // const tabInProgress =
-    //   !isEmpty(this.props.progress[currentTabCode]) &&
-    //   !this.props.progress[currentTabCode].end_date;
+    const currentTabCode = TabCodes[this.state.currentTab];
+    const tabInProgress =
+      !isEmpty(this.props.progress[currentTabCode]) &&
+      !this.props.progress[currentTabCode].end_date;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
-      this.props.noticeOfWork.now_application_status_code === "AIA" || "WDN" || "REJ";
-    const disabled = isApplicationDelayed || isApplicationComplete;
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
+    const disabled = isApplicationDelayed || isApplicationComplete || !tabInProgress;
+    console.log(isApplicationDelayed);
+    console.log(isApplicationComplete);
+    // console.log(disabled);
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -74,7 +78,7 @@ const mapStateToProps = (state) => ({
   // can disable all based off client delay
   progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
-  applicationDelay: getApplictionDelay(state),
+  applicationDelay: getApplicationDelay(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWActionWrapper));
