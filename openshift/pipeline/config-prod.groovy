@@ -469,8 +469,8 @@ environments {
                 resource = "mines-application-prod"
                 idpHint_core = "idir"
                 idpHint_minespace = "bceid"
-                url = "https://sso.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                url = "https://oidc.gov.bc.ca/auth"
+                known_config_url = "https://oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {

@@ -15,7 +15,7 @@ import {
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AddButton from "@/components/common/AddButton";
 import {
   createNoticeOfWorkApplicationReview,
@@ -52,6 +52,7 @@ const propTypes = {
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  type: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -86,7 +87,7 @@ const ApplicationReview = (props) => (
       />
       {props.readyForReview && !props.completeDate && (
         <div className="inline-flex flex-end">
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Popconfirm
               placement="topRight"
               title={`Are you sure you want to complete ${props.reviewType.label}?`}
@@ -96,7 +97,7 @@ const ApplicationReview = (props) => (
             >
               <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
             </Popconfirm>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         </div>
       )}
     </ScrollContentWrapper>
@@ -193,7 +194,10 @@ export class NOWApplicationReviews extends Component {
 
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
-    const initialValues = { now_application_guid: this.props.noticeOfWork.now_application_guid };
+    const initialValues = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      now_application_review_type_code: this.props.type,
+    };
     this.props.openModal({
       props: {
         initialValues,
@@ -393,13 +397,13 @@ export class NOWApplicationReviews extends Component {
                     </Button>
                   )}
 
-                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                     <AddButton
                       onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                     >
                       Add Reviewer
                     </AddButton>
-                  </AuthorizationWrapper>
+                  </NOWActionWrapper>
                 </div>
               </div>
             </div>
@@ -407,57 +411,60 @@ export class NOWApplicationReviews extends Component {
         </Row>
         {this.props.noticeOfWorkReviews && (
           <div className="page__content">
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "REF"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "REF"
-                )}
-                completeDate={this.props.noticeOfWork.referral_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    referral_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "FNC"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "FNC"
-                )}
-                completeDate={this.props.noticeOfWork.consultation_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    consultation_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
-            {this.props.noticeOfWorkReviewTypes.some(
-              (reviewType) => reviewType.value === "PUB"
-            ) && (
-              <ApplicationReview
-                {...commonApplicationReviewProps}
-                reviewType={this.props.noticeOfWorkReviewTypes.find(
-                  (reviewType) => reviewType.value === "PUB"
-                )}
-                completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
-                completeHandler={() =>
-                  this.updateNoticeOfWork({
-                    ...this.props.noticeOfWork,
-                    public_comment_closed_on_date: new Date(),
-                  })
-                }
-              />
-            )}
+            {this.props.type === "REF" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "REF"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "REF"
+                  )}
+                  completeDate={this.props.noticeOfWork.referral_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      referral_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
+            {this.props.type === "FNC" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "FNC"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "FNC"
+                  )}
+                  completeDate={this.props.noticeOfWork.consultation_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      consultation_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
+            {this.props.type === "PUB" &&
+              this.props.noticeOfWorkReviewTypes.some(
+                (reviewType) => reviewType.value === "PUB"
+              ) && (
+                <ApplicationReview
+                  {...commonApplicationReviewProps}
+                  reviewType={this.props.noticeOfWorkReviewTypes.find(
+                    (reviewType) => reviewType.value === "PUB"
+                  )}
+                  completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
+                  completeHandler={() =>
+                    this.updateNoticeOfWork({
+                      ...this.props.noticeOfWork,
+                      public_comment_closed_on_date: new Date(),
+                    })
+                  }
+                />
+              )}
           </div>
         )}
       </div>

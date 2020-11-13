@@ -7,7 +7,7 @@ export const DEFAULT_ENVIRONMENT = {
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
   keycloak_idpHint: "local",
-  keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
+  keycloak_url: "https://test.oidc.gov.bc.ca/auth",
   siteminder_url: "https://logontest.gov.bc.ca",
 };
 
