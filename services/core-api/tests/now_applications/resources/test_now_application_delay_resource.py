@@ -1,4 +1,4 @@
-import json, pytest, datetime
+import json, pytest, datetime, uuid
 
 from tests.now_application_factories import NOWApplicationIdentityFactory
 from tests.now_application_factories import NOWApplicationDelayFactory
@@ -13,6 +13,15 @@ class TestApplicationResource:
         get_resp = test_client.get(
             f'/now-applications/{now_app_guid}/delays', headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
+        get_data = json.loads(get_resp.data.decode())
+        assert len(get_data['records']) == 1
+
+    def test_get_now_application_delay_not_found(self, test_client, db_session, auth_headers):
+        now_app = NOWApplicationIdentityFactory()
+
+        get_resp = test_client.get(
+            f'/now-applications/{uuid.uuid4()}/delays', headers=auth_headers['full_auth_header'])
+        assert get_resp.status_code == 204, get_resp.response
         get_data = json.loads(get_resp.data.decode())
         assert len(get_data['records']) == 1
 

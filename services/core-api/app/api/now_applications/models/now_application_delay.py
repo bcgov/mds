@@ -24,8 +24,8 @@ class NOWApplicationDelay(Base, AuditMixin):
     now_application_delay_guid = db.Column(
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
-    now_application_guid = db.Column(db.Integer,
-                                     db.ForeignKey('now_application_identity.now_application_guid'))
+    now_application_guid = db.Column(
+        db.Integer, nullable=False, db.ForeignKey('now_application_identity.now_application_guid'))
     now_application = db.relationship('NOWApplicationIdentity')
 
     #Reason for delay (behaves like type tables)
@@ -64,7 +64,6 @@ class NOWApplicationDelay(Base, AuditMixin):
     @validates('end_date')
     def validate_end_date(self, key, end_date):
         if end_date is not None:
-            print(end_date < self.start_date)
             if end_date < self.start_date:
                 raise AssertionError('end_date cannot be before start_date')
         return end_date
