@@ -69,7 +69,7 @@
       "name": "KEYCLOAK_URL",
       "displayName": "Keycloak URL",
       "description": "URL of the keycloak server",
-      "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
+      "value": "https://test.oidc.gov.bc.ca/auth"
     },
     {
       "name": "SITEMINDER_URL",
