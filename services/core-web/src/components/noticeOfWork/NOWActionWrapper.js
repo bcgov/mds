@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
@@ -45,12 +46,14 @@ export class NOWActionWrapper extends Component {
   }
 
   render() {
-    const currentTabCode = TabCodes[this.state.currentTab];
-    const tabInProgress =
-      !isEmpty(this.props.progress[currentTabCode]) &&
-      !this.props.progress[currentTabCode].end_date;
-    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const disabled = isApplicationDelayed || !tabInProgress;
+    // commenting out until this is implemented in the follow up PR
+    // const currentTabCode = TabCodes[this.state.currentTab];
+    // const tabInProgress =
+    //   !isEmpty(this.props.progress[currentTabCode]) &&
+    //   !this.props.progress[currentTabCode].end_date;
+    // const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
+    // const disabled = isApplicationDelayed || !tabInProgress;
+    const disabled = isApplicationDelayed;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}

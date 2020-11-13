@@ -182,50 +182,55 @@ export class NOWProgressActions extends Component {
 
     return (
       <div className="inline-flex">
-        {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
+        {false && (
           <>
-            {!this.props.progress[this.props.tab] && (
+            {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
+              <>
+                {!this.props.progress[this.props.tab] && (
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                    <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                      <ClockCircleOutlined />
+                      Start {this.props.progressStatusHash[this.props.tab]}
+                    </Button>
+                  </AuthorizationWrapper>
+                )}
+                {this.props.progress[this.props.tab] &&
+                  this.props.progress[this.props.tab].start_date &&
+                  !this.props.progress[this.props.tab].end_date && (
+                    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                      <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
+                        <ClockCircleOutlined />
+                        Complete {this.props.progressStatusHash[this.props.tab]}
+                      </Button>
+                    </AuthorizationWrapper>
+                  )}
+                {this.props.progress[this.props.tab] &&
+                  this.props.progress[this.props.tab].end_date && (
+                    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                      <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
+                        <ClockCircleOutlined />
+                        Resume {this.props.progressStatusHash[this.props.tab]}
+                      </Button>
+                    </AuthorizationWrapper>
+                  )}
+              </>
+            )}
+            {this.props.tab === "ADMIN" && (
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Button type="primary" onClick={() => this.openProgressModal("Start")}>
-                  <ClockCircleOutlined />
-                  Start {this.props.progressStatusHash[this.props.tab]}
-                </Button>
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <Button type="secondary">
+                    Manage Delay
+                    <DownOutlined />
+                  </Button>
+                </Dropdown>
               </AuthorizationWrapper>
             )}
-            {this.props.progress[this.props.tab] &&
-              this.props.progress[this.props.tab].start_date &&
-              !this.props.progress[this.props.tab].end_date && (
-                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
-                    <ClockCircleOutlined />
-                    Complete {this.props.progressStatusHash[this.props.tab]}
-                  </Button>
-                </AuthorizationWrapper>
-              )}
-            {this.props.progress[this.props.tab] && this.props.progress[this.props.tab].end_date && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
-                  <ClockCircleOutlined />
-                  Resume {this.props.progressStatusHash[this.props.tab]}
-                </Button>
-              </AuthorizationWrapper>
+            {isApplicationDelayed && (
+              <Button type="primary" onClick={this.openReasonForDelay}>
+                <EyeOutlined /> View Reason for Delay
+              </Button>
             )}
           </>
-        )}
-        {this.props.tab === "ADMIN" && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <Dropdown overlay={menu} placement="bottomLeft">
-              <Button type="secondary">
-                Manage Delay
-                <DownOutlined />
-              </Button>
-            </Dropdown>
-          </AuthorizationWrapper>
-        )}
-        {isApplicationDelayed && (
-          <Button type="primary" onClick={this.openReasonForDelay}>
-            <EyeOutlined /> View Reason for Delay
-          </Button>
         )}
       </div>
     );
