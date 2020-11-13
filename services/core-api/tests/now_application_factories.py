@@ -369,6 +369,22 @@ class NOWApplicationProgressFactory(BaseFactory):
     active_ind = True
 
 
+class NOWApplicationDelayFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationDelay
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
+
+    now_application_guid = factory.SelfAttribute('now_application.now_application_guid')
+    #application_progress_id = factory.Sequence(lambda n: n)
+    delay_type_code = 'OAB'
+    start_date = factory.Faker('past_datetime')
+    start_comment = factory.Faker('name')
+    end_date = factory.Faker('past_datetime')
+    end_comment = factory.Faker('name')
+
+
 class NOWApplicationReviewFactory(BaseFactory):
     class Meta:
         model = app_models.NOWApplicationReview
@@ -448,4 +464,15 @@ class NOWApplicationIdentityFactory(BaseFactory):
     now_number = factory.Sequence(lambda n: n)
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
+
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
+
+    @factory.post_generation
+    def application_delays(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
