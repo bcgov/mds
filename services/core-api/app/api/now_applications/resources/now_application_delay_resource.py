@@ -27,7 +27,7 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
     def get(self, now_application_guid):
-        now_app = NOWApplicationIdentity.find_by_guid(now_application_guid).application_delays
+        now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
             raise NotFound('Notice of Work Application not found')
 
