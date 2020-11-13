@@ -31,10 +31,11 @@ const propTypes = {
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
   ]).isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {};
-// eslint-disable-next-line react/prefer-stateless-function
 export class NOWActionWrapper extends Component {
   state = { currentTab: "" };
 
@@ -45,12 +46,14 @@ export class NOWActionWrapper extends Component {
   }
 
   render() {
-    const currentTabCode = TabCodes[this.state.currentTab];
-    const tabInProgress =
-      !isEmpty(this.props.progress[currentTabCode]) &&
-      !this.props.progress[currentTabCode].end_date;
+    // commenting out until this is implemented in the follow up PR
+    // const currentTabCode = TabCodes[this.state.currentTab];
+    // const tabInProgress =
+    //   !isEmpty(this.props.progress[currentTabCode]) &&
+    //   !this.props.progress[currentTabCode].end_date;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const disabled = isApplicationDelayed || !tabInProgress;
+    // const disabled = isApplicationDelayed || !tabInProgress;
+    const disabled = isApplicationDelayed;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
