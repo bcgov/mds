@@ -25,7 +25,7 @@ class NOWApplicationDelay(Base, AuditMixin):
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
     now_application_guid = db.Column(
-        db.Integer, nullable=False, db.ForeignKey('now_application_identity.now_application_guid'))
+        db.Integer, db.ForeignKey('now_application_identity.now_application_guid'), nullable=False)
     now_application = db.relationship('NOWApplicationIdentity')
 
     #Reason for delay (behaves like type tables)
