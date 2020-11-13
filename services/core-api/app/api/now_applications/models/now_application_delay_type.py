@@ -22,7 +22,7 @@ class NOWApplicationDelayType(Base, AuditMixin):
     delay_type_code = db.Column(db.String, primary_key=True, server_default=FetchedValue())
     description = db.Column(db.String, nullable=False)
     display_order = db.Column(db.Integer)
-    active_ind = db.Column(db.Boolean, nullable=False)
+    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
         return '<NOWApplicationDelayReason %r>' % self.delay_type_code

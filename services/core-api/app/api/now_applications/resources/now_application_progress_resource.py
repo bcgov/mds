@@ -1,4 +1,5 @@
 from flask import request
+from sqlalchemy.orm import validates
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
@@ -69,7 +70,6 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
 
-        ##VALIDATE DATES
         existing_now_progress.end_date = data['end_date']
         existing_now_progress.save()
         return existing_now_progress, 200
