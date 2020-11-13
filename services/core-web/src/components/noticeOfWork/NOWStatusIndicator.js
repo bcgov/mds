@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { Alert, Badge, Tooltip } from "antd";
 import { withRouter } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
@@ -36,8 +37,7 @@ export const NOWStatusIndicator = (props) => {
     "linear-gradient(90deg, #FDBC00 0%, #FDBC00 28.89%, #FFF1A7 100%)"
   );
 
-  const isApplicationDelayed =
-    props.applicationDelay.length > 0 && props.applicationDelay[0].end_date === null;
+  const isApplicationDelayed = !isEmpty(props.applicationDelay);
   const message = "Complete";
   return (
     <>

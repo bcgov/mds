@@ -10,7 +10,7 @@ export const {
   getOriginalNoticeOfWork,
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
-  getApplictionDelay,
+  getApplictionDelays,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(
@@ -51,4 +51,9 @@ export const getNOWProgress = createSelector([getNoticeOfWork], (noticeOfWork) =
     );
   }
   return progress;
+});
+
+export const getApplictionDelay = createSelector([getApplictionDelays], (delays) => {
+  const currentDelay = delays.filter((delay) => delay.end_date === null)[0];
+  return currentDelay;
 });

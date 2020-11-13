@@ -623,3 +623,14 @@ export const getExemptionFeeStatusOptionsHash = createSelector(
   [getExemptionFeeSatusDropDownOptions],
   createLabelHash
 );
+
+export const getDelayTypeDropDownOptions = createSelectorWrapper(
+  getDelayTypeOptions,
+  createDropDownList,
+  ["description", "delay_type_code", "active_ind"]
+);
+
+export const getDelayTypeOptionsHash = createSelector(
+  [getDelayTypeDropDownOptions],
+  createLabelHash
+);

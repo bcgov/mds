@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { withRouter } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -34,8 +35,7 @@ export class NOWActionWrapper extends Component {
   // }
 
   render() {
-    const isApplicationDelayed =
-      this.props.applicationDelay.length > 0 && this.props.applicationDelay[0].end_date === null;
+    const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const disabled = isApplicationDelayed;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>

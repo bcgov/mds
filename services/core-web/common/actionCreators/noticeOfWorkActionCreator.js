@@ -168,7 +168,7 @@ export const updateNoticeOfWorkApplication = (
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressCode) => (
+export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressCode, message) => (
   dispatch
 ) => {
   dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
@@ -183,6 +183,10 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
@@ -193,9 +197,12 @@ export const createNoticeOfWorkApplicationProgress = (applicationGuid, progressC
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateNoticeOfWorkApplicationProgress = (applicationGuid, progressCode, payload) => (
-  dispatch
-) => {
+export const updateNoticeOfWorkApplicationProgress = (
+  applicationGuid,
+  progressCode,
+  payload,
+  message
+) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
   dispatch(showLoading());
   return CustomAxios()
@@ -208,6 +215,10 @@ export const updateNoticeOfWorkApplicationProgress = (applicationGuid, progressC
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message,
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_PROGRESS));
       return response;
     })
@@ -362,6 +373,10 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully started a delay.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
@@ -372,16 +387,20 @@ export const createApplicationDelay = (applicationGuid, payload) => (dispatch) =
     .finally(() => dispatch(hideLoading()));
 };
 
-export const updateApplicationDelay = (applicationGuid, payload) => (dispatch) => {
+export const updateApplicationDelay = (applicationGuid, delayGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION_DELAY(applicationGuid, delayGuid)}`,
       payload,
       createRequestHeader()
     )
     .then((response) => {
+      notification.success({
+        message: "Successfully stopped the delay.",
+        duration: 10,
+      });
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_DELAY));
       return response;
     })
