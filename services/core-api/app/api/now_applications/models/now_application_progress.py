@@ -1,5 +1,6 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
