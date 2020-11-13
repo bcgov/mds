@@ -6,12 +6,23 @@ import { isEmpty } from "lodash";
 import { withRouter } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { getNoticeOfWork, getApplictionDelay } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getApplictionDelay,
+  getNOWProgress,
+} from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @constant NOWActionWrapper conditionally renders NoW actions based on various conditions (ie, Rejected, Permit issued, client delay, stages not started, etc)
  * persists permissions using authWrapper - These actions are not visible to admin if disabled.
  */
+const TabCodes = {
+  application: "REV",
+  referral: "REF",
+  consultation: "CON",
+  "public-comment": "PUB",
+  "draft-permit": "DFT",
+};
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -25,18 +36,21 @@ const propTypes = {
 const defaultProps = {};
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWActionWrapper extends Component {
-  // state = { currentTab: "" };
+  state = { currentTab: "" };
 
-  // componentDidMount() {
-  //   // use this logic to disable buttons on a specific section based on progress not started or completed
-  //   const split = this.props.history.location.pathname.split("/");
-  //   const currentTab = split.pop();
-  //   this.setState({ currentTab });
-  // }
+  componentDidMount() {
+    const split = this.props.history.location.pathname.split("/");
+    const currentTab = split.pop();
+    this.setState({ currentTab });
+  }
 
   render() {
+    const currentTabCode = TabCodes[this.state.currentTab];
+    const tabInProgress =
+      !isEmpty(this.props.progress[currentTabCode]) &&
+      !this.props.progress[currentTabCode].end_date;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const disabled = isApplicationDelayed;
+    const disabled = isApplicationDelayed || !tabInProgress;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -54,6 +68,7 @@ const mapStateToProps = (state) => ({
   // can disable all actions based off application status === rejected || withdrawn
   // can disable all based if permit is issued
   // can disable all based off client delay
+  progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplictionDelay(state),
 });

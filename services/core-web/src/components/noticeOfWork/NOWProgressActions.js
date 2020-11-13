@@ -7,6 +7,7 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
+import { formatDate } from "@common/utils/helpers";
 import {
   createNoticeOfWorkApplicationProgress,
   updateNoticeOfWorkApplicationProgress,
@@ -23,12 +24,12 @@ import {
 import {
   getDelayTypeDropDownOptions,
   getDelayTypeOptionsHash,
+  getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import { getNoticeOfWorkApplicationProgressStatusCodeOptionsHash } from "@common/selectors/staticContentSelectors";
 
 /**
  * @constant NOWProgressActions conditionally renders NoW progress actions for each tab
