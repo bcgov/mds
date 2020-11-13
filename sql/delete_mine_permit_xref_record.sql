@@ -23,11 +23,12 @@
 --			now_application_progress (now_application_id)
 --
 
-CREATE OR REPLACE FUNCTION delete_mine_permit_xref (permit_no varchar, mine_no varchar) RETURNS VOID AS $$
+-- Create the function
+CREATE OR REPLACE FUNCTION delete_mine_permit_xref (_permit_no varchar, _mine_no varchar) RETURNS VOID AS $$
 
 DECLARE
-	permit_id integer;
-	mine_guid uuid;
+	_permit_id integer;
+	_mine_guid uuid;
 	mine_report_ids integer[];
 	mine_report_submission_ids integer[];
 	permit_amendment_ids integer[];
@@ -38,23 +39,23 @@ DECLARE
 BEGIN
 
 	-- Get the permit_id associated with this permit number.
-	SELECT permit_id INTO permit_id
+	SELECT permit_id INTO _permit_id
 	FROM permit
-	WHERE permit_no = $1;
+	WHERE permit_no = _permit_no;
 
 	-- Get the mine_guid associated with this mine number.
-	SELECT mine_guid INTO mine_guid
+	SELECT mine_guid INTO _mine_guid
 	FROM mine
-	WHERE mine_no = $2;
+	WHERE mine_no = _mine_no;
 
-	RAISE NOTICE 'Deleting records associated with the mine_permit_xref record with permit_id % and mine_guid %', permit_id, mine_guid;
+	RAISE NOTICE 'Deleting records associated with the mine_permit_xref record with permit_id % and mine_guid %', _permit_id, _mine_guid;
 
 	-- Delete the records associated with mine reports.
 	RAISE NOTICE 'Deleting records associated with mine reports';
 
 	SELECT mine_report_id INTO mine_report_ids
 	FROM mine_report
-	WHERE mine_guid = mine_guid AND permit_id = permit_id;
+	WHERE mine_guid = _mine_guid AND permit_id = _permit_id;
 
 	SELECT mine_report_submission_id INTO mine_report_submission_ids
 	FROM mine_report_submission
@@ -74,10 +75,10 @@ BEGIN
 
 	SELECT permit_amendment_id INTO permit_amendment_ids
 	FROM permit_amendment
-	WHERE mine_guid = mine_guid AND permit_id = permit_id;
+	WHERE mine_guid = _mine_guid AND permit_id = _permit_id;
 
 	SELECT now_application_guid INTO now_application_guids
-	FROM permit_amendment_document
+	FROM permit_amendment
 	WHERE permit_amendment_id = ANY(permit_amendment_ids); 
 
 	DELETE FROM permit_amendment_document
@@ -145,9 +146,15 @@ BEGIN
 	RAISE NOTICE 'Deleting the record';
 
 	DELETE FROM mine_permit_xref
-	WHERE mine_guid = mine_guid AND permit_id = permit_id;
+	WHERE mine_guid = _mine_guid AND permit_id = _permit_id;
 
 	RAISE NOTICE 'Successfully deleted all records';
 END;
 
 $$ LANGUAGE PLPGSQL;
+
+-- Call the function.
+SELECT delete_mine_permit_xref('&1', '&2');
+
+-- Drop the function.
+DROP FUNCTION delete_mine_permit_xref (varchar, varchar);
