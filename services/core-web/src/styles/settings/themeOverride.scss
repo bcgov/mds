@@ -229,6 +229,20 @@
   border: 1px solid $primary-color;
 }
 
+// ALERTS
+.ant-alert-warning {
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+  }
+  .ant-alert-icon {
+    margin-top:4px
+  }
+}
+
 .ant-alert-info .ant-alert-icon,
 .ant-alert-with-description .ant-alert-message,
 .ant-alert-description,

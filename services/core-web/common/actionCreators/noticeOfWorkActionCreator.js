@@ -318,6 +318,23 @@ export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, min
     .finally(() => dispatch(hideLoading()));
 };
 
+export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (dispatch) => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_STATUS(now_application_guid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
 export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dispatch) => {
   dispatch(noticeOfWorkActions.storeNoticeOfWorkApplicationDocumentDownloadState(payload));
 };

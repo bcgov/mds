@@ -83,7 +83,6 @@ class PermitListResource(Resource, UserMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         permit_no = data.get('permit_no')
-        permit_prefix = None
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -101,11 +100,6 @@ class PermitListResource(Resource, UserMixin):
                 raise NotFound('There was no Notice of Work found with the provided guid.')
             now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             now_application = now_application_identity.now_application
-            permit_is_exploration = data.get('permit_is_exploration')
-            permit_prefix = now_application.notice_of_work_type_code[0] if now_application.notice_of_work_type_code[0] != 'S' else 'G'
-            if permit_prefix in ['M', 'C'] and permit_is_exploration:
-               permit_prefix = permit_prefix + 'X'
-            permit_prefix = permit_prefix + '-'
         
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
@@ -113,7 +107,7 @@ class PermitListResource(Resource, UserMixin):
             
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine, permit_no, data.get('permit_status_code'), permit_prefix)
+        permit = Permit.create(mine, permit_no, data.get('permit_status_code'))
 
         amendment = PermitAmendment.create(
             permit,

@@ -54,6 +54,7 @@ import Loading from "@/components/common/Loading";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -895,6 +896,28 @@ export class NoticeOfWorkApplication extends Component {
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   {this.renderPermitGeneration()}
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
+              tab="Process Permit"
+              key="process-permit"
+              disabled={!verificationComplete}
+            >
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    Process the permit. We've got to process this permit. Process this permit,
+                    proactively!
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <ProcessPermit
+                    mineGuid={this.props.noticeOfWork.mine_guid}
+                    noticeOfWork={this.props.noticeOfWork}
+                  />
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>

@@ -5,7 +5,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
-from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
+from app.api.now_applications.resources.now_application_status_resource import NOWApplicationStatusCodeResource, NOWApplicationStatusResource
 from app.api.now_applications.resources.unit_type_resource import UnitTypeResource
 from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource, NOWApplicationDocumentTypeListResource, NOWApplicationDocumentGenerateResource
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
@@ -21,6 +21,7 @@ api = Namespace('now-applications', description='Core Notice of Work operations'
 
 api.add_resource(NOWApplicationListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
+api.add_resource(NOWApplicationStatusResource, '/<string:application_guid>/status')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
 api.add_resource(NOWApplicationProgressResource, '/<string:application_guid>/progress')
 api.add_resource(NOWApplicationReviewListResource, '/<string:application_guid>/reviews')
