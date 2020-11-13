@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button } from "antd";
@@ -7,10 +6,12 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   closeModal: PropTypes.func.isRequired,
   tab: PropTypes.string.isRequired,
+  tabCode: PropTypes.string.isRequired,
+  trigger: PropTypes.string.isRequired,
+  handleProgress: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -31,8 +32,8 @@ export const NOWProgressModal = (props) => (
         </p>
         <br />
         <p>
-          Click "Complete {props.tab}" when you are finished. If you need to make any changes later,
-          click "Resume {props.tab}".
+          Click &quot;Complete {props.tab}&quot; when you are finished. If you need to make any
+          changes later, click &quot;Resume {props.tab}&quot;.
         </p>
         <br />
         <p>
@@ -44,7 +45,7 @@ export const NOWProgressModal = (props) => (
     {props.trigger === "Complete" && (
       <>
         <Alert
-          message={`If you need to make changes or add documentation later, click 'Resume ${props.tab}'.`}
+          message={`If you need to make changes or add documentation later, click &quot;Resume ${props.tab}&quot;.`}
           type="info"
           showIcon
         />
