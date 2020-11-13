@@ -80,11 +80,6 @@ class NOWApplication(Base, AuditMixin):
     has_key_for_inspector = db.Column(db.Boolean, nullable=True)
     has_req_access_authorizations = db.Column(db.Boolean, nullable=True)
 
-    ready_for_review_date = db.Column(db.Date)
-    referral_closed_on_date = db.Column(db.Date)
-    consultation_closed_on_date = db.Column(db.Date)
-    public_comment_closed_on_date = db.Column(db.Date)
-
     permit_status = db.Column(db.String)
     term_of_application = db.Column(db.Numeric(14, 0))
     is_applicant_individual_or_company = db.Column(db.String)
