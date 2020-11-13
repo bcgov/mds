@@ -20,6 +20,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -33,6 +34,7 @@ const propTypes = {
   updateNoticeOfWorkStatus: PropTypes.func.isRequired,
   progress: PropTypes.objectOf(PropTypes.any).isRequired,
   progressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  draftAmendment: CustomPropTypes.permit.isRequired,
 };
 
 const defaultProps = {};
@@ -138,6 +140,24 @@ export class ProcessPermit extends Component {
 
   getValidationMessages = () => {
     const validationMessages = [];
+    if (
+      !(
+        this.props.draftAmendment.security_received ||
+        this.props.draftAmendment.security_not_required
+      )
+    ) {
+      validationMessages.push({ message: `The security details must be recorded.` });
+    }
+    if (
+      !this.props.noticeOfWork.documents ||
+      !this.props.noticeOfWork.documents.some(
+        (doc) => doc.now_application_document_type_code === "MRP" && doc.is_final_package
+      )
+    ) {
+      validationMessages.push({
+        message: `The final application package requires a Mine Emergency Response Plan.`,
+      });
+    }
     this.props.progressStatusCodes
       .filter(
         (progressStatus) =>
@@ -152,11 +172,7 @@ export class ProcessPermit extends Component {
 
   menu = (validationErrors) => (
     <Menu>
-      <Menu.Item
-        key="issue-permit"
-        onClick={this.openIssuePermitModal}
-        disabled={!validationErrors}
-      >
+      <Menu.Item key="issue-permit" onClick={this.openIssuePermitModal} disabled={validationErrors}>
         Issue permit
       </Menu.Item>
       <Menu.Item key="reject-application" onClick={this.openRejectApplicationModal}>
@@ -196,6 +212,7 @@ export class ProcessPermit extends Component {
           </div>
           <div className="view--content side-menu--content">
             <Result
+              style={{ paddingTop: "0px" }}
               status={validationErrors ? "warning" : "success"}
               title={
                 validationErrors
@@ -207,15 +224,18 @@ export class ProcessPermit extends Component {
               extra={[
                 <Row>
                   <Col
-                    lg={{ span: 8, offset: 8 }}
-                    md={{ span: 10, offset: 7 }}
-                    sm={{ span: 12, offset: 6 }}
+                    lg={{ span: 12, offset: 6 }}
+                    md={{ span: 16, offset: 4 }}
+                    sm={{ span: 20, offset: 2 }}
                     style={{ textAlign: "left" }}
                   >
                     {validationMessages.map((message) => (
-                      <p>
-                        <RightCircleOutlined /> {message.message}
-                      </p>
+                      <Row style={{ paddingBottom: "8px" }}>
+                        <Col span={2}>
+                          <RightCircleOutlined />
+                        </Col>
+                        <Col span={22}>{message.message}</Col>
+                      </Row>
                     ))}
                   </Col>
                 </Row>,
@@ -234,6 +254,7 @@ ProcessPermit.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   progressStatusCodes: getDropdownNticeOfWorkApplicationStatusCodes(state),
+  draftAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

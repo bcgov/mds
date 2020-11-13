@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -23,8 +24,8 @@ class NOWApplicationDelay(Base, AuditMixin):
     now_application_delay_guid = db.Column(
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
-    now_application_guid = db.Column(db.Integer,
-                                     db.ForeignKey('now_application_identity.now_application_guid'))
+    now_application_guid = db.Column(
+        db.Integer, db.ForeignKey('now_application_identity.now_application_guid'), nullable=False)
     now_application = db.relationship('NOWApplicationIdentity')
 
     #Reason for delay (behaves like type tables)
@@ -59,3 +60,10 @@ class NOWApplicationDelay(Base, AuditMixin):
     @classmethod
     def find_by_guid(cls, guid):
         return cls.query.filter_by(now_application_delay_guid=guid).first()
+
+    @validates('end_date')
+    def validate_end_date(self, key, end_date):
+        if end_date is not None:
+            if end_date < self.start_date:
+                raise AssertionError('end_date cannot be before start_date')
+        return end_date

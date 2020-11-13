@@ -27,9 +27,13 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY, code=200, envelope='records')
     def get(self, now_application_guid):
-        return NOWApplicationIdentity.find_by_guid(now_application_guid).application_delays
+        now_app = NOWApplicationIdentity.find_by_guid(now_application_guid).application_delays
+        if not now_app:
+            raise NotFound('Notice of Work Application not found')
 
-    @api.doc(description='Start a delay on a notice of work application', params={})
+        return now_app.application_delays
+
+    @api.doc(description='Start a delay on a Notice of Work application', params={})
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DELAY, code=201)
     def post(self, now_application_guid):
@@ -37,16 +41,18 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         if not now_app:
             raise NotFound('Notice of Work Application not found')
 
-        ##date math to ensure this starts after most recent edit
-
         ##ensure no nothers are already open
         if len([d for d in now_app.application_delays if d.end_date == None]) > 0:
             raise BadRequest("Close existing 'open' delay before opening a new one")
 
         now_delay = NOWApplicationDelay._schema().load(request.json)
         now_app.application_delays.append(now_delay)
-        now_app.save()
 
+        ##ensure this starts after most recent edit
+        if (now_delay.start_date < now_app.now_application.last_updated_date.replace(tzinfo=None)):
+            raise BadRequest("Delay cannot start before last updated date")
+
+        now_app.save()
         return now_delay, 201
 
 
@@ -58,9 +64,6 @@ class NOWApplicationDelayResource(Resource, UserMixin):
         now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
             raise NotFound('Notice of Work Application not found')
-
-        # now_delay = NOWApplicationDelay.find_by_guid(now_application_delay_guid)
-        # now_delay.deep_update_from_dict(request.json)
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))

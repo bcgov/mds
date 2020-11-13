@@ -172,16 +172,11 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         return
 
     @classmethod
-    def create(cls,
-               mine,
-               permit_no,
-               permit_status_code,
-               permit_is_exploration,
-               add_to_session=True):
+    def create(cls, mine, permit_no, permit_status_code, is_exploration, add_to_session=True):
         permit = cls(
             permit_no=permit_no,
             permit_status_code=permit_status_code,
-            is_exploration=permit_is_exploration)
+            is_exploration=is_exploration)
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
             permit.save(commit=False)

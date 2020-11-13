@@ -119,6 +119,8 @@ export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/status`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
@@ -128,7 +130,7 @@ export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 export const NOTICE_OF_WORK_UNIT_TYPE_OPTIONS = "/now-applications/unit-types";
 export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/application-types";
-export const NOTICE_OF_WORK_APPLICATION_STATUS =
+export const NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS =
   "/now-applications/application-status-codes";
 export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-document-types";
 export const NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-export";

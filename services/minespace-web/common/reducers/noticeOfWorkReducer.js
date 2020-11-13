@@ -8,7 +8,7 @@ const initialState = {
   noticeOfWorkPageData: {},
   noticeOfWorkReviews: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
-  applictionDelays: [],
+  applicationDelays: [],
 };
 
 export const noticeOfWorkReducer = (state = initialState, action) => {
@@ -52,7 +52,7 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DELAY:
       return {
         ...state,
-        applictionDelays: action.payload.records,
+        applicationDelays: action.payload.records,
       };
     default:
       return state;

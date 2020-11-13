@@ -111,6 +111,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
         'security_adjustment': fields.Fixed(description='Currency', decimals=2),
         'security_received_date': fields.DateTime(dt_format='iso8601'),
+        'security_not_required': fields.Boolean,
                                                                                          # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
         'description': fields.String,
         'lead_inspector_title': fields.String,

@@ -143,7 +143,7 @@ export class MinePermitInfo extends Component {
 
   // Permit Handlers
   handleAddPermit = (values) => {
-    const permit_no = values.permit_is_exploration
+    const permit_no = values.is_exploration
       ? `${values.permit_type}X-${values.permit_no}`
       : `${values.permit_type}-${values.permit_no}`;
     const payload = { ...values, permit_no };

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
@@ -362,7 +362,6 @@ class NOWApplicationProgressFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    #application_progress_id = factory.Sequence(lambda n: n)
     application_progress_status_code = 'REV'
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
@@ -377,11 +376,11 @@ class NOWApplicationDelayFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
 
     now_application_guid = factory.SelfAttribute('now_application.now_application_guid')
-    #application_progress_id = factory.Sequence(lambda n: n)
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
-    end_date = factory.Faker('past_datetime')
+
+    end_date = factory.Faker('future_datetime')
     end_comment = factory.Faker('name')
 
 
@@ -417,6 +416,7 @@ class NOWApplicationFactory(BaseFactory):
     tenure_number = factory.Sequence(lambda n: str(n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
+    last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
