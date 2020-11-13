@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
@@ -381,7 +381,8 @@ class NOWApplicationDelayFactory(BaseFactory):
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
-    end_date = factory.Faker('past_datetime')
+
+    end_date = factory.Faker('future_datetime')
     end_comment = factory.Faker('name')
 
 
@@ -417,6 +418,7 @@ class NOWApplicationFactory(BaseFactory):
     tenure_number = factory.Sequence(lambda n: str(n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
+    last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')

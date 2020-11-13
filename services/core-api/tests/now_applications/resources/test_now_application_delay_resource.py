@@ -50,6 +50,26 @@ class TestApplicationResource:
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 400, post_resp.response
 
+    def test_post_add_new_delay_fail_on_start_date_before_last_updated_date(
+            self, test_client, db_session, auth_headers):
+
+        now_app_delay = NOWApplicationDelayFactory(end_date=None)
+
+        payload = {
+            'delay_type_code':
+            now_app_delay.delay_type_code,
+            'start_comment':
+            now_app_delay.start_comment,
+            'start_date': (now_app_delay.now_application.now_application.last_updated_date -
+                           datetime.timedelta(minutes=1)).isoformat()
+        }
+
+        post_resp = test_client.post(
+            f'/now-applications/{now_app_delay.now_application_guid}/delays',
+            json=payload,
+            headers=auth_headers['full_auth_header'])
+        assert post_resp.status_code == 400, post_resp.response
+
     """PUT /now-applications/<guid>/delays/<guid>"""
 
     def test_put_end_delay_success(self, test_client, db_session, auth_headers):
@@ -96,3 +116,19 @@ class TestApplicationResource:
             json=payload,
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 201, post_resp.response
+
+    def test_put_fail_end_date_before_start_date(self, test_client, db_session, auth_headers):
+        now_app_delay = NOWApplicationDelayFactory(end_date=None)
+
+        payload = {
+            'delay_type_code': now_app_delay.delay_type_code,
+            'start_comment': now_app_delay.start_comment,
+            'start_date': now_app_delay.start_date.isoformat(),
+            'end_date': (now_app_delay.start_date - datetime.timedelta(days=1)).isoformat(),
+        }
+
+        post_resp = test_client.put(
+            f'/now-applications/{now_app_delay.now_application_guid}/delays/{now_app_delay.now_application_delay_guid}',
+            json=payload,
+            headers=auth_headers['full_auth_header'])
+        assert post_resp.status_code == 400, post_resp.response

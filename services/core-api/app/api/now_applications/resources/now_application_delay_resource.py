@@ -45,8 +45,11 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
 
         now_delay = NOWApplicationDelay._schema().load(request.json)
         now_app.application_delays.append(now_delay)
-        now_app.save()
 
+        if (now_delay.start_date < now_app.now_application.last_updated_date.replace(tzinfo=None)):
+            raise BadRequest("Delay cannot start before last updated date")
+
+        now_app.save()
         return now_delay, 201
 
 
