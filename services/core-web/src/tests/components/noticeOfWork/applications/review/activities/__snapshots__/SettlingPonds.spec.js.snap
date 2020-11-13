@@ -49,7 +49,7 @@ exports[`SettlingPonds renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Length(km)",
+          "title": "Length(m)",
           "validate": Array [
             [Function],
           ],

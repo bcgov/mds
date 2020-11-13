@@ -54,8 +54,10 @@ import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applicat
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -572,20 +574,23 @@ export class NoticeOfWorkApplication extends Component {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md between">
+      <div className="inline-flex block-mobile padding-md">
         <h2>Application</h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <Dropdown
-            overlay={this.menu(true)}
-            placement="bottomLeft"
-            onVisibleChange={this.handleVisibleChange}
-            visible={this.state.menuVisible}
-          >
-            <Button type="secondary" className="full-mobile">
-              Actions
-              <DownOutlined />
-            </Button>
-          </Dropdown>
+          <>
+            <NOWProgressActions tab="REV" />
+            <Dropdown
+              overlay={this.menu(true)}
+              placement="bottomLeft"
+              onVisibleChange={this.handleVisibleChange}
+              visible={this.state.menuVisible}
+            >
+              <Button type="secondary" className="full-mobile">
+                Actions
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </>
         )}
       </div>
     ) : (
@@ -879,7 +884,10 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Referral</h2>
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Referral</h2>
+                      <NOWProgressActions tab="REF" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -892,6 +900,7 @@ export class NoticeOfWorkApplication extends Component {
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>
+
             <Tabs.TabPane
               tab={this.renderTabTitle("Consultation")}
               key="consultation"
@@ -900,7 +909,10 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Consultation</h2>
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Consultation</h2>
+                      <NOWProgressActions tab="CON" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -921,7 +933,10 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <h2 className="padding-md">Public Comment</h2>
+                    <div className="inline-flex">
+                      <h2 className="padding-md">Public Comment</h2>
+                      <NOWProgressActions tab="PUB" />
+                    </div>
                     <NOWStatusIndicator type="banner" />
                   </div>
                   <div className="page__content">
@@ -956,6 +971,28 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
+              tab="Process Permit"
+              key="process-permit"
+              disabled={!verificationComplete}
+            >
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">
+                    Process the permit. We've got to process this permit. Process this permit,
+                    proactively!
+                  </p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <ProcessPermit
+                    mineGuid={this.props.noticeOfWork.mine_guid}
+                    noticeOfWork={this.props.noticeOfWork}
+                  />
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
               tab="Administrative"
               key="administrative"
               disabled={!verificationComplete}
@@ -970,8 +1007,9 @@ export class NoticeOfWorkApplication extends Component {
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex block-mobile padding-md between">
+                    <div className="inline-flex block-mobile padding-md">
                       <h2>Administrative</h2>
+                      <NOWProgressActions tab="ADMIN" />
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown
                           overlay={this.menu(false)}

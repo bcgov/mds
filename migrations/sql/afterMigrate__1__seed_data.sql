@@ -573,15 +573,31 @@ ON CONFLICT DO NOTHING;
 INSERT INTO now_application_progress_status (
     application_progress_status_code,
     description,
+    display_order,
     create_user,
     update_user
     )
 VALUES 
-    ('VER', 'Verification', 'system-mds', 'system-mds'),
-    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
-    ('DEC', 'Decision', 'system-mds', 'system-mds')
+    ('REV', 'Technical Review', 10, 'system-mds', 'system-mds'),
+    ('REF', 'Referral', 20, 'system-mds', 'system-mds'),
+    ('CON', 'Consultation', 30, 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 40, 'system-mds', 'system-mds'),
+    ('DFT', 'Draft Permit', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+
+INSERT INTO now_application_delay_type (
+    delay_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES 
+    ('INF', 'Missing Information from Proponent', 'system-mds', 'system-mds'),
+    ('SEC', 'Waiting for Security', 'system-mds', 'system-mds'),
+    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 
 INSERT INTO now_application_permit_type(
     now_application_permit_type_code,

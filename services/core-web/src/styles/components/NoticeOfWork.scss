@@ -148,6 +148,11 @@
     }
   }
 
+  &--timeline {
+    @extend .side-menu;
+    padding-left: 20px;
+  }
+
   ul {
     list-style: none;
   }

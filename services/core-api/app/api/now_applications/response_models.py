@@ -254,8 +254,19 @@ NOW_APPLICATION_DOCUMENT = api.model(
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress', {
         'start_date': fields.Date,
+        'end_date': fields.Date,
         'created_by': fields.String,
         'application_progress_status_code': fields.String
+    })
+
+NOW_APPLICATION_DELAY = api.model(
+    'NOWApplicationDelay', {
+        'now_application_delay_guid': fields.String,
+        'delay_type_code': fields.String,
+        'start_comment': fields.String,
+        'start_date': fields.DateTime,
+        'end_comment': fields.String,
+        'end_date': fields.DateTime
     })
 
 NOW_APPLICATION_REVIEW_MDOEL = api.model(
@@ -571,7 +582,8 @@ APPLICATION_PROGRESS_STATUS_CODES = api.model(
     'ApplicationProgressStatusCodes', {
         'application_progress_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model(
@@ -586,4 +598,12 @@ NOW_APPLICATION_REVIEW_TYPES = api.model(
         'now_application_review_type_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean
+    })
+
+NOW_APPLICATION_DELAY_TYPE = api.model(
+    'ApplicationDelayTypes', {
+        'delay_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })

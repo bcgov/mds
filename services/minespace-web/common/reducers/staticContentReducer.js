@@ -41,6 +41,7 @@ const initialState = {
   exemptionFeeStatusOptions: [],
   permitConditionTypeOptions: [],
   permitConditionCategoryOptions: [],
+  noticeOfWorkApplicationDelayOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -112,6 +113,8 @@ export const getPermitConditionTypeOptions = (state) =>
   state[STATIC_CONTENT].permitConditionTypeOptions;
 export const getPartyBusinessRoleOptions = (state) =>
   state[STATIC_CONTENT].partyBusinessRoleOptions;
+export const getDelayTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationDelayOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
