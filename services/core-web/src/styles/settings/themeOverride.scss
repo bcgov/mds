@@ -218,11 +218,15 @@
 }
 
 // RESULTS
-.ant-result-success .ant-result-icon > .anticon,
 .ant-result-info .ant-result-icon > .anticon {
   color: $primary-color;
 }
-
+.ant-result-success .ant-result-icon > .anticon {
+  color: $ok-green;
+}
+.ant-result-success .ant-result-icon > .anticon {
+  color: $ok-green;
+}
 // // ALERTS
 // .ant-alert-info {
 //   background-color: $primary-color;

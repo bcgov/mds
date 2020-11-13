@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Menu, Dropdown, Timeline, notification } from "antd";
+import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
 import {
   DownOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
   StopOutlined,
+  RightCircleOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -135,21 +136,26 @@ export class ProcessPermit extends Component {
       .then(() => this.props.closeModal());
   };
 
-  canIssuePermit = () => {
-    const progressComplete = this.props.progressStatusCodes.every(
-      (progressStatus) =>
-        this.props.progress[progressStatus.application_progress_status_code] &&
-        this.props.progress[progressStatus.application_progress_status_code].end_date
-    );
-    return progressComplete;
+  getValidationMessages = () => {
+    const validationMessages = [];
+    this.props.progressStatusCodes
+      .filter(
+        (progressStatus) =>
+          !this.props.progress[progressStatus.application_progress_status_code] ||
+          !this.props.progress[progressStatus.application_progress_status_code].end_date
+      )
+      .forEach((progressStatus) =>
+        validationMessages.push({ message: `${progressStatus.description} must be completed.` })
+      );
+    return validationMessages;
   };
 
-  menu = () => (
+  menu = (validationErrors) => (
     <Menu>
       <Menu.Item
         key="issue-permit"
         onClick={this.openIssuePermitModal}
-        disabled={!this.canIssuePermit()}
+        disabled={!validationErrors}
       >
         Issue permit
       </Menu.Item>
@@ -162,32 +168,64 @@ export class ProcessPermit extends Component {
     </Menu>
   );
 
-  render = () => (
-    <div>
-      <div className="view--header">
-        <div className="inline-flex block-mobile padding-md">
-          <h2>Process Permit</h2>
-          <Dropdown overlay={this.menu()} placement="bottomLeft">
-            <Button type="secondary" className="full-mobile">
-              Process
-              <DownOutlined />
-            </Button>
-          </Dropdown>
+  render = () => {
+    const validationMessages = this.getValidationMessages();
+    const validationErrors = validationMessages.length > 0;
+    const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    return (
+      <div>
+        <div className="view--header">
+          <div className="inline-flex block-mobile padding-md">
+            <h2>Process Permit</h2>
+            <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+              <Button type="secondary" className="full-mobile">
+                Process
+                <DownOutlined />
+              </Button>
+            </Dropdown>
+          </div>
+          <NOWStatusIndicator type="banner" />
         </div>
-        <NOWStatusIndicator type="banner" />
+        <>
+          <div className="side-menu--timeline">
+            <Timeline>
+              {this.props.progressStatusCodes
+                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
+            </Timeline>
+          </div>
+          <div className="view--content side-menu--content">
+            <Result
+              status={validationErrors ? "warning" : "success"}
+              title={
+                validationErrors
+                  ? `The following issues must be resolved before you can issue this ${
+                      isAmendment ? "amendment" : "permit"
+                    }.`
+                  : `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
+              }
+              extra={[
+                <Row>
+                  <Col
+                    lg={{ span: 8, offset: 8 }}
+                    md={{ span: 10, offset: 7 }}
+                    sm={{ span: 12, offset: 6 }}
+                    style={{ textAlign: "left" }}
+                  >
+                    {validationMessages.map((message) => (
+                      <p>
+                        <RightCircleOutlined /> {message.message}
+                      </p>
+                    ))}
+                  </Col>
+                </Row>,
+              ]}
+            />
+          </div>
+        </>
       </div>
-      <>
-        <div className="side-menu--timeline">
-          <Timeline>
-            {this.props.progressStatusCodes
-              .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-              .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
-          </Timeline>
-        </div>
-        <div className="view--content side-menu--content" />
-      </>
-    </div>
-  );
+    );
+  };
 }
 
 ProcessPermit.propTypes = propTypes;

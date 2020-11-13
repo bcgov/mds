@@ -36,7 +36,9 @@ export class NOWActionWrapper extends Component {
 
   render() {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const disabled = isApplicationDelayed;
+    const isApplicationComplete =
+      this.props.noticeOfWork.now_application_status_code === "AIA" || "WDN" || "REJ";
+    const disabled = isApplicationDelayed || isApplicationComplete;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}

@@ -107,7 +107,7 @@ class PermitListResource(Resource, UserMixin):
             permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
             if permit_prefix in ['M', 'C'] and cls.is_exploration:
                 permit_prefix = permit_prefix + 'X'
-            permit_no = permit_prefix + '-DRAFT'
+            permit_no = permit_prefix + '-DRAFT-' + now_application_identity.now_number
 
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
