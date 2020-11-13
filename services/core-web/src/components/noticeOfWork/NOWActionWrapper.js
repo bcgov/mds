@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
   getNoticeOfWork,
-  getApplictionDelay,
+  getApplicationDelay,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
 
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => ({
   // can disable all based off client delay
   progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
-  applicationDelay: getApplictionDelay(state),
+  applicationDelay: getApplicationDelay(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWActionWrapper));

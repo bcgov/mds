@@ -17,7 +17,7 @@ import {
 import {
   getNoticeOfWork,
   getNOWProgress,
-  getApplictionDelay,
+  getApplicationDelay,
 } from "@common/selectors/noticeOfWorkSelectors";
 import {
   getDelayTypeDropDownOptions,
@@ -244,7 +244,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   progressStatusHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
   progress: getNOWProgress(state),
-  applicationDelay: getApplictionDelay(state),
+  applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
 });
 

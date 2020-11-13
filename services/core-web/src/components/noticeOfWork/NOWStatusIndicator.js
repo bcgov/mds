@@ -6,7 +6,7 @@ import { isEmpty } from "lodash";
 import { Alert, Badge, Tooltip } from "antd";
 import { withRouter } from "react-router-dom";
 import CustomPropTypes from "@/customPropTypes";
-import { getNoticeOfWork, getApplictionDelay } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork, getApplicationDelay } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @constant NOWStatusIndicator conditionally show a status indicator of the various stages on a NoW record based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
@@ -73,7 +73,7 @@ NOWStatusIndicator.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   // can update color and message based on 'complete' state
   noticeOfWork: getNoticeOfWork(state),
-  applicationDelay: getApplictionDelay(state),
+  applicationDelay: getApplicationDelay(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWStatusIndicator));
