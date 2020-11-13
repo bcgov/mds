@@ -23,7 +23,7 @@
 --			now_application_progress (now_application_id)
 --
 
--- Create the function
+-- Create the function.
 CREATE OR REPLACE FUNCTION delete_mine_permit_xref(_permit_no varchar, _mine_no varchar) RETURNS VOID AS $$
 
 DECLARE
