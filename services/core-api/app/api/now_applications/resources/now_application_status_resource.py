@@ -39,7 +39,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
     @api.doc(description='Update Status of an Application', params={})
     @requires_role_edit_permit
     def put(self, application_guid):
-        current_app.logger.info('NOW APP PUT')
         data = self.parser.parse_args()
         issue_date = data.get('issue_date', None)
         auth_end_date = data.get('auth_end_date', None)
@@ -63,17 +62,12 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         if not permit:
             raise NotFound('No permit amendment found for this application.')
 
-        current_app.logger.info(now_application_status_code)
-
-        if now_application_status_code is not None: # and now_application_identity.now_application.now_application_status_code != now_application_status_code:
+        if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
             now_application_identity.now_application.status_updated_date = datetime.today()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
 
-            current_app.logger.info('Status updated!')
-
             # Approved
             if now_application_status_code == 'AIA':
-                current_app.logger.info('APPROVED')
                 #move out of draft
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
@@ -89,22 +83,37 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.auth_end_date = auth_end_date
                 permit_amendment.save()
 
-                current_app.logger.info('CONTACTS')
-
                 #create contacts
-                #TODO: Handle prior permittee on amendments
                 for contact in now_application_identity.now_application.contacts:
-                    mine_party_appointment = MinePartyAppointment.create(
-                        mine=now_application_identity.mine
-                        if contact.mine_party_appt_type_code != 'PMT' else None,
-                        permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
-                        party_guid=contact.party_guid,
-                        mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                        start_date=datetime.utcnow(),
-                        end_date=None,
-                        processed_by=self.get_user_info())
-                    mine_party_appointment.save()
-                    current_app.logger.info('CONTACT')
-                #documents
+
+                    new_permittee = False
+
+                    if contact.mine_party_appt_type_code == "PMT":
+                        current_mpa = MinePartyAppointment.find_current_appointments(
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
+                            permit_id=permit.permit_id)
+                        if len(current_mpa) > 1:
+                            raise BadRequest(
+                                'This permit has more than one active permittee. Please resolve this and try again.'
+                            )
+                        if len(current_mpa) == 1:
+                            if current_mpa[0].party_guid != contact.party_guid:
+                                current_mpa[0].end_date = start_date - timedelta(days=1)
+                                current_mpa[0].save()
+                                new_permittee = True
+
+                    if contact.mine_party_appt_type_code != "PMT" or new_permittee:
+                        mine_party_appointment = MinePartyAppointment.create(
+                            mine=now_application_identity.mine
+                            if contact.mine_party_appt_type_code != 'PMT' else None,
+                            permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
+                            party_guid=contact.party_guid,
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
+                            start_date=datetime.utcnow(),
+                            end_date=None,
+                            processed_by=self.get_user_info())
+                        mine_party_appointment.save()
+
+                #TODO: Documents / CRR
 
         return 200
