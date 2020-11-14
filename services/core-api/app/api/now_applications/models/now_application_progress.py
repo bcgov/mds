@@ -4,6 +4,7 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
+import dateutil.parser
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.include.user_info import User
@@ -52,6 +53,9 @@ class NOWApplicationProgress(Base, AuditMixin):
     @validates('end_date')
     def validate_end_date(self, key, end_date):
         if end_date is not None:
-            if end_date < self.start_date:
+            if isinstance(end_date, str):
+                end_date = dateutil.parser.isoparse(end_date)
+
+            if end_date < self.start_date.replace(tzinfo=None):
                 raise AssertionError('end_date cannot be before start_date')
         return end_date
