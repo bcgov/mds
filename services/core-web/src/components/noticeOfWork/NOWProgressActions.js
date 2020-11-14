@@ -93,7 +93,8 @@ export class NOWProgressActions extends Component {
   handleStartDelay = (values) => {
     const payload = {
       ...values,
-      start_date: new Date(this.props.noticeOfWork.last_updated_date),
+      // start_date: new Date(this.props.noticeOfWork.last_updated_date),
+      start_date: new Date().toISOString(),
     };
     this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
@@ -106,7 +107,7 @@ export class NOWProgressActions extends Component {
   handleStopDelay = (values) => {
     const payload = {
       ...values,
-      end_date: new Date(),
+      end_date: new Date().toISOString(),
     };
     this.props
       .updateApplicationDelay(
@@ -162,6 +163,7 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -723,9 +724,9 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
-  renderTabTitle = (title) => (
+  renderTabTitle = (title, tabSection) => (
     <span>
-      <NOWStatusIndicator type="badge" />
+      <NOWStatusIndicator type="badge" tabSection={tabSection} />
       {title}
     </span>
   );
@@ -805,7 +806,7 @@ export class NoticeOfWorkApplication extends Component {
             )}
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Application")}
+              tab={this.renderTabTitle("Application", "REV")}
               key="application"
               disabled={!isImported}
             >
@@ -823,7 +824,11 @@ export class NoticeOfWorkApplication extends Component {
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
                       {this.renderEditModeNav()}
-                      <NOWStatusIndicator type="banner" />
+                      <NOWStatusIndicator
+                        type="banner"
+                        tabSection="REV"
+                        isEditMode={!this.state.isViewMode}
+                      />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -877,7 +882,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Referral")}
+              tab={this.renderTabTitle("Referral", "REF")}
               key="referral"
               disabled={!verificationComplete}
             >
@@ -888,7 +893,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Referral</h2>
                       <NOWProgressActions tab="REF" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="REF" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -902,7 +907,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Consultation")}
+              tab={this.renderTabTitle("Consultation", "CON")}
               key="consultation"
               disabled={!verificationComplete}
             >
@@ -913,7 +918,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Consultation</h2>
                       <NOWProgressActions tab="CON" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="CON" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -926,7 +931,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
             <Tabs.TabPane
-              tab={this.renderTabTitle("Public Comment")}
+              tab={this.renderTabTitle("Public Comment", "PUB")}
               key="public-comment"
               disabled={!verificationComplete}
             >
@@ -937,7 +942,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Public Comment</h2>
                       <NOWProgressActions tab="PUB" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="PUB" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -951,7 +956,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Draft Permit")}
+              tab={this.renderTabTitle("Draft Permit", "DFT")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
