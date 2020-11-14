@@ -977,10 +977,7 @@ export class NoticeOfWorkApplication extends Component {
             >
               <>
                 <div className="tab-disclaimer">
-                  <p className="center">
-                    Process the permit. We've got to process this permit. Process this permit,
-                    proactively!
-                  </p>
+                  <p className="center">Process the permit after resolving all issues.</p>
                 </div>
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>

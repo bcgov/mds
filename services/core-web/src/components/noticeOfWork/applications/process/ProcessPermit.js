@@ -7,6 +7,7 @@ import {
   CheckCircleOutlined,
   StopOutlined,
   RightCircleOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -126,7 +127,13 @@ export class ProcessPermit extends Component {
         ...values,
         now_application_status_code: "REJ",
       })
-      .then(() => this.props.closeModal());
+      .then(() => {
+        this.props.closeModal();
+        notification.success({
+          message: "This application has been rejected.",
+          duration: 10,
+        });
+      });
   };
 
   withdrawApplication = (values) => {
@@ -135,7 +142,13 @@ export class ProcessPermit extends Component {
         ...values,
         now_application_status_code: "WDN",
       })
-      .then(() => this.props.closeModal());
+      .then(() => {
+        this.props.closeModal();
+        notification.success({
+          message: "This application has been withdrawn.",
+          duration: 10,
+        });
+      });
   };
 
   getValidationMessages = () => {
@@ -188,17 +201,29 @@ export class ProcessPermit extends Component {
     const validationMessages = this.getValidationMessages();
     const validationErrors = validationMessages.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
+    const isProcessed =
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
+    const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
     return (
       <div>
         <div className="view--header">
           <div className="inline-flex block-mobile padding-md">
             <h2>Process Permit</h2>
-            <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
-              <Button type="secondary" className="full-mobile">
-                Process
-                <DownOutlined />
+            {isProcessed && (
+              <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                <Button type="secondary" className="full-mobile">
+                  Process <DownOutlined />
+                </Button>
+              </Dropdown>
+            )}
+            {isApproved && (
+              <Button>
+                <LinkOutlined />
+                View permit on mine record
               </Button>
-            </Dropdown>
+            )}
           </div>
           <NOWStatusIndicator type="banner" />
         </div>

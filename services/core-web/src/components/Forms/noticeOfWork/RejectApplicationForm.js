@@ -1,16 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
-import CustomPropTypes from "@/customPropTypes";
-import RenderField from "@/components/common/RenderField";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -22,11 +17,7 @@ const propTypes = {
 export const RejectApplicationForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col span={24}>
-        <Form.Item>
-          <Field id="permit_guid" name="permit_guid" label="Permit *" component={RenderField} />
-        </Form.Item>
-      </Col>
+      <Col span={24} />
     </Row>
     <div className="right center-mobile">
       <Popconfirm
