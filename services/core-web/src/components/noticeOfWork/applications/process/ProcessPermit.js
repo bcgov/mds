@@ -253,7 +253,6 @@ export class ProcessPermit extends Component {
           </div>
           <div className="view--content side-menu--content">
             <Result
-              style={{ paddingTop: "0px" }}
               status={(isApproved && "success") || (validationErrors && "warning") || "info"}
               title={
                 (isApproved &&
