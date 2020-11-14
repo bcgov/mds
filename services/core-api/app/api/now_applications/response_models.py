@@ -418,7 +418,7 @@ NOW_APPLICATION_MODEL = api.model(
         Date,
         'security_not_required': fields.Boolean,
         'last_updated_date':
-        Date,
+        DateTime,
         'last_updated_by':
         fields.String,
         'permit_status':
