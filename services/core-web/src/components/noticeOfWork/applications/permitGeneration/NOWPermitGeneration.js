@@ -313,7 +313,7 @@ export class NOWPermitGeneration extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
-          <NOWStatusIndicator type="banner" tabSection="DFT" />
+          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
         </div>
         {!isEmpty(this.state.permittee) ? (
           <>

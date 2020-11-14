@@ -824,7 +824,11 @@ export class NoticeOfWorkApplication extends Component {
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
                       {this.renderEditModeNav()}
-                      <NOWStatusIndicator type="banner" tabSection="REV" />
+                      <NOWStatusIndicator
+                        type="banner"
+                        tabSection="REV"
+                        isEditMode={!this.state.isViewMode}
+                      />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu

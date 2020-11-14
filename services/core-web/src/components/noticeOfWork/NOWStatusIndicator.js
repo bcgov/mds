@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
@@ -18,7 +17,6 @@ import { getDelayTypeOptionsHash } from "@common/selectors/staticContentSelector
  * Indicator Types and Location:
  * Tab header Badge
  * Fixed Header Banner
- * Decision Timeline
  * Colors:
  * Complete =  linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%);
  * Rejected/WithDrawn =  linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%);
@@ -30,19 +28,18 @@ import { getDelayTypeOptionsHash } from "@common/selectors/staticContentSelector
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  isComplete: PropTypes.bool,
-  isInProgress: PropTypes.bool,
   isEditMode: PropTypes.bool,
   type: PropTypes.string.isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   tabSection: PropTypes.string,
 };
 
-const defaultProps = { isComplete: false, isEditMode: false, isInProgress: false, tabSection: "" };
+const defaultProps = { isEditMode: false, tabSection: "" };
 
 export class NOWStatusIndicator extends Component {
-  state = { bannerColor: "", badgeColor: "", message: "", bannerVisible: true };
+  state = { bannerColor: "", badgeColor: "", message: "" };
 
   componentDidMount() {
     this.handleIndicatorColor(
@@ -84,7 +81,6 @@ export class NOWStatusIndicator extends Component {
             "linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%)",
           badgeColor: "#45A766",
           message: "Application is Approved",
-          bannerVisible: true,
         });
       } else {
         const message =
@@ -93,7 +89,6 @@ export class NOWStatusIndicator extends Component {
           bannerColor: "linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%)",
           badgeColor: "#D40D0D",
           message,
-          bannerVisible: true,
         });
       }
     } else if (isApplicationDelayed) {
@@ -106,7 +101,6 @@ export class NOWStatusIndicator extends Component {
       this.setState({
         bannerColor: "linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%)",
         message: "Edit Mode",
-        bannerVisible: true,
       });
     } else if (!isEmpty(progress[tabSection])) {
       if (progress[tabSection].end_date) {
@@ -115,7 +109,6 @@ export class NOWStatusIndicator extends Component {
             "linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%)",
           badgeColor: "#45A766",
           message: "Complete",
-          bannerVisible: true,
         });
       } else {
         this.setState({ bannerColor: "transparent", badgeColor: "yellow", message: "In Progress" });
@@ -125,7 +118,6 @@ export class NOWStatusIndicator extends Component {
         bannerColor: "transparent",
         badgeColor: "",
         message: "",
-        bannerVisible: false,
       });
     }
   };
@@ -159,7 +151,6 @@ NOWStatusIndicator.propTypes = propTypes;
 NOWStatusIndicator.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  // can update color and message based on 'complete' state
   progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
