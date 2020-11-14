@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
+from marshmallow import fields, validate
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -18,6 +19,10 @@ class NOWApplicationDelay(Base, AuditMixin):
     __tablename__ = "now_application_delay"
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
+
+    class _ModelSchema(Base._ModelSchema):
+        now_application_delay_id = fields.Integer(dump_only=True)
+        now_application_guid = fields.UUID(dump_only=True)
 
     now_application_delay_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())

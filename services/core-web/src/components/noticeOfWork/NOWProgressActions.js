@@ -182,7 +182,8 @@ export class NOWProgressActions extends Component {
 
     return (
       <div className="inline-flex">
-        <>
+        {false && (
+          <>
             {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
               <>
                 {!this.props.progress[this.props.tab] && (
@@ -230,6 +231,7 @@ export class NOWProgressActions extends Component {
               </Button>
             )}
           </>
+        )}
       </div>
     );
   }
