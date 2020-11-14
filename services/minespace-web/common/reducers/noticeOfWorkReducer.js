@@ -69,5 +69,5 @@ export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].original
 export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOfWorkPageData;
 export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
 export const getDocumentDownloadState = (state) => state[NOTICE_OF_WORK].documentDownloadState;
-export const getApplicationDelays = (state) => state[NOTICE_OF_WORK].applictionDelays;
+export const getApplicationDelays = (state) => state[NOTICE_OF_WORK].applicationDelays;
 export default noticeOfWorkReducerObject;

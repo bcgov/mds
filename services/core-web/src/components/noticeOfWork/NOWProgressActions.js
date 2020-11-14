@@ -162,6 +162,7 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const menu = (
       <Menu>

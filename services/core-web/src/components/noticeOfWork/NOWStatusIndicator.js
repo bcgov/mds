@@ -57,8 +57,9 @@ export class NOWStatusIndicator extends Component {
       this.props.noticeOfWork.now_application_status_code !==
       nextProps.noticeOfWork.now_application_status_code;
     const progressChanged = this.props.progress !== nextProps.progress;
+    const editModeChanged = this.props.isEditMode !== nextProps.isEditMode;
 
-    if (delayChanged || statusChanged || progressChanged) {
+    if (delayChanged || statusChanged || progressChanged || editModeChanged) {
       this.handleIndicatorColor(
         nextProps.applicationDelay,
         nextProps.noticeOfWork.now_application_status_code,
@@ -111,7 +112,7 @@ export class NOWStatusIndicator extends Component {
           message: "Complete",
         });
       } else {
-        this.setState({ bannerColor: "transparent", badgeColor: "yellow", message: "In Progress" });
+        this.setState({ bannerColor: "transparent", badgeColor: "yellow" });
       }
     } else {
       this.setState({
