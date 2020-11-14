@@ -46,11 +46,11 @@ export class NOWActionWrapper extends Component {
   }
 
   render() {
-    // commenting out until this is implemented in the follow up PR
-    // const currentTabCode = TabCodes[this.state.currentTab];
-    // const tabInProgress =
-    //   !isEmpty(this.props.progress[currentTabCode]) &&
-    //   !this.props.progress[currentTabCode].end_date;
+    const currentTabCode = TabCodes[this.state.currentTab];
+    const tabInProgress =
+      !isEmpty(this.props.progress[currentTabCode]) &&
+      !this.props.progress[currentTabCode].end_date;
+    const shouldDisableTab = currentTabCode !== undefined && tabInProgress;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||

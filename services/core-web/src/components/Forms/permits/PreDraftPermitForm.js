@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
@@ -67,16 +68,11 @@ export const PreDraftPermitForm = (props) => {
             Cancel
           </Button>
         </Popconfirm>
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Button
-            className="full-mobile"
-            type="primary"
-            htmlType="submit"
-            loading={props.submitting}
-          >
-            Start Draft Permit
-          </Button>
-        </NOWActionWrapper>
+        {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS}> */}
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
+          Start Draft Permit
+        </Button>
+        {/* </NOWActionWrapper> */}
       </div>
     </Form>
   );

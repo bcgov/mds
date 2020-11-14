@@ -313,7 +313,7 @@ export class NOWPermitGeneration extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
-          <NOWStatusIndicator type="banner" />
+          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
         </div>
         {!isEmpty(this.state.permittee) ? (
           <>
@@ -364,9 +364,9 @@ export class NOWPermitGeneration extends Component {
                     ) : (
                       <>
                         <NullScreen type="draft-permit" />
-                        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </NOWActionWrapper>
+                        {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS}> */}
+                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                        {/* </NOWActionWrapper> */}
                       </>
                     )}
                   </div>

@@ -93,7 +93,8 @@ export class NOWProgressActions extends Component {
   handleStartDelay = (values) => {
     const payload = {
       ...values,
-      start_date: new Date(this.props.noticeOfWork.last_updated_date),
+      // start_date: new Date(this.props.noticeOfWork.last_updated_date),
+      start_date: new Date().toISOString(),
     };
     this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
@@ -106,7 +107,7 @@ export class NOWProgressActions extends Component {
   handleStopDelay = (values) => {
     const payload = {
       ...values,
-      end_date: new Date(),
+      end_date: new Date().toISOString(),
     };
     this.props
       .updateApplicationDelay(
@@ -162,6 +163,7 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const menu = (
       <Menu>
@@ -182,56 +184,53 @@ export class NOWProgressActions extends Component {
 
     return (
       <div className="inline-flex">
-        {false && (
-          <>
-            {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
-              <>
-                {!this.props.progress[this.props.tab] && (
+        <>
+          {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
+            <>
+              {!this.props.progress[this.props.tab] && (
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                    <ClockCircleOutlined />
+                    Start {this.props.progressStatusHash[this.props.tab]}
+                  </Button>
+                </AuthorizationWrapper>
+              )}
+              {this.props.progress[this.props.tab] &&
+                this.props.progress[this.props.tab].start_date &&
+                !this.props.progress[this.props.tab].end_date && (
                   <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                    <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                    <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
                       <ClockCircleOutlined />
-                      Start {this.props.progressStatusHash[this.props.tab]}
+                      Complete {this.props.progressStatusHash[this.props.tab]}
                     </Button>
                   </AuthorizationWrapper>
                 )}
-                {this.props.progress[this.props.tab] &&
-                  this.props.progress[this.props.tab].start_date &&
-                  !this.props.progress[this.props.tab].end_date && (
-                    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                      <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
-                        <ClockCircleOutlined />
-                        Complete {this.props.progressStatusHash[this.props.tab]}
-                      </Button>
-                    </AuthorizationWrapper>
-                  )}
-                {this.props.progress[this.props.tab] &&
-                  this.props.progress[this.props.tab].end_date && (
-                    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                      <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
-                        <ClockCircleOutlined />
-                        Resume {this.props.progressStatusHash[this.props.tab]}
-                      </Button>
-                    </AuthorizationWrapper>
-                  )}
-              </>
-            )}
-            {this.props.tab === "ADMIN" && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown overlay={menu} placement="bottomLeft">
-                  <Button type="secondary">
-                    Manage Delay
-                    <DownOutlined />
+              {this.props.progress[this.props.tab] && this.props.progress[this.props.tab].end_date && (
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
+                    <ClockCircleOutlined />
+                    Resume {this.props.progressStatusHash[this.props.tab]}
                   </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
-            )}
-            {isApplicationDelayed && (
-              <Button type="primary" onClick={this.openReasonForDelay}>
-                <EyeOutlined /> View Reason for Delay
-              </Button>
-            )}
-          </>
-        )}
+                </AuthorizationWrapper>
+              )}
+            </>
+          )}
+          {this.props.tab === "ADMIN" && (
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Dropdown overlay={menu} placement="bottomLeft">
+                <Button type="secondary">
+                  Manage Delay
+                  <DownOutlined />
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
+          )}
+          {isApplicationDelayed && (
+            <Button type="primary" onClick={this.openReasonForDelay}>
+              <EyeOutlined /> View Reason for Delay
+            </Button>
+          )}
+        </>
       </div>
     );
   }
