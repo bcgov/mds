@@ -32,7 +32,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
-COPY wallet /opt/oracle/instantclient/network/wallet
+COPY cwallet.sso /opt/oracle/instantclient/network/wallet
 COPY sqlnet.ora /opt/oracle/instantclient/network/admin
 
 # Run the server
