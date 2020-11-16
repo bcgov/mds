@@ -50,6 +50,7 @@ class NOWApplicationProgress(Base, AuditMixin):
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
 
+<<<<<<< HEAD
     @validates('end_date')
     def validate_end_date(self, key, end_date):
         if end_date is not None:
@@ -58,3 +59,14 @@ class NOWApplicationProgress(Base, AuditMixin):
             if end_date < self.start_date:
                 raise AssertionError('end_date cannot be before start_date')
         return end_date
+=======
+    #@validates('end_date')
+    #def validate_end_date(self, key, end_date):
+    #    if end_date is not None:
+    #        if isinstance(end_date, str):
+    #            end_date = dateutil.parser.isoparse(end_date)
+    #
+    #        if end_date < self.start_date.replace(tzinfo=None):
+    #            raise AssertionError('end_date cannot be before start_date')
+    #    return end_date
+>>>>>>> 0f400d6d831cd7bc1fdb2872c2c5f66829dcedfd

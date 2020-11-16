@@ -151,6 +151,7 @@
   &--timeline {
     @extend .side-menu;
     padding-left: 20px;
+    padding-top:10px;
   }
 
   ul {
@@ -227,8 +228,8 @@
 
 .status-banner {
   position: relative;
-  top: -11px;
-  height: 11px;
+  top: -15px;
+  height: 22px;
   z-index: 100;
   .ant-alert-message {
     top: -10px;

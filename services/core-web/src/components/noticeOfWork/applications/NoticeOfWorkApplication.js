@@ -989,6 +989,7 @@ export class NoticeOfWorkApplication extends Component {
                   <ProcessPermit
                     mineGuid={this.props.noticeOfWork.mine_guid}
                     noticeOfWork={this.props.noticeOfWork}
+                    fixedTop={this.state.fixedTop}
                   />
                 </LoadingWrapper>
               </>

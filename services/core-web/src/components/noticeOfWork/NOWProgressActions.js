@@ -173,17 +173,22 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
+    const isProcessed =
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
     const menu = (
       <Menu>
         <Menu.Item
           onClick={() => this.openHandleDelayModal("Start")}
-          disabled={isApplicationDelayed}
+          disabled={isApplicationDelayed || isProcessed}
         >
           Start Delay
         </Menu.Item>
         <Menu.Item
-          disabled={!isApplicationDelayed}
+          disabled={!isApplicationDelayed || isProcessed}
           onClick={() => this.openHandleDelayModal("Stop")}
         >
           Stop Delay
@@ -194,7 +199,7 @@ export class NOWProgressActions extends Component {
     return (
       <div className="inline-flex">
         <>
-          {!isApplicationDelayed && this.props.tab !== "ADMIN" && (
+          {!(isApplicationDelayed || isProcessed) && this.props.tab !== "ADMIN" && (
             <>
               {!this.props.progress[this.props.tab] && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -234,7 +239,7 @@ export class NOWProgressActions extends Component {
               </Dropdown>
             </AuthorizationWrapper>
           )}
-          {isApplicationDelayed && (
+          {isApplicationDelayed && !isProcessed && (
             <Button type="primary" onClick={this.openReasonForDelay}>
               <EyeOutlined /> View Reason for Delay
             </Button>

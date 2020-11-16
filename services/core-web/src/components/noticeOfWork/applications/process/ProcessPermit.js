@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
 import {
@@ -11,23 +12,28 @@ import {
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getDropdownNticeOfWorkApplicationStatusCodes } from "@common/selectors/staticContentSelectors";
+import { getDropdownNoticeOfWorkApplicationStatusCodes } from "@common/selectors/staticContentSelectors";
 import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import {
   updateNoticeOfWorkStatus,
   fetchApplicationDelay,
+  fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
+import * as route from "@/constants/routes";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
  */
 
 const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
@@ -36,6 +42,8 @@ const propTypes = {
   progress: PropTypes.objectOf(PropTypes.any).isRequired,
   progressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -71,6 +79,10 @@ export class ProcessPermit extends Component {
 
   componentDidMount = () => {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+    this.props.fetchDraftPermitByNOW(
+      this.props.mineGuid,
+      this.props.noticeOfWork.now_application_guid
+    );
   };
 
   openIssuePermitModal = () => {
@@ -113,6 +125,9 @@ export class ProcessPermit extends Component {
         now_application_status_code: "AIA",
       })
       .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
         notification.success({
           message: "Permit has been successfully issued for this application.",
@@ -128,6 +143,9 @@ export class ProcessPermit extends Component {
         now_application_status_code: "REJ",
       })
       .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
         notification.success({
           message: "This application has been rejected.",
@@ -143,6 +161,9 @@ export class ProcessPermit extends Component {
         now_application_status_code: "WDN",
       })
       .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
         notification.success({
           message: "This application has been withdrawn.",
@@ -155,11 +176,12 @@ export class ProcessPermit extends Component {
     const validationMessages = [];
     if (
       !(
-        this.props.draftAmendment.security_received ||
-        this.props.draftAmendment.security_not_required
+        this.props.draftAmendment &&
+        (this.props.draftAmendment.security_received_date ||
+          this.props.draftAmendment.security_not_required)
       )
     ) {
-      validationMessages.push({ message: `The security details must be recorded.` });
+      validationMessages.push({ message: `The reclamation securities must be recorded.` });
     }
     if (
       !this.props.noticeOfWork.documents ||
@@ -211,18 +233,12 @@ export class ProcessPermit extends Component {
         <div className="view--header">
           <div className="inline-flex block-mobile padding-md">
             <h2>Process Permit</h2>
-            {isProcessed && (
+            {!isProcessed && (
               <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
                 <Button type="secondary" className="full-mobile">
                   Process <DownOutlined />
                 </Button>
               </Dropdown>
-            )}
-            {isApproved && (
-              <Button>
-                <LinkOutlined />
-                View permit on mine record
-              </Button>
             )}
           </div>
           <NOWStatusIndicator type="banner" />
@@ -237,14 +253,15 @@ export class ProcessPermit extends Component {
           </div>
           <div className="view--content side-menu--content">
             <Result
-              style={{ paddingTop: "0px" }}
-              status={validationErrors ? "warning" : "success"}
+              status={(isApproved && "success") || (validationErrors && "warning") || "info"}
               title={
-                validationErrors
-                  ? `The following issues must be resolved before you can issue this ${
-                      isAmendment ? "amendment" : "permit"
-                    }.`
-                  : `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
+                (isApproved &&
+                  `This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`) ||
+                (validationErrors &&
+                  `The following issues must be resolved before you can issue this ${
+                    isAmendment ? "amendment" : "permit"
+                  }.`) ||
+                `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
               }
               extra={[
                 <Row>
@@ -252,16 +269,28 @@ export class ProcessPermit extends Component {
                     lg={{ span: 12, offset: 6 }}
                     md={{ span: 16, offset: 4 }}
                     sm={{ span: 20, offset: 2 }}
-                    style={{ textAlign: "left" }}
+                    style={{ textAlign: isApproved ? "center" : "left" }}
                   >
-                    {validationMessages.map((message) => (
-                      <Row style={{ paddingBottom: "8px" }}>
-                        <Col span={2}>
-                          <RightCircleOutlined />
-                        </Col>
-                        <Col span={22}>{message.message}</Col>
-                      </Row>
-                    ))}
+                    {isApproved ? (
+                      <Button
+                        onClick={() =>
+                          this.props.history.push(
+                            route.MINE_PERMITS.dynamicRoute(this.props.mineGuid)
+                          )
+                        }
+                      >
+                        <LinkOutlined /> View permit on the mine record
+                      </Button>
+                    ) : (
+                      validationMessages.map((message) => (
+                        <Row style={{ paddingBottom: "8px" }}>
+                          <Col span={2}>
+                            <RightCircleOutlined />
+                          </Col>
+                          <Col span={22}>{message.message}</Col>
+                        </Row>
+                      ))
+                    )}
                   </Col>
                 </Row>,
               ]}
@@ -278,7 +307,7 @@ ProcessPermit.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
-  progressStatusCodes: getDropdownNticeOfWorkApplicationStatusCodes(state),
+  progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   draftAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
@@ -289,8 +318,10 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       updateNoticeOfWorkStatus,
       fetchApplicationDelay,
+      fetchDraftPermitByNOW,
+      fetchImportedNoticeOfWorkApplication,
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProcessPermit);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProcessPermit));
