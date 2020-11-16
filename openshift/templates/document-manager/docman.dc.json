@@ -846,8 +846,8 @@
           {
             "name": "web",
             "protocol": "TCP",
-            "port": 5001,
-            "targetPort": 5001
+            "port": 5555,
+            "targetPort": 5555
           }
         ],
         "selector": {
