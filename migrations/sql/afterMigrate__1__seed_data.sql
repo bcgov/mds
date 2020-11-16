@@ -577,11 +577,26 @@ INSERT INTO now_application_progress_status (
     update_user
     )
 VALUES 
-    ('VER', 'Verification', 'system-mds', 'system-mds'),
     ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
-    ('DEC', 'Decision', 'system-mds', 'system-mds')
+    ('REF', 'Referral', 'system-mds', 'system-mds'),
+    ('CON', 'Consultation', 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 'system-mds', 'system-mds'),
+    ('DFT', 'Draft Permit', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+
+INSERT INTO now_application_delay_type (
+    delay_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES 
+    ('INF', 'Missing Information from Proponent', 'system-mds', 'system-mds'),
+    ('SEC', 'Waiting for Security', 'system-mds', 'system-mds'),
+    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 
 INSERT INTO now_application_permit_type(
     now_application_permit_type_code,
@@ -647,8 +662,8 @@ VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
-  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds'),
+  ('PMT', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
+  ('PMA', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
   ('NTR', '[]', 'templates/now/NOW Technical Review.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 

@@ -30,7 +30,9 @@ import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -109,19 +111,9 @@ export class NOWPermitGeneration extends Component {
 
   createPermit = (isExploration) => {
     this.setState({ isLoaded: false });
-    // this logic will be moved to the BE when we generate Permit #
-    const randomNumber = Math.floor(100000 + Math.random() * 900000);
-    const correctPermitType =
-      this.props.noticeOfWork.notice_of_work_type_code[0] === "S"
-        ? "G"
-        : this.props.noticeOfWork.notice_of_work_type_code[0];
-    const permitNo = isExploration
-      ? `${correctPermitType}X-${randomNumber}`
-      : `${correctPermitType}-${randomNumber}`;
     const payload = {
       permit_status_code: "D",
       permit_is_exploration: isExploration,
-      permit_no: permitNo,
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
     this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
@@ -151,9 +143,14 @@ export class NOWPermitGeneration extends Component {
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
+    const addressLineOne = permittee.party.address[0].address_line_1
+      ? `${permittee.party.address[0].address_line_1}\n`
+      : "";
+    const mailingAddress = `${addressLineOne}${permittee.party.address[0].city || ""} ${permittee
+      .party.address[0].sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`;
     permitGenObject.permittee = permittee.party.name;
     permitGenObject.permittee_email = permittee.party.email;
-    permitGenObject.permittee_mailing_address = `${permittee.party.address[0].address_line_1}\n${permittee.party.address[0].city} ${permittee.party.address[0].sub_division_code} ${permittee.party.address[0].post_code}`;
+    permitGenObject.permittee_mailing_address = mailingAddress;
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
@@ -272,17 +269,18 @@ export class NOWPermitGeneration extends Component {
       ? `(${this.props.noticeOfWork.type_of_application})`
       : "";
     return this.props.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md between">
+      <div className="inline-flex block-mobile padding-md">
         <h2>{`Draft Permit ${nowType}`}</h2>
+        <NOWProgressActions tab="DFT" />
         {this.state.isDraft && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown overlay={this.menu()} placement="bottomLeft">
               <Button type="secondary" className="full-mobile">
                 Actions
                 <DownOutlined />
               </Button>
             </Dropdown>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
       </div>
     ) : (
@@ -315,6 +313,7 @@ export class NOWPermitGeneration extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
+          <NOWStatusIndicator type="banner" />
         </div>
         {!isEmpty(this.state.permittee) ? (
           <>
@@ -352,6 +351,7 @@ export class NOWPermitGeneration extends Component {
                               sm={{ span: 12, offset: 6 }}
                             >
                               <PreDraftPermitForm
+                                initialValues={{ is_exploration: false }}
                                 cancelPreDraft={this.cancelPreDraft}
                                 permits={this.props.permits}
                                 isAmendment={this.props.isAmendment}
@@ -364,9 +364,9 @@ export class NOWPermitGeneration extends Component {
                     ) : (
                       <>
                         <NullScreen type="draft-permit" />
-                        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                           <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </AuthorizationWrapper>
+                        </NOWActionWrapper>
                       </>
                     )}
                   </div>

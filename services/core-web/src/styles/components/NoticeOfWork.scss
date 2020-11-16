@@ -81,13 +81,14 @@
 
   &--body {
     padding: 20px;
+    padding-bottom: 50px;
   }
 }
 
 .view {
   padding: 10px;
   &--header {
-    height: 69px;
+    height: 73px;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
@@ -138,7 +139,7 @@
   }
 
   &--fixed {
-    top: 130px;
+    top: 135px;
     position: fixed;
     width: 240px;
 
@@ -146,7 +147,6 @@
       display: none;
     }
   }
-
 
   ul {
     list-style: none;
@@ -218,4 +218,17 @@
   border: 2px solid #a09495;
   border-radius: 5px;
   padding: 10px;
+}
+
+.status-banner {
+  position: relative;
+  top: -11px;
+  height: 11px;
+  z-index: 100;
+  .ant-alert-message {
+    top: -10px;
+    position: relative;
+    left: 150px;
+    color: white;
+  }
 }

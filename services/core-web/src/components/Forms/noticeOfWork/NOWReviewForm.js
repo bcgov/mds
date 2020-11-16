@@ -11,7 +11,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
-import { required, dateNotInFuture } from "@common/utils/Validate";
+import { required, dateNotInFuture, validateSelectOptions } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 
 import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
@@ -73,7 +73,8 @@ export class NOWReviewForm extends Component {
                 label="Review Type"
                 component={renderConfig.SELECT}
                 data={this.props.reviewTypes}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.reviewTypes)]}
+                disabled
               />
             </Form.Item>
             <Form.Item>

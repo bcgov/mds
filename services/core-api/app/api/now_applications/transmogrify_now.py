@@ -197,6 +197,9 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
 
 def _transmogrify_clients(now_app, now_sub, mms_now_sub):
     agent = now_sub.submitter
+    if not agent:
+        return
+
     emailValidator = re.compile(r'[^@]+@[^@]+\.[^@]+')
     now_party_appt = None
     if agent.type == 'Individual' and agent.ind_lastname and agent.ind_firstname and agent.ind_phonenumber:

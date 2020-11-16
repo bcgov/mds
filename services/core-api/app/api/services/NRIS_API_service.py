@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from flask import request, current_app
 from werkzeug import exceptions
 from app.api.constants import NRIS_TOKEN, NRIS_COMPLIANCE_DATA
-from app.api.utils.apm import register_apm
 
 
 def _get_datetime_from_NRIS_data(date):
@@ -31,10 +30,6 @@ def _get_fiscal_year():
     return current_year if current_date > fiscal_year_end else current_year - 1
 
 
-#def get_nris_download_token():
-
-
-@register_apm()
 def _get_NRIS_data_by_mine(auth_token, mine_no):
     current_date = datetime.utcnow()
 

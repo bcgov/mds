@@ -54,10 +54,10 @@ class Validator {
 
 export const Validate = new Validator();
 
-export const required = (value) => (value ? undefined : "This is a required field");
+export const required = (value) => (value || value === 0 ? undefined : "This is a required field");
 
 export const requiredRadioButton = (value) =>
-  value !== null ? undefined : "This is a required field";
+  value !== null && value !== undefined ? undefined : "This is a required field";
 
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
@@ -139,6 +139,15 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     ? "Incident date and time cannot occur before reporting occurence."
     : undefined
 );
+
+// eslint-disable-next-line consistent-return
+export const validateSelectOptions = memoize((data) => (value) => {
+  if (value && data.length > 0) {
+    return data.find((opt) => opt.value === value) !== undefined
+      ? undefined
+      : "Invalid. Select an option provided in the dropdown.";
+  }
+});
 
 export const validateDateRanges = (
   existingAppointments,

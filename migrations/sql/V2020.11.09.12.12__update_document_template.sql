@@ -1,0 +1,1 @@
+UPDATE document_template set template_file_path = 'templates/permit/Permit Template.docx' where document_template_code IN ('PMT', 'PMA');

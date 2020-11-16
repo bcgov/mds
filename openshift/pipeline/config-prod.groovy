@@ -216,8 +216,6 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
@@ -247,8 +245,6 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
@@ -294,8 +290,6 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
@@ -346,20 +340,6 @@ app {
                             'DB_CPU_LIMIT':"${vars.resources.metabase.db_cpu_limit}",
                             'DB_MEMORY_REQUEST':"${vars.resources.metabase.db_memory_request}",
                             'DB_MEMORY_LIMIT':"${vars.resources.metabase.db_memory_limit}"
-                    ]
-                ],
-                [
-                    'file':'openshift/templates/tools/logstash.dc.json',
-                    'params':[
-                            'NAME':"mds-logstash",
-                            'VERSION':"${app.deployment.version}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
                     ]
                 ],
                 [
@@ -476,12 +456,6 @@ environments {
                     db_memory_request = "256Mi"
                     db_memory_limit = "1Gi"
                 }
-                logstash {
-                    cpu_request = "50m"
-                    cpu_limit = "400m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
-                }
                 digdag {
                     cpu_request = "150m"
                     cpu_limit = "300m"
@@ -495,8 +469,8 @@ environments {
                 resource = "mines-application-prod"
                 idpHint_core = "idir"
                 idpHint_minespace = "bceid"
-                url = "https://sso.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                url = "https://oidc.gov.bc.ca/auth"
+                known_config_url = "https://oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {
@@ -509,11 +483,6 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 fn_layer_url = "https://apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 0
-                elastic_enabled_nris = 0
-                elastic_service_name = "MDS Prod"
-                elastic_service_name_nris = "NRIS API Prod"
-                elastic_service_name_docman = 'DocMan Prod'
                 matomo_url = "https://matomo-empr-mds-prod.pathfinder.gov.bc.ca/"
             }
             modules {

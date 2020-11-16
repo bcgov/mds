@@ -55,6 +55,7 @@ exports[`BondForm renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />
@@ -74,7 +75,7 @@ exports[`BondForm renders properly 1`] = `
         <Connect(PartySelectField)
           allowAddingParties={true}
           id="payer_party_guid"
-          initialValue={Object {}}
+          initialValues={Object {}}
           label="Payer*"
           name="payer_party_guid"
           partyLabel="payee"
@@ -261,6 +262,11 @@ exports[`BondForm renders properly 1`] = `
           label="Province"
           name="institution_province"
           placeholder="Please select province"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>
@@ -370,7 +376,11 @@ exports[`BondForm renders properly 1`] = `
           label="Document Category"
           name="bond_document_type_code"
           placeholder="Please select category"
-          validate={Array []}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
         />
       </FormItem>
     </Col>

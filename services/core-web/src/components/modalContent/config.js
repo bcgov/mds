@@ -15,7 +15,6 @@ import AddReportModal from "./AddReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
-import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import UpdateNOWStatusModal from "./UpdateNOWStatusModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
 import EditFinalPermitDocumentPackage from "./EditFinalPermitDocumentPackage";
@@ -29,6 +28,9 @@ import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
 import AddQuickPartyModal from "./AddQuickPartyModal";
+import NOWProgressModal from "./NOWProgressModal";
+import NOWReasonForDelayModal from "./NOWReasonForDelayModal";
+import NOWDelayModal from "./NOWDelayModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -53,7 +55,6 @@ export const modalConfig = {
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
   EDIT_FINAL_PERMIT_DOC_PACKAGE: EditFinalPermitDocumentPackage,
   NOW_REVIEW: NOWReviewModal,
-  UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
   UPDATE_NOW_STATUS: UpdateNOWStatusModal,
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
@@ -62,6 +63,9 @@ export const modalConfig = {
   CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
   DELETE_CONDITION_MODAL: DeleteConditionModal,
+  NOW_PROGRESS_MODAL: NOWProgressModal,
+  NOW_REASON_FOR_DELAY_MODAL: NOWReasonForDelayModal,
+  NOW_DELAY_MODAL: NOWDelayModal,
 };
 
 export default modalConfig;

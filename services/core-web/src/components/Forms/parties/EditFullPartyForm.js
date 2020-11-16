@@ -12,6 +12,7 @@ import {
   postalCode,
   maxLength,
   number,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, upperCase, resetForm, formatDateTime } from "@common/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -195,6 +196,7 @@ export class EditFullPartyForm extends Component {
                       name="sub_division_code"
                       label="Province"
                       format={null}
+                      validate={[validateSelectOptions(this.props.provinceOptions)]}
                       component={renderConfig.SELECT}
                       data={[{ label: "None", value: null }, ...this.props.provinceOptions]}
                     />

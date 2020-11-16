@@ -4,7 +4,7 @@ import { Col, Row, Button } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import Condition from "@/components/Forms/permits/conditions/Condition";
 import SectionForm from "@/components/Forms/permits/conditions/SectionForm";
@@ -70,7 +70,7 @@ const Section = (props) => {
         <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   className="no-margin"
                   ghost
@@ -83,8 +83,8 @@ const Section = (props) => {
                 >
                   <UpOutlined />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   ghost
                   className="no-margin"
@@ -97,8 +97,8 @@ const Section = (props) => {
                 >
                   <DownOutlined />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   ghost
                   className="no-margin"
@@ -117,8 +117,8 @@ const Section = (props) => {
                     alt="Edit Condition"
                   />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                 <Button
                   className="no-margin"
                   ghost
@@ -134,7 +134,7 @@ const Section = (props) => {
                     alt="Remove Condition"
                   />
                 </Button>
-              </AuthorizationWrapper>
+              </NOWActionWrapper>
             </div>
           )}
         </Col>
