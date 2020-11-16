@@ -103,7 +103,7 @@
       "value": "3"
     },
     {
-      "name": "WORKER_CPU_LIMIT",
+      "name": "WORKER_CPU_REQUEST",
       "value": "200m"
     },
     {
@@ -111,7 +111,7 @@
       "value": "1.5Gi"
     },
     {
-      "name": "WORKER_CPU_REQUEST",
+      "name": "WORKER_CPU_LIMIT",
       "value": "225m"
     },
     {
