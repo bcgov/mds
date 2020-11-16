@@ -265,7 +265,21 @@
                   },
                   {
                     "name": "NRIS_DB_PORT",
-                    "value": "1521"
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-port"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_SERVER_CERT_DN",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-server-cert-dn"
+                      }
+                    }
                   },
                   {
                     "name": "UWSGI_PROCESSES",
@@ -348,9 +362,29 @@
                     "scheme": "HTTP"
                   }
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/cwallet.sso",
+                    "name": "odb-credentials",
+                    "subPath": "cwallet.sso"
+                  },
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/ewallet.p12",
+                    "name": "odb-credentials",
+                    "subPath": "ewallet.p12"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "Always"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "odb-credentials",
+                "configMap": {
+                  "name": "odb-wallet"
+                }
               }
             ],
             "restartPolicy": "Always",
