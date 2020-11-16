@@ -23,6 +23,7 @@ The application directory is structured as follows:
 |-- app.sh (Shell script used by the python OpenShift s2i image to run the application)
 |-- Dockerfile (Dockerfile for running the application locally using Docker)
 |-- requirements.txt (Libraries required by the project)
+|-- wallet (Wallet files for creating an encrypted connection to the NRIS database. Not stored in repo.)
 ```
 
 ## Pre-requisites and Installation

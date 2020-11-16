@@ -4064,6 +4064,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       display_order: 60,
     },
   ],
+  noticeOfWorkApplicationDelayOptions: [],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {

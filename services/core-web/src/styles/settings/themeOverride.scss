@@ -57,18 +57,18 @@
 }
 
 .ant-btn-danger {
-  color: $danger-btn-color;
-  background-color: white;
+  background-color: $danger-btn-color;
+  color: white;
   border: 1px solid $danger-btn-color;
   &:hover {
-    background-color: white;
+    background-color: $danger-btn-color-hover;
+    color: white;
     border: 1px solid $danger-btn-color-hover;
-    color: $danger-btn-color-hover;
   }
   &:focus {
-    background-color: white;
+    background-color: $danger-btn-color-hover;
+    color: white;
     border: 1px solid $danger-btn-color-hover;
-    color: $danger-btn-color-hover;
   }
 }
 .ant-btn-link {
@@ -221,20 +221,6 @@
 .ant-result-success .ant-result-icon > .anticon,
 .ant-result-info .ant-result-icon > .anticon {
   color: $primary-color;
-}
-
-// ALERTS
-.ant-alert-info {
-  background-color: $primary-color;
-  border: 1px solid $primary-color;
-}
-
-.ant-alert-info .ant-alert-icon,
-.ant-alert-with-description .ant-alert-message,
-.ant-alert-description,
-.ant-alert-close-icon .anticon-close {
-  color: $pure-white;
-  line-height: 2rem;
 }
 
 .ant-alert-close-icon .anticon-close:hover {

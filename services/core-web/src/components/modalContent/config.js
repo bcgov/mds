@@ -28,6 +28,9 @@ import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
 import AddQuickPartyModal from "./AddQuickPartyModal";
+import NOWProgressModal from "./NOWProgressModal";
+import NOWReasonForDelayModal from "./NOWReasonForDelayModal";
+import NOWDelayModal from "./NOWDelayModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -60,6 +63,9 @@ export const modalConfig = {
   CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
   DELETE_CONDITION_MODAL: DeleteConditionModal,
+  NOW_PROGRESS_MODAL: NOWProgressModal,
+  NOW_REASON_FOR_DELAY_MODAL: NOWReasonForDelayModal,
+  NOW_DELAY_MODAL: NOWDelayModal,
 };
 
 export default modalConfig;
