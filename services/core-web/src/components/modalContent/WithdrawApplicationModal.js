@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Alert } from "antd";
 import WithdrawApplicationForm from "@/components/Forms/noticeOfWork/WithdrawApplicationForm";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -25,7 +24,6 @@ export const WithdrawApplicationModal = (props) => {
         onSubmit={props.onSubmit}
         closeModal={props.closeModal}
         title={props.title}
-        initialValues={{}}
       />
     </div>
   );
