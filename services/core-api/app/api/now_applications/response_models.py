@@ -253,8 +253,8 @@ NOW_APPLICATION_DOCUMENT = api.model(
 
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress', {
-        'start_date': fields.Date,
-        'end_date': fields.Date,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
         'created_by': fields.String,
         'application_progress_status_code': fields.String
     })
@@ -416,7 +416,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
-        'security_not_required': fields.Boolean,
+        'security_not_required':
+        fields.Boolean,
         'last_updated_date':
         DateTime,
         'last_updated_by':
