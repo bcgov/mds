@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Result, Row, Col } from "antd";
+import { Button, Menu, Popconfirm, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -17,7 +17,6 @@ import {
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import {
-  getPermits,
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
@@ -25,7 +24,6 @@ import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
-import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
 import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -54,10 +52,9 @@ const propTypes = {
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   formValues: CustomPropTypes.permitGenObj.isRequired,
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  isAmendment: PropTypes.bool.isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
-  isAmendment: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -74,7 +71,6 @@ const regionHash = {
 
 export class NOWPermitGeneration extends Component {
   state = {
-    isPreDraft: false,
     isDraft: false,
     permitGenObj: {},
     isLoaded: false,
@@ -244,13 +240,7 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.notice_of_work_type_code === "COL";
     if (isNewPermit && !isCoalOrMineral) {
       this.createPermit(false);
-    } else {
-      this.setState({ isPreDraft: true });
     }
-  };
-
-  cancelPreDraft = () => {
-    this.setState({ isPreDraft: false });
   };
 
   menu = () => {
@@ -270,7 +260,7 @@ export class NOWPermitGeneration extends Component {
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
         <h2>{`Draft Permit ${nowType}`}</h2>
-        <NOWProgressActions tab="DFT" />
+        <NOWProgressActions tab="DFT" startDraftPermit={this.startDraftPermit} />
         {this.state.isDraft && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown overlay={this.menu()} placement="bottomLeft">
@@ -331,43 +321,7 @@ export class NOWPermitGeneration extends Component {
         >
           <LoadingWrapper condition={this.state.isLoaded}>
             {!this.state.isDraft ? (
-              <div className="null-screen">
-                {this.state.isPreDraft ? (
-                  <Result
-                    status="success"
-                    title={`${this.props.noticeOfWork.type_of_application}`}
-                    subTitle={
-                      this.props.isAmendment
-                        ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
-                        : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
-                    }
-                    extra={[
-                      <Row>
-                        <Col
-                          lg={{ span: 8, offset: 8 }}
-                          md={{ span: 10, offset: 7 }}
-                          sm={{ span: 12, offset: 6 }}
-                        >
-                          <PreDraftPermitForm
-                            initialValues={{ is_exploration: false }}
-                            cancelPreDraft={this.cancelPreDraft}
-                            permits={this.props.permits}
-                            isAmendment={this.props.isAmendment}
-                            onSubmit={this.startDraftPermit}
-                          />
-                        </Col>
-                      </Row>,
-                    ]}
-                  />
-                ) : (
-                  <>
-                    <NullScreen type="draft-permit" />
-                    {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS}> */}
-                    <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                    {/* </NOWActionWrapper> */}
-                  </>
-                )}
-              </div>
+              <NullScreen type="draft-permit" />
             ) : (
               <GeneratePermitForm
                 initialValues={this.state.permitGenObj}
@@ -390,7 +344,6 @@ const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  permits: getPermits(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
+import { getFormValues } from "redux-form";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
@@ -14,6 +15,7 @@ import {
   createApplicationDelay,
   fetchApplicationDelay,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getPermits } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getNOWProgress,
@@ -23,6 +25,7 @@ import {
   getDelayTypeDropDownOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import * as FORM from "@/constants/forms";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -40,6 +43,7 @@ const propTypes = {
   delayTypeOptions: CustomPropTypes.options.isRequired,
   tab: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
@@ -47,9 +51,10 @@ const propTypes = {
   updateApplicationDelay: PropTypes.func.isRequired,
   createApplicationDelay: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
+  startDraftPermit: PropTypes.func,
 };
 
-const defaultProps = {};
+const defaultProps = { startDraftPermit: () => {} };
 
 export class NOWProgressActions extends Component {
   componentDidMount() {
@@ -69,6 +74,9 @@ export class NOWProgressActions extends Component {
           message
         )
         .then(() => {
+          if (tab === "DFT") {
+            this.props.startDraftPermit();
+          }
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
           );
@@ -130,6 +138,8 @@ export class NOWProgressActions extends Component {
         closeModal: this.props.closeModal,
         trigger,
         handleProgress: this.handleProgress,
+        permits: this.props.permits,
+        isAmendment: this.props.noticeOfWork.type_of_application !== "New Permit",
       },
       content: modalConfig.NOW_PROGRESS_MODAL,
     });
@@ -163,7 +173,6 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
-    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const menu = (
       <Menu>
@@ -245,6 +254,8 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
+  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
