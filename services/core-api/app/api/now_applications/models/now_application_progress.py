@@ -55,7 +55,6 @@ class NOWApplicationProgress(Base, AuditMixin):
         if end_date is not None:
             if isinstance(end_date, str):
                 end_date = dateutil.parser.isoparse(end_date)
-
-            if end_date < self.start_date.replace(tzinfo=None):
+            if end_date < self.start_date:
                 raise AssertionError('end_date cannot be before start_date')
         return end_date
