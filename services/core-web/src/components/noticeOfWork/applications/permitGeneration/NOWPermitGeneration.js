@@ -76,16 +76,11 @@ export class NOWPermitGeneration extends Component {
   state = {
     isPreDraft: false,
     isDraft: false,
-    permittee: {},
     permitGenObj: {},
     isLoaded: false,
   };
 
   componentDidMount() {
-    const permittee = this.props.noticeOfWork.contacts.filter(
-      (contact) => contact.mine_party_appt_type_code_description === "Permittee"
-    )[0];
-    this.setState({ permittee });
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
   }
@@ -143,13 +138,17 @@ export class NOWPermitGeneration extends Component {
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
-    const addressLineOne = permittee.party.address[0].address_line_1
-      ? `${permittee.party.address[0].address_line_1}\n`
+    const addressLineOne =
+      !isEmpty(permittee) && permittee.party.address[0].address_line_1
+        ? `${permittee.party.address[0].address_line_1}\n`
+        : "";
+    const addressLineTwo = !isEmpty(permittee)
+      ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0].sub_division_code ||
+          ""} ${permittee.party.address[0].post_code || ""}`
       : "";
-    const mailingAddress = `${addressLineOne}${permittee.party.address[0].city || ""} ${permittee
-      .party.address[0].sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`;
-    permitGenObject.permittee = permittee.party.name;
-    permitGenObject.permittee_email = permittee.party.email;
+    const mailingAddress = `${addressLineOne}${addressLineTwo}`;
+    permitGenObject.permittee = !isEmpty(permittee) ? permittee.party.name : "";
+    permitGenObject.permittee_email = !isEmpty(permittee) ? permittee.party.email : "";
     permitGenObject.permittee_mailing_address = mailingAddress;
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
@@ -315,75 +314,70 @@ export class NOWPermitGeneration extends Component {
           {this.renderEditModeNav()}
           <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
         </div>
-        {!isEmpty(this.state.permittee) ? (
-          <>
-            <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              <NOWSideMenu
-                route={routes.NOTICE_OF_WORK_APPLICATION}
-                noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                tabSection="draft-permit"
-              />
-            </div>
-            <div
-              className={
-                this.props.fixedTop
-                  ? "view--content with-fixed-top side-menu--content"
-                  : "view--content side-menu--content"
-              }
-            >
-              <LoadingWrapper condition={this.state.isLoaded}>
-                {!this.state.isDraft ? (
-                  <div className="null-screen">
-                    {this.state.isPreDraft ? (
-                      <Result
-                        status="success"
-                        title={`${this.props.noticeOfWork.type_of_application}`}
-                        subTitle={
-                          this.props.isAmendment
-                            ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
-                            : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
-                        }
-                        extra={[
-                          <Row>
-                            <Col
-                              lg={{ span: 8, offset: 8 }}
-                              md={{ span: 10, offset: 7 }}
-                              sm={{ span: 12, offset: 6 }}
-                            >
-                              <PreDraftPermitForm
-                                initialValues={{ is_exploration: false }}
-                                cancelPreDraft={this.cancelPreDraft}
-                                permits={this.props.permits}
-                                isAmendment={this.props.isAmendment}
-                                onSubmit={this.startDraftPermit}
-                              />
-                            </Col>
-                          </Row>,
-                        ]}
-                      />
-                    ) : (
-                      <>
-                        <NullScreen type="draft-permit" />
-                        {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS}> */}
-                        <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        {/* </NOWActionWrapper> */}
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <GeneratePermitForm
-                    initialValues={this.state.permitGenObj}
-                    isAmendment={this.props.isAmendment}
-                    noticeOfWork={this.props.noticeOfWork}
-                    isViewMode={this.props.isViewMode}
+
+        <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <NOWSideMenu
+            route={routes.NOTICE_OF_WORK_APPLICATION}
+            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+            tabSection="draft-permit"
+          />
+        </div>
+        <div
+          className={
+            this.props.fixedTop
+              ? "view--content with-fixed-top side-menu--content"
+              : "view--content side-menu--content"
+          }
+        >
+          <LoadingWrapper condition={this.state.isLoaded}>
+            {!this.state.isDraft ? (
+              <div className="null-screen">
+                {this.state.isPreDraft ? (
+                  <Result
+                    status="success"
+                    title={`${this.props.noticeOfWork.type_of_application}`}
+                    subTitle={
+                      this.props.isAmendment
+                        ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
+                        : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
+                    }
+                    extra={[
+                      <Row>
+                        <Col
+                          lg={{ span: 8, offset: 8 }}
+                          md={{ span: 10, offset: 7 }}
+                          sm={{ span: 12, offset: 6 }}
+                        >
+                          <PreDraftPermitForm
+                            initialValues={{ is_exploration: false }}
+                            cancelPreDraft={this.cancelPreDraft}
+                            permits={this.props.permits}
+                            isAmendment={this.props.isAmendment}
+                            onSubmit={this.startDraftPermit}
+                          />
+                        </Col>
+                      </Row>,
+                    ]}
                   />
+                ) : (
+                  <>
+                    <NullScreen type="draft-permit" />
+                    {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS}> */}
+                    <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
+                    {/* </NOWActionWrapper> */}
+                  </>
                 )}
-              </LoadingWrapper>
-            </div>
-          </>
-        ) : (
-          <NullScreen type="no-permittee" />
-        )}
+              </div>
+            ) : (
+              <GeneratePermitForm
+                initialValues={this.state.permitGenObj}
+                isAmendment={this.props.isAmendment}
+                noticeOfWork={this.props.noticeOfWork}
+                isViewMode={this.props.isViewMode}
+              />
+            )}
+          </LoadingWrapper>
+        </div>
       </div>
     );
   }
