@@ -30,8 +30,9 @@ class NOWApplicationProgressResource(Resource, UserMixin):
             )
         progress_status_code = application_progress_status_code.upper()
 
-        existing_now_progress = next((p for p in identity.now_application.application_progress
-                                      if p.progress_status_code == progress_status_code), None)
+        existing_now_progress = next(
+            (p for p in identity.now_application.application_progress
+             if p.application_progress_status_code == progress_status_code), None)
 
         now_progress = None
         if existing_now_progress:
