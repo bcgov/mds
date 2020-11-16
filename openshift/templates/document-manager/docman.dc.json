@@ -735,8 +735,8 @@
                     }
                   },
                   {
-                    "name": "CELERY_REST_URL",
-                    "value": "${NAME}-worker${SUFFIX}"
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
                   },
                   {
                     "name": "S3_PREFIX",
