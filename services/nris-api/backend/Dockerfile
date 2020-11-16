@@ -35,10 +35,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY wallet /opt/oracle/instantclient/network/wallet
 COPY sqlnet.ora /opt/oracle/instantclient/network/admin
 
-# Create "test connection" script
-COPY test_connection.py /app
-RUN chmod 777 /app/test_connection.py
-
 # Run the server
 EXPOSE 5500
 CMD ["flask","run"]
