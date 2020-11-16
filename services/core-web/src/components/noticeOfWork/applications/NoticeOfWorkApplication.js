@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -59,6 +58,8 @@ import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { EDIT } from "@/constants/assets";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -576,10 +577,24 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
-        <h2>Application</h2>
+        <h2>
+          Application
+          <CoreTooltip
+            title="This page is for reviewing and editing the information and documents sent in
+                    with a Notice of Work. All information provided by the proponent, and any
+                    additional files requested during the application review live here. Use the
+                    Actions button to update information about this application."
+          />
+        </h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
           <>
             <NOWProgressActions tab="REV" />
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Button type="primary" onClick={this.toggleEditMode}>
+                <img alt="pencil" className="padding-small--right" src={EDIT} />
+                Edit
+              </Button>
+            </NOWActionWrapper>
             <Dropdown
               overlay={this.menu(true)}
               placement="bottomLeft"
@@ -587,7 +602,7 @@ export class NoticeOfWorkApplication extends Component {
               visible={this.state.menuVisible}
             >
               <Button type="secondary" className="full-mobile">
-                Actions
+                Download
                 <DownOutlined />
               </Button>
             </Dropdown>
@@ -647,44 +662,39 @@ export class NoticeOfWorkApplication extends Component {
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
             <Menu.Item key="open-original-application-form" onClick={this.showApplicationForm}>
-              Open Original Application Form
+              Original Application
             </Menu.Item>
           )}
-        {isReview && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item key="edit" onClick={this.toggleEditMode} className="custom-menu-item">
-              Edit
-            </Menu.Item>
-          </NOWActionWrapper>
-        )}
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Menu.Item
-            key="transfer-to-a-different-mine"
-            className="custom-menu-item"
-            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-          >
-            Transfer to a Different Mine
-          </Menu.Item>
-        </NOWActionWrapper>
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Menu.Item
-            key="edit-application-lat-long"
-            className="custom-menu-item"
-            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-          >
-            Edit Application Lat/Long
-          </Menu.Item>
-        </NOWActionWrapper>
         {!isReview && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item
-              key="edit-application-status"
-              className="custom-menu-item"
-              onClick={() => this.openUpdateStatusModal()}
-            >
-              Edit Application Status
-            </Menu.Item>
-          </NOWActionWrapper>
+          <>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Menu.Item
+                key="transfer-to-a-different-mine"
+                className="custom-menu-item"
+                onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+              >
+                Transfer to a Different Mine
+              </Menu.Item>
+            </NOWActionWrapper>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Menu.Item
+                key="edit-application-lat-long"
+                className="custom-menu-item"
+                onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+              >
+                Edit Application Lat/Long
+              </Menu.Item>
+            </NOWActionWrapper>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Menu.Item
+                key="edit-application-status"
+                className="custom-menu-item"
+                onClick={() => this.openUpdateStatusModal()}
+              >
+                Edit Application Status
+              </Menu.Item>
+            </NOWActionWrapper>
+          </>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
@@ -705,21 +715,23 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
-        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
-          {Object.values(this.props.generatableApplicationDocuments)
-            .filter(
-              ({ now_application_document_type_code }) =>
-                now_application_document_type_code === "NTR"
-            )
-            .map((document) => (
-              <Menu.Item
-                key={document.now_application_document_type_code}
-                onClick={this.handleExportDocument}
-              >
-                {document.description}
-              </Menu.Item>
-            ))}
-        </Menu.SubMenu>
+        <>
+          {isReview &&
+            Object.values(this.props.generatableApplicationDocuments)
+              .filter(
+                ({ now_application_document_type_code }) =>
+                  now_application_document_type_code === "NTR"
+              )
+              .map((document) => (
+                <Menu.Item
+                  className="custom-menu-item"
+                  key={document.now_application_document_type_code}
+                  onClick={this.handleExportDocument}
+                >
+                  Edited Application
+                </Menu.Item>
+              ))}
+        </>
       </Menu>
     );
   };
@@ -811,15 +823,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!isImported}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page is for reviewing and editing the information and documents sent in
-                    with a Notice of Work. All information provided by the proponent, and any
-                    additional files requested during the application review live here. Use the
-                    Actions button to update information about this application.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
@@ -961,14 +964,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains all the information that will appear in the permit when it is
-                    issued. The Conditions sections are pre-populated with conditions based on the
-                    permit type. You can add or remove any condition.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   {this.renderPermitGeneration()}
                 </LoadingWrapper>
@@ -981,10 +976,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">Process the permit after resolving all issues.</p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <ProcessPermit
                     mineGuid={this.props.noticeOfWork.mine_guid}
@@ -1001,17 +992,16 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains information about securities and any internal files relevant
-                    to processing the application. It is also where the permit is issued.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex block-mobile padding-md">
-                      <h2>Administrative</h2>
+                      <h2>
+                        Administrative
+                        <CoreTooltip
+                          title="This page contains information about securities and any internal files relevant
+                    to processing the application. It is also where the permit is issued."
+                        />
+                      </h2>
                       <NOWProgressActions tab="ADMIN" />
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown

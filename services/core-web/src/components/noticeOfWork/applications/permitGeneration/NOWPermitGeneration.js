@@ -34,6 +34,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -262,7 +263,14 @@ export class NOWPermitGeneration extends Component {
       : "";
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
-        <h2>{`Draft Permit ${nowType}`}</h2>
+        <h2>
+          {`Draft Permit ${nowType}`}
+          <CoreTooltip
+            title="This page contains all the information that will appear in the permit when it is
+                    issued. The Conditions sections are pre-populated with conditions based on the
+                    permit type. You can add or remove any condition."
+          />
+        </h2>
         <NOWProgressActions tab="DFT" startDraftPermit={this.startDraftPermit} />
         {this.state.isDraft && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
