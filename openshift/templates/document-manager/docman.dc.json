@@ -444,6 +444,10 @@
                   {
                     "name": "TUSD_URL",
                     "value": "${TUSD_URL}"
+                  },
+                  {
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
                   }
                 ],
                 "resources": {

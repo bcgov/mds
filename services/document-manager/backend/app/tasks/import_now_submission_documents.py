@@ -125,6 +125,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 db.session.commit()
 
                 # Associate the submission document record with the document record
+                message = None
                 try:
                     is_associated, message = associate_now_submissions_document_with_document(
                         guid, import_job, import_doc, import_now_submission_documents_job_id)
@@ -135,6 +136,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
+                    raise Exception(message)
 
                 success_imports.append({
                     import_doc.submission_document_file_name,

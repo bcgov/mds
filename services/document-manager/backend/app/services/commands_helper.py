@@ -131,11 +131,12 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
             'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
         import_job.celery_task_id = response['task-id']
         import_job.save()
+
+        # Create the response message
+        message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {response["task-id"]} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
     except Exception as e:
         message = f'Failed to add an Import Notice of Work Submission Documents job to the task queue: {str(e)}'
 
-    # Create the response message
-    message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {response["task-id"]} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
     return message
 
 
