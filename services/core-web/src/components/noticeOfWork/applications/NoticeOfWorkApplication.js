@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -54,6 +55,7 @@ import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applicat
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
@@ -832,6 +834,7 @@ export class NoticeOfWorkApplication extends Component {
                         tabSection="REV"
                         isEditMode={!this.state.isViewMode}
                       />
+                      {/* <NOWProgressStatus /> */}
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu

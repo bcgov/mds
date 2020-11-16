@@ -101,7 +101,8 @@ export class NOWProgressActions extends Component {
   handleStartDelay = (values) => {
     const payload = {
       ...values,
-      start_date: new Date(this.props.noticeOfWork.last_updated_date).toISOString(),
+      start_date: new Date().toISOString(),
+      // start_date: new Date(this.props.noticeOfWork.last_updated_date).toISOString(),
     };
     this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)

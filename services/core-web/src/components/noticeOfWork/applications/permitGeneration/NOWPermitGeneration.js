@@ -139,9 +139,10 @@ export class NOWPermitGeneration extends Component {
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
-    const addressLineOne = permittee.party.address[0].address_line_1
-      ? `${permittee.party.address[0].address_line_1}\n`
-      : "";
+    const addressLineOne =
+      !isEmpty(permittee) && permittee.party.address[0].address_line_1
+        ? `${permittee.party.address[0].address_line_1}\n`
+        : "";
     const addressLineTwo = !isEmpty(permittee)
       ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0].sub_division_code ||
           ""} ${permittee.party.address[0].post_code || ""}`
