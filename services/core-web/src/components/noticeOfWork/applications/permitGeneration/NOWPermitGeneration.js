@@ -32,6 +32,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -269,8 +270,9 @@ export class NOWPermitGeneration extends Component {
       ? `(${this.props.noticeOfWork.type_of_application})`
       : "";
     return this.props.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md between">
+      <div className="inline-flex block-mobile padding-md">
         <h2>{`Draft Permit ${nowType}`}</h2>
+        <NOWProgressActions tab="DFT" />
         {this.state.isDraft && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown overlay={this.menu()} placement="bottomLeft">

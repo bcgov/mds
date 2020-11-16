@@ -149,6 +149,13 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
+    # Contacts
+    contacts = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+    )
 
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
 

@@ -11,6 +11,7 @@ export const {
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
+  getApplicationDelays,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(
@@ -41,3 +42,19 @@ export const getNOWReclamationSummary = createSelector(
     return reclamationList;
   }
 );
+
+export const getNOWProgress = createSelector([getNoticeOfWork], (noticeOfWork) => {
+  let progress = {};
+  if (noticeOfWork.application_progress.length > 0) {
+    progress = noticeOfWork.application_progress.reduce(
+      (map, obj) => ({ [obj.application_progress_status_code]: { ...obj }, ...map }),
+      {}
+    );
+  }
+  return progress;
+});
+
+export const getApplicationDelay = createSelector([getApplicationDelays], (delays) => {
+  const currentDelay = delays.filter((delay) => delay.end_date === null)[0];
+  return currentDelay;
+});

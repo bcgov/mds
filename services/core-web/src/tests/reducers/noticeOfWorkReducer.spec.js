@@ -13,6 +13,7 @@ const baseExpectedValue = {
   originalNoticeOfWork: {},
   importNowSubmissionDocumentsJob: {},
   noticeOfWorkReviews: [],
+  applicationDelays: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
