@@ -22,6 +22,12 @@ class NOWApplicationProgress(Base, AuditMixin):
     created_by = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
+    last_updated_by = db.Column(
+        db.String(60),
+        nullable=False,
+        default=User().get_user_username,
+        onupdate=User().get_user_username)
+
     def __repr__(self):
         return '<NOWApplicationProgress %r>' % self.application_progress_id
 

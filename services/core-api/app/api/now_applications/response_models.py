@@ -256,7 +256,8 @@ NOW_APPLICATION_PROGRESS = api.model(
         'start_date': fields.DateTime,
         'end_date': fields.DateTime,
         'created_by': fields.String,
-        'application_progress_status_code': fields.String
+        'application_progress_status_code': fields.String,
+        'last_updated_by': fields.String
     })
 
 NOW_APPLICATION_DELAY = api.model(
