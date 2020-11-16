@@ -154,6 +154,7 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 -- Call the function.
+-- NOTE: Manually check/add the records to delete here before running this script.
 SELECT delete_mine_permit_xref('MX-1-113', '0100086');
 SELECT delete_mine_permit_xref('MX-1-134', '0100138');
 
