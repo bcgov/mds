@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Result, Row, Col } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Button, Popconfirm } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
@@ -26,7 +26,7 @@ import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
-import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
+import { EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -247,16 +247,6 @@ export class NOWPermitGeneration extends Component {
     }
   };
 
-  menu = () => {
-    return (
-      <Menu>
-        <Menu.Item key="edit" onClick={this.props.toggleEditMode}>
-          Edit
-        </Menu.Item>
-      </Menu>
-    );
-  };
-
   renderEditModeNav = () => {
     const nowType = this.props.noticeOfWork.type_of_application
       ? `(${this.props.noticeOfWork.type_of_application})`
@@ -273,14 +263,18 @@ export class NOWPermitGeneration extends Component {
         </h2>
         <NOWProgressActions tab="DFT" startDraftPermit={this.startDraftPermit} />
         {this.state.isDraft && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Dropdown overlay={this.menu()} placement="bottomLeft">
-              <Button type="secondary" className="full-mobile">
-                Actions
-                <DownOutlined />
+          <>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Button type="secondary" onClick={this.props.toggleEditMode}>
+                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                Edit
               </Button>
-            </Dropdown>
-          </NOWActionWrapper>
+            </NOWActionWrapper>
+            <Button className="full-mobile" type="secondary" onClick={this.handlePermitGenSubmit}>
+              <DownloadOutlined className="padding-small--right icon-sm" />
+              Download Draft
+            </Button>
+          </>
         )}
       </div>
     ) : (
@@ -297,9 +291,6 @@ export class NOWPermitGeneration extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
-            Preview
-          </Button>
           <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
             Save
           </Button>

@@ -112,7 +112,7 @@ export class NOWStatusIndicator extends Component {
           message: "Complete",
         });
       } else {
-        this.setState({ bannerColor: "transparent", badgeColor: "yellow" });
+        this.setState({ bannerColor: "transparent", badgeColor: "blue" });
       }
     } else {
       this.setState({

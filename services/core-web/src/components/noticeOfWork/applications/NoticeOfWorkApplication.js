@@ -59,7 +59,7 @@ import AssignLeadInspector from "@/components/noticeOfWork/applications/verifica
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { EDIT } from "@/constants/assets";
+import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -590,8 +590,8 @@ export class NoticeOfWorkApplication extends Component {
           <>
             <NOWProgressActions tab="REV" />
             <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Button type="primary" onClick={this.toggleEditMode}>
-                <img alt="pencil" className="padding-small--right" src={EDIT} />
+              <Button type="secondary" onClick={this.toggleEditMode}>
+                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                 Edit
               </Button>
             </NOWActionWrapper>
