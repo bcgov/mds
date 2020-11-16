@@ -556,7 +556,7 @@
                     "protocol": "TCP"
                   }
                 ],
-                "command": ["/opt/app-root/celery.sh"],
+                "command": ["/opt/app-root/src/celery.sh"],
                 "env": [
                   {
                     "name": "DB_USER",
