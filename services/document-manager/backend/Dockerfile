@@ -15,6 +15,6 @@ COPY . .
 # Run the server
 EXPOSE 5001
 
-RUN mkdir -p /var/log/celery /var/run/celery
+RUN mkdir -p /tmp/celery
 
 ENTRYPOINT [ "./init.sh" ]
