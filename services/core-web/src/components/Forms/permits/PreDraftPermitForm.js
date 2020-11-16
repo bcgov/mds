@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
@@ -28,7 +27,6 @@ export const PreDraftPermitForm = (props) => {
                 <Field
                   id="permit_guid"
                   name="permit_guid"
-                  label="Permit *"
                   placeholder="Select a Permit"
                   doNotPinDropdown
                   component={renderConfig.SELECT}

@@ -50,13 +50,13 @@ export class NOWActionWrapper extends Component {
     const tabInProgress =
       !isEmpty(this.props.progress[currentTabCode]) &&
       !this.props.progress[currentTabCode].end_date;
-    const shouldDisableTab = currentTabCode !== undefined && tabInProgress;
+    const shouldDisableTab = currentTabCode !== undefined && !tabInProgress;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    const disabled = isApplicationDelayed || isApplicationComplete || !shouldDisableTab;
+    const disabled = isApplicationDelayed || isApplicationComplete || shouldDisableTab;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -71,9 +71,6 @@ NOWActionWrapper.propTypes = propTypes;
 NOWActionWrapper.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  // can disable all actions based off application status === rejected || withdrawn
-  // can disable all based if permit is issued
-  // can disable all based off client delay
   progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),

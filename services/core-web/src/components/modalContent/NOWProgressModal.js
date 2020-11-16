@@ -47,8 +47,8 @@ export const NOWProgressModal = (props) => (
         {props.tabCode === "DFT" && (
           <>
             {props.isAmendment
-              ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
-              : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`}
+              ? `Please select the permit that this amendment is for.*`
+              : `Please check the box below if this is an exploratory permit.*`}
             <PreDraftPermitForm
               initialValues={{ is_exploration: false }}
               permits={props.permits}

@@ -74,9 +74,6 @@ export class NOWProgressActions extends Component {
           message
         )
         .then(() => {
-          if (tab === "DFT") {
-            this.props.startDraftPermit();
-          }
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
           );
@@ -90,6 +87,9 @@ export class NOWProgressActions extends Component {
           message
         )
         .then(() => {
+          if (tab === "DFT" && trigger === "Start") {
+            this.props.startDraftPermit();
+          }
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
           );
@@ -101,8 +101,7 @@ export class NOWProgressActions extends Component {
   handleStartDelay = (values) => {
     const payload = {
       ...values,
-      // start_date: new Date(this.props.noticeOfWork.last_updated_date),
-      start_date: new Date().toISOString(),
+      start_date: new Date(this.props.noticeOfWork.last_updated_date).toISOString(),
     };
     this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
@@ -173,7 +172,6 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
-    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
