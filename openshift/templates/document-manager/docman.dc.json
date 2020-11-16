@@ -834,7 +834,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${CELERY_SERVICE}${SUFFIX}",
+        "name": "${NAME}-worker${SUFFIX}",
         "creationTimestamp": null,
         "labels": null,
         "annotations": {
@@ -851,7 +851,7 @@
           }
         ],
         "selector": {
-          "name": "${NAME}${SUFFIX}"
+          "name": "${NAME}-worker${SUFFIX}"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
