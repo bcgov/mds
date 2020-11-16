@@ -535,7 +535,7 @@
         "replicas": "${{WORKER_REPLICA_MIN}}",
         "test": false,
         "selector": {
-          "name": "${NAME}${SUFFIX}"
+          "name": "${NAME}-worker${SUFFIX}"
         },
         "template": {
           "metadata": {
