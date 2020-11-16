@@ -434,6 +434,10 @@
                     }
                   },
                   {
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  },
+                  {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
                   },
@@ -737,6 +741,51 @@
                   {
                     "name": "CELERY_REST_API_URL",
                     "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  },
+                  {
+                    "name": "NROS_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-vfcbc-client-service",
+                        "key": "service-client"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-vfcbc-client-service",
+                        "key": "password"
+                      }
+                    }
                   },
                   {
                     "name": "S3_PREFIX",
