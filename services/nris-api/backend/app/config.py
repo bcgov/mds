@@ -34,19 +34,6 @@ class Config(object):
     NRIS_DB_HOSTNAME = os.environ.get('NRIS_DB_HOSTNAME', 'localhost')
     NRIS_SERVER_CERT_DN = os.environ.get('NRIS_SERVER_CERT_DN', 'localhost')
 
-    # Elastic config
-    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
-    ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
-    ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
-    ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', True)
-    ELASTIC_APM = {
-        'SERVICE_NAME': ELASTIC_SERVICE_NAME,
-        'SECRET_TOKEN': ELASTIC_SECRET_TOKEN,
-        'SERVER_URL': ELASTIC_SERVER_URL,
-        'DEBUG': ELASTIC_DEBUG
-    }
-
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
