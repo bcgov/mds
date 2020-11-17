@@ -134,6 +134,9 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
 
                 # Associate the submission document record with the document record
                 try:
+                    logger.info(
+                        f'{guid} {import_job} {import_doc} {import_now_submission_documents_job_id}'
+                    )
                     associate_now_submissions_document_with_document(
                         guid, import_job, import_doc, import_now_submission_documents_job_id)
                 except Exception as e:
@@ -213,7 +216,12 @@ def associate_now_submissions_document_with_document(guid,
                                                      import_doc,
                                                      import_now_submission_documents_job_id,
                                                      attempt=0):
+    logger = get_task_logger(str(import_now_submission_documents_job_id))
     authorization_token = get_core_authorization_token(import_now_submission_documents_job_id)
+
+    logger.info(
+        f'in associate_now_submissions_document_with_document ur:l {Config.CORE_API_URL}/now-applications/{import_job.now_application_guid}/document-identity'
+    )
 
     data = {
         "document_manager_document_guid": str(guid),
@@ -233,18 +241,21 @@ def associate_now_submissions_document_with_document(guid,
         },
         data=json.dumps(data))
 
+    logger.info(resp)
+
     if resp.status_code != requests.codes.created and resp.status_code != requests.codes.conflict:
         if attempt < MAX_ATTEMPTS:
             attempt += 1
+            logger.info(f'attempt {attempt}')
             associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)
         else:
+            logger.info(f'error in associate_now_submissions_document_with_document')
             raise Exception(
                 f'Request to associate submission document with document record failed! Error {resp.status_code}: {resp.content}'
             )
 
 
 def get_core_authorization_token(import_now_submission_documents_job_id, attempt=0):
-    logger = get_task_logger(str(import_now_submission_documents_job_id))
 
     CORE_API_AUTHORIZATION_TOKEN = 'core_api_authorization_token'
     token = cache.get(CORE_API_AUTHORIZATION_TOKEN)
