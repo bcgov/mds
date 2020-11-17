@@ -247,7 +247,8 @@ def associate_now_submissions_document_with_document(guid,
         if attempt < MAX_ATTEMPTS:
             attempt += 1
             logger.info(f'attempt {attempt}')
-            associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)
+            associate_now_submissions_document_with_document(
+                guid, import_job, import_doc, import_now_submission_documents_job_id, attempt)
         else:
             logger.info(f'error in associate_now_submissions_document_with_document')
             raise Exception(
