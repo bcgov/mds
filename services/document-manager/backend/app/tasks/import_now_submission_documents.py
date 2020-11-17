@@ -16,14 +16,15 @@ from app.constants import TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTE
 from app.services.nros_download_service import NROSDownloadService
 from app.services.vfcbc_download_service import VFCBCDownloadService
 
-# TODO: Use real delays before publishing.
 MAX_ATTEMPTS = 5
-RETRY_DELAYS = [15, 15, 15, 15]
-# RETRY_DELAYS = [
-#     TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES,
-#     TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS,
-#     TIMEOUT_12_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS
-# ]
+RETRY_DELAYS = [
+    TIMEOUT_1_MINUTE, TIMEOUT_5_MINUTES, TIMEOUT_10_MINUTES, TIMEOUT_30_MINUTES, TIMEOUT_60_MINUTES,
+    TIMEOUT_60_MINUTES, TIMEOUT_60_MINUTES, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS, TIMEOUT_12_HOURS,
+    TIMEOUT_24_HOURS, TIMEOUT_24_HOURS, TIMEOUT_24_HOURS
+]
+
+# for development only
+# RETRY_DELAYS = [15, 15, 15, 15]
 
 
 def get_originating_system(import_now_submission_document):
@@ -134,9 +135,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
 
                 # Associate the submission document record with the document record
                 try:
-                    logger.info(
-                        f'{guid} {import_job} {import_doc} {import_now_submission_documents_job_id}'
-                    )
                     associate_now_submissions_document_with_document(
                         guid, import_job, import_doc, import_now_submission_documents_job_id)
                 except Exception as e:
@@ -144,10 +142,6 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
-                    # TODO remove this
-                    logger.error('Error to associate file')
-                    logger.error(e.args[0])
-                    logger.error(repr(e))
                     raise e
 
                 success_imports.append({
@@ -161,7 +155,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             except Exception as e:
                 import_doc.error = str(e)
                 import_doc.save()
-                logger.error(f'{doc_prefix} Import ERROR\n{e}')
+                logger.error(f'{doc_prefix} Import ERROR\n{repr(e)}')
                 errors.append({'exception': str(e), 'document': import_doc.task_json()})
 
         # Determine the result of the import
@@ -216,13 +210,7 @@ def associate_now_submissions_document_with_document(guid,
                                                      import_doc,
                                                      import_now_submission_documents_job_id,
                                                      attempt=0):
-    logger = get_task_logger(str(import_now_submission_documents_job_id))
     authorization_token = get_core_authorization_token(import_now_submission_documents_job_id)
-
-    logger.info(
-        f'in associate_now_submissions_document_with_document ur:l {Config.CORE_API_URL}/now-applications/{import_job.now_application_guid}/document-identity'
-    )
-
     data = {
         "document_manager_document_guid": str(guid),
         "messageid": import_doc.submission_document_message_id,
@@ -241,16 +229,12 @@ def associate_now_submissions_document_with_document(guid,
         },
         data=json.dumps(data))
 
-    logger.info(resp)
-
     if resp.status_code != requests.codes.created and resp.status_code != requests.codes.conflict:
         if attempt < MAX_ATTEMPTS:
             attempt += 1
-            logger.info(f'attempt {attempt}')
             associate_now_submissions_document_with_document(
                 guid, import_job, import_doc, import_now_submission_documents_job_id, attempt)
         else:
-            logger.info(f'error in associate_now_submissions_document_with_document')
             raise Exception(
                 f'Request to associate submission document with document record failed! Error {resp.status_code}: {resp.content}'
             )
