@@ -195,7 +195,6 @@ class NOWApplication(Base, AuditMixin):
         super(NOWApplication, self).save(commit)
 
     def get_filtered_submissions_document(now_application):
-        # def filtered_submission_documents(self):
         docs = []
 
         for doc in now_application.imported_submission_documents:
