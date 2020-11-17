@@ -1,4 +1,4 @@
-from app.nris.etl.nris_etl import run_nris_etl
+from app.nris.cli_jobs.nris_jobs import run_nris_etl
 from app import create_app
 
 app = create_app()
