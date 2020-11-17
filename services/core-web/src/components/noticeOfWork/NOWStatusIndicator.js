@@ -112,13 +112,13 @@ export class NOWStatusIndicator extends Component {
           message: "Complete",
         });
       } else {
-        this.setState({ bannerColor: "transparent", badgeColor: "blue" });
+        this.setState({ bannerColor: "transparent", badgeColor: "blue", message: "In Progress" });
       }
     } else {
       this.setState({
         bannerColor: "transparent",
-        badgeColor: "",
-        message: "",
+        badgeColor: "grey",
+        message: "Not Started",
       });
     }
   };
