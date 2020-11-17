@@ -117,6 +117,7 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
         now_application_identity = NOWApplicationIdentity.query.filter_by(
             messageid=message_id).one_or_none()
         if not now_application_identity:
+            current_app.logger.error('Notice of Work identity not found')
             raise NotFound('Notice of Work identity not found')
 
         NOWApplicationDocumentIdentityXref.create(now_application_identity.mine_guid,

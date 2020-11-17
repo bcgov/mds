@@ -136,6 +136,8 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
+                    if not message:
+                        message = str(e)
                     raise Exception(message)
 
                 success_imports.append({
