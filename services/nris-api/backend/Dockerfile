@@ -32,8 +32,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Oracle config files
-COPY cwallet.sso /opt/oracle/instantclient/network/wallet
-COPY sqlnet.ora /opt/oracle/instantclient/network/admin
+RUN mkdir -p /opt/app-root/src/wallet
+COPY cwallet.sso /opt/app-root/src/wallet
+COPY sqlnet.ora /opt/app-root/src/wallet
 
 # Run the server
 EXPOSE 5500
