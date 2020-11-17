@@ -174,11 +174,31 @@ class NOWApplication(Base, AuditMixin):
             if contact.mine_party_appt_type_code == 'PMT'
         ][0]
 
-    @hybrid_property
-    def filtered_submission_documents(self):
+    @classmethod
+    def find_by_application_id(cls, now_application_id):
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
+
+    @classmethod
+    def find_by_application_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
+
+    @classmethod
+    def validate_guid(cls, guid, msg='Invalid guid.'):
+        try:
+            uuid.UUID(str(guid), version=4)
+        except ValueError:
+            raise AssertionError(msg)
+
+    def save(self, commit=True):
+        self.last_updated_by = User().get_user_username()
+        self.last_updated_date = datetime.utcnow()
+        super(NOWApplication, self).save(commit)
+
+    def get_filtered_submissions_document(now_application):
+        # def filtered_submission_documents(self):
         docs = []
 
-        for doc in self.imported_submission_documents:
+        for doc in now_application.imported_submission_documents:
             docs.append({
                 'messageid':
                 doc.messageid,
@@ -202,12 +222,12 @@ class NOWApplication(Base, AuditMixin):
                 doc.document_manager_guid
             })
 
-        for doc in self.submission_documents:
+        for doc in now_application.submission_documents:
             imported = any(
                 (imported_doc.messageid == doc.messageid and imported_doc.filename == doc.filename
                  and imported_doc.documenturl == doc.documenturl
                  and imported_doc.documenttype == doc.documenttype
-                 for imported_doc in self.imported_submission_documents))
+                 for imported_doc in now_application.imported_submission_documents))
             if imported:
                 continue
             else:
@@ -220,28 +240,8 @@ class NOWApplication(Base, AuditMixin):
                     'description': doc.description,
                     'is_final_package': False,
                     'filename': doc.filename,
-                    'now_application_id': self.now_application_id,
+                    'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None
                 })
 
         return docs
-
-    @classmethod
-    def find_by_application_id(cls, now_application_id):
-        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
-
-    @classmethod
-    def find_by_application_guid(cls, now_application_guid):
-        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
-
-    @classmethod
-    def validate_guid(cls, guid, msg='Invalid guid.'):
-        try:
-            uuid.UUID(str(guid), version=4)
-        except ValueError:
-            raise AssertionError(msg)
-
-    def save(self, commit=True):
-        self.last_updated_by = User().get_user_username()
-        self.last_updated_date = datetime.utcnow()
-        super(NOWApplication, self).save(commit)

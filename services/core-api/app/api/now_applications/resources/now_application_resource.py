@@ -39,10 +39,15 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if now_application_identity.now_application_id and not original:
             application = now_application_identity.now_application
+
             application.imported_to_core = True
         else:
             application = transmogrify_now(now_application_identity, include_contacts=original)
+
             application.imported_to_core = False
+
+        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_document(
+            now_application=application)
 
         return application
 

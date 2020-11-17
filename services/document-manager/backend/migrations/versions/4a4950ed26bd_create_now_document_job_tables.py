@@ -27,10 +27,10 @@ def upgrade():
     op.create_table(
         'import_now_submission_documents_job',
         sa.Column('import_now_submission_documents_job_id', sa.Integer(), nullable=False),
-        sa.Column('start_timestamp', sa.DateTime(), nullable=True),
-        sa.Column('end_timestamp', sa.DateTime(), nullable=True),
-        sa.Column('create_timestamp', sa.DateTime(), nullable=True),
-        sa.Column('complete_timestamp', sa.DateTime(), nullable=True),
+        sa.Column('start_timestamp', sa.DateTime(timezone=True), nullable=True),
+        sa.Column('end_timestamp', sa.DateTime(timezone=True), nullable=True),
+        sa.Column('create_timestamp', sa.DateTime(timezone=True), nullable=True),
+        sa.Column('complete_timestamp', sa.DateTime(timezone=True), nullable=True),
         sa.Column('attempt', sa.Integer(), server_default='0', nullable=False),
         sa.Column(
             'import_now_submission_documents_job_status_code',
