@@ -834,7 +834,7 @@ export class NoticeOfWorkApplication extends Component {
                         tabSection="REV"
                         isEditMode={!this.state.isViewMode}
                       />
-                      {/* <NOWProgressStatus /> */}
+                      <NOWProgressStatus tab="REV" bottom={"120px"} />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -899,6 +899,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Referral</h2>
                       <NOWProgressActions tab="REF" />
                     </div>
+                    <NOWProgressStatus tab="REF" />
                     <NOWStatusIndicator type="banner" tabSection="REF" />
                   </div>
                   <div className="page__content">
@@ -924,6 +925,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Consultation</h2>
                       <NOWProgressActions tab="CON" />
                     </div>
+                    <NOWProgressStatus tab="CON" />
                     <NOWStatusIndicator type="banner" tabSection="CON" />
                   </div>
                   <div className="page__content">
@@ -948,6 +950,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Public Comment</h2>
                       <NOWProgressActions tab="PUB" />
                     </div>
+                    <NOWProgressStatus tab="PUB" />
                     <NOWStatusIndicator type="banner" tabSection="PUB" />
                   </div>
                   <div className="page__content">

@@ -35,6 +35,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -307,6 +308,7 @@ export class NOWPermitGeneration extends Component {
           {this.renderEditModeNav()}
           <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
         </div>
+        <NOWProgressStatus tab="DFT" />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu
             route={routes.NOTICE_OF_WORK_APPLICATION}
