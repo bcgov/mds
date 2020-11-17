@@ -143,6 +143,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     db.session.commit()
                     # TODO remove this
                     logger.error('Error to associate file')
+                    logger.error(e.args[0])
                     logger.error(repr(e))
                     raise e
 
