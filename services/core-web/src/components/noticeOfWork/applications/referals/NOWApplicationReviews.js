@@ -65,13 +65,6 @@ const ReviewerLabels = {
 const ApplicationReview = (props) => (
   <div className="padding-large--bottom">
     <ScrollContentWrapper id={props.reviewType.label} title={props.reviewType.label}>
-      {!props.readyForReview && <Badge status="default" text="Not started" />}
-      {props.readyForReview && !props.completeDate && (
-        <Badge status="processing" text="In progress" />
-      )}
-      {props.readyForReview && props.completeDate && (
-        <Badge status="success" text={`Completed on ${formatDate(props.completeDate)}`} />
-      )}
       <NOWApplicationReviewsTable
         isLoaded={props.isLoaded}
         noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
@@ -84,21 +77,6 @@ const ApplicationReview = (props) => (
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
       />
-      {props.readyForReview && !props.completeDate && (
-        <div className="inline-flex flex-end">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Popconfirm
-              placement="topRight"
-              title={`Are you sure you want to complete ${props.reviewType.label}?`}
-              onConfirm={(event) => props.completeHandler(event, props.reviewType.value)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
-            </Popconfirm>
-          </NOWActionWrapper>
-        </div>
-      )}
     </ScrollContentWrapper>
   </div>
 );
@@ -274,13 +252,17 @@ export class NOWApplicationReviews extends Component {
             currentFile: 0,
             totalFiles: 1,
           });
-          notification.success({
-            message: "Cancelled file downloads.",
-            duration: 10,
-          });
-          return;
+          this.downloadDocument(url);
+          // eslint-disable-next-line
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
-        currentFile += 1;
+        // dispatch toast message
+        notification.success({
+          message: `Successfully Downloaded: ${submissionDocs.length + coreDocs.length} files.`,
+          duration: 10,
+        });
+
+        this.props.closeModal();
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
           downloading: true,
           currentFile,
@@ -340,7 +322,6 @@ export class NOWApplicationReviews extends Component {
   render() {
     const commonApplicationReviewProps = {
       isLoaded: this.state.isLoaded,
-      readyForReview: this.props.noticeOfWork.ready_for_review_date,
       noticeOfWorkReviews: this.props.noticeOfWorkReviews,
       noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
       importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
@@ -354,59 +335,22 @@ export class NOWApplicationReviews extends Component {
       <div>
         <Row type="flex" justify="center">
           <Col lg={24} className="padding-large--top">
-            <div className="inline-flex between center-mobile">
-              <div>
-                {!this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disable full-mobile">
-                    <InfoCircleOutlined className="padding-small--right" />
-                    Referral package not downloaded
-                  </Tag>
-                )}
-                {this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disabled full-mobile">
-                    <ClockCircleOutlined className="padding-small--right" />
-                    {`Ready for review since: ${formatDate(
-                      this.props.noticeOfWork.ready_for_review_date
-                    )}`}
-                  </Tag>
-                )}
-              </div>
-              <div>
-                <div className="inline-flex center-mobile">
-                  {!this.props.noticeOfWork.ready_for_review_date && (
-                    <Popconfirm
-                      placement="topRight"
-                      title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
-                      onConfirm={this.openDownloadPackageModal}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="secondary" className="full-mobile">
-                        <DownloadOutlined className="padding-small--right icon-sm" />
-                        Download Referral Package
-                      </Button>
-                    </Popconfirm>
-                  )}
-                  {this.props.noticeOfWork.ready_for_review_date && (
-                    <Button
-                      type="secondary"
-                      className="full-mobile"
-                      onClick={this.openDownloadPackageModal}
-                    >
-                      <DownloadOutlined className="padding-small--right icon-sm" />
-                      Download Referral Package
-                    </Button>
-                  )}
-
-                  <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                    <AddButton
-                      onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
-                    >
-                      Add Reviewer
-                    </AddButton>
-                  </NOWActionWrapper>
-                </div>
-              </div>
+            <div className="right center-mobile">
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openDownloadPackageModal}
+              >
+                <DownloadOutlined className="padding-small--right icon-sm" />
+                Download Referral Package
+              </Button>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+                <AddButton
+                  onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
+                >
+                  Add Reviewer
+                </AddButton>
+              </NOWActionWrapper>
             </div>
           </Col>
         </Row>
@@ -421,13 +365,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "REF"
                   )}
-                  completeDate={this.props.noticeOfWork.referral_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      referral_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
             {this.props.type === "FNC" &&
@@ -439,13 +376,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "FNC"
                   )}
-                  completeDate={this.props.noticeOfWork.consultation_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      consultation_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
             {this.props.type === "PUB" &&
@@ -457,13 +387,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "PUB"
                   )}
-                  completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      public_comment_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
           </div>

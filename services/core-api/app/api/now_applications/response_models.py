@@ -419,14 +419,6 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'ready_for_review_date':
-        Date,
-        'referral_closed_on_date':
-        Date,
-        'consultation_closed_on_date':
-        Date,
-        'public_comment_closed_on_date':
-        Date,
         'security_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
@@ -505,10 +497,6 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'ready_for_review_date': Date,
-        'referral_closed_on_date': Date,
-        'consultation_closed_on_date': Date,
-        'public_comment_closed_on_date': Date,
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
         'last_updated_date': Date,
