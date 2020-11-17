@@ -395,7 +395,7 @@
                   },
                   {
                     "name": "CORE_API_URL",
-                    "value": "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/1509/api"
+                    "value": "${CORE_API_URL}"
                   },
                   {
                     "name": "AUTHENTICATION_URL",
@@ -700,7 +700,7 @@
                   },
                   {
                     "name": "CORE_API_URL",
-                    "value": "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/1509/api"
+                    "value": "${CORE_API_URL}"
                   },
                   {
                     "name": "AUTHENTICATION_URL",
