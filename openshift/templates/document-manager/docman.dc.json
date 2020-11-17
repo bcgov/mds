@@ -395,7 +395,7 @@
                   },
                   {
                     "name": "CORE_API_URL",
-                    "value": "${CORE_API_URL}"
+                    "value": "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/1509/api"
                   },
                   {
                     "name": "AUTHENTICATION_URL",
@@ -444,10 +444,6 @@
                   {
                     "name": "TUSD_URL",
                     "value": "${TUSD_URL}"
-                  },
-                  {
-                    "name": "CELERY_REST_API_URL",
-                    "value": "http://${NAME}-worker${SUFFIX}:5555"
                   }
                 ],
                 "resources": {
@@ -704,7 +700,7 @@
                   },
                   {
                     "name": "CORE_API_URL",
-                    "value": "${CORE_API_URL}"
+                    "value": "https://minesdigitalservices-dev.pathfinder.gov.bc.ca/1509/api"
                   },
                   {
                     "name": "AUTHENTICATION_URL",
