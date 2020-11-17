@@ -46,8 +46,6 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
-
 const TimelineItem = (progress, progressStatus) => {
   if (!progress[progressStatus.application_progress_status_code])
     return (
@@ -303,7 +301,6 @@ export class ProcessPermit extends Component {
 }
 
 ProcessPermit.propTypes = propTypes;
-ProcessPermit.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),

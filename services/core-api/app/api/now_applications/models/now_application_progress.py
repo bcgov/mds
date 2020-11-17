@@ -64,4 +64,3 @@ class NOWApplicationProgress(Base, AuditMixin):
             if end_date < self.start_date:
                 raise AssertionError('end_date cannot be before start_date')
         return end_date
-

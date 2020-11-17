@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Alert } from "antd";
 import RejectApplicationForm from "@/components/Forms/noticeOfWork/RejectApplicationForm";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -25,7 +24,6 @@ export const RejectApplicationModal = (props) => {
         onSubmit={props.onSubmit}
         closeModal={props.closeModal}
         title={props.title}
-        initialValues={{}}
       />
     </div>
   );

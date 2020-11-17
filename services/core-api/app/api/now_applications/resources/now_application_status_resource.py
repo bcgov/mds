@@ -59,7 +59,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             raise NotFound('No permit found for this application.')
 
         permit_amendment = PermitAmendment.find_by_now_application_guid(application_guid)
-        if not permit:
+        if not permit_amendment:
             raise NotFound('No permit amendment found for this application.')
 
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
