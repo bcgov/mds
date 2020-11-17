@@ -62,12 +62,20 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
     import_documents = []
     doc_ids = []
     import_job = None
+
     try:
+
         logger = get_task_logger(str(import_now_submission_documents_job_id))
 
         # Get the NoW Submission Documents Import job
         import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
-            import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
+            import_now_submission_documents_job_id=import_now_submission_documents_job_id
+        ).one_or_none()
+
+        if not import_job:
+            raise Exception(
+                f'Can not find import_now_submission_documents_job_id: {import_now_submission_documents_job_id}'
+            )
 
         # Update job-start information
         import_job.attempt += 1
@@ -125,20 +133,15 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                 db.session.commit()
 
                 # Associate the submission document record with the document record
-                message = None
                 try:
-                    is_associated, message = associate_now_submissions_document_with_document(
+                    associate_now_submissions_document_with_document(
                         guid, import_job, import_doc, import_now_submission_documents_job_id)
-                    if not is_associated:
-                        raise Exception(message)
                 except Exception as e:
                     db.session.rollback()
                     import_doc.document = None
                     db.session.delete(doc)
                     db.session.commit()
-                    if not message:
-                        message = str(e)
-                    raise Exception(message)
+                    raise e
 
                 success_imports.append({
                     import_doc.submission_document_file_name,
@@ -177,6 +180,8 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
             success_docs=success_imports,
             errors=errors,
             doc_ids=doc_ids)
+        if not import_job:
+            return
 
     # Update job-end information
     current_timestamp = datetime.utcnow()
@@ -229,9 +234,9 @@ def associate_now_submissions_document_with_document(guid,
             attempt += 1
             associate_now_submissions_document_with_document(guid, import_job, import_doc, attempt)
         else:
-            return False, f'Request to associate submission document with document record failed! Error {resp.status_code}: {resp.content}'
-
-    return True, 'Request to associate submission document with document record succeeded.'
+            raise Exception(
+                f'Request to associate submission document with document record failed! Error {resp.status_code}: {resp.content}'
+            )
 
 
 def get_core_authorization_token(import_now_submission_documents_job_id, attempt=0):
