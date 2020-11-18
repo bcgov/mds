@@ -11,6 +11,9 @@ exports[`ProcessPermit renders properly 1`] = `
       <h2>
         Process Permit
       </h2>
+      <Connect(NOWProgressActions)
+        tab="PRO"
+      />
       <Dropdown
         mouseEnterDelay={0.15}
         mouseLeaveDelay={0.1}
