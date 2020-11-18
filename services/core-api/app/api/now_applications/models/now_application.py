@@ -20,7 +20,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 
 
 class NOWApplication(Base, AuditMixin):
-    __tablename__ = "now_application"
+    __tablename__ = 'now_application'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
 
@@ -127,17 +127,24 @@ class NOWApplication(Base, AuditMixin):
         'Document',
         lazy='selectin',
         secondary=
-        "join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
+        'join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
+    imported_submission_documents = db.relationship(
+        'NOWApplicationDocumentIdentityXref',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
+    )
+
     contacts = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
-        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+        'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
     # Contacts
     contacts = db.relationship(
@@ -188,3 +195,54 @@ class NOWApplication(Base, AuditMixin):
         self.last_updated_by = User().get_user_username()
         self.last_updated_date = datetime.utcnow()
         super(NOWApplication, self).save(commit)
+
+    def get_filtered_submissions_document(now_application):
+        docs = []
+
+        for doc in now_application.imported_submission_documents:
+            docs.append({
+                'messageid':
+                doc.messageid,
+                'now_application_document_xref_guid':
+                str(doc.now_application_document_xref_guid),
+                'mine_document_guid':
+                str(doc.mine_document_guid),
+                'documenturl':
+                doc.documenturl,
+                'documenttype':
+                doc.documenttype,
+                'description':
+                doc.description,
+                'is_final_package':
+                doc.is_final_package,
+                'filename':
+                doc.filename,
+                'now_application_id':
+                doc.now_application_id,
+                'document_manager_guid':
+                doc.document_manager_guid
+            })
+
+        for doc in now_application.submission_documents:
+            imported = any(
+                (imported_doc.messageid == doc.messageid and imported_doc.filename == doc.filename
+                 and imported_doc.documenturl == doc.documenturl
+                 and imported_doc.documenttype == doc.documenttype
+                 for imported_doc in now_application.imported_submission_documents))
+            if imported:
+                continue
+            else:
+                docs.append({
+                    'now_application_document_xref_guid': None,
+                    'mine_document_guid': None,
+                    'messageid': doc.messageid,
+                    'documenturl': doc.documenturl,
+                    'documenttype': doc.documenttype,
+                    'description': doc.description,
+                    'is_final_package': False,
+                    'filename': doc.filename,
+                    'now_application_id': now_application.now_application_id,
+                    'document_manager_guid': None
+                })
+
+        return docs

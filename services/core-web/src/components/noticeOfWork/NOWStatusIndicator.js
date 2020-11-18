@@ -11,6 +11,7 @@ import {
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
 import { getDelayTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { COLOR } from "@/constants/styles";
 
 /**
  * @constant NOWStatusIndicator conditionally show a status indicator of the various stages on a NoW record based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
@@ -78,47 +79,49 @@ export class NOWStatusIndicator extends Component {
     if (isApplicationComplete) {
       if (statusCode === "AIA") {
         this.setState({
-          bannerColor:
-            "linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%)",
-          badgeColor: "#45A766",
+          bannerColor: COLOR.greenGradient,
+          badgeColor: COLOR.successGreen,
           message: "Application is Approved",
         });
       } else {
         const message =
           statusCode === "WDN" ? "Application has been Withdrawn" : "Application has been Rejected";
         this.setState({
-          bannerColor: "linear-gradient(77.2deg, #D40D0D 0%, #E70000 28.89%, #FFFFFF 100%)",
-          badgeColor: "#D40D0D",
+          bannerColor: COLOR.redGradient,
+          badgeColor: COLOR.errorRed,
           message,
         });
       }
     } else if (isApplicationDelayed) {
       this.setState({
-        bannerColor: "linear-gradient(90deg, #FDBC00 0%, #FDBC00 28.89%, #FFF1A7 100%)",
-        badgeColor: "#FDBC00",
+        bannerColor: COLOR.yellowGradient,
+        badgeColor: COLOR.yellow,
         message: `Delayed: ${this.props.delayTypeOptionsHash[applicationDelay.delay_type_code]}`,
       });
     } else if (isEditMode) {
       this.setState({
-        bannerColor: "linear-gradient(90deg, #5D46A1 0%, rgba(255,255,255,0.5) 100%)",
+        bannerColor: COLOR.violetGradient,
         message: "Edit Mode",
       });
     } else if (!isEmpty(progress[tabSection])) {
       if (progress[tabSection].end_date) {
         this.setState({
-          bannerColor:
-            "linear-gradient(90deg, #45A766 0%, #45A766 28.89%, rgba(127,254,0,0.13) 100%)",
-          badgeColor: "#45A766",
+          bannerColor: COLOR.greenGradient,
+          badgeColor: COLOR.successGreen,
           message: "Complete",
         });
       } else {
-        this.setState({ bannerColor: "transparent", badgeColor: "yellow" });
+        this.setState({
+          bannerColor: "transparent",
+          badgeColor: COLOR.blue,
+          message: "In Progress",
+        });
       }
     } else {
       this.setState({
         bannerColor: "transparent",
-        badgeColor: "",
-        message: "",
+        badgeColor: COLOR.mediumGrey,
+        message: "Not Started",
       });
     }
   };
@@ -133,7 +136,7 @@ export class NOWStatusIndicator extends Component {
             banner
             style={{
               background: this.state.bannerColor,
-              color: "#fff",
+              color: COLOR.backgroundWhite,
             }}
             className="status-banner"
           />

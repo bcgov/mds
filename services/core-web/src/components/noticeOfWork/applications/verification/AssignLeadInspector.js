@@ -38,11 +38,7 @@ const AssignLeadInspector = (props) => {
       )}
       <Row gutter={16}>
         <Col span={24}>
-          <div
-            style={
-              isEditMode && props.isAdminView ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}
-            }
-          >
+          <div style={isEditMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
             <UpdateNOWLeadInspectorForm
               initialValues={{
                 lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,

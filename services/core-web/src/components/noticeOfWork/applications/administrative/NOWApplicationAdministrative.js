@@ -17,11 +17,15 @@ const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateLeadInspector: PropTypes.func.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
 };
+
+const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
 const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
 const exportedDocuments = ["NTR"];
 const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
+
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div className="page__content">
@@ -29,6 +33,7 @@ export const NOWApplicationAdministrative = (props) => {
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
+          importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           adminView
         />
       </ScrollContentWrapper>
@@ -83,5 +88,6 @@ export const NOWApplicationAdministrative = (props) => {
 };
 
 NOWApplicationAdministrative.propTypes = propTypes;
+NOWApplicationAdministrative.defaultProps = defaultProps;
 
 export default NOWApplicationAdministrative;

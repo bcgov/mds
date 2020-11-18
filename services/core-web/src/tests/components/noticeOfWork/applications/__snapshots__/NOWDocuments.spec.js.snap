@@ -69,8 +69,9 @@ exports[`NOWDocuments renders properly 1`] = `
     rowSelection={null}
   />
   <br />
-  <withRouter(Connect(NOWActionWrapper))
+  <Connect(NOWActionWrapper)
     permission="role_edit_permits"
+    tab="REV"
   >
     <AddButton
       className=""
@@ -80,6 +81,6 @@ exports[`NOWDocuments renders properly 1`] = `
     >
       Add Document
     </AddButton>
-  </withRouter(Connect(NOWActionWrapper))>
+  </Connect(NOWActionWrapper)>
 </div>
 `;
