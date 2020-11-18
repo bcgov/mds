@@ -42,22 +42,3 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
 
     def __repr__(self):
         return '<NOWApplicationDocumentIdentityXref %r>' % self.now_application_document_xref_guid
-
-    @classmethod
-    def create(cls, mine_guid, now_application_id, document_manager_document_guid, message_id,
-               document_url, file_name, document_type, description):
-
-        new_document_identity_xref = cls(
-            messageid=message_id,
-            documenturl=document_url,
-            documenttype=document_type,
-            description=description,
-            filename=file_name,
-            now_application_id=now_application_id,
-            mine_document=MineDocument(
-                mine_guid=mine_guid,
-                document_manager_guid=document_manager_document_guid,
-                document_name=file_name))
-
-        new_document_identity_xref.save()
-        return new_document_identity_xref

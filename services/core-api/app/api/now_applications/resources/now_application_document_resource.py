@@ -120,9 +120,20 @@ class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
             current_app.logger.error('Notice of Work identity not found')
             raise NotFound('Notice of Work identity not found')
 
-        NOWApplicationDocumentIdentityXref.create(now_application_identity.mine_guid,
-                                                  now_application_identity.now_application_id,
-                                                  document_manager_document_guid, message_id,
-                                                  document_url, file_name, document_type,
-                                                  description)
+        new_mine_doc = MineDocument(
+            mine_guid=now_application_identity.mine_guid,
+            document_manager_guid=document_manager_document_guid,
+            document_name=file_name)
+
+        new_document_identity_xref = NOWApplicationDocumentIdentityXref(
+            messageid=message_id,
+            documenturl=document_url,
+            documenttype=document_type,
+            description=description,
+            filename=file_name,
+            now_application_id=now_application_identity.now_application_id,
+            mine_document=new_mine_doc)
+
+        new_document_identity_xref.save()
+
         return requests.codes.created
