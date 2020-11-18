@@ -1,5 +1,6 @@
 import uuid
 import json
+import pytest
 from datetime import datetime, timedelta
 
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
@@ -10,7 +11,8 @@ from tests.factories import MineFactory
 # class TestNOWApplicationStatus:
 class TestNOWApplicationDocumentIdentity:
     """POST /now-applications/ID/document-identity"""
-    def test_put_application_status(self, test_client, db_session, auth_headers):
+    @pytest.mark.skip(reason='this will be reworked')
+    def test_post_application_identity_document(self, test_client, db_session, auth_headers):
         mine = MineFactory(major_mine_ind=True)
         now_application = NOWApplicationFactory(application_progress=None)
         now_application_identity = NOWApplicationIdentityFactory(
