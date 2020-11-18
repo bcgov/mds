@@ -583,8 +583,8 @@ export class NoticeOfWorkApplication extends Component {
           <CoreTooltip
             title="This page is for reviewing and editing the information and documents sent in
                     with a Notice of Work. All information provided by the proponent, and any
-                    additional files requested during the application review live here. Use the
-                    Actions button to update information about this application."
+                    additional files requested during the application review live here. When the Technical Review is in progress, use the
+                    Edit button to update information about this application."
           />
         </h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
