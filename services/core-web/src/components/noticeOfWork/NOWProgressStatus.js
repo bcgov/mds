@@ -1,10 +1,9 @@
-/* eslint-disable */
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { isEmpty } from "lodash";
-import { formatDate, flattenObject, getDurationText } from "@common/utils/helpers";
-import { Badge, Descriptions } from "antd";
+import { formatDate } from "@common/utils/helpers";
+import { Badge } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 import {
   getNoticeOfWork,
@@ -22,87 +21,72 @@ import {
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  type: PropTypes.string.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   tab: PropTypes.string.isRequired,
+  top: PropTypes.string,
+  progressStatusHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
   top: "-85px",
 };
 
-export class NOWProgressStatus extends Component {
-  render() {
-    return (
-      <div
-        style={{
-          position: "relative",
-          top: this.props.top,
-          float: "right",
-          padding: "10px",
-        }}
-      >
-        {isEmpty(this.props.progress[this.props.tab]) && (
-          <p style={{ fontSize: "12px" }}>
-            {this.props.progressStatusHash[this.props.tab]} Status:{" "}
-            <Badge color="grey" style={{ paddingLeft: "5px" }} />
-            Not Started
+export const NOWProgressStatus = (props) => {
+  return (
+    <div
+      className="status-content"
+      style={{
+        top: props.top,
+      }}
+    >
+      {isEmpty(props.progress[props.tab]) && (
+        <p className="small-p">
+          {props.progressStatusHash[props.tab]} Status:
+          <Badge color="grey" className="padding-small--left" />
+          Not Started
+        </p>
+      )}
+      {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && (
+        <>
+          <p className="small-p">
+            {props.progressStatusHash[props.tab]} Status:
+            <Badge color="blue" className="padding-small--left" />
+            In Progress
           </p>
-        )}
-        {!isEmpty(this.props.progress[this.props.tab]) &&
-          !this.props.progress[this.props.tab].end_date && (
-            <>
-              <p style={{ fontSize: "12px" }}>
-                {this.props.progressStatusHash[this.props.tab]} Status:
-                <Badge color="blue" style={{ paddingLeft: "5px" }} />
-                In Progress
-              </p>
-              <p style={{ fontSize: "12px" }}>
-                In {this.props.progressStatusHash[this.props.tab]} Since:
-                {formatDate(this.props.progress[this.props.tab].start_date)}/{" "}
-                {/* {getDurationText(
-                  this.props.progress[this.props.tab].start_date,
-                  new Date().toISOString()
-                )} */}
-              </p>
-            </>
+          <p className="small-p">
+            In {props.progressStatusHash[props.tab]} Since:
+            {formatDate(props.progress[props.tab].start_date)}
+          </p>
+        </>
+      )}
+      {!isEmpty(props.progress[props.tab]) && props.progress[props.tab].end_date && (
+        <>
+          <p className="small-p">
+            {props.progressStatusHash[props.tab]} Status:
+            <Badge color="green" className="padding-small--left" />
+            Complete
+          </p>
+          <p className="small-p">
+            In {props.progressStatusHash[props.tab]} Since:
+            {formatDate(props.progress[props.tab].start_date)}
+          </p>
+        </>
+      )}
+      {props.tab === "REV" && (
+        <>
+          {props.noticeOfWork.last_updated_date && (
+            <p className="small-p">
+              Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
+            </p>
           )}
-        {!isEmpty(this.props.progress[this.props.tab]) &&
-          this.props.progress[this.props.tab].end_date && (
-            <>
-              <p style={{ fontSize: "12px" }}>
-                {this.props.progressStatusHash[this.props.tab]} Status:
-                <Badge color="green" style={{ paddingLeft: "5px" }} />
-                Complete
-              </p>
-              <p style={{ fontSize: "12px" }}>
-                In {this.props.progressStatusHash[this.props.tab]} Since:
-                {formatDate(this.props.progress[this.props.tab].start_date)}/{" "}
-                {/* {getDurationText(
-              this.props.progress[this.props.tab].start_date,
-              new Date().toISOString()
-            )} */}
-              </p>
-            </>
+          {props.noticeOfWork.last_updated_by && (
+            <p className="small-p">Updated By: {props.noticeOfWork.last_updated_by}</p>
           )}
-        {this.props.tab === "REV" && (
-          <>
-            {this.props.noticeOfWork.last_updated_date && (
-              <p style={{ fontSize: "12px" }}>
-                Last Updated: {formatDate(this.props.noticeOfWork.last_updated_date)}
-              </p>
-            )}
-            {this.props.noticeOfWork.last_updated_by && (
-              <p style={{ fontSize: "12px" }}>
-                Updated By: {this.props.noticeOfWork.last_updated_by}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-}
+        </>
+      )}
+    </div>
+  );
+};
 
 NOWProgressStatus.propTypes = propTypes;
 NOWProgressStatus.defaultProps = defaultProps;
