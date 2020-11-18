@@ -323,9 +323,8 @@ export const deleteNoticeOfWorkApplicationReview = (applicationGuid, application
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${
-        ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)
-      }/${applicationReviewId}`,
+      `${ENVIRONMENT.apiUrl +
+        API.NOTICE_OF_WORK_APPLICATION_REVIEW(applicationGuid)}/${applicationReviewId}`,
       createRequestHeader()
     )
     .then((response) => {
