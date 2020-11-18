@@ -44,7 +44,7 @@ class FileUpload extends React.Component {
           chunkSize: this.props.chunkSize,
           metadata: {
             filename: file.name,
-            filetype: file.type || "application/octet-stream",
+            filetype: file.type,
           },
           headers: createRequestHeader().headers,
           onError: (err) => {
