@@ -219,7 +219,7 @@ export const NOWDocuments = (props) => {
       <br />
 
       {!props.selectedRows && !props.isViewMode && (
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={props.isAdminView ? "" : "REV"}>
           <AddButton
             className={props.isAdminView ? "position-right" : ""}
             disabled={props.isViewMode}

@@ -42,7 +42,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         data = self.parser.parse_args()
         issue_date = data.get('issue_date', None)
         auth_end_date = data.get('auth_end_date', None)
-
         now_application_status_code = data.get('now_application_status_code', None)
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)

@@ -28,8 +28,9 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         />
         Download All
       </Button>
-      <withRouter(Connect(NOWActionWrapper))
+      <Connect(NOWActionWrapper)
         permission="role_edit_permits"
+        tab="DFT"
       >
         <Button
           block={false}
@@ -52,7 +53,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
           />
           Edit
         </Button>
-      </withRouter(Connect(NOWActionWrapper))>
+      </Connect(NOWActionWrapper)>
     </div>
   </div>
   <br />

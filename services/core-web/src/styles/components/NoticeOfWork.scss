@@ -88,7 +88,7 @@
 .view {
   padding: 10px;
   &--header {
-    height: 73px;
+    height: 100px;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
@@ -96,17 +96,6 @@
       background-color: $pure-white;
       z-index: 50;
       box-shadow: $default-box-shadow;
-    }
-    &.fixed-scroll-view {
-      padding: 20px;
-      height: 133px;
-      padding-bottom: 10px;
-      position: fixed;
-      width: 100vw;
-      box-shadow: $default-box-shadow;
-      top: 50px;
-      background-color: $pure-white;
-      z-index: 50;
     }
   }
 
@@ -139,7 +128,7 @@
   }
 
   &--fixed {
-    top: 135px;
+    top: 160px;
     position: fixed;
     width: 240px;
 
@@ -151,7 +140,11 @@
   &--timeline {
     @extend .side-menu;
     padding-left: 20px;
-    padding-top:10px;
+    padding-top: 10px;
+
+    &.with-fixed-top {
+      margin-top: 100px;
+    }
   }
 
   ul {
@@ -161,8 +154,15 @@
   &--content {
     position: relative;
     padding-right: 20px;
+    top: 30px;
     left: 250px;
     width: calc(100vw - 270px);
+    // extra margin on the bottom to allow to scroll to end of side menu
+    margin-bottom: 900px;
+
+    &.with-fixed-top {
+      margin-top: 100px;
+    }
 
     @include tablet {
       position: inherit;
@@ -228,7 +228,7 @@
 
 .status-banner {
   position: relative;
-  top: -15px;
+  top: 10px; //-15px?
   height: 22px;
   z-index: 100;
   .ant-alert-message {
@@ -238,4 +238,10 @@
     font-weight: lighter;
     color: white !important;
   }
+}
+
+.status-content {
+  position: relative;
+  float: right;
+  padding: 10px;
 }

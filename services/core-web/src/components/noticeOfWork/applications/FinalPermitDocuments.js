@@ -205,7 +205,10 @@ export class FinalPermitDocuments extends Component {
               <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper
+              permission={Permission.EDIT_PERMITS}
+              tab={this.props.adminView ? null : "DFT"}
+            >
               <Button
                 type="secondary"
                 className="full-mobile"

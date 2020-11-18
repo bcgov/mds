@@ -25,6 +25,8 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as route from "@/constants/routes";
 
 /**
@@ -44,6 +46,7 @@ const propTypes = {
   draftAmendment: CustomPropTypes.permit.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -237,9 +240,13 @@ export class ProcessPermit extends Component {
     const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
     return (
       <div>
-        <div className="view--header">
+        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           <div className="inline-flex block-mobile padding-md">
-            <h2>Process Permit</h2>
+            <h2>
+              Process Permit
+              <CoreTooltip title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made." />
+            </h2>
+            <NOWProgressActions tab="PRO" />
             {!isProcessed && (
               <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
                 <Button type="secondary" className="full-mobile">
@@ -251,7 +258,11 @@ export class ProcessPermit extends Component {
           <NOWStatusIndicator type="banner" />
         </div>
         <>
-          <div className="side-menu--timeline">
+          <div
+            className={
+              this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
+            }
+          >
             <Timeline>
               {this.props.progressStatusCodes
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
