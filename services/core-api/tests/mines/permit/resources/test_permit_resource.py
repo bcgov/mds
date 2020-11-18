@@ -10,6 +10,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from tests.factories import MineFactory, PermitFactory, PermitAmendmentFactory, PartyFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationIdentityFactory
 
+
 # GET
 def test_get_permit_not_found(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
@@ -60,6 +61,7 @@ def test_post_permit(test_client, db_session, auth_headers):
     assert permittees[0].party_guid == party_guid
     assert len(updated_mine.mine_permit) == no_of_permits + 1
 
+
 def test_post_permit_now_application(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     party_guid = PartyFactory(company=True).party_guid
@@ -72,7 +74,7 @@ def test_post_permit_now_application(test_client, db_session, auth_headers):
         'issue_date': '1999-12-21',
         'authorization_end_date': '2012-12-02',
         'permit_status_code': 'D',
-        'permit_is_exploration': False,
+        'is_exploration': False,
         'now_application_guid': now_application.now_application_guid,
     }
 

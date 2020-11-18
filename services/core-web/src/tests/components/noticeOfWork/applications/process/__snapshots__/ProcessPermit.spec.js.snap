@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProcessPermit renders properly 1`] = `
+<div>
+  <div
+    className="view--header"
+  >
+    <div
+      className="inline-flex block-mobile padding-md"
+    >
+      <h2>
+        Process Permit
+      </h2>
+      <Dropdown
+        mouseEnterDelay={0.15}
+        mouseLeaveDelay={0.1}
+        overlay={
+          <Menu>
+            <MenuItem
+              disabled={true}
+              onClick={[Function]}
+            >
+              Issue permit
+            </MenuItem>
+            <MenuItem
+              onClick={[Function]}
+            >
+              Reject application
+            </MenuItem>
+            <MenuItem
+              onClick={[Function]}
+            >
+              Withdraw application
+            </MenuItem>
+          </Menu>
+        }
+        placement="bottomLeft"
+      >
+        <Button
+          block={false}
+          className="full-mobile"
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Process 
+          <ForwardRef(DownOutlined) />
+        </Button>
+      </Dropdown>
+    </div>
+    <withRouter(Connect(NOWStatusIndicator))
+      type="banner"
+    />
+  </div>
+  <div
+    className="side-menu--timeline"
+  >
+    <Timeline
+      mode=""
+      reverse={false}
+    />
+  </div>
+  <div
+    className="view--content side-menu--content"
+  >
+    <Result
+      extra={
+        Array [
+          <ForwardRef>
+            <ForwardRef
+              lg={
+                Object {
+                  "offset": 6,
+                  "span": 12,
+                }
+              }
+              md={
+                Object {
+                  "offset": 4,
+                  "span": 16,
+                }
+              }
+              sm={
+                Object {
+                  "offset": 2,
+                  "span": 20,
+                }
+              }
+              style={
+                Object {
+                  "textAlign": "left",
+                }
+              }
+            >
+              <ForwardRef
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                  }
+                }
+              >
+                <ForwardRef
+                  span={2}
+                >
+                  <ForwardRef(RightCircleOutlined) />
+                </ForwardRef>
+                <ForwardRef
+                  span={22}
+                >
+                  Application must have a permittee.
+                </ForwardRef>
+              </ForwardRef>
+              <ForwardRef
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                  }
+                }
+              >
+                <ForwardRef
+                  span={2}
+                >
+                  <ForwardRef(RightCircleOutlined) />
+                </ForwardRef>
+                <ForwardRef
+                  span={22}
+                >
+                  The reclamation securities must be recorded.
+                </ForwardRef>
+              </ForwardRef>
+              <ForwardRef
+                style={
+                  Object {
+                    "paddingBottom": "8px",
+                  }
+                }
+              >
+                <ForwardRef
+                  span={2}
+                >
+                  <ForwardRef(RightCircleOutlined) />
+                </ForwardRef>
+                <ForwardRef
+                  span={22}
+                >
+                  The final application package requires a Mine Emergency Response Plan.
+                </ForwardRef>
+              </ForwardRef>
+            </ForwardRef>
+          </ForwardRef>,
+        ]
+      }
+      status="warning"
+      title="The following issues must be resolved before you can issue this amendment."
+    />
+  </div>
+</div>
+`;

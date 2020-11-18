@@ -59,7 +59,10 @@ class PermitListResource(Resource, UserMixin):
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
-        'permit_is_exploration', type=bool, location='json', help='Whether the permit is an exploration permit or not.')
+        'is_exploration',
+        type=bool,
+        location='json',
+        help='Whether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
 
@@ -83,7 +86,6 @@ class PermitListResource(Resource, UserMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         permit_no = data.get('permit_no')
-        permit_prefix = None
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -101,19 +103,20 @@ class PermitListResource(Resource, UserMixin):
                 raise NotFound('There was no Notice of Work found with the provided guid.')
             now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             now_application = now_application_identity.now_application
-            permit_is_exploration = data.get('permit_is_exploration')
-            permit_prefix = now_application.notice_of_work_type_code[0] if now_application.notice_of_work_type_code[0] != 'S' else 'G'
-            if permit_prefix in ['M', 'C'] and permit_is_exploration:
-               permit_prefix = permit_prefix + 'X'
-            permit_prefix = permit_prefix + '-'
-        
+            notice_of_work_type_code = now_application.notice_of_work_type_code[0]
+            permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
+            if permit_prefix in ['M', 'C'] and data.get('is_exploration'):
+                permit_prefix = permit_prefix + 'X'
+            permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
+
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
             raise BadRequest("That permit number is already in use.")
-            
+
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit = Permit.create(mine, permit_no, data.get('permit_status_code'), permit_prefix)
+        permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
+                               data.get('is_exploration'))
 
         amendment = PermitAmendment.create(
             permit,
