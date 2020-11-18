@@ -141,6 +141,10 @@
     @extend .side-menu;
     padding-left: 20px;
     padding-top: 10px;
+
+    &.with-fixed-top {
+      margin-top: 100px;
+    }
   }
 
   ul {

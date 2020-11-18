@@ -46,6 +46,7 @@ const propTypes = {
   draftAmendment: CustomPropTypes.permit.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -239,7 +240,7 @@ export class ProcessPermit extends Component {
     const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
     return (
       <div>
-        <div className="view--header">
+        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           <div className="inline-flex block-mobile padding-md">
             <h2>
               Process Permit
@@ -257,7 +258,11 @@ export class ProcessPermit extends Component {
           <NOWStatusIndicator type="banner" />
         </div>
         <>
-          <div className="side-menu--timeline">
+          <div
+            className={
+              this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
+            }
+          >
             <Timeline>
               {this.props.progressStatusCodes
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
