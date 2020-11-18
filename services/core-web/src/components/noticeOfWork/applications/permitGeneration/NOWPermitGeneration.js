@@ -280,7 +280,7 @@ export class NOWPermitGeneration extends Component {
         <NOWProgressActions tab="DFT" startDraftPermit={this.startDraftPermit} />
         {this.state.isDraft && (
           <>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
               <Button type="secondary" onClick={this.props.toggleEditMode}>
                 <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                 Edit

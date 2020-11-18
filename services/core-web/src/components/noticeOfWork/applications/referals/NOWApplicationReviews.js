@@ -77,6 +77,7 @@ const ApplicationReview = (props) => (
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
+        type={props.type}
       />
     </ScrollContentWrapper>
   </div>
@@ -332,7 +333,10 @@ export class NOWApplicationReviews extends Component {
                 <DownloadOutlined className="padding-small--right icon-sm" />
                 Download Referral Package
               </Button>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={this.props.type === "FNC" ? "CON" : this.props.type}
+              >
                 <AddButton
                   onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                 >
