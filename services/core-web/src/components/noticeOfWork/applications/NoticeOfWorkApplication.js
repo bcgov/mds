@@ -236,11 +236,7 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-        if (
-          data.imported_to_core &&
-          data.lead_inspector_party_guid &&
-          this.props.match.params.tab === "verification"
-        ) {
+        if (data.imported_to_core && this.props.match.params.tab === "verification") {
           this.handleTabChange("application");
         }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
