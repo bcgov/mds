@@ -253,10 +253,11 @@ NOW_APPLICATION_DOCUMENT = api.model(
 
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress', {
-        'start_date': fields.Date,
-        'end_date': fields.Date,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
         'created_by': fields.String,
-        'application_progress_status_code': fields.String
+        'application_progress_status_code': fields.String,
+        'last_updated_by': fields.String
     })
 
 NOW_APPLICATION_DELAY = api.model(
@@ -404,20 +405,14 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'ready_for_review_date':
-        Date,
-        'referral_closed_on_date':
-        Date,
-        'consultation_closed_on_date':
-        Date,
-        'public_comment_closed_on_date':
-        Date,
         'security_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date':
-        Date,
+        DateTime,
         'last_updated_by':
         fields.String,
         'permit_status':
@@ -486,12 +481,10 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'ready_for_review_date': Date,
-        'referral_closed_on_date': Date,
-        'consultation_closed_on_date': Date,
-        'public_comment_closed_on_date': Date,
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date': Date,
         'last_updated_by': fields.String
     })
@@ -582,7 +575,8 @@ APPLICATION_PROGRESS_STATUS_CODES = api.model(
     'ApplicationProgressStatusCodes', {
         'application_progress_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model(

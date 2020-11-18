@@ -373,7 +373,11 @@ body {
   font-size: 24px !important;
   &--grey {
     @extend .icon-lg;
-    color: $medium-grey;
+    color: $light-grey;
+  }
+  &--green {
+    @extend .icon-lg;
+    color: $ok-green;
   }
 }
 
@@ -444,4 +448,8 @@ body {
   &:hover {
     background-color: darken(#f3f0f0, 2%);
   }
+}
+
+.small-p {
+  font-size: 12px;
 }

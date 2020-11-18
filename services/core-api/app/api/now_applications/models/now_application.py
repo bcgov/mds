@@ -48,7 +48,7 @@ class NOWApplication(Base, AuditMixin):
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
-    last_updated_date = db.Column(db.Date)
+    last_updated_date = db.Column(db.DateTime)
     last_updated_by = db.Column(db.String)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
@@ -80,11 +80,6 @@ class NOWApplication(Base, AuditMixin):
     has_key_for_inspector = db.Column(db.Boolean, nullable=True)
     has_req_access_authorizations = db.Column(db.Boolean, nullable=True)
 
-    ready_for_review_date = db.Column(db.Date)
-    referral_closed_on_date = db.Column(db.Date)
-    consultation_closed_on_date = db.Column(db.Date)
-    public_comment_closed_on_date = db.Column(db.Date)
-
     permit_status = db.Column(db.String)
     term_of_application = db.Column(db.Numeric(14, 0))
     is_applicant_individual_or_company = db.Column(db.String)
@@ -99,6 +94,8 @@ class NOWApplication(Base, AuditMixin):
     # Securities
     security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
+    security_not_required = db.Column(db.Boolean)
+    security_not_required_reason = db.Column(db.String)
 
     # Activities
     camps = db.relationship('Camp', lazy='selectin', uselist=False)
