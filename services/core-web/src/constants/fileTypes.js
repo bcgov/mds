@@ -25,14 +25,14 @@ export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
 export const IMAGE = {
   ".jpeg": "image/jpeg",
-  ".PNG": "image/png",
+  ".png": "image/png",
 };
 
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
   ".geoJSon": "application/vnd.geo+json",
   ".gml": "application/gml+xml",
-  ".kml": "application/vnd.google-earth.kml+xml ",
+  ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
   ".prj": "application/octet-stream",
   ".sbn": "application/octet-stream",

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Switch } from "antd";
+import { invertBy, invert, uniq, isLength } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
@@ -46,6 +47,8 @@ class FileUpload extends React.Component {
 
     this.server = {
       process: (fieldName, file, metadata, load, error, progress, abort) => {
+        console.log("file", file);
+        console.log("metadata", metadata);
         const upload = new tus.Upload(file, {
           endpoint: ENVIRONMENT.apiUrl + this.props.uploadUrl,
           retryDelays: [100, 1000, 3000],
@@ -56,7 +59,9 @@ class FileUpload extends React.Component {
             filetype: file.type || "application/octet-stream",
           },
           headers: createRequestHeader().headers,
+
           onError: (err) => {
+            console.log("err", err);
             error(err);
           },
           onProgress: (bytesUploaded, bytesTotal) => {
@@ -89,7 +94,21 @@ class FileUpload extends React.Component {
   }
 
   render() {
-    const acceptedFileTypes = Object.keys(this.props.acceptedFileTypesMap);
+    let fileValidateTypeLabelExpectedTypesMap = {};
+    let i = 0;
+    for (const ext in this.props.acceptedFileTypesMap) {
+      let mimeType = this.props.acceptedFileTypesMap[ext];
+      if (mimeType in fileValidateTypeLabelExpectedTypesMap) {
+        mimeType += `/${i}`;
+      }
+      fileValidateTypeLabelExpectedTypesMap[mimeType] = ext;
+      i++;
+    }
+    fileValidateTypeLabelExpectedTypesMap = fileValidateTypeLabelExpectedTypesMap;
+    console.log("fileValidateTypeLabelExpectedTypesMap", fileValidateTypeLabelExpectedTypesMap);
+
+    const acceptedFileTypes = Object.keys(fileValidateTypeLabelExpectedTypesMap);
+    console.log("acceptedFileTypes", acceptedFileTypes);
 
     return (
       <div
@@ -125,7 +144,25 @@ class FileUpload extends React.Component {
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
-          fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
+          fileValidateTypeLabelExpectedTypesMap={{}}
+          fileValidateTypeDetectType={(source, type) =>
+            new Promise((resolve, reject) => {
+              console.log("source", source);
+              console.log("type", type);
+              if (!type) {
+                const exts = source.name.split(".");
+                const ext = exts && `.${exts.pop()}`;
+                if (ext in this.props.acceptedFileTypesMap) {
+                  type = this.props.acceptedFileTypesMap[ext];
+                } else {
+                  reject(type);
+                }
+              }
+              console.log("source", source);
+              console.log("new type", type);
+              resolve(type);
+            })
+          }
         />
       </div>
     );
