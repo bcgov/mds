@@ -408,8 +408,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date':
-        Date,
+        DateTime,
         'last_updated_by':
         fields.String,
         'permit_status':
@@ -480,6 +482,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date': Date,
         'last_updated_by': fields.String
     })
@@ -570,7 +574,8 @@ APPLICATION_PROGRESS_STATUS_CODES = api.model(
     'ApplicationProgressStatusCodes', {
         'application_progress_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model(

@@ -46,14 +46,17 @@ export class NOWActionWrapper extends Component {
   }
 
   render() {
-    // commenting out until this is implemented in the follow up PR
-    // const currentTabCode = TabCodes[this.state.currentTab];
-    // const tabInProgress =
-    //   !isEmpty(this.props.progress[currentTabCode]) &&
-    //   !this.props.progress[currentTabCode].end_date;
+    const currentTabCode = TabCodes[this.state.currentTab];
+    const tabInProgress =
+      !isEmpty(this.props.progress[currentTabCode]) &&
+      !this.props.progress[currentTabCode].end_date;
+    const shouldDisableTab = currentTabCode !== undefined && tabInProgress;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    // const disabled = isApplicationDelayed || !tabInProgress;
-    const disabled = isApplicationDelayed;
+    const isApplicationComplete =
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
+    const disabled = isApplicationDelayed || isApplicationComplete;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
