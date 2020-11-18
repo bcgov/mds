@@ -67,4 +67,14 @@ describe("noticeOfWorkReducer", () => {
     );
     expect(result).toEqual(expectedValue);
   });
+
+  it("receives STORE_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWork = MOCK.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB;
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplication(MOCK.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)
+    );
+    expect(result).toEqual(expectedValue);
+  });
 });

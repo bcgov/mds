@@ -18,7 +18,6 @@ const propTypes = {
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateLeadInspector: PropTypes.func.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
-  handleSaveNOWEdit: PropTypes.func.isRequired,
 };
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
