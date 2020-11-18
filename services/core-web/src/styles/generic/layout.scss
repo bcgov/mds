@@ -373,7 +373,11 @@ body {
   font-size: 24px !important;
   &--grey {
     @extend .icon-lg;
-    color: $medium-grey;
+    color: $light-grey;
+  }
+  &--green {
+    @extend .icon-lg;
+    color: $ok-green;
   }
 }
 

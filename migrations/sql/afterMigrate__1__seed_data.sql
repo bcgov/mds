@@ -573,15 +573,16 @@ ON CONFLICT DO NOTHING;
 INSERT INTO now_application_progress_status (
     application_progress_status_code,
     description,
+    display_order,
     create_user,
     update_user
     )
 VALUES 
-    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral', 'system-mds', 'system-mds'),
-    ('CON', 'Consultation', 'system-mds', 'system-mds'),
-    ('PUB', 'Public Comment', 'system-mds', 'system-mds'),
-    ('DFT', 'Draft Permit', 'system-mds', 'system-mds')
+    ('REV', 'Technical Review', 10, 'system-mds', 'system-mds'),
+    ('REF', 'Referral', 20, 'system-mds', 'system-mds'),
+    ('CON', 'Consultation', 30, 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 40, 'system-mds', 'system-mds'),
+    ('DFT', 'Draft Permit', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
