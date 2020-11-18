@@ -14,6 +14,7 @@ import {
   getDelayTypeOptionsHash,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { COLOR } from "@/constants/styles";
 
 /**
  * @constant NOWProgressStatus conditionally show a status indicator of the various stages on a NoW record based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
@@ -42,7 +43,7 @@ export const NOWProgressStatus = (props) => {
       {isEmpty(props.progress[props.tab]) && (
         <p className="small-p">
           {props.progressStatusHash[props.tab]} Status:
-          <Badge color="grey" className="padding-small--left" />
+          <Badge color={COLOR.mediumGrey} className="padding-small--left" />
           Not Started
         </p>
       )}
@@ -50,7 +51,7 @@ export const NOWProgressStatus = (props) => {
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color="blue" className="padding-small--left" />
+            <Badge color={COLOR.blue} className="padding-small--left" />
             In Progress
           </p>
           <p className="small-p">
@@ -63,7 +64,7 @@ export const NOWProgressStatus = (props) => {
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color="green" className="padding-small--left" />
+            <Badge color={COLOR.successGreen} className="padding-small--left" />
             Complete
           </p>
           <p className="small-p">
