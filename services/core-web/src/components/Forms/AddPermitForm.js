@@ -66,7 +66,7 @@ const selector = formValueSelector(FORM.ADD_PERMIT);
 
 const validateBusinessRules = (values) => {
   const errors = {};
-  if (values.permit_is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
+  if (values.is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
     errors.permit_type = "Exploration is only valid for Coal and Placer permits";
   }
   return errors;
@@ -119,8 +119,8 @@ export class AddPermitForm extends Component {
               this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
-                  id="permit_is_exploration"
-                  name="permit_is_exploration"
+                  id="is_exploration"
+                  name="is_exploration"
                   label="Exploration permit"
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
@@ -207,7 +207,7 @@ export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
-    permitIsExploration: selector(state, "permit_is_exploration"),
+    permitIsExploration: selector(state, "is_exploration"),
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,

@@ -9,6 +9,7 @@ class NOWApplicationProgressStatus(AuditMixin, Base):
     application_progress_status_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    display_order = db.Column(db.Integer)
 
     @classmethod
     def get_all(cls):

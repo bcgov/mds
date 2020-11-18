@@ -26,6 +26,25 @@ export const fetchNoticeOfWorkApplication = (applicationGuid) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchImportNoticeOfWorkSubmissionDocumentsJob = (applicationGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.docManUrl}${API.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB(
+        applicationGuid
+      )}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB));
+      dispatch(noticeOfWorkActions.storeImportNoticeOfWorkSubmissionDocumentsJob(response.data));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const fetchNoticeOfWorkApplications = (params = {}) => (dispatch) => {
   dispatch(request(reducerTypes.GET_NOTICE_OF_WORK_APPLICATIONS));
   dispatch(showLoading());
@@ -357,6 +376,23 @@ export const deleteNoticeOfWorkApplicationReviewDocument = (applicationGuid, min
     })
     .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_REVIEW_DOCUMENT)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (dispatch) => {
+  dispatch(showLoading("modal"));
+  dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_APPLICATION_STATUS(now_application_guid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS)))
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const setNoticeOfWorkApplicationDocumentDownloadState = (payload) => (dispatch) => {

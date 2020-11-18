@@ -10,6 +10,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
   >
     <Connect(FinalPermitDocuments)
       adminView={true}
+      importNowSubmissionDocumentsJob={Object {}}
       mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
       noticeOfWork={
         Object {
@@ -57,6 +58,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "state_of_land": Object {},
+          "submission_documents": Array [],
           "submitted_date": "",
           "surface_bulk_sample": Object {
             "details": Array [],
@@ -124,6 +126,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "state_of_land": Object {},
+          "submission_documents": Array [],
           "submitted_date": "",
           "surface_bulk_sample": Object {
             "details": Array [],
@@ -243,6 +246,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
             "details": Array [],
           },
           "state_of_land": Object {},
+          "submission_documents": Array [],
           "submitted_date": "",
           "surface_bulk_sample": Object {
             "details": Array [],

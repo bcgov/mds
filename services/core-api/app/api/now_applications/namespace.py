@@ -5,14 +5,15 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 from app.api.now_applications.resources.now_application_list_resource import NOWApplicationListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_type_resource import NOWApplicationTypeResource
+from app.api.now_applications.resources.now_application_status_resource import NOWApplicationStatusCodeResource, NOWApplicationStatusResource
 from app.api.now_applications.resources.now_application_delay_resource import NOWApplicationDelayResource, NOWApplicationDelayListResource, NOWApplicationDelayTypeResource
-from app.api.now_applications.resources.now_application_status_code_resource import NOWApplicationStatusCodeResource
+from app.api.now_applications.resources.now_application_status_resource import NOWApplicationStatusResource
 from app.api.now_applications.resources.unit_type_resource import UnitTypeResource
 from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeResource, NOWApplicationDocumentTypeListResource, NOWApplicationDocumentGenerateResource
 from app.api.now_applications.resources.underground_exploration_type_resource import UndergroundExplorationTypeResource
 from app.api.now_applications.resources.now_application_progress_resource import NOWApplicationProgressResource
 from app.api.now_applications.resources.now_application_progress_status_resource import NOWApplicationProgressStatusResource
-from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource
+from app.api.now_applications.resources.now_application_document_resource import NOWApplicationDocumentResource, NOWApplicationDocumentUploadResource, NOWApplicationDocumentIdentityResource
 from app.api.now_applications.resources.now_application_permit_type_resource import NOWApplicationPermitTypeResource
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
@@ -22,6 +23,7 @@ api = Namespace('now-applications', description='Core Notice of Work operations'
 
 api.add_resource(NOWApplicationListResource, '')
 api.add_resource(NOWApplicationImportResource, '/<string:application_guid>/import')
+api.add_resource(NOWApplicationStatusResource, '/<string:application_guid>/status')
 api.add_resource(NOWApplicationResource, '/<string:application_guid>')
 api.add_resource(NOWApplicationProgressResource,
                  '/<string:application_guid>/progress/<string:application_progress_status_code>')
@@ -31,6 +33,8 @@ api.add_resource(NOWApplicationReviewResource,
 api.add_resource(NOWApplicationDocumentUploadResource, '/<string:application_guid>/document')
 api.add_resource(NOWApplicationDocumentResource,
                  '/<string:application_guid>/document/<string:mine_document_guid>')
+api.add_resource(NOWApplicationDocumentIdentityResource,
+                 '/<string:application_guid>/document-identity')
 api.add_resource(NOWApplicationDocumentGenerateResource,
                  '/application-document-types/<string:document_type_code>/generate')
 api.add_resource(NOWApplicationDelayListResource, '/<string:now_application_guid>/delays')

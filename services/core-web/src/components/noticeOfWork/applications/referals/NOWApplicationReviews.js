@@ -8,10 +8,7 @@ import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-
 import { formatDate } from "@common/utils/helpers";
 
 import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  getNowDocumentDownloadToken,
-  getDocumentDownloadToken,
-} from "@common/utils/actionlessNetworkCalls";
+import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -41,7 +38,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
-
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
@@ -55,7 +52,9 @@ const propTypes = {
   type: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+};
 
 const ReviewerLabels = {
   FNC: "First Nations Advisor",
@@ -77,6 +76,7 @@ const ApplicationReview = (props) => (
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
+        type={props.type}
       />
     </ScrollContentWrapper>
   </div>
@@ -211,59 +211,47 @@ export class NOWApplicationReviews extends Component {
 
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
-    const submissionDocs = this.props.noticeOfWork.submission_documents
-      .map((document) => ({
-        key: document.id,
-        filename: document.filename,
-      }))
-      .filter((item) => selectedSubmissionRows.includes(item.key));
-    const coreDocs = this.props.noticeOfWork.documents
-      .map((document) => ({
-        key: document.now_application_document_xref_guid,
-        documentManagerGuid: document.mine_document.document_manager_guid,
-        filename: document.mine_document.document_name,
-      }))
-      .filter((item) => selectedCoreRows.includes(item.key));
 
-    let currentFile = 0;
+    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
+      .map((doc) => ({
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
+        filename: doc.filename,
+      }))
+      .filter((doc) => selectedSubmissionRows.includes(doc.key));
+
+    const coreDocs = this.props.noticeOfWork.documents
+      .map((doc) => ({
+        key: doc.now_application_document_xref_guid,
+        documentManagerGuid: doc.mine_document.document_manager_guid,
+        filename: doc.mine_document.document_name,
+      }))
+      .filter((doc) => selectedCoreRows.includes(doc.key));
+
     const totalFiles = submissionDocs.length + coreDocs.length;
-    if (totalFiles === 0) return;
+    if (totalFiles === 0) {
+      return;
+    }
 
     submissionDocs.forEach((doc) =>
-      getNowDocumentDownloadToken(
-        doc.key,
-        this.props.noticeOfWork.now_application_guid,
-        doc.filename,
-        docURLS
-      )
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
+
     coreDocs.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
-    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
-      async () => {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const url of docURLS) {
-          if (this.state.cancelDownload) {
-            this.setState({ cancelDownload: false });
-            this.props.closeModal();
-            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-              downloading: false,
-              currentFile: 0,
-              totalFiles: 1,
-            });
-            notification.success({
-              message: `Cancelled file downloads.`,
-              duration: 10,
-            });
-            return;
-          }
-          currentFile += 1;
+    let currentFile = 0;
+    this.waitFor(() => docURLS.length === totalFiles).then(async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const url of docURLS) {
+        if (this.state.cancelDownload) {
+          this.setState({ cancelDownload: false });
+          this.props.closeModal();
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: true,
-            currentFile,
-            totalFiles,
+            downloading: false,
+            currentFile: 0,
+            totalFiles: 1,
           });
           this.downloadDocument(url);
           // eslint-disable-next-line
@@ -277,20 +265,43 @@ export class NOWApplicationReviews extends Component {
 
         this.props.closeModal();
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: false,
-          currentFile: 1,
-          totalFiles: 1,
+          downloading: true,
+          currentFile,
+          totalFiles,
+        });
+        this.downloadDocument(url);
+        // eslint-disable-next-line
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+      notification.success({
+        message: `Successfully Downloaded: ${totalFiles} files.`,
+        duration: 10,
+      });
+
+      if (!this.props.noticeOfWork.ready_for_review_date) {
+        this.updateNoticeOfWork({
+          ...this.props.noticeOfWork,
+          ready_for_review_date: new Date(),
         });
       }
-    );
+
+      this.props.closeModal();
+      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+        downloading: false,
+        currentFile: 1,
+        totalFiles: 1,
+      });
+    });
   };
 
   openDownloadPackageModal = (event) => {
     event.preventDefault();
     this.props.openModal({
+      width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
+        importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
@@ -314,11 +325,13 @@ export class NOWApplicationReviews extends Component {
       isLoaded: this.state.isLoaded,
       noticeOfWorkReviews: this.props.noticeOfWorkReviews,
       noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
+      importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
       handleDelete: this.handleDeleteReview,
       openEditModal: this.openEditReviewModal,
       handleEdit: this.handleEditReview,
       handleDocumentDelete: this.handleDocumentDelete,
     };
+
     return (
       <div>
         <Row type="flex" justify="center">
@@ -332,7 +345,10 @@ export class NOWApplicationReviews extends Component {
                 <DownloadOutlined className="padding-small--right icon-sm" />
                 Download Referral Package
               </Button>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={this.props.type === "FNC" ? "CON" : this.props.type}
+              >
                 <AddButton
                   onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                 >
