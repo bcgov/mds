@@ -38,12 +38,7 @@ exports[`NOWSecurities renders properly 1`] = `
     <div
       style={Object {}}
     >
-      <ReduxForm
-        destroyOnUnmount={true}
-        enableReinitialize={true}
-        forceUnregisterOnUnmount={false}
-        form="EDIT_PERMIT"
-        getFormState={[Function]}
+      <Connect(ReduxForm)
         initialValues={
           Object {
             "authorization_end_date": null,
@@ -66,19 +61,8 @@ exports[`NOWSecurities renders properly 1`] = `
           }
         }
         isEditMode={false}
-        keepDirtyOnReinitialize={false}
         onCancel={[Function]}
         onSubmit={[Function]}
-        persistentSubmitErrors={false}
-        pure={true}
-        shouldAsyncValidate={[Function]}
-        shouldError={[Function]}
-        shouldValidate={[Function]}
-        shouldWarn={[Function]}
-        submitAsSideEffect={false}
-        touchOnBlur={false}
-        touchOnChange={false}
-        updateUnregisteredFields={false}
       />
     </div>
   </LoadingWrapper>

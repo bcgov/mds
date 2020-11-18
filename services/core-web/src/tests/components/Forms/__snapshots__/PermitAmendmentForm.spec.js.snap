@@ -86,6 +86,16 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          id="security_not_required"
+          label="Security Not Required"
+          name="security_not_required"
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
           id="description"
           label="Description"
           name="description"

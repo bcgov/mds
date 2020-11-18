@@ -11,7 +11,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
     gutter={16}
   >
     <Col
-      md={12}
+      md={8}
       sm={24}
     >
       <div
@@ -41,7 +41,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       />
     </Col>
     <Col
-      md={12}
+      md={8}
       sm={24}
     >
       <div
@@ -57,6 +57,25 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
         disabled={false}
         id="security_received_date"
         name="security_received_date"
+      />
+    </Col>
+    <Col
+      span={8}
+    >
+      <div
+        className="field-title"
+      >
+        Security Not Required
+        <CoreTooltip
+          title="This only applies if a prior security is held covering this application and no increase is required, or another agency holds the bond."
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={false}
+        id="security_not_required"
+        label="No increase required"
+        name="security_not_required"
       />
     </Col>
   </Row>
