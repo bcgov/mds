@@ -70,7 +70,7 @@ const Section = (props) => {
         <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   className="no-margin"
                   ghost
@@ -84,7 +84,7 @@ const Section = (props) => {
                   <UpOutlined />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -98,7 +98,7 @@ const Section = (props) => {
                   <DownOutlined />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -118,7 +118,7 @@ const Section = (props) => {
                   />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   className="no-margin"
                   ghost

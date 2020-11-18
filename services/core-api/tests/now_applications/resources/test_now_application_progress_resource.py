@@ -25,10 +25,12 @@ class TestPostApplicationProgressResource:
             f'/now-applications/{now_application_identity.now_application_guid}/progress/REV',
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 201, post_resp.response
+        post_data = json.loads(post_resp.data.decode())
 
+        #TODO: find a library that can make this date format (that is offset-aware)
         post_resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/progress/REV',
-            json={'end_date': datetime.datetime.now().isoformat()},
+            json={'end_date': '2025-11-17T16:57:37.651Z'},
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 200, post_resp.response
 
@@ -47,9 +49,10 @@ class TestPostApplicationProgressResource:
         assert post_data['end_date'] == None
         org_start_date = post_data['start_date']
 
+        #TODO: find a library that can make this date format (that is offset-aware)
         post_resp = test_client.put(
             f'/now-applications/{now_application_identity.now_application_guid}/progress/REV',
-            json={'end_date': datetime.datetime.now().isoformat()},
+            json={'end_date': '2025-11-17T16:57:37.651Z'},
             headers=auth_headers['full_auth_header'])
         assert post_resp.status_code == 200, post_resp.response
         post_data = json.loads(post_resp.data.decode())

@@ -201,7 +201,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
             "documenturl": null,
             "filename": null,
             "is_final_package": false,
-            "messageid": null,
+            "messageid": 0,
             "mine_document_guid": null,
             "now_application_document_xref_guid": null,
             "now_application_id": null,
