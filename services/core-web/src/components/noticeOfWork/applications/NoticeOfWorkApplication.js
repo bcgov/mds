@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
