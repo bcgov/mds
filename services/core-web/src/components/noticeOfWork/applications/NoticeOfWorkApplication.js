@@ -10,6 +10,7 @@ import { get, isNull, isUndefined, kebabCase } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
@@ -19,6 +20,7 @@ import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/part
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
+  getImportNowSubmissionDocumentsJob,
   getNOWReclamationSummary,
 } from "@common/selectors/noticeOfWorkSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -69,10 +71,12 @@ import { EDIT_OUTLINE } from "@/constants/assets";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
@@ -113,6 +117,7 @@ const propTypes = {
 
 const defaultProps = {
   noticeOfWork: {},
+  importNowSubmissionDocumentsJob: {},
   documentContextTemplate: {},
   formErrors: undefined,
 };
@@ -241,6 +246,7 @@ export class NoticeOfWorkApplication extends Component {
         }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
+      this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id),
     ]);
   };
 
@@ -549,6 +555,7 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         isAmendment={isAmendment}
         documentType={
           isAmendment
@@ -874,6 +881,7 @@ export class NoticeOfWorkApplication extends Component {
                             : this.props.noticeOfWork
                         }
                         noticeOfWork={this.props.noticeOfWork}
+                        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                         renderOriginalValues={this.renderOriginalValues}
                       />
                     </div>
@@ -969,6 +977,7 @@ export class NoticeOfWorkApplication extends Component {
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       type="PUB"
                     />
                   </div>
@@ -1044,6 +1053,8 @@ export class NoticeOfWorkApplication extends Component {
                       inspectors={this.props.inspectors}
                       setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
                       handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+                      handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />
                   </div>
                 </LoadingWrapper>
@@ -1059,6 +1070,7 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
+  importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
@@ -1077,6 +1089,7 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
+      fetchImportNoticeOfWorkSubmissionDocumentsJob,
       generateNoticeOfWorkApplicationDocument,
       exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,

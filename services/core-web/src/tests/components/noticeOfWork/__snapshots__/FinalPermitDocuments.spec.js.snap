@@ -10,7 +10,7 @@ exports[`FinalPermitDocuments renders properly 1`] = `
         Final Application Package
       </h4>
       <p>
-        All files in this list will appear in the Preamble on the permit
+        All files in this list will appear in the Preamble on the permit.
       </p>
     </div>
     <div>
@@ -56,7 +56,29 @@ exports[`FinalPermitDocuments renders properly 1`] = `
       </Connect(NOWActionWrapper)>
     </div>
   </div>
+  <h4>
+    Original Documents
+  </h4>
+  <p>
+    These documents came in with the original application.
+  </p>
+  <NOWSubmissionDocuments
+    displayTableDescription={false}
+    documents={Array []}
+    hideImportStatusColumn={true}
+    hideJobStatusColumn={true}
+    importNowSubmissionDocumentsJob={Object {}}
+    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    now_application_guid="1346wesrt22"
+    selectedRows={null}
+  />
   <br />
+  <h4>
+    Requested Documents
+  </h4>
+  <p>
+    These documents were added after the original application but were provided by the proponent.
+  </p>
   <Connect(NOWDocuments)
     documents={Array []}
     isViewMode={true}
