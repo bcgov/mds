@@ -590,7 +590,7 @@ export class NoticeOfWorkApplication extends Component {
         {this.props.noticeOfWork.lead_inspector_party_guid && (
           <>
             <NOWProgressActions tab="REV" />
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
               <Button type="secondary" onClick={this.toggleEditMode}>
                 <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                 Edit
