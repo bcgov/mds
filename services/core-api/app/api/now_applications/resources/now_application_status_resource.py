@@ -13,6 +13,7 @@ from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODE
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from werkzeug.exceptions import BadRequest, NotFound
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -53,21 +54,20 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 'This application has not been imported. Please import an application before making changes.'
             )
 
-        #validation
-        permit = Permit.find_by_now_application_guid(application_guid)
-        if not permit:
-            raise NotFound('No permit found for this application.')
-
-        permit_amendment = PermitAmendment.find_by_now_application_guid(application_guid)
-        if not permit_amendment:
-            raise NotFound('No permit amendment found for this application.')
-
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
             now_application_identity.now_application.status_updated_date = datetime.today()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
 
             # Approved
             if now_application_status_code == 'AIA':
+                permit = Permit.find_by_now_application_guid(application_guid)
+                if not permit:
+                    raise NotFound('No permit found for this application.')
+
+                permit_amendment = PermitAmendment.find_by_now_application_guid(application_guid)
+                if not permit_amendment:
+                    raise NotFound('No permit amendment found for this application.')
+
                 #move out of draft
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
