@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
-import { isEmpty } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
@@ -36,12 +36,18 @@ export class NOWActionWrapper extends Component {
     this.handleDisableTab(this.props.tab);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = (nextProps) => {
     const tabChanged = this.props.tab !== nextProps.tab;
-    if (tabChanged) {
+    const progressNoWExists =
+      isEmpty(this.props.progress[this.props.tab]) && !isEmpty(nextProps.progress[this.props.tab]);
+    const progressChanged = isEqual(
+      nextProps.progress[this.props.tab],
+      this.props.progress[this.props.tab]
+    );
+    if (tabChanged || progressNoWExists || progressChanged) {
       this.handleDisableTab(nextProps.tab);
     }
-  }
+  };
 
   handleDisableTab = (tab) => {
     if (tab) {

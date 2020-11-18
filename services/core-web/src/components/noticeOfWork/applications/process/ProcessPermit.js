@@ -26,6 +26,7 @@ import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as route from "@/constants/routes";
 
 /**
@@ -240,7 +241,10 @@ export class ProcessPermit extends Component {
       <div>
         <div className="view--header">
           <div className="inline-flex block-mobile padding-md">
-            <h2>Process Permit</h2>
+            <h2>
+              Process Permit
+              <CoreTooltip title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made." />
+            </h2>
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
               <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">

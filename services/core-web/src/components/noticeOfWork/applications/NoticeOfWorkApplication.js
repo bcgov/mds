@@ -895,7 +895,16 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
-                      <h2 className="padding-md">Referral</h2>
+                      <h2 className="padding-md">
+                        Referral
+                        <CoreTooltip
+                          title="This page allows you to identify and download the files that need to be included in the referral package.
+            You may track progress on the E-Referrals website.
+            When responses are receives you can upload them by clicking on “Add Reviewer”
+            Finish this stage by clicking on “Complete Process” when all responses have been received.
+            If you need to make changes later, click “Resume Referral process”"
+                        />
+                      </h2>
                       <NOWProgressActions tab="REF" />
                     </div>
                     <NOWProgressStatus tab="REF" />
@@ -921,7 +930,15 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
-                      <h2 className="padding-md">Consultation</h2>
+                      <h2 className="padding-md">
+                        Consultation
+                        <CoreTooltip
+                          title="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
+                          You may track progress on the Consultation reports and tracking system (CRTS).
+                          When responses are received you can upload them by clicking on “Add Reviewer” .
+                          Finish this stage by clicking on “Complete Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”"
+                        />
+                      </h2>
                       <NOWProgressActions tab="CON" />
                     </div>
                     <NOWProgressStatus tab="CON" />
