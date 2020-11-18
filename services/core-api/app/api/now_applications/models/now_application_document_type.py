@@ -46,7 +46,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['conditions'] = conditions_template_data
 
             # TODO: Adjust this logic so it only renders if it IS a draft (and not the issued permit).
-            template_data['is_draft'] = True
+            template_data['is_draft'] = False
             return template_data
 
         # Transform the template data according to the document type
