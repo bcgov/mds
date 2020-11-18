@@ -28,6 +28,9 @@ import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
 import AddQuickPartyModal from "./AddQuickPartyModal";
+import IssuePermitModal from "./IssuePermitModal";
+import WithdrawApplicationModal from "./WithdrawApplicationModal";
+import RejectApplicationModal from "./RejectApplicationModal";
 import NOWProgressModal from "./NOWProgressModal";
 import NOWReasonForDelayModal from "./NOWReasonForDelayModal";
 import NOWDelayModal from "./NOWDelayModal";
@@ -63,6 +66,9 @@ export const modalConfig = {
   CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
   DELETE_CONDITION_MODAL: DeleteConditionModal,
+  ISSUE_PERMIT_MODAL: IssuePermitModal,
+  WITHDRAW_APPLICATION_MODAL: WithdrawApplicationModal,
+  REJECT_APPLICATION_MODAL: RejectApplicationModal,
   NOW_PROGRESS_MODAL: NOWProgressModal,
   NOW_REASON_FOR_DELAY_MODAL: NOWReasonForDelayModal,
   NOW_DELAY_MODAL: NOWDelayModal,

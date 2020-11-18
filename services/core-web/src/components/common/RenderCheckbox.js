@@ -13,11 +13,12 @@ const propTypes = {
   label: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   input: PropTypes.objectOf(PropTypes.string).isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 const RenderCheckbox = (props) => (
   <Form.Item validateStatus={props.meta.touched ? props.meta.error && "error" : ""}>
-    <Checkbox id={props.id} checked={props.input.value} {...props.input}>
+    <Checkbox id={props.id} checked={props.input.value} {...props.input} disabled={props.disabled}>
       {props.label}
     </Checkbox>
   </Form.Item>

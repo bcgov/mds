@@ -73,7 +73,7 @@ class NOWApplicationResource(Resource, UserMixin):
 
         now_application_status_code = data.get('now_application_status_code', None)
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
-            now_application_identity.now_application.status_updated_date = datetime.today()
+            raise AssertionError("now_application_status_code must not be modified")
 
         if data.get('mine_guid', None):
             mine = Mine.find_by_mine_guid(data['mine_guid'])

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -59,6 +60,7 @@ import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -729,9 +731,9 @@ export class NoticeOfWorkApplication extends Component {
     );
   };
 
-  renderTabTitle = (title) => (
+  renderTabTitle = (title, tabSection) => (
     <span>
-      <NOWStatusIndicator type="badge" />
+      <NOWStatusIndicator type="badge" tabSection={tabSection} />
       {title}
     </span>
   );
@@ -811,7 +813,7 @@ export class NoticeOfWorkApplication extends Component {
             )}
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Application")}
+              tab={this.renderTabTitle("Application", "REV")}
               key="application"
               disabled={!isImported}
             >
@@ -829,7 +831,11 @@ export class NoticeOfWorkApplication extends Component {
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
                       {this.renderEditModeNav()}
-                      <NOWStatusIndicator type="banner" />
+                      <NOWStatusIndicator
+                        type="banner"
+                        tabSection="REV"
+                        isEditMode={!this.state.isViewMode}
+                      />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -884,7 +890,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Referral")}
+              tab={this.renderTabTitle("Referral", "REF")}
               key="referral"
               disabled={!verificationComplete}
             >
@@ -895,7 +901,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Referral</h2>
                       <NOWProgressActions tab="REF" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="REF" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -909,7 +915,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Consultation")}
+              tab={this.renderTabTitle("Consultation", "CON")}
               key="consultation"
               disabled={!verificationComplete}
             >
@@ -920,7 +926,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Consultation</h2>
                       <NOWProgressActions tab="CON" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="CON" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -933,7 +939,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
             <Tabs.TabPane
-              tab={this.renderTabTitle("Public Comment")}
+              tab={this.renderTabTitle("Public Comment", "PUB")}
               key="public-comment"
               disabled={!verificationComplete}
             >
@@ -944,7 +950,7 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Public Comment</h2>
                       <NOWProgressActions tab="PUB" />
                     </div>
-                    <NOWStatusIndicator type="banner" />
+                    <NOWStatusIndicator type="banner" tabSection="PUB" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
@@ -959,7 +965,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Draft Permit")}
+              tab={this.renderTabTitle("Draft Permit", "DFT")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
@@ -974,6 +980,26 @@ export class NoticeOfWorkApplication extends Component {
                 <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   {this.renderPermitGeneration()}
+                </LoadingWrapper>
+              </>
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
+              tab="Process Permit"
+              key="process-permit"
+              disabled={!verificationComplete}
+            >
+              <>
+                <div className="tab-disclaimer">
+                  <p className="center">Process the permit after resolving all issues.</p>
+                </div>
+                <Divider style={{ margin: "0" }} />
+                <LoadingWrapper condition={this.state.isTabLoaded}>
+                  <ProcessPermit
+                    mineGuid={this.props.noticeOfWork.mine_guid}
+                    noticeOfWork={this.props.noticeOfWork}
+                    fixedTop={this.state.fixedTop}
+                  />
                 </LoadingWrapper>
               </>
             </Tabs.TabPane>

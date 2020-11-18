@@ -119,6 +119,8 @@ export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/status`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
