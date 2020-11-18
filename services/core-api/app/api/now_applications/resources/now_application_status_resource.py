@@ -25,11 +25,10 @@ class NOWApplicationStatusCodeResource(Resource, UserMixin):
 
 class NOWApplicationStatusResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-
-    parser.add_argument(
-        'auth_end_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
         'issue_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
+    parser.add_argument(
+        'auth_end_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
         'now_application_status_code',
         type=str,
@@ -42,6 +41,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         data = self.parser.parse_args()
         issue_date = data.get('issue_date', None)
         auth_end_date = data.get('auth_end_date', None)
+
         now_application_status_code = data.get('now_application_status_code', None)
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
@@ -80,29 +80,32 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 permit_amendment.permit_amendment_status_code = 'ACT'
                 permit_amendment.issue_date = issue_date
-                permit_amendment.auth_end_date = auth_end_date
+                permit_amendment.authorization_end_date = auth_end_date
                 permit_amendment.save()
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
-
                     new_permittee = False
 
                     if contact.mine_party_appt_type_code == "PMT":
                         current_mpa = MinePartyAppointment.find_current_appointments(
-                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                            permit_id=permit.permit_id)
-                        if len(current_mpa) > 1:
-                            raise BadRequest(
-                                'This permit has more than one active permittee. Please resolve this and try again.'
-                            )
+                            mine_party_appt_type_code='PMT', permit_id=permit.permit_id)
+
+                        if current_mpa is None or len(current_mpa) == 0:
+                            new_permittee = True
+
                         if len(current_mpa) == 1:
                             if current_mpa[0].party_guid != contact.party_guid:
                                 current_mpa[0].end_date = start_date - timedelta(days=1)
                                 current_mpa[0].save()
                                 new_permittee = True
 
-                    if contact.mine_party_appt_type_code != "PMT" or new_permittee:
+                        if len(current_mpa) > 1:
+                            raise BadRequest(
+                                'This permit has more than one active permittee. Please resolve this and try again.'
+                            )
+
+                    if contact.mine_party_appt_type_code != "PMT" or new_permittee == True:
                         mine_party_appointment = MinePartyAppointment.create(
                             mine=now_application_identity.mine
                             if contact.mine_party_appt_type_code != 'PMT' else None,

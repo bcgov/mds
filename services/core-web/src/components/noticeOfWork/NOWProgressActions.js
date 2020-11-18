@@ -56,6 +56,11 @@ export class NOWProgressActions extends Component {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork)
+      this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+  };
+
   handleProgress = (tab, trigger) => {
     const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
     if (trigger === "Complete") {
