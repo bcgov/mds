@@ -218,9 +218,26 @@
 }
 
 // RESULTS
-.ant-result-success .ant-result-icon > .anticon,
 .ant-result-info .ant-result-icon > .anticon {
   color: $primary-color;
+}
+.ant-result-success .ant-result-icon > .anticon {
+  color: $ok-green;
+}
+
+// ALERTS
+.ant-alert-warning {
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+    line-height: 2rem;
+  }
+  .ant-alert-icon {
+    margin-top:4px
+  }
 }
 
 .ant-alert-close-icon .anticon-close:hover {
@@ -523,4 +540,14 @@ select {
 
 .modal__close {
   font-size: inherit !important;
+}
+
+.ant-timeline-item-head {
+  margin-top: 14px;
+}
+ 
+.ant-timeline > li:last-child {
+  .ant-timeline-item-tail {
+    display: none;
+  }
 }
