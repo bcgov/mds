@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -18,7 +17,6 @@ import {
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import {
-  getPermits,
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
@@ -57,7 +55,6 @@ const propTypes = {
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   formValues: CustomPropTypes.permitGenObj.isRequired,
   preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
@@ -93,10 +90,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   fetchDraftPermit = () => {
-    const permittee = this.props.noticeOfWork.contacts.filter(
-      (contact) => contact.mine_party_appt_type_code_description === "Permittee"
-    )[0];
-    this.setState({ permittee });
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
   };
@@ -382,7 +375,6 @@ const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  permits: getPermits(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
