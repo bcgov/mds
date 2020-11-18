@@ -28,7 +28,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  bottom: "90px",
+  top: "-85px",
 };
 
 export class NOWProgressStatus extends Component {
@@ -37,7 +37,7 @@ export class NOWProgressStatus extends Component {
       <div
         style={{
           position: "relative",
-          bottom: this.props.bottom,
+          top: this.props.top,
           float: "right",
           padding: "10px",
         }}

@@ -798,7 +798,7 @@ export class NoticeOfWorkApplication extends Component {
             size="large"
             activeKey={this.state.activeTab}
             animated={{ inkBar: true, tabPane: false }}
-            className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
+            className="now-tabs"
             onTabClick={this.handleTabChange}
             style={{ margin: "0" }}
             centered
@@ -834,7 +834,7 @@ export class NoticeOfWorkApplication extends Component {
                         tabSection="REV"
                         isEditMode={!this.state.isViewMode}
                       />
-                      <NOWProgressStatus tab="REV" bottom={"120px"} />
+                      <NOWProgressStatus tab="REV" top="-110px" />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu

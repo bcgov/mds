@@ -307,8 +307,8 @@ export class NOWPermitGeneration extends Component {
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
           <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
+          <NOWProgressStatus tab="DFT" />
         </div>
-        <NOWProgressStatus tab="DFT" />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu
             route={routes.NOTICE_OF_WORK_APPLICATION}
@@ -318,9 +318,7 @@ export class NOWPermitGeneration extends Component {
         </div>
         <div
           className={
-            this.props.fixedTop
-              ? "view--content with-fixed-top side-menu--content"
-              : "view--content side-menu--content"
+            this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
           }
         >
           <LoadingWrapper condition={this.state.isLoaded}>
