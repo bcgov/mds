@@ -194,10 +194,11 @@ export class NOWProgressActions extends Component {
       </Menu>
     );
 
+    const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
     return (
       <div className="inline-flex">
         <>
-          {!(isApplicationDelayed || isProcessed) && this.props.tab !== "ADMIN" && (
+          {!(isApplicationDelayed || isProcessed) && showActions && (
             <>
               {!this.props.progress[this.props.tab] && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -227,7 +228,7 @@ export class NOWProgressActions extends Component {
               )}
             </>
           )}
-          {this.props.tab === "ADMIN" && (
+          {this.props.tab === "ADMIN" && !isProcessed && (
             <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
               <Dropdown overlay={menu} placement="bottomLeft">
                 <Button type="secondary">

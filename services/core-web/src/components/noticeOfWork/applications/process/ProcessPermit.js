@@ -25,6 +25,7 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import * as route from "@/constants/routes";
 
 /**
@@ -231,6 +232,7 @@ export class ProcessPermit extends Component {
         <div className="view--header">
           <div className="inline-flex block-mobile padding-md">
             <h2>Process Permit</h2>
+            <NOWProgressActions tab="PRO" />
             {!isProcessed && (
               <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
                 <Button type="secondary" className="full-mobile">

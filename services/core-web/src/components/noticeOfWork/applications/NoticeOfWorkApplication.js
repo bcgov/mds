@@ -834,7 +834,7 @@ export class NoticeOfWorkApplication extends Component {
                         tabSection="REV"
                         isEditMode={!this.state.isViewMode}
                       />
-                      <NOWProgressStatus tab="REV" top="-110px" />
+                      <NOWProgressStatus tab="REV" top="-100px" />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
