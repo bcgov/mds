@@ -409,8 +409,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
-        'security_not_required':
-        fields.Boolean,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date':
         DateTime,
         'last_updated_by':
@@ -484,6 +484,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date': Date,
         'last_updated_by': fields.String
     })

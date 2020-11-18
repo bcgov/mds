@@ -175,6 +175,15 @@ export class ProcessPermit extends Component {
     const validationMessages = [];
     if (
       !(
+        this.props.noticeOfWork.contacts &&
+        this.props.noticeOfWork.contacts.some(
+          (contact) => contact.mine_party_appt_type_code === "PMT"
+        )
+      )
+    )
+      validationMessages.push({ message: "Application must have a permittee." });
+    if (
+      !(
         this.props.draftAmendment &&
         (this.props.draftAmendment.security_received_date ||
           this.props.draftAmendment.security_not_required)

@@ -83,9 +83,23 @@ export class NOWPermitGeneration extends Component {
   };
 
   componentDidMount() {
+    this.fetchDraftPermit();
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
+      this.fetchDraftPermit();
+    }
+  };
+
+  fetchDraftPermit = () => {
+    const permittee = this.props.noticeOfWork.contacts.filter(
+      (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+    )[0];
+    this.setState({ permittee });
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
-  }
+  };
 
   handleDraftPermit = () => {
     this.props
@@ -302,7 +316,29 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
-    return (
+    const isProcessed =
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
+    return isProcessed ? (
+      <div>
+        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
+          {this.renderEditModeNav()}
+          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
+        </div>
+        <div
+          className={
+            this.props.fixedTop
+              ? "view--content with-fixed-top side-menu--content"
+              : "view--content side-menu--content"
+          }
+        >
+          <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
+            This application has been processed.
+          </h3>
+        </div>
+      </div>
+    ) : (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}

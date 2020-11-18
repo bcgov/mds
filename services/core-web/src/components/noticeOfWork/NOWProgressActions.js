@@ -61,6 +61,11 @@ export class NOWProgressActions extends Component {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork)
+      this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+  };
+
   handleProgress = (tab, trigger) => {
     const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
     if (trigger === "Complete") {
@@ -172,6 +177,7 @@ export class NOWProgressActions extends Component {
   };
 
   render() {
+    console.log(this.props.applicationDelay);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||

@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { currency } from "@common/utils/Validate";
+import { currency, required, validateSelectOptions } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -12,13 +14,22 @@ import { CoreTooltip } from "@/components/common/CoreTooltip";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import RenderCheckbox from "@/components/common/RenderCheckbox";
+import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
+  securityNotRequired: PropTypes.bool.isRequired,
 };
+
+const securityNotRequiredReasonOptions = [
+  { value: "Administrative Amendment", label: "Administrative Amendment" },
+  { value: "ALC Holds Bond", label: "ALC Holds Bond" },
+  { value: "Bonding is a Permit Condition", label: "Bonding is a Permit Condition" },
+  { value: "Sufficient Bond in Place", label: "Sufficient Bond in Place" },
+];
 
 export const PermitAmendmentSecurityForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -62,6 +73,20 @@ export const PermitAmendmentSecurityForm = (props) => (
           label="No increase required"
           disabled={!props.isEditMode}
         />
+        {props.securityNotRequired && (
+          <>
+            <div className="field-title">Reason*</div>
+            <Field
+              id="security_not_required_reason"
+              name="security_not_required_reason"
+              component={RenderSelect}
+              placeholder="Please select a reason"
+              data={securityNotRequiredReasonOptions}
+              validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+              disabled={!props.isEditMode}
+            />
+          </>
+        )}
       </Col>
     </Row>
     {props.isEditMode && (
@@ -88,8 +113,14 @@ export const PermitAmendmentSecurityForm = (props) => (
 
 PermitAmendmentSecurityForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.EDIT_PERMIT,
-  touchOnBlur: false,
-  enableReinitialize: true,
-})(PermitAmendmentSecurityForm);
+const selector = formValueSelector(FORM.EDIT_PERMIT); // <-- same as form name
+export default compose(
+  connect((state) => ({
+    securityNotRequired: selector(state, "security_not_required"),
+  })),
+  reduxForm({
+    form: FORM.EDIT_PERMIT,
+    touchOnBlur: false,
+    enableReinitialize: true,
+  })
+)(PermitAmendmentSecurityForm);
