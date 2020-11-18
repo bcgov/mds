@@ -2,8 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button } from "antd";
 import Highlight from "react-highlighter";
+import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
 
@@ -16,6 +19,7 @@ const propTypes = {
   handleProgress: PropTypes.func.isRequired,
   isAmendment: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  isCoalOrMineral: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -46,13 +50,15 @@ export const NOWProgressModal = (props) => (
         <br />
         {props.tabCode === "DFT" && (
           <>
-            {props.isAmendment
-              ? `Please select the permit that this amendment is for.*`
-              : `Please check the box below if this is an exploratory permit.*`}
+            {props.isAmendment && `Please select the permit that this amendment is for.*`}
+            {!props.isAmendment &&
+              props.isCoalOrMineral &&
+              `Please check the box below if this is an exploratory permit.*`}
             <PreDraftPermitForm
               initialValues={{ is_exploration: false }}
               permits={props.permits}
               isAmendment={props.isAmendment}
+              isCoalOrMineral={props.isCoalOrMineral}
             />
           </>
         )}
@@ -97,7 +103,10 @@ export const NOWProgressModal = (props) => (
         </Button>
       </Popconfirm>
       <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-        <Button type="primary" onClick={() => props.handleProgress(props.tabCode, props.trigger)}>
+        <Button
+          type="primary"
+          onClick={() => props.handleProgress(props.tabCode, props.trigger, props.isAmendment)}
+        >
           {props.title}
         </Button>
       </AuthorizationWrapper>
@@ -107,4 +116,8 @@ export const NOWProgressModal = (props) => (
 
 NOWProgressModal.propTypes = propTypes;
 NOWProgressModal.defaultProps = defaultProps;
-export default NOWProgressModal;
+
+const mapStateToProps = (state) => ({
+  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+});
+export default connect(mapStateToProps, null)(NOWProgressModal);

@@ -10,9 +10,7 @@ import { formatDate } from "@common/utils/helpers";
 import { getFormValues, reset } from "redux-form";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import {
-  createPermit,
   fetchPermits,
-  createPermitAmendment,
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
@@ -48,13 +46,10 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   reset: PropTypes.func.isRequired,
-  createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   formValues: CustomPropTypes.permitGenObj.isRequired,
-  preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
@@ -111,18 +106,6 @@ export class NOWPermitGeneration extends Component {
         }
         this.setState({ isLoaded: true });
       });
-  };
-
-  createPermit = (isExploration) => {
-    this.setState({ isLoaded: false });
-    const payload = {
-      permit_status_code: "D",
-      is_exploration: isExploration,
-      now_application_guid: this.props.noticeOfWork.now_application_guid,
-    };
-    this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
-      this.handleDraftPermit();
-    });
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
@@ -225,37 +208,6 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  startDraftPermit = () => {
-    this.setState({ isLoaded: false });
-    if (this.props.preDraftFormValues.permit_guid) {
-      const payload = {
-        permit_amendment_status_code: "DFT",
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
-      };
-      this.props
-        .createPermitAmendment(
-          this.props.noticeOfWork.mine_guid,
-          this.props.preDraftFormValues.permit_guid,
-          payload
-        )
-        .then(() => {
-          this.handleDraftPermit();
-        });
-    } else {
-      this.createPermit(this.props.preDraftFormValues.is_exploration);
-    }
-  };
-
-  startPreDraft = () => {
-    const isNewPermit = this.props.noticeOfWork.type_of_application === "New Permit";
-    const isCoalOrMineral =
-      this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
-      this.props.noticeOfWork.notice_of_work_type_code === "COL";
-    if (isNewPermit && !isCoalOrMineral) {
-      this.createPermit(false);
-    }
-  };
-
   renderEditModeNav = () => {
     const nowType = this.props.noticeOfWork.type_of_application
       ? `(${this.props.noticeOfWork.type_of_application})`
@@ -270,7 +222,7 @@ export class NOWPermitGeneration extends Component {
                     permit type. You can add or remove any condition."
           />
         </h2>
-        <NOWProgressActions tab="DFT" startDraftPermit={this.startDraftPermit} />
+        <NOWProgressActions tab="DFT" handleDraftPermit={this.handleDraftPermit} />
         {this.state.isDraft && (
           <>
             <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
@@ -374,7 +326,6 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
-  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
@@ -383,9 +334,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       reset,
-      createPermit,
       fetchPermits,
-      createPermitAmendment,
       updatePermitAmendment,
       fetchDraftPermitByNOW,
     },
