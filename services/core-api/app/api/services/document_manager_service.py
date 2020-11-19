@@ -90,13 +90,13 @@ class DocumentManagerService():
 
     @classmethod
     def _parse_request_metadata(cls, request):
-        request_metadata = request.headers.get("Upload-Metadata")
+        request_metadata = request.headers.get('Upload-Metadata')
         metadata = {}
         if not request_metadata:
             return metadata
 
-        for key_value in request_metadata.split(","):
-            (key, value) = key_value.split(" ")
-            metadata[key] = base64.b64decode(value).decode("utf-8")
+        for key_value in request_metadata.split(','):
+            (key, value) = key_value.split(' ')
+            metadata[key] = base64.b64decode(value).decode('utf-8')
 
         return metadata
