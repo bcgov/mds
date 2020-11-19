@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
 import { Switch } from "antd";
+import { invert, uniq } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import tus from "tus-js-client";
 import { ENVIRONMENT } from "@common/constants/environment";
+import { APPLICATION_OCTET_STREAM } from "@/constants/fileTypes";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { FLUSH_SOUND, WATER_SOUND } from "@/constants/assets";
 
@@ -21,10 +23,10 @@ const propTypes = {
   acceptedFileTypesMap: PropTypes.objectOf(PropTypes.string),
   onFileLoad: PropTypes.func,
   onRemoveFile: PropTypes.func,
+  addFileStart: PropTypes.func,
   chunkSize: PropTypes.number,
   allowRevert: PropTypes.bool,
   allowMultiple: PropTypes.bool,
-  addFileStart: PropTypes.func,
 };
 
 const defaultProps = {
@@ -53,7 +55,7 @@ class FileUpload extends React.Component {
           chunkSize: this.props.chunkSize,
           metadata: {
             filename: file.name,
-            filetype: file.type,
+            filetype: file.type || APPLICATION_OCTET_STREAM,
           },
           headers: createRequestHeader().headers,
           onError: (err) => {
@@ -89,7 +91,8 @@ class FileUpload extends React.Component {
   }
 
   render() {
-    const acceptedFileTypes = Object.values(this.props.acceptedFileTypesMap);
+    const fileValidateTypeLabelExpectedTypesMap = invert(this.props.acceptedFileTypesMap);
+    const acceptedFileTypes = uniq(Object.values(this.props.acceptedFileTypesMap));
 
     return (
       <div
@@ -125,7 +128,22 @@ class FileUpload extends React.Component {
           maxFileSize={this.props.maxFileSize}
           allowFileTypeValidation={acceptedFileTypes.length > 0}
           acceptedFileTypes={acceptedFileTypes}
-          fileValidateTypeLabelExpectedTypesMap={this.props.acceptedFileTypesMap}
+          fileValidateTypeLabelExpectedTypesMap={fileValidateTypeLabelExpectedTypesMap}
+          fileValidateTypeDetectType={(source, type) =>
+            new Promise((resolve, reject) => {
+              // If the browser can't automatically detect the file's MIME type, use the one stored in the "accepted file types" map.
+              if (!type) {
+                const exts = source.name.split(".");
+                const ext = exts && exts.length > 0 && `.${exts.pop()}`;
+                if (ext && ext in this.props.acceptedFileTypesMap) {
+                  type = this.props.acceptedFileTypesMap[ext];
+                } else {
+                  reject(type);
+                }
+              }
+              resolve(type);
+            })
+          }
         />
       </div>
     );
