@@ -26,7 +26,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     permit_no_seq = db.Sequence('permit_number_seq', metadata=Base.metadata)
     permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    permit_no = db.Column(db.String, nullable=False)
+    permit_no = db.Column(db.String(2), nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
     project_id = db.Column(db.String)
