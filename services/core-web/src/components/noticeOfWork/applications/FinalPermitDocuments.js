@@ -18,6 +18,7 @@ import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
+import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 /**
@@ -27,6 +28,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -38,6 +40,7 @@ const propTypes = {
 
 const defaultProps = {
   adminView: false,
+  importNowSubmissionDocumentsJob: {},
 };
 
 export class FinalPermitDocuments extends Component {
@@ -45,14 +48,27 @@ export class FinalPermitDocuments extends Component {
     cancelDownload: false,
   };
 
-  createFinalDocumentPackage = (selectedCoreRows) => {
-    const documentPayload = this.props.noticeOfWork.documents.map((document) => {
+  createFinalDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
+    const documentsPayload = this.props.noticeOfWork.documents.map((document) => {
       document.is_final_package = selectedCoreRows.includes(
         document.now_application_document_xref_guid
       );
       return document;
     });
-    const payload = { ...this.props.noticeOfWork, documents: documentPayload };
+
+    const submissionDocumentsPayload = this.props.noticeOfWork.filtered_submission_documents.map(
+      (document) => {
+        document.is_final_package = selectedSubmissionRows.includes(document.mine_document_guid);
+        return document;
+      }
+    );
+
+    const payload = {
+      ...this.props.noticeOfWork,
+      documents: documentsPayload,
+      submission_documents: submissionDocumentsPayload,
+    };
+
     const message = "Successfully updated the final application package.";
 
     this.props
@@ -91,69 +107,96 @@ export class FinalPermitDocuments extends Component {
 
   downloadDocumentPackage = () => {
     const docURLS = [];
-    const permitDocuments = this.props.noticeOfWork.documents.filter(
-      ({ is_final_package }) => is_final_package
+
+    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
+        filename: doc.filename,
+      }));
+
+    const coreDocs = this.props.noticeOfWork.documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        key: doc.now_application_document_xref_guid,
+        documentManagerGuid: doc.mine_document.document_manager_guid,
+        filename: doc.mine_document.document_name,
+      }));
+
+    const totalFiles = submissionDocs.length + coreDocs.length;
+    if (totalFiles === 0) {
+      return;
+    }
+
+    submissionDocs.forEach((doc) =>
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
+
+    coreDocs.forEach((doc) =>
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
+    );
+
     let currentFile = 0;
-    const totalFiles = permitDocuments.length;
-    if (totalFiles === 0) return;
-
-    permitDocuments.forEach((doc) =>
-      getDocumentDownloadToken(
-        doc.mine_document.document_manager_guid,
-        doc.mine_document.document_name,
-        docURLS
-      )
-    );
-
-    this.waitFor(() => docURLS.length === permitDocuments.length).then(async () => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
+    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
+      async () => {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const url of docURLS) {
+          if (this.state.cancelDownload) {
+            this.setState({ cancelDownload: false });
+            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+              downloading: false,
+              currentFile: 0,
+              totalFiles: 1,
+            });
+            notification.success({
+              message: "Cancelled file downloads.",
+              duration: 10,
+            });
+            return;
+          }
+          currentFile += 1;
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
+            downloading: true,
+            currentFile,
+            totalFiles,
           });
-          notification.success({
-            message: `Cancelled file downloads.`,
-            duration: 10,
-          });
-          return;
+          this.downloadDocument(url);
+          // eslint-disable-next-line
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
-        currentFile += 1;
-        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
+        notification.success({
+          message: `Successfully Downloaded: ${totalFiles} files.`,
+          duration: 10,
         });
-        this.downloadDocument(url);
-        // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
-      // dispatch toast message
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
 
-      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
-      });
-    });
+        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+          downloading: false,
+          currentFile: 1,
+          totalFiles: 1,
+        });
+      }
+    );
   };
 
   openFinalDocumentPackageModal = (event) => {
+    event.preventDefault();
+
     const finalDocuments = this.props.noticeOfWork.documents
       .filter(({ is_final_package }) => is_final_package)
       .map(({ now_application_document_xref_guid }) => now_application_document_xref_guid);
-    event.preventDefault();
+
+    const finalSubmissionDocuments = this.props.noticeOfWork.filtered_submission_documents
+      .filter(({ is_final_package }) => is_final_package)
+      .map(({ mine_document_guid }) => mine_document_guid);
+
     this.props.openModal({
+      width: 910,
       props: {
-        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        mineGuid: this.props.mineGuid,
+        noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
+        importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
+        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
         documents:
           this.props.noticeOfWork &&
           this.props.noticeOfWork.documents &&
@@ -161,8 +204,9 @@ export class FinalPermitDocuments extends Component {
             (doc) => doc.now_application_document_type_code !== "NTR"
           ),
         finalDocuments,
+        finalSubmissionDocuments,
         onSubmit: this.createFinalDocumentPackage,
-        title: `Create Final Application Package`,
+        title: "Create Final Application Package",
       },
       content: modalConfig.EDIT_FINAL_PERMIT_DOC_PACKAGE,
     });
@@ -172,6 +216,13 @@ export class FinalPermitDocuments extends Component {
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
     );
+
+    const permitSubmissionDocuments =
+      this.props.noticeOfWork.filtered_submission_documents &&
+      this.props.noticeOfWork.filtered_submission_documents.filter(
+        ({ is_final_package }) => is_final_package
+      );
+
     return this.props.documentDownloadState.downloading ? (
       <div className="inline-flex flex-flow-column horizontal-center">
         <h4>Downloading Selected Files...</h4>
@@ -194,7 +245,7 @@ export class FinalPermitDocuments extends Component {
         <div className="inline-flex between">
           <div>
             {!this.props.adminView && <h4>Final Application Package</h4>}
-            <p>All files in this list will appear in the Preamble on the permit</p>
+            <p>All files in this list will appear in the Preamble on the permit.</p>
           </div>
           <div>
             <Button
@@ -220,7 +271,22 @@ export class FinalPermitDocuments extends Component {
             </NOWActionWrapper>
           </div>
         </div>
+        <h4>Original Documents</h4>
+        <p>These documents came in with the original application.</p>
+        <NOWSubmissionDocuments
+          now_application_guid={this.props.noticeOfWork.now_application_guid}
+          mine_guid={this.props.mineGuid}
+          documents={permitSubmissionDocuments}
+          importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+          hideImportStatusColumn
+          hideJobStatusColumn
+        />
         <br />
+        <h4>Requested Documents</h4>
+        <p>
+          These documents were added after the original application but were provided by the
+          proponent.
+        </p>
         <NOWDocuments
           now_application_guid={this.props.noticeOfWork.now_application_guid}
           mine_guid={this.props.mineGuid}

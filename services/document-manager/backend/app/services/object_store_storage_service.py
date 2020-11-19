@@ -84,6 +84,21 @@ class ObjectStoreStorageService():
 
         return True, key
 
+    def upload_fileobj(self, filename, fileobj, progress=False):
+        key = f'{Config.S3_PREFIX}{filename}'
+
+        # Upload the file
+        try:
+            self._client.upload_fileobj(
+                Fileobj=fileobj,
+                Bucket=Config.OBJECT_STORE_BUCKET,
+                Key=key,
+                Callback=ProgressPercentage(filename) if progress else None)
+        except ClientError as e:
+            raise Exception(f'Failed to upload the file: {e}')
+
+        return True, key
+
     def compare_etag(self, filename, key):
         s3_etag = self.s3_etag(key)
         fs_etag = self.calculate_s3_etag(filename)

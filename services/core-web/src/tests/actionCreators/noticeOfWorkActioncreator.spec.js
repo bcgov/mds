@@ -11,6 +11,7 @@ import {
   fetchApplicationDelay,
   updateApplicationDelay,
   createApplicationDelay,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -316,6 +317,32 @@ describe("`fetchApplicationDelay` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchApplicationDelay(applicationGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchImportNoticeOfWorkSubmissionDocumentsJob` action creator", () => {
+  const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
+  const url = `${ENVIRONMENT.docManUrl}${API.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB(
+    applicationGuid
+  )}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchImportNoticeOfWorkSubmissionDocumentsJob(applicationGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchImportNoticeOfWorkSubmissionDocumentsJob(applicationGuid)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

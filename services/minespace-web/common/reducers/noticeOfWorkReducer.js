@@ -5,6 +5,7 @@ const initialState = {
   noticeOfWorkList: [],
   noticeOfWork: {},
   originalNoticeOfWork: {},
+  importNowSubmissionDocumentsJob: {},
   noticeOfWorkPageData: {},
   noticeOfWorkReviews: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
@@ -49,6 +50,11 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
         ...state,
         documentDownloadState: action.payload,
       };
+    case actionTypes.STORE_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB:
+      return {
+        ...state,
+        importNowSubmissionDocumentsJob: action.payload,
+      };
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION_DELAY:
       return {
         ...state,
@@ -66,6 +72,8 @@ const noticeOfWorkReducerObject = {
 export const getNoticeOfWorkList = (state) => state[NOTICE_OF_WORK].noticeOfWorkList;
 export const getNoticeOfWork = (state) => state[NOTICE_OF_WORK].noticeOfWork;
 export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].originalNoticeOfWork;
+export const getImportNowSubmissionDocumentsJob = (state) =>
+  state[NOTICE_OF_WORK].importNowSubmissionDocumentsJob;
 export const getNoticeOfWorkPageData = (state) => state[NOTICE_OF_WORK].noticeOfWorkPageData;
 export const getNoticeOfWorkReviews = (state) => state[NOTICE_OF_WORK].noticeOfWorkReviews;
 export const getDocumentDownloadState = (state) => state[NOTICE_OF_WORK].documentDownloadState;

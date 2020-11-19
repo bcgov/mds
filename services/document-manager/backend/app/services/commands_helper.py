@@ -1,16 +1,21 @@
 import numpy
 import uuid
 import os
+import requests
+import json
 
 from flask import current_app
 from sqlalchemy import and_
 from celery import chord
 
 from app.docman.models.document import Document
+from app.config import Config
+from app.docman.models.import_now_submission_documents_job import ImportNowSubmissionDocumentsJob
 from app.tasks.celery import doc_job_result
 from app.tasks.transfer import transfer_docs
 from app.tasks.verify import verify_docs
 from app.tasks.reorganize import reorganize_docs
+from app.tasks.import_now_submission_documents import import_now_submission_documents
 
 
 def create_transfer_files_job(wait):
@@ -109,3 +114,44 @@ def start_job(wait, job_type, docs, task):
         return result
 
     return message
+
+
+def create_import_now_submission_documents(import_now_submission_documents_job_id):
+    """Creates a job that imports a Notice of Work's submission documents to the object store."""
+
+    response = None
+    # Get the Import NoW Document Job
+    import_job = ImportNowSubmissionDocumentsJob.query.filter_by(
+        import_now_submission_documents_job_id=import_now_submission_documents_job_id).one()
+
+    # Create the task for this job
+    try:
+        data = {"args": [import_job.import_now_submission_documents_job_id]}
+        response = apply_task_async(
+            'app.tasks.import_now_submission_documents.import_now_submission_documents', data)
+        import_job.celery_task_id = response['task-id']
+        import_job.save()
+
+        # Create the response message
+        message = f'Added an Import Notice of Work Submission Documents job with ID: {import_now_submission_documents_job_id}, TaskID: {response["task-id"]} to the task queue: {len(import_job.import_now_submission_documents)} docs will be imported.'
+    except Exception as e:
+        message = f'Failed to add an Import Notice of Work Submission Documents job to the task queue: {str(e)}'
+
+    return message
+
+
+def apply_task_async(task_name, data):
+    response = requests.post(
+        url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
+        headers={'Content-Type': 'application/json'},
+        data=json.dumps(data))
+
+    return json.loads(response.content)
+
+
+def abort_task(task_id):
+    response = requests.post(
+        url=f'{Config.CELERY_REST_API_URL}/api/task/abort/{task_id}',
+        headers={'Content-Type': 'application/json'})
+
+    return json.loads(response.content)
