@@ -315,6 +315,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                     "details": Array [],
                   },
                   "state_of_land": Object {},
+                  "submission_documents": Array [],
                   "submitted_date": "",
                   "surface_bulk_sample": Object {
                     "details": Array [],
@@ -388,6 +389,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "details": Array [],
             },
             "state_of_land": Object {},
+            "submission_documents": Array [],
             "submitted_date": "",
             "surface_bulk_sample": Object {
               "details": Array [],
@@ -1337,6 +1339,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       title="vFCBC/NROS Application Files"
     >
       <NOWSubmissionDocuments
+        displayTableDescription={true}
+        documents={Array []}
+        hideImportStatusColumn={false}
+        hideJobStatusColumn={false}
+        importNowSubmissionDocumentsJob={Object {}}
         selectedRows={null}
       />
     </withRouter(Connect(ScrollContentWrapper))>

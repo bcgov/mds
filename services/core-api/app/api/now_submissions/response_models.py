@@ -61,10 +61,13 @@ CONTACT = api.model(
 DOCUMENT = api.model(
     'DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
+        'document_manager_document_guid': fields.String,
+        'is_final_package': fields.Boolean
     })
 
 PLACER_ACTIVITY = api.model(

@@ -3,18 +3,40 @@ import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
+import NOWSubmissionDocuments from "../noticeOfWork/applications/NOWSubmissionDocuments";
 
 const propTypes = {
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   finalDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
+  finalSubmissionDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  submissionDocuments: PropTypes.arrayOf(PropTypes.strings),
+};
+
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+  submissionDocuments: [],
 };
 
 export const EditFinalPermitDocumentPackage = (props) => {
   const [selectedCoreRows, setSelectedCoreRows] = useState(props.finalDocuments);
+  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
+    props.finalSubmissionDocuments
+  );
   return (
     <div>
+      <h4>vFCBC/NROS Application Files</h4>
+      <NOWSubmissionDocuments
+        now_application_guid={props.noticeOfWorkGuid}
+        documents={props.submissionDocuments}
+        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
+      />
+      <br />
+      <h4>Additional Documents</h4>
       <NOWDocuments
         documents={props.documents}
         isViewMode
@@ -34,7 +56,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
         <Button
           className="full-mobile"
           type="primary"
-          onClick={() => props.onSubmit(selectedCoreRows)}
+          onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
           <DownloadOutlined className="padding-small--right icon-sm" />
           Save Application Package
@@ -45,4 +67,6 @@ export const EditFinalPermitDocumentPackage = (props) => {
 };
 
 EditFinalPermitDocumentPackage.propTypes = propTypes;
+EditFinalPermitDocumentPackage.defaultProps = defaultProps;
+
 export default EditFinalPermitDocumentPackage;

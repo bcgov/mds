@@ -15,6 +15,11 @@ export const storeNoticeOfWorkApplication = (payload) => ({
   payload,
 });
 
+export const storeImportNoticeOfWorkSubmissionDocumentsJob = (payload) => ({
+  type: actionTypes.STORE_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB,
+  payload,
+});
+
 export const clearNoticeOfWorkApplication = () => ({
   type: actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION,
 });

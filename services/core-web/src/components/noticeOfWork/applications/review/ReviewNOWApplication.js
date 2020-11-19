@@ -49,7 +49,8 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  filtered_submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   noticeOfWorkType: PropTypes.string.isRequired,
@@ -709,7 +710,9 @@ export const ReviewNOWApplication = (props) => {
         <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
           <NOWSubmissionDocuments
             now_application_guid={props.now_application_guid}
-            documents={props.submission_documents}
+            documents={props.filtered_submission_documents}
+            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+            displayTableDescription
           />
         </ScrollContentWrapper>
         <ScrollContentWrapper
@@ -739,6 +742,8 @@ export default compose(
     now_application_guid: selector(state, "now_application_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
+    imported_submission_documents: selector(state, "imported_submission_documents"),
+    filtered_submission_documents: selector(state, "filtered_submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),

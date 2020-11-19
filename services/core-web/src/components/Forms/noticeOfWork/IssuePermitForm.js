@@ -4,17 +4,9 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import {
-  required,
-  dateNotInFuture,
-  maxLength,
-  validateSelectOptions,
-} from "@common/utils/Validate";
+import { required, dateNotInFuture } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
-import RenderSelect from "@/components/common/RenderSelect";
-import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
