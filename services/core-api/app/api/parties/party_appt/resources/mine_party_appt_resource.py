@@ -63,7 +63,11 @@ class MinePartyApptResource(Resource, UserMixin):
             incl_pmt = request.args.get('include_permittees', 'false').lower() == 'true'
             types = request.args.getlist('types') #list
             permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
-            mpas = MinePartyAppointment.find_all_by_mine_and_party(mine_guid, party_guid, types, incl_pmt)
+            mpas = MinePartyAppointment.find_by(
+                mine_guid=mine_guid,
+                party_guid=party_guid,
+                mine_party_appt_type_codes=types,
+                include_permittees=incl_pmt)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
 

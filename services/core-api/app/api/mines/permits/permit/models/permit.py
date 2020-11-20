@@ -42,6 +42,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
+        primaryjoin='and_(MinePartyAppointment.permit_id == Permit.permit_id, MinePartyAppointment.deleted_ind==False)',
         lazy='select',
         order_by=
         'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
