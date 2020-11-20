@@ -526,8 +526,7 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleExportDocument = (menuItem) => {
-    const documentTypeCode = menuItem.key;
+  handleExportDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
 
     this.exportNowDocument(documentType, this.props.noticeOfWork);
@@ -730,8 +729,9 @@ export class NoticeOfWorkApplication extends Component {
                 return (
                   <Menu.Item
                     className="custom-menu-item"
-                    key={document.now_application_document_type_code}
-                    onClick={(menuItem) => this.handleExportDocument(menuItem)}
+                    onClick={() => {
+                      this.handleExportDocument(document.now_application_document_type_code);
+                    }}
                   >
                     Edited Application
                   </Menu.Item>
