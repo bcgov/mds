@@ -1,7 +1,7 @@
-import os
+import os, requests
 from flask import current_app, request, Response, stream_with_context
 from flask_restplus import Resource
-from werkzeug.exceptions import BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
 from app.extensions import api, cache
 
 from app.api.utils.resources_mixins import UserMixin
@@ -42,6 +42,8 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         # Generate the document using the template and template data
         docgen_resp = DocumentGeneratorService.generate_document(
             now_application_document_type.document_template, token_data['template_data'])
+        if docgen_resp.status_code != requests.codes.ok:
+            raise BadGateway(f'Failed to generate document: {str(docgen_resp.content)}')
 
         # Push the document to the Document Manager
         filename = docgen_resp.headers['X-Report-Name']
