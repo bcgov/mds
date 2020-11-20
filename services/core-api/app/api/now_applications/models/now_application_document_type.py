@@ -34,6 +34,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 raise Exception(f'Notice of Work has no draft permit')
 
             template_data['is_amendment'] = not now_application.is_new_permit
+            template_data['inspector_signature_image'] = now_application.lead_inspector.signature
+            template_data['is_draft'] = False
 
             conditions = now_application.draft_permit.conditions
             conditions_template_data = {}
@@ -45,8 +47,6 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 conditions_template_data[category_code].append(section_data)
             template_data['conditions'] = conditions_template_data
 
-            # TODO: Adjust this logic so it only renders if it IS a draft (and not the issued permit).
-            template_data['is_draft'] = False
             return template_data
 
         # Transform the template data according to the document type
