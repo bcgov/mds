@@ -118,7 +118,7 @@ export class NOWPermitGeneration extends Component {
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
       conditions: "",
-      lead_inspector_title: "Inspector of Mines",
+      issuing_inspector_title: "Inspector of Mines",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -192,7 +192,7 @@ export class NOWPermitGeneration extends Component {
   handleSaveDraftEdit = () => {
     this.setState({ isLoaded: false });
     const payload = {
-      lead_inspector_title: this.props.formValues.lead_inspector_title,
+      issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
     };
     this.props

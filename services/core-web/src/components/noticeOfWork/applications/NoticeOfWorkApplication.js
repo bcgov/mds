@@ -126,9 +126,9 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     isTabLoaded: false,
-    isMajorMine: null,
-    associatedLeadInspectorPartyGuid: "",
-    associatedIssuingInspectorPartyGuid: "",
+    isMajorMine: undefined,
+    associatedLeadInspectorPartyGuid: undefined,
+    associatedIssuingInspectorPartyGuid: undefined,
     associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -139,7 +139,7 @@ export class NoticeOfWorkApplication extends Component {
     showNullScreen: false,
     initialPermitGuid: "",
     isNewApplication: false,
-    mineGuid: "",
+    mineGuid: undefined,
     submitting: false,
     activeTab: "verification",
   };
@@ -538,7 +538,6 @@ export class NoticeOfWorkApplication extends Component {
   handleExportDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-
     this.exportNowDocument(documentType, this.props.noticeOfWork);
   };
 

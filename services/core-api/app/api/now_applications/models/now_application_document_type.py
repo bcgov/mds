@@ -38,6 +38,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['is_amendment'] = not now_application.is_new_permit
             is_draft = False
             template_data['is_draft'] = is_draft
+            template_data[
+                'issuing_inspector_name'] = now_application.issuing_inspector.name if now_application.issuing_inspector else '<Name of Issuing Inspector>'
             if True:
                 template_data['images'] = {
                     'issuing_inspector_signature':

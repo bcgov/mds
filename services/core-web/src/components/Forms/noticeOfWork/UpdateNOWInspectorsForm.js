@@ -33,7 +33,7 @@ const UpdateNOWInspectorsForm = (props) => {
             name="lead_inspector_party_guid"
             label={
               !props.isAdminView
-                ? "Assign a lead inspector before continuing. This assignment can be updated later under the Administrative tab."
+                ? "Assign the Lead Inspector before continuing. This assignment can be updated later under the Administrative tab."
                 : ""
             }
             component={renderConfig.GROUPED_SELECT}
@@ -51,7 +51,7 @@ const UpdateNOWInspectorsForm = (props) => {
             name="issuing_inspector_party_guid"
             label={
               !props.isAdminView
-                ? "Optionally assign an issuing inspector before continuing. This assignment can be updated later under the Administrative tab."
+                ? "Optionally assign the Issuing Inspector before continuing. This assignment can be updated later under the Administrative tab."
                 : ""
             }
             component={renderConfig.GROUPED_SELECT}
