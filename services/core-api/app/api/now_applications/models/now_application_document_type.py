@@ -27,6 +27,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, now_application):
+        def create_image(source, width=None, height=None):
+            return {'source': source, 'width': width, 'height': height}
 
         # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA) documents
         def transform_permit(template_data, now_application):
@@ -34,11 +36,11 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 raise Exception(f'Notice of Work has no draft permit')
 
             template_data['is_amendment'] = not now_application.is_new_permit
-            is_draft = True
+            is_draft = False
             template_data['is_draft'] = is_draft
-            if not is_draft:
+            if True:
                 template_data['images'] = {
-                    'inspector_signature': now_application.lead_inspector.signature
+                    'inspector_signature': create_image(now_application.lead_inspector.signature)
                 }
 
             conditions = now_application.draft_permit.conditions

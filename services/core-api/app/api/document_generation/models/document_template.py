@@ -84,7 +84,8 @@ class DocumentTemplate(Base, AuditMixin):
         def insert_images(doc, template_data):
             images = template_data.get('images', {})
             for key in images:
-                image_base64 = images[key]
+                image = images[key]
+                image_base64 = image['source']
                 if not image_base64:
                     continue
 
@@ -94,7 +95,9 @@ class DocumentTemplate(Base, AuditMixin):
                     if key in paragraph.text:
                         paragraph.clear()
                         run = paragraph.add_run()
-                        run.add_picture(image_bytes)
+                        width = image['width']
+                        height = image['height']
+                        run.add_picture(image_bytes, width=width, height=height)
 
         doc = None
         if self.document_template_code in ('PMT', 'PMA'):
