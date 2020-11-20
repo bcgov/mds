@@ -32,21 +32,32 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
         # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA) documents
         def transform_permit(template_data, now_application):
-            if not now_application.draft_permit:
-                raise Exception(f'Notice of Work has no draft permit')
-
-            template_data['is_amendment'] = not now_application.is_new_permit
             is_draft = False
+            permit = None
+            if now_application.active_permit:
+                permit = now_application.active_permit
+            elif now_application.draft_permit:
+                permit = now_application.draft_permit
+                is_draft = False
+            elif now_application.remitted_permit:
+                permit = now_application.remitted_permit
+            else:
+                raise Exception('Notice of Work has no permit')
+
+            # NOTE: This is how the front-end is determing whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
+            template_data['is_amendment'] = not now_application.is_new_permit
+
             template_data['is_draft'] = is_draft
+
             template_data[
                 'issuing_inspector_name'] = now_application.issuing_inspector.name if now_application.issuing_inspector else '<Name of Issuing Inspector>'
-            if True:
+            if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
                     create_image(now_application.issuing_inspector.signature)
                 }
 
-            conditions = now_application.draft_permit.conditions
+            conditions = permit.conditions
             conditions_template_data = {}
             for section in conditions:
                 category_code = section.condition_category_code

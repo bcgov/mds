@@ -170,10 +170,22 @@ class NOWApplication(Base, AuditMixin):
         return '<NOWApplication %r>' % self.now_application_guid
 
     @hybrid_property
+    def active_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='ACT').one_or_none()
+
+    @hybrid_property
     def draft_permit(self):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
             permit_amendment_status_code='DFT').one_or_none()
+
+    @hybrid_property
+    def remitted_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='RMT').one_or_none()
 
     @hybrid_property
     def is_new_permit(self):
