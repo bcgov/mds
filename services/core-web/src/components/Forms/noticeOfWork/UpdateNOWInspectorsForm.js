@@ -14,6 +14,7 @@ import * as Permission from "@/constants/permissions";
 const propTypes = {
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
+  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   isAdminView: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
@@ -21,7 +22,7 @@ const propTypes = {
   title: PropTypes.bool.isRequired,
 };
 
-const UpdateNOWLeadInspectorForm = (props) => {
+const UpdateNOWInspectorsForm = (props) => {
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -36,11 +37,28 @@ const UpdateNOWLeadInspectorForm = (props) => {
                 : ""
             }
             component={renderConfig.GROUPED_SELECT}
-            placeholder="Start typing lead inspectors name"
+            placeholder="Start typing the Lead Inspector's name"
             validate={[required]}
             data={props.inspectors}
             disabled={!props.isEditMode}
             onSelect={props.setLeadInspectorPartyGuid}
+          />
+        </Form.Item>
+        <div className="field-title">Issuing Inspector</div>
+        <Form.Item>
+          <Field
+            id="issuing_inspector_party_guid"
+            name="issuing_inspector_party_guid"
+            label={
+              !props.isAdminView
+                ? "Optionally assign an issuing inspector before continuing. This assignment can be updated later under the Administrative tab."
+                : ""
+            }
+            component={renderConfig.GROUPED_SELECT}
+            placeholder="Start typing the Issuing Inspector's name"
+            data={props.inspectors}
+            disabled={!props.isEditMode}
+            onSelect={props.setIssuingInspectorPartyGuid}
           />
         </Form.Item>
         {props.isEditMode && (
@@ -70,9 +88,9 @@ const UpdateNOWLeadInspectorForm = (props) => {
   );
 };
 
-UpdateNOWLeadInspectorForm.propTypes = propTypes;
+UpdateNOWInspectorsForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.UPDATE_NOW_LEAD_INSPECTOR,
   touchOnBlur: true,
-})(UpdateNOWLeadInspectorForm);
+})(UpdateNOWInspectorsForm);

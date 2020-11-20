@@ -40,7 +40,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['is_draft'] = is_draft
             if True:
                 template_data['images'] = {
-                    'inspector_signature': create_image(now_application.lead_inspector.signature)
+                    'issuing_inspector_signature':
+                    create_image(now_application.issuing_inspector.signature)
                 }
 
             conditions = now_application.draft_permit.conditions

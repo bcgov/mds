@@ -58,7 +58,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
+import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -128,6 +128,7 @@ export class NoticeOfWorkApplication extends Component {
     isTabLoaded: false,
     isMajorMine: null,
     associatedLeadInspectorPartyGuid: "",
+    associatedIssuingInspectorPartyGuid: "",
     associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
@@ -284,11 +285,15 @@ export class NoticeOfWorkApplication extends Component {
     this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
-  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
+  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
     this.setState({
       associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
     });
-  };
+
+  setIssuingInspectorPartyGuid = (issuingInspectorPartyGuid) =>
+    this.setState({
+      associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
+    });
 
   setStatus = (status) => {
     this.setState({
@@ -373,11 +378,14 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
-  handleUpdateLeadInspector = (finalAction) => {
+  handleUpdateInspectors = (finalAction) => {
     if (
-      !this.state.associatedLeadInspectorPartyGuid ||
-      this.state.associatedLeadInspectorPartyGuid ===
-        this.props.noticeOfWork.lead_inspector_party_guid
+      (!this.state.associatedLeadInspectorPartyGuid ||
+        this.state.associatedLeadInspectorPartyGuid ===
+          this.props.noticeOfWork.lead_inspector_party_guid) &&
+      (!this.state.associatedIssuingInspectorPartyGuid ||
+        this.state.associatedIssuingInspectorPartyGuid ===
+          this.props.noticeOfWork.issuing_inspector_party_guid)
     ) {
       finalAction();
       return;
@@ -385,11 +393,12 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
-        { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
+        {
+          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
+          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
+        },
         this.props.noticeOfWork.now_application_guid,
-        `Successfully assigned ${
-          this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
-        } as the Lead Inspector`
+        "Successfully updated the assigned inspectors"
       )
       .then(() => {
         this.props
@@ -854,17 +863,14 @@ export class NoticeOfWorkApplication extends Component {
                     >
                       {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
                         <>
-                          <ScrollContentWrapper
-                            id="lead-inspector"
-                            title="Assign Lead Inspector"
-                            isActive
-                          >
-                            <AssignLeadInspector
+                          <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
+                            <AssignInspectors
                               inspectors={this.props.inspectors}
                               noticeOfWork={this.props.noticeOfWork}
                               setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                              handleUpdateLeadInspector={this.handleUpdateLeadInspector}
-                              title="Assign Lead Inspector"
+                              setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                              handleUpdateInspectors={this.handleUpdateInspectors}
+                              title="Assign Inspectors"
                               isEditMode
                             />
                           </ScrollContentWrapper>
@@ -1052,7 +1058,8 @@ export class NoticeOfWorkApplication extends Component {
                       noticeOfWork={this.props.noticeOfWork}
                       inspectors={this.props.inspectors}
                       setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                      handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                      setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                      handleUpdateInspectors={this.handleUpdateInspectors}
                       importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />

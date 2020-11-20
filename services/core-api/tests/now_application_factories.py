@@ -403,6 +403,7 @@ class NOWApplicationFactory(BaseFactory):
 
     application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
     lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)

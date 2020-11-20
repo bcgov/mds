@@ -70,6 +70,9 @@ class NOWApplicationResource(Resource, UserMixin):
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
         if lead_inspector_party_guid is not None:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
+        issuing_inspector_party_guid = data.get('issuing_inspector_party_guid', None)
+        if issuing_inspector_party_guid is not None:
+            now_application_identity.now_application.issuing_inspector_party_guid = issuing_inspector_party_guid
 
         now_application_status_code = data.get('now_application_status_code', None)
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:

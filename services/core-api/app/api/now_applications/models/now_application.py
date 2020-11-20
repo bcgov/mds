@@ -37,6 +37,8 @@ class NOWApplication(Base, AuditMixin):
 
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
+    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    issuing_inspector = db.relationship('Party', lazy='selectin', uselist=False)
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
