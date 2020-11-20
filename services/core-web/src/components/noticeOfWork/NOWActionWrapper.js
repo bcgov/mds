@@ -1,6 +1,8 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { withRouter } from "react-router-dom";
 import { isEmpty, isEqual } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -14,6 +16,14 @@ import {
  * @constant NOWActionWrapper conditionally renders NoW actions based on various conditions (ie, Rejected, Permit issued, client delay, stages not started, etc)
  * persists permissions using authWrapper - These actions are not visible to admin if disabled.
  */
+
+const TabCodes = {
+  application: "REV",
+  referral: "REF",
+  consultation: "CON",
+  "public-comment": "PUB",
+  "draft-permit": "DFT",
+};
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -30,11 +40,18 @@ const defaultProps = {
   tab: null,
 };
 export class NOWActionWrapper extends Component {
-  state = { disableTab: false };
+  state = { disableTab: false, currentTab: undefined };
 
   componentDidMount() {
     this.handleDisableTab(this.props.tab);
+    this.handleCurrentTabRoute(this.props.location.pathname);
   }
+
+  handleCurrentTabRoute = (pathname) => {
+    const split = pathname.split("/");
+    const currentTab = split.pop();
+    this.setState({ currentTab: TabCodes[currentTab] });
+  };
 
   componentWillReceiveProps = (nextProps) => {
     const tabChanged = this.props.tab !== nextProps.tab;
@@ -44,6 +61,10 @@ export class NOWActionWrapper extends Component {
       nextProps.progress[this.props.tab],
       this.props.progress[this.props.tab]
     );
+    const locationChanged = this.props.location.pathname !== nextProps.location.pathname;
+    if (locationChanged) {
+      this.handleCurrentTabRoute(nextProps.location.pathname);
+    }
     if (tabChanged || progressNoWExists || progressChanged) {
       this.handleDisableTab(nextProps.tab);
     }
@@ -64,12 +85,17 @@ export class NOWActionWrapper extends Component {
   };
 
   render() {
+    const doubleCheck = this.state.currentTab === this.props.tab && !this.state.disableTab;
+    console.log(this.state.currentTab);
+    console.log(this.props.tab);
+    console.log(doubleCheck);
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
+    const disabled =
+      isApplicationDelayed || isApplicationComplete || this.state.disableTab || !doubleCheck;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -89,4 +115,4 @@ const mapStateToProps = (state) => ({
   applicationDelay: getApplicationDelay(state),
 });
 
-export default connect(mapStateToProps)(NOWActionWrapper);
+export default withRouter(connect(mapStateToProps)(NOWActionWrapper));
