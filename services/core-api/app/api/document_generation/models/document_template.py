@@ -1,7 +1,6 @@
 import json, os, docx, io, base64
 
 from flask import current_app
-from datetime import datetime
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -39,7 +38,6 @@ class DocumentTemplate(Base, AuditMixin):
 
     def _form_spec_with_context(self, primary_key):
         spec = json.loads(self.form_spec_json)
-
         current_app.logger.debug(f'getting model for string -> {self.source_model_name}')
 
         source_model = get_model_by_model_name(self.source_model_name)
@@ -76,13 +74,20 @@ class DocumentTemplate(Base, AuditMixin):
 
     @hybrid_property
     def file_name(self):
-        return self.template_file_path.split('/')[:-1]
+        return self.template_file_path.split('/')[-1]
+
+    @hybrid_property
+    def file_name_no_extension(self):
+        return '.'.join(self.file_name.split('.')[:-1])
 
     def get_dynamic_template(self, template_data):
         def insert_images(doc, template_data):
             images = template_data.get('images', {})
             for key in images:
                 image_base64 = images[key]
+                if not image_base64:
+                    continue
+
                 image_data = base64.b64decode(image_base64.split(',')[1])
                 image_bytes = io.BytesIO(image_data)
                 for paragraph in doc.paragraphs:
@@ -99,6 +104,7 @@ class DocumentTemplate(Base, AuditMixin):
         if doc:
             fileobj = io.BytesIO()
             doc.save(fileobj)
+            fileobj.seek(0)
             return fileobj
 
         return None

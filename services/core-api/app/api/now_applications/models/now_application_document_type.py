@@ -34,8 +34,10 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 raise Exception(f'Notice of Work has no draft permit')
 
             template_data['is_amendment'] = not now_application.is_new_permit
-            template_data['inspector_signature_image'] = now_application.lead_inspector.signature
-            template_data['is_draft'] = False
+            template_data['is_draft'] = True
+            template_data['images'] = {}
+            template_data['images'][
+                'inspector_signature_image'] = now_application.lead_inspector.signature
 
             conditions = now_application.draft_permit.conditions
             conditions_template_data = {}
