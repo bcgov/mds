@@ -726,15 +726,17 @@ export class NoticeOfWorkApplication extends Component {
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code === "NTR"
               )
-              .map((document) => (
-                <Menu.Item
-                  className="custom-menu-item"
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleExportDocument}
-                >
-                  Edited Application
-                </Menu.Item>
-              ))}
+              .map((document) => {
+                return (
+                  <Menu.Item
+                    className="custom-menu-item"
+                    key={document.now_application_document_type_code}
+                    onClick={(menuItem) => this.handleExportDocument(menuItem)}
+                  >
+                    Edited Application
+                  </Menu.Item>
+                );
+              })}
         </>
       </Menu>
     );

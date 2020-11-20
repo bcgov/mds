@@ -466,3 +466,26 @@ export const fetchApplicationDelay = (applicationGuid) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+// TODO check if it is possible to merge this with deleteNoticeOfWorkApplicationReviewDocument
+export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocumentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(applicationGuid)}/${mineDocumentGuid}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully removed the document",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .finally(() => dispatch(hideLoading()));
+};
