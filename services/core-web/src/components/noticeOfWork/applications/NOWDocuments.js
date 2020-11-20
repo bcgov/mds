@@ -176,15 +176,15 @@ export const NOWDocuments = (props) => {
 
     const deleteButtonColumn = {
       title: "",
-      dataIndex: "isDeleteAllowed",
-      key: "isDeleteAllowed",
+      dataIndex: "isDeletionAllowed",
+      key: "isDeletionAllowed",
       render: (text, record) => {
         if (text) {
           return (
             <Popconfirm
               className="position-right no-margin"
               placement="topLeft"
-              title="Are you sure you want to remove document?"
+              title="Are you sure you want to remove this document?"
               okText="Delete"
               cancelText="Cancel"
               onConfirm={() => {
@@ -229,7 +229,7 @@ export const NOWDocuments = (props) => {
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,
-      isDeleteAllowed: !document.is_final_package,
+      isDeletionAllowed: !document.is_final_package,
     }));
 
   return (
