@@ -1,13 +1,10 @@
-ALTER TABLE now_application ADD COLUMN security_not_required boolean;
-ALTER TABLE permit_amendment ADD COLUMN security_not_required boolean;
-ALTER TABLE now_application ADD COLUMN security_not_required_reason varchar;
-ALTER TABLE permit_amendment ADD COLUMN security_not_required_reason varchar;
-ALTER TABLE permit ADD COLUMN is_exploration boolean DEFAULT false;
+
 UPDATE permit set is_exploration = true where permit_no like '%X-%';
 
 drop view bond_view;
 drop view mine_summary_view;
 ALTER TABLE permit ALTER COLUMN permit_no SET DATA TYPE varchar;
+
 
 CREATE OR REPLACE VIEW public.mine_summary_view
 AS SELECT m.mine_guid::character varying AS mine_guid,
