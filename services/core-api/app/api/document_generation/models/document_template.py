@@ -100,7 +100,8 @@ class DocumentTemplate(Base, AuditMixin):
                         run = paragraph.add_run()
                         run.add_picture(image_bytes, width=width, height=height)
 
-            del template_data['images']
+            if template_data.get('images'):
+                del template_data['images']
 
         doc = None
         if self.document_template_code in ('PMT', 'PMA', 'NCL', 'NWL', 'NRL'):
