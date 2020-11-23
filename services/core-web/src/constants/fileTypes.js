@@ -25,24 +25,22 @@ export const DOCUMENT = { ...PDF, ...DOC, ...OPEN_DOC };
 
 export const IMAGE = {
   ".jpeg": "image/jpeg",
-  ".png": "image/png",
+  ".PNG": "image/png",
 };
 
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
   ".geoJSon": "application/vnd.geo+json",
   ".gml": "application/gml+xml",
-  ".kml": "application/vnd.google-earth.kml+xml",
+  ".kml": "application/vnd.google-earth.kml+xml ",
   ".kmz": "application/vnd.google-earth.kmz",
-  ".prj": APPLICATION_OCTET_STREAM,
-  ".sbn": APPLICATION_OCTET_STREAM,
-  ".sbx": APPLICATION_OCTET_STREAM,
-  ".shp": APPLICATION_OCTET_STREAM,
-  ".shpz": APPLICATION_OCTET_STREAM,
-  ".shx": APPLICATION_OCTET_STREAM,
-  ".wkt": APPLICATION_OCTET_STREAM,
+  ".prj": "application/octet-stream",
+  ".sbn": "application/octet-stream",
+  ".sbx": "application/octet-stream",
+  ".shp": "application/octet-stream",
+  ".shpz": "application/octet-stream",
+  ".shx": "application/octet-stream",
+  ".wkt": "application/octet-stream",
 };
 
 export const SPATIAL = { ...UNIQUELY_SPATIAL, ".csv": "text/csv", ".xml": "application/xml" };
-
-export const APPLICATION_OCTET_STREAM = "application/octet-stream";

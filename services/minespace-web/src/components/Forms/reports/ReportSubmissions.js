@@ -9,6 +9,8 @@ import LinkButton from "@/components/common/LinkButton";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
+import { ReportsUploadedFilesList } from "@/components/Forms/reports/ReportsUploadedFilesList";
+
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   updateMineReportSubmissions: PropTypes.func.isRequired,

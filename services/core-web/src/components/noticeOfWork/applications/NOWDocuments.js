@@ -84,7 +84,7 @@ export const NOWDocuments = (props) => {
       props: {
         onSubmit: handleAddDocument,
         now_application_guid: props.noticeOfWork.now_application_guid,
-        title: "Add Notice of Work document",
+        title: `Add Notice of Work document`,
         categoriesToShow: props.categoriesToShow,
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,

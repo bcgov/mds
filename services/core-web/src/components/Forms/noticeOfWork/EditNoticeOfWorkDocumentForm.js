@@ -10,7 +10,6 @@ import { required, maxLength, validateSelectOptions } from "@common/utils/Valida
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { NOTICE_OF_WORK_DOCUMENT } from "@common/constants/API";
-import { DOCUMENT, EXCEL, SPATIAL } from "@/constants/fileTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -123,7 +122,6 @@ export class EditNoticeOfWorkDocumentForm extends Component {
                   component={FileUpload}
                   addFileStart={() => this.toggleDisabled(true)}
                   uploadUrl={NOTICE_OF_WORK_DOCUMENT(this.props.now_application_guid)}
-                  acceptedFileTypesMap={{ ...DOCUMENT, ...EXCEL, ...SPATIAL }}
                   allowMultiple
                   allowRevert
                 />
