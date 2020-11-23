@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
-import { Table, Button, Popconfirm } from "antd";
+import { Table, Button, Popconfirm, Tooltip } from "antd";
 import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
@@ -178,11 +178,10 @@ export const NOWDocuments = (props) => {
       title: "",
       dataIndex: "isDeletionAllowed",
       key: "isDeletionAllowed",
-      render: (text, record) => {
-        if (text) {
+      render: (isDeletionAllowed, record) => {
+        if (isDeletionAllowed) {
           return (
             <Popconfirm
-              className="position-right no-margin"
               placement="topLeft"
               title="Are you sure you want to remove this document?"
               okText="Delete"
@@ -197,7 +196,20 @@ export const NOWDocuments = (props) => {
             </Popconfirm>
           );
         }
-        return <></>;
+        return (
+          /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+          <div disabled onClick={(event) => event.stopPropagation()}>
+            <Tooltip
+              title="You cannot remove a document that is a part of the Final Application Package."
+              placement="right"
+              mouseEnterDelay={0.3}
+            >
+              <Button ghost type="primary" disabled size="small">
+                <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
+              </Button>
+            </Tooltip>
+          </div>
+        );
       },
     };
 
