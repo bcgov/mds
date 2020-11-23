@@ -653,7 +653,7 @@ export class NoticeOfWorkApplication extends Component {
             <Alert
               message={`You have ${errorsLength} ${
                 errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding`}
+              } that must be fixed before proceeding.`}
               type="error"
               showIcon
               style={{ width: "50vw", margin: "auto", top: "8px" }}

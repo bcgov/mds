@@ -30,7 +30,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         def create_image(source, width=None, height=None):
             return {'source': source, 'width': width, 'height': height}
 
-        # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA) documents
+        # Transform template data for "Working Permit" or "Working Permit for Amendment"
         def transform_permit(template_data, now_application):
             is_draft = False
             permit = None
@@ -48,6 +48,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['is_amendment'] = not now_application.is_new_permit
 
             template_data['is_draft'] = is_draft
+
+            if not now_application.issuing_inspector:
+                raise Exception('This Notice of Work has no Issuing Inspector assigned.')
 
             template_data[
                 'issuing_inspector_name'] = now_application.issuing_inspector.name if now_application.issuing_inspector else '<Name of Issuing Inspector>'
@@ -69,8 +72,22 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             return template_data
 
+        # Transform template data for "Acknowledgement Letter", "Withdrawal Letter", and "Rejection Letter"
+        def transform_letter(template_data, now_application):
+            if not now_application.issuing_inspector:
+                raise Exception('This Notice of Work has no Issuing Inspector assigned.')
+
+            template_data['images'] = {
+                'issuing_inspector_signature':
+                create_image(now_application.issuing_inspector.signature)
+            }
+
+            return template_data
+
         # Transform the template data according to the document type
         if self.now_application_document_type_code in ('PMT', 'PMA'):
             return transform_permit(template_data, now_application)
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL'):
+            return transform_letter(template_data, now_application)
 
         return template_data

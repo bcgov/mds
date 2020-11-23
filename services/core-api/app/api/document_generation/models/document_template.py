@@ -98,9 +98,10 @@ class DocumentTemplate(Base, AuditMixin):
                         width = image['width']
                         height = image['height']
                         run.add_picture(image_bytes, width=width, height=height)
+            del template_data['images']
 
         doc = None
-        if self.document_template_code in ('PMT', 'PMA'):
+        if self.document_template_code in ('PMT', 'PMA', 'NCL', 'NWL', 'NRL'):
             doc = docx.Document(self.os_template_file_path)
             insert_images(doc, template_data)
 

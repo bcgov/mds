@@ -673,17 +673,21 @@ UPDATE document_template SET form_spec_json = '[
       "id": "letter_dt",
       "label": "Letter Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true
     },
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
       "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s name",
+      "required": true
     },
     {
       "id": "proponent_address",
@@ -691,13 +695,6 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the proponent''s address",
       "required": true
-    },
-    {
-      "id": "proponent_name",
-      "label": "Proponent Name",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s name",
-      "required": false
     },
     {
       "id": "property",
@@ -712,17 +709,27 @@ UPDATE document_template SET form_spec_json = '[
       "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true,
       "relative-data-path": "now_application.submitted_date"
     },
     {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
+      "id": "issuing_inspector_name",
       "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
     },
     { 
       "id": "letter_body",
@@ -751,27 +758,18 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
@@ -784,17 +782,21 @@ UPDATE document_template SET form_spec_json = '[
       "id": "letter_dt",
       "label": "Letter Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true
     },
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
       "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s name",
+      "required": true
     },
     {
       "id": "proponent_address",
@@ -802,13 +804,6 @@ UPDATE document_template SET form_spec_json = '[
       "type": "FIELD",
       "placeholder": "Enter the proponent''s address",
       "required": true
-    },
-    {
-      "id": "proponent_name",
-      "label": "Proponent Name",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s name",
-      "required": false
     },
     {
       "id": "property",
@@ -823,16 +818,26 @@ UPDATE document_template SET form_spec_json = '[
       "id": "withdrawal_dt",
       "label": "Withdrawal Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true
     },
     {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
+      "id": "issuing_inspector_name",
       "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
     },
     { 
       "id": "letter_body",
@@ -843,45 +848,30 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
       "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
@@ -894,31 +884,28 @@ UPDATE document_template SET form_spec_json = '[
       "id": "letter_dt",
       "label": "Letter Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true
     },
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
       "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
-    },
-    {
-      "id": "proponent_address",
-      "label": "Proponent Address",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s address",
-      "required": true
     },
     {
       "id": "proponent_name",
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
-      "required": false
+      "required": true
+    },    
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "required": true
     },
     {
       "id": "emailed_to",
@@ -940,7 +927,7 @@ UPDATE document_template SET form_spec_json = '[
       "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true,
       "relative-data-path": "now_application.submitted_date"
     },
@@ -959,12 +946,22 @@ UPDATE document_template SET form_spec_json = '[
       "required": true
     },
     {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
+      "id": "issuing_inspector_name",
       "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "required": true,
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
     },
     { 
       "id": "letter_body",
@@ -975,45 +972,30 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
       "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
