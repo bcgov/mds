@@ -22,7 +22,10 @@ export const createPermit = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
