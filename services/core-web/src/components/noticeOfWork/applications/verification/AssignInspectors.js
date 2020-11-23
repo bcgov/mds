@@ -13,9 +13,9 @@ const propTypes = {
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool,
   isAdminView: PropTypes.bool,
-  title: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -45,6 +45,7 @@ const AssignInspectors = (props) => {
                 lead_inspector_party_guid: props.noticeOfWork.lead_inspector_party_guid,
                 issuing_inspector_party_guid: props.noticeOfWork.issuing_inspector_party_guid,
               }}
+              noticeOfWork={props.noticeOfWork}
               inspectors={props.inspectors}
               setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
               setIssuingInspectorPartyGuid={props.setIssuingInspectorPartyGuid}

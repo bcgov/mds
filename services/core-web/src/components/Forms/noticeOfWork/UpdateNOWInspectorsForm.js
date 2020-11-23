@@ -1,17 +1,19 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Alert } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
+import { MDS_EMAIL } from "@common/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
   setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
@@ -61,6 +63,31 @@ const UpdateNOWInspectorsForm = (props) => {
             onSelect={props.setIssuingInspectorPartyGuid}
           />
         </Form.Item>
+        {!props.isEditMode && (
+          <>
+            {props.noticeOfWork?.issuing_inspector?.signature ? (
+              <img
+                src={props.noticeOfWork?.issuing_inspector?.signature}
+                alt="Signature"
+                style={{ pointerEvents: "none", userSelect: "none" }}
+                height={120}
+              />
+            ) : (
+              <Alert
+                message="No Signature"
+                description={
+                  <>
+                    The signature for the Issuing Inspector has not been provided. Please contact
+                    the MDS team at <a href={`mailto: ${MDS_EMAIL}`}>{MDS_EMAIL}</a>.
+                  </>
+                }
+                type="warning"
+                showIcon
+                style={{ display: "inline-block" }}
+              />
+            )}
+          </>
+        )}
         {props.isEditMode && (
           <div className="right center-mobile">
             {props.isAdminView && (
