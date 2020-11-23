@@ -678,7 +678,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "mine_no",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
@@ -698,10 +697,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
@@ -715,19 +710,16 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "issuing_inspector_name",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
       "id": "issuing_inspector_email",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.email",
       "read-only": true
     },
     {
       "id": "issuing_inspector_phone",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.phone",
       "read-only": true
     },
@@ -740,19 +732,11 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
@@ -787,7 +771,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "mine_no",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
@@ -807,10 +790,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
@@ -823,19 +802,16 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "issuing_inspector_name",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
       "id": "issuing_inspector_email",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.email",
       "read-only": true
     },
     {
       "id": "issuing_inspector_phone",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.phone",
       "read-only": true
     },
@@ -848,31 +824,26 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_email",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
       "id": "rc_office_fax_number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
     }
@@ -889,7 +860,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "mine_no",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
@@ -916,10 +886,6 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
@@ -947,19 +913,16 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "issuing_inspector_name",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
       "id": "issuing_inspector_email",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.email",
       "read-only": true
     },
     {
       "id": "issuing_inspector_phone",
-      "required": true,
       "relative-data-path": "now_application.issuing_inspector.phone",
       "read-only": true
     },
@@ -972,31 +935,26 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "rc_office_email",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
       "id": "rc_office_fax_number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
     }
@@ -1054,8 +1012,8 @@ UPDATE document_template SET form_spec_json = '[
       "read-only": true
     },
     {
-      "id": "lead_inspector",
-      "relative-data-path": "now_application.lead_inspector.name",
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
