@@ -35,8 +35,8 @@ class DocumentGeneratorService():
 
         # Create the document generation request body
         date_string = datetime.date.today().strftime("%Y-%m-%d")
-        report_name = f'{document_template.file_name_no_extension} {date_string}.pdf'
-        data = {'data': template_data, 'options': {'reportName': report_name, 'convertTo': 'pdf'}}
+        document_name = f'{document_template.template_name_no_extension} {date_string}.pdf'
+        data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': 'pdf'}}
 
         # Send the document generation request and return the response
         resp = requests.post(
@@ -51,7 +51,7 @@ class DocumentGeneratorService():
 
     @classmethod
     def _push_template(cls, document_template, template_file):
-        file_name = document_template.file_name
+        file_name = document_template.template_name
         files = {'template': (file_name, template_file, mimetypes.guess_type(file_name))}
 
         resp = requests.post(url=cls.document_generator_url, files=files)

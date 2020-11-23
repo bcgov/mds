@@ -73,12 +73,12 @@ class DocumentTemplate(Base, AuditMixin):
         return os.path.join(current_app.root_path, self.template_file_path)
 
     @hybrid_property
-    def file_name(self):
+    def template_name(self):
         return self.template_file_path.split('/')[-1]
 
     @hybrid_property
-    def file_name_no_extension(self):
-        return '.'.join(self.file_name.split('.')[:-1])
+    def template_name_no_extension(self):
+        return '.'.join(self.template_name.split('.')[:-1])
 
     def get_dynamic_template(self, template_data):
         def insert_images(doc, template_data):

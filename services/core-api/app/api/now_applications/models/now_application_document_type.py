@@ -44,7 +44,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             else:
                 raise Exception('Notice of Work has no permit')
 
-            # NOTE: This is how the front-end is determing whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
+            # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
             template_data['is_amendment'] = not now_application.is_new_permit
 
             template_data['is_draft'] = is_draft

@@ -658,7 +658,7 @@ ON CONFLICT DO NOTHING;
 -- V2019.09.28.14.16
 
 INSERT INTO document_template
-(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
+(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
 	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
 	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
