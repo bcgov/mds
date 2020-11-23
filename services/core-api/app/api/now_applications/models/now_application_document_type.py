@@ -5,6 +5,8 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
 
+SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
+
 
 class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
@@ -52,7 +54,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
-                    create_image(now_application.issuing_inspector.signature)
+                    create_image(
+                        now_application.issuing_inspector.signature,
+                        height=SIGNATURE_IMAGE_HEIGHT_INCHES)
                 }
 
             # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
@@ -81,7 +85,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             template_data['images'] = {
                 'issuing_inspector_signature':
-                create_image(now_application.issuing_inspector.signature)
+                create_image(
+                    now_application.issuing_inspector.signature,
+                    height=SIGNATURE_IMAGE_HEIGHT_INCHES)
             }
 
             return template_data

@@ -4,6 +4,7 @@ from flask import current_app
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
+from docx.shared import Inches
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -89,15 +90,16 @@ class DocumentTemplate(Base, AuditMixin):
                 if not image_base64:
                     continue
 
-                image_data = base64.b64decode(image_base64.split(',')[1])
-                image_bytes = io.BytesIO(image_data)
                 for paragraph in doc.paragraphs:
                     if key in paragraph.text:
+                        image_data = base64.b64decode(image_base64.split(',')[1])
+                        image_bytes = io.BytesIO(image_data)
+                        width = Inches(image['width']) if image['width'] else None
+                        height = Inches(image['height']) if image['height'] else None
                         paragraph.clear()
                         run = paragraph.add_run()
-                        width = image['width']
-                        height = image['height']
                         run.add_picture(image_bytes, width=width, height=height)
+
             del template_data['images']
 
         doc = None
