@@ -660,12 +660,12 @@ ON CONFLICT DO NOTHING;
 INSERT INTO document_template
 (document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
-	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
-  ('PMA', '', 'templates/permit/Permit Template.docx', true, 'system-mds','system-mds'),
-  ('NTR', '[]', 'templates/now/NOW Technical Review.docx', true, 'system-mds', 'system-mds')
+	('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
+	('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
+	('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NTR', '[]', 'templates/now/Technical Review.docx', true, 'system-mds', 'system-mds'),
+  ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds','system-mds'),
+  ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds','system-mds')
 ON CONFLICT DO NOTHING;
 
 UPDATE document_template SET form_spec_json = '[
