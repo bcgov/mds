@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
-import { Table } from "antd";
+import { Table, Button, Popconfirm, Tooltip } from "antd";
 import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
@@ -13,6 +13,7 @@ import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
+  deleteNoticeOfWorkApplicationDocument,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
@@ -20,6 +21,7 @@ import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import { TRASHCAN } from "@/constants/assets";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -35,6 +37,7 @@ const propTypes = {
   addDescriptionColumn: PropTypes.bool,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
 };
 const defaultProps = {
   selectedRows: null,
@@ -70,6 +73,12 @@ export const NOWDocuments = (props) => {
       });
   };
 
+  const handleDeleteDocument = (applicationGuid, mineDocumentGuid) => {
+    props.deleteNoticeOfWorkApplicationDocument(applicationGuid, mineDocumentGuid).then(() => {
+      props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+    });
+  };
+
   const openAddDocumentModal = () => {
     props.openModal({
       props: {
@@ -82,7 +91,11 @@ export const NOWDocuments = (props) => {
     });
   };
 
-  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash, categoriesToShow) => {
+  const columns = (
+    noticeOfWorkApplicationDocumentTypeOptionsHash,
+    categoriesToShow,
+    isViewMode
+  ) => {
     const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
       .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
       .reduce((obj, key) => {
@@ -161,6 +174,49 @@ export const NOWDocuments = (props) => {
       tableColumns.splice(2, 0, descriptionColumn);
     }
 
+    const deleteButtonColumn = {
+      title: "",
+      dataIndex: "isDeletionAllowed",
+      key: "isDeletionAllowed",
+      render: (isDeletionAllowed, record) => {
+        if (isDeletionAllowed) {
+          return (
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to remove this document?"
+              okText="Delete"
+              cancelText="Cancel"
+              onConfirm={() => {
+                handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
+              }}
+            >
+              <Button ghost type="primary" size="small">
+                <img name="remove" src={TRASHCAN} alt="Remove document" />
+              </Button>
+            </Popconfirm>
+          );
+        }
+        return (
+          /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+          <div disabled onClick={(event) => event.stopPropagation()}>
+            <Tooltip
+              title="You cannot remove a document that is a part of the Final Application Package."
+              placement="right"
+              mouseEnterDelay={0.3}
+            >
+              <Button ghost type="primary" disabled size="small">
+                <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
+              </Button>
+            </Tooltip>
+          </div>
+        );
+      },
+    };
+
+    if (!isViewMode) {
+      tableColumns.push(deleteButtonColumn);
+    }
+
     return tableColumns;
   };
 
@@ -172,6 +228,7 @@ export const NOWDocuments = (props) => {
     documents &&
     documents.map((document) => ({
       key: document.now_application_document_xref_guid,
+      mine_document_guid: document.mine_document.mine_document_guid,
       now_application_guid,
       filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
       document_manager_guid: document.mine_document.document_manager_guid,
@@ -184,6 +241,7 @@ export const NOWDocuments = (props) => {
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,
+      isDeletionAllowed: !document.is_final_package,
     }));
 
   return (
@@ -195,7 +253,8 @@ export const NOWDocuments = (props) => {
         pagination={false}
         columns={columns(
           props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-          props.categoriesToShow
+          props.categoriesToShow,
+          props.isViewMode
         )}
         dataSource={transformDocuments(
           props.documents,
@@ -250,6 +309,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      deleteNoticeOfWorkApplicationDocument,
     },
     dispatch
   );

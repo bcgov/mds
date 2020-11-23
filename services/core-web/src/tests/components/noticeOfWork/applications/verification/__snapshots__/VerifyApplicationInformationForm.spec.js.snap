@@ -153,12 +153,14 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
             "documenttype": null,
             "documenturl": null,
             "filename": null,
+            "mine_document_guid": "12345-678",
           },
           Object {
             "description": null,
             "documenttype": null,
             "documenturl": null,
             "filename": null,
+            "mine_document_guid": "12345-6789",
           },
         ],
         "existing_placer_activity": Array [
