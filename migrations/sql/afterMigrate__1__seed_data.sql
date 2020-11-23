@@ -1003,59 +1003,34 @@ UPDATE document_template SET form_spec_json = '[
   ]'
 where document_template_code = 'NCL';
 
---THE FRONTEND DOESN"T ACTUALLY USE THE SPEC TO MAKE THE FORM,
---but we need data enforcement still. 
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
       "id": "permittee",
-      "label": "Permittee Name",
-      "type": "FIELD",
-      "placeholder": "Enter the permittee''s name",
       "relative-data-path": "now_application.permittee_name",
       "read-only": true
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
     {
-      "id": "lead_inspector",
-      "label": "Lead Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name",
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
       "id": "application_date",
-      "label": "Application Date",
-      "type": "DATE",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
       "relative-data-path": "now_application.submitted_date",
       "read-only": true
     },
     {
       "id": "application_type",
-      "label": "Application Type",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
       "relative-data-path": "now_application.notice_of_work_type.description",
       "read-only": true
     }
@@ -1065,54 +1040,31 @@ where document_template_code = 'PMT';
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
       "id": "permittee",
-      "label": "Permittee Name",
-      "type": "FIELD",
-      "placeholder": "Enter the permittee''s name",
       "relative-data-path": "now_application.permittee_name",
       "read-only": true
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
     {
       "id": "lead_inspector",
-      "label": "Lead Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
       "relative-data-path": "now_application.lead_inspector.name",
       "read-only": true
     },
     {
       "id": "application_date",
-      "label": "Application Date",
-      "type": "DATE",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
       "relative-data-path": "now_application.submitted_date",
       "read-only": true
     },
     {
       "id": "application_type",
-      "label": "Application Type",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
       "relative-data-path": "now_application.notice_of_work_type.description",
       "read-only": true
     }
@@ -1138,11 +1090,6 @@ where now_application_document_type_code = 'PMT';
 UPDATE now_application_document_type
 SET document_template_code = 'PMA'
 where now_application_document_type_code = 'PMA';
-
--- UPDATE now_application_document_type
--- SET document_template_code = 'PMA'
--- where now_application_document_type_code = 'PMA';
-
 
 INSERT INTO bond_status(
     bond_status_code,

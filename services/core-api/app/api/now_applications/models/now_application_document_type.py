@@ -44,21 +44,21 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             else:
                 raise Exception('Notice of Work has no permit')
 
-            # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
-            template_data['is_amendment'] = not now_application.is_new_permit
-
-            template_data['is_draft'] = is_draft
-
             if not now_application.issuing_inspector:
-                raise Exception('This Notice of Work has no Issuing Inspector assigned.')
+                raise Exception('No Issuing Inspector has been assigned')
+            if not now_application.issuing_inspector.signature:
+                raise Exception('No signature for the Issuing Inspector has been provided')
 
-            template_data[
-                'issuing_inspector_name'] = now_application.issuing_inspector.name if now_application.issuing_inspector else '<Name of Issuing Inspector>'
             if not is_draft:
                 template_data['images'] = {
                     'issuing_inspector_signature':
                     create_image(now_application.issuing_inspector.signature)
                 }
+
+            # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
+            template_data['is_amendment'] = not now_application.is_new_permit
+
+            template_data['is_draft'] = is_draft
 
             conditions = permit.conditions
             conditions_template_data = {}
@@ -75,7 +75,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         # Transform template data for "Acknowledgement Letter", "Withdrawal Letter", and "Rejection Letter"
         def transform_letter(template_data, now_application):
             if not now_application.issuing_inspector:
-                raise Exception('This Notice of Work has no Issuing Inspector assigned.')
+                raise Exception('No Issuing Inspector has been assigned')
+            if not now_application.issuing_inspector.signature:
+                raise Exception('No signature for the Issuing Inspector has been provided')
 
             template_data['images'] = {
                 'issuing_inspector_signature':
