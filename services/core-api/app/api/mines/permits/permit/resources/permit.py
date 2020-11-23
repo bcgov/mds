@@ -107,7 +107,10 @@ class PermitListResource(Resource, UserMixin):
             permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
             if permit_prefix in ['M', 'C'] and data.get('is_exploration'):
                 permit_prefix = permit_prefix + 'X'
-            permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
+            if now_application_identity.now_number is not None:
+                permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
+            else:            #covering situation where 'P-DRAFT-None' causes a non-unique error
+                permit_no = permit_prefix + '-DRAFT-' + str(mine.mine_no)
 
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
