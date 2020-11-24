@@ -189,12 +189,14 @@ export const NOTICE_OF_WORK = {
   },
   documents: [
     {
+      mine_document_guid: "12345-678",
       documenturl: null,
       filename: null,
       documenttype: null,
       description: null,
     },
     {
+      mine_document_guid: "12345-6789",
       documenturl: null,
       filename: null,
       documenttype: null,

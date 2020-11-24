@@ -33,29 +33,30 @@ export class NOWActionWrapper extends Component {
   state = { disableTab: false };
 
   componentDidMount() {
-    this.handleDisableTab(this.props.tab);
+    this.handleDisableTab(this.props.tab, this.props.progress);
   }
 
   componentWillReceiveProps = (nextProps) => {
     const tabChanged = this.props.tab !== nextProps.tab;
     const progressNoWExists =
       isEmpty(this.props.progress[this.props.tab]) && !isEmpty(nextProps.progress[this.props.tab]);
-    const progressChanged = isEqual(
+    const progressChanged = !isEqual(
       nextProps.progress[this.props.tab],
       this.props.progress[this.props.tab]
     );
+
     if (tabChanged || progressNoWExists || progressChanged) {
-      this.handleDisableTab(nextProps.tab);
+      this.handleDisableTab(nextProps.tab, nextProps.progress);
     }
   };
 
-  handleDisableTab = (tab) => {
+  handleDisableTab = (tab, progress) => {
     if (tab) {
-      if (!isEmpty(this.props.progress[tab]) && !this.props.progress[tab].end_date) {
+      if (!isEmpty(progress[tab]) && !progress[tab].end_date) {
         this.setState({ disableTab: false });
-      } else if (isEmpty(this.props.progress[tab])) {
+      } else if (isEmpty(progress[tab])) {
         this.setState({ disableTab: true });
-      } else if (!isEmpty(this.props.progress[tab]) && this.props.progress[tab].end_date) {
+      } else if (!isEmpty(progress[tab]) && progress[tab].end_date) {
         this.setState({ disableTab: true });
       }
     } else {
