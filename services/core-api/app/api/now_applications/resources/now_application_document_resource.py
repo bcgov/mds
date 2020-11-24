@@ -37,6 +37,10 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
                 mine_document.now_application_document_xref.now_application.now_application_guid):
             raise NotFound('No mine_document found for this application guid.')
 
+        if mine_document.now_application_document_xref.is_final_package:
+            raise BadRequest(
+                'You cannot remove a document that is a part of the Final Application Package.')
+
         mine_document.now_application_document_xref.delete()
         return None, 204
 

@@ -55,7 +55,7 @@ export const NOWProgressStatus = (props) => {
             In Progress
           </p>
           <p className="small-p">
-            In {props.progressStatusHash[props.tab]} Since:
+            In {props.progressStatusHash[props.tab]} Since: {""}
             {formatDate(props.progress[props.tab].start_date)}
           </p>
         </>
@@ -68,7 +68,7 @@ export const NOWProgressStatus = (props) => {
             Complete
           </p>
           <p className="small-p">
-            In {props.progressStatusHash[props.tab]} Since:
+            In {props.progressStatusHash[props.tab]} Since: {""}
             {formatDate(props.progress[props.tab].start_date)}
           </p>
         </>

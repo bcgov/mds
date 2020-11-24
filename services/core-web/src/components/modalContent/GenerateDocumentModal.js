@@ -28,7 +28,7 @@ export const GenerateDocumentModal = (props) => {
           <Alert
             message={`You have ${errorsLength} ${
               errorsLength === 1 ? "issue" : "issues"
-            } that must be fixed before proceeding`}
+            } that must be fixed before proceeding.`}
             type="error"
             showIcon
           />

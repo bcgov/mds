@@ -56,6 +56,12 @@ exports[`NOWDocuments renders properly 1`] = `
           "sorter": [Function],
           "title": "Part of Permit",
         },
+        Object {
+          "dataIndex": "isDeletionAllowed",
+          "key": "isDeletionAllowed",
+          "render": [Function],
+          "title": "",
+        },
       ]
     }
     dataSource={Array []}
