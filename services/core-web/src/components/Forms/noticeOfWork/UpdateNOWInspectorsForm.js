@@ -1,19 +1,22 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Alert } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
+import { MDS_EMAIL } from "@common/constants/strings";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   setLeadInspectorPartyGuid: PropTypes.func.isRequired,
+  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   isAdminView: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
@@ -21,7 +24,7 @@ const propTypes = {
   title: PropTypes.bool.isRequired,
 };
 
-const UpdateNOWLeadInspectorForm = (props) => {
+const UpdateNOWInspectorsForm = (props) => {
   return (
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -32,17 +35,59 @@ const UpdateNOWLeadInspectorForm = (props) => {
             name="lead_inspector_party_guid"
             label={
               !props.isAdminView
-                ? "Assign a lead inspector before continuing. This assignment can be updated later under the Administrative tab."
+                ? "Assign the Lead Inspector before continuing. This assignment can be updated later under the Administrative tab."
                 : ""
             }
             component={renderConfig.GROUPED_SELECT}
-            placeholder="Start typing lead inspectors name"
+            placeholder="Start typing the Lead Inspector's name"
             validate={[required]}
             data={props.inspectors}
             disabled={!props.isEditMode}
             onSelect={props.setLeadInspectorPartyGuid}
           />
         </Form.Item>
+        <div className="field-title">Issuing Inspector</div>
+        <Form.Item>
+          <Field
+            id="issuing_inspector_party_guid"
+            name="issuing_inspector_party_guid"
+            label={
+              !props.isAdminView
+                ? "Optionally assign the Issuing Inspector before continuing. This assignment can be updated later under the Administrative tab."
+                : ""
+            }
+            component={renderConfig.GROUPED_SELECT}
+            placeholder="Start typing the Issuing Inspector's name"
+            data={props.inspectors}
+            disabled={!props.isEditMode}
+            onSelect={props.setIssuingInspectorPartyGuid}
+          />
+        </Form.Item>
+        {!props.isEditMode && (
+          <>
+            {props.noticeOfWork?.issuing_inspector?.signature ? (
+              <img
+                src={props.noticeOfWork.issuing_inspector.signature}
+                alt="Signature"
+                style={{ pointerEvents: "none", userSelect: "none" }}
+                height={120}
+              />
+            ) : (
+              <Alert
+                message="No Signature"
+                description={
+                  <>
+                    The signature for the Issuing Inspector has not been provided. Please contact
+                    the MDS team at <a href={`mailto: ${MDS_EMAIL}`}>{MDS_EMAIL}</a>.
+                  </>
+                }
+                type="warning"
+                showIcon
+                style={{ display: "inline-block" }}
+              />
+            )}
+          </>
+        )}
         {props.isEditMode && (
           <div className="right center-mobile">
             {props.isAdminView && (
@@ -70,9 +115,9 @@ const UpdateNOWLeadInspectorForm = (props) => {
   );
 };
 
-UpdateNOWLeadInspectorForm.propTypes = propTypes;
+UpdateNOWInspectorsForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.UPDATE_NOW_LEAD_INSPECTOR,
   touchOnBlur: true,
-})(UpdateNOWLeadInspectorForm);
+})(UpdateNOWInspectorsForm);

@@ -49,6 +49,10 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
 
     @hybrid_property
+    def phone(self):
+        return self.phone_no + (f' x{self.phone_ext}' if self.phone_ext else '')
+
+    @hybrid_property
     def business_roles_codes(self):
         return [
             x.party_business_role_code for x in self.business_role_appts
