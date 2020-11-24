@@ -194,10 +194,10 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
-    id="lead-inspector"
-    title="Lead Inspector"
+    id="inspectors"
+    title="Inspectors"
   >
-    <AssignLeadInspector
+    <AssignInspectors
       isAdminView={true}
       isEditMode={false}
       noticeOfWork={
@@ -260,7 +260,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
         }
       }
-      title="Update Lead Inspector"
+      title="Update Inspectors"
     />
   </withRouter(Connect(ScrollContentWrapper))>
 </div>
