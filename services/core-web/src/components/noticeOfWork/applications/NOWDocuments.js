@@ -181,19 +181,21 @@ export const NOWDocuments = (props) => {
       render: (isDeletionAllowed, record) => {
         if (isDeletionAllowed) {
           return (
-            <Popconfirm
-              placement="topLeft"
-              title="Are you sure you want to remove this document?"
-              okText="Delete"
-              cancelText="Cancel"
-              onConfirm={() => {
-                handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
-              }}
-            >
-              <Button ghost type="primary" size="small">
-                <img name="remove" src={TRASHCAN} alt="Remove document" />
-              </Button>
-            </Popconfirm>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to remove this document?"
+                okText="Delete"
+                cancelText="Cancel"
+                onConfirm={() => {
+                  handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
+                }}
+              >
+                <Button ghost type="primary" size="small">
+                  <img name="remove" src={TRASHCAN} alt="Remove document" />
+                </Button>
+              </Popconfirm>
+            </NOWActionWrapper>
           );
         }
         return (
