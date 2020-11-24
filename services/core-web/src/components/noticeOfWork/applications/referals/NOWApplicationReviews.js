@@ -76,7 +76,7 @@ const ApplicationReview = (props) => (
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
-        type={props.type}
+        type={props.reviewType.value}
       />
     </ScrollContentWrapper>
   </div>
@@ -352,7 +352,7 @@ export class NOWApplicationReviews extends Component {
                 <AddButton
                   onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                 >
-                  Add Reviewer
+                  Add Review
                 </AddButton>
               </NOWActionWrapper>
             </div>

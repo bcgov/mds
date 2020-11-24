@@ -256,29 +256,19 @@ export class FinalPermitDocuments extends Component {
               <DownloadOutlined className="padding-small--right icon-sm" />
               Download All
             </Button>
-            {this.props.adminView ? (
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                <Button
-                  type="secondary"
-                  className="full-mobile"
-                  onClick={this.openFinalDocumentPackageModal}
-                >
-                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                  Edit
-                </Button>
-              </NOWActionWrapper>
-            ) : (
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                <Button
-                  type="secondary"
-                  className="full-mobile"
-                  onClick={this.openFinalDocumentPackageModal}
-                >
-                  <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                  Edit
-                </Button>
-              </NOWActionWrapper>
-            )}
+            <NOWActionWrapper
+              permission={Permission.EDIT_PERMITS}
+              tab={this.props.adminView ? undefined : "DFT"}
+            >
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openFinalDocumentPackageModal}
+              >
+                <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                Edit
+              </Button>
+            </NOWActionWrapper>
           </div>
         </div>
         <h4>Original Documents</h4>
