@@ -115,7 +115,7 @@ export class NavBar extends Component {
           </Button>
         </Tooltip>
       </a>
-      <AuthorizationWrapper permission={Permission.ADMIN}>
+      <AuthorizationWrapper permission={Permission.ADMIN} showToolTip={false}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
