@@ -67,7 +67,7 @@ const UpdateNOWInspectorsForm = (props) => {
           <>
             {props.noticeOfWork?.issuing_inspector?.signature ? (
               <img
-                src={props.noticeOfWork?.issuing_inspector?.signature}
+                src={props.noticeOfWork.issuing_inspector.signature}
                 alt="Signature"
                 style={{ pointerEvents: "none", userSelect: "none" }}
                 height={120}
