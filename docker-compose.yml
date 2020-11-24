@@ -167,6 +167,23 @@ services:
       - postgres
       - redis
       - document_manager_migrate
+      - document_manager_celery
+      - tusd
+    env_file: ./services/document-manager/backend/.env
+
+  document_manager_celery:
+    restart: always
+    container_name: document_manager_celery
+    build:
+      context: services/document-manager/backend
+    entrypoint: ./celery.sh
+    ports:
+      - 5555:5555
+    volumes:
+      - ./services/document-manager/backend/:/app/
+    depends_on:
+      - postgres
+      - redis
       - tusd
     env_file: ./services/document-manager/backend/.env
 

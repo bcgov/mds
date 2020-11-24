@@ -220,6 +220,7 @@ export const GeneratePermitForm = (props) => (
         <FinalPermitDocuments
           mineGuid={props.noticeOfWork.mine_guid}
           noticeOfWork={props.noticeOfWork}
+          importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
         />
       </>
     </ScrollContentWrapper>

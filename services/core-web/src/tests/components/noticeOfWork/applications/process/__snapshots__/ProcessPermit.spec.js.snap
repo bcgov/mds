@@ -10,7 +10,13 @@ exports[`ProcessPermit renders properly 1`] = `
     >
       <h2>
         Process Permit
+        <CoreTooltip
+          title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made."
+        />
       </h2>
+      <Connect(NOWProgressActions)
+        tab="PRO"
+      />
       <Dropdown
         mouseEnterDelay={0.15}
         mouseLeaveDelay={0.1}
