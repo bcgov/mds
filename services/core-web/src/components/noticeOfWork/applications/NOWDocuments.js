@@ -181,7 +181,7 @@ export const NOWDocuments = (props) => {
       render: (isDeletionAllowed, record) => {
         if (isDeletionAllowed) {
           return (
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
               <Popconfirm
                 placement="topLeft"
                 title="Are you sure you want to remove this document?"
