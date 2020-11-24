@@ -258,7 +258,7 @@ export class FinalPermitDocuments extends Component {
             </Button>
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
-              tab={this.props.adminView ? null : "DFT"}
+              tab={this.props.adminView ? undefined : "DFT"}
             >
               <Button
                 type="secondary"

@@ -19,7 +19,7 @@ import {
   fetchNoticeOfWorkApplicationReviews,
   deleteNoticeOfWorkApplicationReview,
   updateNoticeOfWorkApplicationReview,
-  deleteNoticeOfWorkApplicationReviewDocument,
+  deleteNoticeOfWorkApplicationDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -45,7 +45,7 @@ const propTypes = {
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
-  deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
+  deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -76,7 +76,7 @@ const ApplicationReview = (props) => (
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
-        type={props.type}
+        type={props.reviewType.value}
       />
     </ScrollContentWrapper>
   </div>
@@ -126,7 +126,7 @@ export class NOWApplicationReviews extends Component {
 
   handleDocumentDelete = (mine_document) => {
     this.props
-      .deleteNoticeOfWorkApplicationReviewDocument(
+      .deleteNoticeOfWorkApplicationDocument(
         this.props.noticeOfWork.now_application_guid,
         mine_document
       )
@@ -414,7 +414,7 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
-      deleteNoticeOfWorkApplicationReviewDocument,
+      deleteNoticeOfWorkApplicationDocument,
       setNoticeOfWorkApplicationDocumentDownloadState,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
