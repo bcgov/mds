@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -10,6 +11,7 @@ import {
   RightCircleOutlined,
   LinkOutlined,
 } from "@ant-design/icons";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getDropdownNoticeOfWorkApplicationStatusCodes } from "@common/selectors/staticContentSelectors";
@@ -173,6 +175,62 @@ export class ProcessPermit extends Component {
       });
   };
 
+  handleGenerateDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    this.props
+      .fetchNoticeOfWorkApplicationContextTemplate(
+        documentTypeCode,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        const initialValues = {};
+        this.props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
+        this.props.openModal({
+          props: {
+            initialValues,
+            documentType: this.props.documentContextTemplate,
+            onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
+            title: `Generate ${documentType.description}`,
+          },
+          width: "75vw",
+          content: modalConfig.GENERATE_DOCUMENT,
+        });
+      });
+  };
+
+  handleGenerateDocumentFormSubmit = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: newValues,
+    };
+    this.props
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully Created Document and Attached it to this Notice of Work",
+        () => {
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(() => this.setState({ isLoaded: true }));
+        }
+      )
+      .then(() => {
+        this.props.closeModal();
+      });
+  };
+
   getValidationMessages = () => {
     const validationMessages = [];
     if (
@@ -326,6 +384,7 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   draftAmendment: getDraftPermitAmendmentForNOW(state),
+  documentContextTemplate: getDocumentContextTemplate(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

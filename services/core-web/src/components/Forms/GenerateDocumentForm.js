@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm, focus } from "redux-form";
+import { reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -59,8 +59,8 @@ GenerateDocumentForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
-  touchOnBlur: false,
+  // touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-  onSubmitFail: (errors, dispatch) =>
-    dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),
+  // onSubmitFail: (errors, dispatch) =>
+  //   dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),
 })(GenerateDocumentForm);
