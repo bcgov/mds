@@ -352,7 +352,7 @@ export class NOWApplicationReviews extends Component {
                 <AddButton
                   onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
                 >
-                  Add Review
+                  Add Reviewer
                 </AddButton>
               </NOWActionWrapper>
             </div>
