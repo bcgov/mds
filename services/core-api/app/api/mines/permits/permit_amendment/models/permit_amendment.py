@@ -32,9 +32,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
-    description = db.Column(db.String, nullable=True)
-    lead_inspector_title = db.Column(db.String, nullable=True)
-    regional_office = db.Column(db.String, nullable=True)
+    description = db.Column(db.String)
+    issuing_inspector_title = db.Column(db.String)
+    regional_office = db.Column(db.String)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
@@ -46,6 +46,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     # This value is added to previous amendments to create the new total assessment for the permit
     security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
+    security_not_required = db.Column(db.Boolean)
+    security_not_required_reason = db.Column(db.String)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
@@ -94,7 +96,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                description=None,
                security_adjustment=None,
                permit_amendment_status_code='ACT',
-               lead_inspector_title=None,
+               issuing_inspector_title=None,
                regional_office=None,
                now_application_guid=None,
                add_to_session=True):
@@ -109,7 +111,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
             security_adjustment=security_adjustment,
-            lead_inspector_title=lead_inspector_title,
+            issuing_inspector_title=issuing_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)
         permit._all_permit_amendments.append(new_pa)

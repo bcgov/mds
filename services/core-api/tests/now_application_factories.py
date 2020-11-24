@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
@@ -362,11 +362,26 @@ class NOWApplicationProgressFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    #application_progress_id = factory.Sequence(lambda n: n)
     application_progress_status_code = 'REV'
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
     active_ind = True
+
+
+class NOWApplicationDelayFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationDelay
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
+
+    now_application_guid = factory.SelfAttribute('now_application.now_application_guid')
+    delay_type_code = 'OAB'
+    start_date = factory.Faker('past_datetime')
+    start_comment = factory.Faker('name')
+
+    end_date = factory.Faker('future_datetime')
+    end_comment = factory.Faker('name')
 
 
 class NOWApplicationReviewFactory(BaseFactory):
@@ -384,10 +399,12 @@ class NOWApplicationFactory(BaseFactory):
         model = app_models.NOWApplication
 
     class Params:
-        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        lead_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        issuing_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
 
     application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
-    lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
+    lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
@@ -401,6 +418,7 @@ class NOWApplicationFactory(BaseFactory):
     tenure_number = factory.Sequence(lambda n: str(n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
+    last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
@@ -448,4 +466,15 @@ class NOWApplicationIdentityFactory(BaseFactory):
     now_number = factory.Sequence(lambda n: n)
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
+
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
+
+    @factory.post_generation
+    def application_delays(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)

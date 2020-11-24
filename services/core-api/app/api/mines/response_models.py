@@ -99,9 +99,7 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
-    'PermitAmendment',
-    {
-                                                                                         # 'permit_guid':fields.String,
+    'PermitAmendment', {
         'permit_amendment_id': fields.Integer,
         'permit_amendment_guid': fields.String,
         'permit_amendment_status_code': fields.String,
@@ -111,9 +109,10 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
         'security_adjustment': fields.Fixed(description='Currency', decimals=2),
         'security_received_date': fields.DateTime(dt_format='iso8601'),
-                                                                                         # 'permit_amendment_status_description': fields.String,                                                                            #'permit_amendment_type_description': fields.String,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'description': fields.String,
-        'lead_inspector_title': fields.String,
+        'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))

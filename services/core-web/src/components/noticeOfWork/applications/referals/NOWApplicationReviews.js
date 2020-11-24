@@ -8,10 +8,7 @@ import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-
 import { formatDate } from "@common/utils/helpers";
 
 import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  getNowDocumentDownloadToken,
-  getDocumentDownloadToken,
-} from "@common/utils/actionlessNetworkCalls";
+import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
@@ -22,7 +19,7 @@ import {
   fetchNoticeOfWorkApplicationReviews,
   deleteNoticeOfWorkApplicationReview,
   updateNoticeOfWorkApplicationReview,
-  deleteNoticeOfWorkApplicationReviewDocument,
+  deleteNoticeOfWorkApplicationDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -41,21 +38,23 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,
-
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationReview: PropTypes.func.isRequired,
-  deleteNoticeOfWorkApplicationReviewDocument: PropTypes.func.isRequired,
+  deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   type: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+};
 
 const ReviewerLabels = {
   FNC: "First Nations Advisor",
@@ -66,13 +65,6 @@ const ReviewerLabels = {
 const ApplicationReview = (props) => (
   <div className="padding-large--bottom">
     <ScrollContentWrapper id={props.reviewType.label} title={props.reviewType.label}>
-      {!props.readyForReview && <Badge status="default" text="Not started" />}
-      {props.readyForReview && !props.completeDate && (
-        <Badge status="processing" text="In progress" />
-      )}
-      {props.readyForReview && props.completeDate && (
-        <Badge status="success" text={`Completed on ${formatDate(props.completeDate)}`} />
-      )}
       <NOWApplicationReviewsTable
         isLoaded={props.isLoaded}
         noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
@@ -84,22 +76,8 @@ const ApplicationReview = (props) => (
         handleEdit={props.handleEdit}
         handleDocumentDelete={props.handleDocumentDelete}
         reviewerLabel={ReviewerLabels[props.reviewType.value]}
+        type={props.reviewType.value}
       />
-      {props.readyForReview && !props.completeDate && (
-        <div className="inline-flex flex-end">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Popconfirm
-              placement="topRight"
-              title={`Are you sure you want to complete ${props.reviewType.label}?`}
-              onConfirm={(event) => props.completeHandler(event, props.reviewType.value)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="primary">{`${props.reviewType.label} Completed`}</Button>
-            </Popconfirm>
-          </NOWActionWrapper>
-        </div>
-      )}
     </ScrollContentWrapper>
   </div>
 );
@@ -148,7 +126,7 @@ export class NOWApplicationReviews extends Component {
 
   handleDocumentDelete = (mine_document) => {
     this.props
-      .deleteNoticeOfWorkApplicationReviewDocument(
+      .deleteNoticeOfWorkApplicationDocument(
         this.props.noticeOfWork.now_application_guid,
         mine_document
       )
@@ -233,59 +211,47 @@ export class NOWApplicationReviews extends Component {
 
   downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
     const docURLS = [];
-    const submissionDocs = this.props.noticeOfWork.submission_documents
-      .map((document) => ({
-        key: document.id,
-        filename: document.filename,
-      }))
-      .filter((item) => selectedSubmissionRows.includes(item.key));
-    const coreDocs = this.props.noticeOfWork.documents
-      .map((document) => ({
-        key: document.now_application_document_xref_guid,
-        documentManagerGuid: document.mine_document.document_manager_guid,
-        filename: document.mine_document.document_name,
-      }))
-      .filter((item) => selectedCoreRows.includes(item.key));
 
-    let currentFile = 0;
+    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
+      .map((doc) => ({
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
+        filename: doc.filename,
+      }))
+      .filter((doc) => selectedSubmissionRows.includes(doc.key));
+
+    const coreDocs = this.props.noticeOfWork.documents
+      .map((doc) => ({
+        key: doc.now_application_document_xref_guid,
+        documentManagerGuid: doc.mine_document.document_manager_guid,
+        filename: doc.mine_document.document_name,
+      }))
+      .filter((doc) => selectedCoreRows.includes(doc.key));
+
     const totalFiles = submissionDocs.length + coreDocs.length;
-    if (totalFiles === 0) return;
+    if (totalFiles === 0) {
+      return;
+    }
 
     submissionDocs.forEach((doc) =>
-      getNowDocumentDownloadToken(
-        doc.key,
-        this.props.noticeOfWork.now_application_guid,
-        doc.filename,
-        docURLS
-      )
+      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
+
     coreDocs.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
-    this.waitFor(() => docURLS.length === submissionDocs.length + coreDocs.length).then(
-      async () => {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const url of docURLS) {
-          if (this.state.cancelDownload) {
-            this.setState({ cancelDownload: false });
-            this.props.closeModal();
-            this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-              downloading: false,
-              currentFile: 0,
-              totalFiles: 1,
-            });
-            notification.success({
-              message: `Cancelled file downloads.`,
-              duration: 10,
-            });
-            return;
-          }
-          currentFile += 1;
+    let currentFile = 0;
+    this.waitFor(() => docURLS.length === totalFiles).then(async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const url of docURLS) {
+        if (this.state.cancelDownload) {
+          this.setState({ cancelDownload: false });
+          this.props.closeModal();
           this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: true,
-            currentFile,
-            totalFiles,
+            downloading: false,
+            currentFile: 0,
+            totalFiles: 1,
           });
           this.downloadDocument(url);
           // eslint-disable-next-line
@@ -297,29 +263,45 @@ export class NOWApplicationReviews extends Component {
           duration: 10,
         });
 
-        if (!this.props.noticeOfWork.ready_for_review_date) {
-          this.updateNoticeOfWork({
-            ...this.props.noticeOfWork,
-            ready_for_review_date: new Date(),
-          });
-        }
-
         this.props.closeModal();
         this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: false,
-          currentFile: 1,
-          totalFiles: 1,
+          downloading: true,
+          currentFile,
+          totalFiles,
+        });
+        this.downloadDocument(url);
+        // eslint-disable-next-line
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+      notification.success({
+        message: `Successfully Downloaded: ${totalFiles} files.`,
+        duration: 10,
+      });
+
+      if (!this.props.noticeOfWork.ready_for_review_date) {
+        this.updateNoticeOfWork({
+          ...this.props.noticeOfWork,
+          ready_for_review_date: new Date(),
         });
       }
-    );
+
+      this.props.closeModal();
+      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
+        downloading: false,
+        currentFile: 1,
+        totalFiles: 1,
+      });
+    });
   };
 
   openDownloadPackageModal = (event) => {
     event.preventDefault();
     this.props.openModal({
+      width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.submission_documents,
+        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
+        importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
@@ -341,71 +323,38 @@ export class NOWApplicationReviews extends Component {
   render() {
     const commonApplicationReviewProps = {
       isLoaded: this.state.isLoaded,
-      readyForReview: this.props.noticeOfWork.ready_for_review_date,
       noticeOfWorkReviews: this.props.noticeOfWorkReviews,
       noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
+      importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
       handleDelete: this.handleDeleteReview,
       openEditModal: this.openEditReviewModal,
       handleEdit: this.handleEditReview,
       handleDocumentDelete: this.handleDocumentDelete,
     };
+
     return (
       <div>
         <Row type="flex" justify="center">
           <Col lg={24} className="padding-large--top">
-            <div className="inline-flex between center-mobile">
-              <div>
-                {!this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disable full-mobile">
-                    <InfoCircleOutlined className="padding-small--right" />
-                    Referral package not downloaded
-                  </Tag>
-                )}
-                {this.props.noticeOfWork.ready_for_review_date && (
-                  <Tag className="ant-disabled full-mobile">
-                    <ClockCircleOutlined className="padding-small--right" />
-                    {`Ready for review since: ${formatDate(
-                      this.props.noticeOfWork.ready_for_review_date
-                    )}`}
-                  </Tag>
-                )}
-              </div>
-              <div>
-                <div className="inline-flex center-mobile">
-                  {!this.props.noticeOfWork.ready_for_review_date && (
-                    <Popconfirm
-                      placement="topRight"
-                      title="By downloading the Referral Package you are indicating that Reviews are ready to begin. Do you want to continue?"
-                      onConfirm={this.openDownloadPackageModal}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="secondary" className="full-mobile">
-                        <DownloadOutlined className="padding-small--right icon-sm" />
-                        Download Referral Package
-                      </Button>
-                    </Popconfirm>
-                  )}
-                  {this.props.noticeOfWork.ready_for_review_date && (
-                    <Button
-                      type="secondary"
-                      className="full-mobile"
-                      onClick={this.openDownloadPackageModal}
-                    >
-                      <DownloadOutlined className="padding-small--right icon-sm" />
-                      Download Referral Package
-                    </Button>
-                  )}
-
-                  <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                    <AddButton
-                      onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
-                    >
-                      Add Reviewer
-                    </AddButton>
-                  </NOWActionWrapper>
-                </div>
-              </div>
+            <div className="right center-mobile">
+              <Button
+                type="secondary"
+                className="full-mobile"
+                onClick={this.openDownloadPackageModal}
+              >
+                <DownloadOutlined className="padding-small--right icon-sm" />
+                Download Referral Package
+              </Button>
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={this.props.type === "FNC" ? "CON" : this.props.type}
+              >
+                <AddButton
+                  onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
+                >
+                  Add Reviewer
+                </AddButton>
+              </NOWActionWrapper>
             </div>
           </Col>
         </Row>
@@ -420,13 +369,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "REF"
                   )}
-                  completeDate={this.props.noticeOfWork.referral_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      referral_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
             {this.props.type === "FNC" &&
@@ -438,13 +380,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "FNC"
                   )}
-                  completeDate={this.props.noticeOfWork.consultation_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      consultation_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
             {this.props.type === "PUB" &&
@@ -456,13 +391,6 @@ export class NOWApplicationReviews extends Component {
                   reviewType={this.props.noticeOfWorkReviewTypes.find(
                     (reviewType) => reviewType.value === "PUB"
                   )}
-                  completeDate={this.props.noticeOfWork.public_comment_closed_on_date}
-                  completeHandler={() =>
-                    this.updateNoticeOfWork({
-                      ...this.props.noticeOfWork,
-                      public_comment_closed_on_date: new Date(),
-                    })
-                  }
                 />
               )}
           </div>
@@ -486,7 +414,7 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationReview,
       deleteNoticeOfWorkApplicationReview,
       updateNoticeOfWorkApplicationReview,
-      deleteNoticeOfWorkApplicationReviewDocument,
+      deleteNoticeOfWorkApplicationDocument,
       setNoticeOfWorkApplicationDocumentDownloadState,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,

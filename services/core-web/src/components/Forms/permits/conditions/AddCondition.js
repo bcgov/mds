@@ -65,14 +65,14 @@ export class AddCondition extends Component {
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
             <AddButton type="secondary" disabled>
               {ButtonText(this.props.initialValues.condition_type_code)}
             </AddButton>
           </NOWActionWrapper>
         )}
         {!this.props.editingConditionFlag && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
             <AddButton
               type="secondary"
               onClick={() => {

@@ -2,22 +2,19 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Popconfirm, Dropdown, Result, Row, Col } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { Button, Popconfirm } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
 import { getFormValues, reset } from "redux-form";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import {
-  createPermit,
   fetchPermits,
-  createPermitAmendment,
   updatePermitAmendment,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import {
-  getPermits,
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
@@ -25,13 +22,16 @@ import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
-import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
+import { EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
 import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
+import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -46,14 +46,10 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   reset: PropTypes.func.isRequired,
-  createPermit: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   formValues: CustomPropTypes.permitGenObj.isRequired,
-  preDraftFormValues: CustomPropTypes.preDraftForm.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
@@ -73,21 +69,31 @@ const regionHash = {
 
 export class NOWPermitGeneration extends Component {
   state = {
-    isPreDraft: false,
     isDraft: false,
-    permittee: {},
     permitGenObj: {},
     isLoaded: false,
+    permittee: {},
   };
 
   componentDidMount() {
+    this.fetchDraftPermit();
+
     const permittee = this.props.noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
     this.setState({ permittee });
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
+      this.fetchDraftPermit();
+    }
+  };
+
+  fetchDraftPermit = () => {
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
     this.handleDraftPermit();
-  }
+  };
 
   handleDraftPermit = () => {
     this.props
@@ -108,18 +114,6 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  createPermit = (isExploration) => {
-    this.setState({ isLoaded: false });
-    const payload = {
-      permit_status_code: "D",
-      permit_is_exploration: isExploration,
-      now_application_guid: this.props.noticeOfWork.now_application_guid,
-    };
-    this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
-      this.handleDraftPermit();
-    });
-  };
-
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
@@ -130,7 +124,7 @@ export class NOWPermitGeneration extends Component {
       current_month: moment().format("MMMM"),
       current_year: moment().format("YYYY"),
       conditions: "",
-      lead_inspector_title: "Inspector of Mines",
+      issuing_inspector_title: "Inspector of Mines",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -142,13 +136,20 @@ export class NOWPermitGeneration extends Component {
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
-    const addressLineOne = permittee.party.address[0].address_line_1
-      ? `${permittee.party.address[0].address_line_1}\n`
-      : "";
-    const mailingAddress = `${addressLineOne}${permittee.party.address[0].city || ""} ${permittee
-      .party.address[0].sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`;
-    permitGenObject.permittee = permittee.party.name;
-    permitGenObject.permittee_email = permittee.party.email;
+    const addressLineOne =
+      !isEmpty(permittee) &&
+      !isEmpty(permittee.party.address[0]) &&
+      permittee.party.address[0].address_line_1
+        ? `${permittee.party.address[0].address_line_1}\n`
+        : "";
+    const addressLineTwo =
+      !isEmpty(permittee) && !isEmpty(permittee.party.address[0])
+        ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0]
+            .sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`
+        : "";
+    const mailingAddress = `${addressLineOne}${addressLineTwo}`;
+    permitGenObject.permittee = !isEmpty(permittee) ? permittee.party.name : "";
+    permitGenObject.permittee_email = !isEmpty(permittee) ? permittee.party.email : "";
     permitGenObject.permittee_mailing_address = mailingAddress;
     permitGenObject.property = noticeOfWork.property_name;
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
@@ -200,7 +201,7 @@ export class NOWPermitGeneration extends Component {
   handleSaveDraftEdit = () => {
     this.setState({ isLoaded: false });
     const payload = {
-      lead_inspector_title: this.props.formValues.lead_inspector_title,
+      issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
     };
     this.props
@@ -216,69 +217,44 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  startDraftPermit = () => {
-    this.setState({ isLoaded: false });
-    if (this.props.preDraftFormValues.permit_guid) {
-      const payload = {
-        permit_amendment_status_code: "DFT",
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
-      };
-      this.props
-        .createPermitAmendment(
-          this.props.noticeOfWork.mine_guid,
-          this.props.preDraftFormValues.permit_guid,
-          payload
-        )
-        .then(() => {
-          this.handleDraftPermit();
-        });
-    } else {
-      this.createPermit(this.props.preDraftFormValues.is_exploration);
-    }
-  };
-
-  startPreDraft = () => {
-    const isNewPermit = this.props.noticeOfWork.type_of_application === "New Permit";
-    const isCoalOrMineral =
-      this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
-      this.props.noticeOfWork.notice_of_work_type_code === "COL";
-    if (isNewPermit && !isCoalOrMineral) {
-      this.createPermit(false);
-    } else {
-      this.setState({ isPreDraft: true });
-    }
-  };
-
-  cancelPreDraft = () => {
-    this.setState({ isPreDraft: false });
-  };
-
-  menu = () => {
-    return (
-      <Menu>
-        <Menu.Item key="edit" onClick={this.props.toggleEditMode}>
-          Edit
-        </Menu.Item>
-      </Menu>
-    );
-  };
-
   renderEditModeNav = () => {
     const nowType = this.props.noticeOfWork.type_of_application
       ? `(${this.props.noticeOfWork.type_of_application})`
       : "";
     return this.props.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md between">
-        <h2>{`Draft Permit ${nowType}`}</h2>
+      <div className="inline-flex block-mobile padding-md">
+        <h2>
+          {`Draft Permit ${nowType}`}
+          <CoreTooltip
+            title="This page contains all the information that will appear in the permit when it is
+                    issued. The Conditions sections are pre-populated with conditions based on the
+                    permit type. You can add or remove any condition."
+          />
+        </h2>
+        <NOWProgressActions tab="DFT" handleDraftPermit={this.handleDraftPermit} />
         {this.state.isDraft && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Dropdown overlay={this.menu()} placement="bottomLeft">
-              <Button type="secondary" className="full-mobile">
-                Actions
-                <DownOutlined />
+          <>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+              <Button type="secondary" onClick={this.props.toggleEditMode}>
+                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                Edit
               </Button>
-            </Dropdown>
-          </NOWActionWrapper>
+            </NOWActionWrapper>
+            <Button
+              className="full-mobile"
+              type="secondary"
+              onClick={this.handlePermitGenSubmit}
+              disabled={isEmpty(this.state.permittee)}
+              title={
+                isEmpty(this.state.permittee)
+                  ? "The application must have a permittee assigned before viewing the draft."
+                  : ""
+              }
+            >
+              <DownloadOutlined className="padding-small--right icon-sm" />
+              Download Draft
+            </Button>
+          </>
         )}
       </div>
     ) : (
@@ -295,9 +271,6 @@ export class NOWPermitGeneration extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="tertiary" onClick={this.handlePermitGenSubmit}>
-            Preview
-          </Button>
           <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
             Save
           </Button>
@@ -307,81 +280,60 @@ export class NOWPermitGeneration extends Component {
   };
 
   render() {
-    return (
+    const isProcessed =
+      this.props.noticeOfWork.now_application_status_code === "AIA" ||
+      this.props.noticeOfWork.now_application_status_code === "WDN" ||
+      this.props.noticeOfWork.now_application_status_code === "REJ";
+    return isProcessed ? (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           {this.renderEditModeNav()}
-          <NOWStatusIndicator type="banner" />
+          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
         </div>
-        {!isEmpty(this.state.permittee) ? (
-          <>
-            <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-              <NOWSideMenu
-                route={routes.NOTICE_OF_WORK_APPLICATION}
-                noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                tabSection="draft-permit"
+        <div
+          className={
+            this.props.fixedTop
+              ? "view--content with-fixed-top side-menu--content"
+              : "view--content side-menu--content"
+          }
+        >
+          <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
+            This application has been processed.
+          </h3>
+        </div>
+      </div>
+    ) : (
+      <div>
+        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
+          {this.renderEditModeNav()}
+          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
+          <NOWProgressStatus tab="DFT" />
+        </div>
+        <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
+          <NOWSideMenu
+            route={routes.NOTICE_OF_WORK_APPLICATION}
+            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+            tabSection="draft-permit"
+          />
+        </div>
+        <div
+          className={
+            this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
+          }
+        >
+          <LoadingWrapper condition={this.state.isLoaded}>
+            {!this.state.isDraft ? (
+              <NullScreen type="draft-permit" />
+            ) : (
+              <GeneratePermitForm
+                initialValues={this.state.permitGenObj}
+                isAmendment={this.props.isAmendment}
+                noticeOfWork={this.props.noticeOfWork}
+                isViewMode={this.props.isViewMode}
               />
-            </div>
-            <div
-              className={
-                this.props.fixedTop
-                  ? "view--content with-fixed-top side-menu--content"
-                  : "view--content side-menu--content"
-              }
-            >
-              <LoadingWrapper condition={this.state.isLoaded}>
-                {!this.state.isDraft ? (
-                  <div className="null-screen">
-                    {this.state.isPreDraft ? (
-                      <Result
-                        status="success"
-                        title={`${this.props.noticeOfWork.type_of_application}`}
-                        subTitle={
-                          this.props.isAmendment
-                            ? `You are now creating an amendment for a permit. Please select the permit that this amendment is for.`
-                            : `You are now creating a new permit. Please check the box below if this is an exploratory permit.`
-                        }
-                        extra={[
-                          <Row>
-                            <Col
-                              lg={{ span: 8, offset: 8 }}
-                              md={{ span: 10, offset: 7 }}
-                              sm={{ span: 12, offset: 6 }}
-                            >
-                              <PreDraftPermitForm
-                                initialValues={{ is_exploration: false }}
-                                cancelPreDraft={this.cancelPreDraft}
-                                permits={this.props.permits}
-                                isAmendment={this.props.isAmendment}
-                                onSubmit={this.startDraftPermit}
-                              />
-                            </Col>
-                          </Row>,
-                        ]}
-                      />
-                    ) : (
-                      <>
-                        <NullScreen type="draft-permit" />
-                        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                          <Button onClick={this.startPreDraft}>Start Draft Permit</Button>
-                        </NOWActionWrapper>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <GeneratePermitForm
-                    initialValues={this.state.permitGenObj}
-                    isAmendment={this.props.isAmendment}
-                    noticeOfWork={this.props.noticeOfWork}
-                    isViewMode={this.props.isViewMode}
-                  />
-                )}
-              </LoadingWrapper>
-            </div>
-          </>
-        ) : (
-          <NullScreen type="no-permittee" />
-        )}
+            )}
+          </LoadingWrapper>
+        </div>
       </div>
     );
   }
@@ -393,8 +345,6 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
-  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  permits: getPermits(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
@@ -403,9 +353,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       reset,
-      createPermit,
       fetchPermits,
-      createPermitAmendment,
       updatePermitAmendment,
       fetchDraftPermitByNOW,
     },

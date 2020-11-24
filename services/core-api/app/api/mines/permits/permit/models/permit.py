@@ -26,7 +26,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     permit_no_seq = db.Sequence('permit_number_seq', metadata=Base.metadata)
     permit_id = db.Column(db.Integer, primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
-    permit_no = db.Column(db.String(16), nullable=False)
+    permit_no = db.Column(db.String, nullable=False)
     permit_status_code = db.Column(
         db.String(2), db.ForeignKey('permit_status_code.permit_status_code'))
     project_id = db.Column(db.String)
@@ -42,6 +42,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
+        primaryjoin='and_(MinePartyAppointment.permit_id == Permit.permit_id, MinePartyAppointment.deleted_ind==False)',
         lazy='select',
         order_by=
         'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
@@ -49,6 +50,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     permit_status_code_description = association_proxy('permit_status', 'description')
 
     permit_no_sequence = db.Column(db.Integer)
+    is_exploration = db.Column(db.Boolean)
 
     bonds = db.relationship(
         'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
@@ -159,16 +161,23 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             return permit
         return None
 
+    def assign_permit_no(self, notice_of_work_type_code):
+        permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
+        if permit_prefix in ['M', 'C'] and self.is_exploration:
+            permit_prefix = permit_prefix + 'X'
+        permit_prefix = permit_prefix + '-'
+        next_permit_no_sequence = db.session.execute(self.permit_no_seq)
+        self.permit_no = permit_prefix + str(next_permit_no_sequence)
+        self.permit_no_sequence = next_permit_no_sequence
+        self.save()
+        return
+
     @classmethod
-    def create(cls, mine, permit_no, permit_status_code, permit_prefix, add_to_session=True):
-        permit = cls.find_by_permit_no(permit_no)
-        next_permit_no_sequence = None
-        if not permit:
-            if not permit_no:
-                next_permit_no_sequence = db.session.execute(cls.permit_no_seq)
-                permit_no = permit_prefix + str(next_permit_no_sequence) 
-            permit = cls(permit_no=permit_no, permit_status_code=permit_status_code)
-        permit.permit_no_sequence = next_permit_no_sequence
+    def create(cls, mine, permit_no, permit_status_code, is_exploration, add_to_session=True):
+        permit = cls(
+            permit_no=permit_no,
+            permit_status_code=permit_status_code,
+            is_exploration=is_exploration)
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
             permit.save(commit=False)

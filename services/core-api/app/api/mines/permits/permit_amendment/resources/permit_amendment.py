@@ -64,10 +64,10 @@ class PermitAmendmentListResource(Resource, UserMixin):
         location='json',
         help='The now_application_guid this permit is related to.')
     parser.add_argument(
-        'lead_inspector_title',
+        'issuing_inspector_title',
         type=str,
         location='json',
-        help='Title of the lead inspector for this permit.')
+        help='Title of the Issuing Inspector for this permit.')
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
@@ -163,7 +163,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             security_adjustment=data.get('security_adjustment'),
             permit_amendment_status_code=permit_amendment_status_code
             if permit_amendment_status_code else 'ACT',
-            lead_inspector_title=data.get('lead_inspector_title'),
+            issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
             now_application_guid=data.get('now_application_guid'),
         )
@@ -216,13 +216,16 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False)
+    parser.add_argument('security_not_required', location='json', type=bool, store_missing=False)
+    parser.add_argument(
+        'security_not_required_reason', location='json', type=str, store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
-        'lead_inspector_title',
+        'issuing_inspector_title',
         type=str,
         location='json',
         store_missing=False,
-        help='Title of the lead inspector for this permit.')
+        help='Title of the Issuing Inspector for this permit.')
     parser.add_argument(
         'regional_office',
         type=str,

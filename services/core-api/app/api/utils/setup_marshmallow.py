@@ -18,6 +18,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 from app.api.now_applications.models.equipment import Equipment
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+from app.api.now_applications.models.now_application_delay import NOWApplicationDelay
 from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment
 from app.api.now_submissions import models as sub_models
 from app.api.utils.static_data import setup_static_data
@@ -84,7 +86,9 @@ def setup_schema(Base, session):
     def setup_schema_fn():
         for class_ in ActivityDetailBase.__subclasses__() + [
                 Equipment, NOWApplicationDocumentXref, Bond, BondDocument, ReclamationInvoice,
-                ReclamationInvoiceDocument, BondHistory, PermitConditions, NOWPartyAppointment
+                ReclamationInvoiceDocument, BondHistory, PermitConditions, NOWPartyAppointment,
+                NOWApplicationDocumentIdentityXref,
+                NOWApplicationDelay
         ] + sub_models.model_list:
             if hasattr(class_, "__tablename__") or getattr(class_, "__create_schema__", False):
                 try:

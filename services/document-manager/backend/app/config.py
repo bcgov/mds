@@ -46,6 +46,18 @@ class Config(object):
 
     TUSD_URL = os.environ.get('TUSD_URL', 'http://tusd:1080/files/')
 
+    DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES = int(
+        os.environ.get('DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES', '1048576'))
+
+    # NROS
+    NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
+    NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
+    NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
+
+    # vFCBC
+    VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
+    VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
+
     # Document hosting settings
     OBJECT_STORE_ENABLED = bool(int(os.environ.get('OBJECT_STORE_ENABLED', '0')))
     OBJECT_STORE_HOST = os.environ.get('OBJECT_STORE_HOST', '')
@@ -53,6 +65,17 @@ class Config(object):
     OBJECT_STORE_ACCESS_KEY = os.environ.get('OBJECT_STORE_ACCESS_KEY', '')
     OBJECT_STORE_BUCKET = os.environ.get('OBJECT_STORE_BUCKET', '')
     S3_PREFIX = os.environ.get('S3_PREFIX', 'mds-files-local/')
+
+    CORE_API_URL = os.environ.get('CORE_API_URL', 'http://mds_backend:5000')
+
+    # Authentication
+    AUTHENTICATION_URL = os.environ.get('AUTHENTICATION_URL', '')
+    CLIENT_ID = os.environ.get('CLIENT_ID', '')
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '')
+    GRANT_TYPE = os.environ.get('GRANT_TYPE', 'client_credentials')
+
+    # celery REST API
+    CELERY_REST_API_URL = os.environ.get('CELERY_REST_API_URL', '')
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])

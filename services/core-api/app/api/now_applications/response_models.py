@@ -253,9 +253,21 @@ NOW_APPLICATION_DOCUMENT = api.model(
 
 NOW_APPLICATION_PROGRESS = api.model(
     'NOWApplicationProgress', {
-        'start_date': fields.Date,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
         'created_by': fields.String,
-        'application_progress_status_code': fields.String
+        'application_progress_status_code': fields.String,
+        'last_updated_by': fields.String
+    })
+
+NOW_APPLICATION_DELAY = api.model(
+    'NOWApplicationDelay', {
+        'now_application_delay_guid': fields.String,
+        'delay_type_code': fields.String,
+        'start_comment': fields.String,
+        'start_date': fields.DateTime,
+        'end_comment': fields.String,
+        'end_date': fields.DateTime
     })
 
 NOW_APPLICATION_REVIEW_MDOEL = api.model(
@@ -271,6 +283,7 @@ NOW_APPLICATION_REVIEW_MDOEL = api.model(
 NOW_SUBMISSION_DOCUMENT = api.model(
     'SUBMISSION_DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,
@@ -285,6 +298,20 @@ NOW_PARTY_APPOINTMENT = api.model(
         'party_guid': fields.String,
         'party': fields.Nested(PARTY),
         'state_modified': fields.String,
+    })
+
+IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'messageid': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'is_final_package': fields.Boolean,
+        'now_application_document_xref_guid': fields.String,
+        'now_application_id': fields.Integer,
     })
 
 NOW_APPLICATION_MODEL = api.model(
@@ -304,6 +331,10 @@ NOW_APPLICATION_MODEL = api.model(
         'lead_inspector_party_guid':
         fields.String,
         'lead_inspector':
+        fields.Nested(PARTY),
+        'issuing_inspector_party_guid':
+        fields.String,
+        'issuing_inspector':
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
@@ -393,20 +424,16 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'ready_for_review_date':
-        Date,
-        'referral_closed_on_date':
-        Date,
-        'consultation_closed_on_date':
-        Date,
-        'public_comment_closed_on_date':
-        Date,
         'security_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
+        'security_not_required':
+        fields.Boolean,
+        'security_not_required_reason':
+        fields.String,
         'last_updated_date':
-        Date,
+        DateTime,
         'last_updated_by':
         fields.String,
         'permit_status':
@@ -419,6 +446,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'merchantable_timber_volume':
         fields.Fixed(decimals=2),
+        'imported_submission_documents':
+        fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
+        'filtered_submission_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -431,6 +462,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'mine_region': fields.String,
         'lead_inspector_party_guid': fields.String,
         'lead_inspector': fields.Nested(PARTY),
+        'issuing_inspector_party_guid': fields.String,
+        'issuing_inspector': fields.Nested(PARTY),
         'imported_to_core': fields.Boolean,
         'notice_of_work_type_code': fields.String,
         'now_application_status_code': fields.String,
@@ -475,12 +508,10 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'ready_for_review_date': Date,
-        'referral_closed_on_date': Date,
-        'consultation_closed_on_date': Date,
-        'public_comment_closed_on_date': Date,
         'security_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
+        'security_not_required': fields.Boolean,
+        'security_not_required_reason': fields.String,
         'last_updated_date': Date,
         'last_updated_by': fields.String
     })
@@ -571,7 +602,8 @@ APPLICATION_PROGRESS_STATUS_CODES = api.model(
     'ApplicationProgressStatusCodes', {
         'application_progress_status_code': fields.String,
         'description': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })
 
 NOW_APPLICATION_PERMIT_TYPES = api.model(
@@ -586,4 +618,12 @@ NOW_APPLICATION_REVIEW_TYPES = api.model(
         'now_application_review_type_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean
+    })
+
+NOW_APPLICATION_DELAY_TYPE = api.model(
+    'ApplicationDelayTypes', {
+        'delay_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+        'display_order': fields.Integer,
     })

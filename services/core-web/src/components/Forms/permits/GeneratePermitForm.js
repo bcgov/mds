@@ -147,9 +147,9 @@ export const GeneratePermitForm = (props) => (
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
-              id="lead_inspector_title"
-              name="lead_inspector_title"
-              label="Lead Inspector Title"
+              id="issuing_inspector_title"
+              name="issuing_inspector_title"
+              label="Issuing Inspector Title"
               required
               component={renderConfig.FIELD}
               validate={[required]}
@@ -220,6 +220,7 @@ export const GeneratePermitForm = (props) => (
         <FinalPermitDocuments
           mineGuid={props.noticeOfWork.mine_guid}
           noticeOfWork={props.noticeOfWork}
+          importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
         />
       </>
     </ScrollContentWrapper>

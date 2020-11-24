@@ -119,6 +119,8 @@ export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/status`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
@@ -134,8 +136,8 @@ export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/applicat
 export const NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-export";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
-export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
-  `/now-applications/${applicationGuid}/progress`;
+export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid, progressCode) =>
+  `/now-applications/${applicationGuid}/progress/${progressCode}`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW = (applicationGuid) =>
   `/now-applications/${applicationGuid}/reviews`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES = `/now-applications/review-types`;
@@ -144,6 +146,12 @@ export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
 export const NOTICE_OF_WORK_DOCUMENT = (now_document_guid) =>
   `/now-applications/${now_document_guid}/document`;
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
+export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
+  `/import-now-submission-documents?now_application_guid=${applicationGuid}&most_recent_only=true`;
+export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
+  delayGuid
+    ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
+    : `/now-applications/${applicationGuid}/delays`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>

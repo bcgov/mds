@@ -39,6 +39,7 @@ export const {
   getExemptionFeeStatusOptions,
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
+  getDelayTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -622,3 +623,17 @@ export const getExemptionFeeStatusOptionsHash = createSelector(
   [getExemptionFeeSatusDropDownOptions],
   createLabelHash
 );
+
+export const getDelayTypeDropDownOptions = createSelectorWrapper(
+  getDelayTypeOptions,
+  createDropDownList,
+  ["description", "delay_type_code", "active_ind"]
+);
+
+export const getDelayTypeOptionsHash = createSelector(
+  [getDelayTypeDropDownOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
+  getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);

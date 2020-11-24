@@ -20,6 +20,7 @@ const propTypes = {
   handleEdit: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   reviewerLabel: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const columns = (reviewerLabel) => [
@@ -71,7 +72,10 @@ const columns = (reviewerLabel) => [
     key: "editDeleteButtons",
     align: "right",
     render: (text, record) => (
-      <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+      <NOWActionWrapper
+        permission={Permission.EDIT_PERMITS}
+        tab={record.type === "FNC" ? "CON" : record.type}
+      >
         <div>
           <Button
             ghost
@@ -106,7 +110,8 @@ const transformRowData = (
   handleDelete,
   openEditModal,
   handleEdit,
-  handleDocumentDelete
+  handleDocumentDelete,
+  type
 ) => {
   return reviews.map((review) => ({
     now_application_review_type: reviewTypeHash[review.now_application_review_type_code],
@@ -114,6 +119,7 @@ const transformRowData = (
     openEditModal,
     handleEdit,
     handleDocumentDelete,
+    type,
     ...review,
   }));
 };
@@ -130,7 +136,8 @@ export const NOWApplicationReviewsTable = (props) => {
         props.handleDelete,
         props.openEditModal,
         props.handleEdit,
-        props.handleDocumentDelete
+        props.handleDocumentDelete,
+        props.type
       )}
       tableProps={{
         pagination: false,
