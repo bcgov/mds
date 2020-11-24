@@ -76,8 +76,16 @@ class TestGetNOWApplicationDocumentTypeResource:
 
     def test_generate_document_returns_token(self, test_client, db_session, auth_headers):
         """Should return the a token for successful generation"""
+        now_application = NOWApplicationFactory()
+        now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
+        now_application.issuing_inspector.signature = 'data:image/png;base64,'
 
-        data = {'now_application_guid': uuid.uuid4(), 'template_data': {'help': 'test'}}
+        data = {
+            'now_application_guid': now_application_identity.now_application_guid,
+            'template_data': {
+                'help': 'test'
+            }
+        }
 
         post_resp = test_client.post(
             f'/now-applications/application-document-types/CAL/generate',
@@ -91,6 +99,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         """Should return the a token for successful generation"""
         now_application = NOWApplicationFactory()
         now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
+        now_application.issuing_inspector.signature = 'data:image/png;base64,'
 
         changed_mine_no = str(now_application_identity.mine.mine_no + '1')
         data = {
