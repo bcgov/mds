@@ -72,10 +72,16 @@ export class NOWPermitGeneration extends Component {
     isDraft: false,
     permitGenObj: {},
     isLoaded: false,
+    permittee: {},
   };
 
   componentDidMount() {
     this.fetchDraftPermit();
+
+    const permittee = this.props.noticeOfWork.contacts.filter(
+      (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+    )[0];
+    this.setState({ permittee });
   }
 
   componentDidUpdate = (prevProps) => {
@@ -131,13 +137,16 @@ export class NOWPermitGeneration extends Component {
     )[0];
 
     const addressLineOne =
-      !isEmpty(permittee) && permittee.party.address[0].address_line_1
+      !isEmpty(permittee) &&
+      !isEmpty(permittee.party.address[0]) &&
+      permittee.party.address[0].address_line_1
         ? `${permittee.party.address[0].address_line_1}\n`
         : "";
-    const addressLineTwo = !isEmpty(permittee)
-      ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0].sub_division_code ||
-          ""} ${permittee.party.address[0].post_code || ""}`
-      : "";
+    const addressLineTwo =
+      !isEmpty(permittee) && !isEmpty(permittee.party.address[0])
+        ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0]
+            .sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`
+        : "";
     const mailingAddress = `${addressLineOne}${addressLineTwo}`;
     permitGenObject.permittee = !isEmpty(permittee) ? permittee.party.name : "";
     permitGenObject.permittee_email = !isEmpty(permittee) ? permittee.party.email : "";
@@ -231,7 +240,17 @@ export class NOWPermitGeneration extends Component {
                 Edit
               </Button>
             </NOWActionWrapper>
-            <Button className="full-mobile" type="secondary" onClick={this.handlePermitGenSubmit}>
+            <Button
+              className="full-mobile"
+              type="secondary"
+              onClick={this.handlePermitGenSubmit}
+              disabled={isEmpty(this.state.permittee)}
+              title={
+                isEmpty(this.state.permittee)
+                  ? "The application must have a permittee assigned before viewing the draft."
+                  : ""
+              }
+            >
               <DownloadOutlined className="padding-small--right icon-sm" />
               Download Draft
             </Button>
