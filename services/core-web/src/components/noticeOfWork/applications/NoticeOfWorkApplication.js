@@ -535,8 +535,7 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleExportDocument = (menuItem) => {
-    const documentTypeCode = menuItem.key;
+  handleExportDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
     this.exportNowDocument(documentType, this.props.noticeOfWork);
   };
@@ -734,15 +733,18 @@ export class NoticeOfWorkApplication extends Component {
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code === "NTR"
               )
-              .map((document) => (
-                <Menu.Item
-                  className="custom-menu-item"
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleExportDocument}
-                >
-                  Edited Application
-                </Menu.Item>
-              ))}
+              .map((document) => {
+                return (
+                  <Menu.Item
+                    className="custom-menu-item"
+                    onClick={() => {
+                      this.handleExportDocument(document.now_application_document_type_code);
+                    }}
+                  >
+                    Edited Application
+                  </Menu.Item>
+                );
+              })}
         </>
       </Menu>
     );

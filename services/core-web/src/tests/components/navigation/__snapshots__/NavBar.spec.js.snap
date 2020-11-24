@@ -175,6 +175,7 @@ exports[`NavBar renders properly 1`] = `
           </a>
           <Connect(AuthorizationWrapper)
             permission="role_admin"
+            showToolTip={false}
           >
             <Dropdown
               disabled={true}
