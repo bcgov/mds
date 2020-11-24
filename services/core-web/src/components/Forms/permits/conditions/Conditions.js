@@ -106,14 +106,14 @@ export class Conditions extends Component {
     this.props.setEditingConditionFlag(value);
   };
 
-  getLastUpdatedByConditionForEach = (acc, conditions) => {
+  getMostRecentCondition = (acc, conditions) => {
     conditions.forEach((item) => {
       if (!acc) {
         acc = item;
       }
 
       if (item.sub_conditions && item.sub_conditions.length > 0) {
-        acc = this.getLastUpdatedByConditionForEach(acc, item.sub_conditions);
+        acc = this.getMostRecentCondition(acc, item.sub_conditions);
       }
 
       acc = new Date(acc.update_timestamp) > new Date(item.update_timestamp) ? acc : item;
@@ -123,7 +123,7 @@ export class Conditions extends Component {
   };
 
   render = () => {
-    const mostRecentCondition = this.getLastUpdatedByConditionForEach(null, this.props.conditions);
+    const mostRecentCondition = this.getMostRecentCondition(null, this.props.conditions);
     return (
       <>
         <div
