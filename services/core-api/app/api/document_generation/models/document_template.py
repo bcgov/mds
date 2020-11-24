@@ -92,7 +92,12 @@ class DocumentTemplate(Base, AuditMixin):
 
                 for paragraph in doc.paragraphs:
                     if key in paragraph.text:
-                        image_data = base64.b64decode(image_base64.split(',')[1])
+                        image_data = None
+                        try:
+                            image_data = base64.b64decode(image_base64.split(',')[1])
+                        except:
+                            raise Exception('Image data is not a valid Base64 string')
+
                         image_bytes = io.BytesIO(image_data)
                         width = Inches(image['width']) if image['width'] else None
                         height = Inches(image['height']) if image['height'] else None

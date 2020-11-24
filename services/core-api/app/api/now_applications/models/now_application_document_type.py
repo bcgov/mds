@@ -32,7 +32,13 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         def create_image(source, width=None, height=None):
             return {'source': source, 'width': width, 'height': height}
 
-        # Transform template data for "Working Permit" or "Working Permit for Amendment"
+        def validate_issuing_inspector(now_application):
+            if not now_application.issuing_inspector:
+                raise Exception('No Issuing Inspector has been assigned')
+            if not now_application.issuing_inspector.signature:
+                raise Exception('No signature for the Issuing Inspector has been provided')
+
+        # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
         def transform_permit(template_data, now_application):
             is_draft = False
             permit = None
@@ -46,10 +52,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             else:
                 raise Exception('Notice of Work has no permit')
 
-            if not now_application.issuing_inspector:
-                raise Exception('No Issuing Inspector has been assigned')
-            if not now_application.issuing_inspector.signature:
-                raise Exception('No signature for the Issuing Inspector has been provided')
+            validate_issuing_inspector(now_application)
 
             if not is_draft:
                 template_data['images'] = {
@@ -76,12 +79,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             return template_data
 
-        # Transform template data for "Acknowledgement Letter", "Withdrawal Letter", and "Rejection Letter"
+        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), and "Rejection Letter" (RJL)
         def transform_letter(template_data, now_application):
-            if not now_application.issuing_inspector:
-                raise Exception('No Issuing Inspector has been assigned')
-            if not now_application.issuing_inspector.signature:
-                raise Exception('No signature for the Issuing Inspector has been provided')
+            validate_issuing_inspector(now_application)
 
             template_data['images'] = {
                 'issuing_inspector_signature':
