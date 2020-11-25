@@ -362,6 +362,7 @@ export class MineSecurityInfo extends Component {
                 openCloseBondModal={this.openCloseBondModal}
                 recordsByPermit={this.recordsByPermit}
                 activeBondCount={this.activeBondCount}
+                getBalance={this.getBalance}
               />
             </div>
           </Tabs.TabPane>
