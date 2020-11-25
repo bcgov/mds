@@ -40,22 +40,20 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Total Held",
       },
       Object {
-        "dataIndex": "amount_confiscated",
-        "key": "amount_confiscated",
+        "dataIndex": "balance",
+        "key": "balance",
         "render": [Function],
         "title": <div>
-          Total Confiscated
+          Confiscated Cash On Hand
           <CoreTooltip
-            title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit"
+            title="Confiscated Cash On Hand: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds."
           />
         </div>,
       },
       Object {
         "align": "right",
-        "dataIndex": "addEditButton",
         "key": "addEditButton",
         "render": [Function],
-        "title": "",
       },
     ]
   }
