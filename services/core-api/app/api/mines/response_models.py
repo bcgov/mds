@@ -500,8 +500,8 @@ PERMIT_CONDITION_MODEL = api.model(
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
         'display_order': fields.Integer,
-        'update_user': fields.String,
-        'update_timestamp': fields.DateTime
+        'last_updated_by': fields.String,
+        'last_updated_date': fields.DateTime
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {

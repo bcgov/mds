@@ -116,7 +116,7 @@ export class Conditions extends Component {
         acc = this.getMostRecentCondition(acc, item.sub_conditions);
       }
 
-      acc = new Date(acc.update_timestamp) > new Date(item.update_timestamp) ? acc : item;
+      acc = new Date(acc.last_updated_date) > new Date(item.last_updated_date) ? acc : item;
     });
 
     return acc;
@@ -139,12 +139,14 @@ export class Conditions extends Component {
           <div style={{ marginLeft: 24 }}>
             <p>
               <b>Updated at: </b>
-              {mostRecentCondition && mostRecentCondition.update_timestamp
-                ? formatDateTime(mostRecentCondition.update_timestamp)
+              {mostRecentCondition && mostRecentCondition.last_updated_date
+                ? formatDateTime(mostRecentCondition.last_updated_date)
                 : "N/A"}
               <br />
               <b>Updated by: </b>
-              {mostRecentCondition ? mostRecentCondition.update_user : "N/A"}
+              {mostRecentCondition && mostRecentCondition.last_updated_by
+                ? mostRecentCondition.last_updated_by
+                : "N/A"}
               <br />
             </p>
           </div>

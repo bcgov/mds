@@ -47,14 +47,13 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         order_by='asc(PermitConditions.display_order)',
         backref=backref('parent', remote_side=[permit_condition_id]))
 
-    update_user = db.Column(
+    last_updated_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_updated_by = db.Column(
         db.String(60),
         nullable=False,
         default=User().get_user_username,
         onupdate=User().get_user_username)
-
-    update_timestamp = db.Column(
-        db.DateTime, nullable=False, server_default=FetchedValue(), onupdate=datetime.utcnow)
 
     @hybrid_property
     def sub_conditions(self):
