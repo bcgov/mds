@@ -85,7 +85,7 @@ BEGIN
 	WHERE permit_amendment_id = ANY(permit_amendment_ids);
 
 	DELETE FROM permit_conditions
-	WHERE permit_condition_id = ANY(permit_amendment_ids);
+	WHERE permit_amendment_id = ANY(permit_amendment_ids);
 
 	DELETE FROM permit_amendment
 	WHERE permit_amendment_id = ANY(permit_amendment_ids);
