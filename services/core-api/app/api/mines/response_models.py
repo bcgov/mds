@@ -115,7 +115,9 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
-        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
+        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
+        'permit_conditions_last_updated_by': fields.String,
+        'permit_conditions_last_updated_date': fields.DateTime
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -499,9 +501,7 @@ PERMIT_CONDITION_MODEL = api.model(
         'condition_type_code': fields.String,
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer,
-        'last_updated_by': fields.String,
-        'last_updated_date': fields.DateTime
+        'display_order': fields.Integer
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {

@@ -8,7 +8,6 @@ from app.extensions import db
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
 from sqlalchemy.ext.hybrid import hybrid_property
-from app.api.utils.include.user_info import User
 
 from app.api.utils.field_template import FieldTemplate
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -46,14 +45,6 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
         lazy='joined',
         order_by='asc(PermitConditions.display_order)',
         backref=backref('parent', remote_side=[permit_condition_id]))
-
-    last_updated_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
-    last_updated_by = db.Column(
-        db.String(60),
-        nullable=False,
-        default=User().get_user_username,
-        onupdate=User().get_user_username)
 
     @hybrid_property
     def sub_conditions(self):

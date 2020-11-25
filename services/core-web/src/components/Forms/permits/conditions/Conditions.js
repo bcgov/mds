@@ -20,6 +20,7 @@ import {
   deletePermitCondition,
   updatePermitCondition,
   setEditingConditionFlag,
+  fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import { maxBy, concat } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
@@ -39,6 +40,7 @@ const propTypes = {
   setEditingConditionFlag: PropTypes.func.isRequired,
   deletePermitCondition: PropTypes.func.isRequired,
   updatePermitCondition: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
 
 export class Conditions extends Component {
@@ -72,6 +74,10 @@ export class Conditions extends Component {
         this.setState({ submitting: false });
         this.props.closeModal();
         this.fetchPermitConditions();
+        this.props.fetchDraftPermitByNOW(
+          null,
+          this.props.draftPermitAmendment.now_application_guid
+        );
       });
   };
 
@@ -89,41 +95,51 @@ export class Conditions extends Component {
     });
   };
 
-  handleEdit = (values) =>
-    this.props.updatePermitCondition(values.permit_condition_guid, values).then(() => {
-      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
-      this.props.setEditingConditionFlag(false);
-    });
+  handleEdit = (values) => {
+    return this.props
+      .updatePermitCondition(
+        values.permit_condition_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid,
+        values
+      )
+      .then(() => {
+        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.props.fetchDraftPermitByNOW(
+          null,
+          this.props.draftPermitAmendment.now_application_guid
+        );
+        this.props.setEditingConditionFlag(false);
+      });
+  };
 
   reorderConditions = (condition, isMoveUp) => {
     condition.display_order = isMoveUp ? condition.display_order - 1 : condition.display_order + 1;
-    return this.props.updatePermitCondition(condition.permit_condition_guid, condition).then(() => {
-      this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
-    });
+    return this.props
+      .updatePermitCondition(
+        condition.permit_condition_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid,
+        condition
+      )
+      .then(() => {
+        this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.props.fetchDraftPermitByNOW(
+          null,
+          this.props.draftPermitAmendment.now_application_guid
+        );
+      });
   };
 
   setConditionEditingFlag = (value) => {
     this.props.setEditingConditionFlag(value);
   };
 
-  getMostRecentCondition = (acc, conditions) => {
-    conditions.forEach((item) => {
-      if (!acc) {
-        acc = item;
-      }
-
-      if (item.sub_conditions && item.sub_conditions.length > 0) {
-        acc = this.getMostRecentCondition(acc, item.sub_conditions);
-      }
-
-      acc = new Date(acc.last_updated_date) > new Date(item.last_updated_date) ? acc : item;
-    });
-
-    return acc;
-  };
-
   render = () => {
-    const mostRecentCondition = this.getMostRecentCondition(null, this.props.conditions);
+    const conditionsMetadata = this.props.draftPermitAmendment
+      ? {
+          last_updated_by: this.props.draftPermitAmendment.permit_conditions_last_updated_by,
+          last_updated_date: this.props.draftPermitAmendment.permit_conditions_last_updated_date,
+        }
+      : null;
     return (
       <>
         <div
@@ -139,13 +155,13 @@ export class Conditions extends Component {
           <div style={{ marginLeft: 24 }}>
             <p>
               <b>Updated at: </b>
-              {mostRecentCondition && mostRecentCondition.last_updated_date
-                ? formatDateTime(mostRecentCondition.last_updated_date)
+              {conditionsMetadata && conditionsMetadata.last_updated_date
+                ? formatDateTime(conditionsMetadata.last_updated_date)
                 : "N/A"}
               <br />
               <b>Updated by: </b>
-              {mostRecentCondition && mostRecentCondition.last_updated_by
-                ? mostRecentCondition.last_updated_by
+              {conditionsMetadata && conditionsMetadata.last_updated_by
+                ? conditionsMetadata.last_updated_by
                 : "N/A"}
               <br />
             </p>
@@ -222,6 +238,7 @@ const mapDispatchToProps = (dispatch) =>
       setEditingConditionFlag,
       deletePermitCondition,
       updatePermitCondition,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );
