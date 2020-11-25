@@ -631,6 +631,7 @@ VALUES
     ('CAL', 'Acknowledgement Letter', true, 'system-mds', 'system-mds'),
 	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
 	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
+	('NPE', 'Permit Enclosed Letter', true, 'system-mds', 'system-mds'),
     ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
     ('PMT','Working Permit', true, 'system-mds','system-mds'),
     ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds'),
@@ -663,6 +664,7 @@ VALUES
   ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
   ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
   ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
   ('NTR', '[]', 'templates/now/Technical Review.docx', true, 'system-mds', 'system-mds'),
   ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
   ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
@@ -963,6 +965,96 @@ where document_template_code = 'NCL';
 
 UPDATE document_template SET form_spec_json = '[
     {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s name",
+      "required": true
+    },    
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "required": true
+    },
+    {
+      "id": "property",
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "application_dt",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
+    },
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
+    },
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Please ensure that you and all persons who are carrying out activities in accordance with this permit comply with all terms and conditions of the permit and are familiar with the permitted work program.\n\nThis permit applies only to the requirements under the Mines Act and Health, Safety and Reclamation Code for Mines in British Columbia (Code).  Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation. Examples of other authorizations would be for timber removal, water use, works within the agricultural land reserve etc.\n\nThe amount of your security deposit may be adjusted on the basis of reclamation performance, field inspections by this ministry, and on reports which may be requested.",
+      "required": true
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'NPE';
+
+UPDATE document_template SET form_spec_json = '[
+    {
       "id": "mine_no",
       "relative-data-path": "mine.mine_no",
       "read-only": true
@@ -1040,6 +1132,10 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'NPE'
+where now_application_document_type_code = 'NPE';
 
 UPDATE now_application_document_type
 SET document_template_code = 'PMT'

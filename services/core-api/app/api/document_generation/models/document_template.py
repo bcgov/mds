@@ -109,7 +109,7 @@ class DocumentTemplate(Base, AuditMixin):
                 del template_data['images']
 
         doc = None
-        if self.document_template_code in ('PMT', 'PMA', 'NCL', 'NWL', 'NRL'):
+        if self.document_template_code in ('PMT', 'PMA', 'NPE', 'NCL', 'NWL', 'NRL'):
             doc = docx.Document(self.os_template_file_path)
             insert_images(doc, template_data)
 
