@@ -168,6 +168,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "CAL",
           "WDL",
           "RJL",
+          "NPE",
           "OTH",
         ]
       }
