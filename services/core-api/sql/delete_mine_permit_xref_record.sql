@@ -53,11 +53,11 @@ BEGIN
 	-- Delete the records associated with mine reports.
 	RAISE NOTICE 'Deleting records associated with mine reports';
 
-	SELECT mine_report_id INTO mine_report_ids
+	SELECT array_agg(mine_report_id) INTO mine_report_ids
 	FROM mine_report
 	WHERE mine_guid = _mine_guid AND permit_id = _permit_id;
 
-	SELECT mine_report_submission_id INTO mine_report_submission_ids
+	SELECT array_agg(mine_report_submission_id) INTO mine_report_submission_ids
 	FROM mine_report_submission
 	WHERE mine_report_id = ANY(mine_report_ids);
 
@@ -73,11 +73,11 @@ BEGIN
 	-- Delete the records associated with permit amendments.
 	RAISE NOTICE 'Deleting records associated with permit amendments';
 
-	SELECT permit_amendment_id INTO permit_amendment_ids
+	SELECT array_agg(permit_amendment_id) INTO permit_amendment_ids
 	FROM permit_amendment
 	WHERE mine_guid = _mine_guid AND permit_id = _permit_id;
 
-	SELECT now_application_guid INTO now_application_guids
+	SELECT array_agg(now_application_guid) INTO now_application_guids
 	FROM permit_amendment
 	WHERE permit_amendment_id = ANY(permit_amendment_ids); 
 
@@ -93,11 +93,11 @@ BEGIN
 	-- Delete the records associated with Notices of Work.
 	RAISE NOTICE 'Deleting records associated with Notices of Work';	
 
-	SELECT now_application_id INTO now_application_ids
+	SELECT array_agg(now_application_id) INTO now_application_ids
 	FROM now_application_identity
 	WHERE now_application_guid = ANY(now_application_guids);
 
-	SELECT activity_summary_id INTO activity_summary_ids
+	SELECT array_agg(activity_summary_id) INTO activity_summary_ids
 	FROM activity_summary
 	WHERE now_application_id = ANY(now_application_ids);
 
