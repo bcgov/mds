@@ -369,7 +369,10 @@ export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (disp
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS)))
+    .catch((err) => {
+      throw new Error(err);
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 

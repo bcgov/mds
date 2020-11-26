@@ -165,6 +165,7 @@ class NOWApplication(Base, AuditMixin):
     )
 
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
+    status_reason = db.Column(db.String)
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

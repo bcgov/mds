@@ -13,6 +13,11 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  additionalTitle: PropTypes.string,
+};
+
+const defaultProps = {
+  additionalTitle: "",
 };
 
 const createFields = (fields) => (
@@ -49,17 +54,18 @@ export const GenerateDocumentForm = (props) => (
         </Button>
       </Popconfirm>
       <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-        Generate {props.documentType.description}
+        Generate {props.documentType.description} {props.additionalTitle}
       </Button>
     </div>
   </Form>
 );
 
 GenerateDocumentForm.propTypes = propTypes;
+GenerateDocumentForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
-  // touchOnBlur: true,
+  touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
   // onSubmitFail: (errors, dispatch) =>
   //   dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),

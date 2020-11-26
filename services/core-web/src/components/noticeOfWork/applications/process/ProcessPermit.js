@@ -11,11 +11,22 @@ import {
   RightCircleOutlined,
   LinkOutlined,
 } from "@ant-design/icons";
+import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
+import {
+  generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
+  fetchNoticeOfWorkApplicationContextTemplate,
+} from "@/actionCreators/documentActionCreator";
 import { connect } from "react-redux";
+import { formatDate } from "@common/utils/helpers";
 import { bindActionCreators } from "redux";
-import { getDropdownNoticeOfWorkApplicationStatusCodes } from "@common/selectors/staticContentSelectors";
-import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getDropdownNoticeOfWorkApplicationStatusCodes,
+  getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
+  getNoticeOfWorkApplicationStatusOptionsHash,
+} from "@common/selectors/staticContentSelectors";
+
 import {
   updateNoticeOfWorkStatus,
   fetchApplicationDelay,
@@ -29,6 +40,8 @@ import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors
 import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 
 /**
@@ -49,6 +62,10 @@ const propTypes = {
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
+  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
+  noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -99,26 +116,46 @@ export class ProcessPermit extends Component {
     });
   };
 
-  openRejectApplicationModal = () => {
+  openStatusModal = () => {
     this.props.openModal({
       props: {
-        title: "Reject Application",
-        onSubmit: this.rejectApplication,
+        title: "Undo-Reject Application",
+        onSubmit: this.updateApplicationStatus,
       },
       width: "50vw",
-      content: modalConfig.REJECT_APPLICATION_MODAL,
+      content: modalConfig.UPDATE_NOW_STATUS,
     });
   };
 
-  openWithdrawApplicationModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Withdraw Application",
-        onSubmit: this.withdrawApplication,
-      },
-      width: "50vw",
-      content: modalConfig.WITHDRAW_APPLICATION_MODAL,
-    });
+  openRejectApplicationModal = (type) => {
+    const letterCode = type === "REJ" ? "RJL" : "WDL";
+    const needSignature = this.props.noticeOfWork?.issuing_inspector?.signature;
+    const documentType = this.props.generatableApplicationDocuments[letterCode];
+    this.props
+      .fetchNoticeOfWorkApplicationContextTemplate(
+        letterCode,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        const initialValues = {};
+        this.props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
+        this.props.openModal({
+          props: {
+            initialValues,
+            title: type === "REJ" ? "Reject Application" : "Withdraw Application",
+            documentType: this.props.documentContextTemplate,
+            onSubmit: this.rejectApplication,
+            type,
+            generateDocument: this.handleGenerateDocumentFormSubmit,
+            draftAmendment: this.props.draftAmendment,
+          },
+          width: "50vw",
+          content: modalConfig.REJECT_APPLICATION_MODAL,
+        });
+      });
   };
 
   issuePermit = (values) => {
@@ -157,47 +194,21 @@ export class ProcessPermit extends Component {
       });
   };
 
-  withdrawApplication = (values) => {
+  updateApplicationStatus = (values) => {
+    console.log(values);
+    // const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
+    //   values.now_application_status_code
+    // ];
     this.props
-      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
-        ...values,
-        now_application_status_code: "WDN",
-      })
+      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
         );
         this.props.closeModal();
         notification.success({
-          message: "This application has been withdrawn.",
+          message: "This application status has been updated.",
           duration: 10,
-        });
-      });
-  };
-
-  handleGenerateDocument = (menuItem) => {
-    const documentTypeCode = menuItem.key;
-    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-    this.props
-      .fetchNoticeOfWorkApplicationContextTemplate(
-        documentTypeCode,
-        this.props.noticeOfWork.now_application_guid
-      )
-      .then(() => {
-        const initialValues = {};
-        this.props.documentContextTemplate.document_template.form_spec.map(
-          // eslint-disable-next-line
-          (item) => (initialValues[item.id] = item["context-value"])
-        );
-        this.props.openModal({
-          props: {
-            initialValues,
-            documentType: this.props.documentContextTemplate,
-            onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
-            title: `Generate ${documentType.description}`,
-          },
-          width: "75vw",
-          content: modalConfig.GENERATE_DOCUMENT,
         });
       });
   };
@@ -214,21 +225,11 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props
-      .generateNoticeOfWorkApplicationDocument(
-        documentTypeCode,
-        payload,
-        "Successfully Created Document and Attached it to this Notice of Work",
-        () => {
-          this.setState({ isLoaded: false });
-          this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(() => this.setState({ isLoaded: true }));
-        }
-      )
-      .then(() => {
-        this.props.closeModal();
-      });
+    this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully Created Document and Attached it to this Notice of Work"
+    );
   };
 
   getValidationMessages = () => {
@@ -278,10 +279,10 @@ export class ProcessPermit extends Component {
       <Menu.Item key="issue-permit" onClick={this.openIssuePermitModal} disabled={validationErrors}>
         Issue permit
       </Menu.Item>
-      <Menu.Item key="reject-application" onClick={this.openRejectApplicationModal}>
+      <Menu.Item key="reject-application" onClick={() => this.openRejectApplicationModal("REJ")}>
         Reject application
       </Menu.Item>
-      <Menu.Item key="withdraw-application" onClick={this.openWithdrawApplicationModal}>
+      <Menu.Item key="withdraw-application" onClick={() => this.openRejectApplicationModal("WDN")}>
         Withdraw application
       </Menu.Item>
     </Menu>
@@ -293,7 +294,6 @@ export class ProcessPermit extends Component {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
-      this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
     return (
@@ -306,11 +306,22 @@ export class ProcessPermit extends Component {
             </h2>
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
-              <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
-                <Button type="secondary" className="full-mobile">
-                  Process <DownOutlined />
+              <>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                    <Button type="primary" className="full-mobile">
+                      Process <DownOutlined />
+                    </Button>
+                  </Dropdown>
+                </AuthorizationWrapper>
+              </>
+            )}
+            {isProcessed && !isApproved && (
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
+                  Undo-Reject Application
                 </Button>
-              </Dropdown>
+              </AuthorizationWrapper>
             )}
           </div>
           <NOWStatusIndicator type="banner" />
@@ -385,6 +396,9 @@ const mapStateToProps = (state) => ({
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   draftAmendment: getDraftPermitAmendmentForNOW(state),
   documentContextTemplate: getDocumentContextTemplate(state),
+  generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
+  noticeOfWork: getNoticeOfWork(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -396,6 +410,9 @@ const mapDispatchToProps = (dispatch) =>
       fetchApplicationDelay,
       fetchDraftPermitByNOW,
       fetchImportedNoticeOfWorkApplication,
+      generateNoticeOfWorkApplicationDocument,
+      exportNoticeOfWorkApplicationDocument,
+      fetchNoticeOfWorkApplicationContextTemplate,
     },
     dispatch
   );

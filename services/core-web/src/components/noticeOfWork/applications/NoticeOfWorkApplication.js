@@ -129,7 +129,6 @@ export class NoticeOfWorkApplication extends Component {
     isMajorMine: undefined,
     associatedLeadInspectorPartyGuid: undefined,
     associatedIssuingInspectorPartyGuid: undefined,
-    associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -295,12 +294,6 @@ export class NoticeOfWorkApplication extends Component {
       associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
 
-  setStatus = (status) => {
-    this.setState({
-      associatedStatus: status,
-    });
-  };
-
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -406,44 +399,6 @@ export class NoticeOfWorkApplication extends Component {
           .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
-  };
-
-  handleUpdateStatus = (finalAction) => {
-    if (
-      !this.state.associatedStatus ||
-      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
-    ) {
-      finalAction();
-      return;
-    }
-
-    this.setState({ isLoaded: false });
-    this.props
-      .updateNoticeOfWorkApplication(
-        { now_application_status_code: this.state.associatedStatus },
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully changed status to ${
-          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
-        }`
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
-  };
-
-  openUpdateStatusModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Application Status",
-        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
-        setStatus: this.setStatus,
-        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_STATUS,
-    });
   };
 
   openChangeNOWMineModal = (noticeOfWork) => {
@@ -694,15 +649,6 @@ export class NoticeOfWorkApplication extends Component {
                 onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
               >
                 Edit Application Lat/Long
-              </Menu.Item>
-            </NOWActionWrapper>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item
-                key="edit-application-status"
-                className="custom-menu-item"
-                onClick={() => this.openUpdateStatusModal()}
-              >
-                Edit Application Status
               </Menu.Item>
             </NOWActionWrapper>
           </>

@@ -42,6 +42,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         data = self.parser.parse_args()
         issue_date = data.get('issue_date', None)
         auth_end_date = data.get('auth_end_date', None)
+        status_reason = data.get('status_reason', None)
         now_application_status_code = data.get('now_application_status_code', None)
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
@@ -56,6 +57,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
             now_application_identity.now_application.status_updated_date = datetime.today()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
+            now_application_identity.now_application.status_reason = status_reason
 
             # Approved
             if now_application_status_code == 'AIA':

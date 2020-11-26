@@ -5,6 +5,7 @@ import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
+import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -21,7 +22,7 @@ const UpdateNOWStatusForm = (props) => {
           <Field
             id="now_application_status_code"
             name="now_application_status_code"
-            label="Status"
+            label="Status*"
             component={renderConfig.SELECT}
             placeholder="Select the status"
             validate={[required]}
@@ -39,4 +40,6 @@ UpdateNOWStatusForm.propTypes = propTypes;
 
 export default reduxForm({
   form: FORM.UPDATE_NOW_STATUS,
+  touchOnBlur: false,
+  onSubmitSuccess: resetForm(FORM.UPDATE_NOW_STATUS),
 })(UpdateNOWStatusForm);

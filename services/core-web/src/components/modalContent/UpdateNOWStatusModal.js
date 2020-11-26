@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import Highlight from "react-highlighter";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { getDropdownNoticeOfWorkApplicationStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import UpdateNOWStatusForm from "@/components/Forms/noticeOfWork/UpdateNOWStatusForm";
+import NOWRejectionReason from "@/components/noticeOfWork/applications/NOWRejectionReason";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -14,7 +16,7 @@ const propTypes = {
   updateStatusFormValues: PropTypes.objectOf(PropTypes.any),
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,
   setStatus: PropTypes.func.isRequired,
-  handleUpdateStatus: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
@@ -32,12 +34,26 @@ export class UpdateNOWStatusModal extends Component {
 
   handleUpdateStatus = () => {
     this.setState({ disableButton: true });
-    this.props.handleUpdateStatus();
+    this.props.onSubmit();
   };
 
   render() {
     return (
       <div>
+        <p>
+          The Notice of Work application was <Highlight search="Rejected">Rejected</Highlight> for
+          the following reason:
+        </p>
+        <br />
+        <NOWRejectionReason />
+        <Alert
+          message="This action is final"
+          description="No changes or additions can be made to this application after the permit has been issued. Ensure the issues above are resolved after reverting rejecting."
+          type="warning"
+          showIcon
+          style={{ textAlign: "left" }}
+        />
+        <br />
         <Row gutter={16}>
           <Col span={24}>
             <UpdateNOWStatusForm
@@ -65,7 +81,7 @@ export class UpdateNOWStatusModal extends Component {
           </Popconfirm>
           <Button
             className="full-mobile"
-            type="primary"
+            type="danger"
             onClick={this.handleUpdateStatus}
             disabled={this.invalidUpdateStatusPayload(this.props.updateStatusFormValues)}
           >
