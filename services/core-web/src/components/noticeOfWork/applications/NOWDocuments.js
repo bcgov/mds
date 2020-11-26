@@ -7,7 +7,10 @@ import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import {
+  getNoticeOfWorkApplicationDocumentTypeOptionsHash,
+  getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -27,6 +30,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
+  noticeOfWorkApplicationDocumentTypeOptions: PropTypes.objectOf(PropTypes.any).isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
@@ -82,17 +86,22 @@ export const NOWDocuments = (props) => {
     });
   };
 
-  const columns = (noticeOfWorkApplicationDocumentTypeOptionsHash, categoriesToShow) => {
-    const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
-      .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
-      .reduce((obj, key) => {
-        obj[key] = noticeOfWorkApplicationDocumentTypeOptionsHash[key];
-        return obj;
-      }, {});
-    const categoryFilters = Object.values(filtered).map((dt) => ({
-      text: dt,
-      value: dt,
+  const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow) => {
+    const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
+      if (subType && categoriesToShow.length > 0) {
+        return categoriesToShow.includes(subType);
+      }
+      if (categoriesToShow.length > 0) {
+        return categoriesToShow.includes(value);
+      }
+      return true;
+    });
+
+    const categoryFilters = filtered.map((item) => ({
+      text: item.label,
+      value: item.value,
     }));
+
     const fileNameColumn = props.selectedRows
       ? {
           title: "File Name",
@@ -193,10 +202,7 @@ export const NOWDocuments = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns(
-          props.noticeOfWorkApplicationDocumentTypeOptionsHash,
-          props.categoriesToShow
-        )}
+        columns={columns(props.noticeOfWorkApplicationDocumentTypeOptions, props.categoriesToShow)}
         dataSource={transformDocuments(
           props.documents,
           props.noticeOfWork.now_application_guid,
@@ -238,6 +244,9 @@ NOWDocuments.propTypes = propTypes;
 NOWDocuments.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
     state
   ),
   noticeOfWork: getNoticeOfWork(state),

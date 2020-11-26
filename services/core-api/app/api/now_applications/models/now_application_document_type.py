@@ -10,6 +10,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
+    now_application_document_sub_type_code = db.Column(db.String, db.ForeignKey('now_application_document_sub_type.now_application_document_sub_type_code'))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     document_template_code = db.Column(db.String,
                                        db.ForeignKey('document_template.document_template_code'))

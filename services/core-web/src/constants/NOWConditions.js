@@ -74,4 +74,5 @@ export const draftPermitMenu = [
       { href: "ADC", title: "F. Additional Conditions" },
     ],
   },
+  { href: "maps", title: "Maps", alwaysVisible: true, children: [] },
 ];
