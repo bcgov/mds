@@ -14,10 +14,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   additionalTitle: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   additionalTitle: "",
+  disabled: false,
 };
 
 const createFields = (fields) => (
@@ -53,7 +55,13 @@ export const GenerateDocumentForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
+      <Button
+        className="full-mobile"
+        type="primary"
+        htmlType="submit"
+        loading={props.submitting}
+        disabled={props.disabled}
+      >
         Generate {props.documentType.description} {props.additionalTitle}
       </Button>
     </div>

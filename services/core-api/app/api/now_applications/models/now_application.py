@@ -58,6 +58,7 @@ class NOWApplication(Base, AuditMixin):
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
+    status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
     last_updated_by = db.Column(db.String)
     submitted_date = db.Column(db.Date, nullable=False)
@@ -165,7 +166,6 @@ class NOWApplication(Base, AuditMixin):
     )
 
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
-    status_reason = db.Column(db.String)
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

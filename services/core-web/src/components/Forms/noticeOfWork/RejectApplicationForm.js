@@ -12,6 +12,7 @@ import * as FORM from "@/constants/forms";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
@@ -44,6 +45,9 @@ export const RejectApplicationForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
+      <Button className="full-mobile" type="tertiary" onClick={props.prev}>
+        Back
+      </Button>
       <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
         {props.title}
       </Button>

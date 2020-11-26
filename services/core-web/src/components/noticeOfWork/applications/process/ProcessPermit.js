@@ -129,7 +129,7 @@ export class ProcessPermit extends Component {
 
   openRejectApplicationModal = (type) => {
     const letterCode = type === "REJ" ? "RJL" : "WDL";
-    const needSignature = this.props.noticeOfWork?.issuing_inspector?.signature;
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     const documentType = this.props.generatableApplicationDocuments[letterCode];
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
@@ -151,6 +151,7 @@ export class ProcessPermit extends Component {
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             draftAmendment: this.props.draftAmendment,
+            signature,
           },
           width: "50vw",
           content: modalConfig.REJECT_APPLICATION_MODAL,
@@ -195,18 +196,21 @@ export class ProcessPermit extends Component {
   };
 
   updateApplicationStatus = (values) => {
-    // const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
-    //   values.now_application_status_code
-    // ];
+    const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
+      values.now_application_status_code
+    ];
     this.props
-      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, values)
+      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
+        ...values,
+        status_reason: null,
+      })
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
         );
         this.props.closeModal();
         notification.success({
-          message: "This application status has been updated.",
+          message: `The status has been updated to ${statusLabel}.`,
           duration: 10,
         });
       });

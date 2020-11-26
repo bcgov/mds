@@ -240,8 +240,28 @@
   }
 }
 
+.ant-alert-error {
+  margin: 0;
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+    line-height: 2rem;
+  }
+}
+
 .ant-alert-info {
   background-color: #ecf6fd;
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+    line-height: 2rem;
+  }
 
   .ant-alert-icon {
     background-color: #ecf6fd !important;

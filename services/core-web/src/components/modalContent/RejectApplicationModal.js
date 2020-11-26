@@ -11,6 +11,7 @@ const propTypes = {
   generateDocument: PropTypes.func.isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   type: PropTypes.string.isRequired,
+  signature: PropTypes.bool.isRequired,
 };
 
 export class RejectApplicationModal extends Component {
@@ -41,6 +42,7 @@ export class RejectApplicationModal extends Component {
             additionalTitle="and Process"
             onSubmit={this.handleGenerate}
             submitting={this.state.submitting}
+            disabled={!this.props.signature}
           />
         ),
       },
@@ -52,6 +54,7 @@ export class RejectApplicationModal extends Component {
             closeModal={this.props.closeModal}
             title={this.props.title}
             type={this.props.type}
+            prev={this.prev}
           />
         ),
       },
@@ -60,12 +63,24 @@ export class RejectApplicationModal extends Component {
       <div>
         <Alert
           message="This action is final"
-          description="No changes or additions can be made to this application after the permit has been rejected."
+          description="No changes or additions can be made to this application after it has been rejected."
           type="warning"
           showIcon
           style={{ textAlign: "left" }}
         />
         <br />
+        {!this.props.signature && (
+          <>
+            <Alert
+              message="Signature needed."
+              description="The signature for the Issuing Inspector has not been provided."
+              type="error"
+              showIcon
+              style={{ textAlign: "left" }}
+            />
+            <br />
+          </>
+        )}
         <Steps current={this.state.step}>
           {steps.map((step) => (
             <Steps.Step key={step.title} title={step.title} />

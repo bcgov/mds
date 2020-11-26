@@ -344,6 +344,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'status_updated_date':
         Date,
+        'status_reason': fields.String,
         'submitted_date':
         Date,
         'received_date':

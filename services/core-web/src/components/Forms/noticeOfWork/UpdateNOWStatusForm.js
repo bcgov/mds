@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { Popconfirm, Button } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import PropTypes from "prop-types";
@@ -8,16 +9,21 @@ import * as FORM from "@/constants/forms";
 import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,
-  setStatus: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 const UpdateNOWStatusForm = (props) => {
   return (
     <div>
-      <Form layout="vertical">
+      <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Form.Item>
           <Field
             id="now_application_status_code"
@@ -27,10 +33,31 @@ const UpdateNOWStatusForm = (props) => {
             placeholder="Select the status"
             validate={[required]}
             data={props.dropdownNoticeOfWorkApplicationStatusOptions}
-            onSelect={props.setStatus}
-            doNotPinDropdown
           />
         </Form.Item>
+        <div className="right center-mobile">
+          <Popconfirm
+            placement="topRight"
+            title="Are you sure you want to cancel?"
+            onConfirm={props.closeModal}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button className="full-mobile" type="secondary">
+              Cancel
+            </Button>
+          </Popconfirm>
+          <AuthorizationWrapper permission={Permission.ADMIN}>
+            <Button
+              className="full-mobile"
+              type="danger"
+              htmlType="submit"
+              disabled={props.disabled}
+            >
+              {props.title}
+            </Button>
+          </AuthorizationWrapper>
+        </div>
       </Form>
     </div>
   );
