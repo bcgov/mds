@@ -3,7 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
-  createNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
   importNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
@@ -74,28 +73,27 @@ export class ApplicationStepOne extends Component {
       });
   };
 
-  renderContent = () =>
-    (this.props.isNewApplication && (
-      <MajorMinePermitApplicationCreate
-        initialPermitGuid={this.props.initialPermitGuid}
-        mineGuid={this.props.mineGuid}
-        loadNoticeOfWork={this.props.loadNoticeOfWork}
-      />
-    )) || (
-      <VerifyApplicationInformationForm
-        isImporting={this.state.isImporting}
-        originalNoticeOfWork={this.props.originalNoticeOfWork}
-        noticeOfWork={this.props.noticeOfWork}
-        mineGuid={this.props.mineGuid}
-        onSubmit={this.handleNOWImport}
-        initialValues={this.props.originalNoticeOfWork}
-      />
-    );
-
   render() {
     return (
       <div className="tab__content">
-        {!this.state.isImported && this.props.mineGuid && this.renderContent()}
+        {!this.state.isImported &&
+          this.props.mineGuid &&
+          ((this.props.isNewApplication && (
+            <MajorMinePermitApplicationCreate
+              initialPermitGuid={this.props.initialPermitGuid}
+              mineGuid={this.props.mineGuid}
+              loadNoticeOfWork={this.props.loadNoticeOfWork}
+            />
+          )) || (
+            <VerifyApplicationInformationForm
+              isImporting={this.state.isImporting}
+              originalNoticeOfWork={this.props.originalNoticeOfWork}
+              noticeOfWork={this.props.noticeOfWork}
+              mineGuid={this.props.mineGuid}
+              onSubmit={this.handleNOWImport}
+              initialValues={this.props.originalNoticeOfWork}
+            />
+          ))}
       </div>
     );
   }
@@ -104,7 +102,6 @@ export class ApplicationStepOne extends Component {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      createNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       importNoticeOfWorkApplication,
     },

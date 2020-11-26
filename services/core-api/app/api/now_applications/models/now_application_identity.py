@@ -14,7 +14,8 @@ from app.api.constants import *
 
 
 class NOWApplicationIdentity(Base, AuditMixin):
-    __tablename__ = "now_application_identity"
+    __tablename__ = 'now_application_identity'
+
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
 
@@ -53,27 +54,24 @@ class NOWApplicationIdentity(Base, AuditMixin):
 
     @hybrid_property
     def mms_now_submission(self):
-        return MMSApplication.query.filter_by(mms_cid=self.mms_cid).first()
+        return MMSApplication.query.filter_by(mms_cid=self.mms_cid).one_or_none()
 
     @classmethod
     def find_by_guid(cls, now_application_guid):
-        return cls.query.filter_by(now_application_guid=now_application_guid).first()
+        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
 
     @classmethod
     def find_by_messageid(cls, messageid):
-        return cls.query.filter_by(messageid=messageid).first()
+        return cls.query.filter_by(messageid=messageid).one_or_none()
 
     @classmethod
     def find_by_now_number(cls, now_number):
-        return cls.query.filter_by(now_number=now_number).first()
+        return cls.query.filter_by(now_number=now_number).one_or_none()
 
     @classmethod
     def submission_count_ytd(cls, _mine_guid, _sub_year):
-        try:
-            return cls.query.filter_by(mine_guid=_mine_guid).filter(
-                cls.now_number.ilike(f'%-{_sub_year}-%')).count()
-        except ValueError:
-            return None
+        return cls.query.filter_by(mine_guid=_mine_guid).filter(
+            cls.now_number.ilike(f'%-{_sub_year}-%')).count()
 
     @classmethod
     def create_now_number(cls, mine):
