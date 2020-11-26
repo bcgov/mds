@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -15,7 +14,6 @@ import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkS
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
   generateNoticeOfWorkApplicationDocument,
-  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { connect } from "react-redux";
@@ -23,7 +21,6 @@ import { formatDate } from "@common/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
-  getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 
@@ -63,9 +60,9 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
-  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -130,7 +127,6 @@ export class ProcessPermit extends Component {
   openRejectApplicationModal = (type) => {
     const letterCode = type === "REJ" ? "RJL" : "WDL";
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
-    const documentType = this.props.generatableApplicationDocuments[letterCode];
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         letterCode,
@@ -399,7 +395,6 @@ const mapStateToProps = (state) => ({
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   draftAmendment: getDraftPermitAmendmentForNOW(state),
   documentContextTemplate: getDocumentContextTemplate(state),
-  generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   noticeOfWork: getNoticeOfWork(state),
 });
@@ -414,7 +409,6 @@ const mapDispatchToProps = (dispatch) =>
       fetchDraftPermitByNOW,
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
-      exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
     },
     dispatch

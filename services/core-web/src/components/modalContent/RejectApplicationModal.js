@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Steps, Alert } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import RejectApplicationForm from "@/components/Forms/noticeOfWork/RejectApplicationForm";
 
@@ -12,6 +13,7 @@ const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   type: PropTypes.string.isRequired,
   signature: PropTypes.bool.isRequired,
+  draftAmendment: CustomPropTypes.permit.isRequired,
 };
 
 export class RejectApplicationModal extends Component {
@@ -55,6 +57,7 @@ export class RejectApplicationModal extends Component {
             title={this.props.title}
             type={this.props.type}
             prev={this.prev}
+            draftAmendment={this.props.draftAmendment}
           />
         ),
       },

@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { resetForm } from "@common/utils/helpers";
+import { formatDate, formatMoney, resetForm } from "@common/utils/helpers";
+import { Button, Col, Row, Popconfirm, Alert } from "antd";
+
 import { maxLength } from "@common/utils/Validate";
+import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 
@@ -16,10 +18,25 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
+  draftAmendment: CustomPropTypes.permit.isRequired,
 };
 
 export const RejectApplicationForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
+    {props.draftAmendment?.security_received_date && props.draftAmendment?.security_adjustment && (
+      <Alert
+        message="Return Reclamation Securities"
+        description={`A Security adjustment of ${formatMoney(
+          props.draftAmendment.security_adjustment
+        )} was received on ${formatDate(
+          props.draftAmendment.security_received_date
+        )} for this application which needs to be returned to the applicant or moved to a new application by the applicant. Update this information before rejecting.`}
+        type="error"
+        showIcon
+        style={{ textAlign: "left" }}
+      />
+    )}
+    <br />
     <Row>
       <Col span={24}>
         <Form.Item>
