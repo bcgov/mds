@@ -5,6 +5,8 @@ from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
 
+SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
+
 
 class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
@@ -28,15 +30,45 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, now_application):
+        def create_image(source, width=None, height=None):
+            return {'source': source, 'width': width, 'height': height}
 
-        # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA) documents
+        def validate_issuing_inspector(now_application):
+            if not now_application.issuing_inspector:
+                raise Exception('No Issuing Inspector has been assigned')
+            if not now_application.issuing_inspector.signature:
+                raise Exception('No signature for the Issuing Inspector has been provided')
+
+        # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
         def transform_permit(template_data, now_application):
-            if not now_application.draft_permit:
-                raise Exception(f'Notice of Work has no draft permit')
+            is_draft = False
+            permit = None
+            if now_application.active_permit:
+                permit = now_application.active_permit
+            elif now_application.draft_permit:
+                permit = now_application.draft_permit
+                is_draft = True
+            elif now_application.remitted_permit:
+                permit = now_application.remitted_permit
+            else:
+                raise Exception('Notice of Work has no permit')
 
+            validate_issuing_inspector(now_application)
+
+            if not is_draft:
+                template_data['images'] = {
+                    'issuing_inspector_signature':
+                    create_image(
+                        now_application.issuing_inspector.signature,
+                        height=SIGNATURE_IMAGE_HEIGHT_INCHES)
+                }
+
+            # NOTE: This is how the front-end is determining whether it's an amendment or not. But, is it not more correct to check permit_amendment.permit_amendment_type_code == 'AMD'?
             template_data['is_amendment'] = not now_application.is_new_permit
 
-            conditions = now_application.draft_permit.conditions
+            template_data['is_draft'] = is_draft
+
+            conditions = permit.conditions
             conditions_template_data = {}
             for section in conditions:
                 category_code = section.condition_category_code
@@ -48,8 +80,23 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             return template_data
 
+        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
+        def transform_letter(template_data, now_application):
+            validate_issuing_inspector(now_application)
+
+            template_data['images'] = {
+                'issuing_inspector_signature':
+                create_image(
+                    now_application.issuing_inspector.signature,
+                    height=SIGNATURE_IMAGE_HEIGHT_INCHES)
+            }
+
+            return template_data
+
         # Transform the template data according to the document type
         if self.now_application_document_type_code in ('PMT', 'PMA'):
             return transform_permit(template_data, now_application)
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE'):
+            return transform_letter(template_data, now_application)
 
         return template_data

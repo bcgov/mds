@@ -36,7 +36,17 @@ class NOWApplication(Base, AuditMixin):
     now_number = association_proxy('now_application_identity', 'now_number')
 
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
+    lead_inspector = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.lead_inspector_party_guid')
+    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    issuing_inspector = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
@@ -160,10 +170,22 @@ class NOWApplication(Base, AuditMixin):
         return '<NOWApplication %r>' % self.now_application_guid
 
     @hybrid_property
+    def active_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='ACT').one_or_none()
+
+    @hybrid_property
     def draft_permit(self):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
             permit_amendment_status_code='DFT').one_or_none()
+
+    @hybrid_property
+    def remitted_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='RMT').one_or_none()
 
     @hybrid_property
     def is_new_permit(self):
