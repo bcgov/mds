@@ -35,6 +35,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         type=str,
         location='json',
         help='Whether the permit is an exploration permit or not.')
+    parser.add_argument(
+        'status_reason', type=str, location='json', help='Reason for rejecting the application')
 
     @api.doc(description='Update Status of an Application', params={})
     @requires_role_edit_permit
@@ -58,7 +60,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             now_application_identity.now_application.status_updated_date = datetime.today()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
-
+            now_application_identity.save()
             # Approved
             if now_application_status_code == 'AIA':
                 permit = Permit.find_by_now_application_guid(application_guid)
