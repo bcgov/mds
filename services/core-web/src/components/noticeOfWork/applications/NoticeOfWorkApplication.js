@@ -129,7 +129,6 @@ export class NoticeOfWorkApplication extends Component {
     isMajorMine: undefined,
     associatedLeadInspectorPartyGuid: undefined,
     associatedIssuingInspectorPartyGuid: undefined,
-    associatedStatus: "",
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -295,12 +294,6 @@ export class NoticeOfWorkApplication extends Component {
       associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
 
-  setStatus = (status) => {
-    this.setState({
-      associatedStatus: status,
-    });
-  };
-
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -408,44 +401,6 @@ export class NoticeOfWorkApplication extends Component {
       .then(() => finalAction());
   };
 
-  handleUpdateStatus = (finalAction) => {
-    if (
-      !this.state.associatedStatus ||
-      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
-    ) {
-      finalAction();
-      return;
-    }
-
-    this.setState({ isLoaded: false });
-    this.props
-      .updateNoticeOfWorkApplication(
-        { now_application_status_code: this.state.associatedStatus },
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully changed status to ${
-          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
-        }`
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
-  };
-
-  openUpdateStatusModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Application Status",
-        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
-        setStatus: this.setStatus,
-        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_STATUS,
-    });
-  };
-
   openChangeNOWMineModal = (noticeOfWork) => {
     this.props.openModal({
       props: {
@@ -482,6 +437,7 @@ export class NoticeOfWorkApplication extends Component {
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         documentTypeCode,
@@ -499,6 +455,7 @@ export class NoticeOfWorkApplication extends Component {
             documentType: this.props.documentContextTemplate,
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
+            signature,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
@@ -696,15 +653,6 @@ export class NoticeOfWorkApplication extends Component {
                 Edit Application Lat/Long
               </Menu.Item>
             </NOWActionWrapper>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item
-                key="edit-application-status"
-                className="custom-menu-item"
-                onClick={() => this.openUpdateStatusModal()}
-              >
-                Edit Application Status
-              </Menu.Item>
-            </NOWActionWrapper>
           </>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
@@ -712,9 +660,8 @@ export class NoticeOfWorkApplication extends Component {
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(
                 ({ now_application_document_type_code }) =>
-                  now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT" &&
-                  now_application_document_type_code !== "NTR"
+                  now_application_document_type_code === "CAL" ||
+                  now_application_document_type_code === "NPE"
               )
               .map((document) => (
                 <Menu.Item
