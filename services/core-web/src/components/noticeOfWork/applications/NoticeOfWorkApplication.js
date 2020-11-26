@@ -437,6 +437,7 @@ export class NoticeOfWorkApplication extends Component {
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         documentTypeCode,
@@ -454,6 +455,7 @@ export class NoticeOfWorkApplication extends Component {
             documentType: this.props.documentContextTemplate,
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
+            signature,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
@@ -658,7 +660,7 @@ export class NoticeOfWorkApplication extends Component {
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(
                 ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "NCL"
+                  now_application_document_type_code === "CAL"
               )
               .map((document) => (
                 <Menu.Item
