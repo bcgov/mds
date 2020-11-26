@@ -44,8 +44,6 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    console.log("handleNOWImport values", values);
-
     this.setState({ isImporting: true });
 
     const contacts = values.contacts.map((contact) => {
@@ -71,7 +69,9 @@ export class ApplicationStepOne extends Component {
             this.props.handleTabChange("application");
           })
       )
-      .finally(() => this.setState({ isImporting: false }));
+      .finally(() => {
+        this.setState({ isImporting: false });
+      });
   };
 
   renderContent = () =>
@@ -96,7 +96,6 @@ export class ApplicationStepOne extends Component {
     return (
       <div className="tab__content">
         {!this.state.isImported && this.props.mineGuid && this.renderContent()}
-        {this.state.isImported && this.props.noticeOfWork.lead_inspector_party_guid && <div />}
       </div>
     );
   }
