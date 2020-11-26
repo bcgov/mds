@@ -453,3 +453,13 @@ body {
 .small-p {
   font-size: 12px;
 }
+
+img.lessOpacity {
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  zoom: 1;
+}
+
+.lighter {
+  font-weight: 300 !important;
+}

@@ -41,10 +41,8 @@ exports[`MineReclamationInvoiceTable renders properly 1`] = `
       },
       Object {
         "align": "right",
-        "dataIndex": "addEditButton",
         "key": "addEditButton",
         "render": [Function],
-        "title": "",
       },
     ]
   }

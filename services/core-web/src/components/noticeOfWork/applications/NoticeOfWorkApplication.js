@@ -58,7 +58,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
+import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -126,9 +126,9 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     isTabLoaded: false,
-    isMajorMine: null,
-    associatedLeadInspectorPartyGuid: "",
-    associatedStatus: "",
+    isMajorMine: undefined,
+    associatedLeadInspectorPartyGuid: undefined,
+    associatedIssuingInspectorPartyGuid: undefined,
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -138,7 +138,7 @@ export class NoticeOfWorkApplication extends Component {
     showNullScreen: false,
     initialPermitGuid: "",
     isNewApplication: false,
-    mineGuid: "",
+    mineGuid: undefined,
     submitting: false,
     activeTab: "verification",
   };
@@ -284,17 +284,15 @@ export class NoticeOfWorkApplication extends Component {
     this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
-  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
+  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
     this.setState({
       associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
     });
-  };
 
-  setStatus = (status) => {
+  setIssuingInspectorPartyGuid = (issuingInspectorPartyGuid) =>
     this.setState({
-      associatedStatus: status,
+      associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
-  };
 
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
@@ -373,11 +371,14 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
-  handleUpdateLeadInspector = (finalAction) => {
+  handleUpdateInspectors = (finalAction) => {
     if (
-      !this.state.associatedLeadInspectorPartyGuid ||
-      this.state.associatedLeadInspectorPartyGuid ===
-        this.props.noticeOfWork.lead_inspector_party_guid
+      (!this.state.associatedLeadInspectorPartyGuid ||
+        this.state.associatedLeadInspectorPartyGuid ===
+          this.props.noticeOfWork.lead_inspector_party_guid) &&
+      (!this.state.associatedIssuingInspectorPartyGuid ||
+        this.state.associatedIssuingInspectorPartyGuid ===
+          this.props.noticeOfWork.issuing_inspector_party_guid)
     ) {
       finalAction();
       return;
@@ -385,11 +386,12 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
-        { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
+        {
+          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
+          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
+        },
         this.props.noticeOfWork.now_application_guid,
-        `Successfully assigned ${
-          this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
-        } as the Lead Inspector`
+        "Successfully updated the assigned inspectors"
       )
       .then(() => {
         this.props
@@ -397,44 +399,6 @@ export class NoticeOfWorkApplication extends Component {
           .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
-  };
-
-  handleUpdateStatus = (finalAction) => {
-    if (
-      !this.state.associatedStatus ||
-      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
-    ) {
-      finalAction();
-      return;
-    }
-
-    this.setState({ isLoaded: false });
-    this.props
-      .updateNoticeOfWorkApplication(
-        { now_application_status_code: this.state.associatedStatus },
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully changed status to ${
-          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
-        }`
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
-  };
-
-  openUpdateStatusModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Application Status",
-        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
-        setStatus: this.setStatus,
-        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_STATUS,
-    });
   };
 
   openChangeNOWMineModal = (noticeOfWork) => {
@@ -473,6 +437,7 @@ export class NoticeOfWorkApplication extends Component {
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         documentTypeCode,
@@ -490,6 +455,7 @@ export class NoticeOfWorkApplication extends Component {
             documentType: this.props.documentContextTemplate,
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
+            signature,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
@@ -513,7 +479,7 @@ export class NoticeOfWorkApplication extends Component {
       .generateNoticeOfWorkApplicationDocument(
         documentTypeCode,
         payload,
-        "Successfully Created Document and Attached it to this Notice of Work",
+        "Successfully created document and attached it to Notice of Work",
         () => {
           this.setState({ isLoaded: false });
           this.props
@@ -526,10 +492,8 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleExportDocument = (menuItem) => {
-    const documentTypeCode = menuItem.key;
+  handleExportDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-
     this.exportNowDocument(documentType, this.props.noticeOfWork);
   };
 
@@ -645,7 +609,7 @@ export class NoticeOfWorkApplication extends Component {
             <Alert
               message={`You have ${errorsLength} ${
                 errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding`}
+              } that must be fixed before proceeding.`}
               type="error"
               showIcon
               style={{ width: "50vw", margin: "auto", top: "8px" }}
@@ -689,15 +653,6 @@ export class NoticeOfWorkApplication extends Component {
                 Edit Application Lat/Long
               </Menu.Item>
             </NOWActionWrapper>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item
-                key="edit-application-status"
-                className="custom-menu-item"
-                onClick={() => this.openUpdateStatusModal()}
-              >
-                Edit Application Status
-              </Menu.Item>
-            </NOWActionWrapper>
           </>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
@@ -705,9 +660,8 @@ export class NoticeOfWorkApplication extends Component {
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(
                 ({ now_application_document_type_code }) =>
-                  now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT" &&
-                  now_application_document_type_code !== "NTR"
+                  now_application_document_type_code === "CAL" ||
+                  now_application_document_type_code === "NPE"
               )
               .map((document) => (
                 <Menu.Item
@@ -726,15 +680,18 @@ export class NoticeOfWorkApplication extends Component {
                 ({ now_application_document_type_code }) =>
                   now_application_document_type_code === "NTR"
               )
-              .map((document) => (
-                <Menu.Item
-                  className="custom-menu-item"
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleExportDocument}
-                >
-                  Edited Application
-                </Menu.Item>
-              ))}
+              .map((document) => {
+                return (
+                  <Menu.Item
+                    className="custom-menu-item"
+                    onClick={() => {
+                      this.handleExportDocument(document.now_application_document_type_code);
+                    }}
+                  >
+                    Edited Application
+                  </Menu.Item>
+                );
+              })}
         </>
       </Menu>
     );
@@ -854,17 +811,14 @@ export class NoticeOfWorkApplication extends Component {
                     >
                       {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
                         <>
-                          <ScrollContentWrapper
-                            id="lead-inspector"
-                            title="Assign Lead Inspector"
-                            isActive
-                          >
-                            <AssignLeadInspector
+                          <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
+                            <AssignInspectors
                               inspectors={this.props.inspectors}
                               noticeOfWork={this.props.noticeOfWork}
                               setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                              handleUpdateLeadInspector={this.handleUpdateLeadInspector}
-                              title="Assign Lead Inspector"
+                              setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                              handleUpdateInspectors={this.handleUpdateInspectors}
+                              title="Assign Inspectors"
                               isEditMode
                             />
                           </ScrollContentWrapper>
@@ -1052,7 +1006,8 @@ export class NoticeOfWorkApplication extends Component {
                       noticeOfWork={this.props.noticeOfWork}
                       inspectors={this.props.inspectors}
                       setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                      handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                      setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                      handleUpdateInspectors={this.handleUpdateInspectors}
                       importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />

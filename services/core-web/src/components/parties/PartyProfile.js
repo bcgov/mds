@@ -9,6 +9,7 @@ import {
   MinusCircleOutlined,
   MailOutlined,
   CheckCircleOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { uniq, isEmpty } from "lodash";
 import {
@@ -289,7 +290,26 @@ export class PartyProfile extends Component {
                 {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={party.address[0] || {}} />
+            <div className="inline-flex">
+              <div className="padding-right">
+                <Address address={party.address[0] || {}} />
+              </div>
+            </div>
+            <div className="inline-flex">
+              <div className="padding-right">
+                <EditOutlined className="icon-sm" />
+              </div>
+              {party.signature ? (
+                <img
+                  src={party.signature}
+                  alt="Signature"
+                  style={{ pointerEvents: "none", userSelect: "none" }}
+                  height={120}
+                />
+              ) : (
+                <p>No Signature Provided</p>
+              )}
+            </div>
           </div>
           <div className="profile__content">
             <Tabs

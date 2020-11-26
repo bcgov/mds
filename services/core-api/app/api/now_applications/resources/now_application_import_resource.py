@@ -62,7 +62,6 @@ class NOWApplicationImportResource(Resource, UserMixin):
             raise NotFound('No identity record for this application guid.')
 
         application = transmogrify_now(now_application_identity)
-        application.mine_guid = mine_guid
         application.latitude = latitude
         application.longitude = longitude
         application.now_application_guid = application_guid
@@ -92,8 +91,12 @@ class NOWApplicationImportResource(Resource, UserMixin):
         db.session.refresh(now_application_identity)
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This record has already been imported.')
+
         application.save()
         db.session.refresh(now_application_identity)
+        now_application_identity.mine_guid = mine_guid
+        now_application_identity.save()
+
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,
             now_application_identity.now_application.status.description,

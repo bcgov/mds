@@ -99,7 +99,7 @@ export class NOWSideMenu extends Component {
               ({ href, alwaysVisible }) =>
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
             )
-            .map(({ href, title, children }) => (
+            .map(({ href, title, children, light = false }) => (
               <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
                 {children &&
                   children.length > 1 &&
@@ -107,7 +107,7 @@ export class NOWSideMenu extends Component {
                     <Anchor.Link
                       href={`#${child.href}`}
                       title={child.title}
-                      className="now-menu-link-"
+                      className={light ? "now-menu-link- lighter" : "now-menu-link-"}
                     />
                   ))}
               </Anchor.Link>

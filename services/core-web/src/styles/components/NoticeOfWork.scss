@@ -121,6 +121,7 @@
 .side-menu {
   width: 240px;
   position: absolute;
+  text-align: right;
   left: 0;
 
   @include tablet {
@@ -130,6 +131,7 @@
   &--fixed {
     top: 160px;
     position: fixed;
+    text-align: right;
     width: 240px;
 
     @include tablet {
@@ -152,6 +154,7 @@
   }
 
   &--content {
+    padding: 20px;
     position: relative;
     padding-right: 20px;
     top: 30px;
@@ -176,6 +179,7 @@
 }
 
 .now-menu-link {
+  height: 35px;
   a:hover {
     text-decoration: none;
     color: $light-violet;

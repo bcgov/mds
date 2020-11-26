@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm, focus } from "redux-form";
+import { reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -13,6 +13,13 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  additionalTitle: PropTypes.string,
+  disabled: PropTypes.bool,
+};
+
+const defaultProps = {
+  additionalTitle: "",
+  disabled: false,
 };
 
 const createFields = (fields) => (
@@ -48,19 +55,24 @@ export const GenerateDocumentForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-        Generate {props.documentType.description}
+      <Button
+        className="full-mobile"
+        type="primary"
+        htmlType="submit"
+        loading={props.submitting}
+        disabled={props.disabled}
+      >
+        Generate {props.documentType.description} {props.additionalTitle}
       </Button>
     </div>
   </Form>
 );
 
 GenerateDocumentForm.propTypes = propTypes;
+GenerateDocumentForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
-  touchOnBlur: false,
+  touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-  onSubmitFail: (errors, dispatch) =>
-    dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),
 })(GenerateDocumentForm);
