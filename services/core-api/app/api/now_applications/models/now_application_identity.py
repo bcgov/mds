@@ -56,12 +56,8 @@ class NOWApplicationIdentity(Base, AuditMixin):
         return MMSApplication.query.filter_by(mms_cid=self.mms_cid).first()
 
     @classmethod
-    def find_by_guid(cls, _id):
-        try:
-            uuid.UUID(_id, version=4)
-            return cls.query.filter_by(now_application_guid=_id).first()
-        except ValueError:
-            return None
+    def find_by_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).first()
 
     @classmethod
     def find_by_messageid(cls, messageid):

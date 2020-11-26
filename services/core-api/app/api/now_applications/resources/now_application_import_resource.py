@@ -50,47 +50,46 @@ class NOWApplicationImportResource(Resource, UserMixin):
         mine_guid = data.get('mine_guid')
         latitude = data.get('latitude')
         longitude = data.get('longitude')
-        contacts = data.get('contacts')
+        contacts = data.get('contacts', [])
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
 
-        now_application_identity = NOWApplicationIdentity.query.filter_by(
-            now_application_guid=application_guid).first()
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
-
-        application = transmogrify_now(now_application_identity)
-        application.latitude = latitude
-        application.longitude = longitude
-        application.now_application_guid = application_guid
-
-        if contacts is not None:
-            for contact in contacts:
-
-                now_party = Party.find_by_party_guid(contact['party_guid'])
-                if not now_party:
-                    raise NotFound('No party found for party with guid ' + contact['party_guid'])
-
-                mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
-                    contact['mine_party_appt_type_code'])
-                if not mine_party_appt_type:
-                    raise NotFound('No mine party appointment type found for type with code ' +
-                                   contact['mine_party_appt_type_code'])
-
-                now_party_appt = NOWPartyAppointment(
-                    mine_party_appt_type_code=mine_party_appt_type.mine_party_appt_type_code,
-                    mine_party_appt_type=mine_party_appt_type,
-                    party=now_party)
-
-                application.contacts.append(now_party_appt)
 
         # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
         # In the event of multiple requests being fired simultaneously this can still sometimes fail.
         db.session.refresh(now_application_identity)
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This record has already been imported.')
+
+        application = transmogrify_now(now_application_identity)
+        application.latitude = latitude
+        application.longitude = longitude
+        application.now_application_guid = application_guid
+
+        for contact in contacts:
+            party_guid = contact['party_guid']
+            now_party = Party.find_by_party_guid(party_guid)
+            if not now_party:
+                raise NotFound(f'No party found for party with guid {party_guid}')
+
+            mine_party_appt_type_code = contact['mine_party_appt_type_code']
+            mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
+                mine_party_appt_type_code)
+            if not mine_party_appt_type:
+                raise NotFound(
+                    f'No mine party appointment type found for type with code {mine_party_appt_type_code}'
+                )
+
+            now_party_appt = NOWPartyAppointment(
+                mine_party_appt_type_code=mine_party_appt_type_code,
+                mine_party_appt_type=mine_party_appt_type,
+                party=now_party)
+            application.contacts.append(now_party_appt)
 
         application.save()
         db.session.refresh(now_application_identity)

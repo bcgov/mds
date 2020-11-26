@@ -30,7 +30,7 @@ const defaultProps = {
 export class ApplicationStepOne extends Component {
   state = {
     isImported: false,
-    submitting: false,
+    isImporting: false,
   };
 
   componentDidMount() {
@@ -44,53 +44,53 @@ export class ApplicationStepOne extends Component {
   }
 
   handleNOWImport = (values) => {
-    this.setState({ submitting: true });
+    console.log("handleNOWImport values", values);
+
+    this.setState({ isImporting: true });
+
     const contacts = values.contacts.map((contact) => {
       return {
         mine_party_appt_type_code: contact.mine_party_appt_type_code,
         party_guid: contact.party_guid,
       };
     });
+
     const payload = {
       ...values,
       contacts,
     };
+
     return this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
-      .then(() => {
-        return this.props
+      .then(() =>
+        this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
           .then(({ data }) => {
             this.props.loadMineData(values.mine_guid);
+            this.setState({ isImported: data.imported_to_core });
             this.props.handleTabChange("application");
-            this.setState({ isImported: data.imported_to_core, submitting: false });
-          });
-      });
+          })
+      )
+      .finally(() => this.setState({ isImporting: false }));
   };
 
-  renderContent = () => {
-    if (this.props.isNewApplication) {
-      return (
-        <MajorMinePermitApplicationCreate
-          initialPermitGuid={this.props.initialPermitGuid}
-          mineGuid={this.props.mineGuid}
-          loadNoticeOfWork={this.props.loadNoticeOfWork}
-        />
-      );
-    }
-    return (
-      <>
-        <VerifyApplicationInformationForm
-          submitting={this.state.submitting}
-          originalNoticeOfWork={this.props.originalNoticeOfWork}
-          noticeOfWork={this.props.noticeOfWork}
-          mineGuid={this.props.mineGuid}
-          onSubmit={this.handleNOWImport}
-          initialValues={this.props.originalNoticeOfWork}
-        />
-      </>
+  renderContent = () =>
+    (this.props.isNewApplication && (
+      <MajorMinePermitApplicationCreate
+        initialPermitGuid={this.props.initialPermitGuid}
+        mineGuid={this.props.mineGuid}
+        loadNoticeOfWork={this.props.loadNoticeOfWork}
+      />
+    )) || (
+      <VerifyApplicationInformationForm
+        isImporting={this.state.isImporting}
+        originalNoticeOfWork={this.props.originalNoticeOfWork}
+        noticeOfWork={this.props.noticeOfWork}
+        mineGuid={this.props.mineGuid}
+        onSubmit={this.handleNOWImport}
+        initialValues={this.props.originalNoticeOfWork}
+      />
     );
-  };
 
   render() {
     return (
