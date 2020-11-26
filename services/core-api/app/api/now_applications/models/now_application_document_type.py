@@ -79,7 +79,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             return template_data
 
-        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), and "Rejection Letter" (RJL)
+        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
         def transform_letter(template_data, now_application):
             validate_issuing_inspector(now_application)
 
@@ -95,7 +95,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         # Transform the template data according to the document type
         if self.now_application_document_type_code in ('PMT', 'PMA'):
             return transform_permit(template_data, now_application)
-        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL'):
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE'):
             return transform_letter(template_data, now_application)
 
         return template_data
