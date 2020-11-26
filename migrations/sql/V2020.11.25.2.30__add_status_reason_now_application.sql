@@ -1,0 +1,1 @@
+ALTER TABLE now_application ADD COLUMN status_reason varchar(4000);
