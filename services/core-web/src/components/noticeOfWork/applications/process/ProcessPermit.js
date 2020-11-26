@@ -227,7 +227,7 @@ export class ProcessPermit extends Component {
     this.props.generateNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
-      "Successfully Created Document and Attached it to this Notice of Work"
+      "Successfully created document and attached it to Notice of Work"
     );
   };
 
@@ -281,7 +281,7 @@ export class ProcessPermit extends Component {
       <Menu.Item key="reject-application" onClick={() => this.openRejectApplicationModal("REJ")}>
         Reject application
       </Menu.Item>
-      <Menu.Item key="withdraw-application" onClick={() => this.openRejectApplicationModal("WDN")}>
+      <Menu.Item key="withdraw-application" onClick={() => this.openRejectApplicationModal("WDL")}>
         Withdraw application
       </Menu.Item>
     </Menu>
@@ -305,15 +305,13 @@ export class ProcessPermit extends Component {
             </h2>
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
-              <>
-                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
-                    <Button type="primary" className="full-mobile">
-                      Process <DownOutlined />
-                    </Button>
-                  </Dropdown>
-                </AuthorizationWrapper>
-              </>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                  <Button type="primary" className="full-mobile">
+                    Process <DownOutlined />
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
             )}
             {isProcessed && !isApproved && (
               <AuthorizationWrapper permission={Permission.ADMIN}>

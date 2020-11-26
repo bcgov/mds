@@ -45,7 +45,7 @@ export const RejectApplicationForm = (props) => (
             name="status_reason"
             label={props.type === "REJ" ? "Reason for Rejection" : "Reason for Withdrawal"}
             component={renderConfig.AUTO_SIZE_FIELD}
-            validate={[maxLength(280)]}
+            validate={[maxLength(4000)]}
           />
         </Form.Item>
       </Col>

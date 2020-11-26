@@ -75,7 +75,7 @@ export class RejectApplicationModal extends Component {
         {!this.props.signature && (
           <>
             <Alert
-              message="Signature needed."
+              message="Signature needed"
               description="The signature for the Issuing Inspector has not been provided."
               type="error"
               showIcon

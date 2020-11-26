@@ -660,7 +660,8 @@ export class NoticeOfWorkApplication extends Component {
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(
                 ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "CAL"
+                  now_application_document_type_code === "CAL" ||
+                  now_application_document_type_code === "NPE"
               )
               .map((document) => (
                 <Menu.Item
