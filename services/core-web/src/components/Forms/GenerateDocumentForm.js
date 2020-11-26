@@ -67,6 +67,4 @@ export default reduxForm({
   form: FORM.GENERATE_DOCUMENT,
   touchOnBlur: true,
   onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-  // onSubmitFail: (errors, dispatch) =>
-  //   dispatch(focus(FORM.GENERATE_DOCUMENT, Object.keys(errors)[0])),
 })(GenerateDocumentForm);

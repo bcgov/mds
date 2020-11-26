@@ -195,7 +195,6 @@ export class ProcessPermit extends Component {
   };
 
   updateApplicationStatus = (values) => {
-    console.log(values);
     // const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
     //   values.now_application_status_code
     // ];
