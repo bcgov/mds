@@ -10,6 +10,7 @@ import {
   setEditingConditionFlag,
   createPermitCondition,
   fetchPermitConditions,
+  fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
@@ -25,6 +26,7 @@ const propTypes = {
   setEditingConditionFlag: PropTypes.func.isRequired,
   createPermitCondition: PropTypes.func.isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permit.isRequired,
 };
 
@@ -53,6 +55,10 @@ export class AddCondition extends Component {
       .then(() => {
         this.setState({ isEditing: false });
         this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.props.fetchDraftPermitByNOW(
+          null,
+          this.props.draftPermitAmendment.now_application_guid
+        );
         this.props.setEditingConditionFlag(false);
       });
 
@@ -108,6 +114,7 @@ const mapDispatchToProps = (dispatch) =>
       setEditingConditionFlag,
       fetchPermitConditions,
       createPermitCondition,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );

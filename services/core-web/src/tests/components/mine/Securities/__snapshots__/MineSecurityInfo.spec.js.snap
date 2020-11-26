@@ -141,6 +141,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
             ]
           }
           expandedRowKeys={Array []}
+          getBalance={[Function]}
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
