@@ -23,7 +23,7 @@ const propTypes = {
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
-const governmentDocuments = ["CAL", "WDL", "RJL", "OTH"];
+const governmentDocuments = ["CAL", "WDL", "RJL", "NPE", "OTH"];
 const exportedDocuments = ["NTR"];
 const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 

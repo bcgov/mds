@@ -479,7 +479,7 @@ export class NoticeOfWorkApplication extends Component {
       .generateNoticeOfWorkApplicationDocument(
         documentTypeCode,
         payload,
-        "Successfully Created Document and Attached it to this Notice of Work",
+        "Successfully created document and attached it to Notice of Work",
         () => {
           this.setState({ isLoaded: false });
           this.props
