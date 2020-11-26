@@ -259,12 +259,19 @@ export const setEditingConditionFlag = (payload) => (dispatch) => {
   dispatch(permitActions.storeEditingConditionFlag(payload));
 };
 
-export const updatePermitCondition = (permitConditionGuid, payload) => (dispatch) => {
+export const updatePermitCondition = (permitConditionGuid, permitAmdendmentGuid, payload) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()
     .put(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, null, permitConditionGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+        null,
+        null,
+        permitAmdendmentGuid,
+        permitConditionGuid
+      )}`,
       payload,
       createRequestHeader()
     )
