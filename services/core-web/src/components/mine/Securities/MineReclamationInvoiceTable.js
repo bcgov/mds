@@ -75,8 +75,6 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Balance">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -140,8 +138,6 @@ export const MineReclamationInvoiceTable = (props) => {
       ),
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
