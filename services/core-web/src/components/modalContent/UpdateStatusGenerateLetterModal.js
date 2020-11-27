@@ -23,7 +23,7 @@ const defaultProps = {
   issuingInspectorGuid: "",
 };
 
-export class RejectApplicationModal extends Component {
+export class UpdateStatusGenerateLetterModal extends Component {
   state = { step: 0, submitting: false };
 
   handleGenerate = (values) => {
@@ -121,7 +121,7 @@ export class RejectApplicationModal extends Component {
   }
 }
 
-RejectApplicationModal.propTypes = propTypes;
-RejectApplicationModal.defaultProps = defaultProps;
+UpdateStatusGenerateLetterModal.propTypes = propTypes;
+UpdateStatusGenerateLetterModal.defaultProps = defaultProps;
 
-export default RejectApplicationModal;
+export default UpdateStatusGenerateLetterModal;

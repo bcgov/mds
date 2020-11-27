@@ -102,17 +102,6 @@ export class ProcessPermit extends Component {
     );
   };
 
-  openIssuePermitModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Issue Permit",
-        onSubmit: this.issuePermit,
-      },
-      width: "50vw",
-      content: modalConfig.ISSUE_PERMIT_MODAL,
-    });
-  };
-
   openStatusModal = () => {
     this.props.openModal({
       props: {
@@ -124,7 +113,7 @@ export class ProcessPermit extends Component {
     });
   };
 
-  openRejectApplicationModal = (type) => {
+  openUpdateStatusGenerateLetterModal = (type) => {
     const content = {
       REJ: {
         title: "Reject Application",
@@ -168,25 +157,7 @@ export class ProcessPermit extends Component {
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },
           width: "50vw",
-          content: modalConfig.REJECT_APPLICATION_MODAL,
-        });
-      });
-  };
-
-  issuePermit = (values) => {
-    this.props
-      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
-        ...values,
-        now_application_status_code: "AIA",
-      })
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-        this.props.closeModal();
-        notification.success({
-          message: "Permit has been successfully issued for this application.",
-          duration: 10,
+          content: modalConfig.NOW_STATUS_LETTER_MODAL,
         });
       });
   };
@@ -299,15 +270,21 @@ export class ProcessPermit extends Component {
     <Menu>
       <Menu.Item
         key="issue-permit"
-        onClick={() => this.openRejectApplicationModal("AIA")}
+        onClick={() => this.openUpdateStatusGenerateLetterModal("AIA")}
         disabled={validationErrors}
       >
         Issue permit
       </Menu.Item>
-      <Menu.Item key="reject-application" onClick={() => this.openRejectApplicationModal("REJ")}>
+      <Menu.Item
+        key="reject-application"
+        onClick={() => this.openUpdateStatusGenerateLetterModal("REJ")}
+      >
         Reject application
       </Menu.Item>
-      <Menu.Item key="withdraw-application" onClick={() => this.openRejectApplicationModal("WDL")}>
+      <Menu.Item
+        key="withdraw-application"
+        onClick={() => this.openUpdateStatusGenerateLetterModal("WDL")}
+      >
         Withdraw application
       </Menu.Item>
     </Menu>
