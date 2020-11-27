@@ -43,11 +43,13 @@ exports[`EditPartyModal renders properly 1`] = `
       Object {
         "isActive": true,
         "label": "AB",
+        "subType": null,
         "value": "AB",
       },
       Object {
         "isActive": true,
         "label": "BC",
+        "subType": null,
         "value": "BC",
       },
     ]
