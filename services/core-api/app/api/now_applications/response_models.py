@@ -345,6 +345,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'status_updated_date':
         Date,
+        'status_reason': fields.String,
         'submitted_date':
         Date,
         'received_date':
@@ -469,6 +470,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'notice_of_work_type_code': fields.String,
         'now_application_status_code': fields.String,
         'status_updated_date': Date,
+        'status_reason': fields.String,
         'submitted_date': Date,
         'received_date': Date,
         'latitude': fields.Fixed(decimals=7),
