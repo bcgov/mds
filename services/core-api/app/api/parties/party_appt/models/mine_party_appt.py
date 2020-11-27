@@ -161,6 +161,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 party_guid=None,
                 mine_party_appt_type_codes=None,
                 include_permittees=False):
+        current_app.logger.info('1')
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
@@ -177,8 +178,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_permittees = []
             for mp in mine.mine_permit:
-                if mp.permittee_appointments:
-                    permit_permittees.append(mp.permittee_appointments[0])
+                for pa in mp.permittee_appointments:
+                    if pa.end_date is None or (
+                        (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
+                            and pa.end_date >= datetime.utcnow().date()):
+                        permit_permittees.append(pa)
             results = results + permit_permittees
         return results
 
