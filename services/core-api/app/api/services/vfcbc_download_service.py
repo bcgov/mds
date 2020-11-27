@@ -55,6 +55,10 @@ class VFCBCDownloadService():
             download_session.cookies = _vfcbc_cookies
 
         file_download_req = download_session.get(file_url, stream=True)
+        if file_download_req.status_code != requests.codes.ok:
+            raise Exception(
+                f'vFCBC file download request failed! Error {file_download_req.status_code}: {file_download_req.content}'
+            )
 
         file_download_resp = Response(
             stream_with_context(

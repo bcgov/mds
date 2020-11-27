@@ -11,6 +11,8 @@ import {
   fetchApplicationDelay,
   updateApplicationDelay,
   createApplicationDelay,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
+  deleteNoticeOfWorkApplicationDocument,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -316,6 +318,64 @@ describe("`fetchApplicationDelay` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return fetchApplicationDelay(applicationGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchImportNoticeOfWorkSubmissionDocumentsJob` action creator", () => {
+  const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
+  const url = `${ENVIRONMENT.docManUrl}${API.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB(
+    applicationGuid
+  )}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchImportNoticeOfWorkSubmissionDocumentsJob(applicationGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchImportNoticeOfWorkSubmissionDocumentsJob(applicationGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deleteNoticeOfWorkApplicationDocument` action creator", () => {
+  const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
+  const mineDocumentGuid = NOW_MOCK.NOTICE_OF_WORK.documents[0].mine_document_guid;
+  const url = `${ENVIRONMENT.apiUrl +
+    API.NOTICE_OF_WORK_DOCUMENT(applicationGuid)}/${mineDocumentGuid}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(200, mockResponse);
+    return deleteNoticeOfWorkApplicationDocument(
+      applicationGuid,
+      mineDocumentGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onDelete(url).reply(418, MOCK.ERROR);
+    return deleteNoticeOfWorkApplicationDocument(
+      applicationGuid,
+      mineDocumentGuid
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

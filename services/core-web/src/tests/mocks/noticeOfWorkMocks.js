@@ -189,16 +189,32 @@ export const NOTICE_OF_WORK = {
   },
   documents: [
     {
+      mine_document_guid: "12345-678",
       documenturl: null,
       filename: null,
       documenttype: null,
       description: null,
     },
     {
+      mine_document_guid: "12345-6789",
       documenturl: null,
       filename: null,
       documenttype: null,
       description: null,
+    },
+  ],
+  filtered_submission_documents: [
+    {
+      messageid: 0,
+      documenturl: null,
+      description: null,
+      document_manager_guid: null,
+      documenttype: null,
+      filename: null,
+      is_final_package: false,
+      mine_document_guid: null,
+      now_application_document_xref_guid: null,
+      now_application_id: null,
     },
   ],
   contacts: [
@@ -367,6 +383,31 @@ export const NOTICE_OF_WORK = {
   mech_trenching_activity: [],
 };
 
+export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = {
+  import_now_submission_documents_job_id: 17,
+  start_timestamp: "2020-11-17T17:20:13.327639",
+  end_timestamp: "2020-11-17T17:20:13.340830",
+  create_timestamp: "2020-11-17T17:16:54.375057",
+  complete_timestamp: "2020-11-17T17:20:13.340830",
+  attempt: 1,
+  create_user: null,
+  celery_task_id: "da2c1d64-0328-4674-810c-609ecefa1e61",
+  now_application_id: "1",
+  now_application_guid: "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+  import_now_submission_documents_job_status_code: "SUC",
+  import_now_submission_documents: [
+    {
+      import_now_submission_documents_job_id: 17,
+      document_id: 660,
+      submission_document_url: "https://",
+      submission_document_file_name: "Multi-year Exploration Area.dbf",
+      submission_document_type: "SpatialFileDoc",
+      submission_document_message_id: 0,
+      error: null,
+    },
+  ],
+};
+
 export const NOTICE_OF_WORK_LIST = {
   records: [NOTICE_OF_WORK],
   current_page: 1,
@@ -408,6 +449,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   water_supply: { details: [] },
   placer_operation: { details: [] },
   documents: [],
+  submission_documents: [],
   application_documents: [],
 };
 

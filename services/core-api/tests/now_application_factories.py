@@ -399,10 +399,12 @@ class NOWApplicationFactory(BaseFactory):
         model = app_models.NOWApplication
 
     class Params:
-        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        lead_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        issuing_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
 
     application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
-    lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
+    lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)

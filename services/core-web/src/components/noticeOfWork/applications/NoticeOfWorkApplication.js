@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -11,6 +10,7 @@ import { get, isNull, isUndefined, kebabCase } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
@@ -20,6 +20,7 @@ import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/part
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
+  getImportNowSubmissionDocumentsJob,
   getNOWReclamationSummary,
 } from "@common/selectors/noticeOfWorkSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -55,10 +56,13 @@ import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applicat
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
+import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import AssignLeadInspector from "@/components/noticeOfWork/applications/verification/AssignLeadInspector";
+import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -67,10 +71,12 @@ import ProcessPermit from "@/components/noticeOfWork/applications/process/Proces
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
@@ -111,6 +117,7 @@ const propTypes = {
 
 const defaultProps = {
   noticeOfWork: {},
+  importNowSubmissionDocumentsJob: {},
   documentContextTemplate: {},
   formErrors: undefined,
 };
@@ -119,9 +126,9 @@ export class NoticeOfWorkApplication extends Component {
   state = {
     isLoaded: false,
     isTabLoaded: false,
-    isMajorMine: null,
-    associatedLeadInspectorPartyGuid: "",
-    associatedStatus: "",
+    isMajorMine: undefined,
+    associatedLeadInspectorPartyGuid: undefined,
+    associatedIssuingInspectorPartyGuid: undefined,
     isViewMode: true,
     showOriginalValues: false,
     fixedTop: false,
@@ -131,7 +138,7 @@ export class NoticeOfWorkApplication extends Component {
     showNullScreen: false,
     initialPermitGuid: "",
     isNewApplication: false,
-    mineGuid: "",
+    mineGuid: undefined,
     submitting: false,
     activeTab: "verification",
   };
@@ -234,15 +241,12 @@ export class NoticeOfWorkApplication extends Component {
     await Promise.all([
       this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
-        if (
-          data.imported_to_core &&
-          data.lead_inspector_party_guid &&
-          this.props.match.params.tab === "verification"
-        ) {
+        if (data.imported_to_core && this.props.match.params.tab === "verification") {
           this.handleTabChange("application");
         }
         this.loadMineInfo(data.mine_guid, this.setState({ isLoaded: true }));
       }),
+      this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id),
     ]);
   };
 
@@ -280,17 +284,15 @@ export class NoticeOfWorkApplication extends Component {
     this.setState((prevState) => ({ showOriginalValues: !prevState.showOriginalValues }));
   };
 
-  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) => {
+  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
     this.setState({
       associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
     });
-  };
 
-  setStatus = (status) => {
+  setIssuingInspectorPartyGuid = (issuingInspectorPartyGuid) =>
     this.setState({
-      associatedStatus: status,
+      associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
-  };
 
   handleSaveNOWEdit = () => {
     this.setState({ submitting: true });
@@ -369,11 +371,14 @@ export class NoticeOfWorkApplication extends Component {
     this.props.closeModal();
   };
 
-  handleUpdateLeadInspector = (finalAction) => {
+  handleUpdateInspectors = (finalAction) => {
     if (
-      !this.state.associatedLeadInspectorPartyGuid ||
-      this.state.associatedLeadInspectorPartyGuid ===
-        this.props.noticeOfWork.lead_inspector_party_guid
+      (!this.state.associatedLeadInspectorPartyGuid ||
+        this.state.associatedLeadInspectorPartyGuid ===
+          this.props.noticeOfWork.lead_inspector_party_guid) &&
+      (!this.state.associatedIssuingInspectorPartyGuid ||
+        this.state.associatedIssuingInspectorPartyGuid ===
+          this.props.noticeOfWork.issuing_inspector_party_guid)
     ) {
       finalAction();
       return;
@@ -381,11 +386,12 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ isLoaded: false });
     this.props
       .updateNoticeOfWorkApplication(
-        { lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid },
+        {
+          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
+          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
+        },
         this.props.noticeOfWork.now_application_guid,
-        `Successfully assigned ${
-          this.props.inspectorsHash[this.state.associatedLeadInspectorPartyGuid]
-        } as the Lead Inspector`
+        "Successfully updated the assigned inspectors"
       )
       .then(() => {
         this.props
@@ -393,44 +399,6 @@ export class NoticeOfWorkApplication extends Component {
           .then(() => this.setState({ isLoaded: true }));
       })
       .then(() => finalAction());
-  };
-
-  handleUpdateStatus = (finalAction) => {
-    if (
-      !this.state.associatedStatus ||
-      this.state.associatedStatus === this.props.noticeOfWork.now_application_status_code
-    ) {
-      finalAction();
-      return;
-    }
-
-    this.setState({ isLoaded: false });
-    this.props
-      .updateNoticeOfWorkApplication(
-        { now_application_status_code: this.state.associatedStatus },
-        this.props.noticeOfWork.now_application_guid,
-        `Successfully changed status to ${
-          this.props.noticeOfWorkApplicationStatusOptionsHash[this.state.associatedStatus]
-        }`
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
-  };
-
-  openUpdateStatusModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Change Application Status",
-        now_application_status_code: this.props.noticeOfWork.now_application_status_code,
-        setStatus: this.setStatus,
-        handleUpdateStatus: (e) => this.handleUpdateStatus(this.props.closeModal, e),
-      },
-      content: modalConfig.UPDATE_NOW_STATUS,
-    });
   };
 
   openChangeNOWMineModal = (noticeOfWork) => {
@@ -469,6 +437,7 @@ export class NoticeOfWorkApplication extends Component {
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         documentTypeCode,
@@ -486,6 +455,7 @@ export class NoticeOfWorkApplication extends Component {
             documentType: this.props.documentContextTemplate,
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
+            signature,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
@@ -509,7 +479,7 @@ export class NoticeOfWorkApplication extends Component {
       .generateNoticeOfWorkApplicationDocument(
         documentTypeCode,
         payload,
-        "Successfully Created Document and Attached it to this Notice of Work",
+        "Successfully created document and attached it to Notice of Work",
         () => {
           this.setState({ isLoaded: false });
           this.props
@@ -522,10 +492,8 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleExportDocument = (menuItem) => {
-    const documentTypeCode = menuItem.key;
+  handleExportDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-
     this.exportNowDocument(documentType, this.props.noticeOfWork);
   };
 
@@ -551,6 +519,7 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         isAmendment={isAmendment}
         documentType={
           isAmendment
@@ -576,10 +545,24 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitting;
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
-        <h2>Application</h2>
+        <h2>
+          Application
+          <CoreTooltip
+            title="This page is for reviewing and editing the information and documents sent in
+                    with a Notice of Work. All information provided by the proponent, and any
+                    additional files requested during the application review live here. When the Technical Review is in progress, use the
+                    Edit button to update information about this application."
+          />
+        </h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
           <>
             <NOWProgressActions tab="REV" />
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
+              <Button type="secondary" onClick={this.toggleEditMode}>
+                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                Edit
+              </Button>
+            </NOWActionWrapper>
             <Dropdown
               overlay={this.menu(true)}
               placement="bottomLeft"
@@ -587,7 +570,7 @@ export class NoticeOfWorkApplication extends Component {
               visible={this.state.menuVisible}
             >
               <Button type="secondary" className="full-mobile">
-                Actions
+                Download
                 <DownOutlined />
               </Button>
             </Dropdown>
@@ -626,7 +609,7 @@ export class NoticeOfWorkApplication extends Component {
             <Alert
               message={`You have ${errorsLength} ${
                 errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding`}
+              } that must be fixed before proceeding.`}
               type="error"
               showIcon
               style={{ width: "50vw", margin: "auto", top: "8px" }}
@@ -647,53 +630,38 @@ export class NoticeOfWorkApplication extends Component {
             (x) => x.filename === "ApplicationForm.pdf"
           ).length > 0 && (
             <Menu.Item key="open-original-application-form" onClick={this.showApplicationForm}>
-              Open Original Application Form
+              Original Application
             </Menu.Item>
           )}
-        {isReview && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item key="edit" onClick={this.toggleEditMode} className="custom-menu-item">
-              Edit
-            </Menu.Item>
-          </NOWActionWrapper>
-        )}
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Menu.Item
-            key="transfer-to-a-different-mine"
-            className="custom-menu-item"
-            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-          >
-            Transfer to a Different Mine
-          </Menu.Item>
-        </NOWActionWrapper>
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Menu.Item
-            key="edit-application-lat-long"
-            className="custom-menu-item"
-            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-          >
-            Edit Application Lat/Long
-          </Menu.Item>
-        </NOWActionWrapper>
         {!isReview && (
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-            <Menu.Item
-              key="edit-application-status"
-              className="custom-menu-item"
-              onClick={() => this.openUpdateStatusModal()}
-            >
-              Edit Application Status
-            </Menu.Item>
-          </NOWActionWrapper>
+          <>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Menu.Item
+                key="transfer-to-a-different-mine"
+                className="custom-menu-item"
+                onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+              >
+                Transfer to a Different Mine
+              </Menu.Item>
+            </NOWActionWrapper>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Menu.Item
+                key="edit-application-lat-long"
+                className="custom-menu-item"
+                onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+              >
+                Edit Application Lat/Long
+              </Menu.Item>
+            </NOWActionWrapper>
+          </>
         )}
         {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(
                 ({ now_application_document_type_code }) =>
-                  now_application_document_type_code !== "PMA" &&
-                  now_application_document_type_code !== "PMT" &&
-                  now_application_document_type_code !== "NTR"
+                  now_application_document_type_code === "CAL" ||
+                  now_application_document_type_code === "NPE"
               )
               .map((document) => (
                 <Menu.Item
@@ -705,21 +673,26 @@ export class NoticeOfWorkApplication extends Component {
               ))}
           </Menu.SubMenu>
         )}
-        <Menu.SubMenu key="export-now-documents" title="Export NoW Documents">
-          {Object.values(this.props.generatableApplicationDocuments)
-            .filter(
-              ({ now_application_document_type_code }) =>
-                now_application_document_type_code === "NTR"
-            )
-            .map((document) => (
-              <Menu.Item
-                key={document.now_application_document_type_code}
-                onClick={this.handleExportDocument}
-              >
-                {document.description}
-              </Menu.Item>
-            ))}
-        </Menu.SubMenu>
+        <>
+          {isReview &&
+            Object.values(this.props.generatableApplicationDocuments)
+              .filter(
+                ({ now_application_document_type_code }) =>
+                  now_application_document_type_code === "NTR"
+              )
+              .map((document) => {
+                return (
+                  <Menu.Item
+                    className="custom-menu-item"
+                    onClick={() => {
+                      this.handleExportDocument(document.now_application_document_type_code);
+                    }}
+                  >
+                    Edited Application
+                  </Menu.Item>
+                );
+              })}
+        </>
       </Menu>
     );
   };
@@ -784,7 +757,7 @@ export class NoticeOfWorkApplication extends Component {
             size="large"
             activeKey={this.state.activeTab}
             animated={{ inkBar: true, tabPane: false }}
-            className={this.state.fixedTop ? "now-tabs" : "now-tabs"}
+            className="now-tabs"
             onTabClick={this.handleTabChange}
             style={{ margin: "0" }}
             centered
@@ -811,15 +784,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!isImported}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page is for reviewing and editing the information and documents sent in
-                    with a Notice of Work. All information provided by the proponent, and any
-                    additional files requested during the application review live here. Use the
-                    Actions button to update information about this application.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div>
                     <div className={this.renderFixedHeaderClass()}>
@@ -829,6 +793,7 @@ export class NoticeOfWorkApplication extends Component {
                         tabSection="REV"
                         isEditMode={!this.state.isViewMode}
                       />
+                      <NOWProgressStatus tab="REV" top="-100px" />
                     </div>
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
@@ -846,17 +811,14 @@ export class NoticeOfWorkApplication extends Component {
                     >
                       {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
                         <>
-                          <ScrollContentWrapper
-                            id="lead-inspector"
-                            title="Assign Lead Inspector"
-                            isActive
-                          >
-                            <AssignLeadInspector
+                          <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
+                            <AssignInspectors
                               inspectors={this.props.inspectors}
                               noticeOfWork={this.props.noticeOfWork}
                               setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                              handleUpdateLeadInspector={this.handleUpdateLeadInspector}
-                              title="Assign Lead Inspector"
+                              setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                              handleUpdateInspectors={this.handleUpdateInspectors}
+                              title="Assign Inspectors"
                               isEditMode
                             />
                           </ScrollContentWrapper>
@@ -873,6 +835,7 @@ export class NoticeOfWorkApplication extends Component {
                             : this.props.noticeOfWork
                         }
                         noticeOfWork={this.props.noticeOfWork}
+                        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                         renderOriginalValues={this.renderOriginalValues}
                       />
                     </div>
@@ -890,9 +853,19 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
-                      <h2 className="padding-md">Referral</h2>
+                      <h2 className="padding-md">
+                        Referral
+                        <CoreTooltip
+                          title="This page allows you to identify and download the files that need to be included in the referral package.
+            You may track progress on the E-Referrals website.
+            When responses are receives you can upload them by clicking on “Add Reviewer”
+            Finish this stage by clicking on “Complete Process” when all responses have been received.
+            If you need to make changes later, click “Resume Referral process”"
+                        />
+                      </h2>
                       <NOWProgressActions tab="REF" />
                     </div>
+                    <NOWProgressStatus tab="REF" />
                     <NOWStatusIndicator type="banner" tabSection="REF" />
                   </div>
                   <div className="page__content">
@@ -915,9 +888,18 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
-                      <h2 className="padding-md">Consultation</h2>
+                      <h2 className="padding-md">
+                        Consultation
+                        <CoreTooltip
+                          title="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
+                          You may track progress on the Consultation reports and tracking system (CRTS).
+                          When responses are received you can upload them by clicking on “Add Reviewer” .
+                          Finish this stage by clicking on “Complete Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”"
+                        />
+                      </h2>
                       <NOWProgressActions tab="CON" />
                     </div>
+                    <NOWProgressStatus tab="CON" />
                     <NOWStatusIndicator type="banner" tabSection="CON" />
                   </div>
                   <div className="page__content">
@@ -942,12 +924,14 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="padding-md">Public Comment</h2>
                       <NOWProgressActions tab="PUB" />
                     </div>
+                    <NOWProgressStatus tab="PUB" />
                     <NOWStatusIndicator type="banner" tabSection="PUB" />
                   </div>
                   <div className="page__content">
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
                       type="PUB"
                     />
                   </div>
@@ -961,14 +945,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains all the information that will appear in the permit when it is
-                    issued. The Conditions sections are pre-populated with conditions based on the
-                    permit type. You can add or remove any condition.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   {this.renderPermitGeneration()}
                 </LoadingWrapper>
@@ -981,10 +957,6 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">Process the permit after resolving all issues.</p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <ProcessPermit
                     mineGuid={this.props.noticeOfWork.mine_guid}
@@ -1001,17 +973,16 @@ export class NoticeOfWorkApplication extends Component {
               disabled={!verificationComplete}
             >
               <>
-                <div className="tab-disclaimer">
-                  <p className="center">
-                    This page contains information about securities and any internal files relevant
-                    to processing the application. It is also where the permit is issued.
-                  </p>
-                </div>
-                <Divider style={{ margin: "0" }} />
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex block-mobile padding-md">
-                      <h2>Administrative</h2>
+                      <h2>
+                        Administrative
+                        <CoreTooltip
+                          title="This page contains information about securities and any internal files relevant
+                    to processing the application. It is also where the permit is issued."
+                        />
+                      </h2>
                       <NOWProgressActions tab="ADMIN" />
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown
@@ -1035,7 +1006,10 @@ export class NoticeOfWorkApplication extends Component {
                       noticeOfWork={this.props.noticeOfWork}
                       inspectors={this.props.inspectors}
                       setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                      handleUpdateLeadInspector={this.handleUpdateLeadInspector}
+                      setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                      handleUpdateInspectors={this.handleUpdateInspectors}
+                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+                      handleSaveNOWEdit={this.handleSaveNOWEdit}
                     />
                   </div>
                 </LoadingWrapper>
@@ -1051,6 +1025,7 @@ export class NoticeOfWorkApplication extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   originalNoticeOfWork: getOriginalNoticeOfWork(state),
+  importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
@@ -1069,6 +1044,7 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       fetchOriginalNoticeOfWorkApplication,
+      fetchImportNoticeOfWorkSubmissionDocumentsJob,
       generateNoticeOfWorkApplicationDocument,
       exportNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,

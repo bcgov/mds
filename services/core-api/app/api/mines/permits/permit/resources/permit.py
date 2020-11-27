@@ -52,10 +52,10 @@ class PermitListResource(Resource, UserMixin):
         location='json',
         help='The now_application_guid this permit is related to.')
     parser.add_argument(
-        'lead_inspector_title',
+        'issuing_inspector_title',
         type=str,
         location='json',
-        help='Title of the lead inspector for this permit.')
+        help='Title of the Issuing Inspector for this permit.')
     parser.add_argument(
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
@@ -107,7 +107,10 @@ class PermitListResource(Resource, UserMixin):
             permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
             if permit_prefix in ['M', 'C'] and data.get('is_exploration'):
                 permit_prefix = permit_prefix + 'X'
-            permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
+            if now_application_identity.now_number is not None:
+                permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
+            else:            #covering situation where 'P-DRAFT-None' causes a non-unique error
+                permit_no = permit_prefix + '-DRAFT-' + str(mine.mine_no)
 
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
@@ -126,7 +129,7 @@ class PermitListResource(Resource, UserMixin):
             data.get('authorization_end_date'),
             'OGP',
             description='Initial permit issued.',
-            lead_inspector_title=data.get('lead_inspector_title'),
+            issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
             now_application_guid=data.get('now_application_guid'))
 

@@ -1,0 +1,1 @@
+ALTER TABLE now_application_identity ADD COLUMN IF NOT EXISTS is_document_import_requested boolean NOT NULL DEFAULT false;

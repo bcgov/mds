@@ -1,9 +1,7 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
-import { isEmpty } from "lodash";
-import { withRouter } from "react-router-dom";
+import { isEmpty, isEqual } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import {
@@ -16,47 +14,63 @@ import {
  * @constant NOWActionWrapper conditionally renders NoW actions based on various conditions (ie, Rejected, Permit issued, client delay, stages not started, etc)
  * persists permissions using authWrapper - These actions are not visible to admin if disabled.
  */
-const TabCodes = {
-  application: "REV",
-  referral: "REF",
-  consultation: "CON",
-  "public-comment": "PUB",
-  "draft-permit": "DFT",
-};
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  history: PropTypes.shape({ location: PropTypes.objectOf(PropTypes.any) }).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
   ]).isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
+  tab: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  tab: null,
+};
 export class NOWActionWrapper extends Component {
-  state = { currentTab: "" };
+  state = { disableTab: false };
 
   componentDidMount() {
-    const split = this.props.history.location.pathname.split("/");
-    const currentTab = split.pop();
-    this.setState({ currentTab });
+    this.handleDisableTab(this.props.tab, this.props.progress);
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    const tabChanged = this.props.tab !== nextProps.tab;
+    const progressNoWExists =
+      isEmpty(this.props.progress[this.props.tab]) && !isEmpty(nextProps.progress[this.props.tab]);
+    const progressChanged = !isEqual(
+      nextProps.progress[this.props.tab],
+      this.props.progress[this.props.tab]
+    );
+
+    if (tabChanged || progressNoWExists || progressChanged) {
+      this.handleDisableTab(nextProps.tab, nextProps.progress);
+    }
+  };
+
+  handleDisableTab = (tab, progress) => {
+    if (tab) {
+      if (!isEmpty(progress[tab]) && !progress[tab].end_date) {
+        this.setState({ disableTab: false });
+      } else if (isEmpty(progress[tab])) {
+        this.setState({ disableTab: true });
+      } else if (!isEmpty(progress[tab]) && progress[tab].end_date) {
+        this.setState({ disableTab: true });
+      }
+    } else {
+      this.setState({ disableTab: false });
+    }
+  };
+
   render() {
-    const currentTabCode = TabCodes[this.state.currentTab];
-    const tabInProgress =
-      !isEmpty(this.props.progress[currentTabCode]) &&
-      !this.props.progress[currentTabCode].end_date;
-    const shouldDisableTab = currentTabCode !== undefined && tabInProgress;
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    const disabled = isApplicationDelayed || isApplicationComplete;
+    const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
@@ -71,12 +85,9 @@ NOWActionWrapper.propTypes = propTypes;
 NOWActionWrapper.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  // can disable all actions based off application status === rejected || withdrawn
-  // can disable all based if permit is issued
-  // can disable all based off client delay
   progress: getNOWProgress(state),
   noticeOfWork: getNoticeOfWork(state),
   applicationDelay: getApplicationDelay(state),
 });
 
-export default withRouter(connect(mapStateToProps)(NOWActionWrapper));
+export default connect(mapStateToProps)(NOWActionWrapper);

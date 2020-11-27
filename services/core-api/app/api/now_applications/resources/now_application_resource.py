@@ -1,9 +1,9 @@
-import uuid
+import requests
 from datetime import datetime
 
 from flask import request, current_app
-from flask_restplus import Resource
-from werkzeug.exceptions import BadRequest, InternalServerError, NotFound, NotImplemented
+from flask_restplus import Resource, marshal
+from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -17,10 +17,9 @@ from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.transmogrify_now import transmogrify_now
-
-from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
-
+from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT
 from app.api.services.nros_now_status_service import NROSNOWStatusService
+from app.api.services.document_manager_service import DocumentManagerService
 
 
 class NOWApplicationResource(Resource, UserMixin):
@@ -40,10 +39,15 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if now_application_identity.now_application_id and not original:
             application = now_application_identity.now_application
+
             application.imported_to_core = True
         else:
             application = transmogrify_now(now_application_identity, include_contacts=original)
+
             application.imported_to_core = False
+
+        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_document(
+            now_application=application)
 
         return application
 
@@ -64,8 +68,11 @@ class NOWApplicationResource(Resource, UserMixin):
             )
         data = request.json
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
-        if lead_inspector_party_guid is not None:
+        if lead_inspector_party_guid:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
+        issuing_inspector_party_guid = data.get('issuing_inspector_party_guid', None)
+        if issuing_inspector_party_guid:
+            now_application_identity.now_application.issuing_inspector_party_guid = issuing_inspector_party_guid
 
         now_application_status_code = data.get('now_application_status_code', None)
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
@@ -79,6 +86,36 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.mine = mine
         now_application_identity.save()
 
+        # If not already requested, create the job to import this NoW's submission documents.
+        if not now_application_identity.is_document_import_requested:
+            now_application = now_application_identity.now_application
+            resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
+                request, now_application)
+            now_application_identity.is_document_import_requested = resp.status_code == requests.codes.created
+            now_application_identity.save()
+
+        filtered_submission_documents = data.get('filtered_submission_documents', None)
+
+        # Remove these so deep_update_from_dict doesn't try to process them.
+        if 'filtered_submission_documents' in data:
+            del data['filtered_submission_documents']
+        if 'imported_submission_documents' in data:
+            del data['imported_submission_documents']
+
+        if filtered_submission_documents:
+            imported_documents = now_application_identity.now_application.imported_submission_documents
+            for doc in imported_documents:
+                filtered_doc = next(
+                    (x for x in filtered_submission_documents
+                     if x['documenturl'] == doc.documenturl and x['messageid'] == doc.messageid
+                     and x['filename'] == doc.filename and x['documenttype'] == doc.documenttype),
+                    None)
+                if filtered_doc:
+                    doc.is_final_package = filtered_doc['is_final_package']
+
+            data['imported_submission_documents'] = marshal(imported_documents,
+                                                            IMPORTED_NOW_SUBMISSION_DOCUMENT)
+
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,
@@ -87,3 +124,16 @@ class NOWApplicationResource(Resource, UserMixin):
                 "%Y-%m-%dT%H:%M:%S"))
 
         return now_application_identity.now_application
+
+    # NOTE: This is a method created for testing purposes and isn't used by our application.
+    @requires_role_edit_permit
+    def post(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
+        if not now_application_identity:
+            raise NotFound('No identity record for this application guid.')
+
+        now_application = now_application_identity.now_application
+        if now_application:
+            resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
+                request, now_application)
+            return resp

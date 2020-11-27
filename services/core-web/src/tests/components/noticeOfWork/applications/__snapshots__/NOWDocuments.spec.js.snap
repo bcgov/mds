@@ -56,6 +56,12 @@ exports[`NOWDocuments renders properly 1`] = `
           "sorter": [Function],
           "title": "Part of Permit",
         },
+        Object {
+          "dataIndex": "isDeletionAllowed",
+          "key": "isDeletionAllowed",
+          "render": [Function],
+          "title": "",
+        },
       ]
     }
     dataSource={Array []}
@@ -69,8 +75,9 @@ exports[`NOWDocuments renders properly 1`] = `
     rowSelection={null}
   />
   <br />
-  <withRouter(Connect(NOWActionWrapper))
+  <Connect(NOWActionWrapper)
     permission="role_edit_permits"
+    tab="REV"
   >
     <AddButton
       className=""
@@ -80,6 +87,6 @@ exports[`NOWDocuments renders properly 1`] = `
     >
       Add Document
     </AddButton>
-  </withRouter(Connect(NOWActionWrapper))>
+  </Connect(NOWActionWrapper)>
 </div>
 `;

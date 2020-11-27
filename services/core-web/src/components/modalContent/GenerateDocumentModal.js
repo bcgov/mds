@@ -11,6 +11,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   documentFormErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  signature: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -22,13 +23,25 @@ export const GenerateDocumentModal = (props) => {
   const showErrors = errorsLength > 0;
   return (
     <div>
-      <GenerateDocumentForm {...props} />
+      {!props.signature && (
+        <>
+          <Alert
+            message="Signature needed to generate."
+            description="The signature for the Issuing Inspector has not been provided."
+            type="error"
+            showIcon
+            style={{ textAlign: "left" }}
+          />
+          <br />
+        </>
+      )}
+      <GenerateDocumentForm {...props} disabled={!props.signature} />
       {showErrors && (
         <div className="error center">
           <Alert
             message={`You have ${errorsLength} ${
               errorsLength === 1 ? "issue" : "issues"
-            } that must be fixed before proceeding`}
+            } that must be fixed before proceeding.`}
             type="error"
             showIcon
           />

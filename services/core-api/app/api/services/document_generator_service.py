@@ -1,13 +1,15 @@
-import requests, hashlib, os, mimetypes, json, datetime
-from flask import Response, current_app, stream_with_context
+import requests, hashlib, mimetypes, json, datetime
+
+from flask import current_app
+
 from app.config import Config
 
 
-def sha256_checksum(filename, block_size=65536):
+def sha256_checksum(fileobj, block_size=65536):
     sha256 = hashlib.sha256()
-    with open(filename, 'rb') as f:
-        for block in iter(lambda: f.read(block_size), b''):
-            sha256.update(block)
+    for block in iter(lambda: fileobj.read(block_size), b''):
+        sha256.update(block)
+    fileobj.seek(0)
     return sha256.hexdigest()
 
 
@@ -15,54 +17,52 @@ class DocumentGeneratorService():
     document_generator_url = f'{Config.DOCUMENT_GENERATOR_URL}/template'
 
     @classmethod
-    def generate_document_and_stream_response(cls, template_file_path, data):
+    def generate_document(cls, document_template, template_data):
 
-        # Ensure that the desired template exists
-        current_app.logger.debug(f'CHECKING TEMPLATE at {template_file_path}')
-        template_exists = cls._check_remote_template(template_file_path)
+        # Get the template file
+        fileobj = None
+        dynamic_template = document_template.get_dynamic_template(template_data)
+        if dynamic_template:
+            fileobj = dynamic_template
+        else:
+            fileobj = open(document_template.os_template_file_path, 'rb')
+
+        # Push the template file to the Document Generator if it doesn't exist
+        file_sha = sha256_checksum(fileobj)
+        template_exists = cls._check_remote_template_sha(file_sha)
         if not template_exists:
-            current_app.logger.debug(f'PUSHING TEMPLATE at {template_file_path}')
-            cls._push_template(template_file_path)
+            cls._push_template(document_template, fileobj)
 
-        # Create the document generation request
-        file_sha = sha256_checksum(template_file_path)
-        file_name = os.path.basename(template_file_path)
-        file_name_no_ext = '.'.join(file_name.split('.')[:-1])
-        # https://carbone.io/api-reference.html#native-api
-        body = {
-            'data': data,
-            'options': {
-                'reportName': f'{file_name_no_ext}-{datetime.date.today().strftime("%d%m%Y")}.pdf',
-                'convertTo': 'pdf'
-            }
-        }
+        # Create the document generation request body
+        date_string = datetime.date.today().strftime("%Y-%m-%d")
+        document_name = f'{document_template.template_name_no_extension} {date_string}.pdf'
+        data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': 'pdf'}}
 
         # Send the document generation request and return the response
         resp = requests.post(
             url=f'{cls.document_generator_url}/{file_sha}/render',
-            data=json.dumps(body),
+            data=json.dumps(data),
             headers={'Content-Type': 'application/json'})
         if resp.status_code != 200:
-            current_app.logger.warn(f'Docgen-api/generate replied with {str(resp.content)}')
+            current_app.logger.warn(f'Render document request responded with: {str(resp.content)}')
 
+        fileobj.close()
         return resp
 
     @classmethod
-    def _push_template(cls, template_file_path):
-        file = open(template_file_path, 'rb')
-        file_name = os.path.basename(template_file_path)
-        files = {'template': (file_name, file.read(), mimetypes.guess_type(file_name))}
+    def _push_template(cls, document_template, template_file):
+        file_name = document_template.template_name
+        files = {'template': (file_name, template_file, mimetypes.guess_type(file_name))}
+
         resp = requests.post(url=cls.document_generator_url, files=files)
         if resp.status_code != 200:
-            current_app.logger.warn(f'Docgen-api/push-template replied with {str(resp.text)}')
-            return False
-        return True
+            current_app.logger.warn(f'Push template request responded with {str(resp.text)}')
 
     @classmethod
-    def _check_remote_template(cls, template_file_path):
-        file_sha = sha256_checksum(template_file_path)
+    def _check_remote_template_sha(cls, file_sha):
         resp = requests.get(url=f'{cls.document_generator_url}/{file_sha}')
         if resp.status_code != 200:
-            current_app.logger.warn(f'Docgen-api/check-template replied with {str(resp.content)}')
+            current_app.logger.warn(f'Check template request responded with: {str(resp.content)}')
             return False
+
         return True

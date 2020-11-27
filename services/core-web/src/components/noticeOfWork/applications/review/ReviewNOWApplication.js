@@ -34,7 +34,6 @@ import ReviewActivities from "@/components/noticeOfWork/applications/review/Revi
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
-import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import ReviewNOWContacts from "./ReviewNOWContacts";
@@ -50,7 +49,8 @@ const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  filtered_submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   noticeOfWorkType: PropTypes.string.isRequired,
@@ -673,71 +673,61 @@ export const ReviewNOWApplication = (props) => {
   return (
     <div>
       <Form layout="vertical">
-        <div>
-          <div className="right" style={{ position: "relative", top: "30px" }}>
-            {props.noticeOfWork.last_updated_date && (
-              <p className="violet">
-                Last Updated: {formatDate(props.noticeOfWork.last_updated_date)}
-              </p>
-            )}
-            {props.noticeOfWork.last_updated_by && (
-              <p className="violet">Updated By: {props.noticeOfWork.last_updated_by}</p>
-            )}
-          </div>
-          <ScrollContentWrapper id="application-info" title="Application Info">
-            {renderApplicationInfo()}
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="contacts" title="Contacts">
-            <ReviewNOWContacts
-              contacts={props.noticeOfWork.contacts}
-              isViewMode={props.isViewMode}
-              contactFormValues={props.contacts}
-              noticeOfWork={props.noticeOfWork}
-            />
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="access" title="Access">
-            {renderAccess()}
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="state-of-land" title="State of Land">
-            {renderStateOfLand()}
-          </ScrollContentWrapper>
-          <ScrollContentWrapper id="first-aid" title="First Aid">
-            {renderFirstAid()}
-          </ScrollContentWrapper>
-          <br />
-          <h2>Work Plan</h2>
-          <Divider />
-          {renderWorkPlan()}
-          <br />
-          <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
-            {renderReclamation()}
-          </ScrollContentWrapper>
-          <ReviewActivities
+        <ScrollContentWrapper id="application-info" title="Application Info">
+          {renderApplicationInfo()}
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="contacts" title="Contacts">
+          <ReviewNOWContacts
+            contacts={props.noticeOfWork.contacts}
             isViewMode={props.isViewMode}
-            noticeOfWorkType={props.noticeOfWorkType}
-            noticeOfWork={props.initialValues}
-            renderOriginalValues={props.renderOriginalValues}
+            contactFormValues={props.contacts}
+            noticeOfWork={props.noticeOfWork}
           />
-          <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
-            <NOWSubmissionDocuments
-              now_application_guid={props.now_application_guid}
-              documents={props.submission_documents}
-            />
-          </ScrollContentWrapper>
-          <ScrollContentWrapper
-            id="additional-application-files"
-            title="Additional Application Files"
-          >
-            <NOWDocuments
-              documents={
-                props.documents &&
-                props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
-              }
-              isViewMode={props.isViewMode}
-              disclaimerText="Attach any file revisions or new files requested from the proponent here."
-            />
-          </ScrollContentWrapper>
-        </div>
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="access" title="Access">
+          {renderAccess()}
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="state-of-land" title="State of Land">
+          {renderStateOfLand()}
+        </ScrollContentWrapper>
+        <ScrollContentWrapper id="first-aid" title="First Aid">
+          {renderFirstAid()}
+        </ScrollContentWrapper>
+        <br />
+        <h2>Work Plan</h2>
+        <Divider />
+        {renderWorkPlan()}
+        <br />
+        <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
+          {renderReclamation()}
+        </ScrollContentWrapper>
+        <ReviewActivities
+          isViewMode={props.isViewMode}
+          noticeOfWorkType={props.noticeOfWorkType}
+          noticeOfWork={props.initialValues}
+          renderOriginalValues={props.renderOriginalValues}
+        />
+        <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
+          <NOWSubmissionDocuments
+            now_application_guid={props.now_application_guid}
+            documents={props.filtered_submission_documents}
+            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+            displayTableDescription
+          />
+        </ScrollContentWrapper>
+        <ScrollContentWrapper
+          id="additional-application-files"
+          title="Additional Application Files"
+        >
+          <NOWDocuments
+            documents={
+              props.documents &&
+              props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
+            }
+            isViewMode={props.isViewMode}
+            disclaimerText="Attach any file revisions or new files requested from the proponent here."
+          />
+        </ScrollContentWrapper>
       </Form>
     </div>
   );
@@ -752,6 +742,8 @@ export default compose(
     now_application_guid: selector(state, "now_application_guid"),
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
+    imported_submission_documents: selector(state, "imported_submission_documents"),
+    filtered_submission_documents: selector(state, "filtered_submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
