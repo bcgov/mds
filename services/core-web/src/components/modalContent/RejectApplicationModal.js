@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Steps, Alert } from "antd";
+import { MDS_EMAIL } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import RejectApplicationForm from "@/components/Forms/noticeOfWork/RejectApplicationForm";
+import IssuePermitForm from "@/components/Forms/noticeOfWork/IssuePermitForm";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -14,6 +16,11 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   signature: PropTypes.bool.isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
+  issuingInspectorGuid: PropTypes.string,
+};
+
+const defaultProps = {
+  issuingInspectorGuid: "",
 };
 
 export class RejectApplicationModal extends Component {
@@ -33,6 +40,24 @@ export class RejectApplicationModal extends Component {
 
   prev = () => this.setState((prevState) => ({ step: prevState.step - 1 }));
 
+  renderCorrectFrom = () =>
+    this.props.type === "AIA" ? (
+      <IssuePermitForm
+        onSubmit={this.props.onSubmit}
+        closeModal={this.props.closeModal}
+        title={this.props.title}
+      />
+    ) : (
+      <RejectApplicationForm
+        onSubmit={this.props.onSubmit}
+        closeModal={this.props.closeModal}
+        title={this.props.title}
+        type={this.props.type}
+        prev={this.prev}
+        draftAmendment={this.props.draftAmendment}
+      />
+    );
+
   render() {
     const steps = [
       {
@@ -50,23 +75,18 @@ export class RejectApplicationModal extends Component {
       },
       {
         title: "Process",
-        content: (
-          <RejectApplicationForm
-            onSubmit={this.props.onSubmit}
-            closeModal={this.props.closeModal}
-            title={this.props.title}
-            type={this.props.type}
-            prev={this.prev}
-            draftAmendment={this.props.draftAmendment}
-          />
-        ),
+        content: this.renderCorrectFrom(),
       },
     ];
+    const alertMessage =
+      this.props.type === "AIA"
+        ? "No changes or additions can be made to this application after the permit has been issued."
+        : "No changes or additions can be made to this application after it has been rejected.";
     return (
       <div>
         <Alert
           message="This action is final"
-          description="No changes or additions can be made to this application after it has been rejected."
+          description={alertMessage}
           type="warning"
           showIcon
           style={{ textAlign: "left" }}
@@ -76,7 +96,12 @@ export class RejectApplicationModal extends Component {
           <>
             <Alert
               message="Signature needed"
-              description="The signature for the Issuing Inspector has not been provided."
+              description={
+                <>
+                  The signature for the Issuing Inspector has not been provided. Please contact the
+                  MDS team at <a href={`mailto: ${MDS_EMAIL}`}>{MDS_EMAIL}</a>.
+                </>
+              }
               type="error"
               showIcon
               style={{ textAlign: "left" }}
@@ -97,5 +122,6 @@ export class RejectApplicationModal extends Component {
 }
 
 RejectApplicationModal.propTypes = propTypes;
+RejectApplicationModal.defaultProps = defaultProps;
 
 export default RejectApplicationModal;
