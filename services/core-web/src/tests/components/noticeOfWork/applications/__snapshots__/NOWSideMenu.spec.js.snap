@@ -27,32 +27,32 @@ exports[`NOWSideMenu renders properly 1`] = `
       <AnchorLink
         className="now-menu-link-"
         href="#GEC"
-        title="A. General"
+        title="> General"
       />
       <AnchorLink
         className="now-menu-link-"
         href="#HSC"
-        title="B. Healthy and Safety"
+        title="> Healthy and Safety"
       />
       <AnchorLink
         className="now-menu-link-"
         href="#GOC"
-        title="C. Geotechnical"
+        title="> Geotechnical"
       />
       <AnchorLink
         className="now-menu-link-"
         href="#ELC"
-        title="D. Environmental Land"
+        title="> Environmental Land"
       />
       <AnchorLink
         className="now-menu-link-"
         href="#RCC"
-        title="E. Reclamation and Closure"
+        title="> Reclamation and Closure"
       />
       <AnchorLink
         className="now-menu-link-"
         href="#ADC"
-        title="F. Additional Conditions"
+        title="> Additional Conditions"
       />
     </AnchorLink>
   </Anchor>

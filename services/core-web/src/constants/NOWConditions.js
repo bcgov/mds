@@ -66,12 +66,12 @@ export const draftPermitMenu = [
     title: "Conditions",
     alwaysVisible: true,
     children: [
-      { href: "GEC", title: "A. General" },
-      { href: "HSC", title: "B. Healthy and Safety" },
-      { href: "GOC", title: "C. Geotechnical" },
-      { href: "ELC", title: "D. Environmental Land" },
-      { href: "RCC", title: "E. Reclamation and Closure" },
-      { href: "ADC", title: "F. Additional Conditions" },
+      { href: "GEC", title: "> General", light: true },
+      { href: "HSC", title: "> Healthy and Safety", light: true },
+      { href: "GOC", title: "> Geotechnical", light: true },
+      { href: "ELC", title: "> Environmental Land", light: true },
+      { href: "RCC", title: "> Reclamation and Closure", light: true },
+      { href: "ADC", title: "> Additional Conditions", light: true },
     ],
   },
 ];
