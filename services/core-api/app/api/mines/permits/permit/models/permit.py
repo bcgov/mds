@@ -42,7 +42,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     permittee_appointments = db.relationship(
         'MinePartyAppointment',
-        primaryjoin='and_(MinePartyAppointment.permit_id == Permit.permit_id, MinePartyAppointment.deleted_ind==False)',
+        primaryjoin=
+        'and_(MinePartyAppointment.permit_id == Permit.permit_id, MinePartyAppointment.deleted_ind==False)',
         lazy='select',
         order_by=
         'desc(MinePartyAppointment.start_date), desc(MinePartyAppointment.mine_party_appt_id)')
@@ -114,9 +115,17 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def delete(self):
         if self.bonds:
             raise Exception('Unable to delete permit with attached bonds.')
+
+        if self.permit_amendments and any(
+                amendment.is_linked_now_application_imported_to_core == True
+                for amendment in self.permit_amendments):
+            raise Exception(
+                'Unable to delete permit with linked NOW application in Core to one of its permit amendments.'
+            )
+
         if self.permit_amendments:
             for amendment in self.permit_amendments:
-                amendment.delete()
+                amendment.delete(is_force_delete=True)
         super(Permit, self).delete()
 
     @classmethod

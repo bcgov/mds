@@ -56,15 +56,24 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
+  const isLinkedToNowApplication =
+    record.amendmentEdit.amendment.is_linked_now_application_imported_to_core;
+
   // eslint-disable-next-line consistent-return
   return (
     <AuthorizationWrapper permission={Permission.ADMIN}>
       <Popconfirm
         placement="topLeft"
-        title="Are you sure you want to delete this amendment and all related documents?"
-        okText="Delete"
+        title={
+          isLinkedToNowApplication
+            ? "You cannot delete permit amendment with associated NOW application imported to Core."
+            : "Are you sure you want to delete this amendment and all related documents?"
+        }
+        okText={isLinkedToNowApplication ? "Ok" : "Delete"}
         cancelText="Cancel"
-        onConfirm={() => record.handleDeletePermitAmendment(record)}
+        onConfirm={
+          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
+        }
       >
         <Button className="permit-table-button" type="ghost">
           <div>
@@ -215,29 +224,48 @@ const columns = [
         </Menu>
       );
 
+      const isLinkedToNowApplication =
+        record.permit.permit_amendments.filter(
+          (amendment) => amendment.is_linked_now_application_imported_to_core === true
+        ).length > 0;
+
+      const isAnyBondsAssociatedTo = record.permit.bonds && record.permit.bonds.length > 0;
+
+      const isDeletionAllowed = !isAnyBondsAssociatedTo && !isLinkedToNowApplication;
+
+      let title = "";
+      if (isDeletionAllowed) {
+        title =
+          "Are you sure you want to delete this permit and all related permit amendments and permit documents?";
+      } else {
+        if (isLinkedToNowApplication) {
+          title +=
+            "You cannot delete permit which has permit amendments associated to a NOW application which is imported to Core. ";
+        }
+
+        if (isAnyBondsAssociatedTo) {
+          title += "You cannot delete a permit that has associated bond records. ";
+        }
+      }
+
       const deletePermitPopUp = (
         <Popconfirm
           placement="topLeft"
-          {...(() => {
-            return record.permit.bonds && record.permit.bonds.length > 0
-              ? {
-                  title: "You cannot delete a permit that has associated bond records.",
-                  okText: "Ok",
-                }
-              : {
-                  title:
-                    "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
-                  onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
-                  okText: "Delete",
-                  cancelText: "Cancel",
-                };
-          })()}
+          title={title}
+          onConfirm={
+            isDeletionAllowed
+              ? () => record.handleDeletePermit(record.permit.permit_guid)
+              : () => {}
+          }
+          okText={isDeletionAllowed ? "Delete" : "Ok"}
+          cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
             <img name="remove" src={TRASHCAN} alt="Remove Permit" />
           </Button>
         </Popconfirm>
       );
+
       return (
         <div className="btn--middle flex">
           <AuthorizationWrapper
@@ -404,6 +432,7 @@ const transformChildRowData = (
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
+  isAssociatedWithNOWApplicationImportedToCore: "",
   amendmentEdit: {
     major_mine_ind,
     amendment,
