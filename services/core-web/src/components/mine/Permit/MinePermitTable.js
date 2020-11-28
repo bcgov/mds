@@ -240,18 +240,18 @@ const columns = [
       } else {
         if (isLinkedToNowApplication) {
           title +=
-            "You cannot delete permit which has permit amendments associated to a NOW application which is imported to Core. ";
+            "You cannot delete a permit that has permit amendments associated with a NOW application imported to Core.\n";
         }
 
         if (isAnyBondsAssociatedTo) {
-          title += "You cannot delete a permit that has associated bond records. ";
+          title += "You cannot delete a permit that has associated bond records.";
         }
       }
 
       const deletePermitPopUp = (
         <Popconfirm
           placement="topLeft"
-          title={title}
+          title={<div style={{ whiteSpace: "pre-wrap" }}>{title}</div>}
           onConfirm={
             isDeletionAllowed
               ? () => record.handleDeletePermit(record.permit.permit_guid)
