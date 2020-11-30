@@ -307,13 +307,13 @@ export class ReviewApplicationFeeContent extends Component {
           />
           <div className="field-title">
             Proposed Annual Maximum Tonnage
-            <CoreTooltip title="This amount is found within the application in vFCBC or on the first page of the application form pdf and needs to be entered manually in order to continue processing this application." />
+            <CoreTooltip title="The proposed annual maximum tonnage as submitted in the application. This cannot be changed." />
           </div>
           <Field
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            disabled={this.props.isViewMode}
+            disabled
             validate={[number]}
           />
           <div className="field-title">
