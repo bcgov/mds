@@ -66,7 +66,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         placement="topLeft"
         title={
           isLinkedToNowApplication
-            ? "You cannot delete permit amendment with associated NOW application imported to Core."
+            ? "You cannot delete permit amendment with associated NoW application imported to CORE."
             : "Are you sure you want to delete this amendment and all related documents?"
         }
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
@@ -233,25 +233,35 @@ const columns = [
 
       const isDeletionAllowed = !isAnyBondsAssociatedTo && !isLinkedToNowApplication;
 
-      let title = "";
-      if (isDeletionAllowed) {
-        title =
-          "Are you sure you want to delete this permit and all related permit amendments and permit documents?";
-      } else {
+      const issues = [];
+
+      if (!isDeletionAllowed) {
         if (isLinkedToNowApplication) {
-          title +=
-            "You cannot delete a permit that has permit amendments associated with a NOW application imported to Core.\n";
+          issues.push("Permit has amendments associated with a NoW application imported to CORE.");
         }
 
         if (isAnyBondsAssociatedTo) {
-          title += "You cannot delete a permit that has associated bond records.";
+          issues.push("Permit has associated bond records.");
         }
       }
 
       const deletePermitPopUp = (
         <Popconfirm
           placement="topLeft"
-          title={<div style={{ whiteSpace: "pre-wrap" }}>{title}</div>}
+          title={
+            issues && issues.length > 0 ? (
+              <div style={{ whiteSpace: "pre-wrap" }}>
+                <p>You cannot delete this permit due to following issues:</p>
+                <ul>
+                  {issues.map((issue) => (
+                    <li>{issue}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              "Are you sure you want to delete this permit and all related permit amendments and permit documents?"
+            )
+          }
           onConfirm={
             isDeletionAllowed
               ? () => record.handleDeletePermit(record.permit.permit_guid)
