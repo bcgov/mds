@@ -334,6 +334,7 @@ export const getDurationText = (startDate, endDate) => {
   const months = duration.months();
   const weeks = duration.weeks();
   const days = duration.subtract(weeks, "w").days();
+  const hours = duration.hours();
 
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");
@@ -343,10 +344,25 @@ export const getDurationText = (startDate, endDate) => {
   return `${yearsText}${monthsText}${weeksText}${daysText}`;
 };
 
+export const getDurationTextInDays = (duration) => {
+  if (Math.sign(duration._milliseconds) === -1) {
+    return "Invalid - End Date precedes Start Date";
+  }
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+
+  const daysText = getDurationTextOrDefault(days, "Day");
+  const hourText = getDurationTextOrDefault(hours, "Hour");
+  const minuteText = getDurationTextOrDefault(minutes, "Minute");
+  const value = `${daysText} ${hourText} ${minuteText}`;
+  return `${value}`;
+};
+
 const getDurationTextOrDefault = (duration, unit) => {
   if (duration <= 0) {
     return "";
   }
   unit = duration === 1 ? unit : unit + "s";
-  return `${duration} ${unit} `;
+  return `${duration} ${unit}`;
 };
