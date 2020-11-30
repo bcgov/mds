@@ -206,15 +206,17 @@ export const NOWDocuments = (props) => {
         return (
           /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
           <div disabled onClick={(event) => event.stopPropagation()}>
-            <Tooltip
-              title="You cannot remove a document that is a part of the Final Application Package."
-              placement="right"
-              mouseEnterDelay={0.3}
-            >
-              <Button ghost type="primary" disabled size="small">
-                <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
-              </Button>
-            </Tooltip>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Tooltip
+                title="You cannot remove a document that is a part of the Final Application Package."
+                placement="right"
+                mouseEnterDelay={0.3}
+              >
+                <Button ghost type="primary" disabled size="small">
+                  <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
+                </Button>
+              </Tooltip>
+            </NOWActionWrapper>
           </div>
         );
       },

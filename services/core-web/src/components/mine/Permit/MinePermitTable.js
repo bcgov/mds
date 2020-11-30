@@ -14,6 +14,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
+import { isEmpty } from "lodash";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -56,15 +57,23 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
+  const isLinkedToNowApplication = !isEmpty(record.amendmentEdit.amendment.now_application_guid);
+
   // eslint-disable-next-line consistent-return
   return (
     <AuthorizationWrapper permission={Permission.ADMIN}>
       <Popconfirm
         placement="topLeft"
-        title="Are you sure you want to delete this amendment and all related documents?"
-        okText="Delete"
+        title={
+          isLinkedToNowApplication
+            ? "You cannot delete permit amendment with associated NoW application imported to CORE."
+            : "Are you sure you want to delete this amendment and all related documents?"
+        }
+        okText={isLinkedToNowApplication ? "Ok" : "Delete"}
         cancelText="Cancel"
-        onConfirm={() => record.handleDeletePermitAmendment(record)}
+        onConfirm={
+          isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
+        }
       >
         <Button className="permit-table-button" type="ghost">
           <div>
@@ -215,29 +224,58 @@ const columns = [
         </Menu>
       );
 
+      const isLinkedToNowApplication =
+        record.permit.permit_amendments.filter(
+          (amendment) => !isEmpty(amendment.now_application_guid)
+        ).length > 0;
+
+      const isAnyBondsAssociatedTo = record.permit.bonds && record.permit.bonds.length > 0;
+
+      const isDeletionAllowed = !isAnyBondsAssociatedTo && !isLinkedToNowApplication;
+
+      const issues = [];
+
+      if (!isDeletionAllowed) {
+        if (isLinkedToNowApplication) {
+          issues.push("Permit has amendments associated with a NoW application imported to CORE.");
+        }
+
+        if (isAnyBondsAssociatedTo) {
+          issues.push("Permit has associated bond records.");
+        }
+      }
+
       const deletePermitPopUp = (
         <Popconfirm
           placement="topLeft"
-          {...(() => {
-            return record.permit.bonds && record.permit.bonds.length > 0
-              ? {
-                  title: "You cannot delete a permit that has associated bond records.",
-                  okText: "Ok",
-                }
-              : {
-                  title:
-                    "Are you sure you want to delete this permit and all related permit amendments and permit documents?",
-                  onConfirm: () => record.handleDeletePermit(record.permit.permit_guid),
-                  okText: "Delete",
-                  cancelText: "Cancel",
-                };
-          })()}
+          title={
+            issues && issues.length > 0 ? (
+              <div style={{ whiteSpace: "pre-wrap" }}>
+                <p>You cannot delete this permit due to following issues:</p>
+                <ul>
+                  {issues.map((issue) => (
+                    <li>{issue}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              "Are you sure you want to delete this permit and all related permit amendments and permit documents?"
+            )
+          }
+          onConfirm={
+            isDeletionAllowed
+              ? () => record.handleDeletePermit(record.permit.permit_guid)
+              : () => {}
+          }
+          okText={isDeletionAllowed ? "Delete" : "Ok"}
+          cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
             <img name="remove" src={TRASHCAN} alt="Remove Permit" />
           </Button>
         </Popconfirm>
       );
+
       return (
         <div className="btn--middle flex">
           <AuthorizationWrapper
@@ -404,6 +442,7 @@ const transformChildRowData = (
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
+  isAssociatedWithNOWApplicationImportedToCore: "",
   amendmentEdit: {
     major_mine_ind,
     amendment,
