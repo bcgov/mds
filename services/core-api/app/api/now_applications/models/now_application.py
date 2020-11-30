@@ -1,6 +1,7 @@
 import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -213,6 +214,13 @@ class NOWApplication(Base, AuditMixin):
             uuid.UUID(str(guid), version=4)
         except ValueError:
             raise AssertionError(msg)
+
+    @validates('proposed_annual_maximum_tonnage')
+    def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
+        if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
+            if self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
+        return proposed_annual_maximum_tonnage
 
     def save(self, commit=True):
         self.last_updated_by = User().get_user_username()
