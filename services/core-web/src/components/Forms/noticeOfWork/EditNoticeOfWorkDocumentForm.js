@@ -76,11 +76,6 @@ export class EditNoticeOfWorkDocumentForm extends Component {
       }
     );
 
-    // .filter(
-    //   ({ value }) =>
-    //     this.props.categoriesToShow.length > 0 ? this.props.categoriesToShow.includes(value) : value
-    // );
-
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
