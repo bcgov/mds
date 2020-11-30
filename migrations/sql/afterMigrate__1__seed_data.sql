@@ -613,7 +613,7 @@ ON CONFLICT DO NOTHING;
 
 
 INSERT INTO now_application_document_type
-(now_application_document_type_code, description, active_ind, create_user, update_user)
+(now_application_document_type_code, description, now_application_document_sub_type_code, active_ind, create_user, update_user)
 VALUES
     ('ANS', 'Annual Summary', true, null, 'system-mds', 'system-mds'),
     ('ACP', 'Archaeological Chance Find Procedure', true, null, 'system-mds', 'system-mds'),
