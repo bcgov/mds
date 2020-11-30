@@ -14,6 +14,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
+import { isEmpty } from "lodash";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -56,8 +57,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
-  const isLinkedToNowApplication =
-    record.amendmentEdit.amendment.is_linked_now_application_imported_to_core;
+  const isLinkedToNowApplication = !isEmpty(record.amendmentEdit.amendment.now_application_guid);
 
   // eslint-disable-next-line consistent-return
   return (
@@ -226,7 +226,7 @@ const columns = [
 
       const isLinkedToNowApplication =
         record.permit.permit_amendments.filter(
-          (amendment) => amendment.is_linked_now_application_imported_to_core === true
+          (amendment) => !isEmpty(amendment.now_application_guid)
         ).length > 0;
 
       const isAnyBondsAssociatedTo = record.permit.bonds && record.permit.bonds.length > 0;

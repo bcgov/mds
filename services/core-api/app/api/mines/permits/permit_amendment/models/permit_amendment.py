@@ -74,13 +74,6 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
 
-    @hybrid_property
-    def is_linked_now_application_imported_to_core(self):
-        if self.now_application_guid is None:
-            return False
-
-        return self.now_application_identity and self.now_application_identity.now_application is not None
-
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
@@ -90,7 +83,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
             )
 
-        if self.is_linked_now_application_imported_to_core:
+        if self.now_application_guid:
             raise Exception(
                 'The permit amendment with linked NOW application in Core cannot be deleted.')
 
