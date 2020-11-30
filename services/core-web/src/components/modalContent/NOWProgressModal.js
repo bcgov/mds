@@ -67,7 +67,7 @@ export const NOWProgressModal = (props) => (
     {props.trigger === "Complete" && (
       <>
         <Alert
-          message={`If you need to make changes or add documentation later, click 'Resume ${props.tab}'.`}
+          description={`If you need to make changes or add documentation later, click 'Resume ${props.tab}'.`}
           type="info"
           showIcon
         />
