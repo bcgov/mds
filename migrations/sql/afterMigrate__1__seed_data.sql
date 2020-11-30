@@ -663,7 +663,7 @@ VALUES
     ('ARE', 'Agent Letter of Representation', true, NULL, 'system-mds', 'system-mds'),
     ('SRE', 'Status Report', true, "GDO", 'system-mds', 'system-mds'),
     ('SOM', 'Status Report - Overlapping Interests Maps', true, "GDO", 'system-mds', 'system-mds'),
-    ('SRS', 'Status Report - Shape Files', true, "GDO", 'system-mds', 'system-mds'),
+    ('SRS', 'Status Report - Shape Files', true, 'GDO', 'system-mds', 'system-mds'),
     ('ECC', 'Email Correspondence/Communications', true, NULL, 'system-mds', 'system-mds'),
     ('RMI', 'Requst for More Information', true, NULL, 'system-mds', 'system-mds'),
     ('WFI', '30 day Warning for Information', true, 'GDO', 'system-mds', 'system-mds'),
