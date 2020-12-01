@@ -246,6 +246,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
         'now_application_document_xref_guid': fields.String,
         'now_application_document_type_code': fields.String,
+        'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
@@ -591,6 +592,7 @@ NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
     'ApplicationDocumentTypeModel', {
         'now_application_document_type_code': fields.String,
         'description': fields.String,
+        'now_application_document_sub_type_code': fields.String,
         'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
         'active_ind': fields.Boolean
     })

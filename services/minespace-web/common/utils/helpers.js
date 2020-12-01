@@ -38,11 +38,18 @@ export const createItemMap = (array, idField) => {
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
-export const createDropDownList = (array, labelField, valueField, isActiveField = false) => {
+export const createDropDownList = (
+  array,
+  labelField,
+  valueField,
+  isActiveField = false,
+  subType = null
+) => {
   const options = array.map((item) => ({
     value: item[valueField],
     label: item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
+    subType: subType ? item[subType] : null,
   }));
 
   return sortBy(options, [

@@ -44,7 +44,11 @@ import * as route from "@/constants/routes";
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
  */
-
+const approvedCode = "AIA";
+const approvedLetterCode = "NPE";
+const rejectedCode = "REJ";
+const rejectedLetterCode = "RJL";
+const WithDrawnLetterCode = "WDL";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -117,18 +121,18 @@ export class ProcessPermit extends Component {
     const content = {
       REJ: {
         title: "Reject Application",
-        statusCode: "REJ",
-        letterCode: "RJL",
+        statusCode: rejectedCode,
+        letterCode: rejectedLetterCode,
       },
       AIA: {
         title: "Issue Permit",
-        statusCode: "AIA",
-        letterCode: "NPE",
+        statusCode: approvedCode,
+        letterCode: approvedLetterCode,
       },
       WDL: {
         title: "Withdraw Application",
-        statusCode: "REJ",
-        letterCode: "WDL",
+        statusCode: rejectedCode,
+        letterCode: WithDrawnLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
@@ -164,7 +168,7 @@ export class ProcessPermit extends Component {
 
   rejectApplication = (values, code) => {
     const message =
-      code === "AIA"
+      code === approvedCode
         ? "Permit has been successfully issued for this application."
         : "This application has been successfully rejected.";
     this.props
@@ -270,20 +274,20 @@ export class ProcessPermit extends Component {
     <Menu>
       <Menu.Item
         key="issue-permit"
-        onClick={() => this.openUpdateStatusGenerateLetterModal("AIA")}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(approvedCode)}
         disabled={validationErrors}
       >
         Issue permit
       </Menu.Item>
       <Menu.Item
         key="reject-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal("REJ")}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(rejectedCode)}
       >
         Reject application
       </Menu.Item>
       <Menu.Item
         key="withdraw-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal("WDL")}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(WithDrawnLetterCode)}
       >
         Withdraw application
       </Menu.Item>
@@ -295,9 +299,9 @@ export class ProcessPermit extends Component {
     const validationErrors = validationMessages.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
-      this.props.noticeOfWork.now_application_status_code === "AIA" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
-    const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
+      this.props.noticeOfWork.now_application_status_code === approvedCode ||
+      this.props.noticeOfWork.now_application_status_code === rejectedCode;
+    const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
