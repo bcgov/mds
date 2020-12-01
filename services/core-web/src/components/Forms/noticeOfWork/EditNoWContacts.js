@@ -64,6 +64,9 @@ const renderContacts = ({
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
 
+  console.log("@@@@");
+  console.log(fields);
+
   return (
     <>
       <Row gutter={24}>
