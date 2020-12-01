@@ -60,12 +60,6 @@ class NOWApplicationImportResource(Resource, UserMixin):
         if not now_application_identity:
             raise NotFound('No identity record for this application guid.')
 
-        # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
-        # In the event of multiple requests being fired simultaneously this can still sometimes fail.
-        db.session.refresh(now_application_identity)
-        if now_application_identity.now_application_id is not None:
-            raise BadRequest('This record has already been imported.')
-
         application = transmogrify_now(now_application_identity)
         application.latitude = latitude
         application.longitude = longitude
@@ -90,6 +84,12 @@ class NOWApplicationImportResource(Resource, UserMixin):
                 mine_party_appt_type=mine_party_appt_type,
                 party=now_party)
             application.contacts.append(now_party_appt)
+
+        # This is a first pass but by no means exhaustive solution to preventing the now application from being saved more than once.
+        # In the event of multiple requests being fired simultaneously this can still sometimes fail.
+        db.session.refresh(now_application_identity)
+        if now_application_identity.now_application_id is not None:
+            raise BadRequest('This record has already been imported.')
 
         application.save()
         db.session.refresh(now_application_identity)
