@@ -224,7 +224,7 @@ class NOWApplication(Base, AuditMixin):
                 raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
         return proposed_annual_maximum_tonnage
 
-    def save_import_meta(self, commit=True):
+    def save_import_meta(self):
         self.imported_by = User().get_user_username()
         self.imported_date = datetime.utcnow()
         self.save()
