@@ -346,7 +346,7 @@ export const getDurationText = (startDate, endDate) => {
 
 export const getDurationTextInDays = (duration) => {
   if (Math.sign(duration._milliseconds) === -1) {
-    return "Invalid - End Date precedes Start Date";
+    return "N/A";
   }
   const days = duration.days();
   const hours = duration.hours();
@@ -356,7 +356,7 @@ export const getDurationTextInDays = (duration) => {
   const hourText = getDurationTextOrDefault(hours, "Hour");
   const minuteText = getDurationTextOrDefault(minutes, "Minute");
   const value = `${daysText} ${hourText} ${minuteText}`;
-  return `${value}`;
+  return `${daysText} ${hourText} ${minuteText}`;
 };
 
 const getDurationTextOrDefault = (duration, unit) => {

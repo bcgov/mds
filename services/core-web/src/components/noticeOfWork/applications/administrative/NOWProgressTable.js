@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Popconfirm, Descriptions, Badge, Timeline, Row, Col } from "antd";
+import { Button, Popconfirm, Descriptions, Badge, Timeline, Row, Col, Steps, Popover } from "antd";
 import { connect } from "react-redux";
 import {
   getNoticeOfWork,
@@ -19,11 +19,12 @@ import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
  */
-
+const noImportMeta = "Information not captured at time of Import";
 const propTypes = {
   getDelayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -56,69 +57,96 @@ const columns = [
   },
 ];
 
-const TimelineItem = (progress, progressStatus, delaysExist) => {
+const stepItem = (progress, progressStatus, delaysExist) => {
   if (!progress[progressStatus.application_progress_status_code])
     return (
-      <Timeline.Item dot={<StopOutlined className="icon-lg--grey" />}>
-        <span className="field-title">{progressStatus.description}</span>
-        <br />
-        <Descriptions column={1}>
-          <Descriptions.Item label="Status"> Not Started</Descriptions.Item>
-        </Descriptions>
-      </Timeline.Item>
+      <Steps.Step
+        title={progressStatus.description}
+        icon={
+          <Popover
+            content={
+              <Descriptions column={1} title={progressStatus.description}>
+                <Descriptions.Item label="Status">Not Started</Descriptions.Item>
+              </Descriptions>
+            }
+          >
+            <StopOutlined className="icon-lg--grey" />
+          </Popover>
+        }
+        description="Not Started"
+      />
     );
   if (progress[progressStatus.application_progress_status_code].end_date)
     return (
-      <Timeline.Item dot={<CheckCircleOutlined className="icon-lg--green" />}>
-        <span className="field-title">{progressStatus.description}</span>
-        <br />
-        <Descriptions column={1}>
-          <Descriptions.Item label="Status">Complete</Descriptions.Item>
-          <Descriptions.Item label="Started by">
-            {progress[progressStatus.application_progress_status_code].created_by}
-          </Descriptions.Item>
-          <Descriptions.Item label="Updated by">
-            {progress[progressStatus.application_progress_status_code].last_updated_by}
-          </Descriptions.Item>
-          <Descriptions.Item label="Date">
-            {formatDate(progress[progressStatus.application_progress_status_code].start_date)} -{" "}
-            {formatDate(progress[progressStatus.application_progress_status_code].end_date)}
-          </Descriptions.Item>
-          <Descriptions.Item label="Duration">
-            {progress[progressStatus.application_progress_status_code].duration}
-          </Descriptions.Item>
-          {delaysExist && (
-            <Descriptions.Item label="Duration Minus Delays">
-              {progress[progressStatus.application_progress_status_code].durationWithoutDelays}
-            </Descriptions.Item>
-          )}
-        </Descriptions>
-      </Timeline.Item>
+      <Steps.Step
+        title={progressStatus.description}
+        icon={
+          <Popover
+            content={
+              <Descriptions column={1} title={progressStatus.description}>
+                <Descriptions.Item label="Status">Complete</Descriptions.Item>
+                <Descriptions.Item label="Started by">
+                  {progress[progressStatus.application_progress_status_code].created_by}
+                </Descriptions.Item>
+                <Descriptions.Item label="Updated by">
+                  {progress[progressStatus.application_progress_status_code].last_updated_by}
+                </Descriptions.Item>
+                <Descriptions.Item label="Date">
+                  {formatDate(progress[progressStatus.application_progress_status_code].start_date)}{" "}
+                  - {formatDate(progress[progressStatus.application_progress_status_code].end_date)}
+                </Descriptions.Item>
+                <Descriptions.Item label="Duration">
+                  {progress[progressStatus.application_progress_status_code].duration}
+                </Descriptions.Item>
+                {delaysExist && (
+                  <Descriptions.Item label="Duration Minus Delays">
+                    {
+                      progress[progressStatus.application_progress_status_code]
+                        .durationWithoutDelays
+                    }
+                  </Descriptions.Item>
+                )}
+              </Descriptions>
+            }
+          >
+            <CheckCircleOutlined className="icon-lg--green" />
+          </Popover>
+        }
+        description="Complete"
+      />
     );
   return (
-    <Timeline.Item dot={<ClockCircleOutlined className="icon-lg" />}>
-      <span className="field-title">{progressStatus.description}</span>
-      <br />
-      <Descriptions column={1}>
-        <Descriptions.Item label="Status">In Progress</Descriptions.Item>
-        <Descriptions.Item label="Started by">
-          {progress[progressStatus.application_progress_status_code].created_by}
-        </Descriptions.Item>
-        <Descriptions.Item label="Date">
-          {formatDate(progress[progressStatus.application_progress_status_code].start_date)} -
-          Present
-        </Descriptions.Item>
-        <Descriptions.Item label="Duration">
-          {progress[progressStatus.application_progress_status_code].duration}
-        </Descriptions.Item>
-        {delaysExist && (
-          <Descriptions.Item label="Duration Minus Delays">
-            {progress[progressStatus.application_progress_status_code].durationWithoutDelays ||
-              "0 Days"}
-          </Descriptions.Item>
-        )}
-      </Descriptions>
-    </Timeline.Item>
+    <Steps.Step
+      icon={
+        <Popover
+          content={
+            <Descriptions column={1} title={progressStatus.description}>
+              <Descriptions.Item label="Status">In Progress</Descriptions.Item>
+              <Descriptions.Item label="Started by">
+                {progress[progressStatus.application_progress_status_code].created_by}
+              </Descriptions.Item>
+              <Descriptions.Item label="Date">
+                {formatDate(progress[progressStatus.application_progress_status_code].start_date)} -
+                Present
+              </Descriptions.Item>
+              <Descriptions.Item label="Duration">
+                {progress[progressStatus.application_progress_status_code].duration}
+              </Descriptions.Item>
+              {delaysExist && (
+                <Descriptions.Item label="Duration Minus Delays">
+                  {progress[progressStatus.application_progress_status_code]
+                    .durationWithoutDelays || "0 Days"}
+                </Descriptions.Item>
+              )}
+            </Descriptions>
+          }
+        >
+          <ClockCircleOutlined className="icon-lg" />
+        </Popover>
+      }
+      title={progressStatus.description}
+      description="In Progress"
+    />
   );
 };
 
@@ -140,34 +168,47 @@ const transformRowData = (delays, delayTypeHash) => {
 
 export class NOWProgressTable extends Component {
   render() {
+    // const
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
-        <div className="padding-large">
-          <Row gutter={16} justify="left">
-            <Col span={12}>
-              <Timeline mode="left">
-                <Timeline.Item dot={<CheckCircleOutlined className="icon-lg--green" />}>
-                  <span className="field-title">Imported to CORE</span>
-                  <br />
-                  <Descriptions column={1}>
-                    <Descriptions.Item label="Status">Verified</Descriptions.Item>
-                    <Descriptions.Item label="Import Date">Sept 11-10</Descriptions.Item>
-                    <Descriptions.Item label="Duration until Review">
-                      11 months 10 days
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Timeline.Item>
-                {this.props.progressStatusCodes
-                  .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                  .map((progressStatus) =>
-                    TimelineItem(this.props.progress, progressStatus, delaysExist)
-                  )}
-              </Timeline>
-            </Col>
-            <Col span={12} />
-          </Row>
-        </div>
+        <Row gutter={16} justify="left">
+          <Col span={24}>
+            <Steps current={5} className="progress-steps">
+              <Steps.Step
+                direction="vertical"
+                title="Imported to CORE"
+                icon={
+                  <Popover
+                    content={
+                      <Descriptions column={1} title="Imported to CORE">
+                        <Descriptions.Item label="Status">Verified</Descriptions.Item>
+                        <Descriptions.Item label="Imported by">
+                          {this.props.noticeOfWork.imported_by || noImportMeta}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Import Date">
+                          {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Duration until Review">
+                          11 months 10 days
+                        </Descriptions.Item>
+                      </Descriptions>
+                    }
+                  >
+                    <CheckCircleOutlined className="icon-lg--green" />
+                  </Popover>
+                }
+                description="Verified"
+              />
+              {this.props.progressStatusCodes
+                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .map((progressStatus) =>
+                  stepItem(this.props.progress, progressStatus, delaysExist)
+                )}
+            </Steps>
+          </Col>
+        </Row>
+        <br />
         <br />
         <CoreTable
           condition
@@ -177,9 +218,7 @@ export class NOWProgressTable extends Component {
           )}
           columns={columns}
           tableProps={{
-            align: "center",
             pagination: false,
-            scroll: { y: 500 },
           }}
         />
         <br />
@@ -187,7 +226,9 @@ export class NOWProgressTable extends Component {
           <>
             <Descriptions.Item label="Total Time in Delay">
               <Badge color={COLOR.yellow} className="padding-small--left" />
-              {this.props.totalApplicationDelayDuration.duration}
+              {delaysExist
+                ? this.props.totalApplicationDelayDuration.duration
+                : Strings.EMPTY_FIELD}
             </Descriptions.Item>
           </>
         </Descriptions>

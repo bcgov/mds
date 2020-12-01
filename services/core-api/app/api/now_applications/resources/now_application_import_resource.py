@@ -92,6 +92,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         if now_application_identity.now_application_id is not None:
             raise BadRequest('This record has already been imported.')
 
+        application.save_import_meta()
         application.save()
         db.session.refresh(now_application_identity)
         now_application_identity.mine_guid = mine_guid

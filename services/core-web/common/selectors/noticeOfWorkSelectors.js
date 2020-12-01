@@ -46,25 +46,43 @@ export const getNOWReclamationSummary = createSelector(
   }
 );
 
-export const getNOWProgress = createSelector([getNoticeOfWork], (noticeOfWork) => {
+export const getTotalApplicationDelayDuration = createSelector([getApplicationDelays], (delays) => {
   const today = new Date();
-  let progress = {};
-  if (noticeOfWork.application_progress.length > 0) {
-    progress = noticeOfWork.application_progress.reduce((map, obj) => {
-      const endDate = obj.end_date ? obj.end_date : today;
-      const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
-      return {
-        [obj.application_progress_status_code]: {
-          ...obj,
-          duration: getDurationTextInDays(duration),
-          durationWithoutDelays: null,
-        },
-        ...map,
-      };
-    }, {});
-  }
-  return progress;
+  let totalArr = [];
+  const totalDuration = delays.map((delay) => {
+    const endDate = delay.end_date ? delay.end_date : today;
+    const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
+    return totalArr.push(delayDuration._milliseconds);
+  });
+  const total = getAmountSum(totalArr);
+  const newMoment = moment.duration(total, "milliseconds");
+  return { duration: getDurationTextInDays(newMoment), milliseconds: total };
 });
+
+export const getNOWProgress = createSelector(
+  [getNoticeOfWork, getTotalApplicationDelayDuration],
+  (noticeOfWork, delayDurations) => {
+    const today = new Date();
+    let progress = {};
+    if (noticeOfWork.application_progress.length > 0) {
+      progress = noticeOfWork.application_progress.reduce((map, obj) => {
+        const endDate = obj.end_date ? obj.end_date : today;
+        const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
+        const difference = duration._milliseconds - delayDurations.milliseconds;
+        const durationDifference = moment.duration(difference, "milliseconds");
+        return {
+          [obj.application_progress_status_code]: {
+            ...obj,
+            duration: getDurationTextInDays(duration),
+            durationWithoutDelays: getDurationTextInDays(durationDifference),
+          },
+          ...map,
+        };
+      }, {});
+    }
+    return progress;
+  }
+);
 
 export const getApplicationDelay = createSelector([getApplicationDelays], (delays) => {
   const currentDelay = delays.filter((delay) => delay.end_date === null)[0];
@@ -81,18 +99,4 @@ export const getApplicationDelaysWithDuration = createSelector([getApplicationDe
   return delayWithDuration;
 });
 
-export const getTotalApplicationDelayDuration = createSelector([getApplicationDelays], (delays) => {
-  const today = new Date();
-  let total;
-  total = moment.duration(0);
-  const totalDuration = delays.map((delay) => {
-    const endDate = delay.end_date ? delay.end_date : today;
-    const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
-    console.log(delayDuration.milliseconds());
-    return total.add(delayDuration);
-  });
-  const momentDurationObj = moment.duration(totalDuration);
-  console.log(getDurationTextInDays(momentDurationObj));
-  console.log(momentDurationObj);
-  return { duration: getDurationTextInDays(momentDurationObj), rawDuration: momentDurationObj };
-});
+const getAmountSum = (arr) => arr.reduce((sum, ar) => +sum + +ar, 0);

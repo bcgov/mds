@@ -249,3 +249,10 @@
   float: right;
   padding: 10px;
 }
+
+.progress-steps {
+  // remove active styling on progress steps as nothing is "active"
+  .ant-steps-item-active .ant-steps-item-description {
+    color: rgba(0, 0, 0, 0.45) !important;
+  }
+}

@@ -62,6 +62,8 @@ class NOWApplication(Base, AuditMixin):
     status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
     last_updated_by = db.Column(db.String)
+    imported_by = db.Column(db.String)
+    imported_date = db.Column(db.DateTime)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -221,6 +223,11 @@ class NOWApplication(Base, AuditMixin):
             if self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
                 raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
         return proposed_annual_maximum_tonnage
+
+    def save_import_meta(self, commit=True):
+        self.imported_by = User().get_user_username()
+        self.imported_date = datetime.utcnow()
+        self.save()
 
     def save(self, commit=True):
         self.last_updated_by = User().get_user_username()
