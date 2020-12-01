@@ -256,3 +256,9 @@
     color: rgba(0, 0, 0, 0.45) !important;
   }
 }
+
+.progress-status {
+  .ant-badge-status-text {
+    font-size: 12px;
+  }
+}

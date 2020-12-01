@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import moment from "moment";
 import { Button, Popconfirm, Descriptions, Badge, Timeline, Row, Col, Steps, Popover } from "antd";
 import { connect } from "react-redux";
 import {
@@ -12,9 +13,10 @@ import {
 import {
   getDelayTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationStatusCodes,
+  getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { ClockCircleOutlined, CheckCircleOutlined, StopOutlined } from "@ant-design/icons";
-import { formatDate, getDurationText } from "@common/utils/helpers";
+import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
@@ -157,7 +159,7 @@ const transformRowData = (delays, delayTypeHash) => {
     return {
       key: delay.now_application_delay_guid,
       reason: delayTypeHash[delay.delay_type_code],
-      duration: delay.duration,
+      duration: delay.duration || "0 Minutes",
       dates: `${formatDate(delay.start_date)} - ${dateMessage}`,
       ...delay,
     };
@@ -168,7 +170,13 @@ const transformRowData = (delays, delayTypeHash) => {
 
 export class NOWProgressTable extends Component {
   render() {
-    // const
+    const firstProgress =
+      this.props.noticeOfWork.application_progress.length > 0
+        ? this.props.noticeOfWork.application_progress[0]
+        : { start_date: null, application_progress_status_code: null };
+    const duration = moment.duration(
+      moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
+    );
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
@@ -189,8 +197,13 @@ export class NOWProgressTable extends Component {
                         <Descriptions.Item label="Import Date">
                           {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Duration until Review">
-                          11 months 10 days
+                        <Descriptions.Item label="Duration until Progress">
+                          {getDurationTextInDays(duration) || Strings.EMPTY_FIELD}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="First stage In Progress">
+                          {this.props.progressStatusCodeHash[
+                            firstProgress.application_progress_status_code
+                          ] || Strings.EMPTY_FIELD}
                         </Descriptions.Item>
                       </Descriptions>
                     }
@@ -240,6 +253,7 @@ export class NOWProgressTable extends Component {
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   progress: getNOWProgress(state),
+  progressStatusCodeHash: getNoticeOfWorkApplicationProgressStatusCodeOptionsHash(state),
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
   applicationDelays: getApplicationDelaysWithDuration(state),
   totalApplicationDelayDuration: getTotalApplicationDelayDuration(state),

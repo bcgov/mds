@@ -45,14 +45,22 @@ export const NOWProgressStatus = (props) => {
       {isEmpty(props.progress[props.tab]) && (
         <p className="small-p">
           {props.progressStatusHash[props.tab]} Status:
-          <Badge color={COLOR.mediumGrey} className="padding-small--left" text="Not Started" />
+          <Badge
+            color={COLOR.mediumGrey}
+            className="padding-small--left progress-status"
+            text="Not Started"
+          />
         </p>
       )}
       {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && (
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color={COLOR.blue} className="padding-small--left" text="In Progress" />
+            <Badge
+              color={COLOR.blue}
+              className="padding-small--left progress-status"
+              text="In Progress"
+            />
           </p>
           <p className="small-p">
             In {props.progressStatusHash[props.tab]} Since:
@@ -74,7 +82,11 @@ export const NOWProgressStatus = (props) => {
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color={COLOR.successGreen} className="padding-small--left" text="Complete" />
+            <Badge
+              color={COLOR.successGreen}
+              className="padding-small--left progress-status"
+              text="Complete"
+            />
           </p>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Started on:
