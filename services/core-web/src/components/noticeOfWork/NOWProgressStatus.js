@@ -73,7 +73,7 @@ export const NOWProgressStatus = (props) => {
               )}
             >
               {formatDate(props.progress[props.tab].start_date)}/
-              {props.progress[props.tab].progress || "0 Days"}
+              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
             </Link>
           </p>
         </>
@@ -99,7 +99,7 @@ export const NOWProgressStatus = (props) => {
               )}
             >
               {formatDate(props.progress[props.tab].start_date)}/
-              {props.progress[props.tab].progress || "0 Days"}
+              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
             </Link>
           </p>
         </>

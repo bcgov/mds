@@ -1,8 +1,7 @@
-/* eslint-disable */
 import { isEmpty } from "lodash";
 import { createSelector } from "reselect";
 import moment from "moment";
-import { getDurationText, getDurationTextInDays } from "@common/utils/helpers";
+import { getDurationTextInDays } from "@common/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
 
@@ -46,12 +45,14 @@ export const getNOWReclamationSummary = createSelector(
   }
 );
 
+const getAmountSum = (arr) => arr.reduce((sum, ar) => +sum + +ar, 0);
 export const getTotalApplicationDelayDuration = createSelector([getApplicationDelays], (delays) => {
   const today = new Date();
-  let totalArr = [];
-  const totalDuration = delays.map((delay) => {
+  const totalArr = [];
+  delays.map((delay) => {
     const endDate = delay.end_date ? delay.end_date : today;
     const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
+    // eslint-disable-next-line no-underscore-dangle
     return totalArr.push(delayDuration._milliseconds);
   });
   const total = getAmountSum(totalArr);
@@ -68,6 +69,7 @@ export const getNOWProgress = createSelector(
       progress = noticeOfWork.application_progress.reduce((map, obj) => {
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
+        // eslint-disable-next-line no-underscore-dangle
         const difference = duration._milliseconds - delayDurations.milliseconds;
         const durationDifference = moment.duration(difference, "milliseconds");
         return {
@@ -98,5 +100,3 @@ export const getApplicationDelaysWithDuration = createSelector([getApplicationDe
   });
   return delayWithDuration;
 });
-
-const getAmountSum = (arr) => arr.reduce((sum, ar) => +sum + +ar, 0);

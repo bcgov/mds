@@ -1,8 +1,7 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { Button, Popconfirm, Descriptions, Badge, Timeline, Row, Col, Steps, Popover } from "antd";
+import { Descriptions, Badge, Row, Col, Steps, Popover } from "antd";
 import { connect } from "react-redux";
 import {
   getNoticeOfWork,
@@ -20,7 +19,6 @@ import { formatDate, getDurationTextInDays } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
-import * as router from "@/constants/routes";
 import * as Strings from "@common/constants/strings";
 
 /**
@@ -28,7 +26,13 @@ import * as Strings from "@common/constants/strings";
  */
 const noImportMeta = "Information not captured at time of Import";
 const propTypes = {
-  getDelayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  progress: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  progressStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  progressStatusCodes: CustomPropTypes.options.isRequired,
+  applicationDelays: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const columns = [
@@ -168,6 +172,8 @@ const transformRowData = (delays, delayTypeHash) => {
   return appDelays;
 };
 
+// this should be stateful once fully implemented
+// eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
   render() {
     const firstProgress =
