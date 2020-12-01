@@ -7,7 +7,10 @@ import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getNoticeOfWorkApplicationDocumentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import {
+  getNoticeOfWorkApplicationDocumentTypeOptionsHash,
+  getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import {
@@ -29,6 +32,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any).isRequired,
   noticeOfWorkApplicationDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.any).isRequired,
+  noticeOfWorkApplicationDocumentTypeOptions: PropTypes.objectOf(PropTypes.any).isRequired,
   isViewMode: PropTypes.bool.isRequired,
   selectedRows: PropTypes.objectOf(PropTypes.any),
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
@@ -91,21 +95,22 @@ export const NOWDocuments = (props) => {
     });
   };
 
-  const columns = (
-    noticeOfWorkApplicationDocumentTypeOptionsHash,
-    categoriesToShow,
-    isViewMode
-  ) => {
-    const filtered = Object.keys(noticeOfWorkApplicationDocumentTypeOptionsHash)
-      .filter((key) => (categoriesToShow.length > 0 ? categoriesToShow.includes(key) : key))
-      .reduce((obj, key) => {
-        obj[key] = noticeOfWorkApplicationDocumentTypeOptionsHash[key];
-        return obj;
-      }, {});
-    const categoryFilters = Object.values(filtered).map((dt) => ({
-      text: dt,
-      value: dt,
+  const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow, isViewMode) => {
+    const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
+      if (subType && categoriesToShow.length > 0) {
+        return categoriesToShow.includes(subType);
+      }
+      if (categoriesToShow.length > 0) {
+        return categoriesToShow.includes(value);
+      }
+      return true;
+    });
+
+    const categoryFilters = filtered.map((item) => ({
+      text: item.label,
+      value: item.value,
     }));
+
     const fileNameColumn = props.selectedRows
       ? {
           title: "File Name",
@@ -201,15 +206,17 @@ export const NOWDocuments = (props) => {
         return (
           /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
           <div disabled onClick={(event) => event.stopPropagation()}>
-            <Tooltip
-              title="You cannot remove a document that is a part of the Final Application Package."
-              placement="right"
-              mouseEnterDelay={0.3}
-            >
-              <Button ghost type="primary" disabled size="small">
-                <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
-              </Button>
-            </Tooltip>
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Tooltip
+                title="You cannot remove a document that is a part of the Final Application Package."
+                placement="right"
+                mouseEnterDelay={0.3}
+              >
+                <Button ghost type="primary" disabled size="small">
+                  <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
+                </Button>
+              </Tooltip>
+            </NOWActionWrapper>
           </div>
         );
       },
@@ -254,7 +261,7 @@ export const NOWDocuments = (props) => {
         align="left"
         pagination={false}
         columns={columns(
-          props.noticeOfWorkApplicationDocumentTypeOptionsHash,
+          props.noticeOfWorkApplicationDocumentTypeOptions,
           props.categoriesToShow,
           props.isViewMode
         )}
@@ -299,6 +306,9 @@ NOWDocuments.propTypes = propTypes;
 NOWDocuments.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
+    state
+  ),
+  noticeOfWorkApplicationDocumentTypeOptions: getDropdownNoticeOfWorkApplicationDocumentTypeOptions(
     state
   ),
   noticeOfWork: getNoticeOfWork(state),

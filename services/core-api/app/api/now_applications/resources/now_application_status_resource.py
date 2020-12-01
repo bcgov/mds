@@ -36,7 +36,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         location='json',
         help='Whether the permit is an exploration permit or not.')
     parser.add_argument(
-        'status_reason', type=str, location='json', help='Reason for rejecting the application')
+        'status_reason', type=str, location='json', help='Reason for rejecting the application.')
+    parser.add_argument(
+        'description', type=str, location='json', help='Description for permit amendment.')
 
     @api.doc(description='Update Status of an Application', params={})
     @requires_role_edit_permit
@@ -45,6 +47,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         issue_date = data.get('issue_date', None)
         auth_end_date = data.get('auth_end_date', None)
         status_reason = data.get('status_reason', None)
+        description = data.get('description', None)
         now_application_status_code = data.get('now_application_status_code', None)
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
@@ -84,6 +87,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.permit_amendment_status_code = 'ACT'
                 permit_amendment.issue_date = issue_date
                 permit_amendment.authorization_end_date = auth_end_date
+                permit_amendment.description = description
                 permit_amendment.save()
 
                 #create contacts

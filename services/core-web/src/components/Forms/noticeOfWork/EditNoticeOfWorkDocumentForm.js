@@ -65,8 +65,15 @@ export class EditNoticeOfWorkDocumentForm extends Component {
 
   render() {
     const filteredDropDownOptions = this.props.dropdownNoticeOfWorkApplicationDocumentTypeOptions.filter(
-      ({ value }) =>
-        this.props.categoriesToShow.length > 0 ? this.props.categoriesToShow.includes(value) : value
+      ({ subType, value }) => {
+        if (subType && this.props.categoriesToShow.length > 0) {
+          return this.props.categoriesToShow.includes(subType);
+        }
+        if (this.props.categoriesToShow.length > 0) {
+          return this.props.categoriesToShow.includes(value);
+        }
+        return true;
+      }
     );
 
     return (

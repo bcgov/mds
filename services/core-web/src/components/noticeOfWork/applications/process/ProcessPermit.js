@@ -44,7 +44,11 @@ import * as route from "@/constants/routes";
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
  */
-
+const approvedCode = "AIA";
+const approvedLetterCode = "NPE";
+const rejectedCode = "REJ";
+const rejectedLetterCode = "RJL";
+const WithDrawnLetterCode = "WDL";
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -102,17 +106,6 @@ export class ProcessPermit extends Component {
     );
   };
 
-  openIssuePermitModal = () => {
-    this.props.openModal({
-      props: {
-        title: "Issue Permit",
-        onSubmit: this.issuePermit,
-      },
-      width: "50vw",
-      content: modalConfig.ISSUE_PERMIT_MODAL,
-    });
-  };
-
   openStatusModal = () => {
     this.props.openModal({
       props: {
@@ -124,12 +117,29 @@ export class ProcessPermit extends Component {
     });
   };
 
-  openRejectApplicationModal = (type) => {
-    const letterCode = type === "REJ" ? "RJL" : "WDL";
+  openUpdateStatusGenerateLetterModal = (type) => {
+    const content = {
+      REJ: {
+        title: "Reject Application",
+        statusCode: rejectedCode,
+        letterCode: rejectedLetterCode,
+      },
+      AIA: {
+        title: "Issue Permit",
+        statusCode: approvedCode,
+        letterCode: approvedLetterCode,
+      },
+      WDL: {
+        title: "Withdraw Application",
+        statusCode: rejectedCode,
+        letterCode: WithDrawnLetterCode,
+      },
+    };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
+
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
-        letterCode,
+        content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
@@ -141,25 +151,30 @@ export class ProcessPermit extends Component {
         this.props.openModal({
           props: {
             initialValues,
-            title: type === "REJ" ? "Reject Application" : "Withdraw Application",
+            title: content[type].title,
             documentType: this.props.documentContextTemplate,
-            onSubmit: this.rejectApplication,
+            onSubmit: (values) => this.rejectApplication(values, type),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             draftAmendment: this.props.draftAmendment,
             signature,
+            issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },
           width: "50vw",
-          content: modalConfig.REJECT_APPLICATION_MODAL,
+          content: modalConfig.NOW_STATUS_LETTER_MODAL,
         });
       });
   };
 
-  issuePermit = (values) => {
+  rejectApplication = (values, code) => {
+    const message =
+      code === approvedCode
+        ? "Permit has been successfully issued for this application."
+        : "This application has been successfully rejected.";
     this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
-        now_application_status_code: "AIA",
+        now_application_status_code: code,
       })
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -167,25 +182,7 @@ export class ProcessPermit extends Component {
         );
         this.props.closeModal();
         notification.success({
-          message: "Permit has been successfully issued for this application.",
-          duration: 10,
-        });
-      });
-  };
-
-  rejectApplication = (values) => {
-    this.props
-      .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
-        ...values,
-        now_application_status_code: "REJ",
-      })
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-        this.props.closeModal();
-        notification.success({
-          message: "This application has been rejected.",
+          message,
           duration: 10,
         });
       });
@@ -275,13 +272,23 @@ export class ProcessPermit extends Component {
 
   menu = (validationErrors) => (
     <Menu>
-      <Menu.Item key="issue-permit" onClick={this.openIssuePermitModal} disabled={validationErrors}>
+      <Menu.Item
+        key="issue-permit"
+        onClick={() => this.openUpdateStatusGenerateLetterModal(approvedCode)}
+        disabled={validationErrors}
+      >
         Issue permit
       </Menu.Item>
-      <Menu.Item key="reject-application" onClick={() => this.openRejectApplicationModal("REJ")}>
+      <Menu.Item
+        key="reject-application"
+        onClick={() => this.openUpdateStatusGenerateLetterModal(rejectedCode)}
+      >
         Reject application
       </Menu.Item>
-      <Menu.Item key="withdraw-application" onClick={() => this.openRejectApplicationModal("WDL")}>
+      <Menu.Item
+        key="withdraw-application"
+        onClick={() => this.openUpdateStatusGenerateLetterModal(WithDrawnLetterCode)}
+      >
         Withdraw application
       </Menu.Item>
     </Menu>
@@ -292,9 +299,9 @@ export class ProcessPermit extends Component {
     const validationErrors = validationMessages.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
-      this.props.noticeOfWork.now_application_status_code === "AIA" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
-    const isApproved = this.props.noticeOfWork.now_application_status_code === "AIA";
+      this.props.noticeOfWork.now_application_status_code === approvedCode ||
+      this.props.noticeOfWork.now_application_status_code === rejectedCode;
+    const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     return (
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>

@@ -360,6 +360,13 @@ export class EditFullPartyForm extends Component {
                     />
                   </Col>
                 </Row>
+                <br />
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={24}>
+                    <h5>Upload Signature</h5>
+                  </Col>
+                </Row>
                 <Row>
                   <Col span={24}>
                     <Field

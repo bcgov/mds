@@ -38,6 +38,14 @@ export const IssuePermitForm = (props) => (
             component={renderConfig.DATE}
             validate={[required]}
           />
+          <Form.Item>
+            <Field
+              id="description"
+              name="description"
+              label="Description"
+              component={renderConfig.FIELD}
+            />
+          </Form.Item>
         </Form.Item>
       </Col>
     </Row>
