@@ -59,6 +59,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     _mine_associations = db.relationship('MinePermitXref')
 
+    # Liability on permit after permit is closed
+    remaining_static_liability = db.Column(db.Numeric(16, 2))
+
     # _context_mine allows a Permit() to be used thouugh it only belongs to that mine.
     # legacy data has permits used by multiple mines, but at access time, our application
     # should behave like permits only belong to one mine. If this is not set, many helper methods
@@ -97,9 +100,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def assessed_liability_total(self):
-        return sum([
-            pa.security_adjustment for pa in self._all_permit_amendments if pa.security_adjustment
-        ])
+        if self.permit_status_code == 'C':
+            return self.remaining_static_liability
+        else:
+            return sum([
+                pa.liability_adjustment for pa in self._all_permit_amendments
+                if pa.liability_adjustment
+            ])
 
     @hybrid_property
     def confiscated_bond_total(self):

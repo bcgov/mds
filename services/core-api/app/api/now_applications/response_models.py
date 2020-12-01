@@ -347,7 +347,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'status_updated_date':
         Date,
-        'status_reason': fields.String,
+        'status_reason':
+        fields.String,
         'submitted_date':
         Date,
         'received_date':
@@ -428,7 +429,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'security_adjustment':
+        'liability_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
@@ -513,7 +514,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'security_adjustment': fields.Fixed(decimals=2),
+        'liability_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,

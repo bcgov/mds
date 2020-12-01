@@ -43,9 +43,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_guid = association_proxy('permit', 'permit_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-    #security_adjustment is the change of work assessed for the new amendment,
+    #liability_adjustment is the change of work assessed for the new amendment,
     # This value is added to previous amendments to create the new total assessment for the permit
-    security_adjustment = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)
@@ -104,7 +104,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                authorization_end_date,
                permit_amendment_type_code='AMD',
                description=None,
-               security_adjustment=None,
+               liability_adjustment=None,
                permit_amendment_status_code='ACT',
                issuing_inspector_title=None,
                regional_office=None,
@@ -120,7 +120,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             permit_amendment_status_code=permit_amendment_status_code
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
-            security_adjustment=security_adjustment,
+            liability_adjustment=liability_adjustment,
             issuing_inspector_title=issuing_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)
