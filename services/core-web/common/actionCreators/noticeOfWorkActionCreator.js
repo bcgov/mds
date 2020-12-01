@@ -124,7 +124,10 @@ export const importNoticeOfWorkApplication = (
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
