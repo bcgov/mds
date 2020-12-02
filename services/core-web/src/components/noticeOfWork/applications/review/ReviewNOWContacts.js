@@ -72,11 +72,15 @@ export const ReviewNOWContacts = (props) => (
         )}
       </>
     ) : (
-      <EditNoWContacts
-        initialValues={props.noticeOfWork}
-        isEditView
-        contactFormValues={props.contactFormValues}
-      />
+      props.noticeOfWork &&
+      props.noticeOfWork.contacts &&
+      props.noticeOfWork.contacts.length > 0 && (
+        <EditNoWContacts
+          initialValues={props.noticeOfWork}
+          isEditView
+          contactFormValues={props.contactFormValues}
+        />
+      )
     )}
   </div>
 );

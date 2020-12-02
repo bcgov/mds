@@ -8,6 +8,7 @@ exports[`EditNoWContacts renders properly 1`] = `
   isVerifying={false}
   name="contacts"
   partyRelationshipTypes={Array []}
+  rerenderOnEveryChange={true}
   rolesUsedOnce={Array []}
 />
 `;

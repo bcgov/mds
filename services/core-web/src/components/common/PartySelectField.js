@@ -113,6 +113,8 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount @@@@@@@@@@@@@");
+    console.log(this.props.initialValues);
     if (
       this.props.initialValues &&
       this.props.initialValues.label &&
@@ -142,6 +144,9 @@ export class PartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    console.log("componentWillReceiveProps @@@@@@@@@@@@@");
+    console.log(nextProps.initialValues);
+
     const initialValuesChangedNotByUser =
       this.props.initialValues &&
       !this.state.userSelected &&

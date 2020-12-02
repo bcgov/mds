@@ -53,6 +53,24 @@ const handleRemove = (fields, index) => {
   });
 };
 
+const getValues = (contactExists, fields, index, initialParty) => {
+  // TODO remove this, need this for debug because issue is reproducible on test only
+  /* eslint-disable */
+  debugger;
+  console.log("EditNoWContacts => getValues @@@@@@@@@@@@@@@@");
+  console.log(fields);
+  console.log(initialParty);
+
+  contactExists
+    ? {
+        ...fields.get(index).party,
+        ...(fields.get(index).party.address.length > 0
+          ? { ...fields.get(index).party.address[0], ...initialParty }
+          : {}),
+      }
+    : {};
+};
+
 const renderContacts = ({
   fields,
   partyRelationshipTypes,
@@ -63,8 +81,6 @@ const renderContacts = ({
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
-
-  console.log("@@@@");
 
   return (
     <>
@@ -79,6 +95,7 @@ const renderContacts = ({
                     value: fields.get(index).party_guid,
                   }
                 : undefined;
+            getValues(contactExists, fields, index, initialParty);
             return (
               <Col lg={12} sm={24} key={fields.get(index).id}>
                 <Card
@@ -289,11 +306,14 @@ export class EditNoWContacts extends Component {
       <FieldArray
         id="contacts"
         name="contacts"
+        rerenderOnEveryChange
         component={renderContacts}
-        partyRelationshipTypes={this.props.partyRelationshipTypesList}
-        isEditView={this.props.isEditView}
-        isVerifying={this.props.isVerifying}
-        rolesUsedOnce={this.state.rolesUsedOnce}
+        {...{
+          partyRelationshipTypes: this.props.partyRelationshipTypesList,
+          isEditView: this.props.isEditView,
+          isVerifying: this.props.isVerifying,
+          rolesUsedOnce: this.state.rolesUsedOnce,
+        }}
       />
     );
   }
