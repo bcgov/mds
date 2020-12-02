@@ -146,10 +146,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     <Connect(NOWDocuments)
       categoriesToShow={
         Array [
-          "SRB",
-          "NIA",
-          "AKL",
-          "SCD",
+          "SDO",
         ]
       }
       disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
@@ -165,11 +162,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     <Connect(NOWDocuments)
       categoriesToShow={
         Array [
-          "CAL",
-          "WDL",
-          "RJL",
-          "NPE",
-          "OTH",
+          "GDO",
         ]
       }
       disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
@@ -263,6 +256,12 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       }
       title="Update Inspectors"
     />
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    id="progress-tracking"
+    title="Application Progress Tracking"
+  >
+    <Connect(NOWProgressTable) />
   </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;

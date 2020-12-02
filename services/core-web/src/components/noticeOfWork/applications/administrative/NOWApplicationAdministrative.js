@@ -6,6 +6,7 @@ import NOWSecurities from "@/components/noticeOfWork/applications/administrative
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
+import NOWProgressTable from "@/components/noticeOfWork/applications/administrative/NOWProgressTable";
 
 /**
  * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
@@ -23,9 +24,7 @@ const propTypes = {
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
-const governmentDocuments = ["CAL", "WDL", "RJL", "NPE", "OTH"];
 const exportedDocuments = ["NTR"];
-const securityDocuments = ["SRB", "NIA", "AKL", "SCD"];
 
 export const NOWApplicationAdministrative = (props) => {
   return (
@@ -43,24 +42,26 @@ export const NOWApplicationAdministrative = (props) => {
         <br />
         <br />
         <NOWDocuments
-          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
-            securityDocuments.includes(now_application_document_type_code)
+          documents={props.noticeOfWork.documents.filter(
+            ({ now_application_document_sub_type_code }) =>
+              now_application_document_sub_type_code === "SDO"
           )}
           isViewMode={false}
           isAdminView
           disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
-          categoriesToShow={securityDocuments}
+          categoriesToShow={["SDO"]}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-files" title="Government Documents">
         <NOWDocuments
-          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
-            governmentDocuments.includes(now_application_document_type_code)
+          documents={props.noticeOfWork.documents.filter(
+            ({ now_application_document_sub_type_code }) =>
+              now_application_document_sub_type_code === "GDO"
           )}
           isViewMode={false}
           isAdminView
           disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
-          categoriesToShow={governmentDocuments}
+          categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="application-export-files" title="Application Export Files">
@@ -84,6 +85,9 @@ export const NOWApplicationAdministrative = (props) => {
           title="Update Inspectors"
           isAdminView
         />
+      </ScrollContentWrapper>
+      <ScrollContentWrapper id="progress-tracking" title="Application Progress Tracking">
+        <NOWProgressTable />
       </ScrollContentWrapper>
     </div>
   );

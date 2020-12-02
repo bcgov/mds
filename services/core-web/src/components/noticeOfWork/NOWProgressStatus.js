@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { isEmpty } from "lodash";
+import { Link } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
 import { Badge } from "antd";
 import CustomPropTypes from "@/customPropTypes";
@@ -15,6 +16,7 @@ import {
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { COLOR } from "@/constants/styles";
+import * as routes from "@/constants/routes";
 
 /**
  * @constant NOWProgressStatus conditionally show a status indicator of the various stages on a NoW record based off certain conditions (ie, Rejected, Permit issued, client delay, stages completed, etc)
@@ -43,20 +45,36 @@ export const NOWProgressStatus = (props) => {
       {isEmpty(props.progress[props.tab]) && (
         <p className="small-p">
           {props.progressStatusHash[props.tab]} Status:
-          <Badge color={COLOR.mediumGrey} className="padding-small--left" />
-          Not Started
+          <Badge
+            color={COLOR.mediumGrey}
+            className="padding-small--left progress-status"
+            text="Not Started"
+          />
         </p>
       )}
       {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && (
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color={COLOR.blue} className="padding-small--left" />
-            In Progress
+            <Badge
+              color={COLOR.blue}
+              className="padding-small--left progress-status"
+              text="In Progress"
+            />
           </p>
           <p className="small-p">
-            In {props.progressStatusHash[props.tab]} Since: {""}
-            {formatDate(props.progress[props.tab].start_date)}
+            In {props.progressStatusHash[props.tab]} Since:
+            <Link
+              className="small-p"
+              to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
+                props.noticeOfWork.now_application_guid,
+                "administrative",
+                "progress-tracking"
+              )}
+            >
+              {formatDate(props.progress[props.tab].start_date)}/
+              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
+            </Link>
           </p>
         </>
       )}
@@ -64,12 +82,25 @@ export const NOWProgressStatus = (props) => {
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
-            <Badge color={COLOR.successGreen} className="padding-small--left" />
-            Complete
+            <Badge
+              color={COLOR.successGreen}
+              className="padding-small--left progress-status"
+              text="Complete"
+            />
           </p>
           <p className="small-p">
-            In {props.progressStatusHash[props.tab]} Since: {""}
-            {formatDate(props.progress[props.tab].start_date)}
+            {props.progressStatusHash[props.tab]} Started on:
+            <Link
+              className="small-p"
+              to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
+                props.noticeOfWork.now_application_guid,
+                "administrative",
+                "progress-tracking"
+              )}
+            >
+              {formatDate(props.progress[props.tab].start_date)}/
+              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
+            </Link>
           </p>
         </>
       )}
