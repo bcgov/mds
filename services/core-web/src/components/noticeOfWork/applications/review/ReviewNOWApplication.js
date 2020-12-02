@@ -724,7 +724,7 @@ export const ReviewNOWApplication = (props) => {
               props.documents &&
               props.documents.filter((doc) => doc.now_application_document_type_code !== "NTR")
             }
-            isViewMode={props.isViewMode}
+            isViewMode={!props.isViewMode}
             disclaimerText="Attach any file revisions or new files requested from the proponent here."
           />
         </ScrollContentWrapper>
