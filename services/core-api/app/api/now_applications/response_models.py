@@ -339,6 +339,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
+        'imported_date': Date,
+        'imported_by':  fields.String,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':

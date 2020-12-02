@@ -391,6 +391,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
+    isImporting={false}
     mineGuid="18133c75-49ad-4101-85f3-a43e35ae989a"
     noticeOfWork={
       Object {
@@ -1165,7 +1166,6 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
-    submitting={false}
   />
 </div>
 `;
