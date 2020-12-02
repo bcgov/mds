@@ -22,11 +22,7 @@ exports[`NOWDocuments renders properly 1`] = `
           "filters": Array [
             Object {
               "text": "Annual Summary",
-              "value": "Annual Summary",
-            },
-            Object {
-              "text": "Other",
-              "value": "Other",
+              "value": "ANS",
             },
           ],
           "key": "category",

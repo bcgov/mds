@@ -19,7 +19,7 @@ const propTypes = {
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  isImporting: PropTypes.bool.isRequired,
   longitude: PropTypes.string,
   latitude: PropTypes.string,
 };
@@ -68,7 +68,7 @@ export const VerifyApplicationInformationForm = (props) => {
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <Button type="primary" htmlType="submit" disabled={props.submitting}>
+          <Button type="primary" htmlType="submit" loading={props.isImporting}>
             Verify Application
           </Button>
         </AuthorizationWrapper>
@@ -87,7 +87,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-  connect(mapStateToProps, null),
+  connect(mapStateToProps),
   reduxForm({
     form: FORM.VERIFY_NOW_APPLICATION_FORM,
   })

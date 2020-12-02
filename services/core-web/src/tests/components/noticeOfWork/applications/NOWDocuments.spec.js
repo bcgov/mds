@@ -16,7 +16,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.noticeOfWork = NOWMocks.IMPORTED_NOTICE_OF_WORK;
   props.documents = [];
-  props.noticeOfWorkApplicationDocumentTypeOptionsHash = NOWMocks.APPLICATION_DOCUMENT_TYPES_HASH;
+  props.noticeOfWorkApplicationDocumentTypeOptions = NOWMocks.DROPDOWN_APPLICATION_DOCUMENT_TYPES;
   props.isViewMode = false;
   props.selectedRows = null;
   props.categoriesToShow = ["ANS", "OTH"];

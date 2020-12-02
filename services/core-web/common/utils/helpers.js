@@ -38,11 +38,18 @@ export const createItemMap = (array, idField) => {
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
-export const createDropDownList = (array, labelField, valueField, isActiveField = false) => {
+export const createDropDownList = (
+  array,
+  labelField,
+  valueField,
+  isActiveField = false,
+  subType = null
+) => {
   const options = array.map((item) => ({
     value: item[valueField],
     label: item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
+    subType: subType ? item[subType] : null,
   }));
 
   return sortBy(options, [
@@ -334,6 +341,7 @@ export const getDurationText = (startDate, endDate) => {
   const months = duration.months();
   const weeks = duration.weeks();
   const days = duration.subtract(weeks, "w").days();
+  const hours = duration.hours();
 
   const yearsText = getDurationTextOrDefault(years, "Year");
   const monthsText = getDurationTextOrDefault(months, "Month");
@@ -343,10 +351,25 @@ export const getDurationText = (startDate, endDate) => {
   return `${yearsText}${monthsText}${weeksText}${daysText}`;
 };
 
+export const getDurationTextInDays = (duration) => {
+  if (Math.sign(duration._milliseconds) === -1) {
+    return "N/A";
+  }
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+
+  const daysText = getDurationTextOrDefault(days, "Day");
+  const hourText = getDurationTextOrDefault(hours, "Hour");
+  const minuteText = getDurationTextOrDefault(minutes, "Minute");
+  const value = `${daysText} ${hourText} ${minuteText}`;
+  return `${daysText} ${hourText} ${minuteText}`;
+};
+
 const getDurationTextOrDefault = (duration, unit) => {
   if (duration <= 0) {
     return "";
   }
   unit = duration === 1 ? unit : unit + "s";
-  return `${duration} ${unit} `;
+  return `${duration} ${unit}`;
 };
