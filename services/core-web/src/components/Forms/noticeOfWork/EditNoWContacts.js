@@ -65,7 +65,6 @@ const renderContacts = ({
   );
 
   console.log("@@@@");
-  console.log(fields);
 
   return (
     <>
