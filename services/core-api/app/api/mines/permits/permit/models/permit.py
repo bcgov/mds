@@ -203,6 +203,4 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def validate_permit_no(self, key, permit_no):
         if not permit_no:
             raise AssertionError('Permit number is not provided.')
-        if len(permit_no) > 16:
-            raise AssertionError('Permit number must not exceed 16 characters.')
         return permit_no

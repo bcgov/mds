@@ -257,5 +257,11 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
       title="Update Inspectors"
     />
   </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    id="progress-tracking"
+    title="Application Progress Tracking"
+  >
+    <Connect(NOWProgressTable) />
+  </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;

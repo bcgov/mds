@@ -437,7 +437,6 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     >
       <Button
         block={false}
-        disabled={false}
         ghost={false}
         htmlType="submit"
         loading={false}
