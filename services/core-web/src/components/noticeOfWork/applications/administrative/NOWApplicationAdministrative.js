@@ -6,6 +6,7 @@ import NOWSecurities from "@/components/noticeOfWork/applications/administrative
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
+import NOWProgressTable from "@/components/noticeOfWork/applications/administrative/NOWProgressTable";
 
 /**
  * @class NOWApplicationAdministrative- contains all information relating to the Administrative work on a Notice of Work Application
@@ -84,6 +85,9 @@ export const NOWApplicationAdministrative = (props) => {
           title="Update Inspectors"
           isAdminView
         />
+      </ScrollContentWrapper>
+      <ScrollContentWrapper id="progress-tracking" title="Application Progress Tracking">
+        <NOWProgressTable />
       </ScrollContentWrapper>
     </div>
   );
