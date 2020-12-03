@@ -60,10 +60,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             )
 
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
-            now_application_identity.now_application.status_updated_date = datetime.today()
-            now_application_identity.now_application.now_application_status_code = now_application_status_code
-            now_application_identity.now_application.status_reason = status_reason
-            now_application_identity.save()
             # Approved
             if now_application_status_code == 'AIA':
                 permit = Permit.find_by_now_application_guid(application_guid)
@@ -131,5 +127,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         mine_party_appointment.save()
 
                 #TODO: Documents / CRR
-
+                # update Now application and save status
+                now_application_identity.now_application.status_updated_date = datetime.today()
+                now_application_identity.now_application.now_application_status_code = now_application_status_code
+                now_application_identity.now_application.status_reason = status_reason
+                now_application_identity.save()
         return 200
