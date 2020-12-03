@@ -53,7 +53,6 @@ export const activitiesMenu = [
     alwaysVisible: true,
   },
 ];
-
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
@@ -66,12 +65,12 @@ export const draftPermitMenu = [
     title: "Conditions",
     alwaysVisible: true,
     children: [
-      { href: "GEC", title: "> General", light: true },
-      { href: "HSC", title: "> Healthy and Safety", light: true },
-      { href: "GOC", title: "> Geotechnical", light: true },
-      { href: "ELC", title: "> Environmental Land", light: true },
-      { href: "RCC", title: "> Reclamation and Closure", light: true },
-      { href: "ADC", title: "> Additional Conditions", light: true },
+      { href: "GEC", title: "> General" },
+      { href: "HSC", title: "> Healthy and Safety" },
+      { href: "GOC", title: "> Geotechnical" },
+      { href: "ELC", title: "> Environmental Land" },
+      { href: "RCC", title: "> Reclamation and Closure" },
+      { href: "ADC", title: "> Additional Conditions" },
     ],
   },
   { href: "maps", title: "Maps", alwaysVisible: true, children: [] },

@@ -157,13 +157,13 @@
     padding: 20px;
     position: relative;
     padding-right: 20px;
-    top: 30px;
     left: 250px;
     width: calc(100vw - 270px);
     // extra margin on the bottom to allow to scroll to end of side menu
     margin-bottom: 900px;
 
     &.with-fixed-top {
+      top: 50px;
       margin-top: 100px;
     }
 
@@ -187,6 +187,13 @@
 
   &.ant-anchor-link {
     line-height: 1.75;
+    border-bottom: none;
+  }
+
+  &.lighter {
+    &.ant-anchor-link-title {
+      font-weight: lighter;
+    }
   }
 }
 

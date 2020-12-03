@@ -87,7 +87,7 @@ export class NOWSideMenu extends Component {
       <div>
         <Anchor
           affix={false}
-          offsetTop={120}
+          offsetTop={160}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
           ref={(anchor) => {
@@ -99,7 +99,7 @@ export class NOWSideMenu extends Component {
               ({ href, alwaysVisible }) =>
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
             )
-            .map(({ href, title, children, light = false }) => (
+            .map(({ href, title, children }) => (
               <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
                 {children &&
                   children.length > 1 &&
@@ -107,7 +107,7 @@ export class NOWSideMenu extends Component {
                     <Anchor.Link
                       href={`#${child.href}`}
                       title={child.title}
-                      className={light ? "now-menu-link- lighter" : "now-menu-link-"}
+                      className="now-menu-link lighter"
                     />
                   ))}
               </Anchor.Link>
