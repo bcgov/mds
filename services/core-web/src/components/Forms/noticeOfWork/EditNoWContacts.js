@@ -200,8 +200,9 @@ const renderContacts = ({
                               ? {
                                   ...fields.get(index).party,
                                   ...(fields.get(index).party.address.length > 0
-                                    ? { ...fields.get(index).party.address[0], ...initialParty }
+                                    ? { ...fields.get(index).party.address[0] }
                                     : {}),
+                                  ...initialParty,
                                 }
                               : {}
                           }
