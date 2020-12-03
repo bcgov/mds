@@ -74,6 +74,21 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
 
+    @hybrid_property
+    def now_application_documents(self):
+        _now_app_docs = []
+        if self.now_application_identity:
+            _now_app_docs = now_application_identity.now_application.documents
+        return _now_app_docs
+                
+
+    @hybrid_property
+    def imported_now_application_documents(self):
+        _imported_now_app_docs = []
+        if self.now_application_identity:
+            _imported_now_app_docs = now_application_identity.now_application.imported_submission_documents
+        return _imported_now_app_docs
+
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 

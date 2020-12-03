@@ -2,6 +2,7 @@ from app.extensions import api
 from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT, IMPORTED_NOW_SUBMISSION_DOCUMENT
 
 
 class DateTime(fields.Raw):
@@ -115,6 +116,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
+        'now_application_documents': fields.list(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'imported_now_application_documents': fields.list(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
