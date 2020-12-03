@@ -88,6 +88,12 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.issue_date = issue_date
                 permit_amendment.authorization_end_date = auth_end_date
                 permit_amendment.description = description
+
+                # transfer reclamation security data from NoW to permit
+                permit_amendment.security_adjustment = now_application_identity.now_application.security_adjustment
+                permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
+                permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
+                permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
                 permit_amendment.save()
 
                 #create contacts
