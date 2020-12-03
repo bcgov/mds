@@ -179,10 +179,14 @@
 }
 
 .now-menu-link {
-  height: 35px;
+  padding: 10px;
   a:hover {
     text-decoration: none;
     color: $light-violet;
+  }
+
+  &.ant-anchor-link {
+    line-height: 1.75;
   }
 }
 

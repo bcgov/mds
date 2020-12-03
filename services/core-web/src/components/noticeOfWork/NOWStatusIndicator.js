@@ -40,7 +40,7 @@ const propTypes = {
 const defaultProps = { isEditMode: false, tabSection: "" };
 
 export class NOWStatusIndicator extends Component {
-  state = { bannerColor: "", badgeColor: "", message: "" };
+  state = { bannerColor: "", badgeColor: "", message: "", showBanner: true };
 
   componentDidMount() {
     this.handleIndicatorColor(
@@ -80,6 +80,7 @@ export class NOWStatusIndicator extends Component {
       if (statusCode === "AIA") {
         this.setState({
           bannerColor: COLOR.greenGradient,
+          showBanner: true,
           badgeColor: COLOR.successGreen,
           message: "Application is Approved",
         });
@@ -88,6 +89,7 @@ export class NOWStatusIndicator extends Component {
           statusCode === "WDN" ? "Application has been Withdrawn" : "Application has been Rejected";
         this.setState({
           bannerColor: COLOR.redGradient,
+          showBanner: true,
           badgeColor: COLOR.errorRed,
           message,
         });
@@ -95,24 +97,28 @@ export class NOWStatusIndicator extends Component {
     } else if (isApplicationDelayed) {
       this.setState({
         bannerColor: COLOR.yellowGradient,
+        showBanner: true,
         badgeColor: COLOR.yellow,
         message: `Delayed: ${this.props.delayTypeOptionsHash[applicationDelay.delay_type_code]}`,
       });
     } else if (isEditMode) {
       this.setState({
         bannerColor: COLOR.violetGradient,
+        showBanner: true,
         message: "Edit Mode",
       });
     } else if (!isEmpty(progress[tabSection])) {
       if (progress[tabSection].end_date) {
         this.setState({
           bannerColor: COLOR.greenGradient,
+          showBanner: true,
           badgeColor: COLOR.successGreen,
           message: "Complete",
         });
       } else {
         this.setState({
           bannerColor: "transparent",
+          showBanner: false,
           badgeColor: COLOR.blue,
           message: "In Progress",
         });
@@ -120,6 +126,7 @@ export class NOWStatusIndicator extends Component {
     } else {
       this.setState({
         bannerColor: "transparent",
+        showBanner: false,
         badgeColor: COLOR.mediumGrey,
         message: "Not Started",
       });
@@ -137,6 +144,7 @@ export class NOWStatusIndicator extends Component {
             style={{
               background: this.state.bannerColor,
               color: COLOR.backgroundWhite,
+              display: this.state.showBanner ? "" : "none",
             }}
             className="status-banner"
           />
