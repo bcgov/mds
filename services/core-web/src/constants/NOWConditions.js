@@ -76,3 +76,10 @@ export const draftPermitMenu = [
   },
   // { href: "maps", title: "Maps", alwaysVisible: true, children: [] },
 ];
+
+export const securityNotRequiredReasonOptions = [
+  { value: "Administrative Amendment", label: "Administrative Amendment" },
+  { value: "ALC Holds Bond", label: "ALC Holds Bond" },
+  { value: "Bonding is a Permit Condition", label: "Bonding is a Permit Condition" },
+  { value: "Sufficient Bond in Place", label: "Sufficient Bond in Place" },
+];
