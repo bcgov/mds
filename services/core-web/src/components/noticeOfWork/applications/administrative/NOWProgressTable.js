@@ -172,7 +172,6 @@ const transformRowData = (delays, delayTypeHash) => {
   return appDelays;
 };
 
-// this should be stateful once fully implemented
 // eslint-disable-next-line react/prefer-stateless-function
 export class NOWProgressTable extends Component {
   render() {

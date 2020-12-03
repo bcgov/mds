@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Popconfirm } from "antd";
+import { Button } from "antd";
 import { bindActionCreators } from "redux";
-import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import {
-  updatePermitAmendment,
-  fetchDraftPermitByNOW,
-} from "@common/actionCreators/permitActionCreator";
-import {
-  getDraftPermitAmendmentForNOW,
-  getDraftPermitForNOW,
-} from "@common/selectors/permitSelectors";
+  updateNoticeOfWorkApplication,
+  fetchImportedNoticeOfWorkApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE } from "@/constants/assets";
@@ -24,24 +20,17 @@ import PermitAmendmentSecurityForm from "@/components/Forms/permits/PermitAmendm
  */
 
 const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
-  updatePermitAmendment: PropTypes.func.isRequired,
-  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  draftPermits: CustomPropTypes.permit.isRequired,
-  draftAmendment: CustomPropTypes.permit.isRequired,
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
 };
 
 export class NOWSecurities extends Component {
-  state = { isEditMode: false, isLoaded: false };
+  state = { isEditMode: false, isLoaded: true };
 
-  componentDidMount() {
-    this.handleFetchDraftPermit();
-  }
-
-  handleFetchDraftPermit = () => {
+  handleFetchData = () => {
     this.props
-      .fetchDraftPermitByNOW(this.props.mineGuid, this.props.noticeOfWork.now_application_guid)
+      .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
       .then(() => this.setState({ isLoaded: true }));
   };
 
@@ -49,16 +38,13 @@ export class NOWSecurities extends Component {
     this.setState((prevState) => ({ isEditMode: !prevState.isEditMode }));
   };
 
-  addSecurityToPermit = (payload) => {
+  handleAddSecurity = (payload) => {
+    this.setState({ isLoaded: false });
+    const message = "Successfully updated the Reclamation Security information.";
     this.props
-      .updatePermitAmendment(
-        this.props.mineGuid,
-        this.props.draftPermits.permit_guid,
-        this.props.draftAmendment.permit_amendment_guid,
-        payload
-      )
+      .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
-        this.handleFetchDraftPermit();
+        this.handleFetchData();
         this.toggleEditMode();
       });
   };
@@ -67,42 +53,21 @@ export class NOWSecurities extends Component {
     return (
       <div>
         <div className="right">
-          <div>
-            {!this.state.isEditMode && (
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                {isEmpty(this.props.draftAmendment) ? (
-                  <Popconfirm
-                    placement="topLeft"
-                    title="In order to edit Securities Total and a Securities Date Received, you need to start a Draft Permit."
-                    okText="Ok"
-                    cancelText="Cancel"
-                  >
-                    <Button type="secondary">
-                      <img
-                        src={EDIT_OUTLINE}
-                        title="Edit"
-                        alt="Edit"
-                        className="padding-md--right"
-                      />
-                      Edit
-                    </Button>
-                  </Popconfirm>
-                ) : (
-                  <Button type="secondary" onClick={this.toggleEditMode}>
-                    <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
-                    Edit
-                  </Button>
-                )}
-              </NOWActionWrapper>
-            )}
-          </div>
+          {!this.state.isEditMode && (
+            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+              <Button type="secondary" onClick={this.toggleEditMode}>
+                <img src={EDIT_OUTLINE} title="Edit" alt="Edit" className="padding-md--right" />
+                Edit
+              </Button>
+            </NOWActionWrapper>
+          )}
         </div>
         <LoadingWrapper condition={this.state.isLoaded}>
           <div style={this.state.isEditMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
             <PermitAmendmentSecurityForm
               isEditMode={this.state.isEditMode}
-              initialValues={this.props.draftAmendment}
-              onSubmit={this.addSecurityToPermit}
+              initialValues={this.props.noticeOfWork}
+              onSubmit={this.handleAddSecurity}
               onCancel={this.toggleEditMode}
             />
           </div>
@@ -113,12 +78,17 @@ export class NOWSecurities extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  draftAmendment: getDraftPermitAmendmentForNOW(state),
-  draftPermits: getDraftPermitForNOW(state),
+  noticeOfWork: getNoticeOfWork(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ updatePermitAmendment, fetchDraftPermitByNOW }, dispatch);
+  bindActionCreators(
+    {
+      updateNoticeOfWorkApplication,
+      fetchImportedNoticeOfWorkApplication,
+    },
+    dispatch
+  );
 
 NOWSecurities.propTypes = propTypes;
 
