@@ -78,7 +78,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def now_application_documents(self):
         _now_app_docs = []
         if self.now_application_identity:
-            _now_app_docs = now_application_identity.now_application.documents
+            _now_app_docs = self.now_application_identity.now_application.documents
         return _now_app_docs
                 
 
@@ -86,7 +86,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def imported_now_application_documents(self):
         _imported_now_app_docs = []
         if self.now_application_identity:
-            _imported_now_app_docs = now_application_identity.now_application.imported_submission_documents
+            _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
 
     def __repr__(self):

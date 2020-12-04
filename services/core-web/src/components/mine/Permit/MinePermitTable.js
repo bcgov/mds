@@ -52,6 +52,18 @@ const renderDocumentLink = (file, text) => (
   </LinkButton>
 );
 
+const finalApplicationPackage = (amendment) => {
+  const finalAppPackage1 =
+    amendment.now_application_documents.length > 0
+      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  const finalAppPackage2 =
+    amendment.imported_now_application_documents.length > 0
+      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  return finalAppPackage1.concat(finalAppPackage2);
+};
+
 const renderDeleteButtonForPermitAmendments = (record) => {
   if (record.amendmentType === originalPermit) {
     return;
@@ -334,6 +346,38 @@ const childColumns = [
     ),
   },
   {
+    title: "Maps",
+    dataIndex: "maps",
+    key: "maps",
+    render: (text) => (
+      <div title="Maps">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(file.mine_document, file.mine_document.document_name)}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Final Application Package",
+    dataIndex: "finalApplicationPackage",
+    key: "finalApplicationPackage",
+    render: (text) => (
+      <div title="Final Application Package">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(file.mine_document, file.mine_document.document_name)}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
     title: "Files",
     dataIndex: "documents",
     key: "documents",
@@ -451,6 +495,10 @@ const transformChildRowData = (
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
+  finalApplicationPackage: finalApplicationPackage(amendment),
+  maps: amendment.now_application_documents.filter(
+    (doc) => doc.now_application_document_sub_type_code === "MDO"
+  ),
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (

@@ -2,7 +2,6 @@ from app.extensions import api
 from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT, IMPORTED_NOW_SUBMISSION_DOCUMENT
 
 
 class DateTime(fields.Raw):
@@ -89,6 +88,27 @@ MINE_DOCUMENT_MODEL = api.model(
         'upload_date': fields.DateTime,
     })
 
+IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'messageid': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    })
+
+PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
+    'NOW_DOCUMENT', {
+        'now_application_document_xref_guid': fields.String,
+        'now_application_document_type_code': fields.String,
+        'now_application_document_sub_type_code': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    })
+
 PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     'PermitAmendmentDocument', {
         'permit_id': fields.Integer,
@@ -116,8 +136,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
-        'now_application_documents': fields.list(fields.Nested(NOW_APPLICATION_DOCUMENT)),
-        'imported_now_application_documents': fields.list(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'now_application_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
+        'imported_now_application_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
