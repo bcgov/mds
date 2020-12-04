@@ -9,6 +9,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { currency, required, validateSelectOptions } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
+import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 import RenderField from "@/components/common/RenderField";
@@ -23,13 +24,6 @@ const propTypes = {
   onCancel: PropTypes.func.isRequired,
   securityNotRequired: PropTypes.bool.isRequired,
 };
-
-const securityNotRequiredReasonOptions = [
-  { value: "Administrative Amendment", label: "Administrative Amendment" },
-  { value: "ALC Holds Bond", label: "ALC Holds Bond" },
-  { value: "Bonding is a Permit Condition", label: "Bonding is a Permit Condition" },
-  { value: "Sufficient Bond in Place", label: "Sufficient Bond in Place" },
-];
 
 export const PermitAmendmentSecurityForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
