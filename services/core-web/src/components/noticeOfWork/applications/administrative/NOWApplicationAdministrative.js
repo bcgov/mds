@@ -38,7 +38,7 @@ export const NOWApplicationAdministrative = (props) => {
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="reclamation-securities" title="Reclamation Securities">
-        <NOWSecurities mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+        <NOWSecurities />
         <br />
         <br />
         <NOWDocuments
