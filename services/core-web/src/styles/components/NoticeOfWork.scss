@@ -119,6 +119,7 @@
 }
 
 .side-menu {
+  margin-left: 15px;
   width: 240px;
   position: absolute;
   text-align: right;
@@ -129,7 +130,8 @@
   }
 
   &--fixed {
-    top: 160px;
+    margin-left: 15px;
+    top: 170px;
     position: fixed;
     text-align: right;
     width: 240px;
@@ -243,7 +245,7 @@
 
 .status-banner {
   position: relative;
-  top: 10px; //-15px?
+  top: 10px;
   height: 22px;
   z-index: 100;
   .ant-alert-message {
@@ -258,7 +260,7 @@
 .status-content {
   position: relative;
   float: right;
-  padding: 10px;
+  padding: 15px;
 }
 
 .progress-steps {
@@ -271,5 +273,20 @@
 .progress-status {
   .ant-badge-status-text {
     font-size: 12px;
+  }
+}
+
+.tab-title {
+  color: $violet;
+  min-width: 250px;
+  max-width: 250px;
+  padding: 10px 0 10px 10px;
+  text-align: end;
+}
+.progress-actions {
+  margin-left: 5px;
+
+  @include tablet {
+    margin-left: 0;
   }
 }

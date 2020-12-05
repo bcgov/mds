@@ -223,7 +223,7 @@ export class NOWPermitGeneration extends Component {
       : "";
     return this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
-        <h2>
+        <h2 className="tab-title">
           {`Draft Permit ${nowType}`}
           <CoreTooltip
             title="This page contains all the information that will appear in the permit when it is

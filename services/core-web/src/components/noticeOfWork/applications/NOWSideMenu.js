@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
-import { activitiesMenu, renderActivities, draftPermitMenu } from "@/constants/NOWConditions";
+import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -82,7 +82,6 @@ export class NOWSideMenu extends Component {
   };
 
   render() {
-    const menu = this.props.tabSection === "application" ? activitiesMenu : draftPermitMenu;
     return (
       <div>
         <Anchor
@@ -94,7 +93,7 @@ export class NOWSideMenu extends Component {
             this.anchor = anchor;
           }}
         >
-          {menu
+          {sideMenuOptions[this.props.tabSection]
             .filter(
               ({ href, alwaysVisible }) =>
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)

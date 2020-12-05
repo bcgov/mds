@@ -19,90 +19,135 @@ const propTypes = {
   openEditModal: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  reviewerLabel: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };
 
-const columns = (reviewerLabel) => [
-  {
-    title: "Type",
-    dataIndex: "now_application_review_type",
-    key: "now_application_review_type",
-    render: (text) => <div title="Type">{text}</div>,
-  },
-  {
-    title: reviewerLabel,
+const ReviewerLabels = {
+  FNC: "First Nations Advisor",
+  PUB: "Commenter Name",
+  REF: "Referral Number",
+  ADV: "Uploaded By",
+};
+
+const responseDateLabels = {
+  FNC: "Date Received",
+  PUB: "Date Received",
+  REF: "Date Received",
+  ADV: "Date Published",
+};
+
+const columns = (type) => {
+  const dueDateColumn = {
+    title: "Due Date",
+    dataIndex: "due_date",
+    key: "due_date",
+    render: (text) => <div title="Due Date">{text}</div>,
+  };
+
+  const urlColumn = {
+    title: "Link to CRTS",
+    dataIndex: "response_url",
+    key: "response_url",
+    render: (text) => <div title="Link to CRTS">{text}</div>,
+  };
+
+  const categoryColumn = {
+    title: "Document Category",
+    dataIndex: "document_category",
+    key: "document_category",
+    render: (text) => <div title="Document Category">{text}</div>,
+  };
+
+  const nameColumn = {
+    title: `${ReviewerLabels[type]}`,
     dataIndex: "referee_name",
     key: "referee_name",
-    render: (text) => <div title="Type">{text}</div>,
-  },
-  {
-    title: "Response Received",
-    dataIndex: "response_date",
-    key: "response_date",
-    render: (text) => <div title="Type">{text}</div>,
-  },
-  {
-    title: "Documents",
-    dataIndex: "documents",
-    key: "documents",
-    render: (text) => (
-      <div title="Documents">
-        <ul>
-          {text.length > 0 &&
-            text.map((doc) => (
-              <li key={doc.mine_document.mine_document_guid}>
-                <div>
-                  <LinkButton
-                    key={doc.mine_document.mine_document_guid}
-                    onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
-                  >
-                    {doc.mine_document.document_name}
-                  </LinkButton>
-                </div>
-              </li>
-            ))}
-        </ul>
-      </div>
-    ),
-  },
-  {
-    title: "",
-    dataIndex: "editDeleteButtons",
-    key: "editDeleteButtons",
-    align: "right",
-    render: (text, record) => (
-      <NOWActionWrapper
-        permission={Permission.EDIT_PERMITS}
-        tab={record.type === "FNC" ? "CON" : record.type}
-      >
-        <div>
-          <Button
-            ghost
-            type="primary"
-            size="small"
-            onClick={(event) =>
-              record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
-            }
-          >
-            <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
-          </Button>
-          <Popconfirm
-            placement="topLeft"
-            title="Are you sure you want to delete this?"
-            onConfirm={() => record.handleDelete(record.now_application_review_id)}
-            okText="Delete"
-            cancelText="Cancel"
-          >
-            <Button ghost size="small">
-              <img name="remove" src={TRASHCAN} alt="Remove Activity" />
-            </Button>
-          </Popconfirm>
+    render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
+  };
+
+  const commonColumns = [
+    {
+      title: type === "ADV" ? "Advertisements" : "Documents",
+      dataIndex: "documents",
+      key: "documents",
+      render: (text) => (
+        <div title="Documents">
+          <ul>
+            {text.length > 0 &&
+              text.map((doc) => (
+                <li key={doc.mine_document.mine_document_guid}>
+                  <div>
+                    <LinkButton
+                      key={doc.mine_document.mine_document_guid}
+                      onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
+                    >
+                      {doc.mine_document.document_name}
+                    </LinkButton>
+                  </div>
+                </li>
+              ))}
+          </ul>
         </div>
-      </NOWActionWrapper>
-    ),
-  },
-];
+      ),
+    },
+    {
+      title: `${responseDateLabels[type]}`,
+      dataIndex: "response_date",
+      key: "response_date",
+      render: (text) => <div title="Received Date">{text}</div>,
+    },
+    {
+      title: "",
+      dataIndex: "editDeleteButtons",
+      key: "editDeleteButtons",
+      align: "right",
+      render: (text, record) => (
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={record.type === "FNC" ? "CON" : record.type}
+        >
+          <div>
+            <Button
+              ghost
+              type="primary"
+              size="small"
+              onClick={(event) =>
+                record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
+              }
+            >
+              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
+            </Button>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this?"
+              onConfirm={() => record.handleDelete(record.now_application_review_id)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button ghost size="small">
+                <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+              </Button>
+            </Popconfirm>
+          </div>
+        </NOWActionWrapper>
+      ),
+    },
+  ];
+
+  if (type === "FNC") {
+    commonColumns.splice(0, 0, urlColumn);
+    commonColumns.splice(1, 0, nameColumn);
+    commonColumns.splice(2, 0, dueDateColumn);
+    commonColumns.splice(3, 0, categoryColumn);
+  } else if (type === "REF") {
+    commonColumns.splice(0, 0, nameColumn);
+    commonColumns.splice(2, 0, categoryColumn);
+  } else if (type === "PUB") {
+    commonColumns.splice(0, 0, nameColumn);
+  }
+
+  return commonColumns;
+};
 
 const transformRowData = (
   reviews,
@@ -125,7 +170,7 @@ const transformRowData = (
 };
 
 export const NOWApplicationReviewsTable = (props) => {
-  const columnValues = columns(props.reviewerLabel);
+  const columnValues = columns(props.type);
   return (
     <CoreTable
       condition={props.isLoaded}

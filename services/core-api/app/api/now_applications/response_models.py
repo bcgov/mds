@@ -249,6 +249,8 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -311,6 +313,8 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })

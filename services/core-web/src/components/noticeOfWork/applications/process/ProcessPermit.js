@@ -306,7 +306,7 @@ export class ProcessPermit extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           <div className="inline-flex block-mobile padding-md">
-            <h2>
+            <h2 className="tab-title">
               Process Permit
               <CoreTooltip title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made." />
             </h2>

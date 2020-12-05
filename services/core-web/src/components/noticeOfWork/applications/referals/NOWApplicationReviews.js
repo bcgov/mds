@@ -1,19 +1,10 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, notification, Badge, Tag, Popconfirm } from "antd";
-import { DownloadOutlined, InfoCircleOutlined, ClockCircleOutlined } from "@ant-design/icons";
-import { formatDate } from "@common/utils/helpers";
-
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
-import * as Permission from "@/constants/permissions";
-import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import AddButton from "@/components/common/AddButton";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
@@ -26,8 +17,9 @@ import {
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkReviews } from "@common/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
-import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
-import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import Consultation from "@/components/noticeOfWork/applications/referals/Consultation";
+import PublicComment from "@/components/noticeOfWork/applications/referals/PublicComment";
+import Referral from "@/components/noticeOfWork/applications/referals/Referrals";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -62,28 +54,8 @@ const ReviewerLabels = {
   REF: "Referee Name",
 };
 
-const ApplicationReview = (props) => (
-  <div className="padding-large--bottom">
-    <ScrollContentWrapper id={props.reviewType.label} title={props.reviewType.label}>
-      <NOWApplicationReviewsTable
-        isLoaded={props.isLoaded}
-        noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
-          (review) => review.now_application_review_type_code === props.reviewType.value
-        )}
-        noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
-        handleDelete={props.handleDelete}
-        openEditModal={props.openEditModal}
-        handleEdit={props.handleEdit}
-        handleDocumentDelete={props.handleDocumentDelete}
-        reviewerLabel={ReviewerLabels[props.reviewType.value]}
-        type={props.reviewType.value}
-      />
-    </ScrollContentWrapper>
-  </div>
-);
-
 export class NOWApplicationReviews extends Component {
-  state = { cancelDownload: false, isLoaded: false };
+  state = { isLoaded: false };
 
   componentDidMount() {
     this.props
@@ -151,25 +123,6 @@ export class NOWApplicationReviews extends Component {
       });
   };
 
-  waitFor = (conditionFunction) => {
-    const poll = (resolve) => {
-      if (conditionFunction()) resolve();
-      else setTimeout(() => poll(resolve), 400);
-    };
-
-    return new Promise(poll);
-  };
-
-  downloadDocument = (url) => {
-    const a = document.createElement("a");
-    a.href = url.url;
-    a.download = url.filename;
-    a.style.display = "none";
-    document.body.append(a);
-    a.click();
-    a.remove();
-  };
-
   openAddReviewModal = (event, onSubmit) => {
     event.preventDefault();
     const initialValues = {
@@ -205,169 +158,31 @@ export class NOWApplicationReviews extends Component {
     });
   };
 
-  cancelDownload = () => {
-    this.setState({ cancelDownload: true });
-  };
-
-  downloadDocumentPackage = (selectedCoreRows, selectedSubmissionRows) => {
-    const docURLS = [];
-
-    const submissionDocs = this.props.noticeOfWork.filtered_submission_documents
-      .map((doc) => ({
-        key: doc.mine_document_guid,
-        documentManagerGuid: doc.document_manager_guid,
-        filename: doc.filename,
-      }))
-      .filter((doc) => selectedSubmissionRows.includes(doc.key));
-
-    const coreDocs = this.props.noticeOfWork.documents
-      .map((doc) => ({
-        key: doc.now_application_document_xref_guid,
-        documentManagerGuid: doc.mine_document.document_manager_guid,
-        filename: doc.mine_document.document_name,
-      }))
-      .filter((doc) => selectedCoreRows.includes(doc.key));
-
-    const totalFiles = submissionDocs.length + coreDocs.length;
-    if (totalFiles === 0) {
-      return;
-    }
-
-    submissionDocs.forEach((doc) =>
-      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
-    );
-
-    coreDocs.forEach((doc) =>
-      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
-    );
-
-    let currentFile = 0;
-    this.waitFor(() => docURLS.length === totalFiles).then(async () => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
-          this.props.closeModal();
-          this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
-          });
-          this.downloadDocument(url);
-          // eslint-disable-next-line
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        }
-        // dispatch toast message
-        notification.success({
-          message: `Successfully Downloaded: ${submissionDocs.length + coreDocs.length} files.`,
-          duration: 10,
-        });
-
-        this.props.closeModal();
-        this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
-        });
-        this.downloadDocument(url);
-        // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
-
-      if (!this.props.noticeOfWork.ready_for_review_date) {
-        this.updateNoticeOfWork({
-          ...this.props.noticeOfWork,
-          ready_for_review_date: new Date(),
-        });
-      }
-
-      this.props.closeModal();
-      this.props.setNoticeOfWorkApplicationDocumentDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
-      });
-    });
-  };
-
-  openDownloadPackageModal = (event) => {
-    event.preventDefault();
-    this.props.openModal({
-      width: 910,
-      props: {
-        noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
-        importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
-        coreDocuments: this.props.noticeOfWork.documents,
-        onSubmit: this.downloadDocumentPackage,
-        cancelDownload: this.cancelDownload,
-        title: "Download Referral Package",
-      },
-      content: modalConfig.DOWNLOAD_DOC_PACKAGE,
-    });
-  };
-
-  updateNoticeOfWork = (updatedNow) => {
-    const id = this.props.noticeOfWork.now_application_guid;
-    this.props
-      .updateNoticeOfWorkApplication(updatedNow, this.props.noticeOfWork.now_application_guid)
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(id);
-      });
-  };
-
   render() {
     const commonApplicationReviewProps = {
       isLoaded: this.state.isLoaded,
       noticeOfWorkReviews: this.props.noticeOfWorkReviews,
       noticeOfWorkReviewTypes: this.props.noticeOfWorkReviewTypes,
-      importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
       handleDelete: this.handleDeleteReview,
       openEditModal: this.openEditReviewModal,
       handleEdit: this.handleEditReview,
       handleDocumentDelete: this.handleDocumentDelete,
+      openAddReviewModal: this.openAddReviewModal,
+      handleAddReview: this.handleAddReview,
     };
 
     return (
       <div>
-        <Row type="flex" justify="center">
-          <Col lg={24} className="padding-large--top">
-            <div className="right center-mobile">
-              <Button
-                type="secondary"
-                className="full-mobile"
-                onClick={this.openDownloadPackageModal}
-              >
-                <DownloadOutlined className="padding-small--right icon-sm" />
-                Download Referral Package
-              </Button>
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab={this.props.type === "FNC" ? "CON" : this.props.type}
-              >
-                <AddButton
-                  onClick={(event) => this.openAddReviewModal(event, this.handleAddReview)}
-                >
-                  Add Reviewer
-                </AddButton>
-              </NOWActionWrapper>
-            </div>
-          </Col>
-        </Row>
         {this.props.noticeOfWorkReviews && (
-          <div className="page__content">
+          <div>
             {this.props.type === "REF" &&
               this.props.noticeOfWorkReviewTypes.some(
                 (reviewType) => reviewType.value === "REF"
               ) && (
-                <ApplicationReview
+                <Referral
                   {...commonApplicationReviewProps}
-                  reviewType={this.props.noticeOfWorkReviewTypes.find(
-                    (reviewType) => reviewType.value === "REF"
+                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
+                    (review) => review.now_application_review_type_code === "REF"
                   )}
                 />
               )}
@@ -375,21 +190,21 @@ export class NOWApplicationReviews extends Component {
               this.props.noticeOfWorkReviewTypes.some(
                 (reviewType) => reviewType.value === "FNC"
               ) && (
-                <ApplicationReview
+                <Consultation
                   {...commonApplicationReviewProps}
-                  reviewType={this.props.noticeOfWorkReviewTypes.find(
-                    (reviewType) => reviewType.value === "FNC"
+                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
+                    (review) => review.now_application_review_type_code === "FNC"
                   )}
                 />
               )}
             {this.props.type === "PUB" &&
               this.props.noticeOfWorkReviewTypes.some(
-                (reviewType) => reviewType.value === "PUB"
+                (reviewType) => reviewType.value === "PUB" || reviewType.value === "ADV"
               ) && (
-                <ApplicationReview
+                <PublicComment
                   {...commonApplicationReviewProps}
-                  reviewType={this.props.noticeOfWorkReviewTypes.find(
-                    (reviewType) => reviewType.value === "PUB"
+                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
+                    (review) => review.now_application_review_type_code === "PUB"
                   )}
                 />
               )}
