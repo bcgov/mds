@@ -98,7 +98,17 @@ export class NOWReviewForm extends Component {
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
-            </Form.Item>{" "}
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="document_category"
+                name="document_category"
+                label="Document Category"
+                component={renderConfig.SELECT}
+                data={this.props.reviewTypes}
+                validate={[required, validateSelectOptions(this.props.reviewTypes)]}
+              />
+            </Form.Item>
             <Form.Item>
               <Field
                 id="NOWReviewFileUpload"

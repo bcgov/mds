@@ -50,8 +50,9 @@ const defaultProps = {
 
 const ReviewerLabels = {
   FNC: "First Nations Advisor",
-  PUB: "Uploaded By",
-  REF: "Referee Name",
+  PUB: "Commenter Name",
+  REF: "Referral Number",
+  ADV: "Uploaded By",
 };
 
 export class NOWApplicationReviews extends Component {
@@ -137,7 +138,6 @@ export class NOWApplicationReviews extends Component {
         reviewTypes: this.props.noticeOfWorkReviewTypes,
         reviewerLabels: ReviewerLabels,
       },
-      isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
     });
   };
@@ -153,7 +153,6 @@ export class NOWApplicationReviews extends Component {
         reviewTypes: this.props.noticeOfWorkReviewTypes,
         reviewerLabels: ReviewerLabels,
       },
-      isViewOnly: true,
       content: modalConfig.NOW_REVIEW,
     });
   };
@@ -181,6 +180,7 @@ export class NOWApplicationReviews extends Component {
               ) && (
                 <Referral
                   {...commonApplicationReviewProps}
+                  // handleAddReview={(values, type) => this.handleAddReview(values, type)}
                   noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                     (review) => review.now_application_review_type_code === "REF"
                   )}
@@ -192,6 +192,7 @@ export class NOWApplicationReviews extends Component {
               ) && (
                 <Consultation
                   {...commonApplicationReviewProps}
+                  // handleAddReview={(values, type) => this.handleAddReview(values, type)}
                   noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                     (review) => review.now_application_review_type_code === "FNC"
                   )}
@@ -202,6 +203,7 @@ export class NOWApplicationReviews extends Component {
                 (reviewType) => reviewType.value === "PUB" || reviewType.value === "ADV"
               ) && (
                 <PublicComment
+                  // handleAddReview={(values, type) => this.handleAddReview(values, type)} // no access to adv or pub here
                   {...commonApplicationReviewProps}
                   noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                     (review) => review.now_application_review_type_code === "PUB"
