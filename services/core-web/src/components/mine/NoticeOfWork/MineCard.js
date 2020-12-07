@@ -48,7 +48,9 @@ export const MineCard = (props) => {
                   ) : (
                     <ul className="mine-list__permits">
                       {props.mine.mine_permit_numbers.map((permit_no) => (
-                        <li key={permit_no}>{permit_no}</li>
+                        <li key={permit_no}>
+                          <p>{permit_no}</p>
+                        </li>
                       ))}
                     </ul>
                   )
