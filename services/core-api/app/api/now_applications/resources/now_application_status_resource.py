@@ -77,6 +77,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 #move out of draft
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
+                    permit_amendment.permit_amendment_status_code = 'OGP'
+
+                if permit_amendment.permit_amendment_status_code == 'DFT':
+                    permit_amendment.permit_amendment_status_code = 'ACT'
 
                 #assign permit_no
                 permit.assign_permit_no(

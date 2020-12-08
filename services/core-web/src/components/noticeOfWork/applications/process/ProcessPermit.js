@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import moment from "moment";
+import { isEmpty } from "lodash";
 import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
 import {
   DownOutlined,
@@ -22,7 +24,7 @@ import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationStatusOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+ getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 
 import {
   updateNoticeOfWorkStatus,
@@ -33,7 +35,10 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
+import {
+  getDraftPermitForNOW,
+  getDraftPermitAmendmentForNOW,
+} from "@common/selectors/permitSelectors";
 import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -49,6 +54,14 @@ const approvedLetterCode = "NPE";
 const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
 const WithDrawnLetterCode = "WDL";
+const originalPermit = "OGP";
+const regionHash = {
+  SE: "Cranbrook",
+  SC: "Kamloops",
+  NE: "Prince George",
+  NW: "Smithers",
+  SW: "Victoria",
+};
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -57,8 +70,10 @@ const propTypes = {
   fetchApplicationDelay: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   updateNoticeOfWorkStatus: PropTypes.func.isRequired,
+  appOptions: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   progress: PropTypes.objectOf(PropTypes.any).isRequired,
   progressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
@@ -153,7 +168,7 @@ export class ProcessPermit extends Component {
             initialValues,
             title: content[type].title,
             documentType: this.props.documentContextTemplate,
-            onSubmit: (values) => this.rejectApplication(values, type),
+            onSubmit: (values) => this.handleApplication(values, type),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             draftAmendment: this.props.draftAmendment,
@@ -166,11 +181,70 @@ export class ProcessPermit extends Component {
       });
   };
 
-  rejectApplication = (values, code) => {
-    const message =
-      code === approvedCode
-        ? "Permit has been successfully issued for this application."
-        : "This application has been successfully rejected.";
+  createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
+    const permitGenObject = {
+      permit_number: "",
+      auth_end_date: "",
+      regional_office: regionHash[noticeOfWork.mine_region],
+      current_date: moment().format("Do"),
+      current_month: moment().format("MMMM"),
+      current_year: moment().format("YYYY"),
+      conditions: "",
+      issuing_inspector_title: "Inspector of Mines",
+    };
+    permitGenObject.mine_no = noticeOfWork.mine_no;
+
+    const permittee = noticeOfWork.contacts.filter(
+      (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+    )[0];
+
+    const originalAmendment = draftPermit.permit_amendments.filter(
+      (org) => org.permit_amendment_type_code === originalPermit
+    )[0];
+
+    const addressLineOne =
+      !isEmpty(permittee) &&
+      !isEmpty(permittee.party.address[0]) &&
+      permittee.party.address[0].address_line_1
+        ? `${permittee.party.address[0].address_line_1}\n`
+        : "";
+    const addressLineTwo =
+      !isEmpty(permittee) && !isEmpty(permittee.party.address[0])
+        ? `${permittee.party.address[0].city || ""} ${permittee.party.address[0]
+            .sub_division_code || ""} ${permittee.party.address[0].post_code || ""}`
+        : "";
+    const mailingAddress = `${addressLineOne}${addressLineTwo}`;
+    permitGenObject.permittee = !isEmpty(permittee) ? permittee.party.name : "";
+    permitGenObject.permittee_email = !isEmpty(permittee) ? permittee.party.email : "";
+    permitGenObject.permittee_mailing_address = mailingAddress;
+    permitGenObject.property = noticeOfWork.property_name;
+    permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
+    permitGenObject.application_date = noticeOfWork.submitted_date;
+    permitGenObject.permit_number = draftPermit.permit_no;
+    permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
+      ? ""
+      : originalAmendment.issue_date;
+    permitGenObject.application_type = this.props.appOptions.filter(
+      (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
+    )[0].description;
+    permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
+    permitGenObject.regional_office = !amendment.regional_office
+      ? regionHash[noticeOfWork.mine_region]
+      : amendment.regional_office;
+
+    return permitGenObject;
+  };
+
+  createDocList = (noticeOfWork) => {
+    return noticeOfWork.documents
+      .filter((document) => document.is_final_package)
+      .map((document) => ({
+        document_name: document.mine_document.document_name,
+        document_upload_date: formatDate(document.mine_document.upload_date),
+      }));
+  };
+
+  afterSuccess = (values, message, code) => {
     this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -185,6 +259,49 @@ export class ProcessPermit extends Component {
           message,
           duration: 10,
         });
+      });
+  };
+
+  handleApplication = (values, code) => {
+    if (code === approvedCode) {
+      this.handleApprovedApplication(values, code);
+    } else {
+      this.afterSuccess(values, "This application has been successfully rejected.", code);
+    }
+  };
+
+  handleApprovedApplication = (values, code) => {
+    const docType = this.props.noticeOfWork.type_of_application === "New Permit" ? "PMT" : "PMA";
+    this.props
+      .fetchNoticeOfWorkApplicationContextTemplate(
+        docType,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        // this.props.documentContextTemplate.document_template.form_spec.map(
+        //   // eslint-disable-next-line
+        //   (item) => (initialValues[item.id] = item["context-value"])
+        // );
+        const permitObj = this.createPermitGenObject(
+          this.props.noticeOfWork,
+          this.props.draftPermit,
+          this.props.draftAmendment
+        );
+        permitObj.auth_end_date = formatDate(values.auth_end_date);
+        permitObj.issue_date = formatDate(values.issue_date);
+
+        this.handleGenerateDocumentFormSubmit(
+          this.props.documentContextTemplate,
+          {
+            ...permitObj,
+            document_list: this.createDocList(this.props.noticeOfWork),
+          },
+          this.afterSuccess(
+            values,
+            "Permit has been successfully issued for this application.",
+            code
+          )
+        );
       });
   };
 
@@ -209,7 +326,7 @@ export class ProcessPermit extends Component {
       });
   };
 
-  handleGenerateDocumentFormSubmit = (documentType, values) => {
+  handleGenerateDocumentFormSubmit = (documentType, values, afterSuccess = null) => {
     const documentTypeCode = documentType.now_application_document_type_code;
     const newValues = values;
     documentType.document_template.form_spec
@@ -221,11 +338,13 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(
-      documentTypeCode,
-      payload,
-      "Successfully created document and attached it to Notice of Work"
-    );
+    this.props
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully created document and attached it to Notice of Work"
+      )
+      .then(() => afterSuccess && afterSuccess());
   };
 
   getValidationMessages = () => {
@@ -398,6 +517,8 @@ ProcessPermit.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
+  appOptions: getNoticeOfWorkApplicationTypeOptions(state),
+  draftPermit: getDraftPermitForNOW(state),
   draftAmendment: getDraftPermitAmendmentForNOW(state),
   documentContextTemplate: getDocumentContextTemplate(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
