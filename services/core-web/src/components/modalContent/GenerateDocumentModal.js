@@ -2,16 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Alert } from "antd";
 import { connect } from "react-redux";
-import { getFormSyncErrors } from "redux-form";
+import { getFormSyncErrors, hasSubmitFailed } from "redux-form";
 import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  documentFormErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  formSyncErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   signature: PropTypes.string.isRequired,
+  submitFailed: PropTypes.bool.isRequired,
+  title: PropTypes.string,
 };
 
 const defaultProps = {
@@ -19,8 +20,8 @@ const defaultProps = {
 };
 
 export const GenerateDocumentModal = (props) => {
-  const errorsLength = Object.keys(props.documentFormErrors).length;
-  const showErrors = errorsLength > 0;
+  const errorsLength = Object.keys(props.formSyncErrors).length;
+  const showErrors = props.submitFailed && errorsLength > 0;
   return (
     <div>
       {!props.signature && (
@@ -30,7 +31,6 @@ export const GenerateDocumentModal = (props) => {
             description="The signature for the Issuing Inspector has not been provided."
             type="error"
             showIcon
-            style={{ textAlign: "left" }}
           />
           <br />
         </>
@@ -55,7 +55,8 @@ GenerateDocumentModal.propTypes = propTypes;
 GenerateDocumentModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  documentFormErrors: getFormSyncErrors(FORM.GENERATE_DOCUMENT)(state),
+  formSyncErrors: getFormSyncErrors(FORM.GENERATE_DOCUMENT)(state),
+  submitFailed: hasSubmitFailed(FORM.GENERATE_DOCUMENT)(state),
 });
 
 export default connect(mapStateToProps)(GenerateDocumentModal);
