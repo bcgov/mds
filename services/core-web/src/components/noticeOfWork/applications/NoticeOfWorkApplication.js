@@ -580,6 +580,18 @@ export class NoticeOfWorkApplication extends Component {
       </div>
     ) : (
       <div className="center padding-md">
+        {showErrors && (
+          <div>
+            <Alert
+              message={`You have ${errorsLength} ${
+                errorsLength === 1 ? "issue" : "issues"
+              } that must be fixed before proceeding.`}
+              type="error"
+              showIcon
+              style={{ position: "absolute", width: "400px" }}
+            />
+          </div>
+        )}
         <div className="inline-flex flex-center block-mobile">
           <Popconfirm
             placement="bottomRight"
@@ -605,18 +617,6 @@ export class NoticeOfWorkApplication extends Component {
             Save
           </Button>
         </div>
-        {showErrors && (
-          <div className="error">
-            <Alert
-              message={`You have ${errorsLength} ${
-                errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding.`}
-              type="error"
-              showIcon
-              style={{ width: "50vw", margin: "auto", top: "8px" }}
-            />
-          </div>
-        )}
       </div>
     );
   };
