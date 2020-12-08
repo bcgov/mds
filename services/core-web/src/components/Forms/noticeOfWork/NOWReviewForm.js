@@ -134,7 +134,7 @@ export class NOWReviewForm extends Component {
                   }));
                 }}
               />
-            )}{" "}
+            )}
           </Col>
         </Row>
         <div className="right center-mobile">

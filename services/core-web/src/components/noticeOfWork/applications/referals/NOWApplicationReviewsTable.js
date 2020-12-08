@@ -65,6 +65,13 @@ const columns = (type) => {
     render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
   };
 
+  const numberColumn = {
+    title: "Referral Number",
+    dataIndex: "referee_name",
+    key: "referee_name",
+    render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
+  };
+
   const commonColumns = [
     {
       title: type === "ADV" ? "Advertisements" : "Documents",
@@ -140,8 +147,8 @@ const columns = (type) => {
     commonColumns.splice(2, 0, dueDateColumn);
     commonColumns.splice(3, 0, categoryColumn);
   } else if (type === "REF") {
-    commonColumns.splice(0, 0, nameColumn);
-    commonColumns.splice(2, 0, categoryColumn);
+    commonColumns.splice(0, 0, numberColumn);
+    commonColumns.splice(1, 0, categoryColumn);
   } else if (type === "PUB") {
     commonColumns.splice(0, 0, nameColumn);
   }
