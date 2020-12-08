@@ -32,7 +32,9 @@ const UpdateNOWStatusForm = (props) => {
             component={renderConfig.SELECT}
             placeholder="Select the status"
             validate={[required]}
-            data={props.dropdownNoticeOfWorkApplicationStatusOptions}
+            data={props.dropdownNoticeOfWorkApplicationStatusOptions.filter(
+              ({ value }) => value !== "AIA"
+            )}
           />
         </Form.Item>
         <div className="right center-mobile">

@@ -15,7 +15,7 @@ const propTypes = {
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   type: PropTypes.string.isRequired,
   signature: PropTypes.bool.isRequired,
-  draftAmendment: CustomPropTypes.permit.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   issuingInspectorGuid: PropTypes.string,
 };
 
@@ -54,7 +54,7 @@ export class UpdateStatusGenerateLetterModal extends Component {
         title={this.props.title}
         type={this.props.type}
         prev={this.prev}
-        draftAmendment={this.props.draftAmendment}
+        noticeOfWork={this.props.noticeOfWork}
       />
     );
 

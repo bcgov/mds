@@ -24,8 +24,8 @@ import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationStatusOptionsHash,
- getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
-
+  getNoticeOfWorkApplicationTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import {
   updateNoticeOfWorkStatus,
   fetchApplicationDelay,
@@ -39,7 +39,6 @@ import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
-import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -75,7 +74,6 @@ const propTypes = {
   progressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftAmendment: CustomPropTypes.permit.isRequired,
-  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
@@ -115,10 +113,6 @@ export class ProcessPermit extends Component {
 
   componentDidMount = () => {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
-    this.props.fetchDraftPermitByNOW(
-      this.props.mineGuid,
-      this.props.noticeOfWork.now_application_guid
-    );
   };
 
   openStatusModal = () => {
@@ -171,7 +165,7 @@ export class ProcessPermit extends Component {
             onSubmit: (values) => this.handleApplication(values, type),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
-            draftAmendment: this.props.draftAmendment,
+            noticeOfWork: this.props.noticeOfWork,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },
@@ -360,9 +354,8 @@ export class ProcessPermit extends Component {
       validationMessages.push({ message: "Application must have a permittee." });
     if (
       !(
-        this.props.draftAmendment &&
-        (this.props.draftAmendment.security_received_date ||
-          this.props.draftAmendment.security_not_required)
+        this.props.noticeOfWork.security_received_date ||
+        this.props.noticeOfWork.security_not_required
       )
     ) {
       validationMessages.push({ message: `The reclamation securities must be recorded.` });
@@ -532,7 +525,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       updateNoticeOfWorkStatus,
       fetchApplicationDelay,
-      fetchDraftPermitByNOW,
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
