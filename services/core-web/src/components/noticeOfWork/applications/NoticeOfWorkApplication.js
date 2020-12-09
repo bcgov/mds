@@ -62,7 +62,6 @@ import AssignInspectors from "@/components/noticeOfWork/applications/verificatio
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
@@ -547,13 +546,15 @@ export class NoticeOfWorkApplication extends Component {
     return this.state.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
         <h2 className="tab-title">
-          Application
-          <CoreTooltip
-            title="This page is for reviewing and editing the information and documents sent in
-                    with a Notice of Work. All information provided by the proponent, and any
-                    additional files requested during the application review live here. When the Technical Review is in progress, use the
-                    Edit button to update information about this application."
-          />
+          <Popover
+            placement="topLeft"
+            content="This page is for reviewing and editing the information and documents sent in
+                          with a Notice of Work. All information provided by the proponent, and any
+                          additional files requested during the application review live here. When the Technical Review is in progress, use the
+                          Edit button to update information about this application."
+          >
+            Application
+          </Popover>
         </h2>
         {this.props.noticeOfWork.lead_inspector_party_guid && (
           <>
@@ -854,14 +855,16 @@ export class NoticeOfWorkApplication extends Component {
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
                       <h2 className="tab-title">
-                        Referral
-                        <CoreTooltip
-                          title="This page allows you to identify and download the files that need to be included in the referral package.
+                        <Popover
+                          placement="topLeft"
+                          content="This page allows you to identify and download the files that need to be included in the referral package.
             You may track progress on the E-Referrals website.
-            When responses are receives you can upload them by clicking on “Add Reviewer”
-            Finish this stage by clicking on “Complete Process” when all responses have been received.
-            If you need to make changes later, click “Resume Referral process”"
-                        />
+            When responses are receives you can upload them by clicking on “Add Referral”
+            Finish this stage by clicking on “Complete Referral Process” when all responses have been received.
+            If you need to make changes later, click “Resume Referral process”."
+                        >
+                          Referral
+                        </Popover>
                       </h2>
                       <NOWProgressActions tab="REF" />
                       <ReferralConsultationPackage type="REF" />
@@ -912,13 +915,15 @@ export class NoticeOfWorkApplication extends Component {
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
                       <h2 className="tab-title">
-                        Consultation
-                        <CoreTooltip
-                          title="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
-                          You may track progress on the Consultation reports and tracking system (CRTS).
-                          When responses are received you can upload them by clicking on “Add Reviewer” .
-                          Finish this stage by clicking on “Complete Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”"
-                        />
+                        <Popover
+                          placement="topLeft"
+                          content="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
+            You may track progress on the Consultation reports and tracking system (CRTS).
+            When responses are received you can upload them by clicking on “Add Consultation” .
+            Finish this stage by clicking on “Complete Consultation Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”."
+                        >
+                          Consultation
+                        </Popover>
                       </h2>
                       <NOWProgressActions tab="CON" />
                       <ReferralConsultationPackage type="CON" />
@@ -958,7 +963,16 @@ export class NoticeOfWorkApplication extends Component {
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div className={this.renderFixedHeaderClass()}>
                     <div className="inline-flex">
-                      <h2 className="tab-title">Public Comment</h2>
+                      <h2 className="tab-title">
+                        <Popover
+                          placement="topLeft"
+                          content="This page allows you to track responses from the public.
+                          When responses are received you can upload them by clicking on “Add Public Comment” or “Add Advertisement”.
+            Finish this stage by clicking on “Complete Public Comment Process” when all responses have been received. If you need to make changes later, click “Resume Public Comment process”."
+                        >
+                          Public Comment
+                        </Popover>
+                      </h2>
                       <NOWProgressActions tab="PUB" />
                     </div>
                     <NOWProgressStatus tab="PUB" />
@@ -1029,16 +1043,11 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="tab-title">
                         <Popover
                           placement="topLeft"
-                          content="This page contains information about securities and any internal files relevant
-            to processing the application. It is also where the permit is issued."
+                          content="This page contains information about securities, inspectors, progress tracking, and any internal files relevant
+            to processing the application."
                         >
                           Administrative
                         </Popover>
-                        {/* Administrative
-                        <CoreTooltip
-                          title="This page contains information about securities and any internal files relevant
-                    to processing the application. It is also where the permit is issued."
-                        /> */}
                       </h2>
                       <NOWProgressActions tab="ADMIN" />
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>

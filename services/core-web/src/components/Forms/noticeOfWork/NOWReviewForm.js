@@ -30,6 +30,8 @@ const propTypes = {
   change: PropTypes.func,
   reviewerLabels: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedNowApplicationReviewTypeCode: PropTypes.string,
+  submitting: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -37,8 +39,8 @@ const defaultProps = {
   selectedNowApplicationReviewTypeCode: "",
 };
 
-const referralCode = "REF";
-const consultationCode = "FNC";
+// const referralCode = "REF";
+// const consultationCode = "FNC";
 const publicCommentCode = "PUB";
 const advertisementCode = "ADV";
 
@@ -101,7 +103,14 @@ export class NOWReviewForm extends Component {
                 </Form.Item>
               </>
             )}
-
+            <Form.Item>
+              <Field
+                id="reference_link"
+                name="reference_link"
+                label="Link to CRTS"
+                component={renderConfig.LINK_FIELD}
+              />
+            </Form.Item>
             <Form.Item>
               <Field
                 id="response_date"
@@ -161,7 +170,12 @@ export class NOWReviewForm extends Component {
               Cancel
             </Button>
           </Popconfirm>
-          <Button className="full-mobile" type="primary" htmlType="submit">
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            disabled={this.props.submitting}
+          >
             {this.props.title}
           </Button>
         </div>

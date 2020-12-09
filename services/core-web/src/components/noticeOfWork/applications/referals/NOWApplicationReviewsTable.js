@@ -2,11 +2,16 @@ import React from "react";
 import { Button, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
+import { formatDate } from "@common/utils/helpers";
+import {
+  getNoticeOfWorkApplicationApplicationReviewTypeHash,
+  getNoticeOfWorkApplicationDocumentTypeOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
+import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
@@ -14,6 +19,7 @@ import CoreTable from "@/components/common/CoreTable";
 const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleDocumentDelete: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   openEditModal: PropTypes.func.isRequired,
@@ -41,35 +47,49 @@ const columns = (type) => {
     title: "Due Date",
     dataIndex: "due_date",
     key: "due_date",
-    render: (text) => <div title="Due Date">{text}</div>,
+    render: (text) => <div title="Due Date">{formatDate(text)}</div>,
   };
 
   const urlColumn = {
     title: "Link to CRTS",
     dataIndex: "response_url",
     key: "response_url",
-    render: (text) => <div title="Link to CRTS">{text}</div>,
+    render: (text) => (
+      <div title="Link to CRTS">
+        {text ? (
+          <a href="text" alt="link to CRTS" target="_blank" rel="noopener noreferrer">
+            text
+          </a>
+        ) : (
+          Strings.EMPTY_FIELD
+        )}
+      </div>
+    ),
   };
 
   const categoryColumn = {
     title: "Document Category",
     dataIndex: "document_category",
     key: "document_category",
-    render: (text) => <div title="Document Category">{text}</div>,
+    render: (text, record) => (
+      <div title="Document Category">
+        {record.documentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
+      </div>
+    ),
   };
 
   const nameColumn = {
     title: `${ReviewerLabels[type]}`,
     dataIndex: "referee_name",
     key: "referee_name",
-    render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
+    render: (text) => <div title={`${ReviewerLabels[type]}`}>{text || Strings.EMPTY_FIELD}</div>,
   };
 
   const numberColumn = {
-    title: "Referral Number",
-    dataIndex: "reference_number",
-    key: "reference_number",
-    render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
+    title: "E-Referral Number",
+    dataIndex: "referral_number",
+    key: "referral_number",
+    render: (text) => <div title="E-Referral Number">{text || Strings.EMPTY_FIELD}</div>,
   };
 
   const commonColumns = [
@@ -80,19 +100,20 @@ const columns = (type) => {
       render: (text) => (
         <div title="Documents">
           <ul>
-            {text.length > 0 &&
-              text.map((doc) => (
-                <li key={doc.mine_document.mine_document_guid}>
-                  <div>
-                    <LinkButton
-                      key={doc.mine_document.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
-                    >
-                      {doc.mine_document.document_name}
-                    </LinkButton>
-                  </div>
-                </li>
-              ))}
+            {text.length > 0
+              ? text.map((doc) => (
+                  <li key={doc.mine_document.mine_document_guid}>
+                    <div>
+                      <LinkButton
+                        key={doc.mine_document.mine_document_guid}
+                        onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
+                      >
+                        {doc.mine_document.document_name}
+                      </LinkButton>
+                    </div>
+                  </li>
+                ))
+              : Strings.EMPTY_FIELD}
           </ul>
         </div>
       ),
@@ -101,7 +122,7 @@ const columns = (type) => {
       title: `${responseDateLabels[type]}`,
       dataIndex: "response_date",
       key: "response_date",
-      render: (text) => <div title="Received Date">{text}</div>,
+      render: (text) => <div title="Received Date">{formatDate(text)}</div>,
     },
     {
       title: "",
@@ -170,7 +191,8 @@ const transformRowData = (
   openEditModal,
   handleEdit,
   handleDocumentDelete,
-  type
+  type,
+  documentTypeOptionsHash
 ) => {
   return reviews.map((review) => ({
     now_application_review_type: reviewTypeHash[review.now_application_review_type_code],
@@ -179,6 +201,7 @@ const transformRowData = (
     handleEdit,
     handleDocumentDelete,
     type,
+    documentTypeOptionsHash,
     ...review,
   }));
 };
@@ -196,7 +219,8 @@ export const NOWApplicationReviewsTable = (props) => {
         props.openEditModal,
         props.handleEdit,
         props.handleDocumentDelete,
-        props.type
+        props.type,
+        props.documentTypeOptionsHash
       )}
       tableProps={{
         pagination: false,
@@ -207,6 +231,7 @@ export const NOWApplicationReviewsTable = (props) => {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkReviewTypesHash: getNoticeOfWorkApplicationApplicationReviewTypeHash(state),
+  documentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
 });
 
 NOWApplicationReviewsTable.propTypes = propTypes;
