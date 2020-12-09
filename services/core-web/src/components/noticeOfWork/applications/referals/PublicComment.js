@@ -32,7 +32,9 @@ export const PublicComment = (props) => {
       <ScrollContentWrapper id="advertisements" title="Advertisements">
         <NOWApplicationReviewsTable
           isLoaded={props.isLoaded}
-          noticeOfWorkReviews={props.noticeOfWorkReviews}
+          noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
+            (review) => review.now_application_review_type_code === "ADV"
+          )}
           noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
           handleDelete={props.handleDelete}
           openEditModal={props.openEditModal}
@@ -43,7 +45,9 @@ export const PublicComment = (props) => {
         <div className="right center-mobile">
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={publicCommentCode}>
             <AddButton
-              onClick={(event) => props.openAddReviewModal(event, props.handleAddReview)}
+              onClick={(event) =>
+                props.openAddReviewModal(event, props.handleAddReview, advertisementCode)
+              }
               type="secondary"
             >
               Add Advertisement
@@ -54,7 +58,9 @@ export const PublicComment = (props) => {
       <ScrollContentWrapper id="public-comment" title="Public Comment">
         <NOWApplicationReviewsTable
           isLoaded={props.isLoaded}
-          noticeOfWorkReviews={props.noticeOfWorkReviews}
+          noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
+            (review) => review.now_application_review_type_code === "PUB"
+          )}
           noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
           handleDelete={props.handleDelete}
           openEditModal={props.openEditModal}
@@ -65,7 +71,9 @@ export const PublicComment = (props) => {
         <div className="right center-mobile">
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={publicCommentCode}>
             <AddButton
-              onClick={(event) => props.openAddReviewModal(event, props.handleAddReview)}
+              onClick={(event) =>
+                props.openAddReviewModal(event, props.handleAddReview, publicCommentCode)
+              }
               type="secondary"
             >
               Add Public Comment

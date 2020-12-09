@@ -31,10 +31,16 @@ const propTypes = {
   reviewerLabels: PropTypes.objectOf(PropTypes.any).isRequired,
   selectedNowApplicationReviewTypeCode: PropTypes.string,
 };
+
 const defaultProps = {
   change: () => {},
   selectedNowApplicationReviewTypeCode: "",
 };
+
+const referralCode = "REF";
+const consultationCode = "FNC";
+const publicCommentCode = "PUB";
+const advertisementCode = "ADV";
 
 export class NOWReviewForm extends Component {
   state = {
@@ -66,6 +72,7 @@ export class NOWReviewForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
+            {/*             
             <Form.Item>
               <Field
                 id="now_application_review_type_code"
@@ -76,25 +83,30 @@ export class NOWReviewForm extends Component {
                 validate={[required, validateSelectOptions(this.props.reviewTypes)]}
                 disabled
               />
-            </Form.Item>
-            <Form.Item>
-              <Field
-                id="referee_name"
-                name="referee_name"
-                label={
-                  this.props.selectedNowApplicationReviewTypeCode
-                    ? this.props.reviewerLabels[this.props.selectedNowApplicationReviewTypeCode]
-                    : "Name"
-                }
-                component={renderConfig.FIELD}
-                validate={[required]}
-              />
-            </Form.Item>
+            </Form.Item> */}
+
+            {this.props.type !== advertisementCode && (
+              <>
+                <Form.Item>
+                  <Field
+                    id="referee_name"
+                    name="referee_name"
+                    label={
+                      this.props.selectedNowApplicationReviewTypeCode
+                        ? this.props.reviewerLabels[this.props.selectedNowApplicationReviewTypeCode]
+                        : "Name"
+                    }
+                    component={renderConfig.FIELD}
+                  />
+                </Form.Item>
+              </>
+            )}
+
             <Form.Item>
               <Field
                 id="response_date"
                 name="response_date"
-                label="Response Received"
+                label="Date Received"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
@@ -105,8 +117,8 @@ export class NOWReviewForm extends Component {
                 name="document_category"
                 label="Document Category"
                 component={renderConfig.SELECT}
-                data={this.props.reviewTypes}
-                validate={[required, validateSelectOptions(this.props.reviewTypes)]}
+                data={[]}
+                validate={[required]}
               />
             </Form.Item>
             <Form.Item>

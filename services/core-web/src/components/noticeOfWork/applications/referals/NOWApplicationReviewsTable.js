@@ -67,8 +67,8 @@ const columns = (type) => {
 
   const numberColumn = {
     title: "Referral Number",
-    dataIndex: "referee_name",
-    key: "referee_name",
+    dataIndex: "reference_number",
+    key: "reference_number",
     render: (text) => <div title={`${ReviewerLabels[type]}`}>{text}</div>,
   };
 
@@ -108,36 +108,43 @@ const columns = (type) => {
       dataIndex: "editDeleteButtons",
       key: "editDeleteButtons",
       align: "right",
-      render: (text, record) => (
-        <NOWActionWrapper
-          permission={Permission.EDIT_PERMITS}
-          tab={record.type === "FNC" ? "CON" : record.type}
-        >
-          <div>
-            <Button
-              ghost
-              type="primary"
-              size="small"
-              onClick={(event) =>
-                record.openEditModal(event, record, record.handleEdit, record.handleDocumentDelete)
-              }
-            >
-              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
-            </Button>
-            <Popconfirm
-              placement="topLeft"
-              title="Are you sure you want to delete this?"
-              onConfirm={() => record.handleDelete(record.now_application_review_id)}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <Button ghost size="small">
-                <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+      render: (text, record) => {
+        const tab = record.type === "FNC" ? "CON" : record.type;
+        const correctTab = tab === "ADV" ? "PUB" : record.type;
+        return (
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={correctTab}>
+            <div>
+              <Button
+                ghost
+                type="primary"
+                size="small"
+                onClick={(event) =>
+                  record.openEditModal(
+                    event,
+                    record,
+                    record.handleEdit,
+                    record.handleDocumentDelete,
+                    record.type
+                  )
+                }
+              >
+                <img src={EDIT_OUTLINE_VIOLET} alt="Edit Review" />
               </Button>
-            </Popconfirm>
-          </div>
-        </NOWActionWrapper>
-      ),
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this?"
+                onConfirm={() => record.handleDelete(record.now_application_review_id)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost size="small">
+                  <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+                </Button>
+              </Popconfirm>
+            </div>
+          </NOWActionWrapper>
+        );
+      },
     },
   ];
 

@@ -124,11 +124,11 @@ export class NOWApplicationReviews extends Component {
       });
   };
 
-  openAddReviewModal = (event, onSubmit) => {
+  openAddReviewModal = (event, onSubmit, type) => {
     event.preventDefault();
     const initialValues = {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
-      now_application_review_type_code: this.props.type,
+      now_application_review_type_code: type,
     };
     this.props.openModal({
       props: {
@@ -137,12 +137,13 @@ export class NOWApplicationReviews extends Component {
         title: "Add Reviewer to Application",
         reviewTypes: this.props.noticeOfWorkReviewTypes,
         reviewerLabels: ReviewerLabels,
+        type,
       },
       content: modalConfig.NOW_REVIEW,
     });
   };
 
-  openEditReviewModal = (event, initialValues, onSubmit, handleDocumentDelete) => {
+  openEditReviewModal = (event, initialValues, onSubmit, handleDocumentDelete, type) => {
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -152,6 +153,7 @@ export class NOWApplicationReviews extends Component {
         title: "Edit Review",
         reviewTypes: this.props.noticeOfWorkReviewTypes,
         reviewerLabels: ReviewerLabels,
+        type,
       },
       content: modalConfig.NOW_REVIEW,
     });
@@ -180,7 +182,6 @@ export class NOWApplicationReviews extends Component {
               ) && (
                 <Referral
                   {...commonApplicationReviewProps}
-                  // handleAddReview={(values, type) => this.handleAddReview(values, type)}
                   noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                     (review) => review.now_application_review_type_code === "REF"
                   )}
@@ -192,7 +193,6 @@ export class NOWApplicationReviews extends Component {
               ) && (
                 <Consultation
                   {...commonApplicationReviewProps}
-                  // handleAddReview={(values, type) => this.handleAddReview(values, type)}
                   noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
                     (review) => review.now_application_review_type_code === "FNC"
                   )}
@@ -200,14 +200,11 @@ export class NOWApplicationReviews extends Component {
               )}
             {this.props.type === "PUB" &&
               this.props.noticeOfWorkReviewTypes.some(
-                (reviewType) => reviewType.value === "PUB" || reviewType.value === "ADV"
+                (reviewType) => reviewType.value === "PUB"
               ) && (
                 <PublicComment
-                  // handleAddReview={(values, type) => this.handleAddReview(values, type)} // no access to adv or pub here
                   {...commonApplicationReviewProps}
-                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
-                    (review) => review.now_application_review_type_code === "PUB"
-                  )}
+                  noticeOfWorkReviews={this.props.noticeOfWorkReviews}
                 />
               )}
           </div>

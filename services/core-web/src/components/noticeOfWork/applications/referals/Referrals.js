@@ -43,7 +43,9 @@ export const Referral = (props) => {
       <div className="right center-mobile">
         <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={referralCode}>
           <AddButton
-            onClick={(event) => props.openAddReviewModal(event, props.handleAddReview)}
+            onClick={(event) =>
+              props.openAddReviewModal(event, props.handleAddReview, referralCode)
+            }
             type="secondary"
           >
             Add Referral

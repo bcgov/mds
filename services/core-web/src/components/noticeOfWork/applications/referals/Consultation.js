@@ -42,7 +42,7 @@ export const Consultation = (props) => {
         <div className="right center-mobile">
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="CON">
             <AddButton
-              onClick={(event) => props.openAddReviewModal(event, props.handleAddReview)}
+              onClick={(event) => props.openAddReviewModal(event, props.handleAddReview, "FNC")}
               type="secondary"
             >
               Add Consultation

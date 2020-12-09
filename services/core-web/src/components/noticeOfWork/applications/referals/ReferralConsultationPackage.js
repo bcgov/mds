@@ -135,24 +135,26 @@ export class ReferralConsultationPackage extends Component {
         duration: 10,
       });
 
-      if (!this.props.noticeOfWork.ready_for_review_date) {
-        this.updateNoticeOfWork({
-          ...this.props.noticeOfWork,
-          ready_for_review_date: new Date(),
-        });
-      }
-
-      this.props.closeModal();
       this.props.setNoticeOfWorkApplicationDocumentDownloadState({
         downloading: false,
         currentFile: 1,
         totalFiles: 1,
       });
+      this.props.closeModal();
     });
   };
 
   openDownloadPackageModal = (event) => {
     event.preventDefault();
+    const column = this.props.type === "REF" ? "is_referral_package" : "is_consultation_package";
+    const coreDocumentsInPackage = this.props.noticeOfWork.documents
+      .filter((document) => document[column])
+      .map(({ now_application_document_xref_guid }) => now_application_document_xref_guid);
+
+    const submissionDocumentsInPackage = this.props.noticeOfWork.filtered_submission_documents
+      .filter((document) => document[column])
+      .map(({ mine_document_guid }) => mine_document_guid);
+
     this.props.openModal({
       width: 910,
       props: {
@@ -163,17 +165,48 @@ export class ReferralConsultationPackage extends Component {
         onSubmit: this.downloadDocumentPackage,
         cancelDownload: this.cancelDownload,
         title: "Download Referral Package",
+        submissionDocumentsInPackage,
+        coreDocumentsInPackage,
+        handleSavePackage: this.handleSavePackage,
+        type: this.props.type,
       },
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });
   };
 
-  updateNoticeOfWork = (updatedNow) => {
-    const id = this.props.noticeOfWork.now_application_guid;
-    this.props
-      .updateNoticeOfWorkApplication(updatedNow, this.props.noticeOfWork.now_application_guid)
+  handleSavePackage = (selectedCoreRows, selectedSubmissionRows) => {
+    const column = this.props.type === "REF" ? "is_referral_package" : "is_consultation_package";
+    const documentsPayload = this.props.noticeOfWork.documents.map((document) => {
+      document[column] = selectedCoreRows.includes(document.now_application_document_xref_guid);
+      return document;
+    });
+
+    const submissionDocumentsPayload = this.props.noticeOfWork.filtered_submission_documents.map(
+      (document) => {
+        document[column] = selectedSubmissionRows.includes(document.mine_document_guid);
+        return document;
+      }
+    );
+
+    const payload = {
+      ...this.props.noticeOfWork,
+      documents: documentsPayload,
+      submission_documents: submissionDocumentsPayload,
+    };
+
+    const message =
+      this.props.type === "REF"
+        ? "Successfully updated the Referral Package."
+        : "Successfully updated the Consultation Package.";
+
+    return this.props
+      .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(id);
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => {
+            this.props.closeModal();
+          });
       });
   };
 
