@@ -38,6 +38,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='selectin')
     permit_guid = association_proxy('permit', 'permit_guid')
+    permit_number = association_proxy('permit', 'permit_no')
 
     received_date = db.Column(db.DateTime)
     due_date = db.Column(db.DateTime)

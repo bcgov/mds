@@ -69,21 +69,26 @@ class MineReportListResource(Resource, UserMixin):
         is_code_required_report = permit_condition_type_code == None
         current_app.logger.debug(is_code_required_report)
         permit_condition_category_code = None
+        permit_guid = data['permit_guid']
 
+        # Code Required Reports check
         if is_code_required_report:
             mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
                 data['mine_report_definition_guid'])
             if mine_report_definition is None:
                 raise BadRequest('A code required report type must be selected from the list.')
         else:
+            # Permit Required Reports check
             permit_condition_category = PermitConditionCategory.find_by_permit_condition_category_code(
                 permit_condition_type_code)
             if permit_condition_category:
                 permit_condition_category_code = permit_condition_category.condition_category_code
             else:
                 raise BadRequest('A permit required report type must be selected from the list.')
+            if not permit_guid:
+                raise BadRequest('A permit must be selected for Permit Required Report')
 
-        permit = Permit.find_by_permit_guid_or_no(data['permit_guid'])
+        permit = Permit.find_by_permit_guid_or_no(permit_guid)
 
         if permit:
             permit._context_mine = mine

@@ -10,7 +10,7 @@ import { Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { resetForm, createDropDownList } from "@common/utils/helpers";
 import {
   getDropdownPermitConditionCategoryOptions,
   getDropdownMineReportStatusOptions,
@@ -18,6 +18,8 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 import ReportComments from "@/components/Forms/reports/ReportComments";
+import { fetchPermits } from "@common/actionCreators/permitActionCreator";
+import { getPermits } from "@common/selectors/permitSelectors";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -33,6 +35,8 @@ const propTypes = {
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
   formMeta: PropTypes.any,
   showReportHistory: PropTypes.func.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
@@ -60,6 +64,10 @@ export class AddMinePermitRequiredForm extends Component {
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
 
+  componentDidMount = () => {
+    this.props.fetchPermits(this.props.mineGuid);
+  };
+
   updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
     let formMeta = this.props.formMeta;
     if (
@@ -81,25 +89,36 @@ export class AddMinePermitRequiredForm extends Component {
   };
 
   render() {
+    const permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
+
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
           <Col span={24}>
-            {!this.props.initialValues.mine_report_definition_guid && (
-              <Form.Item>
-                <Field
-                  id="permit_condition_category_code"
-                  name="permit_condition_category_code"
-                  label="Report Type*"
-                  placeholder="Select report type"
-                  data={this.props.dropdownPermitConditionCategoryOptions}
-                  doNotPinDropdown
-                  component={renderConfig.SELECT}
-                  validate={[required]}
-                  format={null}
-                />
-              </Form.Item>
-            )}
+            <Form.Item>
+              <Field
+                id="permit_guid"
+                name="permit_guid"
+                placeholder="Select a Permit"
+                label="Permit*"
+                component={renderConfig.SELECT}
+                data={permitDropdown}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="permit_condition_category_code"
+                name="permit_condition_category_code"
+                label="Report Type*"
+                placeholder="Select report type"
+                data={this.props.dropdownPermitConditionCategoryOptions}
+                doNotPinDropdown
+                component={renderConfig.SELECT}
+                validate={[required]}
+                format={null}
+              />
+            </Form.Item>
             <Form.Item>
               <Field
                 id="submission_year"
@@ -184,6 +203,8 @@ export default compose(
     mineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     selectedMineReportCategory: selector(state, "permit_condition_category_code"),
     formMeta: state.form[FORM.ADD_REPORT],
+    fetchPermits,
+    permits: getPermits(state),
   })),
   reduxForm({
     form: FORM.ADD_REPORT,
