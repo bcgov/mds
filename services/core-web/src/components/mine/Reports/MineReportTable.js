@@ -42,6 +42,7 @@ const propTypes = {
   sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
   isDashboardView: PropTypes.bool,
+  mineReportType: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -105,19 +106,15 @@ export const MineReportTable = (props) => {
     //   ),
     // },
     {
-      title: "Report Name",
+      title:
+        props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
+          ? "Report Name"
+          : "Report Type",
       key: "report_name",
       dataIndex: "report_name",
       sortField: "report_name",
       sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
       render: (text) => <div title="Report Name">{text}</div>,
-    },
-    {
-      title: "Code Section",
-      key: "code_section",
-      render: (record) => (
-        <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
-      ),
     },
     {
       title: "Compliance Year",
@@ -209,6 +206,18 @@ export const MineReportTable = (props) => {
       },
     },
   ];
+
+  const codeSectionColumn = {
+    title: "Code Section",
+    key: "code_section",
+    render: (record) => (
+      <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
+    ),
+  };
+
+  if (props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports) {
+    columns.splice(2, 0, codeSectionColumn);
+  }
 
   const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
     reports.map((report) => ({

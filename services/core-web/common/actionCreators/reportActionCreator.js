@@ -48,11 +48,14 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
     });
 };
 
-export const fetchMineReports = (mineGuid) => (dispatch) => {
+export const fetchMineReports = (mineGuid, reportsType) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, createRequestHeader())
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}?mine_reports_type=${reportsType}`,
+      createRequestHeader()
+    )
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_REPORTS));
       dispatch(mineReportActions.storeMineReports(response.data));

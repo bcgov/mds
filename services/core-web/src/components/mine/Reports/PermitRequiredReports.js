@@ -14,7 +14,6 @@ import {
 } from "@common/actionCreators/reportActionCreator";
 import { changeModalTitle, openModal, closeModal } from "@common/actions/modalActions";
 import { getMineReports } from "@common/selectors/reportSelectors";
-import { getMineReportDefinitionOptions } from "@common/selectors/staticContentSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -27,14 +26,13 @@ import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 
 /**
- * @class  MineReportInfo - contains all permit information
+ * @class  PermitRequiredReports - contains all permit information
  */
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineGuid: PropTypes.string.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   fetchMineReports: PropTypes.func.isRequired,
   updateMineReport: PropTypes.func.isRequired,
   createMineReport: PropTypes.func.isRequired,
@@ -64,10 +62,10 @@ const defaultParams = {
   status: [],
   sort_field: "received_date",
   sort_dir: "desc",
-  mine_reports_type: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
+  mine_reports_type: Strings.MINE_REPORTS_TYPE.permitRequiredReports,
 };
 
-export class MineReportInfo extends Component {
+export class PermitRequiredReports extends Component {
   state = {
     mine: {},
     params: defaultParams,
@@ -87,7 +85,10 @@ export class MineReportInfo extends Component {
         }),
         () =>
           this.props.history.replace(
-            routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+            routes.MINE_PERMIT_REQUIRED_REPORTS.dynamicRoute(
+              this.props.match.params.id,
+              this.state.params
+            )
           )
       );
     });
@@ -106,19 +107,19 @@ export class MineReportInfo extends Component {
       .then(() => this.fetchReports(report.mine_guid));
   };
 
-  handleAddReport = (values) => {
-    return this.props
-      .createMineReport(this.props.mineGuid, values)
-      .then(() => this.props.closeModal())
-      .then(() => this.fetchReports(this.props.mineGuid));
-  };
-
   fetchReports = (mineGuid) => {
     this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
       this.setState({
         filteredReports: this.props.mineReports,
       });
     });
+  };
+
+  handleAddReport = (values) => {
+    return this.props
+      .createMineReport(this.props.mineGuid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.fetchReports(this.props.mineGuid));
   };
 
   handleRemoveReport = (report) => {
@@ -135,7 +136,6 @@ export class MineReportInfo extends Component {
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
-        mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -172,23 +172,9 @@ export class MineReportInfo extends Component {
   };
 
   handleFiltering = (reports, params) => {
-    const reportDefinitionGuids = params.report_type
-      ? this.props.mineReportDefinitionOptions
-          .filter((option) =>
-            option.categories
-              .map((category) => category.mine_report_category)
-              .includes(params.report_type)
-          )
-          .map((definition) => definition.mine_report_definition_guid)
-      : this.props.mineReportDefinitionOptions.map(
-          (definition) => definition.mine_report_definition_guid
-        );
-
     return reports.filter((report) => {
       const report_type =
-        !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
-      const report_name =
-        !params.report_name || report.mine_report_definition_guid === params.report_name;
+        !params.report_type || report.permit_condition_category_code === params.report_type;
       const compliance_year =
         !params.compliance_year ||
         Number(report.submission_year) === Number(params.compliance_year);
@@ -221,7 +207,6 @@ export class MineReportInfo extends Component {
               .mine_report_submission_status_code
           ));
       return (
-        report_name &&
         report_type &&
         compliance_year &&
         due_date_start &&
@@ -238,7 +223,10 @@ export class MineReportInfo extends Component {
   handleReportFilterSubmit = (params) => {
     this.setState({ params }, () =>
       this.props.history.replace(
-        routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+        routes.MINE_PERMIT_REQUIRED_REPORTS.dynamicRoute(
+          this.props.match.params.id,
+          this.state.params
+        )
       )
     );
   };
@@ -254,7 +242,10 @@ export class MineReportInfo extends Component {
       }),
       () =>
         this.props.history.replace(
-          routes.MINE_REPORTS.dynamicRoute(this.props.match.params.id, this.state.params)
+          routes.MINE_PERMIT_REQUIRED_REPORTS.dynamicRoute(
+            this.props.match.params.id,
+            this.state.params
+          )
         )
     );
   };
@@ -280,7 +271,7 @@ export class MineReportInfo extends Component {
             onSubmit={this.handleReportFilterSubmit}
             handleReset={this.handleReportFilterReset}
             initialValues={this.state.params}
-            mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
+            mineReportType={Strings.MINE_REPORTS_TYPE.permitRequiredReports}
           />
         </div>
         <MineReportTable
@@ -293,7 +284,7 @@ export class MineReportInfo extends Component {
           filters={this.state.params}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
-          mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
+          mineReportType={Strings.MINE_REPORTS_TYPE.permitRequiredReports}
         />
       </div>
     );
@@ -304,7 +295,6 @@ const mapStateToProps = (state) => ({
   mineReports: getMineReports(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
-  mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -321,6 +311,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-MineReportInfo.propTypes = propTypes;
+PermitRequiredReports.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineReportInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(PermitRequiredReports);

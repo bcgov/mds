@@ -5,6 +5,8 @@ import AddReportForm from "@/components/Forms/reports/AddReportForm";
 import ReportHistory from "@/components/Forms/reports/ReportHistory";
 import { SlidingForms } from "@/components/common/SlidingForms";
 import LinkButton from "@/components/common/LinkButton";
+import * as Strings from "@common/constants/strings";
+import AddMinePermitRequiredForm from "../Forms/reports/AddMinePermitRequiredForm";
 
 const propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
@@ -13,6 +15,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   changeModalTitle: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  mineReportsType: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -54,14 +57,25 @@ export const AddReportModal = (props) => {
       <SlidingForms
         selectedForm={selectedForm}
         formContent={[
-          <AddReportForm
-            onSubmit={props.onSubmit}
-            closeModal={props.closeModal}
-            title={props.title}
-            mineGuid={props.mineGuid}
-            initialValues={props.initialValues}
-            showReportHistory={showReportHistory}
-          />,
+          props.mineReportsType === Strings.MINE_REPORTS_TYPE.codeRequiredReports ? (
+            <AddReportForm
+              onSubmit={props.onSubmit}
+              closeModal={props.closeModal}
+              title={props.title}
+              mineGuid={props.mineGuid}
+              initialValues={props.initialValues}
+              showReportHistory={showReportHistory}
+            />
+          ) : (
+            <AddMinePermitRequiredForm
+              onSubmit={props.onSubmit}
+              closeModal={props.closeModal}
+              title={props.title}
+              mineGuid={props.mineGuid}
+              initialValues={props.initialValues}
+              showReportHistory={showReportHistory}
+            />
+          ),
           props.initialValues.mine_report_submissions && (
             <ReportHistory
               hideReportHistory={hideReportHistory}

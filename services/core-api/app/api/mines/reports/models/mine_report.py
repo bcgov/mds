@@ -4,10 +4,11 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import column_property
+from sqlalchemy.orm import column_property, validates
 from sqlalchemy import select, and_, desc, asc
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
+from app.api.constants import MINE_REPORT_TYPE
 
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -22,11 +23,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     mine_report_definition_id = db.Column(
         db.Integer,
         db.ForeignKey('mine_report_definition.mine_report_definition_id'),
-        nullable=False)
+    )
     mine_report_definition = db.relationship('MineReportDefinition', lazy='joined')
     mine_report_definition_guid = association_proxy('mine_report_definition',
                                                     'mine_report_definition_guid')
-    report_name = association_proxy('mine_report_definition', 'report_name')
+    mine_report_definition_report_name = association_proxy('mine_report_definition', 'report_name')
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     mine = db.relationship('Mine', lazy='joined')
@@ -50,6 +51,13 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     created_by_idir = db.Column(db.String, nullable=False, default=User().get_user_username)
 
+    # mine_permit_report related
+    permit_condition_category = db.relationship('PermitConditionCategory', lazy='joined')
+    permit_condition_category_code = db.Column(
+        db.String, db.ForeignKey('permit_condition_category.condition_category_code'))
+    permit_condition_category_description = association_proxy('permit_condition_category',
+                                                              'description')
+
     # The below hybrid properties/expressions exist solely for filtering and sorting purposes.
 
     @hybrid_property
@@ -58,6 +66,10 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             return self.mine_report_submissions[-1].mine_report_submission_status_code
         else:
             return None
+
+    @hybrid_property
+    def report_name(self):
+        return self.mine_report_definition_report_name if self.mine_report_definition_report_name else self.permit_condition_category_description
 
     @mine_report_status_code.expression
     def mine_report_status_code(cls):
@@ -94,6 +106,7 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
                received_date,
                submission_year,
                permit_id=None,
+               permit_condition_category_code=None,
                add_to_session=True):
         mine_report = cls(
             mine_report_definition_id=mine_report_definition_id,
@@ -101,7 +114,8 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             due_date=due_date,
             received_date=received_date,
             submission_year=submission_year,
-            permit_id=permit_id)
+            permit_id=permit_id,
+            permit_condition_category_code=permit_condition_category_code)
         if add_to_session:
             mine_report.save(commit=False)
         return mine_report
@@ -126,10 +140,39 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def find_by_mine_guid_and_category(cls, _id, category):
         try:
             uuid.UUID(_id, version=4)
-            reports = cls.query.filter_by(mine_guid=_id).all()
+            reports = cls.query.filter(
+                MineReport.permit_condition_category_code.is_(None)).filter_by(mine_guid=_id).all()
             return [
                 r for r in reports if category.upper() in
                 [c.mine_report_category.upper() for c in r.mine_report_definition.categories]
             ]
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_mine_guid_and_report_type(cls, _id, report_type):
+        try:
+            uuid.UUID(_id, version=4)
+            reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False)
+            if report_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
+                reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
+            else:
+                reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))
+
+            return reports.all()
+        except ValueError:
+            return None
+
+    @validates('mine_report_definition_id')
+    def validate_mine_report_definition_id(self, key, mine_report_definition_id):
+        if mine_report_definition_id and self.permit_condition_category_code:
+            raise AssertionError(
+                'Code required reports must not specify permit required report specific data.')
+        return mine_report_definition_id
+
+    @validates('permit_condition_category_code')
+    def validate_permit_condition_category(self, key, permit_condition_category_code):
+        if permit_condition_category_code and self.mine_report_definition_id:
+            raise AssertionError(
+                'Permit report reports must not specify Code required reports specific data.')
+        return permit_condition_category_code
