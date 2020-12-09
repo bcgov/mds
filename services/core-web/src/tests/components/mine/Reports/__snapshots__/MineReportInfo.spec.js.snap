@@ -73,6 +73,7 @@ exports[`MineReportInfo renders properly 1`] = `
     handleRemoveReport={[Function]}
     handleTableChange={[Function]}
     isLoaded={false}
+    mineReportType="CRR"
     mineReports={Array []}
     openEditReportModal={[Function]}
     sortDir="desc"
