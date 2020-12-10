@@ -122,7 +122,6 @@
   margin-left: 15px;
   width: 240px;
   position: absolute;
-  text-align: right;
   left: 0;
 
   @include tablet {
@@ -133,7 +132,6 @@
     margin-left: 15px;
     top: 170px;
     position: fixed;
-    text-align: right;
     width: 240px;
 
     @include tablet {
@@ -199,6 +197,7 @@
 .now-menu-link.ant-anchor-link .ant-anchor-link {
   & .ant-anchor-link-title {
     font-weight: lighter;
+    padding-left: 5px;
   }
 }
 
