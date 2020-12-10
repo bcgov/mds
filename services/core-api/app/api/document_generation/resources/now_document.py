@@ -14,9 +14,6 @@ from app.api.now_applications.models.now_application_document_type import NOWApp
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
-from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
-
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -79,20 +76,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             update_user=username)
         now_application_identity.now_application.documents.append(now_doc)
         now_application_identity.save()
-
-        if document_type_code == 'PMA' or document_type_code == 'PMT':
-            permit_amendment = PermitAmendment.find_by_now_application_guid(now_application_guid)
-
-            new_pa_doc = PermitAmendmentDocument(
-                mine_guid=permit_amendment.mine_guid,
-                document_manager_guid=document_manager_guid,
-                document_name=filename)
-
-            permit_amendment.related_documents.append(new_pa_doc)
-
-            permit_amendment.save()
-
-
 
         # Return the generated document
         file_gen_resp = Response(

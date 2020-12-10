@@ -61,6 +61,8 @@ const regionHash = {
   NW: "Smithers",
   SW: "Victoria",
 };
+const signatureHeight = 0.8;
+
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
@@ -187,6 +189,14 @@ export class ProcessPermit extends Component {
       issuing_inspector_title: "Inspector of Mines",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
+    permitGenObject.isDraft = false;
+    permitGenObject.images = {
+      issuing_inspector_signature: {
+        source: noticeOfWork.issuing_inspector.signature,
+        width: null,
+        height: signatureHeight,
+      },
+    };
 
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
@@ -239,6 +249,7 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
+    console.log(values);
     this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -258,13 +269,13 @@ export class ProcessPermit extends Component {
 
   handleApplication = (values, code) => {
     if (code === approvedCode) {
-      this.handleApprovedApplication(values, code);
+      this.handleApprovedApplication(values);
     } else {
       this.afterSuccess(values, "This application has been successfully rejected.", code);
     }
   };
 
-  handleApprovedApplication = (values, code) => {
+  handleApprovedApplication = (values) => {
     const docType = this.props.noticeOfWork.type_of_application === "New Permit" ? "PMT" : "PMA";
     this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
@@ -290,11 +301,8 @@ export class ProcessPermit extends Component {
             ...permitObj,
             document_list: this.createDocList(this.props.noticeOfWork),
           },
-          this.afterSuccess(
-            values,
-            "Permit has been successfully issued for this application.",
-            code
-          )
+          values,
+          this.afterSuccess
         );
       });
   };
@@ -320,9 +328,14 @@ export class ProcessPermit extends Component {
       });
   };
 
-  handleGenerateDocumentFormSubmit = (documentType, values, afterSuccess = null) => {
+  handleGenerateDocumentFormSubmit = (
+    documentType,
+    permitGenObj,
+    values = null,
+    afterSuccess = null
+  ) => {
     const documentTypeCode = documentType.now_application_document_type_code;
-    const newValues = values;
+    const newValues = permitGenObj;
     documentType.document_template.form_spec
       .filter((field) => field.type === "DATE")
       .forEach((field) => {
@@ -332,13 +345,19 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props
-      .generateNoticeOfWorkApplicationDocument(
-        documentTypeCode,
-        payload,
-        "Successfully created document and attached it to Notice of Work"
-      )
-      .then(() => afterSuccess && afterSuccess());
+    this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully created document and attached it to Notice of Work",
+      () => {
+        if (
+          documentType.now_application_document_type_code === "PMA" ||
+          documentType.now_application_document_type_code === "PMT"
+        ) {
+          afterSuccess(values, "Permit has been successfully issued for this application.", "AIA");
+        }
+      }
+    );
   };
 
   getValidationMessages = () => {
