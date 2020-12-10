@@ -1,8 +1,7 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { throttle } from "lodash";
+import { throttle, isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
@@ -113,17 +112,10 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.label &&
-      this.props.initialValues.value
-    ) {
+    if (!isEmpty(this.props.initialValues)) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: {
-          value: this.props.initialValues.value,
-          label: this.props.initialValues.label,
-        },
+        selectedOption: this.props.initialValues,
       });
     }
   }

@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
-import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
+import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 
 const propTypes = {
   contactFormValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
@@ -61,10 +61,9 @@ export const VerifyApplicationInformationForm = (props) => {
       <h4>Match Application Contacts to Core Contacts</h4>
       <p>Select a Contact from Core for each person shown, or update the Roles if required.</p>
       <Divider />
-      <EditNoWContacts
+      <VerifyNoWContacts
         initialValues={props.originalNoticeOfWork}
         contactFormValues={props.contactFormValues}
-        isVerifying
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>

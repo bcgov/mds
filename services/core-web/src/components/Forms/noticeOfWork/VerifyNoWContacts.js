@@ -23,6 +23,8 @@ import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 
+import Address from "@/components/common/Address";
+
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 
@@ -31,26 +33,23 @@ const propTypes = {
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  isEditView: PropTypes.bool,
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
 };
 
-const defaultProps = {
-  isEditView: false,
-};
+const defaultProps = {};
 
 const handleRemove = (fields, index) => {
   const promise = new Promise(function(resolve) {
-    resolve(fields.push({ ...fields.get(index), state_modified: "delete" }));
+    resolve(fields.push({ ...fields.get(index) }));
   });
   return promise.then(() => {
     fields.remove(index);
   });
 };
 
-const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedOnce }) => {
+const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
@@ -60,14 +59,13 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
       <Row gutter={24}>
         {fields
           .map((field, index) => {
-            const contactExists = fields.get(index) && fields.get(index).now_party_appointment_id;
-            const initialParty =
-              isEditView && contactExists
-                ? {
-                    label: fields.get(index).party.name,
-                    value: fields.get(index).party_guid,
-                  }
-                : undefined;
+            const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
+            const initialParty = contactExists
+              ? {
+                  label: fields.get(index).party.name,
+                  value: fields.get(index).party_guid,
+                }
+              : undefined;
             return (
               <Col lg={12} sm={24} key={fields.get(index).id}>
                 <Card
@@ -90,41 +88,58 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
                       <span className="field-title">{`Application ${
                         contactExists ? fields.get(index).mine_party_appt_type_code_description : ""
                       }`}</span>
-
-                      {contactExists ? (
-                        <Popconfirm
-                          className="position-right no-margin"
-                          placement="topLeft"
-                          title={`Are you sure you want to remove ${startCase(
-                            fields.get(index).party.name
-                          )} as a contact on this Notice of Work?`}
-                          okText="Delete"
-                          cancelText="Cancel"
-                          onConfirm={() => {
-                            handleRemove(fields, index);
-                          }}
-                        >
-                          <Button className="full-mobile" ghost type="primary">
-                            <img name="remove" src={TRASHCAN} alt="Remove User" />
-                          </Button>
-                        </Popconfirm>
-                      ) : (
-                        <Button
-                          ghost
-                          onClick={() => {
-                            fields.remove(index);
-                          }}
-                          className="position-right no-margin"
-                        >
-                          <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                        </Button>
-                      )}
+                      <Button
+                        ghost
+                        onClick={() => {
+                          fields.remove(index);
+                        }}
+                        className="position-right no-margin"
+                      >
+                        <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                      </Button>
                     </div>
                   }
                   bordered={false}
                 >
                   <Row align="middle" justify="center">
-                    <Col span={24}>
+                    <Col span={9}>
+                      <h4>
+                        {contactExists ? startCase(fields.get(index).party.name) : "New Contact"}
+                      </h4>
+                      {contactExists && (
+                        <div>
+                          <div className="inline-flex">
+                            <div className="padding-right">
+                              <MailOutlined className="icon-sm" />
+                            </div>
+                            {fields.get(index).party.email &&
+                            fields.get(index).party.email !== "Unknown" ? (
+                              <a href={`mailto:${fields.get(index).party.email}`}>
+                                {fields.get(index).party.email}
+                              </a>
+                            ) : (
+                              <p>{Strings.EMPTY_FIELD}</p>
+                            )}
+                          </div>
+                          <div className="inline-flex">
+                            <div className="padding-right">
+                              <PhoneOutlined className="icon-sm" />
+                            </div>
+                            <p>
+                              {fields.get(index).party.phone_no}{" "}
+                              {fields.get(index).party.phone_ext
+                                ? `x${fields.get(index).party.phone_ext}`
+                                : ""}
+                            </p>
+                          </div>
+                          <Address address={fields.get(index).party?.address[0] || {}} />
+                        </div>
+                      )}
+                    </Col>
+                    <Col span={3}>
+                      <DoubleRightOutlined className="icon-xxl--lightgrey" />
+                    </Col>
+                    <Col span={12}>
                       <Form.Item label="Role*">
                         <Field
                           usedOptions={rolesUsedOnce}
@@ -139,15 +154,17 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
                         <PartySelectField
                           id={`${field}.party_guid`}
                           name={`${field}.party_guid`}
-                          label="Contact*"
+                          label="Matching Core Contact*"
                           partyLabel="Contact"
                           validate={[required]}
                           allowAddingParties
                           initialValues={
                             contactExists
                               ? {
-                                  label: fields.get(index).party.name,
-                                  value: fields.get(index).party_guid,
+                                  ...fields.get(index).party,
+                                  ...(fields.get(index).party.address.length > 0
+                                    ? { ...fields.get(index).party.address[0], ...initialParty }
+                                    : {}),
                                 }
                               : {}
                           }
@@ -186,7 +203,7 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
   );
 };
 
-export class EditNoWContacts extends Component {
+export class VerifyNoWContacts extends Component {
   state = { rolesUsedOnce: [] };
 
   componentDidMount() {
@@ -235,15 +252,15 @@ export class EditNoWContacts extends Component {
         name="contacts"
         component={renderContacts}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
-        isEditView={this.props.isEditView}
+        isEditView
         rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );
   }
 }
 
-EditNoWContacts.propTypes = propTypes;
-EditNoWContacts.defaultProps = defaultProps;
+VerifyNoWContacts.propTypes = propTypes;
+VerifyNoWContacts.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
@@ -259,4 +276,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditNoWContacts);
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyNoWContacts);

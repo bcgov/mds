@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
@@ -301,7 +302,7 @@ export class NoticeOfWorkApplication extends Component {
       this.focusErrorInput();
     } else {
       const { id } = this.props.match.params;
-      this.props
+      return this.props
         .updateNoticeOfWorkApplication(
           this.props.formValues,
           this.props.noticeOfWork.now_application_guid
@@ -600,7 +601,12 @@ export class NoticeOfWorkApplication extends Component {
               Next Issue
             </Button>
           )}
-          <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+          <Button
+            type="primary"
+            className="full-mobile"
+            onClick={this.handleSaveNOWEdit}
+            disabled={this.props.submitting}
+          >
             Save
           </Button>
         </div>
