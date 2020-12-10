@@ -219,7 +219,7 @@ export class ProcessPermit extends Component {
     );
   };
 
-  getValidationMessages = () => {
+  getValidationErrors = () => {
     const validationMessages = [];
     if (
       !(
@@ -238,16 +238,6 @@ export class ProcessPermit extends Component {
     ) {
       validationMessages.push({ message: `The reclamation securities must be recorded.` });
     }
-    if (
-      !this.props.noticeOfWork.documents ||
-      !this.props.noticeOfWork.documents.some(
-        (doc) => doc.now_application_document_type_code === "MRP" && doc.is_final_package
-      )
-    ) {
-      validationMessages.push({
-        message: `The final application package requires a Mine Emergency Response Plan.`,
-      });
-    }
     this.props.progressStatusCodes
       .filter(
         (progressStatus) =>
@@ -257,6 +247,33 @@ export class ProcessPermit extends Component {
       .forEach((progressStatus) =>
         validationMessages.push({ message: `${progressStatus.description} must be completed.` })
       );
+    return validationMessages;
+  };
+
+  getValidationWarnings = () => {
+    const validationMessages = [];
+    // Mine Emergency Resposne Plan
+    if (
+      !this.props.noticeOfWork.documents ||
+      !this.props.noticeOfWork.documents.some(
+        (doc) => doc.now_application_document_type_code === "MRP" && doc.is_final_package
+      )
+    ) {
+      validationMessages.push({
+        message: `The final application package is missing a Mine Emergency Response Plan.`,
+      });
+    }
+    // Archeological Chance Find Procedure
+    if (
+      !this.props.noticeOfWork.documents ||
+      !this.props.noticeOfWork.documents.some(
+        (doc) => doc.now_application_document_type_code === "ACP" && doc.is_final_package
+      )
+    ) {
+      validationMessages.push({
+        message: `The final application package is missing an Archaeological Chance Find Procedure.`,
+      });
+    }
     return validationMessages;
   };
 
@@ -285,8 +302,10 @@ export class ProcessPermit extends Component {
   );
 
   render = () => {
-    const validationMessages = this.getValidationMessages();
-    const validationErrors = validationMessages.length > 0;
+    const validationErrors = this.getValidationErrors();
+    const validationWarnings = this.getValidationWarnings();
+    const isValidationErrors = validationErrors.length > 0;
+    const isValidationWarnings = validationWarnings.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
@@ -303,7 +322,7 @@ export class ProcessPermit extends Component {
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                <Dropdown overlay={this.menu(isValidationErrors)} placement="bottomLeft">
                   <Button type="primary" className="full-mobile">
                     Process <DownOutlined />
                   </Button>
@@ -333,26 +352,20 @@ export class ProcessPermit extends Component {
             </Timeline>
           </div>
           <div className="view--content side-menu--content">
-            <Result
-              status={(isApproved && "success") || (validationErrors && "warning") || "info"}
-              title={
-                (isApproved &&
-                  `This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`) ||
-                (validationErrors &&
-                  `The following issues must be resolved before you can issue this ${
-                    isAmendment ? "amendment" : "permit"
-                  }.`) ||
-                `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
-              }
-              extra={[
-                <Row>
-                  <Col
-                    lg={{ span: 12, offset: 6 }}
-                    md={{ span: 16, offset: 4 }}
-                    sm={{ span: 20, offset: 2 }}
-                    style={{ textAlign: isApproved ? "center" : "left" }}
-                  >
-                    {isApproved ? (
+            {// Permit is issued
+            isApproved && (
+              <Result
+                style={{ paddingTop: "0px" }}
+                status="success"
+                title={`This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`}
+                extra={[
+                  <Row>
+                    <Col
+                      lg={{ span: 12, offset: 6 }}
+                      md={{ span: 16, offset: 4 }}
+                      sm={{ span: 20, offset: 2 }}
+                      style={{ textAlign: "center" }}
+                    >
                       <Button
                         onClick={() =>
                           this.props.history.push(
@@ -362,20 +375,77 @@ export class ProcessPermit extends Component {
                       >
                         <LinkOutlined /> View permit on the mine record
                       </Button>
-                    ) : (
-                      validationMessages.map((message) => (
+                    </Col>
+                  </Row>,
+                ]}
+              />
+            )}
+            {// Permit is ready to be issued
+            !isApproved && !isValidationErrors && (
+              <Result
+                style={{ paddingTop: "0px" }}
+                status="success"
+                title={`This ${
+                  isAmendment ? "amendment" : "permit"
+                } is ready to be processed and issued.`}
+              />
+            )}
+            {// Validation Errors
+            !isApproved && isValidationErrors && (
+              <Result
+                style={{ paddingTop: "0px" }}
+                status="warning"
+                title={`The following issues must be resolved before you can issue this ${
+                  isAmendment ? "amendment" : "permit"
+                }.`}
+                extra={[
+                  <Row>
+                    <Col
+                      lg={{ span: 12, offset: 6 }}
+                      md={{ span: 16, offset: 4 }}
+                      sm={{ span: 20, offset: 2 }}
+                      style={{ textAlign: isApproved ? "center" : "left" }}
+                    >
+                      {validationErrors.map((message) => (
                         <Row style={{ paddingBottom: "8px" }}>
                           <Col span={2}>
                             <RightCircleOutlined />
                           </Col>
                           <Col span={22}>{message.message}</Col>
                         </Row>
-                      ))
-                    )}
-                  </Col>
-                </Row>,
-              ]}
-            />
+                      ))}
+                    </Col>
+                  </Row>,
+                ]}
+              />
+            )}
+            {// Validation Warnings
+            !isApproved && isValidationWarnings && (
+              <Result
+                style={{ paddingTop: "0px" }}
+                status="info"
+                title="Please review the following warnings before issuing the permit."
+                extra={[
+                  <Row>
+                    <Col
+                      lg={{ span: 12, offset: 6 }}
+                      md={{ span: 16, offset: 4 }}
+                      sm={{ span: 20, offset: 2 }}
+                      style={{ textAlign: "left" }}
+                    >
+                      {validationWarnings.map((message) => (
+                        <Row style={{ paddingBottom: "8px" }}>
+                          <Col span={2}>
+                            <RightCircleOutlined />
+                          </Col>
+                          <Col span={22}>{message.message}</Col>
+                        </Row>
+                      ))}
+                    </Col>
+                  </Row>,
+                ]}
+              />
+            )}
           </div>
         </>
       </div>
