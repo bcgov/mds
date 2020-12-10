@@ -15,6 +15,7 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
   required,
   lat,
@@ -38,6 +39,8 @@ import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
+import { USER_ROLES } from "@common/constants/environment";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -63,9 +66,12 @@ const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   proposedTonnage: PropTypes.number.isRequired,
   adjustedTonnage: PropTypes.number.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+
   const renderCodeValues = (codeHash, value) => {
     if (value === Strings.EMPTY_FIELD) {
       return value;
@@ -256,6 +262,7 @@ export const ReviewNOWApplication = (props) => {
           <ReviewApplicationFeeContent
             initialValues={props.noticeOfWork}
             isViewMode={props.isViewMode}
+            isAdmin={isAdmin}
             proposedTonnage={props.proposedTonnage}
             adjustedTonnage={props.adjustedTonnage}
           />
@@ -753,6 +760,7 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
+    userRoles: getUserAccessData(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

@@ -16,6 +16,7 @@ import moment from "moment";
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
 };
@@ -257,10 +258,12 @@ export class ReviewApplicationFeeContent extends Component {
       this.props.initialValues.proposed_start_date,
       this.props.initialValues.proposed_end_date
     );
+
     const showCalculationInvalidError =
       this.state.isDateRangeInvalid &&
       !isNil(this.props.adjustedTonnage) &&
       this.props.initialValues.notice_of_work_type_code === "PLA";
+
     return (
       <>
         <Drawer
@@ -298,7 +301,12 @@ export class ReviewApplicationFeeContent extends Component {
             Proposed Authorization End Date
             <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
-          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
+          <Field
+            id="proposed_end_date"
+            name="proposed_end_date"
+            component={RenderDate}
+            disabled={this.props.isViewMode || !this.props.isAdmin}
+          />
           <div className="field-title">
             Proposed Term of Application
             <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
@@ -317,8 +325,8 @@ export class ReviewApplicationFeeContent extends Component {
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            disabled
             validate={[number]}
+            disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
             Adjusted Annual Maximum Tonnage
