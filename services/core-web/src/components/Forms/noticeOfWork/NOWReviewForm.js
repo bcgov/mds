@@ -46,7 +46,6 @@ const propTypes = {
 const defaultProps = {
   change: () => {},
 };
-
 export class NOWReviewForm extends Component {
   state = {
     uploadedFiles: [],
