@@ -143,6 +143,7 @@ export class NOWApplicationReviews extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       now_application_review_type_code: type,
       now_application_document_type_code: type === ADVERTISEMENT ? ADVERTISEMENT_DOC : null,
+      response_url: type === CONSULTATION_TAB_CODE ? "https://" : null,
     };
     this.props.openModal({
       props: {
