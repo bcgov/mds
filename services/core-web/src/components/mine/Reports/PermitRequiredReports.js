@@ -59,6 +59,7 @@ const defaultParams = {
   received_date_end: undefined,
   received_only: undefined,
   requested_by: undefined,
+  permit_guid: undefined,
   status: [],
   sort_field: "received_date",
   sort_dir: "desc",
@@ -206,6 +207,7 @@ export class PermitRequiredReports extends Component {
             report.mine_report_submissions[report.mine_report_submissions.length - 1]
               .mine_report_submission_status_code
           ));
+      const permit = !params.permit_guid || params.permit_guid === report.permit_guid;
       return (
         report_type &&
         compliance_year &&
@@ -215,7 +217,8 @@ export class PermitRequiredReports extends Component {
         received_date_end &&
         received_only &&
         requested_by &&
-        status
+        status &&
+        permit
       );
     });
   };
