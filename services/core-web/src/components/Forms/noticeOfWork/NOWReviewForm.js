@@ -28,6 +28,7 @@ import {
   ADVERTISEMENT,
   REFERRAL_CODE,
   CONSULTATION_TAB_CODE,
+  ADVERTISEMENT_DOC,
 } from "@/constants/NOWConditions";
 
 const propTypes = {
@@ -72,7 +73,10 @@ export class NOWReviewForm extends Component {
   };
 
   render() {
-    const filteredDropDownOptions = this.props.documentTypeOptions.filter(({ subType }) => {
+    const filteredDropDownOptions = this.props.documentTypeOptions.filter(({ subType, value }) => {
+      if (this.props.type === PUBLIC_COMMENT) {
+        return this.props.categoriesToShow.includes(subType) && value !== ADVERTISEMENT_DOC;
+      }
       return this.props.categoriesToShow.includes(subType);
     });
 
