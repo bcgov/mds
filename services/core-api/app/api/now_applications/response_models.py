@@ -273,13 +273,16 @@ NOW_APPLICATION_DELAY = api.model(
         'end_date': fields.DateTime
     })
 
-NOW_APPLICATION_REVIEW_MDOEL = api.model(
+NOW_APPLICATION_REVIEW_MODEL = api.model(
     'NOWApplicationReview', {
         'now_application_review_id': fields.Integer,
         'now_application_guid': fields.String(attribute='now_application.now_application_guid'),
         'now_application_review_type_code': fields.String,
         'response_date': fields.Date,
         'referee_name': fields.String,
+        'referral_number': fields.String,
+        'response_url': fields.String,
+        'due_date': fields.Date,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     })
 

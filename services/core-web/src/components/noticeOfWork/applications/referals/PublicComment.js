@@ -6,6 +6,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AddButton from "@/components/common/AddButton";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import { PUBLIC_COMMENT, ADVERTISEMENT } from "@/constants/NOWConditions";
 
 /**
  * @constant PublicComment renders edit/view for the PublicComment step
@@ -24,8 +25,7 @@ const propTypes = {
 };
 
 const defaultProps = {};
-const publicCommentCode = "PUB";
-const advertisementCode = "ADV";
+const categoriesToShow = ["PDO"];
 export const PublicComment = (props) => {
   return (
     <div>
@@ -33,20 +33,26 @@ export const PublicComment = (props) => {
         <NOWApplicationReviewsTable
           isLoaded={props.isLoaded}
           noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
-            (review) => review.now_application_review_type_code === "ADV"
+            (review) => review.now_application_review_type_code === ADVERTISEMENT
           )}
           noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
           handleDelete={props.handleDelete}
           openEditModal={props.openEditModal}
           handleEdit={props.handleEdit}
           handleDocumentDelete={props.handleDocumentDelete}
-          type={advertisementCode}
+          type={ADVERTISEMENT}
+          categoriesToShow={categoriesToShow}
         />
         <div className="right center-mobile">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={publicCommentCode}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={PUBLIC_COMMENT}>
             <AddButton
               onClick={(event) =>
-                props.openAddReviewModal(event, props.handleAddReview, advertisementCode)
+                props.openAddReviewModal(
+                  event,
+                  props.handleAddReview,
+                  ADVERTISEMENT,
+                  categoriesToShow
+                )
               }
               type="secondary"
             >
@@ -59,20 +65,26 @@ export const PublicComment = (props) => {
         <NOWApplicationReviewsTable
           isLoaded={props.isLoaded}
           noticeOfWorkReviews={props.noticeOfWorkReviews.filter(
-            (review) => review.now_application_review_type_code === "PUB"
+            (review) => review.now_application_review_type_code === PUBLIC_COMMENT
           )}
           noticeOfWorkReviewTypes={props.noticeOfWorkReviewTypes}
           handleDelete={props.handleDelete}
           openEditModal={props.openEditModal}
           handleEdit={props.handleEdit}
           handleDocumentDelete={props.handleDocumentDelete}
-          type={publicCommentCode}
+          type={PUBLIC_COMMENT}
+          categoriesToShow={categoriesToShow}
         />
         <div className="right center-mobile">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={publicCommentCode}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={PUBLIC_COMMENT}>
             <AddButton
               onClick={(event) =>
-                props.openAddReviewModal(event, props.handleAddReview, publicCommentCode)
+                props.openAddReviewModal(
+                  event,
+                  props.handleAddReview,
+                  PUBLIC_COMMENT,
+                  categoriesToShow
+                )
               }
               type="secondary"
             >

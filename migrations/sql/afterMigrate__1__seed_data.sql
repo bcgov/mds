@@ -671,7 +671,18 @@ VALUES
     ('NPI', 'No Permit Required IP', true, NULL, 'system-mds', 'system-mds'),
     ('WFS', '30 day Warning for Security', true, 'SDO', 'system-mds', 'system-mds'),
     ('PEL', 'Permit Enclosed Letter', true, NULL, 'system-mds', 'system-mds'),
-    ('RFD', 'Reasons for Decision', true, NULL, 'system-mds', 'system-mds')
+    ('RFD', 'Reasons for Decision', true, NULL, 'system-mds', 'system-mds'),
+    ('CRS', 'Consultation Report/Summary', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BCR', 'Begin Consultation Request', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CCC', 'Consultation Correspondence (not in CRTS)', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CSD', 'Consultation Support for Decision', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BRR', 'Begin Referral Request', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RSR', 'Referral Summary Roll Up', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RLE', 'Referral Letter (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RRE', 'Referral Response (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('PCA', 'Advertisement', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCC', 'Public Comment', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(

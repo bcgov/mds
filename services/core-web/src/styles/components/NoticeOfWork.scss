@@ -184,7 +184,8 @@
 
 .now-menu-link {
   padding: 10px;
-  a:hover {
+  a:hover,
+  a:active {
     text-decoration: none;
     color: $light-violet;
   }
@@ -193,11 +194,11 @@
     line-height: 1.75;
     border-bottom: none;
   }
+}
 
-  &.lighter {
-    &.ant-anchor-link-title {
-      font-weight: lighter;
-    }
+.now-menu-link.ant-anchor-link .ant-anchor-link {
+  & .ant-anchor-link-title {
+    font-weight: lighter;
   }
 }
 

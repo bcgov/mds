@@ -27,6 +27,8 @@ const propTypes = {
 };
 
 export class NOWSideMenu extends Component {
+  state = { showNested: false };
+
   // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
@@ -55,10 +57,12 @@ export class NOWSideMenu extends Component {
 
   handleAnchorOnClick = (e, link) => {
     e.preventDefault();
+    this.handleNested(link.href.substring(1));
     this.updateUrlRoute(link.href);
   };
 
   handleAnchorOnChange = (currentActiveLink) => {
+    this.handleNested(currentActiveLink.substring(1));
     if (
       (this.props.history.action === "POP" &&
         currentActiveLink === this.props.history.location.hash) ||
@@ -79,6 +83,19 @@ export class NOWSideMenu extends Component {
     }
 
     this.props.history.push(this.urlRoute, { currentActiveLink: route });
+  };
+
+  handleNested = (link) => {
+    // gets the children if they exist
+    const getChildren = sideMenuOptions[this.props.tabSection].filter(
+      ({ children }) => children?.length > 0
+    )[0]?.children;
+    // checks if child href matches what was clicked
+    const values = getChildren?.filter(({ href }) => link === href);
+    // checks if children exist
+    const obj = sideMenuOptions[this.props.tabSection].filter(({ href }) => link === href)[0];
+    const show = obj?.children?.length > 0 || values?.length > 0;
+    this.setState({ showNested: show });
   };
 
   render() {
@@ -102,11 +119,12 @@ export class NOWSideMenu extends Component {
               <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
                 {children &&
                   children.length > 1 &&
+                  this.state.showNested &&
                   children.map((child) => (
                     <Anchor.Link
                       href={`#${child.href}`}
                       title={child.title}
-                      className="now-menu-link lighter"
+                      className="now-menu-link"
                     />
                   ))}
               </Anchor.Link>

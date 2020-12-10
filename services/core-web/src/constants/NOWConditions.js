@@ -70,12 +70,12 @@ export const sideMenuOptions = {
       title: "Conditions",
       alwaysVisible: true,
       children: [
-        { href: "GEC", title: "> General" },
-        { href: "HSC", title: "> Healthy and Safety" },
-        { href: "GOC", title: "> Geotechnical" },
-        { href: "ELC", title: "> Environmental Land" },
-        { href: "RCC", title: "> Reclamation and Closure" },
-        { href: "ADC", title: "> Additional Conditions" },
+        { href: "GEC", title: "General" },
+        { href: "HSC", title: "Healthy and Safety" },
+        { href: "GOC", title: "Geotechnical" },
+        { href: "ELC", title: "Environmental Land" },
+        { href: "RCC", title: "Reclamation and Closure" },
+        { href: "ADC", title: "Additional Conditions" },
       ],
     },
     { href: "maps", title: "Maps", alwaysVisible: true, children: [] },
@@ -134,3 +134,10 @@ export const securityNotRequiredReasonOptions = [
   { value: "Bonding is a Permit Condition", label: "Bonding is a Permit Condition" },
   { value: "Sufficient Bond in Place", label: "Sufficient Bond in Place" },
 ];
+
+export const CONSULTATION_REVIEW_CODE = "FNC";
+export const CONSULTATION_TAB_CODE = "CON";
+export const REFERRAL_CODE = "REF";
+export const PUBLIC_COMMENT = "PUB";
+export const ADVERTISEMENT = "ADV";
+export const ADVERTISEMENT_DOC = "PCA";

@@ -12,20 +12,23 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_review import NOWApplicationReview
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
-from app.api.now_applications.response_models import NOW_APPLICATION_REVIEW_MDOEL
+from app.api.now_applications.response_models import NOW_APPLICATION_REVIEW_MODEL
 
 
 class NOWApplicationReviewListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
-        'now_application_review_type_code', type=str, help='guid of the mine.', required=True)
-    parser.add_argument(
-        'response_date', type=inputs.datetime_from_iso8601, help='guid of the mine.')
-    parser.add_argument('referee_name', type=str, help='guid of the mine.')
+        'now_application_review_type_code', type=str, help='Type of Review', required=True)
+    parser.add_argument('now_application_document_type_code', type=str, help='Type of document')
+    parser.add_argument('response_date', type=inputs.datetime_from_iso8601, help='Date of Response')
+    parser.add_argument('referee_name', type=str, help='Name of Referee')
+    parser.add_argument('referral_number', type=str, help='referral number for E-Referral')
+    parser.add_argument('response_url', type=str, help='CRTS URL')
+    parser.add_argument('due_date', type=inputs.datetime_from_iso8601, help='Due Date')
 
     @api.doc(description='Add new Review to Now Application', params={})
     @requires_role_edit_permit
-    @api.marshal_with(NOW_APPLICATION_REVIEW_MDOEL, code=201)
+    @api.marshal_with(NOW_APPLICATION_REVIEW_MODEL, code=201)
     def post(self, application_guid):
         now_application = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application:
@@ -37,7 +40,9 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
         new_review = NOWApplicationReview.create(now_application.now_application,
                                                  data['now_application_review_type_code'],
                                                  data.get('response_date'),
-                                                 data.get('referee_name'))
+                                                 data.get('referee_name'),
+                                                 data.get('referral_number'),
+                                                 data.get('response_url'), data.get('due_date'))
 
         new_documents = request.json.get('uploadedFiles', [])
         if 'uploadedFiles' in request.json.keys():
@@ -51,7 +56,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
 
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
-                now_application_document_type_code='PUB' if new_review.now_application_review_type_code == 'PUB' else 'REV',
+                now_application_document_type_code=data['now_application_document_type_code'],
                 now_application_id=now_application.now_application.now_application_id,
             )
 
@@ -64,7 +69,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
 
     @api.doc(description='Add new Review to Now Application', params={})
     @requires_role_view_all
-    @api.marshal_with(NOW_APPLICATION_REVIEW_MDOEL, envelope='records', code=201)
+    @api.marshal_with(NOW_APPLICATION_REVIEW_MODEL, envelope='records', code=201)
     def get(self, application_guid):
         now_application = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application:
@@ -78,10 +83,11 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
 class NOWApplicationReviewResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument(
-        'now_application_review_type_code', type=str, help='guid of the mine.', required=True)
-    parser.add_argument(
-        'response_date', type=inputs.datetime_from_iso8601, help='guid of the mine.')
-    parser.add_argument('referee_name', type=str, help='guid of the mine.')
+        'now_application_review_type_code', type=str, help='Type of Review', required=True)
+    parser.add_argument('now_application_document_type_code', type=str, help='Type of document')
+    parser.add_argument('response_date', type=inputs.datetime_from_iso8601, help='Date of Response')
+    parser.add_argument('referee_name', type=str, help='Name of Referee')
+    parser.add_argument('referral_number', type=str, help='referral number for E-Referral')
 
     @api.doc(description='delete review from Now Application', params={})
     @requires_role_edit_permit
@@ -104,8 +110,9 @@ class NOWApplicationReviewResource(Resource, UserMixin):
 
     @api.doc(description='Update Review to Now Application', params={})
     @requires_role_edit_permit
-    @api.marshal_with(NOW_APPLICATION_REVIEW_MDOEL, code=201)
+    @api.marshal_with(NOW_APPLICATION_REVIEW_MODEL, code=201)
     def put(self, application_guid, now_application_review_id):
+        data = self.parser.parse_args()
         now_app_review = NOWApplicationReview.query.get(now_application_review_id)
         if not now_app_review or str(
                 now_app_review.now_application.now_application_guid) != application_guid:
@@ -118,6 +125,7 @@ class NOWApplicationReviewResource(Resource, UserMixin):
         now_app_review.deep_update_from_dict(request.json)
 
         for doc in new_documents:
+            current_app.logger.debug(doc)
             new_mine_doc = MineDocument(
                 mine_guid=now_app_review.now_application.mine_guid,
                 document_manager_guid=doc[0],
@@ -125,7 +133,7 @@ class NOWApplicationReviewResource(Resource, UserMixin):
 
             new_now_mine_doc = NOWApplicationDocumentXref(
                 mine_document=new_mine_doc,
-                now_application_document_type_code='PUB' if now_app_review.now_application_review_type_code == 'PUB' else 'REV',
+                now_application_document_type_code=data['now_application_document_type_code'],
                 now_application_id=now_app_review.now_application_id,
             )
 

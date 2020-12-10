@@ -6,6 +6,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import AddButton from "@/components/common/AddButton";
 import NOWApplicationReviewsTable from "@/components/noticeOfWork/applications/referals/NOWApplicationReviewsTable";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import { CONSULTATION_TAB_CODE } from "@/constants/NOWConditions";
 
 /**
  * @constant Consultation renders edit/view for the Consultation step
@@ -23,8 +24,7 @@ const propTypes = {
   handleAddReview: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
-
+const categoriesToShow = ["CDO"];
 export const Consultation = (props) => {
   return (
     <div>
@@ -37,12 +37,20 @@ export const Consultation = (props) => {
           openEditModal={props.openEditModal}
           handleEdit={props.handleEdit}
           handleDocumentDelete={props.handleDocumentDelete}
-          type="FNC"
+          type={CONSULTATION_TAB_CODE}
+          categoriesToShow={categoriesToShow}
         />
         <div className="right center-mobile">
-          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="CON">
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={CONSULTATION_TAB_CODE}>
             <AddButton
-              onClick={(event) => props.openAddReviewModal(event, props.handleAddReview, "FNC")}
+              onClick={(event) =>
+                props.openAddReviewModal(
+                  event,
+                  props.handleAddReview,
+                  CONSULTATION_TAB_CODE,
+                  categoriesToShow
+                )
+              }
               type="secondary"
             >
               Add Consultation
@@ -55,6 +63,5 @@ export const Consultation = (props) => {
 };
 
 Consultation.propTypes = propTypes;
-Consultation.defaultProps = defaultProps;
 
 export default Consultation;

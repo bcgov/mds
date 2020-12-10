@@ -23,8 +23,8 @@ const propTypes = {
   handleAddReview: PropTypes.func.isRequired,
 };
 
-const defaultProps = {};
 const referralCode = "REF";
+const categoriesToShow = ["RDO"];
 export const Referral = (props) => {
   return (
     <div>
@@ -38,13 +38,14 @@ export const Referral = (props) => {
           handleEdit={props.handleEdit}
           handleDocumentDelete={props.handleDocumentDelete}
           type={referralCode}
+          categoriesToShow={categoriesToShow}
         />
       </ScrollContentWrapper>
       <div className="right center-mobile">
         <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={referralCode}>
           <AddButton
             onClick={(event) =>
-              props.openAddReviewModal(event, props.handleAddReview, referralCode)
+              props.openAddReviewModal(event, props.handleAddReview, referralCode, categoriesToShow)
             }
             type="secondary"
           >
@@ -57,6 +58,5 @@ export const Referral = (props) => {
 };
 
 Referral.propTypes = propTypes;
-Referral.defaultProps = defaultProps;
 
 export default Referral;

@@ -2,11 +2,8 @@ import React from "react";
 import { Button, Popconfirm } from "antd";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
-import {
-  getNoticeOfWorkApplicationApplicationReviewTypeHash,
-  getNoticeOfWorkApplicationDocumentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
@@ -19,24 +16,24 @@ import CoreTable from "@/components/common/CoreTable";
 const propTypes = {
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  documentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleDocumentDelete: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   openEditModal: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
+  categoriesToShow: PropTypes.arrayOf(PropTypes.String).isRequired,
 };
 
 const ReviewerLabels = {
-  FNC: "First Nations Advisor",
+  CON: "First Nations Advisor",
   PUB: "Commenter Name",
   REF: "Referral Number",
   ADV: "Uploaded By",
 };
 
 const responseDateLabels = {
-  FNC: "Date Received",
+  CON: "Date Received",
   PUB: "Date Received",
   REF: "Date Received",
   ADV: "Date Published",
@@ -57,23 +54,12 @@ const columns = (type) => {
     render: (text) => (
       <div title="Link to CRTS">
         {text ? (
-          <a href="text" alt="link to CRTS" target="_blank" rel="noopener noreferrer">
-            text
+          <a href={text} alt="link to CRTS" target="_blank" rel="noopener noreferrer">
+            {text}
           </a>
         ) : (
           Strings.EMPTY_FIELD
         )}
-      </div>
-    ),
-  };
-
-  const categoryColumn = {
-    title: "Document Category",
-    dataIndex: "document_category",
-    key: "document_category",
-    render: (text, record) => (
-      <div title="Document Category">
-        {record.documentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
       </div>
     ),
   };
@@ -99,22 +85,20 @@ const columns = (type) => {
       key: "documents",
       render: (text) => (
         <div title="Documents">
-          <ul>
-            {text.length > 0
-              ? text.map((doc) => (
-                  <li key={doc.mine_document.mine_document_guid}>
-                    <div>
-                      <LinkButton
-                        key={doc.mine_document.mine_document_guid}
-                        onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
-                      >
-                        {doc.mine_document.document_name}
-                      </LinkButton>
-                    </div>
-                  </li>
-                ))
-              : Strings.EMPTY_FIELD}
-          </ul>
+          {text.length > 0
+            ? text.map((doc) => (
+                <li key={doc.mine_document.mine_document_guid}>
+                  <div key={doc.mine_document.mine_document_guid}>
+                    <LinkButton
+                      key={doc.mine_document.mine_document_guid}
+                      onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
+                    >
+                      {truncateFilename(doc.mine_document.document_name)}
+                    </LinkButton>
+                  </div>
+                </li>
+              ))
+            : Strings.EMPTY_FIELD}
         </div>
       ),
     },
@@ -130,8 +114,7 @@ const columns = (type) => {
       key: "editDeleteButtons",
       align: "right",
       render: (text, record) => {
-        const tab = record.type === "FNC" ? "CON" : record.type;
-        const correctTab = tab === "ADV" ? "PUB" : record.type;
+        const correctTab = record.type === "ADV" ? "PUB" : record.type;
         return (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={correctTab}>
             <div>
@@ -145,7 +128,8 @@ const columns = (type) => {
                     record,
                     record.handleEdit,
                     record.handleDocumentDelete,
-                    record.type
+                    record.type,
+                    record.categoriesToShow
                   )
                 }
               >
@@ -169,14 +153,12 @@ const columns = (type) => {
     },
   ];
 
-  if (type === "FNC") {
+  if (type === "CON") {
     commonColumns.splice(0, 0, urlColumn);
     commonColumns.splice(1, 0, nameColumn);
     commonColumns.splice(2, 0, dueDateColumn);
-    commonColumns.splice(3, 0, categoryColumn);
   } else if (type === "REF") {
     commonColumns.splice(0, 0, numberColumn);
-    commonColumns.splice(1, 0, categoryColumn);
   } else if (type === "PUB") {
     commonColumns.splice(0, 0, nameColumn);
   }
@@ -192,16 +174,17 @@ const transformRowData = (
   handleEdit,
   handleDocumentDelete,
   type,
-  documentTypeOptionsHash
+  categoriesToShow
 ) => {
   return reviews.map((review) => ({
     now_application_review_type: reviewTypeHash[review.now_application_review_type_code],
+    now_application_document_type_code: review.documents?.now_application_document_type_code,
     handleDelete,
     openEditModal,
     handleEdit,
     handleDocumentDelete,
     type,
-    documentTypeOptionsHash,
+    categoriesToShow,
     ...review,
   }));
 };
@@ -220,7 +203,7 @@ export const NOWApplicationReviewsTable = (props) => {
         props.handleEdit,
         props.handleDocumentDelete,
         props.type,
-        props.documentTypeOptionsHash
+        props.categoriesToShow
       )}
       tableProps={{
         pagination: false,
@@ -231,7 +214,6 @@ export const NOWApplicationReviewsTable = (props) => {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkReviewTypesHash: getNoticeOfWorkApplicationApplicationReviewTypeHash(state),
-  documentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(state),
 });
 
 NOWApplicationReviewsTable.propTypes = propTypes;
