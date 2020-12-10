@@ -3,7 +3,7 @@ import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -354,7 +354,10 @@ const childColumns = [
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
-              {renderDocumentLink(file.mine_document, file.mine_document.document_name)}
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
             </li>
           ))}
         </ul>
@@ -370,7 +373,10 @@ const childColumns = [
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
-              {renderDocumentLink(file.mine_document, file.mine_document.document_name)}
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
             </li>
           ))}
         </ul>
@@ -378,11 +384,11 @@ const childColumns = [
     ),
   },
   {
-    title: "Files",
+    title: "Permit Files",
     dataIndex: "documents",
     key: "documents",
     render: (text, record) => (
-      <div title="Files">
+      <div title="Permit Files">
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
@@ -392,7 +398,7 @@ const childColumns = [
                   <span> (amalgamated)</span>
                 </>
               ) : (
-                renderDocumentLink(file, file.document_name)
+                renderDocumentLink(file, truncateFilename(file.document_name))
               )}
             </li>
           ))}

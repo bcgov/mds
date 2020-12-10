@@ -61,7 +61,6 @@ const regionHash = {
   NW: "Smithers",
   SW: "Victoria",
 };
-const signatureHeight = 0.8;
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -189,15 +188,7 @@ export class ProcessPermit extends Component {
       issuing_inspector_title: "Inspector of Mines",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
-    permitGenObject.isDraft = false;
-    permitGenObject.images = {
-      issuing_inspector_signature: {
-        source: noticeOfWork.issuing_inspector.signature,
-        width: null,
-        height: signatureHeight,
-      },
-    };
-
+    permitGenObject.is_draft = false;
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
@@ -283,10 +274,6 @@ export class ProcessPermit extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        // this.props.documentContextTemplate.document_template.form_spec.map(
-        //   // eslint-disable-next-line
-        //   (item) => (initialValues[item.id] = item["context-value"])
-        // );
         const permitObj = this.createPermitGenObject(
           this.props.noticeOfWork,
           this.props.draftPermit,
