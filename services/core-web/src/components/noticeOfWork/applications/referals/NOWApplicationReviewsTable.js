@@ -34,7 +34,7 @@ const ReviewerLabels = {
 
 const responseDateLabels = {
   CON: "Date Received",
-  PUB: "Date Received",
+  PUB: "Response Date",
   REF: "Date Received",
   ADV: "Date Published",
 };
