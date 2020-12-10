@@ -47,5 +47,3 @@ ALTER TABLE now_application_review ALTER COLUMN referee_name DROP NOT NULL;
 ALTER TABLE now_application_review ADD COLUMN referral_number character varying(16);
 ALTER TABLE now_application_review ADD COLUMN response_url character varying(100);
 ALTER TABLE now_application_review ADD COLUMN due_date timestamp with time zone;
-
-ALTER TABLE now_application_review ADD COLUMN due_date
