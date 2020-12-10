@@ -19,10 +19,12 @@ const propTypes = {
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
 };
+
 const defaultProps = {
   adjustedTonnage: null,
   proposedTonnage: null,
 };
+
 const tableOneColumns = [
   {
     title: "Tonnes proposed to be moved in highest producing year",
@@ -102,12 +104,14 @@ export class ReviewApplicationFeeContent extends Component {
         moment(this.props.initialValues.proposed_start_date)
       )
     );
+
     const isExactlyFiveOrUnder =
       (duration.years() === 5 &&
         duration.months() === 0 &&
         duration.weeks() === 0 &&
         duration.days() === 0) ||
       duration.years() < 5;
+
     // eslint-disable-next-line no-underscore-dangle
     const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
     this.setState({ isDateRangeInvalid, isExactlyFiveOrUnder });
@@ -161,7 +165,7 @@ export class ReviewApplicationFeeContent extends Component {
       } else if (proposed >= 250000 && proposed < 500000) {
         isFeeValid = adjusted < 500000;
       } else {
-        // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
+        // Anything above 500,000 is valid as the applicatcant already paid the max fee.
         isFeeValid = true;
       }
     } else if (proposed < 10000) {
@@ -173,7 +177,7 @@ export class ReviewApplicationFeeContent extends Component {
     } else if (proposed >= 125000 && proposed < 250000) {
       isFeeValid = adjusted < 250000;
     } else {
-      // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
+      // Anything above 250,000 is valid as the applicatcant already paid the max fee.
       isFeeValid = true;
     }
     return this.setState({ isApplicationFeeValid: isFeeValid });
@@ -208,7 +212,7 @@ export class ReviewApplicationFeeContent extends Component {
     } else if (proposed >= 130000 && proposed < 170000) {
       isFeeValid = adjusted < 170000;
     }
-    // Anything above 170,000 is valid as the applicatcant alredy paid the max fee.
+    // Anything above 170,000 is valid as the applicatcant already paid the max fee.
     return this.setState({ isApplicationFeeValid: isFeeValid });
   };
 
@@ -291,7 +295,7 @@ export class ReviewApplicationFeeContent extends Component {
             disabled
           />
           <div className="field-title">
-            Proposed End Date
+            Proposed Authorization End Date
             <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
           </div>
           <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />

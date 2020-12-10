@@ -128,7 +128,7 @@ export class ProcessPermit extends Component {
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
 
-    this.props
+    return this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
@@ -162,7 +162,7 @@ export class ProcessPermit extends Component {
       code === approvedCode
         ? "Permit has been successfully issued for this application."
         : "This application has been successfully rejected.";
-    this.props
+    return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
         now_application_status_code: code,
@@ -183,7 +183,7 @@ export class ProcessPermit extends Component {
     const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
       values.now_application_status_code
     ];
-    this.props
+    return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
         status_reason: null,
@@ -212,7 +212,7 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(
+    return this.props.generateNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       "Successfully created document and attached it to Notice of Work"
