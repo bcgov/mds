@@ -86,7 +86,6 @@
 }
 
 .view {
-  padding: 10px;
   &--header {
     height: 100px;
     &.fixed-scroll {
@@ -96,6 +95,14 @@
       background-color: $pure-white;
       z-index: 50;
       box-shadow: $default-box-shadow;
+    }
+    &--content {
+      padding: 10px;
+
+      &--actions {
+        display: inline-flex;
+        padding-top: 10px;
+      }
     }
   }
 
@@ -120,6 +127,7 @@
 
 .side-menu {
   margin-left: 15px;
+  margin-top: 15px;
   width: 240px;
   position: absolute;
   left: 0;
@@ -130,7 +138,7 @@
 
   &--fixed {
     margin-left: 15px;
-    top: 170px;
+    top: 190px;
     position: fixed;
     width: 240px;
 
@@ -147,7 +155,7 @@
     &.with-fixed-top {
       position: fixed;
       top: 80px;
-      margin-top: 100px;
+      margin-top: 80px;
     }
   }
 
@@ -166,7 +174,7 @@
 
     &.with-fixed-top {
       top: 50px;
-      margin-top: 100px;
+      margin-top: 20px;
     }
 
     @include tablet {
@@ -247,7 +255,7 @@
 
 .status-banner {
   position: relative;
-  top: 15px;
+  top: -5px;
   height: 22px;
   z-index: 100;
   .ant-alert-message {
@@ -257,12 +265,6 @@
     font-weight: lighter;
     color: white !important;
   }
-}
-
-.status-content {
-  position: relative;
-  float: right;
-  padding: 15px;
 }
 
 .progress-steps {
@@ -282,7 +284,7 @@
   color: $violet;
   min-width: 250px;
   max-width: 250px;
-  padding: 10px 0 10px 10px;
+  margin-top: 10px;
   text-align: end;
 }
 .progress-actions {

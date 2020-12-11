@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Popconfirm, Popover } from "antd";
+import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,9 +28,8 @@ import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
-import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -218,48 +217,44 @@ export class NOWPermitGeneration extends Component {
 
   renderEditModeNav = () => {
     const nowType = this.props.noticeOfWork.type_of_application
-      ? `(${this.props.noticeOfWork.type_of_application})`
+      ? `${this.props.noticeOfWork.type_of_application}`
       : "";
     return this.props.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md">
-        <h2 className="tab-title">
-          <Popover
-            placement="topLeft"
-            content="This page contains all the information that will appear in the permit when it is
-                          issued. The Conditions sections are pre-populated with conditions based on the
-                          permit type. You can add, edit or remove any condition."
-          >
-            {`Draft Permit ${nowType}`}
-          </Popover>
-        </h2>
-        <NOWProgressActions tab="DFT" handleDraftPermit={this.handleDraftPermit} />
-        {this.state.isDraft && (
-          <>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-              <Button type="secondary" onClick={this.props.toggleEditMode}>
-                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
-                Edit
+      <NOWTabHeader
+        tab="DFT"
+        tabActions={
+          this.state.isDraft && (
+            <>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                <Button type="secondary" onClick={this.props.toggleEditMode}>
+                  <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                  Edit
+                </Button>
+              </NOWActionWrapper>
+              <Button
+                className="full-mobile"
+                type="secondary"
+                onClick={this.handlePermitGenSubmit}
+                disabled={isEmpty(this.state.permittee)}
+                title={
+                  isEmpty(this.state.permittee)
+                    ? "The application must have a permittee assigned before viewing the draft."
+                    : ""
+                }
+              >
+                <DownloadOutlined className="padding-small--right icon-sm" />
+                Download Draft
               </Button>
-            </NOWActionWrapper>
-            <Button
-              className="full-mobile"
-              type="secondary"
-              onClick={this.handlePermitGenSubmit}
-              disabled={isEmpty(this.state.permittee)}
-              title={
-                isEmpty(this.state.permittee)
-                  ? "The application must have a permittee assigned before viewing the draft."
-                  : ""
-              }
-            >
-              <DownloadOutlined className="padding-small--right icon-sm" />
-              Download Draft
-            </Button>
-          </>
-        )}
-      </div>
+            </>
+          )
+        }
+        tabName={`Draft ${nowType}`}
+        handleDraftPermit={this.handleDraftPermit}
+        fixedTop={this.props.fixedTop}
+        isEditMode={!this.props.isViewMode}
+      />
     ) : (
-      <div className="center padding-md">
+      <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
         <div className="inline-flex flex-center block-mobile">
           <Popconfirm
             placement="bottomRight"
@@ -276,6 +271,7 @@ export class NOWPermitGeneration extends Component {
             Save
           </Button>
         </div>
+        <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
       </div>
     );
   };
@@ -287,10 +283,7 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "REJ";
     return isProcessed ? (
       <div>
-        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-          {this.renderEditModeNav()}
-          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
-        </div>
+        {this.renderEditModeNav()}
         <div
           className={
             this.props.fixedTop
@@ -305,11 +298,7 @@ export class NOWPermitGeneration extends Component {
       </div>
     ) : (
       <div>
-        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-          {this.renderEditModeNav()}
-          <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
-          <NOWProgressStatus tab="DFT" />
-        </div>
+        {this.renderEditModeNav()}
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu
             route={routes.NOTICE_OF_WORK_APPLICATION}

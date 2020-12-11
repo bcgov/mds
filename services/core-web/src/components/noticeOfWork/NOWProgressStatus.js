@@ -35,6 +35,7 @@ const defaultProps = {
 };
 
 export const NOWProgressStatus = (props) => {
+  const showStatus = props.tab !== "ADMIN" && props.tab !== "PPR";
   return (
     <div
       className="status-content"
@@ -42,7 +43,7 @@ export const NOWProgressStatus = (props) => {
         top: props.top,
       }}
     >
-      {isEmpty(props.progress[props.tab]) && (
+      {isEmpty(props.progress[props.tab]) && showStatus && (
         <p className="small-p">
           {props.progressStatusHash[props.tab]} Status:
           <Badge
@@ -52,7 +53,7 @@ export const NOWProgressStatus = (props) => {
           />
         </p>
       )}
-      {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && (
+      {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && showStatus && (
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
@@ -78,7 +79,7 @@ export const NOWProgressStatus = (props) => {
           </p>
         </>
       )}
-      {!isEmpty(props.progress[props.tab]) && props.progress[props.tab].end_date && (
+      {!isEmpty(props.progress[props.tab]) && props.progress[props.tab].end_date && showStatus && (
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
