@@ -257,7 +257,6 @@ export class NOWReviewForm extends Component {
             type="primary"
             htmlType="submit"
             loading={this.props.submitting}
-            disabled={this.props.submitting}
           >
             Save
           </Button>

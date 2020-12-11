@@ -125,7 +125,6 @@ class NOWApplicationReviewResource(Resource, UserMixin):
         now_app_review.deep_update_from_dict(request.json)
 
         for doc in new_documents:
-            current_app.logger.debug(doc)
             new_mine_doc = MineDocument(
                 mine_guid=now_app_review.now_application.mine_guid,
                 document_manager_guid=doc[0],
