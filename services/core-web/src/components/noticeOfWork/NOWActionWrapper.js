@@ -22,12 +22,13 @@ const propTypes = {
     PropTypes.element.isRequired,
   ]).isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
+  applicationDelay: PropTypes.objectOf(PropTypes.string),
   tab: PropTypes.string,
 };
 
 const defaultProps = {
   tab: null,
+  applicationDelay: {},
 };
 export class NOWActionWrapper extends Component {
   state = { disableTab: false };

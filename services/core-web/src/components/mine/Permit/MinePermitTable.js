@@ -3,7 +3,7 @@ import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -51,6 +51,18 @@ const renderDocumentLink = (file, text) => (
     {text}
   </LinkButton>
 );
+
+const finalApplicationPackage = (amendment) => {
+  const finalAppPackageCore =
+    amendment.now_application_documents.length > 0
+      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  const finalAppPackageImported =
+    amendment.imported_now_application_documents.length > 0
+      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  return finalAppPackageCore.concat(finalAppPackageImported);
+};
 
 const renderDeleteButtonForPermitAmendments = (record) => {
   if (record.amendmentType === originalPermit) {
@@ -334,11 +346,49 @@ const childColumns = [
     ),
   },
   {
-    title: "Files",
+    title: "Maps",
+    dataIndex: "maps",
+    key: "maps",
+    render: (text) => (
+      <div title="Maps">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Final Application Package",
+    dataIndex: "finalApplicationPackage",
+    key: "finalApplicationPackage",
+    render: (text) => (
+      <div title="Final Application Package">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Permit Files",
     dataIndex: "documents",
     key: "documents",
     render: (text, record) => (
-      <div title="Files">
+      <div title="Permit Files">
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
@@ -348,7 +398,7 @@ const childColumns = [
                   <span> (amalgamated)</span>
                 </>
               ) : (
-                renderDocumentLink(file, file.document_name)
+                renderDocumentLink(file, truncateFilename(file.document_name))
               )}
             </li>
           ))}
@@ -451,6 +501,10 @@ const transformChildRowData = (
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
+  finalApplicationPackage: finalApplicationPackage(amendment),
+  maps: amendment.now_application_documents.filter(
+    (doc) => doc.now_application_document_sub_type_code === "MDO"
+  ),
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (

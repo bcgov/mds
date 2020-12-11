@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Popover } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -30,7 +30,6 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 
 /**
@@ -220,13 +219,15 @@ export class NOWPermitGeneration extends Component {
   renderEditModeNav = () =>
     this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
-        <h2>
-          {`Draft ${this.props.isAmendment ? "Amendment" : "Permit"}`}
-          <CoreTooltip
-            title="This page contains all the information that will appear in the permit when it is
-                    issued. The Conditions sections are pre-populated with conditions based on the
-                    permit type. You can add or remove any condition."
-          />
+        <h2 className="tab-title">
+          <Popover
+            placement="topLeft"
+            content="This page contains all the information that will appear in the permit when it is
+                          issued. The Conditions sections are pre-populated with conditions based on the
+                          permit type. You can add, edit or remove any condition."
+          >
+            {`Draft ${this.props.isAmendment ? "Amendment" : "Permit"}`}
+          </Popover>
         </h2>
         <NOWProgressActions tab="DFT" handleDraftPermit={this.handleDraftPermit} />
         {this.state.isDraft && (

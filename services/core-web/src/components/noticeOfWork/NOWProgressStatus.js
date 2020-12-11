@@ -31,7 +31,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  top: "-85px",
+  top: "-65px",
 };
 
 export const NOWProgressStatus = (props) => {
@@ -69,7 +69,7 @@ export const NOWProgressStatus = (props) => {
               to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
                 props.noticeOfWork.now_application_guid,
                 "administrative",
-                "progress-tracking"
+                "#progress-tracking"
               )}
             >
               {formatDate(props.progress[props.tab].start_date)}/
@@ -95,7 +95,7 @@ export const NOWProgressStatus = (props) => {
               to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
                 props.noticeOfWork.now_application_guid,
                 "administrative",
-                "progress-tracking"
+                "#progress-tracking"
               )}
             >
               {formatDate(props.progress[props.tab].start_date)}/

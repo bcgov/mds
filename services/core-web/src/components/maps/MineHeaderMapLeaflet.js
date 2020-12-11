@@ -142,7 +142,7 @@ class MineHeaderMapLeaflet extends Component {
   }
 
   render() {
-    return <div style={{ height: "100%", width: "100%" }} id="leaflet-map" />;
+    return <div style={{ height: "100%", width: "100%", zIndex: 1 }} id="leaflet-map" />;
   }
 }
 
