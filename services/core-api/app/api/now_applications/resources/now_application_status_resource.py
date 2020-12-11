@@ -1,19 +1,16 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_restplus import Resource, reqparse, inputs
-from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
-
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
-
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -96,7 +93,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 for contact in now_application_identity.now_application.contacts:
                     new_permittee = False
 
-                    if contact.mine_party_appt_type_code == "PMT":
+                    if contact.mine_party_appt_type_code == 'PMT':
                         current_mpa = MinePartyAppointment.find_current_appointments(
                             mine_party_appt_type_code='PMT', permit_id=permit.permit_id)
 
@@ -105,7 +102,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                         if len(current_mpa) == 1:
                             if current_mpa[0].party_guid != contact.party_guid:
-                                current_mpa[0].end_date = start_date - timedelta(days=1)
+                                current_mpa[0].end_date = current_mpa[0].start_date - timedelta(
+                                    days=1)
                                 current_mpa[0].save()
                                 new_permittee = True
 
@@ -114,7 +112,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 'This permit has more than one active permittee. Please resolve this and try again.'
                             )
 
-                    if contact.mine_party_appt_type_code != "PMT" or new_permittee == True:
+                    if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
                         mine_party_appointment = MinePartyAppointment.create(
                             mine=now_application_identity.mine
                             if contact.mine_party_appt_type_code != 'PMT' else None,
@@ -127,7 +125,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         mine_party_appointment.save()
 
                 #TODO: Documents / CRR
-                # update Now application and save status
+                # Update NoW application and save status
                 now_application_identity.now_application.status_updated_date = datetime.today()
                 now_application_identity.now_application.now_application_status_code = now_application_status_code
                 now_application_identity.now_application.status_reason = status_reason
