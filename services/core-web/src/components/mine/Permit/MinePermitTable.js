@@ -78,7 +78,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         <Button className="permit-table-button" type="ghost">
           <div>
             <img
-              className="padding-small--right icon-svg-filter"
+              className="padding-sm--right icon-svg-filter"
               src={TRASHCAN}
               alt="Remove Permit Amendment"
             />
@@ -152,7 +152,7 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
-                <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                 {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
@@ -165,7 +165,7 @@ const columns = [
                 onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
-                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                   Add Permit Amendment
                 </div>
               </button>
@@ -181,7 +181,7 @@ const columns = [
                 }
               >
                 <div>
-                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                   Add Permit Historical Amendment
                 </div>
               </button>
@@ -197,7 +197,7 @@ const columns = [
             >
               <img
                 alt="document"
-                className="padding-small"
+                className="padding-sm"
                 src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
@@ -214,7 +214,7 @@ const columns = [
             >
               <img
                 alt="document"
-                className="padding-small"
+                className="padding-sm"
                 src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
@@ -284,11 +284,11 @@ const columns = [
           >
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                <div className="padding-sm">
+                  <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                   Add/Edit
                   <img
-                    className="padding-small--right icon-svg-filter"
+                    className="padding-sm--right icon-svg-filter"
                     src={CARAT}
                     alt="Menu"
                     style={{ paddingLeft: "5px" }}
@@ -370,7 +370,7 @@ const childColumns = [
             onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
           >
             <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+              <img className="padding-sm--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
             </div>
           </Button>
         </AuthorizationWrapper>
@@ -464,11 +464,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   >
     {rowProps.expanded ? (
       <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--grey" />
+        <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
       <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--grey" />
+        <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
   </a>

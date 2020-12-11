@@ -63,7 +63,7 @@ const ReviewerLabels = {
 };
 
 const ApplicationReview = (props) => (
-  <div className="padding-large--bottom">
+  <div className="padding-lg--bottom">
     <ScrollContentWrapper id={props.reviewType.label} title={props.reviewType.label}>
       <NOWApplicationReviewsTable
         isLoaded={props.isLoaded}
@@ -335,14 +335,14 @@ export class NOWApplicationReviews extends Component {
     return (
       <div>
         <Row type="flex" justify="center">
-          <Col lg={24} className="padding-large--top">
+          <Col lg={24} className="padding-lg--top">
             <div className="right center-mobile">
               <Button
                 type="secondary"
                 className="full-mobile"
                 onClick={this.openDownloadPackageModal}
               >
-                <DownloadOutlined className="padding-small--right icon-sm" />
+                <DownloadOutlined className="padding-sm--right icon-sm" />
                 Download Referral Package
               </Button>
               <NOWActionWrapper

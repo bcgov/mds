@@ -9,7 +9,7 @@ exports[`ProcessPermit renders properly 1`] = `
       className="inline-flex block-mobile padding-md"
     >
       <h2>
-        Process Permit
+        Process Amendment
         <CoreTooltip
           title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made."
         />
@@ -73,96 +73,200 @@ exports[`ProcessPermit renders properly 1`] = `
   </div>
   <div
     className="view--content side-menu--content"
+    style={
+      Object {
+        "marginTop": "-15px",
+        "paddingTop": "0px",
+      }
+    }
   >
     <Result
       extra={
-        Array [
-          <ForwardRef>
+        <div
+          style={
+            Object {
+              "textAlign": "left",
+              "width": "100%",
+            }
+          }
+        >
+          <React.Fragment>
             <ForwardRef
-              lg={
-                Object {
-                  "offset": 6,
-                  "span": 12,
-                }
-              }
-              md={
-                Object {
-                  "offset": 4,
-                  "span": 16,
-                }
-              }
-              sm={
-                Object {
-                  "offset": 2,
-                  "span": 20,
-                }
-              }
-              style={
-                Object {
-                  "textAlign": "left",
-                }
-              }
+              className="padding-md--bottom"
+              justify="center"
             >
-              <ForwardRef
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                  }
-                }
-              >
-                <ForwardRef
-                  span={2}
-                >
-                  <ForwardRef(RightCircleOutlined) />
-                </ForwardRef>
-                <ForwardRef
-                  span={22}
-                >
-                  Application must have a permittee.
-                </ForwardRef>
-              </ForwardRef>
-              <ForwardRef
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                  }
-                }
-              >
-                <ForwardRef
-                  span={2}
-                >
-                  <ForwardRef(RightCircleOutlined) />
-                </ForwardRef>
-                <ForwardRef
-                  span={22}
-                >
-                  The reclamation securities must be recorded.
-                </ForwardRef>
-              </ForwardRef>
-              <ForwardRef
-                style={
-                  Object {
-                    "paddingBottom": "8px",
-                  }
-                }
-              >
-                <ForwardRef
-                  span={2}
-                >
-                  <ForwardRef(RightCircleOutlined) />
-                </ForwardRef>
-                <ForwardRef
-                  span={22}
-                >
-                  The final application package requires a Mine Emergency Response Plan.
-                </ForwardRef>
+              <ForwardRef>
+                <h3>
+                  The following issues shall be resolved before you can issue this amendment.
+                </h3>
               </ForwardRef>
             </ForwardRef>
-          </ForwardRef>,
-        ]
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(StopOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                The issuing inspector must have added a signature before the permit can be issued. Contact an administrator to update the inspector with a signature.  
+              </ForwardRef>
+            </ForwardRef>
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(StopOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                The application must have a permittee. Add a permittee in Contacts under Application.  
+                <LinkButton
+                  onClick={[Function]}
+                  style={null}
+                  tabIndex={0}
+                >
+                  <ForwardRef(LinkOutlined) />
+                   Resolve
+                </LinkButton>
+              </ForwardRef>
+            </ForwardRef>
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(StopOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                The reclamation securities must be recorded. Edit the Reclamation Securities under Administrative.  
+                <LinkButton
+                  onClick={[Function]}
+                  style={null}
+                  tabIndex={0}
+                >
+                  <ForwardRef(LinkOutlined) />
+                   Resolve
+                </LinkButton>
+              </ForwardRef>
+            </ForwardRef>
+            <div
+              className="padding-lg--bottom"
+            />
+          </React.Fragment>
+          <React.Fragment>
+            <ForwardRef
+              className="padding-md--bottom"
+              justify="center"
+            >
+              <ForwardRef>
+                <h3>
+                  Review the following warnings before issuing the  amendment.
+                </h3>
+              </ForwardRef>
+            </ForwardRef>
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(WarningOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
+                <LinkButton
+                  onClick={[Function]}
+                  style={null}
+                  tabIndex={0}
+                >
+                  <ForwardRef(LinkOutlined) />
+                   Resolve
+                </LinkButton>
+              </ForwardRef>
+            </ForwardRef>
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(WarningOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
+                <LinkButton
+                  onClick={[Function]}
+                  style={null}
+                  tabIndex={0}
+                >
+                  <ForwardRef(LinkOutlined) />
+                   Resolve
+                </LinkButton>
+              </ForwardRef>
+            </ForwardRef>
+            <ForwardRef
+              className="padding-md--bottom"
+            >
+              <ForwardRef
+                offset={2}
+                span={2}
+              >
+                <ForwardRef(WarningOutlined)
+                  className="icon-sm padding-sm--top"
+                />
+              </ForwardRef>
+              <ForwardRef
+                span={16}
+              >
+                Consultation has not been started.  
+                <LinkButton
+                  onClick={[Function]}
+                  style={null}
+                  tabIndex={0}
+                >
+                  <ForwardRef(LinkOutlined) />
+                   Resolve
+                </LinkButton>
+              </ForwardRef>
+            </ForwardRef>
+          </React.Fragment>
+        </div>
       }
       status="warning"
-      title="The following issues must be resolved before you can issue this amendment."
+      style={
+        Object {
+          "paddingTop": "0px",
+        }
+      }
     />
   </div>
 </div>

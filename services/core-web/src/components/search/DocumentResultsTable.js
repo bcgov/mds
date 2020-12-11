@@ -44,7 +44,7 @@ export const DocumentResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table padding-large--bottom"
+        className="nested-table padding-lg--bottom"
         align="left"
         showHeader={false}
         pagination={false}

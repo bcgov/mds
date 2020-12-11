@@ -8,7 +8,7 @@ exports[`PermitResultsTable renders properly 1`] = `
   <Divider />
   <Table
     align="left"
-    className="nested-table padding-large--bottom"
+    className="nested-table padding-lg--bottom"
     columns={
       Array [
         Object {

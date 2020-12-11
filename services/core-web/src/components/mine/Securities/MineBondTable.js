@@ -106,8 +106,8 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
             >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+              <div className="padding-sm">
+                <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add Bond
               </div>
             </Button>
@@ -210,16 +210,16 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openViewBondModal(event, record)}
             >
-              <div className="padding-small">
+              <div className="padding-sm">
                 <EyeOutlined className="icon-lg icon-svg-filter" />
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="secondary" className="permit-table-button">
-                  <div className="padding-small">
+                  <div className="padding-sm">
                     <img
-                      className="padding-small--right icon-svg-filter"
+                      className="padding-sm--right icon-svg-filter"
                       src={CARAT}
                       alt="Menu"
                       style={{ paddingLeft: "5px" }}
@@ -257,11 +257,11 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       )}
     </a>

@@ -217,14 +217,11 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  renderEditModeNav = () => {
-    const nowType = this.props.noticeOfWork.type_of_application
-      ? `(${this.props.noticeOfWork.type_of_application})`
-      : "";
-    return this.props.isViewMode ? (
+  renderEditModeNav = () =>
+    this.props.isViewMode ? (
       <div className="inline-flex block-mobile padding-md">
         <h2>
-          {`Draft Permit ${nowType}`}
+          {`Draft ${this.props.isAmendment ? "Amendment" : "Permit"}`}
           <CoreTooltip
             title="This page contains all the information that will appear in the permit when it is
                     issued. The Conditions sections are pre-populated with conditions based on the
@@ -277,7 +274,6 @@ export class NOWPermitGeneration extends Component {
         </div>
       </div>
     );
-  };
 
   render() {
     const isProcessed =

@@ -45,7 +45,7 @@ const renderRecommendations = ({ fields }) => [
     />
   )),
   <LinkButton onClick={() => fields.push({})}>
-    <PlusOutlined className="padding-small--right padding-large--bottom" />
+    <PlusOutlined className="padding-sm--right padding-lg--bottom" />
     {fields.length ? `Add another recommendation` : `Add a recommendation`}
   </LinkButton>,
 ];

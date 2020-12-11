@@ -559,7 +559,7 @@ export class NoticeOfWorkApplication extends Component {
             <NOWProgressActions tab="REV" />
             <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
               <Button type="secondary" onClick={this.toggleEditMode}>
-                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                <img alt="EDIT_OUTLINE" className="padding-sm--right" src={EDIT_OUTLINE} />
                 Edit
               </Button>
             </NOWActionWrapper>
@@ -739,7 +739,7 @@ export class NoticeOfWorkApplication extends Component {
           }}
         />
         <div className="page">
-          <div className="padding-large">
+          <div className="padding-lg">
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
@@ -939,7 +939,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Draft Permit", "DFT")}
+              tab={this.renderTabTitle("Draft", "DFT")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
@@ -950,11 +950,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane
-              tab="Process Permit"
-              key="process-permit"
-              disabled={!verificationComplete}
-            >
+            <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <ProcessPermit
