@@ -376,14 +376,15 @@ const getDurationTextOrDefault = (duration, unit) => {
 
 // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
 // Fees need to be readjusted if they move to a higher bracket only
-export const isPlacerAdjustmentFeeValid = (proposed = 0, adjusted = 0, proposedStartDate, proposedEndDate) => {
+export const isPlacerAdjustmentFeeValid = (
+  proposed = 0,
+  adjusted = 0,
+  proposedStartDate,
+  proposedEndDate
+) => {
   let isFeeValid = true;
 
-  const duration = moment.duration(
-    moment(proposedStartDate).diff(
-      moment(proposedEndDate)
-    )
-  );
+  const duration = moment.duration(moment(proposedStartDate).diff(moment(proposedEndDate)));
   const isExactlyFiveOrUnder =
     (duration.years() === 5 &&
       duration.months() === 0 &&
@@ -419,7 +420,7 @@ export const isPlacerAdjustmentFeeValid = (proposed = 0, adjusted = 0, proposedS
   return isFeeValid;
 };
 
-export const isPitsQuarriesAdjustmentFeeValid  = (proposed = 0, adjusted = 0) => {
+export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => {
   let isFeeValid = true;
   if (proposed < 5000) {
     isFeeValid = adjusted < 5000;
