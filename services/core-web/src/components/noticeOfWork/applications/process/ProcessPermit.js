@@ -239,7 +239,6 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
-    console.log(values);
     this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -340,7 +339,11 @@ export class ProcessPermit extends Component {
           documentType.now_application_document_type_code === "PMA" ||
           documentType.now_application_document_type_code === "PMT"
         ) {
-          afterSuccess(values, "Permit has been successfully issued for this application.", "AIA");
+          afterSuccess(
+            values,
+            "Permit has been successfully issued for this application.",
+            approvedCode
+          );
         }
       }
     );
