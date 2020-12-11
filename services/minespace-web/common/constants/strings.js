@@ -83,3 +83,6 @@ export const NOT_APPLICABLE = "N/A";
 
 // MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";
+
+export const E_REFERRALS_URL =
+  "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";

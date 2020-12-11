@@ -5,35 +5,33 @@ exports[`NOWSecurities renders properly 1`] = `
   <div
     className="right"
   >
-    <div>
-      <Connect(NOWActionWrapper)
-        permission="role_edit_permits"
+    <Connect(NOWActionWrapper)
+      permission="role_edit_permits"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
       >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          type="secondary"
-        >
-          <img
-            alt="Edit"
-            className="padding-md--right"
-            src={
-              Object {
-                "process": [Function],
-              }
+        <img
+          alt="Edit"
+          className="padding-md--right"
+          src={
+            Object {
+              "process": [Function],
             }
-            title="Edit"
-          />
-          Edit
-        </Button>
-      </Connect(NOWActionWrapper)>
-    </div>
+          }
+          title="Edit"
+        />
+        Edit
+      </Button>
+    </Connect(NOWActionWrapper)>
   </div>
   <LoadingWrapper
-    condition={false}
+    condition={true}
   >
     <div
       style={Object {}}
@@ -57,7 +55,7 @@ exports[`NOWSecurities renders properly 1`] = `
                 "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
               },
             ],
-            "liability_adjustment": "1000000",
+            "security_adjustment": "1000000",
           }
         }
         isEditMode={false}

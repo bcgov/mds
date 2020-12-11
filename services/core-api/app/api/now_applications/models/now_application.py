@@ -253,6 +253,10 @@ class NOWApplication(Base, AuditMixin):
                 doc.description,
                 'is_final_package':
                 doc.is_final_package,
+                'is_consultation_package':
+                doc.is_consultation_package,
+                'is_referral_package':
+                doc.is_referral_package,
                 'filename':
                 doc.filename,
                 'now_application_id':
@@ -278,6 +282,8 @@ class NOWApplication(Base, AuditMixin):
                     'documenttype': doc.documenttype,
                     'description': doc.description,
                     'is_final_package': False,
+                    'is_referral_package': False,
+                    'is_consultation_package': False,
                     'filename': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None

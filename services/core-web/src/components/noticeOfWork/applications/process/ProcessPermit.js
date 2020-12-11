@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
+import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification, Popover } from "antd";
 import {
   DownOutlined,
   ClockCircleOutlined,
@@ -23,7 +23,6 @@ import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-
 import {
   updateNoticeOfWorkStatus,
   fetchApplicationDelay,
@@ -33,10 +32,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
-import { fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
@@ -59,8 +55,6 @@ const propTypes = {
   updateNoticeOfWorkStatus: PropTypes.func.isRequired,
   progress: PropTypes.objectOf(PropTypes.any).isRequired,
   progressStatusCodes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  draftAmendment: CustomPropTypes.permit.isRequired,
-  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
@@ -100,10 +94,6 @@ export class ProcessPermit extends Component {
 
   componentDidMount = () => {
     this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
-    this.props.fetchDraftPermitByNOW(
-      this.props.mineGuid,
-      this.props.noticeOfWork.now_application_guid
-    );
   };
 
   openStatusModal = () => {
@@ -156,7 +146,7 @@ export class ProcessPermit extends Component {
             onSubmit: (values) => this.rejectApplication(values, type),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
-            draftAmendment: this.props.draftAmendment,
+            noticeOfWork: this.props.noticeOfWork,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },
@@ -241,9 +231,8 @@ export class ProcessPermit extends Component {
       validationMessages.push({ message: "Application must have a permittee." });
     if (
       !(
-        this.props.draftAmendment &&
-        (this.props.draftAmendment.security_received_date ||
-          this.props.draftAmendment.security_not_required)
+        this.props.noticeOfWork.security_received_date ||
+        this.props.noticeOfWork.security_not_required
       )
     ) {
       validationMessages.push({ message: `The reclamation securities must be recorded.` });
@@ -306,9 +295,13 @@ export class ProcessPermit extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           <div className="inline-flex block-mobile padding-md">
-            <h2>
-              Process Permit
-              <CoreTooltip title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made." />
+            <h2 className="tab-title">
+              <Popover
+                placement="topLeft"
+                content="This page allows you to review the progress of the Notice of Work application and record decisions."
+              >
+                Process Permit
+              </Popover>
             </h2>
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
@@ -398,7 +391,6 @@ ProcessPermit.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   progressStatusCodes: getDropdownNoticeOfWorkApplicationStatusCodes(state),
-  draftAmendment: getDraftPermitAmendmentForNOW(state),
   documentContextTemplate: getDocumentContextTemplate(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   noticeOfWork: getNoticeOfWork(state),
@@ -411,7 +403,6 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       updateNoticeOfWorkStatus,
       fetchApplicationDelay,
-      fetchDraftPermitByNOW,
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,

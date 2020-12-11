@@ -249,6 +249,8 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -271,13 +273,15 @@ NOW_APPLICATION_DELAY = api.model(
         'end_date': fields.DateTime
     })
 
-NOW_APPLICATION_REVIEW_MDOEL = api.model(
+NOW_APPLICATION_REVIEW_MODEL = api.model(
     'NOWApplicationReview', {
         'now_application_review_id': fields.Integer,
         'now_application_guid': fields.String(attribute='now_application.now_application_guid'),
         'now_application_review_type_code': fields.String,
         'response_date': fields.Date,
         'referee_name': fields.String,
+        'referral_number': fields.String,
+        'response_url': fields.String,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     })
 
@@ -311,6 +315,8 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })

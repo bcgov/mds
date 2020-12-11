@@ -18,7 +18,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
-  draftAmendment: CustomPropTypes.permit.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export const RejectApplicationForm = (props) => (
@@ -29,7 +29,7 @@ export const RejectApplicationForm = (props) => (
         description={`A Security adjustment of ${formatMoney(
           props.draftAmendment.liability_adjustment
         )} was received on ${formatDate(
-          props.draftAmendment.security_received_date
+          props.noticeOfWork.security_received_date
         )} for this application which needs to be returned to the applicant or moved to a new application by the applicant. Update this information before rejecting.`}
         type="error"
         showIcon

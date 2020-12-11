@@ -1,17 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { remove } from "lodash";
-import { Field, reduxForm, change } from "redux-form";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength, dateNotInFuture, number } from "@common/utils/Validate";
+import {
+  required,
+  maxLength,
+  dateNotInFuture,
+  number,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { resetForm, currencyMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import PermitAmendmentUploadedFilesList from "@/components/mine/Permit/PermitAmendmentUploadedFilesList";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { USER_ROLES } from "@common/constants/environment";
 
 const originalPermit = "OGP";
@@ -29,6 +38,7 @@ const propTypes = {
   change: PropTypes.func,
   is_historical_amendment: PropTypes.bool.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  securityNotRequired: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -167,6 +177,19 @@ export class PermitAmendmentForm extends Component {
                 component={renderConfig.CHECKBOX}
               />
             </Form.Item>
+            {this.props.securityNotRequired && (
+              <>
+                <Field
+                  id="security_not_required_reason"
+                  label="Reason*"
+                  name="security_not_required_reason"
+                  component={renderConfig.SELECT}
+                  placeholder="Please select a reason"
+                  data={securityNotRequiredReasonOptions}
+                  validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+                />
+              </>
+            )}
             {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
               <Form.Item>
                 <Field
@@ -238,9 +261,15 @@ export class PermitAmendmentForm extends Component {
 PermitAmendmentForm.propTypes = propTypes;
 PermitAmendmentForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.PERMIT_AMENDMENT,
-  validate: validateBusinessRules,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
-})(PermitAmendmentForm);
+const selector = formValueSelector(FORM.PERMIT_AMENDMENT);
+export default compose(
+  connect((state) => ({
+    securityNotRequired: selector(state, "security_not_required"),
+  })),
+  reduxForm({
+    form: FORM.PERMIT_AMENDMENT,
+    validate: validateBusinessRules,
+    touchOnBlur: true,
+    onSubmitSuccess: resetForm(FORM.PERMIT_AMENDMENT),
+  })
+)(PermitAmendmentForm);
