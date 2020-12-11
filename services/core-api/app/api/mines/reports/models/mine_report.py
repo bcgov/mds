@@ -151,11 +151,11 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by_mine_guid_and_report_type(cls, _id, report_type):
+    def find_by_mine_guid_and_report_type(cls, _id, report_type=MINE_REPORT_TYPE['CODE REQUIRED REPORTS']):
         try:
             uuid.UUID(_id, version=4)
             reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False)
-            if report_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS']:
+            if report_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS'] or report_type == MINE_REPORT_TYPE['Tailings Reports']:
                 reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
             else:
                 reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))

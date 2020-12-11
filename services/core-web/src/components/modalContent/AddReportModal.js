@@ -51,14 +51,14 @@ export const AddReportModal = (props) => {
       </div>
     );
   };
-
   return (
     <div>
       <SlidingForms
         selectedForm={selectedForm}
         formContent={[
-          props.mineReportsType === Strings.MINE_REPORTS_TYPE.codeRequiredReports ? (
-            <AddReportForm
+          props.mineReportsType &&
+          props.mineReportsType === Strings.MINE_REPORTS_TYPE.permitRequiredReports ? (
+            <AddMinePermitRequiredForm
               onSubmit={props.onSubmit}
               closeModal={props.closeModal}
               title={props.title}
@@ -67,7 +67,7 @@ export const AddReportModal = (props) => {
               showReportHistory={showReportHistory}
             />
           ) : (
-            <AddMinePermitRequiredForm
+            <AddReportForm
               onSubmit={props.onSubmit}
               closeModal={props.closeModal}
               title={props.title}

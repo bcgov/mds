@@ -82,9 +82,9 @@ export const MineReportTable = (props) => {
     },
     {
       title:
-        props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
-          ? "Report Name"
-          : "Report Type",
+        props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports
+          ? "Report Type"
+          : "Report Name",
       key: "report_name",
       dataIndex: "report_name",
       sortField: "report_name",

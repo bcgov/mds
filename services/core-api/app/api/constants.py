@@ -142,4 +142,8 @@ NOW_SUBMISSION_STATUS = ["Accepted", "Withdrawn", "Under Review"]
 # See static_data.py in utils for its use and the values it contains.
 STATIC_DATA = {}
 
-MINE_REPORT_TYPE = {"CODE REQUIRED REPORTS": "CRR", "PERMIT REQUIRED REPORTS": "PRR"}
+MINE_REPORT_TYPE = {
+    "CODE REQUIRED REPORTS": "CRR",
+    "PERMIT REQUIRED REPORTS": "PRR",
+    "Tailings Reports": "TAR"
+}

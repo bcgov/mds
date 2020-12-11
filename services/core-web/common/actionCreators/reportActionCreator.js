@@ -48,7 +48,10 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
     });
 };
 
-export const fetchMineReports = (mineGuid, reportsType) => (dispatch) => {
+export const fetchMineReports = (
+  mineGuid,
+  reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports
+) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   return CustomAxios()

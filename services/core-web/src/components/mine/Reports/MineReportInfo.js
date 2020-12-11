@@ -4,7 +4,7 @@ import moment from "moment";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row } from "antd";
+import { Row, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   fetchMineReports,
@@ -152,6 +152,7 @@ export class MineReportInfo extends Component {
               ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
                   .mine_report_submission_status_code
               : "NRQ",
+          mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
         },
         onSubmit,
         title: `Edit ${report.submission_year} ${report.report_name}`,
@@ -262,6 +263,10 @@ export class MineReportInfo extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Code Required Reports</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>

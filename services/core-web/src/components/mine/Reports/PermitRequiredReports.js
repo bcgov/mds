@@ -4,7 +4,7 @@ import moment from "moment";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row } from "antd";
+import { Row, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   fetchMineReports,
@@ -137,6 +137,7 @@ export class PermitRequiredReports extends Component {
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
+        mineReportsType: Strings.MINE_REPORTS_TYPE.permitRequiredReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -158,6 +159,7 @@ export class PermitRequiredReports extends Component {
         title: `Edit ${report.submission_year} ${report.report_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
+        mineReportsType: Strings.MINE_REPORTS_TYPE.permitRequiredReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -256,6 +258,10 @@ export class PermitRequiredReports extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Permit Required Reports</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
