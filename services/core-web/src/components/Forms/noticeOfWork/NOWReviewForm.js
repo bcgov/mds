@@ -127,15 +127,6 @@ export class NOWReviewForm extends Component {
                 </Form.Item>
                 <Form.Item>
                   <Field
-                    id="due_date"
-                    name="due_date"
-                    label="Due Date*"
-                    component={renderConfig.DATE}
-                    validate={[required]}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Field
                     id="response_date"
                     name="response_date"
                     label="Date Received"

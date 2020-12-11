@@ -35,7 +35,6 @@ class NOWApplicationReview(Base, AuditMixin):
     referee_name = db.Column(db.String)
     referral_number = db.Column(db.String)
     response_url = db.Column(db.String)
-    due_date = db.Column(db.DateTime)
 
     documents = db.relationship('NOWApplicationDocumentXref', backref='now_application_review')
 
@@ -50,15 +49,13 @@ class NOWApplicationReview(Base, AuditMixin):
                referee_name=None,
                referral_number=None,
                response_url=None,
-               due_date=None,
                add_to_session=True):
         review = cls(
             now_application_review_type_code=now_application_review_type_code,
             response_date=response_date,
             referee_name=referee_name,
             referral_number=referral_number,
-            response_url=response_url,
-            due_date=due_date)
+            response_url=response_url)
         now_application.reviews.append(review)
         if add_to_session:
             review.save(commit=False)

@@ -94,7 +94,6 @@ export class NOWApplicationReviews extends Component {
       referral_number: values.referral_number,
       now_application_document_type_code: values.now_application_document_type_code,
       response_url: values.response_url,
-      due_date: values.due_date,
     };
     return this.props
       .updateNoticeOfWorkApplicationReview(

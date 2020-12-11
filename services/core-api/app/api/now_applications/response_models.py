@@ -282,7 +282,6 @@ NOW_APPLICATION_REVIEW_MODEL = api.model(
         'referee_name': fields.String,
         'referral_number': fields.String,
         'response_url': fields.String,
-        'due_date': fields.Date,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     })
 

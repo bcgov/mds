@@ -24,7 +24,6 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
     parser.add_argument('referee_name', type=str, help='Name of Referee')
     parser.add_argument('referral_number', type=str, help='referral number for E-Referral')
     parser.add_argument('response_url', type=str, help='CRTS URL')
-    parser.add_argument('due_date', type=inputs.datetime_from_iso8601, help='Due Date')
 
     @api.doc(description='Add new Review to Now Application', params={})
     @requires_role_edit_permit
@@ -42,7 +41,7 @@ class NOWApplicationReviewListResource(Resource, UserMixin):
                                                  data.get('response_date'),
                                                  data.get('referee_name'),
                                                  data.get('referral_number'),
-                                                 data.get('response_url'), data.get('due_date'))
+                                                 data.get('response_url'))
 
         new_documents = request.json.get('uploadedFiles', [])
         if 'uploadedFiles' in request.json.keys():
