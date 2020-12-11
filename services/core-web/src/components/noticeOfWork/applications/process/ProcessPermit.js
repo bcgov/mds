@@ -239,7 +239,7 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
-    this.props
+    return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
         now_application_status_code: code,
@@ -258,15 +258,15 @@ export class ProcessPermit extends Component {
 
   handleApplication = (values, code) => {
     if (code === approvedCode) {
-      this.handleApprovedApplication(values);
-    } else {
-      this.afterSuccess(values, "This application has been successfully rejected.", code);
-    }
+      return this.handleApprovedApplication(values);
+    } 
+      return this.afterSuccess(values, "This application has been successfully rejected.", code);
+    
   };
 
   handleApprovedApplication = (values) => {
     const docType = this.props.noticeOfWork.type_of_application === "New Permit" ? "PMT" : "PMA";
-    this.props
+    return this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         docType,
         this.props.noticeOfWork.now_application_guid
@@ -296,7 +296,7 @@ export class ProcessPermit extends Component {
     const statusLabel = this.props.noticeOfWorkApplicationStatusOptionsHash[
       values.now_application_status_code
     ];
-    this.props
+    return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
         status_reason: null,
@@ -330,7 +330,7 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(
+    return this.props.generateNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       "Successfully created document and attached it to Notice of Work",
