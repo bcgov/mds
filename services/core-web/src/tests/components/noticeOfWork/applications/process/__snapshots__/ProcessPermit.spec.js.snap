@@ -8,11 +8,20 @@ exports[`ProcessPermit renders properly 1`] = `
     <div
       className="inline-flex block-mobile padding-md"
     >
-      <h2>
-        Process Permit
-        <CoreTooltip
-          title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made."
-        />
+      <h2
+        className="tab-title"
+      >
+        <Popover
+          content="This page allows you to review the progress of the Notice of Work application and record decisions."
+          mouseEnterDelay={0.1}
+          mouseLeaveDelay={0.1}
+          overlayStyle={Object {}}
+          placement="topLeft"
+          transitionName="zoom-big"
+          trigger="hover"
+        >
+          Process Permit
+        </Popover>
       </h2>
       <Connect(NOWProgressActions)
         tab="PRO"

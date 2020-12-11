@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
+import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification, Popover } from "antd";
 import {
   DownOutlined,
   ClockCircleOutlined,
@@ -40,7 +40,6 @@ import {
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
@@ -424,9 +423,13 @@ export class ProcessPermit extends Component {
       <div>
         <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
           <div className="inline-flex block-mobile padding-md">
-            <h2>
-              Process Permit
-              <CoreTooltip title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made." />
+            <h2 className="tab-title">
+              <Popover
+                placement="topLeft"
+                content="This page allows you to review the progress of the Notice of Work application and record decisions."
+              >
+                Process Permit
+              </Popover>
             </h2>
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
