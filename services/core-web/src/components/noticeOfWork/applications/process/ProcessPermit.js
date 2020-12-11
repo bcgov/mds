@@ -298,7 +298,7 @@ export class ProcessPermit extends Component {
             <h2 className="tab-title">
               <Popover
                 placement="topLeft"
-                content="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made."
+                content="This page allows you to review the progress of the Notice of Work application and record decisions."
               >
                 Process Permit
               </Popover>

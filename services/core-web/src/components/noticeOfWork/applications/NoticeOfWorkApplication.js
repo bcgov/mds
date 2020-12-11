@@ -859,9 +859,9 @@ export class NoticeOfWorkApplication extends Component {
                           placement="topLeft"
                           content="This page allows you to identify and download the files that need to be included in the referral package.
             You may track progress on the E-Referrals website.
-            When responses are receives you can upload them by clicking on “Add Referral”
-            Finish this stage by clicking on “Complete Referral Process” when all responses have been received.
-            If you need to make changes later, click “Resume Referral process”."
+            When responses are receives you can upload them by clicking on 'Add Referral'
+            Finish this stage by clicking on 'Complete Referral Process' when all responses have been received.
+            If you need to make changes later, click 'Resume Referral process'."
                         >
                           Referral
                         </Popover>
@@ -881,7 +881,7 @@ export class NoticeOfWorkApplication extends Component {
                     <a
                       target="_blank"
                       rel="noreferrer"
-                      href="https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain"
+                      href={Strings.E_REFERRALS_URL}
                       alt="E-Referrals"
                     >
                       <ExportOutlined className="padding-small--right" />
@@ -919,8 +919,8 @@ export class NoticeOfWorkApplication extends Component {
                           placement="topLeft"
                           content="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
             You may track progress on the Consultation reports and tracking system (CRTS).
-            When responses are received you can upload them by clicking on “Add Consultation” .
-            Finish this stage by clicking on “Complete Consultation Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”."
+            When responses are received you can upload them by clicking on 'Add Consultation'.
+            Finish this stage by clicking on 'Complete Consultation Process' when all responses have been received. If you need to make changes later, click 'Resume Consultation process'."
                         >
                           Consultation
                         </Popover>
@@ -967,8 +967,8 @@ export class NoticeOfWorkApplication extends Component {
                         <Popover
                           placement="topLeft"
                           content="This page allows you to track responses from the public.
-                          When responses are received you can upload them by clicking on “Add Public Comment” or “Add Advertisement”.
-            Finish this stage by clicking on “Complete Public Comment Process” when all responses have been received. If you need to make changes later, click “Resume Public Comment process”."
+                          When responses are received you can upload them by clicking on 'Add Public Comment' or 'Add Advertisement'.
+            Finish this stage by clicking on 'Complete Public Comment Process' when all responses have been received. If you need to make changes later, click 'Resume Public Comment process'."
                         >
                           Public Comment
                         </Popover>
