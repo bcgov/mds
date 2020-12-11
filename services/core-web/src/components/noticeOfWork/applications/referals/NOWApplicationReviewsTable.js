@@ -40,13 +40,6 @@ const responseDateLabels = {
 };
 
 const columns = (type) => {
-  const dueDateColumn = {
-    title: "Due Date",
-    dataIndex: "due_date",
-    key: "due_date",
-    render: (text) => <div title="Due Date">{formatDate(text)}</div>,
-  };
-
   const urlColumn = {
     title: "Link to CRTS",
     dataIndex: "response_url",
@@ -156,7 +149,6 @@ const columns = (type) => {
   if (type === "CON") {
     commonColumns.splice(0, 0, urlColumn);
     commonColumns.splice(1, 0, nameColumn);
-    commonColumns.splice(2, 0, dueDateColumn);
   } else if (type === "REF") {
     commonColumns.splice(0, 0, numberColumn);
   } else if (type === "PUB") {
