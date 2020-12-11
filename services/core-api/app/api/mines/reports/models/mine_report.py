@@ -151,15 +151,16 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @classmethod
-    def find_by_mine_guid_and_report_type(cls, _id, report_type=MINE_REPORT_TYPE['CODE REQUIRED REPORTS']):
+    def find_by_mine_guid_and_report_type(cls,
+                                          _id,
+                                          reports_type=MINE_REPORT_TYPE['CODE REQUIRED REPORTS']):
         try:
             uuid.UUID(_id, version=4)
             reports = cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False)
-            if report_type == MINE_REPORT_TYPE['CODE REQUIRED REPORTS'] or report_type == MINE_REPORT_TYPE['Tailings Reports']:
-                reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
-            else:
+            if reports_type == MINE_REPORT_TYPE['PERMIT REQUIRED REPORTS']:
                 reports = reports.filter(MineReport.permit_condition_category_code.isnot(None))
-
+            else:
+                reports = reports.filter(MineReport.permit_condition_category_code.is_(None))
             return reports.all()
         except ValueError:
             return None
@@ -175,5 +176,5 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
     def validate_permit_condition_category(self, key, permit_condition_category_code):
         if permit_condition_category_code and self.mine_report_definition_id:
             raise AssertionError(
-                'Permit report reports must not specify Code required reports specific data.')
+                'Permit required reports must not specify Code required reports specific data.')
         return permit_condition_category_code

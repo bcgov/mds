@@ -52,6 +52,7 @@ class MineReportListResource(Resource, UserMixin):
             return MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
 
         reports_type = request.args.get('mine_reports_type', None)
+
         return MineReport.find_by_mine_guid_and_report_type(mine_guid, reports_type)
 
     @api.doc(description='creates a new report for the mine')
