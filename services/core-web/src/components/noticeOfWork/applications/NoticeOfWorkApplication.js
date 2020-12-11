@@ -572,7 +572,7 @@ export class NoticeOfWorkApplication extends Component {
           <div className="center">
             <Popconfirm
               placement="bottomRight"
-              title="You have unsaved changes, Are you sure you want to cancel?"
+              title="You have unsaved changes. Are you sure you want to cancel?"
               onConfirm={this.handleCancelNOWEdit}
               okText="Yes"
               cancelText="No"
