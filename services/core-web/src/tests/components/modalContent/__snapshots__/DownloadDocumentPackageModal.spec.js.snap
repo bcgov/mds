@@ -70,7 +70,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       <ForwardRef(DownloadOutlined)
         className="padding-sm--right icon-sm"
       />
-      Download Package
+      Download Referral Package
     </Button>
     <Connect(NOWActionWrapper)
       permission="role_edit_permits"

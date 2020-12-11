@@ -20,7 +20,7 @@ exports[`ProcessPermit renders properly 1`] = `
           transitionName="zoom-big"
           trigger="hover"
         >
-          Process Permit
+          Process Amendment
         </Popover>
       </h2>
       <Connect(NOWProgressActions)
