@@ -71,7 +71,7 @@ export const sideMenuOptions = {
       alwaysVisible: true,
       children: [
         { href: "GEC", title: "General" },
-        { href: "HSC", title: "Healthy and Safety" },
+        { href: "HSC", title: "Health and Safety" },
         { href: "GOC", title: "Geotechnical" },
         { href: "ELC", title: "Environmental Land" },
         { href: "RCC", title: "Reclamation and Closure" },
