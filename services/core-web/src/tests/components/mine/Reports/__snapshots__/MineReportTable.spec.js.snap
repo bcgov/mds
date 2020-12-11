@@ -21,7 +21,7 @@ exports[`MineReportTable renders properly 1`] = `
         "sortField": "report_name",
         "sortOrder": false,
         "sorter": [Function],
-        "title": "Report Type",
+        "title": "Report Name",
       },
       Object {
         "dataIndex": "submission_year",
