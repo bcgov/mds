@@ -53,15 +53,15 @@ const renderDocumentLink = (file, text) => (
 );
 
 const finalApplicationPackage = (amendment) => {
-  const finalAppPackage1 =
+  const finalAppPackageCore =
     amendment.now_application_documents.length > 0
       ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
       : [];
-  const finalAppPackage2 =
+  const finalAppPackageImported =
     amendment.imported_now_application_documents.length > 0
       ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
       : [];
-  return finalAppPackage1.concat(finalAppPackage2);
+  return finalAppPackageCore.concat(finalAppPackageImported);
 };
 
 const renderDeleteButtonForPermitAmendments = (record) => {
