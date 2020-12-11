@@ -266,7 +266,7 @@ export class NOWProgressActions extends Component {
 
     const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
     return (
-      <div className="inline-flex">
+      <div className="inline-flex progress-actions">
         <>
           {!(isApplicationDelayed || isProcessed) && showActions && (
             <>

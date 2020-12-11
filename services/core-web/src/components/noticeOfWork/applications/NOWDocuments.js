@@ -214,7 +214,7 @@ export const NOWDocuments = (props) => {
               tab={props.isAdminView ? "" : "REV"}
             >
               <Tooltip
-                title="You cannot remove a document that is a part of the Final Application Package."
+                title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
                 placement="right"
                 mouseEnterDelay={0.3}
               >
@@ -256,7 +256,10 @@ export const NOWDocuments = (props) => {
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,
-      isDeletionAllowed: !document.is_final_package,
+      isDeletionAllowed:
+        !document.is_final_package &&
+        !document.is_referral_package &&
+        !document.is_consultation_package,
     }));
 
   return (
