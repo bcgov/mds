@@ -29,7 +29,6 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
-import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -215,90 +214,67 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  renderEditModeNav = () => {
+  render() {
     const nowType = this.props.noticeOfWork.type_of_application
       ? `${this.props.noticeOfWork.type_of_application}`
       : "";
-    return this.props.isViewMode ? (
-      <NOWTabHeader
-        tab="DFT"
-        tabActions={
-          this.state.isDraft && (
-            <>
-              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                <Button type="secondary" onClick={this.props.toggleEditMode}>
-                  <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
-                  Edit
-                </Button>
-              </NOWActionWrapper>
-              <Button
-                className="full-mobile"
-                type="secondary"
-                onClick={this.handlePermitGenSubmit}
-                disabled={isEmpty(this.state.permittee)}
-                title={
-                  isEmpty(this.state.permittee)
-                    ? "The application must have a permittee assigned before viewing the draft."
-                    : ""
-                }
-              >
-                <DownloadOutlined className="padding-small--right icon-sm" />
-                Download Draft
-              </Button>
-            </>
-          )
-        }
-        tabName={`Draft ${nowType}`}
-        handleDraftPermit={this.handleDraftPermit}
-        fixedTop={this.props.fixedTop}
-        isEditMode={!this.props.isViewMode}
-      />
-    ) : (
-      <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-        <div className="inline-flex flex-center block-mobile">
-          <Popconfirm
-            placement="bottomRight"
-            title="You have unsaved changes, Are you sure you want to cancel?"
-            onConfirm={this.handleCancelDraftEdit}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="secondary" className="full-mobile">
-              Cancel
-            </Button>
-          </Popconfirm>
-          <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
-            Save
-          </Button>
-        </div>
-        <NOWStatusIndicator type="banner" tabSection="DFT" isEditMode={!this.props.isViewMode} />
-      </div>
-    );
-  };
-
-  render() {
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    return isProcessed ? (
+    return (
       <div>
-        {this.renderEditModeNav()}
-        <div
-          className={
-            this.props.fixedTop
-              ? "view--content with-fixed-top side-menu--content"
-              : "view--content side-menu--content"
+        <NOWTabHeader
+          tab="DFT"
+          tabActions={
+            this.state.isDraft && (
+              <>
+                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                  <Button type="secondary" onClick={this.props.toggleEditMode}>
+                    <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                    Edit
+                  </Button>
+                </NOWActionWrapper>
+                <Button
+                  className="full-mobile"
+                  type="secondary"
+                  onClick={this.handlePermitGenSubmit}
+                  disabled={isEmpty(this.state.permittee)}
+                  title={
+                    isEmpty(this.state.permittee)
+                      ? "The application must have a permittee assigned before viewing the draft."
+                      : ""
+                  }
+                >
+                  <DownloadOutlined className="padding-small--right icon-sm" />
+                  Download Draft
+                </Button>
+              </>
+            )
           }
-        >
-          <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-            This application has been processed.
-          </h3>
-        </div>
-      </div>
-    ) : (
-      <div>
-        {this.renderEditModeNav()}
+          tabName={`Draft ${nowType}`}
+          handleDraftPermit={this.handleDraftPermit}
+          fixedTop={this.props.fixedTop}
+          tabEditActions={
+            <>
+              <Popconfirm
+                placement="bottomRight"
+                title="You have unsaved changes, Are you sure you want to cancel?"
+                onConfirm={this.handleCancelDraftEdit}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button type="secondary" className="full-mobile">
+                  Cancel
+                </Button>
+              </Popconfirm>
+              <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
+                Save
+              </Button>
+            </>
+          }
+          isEditMode={!this.props.isViewMode}
+        />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu
             route={routes.NOTICE_OF_WORK_APPLICATION}
@@ -312,15 +288,23 @@ export class NOWPermitGeneration extends Component {
           }
         >
           <LoadingWrapper condition={this.state.isLoaded}>
-            {!this.state.isDraft ? (
-              <NullScreen type="draft-permit" />
+            {isProcessed ? (
+              <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
+                This application has been processed.
+              </h3>
             ) : (
-              <GeneratePermitForm
-                initialValues={this.state.permitGenObj}
-                isAmendment={this.props.isAmendment}
-                noticeOfWork={this.props.noticeOfWork}
-                isViewMode={this.props.isViewMode}
-              />
+              <>
+                {!this.state.isDraft ? (
+                  <NullScreen type="draft-permit" />
+                ) : (
+                  <GeneratePermitForm
+                    initialValues={this.state.permitGenObj}
+                    isAmendment={this.props.isAmendment}
+                    noticeOfWork={this.props.noticeOfWork}
+                    isViewMode={this.props.isViewMode}
+                  />
+                )}
+              </>
             )}
           </LoadingWrapper>
         </div>

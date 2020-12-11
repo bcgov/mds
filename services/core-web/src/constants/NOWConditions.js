@@ -159,7 +159,8 @@ export const TAB_DISCLAIMERS = {
   DFT: `This page contains all the information that will appear in the permit when it is
   issued. The Conditions sections are pre-populated with conditions based on the
   permit type. You can add, edit or remove any condition.`,
-  PPR: "Process permit",
+  PRO:
+    "This page allows you to review the progress of the Notice of Work application and record decisions.",
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
 };

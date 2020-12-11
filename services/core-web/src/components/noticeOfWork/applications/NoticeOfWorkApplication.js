@@ -542,7 +542,7 @@ export class NoticeOfWorkApplication extends Component {
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
-    return this.state.isViewMode ? (
+    return (
       <NOWTabHeader
         tab="REV"
         tabActions={
@@ -568,14 +568,8 @@ export class NoticeOfWorkApplication extends Component {
             </>
           )
         }
-        tabName="Application"
-        fixedTop={this.state.fixedTop}
-        isEditMode={!this.state.isViewMode}
-      />
-    ) : (
-      <>
-        <div className={this.state.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-          <div className="inline-flex flex-center view--header--content">
+        tabEditActions={
+          <div className="center">
             <Popconfirm
               placement="bottomRight"
               title="You have unsaved changes, Are you sure you want to cancel?"
@@ -599,9 +593,7 @@ export class NoticeOfWorkApplication extends Component {
             <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
               Save
             </Button>
-          </div>
-          {showErrors ? (
-            <div>
+            {showErrors && (
               <Alert
                 message={`You have ${errorsLength} ${
                   errorsLength === 1 ? "issue" : "issues"
@@ -609,25 +601,16 @@ export class NoticeOfWorkApplication extends Component {
                 type="error"
                 showIcon
                 style={{
-                  width: "50vw",
-                  margin: "auto",
-                  position: "relative",
-                  top: "-5px",
+                  display: "initial",
                 }}
               />
-            </div>
-          ) : (
-            <>
-              <br />
-              <NOWStatusIndicator
-                type="banner"
-                tabSection="REV"
-                isEditMode={!this.state.isViewMode}
-              />
-            </>
-          )}
-        </div>
-      </>
+            )}
+          </div>
+        }
+        tabName="Application"
+        fixedTop={this.state.fixedTop}
+        isEditMode={!this.state.isViewMode}
+      />
     );
   };
 
@@ -999,7 +982,6 @@ export class NoticeOfWorkApplication extends Component {
                   <NOWTabHeader
                     tab="ADMIN"
                     tabName="Administrative"
-                    tracked={false}
                     fixedTop={this.state.fixedTop}
                     tabActions={
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
