@@ -9,6 +9,7 @@ from app.api.now_applications.models.now_application_status import NOWApplicatio
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
@@ -70,6 +71,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 #move out of draft
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
+                    permit_amendment.permit_amendment_status_code = 'OGP'
+
+                if permit_amendment.permit_amendment_status_code == 'DFT':
+                    permit_amendment.permit_amendment_status_code = 'ACT'
 
                 #assign permit_no
                 permit.assign_permit_no(
@@ -77,7 +82,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 permit.save()
 
-                permit_amendment.permit_amendment_status_code = 'ACT'
                 permit_amendment.issue_date = issue_date
                 permit_amendment.authorization_end_date = auth_end_date
                 permit_amendment.description = description
@@ -87,6 +91,15 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
                 permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
                 permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
+                current_app.logger.debug(now_application_identity.now_application.documents)
+                permit_amendment_document = [doc for doc in now_application_identity.now_application.documents if doc.now_application_document_type_code == 'PMA' or doc.now_application_document_type_code == 'PMT'][0]
+                new_pa_doc = PermitAmendmentDocument(
+                    mine_guid=permit_amendment.mine_guid,
+                    document_manager_guid=permit_amendment_document.mine_document.document_manager_guid,
+                    document_name=permit_amendment_document.mine_document.document_name)
+
+                permit_amendment.related_documents.append(new_pa_doc)
+
                 permit_amendment.save()
 
                 #create contacts
