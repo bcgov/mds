@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UndergroundExploration renders properly 1`] = `
+<div>
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
+      Array [
+        Object {
+          "component": [Function],
+          "data": undefined,
+          "title": "Exploration Type",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "underground_exploration_type_code",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Activity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "title": "Quantity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "quantity",
+        },
+        Object {
+          "component": [Function],
+          "title": "Incline",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "incline",
+        },
+        Object {
+          "component": [Function],
+          "title": "Width(m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "width",
+        },
+        Object {
+          "component": [Function],
+          "title": "Length(km)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "length",
+        },
+        Object {
+          "component": [Function],
+          "title": "Height(m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "height",
+        },
+        Object {
+          "component": [Function],
+          "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "disturbed_area",
+        },
+        Object {
+          "component": [Function],
+          "title": "Merchantable timber volume (m3)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "timber_volume",
+        },
+      ]
+    }
+    type="Activity"
+  />
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed Activities
+        <NOWFieldOriginTooltip />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_activity"
+        name="proposed_activity"
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Ore
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="total_ore_unit_type_code"
+        id="total_ore_amount"
+        names={
+          Array [
+            "total_ore_amount",
+            "total_ore_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Waste
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="total_waste_unit_type_code"
+        id="total_waste_amount"
+        names={
+          Array [
+            "total_waste_amount",
+            "total_waste_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+</div>
+`;
