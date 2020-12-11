@@ -857,11 +857,11 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="tab-title">
                         <Popover
                           placement="topLeft"
-                          content="This page allows you to identify and download the files that need to be included in the referral package.
+                          content='This page allows you to identify and download the files that need to be included in the referral package.
             You may track progress on the E-Referrals website.
-            When responses are receives you can upload them by clicking on 'Add Referral'
-            Finish this stage by clicking on 'Complete Referral Process' when all responses have been received.
-            If you need to make changes later, click 'Resume Referral process'."
+            When responses are receives you can upload them by clicking on "Add Referral"
+            Finish this stage by clicking on "Complete Referral" when all responses have been received.
+            If you need to make changes later, click "Resume Referral".'
                         >
                           Referral
                         </Popover>
@@ -917,10 +917,10 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="tab-title">
                         <Popover
                           placement="topLeft"
-                          content="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
+                          content='This page allows you to identify and download the files that need to be included in the package for first nations consultations.
             You may track progress on the Consultation reports and tracking system (CRTS).
-            When responses are received you can upload them by clicking on 'Add Consultation'.
-            Finish this stage by clicking on 'Complete Consultation Process' when all responses have been received. If you need to make changes later, click 'Resume Consultation process'."
+            When responses are received you can upload them by clicking on "Add Consultation".
+            Finish this stage by clicking on "Complete Consultation" when all responses have been received. If you need to make changes later, click "Resume Consultation".'
                         >
                           Consultation
                         </Popover>
@@ -966,9 +966,9 @@ export class NoticeOfWorkApplication extends Component {
                       <h2 className="tab-title">
                         <Popover
                           placement="topLeft"
-                          content="This page allows you to track responses from the public.
-                          When responses are received you can upload them by clicking on 'Add Public Comment' or 'Add Advertisement'.
-            Finish this stage by clicking on 'Complete Public Comment Process' when all responses have been received. If you need to make changes later, click 'Resume Public Comment process'."
+                          content='This page allows you to track responses from the public.
+                          When responses are received you can upload them by clicking on "Add Public Comment" or "Add Advertisement".
+            Finish this stage by clicking on "Complete Public Comment" when all responses have been received. If you need to make changes later, click "Resume Public Comment".'
                         >
                           Public Comment
                         </Popover>
