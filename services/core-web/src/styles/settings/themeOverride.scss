@@ -394,11 +394,10 @@
 // SIDE MENU NAVIGATION
 .ant-anchor-wrapper {
   background-color: $lightest-grey;
-  height: 100vh;
   margin-bottom: 20px;
 }
 .ant-anchor-link-active {
-  border-right: 7px solid $violet;
+  border-left: 7px solid $violet;
 }
 .ant-anchor-link-active > .ant-anchor-link-title {
   font-weight: $bold;

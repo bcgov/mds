@@ -84,8 +84,12 @@ export const NOT_APPLICABLE = "N/A";
 // MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";
 
+
 export const MINE_REPORTS_TYPE = {
   codeRequiredReports: "CRR",
   permitRequiredReports: "PRR",
   tailingsReports: "TAR",
 };
+
+export const E_REFERRALS_URL =
+  "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
