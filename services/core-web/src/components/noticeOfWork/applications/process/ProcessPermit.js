@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification, Popover } from "antd";
+import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
 import {
   DownOutlined,
   ClockCircleOutlined,
@@ -34,15 +34,14 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
-import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
+import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -259,9 +258,8 @@ export class ProcessPermit extends Component {
   handleApplication = (values, code) => {
     if (code === approvedCode) {
       return this.handleApprovedApplication(values);
-    } 
-      return this.afterSuccess(values, "This application has been successfully rejected.", code);
-    
+    }
+    return this.afterSuccess(values, "This application has been successfully rejected.", code);
   };
 
   handleApprovedApplication = (values) => {
@@ -423,96 +421,89 @@ export class ProcessPermit extends Component {
       this.props.noticeOfWork.now_application_status_code === rejectedCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     return (
-      <div>
-        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-          <div className="inline-flex block-mobile padding-md">
-            <h2 className="tab-title">
-              <Popover
-                placement="topLeft"
-                content="This page allows you to review the progress of the Notice of Work application and record decisions."
-              >
-                Process Permit
-              </Popover>
-            </h2>
-            <NOWProgressActions tab="PRO" />
-            {!isProcessed && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
-                  <Button type="primary" className="full-mobile">
-                    Process <DownOutlined />
+      <>
+        <NOWTabHeader
+          tab="PRO"
+          tabName="Process Permit"
+          fixedTop={this.props.fixedTop}
+          tabActions={
+            <>
+              {!isProcessed && (
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                    <Button type="primary" className="full-mobile">
+                      Process <DownOutlined />
+                    </Button>
+                  </Dropdown>
+                </AuthorizationWrapper>
+              )}
+              {isProcessed && !isApproved && (
+                <AuthorizationWrapper permission={Permission.ADMIN}>
+                  <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
+                    Undo-Reject Application
                   </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
-            )}
-            {isProcessed && !isApproved && (
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
-                  Undo-Reject Application
-                </Button>
-              </AuthorizationWrapper>
-            )}
-          </div>
-          <NOWStatusIndicator type="banner" />
+                </AuthorizationWrapper>
+              )}
+            </>
+          }
+        />
+        <div
+          className={
+            this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
+          }
+        >
+          <Timeline>
+            {this.props.progressStatusCodes
+              .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+              .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
+          </Timeline>
         </div>
-        <>
-          <div
-            className={
-              this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
+        <div className="view--content side-menu--content">
+          <Result
+            status={(isApproved && "success") || (validationErrors && "warning") || "info"}
+            title={
+              (isApproved &&
+                `This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`) ||
+              (validationErrors &&
+                `The following issues must be resolved before you can issue this ${
+                  isAmendment ? "amendment" : "permit"
+                }.`) ||
+              `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
             }
-          >
-            <Timeline>
-              {this.props.progressStatusCodes
-                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
-            </Timeline>
-          </div>
-          <div className="view--content side-menu--content">
-            <Result
-              status={(isApproved && "success") || (validationErrors && "warning") || "info"}
-              title={
-                (isApproved &&
-                  `This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`) ||
-                (validationErrors &&
-                  `The following issues must be resolved before you can issue this ${
-                    isAmendment ? "amendment" : "permit"
-                  }.`) ||
-                `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
-              }
-              extra={[
-                <Row>
-                  <Col
-                    lg={{ span: 12, offset: 6 }}
-                    md={{ span: 16, offset: 4 }}
-                    sm={{ span: 20, offset: 2 }}
-                    style={{ textAlign: isApproved ? "center" : "left" }}
-                  >
-                    {isApproved ? (
-                      <Button
-                        onClick={() =>
-                          this.props.history.push(
-                            route.MINE_PERMITS.dynamicRoute(this.props.mineGuid)
-                          )
-                        }
-                      >
-                        <LinkOutlined /> View permit on the mine record
-                      </Button>
-                    ) : (
-                      validationMessages.map((message) => (
-                        <Row style={{ paddingBottom: "8px" }}>
-                          <Col span={2}>
-                            <RightCircleOutlined />
-                          </Col>
-                          <Col span={22}>{message.message}</Col>
-                        </Row>
-                      ))
-                    )}
-                  </Col>
-                </Row>,
-              ]}
-            />
-          </div>
-        </>
-      </div>
+            extra={[
+              <Row>
+                <Col
+                  lg={{ span: 12, offset: 6 }}
+                  md={{ span: 16, offset: 4 }}
+                  sm={{ span: 20, offset: 2 }}
+                  style={{ textAlign: isApproved ? "center" : "left" }}
+                >
+                  {isApproved ? (
+                    <Button
+                      onClick={() =>
+                        this.props.history.push(
+                          route.MINE_PERMITS.dynamicRoute(this.props.mineGuid)
+                        )
+                      }
+                    >
+                      <LinkOutlined /> View permit on the mine record
+                    </Button>
+                  ) : (
+                    validationMessages.map((message) => (
+                      <Row style={{ paddingBottom: "8px" }}>
+                        <Col span={2}>
+                          <RightCircleOutlined />
+                        </Col>
+                        <Col span={22}>{message.message}</Col>
+                      </Row>
+                    ))
+                  )}
+                </Col>
+              </Row>,
+            ]}
+          />
+        </div>
+      </>
     );
   };
 }

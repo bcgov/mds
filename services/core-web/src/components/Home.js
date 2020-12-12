@@ -17,9 +17,9 @@ import {
 } from "@common/actionCreators/staticContentActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import NavBar from "./navigation/NavBar";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
+import NavBar from "./navigation/NavBar";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
