@@ -91,11 +91,15 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
                 permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
                 permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
-                current_app.logger.debug(now_application_identity.now_application.documents)
-                permit_amendment_document = [doc for doc in now_application_identity.now_application.documents if doc.now_application_document_type_code == 'PMA' or doc.now_application_document_type_code == 'PMT'][0]
+                permit_amendment_document = [
+                    doc for doc in now_application_identity.now_application.documents
+                    if doc.now_application_document_type_code == 'PMA'
+                    or doc.now_application_document_type_code == 'PMT'
+                ][0]
                 new_pa_doc = PermitAmendmentDocument(
                     mine_guid=permit_amendment.mine_guid,
-                    document_manager_guid=permit_amendment_document.mine_document.document_manager_guid,
+                    document_manager_guid=permit_amendment_document.mine_document.
+                    document_manager_guid,
                     document_name=permit_amendment_document.mine_document.document_name)
 
                 permit_amendment.related_documents.append(new_pa_doc)
@@ -137,10 +141,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             processed_by=self.get_user_info())
                         mine_party_appointment.save()
 
-                #TODO: Documents / CRR
-                # Update NoW application and save status
-                now_application_identity.now_application.status_updated_date = datetime.today()
-                now_application_identity.now_application.now_application_status_code = now_application_status_code
-                now_application_identity.now_application.status_reason = status_reason
-                now_application_identity.save()
+            #TODO: Documents / CRR
+            # Update NoW application and save status
+            now_application_identity.now_application.status_updated_date = datetime.today()
+            now_application_identity.now_application.now_application_status_code = now_application_status_code
+            now_application_identity.now_application.status_reason = status_reason
+            now_application_identity.save()
         return 200
