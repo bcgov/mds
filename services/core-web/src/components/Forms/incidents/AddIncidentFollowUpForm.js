@@ -104,7 +104,7 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="followup_investigation_type_code"
                   name="followup_investigation_type_code"
-                  label="Was it escalated to EMPR investigation?*"
+                  label="Was it escalated to EMLI investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}
                   data={this.filteredFollowupActions()}

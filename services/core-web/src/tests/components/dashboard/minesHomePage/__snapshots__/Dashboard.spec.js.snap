@@ -797,7 +797,7 @@ exports[`Dashboard renders properly 1`] = `
                 <Card>
                   <div>
                     <h3>
-                      EMPR GIS Links
+                      EMLI GIS Links
                     </h3>
                     <a
                       href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
