@@ -162,9 +162,9 @@ export const MINE_REPORTS = {
 };
 
 export const MINE_PERMIT_REQUIRED_REPORTS = {
-  route: "/mine-dashboard/:id/reports/mine-required-reports",
+  route: "/mine-dashboard/:id/reports/permit-required-reports",
   dynamicRoute: (id, filterParams) =>
-    `/mine-dashboard/${id}/reports/mine-required-reports?${queryString.stringify(filterParams)}`,
+    `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
   component: PermitRequiredReports,
 };
 

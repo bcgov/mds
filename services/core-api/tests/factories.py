@@ -304,15 +304,16 @@ class MineReportFactory(BaseFactory):
 
     class Params:
         permit_required_reports = factory.Trait(
-           mine_report_definition_id = None,
-           permit_condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
-           )
+            mine_report_definition_id=None,
+            permit_condition_category_code=factory.LazyFunction(RandomConditionCategoryCode))
 
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_report_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition) #None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
+    mine_report_definition_id = factory.LazyFunction(
+        RandomMineReportDefinition
+    )                                                                        #None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
     received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
@@ -329,17 +330,6 @@ class MineReportFactory(BaseFactory):
             extracted = 1
 
         MineReportSubmissionFactory.create_batch(size=extracted, report=obj, **kwargs)
-
-    # @factory.post_generation
-    # def permit_condition_category_code(obj, create, extracted, **kwargs):
-    #     if not create:
-    #         return
-
-    #     if not isinstance(extracted, int):
-    #         extracted = 1
-
-    #     if obj.permit_condition_category_code:
-    #         obj.mine_report_definition_id = None
 
 
 class MineReportCommentFactory(BaseFactory):

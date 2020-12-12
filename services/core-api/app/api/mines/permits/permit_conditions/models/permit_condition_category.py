@@ -28,4 +28,4 @@ class PermitConditionCategory(AuditMixin, Base):
 
     @classmethod
     def find_by_permit_condition_category_code(cls, code):
-        return cls.query.filter_by(condition_category_code=code).one_or_none()
+        return cls.query.filter_by(condition_category_code=code, active_ind=True).one_or_none()

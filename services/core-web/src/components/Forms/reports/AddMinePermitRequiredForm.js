@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -6,7 +5,7 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, List } from "antd";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, date } from "@common/utils/Validate";
@@ -25,26 +24,26 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.objectOf(PropTypes.any)]).isRequired,
-  mineReportDefinitionOptions: PropTypes.arrayOf(PropTypes.any).isRequired,
   dropdownPermitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
     .isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   initialValues: PropTypes.objectOf(PropTypes.any),
-  selectedMineReportCategory: PropTypes.string,
-  selectedMineReportDefinition: PropTypes.string,
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
-  formMeta: PropTypes.any,
+  // eslint-disable-next-line react/forbid-prop-types
   showReportHistory: PropTypes.func.isRequired,
   fetchPermits: PropTypes.func.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  change: PropTypes.func,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const selector = formValueSelector(FORM.ADD_REPORT);
 
 const defaultProps = {
   initialValues: {},
-  selectedMineReportDefinition: undefined,
-  selectedMineReportCategory: undefined,
+  change: () => {},
 };
 
 const requiredReceivedDateIfUploadedFiles = (value, formValues) =>
@@ -58,28 +57,11 @@ export class AddMinePermitRequiredForm extends Component {
       this.props.initialValues.mine_report_submissions &&
         this.props.initialValues.mine_report_submissions.length > 0
     ),
-    mineReportDefinitionOptionsFiltered: [],
-    dropdownMineReportDefinitionOptionsFiltered: [],
-    selectedMineReportComplianceArticles: [],
     mineReportSubmissions: this.props.initialValues.mine_report_submissions,
   };
 
   componentDidMount = () => {
     this.props.fetchPermits(this.props.mineGuid);
-  };
-
-  updateDueDateWithDefaultDueDate = (mineReportDefinitionGuid) => {
-    let formMeta = this.props.formMeta;
-    if (
-      !(formMeta && formMeta.fields && formMeta.fields.due_date && formMeta.fields.due_date.touched)
-    ) {
-      this.props.change(
-        "due_date",
-        this.props.mineReportDefinitionOptions.find(
-          (x) => x.mine_report_definition_guid === mineReportDefinitionGuid
-        ).default_due_date
-      );
-    }
   };
 
   updateMineReportSubmissions = (updatedSubmissions) => {
@@ -116,7 +98,6 @@ export class AddMinePermitRequiredForm extends Component {
                 doNotPinDropdown
                 component={renderConfig.SELECT}
                 validate={[required]}
-                format={null}
               />
             </Form.Item>
             <Form.Item>
@@ -162,7 +143,6 @@ export class AddMinePermitRequiredForm extends Component {
                 <ReportComments
                   mineGuid={this.props.mineGuid}
                   mineReportGuid={this.props.initialValues.mine_report_guid}
-                  handleSubmit={this.props.handleCommentSubmit}
                 />
               )}
           </Col>
@@ -202,7 +182,6 @@ export default compose(
     dropdownPermitConditionCategoryOptions: getDropdownPermitConditionCategoryOptions(state),
     mineReportStatusOptions: getDropdownMineReportStatusOptions(state),
     selectedMineReportCategory: selector(state, "permit_condition_category_code"),
-    formMeta: state.form[FORM.ADD_REPORT],
     fetchPermits,
     permits: getPermits(state),
   })),
