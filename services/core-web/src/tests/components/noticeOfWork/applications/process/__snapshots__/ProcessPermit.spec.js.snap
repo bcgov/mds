@@ -124,7 +124,7 @@ exports[`ProcessPermit renders properly 1`] = `
               <ForwardRef
                 span={16}
               >
-                The issuing inspector must have added a signature before the permit can be issued. Contact an administrator to update the inspector with a signature.  
+                The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.  
               </ForwardRef>
             </ForwardRef>
             <ForwardRef
@@ -206,7 +206,7 @@ exports[`ProcessPermit renders properly 1`] = `
               <ForwardRef
                 span={16}
               >
-                The Final Application Package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
+                The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
                 <LinkButton
                   onClick={[Function]}
                   style={null}
@@ -231,7 +231,7 @@ exports[`ProcessPermit renders properly 1`] = `
               <ForwardRef
                 span={16}
               >
-                The Final Application Package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
+                The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
                 <LinkButton
                   onClick={[Function]}
                   style={null}
