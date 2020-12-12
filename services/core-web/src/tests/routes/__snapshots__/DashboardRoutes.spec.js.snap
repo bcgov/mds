@@ -230,7 +230,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/mine-dashboard/:id/reports/mine-required-reports"
+    path="/mine-dashboard/:id/reports/permit-required-reports"
   />
   <Route
     component={

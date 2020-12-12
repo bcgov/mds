@@ -25,7 +25,7 @@ describe("`fetchMineReports` action creator", () => {
   const mineGuid = "1234567";
   const reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports;
 
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}?mine_reports_type=${reportsType}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, reportsType)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
