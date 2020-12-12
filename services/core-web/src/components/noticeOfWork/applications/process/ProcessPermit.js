@@ -399,7 +399,7 @@ export class ProcessPermit extends Component {
     if (!signature) {
       validationMessages.push({
         message:
-          "The issuing inspector must have added a signature before the permit can be issued. Contact an administrator to update the inspector with a signature.",
+          "The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.",
         route:
           this.props.noticeOfWork?.issuing_inspector &&
           route.PARTY_PROFILE.dynamicRoute(this.props.noticeOfWork?.issuing_inspector?.party_guid),
@@ -588,8 +588,8 @@ export class ProcessPermit extends Component {
   render = () => {
     const validationErrors = this.getValidationErrors();
     const validationWarnings = this.getValidationWarnings();
-    const isValidationErrors = validationErrors.length > 0;
-    const isValidationWarnings = validationWarnings.length > 0;
+    const hasValidationErrors = validationErrors.length > 0;
+    const hasValidationWarnings = validationWarnings.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
@@ -610,7 +610,7 @@ export class ProcessPermit extends Component {
             <NOWProgressActions tab="PRO" />
             {!isProcessed && (
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown overlay={this.menu(isValidationErrors)} placement="bottomLeft">
+                <Dropdown overlay={this.menu(hasValidationErrors)} placement="bottomLeft">
                   <Button type="primary" className="full-mobile">
                     Process <DownOutlined />
                   </Button>
@@ -672,7 +672,7 @@ export class ProcessPermit extends Component {
               />
             )}
             {// Permit is ready to be issued
-            !isApproved && !isValidationErrors && (
+            !isApproved && !hasValidationErrors && (
               <Result
                 style={{ paddingTop: "0px" }}
                 status="success"
@@ -690,13 +690,13 @@ export class ProcessPermit extends Component {
               />
             )}
             {// Validation Errors
-            !isApproved && (isValidationErrors || isValidationWarnings) && (
+            !isApproved && (hasValidationErrors || hasValidationWarnings) && (
               <Result
                 style={{ paddingTop: "0px" }}
                 status="warning"
                 extra={
                   <div style={{ textAlign: "left", width: "100%" }}>
-                    {isValidationErrors && (
+                    {hasValidationErrors && (
                       <>
                         <Row className="padding-md--bottom" justify="center">
                           <Col>
@@ -723,7 +723,7 @@ export class ProcessPermit extends Component {
                         <div className="padding-lg--bottom" />
                       </>
                     )}
-                    {isValidationWarnings && (
+                    {hasValidationWarnings && (
                       <>
                         <Row className="padding-md--bottom" justify="center">
                           <Col>

@@ -60,7 +60,7 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
+          disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the Final Application Package unless otherwise specified."
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>

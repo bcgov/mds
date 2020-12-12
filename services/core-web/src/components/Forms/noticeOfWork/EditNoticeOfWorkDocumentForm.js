@@ -109,7 +109,7 @@ export class EditNoticeOfWorkDocumentForm extends Component {
               <Field
                 id="is_final_package"
                 name="is_final_package"
-                label="Part of final application package"
+                label="Part of Final Application Package"
                 type="checkbox"
                 component={renderConfig.CHECKBOX}
               />

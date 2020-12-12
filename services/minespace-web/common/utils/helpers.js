@@ -402,7 +402,7 @@ export const isPlacerAdjustmentFeeValid = (
     } else if (proposed >= 250000 && proposed < 500000) {
       isFeeValid = adjusted < 500000;
     } else {
-      // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
+      // Anything above 500,000 is valid as the applicant already paid the max fee.
       isFeeValid = true;
     }
   } else if (proposed < 10000) {
@@ -414,7 +414,7 @@ export const isPlacerAdjustmentFeeValid = (
   } else if (proposed >= 125000 && proposed < 250000) {
     isFeeValid = adjusted < 250000;
   } else {
-    // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
+    // Anything above 250,000 is valid as the applicant already paid the max fee.
     isFeeValid = true;
   }
   return isFeeValid;
@@ -449,6 +449,6 @@ export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => 
   } else if (proposed >= 130000 && proposed < 170000) {
     isFeeValid = adjusted < 170000;
   }
-  // Anything above 170,000 is valid as the applicatcant alredy paid the max fee.
+  // Anything above 170,000 is valid as the applicant already paid the max fee.
   return isFeeValid;
 };

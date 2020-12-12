@@ -206,7 +206,7 @@ exports[`ProcessPermit renders properly 1`] = `
               <ForwardRef
                 span={16}
               >
-                The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
+                The Final Application Package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
                 <LinkButton
                   onClick={[Function]}
                   style={null}
@@ -231,7 +231,7 @@ exports[`ProcessPermit renders properly 1`] = `
               <ForwardRef
                 span={16}
               >
-                The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
+                The Final Application Package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
                 <LinkButton
                   onClick={[Function]}
                   style={null}
