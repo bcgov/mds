@@ -17,7 +17,22 @@ exports[`ProcessPermit renders properly 1`] = `
             overlay={
               <Menu>
                 <MenuItem
-                  disabled={true}
+                  disabled={
+                    Array [
+                      Object {
+                        "message": "The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.",
+                        "route": undefined,
+                      },
+                      Object {
+                        "message": "The application must have a permittee. Add a permittee in Contacts under Application.",
+                        "route": "/dashboard/notice-of-work/application/1346wesrt22/application##contacts",
+                      },
+                      Object {
+                        "message": "The reclamation securities must be recorded. Edit the Reclamation Securities under Administrative.",
+                        "route": "/dashboard/notice-of-work/application/1346wesrt22/administrative",
+                      },
+                    ]
+                  }
                   onClick={[Function]}
                 >
                   Issue permit
@@ -64,12 +79,6 @@ exports[`ProcessPermit renders properly 1`] = `
   </div>
   <div
     className="view--content side-menu--content"
-    style={
-      Object {
-        "marginTop": "-15px",
-        "paddingTop": "0px",
-      }
-    }
   >
     <Result
       extra={
