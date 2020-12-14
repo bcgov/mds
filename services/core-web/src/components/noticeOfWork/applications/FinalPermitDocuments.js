@@ -69,7 +69,7 @@ export class FinalPermitDocuments extends Component {
       submission_documents: submissionDocumentsPayload,
     };
 
-    const message = "Successfully updated the Final Application Package.";
+    const message = "Successfully updated the final application package.";
 
     this.props
       .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
