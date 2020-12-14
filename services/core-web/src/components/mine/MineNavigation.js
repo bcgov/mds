@@ -108,6 +108,13 @@ export class MineNavigation extends Component {
                 Code Required Reports
               </Link>
             </Menu.Item>
+            <Menu.Item key="permit-required-reports">
+              <Link
+                to={routes.MINE_PERMIT_REQUIRED_REPORTS.dynamicRoute(this.props.mine.mine_guid)}
+              >
+                Permit Required Reports
+              </Link>
+            </Menu.Item>
             {isTailingsVisible && (
               <Menu.Item key="tailings">
                 <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>

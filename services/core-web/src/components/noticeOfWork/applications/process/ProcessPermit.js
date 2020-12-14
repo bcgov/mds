@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification, Popover } from "antd";
+import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
 import LinkButton from "@/components/common/LinkButton";
 import {
   DownOutlined,
@@ -39,15 +39,14 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
-import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
+import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -596,166 +595,156 @@ export class ProcessPermit extends Component {
       this.props.noticeOfWork.now_application_status_code === rejectedCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     return (
-      <div>
-        <div className={this.props.fixedTop ? "view--header fixed-scroll" : "view--header"}>
-          <div className="inline-flex block-mobile padding-md">
-            <h2 className="tab-title">
-              <Popover
-                placement="topLeft"
-                content="This page allows you to review the progress of the Notice of Work application and record decisions."
-              >
-                {`Process ${isAmendment ? "Amendment" : "Permit"}`}
-              </Popover>
-            </h2>
-            <NOWProgressActions tab="PRO" />
-            {!isProcessed && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown overlay={this.menu(hasValidationErrors)} placement="bottomLeft">
-                  <Button type="primary" className="full-mobile">
-                    Process <DownOutlined />
+      <>
+        <NOWTabHeader
+          tab="PRO"
+          tabName="Process Permit"
+          fixedTop={this.props.fixedTop}
+          tabActions={
+            <>
+              {!isProcessed && (
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                    <Button type="primary" className="full-mobile">
+                      Process <DownOutlined />
+                    </Button>
+                  </Dropdown>
+                </AuthorizationWrapper>
+              )}
+              {isProcessed && !isApproved && (
+                <AuthorizationWrapper permission={Permission.ADMIN}>
+                  <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
+                    Undo-Reject Application
                   </Button>
-                </Dropdown>
-              </AuthorizationWrapper>
-            )}
-            {isProcessed && !isApproved && (
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
-                  Undo-Reject Application
-                </Button>
-              </AuthorizationWrapper>
-            )}
-          </div>
-          <NOWStatusIndicator type="banner" />
+                </AuthorizationWrapper>
+              )}
+            </>
+          }
+        />
+        <div
+          className={
+            this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
+          }
+        >
+          <Timeline>
+            {this.props.progressStatusCodes
+              .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+              .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
+          </Timeline>
         </div>
-        <>
-          <div
-            className={
-              this.props.fixedTop ? "side-menu--timeline with-fixed-top" : "side-menu--timeline"
-            }
-          >
-            <Timeline>
-              {this.props.progressStatusCodes
-                .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
-                .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
-            </Timeline>
-          </div>
-          <div
-            className="view--content side-menu--content"
-            style={{ paddingTop: "0px", marginTop: "-15px" }}
-          >
-            {// Permit is issued
-            isApproved && (
-              <Result
-                style={{ paddingTop: "0px" }}
-                status="success"
-                title={`This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`}
-                extra={[
-                  <Row>
-                    <Col
-                      lg={{ span: 12, offset: 6 }}
-                      md={{ span: 16, offset: 4 }}
-                      sm={{ span: 20, offset: 2 }}
-                      style={{ textAlign: "center" }}
+        <div className="view--content side-menu--content">
+          {// Permit is issued
+          isApproved && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="success"
+              title={`This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`}
+              extra={[
+                <Row>
+                  <Col
+                    lg={{ span: 12, offset: 6 }}
+                    md={{ span: 16, offset: 4 }}
+                    sm={{ span: 20, offset: 2 }}
+                    style={{ textAlign: "center" }}
+                  >
+                    <Button
+                      onClick={() =>
+                        this.props.history.push(
+                          route.MINE_PERMITS.dynamicRoute(this.props.mineGuid)
+                        )
+                      }
                     >
-                      <Button
-                        onClick={() =>
-                          this.props.history.push(
-                            route.MINE_PERMITS.dynamicRoute(this.props.mineGuid)
-                          )
-                        }
-                      >
-                        <LinkOutlined /> View permit on the mine record
-                      </Button>
+                      <LinkOutlined /> View permit on the mine record
+                    </Button>
+                  </Col>
+                </Row>,
+              ]}
+            />
+          )}
+          {// Permit is ready to be issued
+          !isApproved && !hasValidationErrors && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="success"
+              extra={
+                <div style={{ textAlign: "left", width: "100%" }}>
+                  <Row className="padding-md--bottom" justify="center">
+                    <Col>
+                      <h3>{`This ${
+                        isAmendment ? "amendment" : "permit"
+                      } is ready to be processed and issued.`}</h3>
                     </Col>
-                  </Row>,
-                ]}
-              />
-            )}
-            {// Permit is ready to be issued
-            !isApproved && !hasValidationErrors && (
-              <Result
-                style={{ paddingTop: "0px" }}
-                status="success"
-                extra={
-                  <div style={{ textAlign: "left", width: "100%" }}>
-                    <Row className="padding-md--bottom" justify="center">
-                      <Col>
-                        <h3>{`This ${
-                          isAmendment ? "amendment" : "permit"
-                        } is ready to be processed and issued.`}</h3>
-                      </Col>
-                    </Row>
-                  </div>
-                }
-              />
-            )}
-            {// Validation Errors
-            !isApproved && (hasValidationErrors || hasValidationWarnings) && (
-              <Result
-                style={{ paddingTop: "0px" }}
-                status="warning"
-                extra={
-                  <div style={{ textAlign: "left", width: "100%" }}>
-                    {hasValidationErrors && (
-                      <>
-                        <Row className="padding-md--bottom" justify="center">
-                          <Col>
-                            <h3>{`The following issues shall be resolved before you can issue this ${
-                              isAmendment ? "amendment" : "permit"
-                            }.`}</h3>
+                  </Row>
+                </div>
+              }
+            />
+          )}
+          {// Validation Errors
+          !isApproved && (hasValidationErrors || hasValidationWarnings) && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="warning"
+              extra={
+                <div style={{ textAlign: "left", width: "100%" }}>
+                  {hasValidationErrors && (
+                    <>
+                      <Row className="padding-md--bottom" justify="center">
+                        <Col>
+                          <h3>{`The following issues shall be resolved before you can issue this ${
+                            isAmendment ? "amendment" : "permit"
+                          }.`}</h3>
+                        </Col>
+                      </Row>
+                      {validationErrors.map((message) => (
+                        <Row className="padding-md--bottom">
+                          <Col offset={2} span={2}>
+                            <StopOutlined className="icon-sm padding-sm--top" />
+                          </Col>
+                          <Col span={16}>
+                            {`${message.message}  `}
+                            {message.route && (
+                              <LinkButton onClick={() => this.props.history.push(message.route)}>
+                                <LinkOutlined /> Resolve
+                              </LinkButton>
+                            )}
                           </Col>
                         </Row>
-                        {validationErrors.map((message) => (
-                          <Row className="padding-md--bottom">
-                            <Col offset={2} span={2}>
-                              <StopOutlined className="icon-sm padding-sm--top" />
-                            </Col>
-                            <Col span={16}>
-                              {`${message.message}  `}
-                              {message.route && (
-                                <LinkButton onClick={() => this.props.history.push(message.route)}>
-                                  <LinkOutlined /> Resolve
-                                </LinkButton>
-                              )}
-                            </Col>
-                          </Row>
-                        ))}
-                        <div className="padding-lg--bottom" />
-                      </>
-                    )}
-                    {hasValidationWarnings && (
-                      <>
-                        <Row className="padding-md--bottom" justify="center">
-                          <Col>
-                            <h3>{`Review the following warnings before issuing the  ${
-                              isAmendment ? "amendment" : "permit"
-                            }.`}</h3>
+                      ))}
+                      <div className="padding-lg--bottom" />
+                    </>
+                  )}
+                  {hasValidationWarnings && (
+                    <>
+                      <Row className="padding-md--bottom" justify="center">
+                        <Col>
+                          <h3>{`Review the following warnings before issuing the  ${
+                            isAmendment ? "amendment" : "permit"
+                          }.`}</h3>
+                        </Col>
+                      </Row>
+                      {validationWarnings.map((message) => (
+                        <Row className="padding-md--bottom">
+                          <Col offset={2} span={2}>
+                            <WarningOutlined className="icon-sm padding-sm--top" />
+                          </Col>
+                          <Col span={16}>
+                            {`${message.message}  `}
+                            {message.route && (
+                              <LinkButton onClick={() => this.props.history.push(message.route)}>
+                                <LinkOutlined /> Resolve
+                              </LinkButton>
+                            )}
                           </Col>
                         </Row>
-                        {validationWarnings.map((message) => (
-                          <Row className="padding-md--bottom">
-                            <Col offset={2} span={2}>
-                              <WarningOutlined className="icon-sm padding-sm--top" />
-                            </Col>
-                            <Col span={16}>
-                              {`${message.message}  `}
-                              {message.route && (
-                                <LinkButton onClick={() => this.props.history.push(message.route)}>
-                                  <LinkOutlined /> Resolve
-                                </LinkButton>
-                              )}
-                            </Col>
-                          </Row>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                }
-              />
-            )}
-          </div>
-        </>
-      </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              }
+            />
+          )}
+        </div>
+      </>
     );
   };
 }

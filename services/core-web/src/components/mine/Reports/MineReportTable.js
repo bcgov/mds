@@ -42,6 +42,7 @@ const propTypes = {
   sortDir: PropTypes.string,
   isPaginated: PropTypes.bool,
   isDashboardView: PropTypes.bool,
+  mineReportType: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -66,15 +67,6 @@ export const MineReportTable = (props) => {
   };
 
   const columns = [
-    // NOTE: This column is commented-out and retained intentionally in case we want to use it later.
-    // {
-    //   title: "Number",
-    //   key: "mine_report_id",
-    //   dataIndex: "mine_report_id",
-    //   sortField: "mine_report_id",
-    //   sorter: props.isDashboardView || ((a, b) => (a.mine_report_id < b.mine_report_id ? -1 : 1)),
-    //   render: (text) => <div title="Number">{text}</div>,
-    // },
     {
       title: "Mine",
       key: "mine_name",
@@ -88,36 +80,16 @@ export const MineReportTable = (props) => {
         </div>
       ),
     },
-    // NOTE: This column is commented-out and retained intentionally in case we want to use it later.
-    // {
-    //   title: "Report Type",
-    //   key: "mine_report_category",
-    //   dataIndex: "mine_report_category",
-    //   sortField: "mine_report_category",
-    //   sorter:
-    //     props.isDashboardView ||
-    //     ((a, b) => a.mine_report_category.localeCompare(b.mine_report_category)),
-    //   className: hideColumn(!props.isDashboardView),
-    //   render: (text) => (
-    //     <div title="Report Type" className={hideColumn(!props.isDashboardView)}>
-    //       {text}
-    //     </div>
-    //   ),
-    // },
     {
-      title: "Report Name",
+      title:
+        props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports
+          ? "Report Type"
+          : "Report Name",
       key: "report_name",
       dataIndex: "report_name",
       sortField: "report_name",
       sorter: props.isDashboardView || ((a, b) => a.report_name.localeCompare(b.report_name)),
       render: (text) => <div title="Report Name">{text}</div>,
-    },
-    {
-      title: "Code Section",
-      key: "code_section",
-      render: (record) => (
-        <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
-      ),
     },
     {
       title: "Compliance Year",
@@ -210,10 +182,38 @@ export const MineReportTable = (props) => {
     },
   ];
 
+  const codeSectionColumn = {
+    title: "Code Section",
+    key: "code_section",
+    render: (record) => (
+      <div title="Code Section">{getComplianceCodeValue(record.mine_report_definition_guid)}</div>
+    ),
+  };
+
+  const permitColumn = {
+    title: "Permit Number",
+    key: "permit_number",
+    dataIndex: "permit_number",
+    sortField: "permit_number",
+    sorter: props.isDashboardView || nullableStringSorter("permit_number"),
+    render: (text, record) => (
+      <Link to={router.MINE_PERMITS.dynamicRoute(record.mine_guid)}>{text}</Link>
+    ),
+  };
+
+  if (props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports) {
+    columns.splice(2, 0, codeSectionColumn);
+  }
+
+  if (props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports) {
+    columns.splice(2, 0, permitColumn);
+  }
+
   const transformRowData = (reports, openEditReportModal, handleEditReport, handleRemoveReport) =>
     reports.map((report) => ({
       key: report.mine_report_guid,
       mine_report_id: Number(report.mine_report_id),
+      permit_number: report.permit_number,
       mine_report_guid: report.mine_report_guid,
       mine_report_definition_guid: report.mine_report_definition_guid,
       mine_report_category:
@@ -247,8 +247,6 @@ export const MineReportTable = (props) => {
           : [],
       mine_guid: report.mine_guid,
       mine_name: report.mine_name,
-      // NOTE: This is commented-out intentionally until we decide on a use for it.
-      // isOverdue: report.due_date && Date.parse(report.due_date) < new Date(),
       report,
       openEditReportModal,
       handleEditReport,
