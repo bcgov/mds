@@ -1,12 +1,11 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { isEmpty, startCase } from "lodash";
+import { startCase } from "lodash";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
-import { PlusOutlined, PhoneOutlined, MailOutlined, DoubleRightOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { FieldArray, Field } from "redux-form";
 
 import { Form } from "@ant-design/compatible";
@@ -21,7 +20,6 @@ import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
 
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -31,18 +29,15 @@ const propTypes = {
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  isEditView: PropTypes.bool,
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
 };
 
-const defaultProps = {
-  isEditView: false,
-};
+const defaultProps = {};
 
 const handleRemove = (fields, index) => {
-  const promise = new Promise(function(resolve) {
+  const promise = new Promise((resolve) => {
     resolve(fields.push({ ...fields.get(index), state_modified: "delete" }));
   });
   return promise.then(() => {
@@ -50,7 +45,7 @@ const handleRemove = (fields, index) => {
   });
 };
 
-const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedOnce }) => {
+const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
@@ -61,13 +56,6 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
         {fields
           .map((field, index) => {
             const contactExists = fields.get(index) && fields.get(index).now_party_appointment_id;
-            const initialParty =
-              isEditView && contactExists
-                ? {
-                    label: fields.get(index).party.name,
-                    value: fields.get(index).party_guid,
-                  }
-                : undefined;
             return (
               <Col lg={12} sm={24} key={fields.get(index).id}>
                 <Card
@@ -135,6 +123,12 @@ const renderContacts = ({ fields, partyRelationshipTypes, isEditView, rolesUsedO
                           validate={[required, validateSelectOptions(filteredRelationships)]}
                         />
                       </Form.Item>
+                      {contactExists && (
+                        <>
+                          <p>{fields.get(index).party.name}</p>
+                          <p>{fields.get(index).party.party_guid}</p>
+                        </>
+                      )}
                       <Form.Item>
                         <PartySelectField
                           id={`${field}.party_guid`}
@@ -235,7 +229,6 @@ export class EditNoWContacts extends Component {
         name="contacts"
         component={renderContacts}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
-        isEditView={this.props.isEditView}
         rolesUsedOnce={this.state.rolesUsedOnce}
       />
     );

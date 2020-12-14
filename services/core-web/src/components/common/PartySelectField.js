@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -141,6 +142,7 @@ export class PartySelectField extends Component {
       this.props.initialValues.value !== nextProps.initialValues.value;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
+    console.log(initialValuesChangedNotByUser);
     if (initialValuesChangedNotByUser) {
       this.handleSearch(nextProps.initialValues.label);
       this.setState({
