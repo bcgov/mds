@@ -39,7 +39,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     Select a Contact from Core for each person shown, or update the Roles if required.
   </p>
   <Divider />
-  <Connect(EditNoWContacts)
+  <Connect(VerifyNoWContacts)
     contactFormValues={Array []}
     initialValues={
       Object {
@@ -427,7 +427,6 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
-    isVerifying={true}
   />
   <div
     className="right center-mobile"
