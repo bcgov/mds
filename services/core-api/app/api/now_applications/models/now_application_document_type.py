@@ -47,7 +47,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 permit = now_application.active_permit
             elif now_application.draft_permit:
                 permit = now_application.draft_permit
-                is_draft = True
+                is_draft = template_data.get('is_draft', True)
             elif now_application.remitted_permit:
                 permit = now_application.remitted_permit
             else:

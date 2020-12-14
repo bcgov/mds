@@ -154,7 +154,6 @@ export class PartySelectField extends Component {
     // If new search results have been returned, transform the results and store them in component state.
     if (searchResultsUpdated || lastCreatedPartyUpdated) {
       let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
-
       if (this.props.organization && !this.props.person) {
         filteredParties = filteredParties.filter(
           ({ party_type_code }) => party_type_code === "ORG"
@@ -169,7 +168,6 @@ export class PartySelectField extends Component {
       if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
-
       this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),

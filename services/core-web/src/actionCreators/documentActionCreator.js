@@ -65,7 +65,10 @@ export const generateNoticeOfWorkApplicationDocument = (
       };
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
