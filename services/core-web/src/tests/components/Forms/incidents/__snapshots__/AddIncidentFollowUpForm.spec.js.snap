@@ -46,7 +46,7 @@ exports[`AddIncidentFollowUpForm renders properly 1`] = `
               ]
             }
             id="followup_investigation_type_code"
-            label="Was it escalated to EMPR investigation?*"
+            label="Was it escalated to EMLI investigation?*"
             name="followup_investigation_type_code"
             placeholder="Please choose one"
             validate={

@@ -5,6 +5,7 @@ import pytest
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
+from app.api.constants import MINE_REPORT_TYPE
 
 from tests.factories import MineFactory, MineReportFactory, PermitFactory, PermitAmendmentFactory, PartyFactory
 THREE_REPORTS = 3
@@ -13,7 +14,7 @@ GUID = str(uuid.uuid4)
 
 
 # GET
-def test_get_all_reports_for_mine(test_client, db_session, auth_headers):
+def test_get_code_required_reports_for_mine(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=THREE_REPORTS)
     get_resp = test_client.get(
         f'/mines/{mine.mine_guid}/reports', headers=auth_headers['full_auth_header'])
@@ -21,6 +22,14 @@ def test_get_all_reports_for_mine(test_client, db_session, auth_headers):
     assert len(get_data['records']) == THREE_REPORTS
     assert get_resp.status_code == 200
 
+def test_get_permit_required_reports_for_mine(test_client, db_session, auth_headers):
+    mine = MineFactory(mine_reports=THREE_REPORTS)
+    mine_reports = MineReportFactory(mine = mine, permit_required_reports = True)
+    get_resp = test_client.get(
+        f'/mines/{mine.mine_guid}/reports?mine_reports_type={MINE_REPORT_TYPE["PERMIT REQUIRED REPORTS"]}', headers=auth_headers['full_auth_header'])
+    get_data = json.loads(get_resp.data.decode())
+    assert len(get_data['records']) == 1
+    assert get_resp.status_code == 200
 
 def test_get_a_report_for_a_mine(test_client, db_session, auth_headers):
     mine = MineFactory(mine_reports=ONE_REPORT)

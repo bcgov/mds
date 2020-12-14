@@ -4,7 +4,7 @@ import moment from "moment";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row } from "antd";
+import { Row, Divider } from "antd";
 import { isEmpty } from "lodash";
 import {
   fetchMineReports,
@@ -64,6 +64,7 @@ const defaultParams = {
   status: [],
   sort_field: "received_date",
   sort_dir: "desc",
+  mine_reports_type: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
 };
 
 export class MineReportInfo extends Component {
@@ -77,7 +78,7 @@ export class MineReportInfo extends Component {
   componentDidMount = () => {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
     const params = queryString.parse(this.props.location.search);
-    this.props.fetchMineReports(this.props.mineGuid).then(() => {
+    this.props.fetchMineReports(this.props.mineGuid, defaultParams.mine_reports_type).then(() => {
       this.setState(
         (prevState) => ({
           isLoaded: true,
@@ -102,36 +103,28 @@ export class MineReportInfo extends Component {
     this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
-      .then(() =>
-        this.props.fetchMineReports(report.mine_guid).then(() => {
-          this.setState({
-            filteredReports: this.props.mineReports,
-          });
-        })
-      );
+      .then(() => this.fetchReports(report.mine_guid));
   };
 
   handleAddReport = (values) => {
     return this.props
       .createMineReport(this.props.mineGuid, values)
       .then(() => this.props.closeModal())
-      .then(() =>
-        this.props.fetchMineReports(this.props.mineGuid).then(() => {
-          this.setState({
-            filteredReports: this.props.mineReports,
-          });
-        })
-      );
+      .then(() => this.fetchReports(this.props.mineGuid));
+  };
+
+  fetchReports = (mineGuid) => {
+    this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
+      this.setState({
+        filteredReports: this.props.mineReports,
+      });
+    });
   };
 
   handleRemoveReport = (report) => {
-    return this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
-      this.props.fetchMineReports(report.mine_guid).then(() => {
-        this.setState({
-          filteredReports: this.props.mineReports,
-        });
-      })
-    );
+    return this.props
+      .deleteMineReport(report.mine_guid, report.mine_report_guid)
+      .then(() => this.fetchReports(report.mine_guid));
   };
 
   openAddReportModal = (event) => {
@@ -142,6 +135,7 @@ export class MineReportInfo extends Component {
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
+        mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -158,6 +152,7 @@ export class MineReportInfo extends Component {
               ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
                   .mine_report_submission_status_code
               : "NRQ",
+          mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
         },
         onSubmit,
         title: `Edit ${report.submission_year} ${report.report_name}`,
@@ -196,7 +191,8 @@ export class MineReportInfo extends Component {
       const report_name =
         !params.report_name || report.mine_report_definition_guid === params.report_name;
       const compliance_year =
-        !params.compliance_year || report.submission_year === params.compliance_year;
+        !params.compliance_year ||
+        Number(report.submission_year) === Number(params.compliance_year);
       const due_date_start =
         !params.due_date_start ||
         moment(report.due_date, Strings.DATE_FORMAT) >=
@@ -267,6 +263,10 @@ export class MineReportInfo extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Code Required Reports</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
@@ -285,6 +285,7 @@ export class MineReportInfo extends Component {
             onSubmit={this.handleReportFilterSubmit}
             handleReset={this.handleReportFilterReset}
             initialValues={this.state.params}
+            mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
           />
         </div>
         <MineReportTable
@@ -297,6 +298,7 @@ export class MineReportInfo extends Component {
           filters={this.state.params}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
+          mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
         />
       </div>
     );

@@ -25,3 +25,7 @@ class PermitConditionCategory(AuditMixin, Base):
     @classmethod
     def get_all(cls):
         return cls.query.order_by(cls.display_order).all()
+
+    @classmethod
+    def find_by_permit_condition_category_code(cls, code):
+        return cls.query.filter_by(condition_category_code=code, active_ind=True).one_or_none()

@@ -7,10 +7,10 @@ exports[`ViewIncidentModal renders properly 1`] = `
       Initial Report
     </h5>
     <div
-      className="content--light-grey padding-small"
+      className="content--light-grey padding-sm"
     >
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -22,7 +22,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -34,7 +34,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -47,7 +47,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
       </div>
       <div>
         <div
-          className="inline-flex padding-small"
+          className="inline-flex padding-sm"
         >
           <p
             className="field-title"
@@ -59,7 +59,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
           </p>
         </div>
         <div
-          className="inline-flex padding-small"
+          className="inline-flex padding-sm"
         >
           <p
             className="field-title"
@@ -72,7 +72,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </div>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -84,7 +84,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -103,10 +103,10 @@ exports[`ViewIncidentModal renders properly 1`] = `
       Incident Details
     </h5>
     <div
-      className="content--light-grey padding-small"
+      className="content--light-grey padding-sm"
     >
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -118,7 +118,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -130,7 +130,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -143,7 +143,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
       </div>
       <div>
         <div
-          className="inline-flex padding-small"
+          className="inline-flex padding-sm"
         >
           <p
             className="field-title"
@@ -155,7 +155,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
           </p>
         </div>
         <div
-          className="inline-flex padding-small"
+          className="inline-flex padding-sm"
         >
           <p
             className="field-title"
@@ -168,7 +168,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </div>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -185,10 +185,10 @@ exports[`ViewIncidentModal renders properly 1`] = `
       Dangerous Occurance Determination
     </h5>
     <div
-      className="content--light-grey padding-small"
+      className="content--light-grey padding-sm"
     >
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -200,7 +200,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="padding-small"
+        className="padding-sm"
       >
         <p
           className="field-title"
@@ -214,7 +214,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </div>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -226,7 +226,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -238,7 +238,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -291,10 +291,10 @@ exports[`ViewIncidentModal renders properly 1`] = `
       Follow-up information
     </h5>
     <div
-      className="content--light-grey padding-small"
+      className="content--light-grey padding-sm"
     >
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -307,7 +307,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
@@ -319,19 +319,19 @@ exports[`ViewIncidentModal renders properly 1`] = `
         </p>
       </div>
       <div
-        className="inline-flex padding-small"
+        className="inline-flex padding-sm"
       >
         <p
           className="field-title"
         >
-          Was it escalated to EMPR Investigation?
+          Was it escalated to EMLI Investigation?
         </p>
         <p>
           No
         </p>
       </div>
       <div
-        className="padding-small"
+        className="padding-sm"
       >
         <p
           className="field-title"
@@ -344,7 +344,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
       </div>
       <div>
         <div
-          className="inline-flex padding-small"
+          className="inline-flex padding-sm"
         >
           <p
             className="field-title"

@@ -14,7 +14,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
     now_application_guid=""
     selectedRows={
       Object {
-        "selectedSubmissionRows": Array [],
+        "selectedSubmissionRows": undefined,
         "setSelectedSubmissionRows": [Function],
       }
     }
@@ -28,7 +28,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
     isViewMode={true}
     selectedRows={
       Object {
-        "selectedCoreRows": Array [],
+        "selectedCoreRows": undefined,
         "setSelectedCoreRows": [Function],
       }
     }
@@ -65,13 +65,28 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       htmlType="button"
       loading={false}
       onClick={[Function]}
-      type="primary"
+      type="tertiary"
     >
       <ForwardRef(DownloadOutlined)
-        className="padding-small--right icon-sm"
+        className="padding-sm--right icon-sm"
       />
       Download Referral Package
     </Button>
+    <Connect(NOWActionWrapper)
+      permission="role_edit_permits"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="primary"
+      >
+        Save and Exit
+      </Button>
+    </Connect(NOWActionWrapper)>
   </div>
 </div>
 `;

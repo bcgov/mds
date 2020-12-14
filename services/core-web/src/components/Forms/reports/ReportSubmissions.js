@@ -49,7 +49,7 @@ export const ReportSubmissions = (props) => {
       <FormItemLabel underline>Report Files</FormItemLabel>
       {hasSubmissions && (
         <React.Fragment>
-          <div className="padding-large--bottom">
+          <div className="padding-lg--bottom">
             <UploadedDocumentsTable
               files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
               showRemove={updateFilesClicked}
