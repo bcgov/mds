@@ -15,6 +15,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment

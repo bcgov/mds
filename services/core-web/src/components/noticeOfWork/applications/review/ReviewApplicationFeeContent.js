@@ -104,6 +104,9 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170,000", permit_fee: "$50,000" },
 ];
 
+const isApplicationFeeValid = (isValid) =>
+  isValid ? undefined : "This value would cause the application fee to become invalid.";
+
 export class ReviewApplicationFeeContent extends Component {
   state = {
     isApplicationFeeValid: true,
@@ -113,9 +116,7 @@ export class ReviewApplicationFeeContent extends Component {
 
   componentDidMount() {
     const duration = moment.duration(
-      moment(this.props.initialValues.proposed_end_date).diff(
-        moment(this.props.initialValues.proposed_start_date)
-      )
+      moment(this.props.proposedAuthorizationEndDate).diff(moment(this.props.proposedStartDate))
     );
     // eslint-disable-next-line no-underscore-dangle
     const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
@@ -160,8 +161,8 @@ export class ReviewApplicationFeeContent extends Component {
           isApplicationFeeValid: isPlacerAdjustmentFeeValid(
             proposed,
             adjusted,
-            this.props.initialValues.proposed_start_date,
-            this.props.initialValues.proposed_end_date
+            this.props.proposedStartDate,
+            this.props.proposedAuthorizationEndDate
           ),
         });
 
@@ -206,8 +207,8 @@ export class ReviewApplicationFeeContent extends Component {
 
   render() {
     this.props.initialValues.calculated_term_of_application = getDurationText(
-      this.props.initialValues.proposed_start_date,
-      this.props.initialValues.proposed_end_date
+      this.props.proposedStartDate,
+      this.props.proposedAuthorizationEndDate
     );
 
     const showCalculationInvalidError =
@@ -247,7 +248,11 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_start_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[dateNotInFuture, dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
+            validate={[
+              dateNotInFuture,
+              dateNotAfterOther(this.props.proposedAuthorizationEndDate),
+              isApplicationFeeValid,
+            ]}
           />
           <div className="field-title">
             Proposed Authorization End Date
@@ -258,7 +263,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_end_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[dateNotBeforeOther(this.props.proposedStartDate)]}
+            validate={[dateNotBeforeOther(this.props.proposedStartDate), isApplicationFeeValid]}
           />
           <div className="field-title">
             Proposed Term of Application
@@ -278,7 +283,7 @@ export class ReviewApplicationFeeContent extends Component {
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            validate={[number]}
+            validate={[number, isApplicationFeeValid]}
             disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
@@ -290,7 +295,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="adjusted_annual_maximum_tonnage"
             component={RenderField}
             disabled={this.props.isViewMode}
-            validate={[number]}
+            validate={[number, isApplicationFeeValid]}
           />
           {showCalculationInvalidError && (
             <div className="error">
