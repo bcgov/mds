@@ -2,7 +2,8 @@ from ldap3 import Server, Connection, ObjectDef, Reader, ALL, NTLM
 from flask import current_app
 
 IDIR_URL = 'plywood.idir.bcgov'
-EMPR_DN = "OU=Users,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
+# TODO: Change this if and when they update it to match EMLI.
+DISTINGUISHED_NAMES = "OU=Users,OU=Energy Mines and Petroleum Resources,OU=BCGOV,DC=idir,DC=BCGOV"
 
 idir_field_map = {
     "bcgov_guid": "bcgovGUID",
@@ -31,7 +32,7 @@ class IdirService():
         return [x.entry_attributes_as_dict for x in r]
 
     def get_empr_users_from_idir(membership_groups=[]):
-        search_results = IdirService.search_for_users(EMPR_DN)
+        search_results = IdirService.search_for_users(DISTINGUISHED_NAMES)
 
         empr_users = []
         for idir_user in search_results:
