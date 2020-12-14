@@ -14,6 +14,7 @@ import {
   dateNotInFuture,
   validateSelectOptions,
   maxLength,
+  protocol,
 } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -115,6 +116,7 @@ export class NOWReviewForm extends Component {
                     name="response_url"
                     label="Link to CRTS"
                     component={renderConfig.FIELD}
+                    validate={[protocol]}
                   />
                 </Form.Item>
                 <Form.Item>

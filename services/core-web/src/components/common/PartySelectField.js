@@ -113,6 +113,7 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.initialSearch);
     if (!isEmpty(this.props.initialValues)) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
