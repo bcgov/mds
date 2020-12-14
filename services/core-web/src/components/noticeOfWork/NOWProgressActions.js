@@ -265,6 +265,7 @@ export class NOWProgressActions extends Component {
     );
 
     const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
+    const showReasonModal = rejected || isApplicationDelayed;
     return (
       <div className="inline-flex progress-actions">
         <>
@@ -308,13 +309,12 @@ export class NOWProgressActions extends Component {
               </Dropdown>
             </AuthorizationWrapper>
           )}
-          {isApplicationDelayed ||
-            (rejected && (
-              <Button type="primary" onClick={() => this.openStatusReasonModal(reasonButtonTitle)}>
-                <EyeOutlined />
-                View {reasonButtonTitle}
-              </Button>
-            ))}
+          {showReasonModal && (
+            <Button type="primary" onClick={() => this.openStatusReasonModal(reasonButtonTitle)}>
+              <EyeOutlined />
+              View {reasonButtonTitle}
+            </Button>
+          )}
         </>
       </div>
     );

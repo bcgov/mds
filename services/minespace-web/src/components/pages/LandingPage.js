@@ -77,8 +77,8 @@ export const LandingPage = (props) => (
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
         <Title level={4}>What is MineSpace?</Title>
         <Paragraph>
-          The <Text strong>Ministry of Energy, Mines and Petroleum Resources</Text> is developing a
-          system to make it easier for the public, industry and government to see what&apos;s
+          The <Text strong>Ministry of Energy, Mines and Low-Carbon Innovation</Text> is developing
+          a system to make it easier for the public, industry and government to see what&apos;s
           happening in the mining industry across British Columbia. The system is called&nbsp;
           <Text strong>Mines Digital Services (MDS)</Text>.
         </Paragraph>
