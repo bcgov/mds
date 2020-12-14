@@ -102,7 +102,7 @@ const NoResults = (searchTerms) => {
 
 const CantFindIt = () => (
   <Row type="flex" justify="center">
-    <Col sm={22} md={18} lg={8} className="padding-large--top padding-xxl--bottom">
+    <Col sm={22} md={18} lg={8} className="padding-lg--top padding-xxl--bottom">
       <h2>Can&#39;t find it?</h2>
       <p>
         Try clicking to see more results, or select the advanced lookup if available. Also, double
@@ -176,7 +176,7 @@ export class SearchResults extends Component {
         <div className="landing-page">
           <div>
             <div className="landing-page__header">
-              <h1 className="padding-small--bottom">
+              <h1 className="padding-sm--bottom">
                 {`${
                   type_filter ? this.props.searchOptionsHash[type_filter] : "Search results"
                 } for ${results}`}
@@ -184,14 +184,14 @@ export class SearchResults extends Component {
               <div>
                 {type_filter ? (
                   <Link to={router.SEARCH_RESULTS.dynamicRoute({ q: this.state.params.q })}>
-                    <ArrowLeftOutlined className="padding-small--right" />
+                    <ArrowLeftOutlined className="padding-sm--right" />
                     {`Back to all search results for ${results}`}
                   </Link>
                 ) : (
                   <p>
-                    <span className="padding-large--right">Just show me:</span>
+                    <span className="padding-lg--right">Just show me:</span>
                     {this.props.searchOptions.map((o) => (
-                      <span className="padding-large" key={o.model_id}>
+                      <span className="padding-lg" key={o.model_id}>
                         <Link
                           to={router.SEARCH_RESULTS.dynamicRoute({
                             q: this.state.params.q,
@@ -215,7 +215,7 @@ export class SearchResults extends Component {
                       key={group.type}
                       sm={24}
                       lg={groupedSearchResults.length === 1 ? 24 : 12}
-                      className="padding-large--top padding-xxl--bottom"
+                      className="padding-lg--top padding-xxl--bottom"
                     >
                       {TableForGroup(
                         group,

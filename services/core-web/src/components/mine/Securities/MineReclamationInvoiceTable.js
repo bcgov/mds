@@ -87,8 +87,8 @@ export const MineReclamationInvoiceTable = (props) => {
                 props.openAddReclamationInvoiceModal(event, record, props.getBalance(record))
               }
             >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+              <div className="padding-sm">
+                <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add Reclamation Invoice
               </div>
             </Button>
@@ -188,11 +188,11 @@ export const MineReclamationInvoiceTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       )}
     </a>

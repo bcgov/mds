@@ -373,3 +373,82 @@ const getDurationTextOrDefault = (duration, unit) => {
   unit = duration === 1 ? unit : unit + "s";
   return `${duration} ${unit}`;
 };
+
+// Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
+// Fees need to be readjusted if they move to a higher bracket only
+export const isPlacerAdjustmentFeeValid = (
+  proposed = 0,
+  adjusted = 0,
+  proposedStartDate,
+  proposedEndDate
+) => {
+  let isFeeValid = true;
+
+  const duration = moment.duration(moment(proposedStartDate).diff(moment(proposedEndDate)));
+  const isExactlyFiveOrUnder =
+    (duration.years() === 5 &&
+      duration.months() === 0 &&
+      duration.weeks() === 0 &&
+      duration.days() === 0) ||
+    duration.years() < 5;
+
+  if (isExactlyFiveOrUnder) {
+    if (proposed < 60000) {
+      isFeeValid = adjusted < 60000;
+    } else if (proposed >= 60000 && proposed < 125000) {
+      isFeeValid = adjusted < 125000;
+    } else if (proposed >= 125000 && proposed < 250000) {
+      isFeeValid = adjusted < 250000;
+    } else if (proposed >= 250000 && proposed < 500000) {
+      isFeeValid = adjusted < 500000;
+    } else {
+      // Anything above 500,000 is valid as the applicant already paid the max fee.
+      isFeeValid = true;
+    }
+  } else if (proposed < 10000) {
+    isFeeValid = adjusted < 10000;
+  } else if (proposed >= 10000 && proposed < 60000) {
+    isFeeValid = adjusted < 60000;
+  } else if (proposed >= 60000 && proposed < 125000) {
+    isFeeValid = adjusted < 125000;
+  } else if (proposed >= 125000 && proposed < 250000) {
+    isFeeValid = adjusted < 250000;
+  } else {
+    // Anything above 250,000 is valid as the applicant already paid the max fee.
+    isFeeValid = true;
+  }
+  return isFeeValid;
+};
+
+export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => {
+  let isFeeValid = true;
+  if (proposed < 5000) {
+    isFeeValid = adjusted < 5000;
+  } else if (proposed >= 5000 && proposed < 10000) {
+    isFeeValid = adjusted < 10000;
+  } else if (proposed >= 10000 && proposed < 20000) {
+    isFeeValid = adjusted < 20000;
+  } else if (proposed >= 20000 && proposed < 30000) {
+    isFeeValid = adjusted < 30000;
+  } else if (proposed >= 30000 && proposed < 40000) {
+    isFeeValid = adjusted < 40000;
+  } else if (proposed >= 40000 && proposed < 50000) {
+    isFeeValid = adjusted < 50000;
+  } else if (proposed >= 50000 && proposed < 60000) {
+    isFeeValid = adjusted < 60000;
+  } else if (proposed >= 60000 && proposed < 70000) {
+    isFeeValid = adjusted < 70000;
+  } else if (proposed >= 70000 && proposed < 80000) {
+    isFeeValid = adjusted < 80000;
+  } else if (proposed >= 80000 && proposed < 90000) {
+    isFeeValid = adjusted < 90000;
+  } else if (proposed >= 90000 && proposed < 100000) {
+    isFeeValid = adjusted < 100000;
+  } else if (proposed >= 100000 && proposed < 130000) {
+    isFeeValid = adjusted < 130000;
+  } else if (proposed >= 130000 && proposed < 170000) {
+    isFeeValid = adjusted < 170000;
+  }
+  // Anything above 170,000 is valid as the applicant already paid the max fee.
+  return isFeeValid;
+};

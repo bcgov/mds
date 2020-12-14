@@ -146,7 +146,7 @@ export class MineHeader extends Component {
               )
             }
           >
-            <img alt="pencil" className="padding-small" src={EDIT_OUTLINE_VIOLET} />
+            <img alt="pencil" className="padding-sm" src={EDIT_OUTLINE_VIOLET} />
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
@@ -158,7 +158,7 @@ export class MineHeader extends Component {
               this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
             }
           >
-            <img alt="document" className="padding-small" src={BRAND_DOCUMENT} />
+            <img alt="document" className="padding-sm" src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
         </Menu.Item>
@@ -186,8 +186,8 @@ export class MineHeader extends Component {
               >
                 <Dropdown className="full-height" overlay={menu} placement="bottomLeft">
                   <Button type="primary">
-                    <div className="padding-small">
-                      <img className="padding-small--right" src={EDIT} alt="Add/Edit" />
+                    <div className="padding-sm">
+                      <img className="padding-sm--right" src={EDIT} alt="Add/Edit" />
                       Add/Edit
                     </div>
                   </Button>
@@ -199,7 +199,7 @@ export class MineHeader extends Component {
 
           {this.props.mine.mine_status[0] && (
             <div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Operating Status </p>
                 {this.props.mine.mine_status[0] ? (
                   <p>{this.props.mine.mine_status[0].status_labels.join(", ")}</p>
@@ -211,7 +211,7 @@ export class MineHeader extends Component {
                 )}
               </div>
 
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Status Since </p>
 
                 {this.props.mine.mine_status[0].status_date ? (
@@ -223,16 +223,16 @@ export class MineHeader extends Component {
             </div>
           )}
           {!this.props.mine.mine_status[0] && (
-            <div className="inline-flex padding-small">
+            <div className="inline-flex padding-sm">
               <p className="field-title">Operating Status</p>
               <p>{String.EMPTY_FIELD}</p>
             </div>
           )}
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Mine Class </p>
             <p>{this.props.mine.major_mine_ind ? String.MAJOR_MINE : String.REGIONAL_MINE}</p>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Tenure</p>
             <div>
               <p>
@@ -244,7 +244,7 @@ export class MineHeader extends Component {
               </p>
             </div>
           </div>
-          <div className="inline-flex padding-small wrap">
+          <div className="inline-flex padding-sm wrap">
             <p className="field-title">Commodity</p>
             {this.props.transformedMineTypes.mine_commodity_code.length > 0 ? (
               uniqBy(this.props.transformedMineTypes.mine_commodity_code).map((code) => (
@@ -254,7 +254,7 @@ export class MineHeader extends Component {
               <p>{String.EMPTY_FIELD}</p>
             )}
           </div>
-          <div className="inline-flex padding-small wrap">
+          <div className="inline-flex padding-sm wrap">
             <p className="field-title">Disturbance</p>
             {this.props.transformedMineTypes.mine_disturbance_code.length > 0 ? (
               uniqBy(this.props.transformedMineTypes.mine_disturbance_code).map((code) => (
@@ -264,7 +264,7 @@ export class MineHeader extends Component {
               <p>{String.EMPTY_FIELD}</p>
             )}
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">TSF</p>
             <p>
               {this.props.mine.mine_tailings_storage_facilities.length > 0
@@ -272,7 +272,7 @@ export class MineHeader extends Component {
                 : String.EMPTY_FIELD}
             </p>
           </div>
-          <div className="inline-flex padding-small wrap">
+          <div className="inline-flex padding-sm wrap">
             <p className="field-title">Notes</p>
             <div>
               {this.props.mine.mine_note ? (
@@ -291,11 +291,11 @@ export class MineHeader extends Component {
               )}
             </div>
           </div>
-          <div className="inline-flex padding-small wrap">
+          <div className="inline-flex padding-sm wrap">
             <p className="field-title">Legacy Alias</p>
             <p>{this.props.mine.mms_alias ? this.props.mine.mms_alias : String.EMPTY_FIELD}</p>
           </div>
-          <div className="inline-flex padding-small wrap">
+          <div className="inline-flex padding-sm wrap">
             <p className="field-title">Exemption Status</p>
             <div>
               {this.props.mine.exemption_fee_status_code

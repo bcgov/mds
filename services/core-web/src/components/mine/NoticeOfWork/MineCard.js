@@ -28,39 +28,38 @@ export const MineCard = (props) => {
         <div className="mine-content__card-right">
           <Row gutter={16}>
             <Col md={12} sm={24}>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Mine Name</p>
                 <p>{props.mine.mine_name}</p>
               </div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Mine Number</p>
                 <p>{props.mine.mine_no}</p>
               </div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Mine Class </p>
                 <p>{props.mine.major_mine_ind ? Strings.MAJOR_MINE : Strings.REGIONAL_MINE}</p>
               </div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Permit Number</p>
-                {props.mine?.mine_permit_numbers?.length > 0 ? (
-                  props.mine.mine_permit_numbers.length === 1 ? (
-                    <p>{props.mine.mine_permit_numbers[0]}</p>
-                  ) : (
-                    <ul className="mine-list__permits">
-                      {props.mine.mine_permit_numbers.map((permit_no) => (
-                        <li key={permit_no}>
-                          <p>{permit_no}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                ) : (
-                  <p>{Strings.EMPTY_FIELD}</p>
+                {(!props.mine.mine_permit_numbers ||
+                  props.mine.mine_permit_numbers?.length === 0) && <p>{Strings.EMPTY_FIELD}</p>}
+                {props.mine.mine_permit_numbers?.length === 1 && (
+                  <p>{props.mine.mine_permit_numbers[0]}</p>
+                )}
+                {props.mine.mine_permit_numbers?.length > 1 && (
+                  <ul className="mine-list__permits">
+                    {props.mine.mine_permit_numbers.map((permit_no) => (
+                      <li key={permit_no}>
+                        <p>{permit_no}</p>
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
             </Col>
             <Col md={12} sm={24}>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Mine Region</p>
                 <p>
                   {props.mine.mine_region
@@ -68,7 +67,7 @@ export const MineCard = (props) => {
                     : Strings.EMPTY_FIELD}
                 </p>
               </div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <div style={{ position: "absolute", left: "0px" }}>
                   <Badge color={Styles.COLOR.fuschia} />
                 </div>
@@ -79,7 +78,7 @@ export const MineCard = (props) => {
                     : Strings.EMPTY_FIELD}
                 </p>
               </div>
-              <div className="inline-flex padding-small">
+              <div className="inline-flex padding-sm">
                 <p className="field-title">Mine Longitude</p>
                 <p>
                   {props.mine.mine_location && props.mine.mine_location.longitude

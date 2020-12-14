@@ -40,7 +40,7 @@ export const NOWProgressStatus = (props) => {
           {props.progressStatusHash[props.tab]} Status:{" "}
           <Badge
             color={COLOR.mediumGrey}
-            className="padding-small--left progress-status"
+            className="padding-sm--left progress-status"
             text="Not Started"
           />
         </p>
@@ -51,7 +51,7 @@ export const NOWProgressStatus = (props) => {
             {props.progressStatusHash[props.tab]} Status:{" "}
             <Badge
               color={COLOR.blue}
-              className="padding-small--left progress-status"
+              className="padding-sm--left progress-status"
               text="In Progress"
             />
           </p>
@@ -77,7 +77,7 @@ export const NOWProgressStatus = (props) => {
             {props.progressStatusHash[props.tab]} Status:
             <Badge
               color={COLOR.successGreen}
-              className="padding-small--left progress-status"
+              className="padding-sm--left progress-status"
               text="Complete"
             />
           </p>
