@@ -138,7 +138,7 @@ export class PartyOrgBookForm extends Component {
             disabled={!hasOrgBookCredential}
           >
             <span>
-              <BookOutlined className="padding-small--right" />
+              <BookOutlined className="padding-sm--right" />
               View on OrgBook
             </span>
           </Button>
@@ -150,7 +150,7 @@ export class PartyOrgBookForm extends Component {
             loading={this.state.isAssociating}
           >
             <span>
-              <CheckCircleOutlined className="padding-small--right" />
+              <CheckCircleOutlined className="padding-sm--right" />
               Associate
             </span>
           </Button>

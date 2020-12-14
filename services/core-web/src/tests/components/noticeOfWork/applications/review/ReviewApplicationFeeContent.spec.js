@@ -156,7 +156,6 @@ describe("ReviewApplicationFeeContent", () => {
       props.adjustedTonnage
     );
     expect(instance.state.isApplicationFeeValid).toEqual(true);
-    expect(instance.state.isExactlyFiveOrUnder).toEqual(true);
     expect(component.find(".error").length).toEqual(0);
   });
 
@@ -184,7 +183,6 @@ describe("ReviewApplicationFeeContent", () => {
       props.adjustedTonnage
     );
     expect(instance.state.isApplicationFeeValid).toEqual(true);
-    expect(instance.state.isExactlyFiveOrUnder).toEqual(true);
     expect(component.find(".error").length).toEqual(0);
   });
 
@@ -213,7 +211,6 @@ describe("ReviewApplicationFeeContent", () => {
       props.proposedTonnage,
       props.adjustedTonnage
     );
-    expect(instance.state.isExactlyFiveOrUnder).toEqual(false);
     expect(instance.state.isApplicationFeeValid).toEqual(false);
     expect(component.find(".error").length).toEqual(1);
   });
@@ -241,7 +238,6 @@ describe("ReviewApplicationFeeContent", () => {
       props.proposedTonnage,
       props.adjustedTonnage
     );
-    expect(instance.state.isExactlyFiveOrUnder).toEqual(true);
     expect(instance.state.isApplicationFeeValid).toEqual(false);
     expect(component.find(".error").length).toEqual(1);
   });

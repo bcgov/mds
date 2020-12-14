@@ -11,8 +11,8 @@ const propTypes = {
 export const IncidentsUploadedFilesList = (props) => (
   <div>
     {props.files.map((file) => (
-      <div className="padding-small margin-small lightest-grey-bg" key={file.mine_document_guid}>
-        <Row className="padding-small">
+      <div className="padding-sm margin-small lightest-grey-bg" key={file.mine_document_guid}>
+        <Row className="padding-sm">
           <Col span={21}>
             <p className="uploaded-file left">{file.document_name}</p>
           </Col>

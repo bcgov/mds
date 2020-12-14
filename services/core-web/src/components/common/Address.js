@@ -26,13 +26,13 @@ export class Address extends Component {
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">
-      <ContactsOutlined className="icon-sm padding-small--right" />
+      <ContactsOutlined className="icon-sm padding-sm--right" />
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );
 
   renderNextLine = (itemArr) => (
-    <div className="padding-large--left">
+    <div className="padding-lg--left">
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );
