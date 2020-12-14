@@ -156,9 +156,8 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
     mockAxios.onPut(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
     return updateNoticeOfWorkApplication(
       payload,
-      applicationGuid,
-      message
-    )(dispatch).then(() => {
+      applicationGuid
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
