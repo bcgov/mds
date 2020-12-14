@@ -72,13 +72,13 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
                     permit_amendment.permit_amendment_status_code = 'OGP'
+                    #assign permit_no
+                    permit.assign_permit_no(
+                    now_application_identity.now_application.notice_of_work_type_code[0])
 
                 if permit_amendment.permit_amendment_status_code == 'DFT':
                     permit_amendment.permit_amendment_status_code = 'ACT'
-
-                #assign permit_no
-                permit.assign_permit_no(
-                    now_application_identity.now_application.notice_of_work_type_code[0])
+                
 
                 permit.save()
 
