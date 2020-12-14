@@ -42,13 +42,21 @@ export const MineCard = (props) => {
               </div>
               <div className="inline-flex padding-small">
                 <p className="field-title">Permit Number</p>
-                <ul className="mine-list__permits">
-                  {props.mine.mine_permit_numbers && props.mine.mine_permit_numbers.length > 0
-                    ? props.mine.mine_permit_numbers.map((permit_no) => (
-                        <li key={permit_no}>{permit_no}</li>
-                      ))
-                    : Strings.EMPTY_FIELD}
-                </ul>
+                {props.mine?.mine_permit_numbers?.length > 0 ? (
+                  props.mine.mine_permit_numbers.length === 1 ? (
+                    <p>{props.mine.mine_permit_numbers[0]}</p>
+                  ) : (
+                    <ul className="mine-list__permits">
+                      {props.mine.mine_permit_numbers.map((permit_no) => (
+                        <li key={permit_no}>
+                          <p>{permit_no}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                ) : (
+                  <p>{Strings.EMPTY_FIELD}</p>
+                )}
               </div>
             </Col>
             <Col md={12} sm={24}>

@@ -40,6 +40,11 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         if mine_document.now_application_document_xref.is_final_package:
             raise BadRequest(
                 'You cannot remove a document that is a part of the Final Application Package.')
+        elif mine_document.now_application_document_xref.is_referral_package:
+            raise BadRequest('You cannot remove a document that is a part of the Referral Package.')
+        elif mine_document.now_application_document_xref.is_consultation_package:
+            raise BadRequest(
+                'You cannot remove a document that is a part of the Consultation Package.')
 
         mine_document.now_application_document_xref.delete()
         return None, 204

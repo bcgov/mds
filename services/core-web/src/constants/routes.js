@@ -25,6 +25,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
+import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
@@ -160,6 +161,13 @@ export const MINE_REPORTS = {
   component: MineReportInfo,
 };
 
+export const MINE_PERMIT_REQUIRED_REPORTS = {
+  route: "/mine-dashboard/:id/reports/permit-required-reports",
+  dynamicRoute: (id, filterParams) =>
+    `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
+  component: PermitRequiredReports,
+};
+
 export const MINE_TAILINGS = {
   route: "/mine-dashboard/:id/reports/tailings",
   dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
@@ -246,7 +254,7 @@ export const NOTICE_OF_WORK_APPLICATION = {
     tab
       ? `/dashboard/notice-of-work/application/${guid}/${tab}`
       : `/dashboard/notice-of-work/application/${guid}/verification`,
-  hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}#${link}`,
+  hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
 };
 

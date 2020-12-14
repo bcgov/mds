@@ -186,7 +186,10 @@ export const NOWDocuments = (props) => {
       render: (isDeletionAllowed, record) => {
         if (isDeletionAllowed) {
           return (
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper
+              permission={Permission.EDIT_PERMITS}
+              tab={props.isAdminView ? "" : "REV"}
+            >
               <Popconfirm
                 placement="topLeft"
                 title="Are you sure you want to remove this document?"
@@ -206,9 +209,12 @@ export const NOWDocuments = (props) => {
         return (
           /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
           <div disabled onClick={(event) => event.stopPropagation()}>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <NOWActionWrapper
+              permission={Permission.EDIT_PERMITS}
+              tab={props.isAdminView ? "" : "REV"}
+            >
               <Tooltip
-                title="You cannot remove a document that is a part of the Final Application Package."
+                title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
                 placement="right"
                 mouseEnterDelay={0.3}
               >
@@ -250,7 +256,10 @@ export const NOWDocuments = (props) => {
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,
-      isDeletionAllowed: !document.is_final_package,
+      isDeletionAllowed:
+        !document.is_final_package &&
+        !document.is_referral_package &&
+        !document.is_consultation_package,
     }));
 
   return (

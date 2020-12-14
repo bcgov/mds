@@ -90,7 +90,7 @@ exports[`MineIncidentTable renders properly 1`] = `
         "key": "followup_action",
         "onFilter": [Function],
         "render": [Function],
-        "title": "EMPR Action",
+        "title": "EMLI Action",
       },
       Object {
         "className": "",

@@ -1,19 +1,17 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_restplus import Resource, reqparse, inputs
-from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
-
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
-
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -60,10 +58,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             )
 
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
-            now_application_identity.now_application.status_updated_date = datetime.today()
-            now_application_identity.now_application.now_application_status_code = now_application_status_code
-            now_application_identity.now_application.status_reason = status_reason
-            now_application_identity.save()
             # Approved
             if now_application_status_code == 'AIA':
                 permit = Permit.find_by_now_application_guid(application_guid)
@@ -77,6 +71,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 #move out of draft
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
+                    permit_amendment.permit_amendment_status_code = 'OGP'
+
+                if permit_amendment.permit_amendment_status_code == 'DFT':
+                    permit_amendment.permit_amendment_status_code = 'ACT'
 
                 #assign permit_no
                 permit.assign_permit_no(
@@ -84,17 +82,35 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 permit.save()
 
-                permit_amendment.permit_amendment_status_code = 'ACT'
                 permit_amendment.issue_date = issue_date
                 permit_amendment.authorization_end_date = auth_end_date
                 permit_amendment.description = description
+
+                # transfer reclamation security data from NoW to permit
+                permit_amendment.security_adjustment = now_application_identity.now_application.security_adjustment
+                permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
+                permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
+                permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
+                permit_amendment_document = [
+                    doc for doc in now_application_identity.now_application.documents
+                    if doc.now_application_document_type_code == 'PMA'
+                    or doc.now_application_document_type_code == 'PMT'
+                ][0]
+                new_pa_doc = PermitAmendmentDocument(
+                    mine_guid=permit_amendment.mine_guid,
+                    document_manager_guid=permit_amendment_document.mine_document.
+                    document_manager_guid,
+                    document_name=permit_amendment_document.mine_document.document_name)
+
+                permit_amendment.related_documents.append(new_pa_doc)
+
                 permit_amendment.save()
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
                     new_permittee = False
 
-                    if contact.mine_party_appt_type_code == "PMT":
+                    if contact.mine_party_appt_type_code == 'PMT':
                         current_mpa = MinePartyAppointment.find_current_appointments(
                             mine_party_appt_type_code='PMT', permit_id=permit.permit_id)
 
@@ -103,7 +119,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                         if len(current_mpa) == 1:
                             if current_mpa[0].party_guid != contact.party_guid:
-                                current_mpa[0].end_date = start_date - timedelta(days=1)
+                                current_mpa[0].end_date = current_mpa[0].start_date - timedelta(
+                                    days=1)
                                 current_mpa[0].save()
                                 new_permittee = True
 
@@ -112,7 +129,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 'This permit has more than one active permittee. Please resolve this and try again.'
                             )
 
-                    if contact.mine_party_appt_type_code != "PMT" or new_permittee == True:
+                    if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
                         mine_party_appointment = MinePartyAppointment.create(
                             mine=now_application_identity.mine
                             if contact.mine_party_appt_type_code != 'PMT' else None,
@@ -124,6 +141,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             processed_by=self.get_user_info())
                         mine_party_appointment.save()
 
-                #TODO: Documents / CRR
-
+            #TODO: Documents / CRR
+            # Update NoW application and save status
+            now_application_identity.now_application.status_updated_date = datetime.today()
+            now_application_identity.now_application.now_application_status_code = now_application_status_code
+            now_application_identity.now_application.status_reason = status_reason
+            now_application_identity.save()
         return 200

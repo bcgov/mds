@@ -232,7 +232,7 @@ const FollowupInformation = (props) => {
         />
 
         <IncidentField
-          title="Was it escalated to EMPR Investigation?"
+          title="Was it escalated to EMLI Investigation?"
           content={
             props.incidentFollowupActionHash[props.incident.followup_investigation_type_code] ||
             Strings.EMPTY_FIELD

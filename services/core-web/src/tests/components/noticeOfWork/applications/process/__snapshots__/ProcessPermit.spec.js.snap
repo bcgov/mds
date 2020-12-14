@@ -1,68 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProcessPermit renders properly 1`] = `
-<div>
-  <div
-    className="view--header"
-  >
-    <div
-      className="inline-flex block-mobile padding-md"
-    >
-      <h2>
-        Process Permit
-        <CoreTooltip
-          title="This page allows you to review the progress of the Notice of work and record decisions. You can also generate any decisions letters once a decision is made."
-        />
-      </h2>
-      <Connect(NOWProgressActions)
-        tab="PRO"
-      />
-      <Connect(AuthorizationWrapper)
-        permission="role_edit_permits"
-      >
-        <Dropdown
-          mouseEnterDelay={0.15}
-          mouseLeaveDelay={0.1}
-          overlay={
-            <Menu>
-              <MenuItem
-                disabled={true}
-                onClick={[Function]}
-              >
-                Issue permit
-              </MenuItem>
-              <MenuItem
-                onClick={[Function]}
-              >
-                Reject application
-              </MenuItem>
-              <MenuItem
-                onClick={[Function]}
-              >
-                Withdraw application
-              </MenuItem>
-            </Menu>
-          }
-          placement="bottomLeft"
+<Fragment>
+  <NOWTabHeader
+    handleDraftPermit={null}
+    isEditMode={false}
+    tab="PRO"
+    tabActions={
+      <React.Fragment>
+        <UNDEFINED
+          permission="role_edit_permits"
         >
-          <Button
-            block={false}
-            className="full-mobile"
-            ghost={false}
-            htmlType="button"
-            loading={false}
-            type="primary"
+          <Dropdown
+            mouseEnterDelay={0.15}
+            mouseLeaveDelay={0.1}
+            overlay={
+              <Menu>
+                <MenuItem
+                  disabled={true}
+                  onClick={[Function]}
+                >
+                  Issue permit
+                </MenuItem>
+                <MenuItem
+                  onClick={[Function]}
+                >
+                  Reject application
+                </MenuItem>
+                <MenuItem
+                  onClick={[Function]}
+                >
+                  Withdraw application
+                </MenuItem>
+              </Menu>
+            }
+            placement="bottomLeft"
           >
-            Process 
-            <ForwardRef(DownOutlined) />
-          </Button>
-        </Dropdown>
-      </Connect(AuthorizationWrapper)>
-    </div>
-    <withRouter(Connect(NOWStatusIndicator))
-      type="banner"
-    />
-  </div>
+            <ForwardRef(InternalButton)
+              block={false}
+              className="full-mobile"
+              ghost={false}
+              htmlType="button"
+              loading={false}
+              type="primary"
+            >
+              Process 
+              <ForwardRef(DownOutlined) />
+            </ForwardRef(InternalButton)>
+          </Dropdown>
+        </UNDEFINED>
+      </React.Fragment>
+    }
+    tabEditActions=""
+    tabName="Process Permit"
+  />
   <div
     className="side-menu--timeline"
   >
@@ -165,5 +156,5 @@ exports[`ProcessPermit renders properly 1`] = `
       title="The following issues must be resolved before you can issue this amendment."
     />
   </div>
-</div>
+</Fragment>
 `;

@@ -265,12 +265,12 @@ export class MineIncidentTable extends Component {
         ),
       },
       {
-        title: "EMPR Action",
+        title: "EMLI Action",
         key: "followup_action",
         dataIndex: "followup_action",
         className: hideColumn(true),
         render: (action, record) => (
-          <div title="EMPR Action" className={hideColumn(true)}>
+          <div title="EMLI Action" className={hideColumn(true)}>
             {action ? action.description : record.incident.followup_type_code}
           </div>
         ),

@@ -28,8 +28,8 @@ const exportedDocuments = ["NTR"];
 
 export const NOWApplicationAdministrative = (props) => {
   return (
-    <div className="page__content">
-      <ScrollContentWrapper id="application-files" title="Final Application Package">
+    <div>
+      <ScrollContentWrapper id="final-application-package" title="Final Application Package">
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
@@ -37,8 +37,8 @@ export const NOWApplicationAdministrative = (props) => {
           adminView
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="application-files" title="Reclamation Securities">
-        <NOWSecurities mineGuid={props.mineGuid} noticeOfWork={props.noticeOfWork} />
+      <ScrollContentWrapper id="reclamation-securities" title="Reclamation Securities">
+        <NOWSecurities />
         <br />
         <br />
         <NOWDocuments
@@ -52,7 +52,7 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["SDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="application-files" title="Government Documents">
+      <ScrollContentWrapper id="government-documents" title="Government Documents">
         <NOWDocuments
           documents={props.noticeOfWork.documents.filter(
             ({ now_application_document_sub_type_code }) =>
@@ -64,7 +64,7 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="application-export-files" title="Application Export Files">
+      <ScrollContentWrapper id="generated-documents" title="Application Export Files">
         <NOWDocuments
           documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
             exportedDocuments.includes(now_application_document_type_code)
