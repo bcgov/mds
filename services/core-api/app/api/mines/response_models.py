@@ -428,12 +428,16 @@ MINE_REPORT_MODEL = api.model(
         fields.String,
         'permit_guid':
         fields.String,
+        'permit_number':
+        fields.String,
         'mine_report_submissions':
         fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
         'mine_guid':
         fields.String,
         'mine_name':
         fields.String,
+        'permit_condition_category_code':
+        fields.String
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
