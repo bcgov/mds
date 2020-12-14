@@ -227,7 +227,7 @@ export class FinalPermitDocuments extends Component {
       <div className="inline-flex flex-flow-column horizontal-center">
         <h4>Downloading Selected Files...</h4>
         <Progress
-          className="padding-md--top padding-large--bottom"
+          className="padding-md--top padding-lg--bottom"
           strokeColor={COLOR.violet}
           type="circle"
           percent={Math.round(
@@ -253,7 +253,7 @@ export class FinalPermitDocuments extends Component {
               className="full-mobile"
               onClick={() => this.downloadDocumentPackage()}
             >
-              <DownloadOutlined className="padding-small--right icon-sm" />
+              <DownloadOutlined className="padding-sm--right icon-sm" />
               Download All
             </Button>
             <NOWActionWrapper

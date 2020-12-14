@@ -45,9 +45,9 @@ const defaultProps = {
 };
 
 const handleRemove = (fields, index) => {
-  const promise = new Promise(function(resolve) {
-    resolve(fields.push({ ...fields.get(index), state_modified: "delete" }));
-  });
+  const promise = new Promise((resolve) =>
+    resolve(fields.push({ ...fields.get(index), state_modified: "delete" }))
+  );
   return promise.then(() => {
     fields.remove(index);
   });
@@ -229,7 +229,7 @@ const renderContacts = ({
               }
             >
               <div className="inline-flex flex-center">
-                <PlusOutlined className="icon-sm padding-small--right" />
+                <PlusOutlined className="icon-sm padding-sm--right" />
                 <p>Add New Contact</p>
               </div>
             </div>

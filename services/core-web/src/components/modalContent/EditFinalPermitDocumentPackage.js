@@ -58,7 +58,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
           type="primary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <DownloadOutlined className="padding-small--right icon-sm" />
+          <DownloadOutlined className="padding-sm--right icon-sm" />
           Save Application Package
         </Button>
       </div>

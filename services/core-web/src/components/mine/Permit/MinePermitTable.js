@@ -3,7 +3,7 @@ import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
 import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
@@ -52,6 +52,18 @@ const renderDocumentLink = (file, text) => (
   </LinkButton>
 );
 
+const finalApplicationPackage = (amendment) => {
+  const finalAppPackageCore =
+    amendment.now_application_documents.length > 0
+      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  const finalAppPackageImported =
+    amendment.imported_now_application_documents.length > 0
+      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  return finalAppPackageCore.concat(finalAppPackageImported);
+};
+
 const renderDeleteButtonForPermitAmendments = (record) => {
   if (record.amendmentType === originalPermit) {
     return;
@@ -78,7 +90,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         <Button className="permit-table-button" type="ghost">
           <div>
             <img
-              className="padding-small--right icon-svg-filter"
+              className="padding-sm--right icon-svg-filter"
               src={TRASHCAN}
               alt="Remove Permit Amendment"
             />
@@ -152,7 +164,7 @@ const columns = [
               onClick={(event) => record.openAddAmalgamatedPermitModal(event, record.permit)}
             >
               <div>
-                <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                 {text.hasAmalgamated ? "Add Permit Amendment" : "Amalgamate Permit"}
               </div>
             </button>
@@ -165,7 +177,7 @@ const columns = [
                 onClick={(event) => record.openAddPermitAmendmentModal(event, record.permit)}
               >
                 <div>
-                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                   Add Permit Amendment
                 </div>
               </button>
@@ -181,7 +193,7 @@ const columns = [
                 }
               >
                 <div>
-                  <PlusOutlined className="padding-small add-permit-dropdown-button-icon" />
+                  <PlusOutlined className="padding-sm add-permit-dropdown-button-icon" />
                   Add Permit Historical Amendment
                 </div>
               </button>
@@ -197,7 +209,7 @@ const columns = [
             >
               <img
                 alt="document"
-                className="padding-small"
+                className="padding-sm"
                 src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
@@ -214,7 +226,7 @@ const columns = [
             >
               <img
                 alt="document"
-                className="padding-small"
+                className="padding-sm"
                 src={EDIT_OUTLINE_VIOLET}
                 style={{ paddingRight: "15px" }}
               />
@@ -284,11 +296,11 @@ const columns = [
           >
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               <Button type="secondary" className="permit-table-button">
-                <div className="padding-small">
-                  <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+                <div className="padding-sm">
+                  <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                   Add/Edit
                   <img
-                    className="padding-small--right icon-svg-filter"
+                    className="padding-sm--right icon-svg-filter"
                     src={CARAT}
                     alt="Menu"
                     style={{ paddingLeft: "5px" }}
@@ -334,11 +346,49 @@ const childColumns = [
     ),
   },
   {
-    title: "Files",
+    title: "Maps",
+    dataIndex: "maps",
+    key: "maps",
+    render: (text) => (
+      <div title="Maps">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Final Application Package",
+    dataIndex: "finalApplicationPackage",
+    key: "finalApplicationPackage",
+    render: (text) => (
+      <div title="Final Application Package">
+        <ul>
+          {text.map((file) => (
+            <li className="wrapped-text">
+              {renderDocumentLink(
+                file.mine_document,
+                truncateFilename(file.mine_document.document_name)
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    title: "Permit Files",
     dataIndex: "documents",
     key: "documents",
     render: (text, record) => (
-      <div title="Files">
+      <div title="Permit Files">
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
@@ -348,7 +398,7 @@ const childColumns = [
                   <span> (amalgamated)</span>
                 </>
               ) : (
-                renderDocumentLink(file, file.document_name)
+                renderDocumentLink(file, truncateFilename(file.document_name))
               )}
             </li>
           ))}
@@ -370,7 +420,7 @@ const childColumns = [
             onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
           >
             <div>
-              <img className="padding-small--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
+              <img className="padding-sm--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
             </div>
           </Button>
         </AuthorizationWrapper>
@@ -451,6 +501,10 @@ const transformChildRowData = (
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
+  finalApplicationPackage: finalApplicationPackage(amendment),
+  maps: amendment.now_application_documents.filter(
+    (doc) => doc.now_application_document_sub_type_code === "MDO"
+  ),
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (
@@ -464,11 +518,11 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
   >
     {rowProps.expanded ? (
       <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--grey" />
+        <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
       <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--grey" />
+        <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
   </a>

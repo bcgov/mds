@@ -25,6 +25,8 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
     documenttype = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
     is_final_package = db.Column(db.Boolean, server_default=FetchedValue())
+    is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
+    is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())
 
     now_application_id = db.Column(
         db.Integer,

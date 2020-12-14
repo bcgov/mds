@@ -68,7 +68,7 @@ const columns = [
     render: (text, record) => (
       <div title="Overdue">
         {record.overdue && record.due_date !== null ? (
-          <img className="padding-small" src={RED_CLOCK} alt="Overdue Report" />
+          <img className="padding-sm" src={RED_CLOCK} alt="Overdue Report" />
         ) : (
           ""
         )}

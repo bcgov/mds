@@ -56,7 +56,7 @@ export const MineResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table padding-large--bottom"
+        className="nested-table padding-lg--bottom"
         align="left"
         showHeader={false}
         pagination={false}
@@ -65,7 +65,7 @@ export const MineResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          className="padding-large--left float-right"
+          className="padding-lg--left float-right"
           to={router.MINE_HOME_PAGE.dynamicRoute({
             search: props.query,
             page: Strings.DEFAULT_PAGE,

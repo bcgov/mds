@@ -43,7 +43,7 @@ const columns = [
           {!isEmpty(record.party_orgbook_entity) && (
             <img
               alt="Verified"
-              className="padding-small"
+              className="padding-sm"
               src={SUCCESS_CHECKMARK}
               width="25"
               title={`Party verified by ${

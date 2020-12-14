@@ -71,6 +71,7 @@ def import_nris_xml():
     cursor.close()
 
     cursor = oracle_db.cursor()
+    # TODO: Change this to EMLI if and when it is updated.
     cursor.execute(
         "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 
