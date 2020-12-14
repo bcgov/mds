@@ -6,7 +6,12 @@ import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import { Field } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import { number } from "@common/utils/Validate";
+import {
+  number,
+  dateNotInFuture,
+  dateNotBeforeOther,
+  dateNotAfterOther,
+} from "@common/utils/Validate";
 import {
   getDurationText,
   isPlacerAdjustmentFeeValid,
@@ -23,11 +28,15 @@ const propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
+  proposedStartDate: PropTypes.string,
+  proposedAuthorizationEndDate: PropTypes.string,
 };
 
 const defaultProps = {
   adjustedTonnage: null,
   proposedTonnage: null,
+  proposedStartDate: null,
+  proposedAuthorizationEndDate: null,
 };
 
 const tableOneColumns = [
@@ -224,34 +233,36 @@ export class ReviewApplicationFeeContent extends Component {
           <div className="inline-flex between">
             <h4>
               Permit Application Fee Assessment
-              <CoreTooltip title="The application fee collected for this application was based on the Term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
+              <CoreTooltip title="The application fee collected for this application was based on the term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
             </h4>
             <LinkButton onClick={this.toggleFeeDrawer}>View Fee Chart</LinkButton>
           </div>
           <br />
           <div className="field-title">
             Proposed Start Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
           </div>
           <Field
             id="proposed_start_date"
             name="proposed_start_date"
             component={RenderDate}
-            disabled
+            disabled={this.props.isViewMode || !this.props.isAdmin}
+            validate={[dateNotInFuture, dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
           />
           <div className="field-title">
             Proposed Authorization End Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
           </div>
           <Field
             id="proposed_end_date"
             name="proposed_end_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
+            validate={[dateNotBeforeOther(this.props.proposedStartDate)]}
           />
           <div className="field-title">
             Proposed Term of Application
-            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
           </div>
           <Field
             id="calculated_term_of_application"

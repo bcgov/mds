@@ -363,7 +363,7 @@ export const getDurationTextInDays = (duration) => {
   const hourText = getDurationTextOrDefault(hours, "Hour");
   const minuteText = getDurationTextOrDefault(minutes, "Minute");
   const value = `${daysText} ${hourText} ${minuteText}`;
-  return `${daysText} ${hourText} ${minuteText}`;
+  return value;
 };
 
 const getDurationTextOrDefault = (duration, unit) => {

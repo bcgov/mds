@@ -43,6 +43,7 @@ export class UpdateStatusGenerateLetterModal extends Component {
   renderCorrectFrom = () =>
     this.props.type === "AIA" ? (
       <IssuePermitForm
+        noticeOfWork={this.props.noticeOfWork}
         onSubmit={this.props.onSubmit}
         closeModal={this.props.closeModal}
         title={this.props.title}
@@ -60,19 +61,19 @@ export class UpdateStatusGenerateLetterModal extends Component {
 
   render() {
     const steps = [
-      {
-        title: "Generate Letter",
-        content: (
-          <GenerateDocumentForm
-            {...this.props}
-            showActions={false}
-            additionalTitle="and Process"
-            onSubmit={this.handleGenerate}
-            submitting={this.state.submitting}
-            disabled={!this.props.signature}
-          />
-        ),
-      },
+      // {
+      //   title: "Generate Letter",
+      //   content: (
+      //     <GenerateDocumentForm
+      //       {...this.props}
+      //       showActions={false}
+      //       additionalTitle="and Process"
+      //       onSubmit={this.handleGenerate}
+      //       submitting={this.state.submitting}
+      //       disabled={!this.props.signature}
+      //     />
+      //   ),
+      // },
       {
         title: "Process",
         content: this.renderCorrectFrom(),

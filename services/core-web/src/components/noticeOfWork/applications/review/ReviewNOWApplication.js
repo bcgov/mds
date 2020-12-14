@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
+import { Field, reduxForm, FormSection, formValueSelector, change } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Divider, Row, Col } from "antd";
@@ -24,6 +24,7 @@ import {
   requiredRadioButton,
   validateSelectOptions,
 } from "@common/utils/Validate";
+import { getDurationText } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -66,6 +67,8 @@ const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   proposedTonnage: PropTypes.number.isRequired,
   adjustedTonnage: PropTypes.number.isRequired,
+  proposedStartDate: PropTypes.string.isRequired,
+  proposedAuthorizationEndDate: PropTypes.string.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
@@ -265,6 +268,8 @@ export const ReviewNOWApplication = (props) => {
             isAdmin={isAdmin}
             proposedTonnage={props.proposedTonnage}
             adjustedTonnage={props.adjustedTonnage}
+            proposedStartDate={props.proposedStartDate}
+            proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
           />
         </Col>
       </Row>
@@ -753,6 +758,8 @@ export default compose(
     filtered_submission_documents: selector(state, "filtered_submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
+    proposedStartDate: selector(state, "proposed_start_date"),
+    proposedAuthorizationEndDate: selector(state, "proposed_end_date"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
