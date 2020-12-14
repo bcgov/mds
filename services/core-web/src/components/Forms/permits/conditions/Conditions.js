@@ -208,7 +208,7 @@ export class Conditions extends Component {
                 />
                 {false && (
                   <Button type="secondary" className="full-mobile btn--middle">
-                    <UndoOutlined className="padding-small--right icon-sm" />
+                    <UndoOutlined className="padding-sm--right icon-sm" />
                     Restore Deleted Standard Conditions
                   </Button>
                 )}

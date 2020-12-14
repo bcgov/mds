@@ -7,7 +7,11 @@ import RenderDate from "@/components/common/RenderDate";
 import { Field } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
 import { number } from "@common/utils/Validate";
-import { getDurationText } from "@common/utils/helpers";
+import {
+  getDurationText,
+  isPlacerAdjustmentFeeValid,
+  isPitsQuarriesAdjustmentFeeValid,
+} from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -93,7 +97,6 @@ export class ReviewApplicationFeeContent extends Component {
     isApplicationFeeValid: true,
     isFeeDrawerVisible: false,
     isDateRangeInvalid: false,
-    isExactlyFiveOrUnder: false,
   };
 
   componentDidMount() {
@@ -102,15 +105,9 @@ export class ReviewApplicationFeeContent extends Component {
         moment(this.props.initialValues.proposed_start_date)
       )
     );
-    const isExactlyFiveOrUnder =
-      (duration.years() === 5 &&
-        duration.months() === 0 &&
-        duration.weeks() === 0 &&
-        duration.days() === 0) ||
-      duration.years() < 5;
     // eslint-disable-next-line no-underscore-dangle
     const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
-    this.setState({ isDateRangeInvalid, isExactlyFiveOrUnder });
+    this.setState({ isDateRangeInvalid });
     if (!isNil(this.props.proposedTonnage) && !isNil(this.props.adjustedTonnage)) {
       this.typeDeterminesFee(
         this.props.initialValues.notice_of_work_type_code,
@@ -144,73 +141,20 @@ export class ReviewApplicationFeeContent extends Component {
     }
   };
 
-  // Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
-  // Fees need to be readjusted if they move to a higher bracket only
-  adjustmentExceedsFeePlacer = (proposed, adjusted) => {
-    let isFeeValid = true;
-    if (this.state.isDateRangeInvalid) {
-      return this.setState({ isApplicationFeeValid: isFeeValid });
-    }
-    if (this.state.isExactlyFiveOrUnder) {
-      if (proposed < 60000) {
-        isFeeValid = adjusted < 60000;
-      } else if (proposed >= 60000 && proposed < 125000) {
-        isFeeValid = adjusted < 125000;
-      } else if (proposed >= 125000 && proposed < 250000) {
-        isFeeValid = adjusted < 250000;
-      } else if (proposed >= 250000 && proposed < 500000) {
-        isFeeValid = adjusted < 500000;
-      } else {
-        // Anything above 500,000 is valid as the applicatcant alredy paid the max fee.
-        isFeeValid = true;
-      }
-    } else if (proposed < 10000) {
-      isFeeValid = adjusted < 10000;
-    } else if (proposed >= 10000 && proposed < 60000) {
-      isFeeValid = adjusted < 60000;
-    } else if (proposed >= 60000 && proposed < 125000) {
-      isFeeValid = adjusted < 125000;
-    } else if (proposed >= 125000 && proposed < 250000) {
-      isFeeValid = adjusted < 250000;
-    } else {
-      // Anything above 250,000 is valid as the applicatcant alredy paid the max fee.
-      isFeeValid = true;
-    }
-    return this.setState({ isApplicationFeeValid: isFeeValid });
-  };
+  adjustmentExceedsFeePlacer = (proposed, adjusted) =>
+    this.state.isDateRangeInvalid
+      ? this.setState({ isApplicationFeeValid: true })
+      : this.setState({
+          isApplicationFeeValid: isPlacerAdjustmentFeeValid(
+            proposed,
+            adjusted,
+            this.props.initialValues.proposed_start_date,
+            this.props.initialValues.proposed_end_date
+          ),
+        });
 
-  adjustmentExceedsFeePitsQuarries = (proposed, adjusted) => {
-    let isFeeValid = true;
-    if (proposed < 5000) {
-      isFeeValid = adjusted < 5000;
-    } else if (proposed >= 5000 && proposed < 10000) {
-      isFeeValid = adjusted < 10000;
-    } else if (proposed >= 10000 && proposed < 20000) {
-      isFeeValid = adjusted < 20000;
-    } else if (proposed >= 20000 && proposed < 30000) {
-      isFeeValid = adjusted < 30000;
-    } else if (proposed >= 30000 && proposed < 40000) {
-      isFeeValid = adjusted < 40000;
-    } else if (proposed >= 40000 && proposed < 50000) {
-      isFeeValid = adjusted < 50000;
-    } else if (proposed >= 50000 && proposed < 60000) {
-      isFeeValid = adjusted < 60000;
-    } else if (proposed >= 60000 && proposed < 70000) {
-      isFeeValid = adjusted < 70000;
-    } else if (proposed >= 70000 && proposed < 80000) {
-      isFeeValid = adjusted < 80000;
-    } else if (proposed >= 80000 && proposed < 90000) {
-      isFeeValid = adjusted < 90000;
-    } else if (proposed >= 90000 && proposed < 100000) {
-      isFeeValid = adjusted < 100000;
-    } else if (proposed >= 100000 && proposed < 130000) {
-      isFeeValid = adjusted < 130000;
-    } else if (proposed >= 130000 && proposed < 170000) {
-      isFeeValid = adjusted < 170000;
-    }
-    // Anything above 170,000 is valid as the applicatcant alredy paid the max fee.
-    return this.setState({ isApplicationFeeValid: isFeeValid });
-  };
+  adjustmentExceedsFeePitsQuarries = (proposed, adjusted) =>
+    this.setState({ isApplicationFeeValid: isPitsQuarriesAdjustmentFeeValid(proposed, adjusted) });
 
   toggleFeeDrawer = () =>
     this.setState((prevState) => ({
