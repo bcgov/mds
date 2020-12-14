@@ -149,7 +149,8 @@ export class NOWProgressActions extends Component {
   };
 
   startOrResumeProgress = (tab, trigger) => {
-    const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
+    const ending = trigger === "Start" ? "ed" : "d";
+    const message = `Successfully ${trigger}${ending} the ${this.props.progressStatusHash[tab]} Process.`;
     this.props
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
