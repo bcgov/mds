@@ -40,6 +40,9 @@ RUN chmod g=u /etc/passwd
 
 USER 1001
 
+COPY fix_uid .
+RUN chmod +x ./fix_uid
+
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
     mkdir ${APP_ROOT}/sonar-scanner-cli && unzip -q /tmp/sonar-scanner-cli.zip -d ${APP_ROOT}/sonar-scanner-cli && \
@@ -55,4 +58,4 @@ RUN source /opt/app-root/etc/scl_enable && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
-ENTRYPOINT [ "fix-uid" ]
+ENTRYPOINT [ "./fix-uid" ]
