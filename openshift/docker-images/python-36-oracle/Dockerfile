@@ -35,10 +35,9 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 
-# Allow user edit to fix instant client encryption issue
-RUN chmod g=u /etc/passwd
-
 USER 1001
+
+COPY fix_uid $APP_ROOT
 
 # Install sonar-scanner
 RUN curl -sLo /tmp/sonar-scanner-cli.zip https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/3.2.0.1227/sonar-scanner-cli-3.2.0.1227-linux.zip && \
@@ -55,4 +54,5 @@ RUN source /opt/app-root/etc/scl_enable && \
     pip install -U pip setuptools wheel && \
     cd ${APP_ROOT}/src && pip install -r requirements.txt
 
-ENTRYPOINT [ "fix-uid" ]
+
+ENTRYPOINT [ "/opt/app-root/fix-uid" ]
