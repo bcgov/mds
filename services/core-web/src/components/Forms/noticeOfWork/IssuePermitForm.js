@@ -31,7 +31,6 @@ const defaultProps = {
 };
 
 export const IssuePermitForm = (props) => {
-  console.log(props);
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>

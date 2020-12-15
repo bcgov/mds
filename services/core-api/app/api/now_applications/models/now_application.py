@@ -221,8 +221,9 @@ class NOWApplication(Base, AuditMixin):
     @validates('proposed_annual_maximum_tonnage')
     def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
         if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
-            if self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
-                raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
+            if not get_user_is_admin(
+            ) and self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('Only admins can modify the proposed annual maximum tonnage.')
         return proposed_annual_maximum_tonnage
 
     def save_import_meta(self):
