@@ -604,7 +604,7 @@ export class ProcessPermit extends Component {
             <>
               {!isProcessed && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                  <Dropdown overlay={this.menu(hasValidationErrors)} placement="bottomLeft">
                     <Button type="primary" className="full-mobile">
                       Process <DownOutlined />
                     </Button>
