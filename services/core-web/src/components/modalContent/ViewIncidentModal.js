@@ -40,8 +40,8 @@ export class ViewIncidentModal extends Component {
     return (
       <div>
         <h5>Initial Report</h5>
-        <div className="content--light-grey padding-small">
-          <div className="inline-flex padding-small">
+        <div className="content--light-grey padding-sm">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Incident type(s)</p>
             <p>
               {this.props.incident.categories && this.props.incident.categories.length > 0
@@ -52,14 +52,14 @@ export class ViewIncidentModal extends Component {
                 : Strings.EMPTY_FIELD}
             </p>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Incident reported to</p>
             <p>
               {this.props.inspectorsHash[this.props.incident.reported_to_inspector_party_guid] ||
                 Strings.EMPTY_FIELD}
             </p>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Inspector responsible</p>
             <p>
               {this.props.inspectorsHash[this.props.incident.responsible_inspector_party_guid] ||
@@ -67,21 +67,21 @@ export class ViewIncidentModal extends Component {
             </p>
           </div>
           <div>
-            <div className="inline-flex padding-small">
+            <div className="inline-flex padding-sm">
               <p className="field-title">Reported by</p>
               <p>{this.props.incident.reported_by_name || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
+            <div className="inline-flex padding-sm">
               <p className="field-title">Phone number</p>
               <p>{formattedPhoneNo || Strings.EMPTY_FIELD}</p>
             </div>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Date reported</p>
             <p>{formatDate(this.props.incident.reported_timestamp) || Strings.EMPTY_FIELD}</p>
           </div>
 
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Time reported</p>
             <p>{formatTime(this.props.incident.reported_timestamp) || Strings.EMPTY_FIELD}</p>
           </div>
@@ -94,38 +94,38 @@ export class ViewIncidentModal extends Component {
   renderIncidentDetails = () => (
     <div>
       <h5>Incident Details</h5>
-      <div className="content--light-grey padding-small">
-        <div className="inline-flex padding-small">
+      <div className="content--light-grey padding-sm">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Incident date</p>
           <p>{formatDate(this.props.incident.incident_timestamp) || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Incident time</p>
           <p>{formatTime(this.props.incident.incident_timestamp) || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Number of fatalities</p>
           <p>{this.props.incident.number_of_fatalities}</p>
         </div>
         <div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Number of injuries</p>
             <p>{this.props.incident.number_of_injuries}</p>
           </div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Were emergency services called?</p>
             <p>{this.props.incident.emergency_services_called ? "Yes" : "No"}</p>
           </div>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Brief description of incident</p>
           <p>{this.props.incident.incident_description || Strings.EMPTY_FIELD}</p>
         </div>
       </div>
       <br />
       <h5>Dangerous Occurance Determination</h5>
-      <div className="content--light-grey padding-small">
-        <div className="inline-flex padding-small">
+      <div className="content--light-grey padding-sm">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Inspector&apos;s determination</p>
           <p>
             {this.props.incidentDeterminationHash[this.props.incident.determination_type_code] ||
@@ -134,7 +134,7 @@ export class ViewIncidentModal extends Component {
         </div>
         {this.props.incident.determination_type_code ===
           Strings.INCIDENT_DETERMINATION_TYPES.dangerousOccurance && (
-          <div className="padding-small">
+          <div className="padding-sm">
             <p className="field-title">
               Which section(s) of the code applies to this dangerous occurrence?
             </p>
@@ -149,7 +149,7 @@ export class ViewIncidentModal extends Component {
             )}
           </div>
         )}
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Inspector who made the determination</p>
           <p>
             {this.props.inspectorsHash[this.props.incident.determination_inspector_party_guid] ||
@@ -157,7 +157,7 @@ export class ViewIncidentModal extends Component {
           </p>
         </div>
 
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Mine&apos;s determination</p>
           <p>
             {this.props.incidentDeterminationHash[
@@ -165,7 +165,7 @@ export class ViewIncidentModal extends Component {
             ] || Strings.EMPTY_FIELD}
           </p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Mine representative who made determination</p>
           <p>{this.props.incident.mine_determination_representative || Strings.EMPTY_FIELD}</p>
         </div>
@@ -197,24 +197,24 @@ export class ViewIncidentModal extends Component {
   renderFollowUpInformation = () => (
     <div>
       <h5>Follow-up information</h5>
-      <div className="content--light-grey padding-small">
-        <div className="inline-flex padding-small">
+      <div className="content--light-grey padding-sm">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Was there a follow-up inspection?</p>
           <p> {this.props.incident.followup_inspection ? "Yes" : "No"}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Follow-up inspection date</p>
           <p>{formatDate(this.props.incident.followup_inspection_date) || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
-          <p className="field-title">Was it escalated to EMPR Investigation?</p>
+        <div className="inline-flex padding-sm">
+          <p className="field-title">Was it escalated to EMLI Investigation?</p>
           <p>
             {this.props.incidentFollowupActionHash[
               this.props.incident.followup_investigation_type_code
             ] || Strings.EMPTY_FIELD}
           </p>
         </div>
-        <div className="padding-small">
+        <div className="padding-sm">
           <p className="field-title">Mine managers recommendations</p>
           {this.props.incident.recommendations.length >= 1 ? (
             <div className="inline-flex">
@@ -232,7 +232,7 @@ export class ViewIncidentModal extends Component {
           )}
         </div>
         <div>
-          <div className="inline-flex padding-small">
+          <div className="inline-flex padding-sm">
             <p className="field-title">Incident Status</p>
             <p>
               {this.props.incidentStatusCodeHash[this.props.incident.status_code] ||

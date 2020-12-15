@@ -69,7 +69,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
       type="primary"
     >
       <ForwardRef(DownloadOutlined)
-        className="padding-small--right icon-sm"
+        className="padding-sm--right icon-sm"
       />
       Save Application Package
     </Button>

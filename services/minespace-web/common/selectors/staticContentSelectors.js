@@ -438,6 +438,12 @@ export const getMineReportCategoryOptionsHash = createSelector(
   createLabelHash
 );
 
+export const getDropdownPermitConditionCategoryOptions = createSelectorWrapper(
+  getPermitConditionCategoryOptions,
+  createDropDownList,
+  ["description", "condition_category_code"]
+);
+
 export const getDropdownMineReportStatusOptions = createSelectorWrapper(
   getMineReportStatusOptions,
   createDropDownList,

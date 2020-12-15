@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, ExportOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { getFormValues, reset, getFormSyncErrors, focus, submit } from "redux-form";
 import { bindActionCreators } from "redux";
@@ -56,12 +56,11 @@ import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applicat
 import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
-import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
-import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
+import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
+import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
@@ -543,80 +542,75 @@ export class NoticeOfWorkApplication extends Component {
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitting;
-    return this.state.isViewMode ? (
-      <div className="inline-flex block-mobile padding-md">
-        <h2>
-          Application
-          <CoreTooltip
-            title="This page is for reviewing and editing the information and documents sent in
-                    with a Notice of Work. All information provided by the proponent, and any
-                    additional files requested during the application review live here. When the Technical Review is in progress, use the
-                    Edit button to update information about this application."
-          />
-        </h2>
-        {this.props.noticeOfWork.lead_inspector_party_guid && (
-          <>
-            <NOWProgressActions tab="REV" />
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
-              <Button type="secondary" onClick={this.toggleEditMode}>
-                <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
-                Edit
-              </Button>
-            </NOWActionWrapper>
-            <Dropdown
-              overlay={this.menu(true)}
-              placement="bottomLeft"
-              onVisibleChange={this.handleVisibleChange}
-              visible={this.state.menuVisible}
+    return (
+      <NOWTabHeader
+        tab="REV"
+        tabActions={
+          this.props.noticeOfWork.lead_inspector_party_guid && (
+            <>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
+                <Button type="secondary" onClick={this.toggleEditMode}>
+                  <img alt="EDIT_OUTLINE" className="padding-sm--right" src={EDIT_OUTLINE} />
+                  Edit
+                </Button>
+              </NOWActionWrapper>
+              <Dropdown
+                overlay={this.menu(true)}
+                placement="bottomLeft"
+                onVisibleChange={this.handleVisibleChange}
+                visible={this.state.menuVisible}
+              >
+                <Button type="secondary" className="full-mobile">
+                  Download
+                  <DownOutlined />
+                </Button>
+              </Dropdown>
+            </>
+          )
+        }
+        tabEditActions={
+          <div className="center">
+            <Popconfirm
+              placement="bottomRight"
+              title="You have unsaved changes. Are you sure you want to cancel?"
+              onConfirm={this.handleCancelNOWEdit}
+              okText="Yes"
+              cancelText="No"
             >
               <Button type="secondary" className="full-mobile">
-                Download
-                <DownOutlined />
+                Cancel
               </Button>
-            </Dropdown>
-          </>
-        )}
-      </div>
-    ) : (
-      <div className="center padding-md">
-        <div className="inline-flex flex-center block-mobile">
-          <Popconfirm
-            placement="bottomRight"
-            title="You have unsaved changes, Are you sure you want to cancel?"
-            onConfirm={this.handleCancelNOWEdit}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="secondary" className="full-mobile">
-              Cancel
+            </Popconfirm>
+            {showErrors && (
+              <Button
+                type="danger"
+                className="full-mobile"
+                onClick={() => this.focusErrorInput(true)}
+              >
+                Next Issue
+              </Button>
+            )}
+            <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+              Save
             </Button>
-          </Popconfirm>
-          {showErrors && (
-            <Button
-              type="danger"
-              className="full-mobile"
-              onClick={() => this.focusErrorInput(true)}
-            >
-              Next Issue
-            </Button>
-          )}
-          <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
-            Save
-          </Button>
-        </div>
-        {showErrors && (
-          <div className="error">
-            <Alert
-              message={`You have ${errorsLength} ${
-                errorsLength === 1 ? "issue" : "issues"
-              } that must be fixed before proceeding.`}
-              type="error"
-              showIcon
-              style={{ width: "50vw", margin: "auto", top: "8px" }}
-            />
+            {showErrors && (
+              <Alert
+                message={`You have ${errorsLength} ${
+                  errorsLength === 1 ? "issue" : "issues"
+                } that must be fixed before proceeding.`}
+                type="error"
+                showIcon
+                style={{
+                  display: "initial",
+                }}
+              />
+            )}
           </div>
-        )}
-      </div>
+        }
+        tabName="Application"
+        fixedTop={this.state.fixedTop}
+        isEditMode={!this.state.isViewMode}
+      />
     );
   };
 
@@ -739,7 +733,7 @@ export class NoticeOfWorkApplication extends Component {
           }}
         />
         <div className="page">
-          <div className="padding-large">
+          <div className="padding-lg">
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
@@ -785,15 +779,7 @@ export class NoticeOfWorkApplication extends Component {
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <div>
-                    <div className={this.renderFixedHeaderClass()}>
-                      {this.renderEditModeNav()}
-                      <NOWStatusIndicator
-                        type="banner"
-                        tabSection="REV"
-                        isEditMode={!this.state.isViewMode}
-                      />
-                      <NOWProgressStatus tab="REV" top="-100px" />
-                    </div>
+                    {this.renderEditModeNav()}
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
                         route={routes.NOTICE_OF_WORK_APPLICATION}
@@ -850,24 +836,35 @@ export class NoticeOfWorkApplication extends Component {
             >
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex">
-                      <h2 className="padding-md">
-                        Referral
-                        <CoreTooltip
-                          title="This page allows you to identify and download the files that need to be included in the referral package.
-            You may track progress on the E-Referrals website.
-            When responses are receives you can upload them by clicking on “Add Reviewer”
-            Finish this stage by clicking on “Complete Process” when all responses have been received.
-            If you need to make changes later, click “Resume Referral process”"
-                        />
-                      </h2>
-                      <NOWProgressActions tab="REF" />
-                    </div>
-                    <NOWProgressStatus tab="REF" />
-                    <NOWStatusIndicator type="banner" tabSection="REF" />
+                  <NOWTabHeader
+                    tab="REF"
+                    tabActions={<ReferralConsultationPackage type="REF" />}
+                    tabName="Referral"
+                    fixedTop={this.state.fixedTop}
+                  />
+                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                    <NOWSideMenu
+                      route={routes.NOTICE_OF_WORK_APPLICATION}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="referral"
+                    />
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      href={Strings.E_REFERRALS_URL}
+                      alt="E-Referrals"
+                    >
+                      <ExportOutlined className="padding-small--right" />
+                      Link to E-referrals homepage
+                    </a>
                   </div>
-                  <div className="page__content">
+                  <div
+                    className={
+                      this.state.fixedTop
+                        ? "side-menu--content with-fixed-top"
+                        : "side-menu--content"
+                    }
+                  >
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
@@ -885,23 +882,26 @@ export class NoticeOfWorkApplication extends Component {
             >
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex">
-                      <h2 className="padding-md">
-                        Consultation
-                        <CoreTooltip
-                          title="This page allows you to identify and download the files that need to be included in the package for first nations consultations.
-                          You may track progress on the Consultation reports and tracking system (CRTS).
-                          When responses are received you can upload them by clicking on “Add Reviewer” .
-                          Finish this stage by clicking on “Complete Process” when all responses have been received. If you need to make changes later, click “Resume Consultation process”"
-                        />
-                      </h2>
-                      <NOWProgressActions tab="CON" />
-                    </div>
-                    <NOWProgressStatus tab="CON" />
-                    <NOWStatusIndicator type="banner" tabSection="CON" />
+                  <NOWTabHeader
+                    tab="CON"
+                    tabActions={<ReferralConsultationPackage type="CON" />}
+                    tabName="Consultation"
+                    fixedTop={this.state.fixedTop}
+                  />
+                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                    <NOWSideMenu
+                      route={routes.NOTICE_OF_WORK_APPLICATION}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="consultation"
+                    />
                   </div>
-                  <div className="page__content">
+                  <div
+                    className={
+                      this.state.fixedTop
+                        ? "side-menu--content with-fixed-top"
+                        : "side-menu--content"
+                    }
+                  >
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
@@ -918,15 +918,21 @@ export class NoticeOfWorkApplication extends Component {
             >
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex">
-                      <h2 className="padding-md">Public Comment</h2>
-                      <NOWProgressActions tab="PUB" />
-                    </div>
-                    <NOWProgressStatus tab="PUB" />
-                    <NOWStatusIndicator type="banner" tabSection="PUB" />
+                  <NOWTabHeader tab="PUB" tabName="Public Comment" fixedTop={this.state.fixedTop} />
+                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                    <NOWSideMenu
+                      route={routes.NOTICE_OF_WORK_APPLICATION}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="public-comment"
+                    />
                   </div>
-                  <div className="page__content">
+                  <div
+                    className={
+                      this.state.fixedTop
+                        ? "side-menu--content with-fixed-top"
+                        : "side-menu--content"
+                    }
+                  >
                     <NOWApplicationReviews
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}
@@ -939,7 +945,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Draft Permit", "DFT")}
+              tab={this.renderTabTitle("Draft", "DFT")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
@@ -950,11 +956,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane
-              tab="Process Permit"
-              key="process-permit"
-              disabled={!verificationComplete}
-            >
+            <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <ProcessPermit
@@ -973,16 +975,11 @@ export class NoticeOfWorkApplication extends Component {
             >
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <div className={this.renderFixedHeaderClass()}>
-                    <div className="inline-flex block-mobile padding-md">
-                      <h2>
-                        Administrative
-                        <CoreTooltip
-                          title="This page contains information about securities and any internal files relevant
-                    to processing the application. It is also where the permit is issued."
-                        />
-                      </h2>
-                      <NOWProgressActions tab="ADMIN" />
+                  <NOWTabHeader
+                    tab="ADMIN"
+                    tabName="Administrative"
+                    fixedTop={this.state.fixedTop}
+                    tabActions={
                       <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
                         <Dropdown
                           overlay={this.menu(false)}
@@ -996,10 +993,22 @@ export class NoticeOfWorkApplication extends Component {
                           </Button>
                         </Dropdown>
                       </NOWActionWrapper>
-                    </div>
-                    <NOWStatusIndicator type="banner" />
+                    }
+                  />
+                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                    <NOWSideMenu
+                      route={routes.NOTICE_OF_WORK_APPLICATION}
+                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                      tabSection="administrative"
+                    />
                   </div>
-                  <div className="page__content">
+                  <div
+                    className={
+                      this.state.fixedTop
+                        ? "side-menu--content with-fixed-top"
+                        : "side-menu--content"
+                    }
+                  >
                     <NOWApplicationAdministrative
                       mineGuid={this.props.noticeOfWork.mine_guid}
                       noticeOfWork={this.props.noticeOfWork}

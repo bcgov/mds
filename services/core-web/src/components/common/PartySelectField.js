@@ -54,7 +54,7 @@ const renderAddPartyHeader = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
     <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? Try typing a different search. If needed, click the link to create a new contact. `}</p>
     <LinkButton onClick={showAddParty}>
-      <PlusOutlined className="padding-small--right" />
+      <PlusOutlined className="padding-sm--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
     <Divider style={{ margin: "0" }} />
@@ -162,7 +162,6 @@ export class PartySelectField extends Component {
     // If new search results have been returned, transform the results and store them in component state.
     if (searchResultsUpdated || lastCreatedPartyUpdated) {
       let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
-
       if (this.props.organization && !this.props.person) {
         filteredParties = filteredParties.filter(
           ({ party_type_code }) => party_type_code === "ORG"
@@ -177,7 +176,6 @@ export class PartySelectField extends Component {
       if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
-
       this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),

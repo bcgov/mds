@@ -98,7 +98,7 @@ export class AddPartyComponentWrapper extends Component {
     <div>
       <h2>Add new {this.props.addPartyFormState.partyLabel}</h2>
       <LinkButton onClick={this.resetAddPartyForm}>
-        <ArrowLeftOutlined className="padding-small--right" />
+        <ArrowLeftOutlined className="padding-sm--right" />
         Back to: {this.props.childProps.title}
       </LinkButton>
       <Divider />

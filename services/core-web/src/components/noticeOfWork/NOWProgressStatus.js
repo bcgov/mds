@@ -26,65 +26,58 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   tab: PropTypes.string.isRequired,
-  top: PropTypes.string,
   progressStatusHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const defaultProps = {
-  top: "-85px",
-};
+const defaultProps = {};
 
 export const NOWProgressStatus = (props) => {
+  const showStatus = props.tab !== "ADMIN" && props.tab !== "PRO";
   return (
-    <div
-      className="status-content"
-      style={{
-        top: props.top,
-      }}
-    >
-      {isEmpty(props.progress[props.tab]) && (
+    <div>
+      {isEmpty(props.progress[props.tab]) && showStatus && (
         <p className="small-p">
-          {props.progressStatusHash[props.tab]} Status:
+          {props.progressStatusHash[props.tab]} Status:{" "}
           <Badge
             color={COLOR.mediumGrey}
-            className="padding-small--left progress-status"
+            className="padding-sm--left progress-status"
             text="Not Started"
           />
         </p>
       )}
-      {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && (
+      {!isEmpty(props.progress[props.tab]) && !props.progress[props.tab].end_date && showStatus && (
         <>
           <p className="small-p">
-            {props.progressStatusHash[props.tab]} Status:
+            {props.progressStatusHash[props.tab]} Status:{" "}
             <Badge
               color={COLOR.blue}
-              className="padding-small--left progress-status"
+              className="padding-sm--left progress-status"
               text="In Progress"
             />
           </p>
           <p className="small-p">
-            In {props.progressStatusHash[props.tab]} Since:
+            In {props.progressStatusHash[props.tab]} Since:{" "}
             <Link
               className="small-p"
               to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
                 props.noticeOfWork.now_application_guid,
                 "administrative",
-                "progress-tracking"
+                "#progress-tracking"
               )}
             >
-              {formatDate(props.progress[props.tab].start_date)}/
+              {formatDate(props.progress[props.tab].start_date)} /
               {props.progress[props.tab].durationWithoutDelays || "0 Days"}
             </Link>
           </p>
         </>
       )}
-      {!isEmpty(props.progress[props.tab]) && props.progress[props.tab].end_date && (
+      {!isEmpty(props.progress[props.tab]) && props.progress[props.tab].end_date && showStatus && (
         <>
           <p className="small-p">
             {props.progressStatusHash[props.tab]} Status:
             <Badge
               color={COLOR.successGreen}
-              className="padding-small--left progress-status"
+              className="padding-sm--left progress-status"
               text="Complete"
             />
           </p>
@@ -95,10 +88,10 @@ export const NOWProgressStatus = (props) => {
               to={routes.NOTICE_OF_WORK_APPLICATION.hashRoute(
                 props.noticeOfWork.now_application_guid,
                 "administrative",
-                "progress-tracking"
+                "#progress-tracking"
               )}
             >
-              {formatDate(props.progress[props.tab].start_date)}/
+              {formatDate(props.progress[props.tab].start_date)} /
               {props.progress[props.tab].durationWithoutDelays || "0 Days"}
             </Link>
           </p>

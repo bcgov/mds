@@ -7,6 +7,8 @@ import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelector
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import * as Permission from "@/constants/permissions";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {
@@ -15,9 +17,13 @@ const propTypes = {
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  handleSavePackage: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   closeModal: PropTypes.func.isRequired,
+  coreDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
+  submissionDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -25,13 +31,15 @@ const defaultProps = {
 };
 
 export const DownloadDocumentPackageModal = (props) => {
-  const [selectedCoreRows, setSelectedCoreRows] = useState([]);
-  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState([]);
+  const [selectedCoreRows, setSelectedCoreRows] = useState(props.coreDocumentsInPackage);
+  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
+    props.submissionDocumentsInPackage
+  );
   return props.documentDownloadState.downloading ? (
     <div className="inline-flex flex-flow-column horizontal-center">
       <h4>Downloading Selected Files...</h4>
       <Progress
-        className="padding-md--top padding-large--bottom"
+        className="padding-md--top padding-lg--bottom"
         strokeColor={COLOR.violet}
         type="circle"
         percent={Math.round(
@@ -71,12 +79,24 @@ export const DownloadDocumentPackageModal = (props) => {
         </Popconfirm>
         <Button
           className="full-mobile"
-          type="primary"
+          type="tertiary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <DownloadOutlined className="padding-small--right icon-sm" />
+          <DownloadOutlined className="padding-sm--right icon-sm" />
           Download Referral Package
         </Button>
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={props.type === "FNC" ? "CON" : props.type}
+        >
+          <Button
+            type="primary"
+            className="full-mobile"
+            onClick={() => props.handleSavePackage(selectedCoreRows, selectedSubmissionRows)}
+          >
+            Save and Exit
+          </Button>
+        </NOWActionWrapper>
       </div>
     </div>
   );

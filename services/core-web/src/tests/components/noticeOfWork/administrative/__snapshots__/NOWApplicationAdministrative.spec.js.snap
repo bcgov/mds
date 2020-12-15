@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NOWApplicationAdministrative renders properly 1`] = `
-<div
-  className="page__content"
->
+<div>
   <withRouter(Connect(ScrollContentWrapper))
-    id="application-files"
+    id="final-application-package"
     title="Final Application Package"
   >
     <Connect(FinalPermitDocuments)
@@ -75,7 +73,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
-    id="application-files"
+    id="reclamation-securities"
     title="Reclamation Securities"
   >
     <Connect(NOWSecurities) />
@@ -94,7 +92,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
-    id="application-files"
+    id="government-documents"
     title="Government Documents"
   >
     <Connect(NOWDocuments)
@@ -110,7 +108,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
-    id="application-export-files"
+    id="generated-documents"
     title="Application Export Files"
   >
     <Connect(NOWDocuments)

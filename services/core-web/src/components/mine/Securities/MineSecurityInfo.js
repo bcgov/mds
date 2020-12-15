@@ -337,7 +337,7 @@ export class MineSecurityInfo extends Component {
                   title={
                     <span>
                       Total Active Bonds
-                      <CoreTooltip title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated." />
+                      <CoreTooltip title="Total Active Bonds: This is the number of active bonds held by the Ministry for all the permits on this mine record. It does not include bonds that have been released or confiscated." />
                     </span>
                   }
                   content={this.props.bondTotals.count}

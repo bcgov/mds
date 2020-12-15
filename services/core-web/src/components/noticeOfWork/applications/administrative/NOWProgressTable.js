@@ -76,7 +76,7 @@ const stepItem = (progress, progressStatus, delaysExist) => {
               </Descriptions>
             }
           >
-            <StopOutlined className="icon-lg--grey" />
+            <StopOutlined className="icon-lg--lightgrey" />
           </Popover>
         }
         description="Not Started"
@@ -243,7 +243,7 @@ export class NOWProgressTable extends Component {
         <Descriptions column={1}>
           <>
             <Descriptions.Item label="Total Time in Delay">
-              <Badge color={COLOR.yellow} className="padding-small--left" />
+              <Badge color={COLOR.yellow} className="padding-sm--left" />
               {delaysExist
                 ? this.props.totalApplicationDelayDuration.duration
                 : Strings.EMPTY_FIELD}
