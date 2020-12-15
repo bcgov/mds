@@ -37,7 +37,7 @@ RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 
 USER 1001
 
-COPY $APP_ROOT/fix_uid .
+COPY fix_uid $APP_ROOT
 RUN chmod +x $APP_ROOT/fix_uid
 
 # Install sonar-scanner
