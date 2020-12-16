@@ -361,7 +361,16 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Present condition of the land
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.present_land_condition_description")
+                    .value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.present_land_condition_description")
+                    .edited
+                }
+              />
             </div>
             <Field
               id="present_land_condition_description"
@@ -373,7 +382,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Current means of access
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.means_of_access_description").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.means_of_access_description").edited
+                }
+              />
             </div>
             <Field
               id="means_of_access_description"
@@ -387,7 +403,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Physiography
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.physiography_description").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.physiography_description").edited
+                }
+              />
             </div>
             <Field
               id="physiography_description"
@@ -399,7 +422,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Old Equipment
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.old_equipment_description").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.old_equipment_description").edited
+                }
+              />
             </div>
             <Field
               id="old_equipment_description"
@@ -413,7 +443,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Type of vegetation
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.type_of_vegetation_description").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.type_of_vegetation_description").edited
+                }
+              />
             </div>
             <Field
               id="type_of_vegetation_description"
@@ -425,7 +462,16 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Recreational trail/use
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.recreational_trail_use_description")
+                    .value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.recreational_trail_use_description")
+                    .edited
+                }
+              />
             </div>
             <Field
               id="recreational_trail_use_description"
@@ -462,7 +508,12 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Activities in park
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_activity_in_park").value
+                }
+                isVisible={props.renderOriginalValues("state_of_land.has_activity_in_park").edited}
+              />
             </div>
             <Field
               id="has_activity_in_park"
@@ -476,7 +527,10 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Proposed activities on private land
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("state_of_land.is_on_private_land").value}
+                isVisible={props.renderOriginalValues("state_of_land.is_on_private_land").edited}
+              />
             </div>
             <Field
               id="is_on_private_land"
@@ -488,7 +542,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title--light">
               Do you have authorization by the Lieutenant Governor in Council?
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").edited
+                }
+              />
             </div>
             <Field
               id="has_auth_lieutenant_gov_council"
@@ -508,10 +569,10 @@ export const ReviewNOWApplication = (props) => {
               proposed project?
               <NOWOriginalValueTooltip
                 originalValue={
-                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").value
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").value
                 }
                 isVisible={
-                  props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").edited
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").edited
                 }
               />
             </div>
@@ -524,7 +585,14 @@ export const ReviewNOWApplication = (props) => {
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").edited
+                }
+              />
             </div>
             <Field
               id="arch_site_protection_plan"
@@ -542,7 +610,14 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_shared_info_with_fn").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_shared_info_with_fn").edited
+                }
+              />
             </div>
             <Field
               id="has_shared_info_with_fn"
@@ -555,7 +630,16 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_fn_cultural_heritage_sites_in_area")
+                    .value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_fn_cultural_heritage_sites_in_area")
+                    .edited
+                }
+              />
             </div>
             <Field
               id="has_fn_cultural_heritage_sites_in_area"
@@ -569,7 +653,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe your First Nations engagement activities
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.fn_engagement_activities").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.fn_engagement_activities").edited
+                }
+              />
             </div>
             <Field
               id="fn_engagement_activities"
@@ -581,7 +672,14 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area
-              <NOWFieldOriginTooltip />
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.cultural_heritage_description").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.cultural_heritage_description").edited
+                }
+              />
             </div>
             <Field
               id="cultural_heritage_description"
