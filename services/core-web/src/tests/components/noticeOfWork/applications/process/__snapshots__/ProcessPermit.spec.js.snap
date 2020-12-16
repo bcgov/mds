@@ -218,31 +218,6 @@ exports[`ProcessPermit renders properly 1`] = `
                 </LinkButton>
               </ForwardRef>
             </ForwardRef>
-            <ForwardRef
-              className="padding-md--bottom"
-            >
-              <ForwardRef
-                offset={2}
-                span={2}
-              >
-                <ForwardRef(WarningOutlined)
-                  className="icon-sm padding-sm--top"
-                />
-              </ForwardRef>
-              <ForwardRef
-                span={16}
-              >
-                Consultation has not been started.  
-                <LinkButton
-                  onClick={[Function]}
-                  style={null}
-                  tabIndex={0}
-                >
-                  <ForwardRef(LinkOutlined) />
-                   Resolve
-                </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
           </React.Fragment>
         </div>
       }
