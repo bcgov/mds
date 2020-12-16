@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { isNil } from "lodash";
 import { Drawer, Button, Table, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
-import { Field } from "redux-form";
+import { Field, change } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
 import {
   number,
@@ -21,7 +23,8 @@ import {
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import moment from "moment";
+import { memoize } from "lodash";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -105,8 +108,9 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170,000", permit_fee: "$50,000" },
 ];
 
-const isApplicationFeeValid = (isValid) =>
-  isValid ? undefined : "This value would cause the application fee to become invalid.";
+const validateIsApplicationFeeValid = memoize((isValid) => () =>
+  isValid ? undefined : "This value would cause the application fee to become invalid."
+);
 
 export class ReviewApplicationFeeContent extends Component {
   state = {
@@ -116,7 +120,7 @@ export class ReviewApplicationFeeContent extends Component {
   };
 
   componentDidMount() {
-    this.setIsDateRangeValid(this.props.proposedAuthorizationEndDate, this.props.proposedStartDate);
+    this.setIsDateRangeValid(this.props.proposedStartDate, this.props.proposedAuthorizationEndDate);
     if (!isNil(this.props.proposedTonnage) && !isNil(this.props.adjustedTonnage)) {
       this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
@@ -134,15 +138,23 @@ export class ReviewApplicationFeeContent extends Component {
     const proposedAuthorizationEndDateChanged =
       this.props.proposedAuthorizationEndDate !== nextProps.proposedAuthorizationEndDate;
     if (proposedStartDateChanged || proposedAuthorizationEndDateChanged) {
-      this.setIsDateRangeValid(nextProps.proposedAuthorizationEndDate, nextProps.proposedStartDate);
+      this.setIsDateRangeValid(nextProps.proposedStartDate, nextProps.proposedAuthorizationEndDate);
+      this.props.change(
+        FORM.EDIT_NOTICE_OF_WORK,
+        "calculated_term_of_application",
+        getDurationText(nextProps.proposedStartDate, nextProps.proposedAuthorizationEndDate)
+      );
     }
 
     // Handle changes to proposed and adjusted tonnage.
     const adjustedChanged = this.props.adjustedTonnage !== nextProps.adjustedTonnage;
     const proposedChanged = this.props.proposedTonnage !== nextProps.proposedTonnage;
-    const isAdjustedNull = !isNil(nextProps.adjustedTonnage);
-    const isProposedNull = !isNil(nextProps.proposedTonnage);
-    if (!isAdjustedNull && !isProposedNull && (proposedChanged || adjustedChanged)) {
+    if (
+      proposedChanged ||
+      adjustedChanged ||
+      proposedStartDateChanged ||
+      proposedAuthorizationEndDateChanged
+    ) {
       this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
         nextProps.proposedTonnage,
@@ -158,7 +170,7 @@ export class ReviewApplicationFeeContent extends Component {
   };
 
   setIsApplicationFeeValid = (type, proposed, adjusted, start, end) => {
-    let isApplicationFeeValid = this.state.isApplicationFeeValid;
+    let isApplicationFeeValid = true;
 
     // Application fee only apply to Placer, Sand and Gravel, and Quarry mines.
     if (type === "PLA") {
@@ -168,7 +180,11 @@ export class ReviewApplicationFeeContent extends Component {
       isApplicationFeeValid = this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
     }
 
-    this.setState({ isApplicationFeeValid });
+    console.log("setIsApplicationFeeValid", type, proposed, adjusted, start, end);
+
+    this.setState({ isApplicationFeeValid: isApplicationFeeValid });
+
+    console.log("setIsApplicationFeeValid", isApplicationFeeValid);
   };
 
   adjustmentExceedsFeePlacer = (proposed, adjusted, start, end) =>
@@ -216,11 +232,6 @@ export class ReviewApplicationFeeContent extends Component {
   );
 
   render() {
-    this.props.initialValues.calculated_term_of_application = getDurationText(
-      this.props.proposedStartDate,
-      this.props.proposedAuthorizationEndDate
-    );
-
     const showCalculationInvalidError =
       !this.state.isDateRangeValid &&
       !isNil(this.props.adjustedTonnage) &&
@@ -261,7 +272,7 @@ export class ReviewApplicationFeeContent extends Component {
             validate={[
               dateNotInFuture,
               dateNotAfterOther(this.props.proposedAuthorizationEndDate),
-              isApplicationFeeValid,
+              validateIsApplicationFeeValid(this.state.isApplicationFeeValid),
             ]}
           />
           <div className="field-title">
@@ -273,7 +284,10 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_end_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[dateNotBeforeOther(this.props.proposedStartDate), isApplicationFeeValid]}
+            validate={[
+              dateNotBeforeOther(this.props.proposedStartDate),
+              validateIsApplicationFeeValid(this.state.isApplicationFeeValid),
+            ]}
           />
           <div className="field-title">
             Proposed Term of Application
@@ -293,7 +307,7 @@ export class ReviewApplicationFeeContent extends Component {
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            validate={[number, isApplicationFeeValid]}
+            validate={[number, validateIsApplicationFeeValid(this.state.isApplicationFeeValid)]}
             disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
@@ -305,7 +319,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="adjusted_annual_maximum_tonnage"
             component={RenderField}
             disabled={this.props.isViewMode}
-            validate={[number, isApplicationFeeValid]}
+            validate={[number, validateIsApplicationFeeValid(this.state.isApplicationFeeValid)]}
           />
           {showCalculationInvalidError && (
             <div className="error">
@@ -334,4 +348,12 @@ export class ReviewApplicationFeeContent extends Component {
 ReviewApplicationFeeContent.propTypes = propTypes;
 ReviewApplicationFeeContent.defaultProps = defaultProps;
 
-export default ReviewApplicationFeeContent;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(ReviewApplicationFeeContent);

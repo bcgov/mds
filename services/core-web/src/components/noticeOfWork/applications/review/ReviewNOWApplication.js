@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, FormSection, formValueSelector, change } from "redux-form";
+import { Field, reduxForm, FormSection, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Divider, Row, Col } from "antd";
