@@ -16,6 +16,7 @@ import {
   getDurationText,
   isPlacerAdjustmentFeeValid,
   isPitsQuarriesAdjustmentFeeValid,
+  isDateRangeValid,
 } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
@@ -110,64 +111,73 @@ const isApplicationFeeValid = (isValid) =>
 export class ReviewApplicationFeeContent extends Component {
   state = {
     isApplicationFeeValid: true,
+    isDateRangeValid: true,
     isFeeDrawerVisible: false,
-    isDateRangeInvalid: false,
   };
 
   componentDidMount() {
-    const duration = moment.duration(
-      moment(this.props.proposedAuthorizationEndDate).diff(moment(this.props.proposedStartDate))
-    );
-    // eslint-disable-next-line no-underscore-dangle
-    const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
-    this.setState({ isDateRangeInvalid });
+    this.setIsDateRangeValid(this.props.proposedAuthorizationEndDate, this.props.proposedStartDate);
     if (!isNil(this.props.proposedTonnage) && !isNil(this.props.adjustedTonnage)) {
-      this.typeDeterminesFee(
+      this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
         this.props.proposedTonnage,
-        this.props.adjustedTonnage
+        this.props.adjustedTonnage,
+        this.props.proposedStartDate,
+        this.props.proposedAuthorizationEndDate
       );
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    // Handle changes to proposed start and end dates.
+    const proposedStartDateChanged = this.props.proposedStartDate !== nextProps.proposedStartDate;
+    const proposedAuthorizationEndDateChanged =
+      this.props.proposedAuthorizationEndDate !== nextProps.proposedAuthorizationEndDate;
+    if (proposedStartDateChanged || proposedAuthorizationEndDateChanged) {
+      this.setIsDateRangeValid(nextProps.proposedAuthorizationEndDate, nextProps.proposedStartDate);
+    }
+
+    // Handle changes to proposed and adjusted tonnage.
     const adjustedChanged = this.props.adjustedTonnage !== nextProps.adjustedTonnage;
     const proposedChanged = this.props.proposedTonnage !== nextProps.proposedTonnage;
-    const adjusted = !isNil(nextProps.adjustedTonnage);
-    if ((proposedChanged || adjustedChanged) && adjusted) {
-      this.typeDeterminesFee(
+    const isAdjustedNull = !isNil(nextProps.adjustedTonnage);
+    const isProposedNull = !isNil(nextProps.proposedTonnage);
+    if (!isAdjustedNull && !isProposedNull && (proposedChanged || adjustedChanged)) {
+      this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
         nextProps.proposedTonnage,
-        nextProps.adjustedTonnage
+        nextProps.adjustedTonnage,
+        nextProps.proposedStartDate,
+        nextProps.proposedAuthorizationEndDate
       );
     }
   }
 
-  // eslint-disable-next-line consistent-return
-  typeDeterminesFee = (type, proposed, adjusted) => {
-    // application fees only apply to Placer, S&G, and Q mines
-    if (type === "PLA") {
-      return this.adjustmentExceedsFeePlacer(proposed, adjusted);
-    }
-    if (type === "SAG" || type === "QCA" || type === "QIM") {
-      return this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
-    }
+  setIsDateRangeValid = (start, end) => {
+    this.setState({ isDateRangeValid: isDateRangeValid(start, end) });
   };
 
-  adjustmentExceedsFeePlacer = (proposed, adjusted) =>
-    this.state.isDateRangeInvalid
-      ? this.setState({ isApplicationFeeValid: true })
-      : this.setState({
-          isApplicationFeeValid: isPlacerAdjustmentFeeValid(
-            proposed,
-            adjusted,
-            this.props.proposedStartDate,
-            this.props.proposedAuthorizationEndDate
-          ),
-        });
+  setIsApplicationFeeValid = (type, proposed, adjusted, start, end) => {
+    let isApplicationFeeValid = this.state.isApplicationFeeValid;
+
+    // Application fee only apply to Placer, Sand and Gravel, and Quarry mines.
+    if (type === "PLA") {
+      isApplicationFeeValid = this.adjustmentExceedsFeePlacer(proposed, adjusted, start, end);
+    }
+    if (type === "SAG" || type === "QCA" || type === "QIM") {
+      isApplicationFeeValid = this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
+    }
+
+    this.setState({ isApplicationFeeValid });
+  };
+
+  adjustmentExceedsFeePlacer = (proposed, adjusted, start, end) =>
+    !this.state.isDateRangeValid
+      ? true
+      : isPlacerAdjustmentFeeValid(proposed, adjusted, start, end);
 
   adjustmentExceedsFeePitsQuarries = (proposed, adjusted) =>
-    this.setState({ isApplicationFeeValid: isPitsQuarriesAdjustmentFeeValid(proposed, adjusted) });
+    isPitsQuarriesAdjustmentFeeValid(proposed, adjusted);
 
   toggleFeeDrawer = () =>
     this.setState((prevState) => ({
@@ -212,7 +222,7 @@ export class ReviewApplicationFeeContent extends Component {
     );
 
     const showCalculationInvalidError =
-      this.state.isDateRangeInvalid &&
+      !this.state.isDateRangeValid &&
       !isNil(this.props.adjustedTonnage) &&
       this.props.initialValues.notice_of_work_type_code === "PLA";
 

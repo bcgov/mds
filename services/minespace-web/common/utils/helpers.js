@@ -86,6 +86,13 @@ export const currencyMask = createNumberMask({
   allowNegative: true,
 });
 
+export const isDateRangeValid = (start, end) => {
+  const duration = moment.duration(moment(end).diff(moment(start)));
+  // eslint-disable-next-line no-underscore-dangle
+  const isDateRangeValid = Math.sign(duration._milliseconds) !== -1;
+  return isDateRangeValid;
+};
+
 export const dateSorter = (key) => (a, b) => {
   if (a[key] === b[key]) {
     return 0;
