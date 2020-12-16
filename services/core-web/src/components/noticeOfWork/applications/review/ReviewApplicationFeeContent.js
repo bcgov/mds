@@ -111,7 +111,7 @@ const tableTwoData = [
 const validateIsApplicationFeeValid = memoize((isValid) => () =>
   isValid
     ? undefined
-    : "Adjustments to this or another value involved in permit fee calculation need to be made."
+    : "Adjustments to this or another value involved in the permit fee calculation needs to be made."
 );
 
 export class ReviewApplicationFeeContent extends Component {
