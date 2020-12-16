@@ -557,7 +557,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Present condition of the land
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -574,7 +578,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Current means of access
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -595,7 +603,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Physiography
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -612,7 +624,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Old Equipment
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -633,7 +649,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Type of vegetation
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -650,7 +670,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Recreational trail/use
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -701,7 +725,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Activities in park
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -722,7 +750,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Proposed activities on private land
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -739,7 +771,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title--light"
               >
                 Do you have authorization by the Lieutenant Governor in Council?
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -785,7 +821,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title--light"
               >
                 Plan to protect the archaeological site
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -810,7 +850,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Have you shared information and engaged with First Nations in the area of the proposed activity?
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -827,7 +871,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -848,7 +896,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Describe your First Nations engagement activities
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -865,7 +917,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Describe any cultural heritage resources in the area
-                <NOWFieldOriginTooltip />
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
               </div>
               <Field
                 component={[Function]}
@@ -1081,16 +1137,100 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "directions_to_site",
             ],
             Array [
-              "state_of_land.has_community_water_shed",
+              "state_of_land.present_land_condition_description",
+            ],
+            Array [
+              "state_of_land.present_land_condition_description",
+            ],
+            Array [
+              "state_of_land.means_of_access_description",
+            ],
+            Array [
+              "state_of_land.means_of_access_description",
+            ],
+            Array [
+              "state_of_land.physiography_description",
+            ],
+            Array [
+              "state_of_land.physiography_description",
+            ],
+            Array [
+              "state_of_land.old_equipment_description",
+            ],
+            Array [
+              "state_of_land.old_equipment_description",
+            ],
+            Array [
+              "state_of_land.type_of_vegetation_description",
+            ],
+            Array [
+              "state_of_land.type_of_vegetation_description",
+            ],
+            Array [
+              "state_of_land.recreational_trail_use_description",
+            ],
+            Array [
+              "state_of_land.recreational_trail_use_description",
             ],
             Array [
               "state_of_land.has_community_water_shed",
             ],
             Array [
-              "state_of_land.has_archaeology_sites_affected",
+              "state_of_land.has_community_water_shed",
             ],
             Array [
-              "state_of_land.has_archaeology_sites_affected",
+              "state_of_land.has_activity_in_park",
+            ],
+            Array [
+              "state_of_land.has_activity_in_park",
+            ],
+            Array [
+              "state_of_land.is_on_private_land",
+            ],
+            Array [
+              "state_of_land.is_on_private_land",
+            ],
+            Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
+              "state_of_land.arch_site_protection_plan",
+            ],
+            Array [
+              "state_of_land.arch_site_protection_plan",
+            ],
+            Array [
+              "state_of_land.has_shared_info_with_fn",
+            ],
+            Array [
+              "state_of_land.has_shared_info_with_fn",
+            ],
+            Array [
+              "state_of_land.has_fn_cultural_heritage_sites_in_area",
+            ],
+            Array [
+              "state_of_land.has_fn_cultural_heritage_sites_in_area",
+            ],
+            Array [
+              "state_of_land.fn_engagement_activities",
+            ],
+            Array [
+              "state_of_land.fn_engagement_activities",
+            ],
+            Array [
+              "state_of_land.cultural_heritage_description",
+            ],
+            Array [
+              "state_of_land.cultural_heritage_description",
             ],
             Array [
               "first_aid_equipment_on_site",
@@ -1106,6 +1246,202 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
             Object {
               "type": "return",
               "value": Object {
