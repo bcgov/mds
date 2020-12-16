@@ -13,7 +13,7 @@ import {
   dateNotAfterOther,
 } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm, formatDate } from "@common/utils/helpers";
+import { resetForm, isPlacerAdjustmentFeeValid } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 
@@ -28,6 +28,32 @@ const propTypes = {
 
 const defaultProps = {
   formValues: {},
+};
+
+const dateRangeIsValidStart = (value, allValues, props) => {
+  const start = value;
+  const end = allValues.auth_end_date;
+  return dateRangeIsValid(start, end, props);
+};
+
+const dateRangeIsValidEnd = (value, allValues, props) => {
+  const start = allValues.issue_date;
+  const end = value;
+  return dateRangeIsValid(start, end, props);
+};
+
+const dateRangeIsValid = (start, end, props) => {
+  const type = props.noticeOfWork.notice_of_work_type_code;
+  const proposedTonnage = props.noticeOfWork.proposed_annual_maximum_tonnage;
+  const adjustedTonnage = props.noticeOfWork.adjusted_annual_maximum_tonnage;
+
+  if (type === "PLA") {
+    return isPlacerAdjustmentFeeValid(proposedTonnage, adjustedTonnage, start, end)
+      ? undefined
+      : "This value would create an invalid date range for the paid permit fee.";
+  }
+
+  return undefined;
 };
 
 export const IssuePermitForm = (props) => {
@@ -45,6 +71,7 @@ export const IssuePermitForm = (props) => {
                 required,
                 dateNotInFuture,
                 dateNotAfterOther(props.formValues.auth_end_date),
+                dateRangeIsValidStart,
               ]}
             />
           </Form.Item>
@@ -54,7 +81,11 @@ export const IssuePermitForm = (props) => {
               name="auth_end_date"
               label="Authorization End Date*"
               component={renderConfig.DATE}
-              validate={[required, dateNotBeforeOther(props.formValues.issue_date)]}
+              validate={[
+                required,
+                dateNotBeforeOther(props.formValues.issue_date),
+                dateRangeIsValidEnd,
+              ]}
             />
             <Form.Item>
               <Field

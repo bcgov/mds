@@ -108,12 +108,6 @@ const tableTwoData = [
   { tonnes_per_year: "≥ 170,000", permit_fee: "$50,000" },
 ];
 
-const validateIsApplicationFeeValid = memoize((isValid) => () =>
-  isValid
-    ? undefined
-    : "Adjustments to this or another value involved in the permit fee calculation needs to be made."
-);
-
 export class ReviewApplicationFeeContent extends Component {
   state = {
     isApplicationFeeValid: true,
@@ -278,11 +272,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_start_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[
-              dateNotInFuture,
-              dateNotAfterOther(this.props.proposedAuthorizationEndDate),
-              validateIsApplicationFeeValid(this.state.isApplicationFeeValid),
-            ]}
+            validate={[dateNotInFuture, dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
           />
           <div className="field-title">
             Proposed Authorization End Date
@@ -293,10 +283,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_end_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[
-              dateNotBeforeOther(this.props.proposedStartDate),
-              validateIsApplicationFeeValid(this.state.isApplicationFeeValid),
-            ]}
+            validate={[dateNotBeforeOther(this.props.proposedStartDate)]}
           />
           <div className="field-title">
             Proposed Term of Application
@@ -316,7 +303,7 @@ export class ReviewApplicationFeeContent extends Component {
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            validate={[number, validateIsApplicationFeeValid(this.state.isApplicationFeeValid)]}
+            validate={[number]}
             disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
@@ -328,7 +315,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="adjusted_annual_maximum_tonnage"
             component={RenderField}
             disabled={this.props.isViewMode}
-            validate={[number, validateIsApplicationFeeValid(this.state.isApplicationFeeValid)]}
+            validate={[number]}
           />
           {showCalculationInvalidError && (
             <div className="error">
