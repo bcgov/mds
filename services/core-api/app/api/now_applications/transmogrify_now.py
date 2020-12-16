@@ -408,7 +408,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
         exploration_access = app_models.ExplorationAccess(
             reclamation_description=expaccessreclamation,
             reclamation_cost=expaccessreclamationcost,
-            has_proposed_bridges_or_culverts=hasproposedcrossings,
+            has_proposed_bridges_or_culverts=hasproposedcrossings == 'Yes',
             bridge_culvert_crossing_description=proposedcrossingschanges,
             total_disturbed_area=expaccesstotaldistarea,
             total_disturbed_area_unit_type_code='HA')
