@@ -113,7 +113,6 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.initialSearch);
     if (!isEmpty(this.props.initialValues)) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
@@ -143,7 +142,6 @@ export class PartySelectField extends Component {
       this.props.initialValues.value !== nextProps.initialValues.value;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
-    console.log(initialValuesChangedNotByUser);
     if (initialValuesChangedNotByUser) {
       this.handleSearch(nextProps.initialValues.label);
       this.setState({

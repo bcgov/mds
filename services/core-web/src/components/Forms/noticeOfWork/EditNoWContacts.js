@@ -57,7 +57,13 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
           .map((field, index) => {
             const contactExists = fields.get(index) && fields.get(index).now_party_appointment_id;
             return (
-              <Col lg={12} sm={24} key={fields.get(index).id}>
+              <Col
+                lg={12}
+                sm={24}
+                key={
+                  contactExists ? fields.get(index).now_party_appointment_id : fields.get(index).id
+                }
+              >
                 <Card
                   style={contactExists ? {} : { boxShadow: "0px 4px 4px #7c66ad" }}
                   className="ant-card-now"
@@ -123,12 +129,6 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                           validate={[required, validateSelectOptions(filteredRelationships)]}
                         />
                       </Form.Item>
-                      {contactExists && (
-                        <>
-                          <p>{fields.get(index).party.name}</p>
-                          <p>{fields.get(index).party.party_guid}</p>
-                        </>
-                      )}
                       <Form.Item>
                         <PartySelectField
                           id={`${field}.party_guid`}
