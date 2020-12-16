@@ -197,11 +197,15 @@ class NOWApplication(Base, AuditMixin):
         return self.type_of_application == 'New Permit'
 
     @hybrid_property
+    def permittee(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
+        ]
+        return permittees[0] if permittees else None
+
+    @hybrid_property
     def permittee_name(self):
-        return [
-            contact.party.name for contact in self.contacts
-            if contact.mine_party_appt_type_code == 'PMT'
-        ][0]
+        return self.permittee.name if self.permittee else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
