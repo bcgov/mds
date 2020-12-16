@@ -109,7 +109,9 @@ const tableTwoData = [
 ];
 
 const validateIsApplicationFeeValid = memoize((isValid) => () =>
-  isValid ? undefined : "This value would cause the application fee to become invalid."
+  isValid
+    ? undefined
+    : "Adjustments to this or another value involved in permit fee calculation need to be made."
 );
 
 export class ReviewApplicationFeeContent extends Component {
@@ -139,10 +141,9 @@ export class ReviewApplicationFeeContent extends Component {
       this.props.proposedAuthorizationEndDate !== nextProps.proposedAuthorizationEndDate;
     if (proposedStartDateChanged || proposedAuthorizationEndDateChanged) {
       this.setIsDateRangeValid(nextProps.proposedStartDate, nextProps.proposedAuthorizationEndDate);
-      this.props.change(
-        FORM.EDIT_NOTICE_OF_WORK,
-        "calculated_term_of_application",
-        getDurationText(nextProps.proposedStartDate, nextProps.proposedAuthorizationEndDate)
+      this.updateCalculatedTermOfApplication(
+        nextProps.proposedStartDate,
+        nextProps.proposedAuthorizationEndDate
       );
     }
 
@@ -180,12 +181,15 @@ export class ReviewApplicationFeeContent extends Component {
       isApplicationFeeValid = this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
     }
 
-    console.log("setIsApplicationFeeValid", type, proposed, adjusted, start, end);
-
     this.setState({ isApplicationFeeValid: isApplicationFeeValid });
-
-    console.log("setIsApplicationFeeValid", isApplicationFeeValid);
   };
+
+  updateCalculatedTermOfApplication = (start, end) =>
+    this.props.change(
+      FORM.EDIT_NOTICE_OF_WORK,
+      "calculated_term_of_application",
+      getDurationText(start, end)
+    );
 
   adjustmentExceedsFeePlacer = (proposed, adjusted, start, end) =>
     !this.state.isDateRangeValid
@@ -232,6 +236,11 @@ export class ReviewApplicationFeeContent extends Component {
   );
 
   render() {
+    this.updateCalculatedTermOfApplication(
+      this.props.proposedStartDate,
+      this.props.proposedAuthorizationEndDate
+    );
+
     const showCalculationInvalidError =
       !this.state.isDateRangeValid &&
       !isNil(this.props.adjustedTonnage) &&
