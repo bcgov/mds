@@ -17,6 +17,7 @@ const setupProps = () => {
   };
   props.adjustedTonnage = null;
   props.proposedTonnage = "10000";
+  props.change = () => {};
 };
 
 beforeEach(() => {
