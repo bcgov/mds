@@ -23,13 +23,13 @@ import {
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { memoize } from "lodash";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  change: PropTypes.func.isRequired,
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
   proposedStartDate: PropTypes.string,
@@ -175,7 +175,7 @@ export class ReviewApplicationFeeContent extends Component {
       isApplicationFeeValid = this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
     }
 
-    this.setState({ isApplicationFeeValid: isApplicationFeeValid });
+    this.setState({ isApplicationFeeValid });
   };
 
   updateCalculatedTermOfApplication = (start, end) =>
