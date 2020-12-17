@@ -59,6 +59,8 @@ class DocumentTemplate(Base, AuditMixin):
                 for x in relative_data_path.split('.'):
                     current_app.logger.debug(f'getting {current_object}.{x}')
                     current_object = getattr(current_object, x)
+                    if current_object is None:
+                        break
 
                 current_app.logger.info(
                     f'Found data for form."{item["id"]}" at "{item["relative-data-path"]}" with -> "{current_object}"'
