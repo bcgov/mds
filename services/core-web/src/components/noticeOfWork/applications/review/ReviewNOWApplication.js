@@ -15,6 +15,7 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
   required,
   lat,
@@ -36,6 +37,8 @@ import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWS
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
+import { USER_ROLES } from "@common/constants/environment";
+import * as Permission from "@/constants/permissions";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
@@ -63,9 +66,14 @@ const propTypes = {
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
   proposedTonnage: PropTypes.number.isRequired,
   adjustedTonnage: PropTypes.number.isRequired,
+  proposedStartDate: PropTypes.string.isRequired,
+  proposedAuthorizationEndDate: PropTypes.string.isRequired,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+
   const renderCodeValues = (codeHash, value) => {
     if (value === Strings.EMPTY_FIELD) {
       return value;
@@ -262,8 +270,11 @@ export const ReviewNOWApplication = (props) => {
           <ReviewApplicationFeeContent
             initialValues={props.noticeOfWork}
             isViewMode={props.isViewMode}
+            isAdmin={isAdmin}
             proposedTonnage={props.proposedTonnage}
             adjustedTonnage={props.adjustedTonnage}
+            proposedStartDate={props.proposedStartDate}
+            proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
           />
         </Col>
       </Row>
@@ -875,6 +886,8 @@ export default compose(
     filtered_submission_documents: selector(state, "filtered_submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
+    proposedStartDate: selector(state, "proposed_start_date"),
+    proposedAuthorizationEndDate: selector(state, "proposed_end_date"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
@@ -882,6 +895,7 @@ export default compose(
     regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
+    userRoles: getUserAccessData(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
