@@ -115,6 +115,7 @@ export class NoticeOfWorkTable extends Component {
       originating_system: application.originating_system || Strings.EMPTY_FIELD,
       document:
         application.application_documents.length >= 1 ? application.application_documents[0] : {},
+      is_historic: application.is_historic,
     }));
 
   filterProperties = (name, field) => ({
@@ -294,7 +295,9 @@ export class NoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
+                <Button type="primary" disabled={record.is_historic}>
+                  Open
+                </Button>
               </Link>
             </AuthorizationWrapper>
           </div>
