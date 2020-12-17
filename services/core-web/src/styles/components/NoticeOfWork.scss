@@ -229,25 +229,6 @@
   height: 25px;
 }
 
-.tab-disclaimer {
-  width: 800px;
-  position: relative;
-  top: -10px;
-  margin: auto;
-
-  &.draft {
-    left: -120px;
-  }
-
-  @include mobile {
-    display: none;
-  }
-
-  @include tablet {
-    width: 400px;
-  }
-}
-
 .fee-determination--block {
   border: 2px solid #a09495;
   border-radius: 5px;
@@ -288,6 +269,7 @@
   margin-top: 10px;
   text-align: end;
 }
+
 .progress-actions {
   margin-left: 5px;
 

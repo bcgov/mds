@@ -19,9 +19,9 @@ import { required, validateSelectOptions } from "@common/utils/Validate";
 import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import CustomPropTypes from "@/customPropTypes";
+// import CustomPropTypes from "@/customPropTypes";
 
-import PartySelectField from "@/components/common/PartySelectField";
+import NOWPartySelectField from "@/components/common/NOWPartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
@@ -29,9 +29,9 @@ const propTypes = {
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  contactFormValues: PropTypes.arrayOf(
-    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
-  ).isRequired,
+  // contactFormValues: PropTypes.arrayOf(
+  //   PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  // ).isRequired,
 };
 
 const defaultProps = {};
@@ -130,7 +130,26 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                         />
                       </Form.Item>
                       <Form.Item>
-                        <PartySelectField
+                        <Field
+                          id={`${field}.party_guid`}
+                          name={`${field}.party_guid`}
+                          label="Contact*"
+                          partyLabel="Contact"
+                          validate={[required]}
+                          component={NOWPartySelectField}
+                          allowAddingParties
+                          initialValues={
+                            contactExists
+                              ? {
+                                  label: fields.get(index).party.name,
+                                  value: fields.get(index).party_guid,
+                                }
+                              : {}
+                          }
+                          initialSearch={contactExists ? fields.get(index).party.name : undefined}
+                        />
+                      </Form.Item>
+                      {/* <NOWPartySelectField
                           id={`${field}.party_guid`}
                           name={`${field}.party_guid`}
                           label="Contact*"
@@ -147,7 +166,7 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                           }
                           initialSearch={contactExists ? fields.get(index).party.name : undefined}
                         />
-                      </Form.Item>
+                      </Form.Item> */}
                     </Col>
                   </Row>
                 </Card>
@@ -184,7 +203,7 @@ export class EditNoWContacts extends Component {
   state = { rolesUsedOnce: [] };
 
   componentDidMount() {
-    this.handleRoles(this.props.contactFormValues);
+    // this.handleRoles(this.props.contactFormValues);
   }
 
   showAddPartyModal = () => {
@@ -198,17 +217,20 @@ export class EditNoWContacts extends Component {
     });
   };
 
-  handleRoles = (contacts) => {
-    let usedRoles = [];
-    if (contacts.length > 0) {
-      usedRoles = contacts.map(({ mine_party_appt_type_code }) => mine_party_appt_type_code);
-    }
-    const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
-    return this.setState({ rolesUsedOnce });
-  };
+  // handleRoles = (contacts) => {
+  //   let usedRoles = [];
+  //   if (contacts.length > 0) {
+  //     usedRoles = contacts.map(
+  //       ({ mine_party_appt_type_code, state_modified }) =>
+  //         !state_modified && mine_party_appt_type_code
+  //     );
+  //   }
+  //   const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
+  //   return this.setState({ rolesUsedOnce });
+  // };
 
   componentWillReceiveProps = (nextProps) => {
-    const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
+    // const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
     if (
       nextProps.addPartyFormState.showingAddPartyForm &&
       this.props.addPartyFormState.showingAddPartyForm !==
@@ -217,9 +239,9 @@ export class EditNoWContacts extends Component {
       this.showAddPartyModal();
     }
 
-    if (contactsChanged) {
-      this.handleRoles(nextProps.contactFormValues);
-    }
+    // if (contactsChanged) {
+    //   this.handleRoles(nextProps.contactFormValues);
+    // }
   };
 
   render() {
