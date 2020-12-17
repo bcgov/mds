@@ -12,7 +12,6 @@
   "spec": {
     "containers": [
       {
-        "command": [],
         "env": [],
         "image": "${IMAGE_PATH}:${IMAGE_TAG}",
         "imagePullPolicy": "Always",
