@@ -159,7 +159,7 @@ export class ProcessPermit extends Component {
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
 
-    this.props
+    return this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
