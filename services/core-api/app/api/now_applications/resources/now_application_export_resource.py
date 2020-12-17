@@ -111,7 +111,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
             def get_address(contact):
                 if  not contact.get('party', None) or not contact['party'].get('address', None) or not len(contact['party']['address']) > 0:
                     return ''
-                current_app.logger.debug(contact['party']['address'])
                 address = contact['party']['address'][0]
                 address_string = ''
                 if address.get('suite_no', None):
