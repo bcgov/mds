@@ -267,8 +267,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 ]
               }
             />
-            <ReviewApplicationFeeContent
-              adjustedTonnage={null}
+            <Connect(ReviewApplicationFeeContent)
               initialValues={
                 Object {
                   "adjusted_annual_maximum_tonnage": "",
@@ -330,7 +329,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               }
               isViewMode={true}
-              proposedTonnage={null}
             />
           </Col>
         </Row>

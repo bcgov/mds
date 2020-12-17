@@ -27,6 +27,8 @@ class Validator {
 
   CURRENCY_REGEX = /^-?\d{1,8}(?:\.\d{0,2})?$/;
 
+  PROTOCOL_REGEX = /^https?:\/\/(.*)$/;
+
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
   }
@@ -49,6 +51,10 @@ class Validator {
 
   checkCurrency(number) {
     return this.CURRENCY_REGEX.test(number);
+  }
+
+  checkProtocol(url) {
+    return this.PROTOCOL_REGEX.test(url);
   }
 }
 
@@ -100,6 +106,9 @@ export const phoneNumber = (value) =>
 
 export const postalCode = (value) =>
   value && !Validate.checkPostalCode(value) ? "Invalid postal code e.g. X1X1X1" : undefined;
+
+export const protocol = (value) =>
+  value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;
 
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;

@@ -14,6 +14,7 @@ import {
   dateNotInFuture,
   validateSelectOptions,
   maxLength,
+  protocol,
 } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -115,6 +116,7 @@ export class NOWReviewForm extends Component {
                     name="response_url"
                     label="Link to CRTS"
                     component={renderConfig.FIELD}
+                    validate={[protocol]}
                   />
                 </Form.Item>
                 <Form.Item>
@@ -238,8 +240,9 @@ export class NOWReviewForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
