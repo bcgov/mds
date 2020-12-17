@@ -73,6 +73,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
               Array [
                 Object {
                   "application_documents": Array [],
+                  "is_historic": false,
                   "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
                   "mine_name": "Hamilton, Herrera and Mccormick",
                   "mine_no": "brother",
@@ -84,6 +85,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                 },
                 Object {
                   "application_documents": Array [],
+                  "is_historic": true,
                   "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
                   "mine_name": "Thompson-Sullivan",
                   "mine_no": "other",

@@ -62,7 +62,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
     Array [
       Object {
         "document": Object {},
-        "is_historic": undefined,
+        "is_historic": false,
         "key": "07e801a0-fa33-4c3b-abcc-ac6df628d483",
         "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
         "mine_name": "Hamilton, Herrera and Mccormick",
@@ -74,7 +74,7 @@ exports[`MineNoticeOfWorkTable renders properly 1`] = `
       },
       Object {
         "document": Object {},
-        "is_historic": undefined,
+        "is_historic": true,
         "key": "8e1536da-644c-4961-976b-b1326fa75825",
         "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
         "mine_name": "Thompson-Sullivan",
