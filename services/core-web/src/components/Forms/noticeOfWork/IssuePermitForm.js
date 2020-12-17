@@ -30,17 +30,11 @@ const defaultProps = {
   formValues: {},
 };
 
-const dateRangeIsValidStart = (value, allValues, props) => {
-  const start = value;
-  const end = allValues.auth_end_date;
-  return dateRangeIsValid(start, end, props);
-};
+const dateRangeIsValidStart = (value, allValues, props) =>
+  dateRangeIsValid(value, allValues.auth_end_date, props);
 
-const dateRangeIsValidEnd = (value, allValues, props) => {
-  const start = allValues.issue_date;
-  const end = value;
-  return dateRangeIsValid(start, end, props);
-};
+const dateRangeIsValidEnd = (value, allValues, props) =>
+  dateRangeIsValid(allValues.issue_date, value, props);
 
 const dateRangeIsValid = (start, end, props) => {
   const type = props.noticeOfWork.notice_of_work_type_code;
@@ -105,8 +99,9 @@ export const IssuePermitForm = (props) => {
           onConfirm={props.closeModal}
           okText="Yes"
           cancelText="No"
+          disabled={props.submitting}
         >
-          <Button className="full-mobile" type="secondary">
+          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
             Cancel
           </Button>
         </Popconfirm>
