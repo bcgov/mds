@@ -5,6 +5,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
+from datetime import datetime
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -50,22 +51,31 @@ class DocumentTemplate(Base, AuditMixin):
             raise Exception('Context Object not found')
 
         for item in spec:
+
+            # Handle "relative data path"
             relative_data_path = item.get('relative-data-path')
-            if not relative_data_path:
-                current_app.logger.debug(f'No relative-data-path for {item["id"]}')
+            if relative_data_path:
+                current_object = source_obj_instance
+                for x in relative_data_path.split('.'):
+                    current_app.logger.debug(f'getting {current_object}.{x}')
+                    current_object = getattr(current_object, x)
+
+                current_app.logger.info(
+                    f'Found data for form."{item["id"]}" at "{item["relative-data-path"]}" with -> "{current_object}"'
+                )
+
+                del item['relative-data-path']
+                item['context-value'] = str(current_object)
                 continue
 
-            current_object = source_obj_instance
-            for x in relative_data_path.split('.'):
-                current_app.logger.debug(f'getting {current_object}.{x}')
-                current_object = getattr(current_object, x)
+            # Handle "context-value"
+            context_value = item.get('context-value')
+            if context_value:
+                if context_value == '{DATETIME.UTCNOW}':
+                    context_value = str(datetime.utcnow())
 
-            current_app.logger.info(
-                f'Found data for form."{item["id"]}" at "{item["relative-data-path"]}" with -> "{current_object}"'
-            )
-
-            del item['relative-data-path']
-            item['context-value'] = str(current_object)
+                item['context-value'] = context_value
+                continue
 
         return spec
 

@@ -722,6 +722,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -815,6 +816,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -904,6 +906,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -1014,6 +1017,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
