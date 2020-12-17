@@ -24,12 +24,17 @@ class POD():
     image_tag = os.getenv("IMAGE_TAG", "dev-pr-NUM")
     suffix = os.getenv("SUFFIX", "-pr-NUM")
 
-    def __init__(
-        self, pod_name, env_pod, command, image_namespace=None, image_tag=None, env=None, env_container_id=0
-    ):
+    def __init__(self,
+                 pod_name,
+                 env_pod,
+                 command,
+                 image_namespace=None,
+                 image_tag=None,
+                 env=None,
+                 env_container_id=0):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
-        self.command = command if command else ["flask", "test-cli-command"]
+        self.command = command if command else None
         self.env_container_id = env_container_id
 
         # If env, creating container from scratch, pull from tools build suffix
@@ -58,20 +63,18 @@ class POD():
         """
         json_data = self.create_pod_template()
 
-        if (self.env is not None):
+        # Update env from existing pod
+        current_running_pod = self.v1_pod.get(
+            label_selector=self.env_pod_label, namespace=self.namespace)
+        env_dict = (
+            current_running_pod.to_dict()["items"][0]["spec"]["containers"][self.env_container_id]
+            ["env"] if current_running_pod else [])
+
+        if (self.env is not None and env_pod == 'digdag-mds-job'):
+            json_data["spec"]["containers"][0]["env"] = json.loads(self.env) + env_dict
+        elif (self.env is not None):
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env)
         else:
-            # Update env from existing pod
-            current_running_pod = self.v1_pod.get(
-                label_selector=self.env_pod_label, namespace=self.namespace
-            )
-            env_dict = (
-                current_running_pod.to_dict()["items"][0]["spec"]["containers"][
-                    self.env_container_id
-                ]["env"]
-                if current_running_pod
-                else []
-            )
             json_data["spec"]["containers"][0]["env"] = env_dict
 
         return json_data
@@ -90,7 +93,8 @@ class POD():
         json_data["metadata"]["labels"]["name"] = self.job_pod_name
         json_data["metadata"]["name"] = self.job_pod_name
         json_data["metadata"]["namespace"] = self.namespace
-        json_data["spec"]["containers"][0]["command"] = self.command
+        if (self.command is not None):
+            json_data["spec"]["containers"][0]["command"] = self.command
         json_data["spec"]["containers"][0]["name"] = self.job_pod_name
         json_data["spec"]["containers"][0]["image"] = self.image
 
@@ -104,25 +108,20 @@ class POD():
         pod_template = pod_template if pod_template else self.get_pod_template()
         result = None
         try:
-            result = self.v1_pod.create(
-                body=pod_template, namespace=self.namespace)
+            result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
         except ConflictError as e:
             print("Pod exists, recreating")
-            self.v1_pod.delete(name=self.job_pod_name,
-                               namespace=self.namespace)
+            self.v1_pod.delete(name=self.job_pod_name, namespace=self.namespace)
             # Wait for pod to disappear, it can take a while if running
             time.sleep(60)
             # Then create it
-            result = self.v1_pod.create(
-                body=pod_template, namespace=self.namespace)
+            result = self.v1_pod.create(body=pod_template, namespace=self.namespace)
 
         # Wait for pod to be created before polling it for status
         time.sleep(30)
 
         # Watch the pod status and exit the job with success or raise exception
-        for e in self.v1_pod.watch(
-            label_selector=self.job_pod_label, namespace=self.namespace
-        ):
+        for e in self.v1_pod.watch(label_selector=self.job_pod_label, namespace=self.namespace):
             print("******** Pod Status ********")
             print(e["object"].status)
 

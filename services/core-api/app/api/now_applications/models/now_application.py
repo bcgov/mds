@@ -15,6 +15,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -196,11 +197,15 @@ class NOWApplication(Base, AuditMixin):
         return self.type_of_application == 'New Permit'
 
     @hybrid_property
+    def permittee(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
+        ]
+        return permittees[0] if permittees else None
+
+    @hybrid_property
     def permittee_name(self):
-        return [
-            contact.party.name for contact in self.contacts
-            if contact.mine_party_appt_type_code == 'PMT'
-        ][0]
+        return self.permittee.name if self.permittee else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
@@ -220,8 +225,9 @@ class NOWApplication(Base, AuditMixin):
     @validates('proposed_annual_maximum_tonnage')
     def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
         if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
-            if self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
-                raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
+            if not get_user_is_admin(
+            ) and self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('Only admins can modify the proposed annual maximum tonnage.')
         return proposed_annual_maximum_tonnage
 
     def save_import_meta(self):

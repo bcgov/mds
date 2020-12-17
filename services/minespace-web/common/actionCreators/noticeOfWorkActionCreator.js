@@ -318,7 +318,10 @@ export const updateNoticeOfWorkApplicationReview = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 

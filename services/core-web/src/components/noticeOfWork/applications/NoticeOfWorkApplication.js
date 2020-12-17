@@ -140,6 +140,7 @@ export class NoticeOfWorkApplication extends Component {
     isNewApplication: false,
     mineGuid: undefined,
     submitting: false,
+    submitted: false,
     activeTab: "verification",
   };
 
@@ -295,11 +296,12 @@ export class NoticeOfWorkApplication extends Component {
     });
 
   handleSaveNOWEdit = () => {
-    this.setState({ submitting: true });
+    this.setState({ submitted: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length > 0) {
       this.focusErrorInput();
     } else {
+      this.setState({ submitting: true });
       const { id } = this.props.match.params;
       return this.props
         .updateNoticeOfWorkApplication(
@@ -310,9 +312,13 @@ export class NoticeOfWorkApplication extends Component {
           this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.setState(() => ({
               isViewMode: true,
-              submitting: false,
             }));
           });
+        })
+        .finally(() => {
+          this.setState(() => ({
+            submitting: false,
+          }));
         });
     }
   };
@@ -542,7 +548,7 @@ export class NoticeOfWorkApplication extends Component {
 
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
-    const showErrors = errorsLength > 0 && this.state.submitting;
+    const showErrors = errorsLength > 0 && this.state.submitted;
     return (
       <NOWTabHeader
         tab="REV"
@@ -577,8 +583,9 @@ export class NoticeOfWorkApplication extends Component {
               onConfirm={this.handleCancelNOWEdit}
               okText="Yes"
               cancelText="No"
+              disabled={this.state.submitting}
             >
-              <Button type="secondary" className="full-mobile">
+              <Button type="secondary" className="full-mobile" disabled={this.state.submitting}>
                 Cancel
               </Button>
             </Popconfirm>
@@ -591,7 +598,12 @@ export class NoticeOfWorkApplication extends Component {
                 Next Issue
               </Button>
             )}
-            <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+            <Button
+              type="primary"
+              className="full-mobile"
+              onClick={this.handleSaveNOWEdit}
+              loading={this.state.submitting}
+            >
               Save
             </Button>
             {showErrors && (
