@@ -124,6 +124,7 @@ describe("ReviewApplicationFeeContent", () => {
   it("S&G: isApplicationFeeValid === false if `adjustedTonnage` is set and exceeds proposed tonnage range for S&G", () => {
     props.proposedTonnage = 10000;
     props.adjustedTonnage = 21000;
+    props.initialValues.notice_of_work_type_code = "SAG";
     const component = shallow(<ReviewApplicationFeeContent {...props} />);
     const instance = component.instance();
     const setIsApplicationFeeValidSpy = jest.spyOn(instance, "setIsApplicationFeeValid");
