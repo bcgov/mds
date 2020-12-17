@@ -65,7 +65,8 @@ class DocumentTemplate(Base, AuditMixin):
                 )
 
                 del item['relative-data-path']
-                item['context-value'] = str(current_object)
+                context_value = str(current_object) if current_object else None
+                item['context-value'] = context_value
                 continue
 
             # Handle "context-value"
