@@ -234,7 +234,6 @@ class SurfaceBulkFactory(ActivitySummaryBaseFactory):
 
     processing_method_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     handling_instructions = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
-    drainage_mitigation_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
     @factory.post_generation
     def details(obj, create, extracted, **kwargs):

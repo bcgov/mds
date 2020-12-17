@@ -1,0 +1,1 @@
+ALTER TABLE now_submissions.surface_bulk_sample DROP COLUMN IF EXISTS drainage_mitigation_description;

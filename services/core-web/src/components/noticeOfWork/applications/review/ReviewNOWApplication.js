@@ -33,7 +33,7 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import ReviewNOWContacts from "./ReviewNOWContacts";
@@ -221,7 +221,10 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("is_applicant_individual_or_company").value}
+              isVisible={props.renderOriginalValues("is_applicant_individual_or_company").edited}
+            />
           </div>
           <Field
             id="is_applicant_individual_or_company"
@@ -231,7 +234,10 @@ export const ReviewNOWApplication = (props) => {
           />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("relationship_to_applicant").value}
+              isVisible={props.renderOriginalValues("relationship_to_applicant").edited}
+            />
           </div>
           <Field
             id="relationship_to_applicant"
@@ -286,7 +292,10 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Do you have the required access authorizations in place?
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
+              isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
+            />
           </div>
           <Field
             id="has_req_access_authorizations"
@@ -301,7 +310,14 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("has_surface_disturbance_outside_tenure").value
+              }
+              isVisible={
+                props.renderOriginalValues("has_surface_disturbance_outside_tenure").edited
+              }
+            />
           </div>
           <Field
             id="has_surface_disturbance_outside_tenure"
@@ -314,7 +330,10 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title--light">
             Please provide the type and authorization numbers for each access authorization
             application or exemption to use the road(s).
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("req_access_authorization_numbers").value}
+              isVisible={props.renderOriginalValues("req_access_authorization_numbers").edited}
+            />
           </div>
           <Field
             id="req_access_authorization_numbers"
@@ -328,7 +347,10 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Access presently gated
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("is_access_gated").value}
+              isVisible={props.renderOriginalValues("is_access_gated").edited}
+            />
           </div>
           <Field
             id="is_access_gated"
@@ -340,7 +362,10 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Key provided to the inspector
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("has_key_for_inspector").value}
+              isVisible={props.renderOriginalValues("has_key_for_inspector").edited}
+            />
           </div>
           <Field
             id="has_key_for_inspector"
@@ -735,7 +760,10 @@ export const ReviewNOWApplication = (props) => {
       <Col md={12} sm={24}>
         <div className="field-title">
           Description of Work
-          <NOWFieldOriginTooltip />
+          <NOWOriginalValueTooltip
+            originalValue={props.renderOriginalValues("work_plan").value}
+            isVisible={props.renderOriginalValues("work_plan").edited}
+          />
         </div>
         <Field
           id="work_plan"
@@ -753,7 +781,10 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total merchantable timber volume
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("merchantable_timber_volume").value}
+              isVisible={props.renderOriginalValues("merchantable_timber_volume").edited}
+            />
           </div>
           <Field
             id="merchantable_timber_volume"

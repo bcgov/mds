@@ -83,7 +83,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         Bedrock excavation
-        <NOWFieldOriginTooltip />
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -104,7 +108,11 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         className="field-title"
       >
         If the material has potential for spontaneous combustion, give details of separate handling.
-        <NOWFieldOriginTooltip />
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
