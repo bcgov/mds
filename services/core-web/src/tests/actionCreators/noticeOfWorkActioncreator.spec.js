@@ -155,7 +155,7 @@ describe("`updateNoticeOfWorkApplication` action creator", () => {
     return updateNoticeOfWorkApplication(
       payload,
       applicationGuid
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

@@ -7,7 +7,7 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
-import { getFormValues, reset } from "redux-form";
+import { getFormValues, reset, isSubmitting } from "redux-form";
 import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
 import {
   fetchPermits,
@@ -50,6 +50,7 @@ const propTypes = {
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -263,12 +264,18 @@ export class NOWPermitGeneration extends Component {
                 onConfirm={this.handleCancelDraftEdit}
                 okText="Yes"
                 cancelText="No"
+                disabled={this.props.submitting}
               >
-                <Button type="secondary" className="full-mobile">
+                <Button type="secondary" className="full-mobile" disabled={this.props.submitting}>
                   Cancel
                 </Button>
               </Popconfirm>
-              <Button type="primary" className="full-mobile" onClick={this.handleSaveDraftEdit}>
+              <Button
+                type="primary"
+                className="full-mobile"
+                onClick={this.handleSaveDraftEdit}
+                loading={this.props.submitting}
+              >
                 Save
               </Button>
             </>
@@ -319,6 +326,7 @@ NOWPermitGeneration.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   appOptions: getNoticeOfWorkApplicationTypeOptions(state),
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
+  submitting: isSubmitting(FORM.GENERATE_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
