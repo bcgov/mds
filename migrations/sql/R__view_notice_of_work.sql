@@ -12,6 +12,8 @@ COALESCE(nows.description, sub.status) as now_application_status_description,
 COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
 (CASE
 	WHEN nid.now_application_id IS NOT NULL THEN FALSE
+	WHEN sub.originating_system IS NULL AND msub.mms_cid IS NOT NULL THEN TRUE
+	WHEN sub.originating_system IS NOT NULL AND nid.now_number IS NULL THEN TRUE
 	WHEN pa.now_application_guid IS NULL THEN FALSE
 	ELSE TRUE
 END) AS is_historic,
@@ -29,4 +31,6 @@ LEFT JOIN now_application app on nid.now_application_id=app.now_application_id
 LEFT JOIN party p on app.lead_inspector_party_guid=p.party_guid
 LEFT JOIN notice_of_work_type nowt on app.notice_of_work_type_code=nowt.notice_of_work_type_code
 LEFT JOIN now_application_status nows on app.now_application_status_code=nows.now_application_status_code
-LEFT JOIN permit_amendment pa ON nid.now_application_guid = pa.now_application_guid;
+LEFT JOIN permit_amendment pa ON nid.now_application_guid = pa.now_application_guid
+WHERE sub.originating_system IS NULL 
+	OR (sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);
