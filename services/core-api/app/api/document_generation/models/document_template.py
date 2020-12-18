@@ -62,7 +62,7 @@ class DocumentTemplate(Base, AuditMixin):
                     if current_object is None:
                         break
 
-                current_app.logger.info(
+                current_app.logger.debug(
                     f'Found data for form."{item["id"]}" at "{item["relative-data-path"]}" with -> "{current_object}"'
                 )
 
