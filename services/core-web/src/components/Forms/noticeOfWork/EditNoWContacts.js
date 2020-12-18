@@ -77,6 +77,7 @@ const NOWContact = ({
             <span className="inline-flex">
               <p>Previously: </p>
               <p className="p-light">
+                {" "}
                 {startCase(contact.party.name)} ({contact.mine_party_appt_type_code_description})
               </p>
             </span>
