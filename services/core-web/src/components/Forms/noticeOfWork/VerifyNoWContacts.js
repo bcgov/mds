@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty, startCase } from "lodash";
-import { Col, Row, Button, Card } from "antd";
+import { Col, Row, Button, Card, Result } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined, DoubleRightOutlined } from "@ant-design/icons";
 import { FieldArray, Field } from "redux-form";
 
@@ -24,7 +24,7 @@ import * as Strings from "@common/constants/strings";
 
 import Address from "@/components/common/Address";
 
-import PartySelectField from "@/components/common/PartySelectField";
+import NOWPartySelectField from "@/components/common/NOWPartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
@@ -35,11 +35,20 @@ const propTypes = {
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
+  wasFormReset: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
 
-const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
+const renderContacts = ({
+  fields,
+  partyRelationshipTypes,
+  rolesUsedOnce,
+  confirmedContacts,
+  updateConfirmedList,
+  contactFormValues,
+  wasFormReset,
+}) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
@@ -48,6 +57,10 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
     <>
       <Row gutter={24}>
         {fields.map((field, index) => {
+          // eslint-disable-next-line no-unused-expressions
+          fields.get(index).id
+            ? (fields.get(index).id = fields.get(index).id)
+            : (fields.get(index).id = uuidv4());
           const contactExists = fields.get(index) && !isEmpty(fields.get(index).party);
           const initialParty = contactExists
             ? {
@@ -77,15 +90,17 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                     <span className="field-title">{`Application ${
                       contactExists ? fields.get(index).mine_party_appt_type_code_description : ""
                     }`}</span>
-                    <Button
-                      ghost
-                      onClick={() => {
-                        fields.remove(index);
-                      }}
-                      className="position-right no-margin"
-                    >
-                      <img name="remove" src={TRASHCAN} alt="Remove MineType" />
-                    </Button>
+                    {!confirmedContacts?.includes(fields.get(index).id) && (
+                      <Button
+                        ghost
+                        onClick={() => {
+                          fields.remove(index);
+                        }}
+                        className="position-right no-margin"
+                      >
+                        <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                      </Button>
+                    )}
                   </div>
                 }
                 bordered={false}
@@ -136,32 +151,60 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                         name={`${field}.mine_party_appt_type_code`}
                         component={RenderSelect}
                         data={filteredRelationships}
+                        disabled={confirmedContacts?.includes(fields.get(index).id)}
                         validate={[required, validateSelectOptions(filteredRelationships)]}
                       />
                     </Form.Item>
                     <Form.Item>
-                      <PartySelectField
-                        id={`${field}.party_guid`}
-                        name={`${field}.party_guid`}
-                        label="Matching Core Contact*"
-                        partyLabel="Contact"
-                        validate={[required]}
-                        allowAddingParties
-                        initialValues={
-                          contactExists
-                            ? {
-                                ...fields.get(index).party,
-                                ...(fields.get(index).party.address.length > 0
-                                  ? { ...fields.get(index).party.address[0], ...initialParty }
-                                  : initialParty),
-                              }
-                            : {}
-                        }
-                        initialSearch={contactExists ? fields.get(index).party.name : undefined}
-                      />
+                      <Form.Item>
+                        <Field
+                          id={`${field}.party_guid`}
+                          name={`${field}.party_guid`}
+                          label="Matching Core Contact*"
+                          partyLabel="Contact"
+                          validate={[required]}
+                          component={NOWPartySelectField}
+                          allowAddingParties
+                          disabled={confirmedContacts?.includes(fields.get(index).id)}
+                          initialValues={
+                            contactExists
+                              ? {
+                                  ...fields.get(index).party,
+                                  ...(fields.get(index).party.address.length > 0
+                                    ? { ...fields.get(index).party.address[0], ...initialParty }
+                                    : initialParty),
+                                }
+                              : {}
+                          }
+                          initialSearch={contactExists ? fields.get(index).party.name : undefined}
+                          wasFormReset={wasFormReset}
+                        />
+                      </Form.Item>
                     </Form.Item>
                   </Col>
                 </Row>
+                <br />
+                {!confirmedContacts?.includes(fields.get(index).id) ? (
+                  <Button
+                    type="primary"
+                    className="position-right"
+                    disabled={
+                      !contactFormValues[index]?.party_guid ||
+                      !contactFormValues[index]?.mine_party_appt_type_code
+                    }
+                    onClick={(event) => updateConfirmedList(event, fields.get(index).id)}
+                  >
+                    Confirm
+                  </Button>
+                ) : (
+                  <div className="confirm-success">
+                    <Result
+                      className="position-right no-margin"
+                      status="success"
+                      title="Confirmed"
+                    />
+                  </div>
+                )}
               </Card>
             </Col>
           );
@@ -192,11 +235,18 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
 };
 
 export class VerifyNoWContacts extends Component {
-  state = { rolesUsedOnce: [] };
+  state = { rolesUsedOnce: [], confirmedContacts: [] };
 
   componentDidMount() {
     this.handleRoles(this.props.contactFormValues);
   }
+
+  updateConfirmedContactList = (event, id) => {
+    event.preventDefault();
+    this.setState((prevState) => ({
+      confirmedContacts: [id, ...prevState.confirmedContacts],
+    }));
+  };
 
   showAddPartyModal = () => {
     this.props.openModal({
@@ -219,6 +269,8 @@ export class VerifyNoWContacts extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const formReset =
+      nextProps.contactFormValues === this.props.contactFormValues && nextProps.wasFormReset;
     const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
     if (
       nextProps.addPartyFormState.showingAddPartyForm &&
@@ -231,6 +283,10 @@ export class VerifyNoWContacts extends Component {
     if (contactsChanged) {
       this.handleRoles(nextProps.contactFormValues);
     }
+
+    if (formReset) {
+      this.setState({ confirmedContacts: [] });
+    }
   };
 
   render() {
@@ -241,6 +297,10 @@ export class VerifyNoWContacts extends Component {
         component={renderContacts}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         rolesUsedOnce={this.state.rolesUsedOnce}
+        confirmedContacts={this.state.confirmedContacts}
+        updateConfirmedList={this.updateConfirmedContactList}
+        contactFormValues={this.props.contactFormValues}
+        wasFormReset={this.props.wasFormReset}
       />
     );
   }

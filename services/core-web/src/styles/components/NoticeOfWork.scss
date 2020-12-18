@@ -277,3 +277,18 @@
     margin-left: 0;
   }
 }
+
+.confirm-success {
+  .ant-result-icon > .anticon {
+    font-size: 40px;
+  }
+  .ant-result {
+    padding: 20px;
+  }
+  .ant-result-icon {
+    margin-bottom: 0;
+  }
+  .ant-result-title {
+    font-size: 20px;
+  }
+}

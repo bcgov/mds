@@ -38,6 +38,8 @@ const propTypes = {
   contactFormValues: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
   ).isRequired,
+  contact: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party })))
+    .isRequired,
 };
 
 const defaultProps = {};
@@ -56,7 +58,7 @@ const NOWContact = ({
   contact,
   handleRemove,
   editContact,
-  toggleEdit,
+  updateEditedList,
   rolesUsedOnce,
   filteredRelationships,
   index,
@@ -71,13 +73,21 @@ const NOWContact = ({
               ? contact.mine_party_appt_type_code_description
               : `Updating Application Contact`}
           </h3>
+          {editContact?.includes(contact.now_party_appointment_id) && (
+            <span className="inline-flex">
+              <p>Previously: </p>
+              <p className="p-light">
+                {startCase(contact.party.name)} ({contact.mine_party_appt_type_code_description})
+              </p>
+            </span>
+          )}
         </div>
         <div>
           {!editContact?.includes(contact.now_party_appointment_id) && (
             <Button
               ghost
               className="no-margin"
-              onClick={() => toggleEdit(contact.now_party_appointment_id)}
+              onClick={() => updateEditedList(contact.now_party_appointment_id)}
             >
               <img alt="pencil" src={EDIT_OUTLINE_VIOLET} />
             </Button>
@@ -170,7 +180,7 @@ const renderContacts = ({
   partyRelationshipTypes,
   rolesUsedOnce,
   editContact,
-  toggleEdit,
+  updateEditedList,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
@@ -199,7 +209,7 @@ const renderContacts = ({
                     contact={fields.get(index)}
                     handleRemove={() => handleRemove(fields, index)}
                     editContact={editContact}
-                    toggleEdit={toggleEdit}
+                    updateEditedList={updateEditedList}
                   />
                 ) : (
                   <Card
@@ -295,9 +305,9 @@ export class EditNoWContacts extends Component {
     this.handleRoles(this.props.contactFormValues);
   }
 
-  toggleEditExistingContact = (index) => {
+  updateEditedContactList = (id) => {
     this.setState((prevState) => ({
-      editContact: [index, ...prevState.editContact],
+      editContact: [id, ...prevState.editContact],
     }));
   };
 
@@ -353,7 +363,7 @@ export class EditNoWContacts extends Component {
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         rolesUsedOnce={this.state.rolesUsedOnce}
         editContact={this.state.editContact}
-        toggleEdit={this.toggleEditExistingContact}
+        updateEditedList={this.updateEditedContactList}
       />
     );
   }

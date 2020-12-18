@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -17,7 +16,6 @@ import { Select, Divider } from "antd";
 import LinkButton from "@/components/common/LinkButton";
 
 import CustomPropTypes from "@/customPropTypes";
-import RenderLargeSelect from "./RenderLargeSelect";
 
 /**
  * @constant NOWPartySelectField - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -43,11 +41,37 @@ const propTypes = {
     error: PropTypes.string,
     warning: PropTypes.string,
   }).isRequired,
+  disabled: PropTypes.bool,
+  wasFormReset: PropTypes.bool,
+  initialSearch: PropTypes.string,
+  fetchSearchResults: PropTypes.func.isRequired,
+  setAddPartyFormState: PropTypes.func.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string),
+
+  name: PropTypes.string,
+  // Defaults to false, set to true to only see people. Displays both people and organizations by default.
+  person: PropTypes.bool,
+  // Defaults to false, set to true to only see organizations. Displays both people and organizations by default.
+  organization: PropTypes.bool,
+  allowAddingParties: PropTypes.bool,
+  searchResults: PropTypes.objectOf(PropTypes.any),
+  lastCreatedParty: CustomPropTypes.party.isRequired,
+  partyLabel: PropTypes.string,
 };
 
 const defaultProps = {
-  label: "",
+  initialSearch: undefined,
   placeholder: "",
+  disabled: false,
+  wasFormReset: null,
+  initialValues: {},
+  name: "party_guid",
+  label: "Name*",
+  partyLabel: "contact",
+  person: false,
+  organization: false,
+  allowAddingParties: false,
+  searchResults: [],
 };
 
 const renderAddPartyHeader = (showAddParty, partyLabel) => (
@@ -138,13 +162,15 @@ export class NOWPartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    const formReset =
+      this.props.wasFormReset !== null &&
+      this.props.wasFormReset !== nextProps.wasFormReset &&
+      nextProps.wasFormReset;
     const initialValuesChangedNotByUser =
       !isEmpty(this.props.initialValues) &&
       this.state.selectedOption.value &&
       !this.state.isUserEvent &&
       this.props.initialValues.value !== nextProps.initialValues.value;
-    console.log("initialValuesChangedNotByUser:", initialValuesChangedNotByUser);
-    console.log("componentWillReceiveProps, initialValues:");
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
     if (initialValuesChangedNotByUser) {
@@ -153,6 +179,18 @@ export class NOWPartySelectField extends Component {
         selectedOption: {
           value: nextProps.initialValues.value,
           label: nextProps.initialValues.label,
+        },
+        isUserEvent: false,
+      });
+    }
+
+    // if user cancels the form, clear the dropdown, reset the search with name
+    if (formReset) {
+      this.handleSearch(nextProps.initialValues.label);
+      this.setState({
+        selectedOption: {
+          value: "",
+          label: "",
         },
         isUserEvent: false,
       });
@@ -217,23 +255,6 @@ export class NOWPartySelectField extends Component {
     this.setState({ isUserEvent: true, selectedOption: option });
   };
 
-  // Validator to ensure the selected option is in the collection of available options.
-  // This validator is appened to any validators passed in from the form in the render function below.
-  // eslint-disable-next-line consistent-return
-  validOption = (value) => {
-    // ignore this validation if an initialValues is passed in
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.label &&
-      this.props.initialValues.value &&
-      this.props.initialValues.value !== this.state.selectedOption.value
-    ) {
-      return this.state.partyDataSource.find((opt) => opt.value === value)
-        ? undefined
-        : `Invalid ${this.props.partyLabel}`;
-    }
-  };
-
   render() {
     return (
       <Form.Item
@@ -257,6 +278,7 @@ export class NOWPartySelectField extends Component {
           notFoundContent="Not Found"
           dropdownMatchSelectWidth
           backfill
+          disabled={this.props.disabled}
           style={{ width: "100%" }}
           options={this.state.partyDataSource}
           placeholder="Search for Contact"
