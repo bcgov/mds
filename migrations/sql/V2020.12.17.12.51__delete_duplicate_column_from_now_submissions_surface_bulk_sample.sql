@@ -1,1 +1,7 @@
-ALTER TABLE now_submissions.surface_bulk_sample DROP COLUMN IF EXISTS drainage_mitigation_description;
+ALTER TABLE surface_bulk_sample DROP COLUMN IF EXISTS drainage_mitigation_description;
+
+ALTER TABLE surface_bulk_sample DROP COLUMN IF EXISTS spontaneous_combustion_handling;
+ALTER TABLE now_submissions.application DROP COLUMN IF EXISTS spontaneouscombustionhandling;
+
+-----------------------------------------------------
+-- ALTER TABLE now_submissions.application RENAME COLUMN recreationuse TO isrecreationuse;

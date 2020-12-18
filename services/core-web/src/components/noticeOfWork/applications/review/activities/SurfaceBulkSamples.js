@@ -102,18 +102,16 @@ export const SurfaceBulkSamples = (props) => {
             handling.
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("surface_bulk_sample.spontaneous_combustion_handling")
-                  .value
+                props.renderOriginalValues("surface_bulk_sample.handling_instructions").value
               }
               isVisible={
-                props.renderOriginalValues("surface_bulk_sample.spontaneous_combustion_handling")
-                  .edited
+                props.renderOriginalValues("surface_bulk_sample.handling_instructions").edited
               }
             />
           </div>
           <Field
-            id="spontaneous_combustion_handling"
-            name="spontaneous_combustion_handling"
+            id="handling_instructions"
+            name="handling_instructions"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
