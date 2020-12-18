@@ -344,15 +344,18 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
-        'imported_date': Date,
-        'imported_by':  fields.String,
+        'imported_date':
+        Date,
+        'imported_by':
+        fields.String,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':
         fields.String,
         'status_updated_date':
         Date,
-        'status_reason': fields.String,
+        'status_reason':
+        fields.String,
         'submitted_date':
         Date,
         'received_date':
@@ -541,6 +544,7 @@ NOW_VIEW_MODEL = api.model(
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date,
+        'is_historic': fields.Boolean,
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
