@@ -34,6 +34,8 @@ class NoticeOfWorkView(Base):
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
 
+    is_historic = db.Column(db.Boolean)
+
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
