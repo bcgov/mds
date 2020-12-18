@@ -940,7 +940,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Emailed to",
       "type": "FIELD",
       "placeholder": "Enter the name of the email recipient",
-      "relative-data-path": "now_application.permittee.email",
+      "relative-data-path": "now_application.permittee.email"
     },
     {
       "id": "property",
