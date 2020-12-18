@@ -118,7 +118,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if address.get('address_line_1', None):
                     address_string += f'{address["address_line_1"]} '
                 if address.get('address_line_2', None):
-                    address_string += f'{address["address_line_2"]} '
+                    address_string += address["address_line_2"]
                 address_string = address_string.strip()
 
                 if address['city'] or address['sub_division_code'] or address['post_code']:
