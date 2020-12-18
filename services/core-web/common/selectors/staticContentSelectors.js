@@ -438,6 +438,12 @@ export const getMineReportCategoryOptionsHash = createSelector(
   createLabelHash
 );
 
+export const getDropdownPermitConditionCategoryOptions = createSelectorWrapper(
+  getPermitConditionCategoryOptions,
+  createDropDownList,
+  ["description", "condition_category_code"]
+);
+
 export const getDropdownMineReportStatusOptions = createSelectorWrapper(
   getMineReportStatusOptions,
   createDropDownList,
@@ -496,7 +502,12 @@ export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
 export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelectorWrapper(
   getNoticeOfWorkApplicationDocumentTypeOptions,
   createDropDownList,
-  ["description", "now_application_document_type_code", "active_ind"]
+  [
+    "description",
+    "now_application_document_type_code",
+    "active_ind",
+    "now_application_document_sub_type_code",
+  ]
 );
 
 export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(

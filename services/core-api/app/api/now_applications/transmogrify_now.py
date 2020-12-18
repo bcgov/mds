@@ -764,14 +764,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=new_uea.type,
-                    incline=new_uea.incline,
-                    incline_unit_type_code=code_lookup(app_models.UnitType,
-                                                       unit_type_map[new_uea.inclineunits],
-                                                       'unit_type_code'),
+                    incline=getattr(new_uea, 'incline', None),
+                    incline_unit_type_code=code_lookup(
+                        app_models.UnitType, unit_type_map[getattr(new_uea, 'inclineunits', None)],
+                        'unit_type_code'),
                     quantity=new_uea.quantity,
-                    length=new_uea.length,
-                    width=new_uea.width,
-                    height=new_uea.height,
+                    length=getattr(new_uea, 'length', None),
+                    width=getattr(new_uea, 'width', None),
+                    height=getattr(new_uea, 'height', None),
                     underground_exploration_type_code='NEW'))
 
         if (len(mms_now_sub.under_exp_rehab_activity) > 0):
@@ -783,14 +783,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=rehab_uea.type,
-                    incline=rehab_uea.incline,
-                    incline_unit_type_code=code_lookup(app_models.UnitType,
-                                                       unit_type_map[rehab_uea.inclineunits],
-                                                       'unit_type_code'),
+                    incline=getattr(rehab_uea, 'incline', None),
+                    incline_unit_type_code=code_lookup(
+                        app_models.UnitType, unit_type_map[getattr(rehab_uea, 'inclineunits',
+                                                                   None)], 'unit_type_code'),
                     quantity=rehab_uea.quantity,
-                    length=rehab_uea.length,
-                    width=rehab_uea.width,
-                    height=rehab_uea.height,
+                    length=getattr(rehab_uea, 'length', None),
+                    width=getattr(rehab_uea, 'width', None),
+                    height=getattr(rehab_uea, 'height', None),
                     underground_exploration_type_code='RHB'))
 
         if (len(mms_now_sub.under_exp_surface_activity) > 0):

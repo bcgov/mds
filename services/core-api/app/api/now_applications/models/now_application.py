@@ -1,6 +1,7 @@
 import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -14,6 +15,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -58,8 +60,11 @@ class NOWApplication(Base, AuditMixin):
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
+    status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
     last_updated_by = db.Column(db.String)
+    imported_by = db.Column(db.String)
+    imported_date = db.Column(db.DateTime)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -192,11 +197,15 @@ class NOWApplication(Base, AuditMixin):
         return self.type_of_application == 'New Permit'
 
     @hybrid_property
+    def permittee(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
+        ]
+        return permittees[0] if permittees else None
+
+    @hybrid_property
     def permittee_name(self):
-        return [
-            contact.party.name for contact in self.contacts
-            if contact.mine_party_appt_type_code == 'PMT'
-        ][0]
+        return self.permittee.name if self.permittee else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
@@ -212,6 +221,19 @@ class NOWApplication(Base, AuditMixin):
             uuid.UUID(str(guid), version=4)
         except ValueError:
             raise AssertionError(msg)
+
+    @validates('proposed_annual_maximum_tonnage')
+    def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
+        if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
+            if not get_user_is_admin(
+            ) and self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('Only admins can modify the proposed annual maximum tonnage.')
+        return proposed_annual_maximum_tonnage
+
+    def save_import_meta(self):
+        self.imported_by = User().get_user_username()
+        self.imported_date = datetime.utcnow()
+        self.save()
 
     def save(self, commit=True):
         self.last_updated_by = User().get_user_username()
@@ -237,6 +259,10 @@ class NOWApplication(Base, AuditMixin):
                 doc.description,
                 'is_final_package':
                 doc.is_final_package,
+                'is_consultation_package':
+                doc.is_consultation_package,
+                'is_referral_package':
+                doc.is_referral_package,
                 'filename':
                 doc.filename,
                 'now_application_id':
@@ -262,6 +288,8 @@ class NOWApplication(Base, AuditMixin):
                     'documenttype': doc.documenttype,
                     'description': doc.description,
                     'is_final_package': False,
+                    'is_referral_package': False,
+                    'is_consultation_package': False,
                     'filename': doc.filename,
                     'now_application_id': now_application.now_application_id,
                     'document_manager_guid': None

@@ -88,6 +88,27 @@ MINE_DOCUMENT_MODEL = api.model(
         'upload_date': fields.DateTime,
     })
 
+IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'messageid': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    })
+
+PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
+    'NOW_DOCUMENT', {
+        'now_application_document_xref_guid': fields.String,
+        'now_application_document_type_code': fields.String,
+        'now_application_document_sub_type_code': fields.String,
+        'description': fields.String,
+        'is_final_package': fields.Boolean,
+        'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
+    })
+
 PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     'PermitAmendmentDocument', {
         'permit_id': fields.Integer,
@@ -115,7 +136,11 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
-        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL))
+        'now_application_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
+        'imported_now_application_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
+        'permit_conditions_last_updated_by': fields.String,
+        'permit_conditions_last_updated_date': fields.DateTime,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -403,12 +428,16 @@ MINE_REPORT_MODEL = api.model(
         fields.String,
         'permit_guid':
         fields.String,
+        'permit_number':
+        fields.String,
         'mine_report_submissions':
         fields.List(fields.Nested(MINE_REPORT_SUBMISSION_MODEL)),
         'mine_guid':
         fields.String,
         'mine_name':
         fields.String,
+        'permit_condition_category_code':
+        fields.String
     })
 
 MINE_REPORT_DEFINITION_CATEGORIES = api.model('MineReportDefinitionCategoriesModel', {
@@ -499,7 +528,7 @@ PERMIT_CONDITION_MODEL = api.model(
         'condition_type_code': fields.String,
         'sub_conditions': fields.List(PermitCondition),
         'step': fields.String,
-        'display_order': fields.Integer,
+        'display_order': fields.Integer
     })
 
 PERMIT_CONDITION_TEMPLATE_MODEL = api.model('PermitConditionTemplate', {

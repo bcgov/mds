@@ -613,30 +613,76 @@ ON CONFLICT DO NOTHING;
 
 
 INSERT INTO now_application_document_type
-(now_application_document_type_code, description, active_ind, create_user, update_user)
+(now_application_document_type_code, description, active_ind, now_application_document_sub_type_code, create_user, update_user)
 VALUES
-	('ANS', 'Annual Summary', true, 'system-mds', 'system-mds'),
-	('ACP', 'Archaeological Chance Find Procedure', true, 'system-mds', 'system-mds'),
-	('BLP', 'Blasting Procedure', true, 'system-mds', 'system-mds'),
-	('EMS', 'Explosives Magazine Storage and Use Permit Application', true, 'system-mds', 'system-mds'),
-	('LAL', 'Landowner Authorization Letter', true, 'system-mds', 'system-mds'),
-	('MRP', 'Mine Emergency Response Plan', true, 'system-mds', 'system-mds'),
-	('OTH', 'Other', true, 'system-mds', 'system-mds'),
-	('RFE', 'Record of First Nations Engagement', true, 'system-mds', 'system-mds'),
-	('TAL', 'Tenure Authorization Letter', true, 'system-mds', 'system-mds'),
-	('TMP', 'Tenure Map / Property Map', true, 'system-mds', 'system-mds'),
-	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
-    ('REV', 'Review',true,'system-mds','system-mds'),
-    ('PUB', 'Public Comment',true,'system-mds','system-mds'),
-    ('CAL', 'Acknowledgement Letter', true, 'system-mds', 'system-mds'),
-	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
-	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
-    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
-    ('PMT','Working Permit', true, 'system-mds','system-mds'),
-    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds'),
-    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds','system-mds'),
-    ('NIA', 'No Interest Acknowledgement Form', true, 'system-mds','system-mds'),
-    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds','system-mds')
+    ('ANS', 'Annual Summary', true, null, 'system-mds', 'system-mds'),
+    ('ACP', 'Archaeological Chance Find Procedure', true, null, 'system-mds', 'system-mds'),
+    ('BLP', 'Blasting Procedure', true, null, 'system-mds', 'system-mds'),
+    ('EMS', 'Explosives Magazine Storage and Use Permit Application', true, null, 'system-mds', 'system-mds'),
+    ('LAL', 'Landowner Authorization Letter', true, null, 'system-mds', 'system-mds'),
+    ('MRP', 'Mine Emergency Response Plan', true, null, 'system-mds', 'system-mds'),
+    ('OTH', 'Other', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RFE', 'Record of First Nations Engagement', true, null, 'system-mds', 'system-mds'),
+    ('TAL', 'Tenure Authorization Letter', true, null, 'system-mds', 'system-mds'),
+    ('REV', 'Review', true, null, 'system-mds','system-mds'),
+    ('PUB', 'Public Comment', true, null, 'system-mds','system-mds'),
+    ('CAL', 'Acknowledgement Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('WDL', 'Withdrawl Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RJL', 'Rejection Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('NPE', 'Permit Enclosed Letter', true, null, 'system-mds', 'system-mds'),
+    ('PMT','Working Permit', true, null, 'system-mds','system-mds'),
+    ('PMA','Working Permit for Amendment', true, null, 'system-mds','system-mds'),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'SDO', 'system-mds','system-mds'),
+    ('NIA', 'No Interest Acknowledgement Form', true, 'SDO', 'system-mds','system-mds'),
+    ('AKL', 'Acknowledgement of Security Letter', true, 'SDO', 'system-mds','system-mds'),
+    ('SCD', 'Bond Calculator', true, 'SDO', 'system-mds', 'system-mds'),
+    ('TMP', 'Title/Tenure Map', true, null, 'system-mds', 'system-mds'),
+    ('MPW', 'Proposed and/or Permitted Mine Area Map', true, null, 'system-mds', 'system-mds'),
+    ('LMA', 'Location Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('LTM', 'Land Title/Licence of Ocupation Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('OMA', 'Overview Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('SMA', 'Supplemental Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('SSF', 'Submitted Shape Files', true, NULL, 'system-mds', 'system-mds'),
+    ('CSL', 'Cross-sectional/Longitudinal', true, NULL, 'system-mds', 'system-mds'),
+    ('PFR', 'Preliminary Field Reconnaisance', true, NULL, 'system-mds', 'system-mds'),
+    ('AOA', 'Archaeological Overview Assessment', true, NULL, 'system-mds', 'system-mds'),
+    ('AIA', 'Archaeological Impact Assessment', true, NULL, 'system-mds', 'system-mds'),
+    ('SOP', 'Standard/Safe Operating Procedures', true, NULL, 'system-mds', 'system-mds'),
+    ('RSP', 'Riparian Setbacks Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('WMP', 'Water Management Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('WPL', 'Wildlife Management Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('RPL', 'Reclamation Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('OMP', 'Other Management Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('SEP', 'Sediment and Erosion Control Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('FDP', 'Fugitive Dust Management Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('VMP', 'Vegetation Management Plan', true, NULL, 'system-mds', 'system-mds'),
+    ('TSS', 'Terrain Stability Study', true, NULL, 'system-mds', 'system-mds'),
+    ('MAD', 'Metal Leaching/Acid Rock Drainage', true, NULL, 'system-mds', 'system-mds'),
+    ('LNO', 'Landowner Notification', true, NULL, 'system-mds', 'system-mds'),
+    ('DWP', 'Description of Work/Work Program', true, NULL, 'system-mds', 'system-mds'),
+    ('ARE', 'Agent Letter of Representation', true, NULL, 'system-mds', 'system-mds'),
+    ('SRE', 'Status Report', true, 'GDO', 'system-mds', 'system-mds'),
+    ('SOM', 'Status Report - Overlapping Interests Maps', true, 'GDO', 'system-mds', 'system-mds'),
+    ('SRS', 'Status Report - Shape Files', true, 'GDO', 'system-mds', 'system-mds'),
+    ('ECC', 'Email Correspondence/Communications', true, NULL, 'system-mds', 'system-mds'),
+    ('RMI', 'Requst for More Information', true, NULL, 'system-mds', 'system-mds'),
+    ('WFI', '30 day Warning for Information', true, 'GDO', 'system-mds', 'system-mds'),
+    ('NPR', 'No Permit Required', true, NULL, 'system-mds', 'system-mds'),
+    ('NPI', 'No Permit Required IP', true, NULL, 'system-mds', 'system-mds'),
+    ('WFS', '30 day Warning for Security', true, 'SDO', 'system-mds', 'system-mds'),
+    ('PEL', 'Permit Enclosed Letter', true, NULL, 'system-mds', 'system-mds'),
+    ('RFD', 'Reasons for Decision', true, NULL, 'system-mds', 'system-mds'),
+    ('CRS', 'Consultation Report/Summary', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BCR', 'Begin Consultation Request', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CCC', 'Consultation Correspondence (not in CRTS)', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CSD', 'Consultation Support for Decision', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BRR', 'Begin Referral Request', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RSR', 'Referral Summary Roll Up', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RLE', 'Referral Letter (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RRE', 'Referral Response (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('PCA', 'Advertisement', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCC', 'Public Comment', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -648,7 +694,8 @@ INSERT INTO now_application_review_type(
 VALUES
     ('REF', 'Referral', 'system-mds', 'system-mds'),
     ('FNC', 'First Nations Consultation', 'system-mds', 'system-mds'),
-    ('PUB', 'Public Comment', 'system-mds', 'system-mds')
+    ('PUB', 'Public Comment', 'system-mds', 'system-mds'),
+    ('ADV', 'Advertisements', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -663,6 +710,7 @@ VALUES
   ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
   ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
   ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
   ('NTR', '[]', 'templates/now/Technical Review.docx', true, 'system-mds', 'system-mds'),
   ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
   ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
@@ -906,10 +954,9 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "bond_inc_amt",
-      "label": "Bond Amount",
+      "label": "Bond Increase Amount",
       "type": "CURRENCY",
-      "placeholder": "Enter the bond amount",
-      "required": true
+      "placeholder": "Enter the bond increase amount"
     },
     {
       "id": "issuing_inspector_name",
@@ -930,7 +977,7 @@ UPDATE document_template SET form_spec_json = '[
       "id": "letter_body",
       "label": "Letter Body",
       "type": "AUTO_SIZE_FIELD",
-      "context-value": "You may wish to take the opportunity to post your security at this time to avoid delays in the permitting process.  The security deposit amount has been calculated based on the information provided in your application.  Details for the security deposit calculation are outlined in the attached spreadsheet.  Preferred forms of security are certified cheques, money orders or bank drafts made payable to the Minister of Finance.  Surety Bonds and Irrevocable Standby Letters of Credit (‘ILOC’) are also acceptable.  Please do not send cash.  Ensure you also include a completed and signed `No Interest Payable Form`, which is attached.  ILOCs will only be accepted from the following financial institutions: Bank of Montreal, Bank of Nova Scotia, Canadian Imperial Bank of Commerce, Royal Bank of Canada, Toronto-Dominion Bank.\n\nIn addition, within 30 calendar days of receipt of this letter and prior to issuance of a permit, you must provide to this office:  A Chance Find Procedure (‘CFP’) for archaeological sites, an invasive plant species management plan and an updated Mine Emergency Response Plan (‘MERP’).  Guidelines and best management practices have been attached to this letter to assist with the preparation of the aforementioned items.\n\nThe introduction and spread of invasive plants is a concern throughout the area.  The provincial Invasive Alien Plant Program (https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/iapp) should be reviewed to determine what invasive species have been documented in and around the proposed work site(s).  Best management practices should be applied during operations and an invasive plant management strategy developed.  The attached best practices document has been developed by the Invasive Species Council of British Columbia for forestry operations, but the operational guidelines describe in it can be extended to mineral exploration operations.  For example, ensure incoming and outgoing vehicles are free of weed seeds and plant parts, report observations of infestation and re-vegetate disturbed areas as soon after disturbance.  For more information on individual species visit the Ministry of Agriculture site www.weedsbc.ca or the Invasive Species Council of BC website at www.bcinvasives.ca and go to `resources`.\n\nThe MERP shall include a section which outlines how engagement with affected communities and First Nations will occur in case of an emergency at your mine site.  The MERP is required to be posted at the work site at all times, which must include the name of the designated Mine Manager.  All employees must be advised and trained in the use of this plan.\n\nOther legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation.  It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
+      "context-value": "Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation. It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
       "required": true
     },
     {
@@ -960,6 +1007,96 @@ UPDATE document_template SET form_spec_json = '[
     }
   ]'
 where document_template_code = 'NCL';
+
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s name",
+      "required": true
+    },    
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "required": true
+    },
+    {
+      "id": "property",
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+    {
+      "id": "application_dt",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
+    },
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
+    },
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Please ensure that you and all persons who are carrying out activities in accordance with this permit comply with all terms and conditions of the permit and are familiar with the permitted work program.\n\nThis permit applies only to the requirements under the Mines Act and Health, Safety and Reclamation Code for Mines in British Columbia (Code).  Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation. Examples of other authorizations would be for timber removal, water use, works within the agricultural land reserve etc.\n\nThe amount of your security deposit may be adjusted on the basis of reclamation performance, field inspections by this ministry, and on reports which may be requested.",
+      "required": true
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    }
+  ]'
+where document_template_code = 'NPE';
 
 UPDATE document_template SET form_spec_json = '[
     {
@@ -1040,6 +1177,10 @@ where now_application_document_type_code = 'WDL';
 UPDATE now_application_document_type
 SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
+
+UPDATE now_application_document_type
+SET document_template_code = 'NPE'
+where now_application_document_type_code = 'NPE';
 
 UPDATE now_application_document_type
 SET document_template_code = 'PMT'

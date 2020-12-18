@@ -5,6 +5,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -58,6 +59,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)')
+    permit_conditions_last_updated_date = db.Column(db.DateTime)
+    permit_conditions_last_updated_by = db.Column(db.String(60))
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.
@@ -68,6 +71,24 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
 
+    now_application_identity = db.relationship(
+        'NOWApplicationIdentity', lazy='selectin', uselist=False)
+
+    @hybrid_property
+    def now_application_documents(self):
+        _now_app_docs = []
+        if self.now_application_identity:
+            _now_app_docs = self.now_application_identity.now_application.documents
+        return _now_app_docs
+                
+
+    @hybrid_property
+    def imported_now_application_documents(self):
+        _imported_now_app_docs = []
+        if self.now_application_identity:
+            _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
+        return _imported_now_app_docs
+
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
@@ -76,6 +97,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             raise Exception(
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
             )
+
+        if self.now_application_guid:
+            raise Exception(
+                'The permit amendment with linked NOW application in Core cannot be deleted.')
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()

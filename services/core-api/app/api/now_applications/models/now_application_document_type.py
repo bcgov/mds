@@ -12,6 +12,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
+    now_application_document_sub_type_code = db.Column(db.String, db.ForeignKey('now_application_document_sub_type.now_application_document_sub_type_code'))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     document_template_code = db.Column(db.String,
                                        db.ForeignKey('document_template.document_template_code'))
@@ -46,7 +47,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 permit = now_application.active_permit
             elif now_application.draft_permit:
                 permit = now_application.draft_permit
-                is_draft = True
+                is_draft = template_data.get('is_draft', True)
             elif now_application.remitted_permit:
                 permit = now_application.remitted_permit
             else:
@@ -79,7 +80,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
             return template_data
 
-        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), and "Rejection Letter" (RJL)
+        # Transform template data for "Acknowledgement Letter" (CAL), "Withdrawal Letter" (WDL), "Rejection Letter" (RJL), and "Permit Enclosed Letter" (NPE)
         def transform_letter(template_data, now_application):
             validate_issuing_inspector(now_application)
 
@@ -95,7 +96,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         # Transform the template data according to the document type
         if self.now_application_document_type_code in ('PMT', 'PMA'):
             return transform_permit(template_data, now_application)
-        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL'):
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE'):
             return transform_letter(template_data, now_application)
 
         return template_data

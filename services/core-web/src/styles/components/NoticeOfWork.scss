@@ -86,7 +86,6 @@
 }
 
 .view {
-  padding: 10px;
   &--header {
     height: 100px;
     &.fixed-scroll {
@@ -96,6 +95,14 @@
       background-color: $pure-white;
       z-index: 50;
       box-shadow: $default-box-shadow;
+    }
+    &--content {
+      padding: 10px;
+
+      &--actions {
+        display: inline-flex;
+        padding-top: 10px;
+      }
     }
   }
 
@@ -119,6 +126,8 @@
 }
 
 .side-menu {
+  margin-left: 15px;
+  margin-top: 15px;
   width: 240px;
   position: absolute;
   left: 0;
@@ -128,7 +137,8 @@
   }
 
   &--fixed {
-    top: 160px;
+    margin-left: 15px;
+    top: 190px;
     position: fixed;
     width: 240px;
 
@@ -143,7 +153,9 @@
     padding-top: 10px;
 
     &.with-fixed-top {
-      margin-top: 100px;
+      position: fixed;
+      top: 80px;
+      margin-top: 80px;
     }
   }
 
@@ -152,16 +164,17 @@
   }
 
   &--content {
+    padding: 20px;
     position: relative;
     padding-right: 20px;
-    top: 30px;
     left: 250px;
     width: calc(100vw - 270px);
     // extra margin on the bottom to allow to scroll to end of side menu
     margin-bottom: 900px;
 
     &.with-fixed-top {
-      margin-top: 100px;
+      top: 50px;
+      margin-top: 20px;
     }
 
     @include tablet {
@@ -176,9 +189,23 @@
 }
 
 .now-menu-link {
-  a:hover {
+  padding: 10px;
+  a:hover,
+  a:active {
     text-decoration: none;
     color: $light-violet;
+  }
+
+  &.ant-anchor-link {
+    line-height: 1.75;
+    border-bottom: none;
+  }
+}
+
+.now-menu-link.ant-anchor-link .ant-anchor-link {
+  & .ant-anchor-link-title {
+    font-weight: lighter;
+    padding-left: 5px;
   }
 }
 
@@ -228,7 +255,7 @@
 
 .status-banner {
   position: relative;
-  top: 10px; //-15px?
+  bottom: -5px;
   height: 22px;
   z-index: 100;
   .ant-alert-message {
@@ -240,8 +267,30 @@
   }
 }
 
-.status-content {
-  position: relative;
-  float: right;
-  padding: 10px;
+.progress-steps {
+  // remove active styling on progress steps as nothing is "active"
+  .ant-steps-item-active .ant-steps-item-description {
+    color: rgba(0, 0, 0, 0.45) !important;
+  }
+}
+
+.progress-status {
+  .ant-badge-status-text {
+    font-size: 12px;
+  }
+}
+
+.tab-title {
+  color: $violet;
+  min-width: 255px;
+  max-width: 255px;
+  margin-top: 10px;
+  text-align: end;
+}
+.progress-actions {
+  margin-left: 5px;
+
+  @include tablet {
+    margin-left: 0;
+  }
 }

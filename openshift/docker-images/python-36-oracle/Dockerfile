@@ -35,6 +35,10 @@ RUN echo '/opt/app-root/oracle_bin/instantclient/' | tee -a /etc/ld.so.conf.d/or
 COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 
+RUN chmod g=u /etc/passwd
+COPY fix_uid /usr/local/bin
+RUN chmod +x /usr/local/bin/fix_uid
+
 USER 1001
 
 # Install sonar-scanner

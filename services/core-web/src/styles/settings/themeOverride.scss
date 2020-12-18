@@ -236,7 +236,36 @@
     line-height: 2rem;
   }
   .ant-alert-icon {
-    margin-top:4px
+    margin-top: 4px;
+  }
+}
+
+.ant-alert-error {
+  margin: 0;
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+    line-height: 2rem;
+  }
+}
+
+.ant-alert-info {
+  background-color: #ecf6fd;
+  .ant-alert-message {
+    color: black !important;
+    font-weight: 800;
+  }
+  .ant-alert-description {
+    color: black !important;
+    line-height: 2rem;
+  }
+
+  .ant-alert-icon {
+    background-color: #ecf6fd !important;
+    color: #3d6de7 !important;
   }
 }
 
@@ -365,11 +394,10 @@
 // SIDE MENU NAVIGATION
 .ant-anchor-wrapper {
   background-color: $lightest-grey;
-  height: 100vh;
   margin-bottom: 20px;
 }
 .ant-anchor-link-active {
-  border-left: 5px solid $violet;
+  border-left: 7px solid $violet;
 }
 .ant-anchor-link-active > .ant-anchor-link-title {
   font-weight: $bold;
@@ -545,7 +573,11 @@ select {
 .ant-timeline-item-head {
   margin-top: 14px;
 }
- 
+
+.ant-timeline-item-content {
+  text-align: left;
+}
+
 .ant-timeline > li:last-child {
   .ant-timeline-item-tail {
     display: none;

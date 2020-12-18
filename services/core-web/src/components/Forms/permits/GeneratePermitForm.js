@@ -12,6 +12,7 @@ import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
+import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -220,12 +221,23 @@ export const GeneratePermitForm = (props) => (
         <FinalPermitDocuments
           mineGuid={props.noticeOfWork.mine_guid}
           noticeOfWork={props.noticeOfWork}
-          importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
         />
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
       <Conditions isViewMode={props.isViewMode} />
+    </ScrollContentWrapper>
+    <ScrollContentWrapper id="maps" title="Maps">
+      <NOWDocuments
+        documents={props.noticeOfWork.documents.filter(
+          ({ now_application_document_sub_type_code }) =>
+            now_application_document_sub_type_code === "MDO"
+        )}
+        isViewMode={props.isViewMode}
+        disclaimerText="In this table you can see all map related Notice of Work documents."
+        categoriesToShow={["MDO"]}
+        addDescriptionColumn={false}
+      />
     </ScrollContentWrapper>
   </Form>
 );

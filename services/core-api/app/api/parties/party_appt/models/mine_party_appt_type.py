@@ -25,15 +25,8 @@ class MinePartyAppointmentType(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_party_appt_type_code(cls, code):
-        try:
-            return cls.query.filter_by(mine_party_appt_type_code=code).first()
-        except ValueError:
-            return None
+        return cls.query.filter_by(mine_party_appt_type_code=code).one_or_none()
 
     @classmethod
     def get_all(cls):
-        try:
-            return cls.query.order_by(
-                desc(cls.grouping_level), cls.display_order).all()
-        except ValueError:
-            return None
+        return cls.query.order_by(desc(cls.grouping_level), cls.display_order).all()

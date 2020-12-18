@@ -213,15 +213,15 @@ export class NOWProgressActions extends Component {
     });
   };
 
-  openReasonForDelay = () => {
+  openStatusReasonModal = (title) => {
     this.props.openModal({
       props: {
-        title: "Reason for delay",
+        title,
         closeModal: this.props.closeModal,
         applicationDelay: this.props.applicationDelay,
       },
       isViewOnly: true,
-      content: modalConfig.NOW_REASON_FOR_DELAY_MODAL,
+      content: modalConfig.NOW_STATUS_REASON_MODAL,
     });
   };
 
@@ -244,8 +244,9 @@ export class NOWProgressActions extends Component {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
-      this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
+    const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
+    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Reason for Rejection";
     const menu = (
       <Menu>
         <Menu.Item
@@ -264,8 +265,9 @@ export class NOWProgressActions extends Component {
     );
 
     const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
+    const showReasonModal = rejected || isApplicationDelayed;
     return (
-      <div className="inline-flex">
+      <div className="inline-flex progress-actions">
         <>
           {!(isApplicationDelayed || isProcessed) && showActions && (
             <>
@@ -307,9 +309,10 @@ export class NOWProgressActions extends Component {
               </Dropdown>
             </AuthorizationWrapper>
           )}
-          {isApplicationDelayed && !isProcessed && (
-            <Button type="primary" onClick={this.openReasonForDelay}>
-              <EyeOutlined /> View Reason for Delay
+          {showReasonModal && (
+            <Button type="primary" onClick={() => this.openStatusReasonModal(reasonButtonTitle)}>
+              <EyeOutlined />
+              View {reasonButtonTitle}
             </Button>
           )}
         </>

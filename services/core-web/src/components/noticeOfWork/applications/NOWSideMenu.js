@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { Anchor } from "antd";
-import { activitiesMenu, renderActivities, draftPermitMenu } from "@/constants/NOWConditions";
+import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -27,6 +27,8 @@ const propTypes = {
 };
 
 export class NOWSideMenu extends Component {
+  state = { showNested: false };
+
   // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
@@ -55,10 +57,12 @@ export class NOWSideMenu extends Component {
 
   handleAnchorOnClick = (e, link) => {
     e.preventDefault();
+    this.handleNested(link.href.substring(1));
     this.updateUrlRoute(link.href);
   };
 
   handleAnchorOnChange = (currentActiveLink) => {
+    this.handleNested(currentActiveLink.substring(1));
     if (
       (this.props.history.action === "POP" &&
         currentActiveLink === this.props.history.location.hash) ||
@@ -81,20 +85,32 @@ export class NOWSideMenu extends Component {
     this.props.history.push(this.urlRoute, { currentActiveLink: route });
   };
 
+  handleNested = (link) => {
+    // gets the children if they exist
+    const getChildren = sideMenuOptions[this.props.tabSection].filter(
+      ({ children }) => children?.length > 0
+    )[0]?.children;
+    // checks if child href matches what was clicked
+    const values = getChildren?.filter(({ href }) => link === href);
+    // checks if children exist
+    const obj = sideMenuOptions[this.props.tabSection].filter(({ href }) => link === href)[0];
+    const show = obj?.children?.length > 0 || values?.length > 0;
+    this.setState({ showNested: show });
+  };
+
   render() {
-    const menu = this.props.tabSection === "application" ? activitiesMenu : draftPermitMenu;
     return (
       <div>
         <Anchor
           affix={false}
-          offsetTop={120}
+          offsetTop={160}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
           ref={(anchor) => {
             this.anchor = anchor;
           }}
         >
-          {menu
+          {sideMenuOptions[this.props.tabSection]
             .filter(
               ({ href, alwaysVisible }) =>
                 alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
@@ -103,11 +119,12 @@ export class NOWSideMenu extends Component {
               <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
                 {children &&
                   children.length > 1 &&
+                  this.state.showNested &&
                   children.map((child) => (
                     <Anchor.Link
                       href={`#${child.href}`}
                       title={child.title}
-                      className="now-menu-link-"
+                      className="now-menu-link"
                     />
                   ))}
               </Anchor.Link>

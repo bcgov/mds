@@ -246,8 +246,11 @@ NOW_APPLICATION_DOCUMENT = api.model(
     'NOW_DOCUMENT', {
         'now_application_document_xref_guid': fields.String,
         'now_application_document_type_code': fields.String,
+        'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -270,13 +273,15 @@ NOW_APPLICATION_DELAY = api.model(
         'end_date': fields.DateTime
     })
 
-NOW_APPLICATION_REVIEW_MDOEL = api.model(
+NOW_APPLICATION_REVIEW_MODEL = api.model(
     'NOWApplicationReview', {
         'now_application_review_id': fields.Integer,
         'now_application_guid': fields.String(attribute='now_application.now_application_guid'),
         'now_application_review_type_code': fields.String,
         'response_date': fields.Date,
         'referee_name': fields.String,
+        'referral_number': fields.String,
+        'response_url': fields.String,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT))
     })
 
@@ -310,6 +315,8 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })
@@ -338,12 +345,18 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
+        'imported_date':
+        Date,
+        'imported_by':
+        fields.String,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':
         fields.String,
         'status_updated_date':
         Date,
+        'status_reason':
+        fields.String,
         'submitted_date':
         Date,
         'received_date':
@@ -468,6 +481,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'notice_of_work_type_code': fields.String,
         'now_application_status_code': fields.String,
         'status_updated_date': Date,
+        'status_reason': fields.String,
         'submitted_date': Date,
         'received_date': Date,
         'latitude': fields.Fixed(decimals=7),
@@ -531,6 +545,7 @@ NOW_VIEW_MODEL = api.model(
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date,
+        'is_historic': fields.Boolean,
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
@@ -587,6 +602,7 @@ NOW_APPLICATION_DOCUMENT_TYPE_MODEL = api.model(
     'ApplicationDocumentTypeModel', {
         'now_application_document_type_code': fields.String,
         'description': fields.String,
+        'now_application_document_sub_type_code': fields.String,
         'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True),
         'active_ind': fields.Boolean
     })

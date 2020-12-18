@@ -267,8 +267,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 ]
               }
             />
-            <ReviewApplicationFeeContent
-              adjustedTonnage={null}
+            <Connect(ReviewApplicationFeeContent)
               initialValues={
                 Object {
                   "adjusted_annual_maximum_tonnage": "",
@@ -330,7 +329,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               }
               isViewMode={true}
-              proposedTonnage={null}
             />
           </Col>
         </Row>
@@ -1353,7 +1351,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     >
       <Connect(NOWDocuments)
         disclaimerText="Attach any file revisions or new files requested from the proponent here."
-        isViewMode={true}
+        isViewMode={false}
       />
     </withRouter(Connect(ScrollContentWrapper))>
   </Form>

@@ -250,8 +250,8 @@ export class PartyProfile extends Component {
                     }
                     disabled={this.state.deletingParty}
                   >
-                    <img alt="pencil" className="padding-small--right" src={EDIT} />
-                    Update Party
+                    <img alt="pencil" className="padding-sm--right" src={EDIT} />
+                    Update Contact
                   </Button>
                 </AuthorizationWrapper>
               </div>

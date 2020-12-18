@@ -124,7 +124,10 @@ export const importNoticeOfWorkApplication = (
       dispatch(success(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -183,7 +186,10 @@ export const updateNoticeOfWorkApplication = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -312,7 +318,10 @@ export const updateNoticeOfWorkApplicationReview = (
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION_REVIEW));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -369,7 +378,10 @@ export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (disp
       dispatch(success(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
