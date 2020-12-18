@@ -19,7 +19,7 @@ class MineSummaryResource(Resource):
     @requires_role_view_all
     def get(self):
 
-        json_string = None   #cache.get(MINE_DETAILS_JSON)
+        json_string = cache.get(MINE_DETAILS_JSON)
         if not json_string:
 
             records = MineSummaryView.query.all()
