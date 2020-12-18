@@ -16,7 +16,7 @@ class MineSummaryResource(Resource):
         description=
         'Returns a subset of mine data. Column headers: mine_guid, mine_name, mine_no, mine_region, major_mine_ind, operating_status, operating_status_code, effective_date, tenure, tenure_code, commodity, commodity_code, disturbance, disturbance_code, permit_no, permittee_party_name'
     )
-    #@requires_role_view_all
+    @requires_role_view_all
     def get(self):
 
         json_string = None   #cache.get(MINE_DETAILS_JSON)
