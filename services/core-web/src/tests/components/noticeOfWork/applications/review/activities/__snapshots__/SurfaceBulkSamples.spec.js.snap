@@ -117,8 +117,8 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id="spontaneous_combustion_handling"
-        name="spontaneous_combustion_handling"
+        id="handling_instructions"
+        name="handling_instructions"
       />
     </Col>
   </Row>
