@@ -104,8 +104,8 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     type_of_vegetation_description = now_sub.typeofvegetation
     recreational_trail_use_description = now_sub.recreationuse
     has_activity_in_park = now_sub.isparkactivities == 'Yes'
-    is_on_private_land = now_sub.isonprivateland == 'Yes'
-    has_auth_lieutenant_gov_council = now_sub.hasltgovauthorization == 'Yes'
+    hasltgovauthorization = now_sub.hasltgovauthorization == 'Yes'
+    has_auth_lieutenant_gov_council = now_sub.hasarchaeologicalprotectionplan == 'Yes'
     arch_site_protection_plan = now_sub.archaeologicalprotectionplan
     has_shared_info_with_fn = now_sub.hasengagedfirstnations == 'Yes'
     has_fn_cultural_heritage_sites_in_area = now_sub.hasculturalheritageresources == 'Yes'
@@ -123,7 +123,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             type_of_vegetation_description=type_of_vegetation_description,
             recreational_trail_use_description=recreational_trail_use_description,
             has_activity_in_park=has_activity_in_park,
-            is_on_private_land=is_on_private_land,
+            is_on_private_land=hasltgovauthorization,
             has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
             arch_site_protection_plan=arch_site_protection_plan,
             has_shared_info_with_fn=has_shared_info_with_fn,

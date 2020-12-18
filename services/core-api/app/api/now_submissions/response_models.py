@@ -335,7 +335,7 @@ APPLICATION = api.model(
         'recreationuse': fields.String,
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
-        'isonprivateland': fields.String,
+        'hasarchaeologicalprotectionplan':fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
