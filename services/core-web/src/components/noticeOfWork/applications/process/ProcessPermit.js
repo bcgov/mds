@@ -159,7 +159,7 @@ export class ProcessPermit extends Component {
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
 
-    this.props
+    return this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
@@ -421,7 +421,7 @@ export class ProcessPermit extends Component {
             "The application can not have more than one permittee. Verify the correct permittee and remove any others in Contacts under Application.",
           route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
             this.props.noticeOfWork.now_application_guid,
-            "application##contacts"
+            "application#contacts"
           ),
         });
       }
@@ -441,7 +441,7 @@ export class ProcessPermit extends Component {
           "The application must have a permittee. Add a permittee in Contacts under Application.",
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
           this.props.noticeOfWork.now_application_guid,
-          "application##contacts"
+          "application#contacts"
         ),
       });
     }
@@ -466,8 +466,9 @@ export class ProcessPermit extends Component {
     this.props.progressStatusCodes
       .filter(
         (progressStatus) =>
-          progressStatus.application_progress_status_code !== "" &&
           progressStatus.application_progress_status_code !== "CON" &&
+          progressStatus.application_progress_status_code !== "REF" &&
+          progressStatus.application_progress_status_code !== "PUB" &&
           (!this.props.progress[progressStatus.application_progress_status_code] ||
             !this.props.progress[progressStatus.application_progress_status_code].end_date)
       )
@@ -481,12 +482,24 @@ export class ProcessPermit extends Component {
         })
       );
 
-    if (this.props.progress.CON?.start_date && !this.props.progress.CON?.end_date) {
-      validationMessages.push({
-        message: "Consultation must be completed.",
-        route: ProgressRouteFor("CON", this.props.noticeOfWork?.now_application_guid),
-      });
-    }
+    this.props.progressStatusCodes
+      .filter(
+        (progressStatus) =>
+          (progressStatus.application_progress_status_code === "CON" ||
+            progressStatus.application_progress_status_code === "REF" ||
+            progressStatus.application_progress_status_code === "PUB") &&
+          this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
+            !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+      )
+      .forEach((progressStatus) =>
+        validationMessages.push({
+          message: `${progressStatus.description} must be completed.`,
+          route: ProgressRouteFor(
+            progressStatus.application_progress_status_code,
+            this.props.noticeOfWork?.now_application_guid
+          ),
+        })
+      );
 
     return validationMessages;
   };
@@ -550,12 +563,23 @@ export class ProcessPermit extends Component {
     }
 
     // Progress
-    if (!this.props.progress.CON?.start_date) {
-      validationMessages.push({
-        message: "Consultation has not been started.",
-        route: ProgressRouteFor("CON", this.props.noticeOfWork?.now_application_guid),
-      });
-    }
+    this.props.progressStatusCodes
+      .filter(
+        (progressStatus) =>
+          (progressStatus.application_progress_status_code === "CON" ||
+            progressStatus.application_progress_status_code === "REF" ||
+            progressStatus.application_progress_status_code === "PUB") &&
+          !this.props.progress[progressStatus.application_progress_status_code]?.start_date
+      )
+      .forEach((progressStatus) =>
+        validationMessages.push({
+          message: `${progressStatus.description} has not been started.`,
+          route: ProgressRouteFor(
+            progressStatus.application_progress_status_code,
+            this.props.noticeOfWork?.now_application_guid
+          ),
+        })
+      );
 
     return validationMessages;
   };
