@@ -31,7 +31,7 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
-  initialValue: PropTypes.objectOf(PropTypes.string),
+  initialValues: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -44,7 +44,7 @@ const defaultProps = {
   allowAddingParties: false,
   validate: [],
   searchResults: [],
-  initialValue: "",
+  initialValues: {},
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -104,10 +104,10 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (this.props.initialValue) {
-      this.handleSearch(this.props.initialValue.label);
+    if (this.props.initialValues) {
+      this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: this.props.initialValue,
+        selectedOption: this.props.initialValues,
       });
     }
   }
@@ -182,7 +182,7 @@ export class PartySelectField extends Component {
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
-    if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
+    if (this.props.initialValues && this.props.initialValues !== this.state.selectedOption) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;

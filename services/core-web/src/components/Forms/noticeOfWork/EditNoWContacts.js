@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { v4 as uuidv4 } from "uuid";
@@ -6,7 +7,7 @@ import PropTypes from "prop-types";
 import { startCase } from "lodash";
 import { Col, Row, Button, Card, Popconfirm } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { FieldArray, Field } from "redux-form";
+import { FieldArray, Field, change } from "redux-form";
 
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
@@ -16,10 +17,15 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import { required, validateSelectOptions } from "@common/utils/Validate";
-import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
+import { TRASHCAN, PROFILE_NOCIRCLE, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-// import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
+import * as router from "@/constants/routes";
+import CustomPropTypes from "@/customPropTypes";
+import { Link } from "react-router-dom";
+import { formatTitleString } from "@common/utils/helpers";
+import Address from "@/components/common/Address";
 
 import NOWPartySelectField from "@/components/common/NOWPartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -29,9 +35,9 @@ const propTypes = {
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  // contactFormValues: PropTypes.arrayOf(
-  //   PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
-  // ).isRequired,
+  contactFormValues: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.shape({ party: CustomPropTypes.party }))
+  ).isRequired,
 };
 
 const defaultProps = {};
@@ -45,11 +51,130 @@ const handleRemove = (fields, index) => {
   });
 };
 
-const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
+const NOWContact = ({
+  field,
+  contact,
+  handleRemove,
+  editContact,
+  toggleEdit,
+  rolesUsedOnce,
+  filteredRelationships,
+  index,
+}) => (
+  <Card
+    className="ant-card-now"
+    title={
+      <div className="inline-flex between wrap">
+        <div>
+          <h3>
+            {!editContact?.includes(contact.now_party_appointment_id)
+              ? contact.mine_party_appt_type_code_description
+              : `Updating Application Contact`}
+          </h3>
+        </div>
+        <div>
+          {!editContact?.includes(contact.now_party_appointment_id) && (
+            <Button
+              ghost
+              className="no-margin"
+              onClick={() => toggleEdit(contact.now_party_appointment_id)}
+            >
+              <img alt="pencil" src={EDIT_OUTLINE_VIOLET} />
+            </Button>
+          )}
+          <Popconfirm
+            className="no-margin"
+            placement="topLeft"
+            title={`Are you sure you want to remove the ${
+              contact.mine_party_appt_type_code_description
+            }, ${startCase(contact.party.name)}, as a contact on this Notice of Work?`}
+            okText="Delete"
+            cancelText="Cancel"
+            onConfirm={handleRemove}
+          >
+            <Button ghost>
+              <img name="remove" src={TRASHCAN} alt="Remove User" />
+            </Button>
+          </Popconfirm>
+        </div>
+      </div>
+    }
+    bordered={false}
+  >
+    <div>
+      {editContact?.includes(contact.now_party_appointment_id) ? (
+        <>
+          <Row align="middle" justify="center">
+            <Col span={24}>
+              <Form.Item label="Role*">
+                <Field
+                  usedOptions={rolesUsedOnce}
+                  id={`${field}.mine_party_appt_type_code`}
+                  name={`${field}.mine_party_appt_type_code`}
+                  component={RenderSelect}
+                  data={filteredRelationships}
+                  validate={[required, validateSelectOptions(filteredRelationships)]}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Field
+                  id={`${field}.party_guid`}
+                  name={`${field}.party_guid`}
+                  label="Contact*"
+                  partyLabel="Contact"
+                  validate={[required]}
+                  component={NOWPartySelectField}
+                  allowAddingParties
+                  initialValues={{
+                    label: contact.party.name,
+                    value: contact.party_guid,
+                  }}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <>
+          <h4>
+            <Link
+              style={{ fontSize: "1.5rem", fontWeight: "bold" }}
+              to={router.PARTY_PROFILE.dynamicRoute(contact.party.party_guid)}
+            >
+              {formatTitleString(contact.party.name)}
+            </Link>
+          </h4>
+          <br />
+          <h6>Email Address</h6>
+          {contact.party.email ? (
+            <a href={`mailto:${contact.party.email}`}>{contact.party.email}</a>
+          ) : (
+            <span>{Strings.EMPTY_FIELD}</span>
+          )}
+          <br />
+          <br />
+          <h6>Phone Number</h6>
+          {contact.party.phone_no} {contact.party.phone_ext ? `x${contact.party.phone_ext}` : ""}
+          <br />
+          <br />
+          <h6>Mailing Address</h6>
+          <Address address={contact.party.address.length > 0 && contact.party.address[0]} />
+        </>
+      )}
+    </div>
+  </Card>
+);
+
+const renderContacts = ({
+  fields,
+  partyRelationshipTypes,
+  rolesUsedOnce,
+  editContact,
+  toggleEdit,
+}) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
   );
-
   return (
     <>
       <Row gutter={24}>
@@ -58,51 +183,39 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
             const contactExists = fields.get(index) && fields.get(index).now_party_appointment_id;
             return (
               <Col
-                lg={12}
-                sm={24}
                 key={
                   contactExists ? fields.get(index).now_party_appointment_id : fields.get(index).id
                 }
+                sm={24}
+                lg={12}
+                xxl={8}
               >
-                <Card
-                  style={contactExists ? {} : { boxShadow: "0px 4px 4px #7c66ad" }}
-                  className="ant-card-now"
-                  title={
-                    <div
-                      className="inline-flex"
-                      style={{
-                        alignItems: "center",
-                        height: "55px",
-                      }}
-                    >
-                      <img
-                        className="icon-sm padding-md--right"
-                        src={PROFILE_NOCIRCLE}
-                        alt="user"
-                        height={25}
-                      />
-                      <span className="field-title">{`Application ${
-                        contactExists ? fields.get(index).mine_party_appt_type_code_description : ""
-                      }`}</span>
-
-                      {contactExists ? (
-                        <Popconfirm
-                          className="position-right no-margin"
-                          placement="topLeft"
-                          title={`Are you sure you want to remove ${startCase(
-                            fields.get(index).party.name
-                          )} as a contact on this Notice of Work?`}
-                          okText="Delete"
-                          cancelText="Cancel"
-                          onConfirm={() => {
-                            handleRemove(fields, index);
-                          }}
-                        >
-                          <Button className="full-mobile" ghost type="primary">
-                            <img name="remove" src={TRASHCAN} alt="Remove User" />
-                          </Button>
-                        </Popconfirm>
-                      ) : (
+                {contactExists ? (
+                  <NOWContact
+                    filteredRelationships={filteredRelationships}
+                    rolesUsedOnce={rolesUsedOnce}
+                    field={field}
+                    index={index}
+                    contact={fields.get(index)}
+                    handleRemove={() => handleRemove(fields, index)}
+                    editContact={editContact}
+                    toggleEdit={toggleEdit}
+                  />
+                ) : (
+                  <Card
+                    style={{ boxShadow: "0px 4px 4px #7c66ad" }}
+                    className="ant-card-now"
+                    title={
+                      <div className="inline-flex">
+                        <h3>
+                          <img
+                            className="icon-sm padding-md--right"
+                            src={PROFILE_NOCIRCLE}
+                            alt="user"
+                            height={25}
+                          />
+                          New Application Contact
+                        </h3>
                         <Button
                           ghost
                           onClick={() => {
@@ -110,71 +223,47 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
                           }}
                           className="position-right no-margin"
                         >
-                          <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                          <img name="remove" src={TRASHCAN} alt="Remove New Contact" />
                         </Button>
-                      )}
+                      </div>
+                    }
+                    bordered={false}
+                  >
+                    <div>
+                      <br />
+                      <Row align="middle" justify="center">
+                        <Col span={24}>
+                          <Form.Item label="Role*">
+                            <Field
+                              usedOptions={rolesUsedOnce}
+                              id={`${field}.mine_party_appt_type_code`}
+                              name={`${field}.mine_party_appt_type_code`}
+                              component={RenderSelect}
+                              data={filteredRelationships}
+                              validate={[required, validateSelectOptions(filteredRelationships)]}
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <Field
+                              id={`${field}.party_guid`}
+                              name={`${field}.party_guid`}
+                              label="Contact*"
+                              partyLabel="Contact"
+                              validate={[required]}
+                              component={NOWPartySelectField}
+                              allowAddingParties
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </div>
-                  }
-                  bordered={false}
-                >
-                  <Row align="middle" justify="center">
-                    <Col span={24}>
-                      <Form.Item label="Role*">
-                        <Field
-                          usedOptions={rolesUsedOnce}
-                          id={`${field}.mine_party_appt_type_code`}
-                          name={`${field}.mine_party_appt_type_code`}
-                          component={RenderSelect}
-                          data={filteredRelationships}
-                          validate={[required, validateSelectOptions(filteredRelationships)]}
-                        />
-                      </Form.Item>
-                      <Form.Item>
-                        <Field
-                          id={`${field}.party_guid`}
-                          name={`${field}.party_guid`}
-                          label="Contact*"
-                          partyLabel="Contact"
-                          validate={[required]}
-                          component={NOWPartySelectField}
-                          allowAddingParties
-                          initialValues={
-                            contactExists
-                              ? {
-                                  label: fields.get(index).party.name,
-                                  value: fields.get(index).party_guid,
-                                }
-                              : {}
-                          }
-                          initialSearch={contactExists ? fields.get(index).party.name : undefined}
-                        />
-                      </Form.Item>
-                      {/* <NOWPartySelectField
-                          id={`${field}.party_guid`}
-                          name={`${field}.party_guid`}
-                          label="Contact*"
-                          partyLabel="Contact"
-                          validate={[required]}
-                          allowAddingParties
-                          initialValues={
-                            contactExists
-                              ? {
-                                  label: fields.get(index).party.name,
-                                  value: fields.get(index).party_guid,
-                                }
-                              : {}
-                          }
-                          initialSearch={contactExists ? fields.get(index).party.name : undefined}
-                        />
-                      </Form.Item> */}
-                    </Col>
-                  </Row>
-                </Card>
+                  </Card>
+                )}
               </Col>
             );
           })
           .filter((field, index) => !fields.get(index) || !fields.get(index).state_modified)}
-        <Col lg={12} sm={24}>
+        <Col sm={24} lg={12} xxl={8}>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <div
               role="button"
@@ -200,11 +289,17 @@ const renderContacts = ({ fields, partyRelationshipTypes, rolesUsedOnce }) => {
 };
 
 export class EditNoWContacts extends Component {
-  state = { rolesUsedOnce: [] };
+  state = { rolesUsedOnce: [], editContact: [] };
 
   componentDidMount() {
-    // this.handleRoles(this.props.contactFormValues);
+    this.handleRoles(this.props.contactFormValues);
   }
+
+  toggleEditExistingContact = (index) => {
+    this.setState((prevState) => ({
+      editContact: [index, ...prevState.editContact],
+    }));
+  };
 
   showAddPartyModal = () => {
     this.props.openModal({
@@ -217,20 +312,21 @@ export class EditNoWContacts extends Component {
     });
   };
 
-  // handleRoles = (contacts) => {
-  //   let usedRoles = [];
-  //   if (contacts.length > 0) {
-  //     usedRoles = contacts.map(
-  //       ({ mine_party_appt_type_code, state_modified }) =>
-  //         !state_modified && mine_party_appt_type_code
-  //     );
-  //   }
-  //   const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
-  //   return this.setState({ rolesUsedOnce });
-  // };
+  handleRoles = (contacts) => {
+    let usedRoles = [];
+    if (contacts.length > 0) {
+      usedRoles = contacts.map(
+        ({ mine_party_appt_type_code, state_modified }) =>
+          !state_modified && mine_party_appt_type_code
+      );
+    }
+    const rolesUsedOnce = usedRoles.filter((role) => role === "PMT" || role === "MMG");
+    return this.setState({ rolesUsedOnce });
+  };
 
   componentWillReceiveProps = (nextProps) => {
-    // const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
+    const nowWasSaved = this.props.initialValues !== nextProps.initialValues;
+    const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
     if (
       nextProps.addPartyFormState.showingAddPartyForm &&
       this.props.addPartyFormState.showingAddPartyForm !==
@@ -239,9 +335,13 @@ export class EditNoWContacts extends Component {
       this.showAddPartyModal();
     }
 
-    // if (contactsChanged) {
-    //   this.handleRoles(nextProps.contactFormValues);
-    // }
+    if (contactsChanged) {
+      this.handleRoles(nextProps.contactFormValues);
+    }
+
+    if (nowWasSaved) {
+      this.setState({ editContact: [] });
+    }
   };
 
   render() {
@@ -252,6 +352,8 @@ export class EditNoWContacts extends Component {
         component={renderContacts}
         partyRelationshipTypes={this.props.partyRelationshipTypesList}
         rolesUsedOnce={this.state.rolesUsedOnce}
+        editContact={this.state.editContact}
+        toggleEdit={this.toggleEditExistingContact}
       />
     );
   }
@@ -270,6 +372,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
+      change,
     },
     dispatch
   );

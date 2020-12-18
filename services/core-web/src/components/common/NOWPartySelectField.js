@@ -95,11 +95,13 @@ const transformData = (data, options, header) => {
   return transformedData;
 };
 
-class NOWPartySelectField extends Component {
+export class NOWPartySelectField extends Component {
   state = {
     selectedOption: { value: "", label: "" },
     partyDataSource: [],
     showingAddPartyForm: false,
+    initialSearch: this.props.initialSearch,
+    isUserEvent: false,
   };
 
   constructor(props) {
@@ -114,7 +116,10 @@ class NOWPartySelectField extends Component {
     if (!isEmpty(this.props.initialValues)) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: this.props.initialValues,
+        selectedOption: {
+          value: this.props.initialValues.value,
+          label: this.props.initialValues.label,
+        },
       });
     }
   }
@@ -133,28 +138,23 @@ class NOWPartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    console.log("this.props.initialValues", this.props.initialValues);
-    console.log("nextProps.initialValues", nextProps.initialValues);
-    // console.log(this.state.userSelected)
-    // console.log(!this.state.userSelected)
-    console.log("this.state.selectedOption", this.state.selectedOption);
     const initialValuesChangedNotByUser =
-      this.props.initialValues &&
-      // !this.state.userSelected &&
+      !isEmpty(this.props.initialValues) &&
       this.state.selectedOption.value &&
+      !this.state.isUserEvent &&
       this.props.initialValues.value !== nextProps.initialValues.value;
-
-    console.log("initialValuesChangedNotByUser OUTSIDE", initialValuesChangedNotByUser);
+    console.log("initialValuesChangedNotByUser:", initialValuesChangedNotByUser);
+    console.log("componentWillReceiveProps, initialValues:");
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
     if (initialValuesChangedNotByUser) {
-      console.log("initialValuesChangedNotByUser INSIDE", initialValuesChangedNotByUser);
       this.handleSearch(nextProps.initialValues.label);
       this.setState({
         selectedOption: {
           value: nextProps.initialValues.value,
           label: nextProps.initialValues.label,
         },
+        isUserEvent: false,
       });
     }
 
@@ -175,13 +175,15 @@ class NOWPartySelectField extends Component {
       if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
-      const newPartyDataSource = transformData(
-        createItemIdsArray(filteredParties, "party_guid"),
-        createItemMap(filteredParties, "party_guid"),
-        this.props.allowAddingParties &&
-          renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
-      );
-      this.setState({ partyDataSource: newPartyDataSource });
+      this.setState(() => {
+        const newPartyDataSource = transformData(
+          createItemIdsArray(filteredParties, "party_guid"),
+          createItemMap(filteredParties, "party_guid"),
+          this.props.allowAddingParties &&
+            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
+        );
+        return { partyDataSource: newPartyDataSource };
+      });
     }
 
     // If a new party was just added, detect this and set the selected party to the newly created party.
@@ -192,30 +194,44 @@ class NOWPartySelectField extends Component {
           label: nextProps.lastCreatedParty.name,
         },
         showingAddPartyForm: false,
+        isUserEvent: true,
       });
     }
   };
 
   handleFocus = () => {
-    console.log(this.props.initialSearch);
-    if (this.props.initialSearch) {
-      this.fetchSearchResultsThrottled(this.props.initialSearch, "party");
+    if (this.state.initialSearch) {
+      this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
     }
+    this.setState({ initialSearch: null });
   };
 
   handleSearch = (value) => {
-    console.log("value", value);
-    // this.setState({ userSelected: false });
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
-    console.log("{ value, label: value }", { value, label: value });
-    this.setState({ selectedOption: { value, label: value } });
+    this.setState({ isUserEvent: true, selectedOption: { value, label: value } });
   };
 
   handleSelect = (value, option) => {
-    console.log("Option:", option);
-    this.setState({ selectedOption: option });
+    this.setState({ isUserEvent: true, selectedOption: option });
+  };
+
+  // Validator to ensure the selected option is in the collection of available options.
+  // This validator is appened to any validators passed in from the form in the render function below.
+  // eslint-disable-next-line consistent-return
+  validOption = (value) => {
+    // ignore this validation if an initialValues is passed in
+    if (
+      this.props.initialValues &&
+      this.props.initialValues.label &&
+      this.props.initialValues.value &&
+      this.props.initialValues.value !== this.state.selectedOption.value
+    ) {
+      return this.state.partyDataSource.find((opt) => opt.value === value)
+        ? undefined
+        : `Invalid ${this.props.partyLabel}`;
+    }
   };
 
   render() {
@@ -242,7 +258,7 @@ class NOWPartySelectField extends Component {
           dropdownMatchSelectWidth
           backfill
           style={{ width: "100%" }}
-          options={this.props.dataSource}
+          options={this.state.partyDataSource}
           placeholder="Search for Contact"
           filterOption={false}
           onSearch={this.handleSearch}
@@ -252,7 +268,7 @@ class NOWPartySelectField extends Component {
           {...this.props.input}
           onFocus={(event) => {
             this.handleFocus();
-            props.input.onFocus(event);
+            this.props.input.onFocus(event);
           }}
         />
       </Form.Item>
