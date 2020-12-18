@@ -21,7 +21,6 @@ exports[`PartySelectField renders properly 1`] = `
       ],
     }
   }
-  handleFocus={[Function]}
   handleSearch={[Function]}
   handleSelect={[Function]}
   id="party_guid"
