@@ -54,11 +54,11 @@ const renderDocumentLink = (file, text) => (
 
 const finalApplicationPackage = (amendment) => {
   const finalAppPackageCore =
-    amendment.now_application_documents.length > 0
+    amendment.now_application_documents?.length > 0
       ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   const finalAppPackageImported =
-    amendment.imported_now_application_documents.length > 0
+    amendment.imported_now_application_documents?.length > 0
       ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   return finalAppPackageCore.concat(finalAppPackageImported);
@@ -352,7 +352,7 @@ const childColumns = [
     render: (text) => (
       <div title="Maps">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
               {renderDocumentLink(
                 file.mine_document,
@@ -371,7 +371,7 @@ const childColumns = [
     render: (text) => (
       <div title="Final Application Package">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
               {renderDocumentLink(
                 file.mine_document,
@@ -502,7 +502,7 @@ const transformChildRowData = (
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
   finalApplicationPackage: finalApplicationPackage(amendment),
-  maps: amendment.now_application_documents.filter(
+  maps: amendment.now_application_documents?.filter(
     (doc) => doc.now_application_document_sub_type_code === "MDO"
   ),
 });
