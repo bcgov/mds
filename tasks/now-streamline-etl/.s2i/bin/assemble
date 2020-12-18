@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Before assembling"
-/usr/local/bin/fix-uid
+$APP_ROOT/util/fix-uid
 
 /usr/libexec/s2i/assemble
 rc=$?

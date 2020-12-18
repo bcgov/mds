@@ -36,8 +36,9 @@ COPY sqlnet.ora $APP_ROOT/oracle_bin/instantclient/network/admin
 RUN chmod 777 $APP_ROOT/oracle_bin/instantclient/network/admin/sqlnet.ora
 
 RUN chmod g=u /etc/passwd
-COPY fix_uid /usr/local/bin
-RUN chmod +x /usr/local/bin/fix_uid
+RUN mkdir ${APP_ROOT}/util
+COPY fix_uid ${APP_ROOT}/util
+RUN chmod +x ${APP_ROOT}/util/fix_uid
 
 USER 1001
 
