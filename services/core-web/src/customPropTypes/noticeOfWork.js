@@ -102,7 +102,7 @@ export const settlingPond = shape({
 export const surfaceBulkSamples = shape({
   processing_method_description: PropTypes.string,
   handling_instructions: PropTypes.string,
-  drainage_mitigation_description: PropTypes.string,
+  spontaneous_combustion_handling: PropTypes.string,
   ...defaultActivity,
 });
 
