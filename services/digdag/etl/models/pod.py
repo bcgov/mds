@@ -34,7 +34,7 @@ class POD():
                  env_container_id=0):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
-        self.command = command if command else ["flask", "test-cli-command"]
+        self.command = command if command else None
         self.env_container_id = env_container_id
 
         # If env, creating container from scratch, pull from tools build suffix
@@ -93,7 +93,8 @@ class POD():
         json_data["metadata"]["labels"]["name"] = self.job_pod_name
         json_data["metadata"]["name"] = self.job_pod_name
         json_data["metadata"]["namespace"] = self.namespace
-        json_data["spec"]["containers"][0]["command"] = self.command
+        if (self.command is not None):
+            json_data["spec"]["containers"][0]["command"] = self.command
         json_data["spec"]["containers"][0]["name"] = self.job_pod_name
         json_data["spec"]["containers"][0]["image"] = self.image
 

@@ -2,13 +2,15 @@ import re
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
 
 class Address(SoftDeleteMixin, AuditMixin, Base):
-    __tablename__ = "address"
+    __tablename__ = 'address'
+
     address_id = db.Column(db.Integer, primary_key=True)
     suite_no = db.Column(db.String, nullable=True)
     address_line_1 = db.Column(db.String, nullable=True)
@@ -35,6 +37,28 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
             'sub_division_code': self.sub_division_code,
             'post_code': self.post_code
         }
+
+    @hybrid_property
+    def full(self):
+        full = ''
+        if self.suite_no:
+            full += f'{self.suite_no} '
+        if self.address_line_1:
+            full += f'{self.address_line_1} '
+        if self.address_line_2:
+            full += self.address_line_2
+        full = full.strip()
+
+        if self.city or self.sub_division_code or self.post_code:
+            full += '\n'
+            if self.city:
+                full += self.city
+            if self.sub_division_code:
+                full += f' {self.sub_division_code}'
+            if self.post_code:
+                full += f' {self.post_code}'
+
+        return full.strip()
 
     @classmethod
     def create(cls,

@@ -59,6 +59,10 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @hybrid_property
+    def first_address(self):
+        return self.address[0] if self.address else None
+
+    @hybrid_property
     def business_roles_codes(self):
         return [
             x.party_business_role_code for x in self.business_role_appts

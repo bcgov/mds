@@ -26,7 +26,7 @@ export class SlidingForms extends Component {
   renderWrappedForm = () => (
     <div>
       <LinkButton>
-        <ArrowLeftOutlined className="padding-small--right" />
+        <ArrowLeftOutlined className="padding-sm--right" />
         Back
       </LinkButton>
     </div>

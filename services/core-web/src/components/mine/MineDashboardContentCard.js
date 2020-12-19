@@ -20,7 +20,7 @@ export const MineDashboardContentCard = (props) => (
     <div className="content--card--head">
       <div className="content--card--head--content">
         <span className="info-display">
-          {props.icon && <img src={props.icon} alt="icon" className="padding-small--right" />}
+          {props.icon && <img src={props.icon} alt="icon" className="padding-sm--right" />}
           {props.content}
         </span>
       </div>

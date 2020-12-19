@@ -251,7 +251,7 @@ body {
   flex-direction: column;
 }
 
-.padding-small {
+.padding-sm {
   &--left {
     padding-left: $default-padding-sm;
   }
@@ -291,7 +291,7 @@ body {
   }
 }
 
-.padding-large {
+.padding-lg {
   &--top {
     padding-top: $default-padding-lg;
   }
@@ -371,13 +371,21 @@ body {
 
 .icon-lg {
   font-size: 24px !important;
-  &--grey {
+  &--lightgrey {
     @extend .icon-lg;
     color: $light-grey;
   }
   &--green {
     @extend .icon-lg;
     color: $ok-green;
+  }
+  &--warning {
+    @extend .icon-lg;
+    color: $warning-color;
+  }
+  &--danger {
+    @extend .icon-lg;
+    color: $error-color;
   }
 }
 
