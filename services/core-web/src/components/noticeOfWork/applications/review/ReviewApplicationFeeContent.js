@@ -8,12 +8,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
 import { Field, change } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import {
-  number,
-  dateNotInFuture,
-  dateNotBeforeOther,
-  dateNotAfterOther,
-} from "@common/utils/Validate";
+import { number, dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
 import {
   getDurationText,
   isPlacerAdjustmentFeeValid,
@@ -272,7 +267,7 @@ export class ReviewApplicationFeeContent extends Component {
             name="proposed_start_date"
             component={RenderDate}
             disabled={this.props.isViewMode || !this.props.isAdmin}
-            validate={[dateNotInFuture, dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
+            validate={[dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
           />
           <div className="field-title">
             Proposed Authorization End Date
