@@ -182,6 +182,7 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'processing_method_description': fields.String,
         'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
+        'drainage_mitigation_description': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 

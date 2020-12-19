@@ -112,7 +112,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or is_on_private_land or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or hasltgovauthorization:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes',
