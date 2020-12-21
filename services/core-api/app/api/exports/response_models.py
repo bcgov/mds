@@ -35,6 +35,7 @@ MINE_SUMMARY_MODEL = api.model(
         'disturbance': fields.String,
         'permit_no': fields.String,
         'permittee_name': fields.String,
+        'permittee_party_guid': fields.String,
         'mine_latitude': fields.String,
         'mine_longitude': fields.String,
         'bcmi_url': fields.String,

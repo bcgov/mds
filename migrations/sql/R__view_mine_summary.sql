@@ -30,6 +30,7 @@ AS SELECT m.mine_guid::character varying AS mine_guid,
     min(pa.issue_date) AS issue_date,
     pt.first_name AS permittee_first_name,
     pt.party_name AS permittee_name,
+    pt.party_guid AS permittee_party_guid,
     max(a.suite_no) AS permittee_address_suite,
     max(a.address_line_1) AS permittee_address_line_1,
     max(a.address_line_2) AS permittee_address_line_2,
@@ -65,4 +66,3 @@ AS SELECT m.mine_guid::character varying AS mine_guid,
      LEFT JOIN exemption_fee_status efs ON m.exemption_fee_status_code = efs.exemption_fee_status_code
   WHERE m.deleted_ind = false
   GROUP BY p.permit_no, p.permit_guid, pa.issue_date, m.mine_guid, m.mine_name, m.mine_no, m.deleted_ind, efs.exemption_fee_status_code, efs.description, mos.description, mosr.description, mossr.description, mos.mine_operation_status_code, mosr.mine_operation_status_reason_code, mossr.mine_operation_status_sub_reason_code, ms.effective_date, pt.first_name, pt.party_name;
-

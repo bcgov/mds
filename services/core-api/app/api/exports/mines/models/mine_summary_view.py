@@ -30,6 +30,7 @@ class MineSummaryView(Base):
     disturbance_type_code = db.Column(db.String)
     disturbance = db.Column(db.String)
     permit_no = db.Column(db.String)
+    permittee_party_guid = db.Column(db.String)
     permittee_name = db.Column(db.String)
     mine_latitude = db.Column(db.String)
     mine_longitude = db.Column(db.String)
