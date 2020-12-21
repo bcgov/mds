@@ -22,7 +22,9 @@ class MineSummaryView(Base):
     mine_operation_status_reason_d = db.Column(db.String)
     mine_operation_status_sub_reason_code = db.Column(db.String)
     mine_operation_status_sub_reason_d = db.Column(db.String)
+    mine_date = db.Column(db.String)
     status_date = db.Column(db.String)
+    mine_date_created = db.Co,
     tenure_type_code = db.Column(db.String)
     tenure = db.Column(db.String)
     commodity_type_code = db.Column(db.String)

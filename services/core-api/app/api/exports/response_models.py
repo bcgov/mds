@@ -26,6 +26,7 @@ MINE_SUMMARY_MODEL = api.model(
         'mine_operation_status_reason_d': fields.String,
         'mine_operation_status_sub_reason_code': fields.String,
         'mine_operation_status_sub_reason_d': fields.String,
+        'mine_date': fields.String,
         'status_date': fields.String,
         'tenure_type_code': fields.String,
         'tenure': fields.String,
