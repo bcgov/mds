@@ -109,7 +109,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_contact(contact):
             def get_address(contact):
-                if  not contact.get('party', None) or not contact['party'].get('address', None) or not len(contact['party']['address']) > 0:
+                if not contact.get('party', None) or not contact['party'].get(
+                        'address', None) or not len(contact['party']['address']) > 0:
                     return ''
                 address = contact['party']['address'][0]
                 address_string = ''
@@ -118,7 +119,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if address.get('address_line_1', None):
                     address_string += f'{address["address_line_1"]} '
                 if address.get('address_line_2', None):
-                    address_string += f'{address["address_line_2"]} '
+                    address_string += address["address_line_2"]
                 address_string = address_string.strip()
 
                 if address['city'] or address['sub_division_code'] or address['post_code']:
@@ -222,11 +223,33 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         transform_data(item)
             return obj
 
+        def remove_signature(party):
+            signature = party.get('signature')
+            if signature:
+                del party['signature']
+            return party
+
         # Transform and format various fields
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
+
+        # Remove signature images from parties
+        for contact in now_application_json.get('contacts', []):
+            party = contact.get('party')
+            if party:
+                contact['party'] = remove_signature(party)
+
+        # Remove signature image from the Lead Inspector
+        lead_inspector = now_application_json.get('lead_inspector')
+        if lead_inspector:
+            now_application_json['lead_inspector'] = remove_signature(lead_inspector)
+
+        # Remove signature image from the Issuing Inspector
+        issuing_inspector = now_application_json.get('issuing_inspector')
+        if issuing_inspector:
+            now_application_json['issuing_inspector'] = remove_signature(issuing_inspector)
 
         now_type = NOWApplicationType.query.filter_by(
             notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first()
@@ -282,6 +305,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             template_data[enforced_item['id']] = enforced_item['context-value']
 
         token = uuid.uuid4()
+
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.
