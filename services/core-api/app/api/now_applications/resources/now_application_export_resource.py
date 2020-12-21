@@ -41,7 +41,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.type_of_vegetation_description', 'state_of_land.has_activity_in_park',
     'state_of_land.is_on_private_land', 'state_of_land.has_auth_lieutenant_gov_council',
     'state_of_land.has_fn_cultural_heritage_sites_in_area',
-    'state_of_land.fn_engagement_activities', 'state_of_land.cultural_heritage_description'
+    'state_of_land.fn_engagement_activities', 'state_of_land.cultural_heritage_description',
     'state_of_land.recreational_trail_use_description', 'state_of_land.has_shared_info_with_fn',
     'state_of_land.has_archaeology_sites_affected', 'first_aid_equipment_on_site',
     'first_aid_cert_level', 'exploration_access.reclamation_description',
