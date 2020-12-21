@@ -120,7 +120,11 @@ exports[`Placer renders properly 1`] = `
         className="field-title"
       >
         Proposed Production
-        <NOWFieldOriginTooltip />
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
