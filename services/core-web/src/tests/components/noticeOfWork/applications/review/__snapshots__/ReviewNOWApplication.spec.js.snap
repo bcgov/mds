@@ -696,11 +696,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title"
               >
                 Recreational trail/use
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -847,11 +843,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 className="field-title--light"
               >
                 Plan to protect the archaeological site
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
+                <NOWFieldOriginTooltip />
               </div>
               <Field
                 component={[Function]}
@@ -1243,12 +1235,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.type_of_vegetation_description",
             ],
             Array [
-              "state_of_land.recreational_trail_use_description",
-            ],
-            Array [
-              "state_of_land.recreational_trail_use_description",
-            ],
-            Array [
               "state_of_land.has_community_water_shed",
             ],
             Array [
@@ -1277,12 +1263,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
             Array [
               "state_of_land.has_auth_lieutenant_gov_council",
-            ],
-            Array [
-              "state_of_land.arch_site_protection_plan",
-            ],
-            Array [
-              "state_of_land.arch_site_protection_plan",
             ],
             Array [
               "state_of_land.has_shared_info_with_fn",
@@ -1334,34 +1314,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
             Object {
               "type": "return",
               "value": Object {

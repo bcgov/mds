@@ -34,7 +34,7 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
-import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import { USER_ROLES } from "@common/constants/environment";
@@ -498,6 +498,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Recreational trail/use
+              {/* TODO: uncomment this when we start getting the arch_site_protection_plan from VFCBC
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.recreational_trail_use_description")
@@ -507,7 +508,8 @@ export const ReviewNOWApplication = (props) => {
                   props.renderOriginalValues("state_of_land.recreational_trail_use_description")
                     .edited
                 }
-              />
+              /> */}
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="recreational_trail_use_description"
@@ -621,14 +623,16 @@ export const ReviewNOWApplication = (props) => {
             />
             <div className="field-title--light">
               Plan to protect the archaeological site
-              <NOWOriginalValueTooltip
+              {/* TODO: uncomment this when we start getting the arch_site_protection_plan from VFCBC
+               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.arch_site_protection_plan").value
                 }
                 isVisible={
                   props.renderOriginalValues("state_of_land.arch_site_protection_plan").edited
                 }
-              />
+              /> */}
+              <NOWFieldOriginTooltip />
             </div>
             <Field
               id="arch_site_protection_plan"

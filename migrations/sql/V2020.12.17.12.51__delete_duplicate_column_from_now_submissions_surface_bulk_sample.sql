@@ -4,5 +4,3 @@ ALTER TABLE now_submissions.application DROP COLUMN IF EXISTS spontaneouscombust
 ALTER TABLE now_submissions.application ADD COLUMN IF NOT EXISTS hasarchaeologicalprotectionplan varchar;
 
 ALTER TABLE now_submissions.application DROP COLUMN IF EXISTS isonprivateland;
------------------------------------------------------
--- ALTER TABLE now_submissions.application RENAME COLUMN recreationuse TO isrecreationuse;
