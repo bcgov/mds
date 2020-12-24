@@ -51,6 +51,30 @@ export const GeneratePermitForm = (props) => (
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
+              id="now_number"
+              name="now_number"
+              label="Application Number"
+              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="now_tracking_number"
+              name="now_tracking_number"
+              label="Application Tracking Number"
+              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
               id="permittee"
               name="permittee"
               label="Permittee"

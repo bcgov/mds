@@ -164,17 +164,27 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.regional_office = !amendment.regional_office
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
+    permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
+    permitGenObject.now_number = noticeOfWork.now_number;
 
     return permitGenObject;
   };
 
   createDocList = (noticeOfWork) => {
-    return noticeOfWork.documents
+    const documents = noticeOfWork.filtered_submission_documents
       .filter((document) => document.is_final_package)
       .map((document) => ({
-        document_name: document.mine_document.document_name,
-        document_upload_date: formatDate(document.mine_document.upload_date),
+        document_name: document.filename,
+        document_upload_date: "",
       }));
+    return documents.concat(
+      noticeOfWork.documents
+        .filter((document) => document.is_final_package)
+        .map((document) => ({
+          document_name: document.mine_document.document_name,
+          document_upload_date: formatDate(document.mine_document.upload_date),
+        }))
+    );
   };
 
   handlePermitGenSubmit = () => {

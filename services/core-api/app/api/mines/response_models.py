@@ -173,6 +173,14 @@ PERMIT_AMENDEMENT_STATUS_CODE_MODEL = api.model(
         'display_order': fields.Integer
     })
 
+PERMIT_AMENDEMENT_TYPE_CODE_MODEL = api.model(
+    'PermitAmendmentTypeCode', {
+        'permit_amendment_type_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
+    })
+
 STATUS_MODEL = api.model(
     'MineStatus', {
         'mine_status_guid': fields.String,
