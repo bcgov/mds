@@ -91,6 +91,7 @@ export class NOWProgressActions extends Component {
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
+        permit_amendment_type_code: this.props.preDraftFormValues.permit_amendment_type_code,
       };
       this.props
         .createPermitAmendment(
@@ -107,25 +108,25 @@ export class NOWProgressActions extends Component {
     }
   };
 
-  handleProgress = (tab, trigger, isAmendment) => {
+  handleProgress = (tab, trigger, isAmendment, permitAmendmentType) => {
     if (trigger === "Complete") {
       this.stopProgress(tab);
     } else if (trigger === "Resume") {
       this.startOrResumeProgress(tab, trigger);
     } else if (trigger === "Start") {
       if (tab === "DFT") {
-        this.handlePermit(tab, trigger, isAmendment);
+        this.handlePermit(tab, trigger, isAmendment, permitAmendmentType);
       } else {
         this.startOrResumeProgress(tab, trigger);
       }
     }
   };
 
-  handlePermit = (tab, trigger, isAmendment) => {
+  handlePermit = (tab, trigger, isAmendment, permitAmendmentType) => {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     this.props.submit(FORM.PRE_DRAFT_PERMIT);
     if (errors.length === 0) {
-      this.startDraftPermit(tab, trigger, isAmendment);
+      this.startDraftPermit(tab, trigger, isAmendment, permitAmendmentType);
     }
   };
 
@@ -196,6 +197,20 @@ export class NOWProgressActions extends Component {
   };
 
   openProgressModal = (trigger) => {
+    let permitType = "";
+    if (this.props.permits && this.props.permits.length > 0) {
+      const permit = this.props.permits[0];
+      if (permit.permit_amendments && permit.permit_amendments.length > 0) {
+        permitType =
+          permit.permit_amendments.filter((a) => a.permit_amendment_type_code === "ALG").length > 0
+            ? "ALG"
+            : null;
+      }
+    } else {
+      permitType = "OGP";
+    }
+
+    debugger;
     this.props.openModal({
       props: {
         title: `${trigger} ${this.props.progressStatusHash[this.props.tab]}`,
@@ -209,6 +224,7 @@ export class NOWProgressActions extends Component {
         isCoalOrMineral:
           this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
+        permitType: permitType,
       },
       content: modalConfig.NOW_PROGRESS_MODAL,
     });

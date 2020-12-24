@@ -18,6 +18,8 @@ const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
+  permitAmendmentDropdown: CustomPropTypes.options.isRequired,
+  isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -238,6 +240,20 @@ export const GeneratePermitForm = (props) => (
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="permit_amendment_type_code"
+              name="permit_amendment_type_code"
+              placeholder="Select a Permit amendment type"
+              label="Permit amendment type"
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              data={props.permitAmendmentDropdown}
+              validate={[required]}
+              // disabled={props.isViewMode}
+              disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
             />
           </Col>
         </Row>

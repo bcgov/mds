@@ -40,6 +40,7 @@ export const {
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
   getDelayTypeOptions,
+  getPermitAmendmentTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -453,6 +454,12 @@ export const getDropdownMineReportStatusOptions = createSelectorWrapper(
 export const getMineReportStatusOptionsHash = createSelectorWrapper(
   getDropdownMineReportStatusOptions,
   createLabelHash
+);
+
+export const getDropdownPermitAmendmentTypeOptions = createSelectorWrapper(
+  getPermitAmendmentTypeOptions,
+  createDropDownList,
+  ["description", "permit_amendment_type_code", "active_ind"]
 );
 
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelectorWrapper(

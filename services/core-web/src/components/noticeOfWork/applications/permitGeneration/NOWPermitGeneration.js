@@ -8,7 +8,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting } from "redux-form";
-import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getNoticeOfWorkApplicationTypeOptions,
+  getDropdownPermitAmendmentTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import {
   fetchPermits,
   updatePermitAmendment,
@@ -51,6 +54,7 @@ const propTypes = {
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
+  permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {};
@@ -71,6 +75,8 @@ export class NOWPermitGeneration extends Component {
     permitGenObj: {},
     isLoaded: false,
     permittee: {},
+    permitAmendmentDropdown: [],
+    isPermitAmendmentTypeDropDownDisabled: true,
   };
 
   componentDidMount() {
@@ -167,6 +173,41 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
 
+    debugger;
+    console.log(draftPermit);
+    const draftAmendment = draftPermit.permit_amendments.filter(
+      (a) => a.permit_amendment_status_code === "DFT"
+    )[0];
+
+    let tooltip = "";
+    let isPermitAmendmentTypeDropDownDisabled = true;
+    let permitAmendmentDropdown = [];
+
+    switch (draftAmendment.permit_amendment_type_code) {
+      case "ALG":
+      case "OGP":
+        {
+          tooltip = "You can issue only regular permits";
+          permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
+          isPermitAmendmentTypeDropDownDisabled = true;
+          permitGenObject.permit_amendment_type_code = draftAmendment.permit_amendment_type_code;
+        }
+        break;
+      default:
+      case "AMD":
+        {
+          tooltip = "You can issue permits of amalgamated and regular types";
+          permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
+            (a) => a.value !== "OGP"
+          );
+          isPermitAmendmentTypeDropDownDisabled = false;
+          permitGenObject.permit_amendment_type_code = draftAmendment.permit_amendment_type_code;
+        }
+        break;
+    }
+
+    this.setState({ permitAmendmentDropdown, isPermitAmendmentTypeDropDownDisabled });
+
     return permitGenObject;
   };
 
@@ -188,6 +229,7 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePermitGenSubmit = () => {
+    debugger;
     const newValues = this.props.formValues;
     if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
@@ -207,10 +249,12 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
+    debugger;
     this.setState({ isLoaded: false });
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
+      permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
     };
     this.props
       .updatePermitAmendment(
@@ -319,6 +363,10 @@ export class NOWPermitGeneration extends Component {
                     isAmendment={this.props.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}
+                    permitAmendmentDropdown={this.state.permitAmendmentDropdown}
+                    isPermitAmendmentTypeDropDownDisabled={
+                      this.state.isPermitAmendmentTypeDropDownDisabled
+                    }
                   />
                 )}
               </>
@@ -339,6 +387,7 @@ const mapStateToProps = (state) => ({
   submitting: isSubmitting(FORM.GENERATE_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
