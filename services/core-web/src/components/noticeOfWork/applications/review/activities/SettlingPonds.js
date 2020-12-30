@@ -7,7 +7,7 @@ import CoreEditableTable from "@/components/common/CoreEditableTable";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -22,7 +22,14 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").edited
+              }
+            />
           </div>
           <Field
             id="wastewater_facility_description"
@@ -92,7 +99,12 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.disposal_from_clean_out").value
+              }
+              isVisible={props.renderOriginalValues("settling_pond.disposal_from_clean_out").edited}
+            />
           </div>
           <Field
             id="disposal_from_clean_out"
