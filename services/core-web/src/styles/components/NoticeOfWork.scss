@@ -203,6 +203,7 @@
 }
 
 .now-menu-link.ant-anchor-link .ant-anchor-link {
+  line-height: 1;
   & .ant-anchor-link-title {
     font-weight: lighter;
     padding-left: 5px;
@@ -226,25 +227,6 @@
   padding-bottom: 5px;
   width: 25px;
   height: 25px;
-}
-
-.tab-disclaimer {
-  width: 800px;
-  position: relative;
-  top: -10px;
-  margin: auto;
-
-  &.draft {
-    left: -120px;
-  }
-
-  @include mobile {
-    display: none;
-  }
-
-  @include tablet {
-    width: 400px;
-  }
 }
 
 .fee-determination--block {
@@ -287,10 +269,26 @@
   margin-top: 10px;
   text-align: end;
 }
+
 .progress-actions {
   margin-left: 5px;
 
   @include tablet {
     margin-left: 0;
+  }
+}
+
+.confirm-success {
+  .ant-result-icon > .anticon {
+    font-size: 40px;
+  }
+  .ant-result {
+    padding: 20px;
+  }
+  .ant-result-icon {
+    margin-bottom: 0;
+  }
+  .ant-result-title {
+    font-size: 20px;
   }
 }

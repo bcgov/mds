@@ -84,7 +84,6 @@ export const NOT_APPLICABLE = "N/A";
 // MDS email
 export const MDS_EMAIL = "mds@gov.bc.ca";
 
-
 export const MINE_REPORTS_TYPE = {
   codeRequiredReports: "CRR",
   permitRequiredReports: "PRR",

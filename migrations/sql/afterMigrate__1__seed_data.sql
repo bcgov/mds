@@ -722,6 +722,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -734,13 +735,15 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
       "required": true
     },
     {
       "id": "proponent_address",
       "label": "Proponent Address",
-      "type": "FIELD",
+      "type": "AUTO_SIZE_FIELD",
       "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
       "required": true
     },
     {
@@ -815,6 +818,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -827,13 +831,15 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
       "required": true
     },
     {
       "id": "proponent_address",
       "label": "Proponent Address",
-      "type": "FIELD",
+      "type": "AUTO_SIZE_FIELD",
       "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
       "required": true
     },
     {
@@ -846,6 +852,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Withdrawal Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -904,6 +911,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -916,13 +924,15 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
       "required": true
     },    
     {
       "id": "proponent_address",
       "label": "Proponent Address",
-      "type": "FIELD",
+      "type": "AUTO_SIZE_FIELD",
       "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
       "required": true
     },
     {
@@ -930,7 +940,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Emailed to",
       "type": "FIELD",
       "placeholder": "Enter the name of the email recipient",
-      "required": false
+      "relative-data-path": "now_application.permittee.email"
     },
     {
       "id": "property",
@@ -956,7 +966,8 @@ UPDATE document_template SET form_spec_json = '[
       "id": "bond_inc_amt",
       "label": "Bond Increase Amount",
       "type": "CURRENCY",
-      "placeholder": "Enter the bond increase amount"
+      "placeholder": "Enter the bond increase amount",
+      "relative-data-path": "now_application.security_adjustment"
     },
     {
       "id": "issuing_inspector_name",
@@ -1014,6 +1025,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Letter Date",
       "type": "DATE",
       "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
@@ -1026,13 +1038,15 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
       "required": true
     },    
     {
       "id": "proponent_address",
       "label": "Proponent Address",
-      "type": "FIELD",
+      "type": "AUTO_SIZE_FIELD",
       "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
       "required": true
     },
     {
@@ -1106,7 +1120,7 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "permittee",
-      "relative-data-path": "now_application.permittee_name",
+      "relative-data-path": "now_application.permittee.name",
       "read-only": true
     },
     {
@@ -1140,7 +1154,7 @@ UPDATE document_template SET form_spec_json = '[
     },
     {
       "id": "permittee",
-      "relative-data-path": "now_application.permittee_name",
+      "relative-data-path": "now_application.permittee.name",
       "read-only": true
     },
     {

@@ -256,7 +256,6 @@ class Application(Base):
     recreationuse = db.Column(db.String)
     isparkactivities = db.Column(db.String)
     hasltgovauthorization = db.Column(db.String)
-    isonprivateland = db.Column(db.String)
     hasengagedfirstnations = db.Column(db.String)
     hasculturalheritageresources = db.Column(db.String)
     firstnationsactivities = db.Column(db.String)
@@ -269,9 +268,9 @@ class Application(Base):
     isaccessgated = db.Column(db.String)
     hassurfacedisturbanceoutsidetenure = db.Column(db.String)
     bedrockexcavation = db.Column(db.String)
-    spontaneouscombustionhandling = db.Column(db.String)
     proposedactivites = db.Column(db.String)
     archaeologicalprotectionplan = db.Column(db.String)
+    hasarchaeologicalprotectionplan = db.Column(db.String)
 
     mine = db.relationship(
         'Mine',

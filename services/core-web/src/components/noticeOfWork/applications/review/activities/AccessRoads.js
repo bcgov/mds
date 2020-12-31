@@ -8,7 +8,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   renderOriginalValues: PropTypes.func.isRequired,
@@ -56,7 +56,16 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("exploration_access.has_proposed_bridges_or_culverts")
+                  .value
+              }
+              isVisible={
+                props.renderOriginalValues("exploration_access.has_proposed_bridges_or_culverts")
+                  .edited
+              }
+            />
           </div>
           <Field
             id="has_proposed_bridges_or_culverts"
@@ -66,7 +75,16 @@ export const AccessRoads = (props) => {
           />
           <div className="field-title">
             Describe the changes and reference the locations needed on the map later.
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("exploration_access.bridge_culvert_crossing_description")
+                  .value
+              }
+              isVisible={
+                props.renderOriginalValues("exploration_access.bridge_culvert_crossing_description")
+                  .edited
+              }
+            />
           </div>
           <Field
             id="bridge_culvert_crossing_description"

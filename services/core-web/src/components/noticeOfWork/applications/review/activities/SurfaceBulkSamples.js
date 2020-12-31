@@ -9,7 +9,7 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -78,7 +78,14 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Bedrock excavation
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.has_bedrock_excavation").value
+              }
+              isVisible={
+                props.renderOriginalValues("surface_bulk_sample.has_bedrock_excavation").edited
+              }
+            />
           </div>
           <Field
             id="has_bedrock_excavation"
@@ -93,11 +100,18 @@ export const SurfaceBulkSamples = (props) => {
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
             handling.
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.handling_instructions").value
+              }
+              isVisible={
+                props.renderOriginalValues("surface_bulk_sample.handling_instructions").edited
+              }
+            />
           </div>
           <Field
-            id="spontaneous_combustion_handling"
-            name="spontaneous_combustion_handling"
+            id="handling_instructions"
+            name="handling_instructions"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />

@@ -190,7 +190,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       <h4>
         Permit Application Fee Assessment
         <CoreTooltip
-          title="The application fee collected for this application was based on the Term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference."
+          title="The application fee collected for this application was based on the term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference."
         />
       </h4>
       <LinkButton
@@ -207,7 +207,7 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
     >
       Proposed Start Date
       <CoreTooltip
-        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work."
+        title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work."
       />
     </div>
     <Field
@@ -215,13 +215,18 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       disabled={true}
       id="proposed_start_date"
       name="proposed_start_date"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
     />
     <div
       className="field-title"
     >
-      Proposed End Date
+      Proposed Authorization End Date
       <CoreTooltip
-        title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work."
+        title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work."
       />
     </div>
     <Field
@@ -229,13 +234,18 @@ exports[`ReviewApplicationFeeContent renders properly 1`] = `
       disabled={true}
       id="proposed_end_date"
       name="proposed_end_date"
+      validate={
+        Array [
+          [Function],
+        ]
+      }
     />
     <div
       className="field-title"
     >
       Proposed Term of Application
       <CoreTooltip
-        title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work."
+        title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a Notice of Work."
       />
     </div>
     <Field

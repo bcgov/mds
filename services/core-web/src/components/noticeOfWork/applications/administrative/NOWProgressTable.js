@@ -76,7 +76,7 @@ const stepItem = (progress, progressStatus, delaysExist) => {
               </Descriptions>
             }
           >
-            <StopOutlined className="icon-lg--grey" />
+            <StopOutlined className="icon-lg--lightgrey" />
           </Popover>
         }
         description="Not Started"
@@ -178,10 +178,14 @@ export class NOWProgressTable extends Component {
     const firstProgress =
       this.props.noticeOfWork.application_progress.length > 0
         ? this.props.noticeOfWork.application_progress[0]
-        : { start_date: null, application_progress_status_code: null };
-    const duration = moment.duration(
-      moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
-    );
+        : { start_date: "", application_progress_status_code: "" };
+    const duration = firstProgress?.start_date
+      ? getDurationTextInDays(
+          moment.duration(
+            moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
+          )
+        )
+      : null;
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
@@ -203,7 +207,7 @@ export class NOWProgressTable extends Component {
                           {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
                         </Descriptions.Item>
                         <Descriptions.Item label="Duration until Progress">
-                          {getDurationTextInDays(duration) || Strings.EMPTY_FIELD}
+                          {duration || Strings.EMPTY_FIELD}
                         </Descriptions.Item>
                         <Descriptions.Item label="First stage In Progress">
                           {this.props.progressStatusCodeHash[
@@ -243,7 +247,7 @@ export class NOWProgressTable extends Component {
         <Descriptions column={1}>
           <>
             <Descriptions.Item label="Total Time in Delay">
-              <Badge color={COLOR.yellow} className="padding-small--left" />
+              <Badge color={COLOR.yellow} className="padding-sm--left" />
               {delaysExist
                 ? this.props.totalApplicationDelayDuration.duration
                 : Strings.EMPTY_FIELD}

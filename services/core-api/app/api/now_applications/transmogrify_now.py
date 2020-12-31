@@ -104,15 +104,15 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     type_of_vegetation_description = now_sub.typeofvegetation
     recreational_trail_use_description = now_sub.recreationuse
     has_activity_in_park = now_sub.isparkactivities == 'Yes'
-    is_on_private_land = now_sub.isonprivateland == 'Yes'
-    has_auth_lieutenant_gov_council = now_sub.hasltgovauthorization == 'Yes'
+    hasltgovauthorization = now_sub.hasltgovauthorization == 'Yes'
+    has_auth_lieutenant_gov_council = now_sub.hasarchaeologicalprotectionplan == 'Yes'
     arch_site_protection_plan = now_sub.archaeologicalprotectionplan
     has_shared_info_with_fn = now_sub.hasengagedfirstnations == 'Yes'
     has_fn_cultural_heritage_sites_in_area = now_sub.hasculturalheritageresources == 'Yes'
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or is_on_private_land or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or hasltgovauthorization:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes',
@@ -123,7 +123,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             type_of_vegetation_description=type_of_vegetation_description,
             recreational_trail_use_description=recreational_trail_use_description,
             has_activity_in_park=has_activity_in_park,
-            is_on_private_land=is_on_private_land,
+            is_on_private_land=hasltgovauthorization,
             has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
             arch_site_protection_plan=arch_site_protection_plan,
             has_shared_info_with_fn=has_shared_info_with_fn,
@@ -408,7 +408,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
         exploration_access = app_models.ExplorationAccess(
             reclamation_description=expaccessreclamation,
             reclamation_cost=expaccessreclamationcost,
-            has_proposed_bridges_or_culverts=hasproposedcrossings,
+            has_proposed_bridges_or_culverts=hasproposedcrossings == 'Yes',
             bridge_culvert_crossing_description=proposedcrossingschanges,
             total_disturbed_area=expaccesstotaldistarea,
             total_disturbed_area_unit_type_code='HA')
@@ -693,7 +693,6 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     surfacebulksamplereclcost = mms_now_sub.surfacebulksamplereclcost or now_sub.surfacebulksamplereclcost
     surfacebulksampletotaldistarea = now_sub.surfacebulksampletotaldistarea
     bedrockexcavation = now_sub.bedrockexcavation
-    spontaneouscombustionhandling = now_sub.spontaneouscombustionhandling
 
     if (surfacebulksampleprocmethods or surfacebulksamplereclsephandl
             or surfacebulksamplereclamation or surfacebulksamplerecldrainmiti
@@ -706,8 +705,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             processing_method_description=surfacebulksampleprocmethods,
             handling_instructions=surfacebulksamplereclsephandl,
             drainage_mitigation_description=surfacebulksamplerecldrainmiti,
-            has_bedrock_excavation=bedrockexcavation == 'Yes',
-            spontaneous_combustion_handling=spontaneouscombustionhandling)
+            has_bedrock_excavation=bedrockexcavation == 'Yes')
 
         if (len(mms_now_sub.surface_bulk_sample_activity) > 0):
             surface_bulk_sample_activity = mms_now_sub.surface_bulk_sample_activity
@@ -764,15 +762,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=new_uea.type,
-                    incline=new_uea.incline if new_uea.incline else None,
+                    incline=getattr(new_uea, 'incline', None),
                     incline_unit_type_code=code_lookup(
-                        app_models.UnitType,
-                        unit_type_map[new_uea.inclineunits if new_uea.inclineunits else None],
+                        app_models.UnitType, unit_type_map[getattr(new_uea, 'inclineunits', None)],
                         'unit_type_code'),
                     quantity=new_uea.quantity,
-                    length=new_uea.length if new_uea.length else None,
-                    width=new_uea.width if new_uea.width else None,
-                    height=new_uea.height if new_uea.height else None,
+                    length=getattr(new_uea, 'length', None),
+                    width=getattr(new_uea, 'width', None),
+                    height=getattr(new_uea, 'height', None),
                     underground_exploration_type_code='NEW'))
 
         if (len(mms_now_sub.under_exp_rehab_activity) > 0):
@@ -784,15 +781,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=rehab_uea.type,
-                    incline=rehab_uea.incline if rehab_uea.incline else None,
+                    incline=getattr(rehab_uea, 'incline', None),
                     incline_unit_type_code=code_lookup(
-                        app_models.UnitType,
-                        unit_type_map[rehab_uea.inclineunits if rehab_uea.inclineunits else None],
-                        'unit_type_code'),
+                        app_models.UnitType, unit_type_map[getattr(rehab_uea, 'inclineunits',
+                                                                   None)], 'unit_type_code'),
                     quantity=rehab_uea.quantity,
-                    length=rehab_uea.length if rehab_uea.length else None,
-                    width=rehab_uea.width if rehab_uea.width else None,
-                    height=rehab_uea.height if rehab_uea.height else None,
+                    length=getattr(rehab_uea, 'length', None),
+                    width=getattr(rehab_uea, 'width', None),
+                    height=getattr(rehab_uea, 'height', None),
                     underground_exploration_type_code='RHB'))
 
         if (len(mms_now_sub.under_exp_surface_activity) > 0):

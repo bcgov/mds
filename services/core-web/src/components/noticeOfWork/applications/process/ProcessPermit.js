@@ -4,13 +4,14 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Button, Menu, Dropdown, Timeline, Result, Row, Col, notification } from "antd";
+import LinkButton from "@/components/common/LinkButton";
 import {
   DownOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
   StopOutlined,
-  RightCircleOutlined,
   LinkOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
@@ -19,7 +20,11 @@ import {
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { connect } from "react-redux";
-import { formatDate } from "@common/utils/helpers";
+import {
+  formatDate,
+  isPlacerAdjustmentFeeValid,
+  isPitsQuarriesAdjustmentFeeValid,
+} from "@common/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
   getDropdownNoticeOfWorkApplicationStatusCodes,
@@ -50,7 +55,7 @@ const approvedCode = "AIA";
 const approvedLetterCode = "NPE";
 const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
-const WithDrawnLetterCode = "WDL";
+const withdrawnLetterCode = "WDL";
 const originalPermit = "OGP";
 const regionHash = {
   SE: "Cranbrook",
@@ -84,7 +89,7 @@ const propTypes = {
 const TimelineItem = (progress, progressStatus) => {
   if (!progress[progressStatus.application_progress_status_code])
     return (
-      <Timeline.Item dot={<StopOutlined className="icon-lg--grey" />}>
+      <Timeline.Item dot={<StopOutlined className="icon-lg--lightgrey" />}>
         <span className="field-title">{progressStatus.description}</span>
         <br />
         Not Started
@@ -106,6 +111,15 @@ const TimelineItem = (progress, progressStatus) => {
     </Timeline.Item>
   );
 };
+
+const ProgressRouteFor = (code, now_application_guid) =>
+  ({
+    REV: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "application"),
+    REF: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "referral"),
+    CON: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "consultation"),
+    PUB: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "public-comment"),
+    DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
+  }[code]);
 
 export class ProcessPermit extends Component {
   state = {};
@@ -140,12 +154,12 @@ export class ProcessPermit extends Component {
       WDL: {
         title: "Withdraw Application",
         statusCode: rejectedCode,
-        letterCode: WithDrawnLetterCode,
+        letterCode: withdrawnLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
 
-    this.props
+    return this.props
       .fetchNoticeOfWorkApplicationContextTemplate(
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
@@ -161,7 +175,7 @@ export class ProcessPermit extends Component {
             initialValues,
             title: content[type].title,
             documentType: this.props.documentContextTemplate,
-            onSubmit: (values) => this.handleApplication(values, type),
+            onSubmit: (values) => this.handleApplication(values, content[type].statusCode),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             noticeOfWork: this.props.noticeOfWork,
@@ -278,7 +292,7 @@ export class ProcessPermit extends Component {
         permitObj.auth_end_date = formatDate(values.auth_end_date);
         permitObj.issue_date = formatDate(values.issue_date);
 
-        this.handleGenerateDocumentFormSubmit(
+        return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
@@ -347,25 +361,153 @@ export class ProcessPermit extends Component {
     );
   };
 
-  getValidationMessages = () => {
+  getValidationErrors = () => {
     const validationMessages = [];
+
+    // Fees
+    const placerAdjustedFeeInvalid =
+      this.props.noticeOfWork?.notice_of_work_type_code === "PLA" &&
+      !isPlacerAdjustmentFeeValid(
+        this.props.noticeOfWork?.proposed_annual_maximum_tonnage,
+        this.props.noticeOfWork?.adjusted_annual_maximum_tonnage,
+        this.props.noticeOfWork?.proposed_start_date,
+        this.props.noticeOfWork?.proposed_end_date
+      );
+    const pitsQuarriesFeeInvalid =
+      (this.props.noticeOfWork?.notice_of_work_type_code === "SAG" ||
+        this.props.noticeOfWork?.notice_of_work_type_code === "QCA" ||
+        this.props.noticeOfWork?.notice_of_work_type_code === "QIM") &&
+      !isPitsQuarriesAdjustmentFeeValid(
+        this.props.noticeOfWork?.proposed_annual_maximum_tonnage,
+        this.props.noticeOfWork?.adjusted_annual_maximum_tonnage
+      );
+
+    if (placerAdjustedFeeInvalid || pitsQuarriesFeeInvalid) {
+      validationMessages.push({
+        message:
+          "The Adjusted Annual Maximum Tonnage exceeds the limit allowed for permit fees paid. You must reject the application and ask the proponent to re-apply, or reduce the tonnage entered.",
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "application"
+        ),
+      });
+    }
+
+    // Inspector signature
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
+    if (!signature) {
+      validationMessages.push({
+        message:
+          "The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.",
+        route:
+          this.props.noticeOfWork?.issuing_inspector &&
+          route.PARTY_PROFILE.dynamicRoute(this.props.noticeOfWork?.issuing_inspector?.party_guid),
+      });
+    }
+
+    // Permittee
     if (
-      !(
-        this.props.noticeOfWork.contacts &&
-        this.props.noticeOfWork.contacts.some(
-          (contact) => contact.mine_party_appt_type_code === "PMT"
-        )
+      this.props.noticeOfWork.contacts &&
+      this.props.noticeOfWork.contacts.some(
+        (contact) => contact.mine_party_appt_type_code === "PMT"
       )
-    )
-      validationMessages.push({ message: "Application must have a permittee." });
+    ) {
+      const permittees = this.props.noticeOfWork.contacts.filter(
+        (contact) => contact.mine_party_appt_type_code === "PMT"
+      );
+      if (permittees.length > 1) {
+        validationMessages.push({
+          message:
+            "The application can not have more than one permittee. Verify the correct permittee and remove any others in Contacts under Application.",
+          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.noticeOfWork.now_application_guid,
+            "application#contacts"
+          ),
+        });
+      }
+      if (isEmpty(permittees[0].party.address[0])) {
+        validationMessages.push({
+          message: "The permittee must have an address. Update the contact to add an address.",
+          route:
+            this.props.noticeOfWork?.issuing_inspector &&
+            route.PARTY_PROFILE.dynamicRoute(
+              this.props.noticeOfWork?.issuing_inspector?.party_guid
+            ),
+        });
+      }
+    } else {
+      validationMessages.push({
+        message:
+          "The application must have a permittee. Add a permittee in Contacts under Application.",
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "application#contacts"
+        ),
+      });
+    }
+
+    // Securities
     if (
       !(
         this.props.noticeOfWork.security_received_date ||
         this.props.noticeOfWork.security_not_required
       )
     ) {
-      validationMessages.push({ message: `The reclamation securities must be recorded.` });
+      validationMessages.push({
+        message: `The reclamation securities must be recorded. Edit the Reclamation Securities under Administrative.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "administrative"
+        ),
+      });
     }
+
+    // Progress
+    this.props.progressStatusCodes
+      .filter(
+        (progressStatus) =>
+          progressStatus.application_progress_status_code !== "CON" &&
+          progressStatus.application_progress_status_code !== "REF" &&
+          progressStatus.application_progress_status_code !== "PUB" &&
+          (!this.props.progress[progressStatus.application_progress_status_code] ||
+            !this.props.progress[progressStatus.application_progress_status_code].end_date)
+      )
+      .forEach((progressStatus) =>
+        validationMessages.push({
+          message: `${progressStatus.description} must be completed.`,
+          route: ProgressRouteFor(
+            progressStatus.application_progress_status_code,
+            this.props.noticeOfWork?.now_application_guid
+          ),
+        })
+      );
+
+    this.props.progressStatusCodes
+      .filter(
+        (progressStatus) =>
+          (progressStatus.application_progress_status_code === "CON" ||
+            progressStatus.application_progress_status_code === "REF" ||
+            progressStatus.application_progress_status_code === "PUB") &&
+          this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
+          !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+      )
+      .forEach((progressStatus) =>
+        validationMessages.push({
+          message: `${progressStatus.description} must be completed.`,
+          route: ProgressRouteFor(
+            progressStatus.application_progress_status_code,
+            this.props.noticeOfWork?.now_application_guid
+          ),
+        })
+      );
+
+    return validationMessages;
+  };
+
+  getValidationWarnings = () => {
+    const validationMessages = [];
+
+    // Mine Emergency Resposne Plan
     if (
       !this.props.noticeOfWork.documents ||
       !this.props.noticeOfWork.documents.some(
@@ -373,18 +515,72 @@ export class ProcessPermit extends Component {
       )
     ) {
       validationMessages.push({
-        message: `The final application package requires a Mine Emergency Response Plan.`,
+        message: `The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "administrative"
+        ),
       });
     }
+
+    // Archeological Chance Find Procedure
+    if (
+      !this.props.noticeOfWork.documents ||
+      !this.props.noticeOfWork.documents.some(
+        (doc) => doc.now_application_document_type_code === "ACP" && doc.is_final_package
+      )
+    ) {
+      validationMessages.push({
+        message: `The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "administrative"
+        ),
+      });
+    }
+
+    // Permittee
+    if (
+      this.props.noticeOfWork.contacts &&
+      this.props.noticeOfWork.contacts.some(
+        (contact) => contact.mine_party_appt_type_code === "PMT"
+      )
+    ) {
+      const permittee = this.props.noticeOfWork.contacts.filter(
+        (contact) => contact.mine_party_appt_type_code === "PMT"
+      )[0];
+      if (isEmpty(permittee.party.party_orgbook_entity)) {
+        validationMessages.push({
+          message:
+            "Permittee has not been verified with OrgBook. Update the contact to associate them with an entity on OrgBook.",
+          route:
+            this.props.noticeOfWork?.issuing_inspector &&
+            route.PARTY_PROFILE.dynamicRoute(
+              this.props.noticeOfWork?.issuing_inspector?.party_guid
+            ),
+        });
+      }
+    }
+
+    // Progress
     this.props.progressStatusCodes
       .filter(
         (progressStatus) =>
-          !this.props.progress[progressStatus.application_progress_status_code] ||
-          !this.props.progress[progressStatus.application_progress_status_code].end_date
+          (progressStatus.application_progress_status_code === "CON" ||
+            progressStatus.application_progress_status_code === "REF" ||
+            progressStatus.application_progress_status_code === "PUB") &&
+          !this.props.progress[progressStatus.application_progress_status_code]?.start_date
       )
       .forEach((progressStatus) =>
-        validationMessages.push({ message: `${progressStatus.description} must be completed.` })
+        validationMessages.push({
+          message: `${progressStatus.description} has not been started.`,
+          route: ProgressRouteFor(
+            progressStatus.application_progress_status_code,
+            this.props.noticeOfWork?.now_application_guid
+          ),
+        })
       );
+
     return validationMessages;
   };
 
@@ -405,7 +601,7 @@ export class ProcessPermit extends Component {
       </Menu.Item>
       <Menu.Item
         key="withdraw-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(WithDrawnLetterCode)}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnLetterCode)}
       >
         Withdraw application
       </Menu.Item>
@@ -413,8 +609,10 @@ export class ProcessPermit extends Component {
   );
 
   render = () => {
-    const validationMessages = this.getValidationMessages();
-    const validationErrors = validationMessages.length > 0;
+    const validationErrors = this.getValidationErrors();
+    const validationWarnings = this.getValidationWarnings();
+    const hasValidationErrors = validationErrors.length > 0;
+    const hasValidationWarnings = validationWarnings.length > 0;
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
@@ -430,7 +628,7 @@ export class ProcessPermit extends Component {
             <>
               {!isProcessed && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Dropdown overlay={this.menu(validationErrors)} placement="bottomLeft">
+                  <Dropdown overlay={this.menu(hasValidationErrors)} placement="bottomLeft">
                     <Button type="primary" className="full-mobile">
                       Process <DownOutlined />
                     </Button>
@@ -459,26 +657,20 @@ export class ProcessPermit extends Component {
           </Timeline>
         </div>
         <div className="view--content side-menu--content">
-          <Result
-            status={(isApproved && "success") || (validationErrors && "warning") || "info"}
-            title={
-              (isApproved &&
-                `This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`) ||
-              (validationErrors &&
-                `The following issues must be resolved before you can issue this ${
-                  isAmendment ? "amendment" : "permit"
-                }.`) ||
-              `This ${isAmendment ? "amendment" : "permit"} is ready to be issued.`
-            }
-            extra={[
-              <Row>
-                <Col
-                  lg={{ span: 12, offset: 6 }}
-                  md={{ span: 16, offset: 4 }}
-                  sm={{ span: 20, offset: 2 }}
-                  style={{ textAlign: isApproved ? "center" : "left" }}
-                >
-                  {isApproved ? (
+          {// Permit is issued
+          isApproved && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="success"
+              title={`This ${isAmendment ? "amendment" : "permit"} has been successfully issued.`}
+              extra={[
+                <Row>
+                  <Col
+                    lg={{ span: 12, offset: 6 }}
+                    md={{ span: 16, offset: 4 }}
+                    sm={{ span: 20, offset: 2 }}
+                    style={{ textAlign: "center" }}
+                  >
                     <Button
                       onClick={() =>
                         this.props.history.push(
@@ -488,20 +680,93 @@ export class ProcessPermit extends Component {
                     >
                       <LinkOutlined /> View permit on the mine record
                     </Button>
-                  ) : (
-                    validationMessages.map((message) => (
-                      <Row style={{ paddingBottom: "8px" }}>
-                        <Col span={2}>
-                          <RightCircleOutlined />
+                  </Col>
+                </Row>,
+              ]}
+            />
+          )}
+          {// Permit is ready to be issued
+          !isApproved && !hasValidationErrors && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="success"
+              extra={
+                <div style={{ textAlign: "left", width: "100%" }}>
+                  <Row className="padding-md--bottom" justify="center">
+                    <Col>
+                      <h3>{`This ${
+                        isAmendment ? "amendment" : "permit"
+                      } is ready to be processed and issued.`}</h3>
+                    </Col>
+                  </Row>
+                </div>
+              }
+            />
+          )}
+          {// Validation Errors
+          !isApproved && (hasValidationErrors || hasValidationWarnings) && (
+            <Result
+              style={{ paddingTop: "0px" }}
+              status="warning"
+              extra={
+                <div style={{ textAlign: "left", width: "100%" }}>
+                  {hasValidationErrors && (
+                    <>
+                      <Row className="padding-md--bottom" justify="center">
+                        <Col>
+                          <h3>{`The following issues shall be resolved before you can issue this ${
+                            isAmendment ? "amendment" : "permit"
+                          }.`}</h3>
                         </Col>
-                        <Col span={22}>{message.message}</Col>
                       </Row>
-                    ))
+                      {validationErrors.map((message) => (
+                        <Row className="padding-md--bottom">
+                          <Col offset={2} span={2}>
+                            <StopOutlined className="icon-sm padding-sm--top" />
+                          </Col>
+                          <Col span={16}>
+                            {`${message.message}  `}
+                            {message.route && (
+                              <LinkButton onClick={() => this.props.history.push(message.route)}>
+                                <LinkOutlined /> Resolve
+                              </LinkButton>
+                            )}
+                          </Col>
+                        </Row>
+                      ))}
+                      <div className="padding-lg--bottom" />
+                    </>
                   )}
-                </Col>
-              </Row>,
-            ]}
-          />
+                  {hasValidationWarnings && (
+                    <>
+                      <Row className="padding-md--bottom" justify="center">
+                        <Col>
+                          <h3>{`Review the following warnings before issuing the  ${
+                            isAmendment ? "amendment" : "permit"
+                          }.`}</h3>
+                        </Col>
+                      </Row>
+                      {validationWarnings.map((message) => (
+                        <Row className="padding-md--bottom">
+                          <Col offset={2} span={2}>
+                            <WarningOutlined className="icon-sm padding-sm--top" />
+                          </Col>
+                          <Col span={16}>
+                            {`${message.message}  `}
+                            {message.route && (
+                              <LinkButton onClick={() => this.props.history.push(message.route)}>
+                                <LinkOutlined /> Resolve
+                              </LinkButton>
+                            )}
+                          </Col>
+                        </Row>
+                      ))}
+                    </>
+                  )}
+                </div>
+              }
+            />
+          )}
         </div>
       </>
     );

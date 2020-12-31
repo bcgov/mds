@@ -180,10 +180,9 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
     'NOWApplicationSurfaceBulkSample', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'processing_method_description': fields.String,
+        'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'has_bedrock_excavation': fields.Boolean,
-        'spontaneous_combustion_handling': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
@@ -345,8 +344,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
-        'imported_date': Date,
-        'imported_by':  fields.String,
+        'imported_date':
+        Date,
+        'imported_by':
+        fields.String,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':
@@ -543,6 +544,7 @@ NOW_VIEW_MODEL = api.model(
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date,
+        'is_historic': fields.Boolean,
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),

@@ -39,7 +39,7 @@ export const DownloadDocumentPackageModal = (props) => {
     <div className="inline-flex flex-flow-column horizontal-center">
       <h4>Downloading Selected Files...</h4>
       <Progress
-        className="padding-md--top padding-large--bottom"
+        className="padding-md--top padding-lg--bottom"
         strokeColor={COLOR.violet}
         type="circle"
         percent={Math.round(
@@ -82,8 +82,8 @@ export const DownloadDocumentPackageModal = (props) => {
           type="tertiary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <DownloadOutlined className="padding-small--right icon-sm" />
-          Download Package
+          <DownloadOutlined className="padding-sm--right icon-sm" />
+          Download Referral Package
         </Button>
         <NOWActionWrapper
           permission={Permission.EDIT_PERMITS}

@@ -41,7 +41,7 @@ const columns = [
         {record.verified_status && record.verified_status.healthy_ind && (
           <img
             alt="Verified"
-            className="padding-small"
+            className="padding-sm"
             src={SUCCESS_CHECKMARK}
             width="25"
             title={`Mine data verified by ${record.verified_status.verifying_user} on ${formatDate(

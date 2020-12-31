@@ -1,9 +1,17 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
 import { DownOutlined, ExportOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus, submit } from "redux-form";
+import {
+  getFormValues,
+  reset,
+  getFormSyncErrors,
+  focus,
+  submit,
+  hasSubmitFailed,
+} from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined, kebabCase } from "lodash";
@@ -139,6 +147,7 @@ export class NoticeOfWorkApplication extends Component {
     isNewApplication: false,
     mineGuid: undefined,
     submitting: false,
+    submitted: false,
     activeTab: "verification",
   };
 
@@ -293,14 +302,15 @@ export class NoticeOfWorkApplication extends Component {
       associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
 
-  handleSaveNOWEdit = () => {
-    this.setState({ submitting: true });
+  handleSaveNOWEdit = (endEditSession) => {
+    this.setState({ submitted: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length > 0) {
       this.focusErrorInput();
     } else {
+      this.setState({ submitting: true });
       const { id } = this.props.match.params;
-      this.props
+      return this.props
         .updateNoticeOfWorkApplication(
           this.props.formValues,
           this.props.noticeOfWork.now_application_guid
@@ -308,10 +318,19 @@ export class NoticeOfWorkApplication extends Component {
         .then(() => {
           this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.setState(() => ({
-              isViewMode: true,
-              submitting: false,
+              isViewMode: endEditSession,
+              submitted: false,
             }));
+            if (!endEditSession) {
+              // if save & continue - update NoW/form state to reflect changes committed to db
+              this.forceUpdate();
+            }
           });
+        })
+        .finally(() => {
+          this.setState(() => ({
+            submitting: false,
+          }));
         });
     }
   };
@@ -541,7 +560,7 @@ export class NoticeOfWorkApplication extends Component {
 
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
-    const showErrors = errorsLength > 0 && this.state.submitting;
+    const showErrors = errorsLength > 0 && this.state.submitted && this.props.submitFailed;
     return (
       <NOWTabHeader
         tab="REV"
@@ -550,7 +569,7 @@ export class NoticeOfWorkApplication extends Component {
             <>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="REV">
                 <Button type="secondary" onClick={this.toggleEditMode}>
-                  <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
+                  <img alt="EDIT_OUTLINE" className="padding-sm--right" src={EDIT_OUTLINE} />
                   Edit
                 </Button>
               </NOWActionWrapper>
@@ -576,8 +595,9 @@ export class NoticeOfWorkApplication extends Component {
               onConfirm={this.handleCancelNOWEdit}
               okText="Yes"
               cancelText="No"
+              disabled={this.state.submitting}
             >
-              <Button type="secondary" className="full-mobile">
+              <Button type="secondary" className="full-mobile" disabled={this.state.submitting}>
                 Cancel
               </Button>
             </Popconfirm>
@@ -590,7 +610,20 @@ export class NoticeOfWorkApplication extends Component {
                 Next Issue
               </Button>
             )}
-            <Button type="primary" className="full-mobile" onClick={this.handleSaveNOWEdit}>
+            <Button
+              type="tertiary"
+              className="full-mobile"
+              onClick={() => this.handleSaveNOWEdit(false)}
+              loading={this.state.submitting}
+            >
+              Save & Continue
+            </Button>
+            <Button
+              type="primary"
+              className="full-mobile"
+              onClick={() => this.handleSaveNOWEdit(true)}
+              loading={this.state.submitting}
+            >
               Save
             </Button>
             {showErrors && (
@@ -733,7 +766,7 @@ export class NoticeOfWorkApplication extends Component {
           }}
         />
         <div className="page">
-          <div className="padding-large">
+          <div className="padding-lg">
             <div className="inline-flex between">
               <NoticeOfWorkPageHeader
                 noticeOfWork={this.props.noticeOfWork}
@@ -945,7 +978,7 @@ export class NoticeOfWorkApplication extends Component {
             </Tabs.TabPane>
 
             <Tabs.TabPane
-              tab={this.renderTabTitle("Draft Permit", "DFT")}
+              tab={this.renderTabTitle("Draft", "DFT")}
               key="draft-permit"
               disabled={!verificationComplete}
             >
@@ -956,11 +989,7 @@ export class NoticeOfWorkApplication extends Component {
               </>
             </Tabs.TabPane>
 
-            <Tabs.TabPane
-              tab="Process Permit"
-              key="process-permit"
-              disabled={!verificationComplete}
-            >
+            <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
               <>
                 <LoadingWrapper condition={this.state.isTabLoaded}>
                   <ProcessPermit
@@ -1040,6 +1069,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
+  submitFailed: hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   inspectors: getDropdownInspectors(state),
   inspectorsHash: getInspectorsHash(state),
