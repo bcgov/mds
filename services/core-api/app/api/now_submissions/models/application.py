@@ -271,6 +271,7 @@ class Application(Base):
     proposedactivites = db.Column(db.String)
     archaeologicalprotectionplan = db.Column(db.String)
     hasarchaeologicalprotectionplan = db.Column(db.String)
+    isonprivateland = db.Column(db.String)
 
     mine = db.relationship(
         'Mine',

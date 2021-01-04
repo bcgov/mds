@@ -5,7 +5,7 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class MineSummaryCSVView(Base):
+class MineSummaryView(Base):
     __tablename__ = "mine_summary_view"
     mine_guid = db.Column(UUID(as_uuid=True), primary_key=True)
     permit_guid = db.Column(UUID(as_uuid=True), primary_key=True)
@@ -22,7 +22,9 @@ class MineSummaryCSVView(Base):
     mine_operation_status_reason_d = db.Column(db.String)
     mine_operation_status_sub_reason_code = db.Column(db.String)
     mine_operation_status_sub_reason_d = db.Column(db.String)
+    mine_date = db.Column(db.String)
     status_date = db.Column(db.String)
+    mine_date_created = db.Column(db.String)
     tenure_type_code = db.Column(db.String)
     tenure = db.Column(db.String)
     commodity_type_code = db.Column(db.String)
@@ -30,10 +32,20 @@ class MineSummaryCSVView(Base):
     disturbance_type_code = db.Column(db.String)
     disturbance = db.Column(db.String)
     permit_no = db.Column(db.String)
+    permittee_party_guid = db.Column(db.String)
     permittee_name = db.Column(db.String)
     mine_latitude = db.Column(db.String)
     mine_longitude = db.Column(db.String)
     bcmi_url = db.Column(db.String)
+
+    mine_exemption_fee_status_code = db.Column(db.String)
+    mine_exemption_fee_status_d = db.Column(db.String)
+    permittee_address_suite = db.Column(db.String)
+    permittee_address_line_1 = db.Column(db.String)
+    permittee_address_line_2 = db.Column(db.String)
+    permittee_address_city = db.Column(db.String)
+    permittee_address_post_code = db.Column(db.String)
+    permittee_address_prov = db.Column(db.String)
 
     def csv_row(self):
         model = inspect(self.__class__)
