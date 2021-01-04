@@ -60,6 +60,8 @@ NOW_APPLICATION_DATA = {
     "str",
     "archsitesaffected":
     "Yes",
+    "isonprivateland":
+    "Yes",
     "hasltgovauthorization":
     "Yes",
     "sandgravelquarryoperations":
