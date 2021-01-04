@@ -8,7 +8,7 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -100,7 +100,12 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Production
-            <NOWFieldOriginTooltip />
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("placer_operation.proposed_production").value
+              }
+              isVisible={props.renderOriginalValues("placer_operation.proposed_production").edited}
+            />
           </div>
           <Field
             id="proposed_production"

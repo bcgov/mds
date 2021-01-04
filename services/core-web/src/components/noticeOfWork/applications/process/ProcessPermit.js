@@ -55,7 +55,7 @@ const approvedCode = "AIA";
 const approvedLetterCode = "NPE";
 const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
-const WithDrawnLetterCode = "WDL";
+const withdrawnLetterCode = "WDL";
 const originalPermit = "OGP";
 const regionHash = {
   SE: "Cranbrook",
@@ -154,7 +154,7 @@ export class ProcessPermit extends Component {
       WDL: {
         title: "Withdraw Application",
         statusCode: rejectedCode,
-        letterCode: WithDrawnLetterCode,
+        letterCode: withdrawnLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
@@ -175,7 +175,7 @@ export class ProcessPermit extends Component {
             initialValues,
             title: content[type].title,
             documentType: this.props.documentContextTemplate,
-            onSubmit: (values) => this.handleApplication(values, type),
+            onSubmit: (values) => this.handleApplication(values, content[type].statusCode),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             noticeOfWork: this.props.noticeOfWork,
@@ -292,7 +292,7 @@ export class ProcessPermit extends Component {
         permitObj.auth_end_date = formatDate(values.auth_end_date);
         permitObj.issue_date = formatDate(values.issue_date);
 
-        this.handleGenerateDocumentFormSubmit(
+        return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
@@ -489,7 +489,7 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
           this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
-            !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.end_date
       )
       .forEach((progressStatus) =>
         validationMessages.push({
@@ -601,7 +601,7 @@ export class ProcessPermit extends Component {
       </Menu.Item>
       <Menu.Item
         key="withdraw-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(WithDrawnLetterCode)}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnLetterCode)}
       >
         Withdraw application
       </Menu.Item>
