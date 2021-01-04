@@ -223,6 +223,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
