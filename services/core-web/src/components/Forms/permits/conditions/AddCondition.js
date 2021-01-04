@@ -28,9 +28,10 @@ const propTypes = {
   fetchPermitConditions: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permit.isRequired,
+  alternateTitle: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = { alternateTitle: "" };
 
 const ConditionComponent = (props) =>
   ({
@@ -68,12 +69,15 @@ export class AddCondition extends Component {
   };
 
   render = () => {
+    const title = this.props.initialValues.alternateTitle
+      ? this.props.initialValues.alternateTitle
+      : ButtonText(this.props.initialValues.condition_type_code);
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
             <AddButton type="secondary" disabled>
-              {ButtonText(this.props.initialValues.condition_type_code)}
+              {title}
             </AddButton>
           </NOWActionWrapper>
         )}
@@ -86,7 +90,7 @@ export class AddCondition extends Component {
                 this.setState({ isEditing: true });
               }}
             >
-              {ButtonText(this.props.initialValues.condition_type_code)}
+              {title}
             </AddButton>
           </NOWActionWrapper>
         )}

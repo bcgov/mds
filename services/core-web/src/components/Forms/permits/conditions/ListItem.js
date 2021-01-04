@@ -155,6 +155,7 @@ const ListItem = (props) => {
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
+                alternateTitle: "Add Sub-List Item",
               }}
             />
           </Col>
