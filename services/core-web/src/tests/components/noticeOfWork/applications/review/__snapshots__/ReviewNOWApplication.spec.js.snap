@@ -794,7 +794,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               sm={24}
             >
               <div
-                className="field-title--light"
+                className="field-title"
               >
                 Do you have authorization by the Lieutenant Governor in Council?
                 <NOWOriginalValueTooltip
@@ -844,7 +844,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               />
               <div
-                className="field-title--light"
+                className="field-title"
               >
                 Plan to protect the archaeological site
                 <NOWOriginalValueTooltip

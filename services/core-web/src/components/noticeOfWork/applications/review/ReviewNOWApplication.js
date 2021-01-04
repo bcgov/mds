@@ -576,7 +576,7 @@ export const ReviewNOWApplication = (props) => {
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title--light">
+            <div className="field-title">
               Do you have authorization by the Lieutenant Governor in Council?
               <NOWOriginalValueTooltip
                 originalValue={
@@ -619,7 +619,7 @@ export const ReviewNOWApplication = (props) => {
               disabled={props.isViewMode}
               validate={[requiredRadioButton]}
             />
-            <div className="field-title--light">
+            <div className="field-title">
               Plan to protect the archaeological site
               <NOWOriginalValueTooltip
                 originalValue={
