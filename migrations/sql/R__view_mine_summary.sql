@@ -66,4 +66,4 @@ AS SELECT m.mine_guid::character varying AS mine_guid,
      LEFT JOIN mine_commodity_code mcc ON mtdx.mine_commodity_code::text = mcc.mine_commodity_code::TEXT
      LEFT JOIN exemption_fee_status efs ON m.exemption_fee_status_code = efs.exemption_fee_status_code
   WHERE m.deleted_ind = false
-  GROUP BY p.permit_no, p.permit_guid, pa.issue_date, m.mine_guid, m.mine_name, m.mine_no, m.deleted_ind, efs.exemption_fee_status_code, efs.description, mos.description, mosr.description, mossr.description, mos.mine_operation_status_code, mosr.mine_operation_status_reason_code, mossr.mine_operation_status_sub_reason_code, ms.effective_date, pt.first_name, pt.party_name;
+  GROUP BY p.permit_no, p.permit_guid, pa.issue_date, m.mine_guid, m.mine_name, m.mine_no, m.deleted_ind, efs.exemption_fee_status_code, efs.description, mos.description, mosr.description, mossr.description, mos.mine_operation_status_code, mosr.mine_operation_status_reason_code, mossr.mine_operation_status_sub_reason_code, ms.effective_date, pt.first_name, pt.party_name, pt.party_guid;
