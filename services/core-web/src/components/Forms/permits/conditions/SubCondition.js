@@ -40,46 +40,28 @@ const SubCondition = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      {props.condition && props.condition.display_order !== 1 && (
-        <>
-          <Row gutter={32}>
-            <Col span={24}>&nbsp;</Col>
-          </Row>
-          <Row gutter={32}>
-            <Col span={24}>&nbsp;</Col>
-          </Row>
-        </>
-      )}
-      <Row gutter={[24, 32]}>
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
         {!isEditing && (
           <>
             <Col span={1} />
             <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
           </>
         )}
-        <Col span={props.isViewOnly ? 17 : 18}>
-          <Row>
-            <Col span={24}>{!isEditing && props.condition.condition}</Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              {isEditing && (
-                <SubConditionForm
-                  onCancel={() => {
-                    setIsEditing(!isEditing);
-                    props.setConditionEditingFlag(false);
-                    props.handleCancel(false);
-                  }}
-                  onSubmit={(values) =>
-                    props.handleSubmit(values).then(() => setIsEditing(!isEditing))
-                  }
-                  initialValues={props.condition || props.initialValues}
-                />
-              )}
-            </Col>
-          </Row>
+        <Col span={props.isViewOnly ? 18 : 19}>
+          {!isEditing && props.condition.condition}
+          {isEditing && (
+            <SubConditionForm
+              onCancel={() => {
+                setIsEditing(!isEditing);
+                props.setConditionEditingFlag(false);
+                props.handleCancel(false);
+              }}
+              onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+              initialValues={props.condition || props.initialValues}
+            />
+          )}
         </Col>
-        <Col span={4} className="float-right">
+        <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
@@ -163,14 +145,9 @@ const SubCondition = (props) => {
             isViewOnly={props.isViewOnly}
           />
         ))}
-      {props.condition && props.condition.sub_conditions.length === 0 && (
-        <Row gutter={32}>
-          <Col span={24}>&nbsp;</Col>
-        </Row>
-      )}
       {!isEditing && !props.isViewOnly && (
-        <Row gutter={32}>
-          <Col span={22} offset={2}>
+        <Row gutter={[8, 16]}>
+          <Col span={22} offset={1}>
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,

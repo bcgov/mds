@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import Condition from "@/components/Forms/permits/conditions/Condition";
-import SectionForm from "@/components/Forms/permits/conditions/SectionForm";
-import AddCondition from "./AddCondition";
+import SubConditionForm from "./SubConditionForm";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -35,28 +33,23 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const Section = (props) => {
+const NestedSubCondition = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      {props.condition &&
-        props.condition.sub_conditions.length === 0 &&
-        props.condition.display_order !== 1 && (
-          <Row gutter={32}>
-            <Col span={24}>&nbsp;</Col>
-          </Row>
-        )}
-      <Row gutter={[16, 24]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
-        {!isEditing && <Col span={props.isViewOnly ? 2 : 1}>{props.condition.step}</Col>}
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
         {!isEditing && (
-          <Col span={props.isViewOnly ? 17 : 18} className="field-title">
-            {props.condition.condition}
-          </Col>
+          <>
+            <Col span={3} />
+            <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
+          </>
         )}
+        <Col span={props.isViewOnly ? 16 : 15}>{!isEditing && props.condition.condition}</Col>
+
         {isEditing && (
-          <Col span={18}>
-            <SectionForm
+          <Col span={24}>
+            <SubConditionForm
               onCancel={() => {
                 setIsEditing(!isEditing);
                 props.setConditionEditingFlag(false);
@@ -67,13 +60,14 @@ const Section = (props) => {
             />
           </Col>
         )}
-        <Col span={4} className="float-right show-on-hover">
+
+        <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  className="no-margin"
                   ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => {
@@ -120,8 +114,8 @@ const Section = (props) => {
               </NOWActionWrapper>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  className="no-margin"
                   ghost
+                  className="no-margin"
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
@@ -151,32 +145,11 @@ const Section = (props) => {
             isViewOnly={props.isViewOnly}
           />
         ))}
-      {!isEditing && !props.isViewOnly && (
-        <Row gutter={32}>
-          <Col span={22}>
-            <AddCondition
-              initialValues={{
-                condition_category_code: props.condition.condition_category_code,
-                condition_type_code: "CON",
-                display_order:
-                  props.condition.sub_conditions.length === 0
-                    ? 1
-                    : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
-                parent_permit_condition_id: props.condition.permit_condition_id,
-                permit_amendment_id: props.condition.permit_amendment_id,
-              }}
-            />
-          </Col>
-        </Row>
-      )}
-      <Row gutter={32}>
-        <Col span={24}>&nbsp;</Col>
-      </Row>
     </>
   );
 };
 
-Section.propTypes = propTypes;
-Section.defaultProps = defaultProps;
+NestedSubCondition.propTypes = propTypes;
+NestedSubCondition.defaultProps = defaultProps;
 
-export default Section;
+export default NestedSubCondition;
