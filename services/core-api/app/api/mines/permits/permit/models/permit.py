@@ -100,10 +100,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def assessed_liability_total(self):
-        if self.permit_status_code == 'C':
-            return self.remaining_static_liability
-        else:
-            return sum([
+        return self.remaining_static_liability if self.remaining_static_liability is not None else sum(
+            [
                 pa.liability_adjustment for pa in self._all_permit_amendments
                 if pa.liability_adjustment
             ])
