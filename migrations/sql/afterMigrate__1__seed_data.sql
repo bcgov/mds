@@ -1331,6 +1331,7 @@ VALUES
 on conflict do nothing;
 
 
+-- UPDATE S&G SEED PARENTS
 INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
@@ -1387,7 +1388,7 @@ VALUES
   (32, 'SAG', 30, 'Washing of aggregates is not authorized.', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),   
 
   (33, 'SAG', 19, 'Activities must be conducted within the permit area illustrated by [Figure #] [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),            
-  (34, 'SAG', 19, 'This permit approval is valid until [approval end date].', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'), 
+  (34, 'SAG', 19, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'), 
   (35, 'SAG', 19, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),  
   (36, 'SAG', 19, 'Authorized activities are restricted to the following schedule [daily operating hours, or operating hours listed by day of week].', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),  
   (37, 'SAG', 19, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),   
@@ -1463,8 +1464,8 @@ VALUES
 -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (87, 'SAG', 15, '[X dollars] $<<bond_amt>> in security must be maintained with the Minister of Finance.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (88, 'SAG', 87, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (89, 'SAG', 88, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of [description of activity]: [$Dollar amount] for a subtotal of [$Dollar Amount]; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (90, 'SAG', 88, 'Within [Enter time] months following the start of construction of [description of activity]: [$Dollar Amount] for a total of [$Dollar Amount].', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (89, 'SAG', 88, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of [$Dollar Amount]; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (90, 'SAG', 88, 'Within [Enter time] months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
 
   (91, 'SAG', 16, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved work program. The surface of the land and watercourses must be reclaimed to the following end land use:  <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (92, 'SAG', 17, 'All available topsoil, overburden, and organic material including large woody debris in the disturbance footprint must be salvaged and stockpiled for use in reclamation.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
@@ -1475,15 +1476,16 @@ VALUES
   (97, 'SAG', 17, 'Progressive reclamation must be conducted whenever practicable. Reclamation activities must include:', 'RCC', 'CON', 6, 'system-mds', 'system-mds'),
   (98, 'SAG', 97, 'Compacted surfaces must be de-compacted to allow water infiltration and achieve self-staining vegetation.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (99, 'SAG', 97, 'Salvaged soil material must:', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
-  (100, 'SAG', 97, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (101, 'SAG', 97, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (102, 'SAG', 97, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
-  (103, 'SAG', 97, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
-  (104, 'SAG', 97, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
+
+  (100, 'SAG', 99, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (101, 'SAG', 99, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (102, 'SAG', 99, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
+  (103, 'SAG', 99, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
+  (104, 'SAG', 99, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
 
   (105, 'SAG', 18, 'Individual roads and trails will be exempted from the requirement for total reclamation if either:', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (105, 'SAG', 105, 'It can be demonstrated that an agency of the Crown has accepted responsibility in writing for the operation, maintenance and reclamation of the road or trail; or', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (105, 'SAG', 105, 'The Chief Permitting Officer provides notification that the road should not be reclaimed due to the use or potential use by other users who will assume liability.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds')
+  (106, 'SAG', 105, 'It can be demonstrated that an agency of the Crown has accepted responsibility in writing for the operation, maintenance and reclamation of the road or trail; or', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (107, 'SAG', 105, 'The Chief Permitting Officer provides notification that the road should not be reclaimed due to the use or potential use by other users who will assume liability.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 -- UPDATE PLA SEED PARENTS
@@ -1779,7 +1781,8 @@ VALUES
   (460, 'MIN', 410, 'In addition to [Document XX] – update as required), [First Nation’s Name]’s CFP must be implemented prior to commencement of work. All employees and contractors at the mine site must be trained on the [First Nation’s Name]’s CFP.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
   (461, 'MIN', 410, 'The recommendations provided in the document: [Name of Archeological Study document, Date (Author of document)] must be implemented.', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
   (462, 'MIN', 410, 'Prior to any ground disturbance, evaluation for archaeological potential in the area of work must be conducted by a qualified person. Any recommendations provided by a qualified person resulting from this evaluation must be implemented.', 'ELC', 'CON', 4, 'system-mds', 'system-mds'),
-  (463, 'MIN', 410, 'Prior to any ground disturbance, an Archaeological Overview Assessment (AOA) covering the planned work area(s) must be conducted. Preliminary Field Reconnaissance (PFR) must be conducted by a qualified person in areas of moderate to high archaeological potential that overlap planned disturbances. <<OR>> Prior to any ground disturbance, an Archaeological Overview Assessment (AOA) covering the planned work area(s) must be conducted. An Archaeological Impact Assessment (AIA) must be completed in areas of high archaeological potential that overlap planned disturbances.', 'ELC', 'CON', 5, 'system-mds', 'system-mds'),
+  (463, 'MIN', 410, 'Prior to any ground disturbance, an Archaeological Overview Assessment (AOA) covering the planned work area(s) must be conducted. Preliminary Field Reconnaissance (PFR) must be conducted by a qualified person in areas of moderate to high archaeological potential that overlap planned disturbances. <<OR>>', 'ELC', 'CON', 5, 'system-mds', 'system-mds'),
+  (464, 'MIN', 410, 'Prior to any ground disturbance, an Archaeological Overview Assessment (AOA) covering the planned work area(s) must be conducted. An Archaeological Impact Assessment (AIA) must be completed in areas of high archaeological potential that overlap planned disturbances.', 'ELC', 'CON', 6, 'system-mds', 'system-mds'),
 
   (465, 'MIN', 411, 'Garbage and other attractants must be removed from work sites daily and must either be incinerated or stored in an airtight container until removed from the mine site.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (466, 'MIN', 411, 'Water intakes must comply with the Freshwater Intake End-of-Pipe Fish Screen Guideline, 1995 (Department of Fisheries and Oceans), or most recent version thereof.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -2088,11 +2091,9 @@ VALUES
 
   (717, 'QCA', 716, 'Characterization of unauthorized discharges of sediment-laden run-off must include, at a minimum, flow, total suspended solids, turbidity, pH, conductivity, temperature, dissolved oxygen, and total and dissolved metals, of both the effluent and the receiving water.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
 
-  (718, 'QCA', 616, 'Water Management, Monitoring and Reporting', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
-  (719, 'QCA', 617, 'Condition of the Land', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
-  (720, 'QCA', 719, 'All equipment brought on to the site must be removed from the project area when the site is not active.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (721, 'QCA', 719, 'Derelict or damaged equipment, supplies, or materials must not be stored or otherwise left or abandoned anywhere on the mine site.', 'ELC', 'LIS', 2, 'system-mds', 'system-mds'),
-  (722, 'QCA', 719, 'When the site is not active, disturbed areas are to be left in a condition that is neat, clean and safe.', 'ELC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (720, 'QCA', 617, 'All equipment brought on to the site must be removed from the project area when the site is not active.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (721, 'QCA', 617, 'Derelict or damaged equipment, supplies, or materials must not be stored or otherwise left or abandoned anywhere on the mine site.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
+  (722, 'QCA', 617, 'When the site is not active, disturbed areas are to be left in a condition that is neat, clean and safe.', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
  
     -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (723, 'QCA', 618, 'The Permittee must maintain with the Minister of Finance security in the amount of [X dollars] $<<bond_amt>>.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
