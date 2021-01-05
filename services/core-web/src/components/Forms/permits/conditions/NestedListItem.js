@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
-import { maxBy } from "lodash";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import NestedListItem from "@/components/Forms/permits/conditions/NestedListItem";
-import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
-import SubConditionForm from "./SubConditionForm";
+import ListItemForm from "@/components/Forms/permits/conditions/ListItemForm";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -35,23 +32,18 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const NestedSubCondition = (props) => {
+const NestedListItem = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
       <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
-        {!isEditing && (
-          <>
-            <Col span={3} />
-            <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-          </>
-        )}
-        <Col span={props.isViewOnly ? 16 : 15}>{!isEditing && props.condition.condition}</Col>
-
-        {isEditing && (
-          <Col span={24}>
-            <SubConditionForm
+        {!isEditing && <Col span={4} />}
+        <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
+        <Col span={props.isViewOnly ? 14 : 15}>
+          {!isEditing && props.condition.condition}
+          {isEditing && (
+            <ListItemForm
               onCancel={() => {
                 setIsEditing(!isEditing);
                 props.setConditionEditingFlag(false);
@@ -60,9 +52,8 @@ const NestedSubCondition = (props) => {
               onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
               initialValues={props.condition || props.initialValues}
             />
-          </Col>
-        )}
-
+          )}
+        </Col>
         <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
@@ -135,42 +126,11 @@ const NestedSubCondition = (props) => {
           )}
         </Col>
       </Row>
-      {props.condition &&
-        props.condition.sub_conditions.map((condition) => (
-          <NestedListItem
-            condition={condition}
-            reorderConditions={props.reorderConditions}
-            handleSubmit={props.handleSubmit}
-            handleDelete={props.handleDelete}
-            setConditionEditingFlag={props.setConditionEditingFlag}
-            editingConditionFlag={props.editingConditionFlag}
-            isViewOnly={props.isViewOnly}
-          />
-        ))}
-      {!isEditing && !props.isViewOnly && (
-        <Row gutter={[8, 16]}>
-          <Col span={22} offset={3}>
-            <AddCondition
-              initialValues={{
-                condition_category_code: props.condition.condition_category_code,
-                condition_type_code: "CON",
-                display_order:
-                  props.condition.sub_conditions.length === 0
-                    ? 1
-                    : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
-                parent_permit_condition_id: props.condition.permit_condition_id,
-                permit_amendment_id: props.condition.permit_amendment_id,
-                alternateTitle: "Add Sub-List Item",
-              }}
-            />
-          </Col>
-        </Row>
-      )}
     </>
   );
 };
 
-NestedSubCondition.propTypes = propTypes;
-NestedSubCondition.defaultProps = defaultProps;
+NestedListItem.propTypes = propTypes;
+NestedListItem.defaultProps = defaultProps;
 
-export default NestedSubCondition;
+export default NestedListItem;
