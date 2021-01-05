@@ -40,7 +40,7 @@ const SubCondition = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && (
           <>
             <Col span={1} />

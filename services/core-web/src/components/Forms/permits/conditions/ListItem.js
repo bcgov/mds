@@ -40,7 +40,7 @@ const ListItem = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && <Col span={2} />}
         <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
         <Col span={props.isViewOnly ? 16 : 17}>
@@ -155,8 +155,8 @@ const ListItem = (props) => {
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
-                alternateTitle: "Add Sub-List Item",
               }}
+              alternateTitle="Add Secondary Item"
             />
           </Col>
         </Row>

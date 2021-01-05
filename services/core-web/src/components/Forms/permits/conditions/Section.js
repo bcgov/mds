@@ -47,7 +47,7 @@ const Section = (props) => {
             <Col span={24}>&nbsp;</Col>
           </Row>
         )}
-      <Row gutter={[16, 24]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
+      <Row gutter={[16, 24]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && <Col span={props.isViewOnly ? 2 : 1}>{props.condition.step}</Col>}
         {!isEditing && (
           <Col span={props.isViewOnly ? 17 : 18} className="field-title">

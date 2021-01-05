@@ -88,7 +88,7 @@ export class NOWPermitGeneration extends Component {
     }
 
     if (nextProps.noticeOfWork.contacts !== this.props.noticeOfWork.contacts) {
-      const permittee = nextProps.noticeOfWork.contacts.filter(
+      const permittee = nextProps.noticeOfWork?.contacts?.filter(
         (contact) => contact.mine_party_appt_type_code_description === "Permittee"
       )[0];
       this.setState({ permittee });

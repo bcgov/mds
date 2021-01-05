@@ -37,7 +37,7 @@ const NestedListItem = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && <Col span={4} />}
         <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
         <Col span={props.isViewOnly ? 14 : 15}>

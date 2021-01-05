@@ -69,8 +69,8 @@ export class AddCondition extends Component {
   };
 
   render = () => {
-    const title = this.props.initialValues.alternateTitle
-      ? this.props.initialValues.alternateTitle
+    const title = this.props.alternateTitle
+      ? this.props.alternateTitle
       : ButtonText(this.props.initialValues.condition_type_code);
     return (
       <>

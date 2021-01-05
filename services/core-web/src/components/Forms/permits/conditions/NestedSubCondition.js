@@ -40,7 +40,7 @@ const NestedSubCondition = (props) => {
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? " " : "hover-row"}>
+      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && (
           <>
             <Col span={3} />
@@ -153,15 +153,15 @@ const NestedSubCondition = (props) => {
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,
-                condition_type_code: "CON",
+                condition_type_code: "LIS",
                 display_order:
                   props.condition.sub_conditions.length === 0
                     ? 1
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
-                alternateTitle: "Add Sub-List Item",
               }}
+              alternateTitle="Add Tertiary Item"
             />
           </Col>
         </Row>

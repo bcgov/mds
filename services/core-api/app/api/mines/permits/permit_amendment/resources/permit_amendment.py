@@ -189,9 +189,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 now_type = application_identity.now_application.notice_of_work_type_code
                 condition_code = now_type
 
-                if now_type == "QCA" or now_type == "QIM":
+                if now_type == "QIM":
                     condition_code = "QCA"
-                elif now_type == "MIN" or now_type == "COL":
+                elif now_type == "COL":
                     condition_code = "MIN"
 
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
