@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 from flask_restplus import Resource, reqparse, inputs
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -143,7 +145,15 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
             #TODO: Documents / CRR
             # Update NoW application and save status
-            now_application_identity.now_application.status_updated_date = datetime.today()
+            if now_application_status_code == 'REJ':
+                for progress in now_application_identity.now_application.application_progress:
+                    current_app.logger.debug(datetime.utcnow())
+                    current_app.logger.debug(progress.start_date)
+                    progress.end_date = datetime.utcnow()
+                for delay in now_application_identity.application_delays:
+                    delay.end_date = datetime.utcnow()
+
+            now_application_identity.now_application.status_updated_date = datetime.utcnow()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
             now_application_identity.save()

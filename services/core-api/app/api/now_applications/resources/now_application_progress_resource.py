@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import request
+from flask import request, current_app
 from sqlalchemy.orm import validates
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit
@@ -71,8 +71,8 @@ class NOWApplicationProgressResource(Resource, UserMixin):
 
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
-
-        existing_now_progress.end_date = data['end_date']
+        # current_app.logger.debug(data['end_date'])
+        existing_now_progress.end_date = datetime.utcnow()
         existing_now_progress.save()
 
         return existing_now_progress, 200
