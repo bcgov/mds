@@ -17,7 +17,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       <div
         className="field-title"
       >
-        Assessed Liability
+        Assessed Liability Adjustment
         <CoreTooltip
           title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
         />

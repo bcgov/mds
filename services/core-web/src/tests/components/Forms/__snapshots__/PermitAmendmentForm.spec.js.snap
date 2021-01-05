@@ -48,7 +48,7 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       </FormItem>
       <FormItem
         hasFeedback={false}
-        label="Assessed Liability"
+        label="Assessed Liability Adjustment"
       >
         <p
           className="p-light"
