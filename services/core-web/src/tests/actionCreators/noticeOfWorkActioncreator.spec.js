@@ -136,13 +136,15 @@ describe("`fetchOriginalNoticeOfWorkApplication` action creator", () => {
 describe("`updateNoticeOfWorkApplication` action creator", () => {
   const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
   const payload = {};
+  const message = "Successful";
   const url = `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_APPLICATION(applicationGuid)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
     return updateNoticeOfWorkApplication(
       payload,
-      applicationGuid
+      applicationGuid,
+      message
     )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);

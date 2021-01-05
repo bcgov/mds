@@ -9,6 +9,47 @@ from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, 
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES, NOW_APPLICATION_DELAY_TYPE
 from app.api.securities.response_models import BOND_STATUS, BOND_TYPE, BOND_DOCUMENT_TYPE
 
+MINE_SUMMARY_MODEL = api.model(
+    'MineSummaryModel', {
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'mine_name': fields.String,
+        'mine_number': fields.String,
+        'mine_region': fields.String,
+        'major_mine_ind': fields.String,
+        'major_mine_d': fields.String,
+        'operation_status_code': fields.String,
+        'operation_status': fields.String,
+        'mine_operation_status_code': fields.String,
+        'mine_operation_status_d': fields.String,
+        'mine_operation_status_reason_code': fields.String,
+        'mine_operation_status_reason_d': fields.String,
+        'mine_operation_status_sub_reason_code': fields.String,
+        'mine_operation_status_sub_reason_d': fields.String,
+        'mine_date': fields.String,
+        'status_date': fields.String,
+        'tenure_type_code': fields.String,
+        'tenure': fields.String,
+        'commodity_type_code': fields.String,
+        'commodity': fields.String,
+        'disturbance_type_code': fields.String,
+        'disturbance': fields.String,
+        'permit_no': fields.String,
+        'permittee_name': fields.String,
+        'permittee_party_guid': fields.String,
+        'mine_latitude': fields.String,
+        'mine_longitude': fields.String,
+        'bcmi_url': fields.String,
+        'mine_exemption_fee_status_code': fields.String,
+        'mine_exemption_fee_status_d': fields.String,
+        'permittee_address_suite': fields.String,
+        'permittee_address_line_1': fields.String,
+        'permittee_address_line_2': fields.String,
+        'permittee_address_city': fields.String,
+        'permittee_address_post_code': fields.String,
+        'permittee_address_prov': fields.String,
+    })
+
 STATIC_CONTENT_MODEL = api.model(
     'StaticContentModel', {
         'mineDisturbanceOptions':
@@ -102,9 +143,8 @@ STATIC_CONTENT_MODEL = api.model(
         'permitConditionCategoryOptions':
         fields.List(
             fields.Nested(PERMIT_CONDITION_CATEGORY_MODEL), attribute='PermitConditionCategory'),
-        'partyBusinessRoleOptions':fields.List(
-            fields.Nested(PARTY_BUSINESS_ROLE), attribute='PartyBusinessRoleCode'),
+        'partyBusinessRoleOptions':
+        fields.List(fields.Nested(PARTY_BUSINESS_ROLE), attribute='PartyBusinessRoleCode'),
         'noticeOfWorkApplicationDelayOptions':
-        fields.List(
-            fields.Nested(NOW_APPLICATION_DELAY_TYPE), attribute='NOWApplicationDelayType'),
+        fields.List(fields.Nested(NOW_APPLICATION_DELAY_TYPE), attribute='NOWApplicationDelayType'),
     })

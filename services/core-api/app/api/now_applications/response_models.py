@@ -180,10 +180,9 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
     'NOWApplicationSurfaceBulkSample', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'processing_method_description': fields.String,
+        'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'has_bedrock_excavation': fields.Boolean,
-        'spontaneous_combustion_handling': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
