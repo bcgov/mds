@@ -65,6 +65,7 @@ class PermitListResource(Resource, UserMixin):
         help='Whether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('remaining_liability', type=str, location='json', store_missing=True)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -217,6 +218,7 @@ class PermitResource(Resource, UserMixin):
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument('remaining_liability', type=str, location='json', store_missing=True)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -242,6 +244,10 @@ class PermitResource(Resource, UserMixin):
             if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
                 continue     # non-editable fields from put
             setattr(permit, key, value)
+
+        # TODO: Confirm desired behavior
+        if data.get('permit_status_code') != 'C':
+            permit.remaining_liability = None
 
         permit.save()
         return permit

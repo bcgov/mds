@@ -154,6 +154,7 @@ PERMIT_MODEL = api.model(
         'current_permittee': fields.String,
         'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+        'remaining_liability': fields.Fixed(description='Currency', decimals=2),
         'assessed_liability_total': fields.Float,
         'confiscated_bond_total': fields.Float,
         'active_bond_total': fields.Float,

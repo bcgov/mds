@@ -2,15 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { required, validateSelectOptions, number } from "@common/utils/Validate";
+import { resetForm, currencyMask } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
+import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -19,7 +20,10 @@ const propTypes = {
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  permitStatusCode: PropTypes.string.isRequired,
 };
+
+const selector = formValueSelector(FORM.EDIT_PERMIT);
 
 export const EditPermitForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -36,6 +40,18 @@ export const EditPermitForm = (props) => (
             validate={[required, validateSelectOptions(props.permitStatusOptions)]}
           />
         </Form.Item>
+        {props.permitStatusCode === "C" && (
+          <Form.Item>
+            <Field
+              id="remaining_liability"
+              name="remaining_liability"
+              label="Remaining liability*"
+              component={renderConfig.FIELD}
+              {...currencyMask}
+              validate={[number, required]}
+            />
+          </Form.Item>
+        )}
       </Col>
     </Row>
     <div className="right center-mobile">
@@ -63,6 +79,7 @@ EditPermitForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
+    permitStatusCode: selector(state, "permit_status_code"),
   })),
   reduxForm({
     form: FORM.EDIT_PERMIT,

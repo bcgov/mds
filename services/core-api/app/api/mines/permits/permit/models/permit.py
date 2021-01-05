@@ -52,6 +52,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     permit_no_sequence = db.Column(db.Integer)
     is_exploration = db.Column(db.Boolean)
+    remaining_liability = db.Column(db.Numeric(16, 2))
 
     bonds = db.relationship(
         'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
@@ -97,7 +98,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def assessed_liability_total(self):
-        return sum([
+        return self.remaining_liability if self.remaining_liability is not None else sum([
             pa.security_adjustment for pa in self._all_permit_amendments if pa.security_adjustment
         ])
 

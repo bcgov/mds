@@ -1,0 +1,1 @@
+ALTER TABLE permit ADD COLUMN IF NOT EXISTS remaining_liability numeric;
