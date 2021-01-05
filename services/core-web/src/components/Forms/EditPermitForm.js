@@ -45,7 +45,7 @@ export const EditPermitForm = (props) => (
               id="remaining_static_liability"
               name="remaining_static_liability"
               label="Remaining outstanding liability amount (if any)"
-              placeholder="0"
+              placeholder="$0.00"
               {...currencyMask}
               component={RenderField}
               validate={[currency]}
