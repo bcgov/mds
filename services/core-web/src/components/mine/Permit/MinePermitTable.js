@@ -200,7 +200,7 @@ const columns = [
             </div>
           </AuthorizationWrapper>
           <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
-            <Menu.Item key="2">
+            <div className="custom-menu-item">
               <button
                 type="button"
                 className="full"
@@ -216,7 +216,7 @@ const columns = [
                 />
                 Edit Permit Status
               </button>
-            </Menu.Item>
+            </div>
           </AuthorizationWrapper>
           <div className="custom-menu-item" key="3">
             <button
