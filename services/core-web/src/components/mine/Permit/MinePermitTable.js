@@ -199,23 +199,25 @@ const columns = [
               </button>
             </div>
           </AuthorizationWrapper>
-          <Menu.Item key="2">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) =>
-                record.openEditPermitModal(event, record.permit, record.description)
-              }
-            >
-              <img
-                alt="document"
-                className="padding-sm"
-                src={EDIT_OUTLINE_VIOLET}
-                style={{ paddingRight: "15px" }}
-              />
-              Edit Permit Status
-            </button>
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+            <Menu.Item key="2">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  record.openEditPermitModal(event, record.permit, record.description)
+                }
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Edit Permit Status
+              </button>
+            </Menu.Item>
+          </AuthorizationWrapper>
           <div className="custom-menu-item" key="3">
             <button
               type="button"
