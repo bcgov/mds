@@ -54,17 +54,24 @@ def clean_nris_xml_import():
 
 
 def import_nris_xml():
-    dsn_tns = cx_Oracle.makedsn(
-        current_app.config['NRIS_DB_HOSTNAME'],
-        current_app.config['NRIS_DB_PORT'],
-        service_name=current_app.config['NRIS_DB_SERVICENAME'])
+    dsn = f'(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST={current_app.config["NRIS_DB_HOSTNAME"]})(PORT={current_app.config["NRIS_DB_PORT"]}))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={current_app.config["NRIS_DB_SERVICENAME"]}))(SECURITY=(ssl_server_cert_dn="{current_app.config["NRIS_SERVER_CERT_DN"]}")))'
     oracle_db = cx_Oracle.connect(
         user=current_app.config['NRIS_DB_USER'],
         password=current_app.config['NRIS_DB_PASSWORD'],
-        dsn=dsn_tns)
+        dsn=dsn)
+
+    # TODO: Remove this block once we can confirm the connection is using TCPS
+    current_app.logger.info('NRIS DB connection type:')
+    cursor = oracle_db.cursor()
+    cursor.execute(
+        "SELECT sys_context('USERENV', 'NETWORK_PROTOCOL') as network_protocol FROM dual")
+    results = cursor.fetchall()
+    for result in results:
+        current_app.logger.info(result)
+    cursor.close()
 
     cursor = oracle_db.cursor()
-
+    # TODO: Change this to EMLI if and when it is updated.
     cursor.execute(
         "select xml_document from CORS.CORS_CV_ASSESSMENTS_XVW where business_area = 'EMPR'")
 

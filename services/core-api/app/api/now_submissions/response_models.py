@@ -61,10 +61,15 @@ CONTACT = api.model(
 DOCUMENT = api.model(
     'DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
+        'document_manager_document_guid': fields.String,
+        'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean
     })
 
 PLACER_ACTIVITY = api.model(
@@ -330,7 +335,8 @@ APPLICATION = api.model(
         'recreationuse': fields.String,
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
-        'isonprivateland': fields.String,
+        'hasarchaeologicalprotectionplan':fields.String,
+        'isonprivateland':fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
@@ -344,7 +350,6 @@ APPLICATION = api.model(
         'isaccessgated': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'bedrockexcavation': fields.String,
-        'spontaneouscombustionhandling': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'proposedactivites': fields.String,
         'applicant': fields.Nested(CLIENT),

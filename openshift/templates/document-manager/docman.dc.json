@@ -63,49 +63,68 @@
       "value": "object-store-credentials"
     },
     {
+      "name": "CORE_API_AUTHORIZATION",
+      "value": "core-api-authorization"
+    },
+    {
+      "name": "CORE_API_URL",
+      "required": true
+    },
+    {
       "name": "CPU_LIMIT",
       "value": "200m"
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1Gi"
+      "value": "1.5Gi"
     },
     {
       "name": "CPU_REQUEST",
-      "value": "150m"
+      "value": "225m"
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "768Mi"
+      "value": "1152Mi"
     },
     {
       "name": "UWSGI_PROCESSES",
-      "value": "2"
+      "value": "4"
     },
     {
       "name": "UWSGI_THREADS",
-      "value": "4"
+      "value": "6"
     },
     {
       "name": "REPLICA_MIN",
-      "value": "2"
-    },
-    {
-      "name": "REPLICA_MAX",
-      "value": "4"
-    },
-    {
-      "name": "MDS_ELASTIC_SECRET",
-      "required": false,
-      "value": "template.mds-elastic-secret"
-    },
-    {
-      "name": "ELASTIC_ENABLED",
       "value": "1"
     },
     {
-      "name": "ELASTIC_SERVICE_NAME",
-      "value": "MDS Document Manager Dev"
+      "name": "REPLICA_MAX",
+      "value": "3"
+    },
+    {
+      "name": "WORKER_CPU_REQUEST",
+      "value": "200m"
+    },
+    {
+      "name": "WORKER_MEMORY_LIMIT",
+      "value": "1.5Gi"
+    },
+    {
+      "name": "WORKER_CPU_LIMIT",
+      "value": "225m"
+    },
+    {
+      "name": "WORKER_MEMORY_REQUEST",
+      "value": "1152Mi"
+    },
+    {
+      "name": "WORKER_REPLICA_MIN",
+      "value": "1"
+    },
+    {
+      "name": "WORKER_REPLICA_MAX",
+      "value": "1"
     },
     {
       "name": "REDIS_CONFIG_NAME",
@@ -278,42 +297,12 @@
                     }
                   },
                   {
-                    "name": "NRIS_DB_PORT",
-                    "value": "1521"
-                  },
-                  {
                     "name": "UWSGI_PROCESSES",
                     "value": "${UWSGI_PROCESSES}"
                   },
                   {
                     "name": "UWSGI_THREADS",
                     "value": "${UWSGI_THREADS}"
-                  },
-                  {
-                    "name": "ELASTIC_ENABLED",
-                    "value": "${ELASTIC_ENABLED}"
-                  },
-                  {
-                    "name": "ELASTIC_SERVICE_NAME",
-                    "value": "${ELASTIC_SERVICE_NAME}"
-                  },
-                  {
-                    "name": "ELASTIC_SECRET_TOKEN",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "secret-token"
-                      }
-                    }
-                  },
-                  {
-                    "name": "ELASTIC_SERVER_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "server-url"
-                      }
-                    }
                   },
                   {
                     "name": "FLASK_RUN_PORT",
@@ -405,6 +394,50 @@
                     }
                   },
                   {
+                    "name": "CORE_API_URL",
+                    "value": "${CORE_API_URL}"
+                  },
+                  {
+                    "name": "AUTHENTICATION_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "authentication-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "GRANT_TYPE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "grant-type"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  },
+                  {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
                   },
@@ -438,6 +471,343 @@
                     "path": "${BASE_PATH}/health",
                     "port": 5001,
                     "scheme": "HTTP"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                  {
+                    "mountPath": "/opt/app-root/src/document_uploads",
+                    "name": "mds-document-storage-data"
+                  }
+                ],
+                "imagePullPolicy": "Always"
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst",
+            "securityContext": {},
+            "volumes": [
+              {
+                "name": "mds-document-storage-data",
+                "persistentVolumeClaim": {
+                  "claimName": "mds-document-storage${SUFFIX}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-worker${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Defines how to deploy the celery task worker"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling",
+          "rollingParams": {
+            "maxSurge": "50%",
+            "maxUnavailable": 1,
+            "timeoutSeconds": 1200
+          },
+          "activeDeadlineSeconds": 21600
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": ["worker"],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${NAME}:${VERSION}"
+              }
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": "${{WORKER_REPLICA_MIN}}",
+        "test": false,
+        "selector": {
+          "name": "${NAME}-worker${SUFFIX}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}-worker${SUFFIX}",
+            "creationTimestamp": null,
+            "labels": {
+              "name": "${NAME}-worker${SUFFIX}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "worker",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 5001,
+                    "protocol": "TCP"
+                  }
+                ],
+                "command": ["/opt/app-root/src/celery.sh"],
+                "env": [
+                  {
+                    "name": "DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-docman-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_HOST",
+                    "value": "${DB_HOST}"
+                  },
+                  {
+                    "name": "DB_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "docman-user-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${DB_CONFIG_NAME}",
+                        "key": "database-name"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_DB_PORT",
+                    "value": "1521"
+                  },
+                  {
+                    "name": "UWSGI_PROCESSES",
+                    "value": "${UWSGI_PROCESSES}"
+                  },
+                  {
+                    "name": "UWSGI_THREADS",
+                    "value": "${UWSGI_THREADS}"
+                  },
+                  {
+                    "name": "FLASK_RUN_PORT",
+                    "value": "5001"
+                  },
+                  {
+                    "name": "FLASK_RUN_HOST",
+                    "value": "0.0.0.0"
+                  },
+                  {
+                    "name": "CACHE_REDIS_HOST",
+                    "value": "${CACHE_REDIS_HOST}"
+                  },
+                  {
+                    "name": "CACHE_REDIS_PASS",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${REDIS_CONFIG_NAME}",
+                        "key": "database-password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "JWT_OIDC_WELL_KNOWN_CONFIG",
+                    "value": "${JWT_OIDC_WELL_KNOWN_CONFIG}"
+                  },
+                  {
+                    "name": "JWT_OIDC_AUDIENCE",
+                    "value": "${JWT_OIDC_AUDIENCE}"
+                  },
+                  {
+                    "name": "JWT_OIDC_ALGORITHMS",
+                    "value": "RS256"
+                  },
+                  {
+                    "name": "BASE_PATH",
+                    "value": "${BASE_PATH}"
+                  },
+                  {
+                    "name": "DOCUMENT_MANAGER_URL",
+                    "value": "${API_URL}"
+                  },
+                  {
+                    "name": "UPLOADED_DOCUMENT_DEST",
+                    "value": "${UPLOADED_DOCUMENT_DEST}"
+                  },
+                  {
+                    "name": "ENVIRONMENT_NAME",
+                    "value": "${ENVIRONMENT_NAME}"
+                  },
+                  {
+                    "name": "OBJECT_STORE_ENABLED",
+                    "value": "${OBJECT_STORE_ENABLED}"
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "key-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "secret-access-key"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_BUCKET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "bucket-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${OBJECT_STORE_SECRET_NAME}",
+                        "key": "endpoint"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CORE_API_URL",
+                    "value": "${CORE_API_URL}"
+                  },
+                  {
+                    "name": "AUTHENTICATION_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "authentication-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "client-secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "GRANT_TYPE",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CORE_API_AUTHORIZATION}",
+                        "key": "grant-type"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  },
+                  {
+                    "name": "NROS_TOKEN_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "token-url"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "client-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NROS_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-nros-now-secret",
+                        "key": "secret"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-vfcbc-client-service",
+                        "key": "service-client"
+                      }
+                    }
+                  },
+                  {
+                    "name": "VFCBC_CLIENT_SECRET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "template.mds-vfcbc-client-service",
+                        "key": "password"
+                      }
+                    }
+                  },
+                  {
+                    "name": "S3_PREFIX",
+                    "value": "mds-files-${VERSION}/"
+                  },
+                  {
+                    "name": "TUSD_URL",
+                    "value": "${TUSD_URL}"
+                  },
+                  {
+                    "name": "CELERY_REST_API_URL",
+                    "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "${WORKER_CPU_LIMIT}",
+                    "memory": "${WORKER_MEMORY_LIMIT}"
+                  },
+                  "requests": {
+                    "cpu": "${WORKER_CPU_REQUEST}",
+                    "memory": "${WORKER_MEMORY_REQUEST}"
                   }
                 },
                 "terminationMessagePath": "/dev/termination-log",
@@ -508,6 +878,33 @@
         ],
         "selector": {
           "name": "${NAME}${SUFFIX}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-worker${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": null,
+        "annotations": {
+          "description": "Exposes and load balances the application pods"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 5555,
+            "targetPort": 5555
+          }
+        ],
+        "selector": {
+          "name": "${NAME}-worker${SUFFIX}"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"

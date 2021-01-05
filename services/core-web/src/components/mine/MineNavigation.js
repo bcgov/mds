@@ -26,7 +26,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Mine Information
-              <DownOutlined className="padding-small--left" />
+              <DownOutlined className="padding-sm--left" />
             </span>
           }
         >
@@ -46,7 +46,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Permits & Approvals
-              <DownOutlined className="padding-small--left" />
+              <DownOutlined className="padding-sm--left" />
             </span>
           }
         >
@@ -76,7 +76,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Oversight
-              <DownOutlined className="padding-small--left" />
+              <DownOutlined className="padding-sm--left" />
             </span>
           }
         >
@@ -98,7 +98,7 @@ export class MineNavigation extends Component {
           title={
             <span>
               Reports
-              <DownOutlined className="padding-small--left" />
+              <DownOutlined className="padding-sm--left" />
             </span>
           }
         >
@@ -106,6 +106,13 @@ export class MineNavigation extends Component {
             <Menu.Item key="code-required-reports">
               <Link to={routes.MINE_REPORTS.dynamicRoute(this.props.mine.mine_guid)}>
                 Code Required Reports
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="permit-required-reports">
+              <Link
+                to={routes.MINE_PERMIT_REQUIRED_REPORTS.dynamicRoute(this.props.mine.mine_guid)}
+              >
+                Permit Required Reports
               </Link>
             </Menu.Item>
             {isTailingsVisible && (

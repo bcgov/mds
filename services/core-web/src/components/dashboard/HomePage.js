@@ -129,16 +129,17 @@ export class HomePage extends Component {
                     rel="noopener noreferrer"
                     title="Not set up to use this? Contact the GIS team."
                   >
-                    EMPR Inspection Mapper
+                    EMLI Inspection Mapper
                   </a>
                 </li>
                 <li>
+                  {/* TODO: Change this to be the correct URL, if and when they change EMPR to EMLI */}
                   <a
                     href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    EMPR Sharepoint Requests Portal
+                    EMLI Sharepoint Requests Portal
                   </a>
                 </li>
                 <li>

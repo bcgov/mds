@@ -1,5 +1,7 @@
 import { isEmpty } from "lodash";
 import { createSelector } from "reselect";
+import moment from "moment";
+import { getDurationTextInDays } from "@common/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
 import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
 
@@ -8,8 +10,10 @@ export const {
   getNoticeOfWorkPageData,
   getNoticeOfWork,
   getOriginalNoticeOfWork,
+  getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
   getDocumentDownloadState,
+  getApplicationDelays,
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(
@@ -40,3 +44,59 @@ export const getNOWReclamationSummary = createSelector(
     return reclamationList;
   }
 );
+
+const getAmountSum = (arr) => arr.reduce((sum, ar) => +sum + +ar, 0);
+export const getTotalApplicationDelayDuration = createSelector([getApplicationDelays], (delays) => {
+  const today = new Date();
+  const totalArr = [];
+  delays.map((delay) => {
+    const endDate = delay.end_date ? delay.end_date : today;
+    const delayDuration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
+    // eslint-disable-next-line no-underscore-dangle
+    return totalArr.push(delayDuration._milliseconds);
+  });
+  const total = getAmountSum(totalArr);
+  const newMoment = moment.duration(total, "milliseconds");
+  return { duration: getDurationTextInDays(newMoment), milliseconds: total };
+});
+
+export const getNOWProgress = createSelector(
+  [getNoticeOfWork, getTotalApplicationDelayDuration],
+  (noticeOfWork, delayDurations) => {
+    const today = new Date();
+    let progress = {};
+    if (noticeOfWork.application_progress.length > 0) {
+      progress = noticeOfWork.application_progress.reduce((map, obj) => {
+        const endDate = obj.end_date ? obj.end_date : today;
+        const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
+        // eslint-disable-next-line no-underscore-dangle
+        const difference = duration._milliseconds - delayDurations.milliseconds;
+        const durationDifference = moment.duration(difference, "milliseconds");
+        return {
+          [obj.application_progress_status_code]: {
+            ...obj,
+            duration: getDurationTextInDays(duration),
+            durationWithoutDelays: getDurationTextInDays(durationDifference),
+          },
+          ...map,
+        };
+      }, {});
+    }
+    return progress;
+  }
+);
+
+export const getApplicationDelay = createSelector([getApplicationDelays], (delays) => {
+  const currentDelay = delays.filter((delay) => delay.end_date === null)[0];
+  return currentDelay;
+});
+
+export const getApplicationDelaysWithDuration = createSelector([getApplicationDelays], (delays) => {
+  const today = new Date();
+  const delayWithDuration = delays.map((delay) => {
+    const endDate = delay.end_date ? delay.end_date : today;
+    const duration = moment.duration(moment(endDate).diff(moment(delay.start_date)));
+    return { duration: getDurationTextInDays(duration), ...delay };
+  });
+  return delayWithDuration;
+});

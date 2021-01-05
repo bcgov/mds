@@ -31,7 +31,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
     signature = db.Column(db.String, nullable=True)
-    now_party_appt = db.relationship('NOWPartyAppointment', lazy='joined')
+    now_party_appt = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        "and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)"
+    )
 
     business_role_appts = db.relationship(
         'PartyBusinessRoleAppointment',
@@ -45,6 +50,17 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def name(self):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
+
+    @hybrid_property
+    def phone(self):
+        if (self.phone_no is not None):
+            return self.phone_no + (f' x{self.phone_ext}' if self.phone_ext else '')
+        else:
+            return None
+
+    @hybrid_property
+    def first_address(self):
+        return self.address[0] if self.address else None
 
     @hybrid_property
     def business_roles_codes(self):
@@ -118,24 +134,24 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def create(
-        cls,
+            cls,
                                                  # Required fields
-        party_name,
-        phone_no,
-        party_type_code,
+            party_name,
+            phone_no,
+            party_type_code,
                                                  # Optional fields
-        address_type_code=None,
+            address_type_code=None,
                                                  # Nullable fields
-        email=None,
-        first_name=None,
-        phone_ext=None,
-        suite_no=None,
-        address_line_1=None,
-        address_line_2=None,
-        city=None,
-        sub_division_code=None,
-        post_code=None,
-        add_to_session=True):
+            email=None,
+            first_name=None,
+            phone_ext=None,
+            suite_no=None,
+            address_line_1=None,
+            address_line_2=None,
+            city=None,
+            sub_division_code=None,
+            post_code=None,
+            add_to_session=True):
         party = cls(
                                                  # Required fields
             party_name=party_name,

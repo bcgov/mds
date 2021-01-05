@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import ListItemForm from "@/components/Forms/permits/conditions/ListItemForm";
 
@@ -62,7 +62,7 @@ const ListItem = (props) => {
         <Col span={4} className="float-right">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -75,8 +75,8 @@ const ListItem = (props) => {
                 >
                   <UpOutlined />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -89,8 +89,8 @@ const ListItem = (props) => {
                 >
                   <DownOutlined />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -109,8 +109,8 @@ const ListItem = (props) => {
                     alt="Edit Condition"
                   />
                 </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              </NOWActionWrapper>
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -126,7 +126,7 @@ const ListItem = (props) => {
                     alt="Remove Condition"
                   />
                 </Button>
-              </AuthorizationWrapper>
+              </NOWActionWrapper>
             </div>
           )}
         </Col>

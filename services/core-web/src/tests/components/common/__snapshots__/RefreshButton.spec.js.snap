@@ -13,6 +13,5 @@ exports[`RefreshButton renders properly 1`] = `
   <ForwardRef(SyncOutlined)
     className="icon-sm"
   />
-  /&gt;
 </Button>
 `;

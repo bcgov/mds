@@ -7,7 +7,12 @@ import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
+import {
+  required,
+  dateNotInFuture,
+  maxLength,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import { getDropdownPermitStatusOptions } from "@common/selectors/staticContentSelectors";
 import { renderConfig } from "@/components/common/config";
@@ -61,7 +66,7 @@ const selector = formValueSelector(FORM.ADD_PERMIT);
 
 const validateBusinessRules = (values) => {
   const errors = {};
-  if (values.permit_is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
+  if (values.is_exploration && !(values.permit_type === "C" || values.permit_type === "M")) {
     errors.permit_type = "Exploration is only valid for Coal and Placer permits";
   }
   return errors;
@@ -105,7 +110,7 @@ export class AddPermitForm extends Component {
                 label="Permit type*"
                 placeholder="Select a permit type"
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={[required, validateSelectOptions(permitTypes)]}
                 data={permitTypes}
               />
             </Form.Item>
@@ -114,8 +119,8 @@ export class AddPermitForm extends Component {
               this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
-                  id="permit_is_exploration"
-                  name="permit_is_exploration"
+                  id="is_exploration"
+                  name="is_exploration"
                   label="Exploration permit"
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
@@ -143,7 +148,7 @@ export class AddPermitForm extends Component {
                 placeholder="Select a permit status"
                 component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.permitStatusOptions)]}
               />
             </Form.Item>
             <Form.Item>
@@ -202,7 +207,7 @@ export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
-    permitIsExploration: selector(state, "permit_is_exploration"),
+    permitIsExploration: selector(state, "is_exploration"),
   })),
   reduxForm({
     form: FORM.ADD_PERMIT,

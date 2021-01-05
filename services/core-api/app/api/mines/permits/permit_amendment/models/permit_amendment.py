@@ -5,6 +5,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
@@ -32,9 +33,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         db.String(3), db.ForeignKey('permit_amendment_status_code.permit_amendment_status_code'))
     permit_amendment_type_code = db.Column(
         db.String(3), db.ForeignKey('permit_amendment_type_code.permit_amendment_type_code'))
-    description = db.Column(db.String, nullable=True)
-    lead_inspector_title = db.Column(db.String, nullable=True)
-    regional_office = db.Column(db.String, nullable=True)
+    description = db.Column(db.String)
+    issuing_inspector_title = db.Column(db.String)
+    regional_office = db.Column(db.String)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',
@@ -46,6 +47,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     # This value is added to previous amendments to create the new total assessment for the permit
     security_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
+    security_not_required = db.Column(db.Boolean)
+    security_not_required_reason = db.Column(db.String)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
@@ -56,6 +59,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitConditions.permit_amendment_id == PermitAmendment.permit_amendment_id, PermitConditions.deleted_ind == False, PermitConditions.parent_permit_condition_id.is_(None))",
         order_by='asc(PermitConditions.display_order)')
+    permit_conditions_last_updated_date = db.Column(db.DateTime)
+    permit_conditions_last_updated_by = db.Column(db.String(60))
 
     #no current use case for this relationship
     #TODO Have factories use this to manage FK.
@@ -66,6 +71,24 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
 
+    now_application_identity = db.relationship(
+        'NOWApplicationIdentity', lazy='selectin', uselist=False)
+
+    @hybrid_property
+    def now_application_documents(self):
+        _now_app_docs = []
+        if self.now_application_identity:
+            _now_app_docs = self.now_application_identity.now_application.documents
+        return _now_app_docs
+                
+
+    @hybrid_property
+    def imported_now_application_documents(self):
+        _imported_now_app_docs = []
+        if self.now_application_identity:
+            _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
+        return _imported_now_app_docs
+
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
 
@@ -74,6 +97,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             raise Exception(
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
             )
+
+        if self.now_application_guid:
+            raise Exception(
+                'The permit amendment with linked NOW application in Core cannot be deleted.')
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
@@ -94,7 +121,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                description=None,
                security_adjustment=None,
                permit_amendment_status_code='ACT',
-               lead_inspector_title=None,
+               issuing_inspector_title=None,
                regional_office=None,
                now_application_guid=None,
                add_to_session=True):
@@ -109,7 +136,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
             security_adjustment=security_adjustment,
-            lead_inspector_title=lead_inspector_title,
+            issuing_inspector_title=issuing_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)
         permit._all_permit_amendments.append(new_pa)

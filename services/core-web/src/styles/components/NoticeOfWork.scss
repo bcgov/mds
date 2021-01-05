@@ -81,13 +81,13 @@
 
   &--body {
     padding: 20px;
+    padding-bottom: 50px;
   }
 }
 
 .view {
-  padding: 10px;
   &--header {
-    height: 69px;
+    height: 100px;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
@@ -96,16 +96,13 @@
       z-index: 50;
       box-shadow: $default-box-shadow;
     }
-    &.fixed-scroll-view {
-      padding: 20px;
-      height: 133px;
-      padding-bottom: 10px;
-      position: fixed;
-      width: 100vw;
-      box-shadow: $default-box-shadow;
-      top: 50px;
-      background-color: $pure-white;
-      z-index: 50;
+    &--content {
+      padding: 10px;
+
+      &--actions {
+        display: inline-flex;
+        padding-top: 10px;
+      }
     }
   }
 
@@ -129,6 +126,8 @@
 }
 
 .side-menu {
+  margin-left: 15px;
+  margin-top: 15px;
   width: 240px;
   position: absolute;
   left: 0;
@@ -138,7 +137,8 @@
   }
 
   &--fixed {
-    top: 130px;
+    margin-left: 15px;
+    top: 190px;
     position: fixed;
     width: 240px;
 
@@ -147,16 +147,35 @@
     }
   }
 
+  &--timeline {
+    @extend .side-menu;
+    padding-left: 20px;
+    padding-top: 10px;
+
+    &.with-fixed-top {
+      position: fixed;
+      top: 80px;
+      margin-top: 80px;
+    }
+  }
 
   ul {
     list-style: none;
   }
 
   &--content {
+    padding: 20px;
     position: relative;
     padding-right: 20px;
     left: 250px;
     width: calc(100vw - 270px);
+    // extra margin on the bottom to allow to scroll to end of side menu
+    margin-bottom: 900px;
+
+    &.with-fixed-top {
+      top: 50px;
+      margin-top: 20px;
+    }
 
     @include tablet {
       position: inherit;
@@ -170,9 +189,24 @@
 }
 
 .now-menu-link {
-  a:hover {
+  padding: 10px;
+  a:hover,
+  a:active {
     text-decoration: none;
     color: $light-violet;
+  }
+
+  &.ant-anchor-link {
+    line-height: 1.75;
+    border-bottom: none;
+  }
+}
+
+.now-menu-link.ant-anchor-link .ant-anchor-link {
+  line-height: 1;
+  & .ant-anchor-link-title {
+    font-weight: lighter;
+    padding-left: 5px;
   }
 }
 
@@ -195,27 +229,66 @@
   height: 25px;
 }
 
-.tab-disclaimer {
-  width: 800px;
-  position: relative;
-  top: -10px;
-  margin: auto;
-
-  &.draft {
-    left: -120px;
-  }
-
-  @include mobile {
-    display: none;
-  }
-
-  @include tablet {
-    width: 400px;
-  }
-}
-
 .fee-determination--block {
   border: 2px solid #a09495;
   border-radius: 5px;
   padding: 10px;
+}
+
+.status-banner {
+  position: relative;
+  bottom: -5px;
+  height: 22px;
+  z-index: 100;
+  .ant-alert-message {
+    top: -10px;
+    position: relative;
+    left: 150px;
+    font-weight: lighter;
+    color: white !important;
+  }
+}
+
+.progress-steps {
+  // remove active styling on progress steps as nothing is "active"
+  .ant-steps-item-active .ant-steps-item-description {
+    color: rgba(0, 0, 0, 0.45) !important;
+  }
+}
+
+.progress-status {
+  .ant-badge-status-text {
+    font-size: 12px;
+  }
+}
+
+.tab-title {
+  color: $violet;
+  min-width: 255px;
+  max-width: 255px;
+  margin-top: 10px;
+  text-align: end;
+}
+
+.progress-actions {
+  margin-left: 5px;
+
+  @include tablet {
+    margin-left: 0;
+  }
+}
+
+.confirm-success {
+  .ant-result-icon > .anticon {
+    font-size: 40px;
+  }
+  .ant-result {
+    padding: 20px;
+  }
+  .ant-result-icon {
+    margin-bottom: 0;
+  }
+  .ant-result-title {
+    font-size: 20px;
+  }
 }

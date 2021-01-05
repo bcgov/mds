@@ -63,6 +63,7 @@ const transformRowData = (applications) =>
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
     document:
       application.application_documents.length >= 1 ? application.application_documents[0] : {},
+    is_historic: application.is_historic,
   }));
 
 const pageTitle = (mineName, isMajorMine) => {
@@ -88,9 +89,7 @@ export class MineNoticeOfWorkTable extends Component {
       title: "Number",
       dataIndex: "now_number",
       sortField: "now_number",
-      render: (text, record) => (
-        <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
-      ),
+      render: (text) => <div title="Number">{text}</div>,
       sorter: true,
     },
     {
@@ -147,7 +146,9 @@ export class MineNoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <AuthorizationWrapper inTesting>
               <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
+                <Button type="primary" disabled={record.is_historic}>
+                  Open
+                </Button>
               </Link>
             </AuthorizationWrapper>
           </div>

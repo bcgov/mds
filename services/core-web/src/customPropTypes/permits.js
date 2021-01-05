@@ -29,7 +29,7 @@ export const permitGenObj = shape({
   current_year: PropTypes.string,
   conditions: PropTypes.string,
   lead_inspector: PropTypes.string,
-  lead_inspector_title: PropTypes.string,
+  issuing_inspector_title: PropTypes.string,
   permittee: PropTypes.string,
   permittee_email: PropTypes.string,
   property: PropTypes.string,

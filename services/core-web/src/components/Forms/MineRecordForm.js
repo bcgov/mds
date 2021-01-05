@@ -16,6 +16,7 @@ import {
   number,
   lat,
   lon,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { getCurrentMineTypes } from "@common/selectors/mineSelectors";
 import {
@@ -364,7 +365,7 @@ export class MineRecordForm extends Component {
         {this.state.showStatusDate && (
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item label="Date of Status Change" className="padding-large">
+              <Form.Item label="Date of Status Change" className="padding-lg">
                 <p className="p-light">
                   The date will default to todays date, unless otherwise specified.
                 </p>
@@ -389,7 +390,7 @@ export class MineRecordForm extends Component {
                 placeholder="Select a Region"
                 component={renderConfig.SELECT}
                 data={this.props.mineRegionOptions}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.mineRegionOptions)]}
               />
             </Form.Item>
           </Col>
@@ -456,6 +457,7 @@ export class MineRecordForm extends Component {
                 label="Fee Exemption"
                 placeholder="Select a fee exemption status"
                 component={renderConfig.SELECT}
+                validate={[validateSelectOptions(this.props.exemptionFeeSatusDropDownOptions)]}
                 data={this.props.exemptionFeeSatusDropDownOptions}
               />
             </Form.Item>

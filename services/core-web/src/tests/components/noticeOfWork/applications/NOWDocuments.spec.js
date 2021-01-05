@@ -7,23 +7,22 @@ const props = {};
 const dispatchProps = {};
 
 const setupDispatchProps = () => {
-  dispatchProps.handleSubmit = jest.fn();
+  dispatchProps.updateNoticeOfWorkApplication = jest.fn();
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
-  dispatchProps.arrayPush = jest.fn();
-  dispatchProps.handleAfterUpload = jest.fn();
+  dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
 };
 
 const setupProps = () => {
-  props.now_application_guid = "145134613";
-  props.mine_guid = "2456345";
+  props.noticeOfWork = NOWMocks.IMPORTED_NOTICE_OF_WORK;
   props.documents = [];
-  props.noticeOfWorkApplicationDocumentTypeOptionsHash = NOWMocks.APPLICATION_DOCUMENT_TYPES_HASH;
+  props.noticeOfWorkApplicationDocumentTypeOptions = NOWMocks.DROPDOWN_APPLICATION_DOCUMENT_TYPES;
   props.isViewMode = false;
   props.selectedRows = null;
   props.categoriesToShow = ["ANS", "OTH"];
   props.disclaimerText = "This test is explaining the purpose of this section";
   props.isAdminView = false;
+  props.addDescriptionColumn = true;
 };
 
 beforeEach(() => {

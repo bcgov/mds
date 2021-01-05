@@ -1,8 +1,10 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
+import dateutil.parser
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.api.utils.include.user_info import User
@@ -16,8 +18,15 @@ class NOWApplicationProgress(Base, AuditMixin):
 
     application_progress_status_code = db.Column(db.String, nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime)
     created_by = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
+    last_updated_by = db.Column(
+        db.String(60),
+        nullable=False,
+        default=User().get_user_username,
+        onupdate=User().get_user_username)
 
     def __repr__(self):
         return '<NOWApplicationProgress %r>' % self.application_progress_id
@@ -46,3 +55,12 @@ class NOWApplicationProgress(Base, AuditMixin):
     @classmethod
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
+
+    @validates('end_date')
+    def validate_end_date(self, key, end_date):
+        if end_date is not None:
+            if isinstance(end_date, str):
+                end_date = dateutil.parser.isoparse(end_date)
+            if end_date < self.start_date:
+                raise AssertionError('end_date cannot be before start_date')
+        return end_date

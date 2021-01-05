@@ -5,7 +5,7 @@ from flask_restplus.apidoc import apidoc
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, apm, migrate
+from app.extensions import api, cache, db, jwt, migrate
 
 from app.nris.models import *
 from app.nris.resources import *
@@ -33,9 +33,6 @@ def register_extensions(app):
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
-
-    if app.config['ELASTIC_ENABLED'] == '1':
-        apm.init_app(app)
 
     try:
         jwt.init_app(app)

@@ -11,7 +11,9 @@ const baseExpectedValue = {
   noticeOfWork: {},
   noticeOfWorkPageData: {},
   originalNoticeOfWork: {},
+  importNowSubmissionDocumentsJob: {},
   noticeOfWorkReviews: [],
+  applicationDelays: [],
   documentDownloadState: { downloading: false, currentFile: 1, totalFiles: 1 },
 };
 
@@ -62,6 +64,16 @@ describe("noticeOfWorkReducer", () => {
     const result = noticeOfWorkReducer(
       undefined,
       storeNoticeOfWorkApplicationReviews(MOCK.NOTICE_OF_WORK_REVIEW_RESPONSE)
+    );
+    expect(result).toEqual(expectedValue);
+  });
+
+  it("receives STORE_IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB", () => {
+    const expectedValue = getBaseExpectedValue();
+    expectedValue.noticeOfWork = MOCK.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB;
+    const result = noticeOfWorkReducer(
+      undefined,
+      storeNoticeOfWorkApplication(MOCK.IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB)
     );
     expect(result).toEqual(expectedValue);
   });

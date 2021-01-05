@@ -10,13 +10,14 @@ import {
   setEditingConditionFlag,
   createPermitCondition,
   fetchPermitConditions,
+  fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import Section from "@/components/Forms/permits/conditions/Section";
 import SubCondition from "@/components/Forms/permits/conditions/SubCondition";
 import ListItem from "@/components/Forms/permits/conditions/ListItem";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 
 const propTypes = {
@@ -25,6 +26,7 @@ const propTypes = {
   setEditingConditionFlag: PropTypes.func.isRequired,
   createPermitCondition: PropTypes.func.isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permit.isRequired,
 };
 
@@ -53,6 +55,10 @@ export class AddCondition extends Component {
       .then(() => {
         this.setState({ isEditing: false });
         this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
+        this.props.fetchDraftPermitByNOW(
+          null,
+          this.props.draftPermitAmendment.now_application_guid
+        );
         this.props.setEditingConditionFlag(false);
       });
 
@@ -65,14 +71,14 @@ export class AddCondition extends Component {
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
             <AddButton type="secondary" disabled>
               {ButtonText(this.props.initialValues.condition_type_code)}
             </AddButton>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
         {!this.props.editingConditionFlag && (
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
             <AddButton
               type="secondary"
               onClick={() => {
@@ -82,7 +88,7 @@ export class AddCondition extends Component {
             >
               {ButtonText(this.props.initialValues.condition_type_code)}
             </AddButton>
-          </AuthorizationWrapper>
+          </NOWActionWrapper>
         )}
         {this.state.isEditing && (
           <ConditionComponent
@@ -108,6 +114,7 @@ const mapDispatchToProps = (dispatch) =>
       setEditingConditionFlag,
       fetchPermitConditions,
       createPermitCondition,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );

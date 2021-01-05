@@ -82,6 +82,26 @@ exports[`ReclamationInvoiceForm renders properly 1`] = `
         />
       </FormItem>
     </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="paid_date"
+          label="Paid Date*"
+          name="paid_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
   </Row>
   <Row
     gutter={16}

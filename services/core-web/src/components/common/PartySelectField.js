@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { throttle } from "lodash";
 import PropTypes from "prop-types";
 import { Divider } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { Field } from "redux-form";
 import { getSearchResults } from "@common/selectors/searchSelectors";
 import { getLastCreatedParty } from "@common/selectors/partiesSelectors";
@@ -31,7 +31,7 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
-  initialValue: PropTypes.objectOf(PropTypes.string),
+  initialValues: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -44,7 +44,7 @@ const defaultProps = {
   allowAddingParties: false,
   validate: [],
   searchResults: [],
-  initialValue: "",
+  initialValues: {},
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -58,16 +58,38 @@ const renderAddPartyFooter = (showAddParty, partyLabel) => (
   </div>
 );
 
-const transformData = (data, options, footer) => {
+const transformData = (data, options, header) => {
   const transformedData = data.map((opt) => ({
     value: options[opt].party_guid,
-    label: `${options[opt].name}, ${
-      Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"
-    }`,
+    label: (
+      <div>
+        <span>{options[opt].name}</span>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <MailOutlined className="icon-xs" />
+          </div>
+          <span>
+            {Validate.checkEmail(options[opt].email) ? options[opt].email : "Email Unknown"}
+          </span>
+        </div>
+        <div className="inline-flex">
+          <div className="padding-right">
+            <PhoneOutlined className="icon-xs" />
+          </div>
+          <span>
+            {options[opt].phone_no} {options[opt].phone_ext ? `x${options[opt].phone_ext}` : ""}
+          </span>
+        </div>
+      </div>
+    ),
   }));
 
-  // Display footer only if desired (Add new party behavior is enabled.)
-  return footer ? transformedData.concat({ value: "footer", label: footer }) : transformedData;
+  // Display header only if desired (Add new party behavior is enabled.)
+  if (header) {
+    transformedData.unshift({ value: "header", label: header });
+  }
+
+  return transformedData;
 };
 
 export class PartySelectField extends Component {
@@ -82,10 +104,10 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (this.props.initialValue) {
-      this.handleSearch(this.props.initialValue.label);
+    if (this.props.initialValues?.label) {
+      this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: this.props.initialValue,
+        selectedOption: this.props.initialValues,
       });
     }
   }
@@ -160,7 +182,7 @@ export class PartySelectField extends Component {
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
-    if (this.props.initialValue && this.props.initialValue !== this.state.selectedOption) {
+    if (this.props.initialValues && this.props.initialValues !== this.state.selectedOption) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;

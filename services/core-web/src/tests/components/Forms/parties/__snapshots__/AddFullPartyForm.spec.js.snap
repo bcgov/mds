@@ -230,11 +230,13 @@ exports[`AddFullPartyForm renders properly 1`] = `
                     Object {
                       "isActive": true,
                       "label": "AB",
+                      "subType": null,
                       "value": "AB",
                     },
                     Object {
                       "isActive": true,
                       "label": "BC",
+                      "subType": null,
                       "value": "BC",
                     },
                   ]
@@ -242,6 +244,11 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 id="sub_division_code"
                 label="Province"
                 name="sub_division_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </FormItem>
           </Col>

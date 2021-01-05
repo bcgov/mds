@@ -2,11 +2,30 @@
 
 exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
 <div>
+  <h4>
+    vFCBC/NROS Application Files
+  </h4>
+  <NOWSubmissionDocuments
+    displayTableDescription={false}
+    documents={Array []}
+    hideImportStatusColumn={false}
+    hideJobStatusColumn={false}
+    importNowSubmissionDocumentsJob={Object {}}
+    now_application_guid=""
+    selectedRows={
+      Object {
+        "selectedSubmissionRows": undefined,
+        "setSelectedSubmissionRows": [Function],
+      }
+    }
+  />
+  <br />
+  <h4>
+    Additional Documents
+  </h4>
   <Connect(NOWDocuments)
     documents={Array []}
     isViewMode={true}
-    mine_guid=""
-    now_application_guid=""
     selectedRows={
       Object {
         "selectedCoreRows": Array [],
@@ -50,7 +69,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
       type="primary"
     >
       <ForwardRef(DownloadOutlined)
-        className="padding-small--right icon-sm"
+        className="padding-sm--right icon-sm"
       />
       Save Application Package
     </Button>

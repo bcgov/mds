@@ -22,11 +22,7 @@ exports[`NOWDocuments renders properly 1`] = `
           "filters": Array [
             Object {
               "text": "Annual Summary",
-              "value": "Annual Summary",
-            },
-            Object {
-              "text": "Other",
-              "value": "Other",
+              "value": "ANS",
             },
           ],
           "key": "category",
@@ -49,6 +45,19 @@ exports[`NOWDocuments renders properly 1`] = `
           "sorter": [Function],
           "title": "Upload Date/Time",
         },
+        Object {
+          "dataIndex": "is_final_package",
+          "key": "is_final_package",
+          "render": [Function],
+          "sorter": [Function],
+          "title": "Part of Permit",
+        },
+        Object {
+          "dataIndex": "isDeletionAllowed",
+          "key": "isDeletionAllowed",
+          "render": [Function],
+          "title": "",
+        },
       ]
     }
     dataSource={Array []}
@@ -61,11 +70,19 @@ exports[`NOWDocuments renders properly 1`] = `
     rowKey="key"
     rowSelection={null}
   />
-  <AddButton
-    disabled={false}
-    onClick={[Function]}
+  <br />
+  <Connect(NOWActionWrapper)
+    permission="role_edit_permits"
+    tab="REV"
   >
-    Add Document
-  </AddButton>
+    <AddButton
+      className=""
+      disabled={false}
+      onClick={[Function]}
+      style={Object {}}
+    >
+      Add Document
+    </AddButton>
+  </Connect(NOWActionWrapper)>
 </div>
 `;

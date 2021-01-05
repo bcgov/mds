@@ -40,6 +40,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   recordsByPermit: PropTypes.func.isRequired,
   activeBondCount: PropTypes.func.isRequired,
+  getBalance: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -84,19 +85,17 @@ export const MineBondTable = (props) => {
     {
       title: (
         <div>
-          Total Confiscated
-          <CoreTooltip title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit" />
+          Confiscated Cash On Hand
+          <CoreTooltip title="Confiscated Cash On Hand: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
         </div>
       ),
-      dataIndex: "amount_confiscated",
-      key: "amount_confiscated",
+      dataIndex: "balance",
+      key: "balance",
       render: (text) => (
-        <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
+        <div title="Confiscated Cash On Hand">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -107,8 +106,8 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
             >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+              <div className="padding-sm">
+                <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add Bond
               </div>
             </Button>
@@ -158,8 +157,6 @@ export const MineBondTable = (props) => {
       defaultSortOrder: "descend",
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -213,16 +210,16 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openViewBondModal(event, record)}
             >
-              <div className="padding-small">
+              <div className="padding-sm">
                 <EyeOutlined className="icon-lg icon-svg-filter" />
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="secondary" className="permit-table-button">
-                  <div className="padding-small">
+                  <div className="padding-sm">
                     <img
-                      className="padding-small--right icon-svg-filter"
+                      className="padding-sm--right icon-svg-filter"
                       src={CARAT}
                       alt="Menu"
                       style={{ paddingLeft: "5px" }}
@@ -260,11 +257,11 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <MinusSquareFilled className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <PlusSquareFilled className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       )}
     </a>
@@ -275,7 +272,7 @@ export const MineBondTable = (props) => {
       return {
         key: permit.permit_guid,
         total_bonds: props.activeBondCount(permit),
-        amount_confiscated: permit.confiscated_bond_total,
+        balance: props.getBalance(permit),
         amount_held: permit.active_bond_total,
         total_assessed: permit.assessed_liability_total,
         ...permit,

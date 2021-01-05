@@ -39,6 +39,7 @@ export const {
   getExemptionFeeStatusOptions,
   getPermitConditionCategoryOptions,
   getPermitConditionTypeOptions,
+  getDelayTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -437,6 +438,12 @@ export const getMineReportCategoryOptionsHash = createSelector(
   createLabelHash
 );
 
+export const getDropdownPermitConditionCategoryOptions = createSelectorWrapper(
+  getPermitConditionCategoryOptions,
+  createDropDownList,
+  ["description", "condition_category_code"]
+);
+
 export const getDropdownMineReportStatusOptions = createSelectorWrapper(
   getMineReportStatusOptions,
   createDropDownList,
@@ -495,7 +502,12 @@ export const getNoticeOfWorkApplicationStatusOptionsHash = createSelector(
 export const getDropdownNoticeOfWorkApplicationDocumentTypeOptions = createSelectorWrapper(
   getNoticeOfWorkApplicationDocumentTypeOptions,
   createDropDownList,
-  ["description", "now_application_document_type_code", "active_ind"]
+  [
+    "description",
+    "now_application_document_type_code",
+    "active_ind",
+    "now_application_document_sub_type_code",
+  ]
 );
 
 export const getNoticeOfWorkApplicationDocumentTypeOptionsHash = createSelector(
@@ -622,3 +634,17 @@ export const getExemptionFeeStatusOptionsHash = createSelector(
   [getExemptionFeeSatusDropDownOptions],
   createLabelHash
 );
+
+export const getDelayTypeDropDownOptions = createSelectorWrapper(
+  getDelayTypeOptions,
+  createDropDownList,
+  ["description", "delay_type_code", "active_ind"]
+);
+
+export const getDelayTypeOptionsHash = createSelector(
+  [getDelayTypeDropDownOptions],
+  createLabelHash
+);
+
+export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
+  getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);

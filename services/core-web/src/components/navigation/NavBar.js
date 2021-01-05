@@ -64,7 +64,7 @@ export class NavBar extends Component {
     <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
         <button id={this.ifActiveButton("reporting")} type="button" className="menu__btn">
-          <span className="padding-small--right">Browse...</span>
+          <span className="padding-sm--right">Browse...</span>
           <DownOutlined />
         </button>
       </Dropdown>
@@ -103,8 +103,8 @@ export class NavBar extends Component {
       </AuthorizationWrapper>
       <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
-          <UserOutlined className="padding-small--right icon-sm" />
-          <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
+          <UserOutlined className="padding-sm--right icon-sm" />
+          <span className="padding-sm--right">{this.props.userInfo.preferred_username}</span>
           <DownOutlined />
         </button>
       </Dropdown>
@@ -115,7 +115,7 @@ export class NavBar extends Component {
           </Button>
         </Tooltip>
       </a>
-      <AuthorizationWrapper permission={Permission.ADMIN}>
+      <AuthorizationWrapper permission={Permission.ADMIN} showToolTip={false}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
@@ -124,17 +124,15 @@ export class NavBar extends Component {
           <button type="button" className="menu__btn">
             <img
               alt="GoodMines"
-              className="padding-small--right icon-sm vertical-align-sm"
+              className="padding-sm--right icon-sm vertical-align-sm"
               src={SUCCESS_CHECKMARK}
               width="25"
             />
-            <span className="padding-small--right">
-              {this.props.currentUserVerifiedMines.length}
-            </span>
+            <span className="padding-sm--right">{this.props.currentUserVerifiedMines.length}</span>
             {this.props.currentUserUnverifiedMines.length > 0 && (
               <img
                 alt="BadMines"
-                className="padding-small--right icon-sm vertical-align-sm"
+                className="padding-sm--right icon-sm vertical-align-sm"
                 src={YELLOW_HAZARD}
                 width="25"
               />

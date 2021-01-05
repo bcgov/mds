@@ -8,6 +8,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 
 from tests.factories import MineFactory, PermitFactory, PermitAmendmentFactory, PartyFactory, create_mine_and_permit
+from tests.now_application_factories import NOWApplicationIdentityFactory
 
 
 # GET
@@ -59,6 +60,35 @@ def test_post_permit(test_client, db_session, auth_headers):
     assert updated_mine.mine_permit[0].permit_no == PERMIT_NO
     assert permittees[0].party_guid == party_guid
     assert len(updated_mine.mine_permit) == no_of_permits + 1
+
+
+def test_post_permit_now_application(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    party_guid = PartyFactory(company=True).party_guid
+    now_application = NOWApplicationIdentityFactory(mine=mine)
+
+    data = {
+        'permittee_party_guid': str(party_guid),
+        'permit_no': None,
+        'received_date': '1999-12-12',
+        'issue_date': '1999-12-21',
+        'authorization_end_date': '2012-12-02',
+        'permit_status_code': 'D',
+        'is_exploration': False,
+        'now_application_guid': now_application.now_application_guid,
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{mine.mine_guid}/permits', headers=auth_headers['full_auth_header'], json=data)
+    post_data = json.loads(post_resp.data.decode())
+
+    new_permit = Permit.find_by_now_application_guid(str(now_application.now_application_guid))
+    permittees = MinePartyAppointment.find_by_permit_id(new_permit.permit_id)
+
+    assert post_resp.status_code == 200
+    assert new_permit.permit_no is not None
+    assert new_permit.permit_status_code == 'D'
+    assert permittees[0].party_guid == party_guid
 
 
 def test_post_permit_bad_mine_guid(test_client, db_session, auth_headers):

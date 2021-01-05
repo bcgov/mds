@@ -230,11 +230,13 @@ exports[`EditFullPartyForm renders properly 1`] = `
                     Object {
                       "isActive": true,
                       "label": "AB",
+                      "subType": null,
                       "value": "AB",
                     },
                     Object {
                       "isActive": true,
                       "label": "BC",
+                      "subType": null,
                       "value": "BC",
                     },
                   ]
@@ -243,6 +245,11 @@ exports[`EditFullPartyForm renders properly 1`] = `
                 id="sub_division_code"
                 label="Province"
                 name="sub_division_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </FormItem>
           </Col>
@@ -360,6 +367,19 @@ exports[`EditFullPartyForm renders properly 1`] = `
             name="inspector_end_date"
             placeholder="yyyy-mm-dd"
           />
+        </Col>
+      </Row>
+      <br />
+      <Divider />
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h5>
+            Upload Signature
+          </h5>
         </Col>
       </Row>
       <Row>

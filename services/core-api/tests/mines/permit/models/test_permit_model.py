@@ -32,13 +32,3 @@ def test_permit_model_validate_permit_no():
             received_date=datetime.today(),
             issue_date=datetime.today())
     assert 'Permit number is not provided.' in str(e.value)
-
-
-def test_permit_model_validate_permit_no_max_char():
-    with pytest.raises(AssertionError) as e:
-        Permit(
-            permit_no='6' * 17,
-            permit_status_code='O',
-            received_date=datetime.today(),
-            issue_date=datetime.today())
-    assert 'Permit number must not exceed 16 characters.' in str(e.value)

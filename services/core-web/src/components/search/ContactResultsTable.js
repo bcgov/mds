@@ -56,7 +56,7 @@ export const ContactResultsTable = (props) => {
               record.mine_party_appt.map((pr) => (
                 <p>
                   {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
-                  <span className="padding-small--left" style={{ fontStyle: "italic" }}>
+                  <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
                     ({pr.mine.mine_name})
                   </span>
                 </p>
@@ -78,7 +78,7 @@ export const ContactResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider style={{ padding: "0" }} />
       <Table
-        className="nested-table padding-large--bottom"
+        className="nested-table padding-lg--bottom"
         align="left"
         showHeader={false}
         pagination={false}
@@ -87,7 +87,7 @@ export const ContactResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          className="padding-large--left float-right"
+          className="padding-lg--left float-right"
           to={router.CONTACT_HOME_PAGE.dynamicRoute({
             ...parseQuery(props.query),
             page: Strings.DEFAULT_PAGE,

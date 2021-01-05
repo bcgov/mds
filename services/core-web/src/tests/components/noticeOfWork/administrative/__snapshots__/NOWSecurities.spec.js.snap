@@ -5,101 +5,103 @@ exports[`NOWSecurities renders properly 1`] = `
   <div
     className="right"
   >
-    <div>
-      <Connect(AuthorizationWrapper)
-        permission="role_edit_permits"
+    <Connect(NOWActionWrapper)
+      permission="role_edit_permits"
+    >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
       >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          type="secondary"
-        >
-          <img
-            alt="Edit"
-            className="padding-md--right"
-            src={
-              Object {
-                "process": [Function],
-              }
+        <img
+          alt="Edit"
+          className="padding-md--right"
+          src={
+            Object {
+              "process": [Function],
             }
-            title="Edit"
-          />
-          Edit
-        </Button>
-      </Connect(AuthorizationWrapper)>
-    </div>
+          }
+          title="Edit"
+        />
+        Edit
+      </Button>
+    </Connect(NOWActionWrapper)>
   </div>
   <LoadingWrapper
-    condition={false}
+    condition={true}
   >
     <div
       style={Object {}}
     >
-      <ReduxForm
-        destroyOnUnmount={true}
-        enableReinitialize={true}
-        forceUnregisterOnUnmount={false}
-        form="EDIT_PERMIT"
-        getFormState={[Function]}
+      <Connect(ReduxForm)
         initialValues={
           Object {
-            "authorization_end_date": null,
-            "description": "Initial permit issued.",
-            "issue_date": "2019-04-01",
-            "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
-            "permit_amendment_status_code": "ACT",
-            "permit_amendment_type_code": "OGP",
-            "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
-            "received_date": null,
-            "related_documents": Array [
-              Object {
-                "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
-                "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
-                "document_name": "Adams_amendment_1.pdf",
-                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
-              },
-            ],
-            "security_adjustment": "1000000",
+            "adjusted_annual_maximum_tonnage": "",
+            "application_documents": Array [],
+            "blasting_operation": Object {},
+            "camps": Object {
+              "details": Array [],
+            },
+            "contacts": Array [],
+            "cut_lines_polarization_survey": Object {
+              "details": Array [],
+            },
+            "description_of_land": "",
+            "documents": Array [],
+            "exploration_access": Object {
+              "details": Array [],
+            },
+            "exploration_surface_drilling": Object {
+              "details": Array [],
+            },
+            "latitude": "",
+            "longitude": "",
+            "mechanical_trenching": Object {
+              "details": Array [],
+            },
+            "mine_guid": "",
+            "notice_of_work_type_code": "MIN",
+            "now_application_guid": "1346wesrt22",
+            "now_application_id": "",
+            "now_message_id": 47284,
+            "now_tracking_number": 47284,
+            "placer_operation": Object {
+              "details": Array [],
+            },
+            "property_name": "",
+            "proposed_annual_maximum_tonnage": 10000,
+            "proposed_end_date": "2020-03-01",
+            "proposed_start_date": "2016-03-01",
+            "received_date": "",
+            "sand_and_gravel": Object {
+              "details": Array [],
+            },
+            "settling_pond": Object {
+              "details": Array [],
+            },
+            "state_of_land": Object {},
+            "submission_documents": Array [],
+            "submitted_date": "",
+            "surface_bulk_sample": Object {
+              "details": Array [],
+            },
+            "tenure_number": "",
+            "underground_exploration": Object {
+              "details": Array [],
+            },
+            "water_supply": Object {
+              "details": Array [],
+            },
           }
         }
         isEditMode={false}
-        keepDirtyOnReinitialize={false}
         onCancel={[Function]}
         onSubmit={[Function]}
-        persistentSubmitErrors={false}
-        pure={true}
-        shouldAsyncValidate={[Function]}
-        shouldError={[Function]}
-        shouldValidate={[Function]}
-        shouldWarn={[Function]}
-        submitAsSideEffect={false}
-        touchOnBlur={false}
-        touchOnChange={false}
-        updateUnregisteredFields={false}
       />
     </div>
   </LoadingWrapper>
-  <br />
-  <br />
-  <Connect(NOWDocuments)
-    categoriesToShow={
-      Array [
-        "SRB",
-        "NIA",
-        "AKL",
-        "SCD",
-      ]
-    }
-    disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
-    documents={Array []}
-    handleAfterUpload={[MockFunction]}
-    isAdminView={true}
-    isViewMode={false}
-    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    now_application_guid=""
-  />
 </div>
 `;

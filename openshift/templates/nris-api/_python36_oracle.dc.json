@@ -86,19 +86,6 @@
       "value": "1"
     },
     {
-      "name": "MDS_ELASTIC_SECRET",
-      "required": false,
-      "value": "template.mds-elastic-secret"
-    },
-    {
-      "name": "ELASTIC_ENABLED",
-      "value": "1"
-    },
-    {
-      "name": "ELASTIC_SERVICE_NAME",
-      "value": "NRIS API Dev"
-    },
-    {
       "name": "REDIS_CONFIG_NAME",
       "required": false,
       "value": "template.mds-redis-secret"
@@ -155,11 +142,7 @@
               "failurePolicy": "Retry",
               "execNewPod": {
                 "containerName": "app",
-                "command": [
-                  "bash",
-                  "-c",
-                  "cd /opt/app-root/src && flask db upgrade"
-                ]
+                "command": ["bash", "-c", "cd /opt/app-root/src && flask db upgrade"]
               }
             },
             "maxSurge": "50%",
@@ -282,7 +265,21 @@
                   },
                   {
                     "name": "NRIS_DB_PORT",
-                    "value": "1521"
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-port"
+                      }
+                    }
+                  },
+                  {
+                    "name": "NRIS_SERVER_CERT_DN",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${NRIS_ODB_CREDENTIALS}",
+                        "key": "db-server-cert-dn"
+                      }
+                    }
                   },
                   {
                     "name": "UWSGI_PROCESSES",
@@ -291,32 +288,6 @@
                   {
                     "name": "UWSGI_THREADS",
                     "value": "${UWSGI_THREADS}"
-                  },
-                  {
-                    "name": "ELASTIC_ENABLED",
-                    "value": "${ELASTIC_ENABLED}"
-                  },
-                  {
-                    "name": "ELASTIC_SERVICE_NAME",
-                    "value": "${ELASTIC_SERVICE_NAME}"
-                  },
-                  {
-                    "name": "ELASTIC_SECRET_TOKEN",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "secret-token"
-                      }
-                    }
-                  },
-                  {
-                    "name": "ELASTIC_SERVER_URL",
-                    "valueFrom": {
-                      "secretKeyRef": {
-                        "name": "${MDS_ELASTIC_SECRET}",
-                        "key": "server-url"
-                      }
-                    }
                   },
                   {
                     "name": "FLASK_RUN_PORT",
@@ -391,9 +362,29 @@
                     "scheme": "HTTP"
                   }
                 },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/cwallet.sso",
+                    "name": "odb-credentials",
+                    "subPath": "cwallet.sso"
+                  },
+                  {
+                    "mountPath": "/opt/app-root/src/wallet/ewallet.p12",
+                    "name": "odb-credentials",
+                    "subPath": "ewallet.p12"
+                  }
+                ],
                 "terminationMessagePath": "/dev/termination-log",
                 "terminationMessagePolicy": "File",
                 "imagePullPolicy": "Always"
+              }
+            ],
+            "volumes": [
+              {
+                "name": "odb-credentials",
+                "configMap": {
+                  "name": "odb-wallet"
+                }
               }
             ],
             "restartPolicy": "Always",

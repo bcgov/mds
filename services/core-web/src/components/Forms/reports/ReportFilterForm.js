@@ -10,11 +10,14 @@ import {
   getDropdownMineReportStatusOptions,
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
+  getDropdownPermitConditionCategoryOptions,
 } from "@common/selectors/staticContentSelectors";
 import { createDropDownList, sortListObjectsByPropertyLocaleCompare } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
+import { getPermits } from "@common/selectors/permitSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -25,11 +28,16 @@ const propTypes = {
   dropdownMineReportCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinitionGuid: PropTypes.string,
+  mineReportType: PropTypes.string.isRequired,
+  dropdownPermitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
+    .isRequired,
+  permits: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
 };
 
 const defaultProps = {
   selectedMineReportCategory: undefined,
   selectedMineReportDefinitionGuid: undefined,
+  permits: [],
 };
 
 const selector = formValueSelector(FORM.FILTER_REPORTS);
@@ -131,6 +139,11 @@ export class ReportFilterForm extends Component {
   };
 
   render() {
+    let permitDropdown = [];
+    if (this.props.permits) {
+      permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
+    }
+
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit} onReset={this.handleReset}>
         <div>
@@ -142,21 +155,40 @@ export class ReportFilterForm extends Component {
                 label="Report Type"
                 placeholder="Select report type"
                 component={renderConfig.SELECT}
-                data={this.state.dropdownMineReportCategoryOptionsFiltered}
+                data={
+                  this.props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports
+                    ? this.state.dropdownMineReportCategoryOptionsFiltered
+                    : this.props.dropdownPermitConditionCategoryOptions
+                }
                 format={null}
               />
             </Col>
-            <Col md={8} sm={24}>
-              <Field
-                id="report_name"
-                name="report_name"
-                label="Report Name"
-                placeholder="Select report name"
-                component={renderConfig.SELECT}
-                data={this.state.dropdownMineReportDefinitionOptionsFiltered}
-                format={null}
-              />
-            </Col>
+            {this.props.mineReportType === Strings.MINE_REPORTS_TYPE.codeRequiredReports && (
+              <Col md={8} sm={24}>
+                <Field
+                  id="report_name"
+                  name="report_name"
+                  label="Report Name"
+                  placeholder="Select report name"
+                  component={renderConfig.SELECT}
+                  data={this.state.dropdownMineReportDefinitionOptionsFiltered}
+                  format={null}
+                />
+              </Col>
+            )}
+            {this.props.mineReportType === Strings.MINE_REPORTS_TYPE.permitRequiredReports && (
+              <Col md={8} sm={24}>
+                <Field
+                  id="permit_guid"
+                  name="permit_guid"
+                  label="Permit"
+                  placeholder="Select a Permit"
+                  component={renderConfig.SELECT}
+                  data={permitDropdown}
+                  format={null}
+                />
+              </Col>
+            )}
             <Col md={8} sm={24}>
               <Field
                 id="compliance_year"
@@ -269,9 +301,11 @@ export default compose(
   connect((state) => ({
     dropdownMineReportStatusOptions: getDropdownMineReportStatusOptions(state, false),
     dropdownMineReportCategoryOptions: getDropdownMineReportCategoryOptions(state, false),
+    dropdownPermitConditionCategoryOptions: getDropdownPermitConditionCategoryOptions(state),
     mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
     selectedMineReportCategory: selector(state, "report_type"),
     selectedMineReportDefinitionGuid: selector(state, "report_name"),
+    permits: getPermits(state),
   })),
   reduxForm({
     form: FORM.FILTER_REPORTS,

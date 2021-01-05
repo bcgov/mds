@@ -11,6 +11,7 @@ import {
   maxLength,
   number,
   postalCode,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, upperCase } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -168,6 +169,7 @@ export const AddFullPartyForm = (props) => (
                   label="Province"
                   component={renderConfig.SELECT}
                   data={props.provinceOptions}
+                  validate={[validateSelectOptions(props.provinceOptions)]}
                 />
               </Form.Item>
             </Col>

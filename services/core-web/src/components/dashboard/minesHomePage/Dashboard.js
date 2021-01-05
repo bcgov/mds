@@ -331,7 +331,7 @@ export class Dashboard extends Component {
                   <br />
                   <Card>
                     <div>
-                      <h3>EMPR GIS Links</h3>
+                      <h3>EMLI GIS Links</h3>
                       <a
                         href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
                         target="_blank"
@@ -341,6 +341,7 @@ export class Dashboard extends Component {
                       </a>
                       <span> - Not set up to use this? Contact the GIS team.</span>
                       <br />
+                      {/* TODO: Change this to be the correct URL, if and when they change EMPR to EMLI */}
                       <a
                         href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
                         target="_blank"

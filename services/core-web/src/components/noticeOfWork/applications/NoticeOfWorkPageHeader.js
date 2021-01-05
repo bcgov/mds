@@ -41,7 +41,7 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.MINE_GENERAL.dynamicRoute(props.noticeOfWork.mine_guid)}
               disabled={!props.noticeOfWork.mine_guid}
             >
-              <EnvironmentOutlined className="padding-small--right" />
+              <EnvironmentOutlined className="padding-sm--right" />
               {nowMineName}
             </Link>
           </Tag>
@@ -51,19 +51,19 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.PARTY_PROFILE.dynamicRoute(props.noticeOfWork.lead_inspector_party_guid)}
               disabled={!props.noticeOfWork.lead_inspector_party_guid}
             >
-              <UserOutlined className="padding-small--right" />
+              <UserOutlined className="padding-sm--right" />
               {nowLeadInspectorName}
             </Link>
           </Tag>
           <Tag title={`Status: ${nowStatus}`}>
-            <TagOutlined className="padding-small--right" />
+            <TagOutlined className="padding-sm--right" />
             {nowStatus}
           </Tag>
         </span>
       </h1>
       {props.noticeOfWorkPageFromRoute && !props.fixedTop && (
         <Link to={props.noticeOfWorkPageFromRoute.route}>
-          <ArrowLeftOutlined className="padding-small--right" />
+          <ArrowLeftOutlined className="padding-sm--right" />
           Back to: {props.noticeOfWorkPageFromRoute.title}
         </Link>
       )}

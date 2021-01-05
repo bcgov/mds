@@ -140,10 +140,11 @@ export const importedNOWApplication = shape({
   proposed_start_date: PropTypes.date,
   proposed_end_date: PropTypes.date,
   directions_to_site: PropTypes.string,
-
+  status_reason: PropTypes.string,
+  status_updated_date: PropTypes.date,
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  blasting_operation: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  blasting_operation: PropTypes.objectOf(PropTypes.any),
   state_of_land: statueOfLand,
   camps,
   cut_lines_polarization_survey: defaultActivity,

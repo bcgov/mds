@@ -15,6 +15,7 @@ import { getMineReportDefinitionOptions } from "@common/reducers/staticContentRe
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -32,12 +33,16 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
+const defaultParams = {
+  mineReportType: Strings.MINE_REPORTS_TYPE.tailingsReports,
+};
+
 export class MineTailingsInfo extends Component {
   state = { mine: {}, isLoaded: false, params: { sort_field: "received_date", sort_dir: "desc" } };
 
   componentDidMount() {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
-    this.props.fetchMineReports(this.props.mineGuid).then(() => {
+    this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType).then(() => {
       this.setState({ isLoaded: true });
     });
   }
@@ -46,13 +51,13 @@ export class MineTailingsInfo extends Component {
     return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
-      .then(() => this.props.fetchMineReports(report.mine_guid));
+      .then(() => this.props.fetchMineReports(report.mine_guid, defaultParams.mineReportType));
   };
 
   handleRemoveReport = (report) => {
     return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
-      .then(() => this.props.fetchMineReports(report.mine_guid));
+      .then(() => this.props.fetchMineReports(report.mine_guid, defaultParams.mineReportType));
   };
 
   openEditReportModal = (event, onSubmit, report) => {
@@ -63,6 +68,7 @@ export class MineTailingsInfo extends Component {
         onSubmit,
         title: `Edit report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
+        mineReportsType: Strings.MINE_REPORTS_TYPE.tailingsReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -85,8 +91,10 @@ export class MineTailingsInfo extends Component {
 
     const filteredReports =
       this.props.mineReports &&
-      this.props.mineReports.filter((report) =>
-        filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
+      this.props.mineReports.filter(
+        (report) =>
+          report.mine_report_definition_guid &&
+          filteredReportDefinitionGuids.includes(report.mine_report_definition_guid.toLowerCase())
       );
 
     return (
@@ -123,6 +131,7 @@ export class MineTailingsInfo extends Component {
             handleTableChange={this.handleReportFilterSubmit}
             sortField={this.state.params.sort_field}
             sortDir={this.state.params.sort_dir}
+            mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
           />
         </div>
       </div>

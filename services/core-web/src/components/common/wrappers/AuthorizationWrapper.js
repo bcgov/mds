@@ -55,6 +55,7 @@ const propTypes = {
     PropTypes.element.isRequired,
   ]),
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showToolTip: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -62,6 +63,7 @@ const defaultProps = {
   inDevelopment: undefined,
   inTesting: undefined,
   permission: undefined,
+  showToolTip: true,
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -90,13 +92,15 @@ export const AuthorizationWrapper = (props) => {
   return (
     (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
       <Tooltip
-        title={isAdmin ? title() : ""}
+        title={isAdmin && props.showToolTip ? title() : ""}
         placement="left"
-        mouseEnterDelay={1}
+        mouseEnterDelay={1.7}
         mouseLeaveDelay={0}
         arrowPointAtCenter
         overlayClassName="tooltip__admin"
         style={{ zIndex: 100000 }}
+        trigger={["hover"]}
+        destroyTooltipOnHide
       >
         {React.createElement("span", null, props.children)}
       </Tooltip>
