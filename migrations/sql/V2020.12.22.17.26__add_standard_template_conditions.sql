@@ -226,8 +226,8 @@ delete from standard_permit_conditions;
 --   (238, 'PLA', 201, 'This Permit and the associated approved Mine Plan and Reclamation Program must be kept at the mine and must be available to an Inspector upon request.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
 --   (239, 'PLA', 201, 'A completed Annual Summary of Placer Activities (ASPA) form must be submitted to [Regional Mines Office e-mail Inbox] prior to March 31 annually and must be accompanied by:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),
 
---   (240, 'PLA', 239, 'A detailed as-built map of the mine site.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'), 
---   (241, 'PLA', 239, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),  
+--   (240, 'PLA', 239, 'A detailed as-built map of the mine site.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'), 
+--   (241, 'PLA', 239, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
 
 --   (242, 'PLA', 202, 'Unless otherwise approved in writing by the Chief Permitting Officer, all reports required to be submitted under this permit must be signed by a Qualified Professional.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),   
 
@@ -304,8 +304,8 @@ delete from standard_permit_conditions;
 --     -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
 --   (294, 'PLA', 214, 'X dollars ($<<bond_amt>>) in security must be maintained with the Minister of Finance.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
 --   (295, 'PLA', 294, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
---   (296, 'PLA', 295, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <description of activity>: {$Dollar amount} for a subtotal of {$Dollar Amount}; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
---   (297, 'PLA', 295, 'Within {Enter time} months following the start of construction of <description of activity>: {$Dollar Amount} for a total of {$Dollar Amount}.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+--   (296, 'PLA', 295, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+--   (297, 'PLA', 295, 'Within {Enter time} months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
 
 --   (298, 'PLA', 215, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved Mine Plan and Reclamation Program. The surface of the land and watercourses must be reclaimed to the following end land use: <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
 --   (299, 'PLA', 215, 'Reclamation obligations include [xxx disturbance(s)], but exclude [xxx disturbance(s)].', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -404,7 +404,7 @@ delete from standard_permit_conditions;
 --   (437, 'MIN', 401, 'A completed Annual Summary of Exploration Activities (ASEA) form must be submitted to [Regional Mines Office e-mail Inbox] prior to March 31 annually and must be accompanied by:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'), 
 
 --   (438, 'MIN', 437, 'A detailed as-built map of the mine site.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),  
---   (438, 'MIN', 437, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
+--   (562, 'MIN', 437, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
 
 
 --   (439, 'MIN', 401, 'For Multi-Year Area-Based (‘MYAB’) work programs, a MYAB annual update form must be submitted annually to [Regional Mines Office e-mail Inbox].  The MYAB update must be submitted at least two (2) weeks prior to the anticipated commencement of exploration activities in a new calendar year, or no later than March 31 for every year the MYAB approval is in effect.  In addition to the required mapping, the Permittee must submit shapefiles of current and proposed disturbances;', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),  
@@ -475,8 +475,8 @@ delete from standard_permit_conditions;
 --   (481, 'MIN', 413, 'Instream Works:', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
 --   (482, 'MIN', 481, 'Timing:', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
 
---   (483, 'MIN', 473, 'If works are proposed on a stream that contains fish (fish-bearing), all works must be completed during the applicable timing window to protect fish, wildlife or the aquatic ecosystem within that stream. Timing windows represent periods during which works can occur to ensure the lowest risk to environmental and fisheries values.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
---   (484, 'MIN', 473, 'If any of the following conditions are met, the timing window is not applicable:', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
+--   (483, 'MIN', 482, 'If works are proposed on a stream that contains fish (fish-bearing), all works must be completed during the applicable timing window to protect fish, wildlife or the aquatic ecosystem within that stream. Timing windows represent periods during which works can occur to ensure the lowest risk to environmental and fisheries values.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+--   (484, 'MIN', 482, 'If any of the following conditions are met, the timing window is not applicable:', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
 
 --   (485, 'MIN', 484, 'If the stream channel is naturally dry (no flow) or frozen to the bottom at the worksite and the instream activity will not adversely impact fish habitat (e.g. result in the introduction of sediment into fish habitat).', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
 --   (486, 'MIN', 484, 'If construction of a winter crossing is proposed and such works does not adversely impact the stream channel (including stream banks), fish habitat or fish passage. ', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -586,7 +586,7 @@ delete from standard_permit_conditions;
 -- on conflict do nothing;
 
 
--- -- -- UPDATE QUARY SEED PARENTS
+-- -- -- -- UPDATE QUARY SEED PARENTS
 -- INSERT INTO standard_permit_conditions
 -- (standard_permit_condition_id, notice_of_work_type, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 -- VALUES
