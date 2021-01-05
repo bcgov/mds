@@ -193,7 +193,8 @@ class PermitResource(Resource, UserMixin):
         location='json',
         help='Status of the permit being added.',
         store_missing=False)
-    parser.add_argument('remaining_static_liability', type=str, location='json', store_missing=True)
+    parser.add_argument(
+        'remaining_static_liability', type=str, location='json', store_missing=False)
     parser.add_argument(
         'received_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
