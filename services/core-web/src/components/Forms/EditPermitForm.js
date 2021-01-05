@@ -19,7 +19,7 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   permitStatusOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  editPermitFormValues: PropTypes.objectOf(PropTypes.strings),
+  formValues: PropTypes.objectOf(PropTypes.strings),
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
 };
@@ -39,7 +39,8 @@ export const EditPermitForm = (props) => (
             validate={[required, validateSelectOptions(props.permitStatusOptions)]}
           />
         </Form.Item>
-        {props.editPermitFormValues.permit_status_code === "C" && (
+        {(props.formValues.permit_status_code === "C" ||
+          props.formValues.remaining_static_liability !== null) && (
           <Form.Item>
             <Field
               id="remaining_static_liability"
@@ -79,7 +80,7 @@ EditPermitForm.propTypes = propTypes;
 export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
-    editPermitFormValues: getFormValues(FORM.EDIT_PERMIT)(state) || {},
+    formValues: getFormValues(FORM.EDIT_PERMIT)(state) || {},
   })),
   reduxForm({
     form: FORM.EDIT_PERMIT,
