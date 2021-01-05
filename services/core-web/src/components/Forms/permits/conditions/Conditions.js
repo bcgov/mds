@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Collapse, Button } from "antd";
 import { formatDateTime } from "@common/utils/helpers";
-import { UndoOutlined } from "@ant-design/icons";
+import { UndoOutlined, ReadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -95,6 +95,20 @@ export class Conditions extends Component {
     });
   };
 
+  openViewConditionModal = (event, conditions, conditionCategory) => {
+    event.preventDefault();
+    return this.props.openModal({
+      props: {
+        title: conditionCategory,
+        closeModal: this.props.closeModal,
+        conditions,
+      },
+      width: "50vw",
+      isViewOnly: true,
+      content: modalConfig.VIEW_CONDITION_MODAL,
+    });
+  };
+
   handleEdit = (values) => {
     return this.props
       .updatePermitCondition(
@@ -177,9 +191,29 @@ export class Conditions extends Component {
             return (
               <Collapse.Panel
                 style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
-                header={`${conditionCategory.step} ${conditionCategory.description} (${
-                  conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
-                } conditions)`}
+                header={
+                  <span>
+                    {`${conditionCategory.step} ${conditionCategory.description} (${
+                      conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
+                    } conditions)`}
+                    <Button
+                      ghost
+                      onClick={(event) =>
+                        this.openViewConditionModal(
+                          event,
+                          this.props.conditions.filter(
+                            (condition) =>
+                              condition.condition_category_code ===
+                              conditionCategory.condition_category_code
+                          ),
+                          conditionCategory.description
+                        )
+                      }
+                    >
+                      <ReadOutlined className="padding-sm--right icon-sm violet" />
+                    </Button>
+                  </span>
+                }
                 key={conditionCategory.condition_category_code}
                 id={conditionCategory.condition_category_code}
               >
