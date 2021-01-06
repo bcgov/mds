@@ -1,12 +1,8 @@
 ﻿using Syncfusion.EJ2.FileManager.AmazonS3FileProvider;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using Syncfusion.EJ2.FileManager.Base;
 using Amazon;
 
@@ -24,7 +20,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         {
             this.basePath = hostingEnvironment.ContentRootPath;
             this.operation = new AmazonS3FileProvider();
-
             // TODO: Add valid parameters!
             this.operation.RegisterAmazonS3("<---bucketName--->", "<---awsAccessKeyId--->", "<---awsSecretAccessKey--->", "<---serviceName--->");
         }
