@@ -56,7 +56,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
         'now_application_guid',
@@ -160,7 +160,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             permit_amendment_type_code=permit_amendment_type_code
             if permit_amendment_type_code else 'AMD',
             description=data.get('description'),
-            security_adjustment=data.get('security_adjustment'),
+            liability_adjustment=data.get('liability_adjustment'),
             permit_amendment_status_code=permit_amendment_status_code
             if permit_amendment_status_code else 'ACT',
             issuing_inspector_title=data.get('issuing_inspector_title'),
@@ -210,7 +210,7 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument(
         'security_received_date',
         location='json',

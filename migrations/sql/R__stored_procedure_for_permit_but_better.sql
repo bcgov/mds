@@ -55,7 +55,7 @@ DECLARE
 
 	-- Add security adjustment
 	ALTER TABLE ETL_PERMIT
-    ADD COLUMN IF NOT EXISTS security_adjustment numeric;
+    ADD COLUMN IF NOT EXISTS liability_adjustment numeric;
 
 	DROP TABLE IF EXISTS etl_valid_permits;
     CREATE TEMPORARY TABLE etl_valid_permits AS

@@ -88,7 +88,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (PartyResource, "delete", [MINE_ADMIN]),
     (PermitResource, "get", [VIEW_ALL]),
     (PermitListResource, "post", [EDIT_PERMIT]),
-    (PermitResource, "put", [EDIT_PERMIT]),
+    (PermitResource, "put", [EDIT_SECURITIES]),
     (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
     (PermitAmendmentResource, "put", [EDIT_PERMIT]),
     (PermitAmendmentResource, "delete", [MINE_ADMIN]),
