@@ -9,13 +9,11 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 
-/**
- * File Manager sample with Amazon S3 file provider service
- */
 export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
     // this.hostUrl = "https://amazons3.azurewebsites.net/api/AmazonS3Provider/";
+    // TODO: Figure out and use an ENV variable for this.
     this.hostUrl = "http://localhost:62870/api/AmazonS3Provider/";
   }
 
@@ -23,16 +21,70 @@ export class AmazonS3Provider extends SampleBase {
     return (
       <div>
         <div className="control-section">
+          {/* NOTE: See here for more information: https://ej2.syncfusion.com/documentation/api/file-manager/ */}
           <FileManagerComponent
             id="filemanager"
             ajaxSettings={{
-              url: this.hostUrl + "AmazonS3FileOperations",
-              getImageUrl: this.hostUrl + "AmazonS3GetImage",
-              uploadUrl: this.hostUrl + "AmazonS3Upload",
-              downloadUrl: this.hostUrl + "AmazonS3Download",
+              url: `${this.hostUrl  }AmazonS3FileOperations`,
+              getImageUrl: `${this.hostUrl  }AmazonS3GetImage`,
+              // uploadUrl: this.hostUrl + "AmazonS3Upload",
+              downloadUrl: `${this.hostUrl  }AmazonS3Download`,
             }}
+            allowDragAndDrop={false}
+            rootAliasName={null}
+            view="LargeIcons"
+            toolbarSettings={{
+              items: [
+                "NewFolder",
+                "Upload",
+                "Cut",
+                "Copy",
+                "Paste",
+                "Delete",
+                "Download",
+                "Rename",
+                "SortBy",
+                "Refresh",
+                "Selection",
+                "View",
+                "Details",
+              ],
+              visible: true,
+            }}
+            contextMenuSettings={{
+              file: ["Open", "|", "Cut", "Copy", "|", "Delete", "Rename", "|", "Details"],
+              folder: [
+                "Open",
+                "|",
+                "Cut",
+                "Copy",
+                "Paste",
+                "|",
+                "Delete",
+                "Rename",
+                "|",
+                "Details",
+              ],
+              layout: [
+                "SortBy",
+                "View",
+                "Refresh",
+                "|",
+                "Paste",
+                "|",
+                "NewFolder",
+                "Upload",
+                "|",
+                "Details",
+                "|",
+                "SelectAll",
+              ],
+              visible: true,
+            }}
+            // path="/foobar"
             searchSettings={{ allowSearchOnTyping: false }}
           >
+            {/* TODO: Figure out the minimal services required to view files. */}
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
         </div>
