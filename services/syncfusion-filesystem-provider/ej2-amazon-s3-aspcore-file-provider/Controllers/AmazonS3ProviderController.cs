@@ -47,7 +47,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             return null;
         }
 
-        // downloads the selected file(s) and folder(s)
+        // Downloads the selected file(s) and folder(s)
         [Route("AmazonS3Download")]
         public IActionResult AmazonS3Download(string downloadInput)
         {
@@ -55,7 +55,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             return operation.Download(args.Path, args.Names);
         }
 
-        // gets the image(s) from the given path
+        // Gets the image(s) from the given path
         [Route("AmazonS3GetImage")]
         public IActionResult AmazonS3GetImage(FileManagerDirectoryContent args)
         {

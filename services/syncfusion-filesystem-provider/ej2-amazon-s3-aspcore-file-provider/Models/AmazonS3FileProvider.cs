@@ -31,7 +31,6 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
         public void RegisterAmazonS3(string name, string awsAccessKeyId, string awsSecretAccessKey, string serviceName)
         {
             bucketName = name;
-
             AWSCredentials creds = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
 
             AmazonS3Config config = new AmazonS3Config
@@ -93,6 +92,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             readResponse.CWD = cwd;
             return readResponse;
         }
+
         private FileManagerDirectoryContent CreateDirectoryContentInstance(string name, bool value, string type, long size, DateTime createddate, DateTime modifieddate, bool child, string filterpath)
         {
             FileManagerDirectoryContent tempFile = new FileManagerDirectoryContent();
@@ -362,7 +362,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             return newPath + (directoryCount > 0 ? "(" + directoryCount.ToString() + ")" : "");
         }
 
-        //Gets the details of the file(s) or folder(s)
+        // Gets the details of the file(s) or folder(s)
         public FileManagerResponse Details(string path, string[] names, params FileManagerDirectoryContent[] data)
         {
             FileManagerResponse getDetailResponse = new FileManagerResponse();
@@ -434,7 +434,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             return checkExist;
         }
 
-        // Creates a NewFolder
+        // Creates a new folder
         public FileManagerResponse Create(string path, string name, params FileManagerDirectoryContent[] data)
         {
             FileManagerResponse createResponse = new FileManagerResponse();
