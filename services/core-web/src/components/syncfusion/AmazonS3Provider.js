@@ -25,60 +25,21 @@ export class AmazonS3Provider extends SampleBase {
           <FileManagerComponent
             id="filemanager"
             ajaxSettings={{
-              url: `${this.hostUrl  }AmazonS3FileOperations`,
-              getImageUrl: `${this.hostUrl  }AmazonS3GetImage`,
-              // uploadUrl: this.hostUrl + "AmazonS3Upload",
-              downloadUrl: `${this.hostUrl  }AmazonS3Download`,
+              url: `${this.hostUrl}AmazonS3FileOperations`,
+              getImageUrl: `${this.hostUrl}AmazonS3GetImage`,
+              downloadUrl: `${this.hostUrl}AmazonS3Download`,
             }}
             allowDragAndDrop={false}
             rootAliasName={null}
             view="LargeIcons"
             toolbarSettings={{
-              items: [
-                "NewFolder",
-                "Upload",
-                "Cut",
-                "Copy",
-                "Paste",
-                "Delete",
-                "Download",
-                "Rename",
-                "SortBy",
-                "Refresh",
-                "Selection",
-                "View",
-                "Details",
-              ],
+              items: ["Download", "SortBy", "Refresh", "Selection", "View", "Details"],
               visible: true,
             }}
             contextMenuSettings={{
-              file: ["Open", "|", "Cut", "Copy", "|", "Delete", "Rename", "|", "Details"],
-              folder: [
-                "Open",
-                "|",
-                "Cut",
-                "Copy",
-                "Paste",
-                "|",
-                "Delete",
-                "Rename",
-                "|",
-                "Details",
-              ],
-              layout: [
-                "SortBy",
-                "View",
-                "Refresh",
-                "|",
-                "Paste",
-                "|",
-                "NewFolder",
-                "Upload",
-                "|",
-                "Details",
-                "|",
-                "SelectAll",
-              ],
+              file: ["Open", "|", "Details"],
+              folder: ["Open", "|", "Details"],
+              layout: ["SortBy", "View", "Refresh", "|", "Details", "|", "SelectAll"],
               visible: true,
             }}
             // path="/foobar"
