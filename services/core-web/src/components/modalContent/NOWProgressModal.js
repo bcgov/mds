@@ -9,7 +9,6 @@ import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
-import { getDropdownPermitAmendmentTypeOptions } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   title: PropTypes.string,
@@ -21,13 +20,10 @@ const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   isCoalOrMineral: PropTypes.bool.isRequired,
-  permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
-  permitAmendmentType: PropTypes.string,
 };
 
 const defaultProps = {
   title: "",
-  permitAmendmentType: "",
 };
 
 export const NOWProgressModal = (props) => (
@@ -66,8 +62,6 @@ export const NOWProgressModal = (props) => (
               permits={props.permits}
               isAmendment={props.isAmendment}
               isCoalOrMineral={props.isCoalOrMineral}
-              permitAmendmentTypeDropDownOptions={props.permitAmendmentTypeDropDownOptions}
-              permitType={props.permitAmendmentType}
             />
           </>
         )}
@@ -114,14 +108,7 @@ export const NOWProgressModal = (props) => (
       <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
         <Button
           type="primary"
-          onClick={() =>
-            props.handleProgress(
-              props.tabCode,
-              props.trigger,
-              props.isAmendment,
-              props.permitAmendmentType
-            )
-          }
+          onClick={() => props.handleProgress(props.tabCode, props.trigger, props.isAmendment)}
         >
           {props.title}
         </Button>
@@ -135,6 +122,5 @@ NOWProgressModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
 });
 export default connect(mapStateToProps, null)(NOWProgressModal);

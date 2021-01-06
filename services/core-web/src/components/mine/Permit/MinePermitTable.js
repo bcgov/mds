@@ -392,14 +392,7 @@ const childColumns = [
         <ul>
           {text.map((file) => (
             <li className="wrapped-text">
-              {record.isAmalgamated ? (
-                <>
-                  {renderDocumentLink(file, file.document_name)}
-                  <span> (amalgamated)</span>
-                </>
-              ) : (
-                renderDocumentLink(file, truncateFilename(file.document_name))
-              )}
+              {renderDocumentLink(file, truncateFilename(file.document_name))}
             </li>
           ))}
         </ul>

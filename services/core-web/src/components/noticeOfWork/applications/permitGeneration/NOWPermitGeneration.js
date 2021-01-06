@@ -21,6 +21,7 @@ import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
+import { getPermits } from "@common/reducers/permitReducer";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -55,6 +56,7 @@ const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {};
@@ -174,41 +176,44 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.now_number = noticeOfWork.now_number;
 
     debugger;
-    console.log(draftPermit);
-    const draftAmendment = draftPermit.permit_amendments.filter(
-      (a) => a.permit_amendment_status_code === "DFT"
-    )[0];
+    console.log(amendment);
 
-    let tooltip = "";
     let isPermitAmendmentTypeDropDownDisabled = true;
-    let permitAmendmentDropdown = [];
+    let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
+    if (amendment && !_.isEmpty(amendment)) {
+      permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
 
-    switch (draftAmendment.permit_amendment_type_code) {
-      case "ALG":
-      case "OGP":
-        {
-          tooltip = "You can issue only regular permits";
-          permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
-          isPermitAmendmentTypeDropDownDisabled = true;
-          permitGenObject.permit_amendment_type_code = draftAmendment.permit_amendment_type_code;
-        }
-        break;
-      default:
-      case "AMD":
-        {
-          tooltip = "You can issue permits of amalgamated and regular types";
-          permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
-            (a) => a.value !== "OGP"
-          );
-          isPermitAmendmentTypeDropDownDisabled = false;
-          permitGenObject.permit_amendment_type_code = draftAmendment.permit_amendment_type_code;
-        }
-        break;
+      const amendmentType =
+        draftPermit.permit_amendments.filter(
+          (a) => a.permit_amendment_status_code !== "DFT" && a.permit_amendment_type_code === "ALG"
+        ).length > 0
+          ? "ALG"
+          : "AMD";
+
+      if (amendmentType === "AMD") {
+        permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
+          (a) => a.value !== "OGP"
+        );
+        isPermitAmendmentTypeDropDownDisabled = false;
+      }
+
+      this.setState({ permitAmendmentDropdown, isPermitAmendmentTypeDropDownDisabled });
     }
 
-    this.setState({ permitAmendmentDropdown, isPermitAmendmentTypeDropDownDisabled });
-
     return permitGenObject;
+  };
+
+  createPreviousAmendmentGenObject = (permit) => {
+    // gets and sorts in descending order amendments for selected permit
+    const amendments =
+      permit &&
+      permit.permit_amendments
+        .filter((a) => a.permit_amendment_status_code !== "DFT")
+        .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
+    const previousAmendment = amendments[0];
+    previousAmendment.issue_date = formatDate(previousAmendment.issue_date);
+    previousAmendment.authorization_end_date = formatDate(previousAmendment.authorization_end_date);
+    return previousAmendment;
   };
 
   createDocList = (noticeOfWork) => {
@@ -230,13 +235,23 @@ export class NOWPermitGeneration extends Component {
 
   handlePermitGenSubmit = () => {
     debugger;
+    console.log(this.props.permits);
+    console.log(this.props.formValues);
     const newValues = this.props.formValues;
+
     if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
         this.props.formValues.original_permit_issue_date
       );
+
+      if (newValues.permit_amendment_type_code === "ALG") {
+        const permit = this.props.permits.find((p) => p.permit_no === newValues.permit_number);
+        newValues.previous_amendment = this.createPreviousAmendmentGenObject(permit);
+      }
     }
+
     newValues.auth_end_date = formatDate(this.props.formValues.auth_end_date);
+
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
@@ -388,6 +403,7 @@ const mapStateToProps = (state) => ({
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

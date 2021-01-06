@@ -24,7 +24,6 @@ import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { USER_ROLES } from "@common/constants/environment";
 
 const originalPermit = "OGP";
-const amalgamtedPermit = "ALG";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -79,21 +78,8 @@ const validateBusinessRules = (values) => {
 
 export class PermitAmendmentForm extends Component {
   state = {
-    showUploadFiles: false,
     relatedDocuments: this.props.initialValues.related_documents || [],
     uploadedFiles: [],
-  };
-
-  componentDidMount() {
-    this.shouldShowUploadFiles(this.state.relatedDocuments);
-  }
-
-  shouldShowUploadFiles = (relatedDocuments) => {
-    this.setState({
-      showUploadFiles:
-        this.props.initialValues.permit_amendment_type_code !== amalgamtedPermit ||
-        relatedDocuments.length === 0,
-    });
   };
 
   // Attached files handlers
@@ -107,7 +93,6 @@ export class PermitAmendmentForm extends Component {
       (doc) => doc.permit_amendment_document_guid !== documentGuid
     );
     this.setState({ relatedDocuments: newRelatedDocuments });
-    this.shouldShowUploadFiles(newRelatedDocuments);
   };
 
   // File upload handlers
@@ -215,21 +200,17 @@ export class PermitAmendmentForm extends Component {
                 />
               </Form.Item>
             )}
-            {this.state.showUploadFiles && (
-              <Form.Item label="Upload files">
-                <Field
-                  id="PermitDocumentFileUpload"
-                  name="PermitDocumentFileUpload"
-                  onFileLoad={this.onFileLoad}
-                  onRemoveFile={this.onRemoveFile}
-                  mineGuid={this.props.mine_guid}
-                  component={PermitAmendmentFileUpload}
-                  allowMultiple={
-                    this.props.initialValues.permit_amendment_type_code !== amalgamtedPermit
-                  }
-                />
-              </Form.Item>
-            )}
+            <Form.Item label="Upload files">
+              <Field
+                id="PermitDocumentFileUpload"
+                name="PermitDocumentFileUpload"
+                onFileLoad={this.onFileLoad}
+                onRemoveFile={this.onRemoveFile}
+                mineGuid={this.props.mine_guid}
+                component={PermitAmendmentFileUpload}
+                allowMultiple
+              />
+            </Form.Item>
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>

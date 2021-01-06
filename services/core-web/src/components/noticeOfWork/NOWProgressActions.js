@@ -197,20 +197,6 @@ export class NOWProgressActions extends Component {
   };
 
   openProgressModal = (trigger) => {
-    let permitType = "";
-    if (this.props.permits && this.props.permits.length > 0) {
-      const permit = this.props.permits[0];
-      if (permit.permit_amendments && permit.permit_amendments.length > 0) {
-        permitType =
-          permit.permit_amendments.filter((a) => a.permit_amendment_type_code === "ALG").length > 0
-            ? "ALG"
-            : null;
-      }
-    } else {
-      permitType = "OGP";
-    }
-
-    debugger;
     this.props.openModal({
       props: {
         title: `${trigger} ${this.props.progressStatusHash[this.props.tab]}`,
@@ -224,7 +210,6 @@ export class NOWProgressActions extends Component {
         isCoalOrMineral:
           this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
-        permitType: permitType,
       },
       content: modalConfig.NOW_PROGRESS_MODAL,
     });

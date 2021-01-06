@@ -204,7 +204,6 @@ export class ProcessPermit extends Component {
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-
     const originalAmendment = draftPermit.permit_amendments.filter(
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
@@ -239,16 +238,48 @@ export class ProcessPermit extends Component {
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
 
+    debugger;
+    console.log(draftPermit);
+    if (amendment && !_.isEmpty(amendment)) {
+      debugger;
+      permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
+      if (permitGenObject.permit_amendment_type_code === "ALG") {
+        permitGenObject.previous_amendment = this.createPreviousAmendmentGenObject(draftPermit);
+      }
+    }
+
     return permitGenObject;
   };
 
+  createPreviousAmendmentGenObject = (permit) => {
+    // gets and sorts in descending order amendments for selected permit
+    debugger;
+    const amendments =
+      permit &&
+      permit.permit_amendments
+        .filter((a) => a.permit_amendment_status_code !== "DFT")
+        .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
+    const previousAmendment = amendments[0];
+    previousAmendment.issue_date = formatDate(previousAmendment.issue_date);
+    previousAmendment.authorization_end_date = formatDate(previousAmendment.authorization_end_date);
+    return previousAmendment;
+  };
+
   createDocList = (noticeOfWork) => {
-    return noticeOfWork.documents
+    const documents = noticeOfWork.filtered_submission_documents
       .filter((document) => document.is_final_package)
       .map((document) => ({
-        document_name: document.mine_document.document_name,
-        document_upload_date: formatDate(document.mine_document.upload_date),
+        document_name: document.filename,
+        document_upload_date: "",
       }));
+    return documents.concat(
+      noticeOfWork.documents
+        .filter((document) => document.is_final_package)
+        .map((document) => ({
+          document_name: document.mine_document.document_name,
+          document_upload_date: formatDate(document.mine_document.upload_date),
+        }))
+    );
   };
 
   afterSuccess = (values, message, code) => {
@@ -284,6 +315,7 @@ export class ProcessPermit extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
+        debugger;
         const permitObj = this.createPermitGenObject(
           this.props.noticeOfWork,
           this.props.draftPermit,

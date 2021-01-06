@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { compose, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, getFormValues, change } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Tooltip } from "antd";
@@ -9,54 +11,60 @@ import { resetForm, createDropDownList } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import { getDropdownPermitAmendmentTypeOptions } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   isCoalOrMineral: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
-  permitType: PropTypes.string,
-};
-
-const defaultProps = {
-  permitType: "OGP",
 };
 
 export const PreDraftPermitForm = (props) => {
-  const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
-  // const isPermitAmendmentTypeDropDownDisabled =
-  //   props.permitType === "ALG" || props.permitType === "OGP";
-  // const permitAmendmentDropdown = isPermitAmendmentTypeDropDownDisabled
-  //   ? props.permitAmendmentTypeDropDownOptions
-  //   : props.permitAmendmentTypeDropDownOptions.filter((a) => a.value !== "OGP");
+  const [permitType, setPermitType] = useState("OGP");
 
-  let tooltip = "";
-  let isPermitAmendmentTypeDropDownDisabled = false;
-  let permitAmendmentDropdown = [];
+  useEffect(() => {
+    if (!props.isAmendment) {
+      props.change("permit_amendment_type_code", permitType);
+    }
+  });
 
-  switch (props.permitType) {
-    case "ALG": {
-      tooltip = "You can issue only amalgamated permits";
-      permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions;
-      isPermitAmendmentTypeDropDownDisabled = true;
-    }
-    // break;
-    case "OGP": {
-      tooltip = "You can issue only regular permits";
-      permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions;
-      isPermitAmendmentTypeDropDownDisabled = true;
-    }
-    // break;
-    default:
-    case "AMD":
-      {
-        tooltip = "You can issue permits of amalgamated and regular types";
-        permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions.filter(
-          (a) => a.value !== "OGP"
-        );
-        isPermitAmendmentTypeDropDownDisabled = false;
+  const getPermitType = (selectedPermitGuid) => {
+    // TODO remove console logs
+    console.log("@@@@@@@@@");
+    console.log(selectedPermitGuid);
+    console.log(props.permits);
+
+    if (props.permits && props.permits.length > 0) {
+      const permit = props.permits.find((permit) => permit.permit_guid === selectedPermitGuid);
+      if (permit.permit_amendments && permit.permit_amendments.length > 0) {
+        const permitType =
+          permit.permit_amendments.filter((a) => a.permit_amendment_type_code === "ALG").length > 0
+            ? "ALG"
+            : "AMD";
+        setPermitType(permitType);
+        props.change("permit_amendment_type_code", permitType);
       }
-      break;
+    }
+  };
+
+  const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
+  let tooltip = "";
+  let isPermitAmendmentTypeDropDownDisabled = true;
+  let permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions;
+
+  if (permitType === "ALG") {
+    tooltip = "You can issue only amalgamated permits";
+  }
+  if (permitType === "OGP") {
+    tooltip = "You can issue only regular permits";
+  }
+  if (permitType === "AMD") {
+    tooltip = "You can issue permits of amalgamated and regular types";
+    permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions.filter(
+      (a) => a.value !== "OGP"
+    );
+    isPermitAmendmentTypeDropDownDisabled = false;
   }
 
   return (
@@ -74,6 +82,7 @@ export const PreDraftPermitForm = (props) => {
                   component={renderConfig.SELECT}
                   data={permitDropdown}
                   validate={[required]}
+                  onChange={(permitGuid) => getPermitType(permitGuid)}
                 />
               </Form.Item>
             </div>
@@ -115,11 +124,26 @@ export const PreDraftPermitForm = (props) => {
 };
 
 PreDraftPermitForm.propTypes = propTypes;
-PreDraftPermitForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.PRE_DRAFT_PERMIT,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
-  onSubmit: () => {},
-})(PreDraftPermitForm);
+const mapStateToProps = (state) => ({
+  permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
+  formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: FORM.PRE_DRAFT_PERMIT,
+    touchOnBlur: true,
+    onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
+    onSubmit: () => {},
+  })
+)(PreDraftPermitForm);
