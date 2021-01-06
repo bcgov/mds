@@ -1,18 +1,7 @@
-@import "../../../node_modules/@syncfusion/ej2-base/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-icons/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-inputs/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-popups/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-buttons/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-navigations/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-layouts/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-grids/styles/material.scss";
-@import "../../../node_modules/@syncfusion/ej2-react-filemanager/styles/material.scss";
-
 // Theme override variables taken from https://ej2.syncfusion.com/react/documentation/appearance/theme/#googles-material
-$accent: #e3165b;
+$accent: $primary-color; //#e3165b;
 $accent-font: #ffffff;
-$primary: #3f51b5;
+$primary: $primary-color; //#3f51b5;
 $primary-50: #e8eaf6;
 $primary-100: #c5cae9;
 $primary-200: #9fa8da;
@@ -38,4 +27,15 @@ $grey-dark: #303030;
 $grey-light-font: #000000;
 $grey-dark-font: #ffffff;
 $base-font: #000000;
-$error-font: #f44336;
+$error-font: $error-color; //#f44336;
+
+@import "../../../node_modules/@syncfusion/ej2-base/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-icons/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-inputs/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-popups/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-buttons/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-navigations/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-layouts/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-grids/styles/material.scss";
+@import "../../../node_modules/@syncfusion/ej2-react-filemanager/styles/material.scss";
