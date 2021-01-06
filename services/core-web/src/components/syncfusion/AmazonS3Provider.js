@@ -21,7 +21,7 @@ export class AmazonS3Provider extends SampleBase {
     return (
       <div>
         <div className="control-section">
-          {/* NOTE: See here for more information: https://ej2.syncfusion.com/documentation/api/file-manager/ */}
+          {/* NOTE: See here for more information: https://ej2.syncfusion.com/react/documentation/api/file-manager/ */}
           <FileManagerComponent
             id="filemanager"
             ajaxSettings={{
