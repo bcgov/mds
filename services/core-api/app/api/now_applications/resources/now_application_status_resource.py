@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 
@@ -149,9 +149,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 for progress in now_application_identity.now_application.application_progress:
                     current_app.logger.debug(datetime.utcnow())
                     current_app.logger.debug(progress.start_date)
-                    progress.end_date = datetime.utcnow()
+                    progress.end_date = datetime.now(tz=timezone.utc)
                 for delay in now_application_identity.application_delays:
-                    delay.end_date = datetime.utcnow()
+                    delay.end_date = datetime.now(tz=timezone.utc)
 
             now_application_identity.now_application.status_updated_date = datetime.utcnow()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
