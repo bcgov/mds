@@ -76,24 +76,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             return null;
         }
 
-        // uploads the file(s) into a specified path
-        [Route("AmazonS3Upload")]
-        public IActionResult AmazonS3Upload(string path, IList<IFormFile> uploadFiles, string action, string data)
-        {
-            FileManagerResponse uploadResponse;
-            FileManagerDirectoryContent[] dataObject = new FileManagerDirectoryContent[1];
-            dataObject[0] = JsonConvert.DeserializeObject<FileManagerDirectoryContent>(data);
-            uploadResponse = operation.Upload(path, uploadFiles, action, dataObject);
-            if (uploadResponse.Error != null)
-            {
-                Response.Clear();
-                Response.ContentType = "application/json; charset=utf-8";
-                Response.StatusCode = Convert.ToInt32(uploadResponse.Error.Code);
-                Response.HttpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = uploadResponse.Error.Message;
-            }
-            return Content("");
-        }
-
         // downloads the selected file(s) and folder(s)
         [Route("AmazonS3Download")]
         public IActionResult AmazonS3Download(string downloadInput)
