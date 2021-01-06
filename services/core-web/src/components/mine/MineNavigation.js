@@ -136,7 +136,7 @@ export class MineNavigation extends Component {
           <Menu className="sub-menu">
             <Menu.Item key="documents">
               <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
-                Archived
+                Archived MMS Files
               </Link>
             </Menu.Item>
           </Menu>

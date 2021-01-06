@@ -33,7 +33,7 @@ export class MineDocuments extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Archived Files</h2>
+          <h2>Archived MMS Files</h2>
           <p>MMS archived files are available on this page. These documents are read-only.</p>
           <Divider />
           <AmazonS3Provider />
