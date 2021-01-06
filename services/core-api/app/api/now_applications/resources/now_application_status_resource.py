@@ -147,8 +147,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             # Update NoW application and save status
             if now_application_status_code == 'REJ':
                 for progress in now_application_identity.now_application.application_progress:
-                    current_app.logger.debug(datetime.utcnow())
-                    current_app.logger.debug(progress.start_date)
                     progress.end_date = datetime.now(tz=timezone.utc)
                 for delay in now_application_identity.application_delays:
                     delay.end_date = datetime.now(tz=timezone.utc)
