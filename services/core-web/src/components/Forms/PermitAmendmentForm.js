@@ -148,14 +148,14 @@ export class PermitAmendmentForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item label="Assessed Liability">
+            <Form.Item label="Assessed Liability Adjustment">
               <p className="p-light">
                 This amount will be added to the Total Assessed Liability amount for this permit.
                 Changes to this value in CORE will not be updated in MMS.
               </p>
               <Field
-                id="security_adjustment"
-                name="security_adjustment"
+                id="liability_adjustment"
+                name="liability_adjustment"
                 component={renderConfig.FIELD}
                 {...currencyMask}
                 validate={[number]}
