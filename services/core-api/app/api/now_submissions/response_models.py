@@ -336,6 +336,7 @@ APPLICATION = api.model(
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
         'hasarchaeologicalprotectionplan':fields.String,
+        'isonprivateland':fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
