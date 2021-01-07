@@ -23,11 +23,11 @@ const propTypes = {
 
 export const RejectApplicationForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    {props.noticeOfWork?.security_received_date && props.noticeOfWork?.security_adjustment && (
+    {props.draftAmendment?.security_received_date && props.draftAmendment?.liability_adjustment && (
       <Alert
         message="Return Reclamation Securities"
         description={`A Security adjustment of ${formatMoney(
-          props.noticeOfWork.security_adjustment
+          props.draftAmendment.liability_adjustment
         )} was received on ${formatDate(
           props.noticeOfWork.security_received_date
         )} for this application which needs to be returned to the applicant or moved to a new application by the applicant. Update this information before rejecting.`}
