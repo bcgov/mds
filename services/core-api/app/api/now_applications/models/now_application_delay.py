@@ -23,6 +23,8 @@ class NOWApplicationDelay(Base, AuditMixin):
     class _ModelSchema(Base._ModelSchema):
         now_application_delay_id = fields.Integer(dump_only=True)
         now_application_guid = fields.UUID(dump_only=True)
+        start_date = fields.DateTime(dump_only=True)
+        end_date = fields.DateTime(dump_only=True)
 
     now_application_delay_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())

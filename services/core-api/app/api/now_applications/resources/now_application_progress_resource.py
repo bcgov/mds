@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import request, current_app
 from sqlalchemy.orm import validates
 from app.extensions import api
@@ -71,8 +71,8 @@ class NOWApplicationProgressResource(Resource, UserMixin):
 
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
-        # current_app.logger.debug(data['end_date'])
-        existing_now_progress.end_date = datetime.utcnow()
+        
+        existing_now_progress.end_date = datetime.now(tz=timezone.utc)
         existing_now_progress.save()
 
         return existing_now_progress, 200

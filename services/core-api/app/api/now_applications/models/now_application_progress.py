@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.extensions import db
 import dateutil.parser
@@ -44,7 +44,7 @@ class NOWApplicationProgress(Base, AuditMixin):
 
         progress = cls(
             application_progress_status_code=application_progress_status_code,
-            start_date=datetime.utcnow(),
+            start_date=datetime.now(tz=timezone.utc),
             created_by=User().get_user_username(),
         )
         now_application.application_progress.append(progress)
