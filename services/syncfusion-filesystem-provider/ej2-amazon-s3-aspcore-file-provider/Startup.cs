@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DotNetEnv;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +45,8 @@ namespace EJ2FileManagerService
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseMvc();
+            DotNetEnv.Env.Load();
+            DotNetEnv.Env.TraversePath().Load();
         }
     }
 }

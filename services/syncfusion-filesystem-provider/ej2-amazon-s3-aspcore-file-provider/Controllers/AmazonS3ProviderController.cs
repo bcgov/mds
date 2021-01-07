@@ -20,8 +20,12 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         {
             this.basePath = hostingEnvironment.ContentRootPath;
             this.operation = new AmazonS3FileProvider();
-            // TODO: Add valid parameters!
-            this.operation.RegisterAmazonS3("<---bucketName--->", "<---awsAccessKeyId--->", "<---awsSecretAccessKey--->", "<---serviceName--->");
+
+            string name = System.Environment.GetEnvironmentVariable("OBJECT_STORE_BUCKET");
+            string awsAccessKeyId = System.Environment.GetEnvironmentVariable("OBJECT_STORE_ACCESS_KEY_ID");
+            string awsSecretAccessKey = System.Environment.GetEnvironmentVariable("OBJECT_STORE_ACCESS_KEY");
+            string serviceName = System.Environment.GetEnvironmentVariable("OBJECT_STORE_HOST");
+            this.operation.RegisterAmazonS3(name, awsAccessKeyId, awsSecretAccessKey, serviceName);
         }
 
         [Route("AmazonS3FileOperations")]
@@ -30,13 +34,13 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             switch (args.Action)
             {
                 case "read":
-                    // reads the file(s) or folder(s) from the given path.
+                    // Reads the file(s) or folder(s) from the given path
                     return this.operation.ToCamelCase(this.operation.GetFiles(args.Path, false, args.Data));
                 case "details":
-                    // gets the details of the selected file(s) or folder(s).
+                    // Gets the details of the selected file(s) or folder(s)
                     return this.operation.ToCamelCase(this.operation.Details(args.Path, args.Names, args.Data));
                 case "search":
-                    // gets the list of file(s) or folder(s) from a given path based on the searched key string.
+                    // Gets the list of file(s) or folder(s) from a given path based on the searched key string
                     return this.operation.ToCamelCase(this.operation.Search(args.Path, args.SearchString, args.ShowHiddenItems, args.CaseSensitive));
             }
             return null;
