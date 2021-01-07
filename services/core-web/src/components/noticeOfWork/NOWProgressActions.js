@@ -108,25 +108,25 @@ export class NOWProgressActions extends Component {
     }
   };
 
-  handleProgress = (tab, trigger, isAmendment, permitAmendmentType) => {
+  handleProgress = (tab, trigger, isAmendment) => {
     if (trigger === "Complete") {
       this.stopProgress(tab);
     } else if (trigger === "Resume") {
       this.startOrResumeProgress(tab, trigger);
     } else if (trigger === "Start") {
       if (tab === "DFT") {
-        this.handlePermit(tab, trigger, isAmendment, permitAmendmentType);
+        this.handlePermit(tab, trigger, isAmendment);
       } else {
         this.startOrResumeProgress(tab, trigger);
       }
     }
   };
 
-  handlePermit = (tab, trigger, isAmendment, permitAmendmentType) => {
+  handlePermit = (tab, trigger, isAmendment) => {
     const errors = Object.keys(flattenObject(this.props.formErrors));
     this.props.submit(FORM.PRE_DRAFT_PERMIT);
     if (errors.length === 0) {
-      this.startDraftPermit(tab, trigger, isAmendment, permitAmendmentType);
+      this.startDraftPermit(tab, trigger, isAmendment);
     }
   };
 
