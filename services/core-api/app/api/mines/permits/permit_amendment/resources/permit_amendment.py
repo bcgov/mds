@@ -187,15 +187,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             if application_identity.now_application:
                 now_type = application_identity.now_application.notice_of_work_type_code
-                condition_code = now_type
-
-                if now_type == "QIM":
-                    condition_code = "QCA"
-                elif now_type == "COL":
-                    condition_code = "MIN"
 
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
-                    condition_code)
+                    now_type)
                 for condition in standard_conditions:
                     PermitConditions.create(condition.condition_category_code,
                                             condition.condition_type_code,

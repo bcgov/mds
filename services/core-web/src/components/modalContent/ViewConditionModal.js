@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "antd";
-import Condition from "@/components/Forms/permits/conditions/Condition";
+import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import NullScreen from "@/components/common/NullScreen";
 
 const propTypes = {
@@ -13,7 +13,7 @@ export const ViewConditionModal = (props) => {
   return (
     <div>
       {props.conditions?.length > 0 ? (
-        props.conditions.map((condition) => <Condition condition={condition} isViewOnly />)
+        props.conditions.map((condition) => <ConditionLayerOne condition={condition} isViewOnly />)
       ) : (
         <p>
           <NullScreen />

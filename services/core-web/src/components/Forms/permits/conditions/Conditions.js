@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Collapse, Button } from "antd";
 import { formatDateTime } from "@common/utils/helpers";
-import { UndoOutlined, ReadOutlined } from "@ant-design/icons";
+import { ReadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -24,7 +24,7 @@ import {
 } from "@common/actionCreators/permitActionCreator";
 import { maxBy, concat } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
-import Condition from "@/components/Forms/permits/conditions/Condition";
+import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
@@ -218,7 +218,7 @@ export class Conditions extends Component {
                 id={conditionCategory.condition_category_code}
               >
                 {conditions.map((condition) => (
-                  <Condition
+                  <ConditionLayerOne
                     condition={condition}
                     reorderConditions={this.reorderConditions}
                     handleSubmit={this.handleEdit}
@@ -238,14 +238,12 @@ export class Conditions extends Component {
                         : maxBy(conditions, "display_order").display_order + 1,
                     parent_permit_condition_id: null,
                     permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id,
+                    parent_condition_type_code: "SEC",
+                    sibling_condition_type_code:
+                      conditions.length === 0 ? null : conditions[0].condition_type_code,
                   }}
+                  layer={0}
                 />
-                {false && (
-                  <Button type="secondary" className="full-mobile btn--middle">
-                    <UndoOutlined className="padding-sm--right icon-sm" />
-                    Restore Deleted Standard Conditions
-                  </Button>
-                )}
               </Collapse.Panel>
             );
           })}

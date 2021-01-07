@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
-import { maxBy } from "lodash";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
+import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import ListItemForm from "@/components/Forms/permits/conditions/ListItemForm";
-import NestedSubCondition from "@/components/Forms/permits/conditions/NestedSubCondition";
-import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
+import ConditionLayerTwo from "@/components/Forms/permits/conditions/ConditionLayerTwo";
+import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";
+import AddCondition from "./AddCondition";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -35,35 +35,35 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const ListItem = (props) => {
+const ConditionLayerOne = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
-        {!isEditing && <Col span={2} />}
-        <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-        <Col span={props.isViewOnly ? 16 : 17}>
-          {!isEditing && props.condition.condition}
-          {isEditing && (
-            <ListItemForm
-              onCancel={() => {
-                setIsEditing(!isEditing);
-                props.setConditionEditingFlag(false);
-                props.handleCancel(false);
-              }}
-              onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
-              initialValues={props.condition || props.initialValues}
-            />
-          )}
-        </Col>
-        <Col span={3} className="float-right show-on-hover">
+      {props.condition &&
+        props.condition.sub_conditions.length === 0 &&
+        props.condition.display_order !== 1 && (
+          <Row gutter={32}>
+            <Col span={24}>&nbsp;</Col>
+          </Row>
+        )}
+      <Row gutter={[16, 24]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
+        {!isEditing && <Col span={props.isViewOnly ? 2 : 1}>{props.condition.step}</Col>}
+        {!isEditing && (
+          <Col
+            span={props.isViewOnly ? 17 : 18}
+            className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
+          >
+            {props.condition.condition}
+          </Col>
+        )}
+        <Col span={4} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  ghost
                   className="no-margin"
+                  ghost
                   size="small"
                   type="primary"
                   onClick={() => {
@@ -110,8 +110,8 @@ const ListItem = (props) => {
               </NOWActionWrapper>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  ghost
                   className="no-margin"
+                  ghost
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
@@ -129,9 +129,23 @@ const ListItem = (props) => {
           )}
         </Col>
       </Row>
+      {isEditing && (
+        <Col span={18}>
+          <ConditionForm
+            onCancel={() => {
+              setIsEditing(!isEditing);
+              props.setConditionEditingFlag(false);
+              props.handleCancel(false);
+            }}
+            onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+            initialValues={props.condition || props.initialValues}
+            layer={1}
+          />
+        </Col>
+      )}
       {props.condition &&
         props.condition.sub_conditions.map((condition) => (
-          <NestedSubCondition
+          <ConditionLayerTwo
             condition={condition}
             reorderConditions={props.reorderConditions}
             handleSubmit={props.handleSubmit}
@@ -141,10 +155,9 @@ const ListItem = (props) => {
             isViewOnly={props.isViewOnly}
           />
         ))}
-
       {!isEditing && !props.isViewOnly && (
-        <Row gutter={[8, 16]}>
-          <Col span={22} offset={2}>
+        <Row gutter={32}>
+          <Col span={22}>
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,
@@ -155,17 +168,25 @@ const ListItem = (props) => {
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
+                parent_condition_type_code: props.condition.condition_type_code,
+                sibling_condition_type_code:
+                  props.condition.sub_conditions.length === 0
+                    ? null
+                    : props.condition.sub_conditions[0].condition_type_code,
               }}
-              alternateTitle="Add Secondary Item"
+              layer={1}
             />
           </Col>
         </Row>
       )}
+      <Row gutter={32}>
+        <Col span={24}>&nbsp;</Col>
+      </Row>
     </>
   );
 };
 
-ListItem.propTypes = propTypes;
-ListItem.defaultProps = defaultProps;
+ConditionLayerOne.propTypes = propTypes;
+ConditionLayerOne.defaultProps = defaultProps;
 
-export default ListItem;
+export default ConditionLayerOne;

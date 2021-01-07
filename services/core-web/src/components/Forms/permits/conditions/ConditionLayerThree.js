@@ -6,9 +6,9 @@ import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import NestedListItem from "@/components/Forms/permits/conditions/NestedListItem";
+import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";
+import ConditionLayerFour from "@/components/Forms/permits/conditions/ConditionLayerFour";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
-import SubConditionForm from "./SubConditionForm";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -35,34 +35,20 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const NestedSubCondition = (props) => {
+const ConditionLayerThree = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
       <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
-        {!isEditing && (
-          <>
-            <Col span={3} />
-            <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-          </>
-        )}
-        <Col span={props.isViewOnly ? 16 : 15}>{!isEditing && props.condition.condition}</Col>
-
-        {isEditing && (
-          <Col span={24}>
-            <SubConditionForm
-              onCancel={() => {
-                setIsEditing(!isEditing);
-                props.setConditionEditingFlag(false);
-                props.handleCancel(false);
-              }}
-              onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
-              initialValues={props.condition || props.initialValues}
-            />
-          </Col>
-        )}
-
+        {!isEditing && <Col span={2} />}
+        <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
+        <Col
+          span={props.isViewOnly ? 16 : 17}
+          className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
+        >
+          {!isEditing && props.condition.condition}
+        </Col>
         <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
@@ -135,9 +121,21 @@ const NestedSubCondition = (props) => {
           )}
         </Col>
       </Row>
+      {isEditing && (
+        <ConditionForm
+          onCancel={() => {
+            setIsEditing(!isEditing);
+            props.setConditionEditingFlag(false);
+            props.handleCancel(false);
+          }}
+          onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+          initialValues={props.condition || props.initialValues}
+          layer={3}
+        />
+      )}
       {props.condition &&
         props.condition.sub_conditions.map((condition) => (
-          <NestedListItem
+          <ConditionLayerFour
             condition={condition}
             reorderConditions={props.reorderConditions}
             handleSubmit={props.handleSubmit}
@@ -147,21 +145,27 @@ const NestedSubCondition = (props) => {
             isViewOnly={props.isViewOnly}
           />
         ))}
+
       {!isEditing && !props.isViewOnly && (
         <Row gutter={[8, 16]}>
-          <Col span={22} offset={3}>
+          <Col span={22} offset={2}>
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,
-                condition_type_code: "LIS",
+                condition_type_code: "CON",
                 display_order:
                   props.condition.sub_conditions.length === 0
                     ? 1
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
+                parent_condition_type_code: props.condition.condition_type_code,
+                sibling_condition_type_code:
+                  props.condition.sub_conditions.length === 0
+                    ? null
+                    : props.condition.sub_conditions[0].condition_type_code,
               }}
-              alternateTitle="Add Tertiary Item"
+              layer={3}
             />
           </Col>
         </Row>
@@ -170,7 +174,7 @@ const NestedSubCondition = (props) => {
   );
 };
 
-NestedSubCondition.propTypes = propTypes;
-NestedSubCondition.defaultProps = defaultProps;
+ConditionLayerThree.propTypes = propTypes;
+ConditionLayerThree.defaultProps = defaultProps;
 
-export default NestedSubCondition;
+export default ConditionLayerThree;

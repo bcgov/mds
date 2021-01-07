@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Menu, Dropdown } from "antd";
 import {
   getEditingConditionFlag,
   getDraftPermitAmendmentForNOW,
@@ -14,9 +15,7 @@ import {
 } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
-import Section from "@/components/Forms/permits/conditions/Section";
-import SubCondition from "@/components/Forms/permits/conditions/SubCondition";
-import ListItem from "@/components/Forms/permits/conditions/ListItem";
+import Condition from "@/components/Forms/permits/conditions/Condition";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 
@@ -28,31 +27,17 @@ const propTypes = {
   fetchPermitConditions: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permit.isRequired,
-  alternateTitle: PropTypes.string,
 };
 
-const defaultProps = { alternateTitle: "" };
-
-const ConditionComponent = (props) =>
-  ({
-    SEC: <Section {...props} />,
-    CON: <SubCondition {...props} />,
-    LIS: <ListItem {...props} />,
-  }[props.initialValues.condition_type_code]);
-
-const ButtonText = (condition_type_code) =>
-  ({
-    SEC: "Add Sub-Section",
-    CON: "Add Condition",
-    LIS: "Add List Item",
-  }[condition_type_code]);
+const defaultProps = {};
 
 export class AddCondition extends Component {
-  state = { isEditing: false };
+  state = { isEditing: false, conditionType: "SEC" };
 
-  handleSubmit = (values) =>
-    this.props
-      .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, values)
+  handleSubmit = (values) => {
+    const payload = { ...values, condition_type_code: this.state.conditionType };
+    return this.props
+      .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, payload)
       .then(() => {
         this.setState({ isEditing: false });
         this.props.fetchPermitConditions(this.props.draftPermitAmendment.permit_amendment_guid);
@@ -62,6 +47,7 @@ export class AddCondition extends Component {
         );
         this.props.setEditingConditionFlag(false);
       });
+  };
 
   handleCancel = (value) => {
     this.props.setEditingConditionFlag(value);
@@ -69,37 +55,110 @@ export class AddCondition extends Component {
   };
 
   render = () => {
-    const title = this.props.alternateTitle
-      ? this.props.alternateTitle
-      : ButtonText(this.props.initialValues.condition_type_code);
+    const conditionMenu = () =>
+      ({
+        SEC: (
+          <Menu>
+            {(!this.props.initialValues.sibling_condition_type_code ||
+              this.props.initialValues.sibling_condition_type_code === "SEC") && (
+              <Menu.Item>
+                <button
+                  type="button"
+                  className="full"
+                  onClick={() => {
+                    this.props.setEditingConditionFlag(true);
+                    this.setState({ isEditing: true, conditionType: "SEC" });
+                  }}
+                >
+                  Sub-Section
+                </button>
+              </Menu.Item>
+            )}
+            {(!this.props.initialValues.sibling_condition_type_code ||
+              this.props.initialValues.sibling_condition_type_code === "CON") && (
+              <Menu.Item>
+                <button
+                  type="button"
+                  className="full"
+                  onClick={() => {
+                    this.props.setEditingConditionFlag(true);
+                    this.setState({ isEditing: true, conditionType: "CON" });
+                  }}
+                >
+                  Condition
+                </button>
+              </Menu.Item>
+            )}
+          </Menu>
+        ),
+        CON: (
+          <Menu>
+            <Menu.Item>
+              <button
+                type="button"
+                className="full"
+                onClick={() => {
+                  this.props.setEditingConditionFlag(true);
+                  this.setState({ isEditing: true, conditionType: "LIS" });
+                }}
+              >
+                List Item
+              </button>
+            </Menu.Item>
+          </Menu>
+        ),
+        LIS: (
+          <Menu>
+            <Menu.Item>
+              <button
+                type="button"
+                className="full"
+                onClick={() => {
+                  this.props.setEditingConditionFlag(true);
+                  this.setState({ isEditing: true, conditionType: "LIS" });
+                }}
+              >
+                List Item
+              </button>
+            </Menu.Item>
+          </Menu>
+        ),
+      }[this.props.initialValues.parent_condition_type_code]);
+
+    const hasSibling = this.props.initialValues.sibling_condition_type_code;
+    const addTitle = hasSibling ? "Add Another" : "Create";
     return (
       <>
         {!this.state.isEditing && this.props.editingConditionFlag && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-            <AddButton type="secondary" disabled>
-              {title}
-            </AddButton>
+            <Dropdown
+              className="full-height"
+              overlay={conditionMenu()}
+              placement="bottomLeft"
+              disabled
+            >
+              <AddButton type="secondary" disabled>
+                {addTitle}
+              </AddButton>
+            </Dropdown>
           </NOWActionWrapper>
         )}
         {!this.props.editingConditionFlag && (
           <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-            <AddButton
-              type="secondary"
-              onClick={() => {
-                this.props.setEditingConditionFlag(true);
-                this.setState({ isEditing: true });
-              }}
-            >
-              {title}
-            </AddButton>
+            <Dropdown className="full-height" overlay={conditionMenu()} placement="bottomLeft">
+              <AddButton type="secondary">{addTitle}</AddButton>
+            </Dropdown>
           </NOWActionWrapper>
         )}
         {this.state.isEditing && (
-          <ConditionComponent
+          <Condition
             new
             handleCancel={() => this.handleCancel()}
             handleSubmit={(values) => this.handleSubmit(values)}
-            initialValues={this.props.initialValues}
+            initialValues={{
+              ...this.props.initialValues,
+              condition_type_code: this.state.conditionType,
+            }}
           />
         )}
       </>
