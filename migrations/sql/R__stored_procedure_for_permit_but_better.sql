@@ -318,8 +318,7 @@ DECLARE
 	-- # Update existing records in ETL_PERMIT
 	-- ################################################################
 
-	UPDATE ETL_PERMIT
-	SET
+	UPDATE ETL_PERMIT SET
 	    --permit info
 	    mine_no                = info.mine_no               ,
 	    permit_no              = info.permit_no             ,
@@ -340,7 +339,7 @@ DECLARE
 	    WHERE
 	    ETL_PERMIT.mine_guid = info.mine_guid
 	    AND
-	    ETL_PERMIT.party_combo_id = info.party_combo_id
+	    ETL_PERMIT.permit_cid = info.permit_cid
 	    AND
 	    ETL_PERMIT.permit_no = info.permit_no;
 
@@ -406,8 +405,7 @@ DECLARE
 	-- # Update permit records with the newest version in the MMS data
 	-- ################################################################
 
-	UPDATE permit
-	SET
+	UPDATE permit SET
 	    update_user            = 'mms_migration'       ,
 	    update_timestamp       = now()                 ,
 	    permit_status_code     = etl.permit_status_code
@@ -424,8 +422,7 @@ DECLARE
 	-- # Update permit amendment records with the newest version in the MMS data
 	-- ################################################################
 
-	UPDATE permit_amendment
-	SET
+	UPDATE permit_amendment SET
 	    received_date          = etl.received_date         ,
 	    issue_date             = etl.issue_date            ,
 	    update_user            = 'mms_migration'           ,
@@ -497,8 +494,7 @@ DECLARE
 	-- # # Update ETL_PERMIT permit_guids from the newly entered permits.
 	-- # ################################################################
 
-	UPDATE ETL_PERMIT SET permit_guid =
-	(select permit_guid from permit
+	UPDATE ETL_PERMIT SET permit_guid =(select permit_guid from permit
 	inner join mine_permit_xref on permit.permit_id = mine_permit_xref.permit_id
 	WHERE ETL_PERMIT.permit_no=permit.permit_no and ETL_PERMIT.mine_guid = mine_permit_xref.mine_guid limit 1)
 	where permit_amendment_guid NOT IN (
@@ -573,8 +569,7 @@ DECLARE
 	-- # Update existing parties from ETL_PERMIT
 	-- ################################################################
 
-	UPDATE party
-	SET
+	UPDATE party SET
 	    first_name       = etl.first_name            ,
 	    party_name       = etl.party_name            ,
 	    phone_no         = etl.phone_no              ,
@@ -584,6 +579,7 @@ DECLARE
 	    party_type_code  = etl.party_type
 	FROM ETL_PERMIT etl
 	WHERE party.party_guid = etl.party_guid
+	AND etl.party_name is not null
 	AND (
 	    party.first_name != etl.first_name
 	    OR party.party_name != etl.party_name
