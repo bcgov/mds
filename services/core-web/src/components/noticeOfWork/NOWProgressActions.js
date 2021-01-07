@@ -135,9 +135,6 @@ export class NOWProgressActions extends Component {
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        {
-          end_date: new Date(),
-        },
         message
       )
       .then(() => {
@@ -168,7 +165,6 @@ export class NOWProgressActions extends Component {
   handleStartDelay = (values) => {
     const payload = {
       ...values,
-      start_date: new Date().toISOString(),
     };
     this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
@@ -181,7 +177,6 @@ export class NOWProgressActions extends Component {
   handleStopDelay = (values) => {
     const payload = {
       ...values,
-      end_date: new Date().toISOString(),
     };
     this.props
       .updateApplicationDelay(
