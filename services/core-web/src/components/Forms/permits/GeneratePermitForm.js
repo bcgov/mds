@@ -252,7 +252,6 @@ export const GeneratePermitForm = (props) => (
               component={renderConfig.SELECT}
               data={props.permitAmendmentDropdown}
               validate={[required]}
-              // disabled={props.isViewMode}
               disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
             />
           </Col>

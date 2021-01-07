@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from flask_restplus import Resource, reqparse, inputs
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -68,17 +69,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 if not permit_amendment:
                     raise NotFound('No permit amendment found for this application.')
 
-                #move out of draft
+                #move out of draft, draft status on permit indicates that the permit amendment is first (original)
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
-                    permit_amendment.permit_amendment_status_code = 'OGP'
+                    permit_amendment.permit_amendment_status_code = 'ACT'
+                    permit_amendment.permit_amendment_type_code = 'OGP'
                     #assign permit_no
                     permit.assign_permit_no(
-                    now_application_identity.now_application.notice_of_work_type_code[0])
+                        now_application_identity.now_application.notice_of_work_type_code[0])
 
                 if permit_amendment.permit_amendment_status_code == 'DFT':
                     permit_amendment.permit_amendment_status_code = 'ACT'
-                
 
                 permit.save()
 

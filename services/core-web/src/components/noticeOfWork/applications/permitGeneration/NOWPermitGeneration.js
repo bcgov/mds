@@ -179,14 +179,19 @@ export class NOWPermitGeneration extends Component {
     if (amendment && !isEmpty(amendment)) {
       permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
 
-      const amendmentType =
-        draftPermit.permit_amendments.filter(
-          (a) =>
-            a.permit_amendment_status_code !== "DFT" &&
-            a.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
-        ).length > 0
-          ? PERMIT_AMENDMENT_TYPES.amalgamated
-          : PERMIT_AMENDMENT_TYPES.amendment;
+      let amendmentType = PERMIT_AMENDMENT_TYPES.original;
+      const amendments = draftPermit.permit_amendments.filter(
+        (a) => a.permit_amendment_status_code !== "DFT"
+      );
+
+      if (amendments.length > 0) {
+        amendmentType =
+          amendments.filter(
+            (a) => a.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
+          ).length > 0
+            ? PERMIT_AMENDMENT_TYPES.amalgamated
+            : PERMIT_AMENDMENT_TYPES.amendment;
+      }
 
       if (amendmentType === PERMIT_AMENDMENT_TYPES.amendment) {
         permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
