@@ -2,7 +2,7 @@ from flask import Response, current_app
 from flask_restplus import Resource
 from sqlalchemy.inspection import inspect
 
-from ..models.mine_summary_csv_view import MineSummaryCSVView
+from ..models.mine_summary_view import MineSummaryView
 
 from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_view_all
@@ -20,11 +20,11 @@ class MineSummaryCSVResource(Resource):
         csv_string = cache.get(MINE_DETAILS_CSV)
         if not csv_string:
 
-            model = inspect(MineSummaryCSVView)
+            model = inspect(MineSummaryView)
 
             csv_string = "\"" + '","'.join([c.name or "" for c in model.columns]) + "\"\n"
 
-            rows = MineSummaryCSVView.query.all()
+            rows = MineSummaryView.query.all()
 
             csv_string += '\n'.join([r.csv_row() for r in rows])
             cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
