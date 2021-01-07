@@ -117,6 +117,12 @@ export const MINE_GENERAL = {
   component: MineSummary,
 };
 
+export const MINE_DOCUMENTS = {
+  route: "/mine-dashboard/:id/mine-information/mms-archive",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/mms-archive`,
+  component: MineDocuments,
+};
+
 export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
@@ -173,12 +179,6 @@ export const MINE_TAILINGS = {
   route: "/mine-dashboard/:id/reports/tailings",
   dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
   component: MineTailingsInfo,
-};
-
-export const MINE_DOCUMENTS = {
-  route: "/mine-dashboard/:id/documents/documents",
-  dynamicRoute: (id) => `/mine-dashboard/${id}/documents/documents`,
-  component: MineDocuments,
 };
 
 export const PARTY_PROFILE = {

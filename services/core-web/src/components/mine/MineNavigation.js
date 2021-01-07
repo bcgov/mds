@@ -39,6 +39,11 @@ export class MineNavigation extends Component {
                 Contacts
               </Link>
             </Menu.Item>
+            <Menu.Item key="mms-archive">
+              <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Archived MMS Files
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu
@@ -122,23 +127,6 @@ export class MineNavigation extends Component {
                 </Link>
               </Menu.Item>
             )}
-          </Menu>
-        </Menu.SubMenu>
-        <Menu.SubMenu
-          id={this.ifActiveButton("documents")}
-          title={
-            <span>
-              Files
-              <DownOutlined className="padding-small--left" />
-            </span>
-          }
-        >
-          <Menu className="sub-menu">
-            <Menu.Item key="documents">
-              <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
-                Archived MMS Files
-              </Link>
-            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
       </Menu>
