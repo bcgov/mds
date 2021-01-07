@@ -76,7 +76,6 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['security_adjustment'] = str(
                 now_application.security_adjustment
             ) if now_application.security_adjustment else '0.00'
-            template_data['submitted_date'] = str(now_application.submitted_date)
 
             conditions = permit.conditions
             conditions_template_data = {}

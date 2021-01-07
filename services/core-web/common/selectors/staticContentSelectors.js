@@ -462,6 +462,11 @@ export const getDropdownPermitAmendmentTypeOptions = createSelectorWrapper(
   ["description", "permit_amendment_type_code", "active_ind"]
 );
 
+export const getPermitAmendmentTypeOptionsHash = createSelector(
+  [getDropdownPermitAmendmentTypeOptions],
+  createLabelHash
+);
+
 export const getDropdownNoticeOfWorkActivityTypeOptions = createSelectorWrapper(
   getNoticeOfWorkActivityTypeOptions,
   createDropDownList,

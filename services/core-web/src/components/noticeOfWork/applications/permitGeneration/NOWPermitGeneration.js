@@ -33,6 +33,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -60,8 +61,6 @@ const propTypes = {
 };
 
 const defaultProps = {};
-
-const originalPermit = "OGP";
 
 const regionHash = {
   SE: "Cranbrook",
@@ -139,7 +138,7 @@ export class NOWPermitGeneration extends Component {
     )[0];
 
     const originalAmendment = draftPermit.permit_amendments.filter(
-      (org) => org.permit_amendment_type_code === originalPermit
+      (org) => org.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.original
     )[0];
 
     const addressLineOne =
@@ -175,24 +174,23 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
 
-    debugger;
-    console.log(amendment);
-
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
-    if (amendment && !_.isEmpty(amendment)) {
+    if (amendment && !isEmpty(amendment)) {
       permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
 
       const amendmentType =
         draftPermit.permit_amendments.filter(
-          (a) => a.permit_amendment_status_code !== "DFT" && a.permit_amendment_type_code === "ALG"
+          (a) =>
+            a.permit_amendment_status_code !== "DFT" &&
+            a.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
         ).length > 0
-          ? "ALG"
-          : "AMD";
+          ? PERMIT_AMENDMENT_TYPES.amalgamated
+          : PERMIT_AMENDMENT_TYPES.amendment;
 
-      if (amendmentType === "AMD") {
+      if (amendmentType === PERMIT_AMENDMENT_TYPES.amendment) {
         permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
-          (a) => a.value !== "OGP"
+          (a) => a.value !== PERMIT_AMENDMENT_TYPES.original
         );
         isPermitAmendmentTypeDropDownDisabled = false;
       }
@@ -209,6 +207,7 @@ export class NOWPermitGeneration extends Component {
       permit &&
       permit.permit_amendments
         .filter((a) => a.permit_amendment_status_code !== "DFT")
+        // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
     const previousAmendment = amendments[0];
     previousAmendment.issue_date = formatDate(previousAmendment.issue_date);
@@ -234,9 +233,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   handlePermitGenSubmit = () => {
-    debugger;
-    console.log(this.props.permits);
-    console.log(this.props.formValues);
     const newValues = this.props.formValues;
 
     if (this.props.isAmendment) {
@@ -244,14 +240,14 @@ export class NOWPermitGeneration extends Component {
         this.props.formValues.original_permit_issue_date
       );
 
-      if (newValues.permit_amendment_type_code === "ALG") {
+      if (newValues.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated) {
         const permit = this.props.permits.find((p) => p.permit_no === newValues.permit_number);
         newValues.previous_amendment = this.createPreviousAmendmentGenObject(permit);
       }
     }
 
     newValues.auth_end_date = formatDate(this.props.formValues.auth_end_date);
-
+    newValues.application_date = formatDate(newValues.application_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
@@ -264,7 +260,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
-    debugger;
     this.setState({ isLoaded: false });
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,

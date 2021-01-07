@@ -47,6 +47,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -238,12 +239,9 @@ export class ProcessPermit extends Component {
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
 
-    debugger;
-    console.log(draftPermit);
-    if (amendment && !_.isEmpty(amendment)) {
-      debugger;
+    if (amendment && !isEmpty(amendment)) {
       permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
-      if (permitGenObject.permit_amendment_type_code === "ALG") {
+      if (permitGenObject.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated) {
         permitGenObject.previous_amendment = this.createPreviousAmendmentGenObject(draftPermit);
       }
     }
@@ -253,11 +251,11 @@ export class ProcessPermit extends Component {
 
   createPreviousAmendmentGenObject = (permit) => {
     // gets and sorts in descending order amendments for selected permit
-    debugger;
     const amendments =
       permit &&
       permit.permit_amendments
         .filter((a) => a.permit_amendment_status_code !== "DFT")
+        // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
     const previousAmendment = amendments[0];
     previousAmendment.issue_date = formatDate(previousAmendment.issue_date);
@@ -283,6 +281,7 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
+    values.application_date = formatDate(values.application_date);
     return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -315,7 +314,6 @@ export class ProcessPermit extends Component {
         this.props.noticeOfWork.now_application_guid
       )
       .then(() => {
-        debugger;
         const permitObj = this.createPermitGenObject(
           this.props.noticeOfWork,
           this.props.draftPermit,

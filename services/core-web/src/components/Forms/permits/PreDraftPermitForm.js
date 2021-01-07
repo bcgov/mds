@@ -12,16 +12,18 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import { getDropdownPermitAmendmentTypeOptions } from "@common/selectors/staticContentSelectors";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   isCoalOrMineral: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
+  change: PropTypes.func.isRequired,
 };
 
 export const PreDraftPermitForm = (props) => {
-  const [permitType, setPermitType] = useState("OGP");
+  const [permitType, setPermitType] = useState(PERMIT_AMENDMENT_TYPES.original);
 
   useEffect(() => {
     if (!props.isAmendment) {
@@ -30,20 +32,19 @@ export const PreDraftPermitForm = (props) => {
   });
 
   const getPermitType = (selectedPermitGuid) => {
-    // TODO remove console logs
-    console.log("@@@@@@@@@");
-    console.log(selectedPermitGuid);
-    console.log(props.permits);
-
     if (props.permits && props.permits.length > 0) {
-      const permit = props.permits.find((permit) => permit.permit_guid === selectedPermitGuid);
-      if (permit.permit_amendments && permit.permit_amendments.length > 0) {
-        const permitType =
-          permit.permit_amendments.filter((a) => a.permit_amendment_type_code === "ALG").length > 0
-            ? "ALG"
-            : "AMD";
-        setPermitType(permitType);
-        props.change("permit_amendment_type_code", permitType);
+      const selectedPermit = props.permits.find(
+        (permit) => permit.permit_guid === selectedPermitGuid
+      );
+      if (selectedPermit.permit_amendments && selectedPermit.permit_amendments.length > 0) {
+        const selectedPermitType =
+          selectedPermit.permit_amendments.filter(
+            (a) => a.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
+          ).length > 0
+            ? PERMIT_AMENDMENT_TYPES.amalgamated
+            : PERMIT_AMENDMENT_TYPES.amendment;
+        setPermitType(selectedPermitType);
+        props.change("permit_amendment_type_code", selectedPermitType);
       }
     }
   };
@@ -53,16 +54,16 @@ export const PreDraftPermitForm = (props) => {
   let isPermitAmendmentTypeDropDownDisabled = true;
   let permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions;
 
-  if (permitType === "ALG") {
+  if (permitType === PERMIT_AMENDMENT_TYPES.amalgamated) {
     tooltip = "You can issue only amalgamated permits";
   }
-  if (permitType === "OGP") {
+  if (permitType === PERMIT_AMENDMENT_TYPES.original) {
     tooltip = "You can issue only regular permits";
   }
-  if (permitType === "AMD") {
+  if (permitType === PERMIT_AMENDMENT_TYPES.amendment) {
     tooltip = "You can issue permits of amalgamated and regular types";
     permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions.filter(
-      (a) => a.value !== "OGP"
+      (a) => a.value !== PERMIT_AMENDMENT_TYPES.original
     );
     isPermitAmendmentTypeDropDownDisabled = false;
   }
