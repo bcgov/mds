@@ -107,7 +107,7 @@ class NOWApplication(Base, AuditMixin):
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Securities
-    security_adjustment = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)

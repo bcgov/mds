@@ -436,7 +436,7 @@ const simpleRender = () => {
       },
     ],
     contacts: [],
-    security_adjustment: null,
+    liability_adjustment: null,
     security_received_date: null,
     last_updated_date: "2020-09-23",
     last_updated_by: "idir\\lumitche",
