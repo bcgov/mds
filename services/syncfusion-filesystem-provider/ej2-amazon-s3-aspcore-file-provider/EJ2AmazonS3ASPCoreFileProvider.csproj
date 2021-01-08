@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.3.104.13" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.1.1" />
     <PackageReference Include="DotNetEnv" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.4.0.40" />

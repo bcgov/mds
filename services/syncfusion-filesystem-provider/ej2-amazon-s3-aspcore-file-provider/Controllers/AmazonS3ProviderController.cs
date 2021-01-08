@@ -1,4 +1,5 @@
 ﻿using Syncfusion.EJ2.FileManager.AmazonS3FileProvider;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,8 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         }
 
         [Route("AmazonS3FileOperations")]
+        [Authorize("View")]
+
         public object AmazonS3FileOperations([FromBody] FileManagerDirectoryContent args)
         {
             switch (args.Action)

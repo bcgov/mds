@@ -1,9 +1,14 @@
-﻿using DotNetEnv;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace EJ2FileManagerService
 {
@@ -20,6 +25,7 @@ namespace EJ2FileManagerService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins", builder =>
@@ -28,6 +34,23 @@ namespace EJ2FileManagerService
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 });
+            });
+
+            services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Authority = Configuration["Jwt:Authority"];
+                o.Audience = Configuration["Jwt:Audience"];
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("View", policy => { policy.RequireClaim(ClaimTypes.Role, new string[] { "core_view_all" }); });
             });
         }
 
@@ -50,9 +73,34 @@ namespace EJ2FileManagerService
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+    }
+
+    public class ClaimsTransformer : IClaimsTransformation
+    {
+        public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+        {
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
+
+            // Flatten realm_access because Microsoft identity model doesn't support nested claims
+            if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "realm_access"))
+            {
+                var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "realm_access");
+                var realmAccessAsDict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(realmAccessClaim.Value);
+                if (realmAccessAsDict["roles"] != null)
+                {
+                    foreach (var role in realmAccessAsDict["roles"])
+                    {
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+            }
+
+            return Task.FromResult(principal);
         }
     }
 }
