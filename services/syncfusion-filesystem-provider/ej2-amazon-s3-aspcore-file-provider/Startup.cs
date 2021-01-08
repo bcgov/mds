@@ -34,6 +34,13 @@ namespace EJ2FileManagerService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            DotNetEnv.Env.Load();
+            DotNetEnv.Env.TraversePath().Load();
+
+            // Register Syncfusion License (https://help.syncfusion.com/common/essential-studio/licensing/license-key)
+            string syncfusionLicenseKey = System.Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -42,11 +49,10 @@ namespace EJ2FileManagerService
             {
                 app.UseHsts();
             }
+
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseMvc();
-            DotNetEnv.Env.Load();
-            DotNetEnv.Env.TraversePath().Load();
         }
     }
 }
