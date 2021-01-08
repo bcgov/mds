@@ -967,7 +967,7 @@ UPDATE document_template SET form_spec_json = '[
       "label": "Bond Increase Amount",
       "type": "CURRENCY",
       "placeholder": "Enter the bond increase amount",
-      "relative-data-path": "now_application.security_adjustment"
+      "relative-data-path": "now_application.liability_adjustment"
     },
     {
       "id": "issuing_inspector_name",
