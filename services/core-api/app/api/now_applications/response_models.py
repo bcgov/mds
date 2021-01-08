@@ -326,6 +326,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_number':
         fields.String,
+        'now_tracking_number':
+        fields.Integer,
         'mine_guid':
         fields.String,
         'mine_name':
