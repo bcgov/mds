@@ -1,5 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { SampleBase } from "@/components/syncfusion/SampleBase";
+import { ENVIRONMENT } from "@common/constants/environment";
 import {
   FileManagerComponent,
   Inject,
@@ -9,19 +11,21 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 
+const propTypes = {
+  path: PropTypes.string.isRequired,
+};
+
 export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
-    // this.hostUrl = "https://amazons3.azurewebsites.net/api/AmazonS3Provider/";
-    // TODO: Figure out and use an ENV variable for this.
-    this.hostUrl = "http://localhost:62870/api/AmazonS3Provider/";
+    this.hostUrl = ENVIRONMENT.syncfusionFilesystemProviderUrl;
   }
 
   render() {
     return (
       <div>
         <div className="control-section">
-          {/* NOTE: See here for more information: https://ej2.syncfusion.com/react/documentation/api/file-manager/ */}
+          {/* NOTE: See here for documentation: https://ej2.syncfusion.com/react/documentation/api/file-manager/ */}
           <FileManagerComponent
             id="filemanager"
             ajaxSettings={{
@@ -42,10 +46,22 @@ export class AmazonS3Provider extends SampleBase {
               layout: ["SortBy", "View", "Refresh", "|", "Details", "|", "SelectAll"],
               visible: true,
             }}
-            // path="/foobar"
             searchSettings={{ allowSearchOnTyping: false }}
+            beforeSend={(args) => {
+              const data = JSON.parse(args.ajaxSettings.data);
+              data.path = "/" + this.props.mineNumber + data.path;
+              args.ajaxSettings.data = JSON.stringify(data);
+            }}
+            beforeDownload={(args) => {
+              args.data.path = "/" + this.props.mineNumber + args.data.path;
+            }}
+            beforeImageLoad={(args) => {
+              args.imageUrl = args.imageUrl.replace(
+                "/AmazonS3GetImage?path=",
+                `/AmazonS3GetImage?path=/${this.props.mineNumber}`
+              );
+            }}
           >
-            {/* TODO: Figure out the minimal services required to view files. */}
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
         </div>
@@ -53,5 +69,7 @@ export class AmazonS3Provider extends SampleBase {
     );
   }
 }
+
+AmazonS3Provider.propTypes = propTypes;
 
 export default AmazonS3Provider;

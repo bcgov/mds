@@ -37,6 +37,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             {
                 ServiceURL = "https://" + serviceName,
                 ForcePathStyle = true,
+                // TODO: Figure out optimal params.
                 //DisableLogging = false,
                 //LogResponse = true,
                 //Timeout = TimeSpan.FromSeconds(5)
@@ -45,14 +46,10 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             client = new AmazonS3Client(creds, config);
         }
 
-        //Define the root directory to the file manager
+        // Define the root directory to the file manager
         public void GetBucketList()
         {
-            // NOTE: This is commented intentionally. This was their method of determining the "root name", but it didn't work.
-            // ListingObjectsAsync("", "", false).Wait();
-            // RootName = response.S3Objects.First().Key;
-
-            RootName = "dsrp-applications/";
+            RootName = System.Environment.GetEnvironmentVariable("S3_PREFIX");
         }
 
         // Reads the file(s) and folder(s)
@@ -114,7 +111,7 @@ namespace Syncfusion.EJ2.FileManager.AmazonS3FileProvider
             return AsyncDelete(path, names, data).Result;
         }
 
-        // Delete aync method
+        // Delete async method
         public virtual async Task<FileManagerResponse> AsyncDelete(string path, string[] names, params FileManagerDirectoryContent[] data)
         {
             FileManagerResponse removeResponse = new FileManagerResponse();

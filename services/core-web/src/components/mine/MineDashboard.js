@@ -43,6 +43,7 @@ import {
 import RefreshButton from "@/components/common/RefreshButton";
 import * as router from "@/constants/routes";
 import MineComments from "@/components/mine/MineComments";
+
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
