@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Collapse, Button } from "antd";
-import { formatDateTime } from "@common/utils/helpers";
+import { formatDateTime, flattenObject } from "@common/utils/helpers";
 import { ReadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
@@ -22,7 +22,7 @@ import {
   setEditingConditionFlag,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { maxBy, concat } from "lodash";
+import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import CustomPropTypes from "@/customPropTypes";
@@ -194,7 +194,9 @@ export class Conditions extends Component {
                 header={
                   <span>
                     {`${conditionCategory.step} ${conditionCategory.description} (${
-                      conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
+                      Object.values(flattenObject({ conditions })).filter(
+                        (value) => value === "CON"
+                      ).length
                     } conditions)`}
                     <Button
                       ghost
