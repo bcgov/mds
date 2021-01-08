@@ -2033,13 +2033,13 @@ VALUES
   (651, 'QCA', 605, 'No blasting will be permitted under overcast conditions;', 'HSC', 'CON', 5, 'system-mds', 'system-mds'),
   (652, 'QCA', 605, 'All blasts must occur between [Monday to Friday between 10am and 5pm], blasting must not occur on Statutory Holidays;', 'HSC', 'CON', 6, 'system-mds', 'system-mds'),
   (653, 'QCA', 605, 'Controlled blasting methods (e.g. trim and buffer, pre/post shear) must be implemented to minimize damage to the crest and bench face of all final walls and on any interim walls that will be in place for a period exceeding 12 months.', 'HSC', 'CON', 7, 'system-mds', 'system-mds'),
-  (654, 'QCA', 653, 'Controlled blasting may be omitted where a Professional Engineer assesses conditions and states in writing that worker safety will not be adversely endangered by the proposed excavation.', 'HSC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (654, 'QCA', 605, 'Controlled blasting may be omitted where a Professional Engineer assesses conditions and states in writing that worker safety will not be adversely endangered by the proposed excavation.', 'HSC', 'CON', 8, 'system-mds', 'system-mds'),
   
-  (655, 'QCA', 605, 'All blasts must be electronically monitored.', 'HSC', 'CON', 8, 'system-mds', 'system-mds'),
-  (656, 'QCA', 605, 'Blast limits are established at 50 millimeters per second peak particle velocity and 120 decibels on the L scale, at the property boundary.', 'HSC', 'CON', 9, 'system-mds', 'system-mds'),
-  (657, 'QCA', 605, 'The electronic monitor unit must be located such that the air pressure (microphone) sensor has a clear unobstructed line of sight to the centre of the blast. The Inspector may allow or require monitoring at specific locations on a case by case basis as may be required.', 'HSC', 'CON', 10, 'system-mds', 'system-mds'),
-  (658, 'QCA', 605, 'A signed copy of the Blast Log for each blast and a copy of the Electronic Monitor Record must be maintained at on the mine site. Such records must be made available to the Inspector on request.', 'HSC', 'CON', 11, 'system-mds', 'system-mds'),
-  (659, 'QCA', 605, 'To the extent practical, all blasts initiated on the quarry must be videoed, and a copy of the video must be kept at the mine office and made available to the Inspector on request.', 'HSC', 'CON', 12, 'system-mds', 'system-mds'),
+  (655, 'QCA', 605, 'All blasts must be electronically monitored.', 'HSC', 'CON', 9, 'system-mds', 'system-mds'),
+  (656, 'QCA', 605, 'Blast limits are established at 50 millimeters per second peak particle velocity and 120 decibels on the L scale, at the property boundary.', 'HSC', 'CON', 10, 'system-mds', 'system-mds'),
+  (657, 'QCA', 605, 'The electronic monitor unit must be located such that the air pressure (microphone) sensor has a clear unobstructed line of sight to the centre of the blast. The Inspector may allow or require monitoring at specific locations on a case by case basis as may be required.', 'HSC', 'CON', 11, 'system-mds', 'system-mds'),
+  (658, 'QCA', 605, 'A signed copy of the Blast Log for each blast and a copy of the Electronic Monitor Record must be maintained at on the mine site. Such records must be made available to the Inspector on request.', 'HSC', 'CON', 12, 'system-mds', 'system-mds'),
+  (659, 'QCA', 605, 'To the extent practical, all blasts initiated on the quarry must be videoed, and a copy of the video must be kept at the mine office and made available to the Inspector on request.', 'HSC', 'CON', 13, 'system-mds', 'system-mds'),
 
   (660, 'QCA', 659, 'The video file must include the following identification information as a word document:', 'HSC', 'LIS', 1, 'system-mds', 'system-mds'),
   (661, 'QCA', 659, 'the pit name, and mine number', 'HSC', 'LIS', 2, 'system-mds', 'system-mds'),
@@ -2093,22 +2093,22 @@ VALUES
 
   (699, 'QCA', 613, 'The receipt, storage, treatment/processing and or use of imported materials including but not limited to garbage, refuse, concrete, asphalt, asphalt shingles, biosolids and soils originating from off site is not permitted unless authorized in writing by an Inspector.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   
-  (700, 'QCA', 614, 'General', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
-  (701, 'QCA', 700, 'All materials with the potential to generate ML/ARD must be placed in a manner that minimizes the production and release of metals and contaminants to levels that assure protection of environmental quality.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (702, 'QCA', 700, 'Unless otherwise approved, all plans for the prediction, and if necessary, the prevention, mitigation and management of metal leaching and acid rock drainage must be prepared in accordance with the Guidelines for Metal Leaching and Acid Rock Drainage at Minesites in British Columbia (1998).', 'ELC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (700, 'QCA', 614, 'General', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (701, 'QCA', 700, 'All materials with the potential to generate ML/ARD must be placed in a manner that minimizes the production and release of metals and contaminants to levels that assure protection of environmental quality.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (702, 'QCA', 700, 'Unless otherwise approved, all plans for the prediction, and if necessary, the prevention, mitigation and management of metal leaching and acid rock drainage must be prepared in accordance with the Guidelines for Metal Leaching and Acid Rock Drainage at Minesites in British Columbia (1998).', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
 
-  (703, 'QCA', 614, 'Definition of Potentially Acid Generating (PAG) and Metal Leaching (ML) Materials', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
-  (704, 'QCA', 703, 'Neutralization potential (NP) using total inorganic carbon.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (705, 'QCA', 703, 'Acid potential (AP) using total sulphur.', 'ELC', 'LIS', 2, 'system-mds', 'system-mds'),
-  (706, 'QCA', 703, 'All waste materials and mine surfaces must be classified as potentially acid generating (PAG) if they have a NP/AP ratio of less than 2.0.', 'ELC', 'LIS', 3, 'system-mds', 'system-mds'),
-  (707, 'QCA', 703, 'Material classified as PAG must not be used for construction.', 'ELC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (703, 'QCA', 614, 'Definition of Potentially Acid Generating (PAG) and Metal Leaching (ML) Materials', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (704, 'QCA', 703, 'Neutralization potential (NP) using total inorganic carbon.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (705, 'QCA', 703, 'Acid potential (AP) using total sulphur.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
+  (706, 'QCA', 703, 'All waste materials and mine surfaces must be classified as potentially acid generating (PAG) if they have a NP/AP ratio of less than 2.0.', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
+  (707, 'QCA', 703, 'Material classified as PAG must not be used for construction.', 'ELC', 'CON', 4, 'system-mds', 'system-mds'),
 
-  (708, 'QCA', 614, 'ML/ARD Operational Monitoring', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
-  (709, 'QCA', 708, '[Plan Name, Date (Author of Plan – ML/ARD Prediction Plan)] must be implemented on the mine site.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (710, 'QCA', 708, 'Concurrent with excavation, the Permittee must implement a monitoring program to confirm the geochemical characteristics of excavated materials produced and mine surfaces exposed, to determine the potential for ML/ARD and the need for mitigation measures to ensure protection of environmental quality.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (708, 'QCA', 614, 'ML/ARD Operational Monitoring', 'ELC', 'SEC', 3, 'system-mds', 'system-mds'),
+  (709, 'QCA', 708, '[Plan Name, Date (Author of Plan – ML/ARD Prediction Plan)] must be implemented on the mine site.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (710, 'QCA', 708, 'Concurrent with excavation, the Permittee must implement a monitoring program to confirm the geochemical characteristics of excavated materials produced and mine surfaces exposed, to determine the potential for ML/ARD and the need for mitigation measures to ensure protection of environmental quality.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (711, 'QCA', 710, 'At a minimum, the monitoring program must include the characterization of excavated materials at frequency of three samples for every 10,000 tonnes. Each sample must be submitted to an accredited lab and analyzed for sufficient parameters to determine the AP, NP, and total dissolved metals.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
 
-  (712, 'QCA', 708, 'A report, authored by a qualified professional, summarizing the results of the operational monitoring must be submitted to [Regional Mines Office e-mail] prior to March 31 annually. The report must include a description of the geology encountered, interpretation of all ML/ARD monitoring results, a description of any mitigation strategies undertaken during the program, and an assessment of whether additional mitigation is required.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (712, 'QCA', 708, 'A report, authored by a qualified professional, summarizing the results of the operational monitoring must be submitted to [Regional Mines Office e-mail] prior to March 31 annually. The report must include a description of the geology encountered, interpretation of all ML/ARD monitoring results, a description of any mitigation strategies undertaken during the program, and an assessment of whether additional mitigation is required.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
 
 
   (713, 'QCA', 615, 'Erosion and sediment must be effectively controlled on the mine site. Sediment laden water must be suitably contained on the mine site and not be allowed access to any watercourse.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
