@@ -22,6 +22,7 @@ export class AmazonS3Provider extends SampleBase {
   }
 
   render() {
+    const pathPrefix = `/${this.props.mineNumber}`;
     return (
       <div>
         <div className="control-section">
@@ -49,16 +50,16 @@ export class AmazonS3Provider extends SampleBase {
             searchSettings={{ allowSearchOnTyping: false }}
             beforeSend={(args) => {
               const data = JSON.parse(args.ajaxSettings.data);
-              data.path = "/" + this.props.mineNumber + data.path;
+              data.path = pathPrefix + data.path;
               args.ajaxSettings.data = JSON.stringify(data);
             }}
             beforeDownload={(args) => {
-              args.data.path = "/" + this.props.mineNumber + args.data.path;
+              args.data.path = pathPrefix + args.data.path;
             }}
             beforeImageLoad={(args) => {
               args.imageUrl = args.imageUrl.replace(
                 "/AmazonS3GetImage?path=",
-                `/AmazonS3GetImage?path=/${this.props.mineNumber}`
+                `/AmazonS3GetImage?path=${pathPrefix}`
               );
             }}
           >
