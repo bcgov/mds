@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -130,16 +131,19 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             )
 
                     if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
-                        mine_party_appointment = MinePartyAppointment.create(
-                            mine=now_application_identity.mine
-                            if contact.mine_party_appt_type_code != 'PMT' else None,
-                            permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
-                            party_guid=contact.party_guid,
-                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                            start_date=datetime.utcnow(),
-                            end_date=None,
-                            processed_by=self.get_user_info())
-                        mine_party_appointment.save()
+                        current_mpa = MinePartyAppointment.find_by_permit_id(permit.permit_id)
+                        if current_mpa.party_guid != contact.party_guid:
+                            current_mpa.end_date = datetime.now(tz=timezone.utc) - timedelta(days=1)
+                            mine_party_appointment = MinePartyAppointment.create(
+                                mine=now_application_identity.mine
+                                if contact.mine_party_appt_type_code != 'PMT' else None,
+                                permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
+                                party_guid=contact.party_guid,
+                                mine_party_appt_type_code=contact.mine_party_appt_type_code,
+                                start_date=datetime.now(tz=timezone.utc),
+                                end_date=None,
+                                processed_by=self.get_user_info())
+                            mine_party_appointment.save()
 
             #TODO: Documents / CRR
             # Update NoW application and save status
