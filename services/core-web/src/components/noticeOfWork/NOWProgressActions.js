@@ -135,6 +135,7 @@ export class NOWProgressActions extends Component {
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
+        {},
         message
       )
       .then(() => {
@@ -163,11 +164,8 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    const payload = {
-      ...values,
-    };
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();
@@ -175,14 +173,11 @@ export class NOWProgressActions extends Component {
   };
 
   handleStopDelay = (values) => {
-    const payload = {
-      ...values,
-    };
     this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
-        payload
+        values
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
