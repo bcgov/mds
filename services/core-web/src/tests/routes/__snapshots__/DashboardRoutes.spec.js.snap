@@ -134,6 +134,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(MineDocuments)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/mine-information/mms-archive"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MinePermitInfo)",
         "type": [Function],
       }
@@ -244,19 +257,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/mine-dashboard/:id/reports/tailings"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(MineDocuments)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/mine-dashboard/:id/documents/documents"
   />
   <Route
     component={
