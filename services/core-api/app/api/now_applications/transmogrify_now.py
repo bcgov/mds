@@ -96,7 +96,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
 
 def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     landcommunitywatershed = mms_now_sub.landcommunitywatershed or now_sub.landcommunitywatershed
-    archsitesaffected = mms_now_sub.archsitesaffected or now_sub.archsitesaffected
+    archsitesaffected = mms_now_sub.archsitesaffected or now_sub.hasarchaeologicalprotectionplan
     present_land_condition_description = now_sub.landpresentcondition
     means_of_access_description = now_sub.currentmeansofaccess
     physiography_description = now_sub.physiography
@@ -104,15 +104,15 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     type_of_vegetation_description = now_sub.typeofvegetation
     recreational_trail_use_description = now_sub.recreationuse
     has_activity_in_park = now_sub.isparkactivities == 'Yes'
-    hasltgovauthorization = now_sub.hasltgovauthorization == 'Yes'
-    has_auth_lieutenant_gov_council = now_sub.hasarchaeologicalprotectionplan == 'Yes'
+    is_on_private_land = now_sub.isonprivateland == 'Yes'
+    has_auth_lieutenant_gov_council = now_sub.hasltgovauthorization == 'Yes'
     arch_site_protection_plan = now_sub.archaeologicalprotectionplan
     has_shared_info_with_fn = now_sub.hasengagedfirstnations == 'Yes'
     has_fn_cultural_heritage_sites_in_area = now_sub.hasculturalheritageresources == 'Yes'
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or hasltgovauthorization:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes',
@@ -123,7 +123,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             type_of_vegetation_description=type_of_vegetation_description,
             recreational_trail_use_description=recreational_trail_use_description,
             has_activity_in_park=has_activity_in_park,
-            is_on_private_land=hasltgovauthorization,
+            is_on_private_land=is_on_private_land,
             has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
             arch_site_protection_plan=arch_site_protection_plan,
             has_shared_info_with_fn=has_shared_info_with_fn,

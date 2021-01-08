@@ -99,6 +99,8 @@ TIMEOUT_12_HOURS = 43140
 #Redis Map Cache
 MINE_MAP_CACHE = "mds:mines:map-json"
 MINE_DETAILS_CSV = "mds:mines:summary-csv"
+MINE_DETAILS_JSON = "mds:mines:summary-json"
+
 #Redis Cache Keys
 GET_ALL_INSPECTORS_KEY = "mds:parties:all_inspectors"
 STATIC_CONTENT_KEY = "mds:core:all_static_content"

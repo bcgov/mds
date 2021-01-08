@@ -31,6 +31,7 @@ export const NOTICE_OF_WORK = {
   landprivate: null,
   landlegaldesc: null,
   archsitesaffected: null,
+  isonprivateland: null,
   sandgravelquarryoperations: null,
   storeexplosivesonsite: null,
   bcexplosivespermitissued: null,

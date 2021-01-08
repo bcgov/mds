@@ -86,7 +86,8 @@ class NOWSubmissionFactory(BaseFactory):
 
         state_of_land = factory.Trait(
             landcommunitywatershed=factory.LazyFunction(randomYesNo),
-            archsitesaffected=factory.LazyFunction(randomYesNo))
+            archsitesaffected=factory.LazyFunction(randomYesNo),
+            isonprivateland=factory.LazyFunction(randomYesNo))
 
         cut_lines_polarization_survey = factory.Trait(
             cutlinesreclamation=factory.Faker('sentence', nb_words=3),

@@ -17,12 +17,15 @@ from app.api.incidents.models.mine_incident_recommendation import MineIncidentRe
 from app.api.compliance.models.compliance_article import ComplianceArticle
 
 
+def getYear():
+    return datetime.datetime.utcnow().year
+
+
 class MineIncident(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_incident'
 
     mine_incident_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
-    mine_incident_id_year = db.Column(
-        db.Integer, nullable=False, default=datetime.datetime.now().year)
+    mine_incident_id_year = db.Column(db.Integer, nullable=False, default=getYear())
     mine_incident_guid = db.Column(
         UUID(as_uuid=True), nullable=False, server_default=FetchedValue())
 
