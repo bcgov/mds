@@ -292,3 +292,18 @@
     font-size: 20px;
   }
 }
+
+.show-on-hover {
+  display: none;
+}
+.hover-row {
+  .ant-row {
+    margin: 0;
+  }
+  &.ant-row:hover {
+    background-color: rgb(244, 240, 240);
+    .show-on-hover {
+      display: inherit;
+    }
+  }
+}

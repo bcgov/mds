@@ -232,7 +232,7 @@ export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatc
 
 export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
@@ -252,7 +252,7 @@ export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid)
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const setEditingConditionFlag = (payload) => (dispatch) => {
