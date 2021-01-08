@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Result, Popconfirm, Button } from "antd";
-import Condition from "@/components/Forms/permits/conditions/Condition";
+import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 
 const propTypes = {
   handleDelete: PropTypes.func.isRequired,
@@ -28,7 +28,7 @@ export const DeleteConditionModal = (props) => {
         }`}
       />
       <br />
-      <Condition condition={props.condition} isViewOnly />
+      <ConditionLayerOne condition={props.condition} isViewOnly />
       <div className="right center-mobile">
         <Popconfirm
           placement="topRight"
