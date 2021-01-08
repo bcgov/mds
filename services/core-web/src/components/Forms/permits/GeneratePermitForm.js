@@ -32,7 +32,6 @@ export const GeneratePermitForm = (props) => (
               id="mine_no"
               name="mine_no"
               label="Mine Number"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -43,7 +42,6 @@ export const GeneratePermitForm = (props) => (
               id="permit_number"
               name="permit_number"
               label="Permit Number"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -56,7 +54,6 @@ export const GeneratePermitForm = (props) => (
               id="now_number"
               name="now_number"
               label="Application Number"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -67,7 +64,6 @@ export const GeneratePermitForm = (props) => (
               id="now_tracking_number"
               name="now_tracking_number"
               label="Application Tracking Number"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -80,7 +76,6 @@ export const GeneratePermitForm = (props) => (
               id="permittee"
               name="permittee"
               label="Permittee"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -91,7 +86,6 @@ export const GeneratePermitForm = (props) => (
               id="permittee_mailing_address"
               name="permittee_mailing_address"
               label="Permittee Mailing address"
-              required
               component={renderConfig.AUTO_SIZE_FIELD}
               validate={[required]}
               disabled
@@ -113,7 +107,6 @@ export const GeneratePermitForm = (props) => (
               id="mine_location"
               name="mine_location"
               label="Mine Location"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -126,7 +119,6 @@ export const GeneratePermitForm = (props) => (
               id="issue_date"
               name="issue_date"
               label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
-              required
               component={renderConfig.DATE}
               validate={[required]}
               disabled
@@ -152,7 +144,6 @@ export const GeneratePermitForm = (props) => (
               id="auth_end_date"
               name="auth_end_date"
               label="Authorization End Date"
-              required
               component={renderConfig.DATE}
               validate={[required]}
               disabled
@@ -163,7 +154,6 @@ export const GeneratePermitForm = (props) => (
               id="lead_inspector"
               name="lead_inspector"
               label="Lead Inspector Name"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -177,7 +167,6 @@ export const GeneratePermitForm = (props) => (
               id="issuing_inspector_title"
               name="issuing_inspector_title"
               label="Issuing Inspector Title"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -188,7 +177,6 @@ export const GeneratePermitForm = (props) => (
               id="regional_office"
               name="regional_office"
               label="Regional Office"
-              required
               component={renderConfig.SELECT}
               validate={[required]}
               data={[
@@ -212,7 +200,6 @@ export const GeneratePermitForm = (props) => (
               id="application_date"
               name="application_date"
               label="Application Date"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -223,7 +210,6 @@ export const GeneratePermitForm = (props) => (
               id="property"
               name="property"
               label="Property Name"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -236,7 +222,6 @@ export const GeneratePermitForm = (props) => (
               id="application_type"
               name="application_type"
               label="Notice of Work Permit Type"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled

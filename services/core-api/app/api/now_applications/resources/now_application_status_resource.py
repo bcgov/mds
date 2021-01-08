@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from flask_restplus import Resource, reqparse, inputs
-from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -88,7 +87,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.description = description
 
                 # transfer reclamation security data from NoW to permit
-                permit_amendment.security_adjustment = now_application_identity.now_application.security_adjustment
+                permit_amendment.liability_adjustment = now_application_identity.now_application.liability_adjustment
                 permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
                 permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
                 permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason

@@ -74,8 +74,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['longitude'] = str(now_application.longitude)
             template_data['mine_name'] = now_application.mine_name
             template_data['security_adjustment'] = str(
-                now_application.security_adjustment
-            ) if now_application.security_adjustment else '0.00'
+                now_application.liability_adjustment
+            ) if now_application.liability_adjustment else '0.00'
 
             conditions = permit.conditions
             conditions_template_data = {}

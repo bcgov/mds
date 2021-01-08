@@ -214,9 +214,11 @@ export class NOWPermitGeneration extends Component {
         .filter((a) => a.permit_amendment_status_code !== "DFT")
         // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
-    const previousAmendment = amendments[0];
-    previousAmendment.issue_date = formatDate(previousAmendment.issue_date);
-    previousAmendment.authorization_end_date = formatDate(previousAmendment.authorization_end_date);
+    const previousAmendment = {
+      ...amendments[0],
+      issue_date: formatDate(amendments[0].issue_date),
+      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    };
     return previousAmendment;
   };
 
