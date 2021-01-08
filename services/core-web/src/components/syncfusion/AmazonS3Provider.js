@@ -10,6 +10,7 @@ import {
   Toolbar,
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
+import { createRequestHeader } from "@common/utils/RequestHeaders";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
@@ -52,6 +53,13 @@ export class AmazonS3Provider extends SampleBase {
               const data = JSON.parse(args.ajaxSettings.data);
               data.path = pathPrefix + data.path;
               args.ajaxSettings.data = JSON.stringify(data);
+              args.ajaxSettings.beforeSend = function(args) {
+                args.httpRequest.setRequestHeader(
+                  "Authorization",
+                  createRequestHeader().headers.Authorization
+                );
+                args.httpRequest.setRequestHeader("Access-Control-Allow-Origin", "*");
+              };
             }}
             beforeDownload={(args) => {
               args.data.path = pathPrefix + args.data.path;
