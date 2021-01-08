@@ -1330,16 +1330,16 @@ VALUES
 	('LIS', 'List Item', true, 30, 'system-mds', 'system-mds')
 on conflict do nothing;
 
-
 -- UPDATE S&G SEED PARENTS
 INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
 -- SAG starts at 1
   -- GENERAL SECTIONS
-	(1, 'SAG', 'Approval', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
-  (2, 'SAG', 'Documentation and Reporting', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
-  (3, 'SAG', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
+	(1, 'SAG', 'Approval - This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1):', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (108, 'SAG', 'Definitions', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (2, 'SAG', 'Documentation and Reporting', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
+  (3, 'SAG', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 4, 'system-mds', 'system-mds'),
 
 -- HEALTH AND SAFETY SECTIONS
   (4, 'SAG', 'Mine Emergency Response Plan (MERP)', 'HSC', 'SEC', 1, 'system-mds', 'system-mds'),
@@ -1356,7 +1356,7 @@ VALUES
   (11, 'SAG', 'Environmental Protection', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
   (12, 'SAG', 'Invasive Species', 'ELC', 'SEC', 3, 'system-mds', 'system-mds'),
   (13, 'SAG', 'Receiving Foreign Materials', 'ELC', 'SEC', 4, 'system-mds', 'system-mds'),
-  (14, 'SAG', 'Condition of the Land', 'ELC', 'SEC', 8, 'system-mds', 'system-mds'),
+  (14, 'SAG', 'Condition of the Land', 'ELC', 'SEC', 5, 'system-mds', 'system-mds'),
 
 -- RECLAMATION AND CLOSURE PROGRAM
   (15, 'SAG', 'Reclamation Security', 'RCC', 'SEC', 1, 'system-mds', 'system-mds'),
@@ -1370,28 +1370,28 @@ INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, parent_standard_permit_condition_id, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
 -- GENERAL CONDITIONS/LIST-ITEMS/CONDITIONS
-  (19, 'SAG', 1, 'This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1): Write out activities and total disturbance as indicated in the Notice of Work application (that you approve of – you must specify activities that were applied for that you do not approve of if there are any) for example;', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
-	(20, 'SAG', 19, 'Approved Activities:', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),         
+  (19, 'SAG', 108, 'Unless otherwise specified, the definitions in the Mines Act, the regulations and the Code apply to the use of the terms in this permit.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
+	(20, 'SAG', 1, 'Approved Activities:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),         
 
-  (21, 'SAG', 20, 'Work Related Structures: office, storage buildings, first aid etc. [xx.x ha]', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),         
-  (22, 'SAG', 20, 'Mining Areas: # of areas, dimensions [xx.x ha]', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),         
-  (23, 'SAG', 20, 'Stockpile Area(s): [xx.x ha]', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),         
-  (24, 'SAG', 20, 'Processing Area/Infrastructure: description [xx.x ha]', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),         
-	(25, 'SAG', 20, 'Settling Pond(s): # of sites, dimensions [x.xx ha]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),         
-	(26, 'SAG', 20, 'Test pits: # of sites, dimensions [xx.x ha]', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),         
-  (27, 'SAG', 20, 'Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),         
-  (28, 'SAG', 20, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),         
-  (29, 'SAG', 20, 'For a total disturbance area of [x.xx ha]', 'GEC', 'CON', 9, 'system-mds', 'system-mds'),
+  (21, 'SAG', 20, 'Work Related Structures: office, storage buildings, first aid etc. [xx.x ha]', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),         
+  (22, 'SAG', 20, 'Mining Areas: # of areas, dimensions [xx.x ha]', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),         
+  (23, 'SAG', 20, 'Stockpile Area(s): [xx.x ha]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),         
+  (24, 'SAG', 20, 'Processing Area/Infrastructure: description [xx.x ha]', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),         
+	(25, 'SAG', 20, 'Settling Pond(s): # of sites, dimensions [x.xx ha]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),         
+	(26, 'SAG', 20, 'Test pits: # of sites, dimensions [xx.x ha]', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),         
+  (27, 'SAG', 20, 'Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),         
+  (28, 'SAG', 20, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),         
+  (29, 'SAG', 20, 'For a total disturbance area of [x.xx ha]', 'GEC', 'LIS', 9, 'system-mds', 'system-mds'),
 
-  (30, 'SAG', 19, 'Activities not approved:', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),        
-  (31, 'SAG', 30, 'Fording of watercourses is not authorized.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),         
-  (32, 'SAG', 30, 'Washing of aggregates is not authorized.', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),   
+  (30, 'SAG', 1, 'Activities not approved:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),        
+  (31, 'SAG', 30, 'Fording of watercourses is not authorized.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),         
+  (32, 'SAG', 30, 'Washing of aggregates is not authorized.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),   
 
-  (33, 'SAG', 19, 'Activities must be conducted within the permit area illustrated by [Figure #] [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),            
-  (34, 'SAG', 19, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'), 
-  (35, 'SAG', 19, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),  
-  (36, 'SAG', 19, 'Authorized activities are restricted to the following schedule [daily operating hours, or operating hours listed by day of week].', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),  
-  (37, 'SAG', 19, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),   
+  (33, 'SAG', 1, 'Activities must be conducted within the permit area illustrated by [Figure #] [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.]', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),            
+  (34, 'SAG', 1, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'CON', 4, 'system-mds', 'system-mds'), 
+  (35, 'SAG', 1, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),  
+  (36, 'SAG', 1, 'Authorized activities are restricted to the following schedule [daily operating hours, or operating hours listed by day of week].', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),  
+  (37, 'SAG', 1, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),   
 
   (38, 'SAG', 2, 'This Permit and the associated approved Mine Plan and Reclamation Program must be kept at the mine and must be available to an Inspector upon request.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
   (39, 'SAG', 2, 'A completed Annual Summary of Work and Reclamation form must be submitted to [Regional Mines Office e-mail Inbox] prior to March 31 annually and must be accompanied by:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1463,9 +1463,9 @@ VALUES
 
 -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (87, 'SAG', 15, '[X dollars] $<<bond_amt>> in security must be maintained with the Minister of Finance.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (88, 'SAG', 87, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (89, 'SAG', 88, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of [$Dollar Amount]; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (90, 'SAG', 88, 'Within [Enter time] months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (88, 'SAG', 15, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (89, 'SAG', 88, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of [$Dollar Amount]; and', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (90, 'SAG', 88, 'Within [Enter time] months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
   (91, 'SAG', 16, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved work program. The surface of the land and watercourses must be reclaimed to the following end land use:  <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (92, 'SAG', 17, 'All available topsoil, overburden, and organic material including large woody debris in the disturbance footprint must be salvaged and stockpiled for use in reclamation.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
@@ -1477,11 +1477,11 @@ VALUES
   (98, 'SAG', 97, 'Compacted surfaces must be de-compacted to allow water infiltration and achieve self-staining vegetation.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (99, 'SAG', 97, 'Salvaged soil material must:', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
-  (100, 'SAG', 99, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (101, 'SAG', 99, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (102, 'SAG', 99, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
-  (103, 'SAG', 99, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
-  (104, 'SAG', 99, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
+  (100, 'SAG', 99, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (101, 'SAG', 99, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (102, 'SAG', 99, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (103, 'SAG', 99, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (104, 'SAG', 99, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'LIS', 5, 'system-mds', 'system-mds'),
 
   (105, 'SAG', 18, 'Individual roads and trails will be exempted from the requirement for total reclamation if either:', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (106, 'SAG', 105, 'It can be demonstrated that an agency of the Crown has accepted responsibility in writing for the operation, maintenance and reclamation of the road or trail; or', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
@@ -1494,9 +1494,10 @@ INSERT INTO standard_permit_conditions
 VALUES
 -- PLA starts at 200
 -- GENERAL SECTIONS
-	(200, 'PLA', 'Approval', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
-  (201, 'PLA', 'Documentation and Reporting', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
-  (202, 'PLA', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
+	(200, 'PLA', 'Approval - This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1):', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (316, 'PLA', 'Definitions', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (201, 'PLA', 'Documentation and Reporting', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
+  (202, 'PLA', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 4, 'system-mds', 'system-mds'),
 
 -- HEALTH AND SAFETY SECTIONS
   (203, 'PLA', 'Mine Emergency Response Plan (MERP)', 'HSC', 'SEC', 1, 'system-mds', 'system-mds'),
@@ -1528,31 +1529,31 @@ INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, parent_standard_permit_condition_id, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
 -- GENERAL CONDITIONS/LIST-ITEMS/CONDITIONS
-  (218, 'PLA', 200, 'This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1): Write out activities and total disturbance as indicated in the Notice of Work application (that you approve of – you must specify activities that were applied for that you do not approve of if there are any) for example;', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
+  (218, 'PLA', 316, 'Unless otherwise specified, the definitions in the Mines Act, the regulations and the Code apply to the use of the terms in this permit.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
 
-  (219, 'PLA', 218, 'Approved Activities:', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),  
+  (219, 'PLA', 200, 'Approved Activities:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),  
 
-  (220, 'PLA', 219, 'Diversion of Watercourses: (x.xx ha) OR not approved under this authorization.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),         
-  (221, 'PLA', 219, 'Work Related Structures: office, dry tent, storage buildings, first aid etc. (xx.x ha)', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),         
-  (222, 'PLA', 219, 'Mining Areas: # of areas, dimensions (xx.x ha)', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),         
-  (223, 'PLA', 219, 'Processing infrastructure: description (xx.x ha)', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),         
-	(224, 'PLA', 219, 'Test pits: # of sites, dimensions (xx.x ha)', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),         
-	(225, 'PLA', 219, 'Access Construction/Modification: description, dimensions, etc (xx.x ha)', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),         
-  (226, 'PLA', 219, 'Other: list description of any other authorized activities (xx.x ha)', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),         
-  (227, 'PLA', 219, 'For a total disturbance area of (x.xx ha)', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),       
+  (220, 'PLA', 219, 'Diversion of Watercourses: [x.xx ha] <<OR>> not approved under this authorization.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),         
+  (221, 'PLA', 219, 'Work Related Structures: office, dry tent, storage buildings, first aid etc. [xx.x ha]', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),         
+  (222, 'PLA', 219, 'Mining Areas: # of areas, dimensions [xx.x ha]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),         
+  (223, 'PLA', 219, 'Processing infrastructure: description [xx.x ha]', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),         
+	(224, 'PLA', 219, 'Test pits: # of sites, dimensions [xx.x ha]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),         
+	(225, 'PLA', 219, 'Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),         
+  (226, 'PLA', 219, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),         
+  (227, 'PLA', 219, 'For a total disturbance area of [x.xx ha]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),       
 
-  (228, 'PLA', 218, 'Activities not approved:', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),    
+  (228, 'PLA', 200, 'Activities not approved:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),    
 
-  (229, 'PLA', 228, 'Fording of watercourses is not authorized.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),   
-  (230, 'PLA', 228, 'Suction Dredging and/or Enhanced Sniping are not authorized.; add others if necessary', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),   
-  (231, 'PLA', 228, 'Individual settling ponds must not be constructed greater than 2.5 m above grade or be capable of impounding greater than 30,000m3 volume.', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),   
+  (229, 'PLA', 228, 'Fording of watercourses is not authorized.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),   
+  (230, 'PLA', 228, 'Suction Dredging and/or Enhanced Sniping are not authorized.; add others if necessary', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),   
+  (231, 'PLA', 228, 'Individual settling ponds must not be constructed greater than 2.5 m above grade or be capable of impounding greater than 30,000m3 volume.', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),   
 
-  (232, 'PLA', 218, 'Approved mining activities must be conducted within the permit area illustrated by [Figure #] [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.] [OR] Activities must be conducted within the permit area illustrated by [Figure # ][Permit Area Map]. [specific activity/ies)] must be constructed only in the location(s) shown in [Figure X, Figure Y and Figure Z].', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),    
-  (233, 'PLA', 218, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),  
-  (234, 'PLA', 218, 'Maximum Annual Production of Pay Dirt <<annual_tonnes>>;', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),
-  (235, 'PLA', 218, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),
-  (236, 'PLA', 218, 'The use of all-terrain vehicles (ATVs) and utility task vehicles (UTVs) is [not authorized/restricted to business purposes/restricted to authorized exploration access].', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),
-  (237, 'PLA', 218, 'The construction of new access is limited to spur roads of no more than [50m/100m/200m, etc.] in length from the existing access as shown on the attached mapping.  [Figure X, Figure Y and Figure Z]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),
+  (232, 'PLA', 200, 'Approved mining activities must be conducted within the permit area illustrated by [Figure #] [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.] <<OR>> Activities must be conducted within the permit area illustrated by [Figure # ][Permit Area Map]. [specific activity/ies)] must be constructed only in the location(s) shown in [Figure X, Figure Y and Figure Z].', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),    
+  (233, 'PLA', 200, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),  
+  (234, 'PLA', 200, 'Maximum Annual Production of Pay Dirt <<annual_tonnes>>;', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),
+  (235, 'PLA', 200, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),
+  (236, 'PLA', 200, 'The use of all-terrain vehicles (ATVs) and utility task vehicles (UTVs) is [not authorized/restricted to business purposes/restricted to authorized exploration access].', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),
+  (237, 'PLA', 200, 'The construction of new access is limited to spur roads of no more than [50m/100m/200m, etc.] in length from the existing access as shown on the attached mapping.  [Figure X, Figure Y and Figure Z]', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),
 
 
   (238, 'PLA', 201, 'This Permit and the associated approved Mine Plan and Reclamation Program must be kept at the mine and must be available to an Inspector upon request.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
@@ -1635,9 +1636,9 @@ VALUES
 
     -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (294, 'PLA', 214, 'X dollars ($<<bond_amt>>) in security must be maintained with the Minister of Finance.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (295, 'PLA', 294, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (296, 'PLA', 295, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (297, 'PLA', 295, 'Within {Enter time} months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (295, 'PLA', 214, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (296, 'PLA', 295, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (297, 'PLA', 295, 'Within [Enter time] months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
   (298, 'PLA', 215, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved Mine Plan and Reclamation Program. The surface of the land and watercourses must be reclaimed to the following end land use: <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (299, 'PLA', 215, 'Reclamation obligations include [xxx disturbance(s)], but exclude [xxx disturbance(s)].', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1653,11 +1654,11 @@ VALUES
   (306, 'PLA', 305, 'Compacted surfaces must be de-compacted to allow water infiltration and achieve self-staining vegetation.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (307, 'PLA', 305, 'Salvaged soil material must:', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
-  (308, 'PLA', 307, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (309, 'PLA', 307, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (310, 'PLA', 307, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
-  (311, 'PLA', 307, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
-  (312, 'PLA', 307, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
+  (308, 'PLA', 307, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (309, 'PLA', 307, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (310, 'PLA', 307, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (311, 'PLA', 307, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (312, 'PLA', 307, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'LIS', 5, 'system-mds', 'system-mds'),
 
 
 
@@ -1673,7 +1674,8 @@ INSERT INTO standard_permit_conditions
 VALUES
 -- MIN starts at 400
 -- GENERAL SECTIONS
-	(400, 'MIN', 'Approval', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+	(400, 'MIN', 'Approval - This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1):', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (562, 'MIN', 'Definitions', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
   (401, 'MIN', 'Documentation and Reporting', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
   (402, 'MIN', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
 
@@ -1681,6 +1683,7 @@ VALUES
   (403, 'MIN', 'Mine Emergency Response Plan (MERP)', 'HSC', 'SEC', 1, 'system-mds', 'system-mds'),
   (404, 'MIN', 'Fuels and Lubricant Handling, Transportation and Storage', 'HSC', 'SEC', 2, 'system-mds', 'system-mds'),
   (405, 'MIN', 'For exploration drilling operations in coal or coal-bearing formations:', 'HSC', 'SEC', 3, 'system-mds', 'system-mds'),
+  (564, 'MIN', 'Blasting', 'HSC', 'SEC', 4, 'system-mds', 'system-mds'),
 
 -- GEOTECHNICAL SECTIONS
   (406, 'MIN', 'Reporting', 'GOC', 'SEC', 1, 'system-mds', 'system-mds'),
@@ -1708,35 +1711,35 @@ INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, parent_standard_permit_condition_id, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
 -- GENERAL CONDITIONS/LIST-ITEMS/CONDITIONS
-  (419, 'MIN', 400, 'This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1): Write out activities and total disturbance as indicated in the Notice of Work application (that you approve of – you must specify activities that were applied for that you do not approve of if there are any) for example;', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
+  (419, 'MIN', 562, 'Unless otherwise specified, the definitions in the Mines Act, the regulations and the Code apply to the use of the terms in this permit.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
 
-  (420, 'MIN', 419, 'Approved Activities:', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),  
+  (420, 'MIN', 400, 'Approved Activities:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),  
 
-  (421, 'MIN', 420, 'Work Related Structures: Core tent, office, dry tent, first aid etc. [xx.x ha]', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
-  (422, 'MIN', 420, 'Geophysical Survey with exposed electrodes: line kms/area [xx.x ha]', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),  
-  (423, 'MIN', 420, 'Surface Drilling: # of sites [xx.x ha]', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),  
-  (424, 'MIN', 420, 'Helipads: #of sites [xx.x ha]', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),  
-  (425, 'MIN', 420, 'Trenching/Bulk sampling: # of sites, dimensions [xx.x ha]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),  
-  (426, 'MIN', 420, 'Exploration Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),  
-  (427, 'MIN', 420, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),  
-  (428, 'MIN', 420, 'For a total disturbance area of [x.xx ha]', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),   
+  (421, 'MIN', 420, 'Work Related Structures: Core tent, office, dry tent, first aid etc. [xx.x ha]', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (422, 'MIN', 420, 'Geophysical Survey with exposed electrodes: line kms/area [xx.x ha]', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
+  (423, 'MIN', 420, 'Surface Drilling: # of sites [xx.x ha]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),  
+  (424, 'MIN', 420, 'Helipads: #of sites [xx.x ha]', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),  
+  (425, 'MIN', 420, 'Trenching/Bulk sampling: # of sites, dimensions [xx.x ha]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),  
+  (426, 'MIN', 420, 'Exploration Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),  
+  (427, 'MIN', 420, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),  
+  (428, 'MIN', 420, 'For a total disturbance area of [x.xx ha]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),   
 
-  (429, 'MIN', 419, 'Activities not approved:', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
+  (429, 'MIN', 400, 'Activities not approved:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),  
 
-  (430, 'MIN', 429, 'Fording of watercourses is not authorized.; add others if necessary', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),  
+  (430, 'MIN', 429, 'Fording of watercourses is not authorized.; add others if necessary', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),  
 
-  (431, 'MIN', 419, 'Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map]. <<OR>> Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.] <<OR>> Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map]. [specific activity/ies)] must be constructed only in the location(s) shown in [Figure X, Figure Y and Figure Z.]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),  
-  (432, 'MIN', 419, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),  
-  (433, 'MIN', 419, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),  
-  (434, 'MIN', 419, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),  
-  (435, 'MIN', 419, 'The use of all-terrain vehicles (ATVs) and utility task vehicles (UTVs) is [not authorized/restricted to business purposes/restricted to authorized exploration access].', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),  
-  (436, 'MIN', 419, 'The construction of new access is limited to spur roads of no more than [50m/100m/200m, etc.] in length from the existing access as shown on the attached mapping. [Figure X, Figure Y and Figure Z.]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),  
+  (431, 'MIN', 400, 'Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map]. <<OR>> Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z.] <<OR>> Activities must be conducted within the permit area illustrated by [Figure #][Permit Area Map]. [specific activity/ies)] must be constructed only in the location(s) shown in [Figure X, Figure Y and Figure Z.]', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),  
+  (432, 'MIN', 400, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),  
+  (433, 'MIN', 400, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),  
+  (434, 'MIN', 400, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),  
+  (435, 'MIN', 400, 'The use of all-terrain vehicles (ATVs) and utility task vehicles (UTVs) is [not authorized/restricted to business purposes/restricted to authorized exploration access].', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),  
+  (436, 'MIN', 400, 'The construction of new access is limited to spur roads of no more than [50m/100m/200m, etc.] in length from the existing access as shown on the attached mapping. [Figure X, Figure Y and Figure Z.]', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),  
 
 
   (437, 'MIN', 401, 'A completed Annual Summary of Exploration Activities (ASEA) form must be submitted to [Regional Mines Office e-mail Inbox] prior to March 31 annually and must be accompanied by:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'), 
 
   (438, 'MIN', 437, 'A detailed as-built map of the mine site.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),  
-  (562, 'MIN', 437, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
+  (563, 'MIN', 437, 'Shapefiles of the as-built disturbances which include attribution data for the status of reclamation.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),  
 
 
   (439, 'MIN', 401, 'For Multi-Year Area-Based (‘MYAB’) work programs, a MYAB annual update form must be submitted annually to [Regional Mines Office e-mail Inbox].  The MYAB update must be submitted at least two (2) weeks prior to the anticipated commencement of exploration activities in a new calendar year, or no later than March 31 for every year the MYAB approval is in effect.  In addition to the required mapping, the Permittee must submit shapefiles of current and proposed disturbances;', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),  
@@ -1754,9 +1757,9 @@ VALUES
 
   (446, 'MIN', 445, 'A safe operating procedure including the following:', 'HSC', 'LIS', 1, 'system-mds', 'system-mds'),
 
-  (447, 'MIN', 446, 'Gas detection and monitoring, including for flammable and toxic gases;', 'HSC', 'CON', 1, 'system-mds', 'system-mds'),
-  (448, 'MIN', 446, 'Any preventative equipment to be used to divert gases or prevent the uncontrolled release of pressurized fluids;', 'HSC', 'CON', 2, 'system-mds', 'system-mds'),
-  (449, 'MIN', 446, 'Training requirements for field and drilling personnel regarding procedures, assignment of responsibilities and operation of monitoring and preventative equipment;', 'HSC', 'CON', 3, 'system-mds', 'system-mds'),
+  (447, 'MIN', 446, 'Gas detection and monitoring, including for flammable and toxic gases;', 'HSC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (448, 'MIN', 446, 'Any preventative equipment to be used to divert gases or prevent the uncontrolled release of pressurized fluids;', 'HSC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (449, 'MIN', 446, 'Training requirements for field and drilling personnel regarding procedures, assignment of responsibilities and operation of monitoring and preventative equipment;', 'HSC', 'LIS', 3, 'system-mds', 'system-mds'),
 
   (450, 'MIN', 445, 'Requirements and procedures for decommissioning, which may include capping or cementing, to ensure that fluids will not leak from the drill hole, and', 'HSC', 'LIS', 2, 'system-mds', 'system-mds'),
 
@@ -1804,19 +1807,19 @@ VALUES
   (479, 'MIN', 412, '[At least 90 days] prior to the commencement of work under this Permit, an Invasive Species Management Plan must be developed to the satisfaction of the Chief Permitting Officer and the plan must be implemented in doing any work under this Permit.', 'ELC', 'CON', 4, 'system-mds', 'system-mds'),
   (480, 'MIN', 412, '[Name of Plan, Date (Author of Plan)] must be implemented on site.', 'ELC', 'CON', 5, 'system-mds', 'system-mds'),
 
-  (481, 'MIN', 413, 'Instream Works:', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
-  (482, 'MIN', 481, 'Timing:', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (481, 'MIN', 413, 'Instream Works:', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (482, 'MIN', 481, 'Timing:', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
 
   (483, 'MIN', 482, 'If works are proposed on a stream that contains fish (fish-bearing), all works must be completed during the applicable timing window to protect fish, wildlife or the aquatic ecosystem within that stream. Timing windows represent periods during which works can occur to ensure the lowest risk to environmental and fisheries values.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (484, 'MIN', 482, 'If any of the following conditions are met, the timing window is not applicable:', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
 
-  (485, 'MIN', 484, 'If the stream channel is naturally dry (no flow) or frozen to the bottom at the worksite and the instream activity will not adversely impact fish habitat (e.g. result in the introduction of sediment into fish habitat).', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
-  (486, 'MIN', 484, 'If construction of a winter crossing is proposed and such works does not adversely impact the stream channel (including stream banks), fish habitat or fish passage. ', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
-  (487, 'MIN', 484, 'The structure does not encroach below the high-water mark, no work is proposed below the high-water mark of a fish stream, and measures will be taken to prevent the delivery of sediments or contaminants into fish habitat.', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
-  (488, 'MIN', 484, 'You retain a Qualified Professional (such as a Registered Professional Biologist) to prepare a prescription that provides specific measures to comply with the windows and to prevent impacts to fish or fish habitat. This document must be submitted to [ Regional Mines Office e-mail Inbox] with reference to your Notice of Work number <<Notice of work #>>.', 'ELC', 'CON', 4, 'system-mds', 'system-mds'),
-  (489, 'MIN', 484, 'Work is in a non-fish stream and measures will be taken to prevent the delivery of sediments into downstream fish habitat or the stream is not fish-bearing and discontinuous with no connection to downstream fish habitat.', 'ELC', 'CON', 5, 'system-mds', 'system-mds'),
+  (485, 'MIN', 484, 'If the stream channel is naturally dry (no flow) or frozen to the bottom at the worksite and the instream activity will not adversely impact fish habitat (e.g. result in the introduction of sediment into fish habitat).', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (486, 'MIN', 484, 'If construction of a winter crossing is proposed and such works does not adversely impact the stream channel (including stream banks), fish habitat or fish passage. ', 'ELC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (487, 'MIN', 484, 'The structure does not encroach below the high-water mark, no work is proposed below the high-water mark of a fish stream, and measures will be taken to prevent the delivery of sediments or contaminants into fish habitat.', 'ELC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (488, 'MIN', 484, 'You retain a Qualified Professional (such as a Registered Professional Biologist) to prepare a prescription that provides specific measures to comply with the windows and to prevent impacts to fish or fish habitat. This document must be submitted to [ Regional Mines Office e-mail Inbox] with reference to your Notice of Work number <<Notice of work #>>.', 'ELC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (489, 'MIN', 484, 'Work is in a non-fish stream and measures will be taken to prevent the delivery of sediments into downstream fish habitat or the stream is not fish-bearing and discontinuous with no connection to downstream fish habitat.', 'ELC', 'LIS', 5, 'system-mds', 'system-mds'),
 
-  (490, 'MIN', 481, 'Design requirements:', 'ELC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (490, 'MIN', 481, 'Design requirements:', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
 
   (491, 'MIN', 490, 'The original rate of water flow in the stream (existing prior to commencing work) must be maintained upstream and downstream of the worksite during all phases of instream activity associated with the work;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (492, 'MIN', 490, 'If the stream is fish-bearing, the culvert allows fish in the stream to pass up or down stream under all flow conditions;', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1830,7 +1833,7 @@ VALUES
   (500, 'MIN', 490, 'The culvert has a minimum equivalent diameter of 600 mm;', 'ELC', 'CON', 10, 'system-mds', 'system-mds'),
   (501, 'MIN', 490, 'Any stream within the mine site must be assumed to be fish bearing unless determined otherwise by a qualified professional.', 'ELC', 'CON', 11, 'system-mds', 'system-mds'),
 
-  (502, 'MIN', 481, 'Construction:', 'ELC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (502, 'MIN', 481, 'Construction:', 'ELC', 'SEC', 3, 'system-mds', 'system-mds'),
 
   (503, 'MIN', 502, 'The equipment used for site preparation, or for installation, construction, maintenance or removal of the culvert, is situated in a dry stream channel or operated from the top of the bank;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (504, 'MIN', 502, 'The stream channel width must not change as a result of the work.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1840,7 +1843,7 @@ VALUES
   (508, 'MIN', 502, 'Any spoil materials must be deposited in a stable area and in such a way that the excavated material will not contribute sediment or debris to the stream or adversely impact riparian habitats or species at risk and their habitats;', 'ELC', 'CON', 6, 'system-mds', 'system-mds'),
   (509, 'MIN', 502, 'A qualified person must supervise installation of all stream crossings.', 'ELC', 'CON', 7, 'system-mds', 'system-mds'),
   
-  (510, 'MIN', 481, 'Erosion and Sediment Control:', 'ELC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (510, 'MIN', 481, 'Erosion and Sediment Control:', 'ELC', 'SEC', 4, 'system-mds', 'system-mds'),
 
   (511, 'MIN', 510, 'The culvert inlet and outlet incorporate measures to protect the structure and the stream channel against erosion;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (512, 'MIN', 510, 'Any work associated with the proposed changes in and about a stream must not cause stream channel instability or increase the risk of sedimentation into the stream;', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1851,23 +1854,23 @@ VALUES
   (517, 'MIN', 510, 'During periods of heavy or persistent precipitation, work must stop if continuing the work will result in sediment delivery downstream of the immediate worksite. Measures must be taken to minimize the risk of on-going sediment delivery to the stream during the shutdown period;', 'ELC', 'CON', 7, 'system-mds', 'system-mds'),
 
 
-  (518, 'MIN', 481, 'Protection of fish or Wildlife:', 'ELC', 'LIS', 5, 'system-mds', 'system-mds'),
+  (518, 'MIN', 481, 'Protection of fish or Wildlife:', 'ELC', 'SEC', 5, 'system-mds', 'system-mds'),
 
   (519, 'MIN', 518, 'Open bottom structures such as clear span bridges or open bottom culverts are preferred on all fish bearing streams. If permittees wish to install a closed bottom culvert (e.g. round or elliptical) on a fish bearing stream, they must ensure that upstream fish passage through the culvert is maintained. In addition, closed bottom culverts must be embedded in order to provide a natural substrate such that there is no net loss of fish habitat. To achieve this, permittees must comply with the requirements detailed in Section 3.2 of the 2012 Fish-Stream Crossing Guidebook.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
 
 
-  (520, 'MIN', 481, 'Riparian Vegetation and Habitat:', 'ELC', 'LIS', 6, 'system-mds', 'system-mds'),
+  (520, 'MIN', 481, 'Riparian Vegetation and Habitat:', 'ELC', 'SEC', 6, 'system-mds', 'system-mds'),
 
   (521, 'MIN', 520, 'Damage above the high water mark to values such as banks and stream side (riparian) vegetation in the vicinity of the work area must be minimized. Unavoidable impacts that occur must be remedied as per the reclamation section below;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (522, 'MIN', 520, 'Any trees at the work site or within the clearing width area adjacent to streams that must be removed must be felled away from the stream to the fullest extent possible. Where this is not possible, the tree(s) and all resultant debris must be removed from the stream channel as soon as possible after felling, or at most, within the same workday by means that avoid machinery being placed within the stream channel;', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
   (523, 'MIN', 520, 'Minimize disturbance to natural materials, including but not necessarily limited to embedded logs and boulders, as well as vegetation that contribute to fish and wildlife habitat or stream channel stability;', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
 
-  (524, 'MIN', 481, 'Site Reclamation:', 'ELC', 'LIS', 7, 'system-mds', 'system-mds'),
+  (524, 'MIN', 481, 'Site Reclamation:', 'ELC', 'SEC', 7, 'system-mds', 'system-mds'),
   (525, 'MIN', 524, 'Complete required reclamation works on disturbed areas must be conducted according to the site-specific reclamation plans that will ensure function as close as possible to natural pre-disturbance conditions;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (526, 'MIN', 524, 'Soils exposed as a result of work activities that have the potential for sediment delivery to the stream must be promptly re-vegetated. All disturbed soils adjacent to the stream must be re-vegetated with [a certified weed free mix of native species grasses, and suitable seedlings for the BEC zone] if necessary, as soon as works are completed or as soon as site conditions are conducive to growth; if seedlings are included in reclamation plans, they will be planted when material is available.', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
   (527, 'MIN', 524, 'Any materials, such as riprap or gabion rock, used for stream bank armouring must be clean and not contain substances that could be harmful to fish, wildlife or the aquatic ecosystem of the stream.', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
 
-  (528, 'MIN', 481, 'Construction, maintenance and removal of clear span bridges is approved subject to the following conditions:', 'ELC', 'LIS', 8, 'system-mds', 'system-mds'),
+  (528, 'MIN', 481, 'Construction, maintenance and removal of clear span bridges is approved subject to the following conditions:', 'ELC', 'SEC', 8, 'system-mds', 'system-mds'),
 
   (529, 'MIN', 528, 'The equipment used for site preparation, or for construction, maintenance or removal of the bridge is situated in a dry stream channel or operated from the top of the bank;', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
   (530, 'MIN', 528, 'The bridge and its approach roads do not produce a back water effect or increase the head of the stream;', 'ELC', 'CON', 2, 'system-mds', 'system-mds'),
@@ -1886,10 +1889,10 @@ VALUES
 
     -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (540, 'MIN', 415, '[X dollars] $<<bond_amt>> in security must be maintained with the Minister of Finance.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (541, 'MIN', 540, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (541, 'MIN', 415, 'The security must be deposited in accordance with the following installment schedule:', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
 
-  (542, 'MIN', 541, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (543, 'MIN', 541, 'Within {Enter time} months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amoun>>.', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
+  (542, 'MIN', 541, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (543, 'MIN', 541, 'Within [Enter time] months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amoun>>.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
   
   (544, 'MIN', 416, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved work program. The surface of the land and watercourses must be reclaimed to the following end land use: <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
@@ -1905,16 +1908,39 @@ VALUES
   (552, 'MIN', 551, 'Compacted surfaces must be de-compacted to allow water infiltration and achieve self-staining vegetation.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (553, 'MIN', 551, 'Salvaged soil material must:', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
-  (554, 'MIN', 553, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (555, 'MIN', 553, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (556, 'MIN', 553, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
-  (557, 'MIN', 553, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
-  (558, 'MIN', 553, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
+  (554, 'MIN', 553, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (555, 'MIN', 553, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (556, 'MIN', 553, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (557, 'MIN', 553, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (558, 'MIN', 553, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'LIS', 5, 'system-mds', 'system-mds'),
 
   (559, 'MIN', 418, 'Individual roads and trails will be exempted from the requirement for total reclamation if either:', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
 
   (560, 'MIN', 559, 'It can be demonstrated that an agency of the Crown has accepted responsibility in writing for the operation, maintenance and reclamation of the road or trail; or', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (561, 'MIN', 559, 'The Chief Permitting Officer provides notification that the road should not be reclaimed due to the use or potential use by other users who will assume liability.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds')
+  (561, 'MIN', 559, 'The Chief Permitting Officer provides notification that the road should not be reclaimed due to the use or potential use by other users who will assume liability.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
+
+
+-- ADDITIONAL BLASTING CONDITIONS
+  (565, 'MIN', 564, 'The Manager must provide written notification, fourteen days prior to a blast notify the Senior Health & Safety Inspector for the [Region] at [Regional Mines Office email].', 'HSC', 'CON', 1, 'system-mds', 'system-mds'),
+  (566, 'MIN', 564, 'Blasting is not authorized to occur between [Date Range or Time Range or  Other Schedule].', 'HSC', 'CON', 2, 'system-mds', 'system-mds'),
+  (567, 'MIN', 564, 'Blast patterns must be designed by a qualified person to eliminate fly-rock;', 'HSC', 'CON', 3, 'system-mds', 'system-mds'),
+  (568, 'MIN', 564, 'No blasting will be permitted under overcast conditions;', 'HSC', 'CON', 4, 'system-mds', 'system-mds'),
+  (569, 'MIN', 564, 'All blasts must occur between [Monday to Friday between 10am and 5pm], blasting must not occur on Statutory Holidays;', 'HSC', 'CON', 5, 'system-mds', 'system-mds'),
+  (570, 'MIN', 564, 'Controlled blasting methods (e.g. trim and buffer, pre/post shear) must be implemented to minimize damage to the crest and bench face of all final walls and on any interim walls that will be in place for a period exceeding 12 months.', 'HSC', 'CON', 6, 'system-mds', 'system-mds'),
+  (571, 'MIN', 564, 'Controlled blasting may be omitted where a Professional Engineer assesses conditions and states in writing that worker safety will not be adversely endangered by the proposed excavation.', 'HSC', 'CON', 7, 'system-mds', 'system-mds'),
+  
+  (572, 'MIN', 564, 'All blasts must be electronically monitored.', 'HSC', 'CON', 8, 'system-mds', 'system-mds'),
+  (573, 'MIN', 564, 'Blast limits are established at 50 millimeters per second peak particle velocity and 120 decibels on the L scale, at the property boundary.', 'HSC', 'CON', 9, 'system-mds', 'system-mds'),
+  (574, 'MIN', 564, 'The electronic monitor unit must be located such that the air pressure (microphone) sensor has a clear unobstructed line of sight to the centre of the blast. The Inspector may allow or require monitoring at specific locations on a case by case basis as may be required.', 'HSC', 'CON', 10, 'system-mds', 'system-mds'),
+  (575, 'MIN', 564, 'A signed copy of the Blast Log for each blast and a copy of the Electronic Monitor Record must be maintained at on the mine site. Such records must be made available to the Inspector on request.', 'HSC', 'CON', 11, 'system-mds', 'system-mds'),
+  (576, 'MIN', 564, 'To the extent practical, all blasts initiated on the quarry must be videoed, and a copy of the video must be kept at the mine office and made available to the Inspector on request.', 'HSC', 'CON', 12, 'system-mds', 'system-mds'),
+
+  (577, 'MIN', 576, 'The video file must include the following identification information as a word document:', 'HSC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (578, 'MIN', 576, 'the pit name, and mine number', 'HSC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (579, 'MIN', 576, 'the bench/location identification, including a map showing the location on the mine footprint.', 'HSC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (580, 'MIN', 576, 'the name of the blaster', 'HSC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (581, 'MIN', 576, 'the date of the blast', 'HSC', 'LIS', 5, 'system-mds', 'system-mds'),
+  (582, 'MIN', 576, 'the time of the blast', 'HSC', 'LIS', 6, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 
@@ -1924,7 +1950,8 @@ INSERT INTO standard_permit_conditions
 VALUES
 -- QCA starts at 600
 -- GENERAL SECTIONS
-	(600, 'QCA', 'Approval', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+	(600, 'QCA', 'Approval - This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1):', 'GEC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (744, 'QCA', 'Definitions', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
   (601, 'QCA', 'Documentation and Reporting', 'GEC', 'SEC', 2, 'system-mds', 'system-mds'),
   (602, 'QCA', 'Reports to be signed by a Qualified Professional:', 'GEC', 'SEC', 3, 'system-mds', 'system-mds'),
 
@@ -1962,28 +1989,28 @@ INSERT INTO standard_permit_conditions
 (standard_permit_condition_id, notice_of_work_type, parent_standard_permit_condition_id, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
 VALUES
 -- GENERAL CONDITIONS/LIST-ITEMS/CONDITIONS
-  (622, 'QCA', 600, 'This permit authorizes only the following mining activities as outlined in the Mine Plan and Reclamation Program. Mining activities conducted that are not listed below are considered to be undertaken without a permit as required by Mines Act 10(1): Write out activities and total disturbance as indicated in the Notice of Work application (that you approve of – you must specify activities that were applied for that you do not approve of if there are any) for example;', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
-  (623, 'QCA', 622, 'Approved Activities:', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (622, 'QCA', 744, 'Unless otherwise specified, the definitions in the Mines Act, the regulations and the Code apply to the use of the terms in this permit.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
+  (623, 'QCA', 600, 'Approved Activities:', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
 
-  (624, 'QCA', 623, 'Work Related Structures: office, storage buildings, first aid etc. [xx.x ha]', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
-  (625, 'QCA', 623, 'Mining Area(s): [xx.x ha]', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),
-  (626, 'QCA', 623, 'Stockpile Area(s): [xx.x ha]', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),
-  (627, 'QCA', 623, 'Processing Area/Infrastructure: [xx.x ha]', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),
-  (628, 'QCA', 623, 'Settling Pond(s): # of sites, dimensions [xx.x ha]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),
-  (629, 'QCA', 623, 'Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),
-  (630, 'QCA', 623, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),
-  (631, 'QCA', 623, 'For a total disturbance area of [x.xx ha]', 'GEC', 'CON', 8, 'system-mds', 'system-mds'),
+  (624, 'QCA', 623, 'Work Related Structures: office, storage buildings, first aid etc. [xx.x ha]', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (625, 'QCA', 623, 'Mining Area(s): [xx.x ha]', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (626, 'QCA', 623, 'Stockpile Area(s): [xx.x ha]', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (627, 'QCA', 623, 'Processing Area/Infrastructure: [xx.x ha]', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (628, 'QCA', 623, 'Settling Pond(s): # of sites, dimensions [xx.x ha]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),
+  (629, 'QCA', 623, 'Access Construction/Modification: description, dimensions, etc [xx.x ha]', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),
+  (630, 'QCA', 623, 'Other: list description of any other authorized activities [xx.x ha]', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),
+  (631, 'QCA', 623, 'For a total disturbance area of [x.xx ha]', 'GEC', 'LIS', 8, 'system-mds', 'system-mds'),
 
-  (632, 'QCA', 622, 'Activities not approved:', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (632, 'QCA', 600, 'Activities not approved:', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),
 
-  (633, 'QCA', 632, 'Fording of watercourses is not authorized.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
-  (634, 'QCA', 632, 'Washing of aggregates is not authorized.', 'GEC', 'CON', 2, 'system-mds', 'system-mds'),
+  (633, 'QCA', 632, 'Fording of watercourses is not authorized.', 'GEC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (634, 'QCA', 632, 'Washing of aggregates is not authorized.', 'GEC', 'LIS', 2, 'system-mds', 'system-mds'),
 
-  (634, 'QCA', 622, 'Activities must be conducted within the permit area illustrated by Figure # [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z].', 'GEC', 'LIS', 3, 'system-mds', 'system-mds'),
-  (635, 'QCA', 622, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'LIS', 4, 'system-mds', 'system-mds'),
-  (636, 'QCA', 622, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'LIS', 5, 'system-mds', 'system-mds'),
-  (637, 'QCA', 622, 'Authorized activities are restricted to the following schedule [daily operating hours, or operating hours listed by day of week].', 'GEC', 'LIS', 6, 'system-mds', 'system-mds'),
-  (638, 'QCA', 622, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'LIS', 7, 'system-mds', 'system-mds'),
+  (634, 'QCA', 600, 'Activities must be conducted within the permit area illustrated by Figure # [Permit Area Map], and located as shown in [Figure X, Figure Y and Figure Z].', 'GEC', 'CON', 3, 'system-mds', 'system-mds'),
+  (635, 'QCA', 600, 'This permit approval is valid until <<approval end date>>.', 'GEC', 'CON', 4, 'system-mds', 'system-mds'),
+  (636, 'QCA', 600, 'Authorized activities are restricted to the period from [seasonal date interval] [unless xyz occurs]', 'GEC', 'CON', 5, 'system-mds', 'system-mds'),
+  (637, 'QCA', 600, 'Authorized activities are restricted to the following schedule [daily operating hours, or operating hours listed by day of week].', 'GEC', 'CON', 6, 'system-mds', 'system-mds'),
+  (638, 'QCA', 600, 'A Maximum [Annual] Produced Tonnage of <<annual_tonnes>>;', 'GEC', 'CON', 7, 'system-mds', 'system-mds'),
 
 
   (639, 'QCA', 601, 'This Permit and the associated approved Mine Plan and Reclamation Program must be kept at the mine and must be available to an Inspector upon request.', 'GEC', 'CON', 1, 'system-mds', 'system-mds'),
@@ -2079,7 +2106,7 @@ VALUES
   (708, 'QCA', 614, 'ML/ARD Operational Monitoring', 'ELC', 'CON', 3, 'system-mds', 'system-mds'),
   (709, 'QCA', 708, '[Plan Name, Date (Author of Plan – ML/ARD Prediction Plan)] must be implemented on the mine site.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
   (710, 'QCA', 708, 'Concurrent with excavation, the Permittee must implement a monitoring program to confirm the geochemical characteristics of excavated materials produced and mine surfaces exposed, to determine the potential for ML/ARD and the need for mitigation measures to ensure protection of environmental quality.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
-  (711, 'QCA', 710, 'At a minimum, the monitoring program must include the characterization of excavated materials at frequency of three samples for every 10,000 tonnes. Each sample must be submitted to an accredited lab and analyzed for sufficient parameters to determine the AP, NP, and total dissolved metals.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (711, 'QCA', 710, 'At a minimum, the monitoring program must include the characterization of excavated materials at frequency of three samples for every 10,000 tonnes. Each sample must be submitted to an accredited lab and analyzed for sufficient parameters to determine the AP, NP, and total dissolved metals.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
 
   (712, 'QCA', 708, 'A report, authored by a qualified professional, summarizing the results of the operational monitoring must be submitted to [Regional Mines Office e-mail] prior to March 31 annually. The report must include a description of the geology encountered, interpretation of all ML/ARD monitoring results, a description of any mitigation strategies undertaken during the program, and an assessment of whether additional mitigation is required.', 'ELC', 'LIS', 1, 'system-mds', 'system-mds'),
 
@@ -2097,10 +2124,10 @@ VALUES
  
     -- RECLAMATION AND CLOSURE PROGRAM CONDITIONS/LIST-ITEMS/CONDITIONS
   (723, 'QCA', 618, 'The Permittee must maintain with the Minister of Finance security in the amount of [X dollars] $<<bond_amt>>.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (724, 'QCA', 723, 'The Permittee must deposit the security in accordance with the following installment schedule:', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (724, 'QCA', 618, 'The Permittee must deposit the security in accordance with the following installment schedule:', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
 
-  (725, 'QCA', 724, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (726, 'QCA', 724, 'Within <<Enter time>> months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (725, 'QCA', 724, 'Prior to the mobilization of heavy equipment to the site for the purposes of construction of <<description of activity>>: <<$Dollar amount>> for a subtotal of <<$Dollar Amount>>; and', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (726, 'QCA', 724, 'Within <<Enter time>> months following the start of construction of <<description of activity>>: <<$Dollar Amount>> for a total of <<$Dollar Amount>>.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
 
   (727, 'QCA', 619, 'Reclamation of the surface of the land affected by the operations must be conducted in accordance with the approved work program. The surface of the land and watercourses must be reclaimed to the following end land use:  <<land_use>>;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
 
@@ -2114,13 +2141,109 @@ VALUES
   (734, 'QCA', 733, 'Compacted surfaces must be de-compacted to allow water infiltration and achieve self-staining vegetation.', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (735, 'QCA', 733, 'Salvaged soil material must:', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
 
-  (736, 'QCA', 735, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
-  (737, 'QCA', 735, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'CON', 2, 'system-mds', 'system-mds'),
-  (738, 'QCA', 735, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'CON', 3, 'system-mds', 'system-mds'),
-  (739, 'QCA', 735, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'CON', 4, 'system-mds', 'system-mds'),
-  (740, 'QCA', 735, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'CON', 5, 'system-mds', 'system-mds'),
+  (736, 'QCA', 735, 'be replaced on disturbed areas to pre-disturbance depth;', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
+  (737, 'QCA', 735, 'be treated with a rough and loose site preparation where practicable;', 'RCC', 'LIS', 2, 'system-mds', 'system-mds'),
+  (738, 'QCA', 735, 'be keyed into the underlying materials such that they do not slump off or become unstable;', 'RCC', 'LIS', 3, 'system-mds', 'system-mds'),
+  (739, 'QCA', 735, 'incorporate roots, stumps and other woody debris to reduce erosion and create greater biological diversity; and', 'RCC', 'LIS', 4, 'system-mds', 'system-mds'),
+  (740, 'QCA', 735, 'be re-vegetated promptly to a self-sustaining state using appropriate and/or native plant species that support approved end land use.', 'RCC', 'LIS', 5, 'system-mds', 'system-mds'),
 
   (741, 'QCA', 621, 'Individual roads and trails will be exempted from the requirement for total reclamation if either:', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (742, 'QCA', 741, 'The Permittee can demonstrate that an agency of the Crown has accepted responsibility in writing for the operation, maintenance and reclamation of the road or trail; or', 'RCC', 'LIS', 1, 'system-mds', 'system-mds'),
   (743, 'QCA', 741, 'The Permittee can demonstrate that another party has a valid authorization from a relevant provincial authority to assume liability for the road.', 'RCC', 'LIS', 2, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+
+-- MANAGEMENT PLAN PARENT SECTION (these get added to GEO, ELC and RCC on every permit)
+INSERT INTO standard_permit_conditions
+(standard_permit_condition_id, notice_of_work_type, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
+VALUES
+-- GEOTECHNICAL SECTIONS
+  (800, 'SAG', 'Management Plan', 'GOC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (801, 'PLA', 'Management Plan', 'GOC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (802, 'MIN', 'Management Plan', 'GOC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (803, 'QCA', 'Management Plan', 'GOC', 'SEC', 5, 'system-mds', 'system-mds'),
+
+-- PROTECTION OF LAND AND WATERCOURSES
+  (804, 'SAG', 'Management Plan', 'ELC', 'SEC', 6, 'system-mds', 'system-mds'),
+  (805, 'PLA', 'Management Plan', 'ELC', 'SEC', 6, 'system-mds', 'system-mds'),
+  (806, 'MIN', 'Management Plan', 'ELC', 'SEC', 6, 'system-mds', 'system-mds'),
+  (807, 'QCA', 'Management Plan', 'ELC', 'SEC', 9, 'system-mds', 'system-mds'),
+ 
+-- RECLAMATION AND CLOSURE PROGRAM
+  (808, 'SAG', 'Management Plan', 'RCC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (809, 'PLA', 'Management Plan', 'RCC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (810, 'MIN', 'Management Plan', 'RCC', 'SEC', 5, 'system-mds', 'system-mds'),
+  (811, 'QCA', 'Management Plan', 'RCC', 'SEC', 5, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+
+-- MANAGEMENT PLAN CHILDREN SECTION (these get added to GEO, ELC and RCC on every permit)
+INSERT INTO standard_permit_conditions
+(standard_permit_condition_id, notice_of_work_type, parent_standard_permit_condition_id, condition, condition_category_code, condition_type_code, display_order, create_user, update_user)
+VALUES
+  -- GEOTECHNICAL SECTION
+  (812, 'SAG', 800, 'Requiring submission and approval prior to implementation', 'GOC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (813, 'PLA', 801, 'Requiring submission and approval prior to implementation', 'GOC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (814, 'MIN', 802, 'Requiring submission and approval prior to implementation', 'GOC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (815, 'QCA', 803, 'Requiring submission and approval prior to implementation', 'GOC', 'SEC', 1, 'system-mds', 'system-mds'),
+
+  (816, 'SAG', 800, 'Requiring development and implementation', 'GOC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (817, 'PLA', 801, 'Requiring development and implementation', 'GOC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (818, 'MIN', 802, 'Requiring development and implementation', 'GOC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (819, 'QCA', 803, 'Requiring development and implementation', 'GOC', 'SEC', 2, 'system-mds', 'system-mds'),
+  
+  -- PROTECTION OF LAND AND WATERCOURSES SECTION
+  (820, 'SAG', 804, 'Requiring submission and approval prior to implementation', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (821, 'PLA', 805, 'Requiring submission and approval prior to implementation', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (822, 'MIN', 806, 'Requiring submission and approval prior to implementation', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (823, 'QCA', 807, 'Requiring submission and approval prior to implementation', 'ELC', 'SEC', 1, 'system-mds', 'system-mds'),
+
+  (824, 'SAG', 804, 'Requiring development and implementation', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (825, 'PLA', 805, 'Requiring development and implementation', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (826, 'MIN', 806, 'Requiring development and implementation', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (827, 'QCA', 807, 'Requiring development and implementation', 'ELC', 'SEC', 2, 'system-mds', 'system-mds'),
+
+    -- RECLAMATION AND CLOSURE PROGRAM SECTION
+  (828, 'SAG', 808, 'Requiring submission and approval prior to implementation', 'RCC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (829, 'PLA', 809, 'Requiring submission and approval prior to implementation', 'RCC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (830, 'MIN', 810, 'Requiring submission and approval prior to implementation', 'RCC', 'SEC', 1, 'system-mds', 'system-mds'),
+  (831, 'QCA', 811, 'Requiring submission and approval prior to implementation', 'RCC', 'SEC', 1, 'system-mds', 'system-mds'),
+
+  (832, 'SAG', 808, 'Requiring development and implementation', 'RCC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (833, 'PLA', 809, 'Requiring development and implementation', 'RCC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (834, 'MIN', 810, 'Requiring development and implementation', 'RCC', 'SEC', 2, 'system-mds', 'system-mds'),
+  (835, 'QCA', 811, 'Requiring development and implementation', 'RCC', 'SEC', 2, 'system-mds', 'system-mds'),
+
+  -- GEOTECHNICAL CONDITION
+  (836, 'SAG', 812, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (837, 'PLA', 813, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (838, 'MIN', 814, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (839, 'QCA', 815, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+
+  (840, 'SAG', 816, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (841, 'PLA', 817, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (842, 'MIN', 818, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  (843, 'QCA', 819, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'GOC', 'CON', 1, 'system-mds', 'system-mds'),
+  
+  -- PROTECTION OF LAND AND WATERCOURSES CONDITION
+  (844, 'SAG', 820, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (845, 'PLA', 821, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (846, 'MIN', 822, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (847, 'QCA', 823, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+
+  (848, 'SAG', 824, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (849, 'PLA', 825, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (850, 'MIN', 826, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+  (851, 'QCA', 827, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'ELC', 'CON', 1, 'system-mds', 'system-mds'),
+
+    -- RECLAMATION AND CLOSURE PROGRAM CONDITION
+  (852, 'SAG', 828, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (853, 'PLA', 829, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (854, 'MIN', 830, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (855, 'QCA', 831, '[At least 90 days] prior to starting any work under this Permit, a(n) [Plan Name] must be developed and submitted to [Regional Mines Office email] for the approval of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work. <<OR>>', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+
+  (856, 'SAG', 832, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (857, 'PLA', 833, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (858, 'MIN', 834, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
+  (859, 'QCA', 835, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds')
 on conflict do nothing;

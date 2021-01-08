@@ -130,18 +130,16 @@ const ConditionLayerOne = (props) => {
         </Col>
       </Row>
       {isEditing && (
-        <Col span={18}>
-          <ConditionForm
-            onCancel={() => {
-              setIsEditing(!isEditing);
-              props.setConditionEditingFlag(false);
-              props.handleCancel(false);
-            }}
-            onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
-            initialValues={props.condition || props.initialValues}
-            layer={1}
-          />
-        </Col>
+        <ConditionForm
+          onCancel={() => {
+            setIsEditing(!isEditing);
+            props.setConditionEditingFlag(false);
+            props.handleCancel(false);
+          }}
+          onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+          initialValues={props.condition || props.initialValues}
+          layer={1}
+        />
       )}
       {props.condition &&
         props.condition.sub_conditions.map((condition) => (

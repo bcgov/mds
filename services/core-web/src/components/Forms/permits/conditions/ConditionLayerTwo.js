@@ -49,7 +49,7 @@ const ConditionLayerTwo = (props) => {
         )}
         <Col
           className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
-          span={props.isViewOnly ? 18 : 19}
+          span={props.isViewOnly ? 17 : 18}
         >
           {!isEditing && props.condition.condition}
         </Col>
