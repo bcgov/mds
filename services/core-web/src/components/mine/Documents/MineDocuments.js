@@ -23,7 +23,6 @@ export const MineDocuments = (props) => {
         <h2>Archived MMS Files</h2>
         <p>Archived MMS files are available on this page. These documents are read-only.</p>
         <Divider />
-        {/* <AmazonS3Provider path={`/${mine.mine_no}`} /> */}
         <AmazonS3Provider mineNumber={mine.mine_no} />
       </div>
     </div>
