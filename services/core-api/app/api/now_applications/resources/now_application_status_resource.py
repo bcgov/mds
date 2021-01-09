@@ -74,11 +74,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     permit_amendment.permit_amendment_status_code = 'OGP'
                     #assign permit_no
                     permit.assign_permit_no(
-                    now_application_identity.now_application.notice_of_work_type_code[0])
+                        now_application_identity.now_application.notice_of_work_type_code[0])
 
                 if permit_amendment.permit_amendment_status_code == 'DFT':
                     permit_amendment.permit_amendment_status_code = 'ACT'
-                
 
                 permit.save()
 
@@ -144,6 +143,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             #TODO: Documents / CRR
             # Update NoW application and save status
             now_application_identity.now_application.status_updated_date = datetime.today()
+            # populate previous status code
+            now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
             now_application_identity.save()

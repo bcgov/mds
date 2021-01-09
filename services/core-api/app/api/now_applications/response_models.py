@@ -352,6 +352,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_application_status_code':
         fields.String,
+        'previous_application_status_code': fields.String,
         'status_updated_date':
         Date,
         'status_reason':

@@ -59,6 +59,7 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    previous_application_status_code = db.Column(db.String)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)

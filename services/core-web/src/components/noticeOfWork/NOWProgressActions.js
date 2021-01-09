@@ -247,7 +247,7 @@ export class NOWProgressActions extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
-    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Reason for Rejection";
+    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
     const menu = (
       <Menu>
         <Menu.Item
