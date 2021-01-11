@@ -1,11 +1,9 @@
 from datetime import datetime
 from flask import request
 from sqlalchemy.orm import validates
-from flask import current_app
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
-from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from flask_restplus import Resource, reqparse
 from app.api.utils.resources_mixins import UserMixin
@@ -91,7 +89,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 progress.end_date for progress in identity.now_application.application_progress
                 if progress.application_progress_status_code in ["REF", "CON", "PUB"]
             ]
-            current_app.logger.debug(progress_end_dates)
+
             if all([x is not None for x in progress_end_dates]):
                 identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
                 identity.now_application.now_application_status_code = "RCO"
