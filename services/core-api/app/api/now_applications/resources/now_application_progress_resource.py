@@ -1,9 +1,11 @@
 from datetime import datetime
 from flask import request
 from sqlalchemy.orm import validates
+from flask import current_app
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_edit_permit
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from flask_restplus import Resource, reqparse
 from app.api.utils.resources_mixins import UserMixin
@@ -28,6 +30,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
             raise NotFound(
                 'There was no notice of work application found with the provided now_application_guid.'
             )
+
         progress_status_code = application_progress_status_code.upper()
 
         existing_now_progress = next(
@@ -45,6 +48,11 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                                                              progress_status_code)
             now_progress = new_now_progress
 
+        if identity.now_application is not None and identity.now_application.now_application_status_code != "REF" and progress_status_code == "REF" or progress_status_code == "CON" or progress_status_code == "PUB":
+            identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
+            identity.now_application.now_application_status_code = "REF"
+        identity.save()
+
         try:
             now_progress.save()
         except Exception as e:
@@ -61,6 +69,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     def put(self, application_guid, application_progress_status_code):
         data = self.parser.parse_args()
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
+
         if not identity.now_application:
             raise NotFound(
                 'There was no notice of work application found with the provided now_application_guid.'
@@ -74,5 +83,18 @@ class NOWApplicationProgressResource(Resource, UserMixin):
 
         existing_now_progress.end_date = data['end_date']
         existing_now_progress.save()
+
+        # update application status if referral/consultation/Public Comment are all complete.
+        # update status if only one is started and completed.
+        if len(identity.now_application.application_progress) >= 1:
+            progress_end_dates = [
+                progress.end_date for progress in identity.now_application.application_progress
+                if progress.application_progress_status_code in ["REF", "CON", "PUB"]
+            ]
+            current_app.logger.debug(progress_end_dates)
+            if all([x is not None for x in progress_end_dates]):
+                identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
+                identity.now_application.now_application_status_code = "RCO"
+                identity.save()
 
         return existing_now_progress, 200

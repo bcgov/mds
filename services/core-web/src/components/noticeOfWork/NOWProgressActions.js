@@ -174,6 +174,9 @@ export class NOWProgressActions extends Component {
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
@@ -191,6 +194,9 @@ export class NOWProgressActions extends Component {
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
