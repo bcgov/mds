@@ -283,7 +283,6 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
-    values.application_date = formatDate(values.application_date);
     return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -321,13 +320,14 @@ export class ProcessPermit extends Component {
           this.props.draftPermit,
           this.props.draftAmendment
         );
-        permitObj.auth_end_date = formatDate(values.auth_end_date);
-        permitObj.issue_date = formatDate(values.issue_date);
 
         return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
+            auth_end_date: formatDate(values.auth_end_date),
+            issue_date: formatDate(values.issue_date),
+            application_dated: formatDate(values.application_date),
             document_list: this.createDocList(this.props.noticeOfWork),
           },
           values,
