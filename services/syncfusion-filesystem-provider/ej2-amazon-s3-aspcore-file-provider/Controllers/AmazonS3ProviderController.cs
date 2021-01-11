@@ -52,7 +52,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Route("AmazonS3Download")]
         [Authorize("View")]
         public IActionResult AmazonS3Download(string downloadInput)
-
         {
             Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
             FileManagerDirectoryContent args = JsonConvert.DeserializeObject<FileManagerDirectoryContent>(downloadInput);
