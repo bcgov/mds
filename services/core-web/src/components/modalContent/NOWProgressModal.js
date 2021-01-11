@@ -55,7 +55,10 @@ export const NOWProgressModal = (props) => (
               props.isCoalOrMineral &&
               `Please check the box below if this is an exploratory permit.*`}
             <PreDraftPermitForm
-              initialValues={{ is_exploration: false }}
+              initialValues={{
+                is_exploration: false,
+                permit_amendment_type_code: props.permitType,
+              }}
               permits={props.permits}
               isAmendment={props.isAmendment}
               isCoalOrMineral={props.isCoalOrMineral}
