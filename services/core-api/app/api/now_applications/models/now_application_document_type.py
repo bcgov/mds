@@ -12,7 +12,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
-    now_application_document_sub_type_code = db.Column(db.String, db.ForeignKey('now_application_document_sub_type.now_application_document_sub_type_code'))
+    now_application_document_sub_type_code = db.Column(
+        db.String,
+        db.ForeignKey('now_application_document_sub_type.now_application_document_sub_type_code'))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     document_template_code = db.Column(db.String,
                                        db.ForeignKey('document_template.document_template_code'))
@@ -67,6 +69,13 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['is_amendment'] = not now_application.is_new_permit
 
             template_data['is_draft'] = is_draft
+
+            template_data['latitude'] = str(now_application.latitude)
+            template_data['longitude'] = str(now_application.longitude)
+            template_data['mine_name'] = now_application.mine_name
+            template_data['security_adjustment'] = str(
+                now_application.liability_adjustment
+            ) if now_application.liability_adjustment else '0.00'
 
             conditions = permit.conditions
             conditions_template_data = {}

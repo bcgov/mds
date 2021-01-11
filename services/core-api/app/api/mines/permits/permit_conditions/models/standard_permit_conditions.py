@@ -34,8 +34,13 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
 
     @classmethod
     def find_by_notice_of_work_type_code(cls, notice_of_work_type):
+        condition_code = notice_of_work_type
+        if notice_of_work_type == "QIM":
+            condition_code = "QCA"
+        elif notice_of_work_type == "COL":
+            condition_code = "MIN"
         return cls.query.filter_by(
-            notice_of_work_type=notice_of_work_type,
+            notice_of_work_type=condition_code,
             parent_standard_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
 
