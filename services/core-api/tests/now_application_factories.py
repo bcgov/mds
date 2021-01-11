@@ -380,7 +380,8 @@ class NOWApplicationDelayFactory(BaseFactory):
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
 
-    end_date = factory.Faker('future_datetime')
+    # setting this in the past as you cannot create new records if end_date is future.
+    end_date = factory.Faker('past_datetime')
     end_comment = factory.Faker('name')
 
 
