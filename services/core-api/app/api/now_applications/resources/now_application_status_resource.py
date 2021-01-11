@@ -69,17 +69,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 if not permit_amendment:
                     raise NotFound('No permit amendment found for this application.')
 
-                #move out of draft
+                #move out of draft, draft status on permit indicates that the permit amendment is first (original)
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
-                    permit_amendment.permit_amendment_status_code = 'OGP'
+                    permit_amendment.permit_amendment_status_code = 'ACT'
+                    permit_amendment.permit_amendment_type_code = 'OGP'
                     #assign permit_no
                     permit.assign_permit_no(
-                    now_application_identity.now_application.notice_of_work_type_code[0])
+                        now_application_identity.now_application.notice_of_work_type_code[0])
 
                 if permit_amendment.permit_amendment_status_code == 'DFT':
                     permit_amendment.permit_amendment_status_code = 'ACT'
-                
 
                 permit.save()
 
@@ -88,7 +88,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.description = description
 
                 # transfer reclamation security data from NoW to permit
-                permit_amendment.security_adjustment = now_application_identity.now_application.security_adjustment
+                permit_amendment.liability_adjustment = now_application_identity.now_application.liability_adjustment
                 permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
                 permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
                 permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
