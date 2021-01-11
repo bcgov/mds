@@ -35,6 +35,10 @@ class PermitAmendmentTypeCode(AuditMixin, Base):
         if add_to_session:
             permit_amendment_type_code.save(commit=False)
         return permit_amendment_type_code
+    
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
     @validates('permit_amendment_type_code')
     def validate_permit_amendment_type_code(self, key, permit_amendment_type_code):

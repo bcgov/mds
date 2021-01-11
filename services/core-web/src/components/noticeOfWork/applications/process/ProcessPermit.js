@@ -47,6 +47,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -55,7 +56,7 @@ const approvedCode = "AIA";
 const approvedLetterCode = "NPE";
 const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
-const WithDrawnLetterCode = "WDL";
+const withdrawnLetterCode = "WDL";
 const originalPermit = "OGP";
 const regionHash = {
   SE: "Cranbrook",
@@ -154,7 +155,7 @@ export class ProcessPermit extends Component {
       WDL: {
         title: "Withdraw Application",
         statusCode: rejectedCode,
-        letterCode: WithDrawnLetterCode,
+        letterCode: withdrawnLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
@@ -175,7 +176,7 @@ export class ProcessPermit extends Component {
             initialValues,
             title: content[type].title,
             documentType: this.props.documentContextTemplate,
-            onSubmit: (values) => this.handleApplication(values, type),
+            onSubmit: (values) => this.handleApplication(values, content[type].statusCode),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             noticeOfWork: this.props.noticeOfWork,
@@ -204,7 +205,6 @@ export class ProcessPermit extends Component {
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-
     const originalAmendment = draftPermit.permit_amendments.filter(
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
@@ -239,19 +239,51 @@ export class ProcessPermit extends Component {
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
 
+    if (amendment && !isEmpty(amendment)) {
+      permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
+      if (permitGenObject.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated) {
+        permitGenObject.previous_amendment = this.createPreviousAmendmentGenObject(draftPermit);
+      }
+    }
+
     return permitGenObject;
   };
 
+  createPreviousAmendmentGenObject = (permit) => {
+    // gets and sorts in descending order amendments for selected permit
+    const amendments =
+      permit &&
+      permit.permit_amendments
+        .filter((a) => a.permit_amendment_status_code !== "DFT")
+        // eslint-disable-next-line no-nested-ternary
+        .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
+    const previousAmendment = {
+      ...amendments[0],
+      issue_date: formatDate(amendments[0].issue_date),
+      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    };
+    return previousAmendment;
+  };
+
   createDocList = (noticeOfWork) => {
-    return noticeOfWork.documents
+    const documents = noticeOfWork.filtered_submission_documents
       .filter((document) => document.is_final_package)
       .map((document) => ({
-        document_name: document.mine_document.document_name,
-        document_upload_date: formatDate(document.mine_document.upload_date),
+        document_name: document.filename,
+        document_upload_date: "",
       }));
+    return documents.concat(
+      noticeOfWork.documents
+        .filter((document) => document.is_final_package)
+        .map((document) => ({
+          document_name: document.mine_document.document_name,
+          document_upload_date: formatDate(document.mine_document.upload_date),
+        }))
+    );
   };
 
   afterSuccess = (values, message, code) => {
+    values.application_date = formatDate(values.application_date);
     return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -292,7 +324,7 @@ export class ProcessPermit extends Component {
         permitObj.auth_end_date = formatDate(values.auth_end_date);
         permitObj.issue_date = formatDate(values.issue_date);
 
-        this.handleGenerateDocumentFormSubmit(
+        return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
@@ -489,7 +521,7 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
           this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
-            !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.end_date
       )
       .forEach((progressStatus) =>
         validationMessages.push({
@@ -601,7 +633,7 @@ export class ProcessPermit extends Component {
       </Menu.Item>
       <Menu.Item
         key="withdraw-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(WithDrawnLetterCode)}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnLetterCode)}
       >
         Withdraw application
       </Menu.Item>

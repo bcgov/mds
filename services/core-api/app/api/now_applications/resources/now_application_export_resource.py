@@ -33,7 +33,16 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
     'type_of_application', 'notice_of_work_type_code', 'application_permit_type_code',
     'proposed_start_date', 'crown_grant_or_district_lot_numbers', 'proposed_end_date',
-    'tenure_number', 'directions_to_site', 'state_of_land.has_community_water_shed',
+    'tenure_number', 'directions_to_site', 'has_req_access_authorizations',
+    'has_surface_disturbance_outside_tenure', 'req_access_authorization_numbers', 'is_access_gated',
+    'has_key_for_inspector', 'state_of_land.present_land_condition_description',
+    'state_of_land.means_of_access_description', 'state_of_land.physiography_description',
+    'state_of_land.old_equipment_description', 'state_of_land.has_community_water_shed',
+    'state_of_land.type_of_vegetation_description', 'state_of_land.has_activity_in_park',
+    'state_of_land.is_on_private_land', 'state_of_land.has_auth_lieutenant_gov_council',
+    'state_of_land.has_fn_cultural_heritage_sites_in_area',
+    'state_of_land.fn_engagement_activities', 'state_of_land.cultural_heritage_description',
+    'state_of_land.recreational_trail_use_description', 'state_of_land.has_shared_info_with_fn',
     'state_of_land.has_archaeology_sites_affected', 'first_aid_equipment_on_site',
     'first_aid_cert_level', 'exploration_access.reclamation_description',
     'exploration_access.reclamation_cost', 'blasting_operation.has_storage_explosive_on_site',
@@ -109,7 +118,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_contact(contact):
             def get_address(contact):
-                if  not contact.get('party', None) or not contact['party'].get('address', None) or not len(contact['party']['address']) > 0:
+                if not contact.get('party', None) or not contact['party'].get(
+                        'address', None) or not len(contact['party']['address']) > 0:
                     return ''
                 address = contact['party']['address'][0]
                 address_string = ''
@@ -118,7 +128,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if address.get('address_line_1', None):
                     address_string += f'{address["address_line_1"]} '
                 if address.get('address_line_2', None):
-                    address_string += f'{address["address_line_2"]} '
+                    address_string += address["address_line_2"]
                 address_string = address_string.strip()
 
                 if address['city'] or address['sub_division_code'] or address['post_code']:
@@ -222,11 +232,33 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         transform_data(item)
             return obj
 
+        def remove_signature(party):
+            signature = party.get('signature')
+            if signature:
+                del party['signature']
+            return party
+
         # Transform and format various fields
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
+
+        # Remove signature images from parties
+        for contact in now_application_json.get('contacts', []):
+            party = contact.get('party')
+            if party:
+                contact['party'] = remove_signature(party)
+
+        # Remove signature image from the Lead Inspector
+        lead_inspector = now_application_json.get('lead_inspector')
+        if lead_inspector:
+            now_application_json['lead_inspector'] = remove_signature(lead_inspector)
+
+        # Remove signature image from the Issuing Inspector
+        issuing_inspector = now_application_json.get('issuing_inspector')
+        if issuing_inspector:
+            now_application_json['issuing_inspector'] = remove_signature(issuing_inspector)
 
         now_type = NOWApplicationType.query.filter_by(
             notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first()
@@ -282,6 +314,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             template_data[enforced_item['id']] = enforced_item['context-value']
 
         token = uuid.uuid4()
+
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.

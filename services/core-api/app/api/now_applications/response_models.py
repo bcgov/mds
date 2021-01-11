@@ -180,10 +180,9 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
     'NOWApplicationSurfaceBulkSample', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'processing_method_description': fields.String,
+        'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'has_bedrock_excavation': fields.Boolean,
-        'spontaneous_combustion_handling': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
@@ -327,6 +326,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_number':
         fields.String,
+        'now_tracking_number':
+        fields.Integer,
         'mine_guid':
         fields.String,
         'mine_name':
@@ -437,7 +438,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'security_adjustment':
+        'liability_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
@@ -522,7 +523,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'security_adjustment': fields.Fixed(decimals=2),
+        'liability_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,

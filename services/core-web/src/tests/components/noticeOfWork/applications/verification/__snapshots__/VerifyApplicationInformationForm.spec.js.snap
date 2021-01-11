@@ -38,8 +38,14 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <p>
     Select a Contact from Core for each person shown, or update the Roles if required.
   </p>
+  <p>
+    Click "Confirm" when you have finished matching the contact. Changes will not be saved until you Click "Verify Application"
+  </p>
+  <p>
+    Click "Cancel" to reset the form.
+  </p>
   <Divider />
-  <Connect(EditNoWContacts)
+  <Connect(VerifyNoWContacts)
     contactFormValues={Array []}
     initialValues={
       Object {
@@ -217,6 +223,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
@@ -427,7 +434,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
-    isVerifying={true}
+    wasFormReset={false}
   />
   <div
     className="right center-mobile"
@@ -435,6 +442,16 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     <Connect(AuthorizationWrapper)
       permission="role_edit_permits"
     >
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="secondary"
+      >
+        Cancel
+      </Button>
       <Button
         block={false}
         ghost={false}

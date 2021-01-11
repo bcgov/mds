@@ -128,7 +128,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'received_date': fields.DateTime(dt_format='iso8601'),
         'issue_date': fields.DateTime(dt_format='iso8601'),
         'authorization_end_date': fields.DateTime(dt_format='iso8601'),
-        'security_adjustment': fields.Fixed(description='Currency', decimals=2),
+        'liability_adjustment': fields.Fixed(description='Currency', decimals=2),
         'security_received_date': fields.DateTime(dt_format='iso8601'),
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
@@ -154,6 +154,7 @@ PERMIT_MODEL = api.model(
         'current_permittee': fields.String,
         'project_id': fields.String,
         'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_MODEL)),
+        'remaining_static_liability': fields.Float,
         'assessed_liability_total': fields.Float,
         'confiscated_bond_total': fields.Float,
         'active_bond_total': fields.Float,
@@ -171,6 +172,14 @@ PERMIT_AMENDEMENT_STATUS_CODE_MODEL = api.model(
         'permit_amendment_status_code': fields.String,
         'description': fields.String,
         'display_order': fields.Integer
+    })
+
+PERMIT_AMENDEMENT_TYPE_CODE_MODEL = api.model(
+    'PermitAmendmentTypeCode', {
+        'permit_amendment_type_code': fields.String,
+        'description': fields.String,
+        'display_order': fields.Integer,
+        'active_ind': fields.Boolean
     })
 
 STATUS_MODEL = api.model(

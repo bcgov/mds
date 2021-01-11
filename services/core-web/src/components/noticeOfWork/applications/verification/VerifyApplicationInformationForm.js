@@ -1,7 +1,8 @@
-import React from "react";
-import { compose } from "redux";
+import React, { useState } from "react";
+import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { reduxForm, formValueSelector } from "redux-form";
+
+import { reduxForm, formValueSelector, reset, change } from "redux-form";
 import { Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
@@ -11,7 +12,7 @@ import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
-import EditNoWContacts from "@/components/Forms/noticeOfWork/EditNoWContacts";
+import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 
 const propTypes = {
   contactFormValues: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
@@ -22,6 +23,8 @@ const propTypes = {
   isImporting: PropTypes.bool.isRequired,
   longitude: PropTypes.string,
   latitude: PropTypes.string,
+  change: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -31,10 +34,17 @@ const defaultProps = {
 };
 
 export const VerifyApplicationInformationForm = (props) => {
+  const [wasFormReset, setReset] = useState(false);
   const values = {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
     latitude: props.noticeOfWork.latitude,
+  };
+
+  const handleReset = () => {
+    setReset(true);
+    props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
+    props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
   };
 
   return (
@@ -60,14 +70,22 @@ export const VerifyApplicationInformationForm = (props) => {
       <br />
       <h4>Match Application Contacts to Core Contacts</h4>
       <p>Select a Contact from Core for each person shown, or update the Roles if required.</p>
+      <p>
+        Click &quot;Confirm&quot; when you have finished matching the contact. Changes will not be
+        saved until you Click &quot;Verify Application&quot;
+      </p>
+      <p>Click &quot;Cancel&quot; to reset the form.</p>
       <Divider />
-      <EditNoWContacts
+      <VerifyNoWContacts
         initialValues={props.originalNoticeOfWork}
         contactFormValues={props.contactFormValues}
-        isVerifying
+        wasFormReset={wasFormReset}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+          <Button type="secondary" onClick={handleReset}>
+            Cancel
+          </Button>
           <Button type="primary" htmlType="submit" loading={props.isImporting}>
             Verify Application
           </Button>
@@ -86,9 +104,19 @@ const mapStateToProps = (state) => ({
   contactFormValues: selector(state, "contacts"),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      reset,
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.VERIFY_NOW_APPLICATION_FORM,
+    enableReinitialize: true,
   })
 )(VerifyApplicationInformationForm);

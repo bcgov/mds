@@ -9,11 +9,14 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import api, jwt
+from app.extensions import api, jwt, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
 from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -56,7 +59,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
         'now_application_guid',
@@ -151,6 +154,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         permit_amendment_type_code = data.get('permit_amendment_type_code')
         permit_amendment_status_code = data.get('permit_amendment_status_code')
+
+        now_application_guid = data.get('now_application_guid')
+
         new_pa = PermitAmendment.create(
             permit,
             mine,
@@ -160,7 +166,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             permit_amendment_type_code=permit_amendment_type_code
             if permit_amendment_type_code else 'AMD',
             description=data.get('description'),
-            security_adjustment=data.get('security_adjustment'),
+            liability_adjustment=data.get('liability_adjustment'),
             permit_amendment_status_code=permit_amendment_status_code
             if permit_amendment_status_code else 'ACT',
             issuing_inspector_title=data.get('issuing_inspector_title'),
@@ -176,6 +182,20 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 mine_guid=mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
+
+        if now_application_guid is not None and permit_amendment_status_code == "DFT":
+            application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+            if application_identity.now_application:
+                now_type = application_identity.now_application.notice_of_work_type_code
+
+                standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
+                    now_type)
+                for condition in standard_conditions:
+                    PermitConditions.create(condition.condition_category_code,
+                                            condition.condition_type_code,
+                                            new_pa.permit_amendment_id, condition.condition,
+                                            condition.display_order, condition.sub_conditions)
+                db.session.commit()
 
         new_pa.save()
         return new_pa
@@ -210,7 +230,7 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument(
         'security_received_date',
         location='json',

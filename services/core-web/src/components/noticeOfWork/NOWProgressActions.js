@@ -91,6 +91,7 @@ export class NOWProgressActions extends Component {
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
+        permit_amendment_type_code: this.props.preDraftFormValues.permit_amendment_type_code,
       };
       this.props
         .createPermitAmendment(
@@ -149,7 +150,8 @@ export class NOWProgressActions extends Component {
   };
 
   startOrResumeProgress = (tab, trigger) => {
-    const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
+    const ending = trigger === "Start" ? "ed" : "d";
+    const message = `Successfully ${trigger}${ending} the ${this.props.progressStatusHash[tab]} Process.`;
     this.props
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,

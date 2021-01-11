@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -32,8 +31,7 @@ const propTypes = {
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any),
-  initialSearch: PropTypes.string,
+  initialValues: PropTypes.objectOf(PropTypes.string),
 };
 
 const defaultProps = {
@@ -46,18 +44,17 @@ const defaultProps = {
   allowAddingParties: false,
   validate: [],
   searchResults: [],
-  initialValues: undefined,
-  initialSearch: undefined,
+  initialValues: {},
 };
 
-const renderAddPartyHeader = (showAddParty, partyLabel) => (
+const renderAddPartyFooter = (showAddParty, partyLabel) => (
   <div className="wrapped-text">
-    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for below? Try typing a different search. If needed, click the link to create a new contact. `}</p>
+    <Divider style={{ margin: "0" }} />
+    <p className="footer-text">{`Can't find the ${partyLabel} you are looking for?`}</p>
     <LinkButton onClick={showAddParty}>
-      <PlusOutlined className="padding-sm--right" />
+      <PlusOutlined className="padding-small--right" />
       {`Add a new ${partyLabel}`}
     </LinkButton>
-    <Divider style={{ margin: "0" }} />
   </div>
 );
 
@@ -96,13 +93,7 @@ const transformData = (data, options, header) => {
 };
 
 export class PartySelectField extends Component {
-  state = {
-    selectedOption: { value: "", label: "" },
-    partyDataSource: [],
-    showingAddPartyForm: false,
-    userSelected: false,
-    initialSearch: this.props.initialSearch,
-  };
+  state = { selectedOption: { value: "", label: "" }, partyDataSource: [] };
 
   constructor(props) {
     super(props);
@@ -113,55 +104,31 @@ export class PartySelectField extends Component {
   }
 
   componentDidMount() {
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.label &&
-      this.props.initialValues.value
-    ) {
+    if (this.props.initialValues?.label) {
       this.handleSearch(this.props.initialValues.label);
       this.setState({
-        selectedOption: {
-          value: this.props.initialValues.value,
-          label: this.props.initialValues.label,
-        },
+        selectedOption: this.props.initialValues,
       });
     }
   }
 
   showAddPartyForm = () => {
-    this.setState({
-      showingAddPartyForm: true,
-    });
     this.props.setAddPartyFormState({
       showingAddPartyForm: true,
       person: !this.props.person,
       organization: !this.props.organization,
       partyLabel: this.props.partyLabel,
-      initialValues: this.props.initialValues,
     });
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const initialValuesChangedNotByUser =
-      this.props.initialValues &&
-      !this.state.userSelected &&
-      this.state.selectedOption.value &&
-      this.props.initialValues.value !== nextProps.initialValues.value;
     const lastCreatedPartyUpdated = this.props.lastCreatedParty !== nextProps.lastCreatedParty;
     const searchResultsUpdated = this.props.searchResults !== nextProps.searchResults;
-    if (initialValuesChangedNotByUser) {
-      this.handleSearch(nextProps.initialValues.label);
-      this.setState({
-        selectedOption: {
-          value: nextProps.initialValues.value,
-          label: nextProps.initialValues.label,
-        },
-      });
-    }
 
     // If new search results have been returned, transform the results and store them in component state.
     if (searchResultsUpdated || lastCreatedPartyUpdated) {
       let filteredParties = nextProps.searchResults.party.map((sr) => sr.result);
+
       if (this.props.organization && !this.props.person) {
         filteredParties = filteredParties.filter(
           ({ party_type_code }) => party_type_code === "ORG"
@@ -173,41 +140,33 @@ export class PartySelectField extends Component {
       }
 
       // If a new party was just added, add that party to the list of search results.
-      if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
+      if (lastCreatedPartyUpdated) {
         filteredParties.push(nextProps.lastCreatedParty);
       }
+
       this.setState(() => {
         const newPartyDataSource = transformData(
           createItemIdsArray(filteredParties, "party_guid"),
           createItemMap(filteredParties, "party_guid"),
           this.props.allowAddingParties &&
-            renderAddPartyHeader(this.showAddPartyForm, this.props.partyLabel)
+            renderAddPartyFooter(this.showAddPartyForm, this.props.partyLabel)
         );
         return { partyDataSource: newPartyDataSource };
       });
     }
 
     // If a new party was just added, detect this and set the selected party to the newly created party.
-    if (this.state.showingAddPartyForm && lastCreatedPartyUpdated) {
+    if (lastCreatedPartyUpdated) {
       this.setState({
         selectedOption: {
           value: nextProps.lastCreatedParty.party_guid,
           label: nextProps.lastCreatedParty.name,
         },
-        showingAddPartyForm: false,
       });
     }
   };
 
-  handleFocus = () => {
-    if (this.state.initialSearch) {
-      this.fetchSearchResultsThrottled(this.state.initialSearch, "party");
-    }
-    this.setState({ initialSearch: null });
-  };
-
   handleSearch = (value) => {
-    this.setState({ userSelected: false });
     if (value.length > 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
@@ -215,38 +174,34 @@ export class PartySelectField extends Component {
   };
 
   handleSelect = (value, option) => {
-    this.setState({ selectedOption: option, userSelected: true });
+    this.setState({ selectedOption: option });
   };
 
   // Validator to ensure the selected option is in the collection of available options.
   // This validator is appened to any validators passed in from the form in the render function below.
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
-    // ignore this validation if an initialValues is passed in
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.label &&
-      this.props.initialValues.value &&
-      this.props.initialValues.value !== this.state.selectedOption.value
-    ) {
+    // ignore this validation if an initialValue is passed in
+    if (this.props.initialValues && this.props.initialValues !== this.state.selectedOption) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;
     }
   };
 
-  render = () => (
-    <Field
-      {...this.props}
-      component={RenderLargeSelect}
-      handleSearch={this.handleSearch}
-      handleSelect={this.handleSelect}
-      handleFocus={this.handleFocus}
-      validate={this.props.validate.concat(this.validOption)}
-      dataSource={this.state.partyDataSource}
-      selectedOption={this.state.selectedOption}
-    />
-  );
+  render = () => {
+    return (
+      <Field
+        {...this.props}
+        component={RenderLargeSelect}
+        handleSearch={this.handleSearch}
+        handleSelect={this.handleSelect}
+        validate={this.props.validate.concat(this.validOption)}
+        dataSource={this.state.partyDataSource}
+        selectedOption={this.state.selectedOption}
+      />
+    );
+  };
 }
 
 const mapStateToProps = (state) => ({

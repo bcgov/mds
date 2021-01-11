@@ -1,9 +1,17 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
 import { DownOutlined, ExportOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { getFormValues, reset, getFormSyncErrors, focus, submit } from "redux-form";
+import {
+  getFormValues,
+  reset,
+  getFormSyncErrors,
+  focus,
+  submit,
+  hasSubmitFailed,
+} from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined, kebabCase } from "lodash";
@@ -294,7 +302,7 @@ export class NoticeOfWorkApplication extends Component {
       associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
     });
 
-  handleSaveNOWEdit = () => {
+  handleSaveNOWEdit = (endEditSession) => {
     this.setState({ submitted: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
     if (errors.length > 0) {
@@ -302,7 +310,7 @@ export class NoticeOfWorkApplication extends Component {
     } else {
       this.setState({ submitting: true });
       const { id } = this.props.match.params;
-      this.props
+      return this.props
         .updateNoticeOfWorkApplication(
           this.props.formValues,
           this.props.noticeOfWork.now_application_guid
@@ -310,8 +318,13 @@ export class NoticeOfWorkApplication extends Component {
         .then(() => {
           this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
             this.setState(() => ({
-              isViewMode: true,
+              isViewMode: endEditSession,
+              submitted: false,
             }));
+            if (!endEditSession) {
+              // if save & continue - update NoW/form state to reflect changes committed to db
+              this.forceUpdate();
+            }
           });
         })
         .finally(() => {
@@ -547,7 +560,7 @@ export class NoticeOfWorkApplication extends Component {
 
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
-    const showErrors = errorsLength > 0 && this.state.submitted;
+    const showErrors = errorsLength > 0 && this.state.submitted && this.props.submitFailed;
     return (
       <NOWTabHeader
         tab="REV"
@@ -598,9 +611,17 @@ export class NoticeOfWorkApplication extends Component {
               </Button>
             )}
             <Button
+              type="tertiary"
+              className="full-mobile"
+              onClick={() => this.handleSaveNOWEdit(false)}
+              loading={this.state.submitting}
+            >
+              Save & Continue
+            </Button>
+            <Button
               type="primary"
               className="full-mobile"
-              onClick={this.handleSaveNOWEdit}
+              onClick={() => this.handleSaveNOWEdit(true)}
               loading={this.state.submitting}
             >
               Save
@@ -1048,6 +1069,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
+  submitFailed: hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK)(state),
   mines: getMines(state),
   inspectors: getDropdownInspectors(state),
   inspectorsHash: getInspectorsHash(state),

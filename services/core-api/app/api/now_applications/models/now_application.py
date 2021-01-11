@@ -107,7 +107,7 @@ class NOWApplication(Base, AuditMixin):
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Securities
-    security_adjustment = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)
@@ -161,13 +161,6 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
-    # Contacts
-    contacts = db.relationship(
-        'NOWPartyAppointment',
-        lazy='selectin',
-        primaryjoin=
-        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
-    )
 
     status = db.relationship('NOWApplicationStatus', lazy='selectin')
 
@@ -202,10 +195,6 @@ class NOWApplication(Base, AuditMixin):
             contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
         ]
         return permittees[0] if permittees else None
-
-    @hybrid_property
-    def permittee_name(self):
-        return self.permittee.name if self.permittee else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
