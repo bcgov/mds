@@ -91,6 +91,7 @@ export class NOWProgressActions extends Component {
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
+        permit_amendment_type_code: this.props.preDraftFormValues.permit_amendment_type_code,
       };
       this.props
         .createPermitAmendment(

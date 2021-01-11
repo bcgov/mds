@@ -6,9 +6,9 @@ import { maxBy } from "lodash";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import Condition from "@/components/Forms/permits/conditions/Condition";
-import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
-import SubConditionForm from "./SubConditionForm";
+import ConditionLayerTwo from "@/components/Forms/permits/conditions/ConditionLayerTwo";
+import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";
+import AddCondition from "./AddCondition";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -35,57 +35,35 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const SubCondition = (props) => {
+const ConditionLayerOne = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (
     <>
-      {props.condition && props.condition.display_order !== 1 && (
-        <>
+      {props.condition &&
+        props.condition.sub_conditions.length === 0 &&
+        props.condition.display_order !== 1 && (
           <Row gutter={32}>
             <Col span={24}>&nbsp;</Col>
           </Row>
-          <Row gutter={32}>
-            <Col span={24}>&nbsp;</Col>
-          </Row>
-        </>
-      )}
-      <Row gutter={[24, 32]}>
-        {!isEditing && (
-          <>
-            <Col span={1} />
-            <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-          </>
         )}
-        <Col span={props.isViewOnly ? 17 : 18}>
-          <Row>
-            <Col span={24}>{!isEditing && props.condition.condition}</Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              {isEditing && (
-                <SubConditionForm
-                  onCancel={() => {
-                    setIsEditing(!isEditing);
-                    props.setConditionEditingFlag(false);
-                    props.handleCancel(false);
-                  }}
-                  onSubmit={(values) =>
-                    props.handleSubmit(values).then(() => setIsEditing(!isEditing))
-                  }
-                  initialValues={props.condition || props.initialValues}
-                />
-              )}
-            </Col>
-          </Row>
-        </Col>
-        <Col span={4} className="float-right">
+      <Row gutter={[16, 24]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
+        {!isEditing && <Col span={props.isViewOnly ? 2 : 1}>{props.condition.step}</Col>}
+        {!isEditing && (
+          <Col
+            span={props.isViewOnly ? 17 : 18}
+            className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
+          >
+            {props.condition.condition}
+          </Col>
+        )}
+        <Col span={4} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  ghost
                   className="no-margin"
+                  ghost
                   size="small"
                   type="primary"
                   onClick={() => {
@@ -132,8 +110,8 @@ const SubCondition = (props) => {
               </NOWActionWrapper>
               <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
-                  ghost
                   className="no-margin"
+                  ghost
                   size="small"
                   type="primary"
                   onClick={() => props.handleDelete(props.condition)}
@@ -151,9 +129,21 @@ const SubCondition = (props) => {
           )}
         </Col>
       </Row>
+      {isEditing && (
+        <ConditionForm
+          onCancel={() => {
+            setIsEditing(!isEditing);
+            props.setConditionEditingFlag(false);
+            props.handleCancel(false);
+          }}
+          onSubmit={(values) => props.handleSubmit(values).then(() => setIsEditing(!isEditing))}
+          initialValues={props.condition || props.initialValues}
+          layer={1}
+        />
+      )}
       {props.condition &&
         props.condition.sub_conditions.map((condition) => (
-          <Condition
+          <ConditionLayerTwo
             condition={condition}
             reorderConditions={props.reorderConditions}
             handleSubmit={props.handleSubmit}
@@ -163,34 +153,38 @@ const SubCondition = (props) => {
             isViewOnly={props.isViewOnly}
           />
         ))}
-      {props.condition && props.condition.sub_conditions.length === 0 && (
-        <Row gutter={32}>
-          <Col span={24}>&nbsp;</Col>
-        </Row>
-      )}
       {!isEditing && !props.isViewOnly && (
         <Row gutter={32}>
-          <Col span={22} offset={2}>
+          <Col span={22}>
             <AddCondition
               initialValues={{
                 condition_category_code: props.condition.condition_category_code,
-                condition_type_code: "LIS",
+                condition_type_code: "CON",
                 display_order:
                   props.condition.sub_conditions.length === 0
                     ? 1
                     : maxBy(props.condition.sub_conditions, "display_order").display_order + 1,
                 parent_permit_condition_id: props.condition.permit_condition_id,
                 permit_amendment_id: props.condition.permit_amendment_id,
+                parent_condition_type_code: props.condition.condition_type_code,
+                sibling_condition_type_code:
+                  props.condition.sub_conditions.length === 0
+                    ? null
+                    : props.condition.sub_conditions[0].condition_type_code,
               }}
+              layer={1}
             />
           </Col>
         </Row>
       )}
+      <Row gutter={32}>
+        <Col span={24}>&nbsp;</Col>
+      </Row>
     </>
   );
 };
 
-SubCondition.propTypes = propTypes;
-SubCondition.defaultProps = defaultProps;
+ConditionLayerOne.propTypes = propTypes;
+ConditionLayerOne.defaultProps = defaultProps;
 
-export default SubCondition;
+export default ConditionLayerOne;

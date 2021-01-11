@@ -64,6 +64,8 @@ export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDi
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
+export const getPermitAmendmentTypeOptions = (state) =>
+  state[STATIC_CONTENT].permitAmendmentTypeCodeOptions;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 export const getIncidentDocumentTypeOptions = (state) =>
   state[STATIC_CONTENT].incidentDocumentTypeOptions;

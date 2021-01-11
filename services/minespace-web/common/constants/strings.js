@@ -92,3 +92,9 @@ export const MINE_REPORTS_TYPE = {
 
 export const E_REFERRALS_URL =
   "https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain";
+
+export const PERMIT_AMENDMENT_TYPES = {
+  original: "OGP",
+  amendment: "AMD",
+  amalgamated: "ALG",
+};
