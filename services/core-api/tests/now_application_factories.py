@@ -407,7 +407,8 @@ class NOWApplicationFactory(BaseFactory):
     issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
-    now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
+    now_application_status_code = "REC"
+    previous_application_status_code = "PEV"
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
