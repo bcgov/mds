@@ -31,7 +31,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         [Route("AmazonS3FileOperations")]
         [Authorize("View")]
-
         public object AmazonS3FileOperations([FromBody] FileManagerDirectoryContent args)
         {
             switch (args.Action)
@@ -51,8 +50,11 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         // Downloads the selected file(s) and folder(s)
         [Route("AmazonS3Download")]
+        [Authorize("View")]
         public IActionResult AmazonS3Download(string downloadInput)
+
         {
+            Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
             FileManagerDirectoryContent args = JsonConvert.DeserializeObject<FileManagerDirectoryContent>(downloadInput);
             return operation.Download(args.Path, args.Names);
         }
