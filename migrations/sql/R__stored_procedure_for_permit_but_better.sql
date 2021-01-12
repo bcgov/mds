@@ -660,7 +660,32 @@ DECLARE
 	    );
 
 
-
+WITH ordered_permittees AS
+(
+	SELECT ROW_NUMBER() OVER (ORDER BY permit_id, start_date DESC) AS row_num, permittees.* FROM (
+		SELECT DISTINCT
+		    ETL_PERMIT.mine_party_appt_guid,
+		    mpx.permit_id                  ,
+	        ETL_PERMIT.party_guid          ,
+		    issue_date AS start_date          
+		FROM ETL_PERMIT
+		INNER JOIN ETL_MINE ON
+		    ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
+		inner join permit p on
+		    p.permit_guid = ETL_PERMIT.permit_guid
+		inner join permit p2 on
+		    p.permit_no = p2.permit_no
+		inner join mine_permit_xref mpx on
+		    p2.permit_id = mpx.permit_id
+		WHERE EXISTS (
+		    SELECT party_guid
+		    FROM party
+		    WHERE ETL_PERMIT.party_guid = party.party_guid
+		)
+		AND issue_date IS NOT NULL
+		ORDER BY mpx.permit_id, issue_date DESC
+	) permittees
+)
 	INSERT INTO mine_party_appt (
 	    mine_party_appt_guid     ,
 	    permit_id              ,
@@ -676,34 +701,21 @@ DECLARE
 	    processed_by             ,
 	    processed_on
 	)
-	SELECT
-	    ETL_PERMIT.mine_party_appt_guid,
-	    mpx.permit_id                  ,
-	    ETL_PERMIT.party_guid          ,
-	    null		                   , --Permittees are not related to the mine.
-	    'PMT'                          ,
-	    'mms_migration'                ,
-	    now()                          ,
-	    'mms_migration'                ,
-	    now()                          ,
-	    issue_date                     ,
-	    authorization_end_date         ,
-	    'mms_migration'                ,
-	    now()
-	FROM ETL_PERMIT
-	INNER JOIN ETL_MINE ON
-	    ETL_PERMIT.mine_guid = ETL_MINE.mine_guid
-	inner join permit p on
-	    p.permit_guid = ETL_PERMIT.permit_guid
-	inner join permit p2 on
-	    p.permit_no = p2.permit_no
-	inner join mine_permit_xref mpx on
-	    p2.permit_id = mpx.permit_id
-	WHERE EXISTS (
-	    SELECT party_guid
-	    FROM party
-	    WHERE ETL_PERMIT.party_guid = party.party_guid
-	);
+    SELECT  curr.mine_party_appt_guid	  ,
+		curr.permit_id					  ,
+        curr.party_guid             	  ,
+		NULL as mine_guid				  ,
+        'PMT' AS mine_party_appt_type_code,
+        'mms_migration' AS create_user    ,
+        now() AS create_timestamp         ,
+        'mms_migration' AS update_user    ,
+        now() AS update_timestamp         ,
+        curr.start_date                   ,
+        prev.start_date AS end_date	      ,
+        'mms_migration' AS processed_by   ,
+        now() AS processed_on
+    FROM ordered_permittees curr LEFT JOIN ordered_permittees prev ON prev.row_num = curr.row_num - 1 AND curr.permit_id=prev.permit_id
+    ORDER BY curr.permit_id, curr.start_date desc;
 
 END;
 $$ LANGUAGE PLPGSQL;
