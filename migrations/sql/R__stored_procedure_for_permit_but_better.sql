@@ -701,8 +701,10 @@ WITH ordered_permittees AS
 	    processed_by             ,
 	    processed_on
 	)
-    SELECT  curr.mine_party_appt_guid		  ,
+    SELECT  curr.mine_party_appt_guid	  ,
+		curr.permit_id					  ,
         curr.party_guid             	  ,
+		NULL as mine_guid				  ,
         'PMT' AS mine_party_appt_type_code,
         'mms_migration' AS create_user    ,
         now() AS create_timestamp         ,
