@@ -310,7 +310,25 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
+                ],
+                [
+                     'file':'openshift/templates/filesystem-provider.dc.json',
+                     'params':[
+                             'NAME':"filesystem-provider",
+                             'VERSION':"${app.deployment.version}",
+                             'NAMESPACE':"${vars.deployment.namespace}",
+                             'SUFFIX': "${vars.deployment.suffix}",
+                             'SCHEDULER_PVC_SIZE':"200Mi",
+                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                             'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
+                             'CPU_REQUEST':"${vars.resources.filesystem-provider.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.filesystem-provider.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.filesystem-provider.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.filesystem-provider.memory_limit}",
+                             'ASPNETCORE_ENVIRONMENT': "Development"
+                     ]
                 ]
+
                 // [
                 //     'file':'openshift/templates/digdag/digdag.dc.json',
                 //     'params':[
@@ -417,6 +435,12 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
+                filesystem-provider {
+                    cpu_request = "100m"
+                    cpu_limit = "200m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Gi"
+                }
                 // digdag {
                 //     cpu_request = "100m"
                 //     cpu_limit = "200m"
@@ -468,6 +492,9 @@ environments {
                 }
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
+                }
+                'filesystem-provider' {
+                    HOST = "mds-filesystem-provider-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 // 'digdag' {
                 //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
