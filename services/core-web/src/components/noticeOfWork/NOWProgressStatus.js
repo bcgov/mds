@@ -65,8 +65,8 @@ export const NOWProgressStatus = (props) => {
                 "#progress-tracking"
               )}
             >
-              {formatDate(props.progress[props.tab].start_date)} /
-              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
+              {formatDate(props.progress[props.tab].start_date)}/
+              {props.progress[props.tab].duration || "0 Days"}
             </Link>
           </p>
         </>
@@ -91,8 +91,8 @@ export const NOWProgressStatus = (props) => {
                 "#progress-tracking"
               )}
             >
-              {formatDate(props.progress[props.tab].start_date)} /
-              {props.progress[props.tab].durationWithoutDelays || "0 Days"}
+              {formatDate(props.progress[props.tab].start_date)}/
+              {props.progress[props.tab].duration || "0 Days"}
             </Link>
           </p>
         </>
