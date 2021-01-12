@@ -58,11 +58,6 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
             else:
                 now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
                 now_app.now_application.now_application_status_code = "CDI"
-            now_app.save()
-
-        #ensure this starts after most recent edit
-        # if (now_delay.start_date < now_app.now_application.last_updated_date):
-        #     raise BadRequest("Delay cannot start before last updated date")
 
         now_app.save()
         return now_delay, 201
