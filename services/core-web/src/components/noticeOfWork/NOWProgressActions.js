@@ -91,6 +91,7 @@ export class NOWProgressActions extends Component {
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
+        permit_amendment_type_code: this.props.preDraftFormValues.permit_amendment_type_code,
       };
       this.props
         .createPermitAmendment(
@@ -135,9 +136,7 @@ export class NOWProgressActions extends Component {
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        {
-          end_date: new Date(),
-        },
+        {},
         message
       )
       .then(() => {
@@ -166,12 +165,8 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    const payload = {
-      ...values,
-      start_date: new Date().toISOString(),
-    };
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
         this.props.closeModal();
@@ -179,15 +174,11 @@ export class NOWProgressActions extends Component {
   };
 
   handleStopDelay = (values) => {
-    const payload = {
-      ...values,
-      end_date: new Date().toISOString(),
-    };
     this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
-        payload
+        values
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);

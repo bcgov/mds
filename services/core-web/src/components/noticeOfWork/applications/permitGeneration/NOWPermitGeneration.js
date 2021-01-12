@@ -8,7 +8,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting } from "redux-form";
-import { getNoticeOfWorkApplicationTypeOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getNoticeOfWorkApplicationTypeOptions,
+  getDropdownPermitAmendmentTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import {
   fetchPermits,
   updatePermitAmendment,
@@ -18,6 +21,7 @@ import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
 } from "@common/selectors/permitSelectors";
+import { getPermits } from "@common/reducers/permitReducer";
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -29,6 +33,7 @@ import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -51,11 +56,11 @@ const propTypes = {
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isAmendment: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
+  permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {};
-
-const originalPermit = "OGP";
 
 const regionHash = {
   SE: "Cranbrook",
@@ -71,6 +76,8 @@ export class NOWPermitGeneration extends Component {
     permitGenObj: {},
     isLoaded: false,
     permittee: {},
+    permitAmendmentDropdown: [],
+    isPermitAmendmentTypeDropDownDisabled: true,
   };
 
   componentDidMount() {
@@ -82,11 +89,18 @@ export class NOWPermitGeneration extends Component {
     this.setState({ permittee });
   }
 
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.noticeOfWork !== this.props.noticeOfWork) {
       this.fetchDraftPermit();
     }
-  };
+
+    if (nextProps.noticeOfWork.contacts !== this.props.noticeOfWork.contacts) {
+      const permittee = nextProps.noticeOfWork?.contacts?.filter(
+        (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+      )[0];
+      this.setState({ permittee });
+    }
+  }
 
   fetchDraftPermit = () => {
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
@@ -131,7 +145,7 @@ export class NOWPermitGeneration extends Component {
     )[0];
 
     const originalAmendment = draftPermit.permit_amendments.filter(
-      (org) => org.permit_amendment_type_code === originalPermit
+      (org) => org.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.original
     )[0];
 
     const addressLineOne =
@@ -164,27 +178,90 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.regional_office = !amendment.regional_office
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
+    permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
+    permitGenObject.now_number = noticeOfWork.now_number;
+
+    let isPermitAmendmentTypeDropDownDisabled = true;
+    let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
+    if (amendment && !isEmpty(amendment)) {
+      permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
+
+      let amendmentType = PERMIT_AMENDMENT_TYPES.original;
+      const amendments = draftPermit.permit_amendments.filter(
+        (a) => a.permit_amendment_status_code !== "DFT"
+      );
+
+      if (amendments.length > 0) {
+        amendmentType =
+          amendments.filter(
+            (a) => a.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
+          ).length > 0
+            ? PERMIT_AMENDMENT_TYPES.amalgamated
+            : PERMIT_AMENDMENT_TYPES.amendment;
+      }
+
+      if (amendmentType === PERMIT_AMENDMENT_TYPES.amendment) {
+        permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions.filter(
+          (a) => a.value !== PERMIT_AMENDMENT_TYPES.original
+        );
+        isPermitAmendmentTypeDropDownDisabled = false;
+      }
+
+      this.setState({ permitAmendmentDropdown, isPermitAmendmentTypeDropDownDisabled });
+    }
 
     return permitGenObject;
   };
 
+  createPreviousAmendmentGenObject = (permit) => {
+    // gets and sorts in descending order amendments for selected permit
+    const amendments =
+      permit &&
+      permit.permit_amendments
+        .filter((a) => a.permit_amendment_status_code !== "DFT")
+        // eslint-disable-next-line no-nested-ternary
+        .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
+    const previousAmendment = {
+      ...amendments[0],
+      issue_date: formatDate(amendments[0].issue_date),
+      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    };
+    return previousAmendment;
+  };
+
   createDocList = (noticeOfWork) => {
-    return noticeOfWork.documents
+    const documents = noticeOfWork.filtered_submission_documents
       .filter((document) => document.is_final_package)
       .map((document) => ({
-        document_name: document.mine_document.document_name,
-        document_upload_date: formatDate(document.mine_document.upload_date),
+        document_name: document.filename,
+        document_upload_date: "",
       }));
+    return documents.concat(
+      noticeOfWork.documents
+        .filter((document) => document.is_final_package)
+        .map((document) => ({
+          document_name: document.mine_document.document_name,
+          document_upload_date: formatDate(document.mine_document.upload_date),
+        }))
+    );
   };
 
   handlePermitGenSubmit = () => {
     const newValues = this.props.formValues;
+
     if (this.props.isAmendment) {
       newValues.original_permit_issue_date = formatDate(
         this.props.formValues.original_permit_issue_date
       );
+
+      if (newValues.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated) {
+        const permit = this.props.permits.find((p) => p.permit_no === newValues.permit_number);
+        newValues.previous_amendment = this.createPreviousAmendmentGenObject(permit);
+      }
     }
+
     newValues.auth_end_date = formatDate(this.props.formValues.auth_end_date);
+    newValues.application_date = formatDate(newValues.application_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...newValues,
       document_list: this.createDocList(this.props.noticeOfWork),
@@ -201,6 +278,7 @@ export class NOWPermitGeneration extends Component {
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
+      permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
     };
     this.props
       .updatePermitAmendment(
@@ -309,6 +387,10 @@ export class NOWPermitGeneration extends Component {
                     isAmendment={this.props.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}
+                    permitAmendmentDropdown={this.state.permitAmendmentDropdown}
+                    isPermitAmendmentTypeDropDownDisabled={
+                      this.state.isPermitAmendmentTypeDropDownDisabled
+                    }
                   />
                 )}
               </>
@@ -329,6 +411,8 @@ const mapStateToProps = (state) => ({
   submitting: isSubmitting(FORM.GENERATE_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

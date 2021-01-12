@@ -1,11 +1,13 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -68,17 +70,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 if not permit_amendment:
                     raise NotFound('No permit amendment found for this application.')
 
-                #move out of draft
+                #move out of draft, draft status on permit indicates that the permit amendment is first (original)
                 if permit.permit_status_code == 'D':
                     permit.permit_status_code = 'O'
-                    permit_amendment.permit_amendment_status_code = 'OGP'
+                    permit_amendment.permit_amendment_status_code = 'ACT'
+                    permit_amendment.permit_amendment_type_code = 'OGP'
                     #assign permit_no
                     permit.assign_permit_no(
-                    now_application_identity.now_application.notice_of_work_type_code[0])
+                        now_application_identity.now_application.notice_of_work_type_code[0])
 
                 if permit_amendment.permit_amendment_status_code == 'DFT':
                     permit_amendment.permit_amendment_status_code = 'ACT'
-                
 
                 permit.save()
 
@@ -87,7 +89,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.description = description
 
                 # transfer reclamation security data from NoW to permit
-                permit_amendment.security_adjustment = now_application_identity.now_application.security_adjustment
+                permit_amendment.liability_adjustment = now_application_identity.now_application.liability_adjustment
                 permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
                 permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
                 permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
@@ -143,7 +145,13 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
             #TODO: Documents / CRR
             # Update NoW application and save status
-            now_application_identity.now_application.status_updated_date = datetime.today()
+            if now_application_status_code == 'REJ':
+                for progress in now_application_identity.now_application.application_progress:
+                    progress.end_date = datetime.now(tz=timezone.utc)
+                for delay in now_application_identity.application_delays:
+                    delay.end_date = datetime.now(tz=timezone.utc)
+
+            now_application_identity.now_application.status_updated_date = datetime.utcnow()
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
             now_application_identity.save()
