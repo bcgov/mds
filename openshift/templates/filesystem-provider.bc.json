@@ -24,12 +24,13 @@
       },
       "spec": {
         "triggers": [
-		{
-			"type": "ConfigChange"
-		},
-		{
-			"type": "ImageChange"
-		},
+			{
+				"type": "ConfigChange"
+			},
+			{
+				"type": "ImageChange"
+			}
+		],
         "runPolicy": "Serial",
         "source": {
           "type": "Git",
