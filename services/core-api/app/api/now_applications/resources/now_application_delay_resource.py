@@ -50,10 +50,6 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         now_delay.start_date = datetime.now(tz=timezone.utc)
         now_app.application_delays.append(now_delay)
 
-        # ##ensure this starts after most recent edit
-        # if (now_delay.start_date < now_app.now_application.last_updated_date):
-        #     raise BadRequest("Delay cannot start before last updated date")
-
         now_app.save()
         return now_delay, 201
 

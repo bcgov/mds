@@ -132,7 +132,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             )
 
                     if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
-                        current_mpa = MinePartyAppointment.find_by_permit_id(permit.permit_id)
+                        current_mpa = permit.permittee_appointments[0]
                         if current_mpa.party_guid != contact.party_guid:
                             current_mpa.end_date = datetime.now(tz=timezone.utc) - timedelta(days=1)
                             mine_party_appointment = MinePartyAppointment.create(
@@ -144,6 +144,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 start_date=datetime.now(tz=timezone.utc),
                                 end_date=None,
                                 processed_by=self.get_user_info())
+                            current_mpa.save()
                             mine_party_appointment.save()
 
             #TODO: Documents / CRR
