@@ -89,11 +89,18 @@ export class NOWPermitGeneration extends Component {
     this.setState({ permittee });
   }
 
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.noticeOfWork !== this.props.noticeOfWork) {
       this.fetchDraftPermit();
     }
-  };
+
+    if (nextProps.noticeOfWork.contacts !== this.props.noticeOfWork.contacts) {
+      const permittee = nextProps.noticeOfWork?.contacts?.filter(
+        (contact) => contact.mine_party_appt_type_code_description === "Permittee"
+      )[0];
+      this.setState({ permittee });
+    }
+  }
 
   fetchDraftPermit = () => {
     this.props.fetchPermits(this.props.noticeOfWork.mine_guid);
