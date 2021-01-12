@@ -188,6 +188,7 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'FILE_API_SERVICE_URL': "${vars.modules.'mds-filesystem-provider'.HOST}",
                             'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}"
@@ -494,7 +495,8 @@ environments {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
                 'filesystem-provider' {
-                    HOST = "mds-filesystem-provider-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-filesystem-provider${vars.deployment.suffix}:8080"
+                    PATH = "/${vars.git.changeId}/file-api"
                 }
                 // 'digdag' {
                 //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
