@@ -27,7 +27,7 @@ export class AmazonS3Provider extends SampleBase {
     // Prevent default download using toolbar
     if (args.item.id === `${this.filemanager.element.id}_tb_download`) {
       args.cancel = true;
-      this.customDownload(args.fileDetails);
+      this.customDownload([]);
     }
   };
 
@@ -36,6 +36,12 @@ export class AmazonS3Provider extends SampleBase {
     if (args.item.id === `${this.filemanager.element.id}_cm_download`) {
       args.cancel = true;
       this.customDownload(args.fileDetails);
+    }
+  };
+
+  fileOpen = (args) => {
+    if (args.fileDetails.isFile && args.fileDetails._fm_iconClass !== "e-fe-image") {
+      this.customDownload([]);
     }
   };
 
@@ -155,6 +161,7 @@ export class AmazonS3Provider extends SampleBase {
             }}
             menuClick={this.menuClick}
             toolbarClick={this.toolbarClick}
+            fileOpen={this.fileOpen}
           >
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
