@@ -1318,8 +1318,7 @@ VALUES
 	('HSC', 'B.', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
 	('GOC', 'C.', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
 	('ELC', 'D.', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
-  ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
-	('ADC', 'F.', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
+  ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO permit_condition_type
