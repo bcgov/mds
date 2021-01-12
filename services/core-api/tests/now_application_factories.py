@@ -379,9 +379,6 @@ class NOWApplicationDelayFactory(BaseFactory):
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
-
-    # setting this in the past as you cannot create new records if end_date is future.
-    end_date = factory.Faker('past_datetime')
     end_comment = factory.Faker('name')
 
 
@@ -471,12 +468,12 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
-    @factory.post_generation
-    def application_delays(obj, create, extracted, **kwargs):
-        if not create:
-            return
+    # @factory.post_generation
+    # def application_delays(obj, create, extracted, **kwargs):
+    #     if not create:
+    #         return
 
-        if not isinstance(extracted, int):
-            extracted = 1
+    #     if not isinstance(extracted, int):
+    #         extracted = 1
 
-        NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
+    #     NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
