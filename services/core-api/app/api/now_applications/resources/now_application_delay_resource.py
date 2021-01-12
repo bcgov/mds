@@ -51,13 +51,14 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         now_app.application_delays.append(now_delay)
 
         # update now status
-        if now_app.now_application is not None and now_delay.delay_type_code is not None and now_delay.delay_type_code == "OAB":
-            now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
-            now_app.now_application.now_application_status_code = "GVD"
-        else:
-            now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
-            now_app.now_application.now_application_status_code = "CDI"
-        now_app.save()
+        if now_app.now_application is not None:
+            if now_delay.delay_type_code is not None and now_delay.delay_type_code == "OAB":
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "GVD"
+            else:
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "CDI"
+            now_app.save()
 
         #ensure this starts after most recent edit
         # if (now_delay.start_date < now_app.now_application.last_updated_date):
