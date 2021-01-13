@@ -111,7 +111,11 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     amendment = permit.permit_amendments[0]
 
-    data = {'permit_amendment_type_code': 'AMD', 'permit_amendment_status_code': 'RMT'}
+    data = {
+        'permit_amendment_type_code': 'AMD',
+        'permit_amendment_status_code': 'RMT',
+        'issue_date': datetime.today().date().isoformat(),
+    }
     put_resp = test_client.put(
         f'/mines/{permit.mine.mine_guid}/permits/{permit.permit_guid}/amendments/{amendment.permit_amendment_guid}',
         json=data,
@@ -158,3 +162,33 @@ def test_delete_not_found_permit_amendment(test_client, db_session, auth_headers
     del_resp = test_client.delete(
         f'/permits/amendments/{uuid.uuid4()}', headers=auth_headers['full_auth_header'])
     assert del_resp.status_code == 404, del_resp
+
+
+def test_post__historical_permit_amendment(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permittee = MinePartyAppointmentFactory(permittee=True, permit_id=permit.permit_id)
+    party_guid = PartyFactory(company=True).party_guid
+
+    data = {
+        'permittee_party_guid': 'random guid',
+        'received_date': (datetime.today() + timedelta(days=-1)).date().isoformat(),
+        'issue_date': (datetime.today() + timedelta(days=-1)).date().isoformat(),
+        'is_historical_amendment': True,
+        'authorization_end_date': (datetime.today() + timedelta(days=1)).date().isoformat(),
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{mine.mine_guid}/permits/{permit.permit_guid}/amendments',
+        json=data,
+        headers=auth_headers['full_auth_header'])
+    post_data = json.loads(post_resp.data.decode())
+
+    assert post_resp.status_code == 200, post_resp.response
+    assert parser.parse(post_data['received_date']) == parser.parse(data['received_date'])
+    assert parser.parse(post_data['issue_date']) == parser.parse(data['issue_date'])
+    assert parser.parse(post_data['authorization_end_date']) == parser.parse(
+        data['authorization_end_date'])
+    assert permit.permittee_appointments[0].party_guid == permittee.party.party_guid
+
+    #permit_amdendment is actually in db
+    assert PermitAmendment.find_by_permit_amendment_guid(post_data['permit_amendment_guid'])

@@ -7,10 +7,10 @@ exports[`TransferBondForm renders properly 1`] = `
   layout="vertical"
   onSubmit={[MockFunction]}
 >
-  <Row
-    gutter={0}
-  >
-    <Col>
+  <Row>
+    <Col
+      span={24}
+    >
       <FormItem
         hasFeedback={false}
       >
@@ -30,15 +30,14 @@ exports[`TransferBondForm renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />
       </FormItem>
     </Col>
   </Row>
-  <Row
-    gutter={0}
-  >
+  <Row>
     <Col
       md={24}
     >
@@ -57,15 +56,10 @@ exports[`TransferBondForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -84,7 +78,7 @@ exports[`TransferBondForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"

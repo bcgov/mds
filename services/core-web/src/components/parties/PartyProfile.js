@@ -3,7 +3,14 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
+import { Tabs, Table, Button, Popconfirm } from "antd";
+import {
+  PhoneOutlined,
+  MinusCircleOutlined,
+  MailOutlined,
+  CheckCircleOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
@@ -17,8 +24,9 @@ import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
+  getPartyBusinessRoleOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { formatTitleString, formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
@@ -28,14 +36,11 @@ import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
  */
-
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
@@ -47,6 +52,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
+  partyBusinessRoleOptionsHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
@@ -55,6 +61,7 @@ const propTypes = {
 const defaultProps = {
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
+  partyBusinessRoleOptionsHash: {},
 };
 
 export class PartyProfile extends Component {
@@ -126,6 +133,23 @@ export class PartyProfile extends Component {
           if (record.relationship.mine_party_appt_type_code === "PMT") {
             return <div title="Permit No">{record.relationship.permit_no}</div>;
           }
+          if (record.relationship.party_business_role_code === "INS") {
+            return "N/A";
+          }
+          if (record.relationship.mine_party_appt_type_code === "AGT") {
+            return (
+              <div title="NoW Number">
+                <Link
+                  to={routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+                    record.relationship.now_application.now_application_guid,
+                    "application"
+                  )}
+                >
+                  {record.relationship.now_application.now_number}
+                </Link>
+              </div>
+            );
+          }
           return (
             <div title="Mine Name">
               <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
@@ -141,6 +165,8 @@ export class PartyProfile extends Component {
       {
         title: "Dates",
         dataIndex: "dates",
+        sorter: dateSorter("startDate"),
+        defaultSortOrder: "descend",
         render: (text, record) => (
           <div title="Dates">
             {record.startDate} - {record.endDate}
@@ -159,6 +185,25 @@ export class PartyProfile extends Component {
         startDate: formatDate(relationship.start_date) || "Unknown",
         relationship,
       }));
+
+    const transformBusinessRoleRowData = (businessPartyRecord) =>
+      businessPartyRecord.map((record) => ({
+        key: record.party_business_role_appt_id,
+        role: this.props.partyBusinessRoleOptionsHash[record.party_business_role_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.start_date) || "Unknown",
+        relationship: { party_business_role_code: record.party_business_role_code },
+      }));
+
+    const transformNOWRoleRowData = (NOWPartyRecords) => {
+      return NOWPartyRecords.map((record) => ({
+        key: record.now_party_appointment_id,
+        role: this.props.partyRelationshipTypeHash[record.mine_party_appt_type_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.now_application.submitted_date) || "Unknown",
+        relationship: record,
+      }));
+    };
 
     if (this.state.isLoaded && party) {
       const formattedName = formatTitleString(party.name);
@@ -186,7 +231,7 @@ export class PartyProfile extends Component {
                     disabled={this.state.deletingParty}
                   >
                     <Button type="danger" disabled={this.state.deletingParty}>
-                      <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
+                      <MinusCircleOutlined className="btn-danger--icon" />
                       Delete Party
                     </Button>
                   </Popconfirm>
@@ -205,8 +250,8 @@ export class PartyProfile extends Component {
                     }
                     disabled={this.state.deletingParty}
                   >
-                    <img alt="pencil" className="padding-small--right" src={EDIT} />
-                    Update Party
+                    <img alt="pencil" className="padding-sm--right" src={EDIT} />
+                    Update Contact
                   </Button>
                 </AuthorizationWrapper>
               </div>
@@ -214,7 +259,7 @@ export class PartyProfile extends Component {
             {!isEmpty(party.party_orgbook_entity) && (
               <div className="inline-flex">
                 <div className="padding-right">
-                  <Icon type="check-circle" className="icon-sm" />
+                  <CheckCircleOutlined className="icon-sm" />
                 </div>
                 <p>
                   <a
@@ -229,7 +274,7 @@ export class PartyProfile extends Component {
             )}
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="mail" className="icon-sm" />
+                <MailOutlined className="icon-sm" />
               </div>
               {party.email && party.email !== "Unknown" ? (
                 <a href={`mailto:${party.email}`}>{party.email}</a>
@@ -239,32 +284,55 @@ export class PartyProfile extends Component {
             </div>
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="phone" className="icon-sm" />
+                <PhoneOutlined className="icon-sm" />
               </div>
               <p>
                 {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={party.address[0] || {}} />
+            <div className="inline-flex">
+              <div className="padding-right">
+                <Address address={party.address[0] || {}} />
+              </div>
+            </div>
+            <div className="inline-flex">
+              <div className="padding-right">
+                <EditOutlined className="icon-sm" />
+              </div>
+              {party.signature ? (
+                <img
+                  src={party.signature}
+                  alt="Signature"
+                  style={{ pointerEvents: "none", userSelect: "none" }}
+                  height={120}
+                />
+              ) : (
+                <p>No Signature Provided</p>
+              )}
+            </div>
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.parties[id].mine_party_appt)}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
+                      transformBusinessRoleRowData(
+                        this.props.parties[id].business_role_appts
+                      ).concat(transformNOWRoleRowData(this.props.parties[id].now_party_appt))
+                    )}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>
@@ -277,6 +345,7 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
+  partyBusinessRoleOptionsHash: getPartyBusinessRoleOptionsHash(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });

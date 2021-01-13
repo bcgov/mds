@@ -11,8 +11,7 @@ exports[`AddVarianceForm renders properly 1`] = `
     hasFeedback={false}
     label="Are you creating an application or an approved variance?"
   >
-    <RadioGroup
-      buttonStyle="outline"
+    <Memo(RadioGroup)
       onChange={[Function]}
       value={true}
     >
@@ -28,7 +27,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       >
          Approved Variance 
       </Radio>
-    </RadioGroup>
+    </Memo(RadioGroup)>
   </FormItem>
   <FormItem
     hasFeedback={false}
@@ -53,6 +52,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       placeholder="Select a part of the code"
       validate={
         Array [
+          [Function],
           [Function],
         ]
       }
@@ -131,7 +131,11 @@ exports[`AddVarianceForm renders properly 1`] = `
       label="Document Category"
       name="variance_document_category_code"
       placeholder="Please select category"
-      validate={Array []}
+      validate={
+        Array [
+          [Function],
+        ]
+      }
     />
   </FormItem>
   <FormItem
@@ -149,15 +153,10 @@ exports[`AddVarianceForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -176,7 +175,7 @@ exports[`AddVarianceForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"

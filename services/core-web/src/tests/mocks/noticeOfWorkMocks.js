@@ -31,6 +31,7 @@ export const NOTICE_OF_WORK = {
   landprivate: null,
   landlegaldesc: null,
   archsitesaffected: null,
+  isonprivateland: null,
   sandgravelquarryoperations: null,
   storeexplosivesonsite: null,
   bcexplosivespermitissued: null,
@@ -189,16 +190,32 @@ export const NOTICE_OF_WORK = {
   },
   documents: [
     {
+      mine_document_guid: "12345-678",
       documenturl: null,
       filename: null,
       documenttype: null,
       description: null,
     },
     {
+      mine_document_guid: "12345-6789",
       documenturl: null,
       filename: null,
       documenttype: null,
       description: null,
+    },
+  ],
+  filtered_submission_documents: [
+    {
+      messageid: 0,
+      documenturl: null,
+      description: null,
+      document_manager_guid: null,
+      documenttype: null,
+      filename: null,
+      is_final_package: false,
+      mine_document_guid: null,
+      now_application_document_xref_guid: null,
+      now_application_id: null,
     },
   ],
   contacts: [
@@ -367,6 +384,31 @@ export const NOTICE_OF_WORK = {
   mech_trenching_activity: [],
 };
 
+export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = {
+  import_now_submission_documents_job_id: 17,
+  start_timestamp: "2020-11-17T17:20:13.327639",
+  end_timestamp: "2020-11-17T17:20:13.340830",
+  create_timestamp: "2020-11-17T17:16:54.375057",
+  complete_timestamp: "2020-11-17T17:20:13.340830",
+  attempt: 1,
+  create_user: null,
+  celery_task_id: "da2c1d64-0328-4674-810c-609ecefa1e61",
+  now_application_id: "1",
+  now_application_guid: "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+  import_now_submission_documents_job_status_code: "SUC",
+  import_now_submission_documents: [
+    {
+      import_now_submission_documents_job_id: 17,
+      document_id: 660,
+      submission_document_url: "https://",
+      submission_document_file_name: "Multi-year Exploration Area.dbf",
+      submission_document_type: "SpatialFileDoc",
+      submission_document_message_id: 0,
+      error: null,
+    },
+  ],
+};
+
 export const NOTICE_OF_WORK_LIST = {
   records: [NOTICE_OF_WORK],
   current_page: 1,
@@ -377,20 +419,22 @@ export const NOTICE_OF_WORK_LIST = {
 
 export const IMPORTED_NOTICE_OF_WORK = {
   now_application_id: "",
-  now_application_guid: "",
+  now_application_guid: "1346wesrt22",
   mine_guid: "",
   now_message_id: 47284,
   now_tracking_number: 47284,
-  notice_of_work_type_code: "",
+  notice_of_work_type_code: "MIN",
   submitted_date: "",
   received_date: "",
+  proposed_start_date: "2016-03-01",
+  proposed_end_date: "2020-03-01",
+  adjusted_annual_maximum_tonnage: "",
+  proposed_annual_maximum_tonnage: 10000,
   latitude: "",
   longitude: "",
   property_name: "",
   tenure_number: "",
   description_of_land: "",
-  proposed_start_date: "",
-  proposed_end_date: "",
   contacts: [],
   blasting_operation: {},
   state_of_land: {},
@@ -406,6 +450,8 @@ export const IMPORTED_NOTICE_OF_WORK = {
   water_supply: { details: [] },
   placer_operation: { details: [] },
   documents: [],
+  submission_documents: [],
+  application_documents: [],
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
@@ -422,9 +468,10 @@ export const DROPDOWN_NOTICE_OF_WORK_ACTIVITY_TYPES = [
   {
     value: "cut_lines_polarization_survey",
     label: "Cut Lines and Induced Polarization Survey",
+    subType: null,
     isActive: true,
   },
-  { value: "water_supply", label: "Water Supply", isActive: true },
+  { value: "water_supply", label: "Water Supply", subType: null, isActive: true },
 ];
 
 export const ACTIVITY_TYPE_HASH = {
@@ -474,10 +521,11 @@ export const DROPDOWN_UNDERGROUND_EXPLORATION_TYPES = [
   {
     value: "NEW",
     label: "New",
+    subType: null,
     isActive: true,
   },
-  { value: "RHB", label: "Rehabilitation", isActive: true },
-  { value: "SUR", label: "Surface", isActive: true },
+  { value: "RHB", label: "Rehabilitation", subType: null, isActive: true },
+  { value: "SUR", label: "Surface", subType: null, isActive: true },
 ];
 
 export const UNDERGROUND_EXPLORATION_TYPES_HASH = {
@@ -516,20 +564,22 @@ export const APPLICATION_TYPES = {
 };
 
 export const DROPDOWN_APPLICATION_TYPES = [
-  {
-    value: "QCA",
-    label: "Quarry - Construction Aggregate",
-    isActive: true,
-  },
-  { value: "COL", label: "Coal", isActive: true },
-  { value: "PLA", label: "Placer Operations", isActive: true },
+  { value: "COL", label: "Coal", subType: null, isActive: true },
   {
     value: "MIN",
     label: "Mineral",
+    subType: null,
     isActive: true,
   },
-  { value: "SAG", label: "Sand & Gravel", isActive: true },
-  { value: "QIM", label: "Quarry - Industrial Mineral", isActive: true },
+  { value: "PLA", label: "Placer Operations", subType: null, isActive: true },
+  {
+    value: "QCA",
+    label: "Quarry - Construction Aggregate",
+    subType: null,
+    isActive: true,
+  },
+  { value: "QIM", label: "Quarry - Industrial Mineral", subType: null, isActive: true },
+  { value: "SAG", label: "Sand & Gravel", subType: null, isActive: true },
 ];
 
 export const APPLICATION_TYPES_HASH = {
@@ -557,20 +607,21 @@ export const APPLICATION_STATUS_CODES = {
 };
 
 export const DROPDOWN_APPLICATION_STATUS_CODES = [
+  { value: "AIA", label: "Active/Issued/Approved", subType: null, isActive: true },
+  { value: "CDB", label: "Client Delay Bond", subType: null, isActive: true },
+  { value: "CDI", label: "Client Delay Info", subType: null, isActive: true },
+  { value: "CLO", label: "Closed", subType: null, isActive: true },
+  { value: "CON", label: "Consultation", subType: null, isActive: true },
+  { value: "GVD", label: "Govt Delay", subType: null, isActive: true },
+  { value: "REF", label: "Referred", subType: null, isActive: true },
+  { value: "REJ", label: "Rejected", subType: null, isActive: true },
   {
     value: "SUB",
     label: "Submitted",
+    subType: null,
     isActive: true,
   },
-  { value: "REF", label: "Referred", isActive: true },
-  { value: "CDI", label: "Client Delay Info", isActive: true },
-  { value: "CDB", label: "Client Delay Bond", isActive: true },
-  { value: "GVD", label: "Govt Delay", isActive: true },
-  { value: "CON", label: "Consultation", isActive: true },
-  { value: "AIA", label: "Active/Issued/Approved", isActive: true },
-  { value: "WDN", label: "Withdrawn", isActive: true },
-  { value: "REJ", label: "Rejected", isActive: true },
-  { value: "CLO", label: "Closed", isActive: true },
+  { value: "WDN", label: "Withdrawn", subType: null, isActive: true },
 ];
 
 export const APPLICATION_STATUS_CODES_HASH = {
@@ -623,38 +674,45 @@ export const UNIT_TYPES = {
 
 export const DROPDOWN_UNIT_TYPES = [
   {
-    label: "km",
-    value: "KMT",
-    isActive: true,
-  },
-  {
-    label: "t",
-    value: "MTN",
-    isActive: true,
-  },
-  {
-    label: "m3",
-    value: "MEC",
-    isActive: true,
-  },
-  {
-    label: "ha",
-    value: "HA",
+    label: "%",
+    value: "PER",
+    subType: null,
     isActive: true,
   },
   {
     label: "deg",
     value: "DEG",
+    subType: null,
     isActive: true,
   },
   {
-    label: "%",
-    value: "PER",
+    label: "ha",
+    value: "HA",
+    subType: null,
+    isActive: true,
+  },
+  {
+    label: "km",
+    value: "KMT",
+    subType: null,
     isActive: true,
   },
   {
     label: "m",
     value: "MTR",
+    subType: null,
+    isActive: true,
+  },
+  {
+    label: "m3",
+    value: "MEC",
+    subType: null,
+    isActive: true,
+  },
+  {
+    label: "t",
+    value: "MTN",
+    subType: null,
     isActive: true,
   },
 ];
@@ -671,6 +729,92 @@ export const UNIT_TYPES_HASH = {
 
 export const APPLICATION_DOCUMENT_TYPES = {
   records: [],
+};
+
+export const DROPDOWN_APPLICATION_DOCUMENT_TYPES = [
+  { value: "ANS", label: "Annual Summary", subType: null, isActive: true },
+  { value: "ACP", label: "Archaeological Chance Find Procedure", subType: null, isActive: true },
+  { value: "BLP", label: "Blasting Procedure", subType: null, isActive: true },
+  {
+    value: "EMS",
+    label: "Explosives Magazine Storage and Use Permit Application",
+    subType: null,
+    isActive: true,
+  },
+  { value: "LAL", label: "Landowner Authorization Letter", subType: null, isActive: true },
+  { value: "MRP", label: "Mine Emergency Response Plan", subType: null, isActive: true },
+  { value: "RFE", label: "Record of First Nations Engagement", subType: null, isActive: true },
+  { value: "TAL", label: "Tenure Authorization Letter", subType: null, isActive: true },
+  { value: "PUB", label: "Public Comment", subType: null, isActive: true },
+  { value: "REV", label: "Review", subType: null, isActive: true },
+  { value: "NTR", label: "Technical Review", subType: null, isActive: true },
+  { value: "LMA", label: "Location Map", subType: "MDO", isActive: true },
+  { value: "LTM", label: "Land Title/Licence of Ocupation Map", subType: "MDO", isActive: true },
+  { value: "OMA", label: "Overview Map", subType: "MDO", isActive: true },
+  { value: "SMA", label: "Supplemental Map", subType: "MDO", isActive: true },
+  { value: "SSF", label: "Submitted Shape Files", subType: null, isActive: true },
+  { value: "CSL", label: "Cross-sectional/Longitudinal", subType: null, isActive: true },
+  { value: "PFR", label: "Preliminary Field Reconnaisance", subType: null, isActive: true },
+  { value: "AOA", label: "Archaeological Overview Assessment", subType: null, isActive: true },
+  { value: "AIA", label: "Archaeological Impact Assessment", subType: null, isActive: true },
+  { value: "SOP", label: "Standard/Safe Operating Procedures", subType: null, isActive: true },
+  { value: "RSP", label: "Riparian Setbacks Plan", subType: null, isActive: true },
+  { value: "WMP", label: "Water Management Plan", subType: null, isActive: true },
+  { value: "WPL", label: "Wildlife Management Plan", subType: null, isActive: true },
+  { value: "RPL", label: "Reclamation Plan", subType: null, isActive: true },
+  { value: "OMP", label: "Other Management Plan", subType: null, isActive: true },
+  { value: "SEP", label: "Sediment and Erosion Control Plan", subType: null, isActive: true },
+  { value: "FDP", label: "Fugitive Dust Management Plan", subType: null, isActive: true },
+  { value: "VMP", label: "Vegetation Management Plan", subType: null, isActive: true },
+  { value: "TSS", label: "Terrain Stability Study", subType: null, isActive: true },
+  { value: "MAD", label: "Metal Leaching/Acid Rock Drainage", subType: null, isActive: true },
+  { value: "LNO", label: "Landowner Notification", subType: null, isActive: true },
+  { value: "DWP", label: "Description of Work/Work Program", subType: null, isActive: true },
+  { value: "ARE", label: "Agent Letter of Representation", subType: null, isActive: true },
+  { value: "SRE", label: "Status Report", subType: "GDO", isActive: true },
+  {
+    value: "SOM",
+    label: "Status Report - Overlapping Interests Maps",
+    subType: "GDO",
+    isActive: true,
+  },
+  { value: "SRS", label: "Status Report - Shape Files", subType: "GDO", isActive: true },
+  { value: "ECC", label: "Email Correspondence/Communications", subType: null, isActive: true },
+  { value: "RMI", label: "Requst for More Information", subType: null, isActive: true },
+  { value: "WFI", label: "30 day Warning for Information", subType: "GDO", isActive: true },
+  { value: "NPR", label: "No Permit Required", subType: null, isActive: true },
+  { value: "NPI", label: "No Permit Required IP", subType: null, isActive: true },
+  { value: "WFS", label: "30 day Warning for Security", subType: "SDO", isActive: true },
+  { value: "PEL", label: "Permit Enclosed Letter", subType: null, isActive: true },
+  { value: "RFD", label: "Reasons for Decision", subType: null, isActive: true },
+  {
+    value: "MPW",
+    label: "Proposed and/or Permitted Mine Area Map",
+    subType: "MDO",
+    isActive: true,
+  },
+  { value: "CAL", label: "Acknowledgement Letter", subType: "GDO", isActive: true },
+  { value: "TMP", label: "Title/Tenure Map", subType: "MDO", isActive: true },
+  { value: "WDL", label: "Withdrawal Letter", subType: "GDO", isActive: true },
+  { value: "SCD", label: "Bond Calculator", subType: "SDO", isActive: true },
+  { value: "SRB", label: "Scan of Reclamation Security Document", subType: "SDO", isActive: true },
+  { value: "NIA", label: "No Interest Acknowledgement Form", subType: "SDO", isActive: true },
+  { value: "AKL", label: "Acknowledgement of Security Letter", subType: "SDO", isActive: true },
+  { value: "OTH", label: "Other", subType: "GDO", isActive: true },
+  { value: "RJL", label: "Rejection Letter", subType: "GDO", isActive: true },
+  { value: "NPE", label: "Permit Enclosed Letter", subType: null, isActive: true },
+  { value: "PMT", label: "Working Permit", subType: null, isActive: true },
+  { value: "PMA", label: "Working Permit for Amendment", subType: null, isActive: true },
+];
+
+export const APPLICATION_DOCUMENT_TYPES_HASH = {
+  ANS: "Annual Summary",
+  ACP: "Archaeological Chance Find Procedure",
+  BLP: "Blasting Procedure",
+  EMS: "Explosives Magazine Storage and Use Permit Application",
+  LAL: "Landowner Authorization Letter",
+  MRP: "Mine Emergency Response Plan",
+  OTH: "Other",
 };
 
 export const APPLICATION_PROGRESS_STATUS_CODES = {
@@ -712,13 +856,14 @@ export const APPLICATION_PERMIT_TYPES = {
 };
 
 export const DROPDOWN_APPLICATION_PERMIT_TYPES = [
+  { value: "MYP", label: "Multi-Year Permit", subType: null, isActive: true },
   {
     value: "MY-ABP",
     label: "Multi-Year, Area-Based Permit",
+    subType: null,
     isActive: true,
   },
-  { value: "OYP", label: "One-Year Permit", isActive: true },
-  { value: "MYP", label: "Multi-Year Permit", isActive: true },
+  { value: "OYP", label: "One-Year Permit", subType: null, isActive: true },
 ];
 
 export const NOTICE_OF_WORK_REVIEW_RESPONSE = {

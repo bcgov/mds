@@ -195,7 +195,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 update_user         ,
                 update_timestamp    ,
 				exemption_fee_status_code,
-                mms_alias)
+                mms_alias,
+                mine_no_sequence)
             SELECT
                 new.mine_guid       ,
                 new.mine_no         ,
@@ -208,7 +209,8 @@ CREATE OR REPLACE FUNCTION transfer_mine_information() RETURNS void AS $$
                 'mms_migration'     ,
                 now(),
 				new.exemption_fee_status_code,
-                new.mms_alias
+                new.mms_alias,
+                null
             FROM new_record new;
             SELECT count(*) FROM mine into new_row;
             RAISE NOTICE '....# of new mine records loaded into MDS: %.', (new_row-old_row);

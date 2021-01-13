@@ -25,11 +25,11 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
+import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
-import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -161,6 +161,13 @@ export const MINE_REPORTS = {
   component: MineReportInfo,
 };
 
+export const MINE_PERMIT_REQUIRED_REPORTS = {
+  route: "/mine-dashboard/:id/reports/permit-required-reports",
+  dynamicRoute: (id, filterParams) =>
+    `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
+  component: PermitRequiredReports,
+};
+
 export const MINE_TAILINGS = {
   route: "/mine-dashboard/:id/reports/tailings",
   dynamicRoute: (id) => `/mine-dashboard/${id}/reports/tailings`,
@@ -249,14 +256,6 @@ export const NOTICE_OF_WORK_APPLICATION = {
       : `/dashboard/notice-of-work/application/${guid}/verification`,
   hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/application/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
-};
-
-export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/view-application/:id/:tab",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/view-application/${guid}/technical-review`,
-  hashRoute: (guid, tab, link) =>
-    `/dashboard/notice-of-work/view-application/${guid}/${tab}/${link}`,
-  component: ViewNoticeOfWorkApplication,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";

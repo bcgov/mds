@@ -13,6 +13,9 @@ exports[`EditPartyModal renders properly 1`] = `
       "address": Array [
         Object {},
       ],
+      "business_role_appts": Array [
+        Object {},
+      ],
       "email": null,
       "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
       "party_name": "mock name",
@@ -26,6 +29,9 @@ exports[`EditPartyModal renders properly 1`] = `
       "address": Array [
         Object {},
       ],
+      "business_role_appts": Array [
+        Object {},
+      ],
       "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
       "party_name": "mock name",
       "party_type_code": "PER",
@@ -37,11 +43,13 @@ exports[`EditPartyModal renders properly 1`] = `
       Object {
         "isActive": true,
         "label": "AB",
+        "subType": null,
         "value": "AB",
       },
       Object {
         "isActive": true,
         "label": "BC",
+        "subType": null,
         "value": "BC",
       },
     ]

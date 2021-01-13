@@ -103,7 +103,8 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -181,8 +182,6 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
@@ -212,14 +211,13 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                             'OBJECT_STORE_ENABLED': '1',
-                            'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/"
+                            'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/",
+                            'CORE_API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
                     ]
                 ],
                 [
@@ -257,8 +255,6 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
@@ -314,20 +310,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tools/logstash.dc.json',
-                    'params':[
-                            'NAME':"mds-logstash",
-                            'VERSION':"${app.deployment.version}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
-                    ]
-                ],
-                [
                     'file':'openshift/templates/digdag/digdag.dc.json',
                     'params':[
                             'NAME':"digdag",
@@ -365,8 +347,8 @@ environments {
                 resource = "mines-application-test"
                 idpHint_core = "idir"
                 idpHint_minespace = "bceid"
-                url = "https://sso-test.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                url = "https://test.oidc.gov.bc.ca/auth"
+                known_config_url = "https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logontest.gov.bc.ca"
             }
             resources {
@@ -444,12 +426,6 @@ environments {
                     db_memory_request = "256Mi"
                     db_memory_limit = "1Gi"
                 }
-                logstash {
-                    cpu_request = "50m"
-                    cpu_limit = "150m"
-                    memory_request = "512Mi"
-                    memory_limit = "1.5Gi"
-                }
                 digdag {
                     cpu_request = "100m"
                     cpu_limit = "200m"
@@ -467,11 +443,6 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "test"
                 fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 1
-                elastic_enabled_nris = 1
-                elastic_service_name = "MDS Test"
-                elastic_service_name_nris = "NRIS API Test"
-                elastic_service_name_docman = 'DocMan Test'
                 matomo_url = "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/"
 
             }

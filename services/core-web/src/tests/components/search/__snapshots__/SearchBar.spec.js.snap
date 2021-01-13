@@ -49,10 +49,9 @@ exports[`SearchBar renders properly 1`] = `
         />
       </Card>
     }
-    placement="bottomLeft"
     trigger={
       Array [
-        "",
+        "focus",
       ]
     }
     visible={false}
@@ -61,7 +60,6 @@ exports[`SearchBar renders properly 1`] = `
       enterButton={false}
       onBlur={[Function]}
       onChange={[Function]}
-      onClick={[Function]}
       onFocus={[Function]}
       onSearch={[Function]}
       placeholder="Search"

@@ -24,6 +24,13 @@ _export:
     interval_type: exponential
   py>: tasks.now_etl.run_job
 
++run_streamline_now_job:
+  _retry:
+    limit: 3
+    interval: 20
+    interval_type: exponential
+  py>: tasks.now_etl.run_streamline_job
+
 +teardown:
   echo>: finish ${session_time}
 

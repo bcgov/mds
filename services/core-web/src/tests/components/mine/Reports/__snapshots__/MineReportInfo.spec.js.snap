@@ -4,12 +4,16 @@ exports[`MineReportInfo renders properly 1`] = `
 <div
   className="tab__content"
 >
+  <div>
+    <h2>
+      Code Required Reports
+    </h2>
+    <Divider />
+  </div>
   <div
     className="inline-flex flex-end"
   >
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Connect(AuthorizationWrapper)
         permission="role_edit_reports"
       >
@@ -37,6 +41,7 @@ exports[`MineReportInfo renders properly 1`] = `
           "compliance_year": undefined,
           "due_date_end": undefined,
           "due_date_start": undefined,
+          "mine_reports_type": "CRR",
           "received_date_end": undefined,
           "received_date_start": undefined,
           "received_only": undefined,
@@ -48,6 +53,7 @@ exports[`MineReportInfo renders properly 1`] = `
           "status": Array [],
         }
       }
+      mineReportType="CRR"
       onSubmit={[Function]}
     />
   </div>
@@ -57,6 +63,7 @@ exports[`MineReportInfo renders properly 1`] = `
         "compliance_year": undefined,
         "due_date_end": undefined,
         "due_date_start": undefined,
+        "mine_reports_type": "CRR",
         "received_date_end": undefined,
         "received_date_start": undefined,
         "received_only": undefined,
@@ -72,6 +79,7 @@ exports[`MineReportInfo renders properly 1`] = `
     handleRemoveReport={[Function]}
     handleTableChange={[Function]}
     isLoaded={false}
+    mineReportType="CRR"
     mineReports={Array []}
     openEditReportModal={[Function]}
     sortDir="desc"

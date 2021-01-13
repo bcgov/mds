@@ -36,6 +36,7 @@ export const ViewBondModal = (props) => {
         mine_document_guid: doc.mine_document_guid,
         document_manager_guid: doc.document_manager_guid,
         name: doc.document_name,
+        dated: doc.document_date,
         category: props.bondDocumentTypeOptionsHash[doc.bond_document_type_code],
         uploaded: doc.upload_date,
       },
@@ -61,46 +62,46 @@ export const ViewBondModal = (props) => {
         </div>
       </div>
       <br />
-      <div className="content--light-grey padding-small">
-        <div className="inline-flex padding-small">
+      <div className="content--light-grey padding-sm">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Payment Type</p>
           <p>{props.bondTypeOptionsHash[props.bond.bond_type_code] || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Issue Date</p>
           <p>{formatDate(props.bond.issue_date) || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Payer</p>
           <p>{props.bond.payer.name || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Reference Number</p>
           <p>{props.bond.reference_number || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Project ID</p>
           <p>{props.bond.project_id || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Institution Name</p>
           <p>{props.bond.institution_name || Strings.EMPTY_FIELD}</p>
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Institution Location</p>
           <Address address={address} />
         </div>
-        <div className="inline-flex padding-small">
+        <div className="inline-flex padding-sm">
           <p className="field-title">Notes</p>
           <p>{props.bond.note || Strings.EMPTY_FIELD}</p>
         </div>
         {isBondClosed && (
           <>
-            <div className="inline-flex padding-small">
+            <div className="inline-flex padding-sm">
               <p className="field-title">{`${bondStatusDescription} Date`}</p>
               <p>{formatDate(props.bond.closed_date) || Strings.EMPTY_FIELD}</p>
             </div>
-            <div className="inline-flex padding-small">
+            <div className="inline-flex padding-sm">
               <p className="field-title">{`${bondStatusDescription} Notes`}</p>
               <p>{props.bond.closed_note || Strings.EMPTY_FIELD}</p>
             </div>

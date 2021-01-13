@@ -305,12 +305,14 @@ export const PARTY = {
       party_name: "mock name",
       party_type_code: "PER",
       address: [{}],
+      business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
       party_name: "mock Two",
       party_type_code: "PER",
       address: [{}],
+      business_role_appts: [{}],
     },
   },
   partiesWithAppointments: {
@@ -320,6 +322,7 @@ export const PARTY = {
       party_type_code: "PER",
       address: [{}],
       mine_party_appt: [],
+      business_role_appts: [{}],
     },
     "18145c75-49ad-0101-85f3-a43e45ae989a": {
       party_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
@@ -327,6 +330,14 @@ export const PARTY = {
       party_type_code: "PER",
       address: [{}],
       mine_party_appt: [],
+      business_role_appts: [
+        {
+          end_date: "2020-08-29T00:00:00",
+          party_business_role_appt_id: 275,
+          party_business_role_code: "INS",
+          start_date: "2020-08-11T00:00:00",
+        },
+      ],
     },
   },
 };
@@ -886,24 +897,24 @@ export const REGION_OPTIONS = {
 
 export const REGION_DROPDOWN_OPTIONS = [
   {
-    value: "SW",
-    label: "South West",
-  },
-  {
-    value: "SC",
-    label: "South Central",
+    value: "NE",
+    label: "North East",
   },
   {
     value: "NW",
     label: "North West",
   },
   {
-    value: "NE",
-    label: "North East",
+    value: "SC",
+    label: "South Central",
   },
   {
     value: "SE",
     label: "South East",
+  },
+  {
+    value: "SW",
+    label: "South West",
   },
 ];
 
@@ -916,10 +927,10 @@ export const REGION_HASH = {
 };
 
 export const TENURE_TYPES_DROPDOWN_OPTIONS = [
+  { value: "BCL", label: "BC Land", isActive: true },
   { value: "COL", label: "Coal", isActive: true },
   { value: "MIN", label: "Mineral", isActive: true },
   { value: "PLR", label: "Placer", isActive: true },
-  { value: "BCL", label: "BC Land", isActive: true },
 ];
 
 export const TENURE_TYPES_RESPONSE = {
@@ -1006,7 +1017,10 @@ export const PERMITS = [
     mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
     permit_no: "C-12345",
     permit_status_code: "O",
-    amendments: [
+    assessed_liability_total: 8000000,
+    confiscated_bond_total: 500,
+    active_bond_total: 700,
+    permit_amendments: [
       {
         permit_amendment_guid: "822310fd-3a2c-44a9-a9ce-dee81acc9585",
         permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
@@ -1015,8 +1029,27 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2019-04-01",
         authorization_end_date: null,
-        security_total: "1000000",
+        liability_adjustment: "1000000",
         description: "Initial permit issued.",
+        related_documents: [
+          {
+            mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+            document_guid: "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+            document_name: "Adams_amendment_1.pdf",
+            document_manager_guid: "64caef0e-060d-4875-a470-6c225b242723",
+          },
+        ],
+      },
+      {
+        permit_amendment_guid: "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+        permit_guid: "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+        permit_amendment_status_code: "ACT",
+        permit_amendment_type_code: "AMD",
+        received_date: null,
+        issue_date: "2020-04-01",
+        authorization_end_date: null,
+        liability_adjustment: "7000000",
+        description: "Amendment",
         related_documents: [
           {
             mine_guid: "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
@@ -1102,69 +1135,81 @@ export const COMMODITY_OPTIONS = {
 
 export const DROPDOWN_COMMODITY_OPTIONS = [
   {
-    value: "TO",
-    label: "Thermal Coal",
-    isActive: true,
-  },
-  {
-    value: "MC",
-    label: "Metallurgic",
-    isActive: true,
-  },
-  {
-    value: "CG",
-    label: "Construction Aggregate",
-    isActive: true,
-  },
-
-  {
-    value: "SA",
-    label: "Sand and Gravel",
-    isActive: true,
-  },
-  {
     value: "AE",
     label: "Agate",
+    subType: null,
     isActive: true,
   },
   {
     value: "AL",
     label: "Aluminum",
+    subType: null,
     isActive: true,
   },
   {
     value: "AI",
     label: "Alunite",
+    subType: null,
     isActive: true,
   },
   {
     value: "AM",
     label: "Amber",
+    subType: null,
     isActive: true,
   },
   {
     value: "AY",
     label: "Amethyst",
+    subType: null,
     isActive: true,
   },
   {
     value: "AD",
     label: "Andalusite",
+    subType: null,
     isActive: true,
   },
   {
     value: "AA",
     label: "Andesite",
+    subType: null,
     isActive: true,
   },
   {
     value: "AN",
     label: "Anhydrite",
+    subType: null,
     isActive: true,
   },
   {
     value: "SB",
     label: "Antimony",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "CG",
+    label: "Construction Aggregate",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "MC",
+    label: "Metallurgic",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "SA",
+    label: "Sand and Gravel",
+    subType: null,
+    isActive: true,
+  },
+  {
+    value: "TO",
+    label: "Thermal Coal",
+    subType: null,
     isActive: true,
   },
 ];
@@ -1173,11 +1218,13 @@ export const DROPDOWN_PROVINCE_OPTIONS = [
   {
     value: "AB",
     label: "AB",
+    subType: null,
     isActive: true,
   },
   {
     value: "BC",
     label: "BC",
+    subType: null,
     isActive: true,
   },
 ];
@@ -2513,12 +2560,12 @@ export const MINE_DOCUMENT_SEARCH_RESULTS = [
 ];
 
 export const VARIANCE_DROPDOWN_STATUS_OPTIONS = [
-  { value: "RFD", label: "Ready for Decision", isActive: true },
-  { value: "WIT", label: "Withdrawn", isActive: true },
-  { value: "REV", label: "In Review", isActive: true },
-  { value: "NAP", label: "Not Applicable", isActive: true },
-  { value: "APP", label: "Approved", isActive: true },
-  { value: "DEN", label: "Denied", isActive: true },
+  { value: "APP", label: "Approved", subType: null, isActive: true },
+  { value: "DEN", label: "Denied", subType: null, isActive: true },
+  { value: "REV", label: "In Review", subType: null, isActive: true },
+  { value: "NAP", label: "Not Applicable", subType: null, isActive: true },
+  { value: "RFD", label: "Ready for Decision", subType: null, isActive: true },
+  { value: "WIT", label: "Withdrawn", subType: null, isActive: true },
 ];
 
 export const VARIANCE_STATUS_OPTIONS_HASH = {
@@ -2533,16 +2580,16 @@ export const VARIANCE_STATUS_OPTIONS_HASH = {
 export const VARIANCE_DOCUMENT_CATEGORY_OPTIONS = {
   records: [
     {
-      variance_document_category_code: "REQ",
-      description: "Request",
+      variance_document_category_code: "DEC",
+      description: "Decision",
     },
     {
       variance_document_category_code: "REC",
       description: "Recommendation",
     },
     {
-      variance_document_category_code: "DEC",
-      description: "Decision",
+      variance_document_category_code: "REQ",
+      description: "Request",
     },
   ],
 };
@@ -2652,6 +2699,8 @@ export const NOW = {
       now_number: 44,
       now_application_status_description: "Approved",
       received_date: "2019-08-14",
+      application_documents: [],
+      is_historic: false,
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
@@ -2662,6 +2711,8 @@ export const NOW = {
       now_number: 52,
       now_application_status_description: "Approved",
       received_date: "2019-07-21",
+      application_documents: [],
+      is_historic: true,
     },
   ],
 };
@@ -3588,6 +3639,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     { mine_report_category: "OTH", description: "Other" },
   ],
   partyRelationshipTypes: [],
+  partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [
     {
       activity_type_code: "cut_lines_polarization_survey",
@@ -3652,63 +3704,329 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     {
       now_application_document_type_code: "ANS",
       description: "Annual Summary",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "ACP",
       description: "Archaeological Chance Find Procedure",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "BLP",
       description: "Blasting Procedure",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "EMS",
       description: "Explosives Magazine Storage and Use Permit Application",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "LAL",
       description: "Landowner Authorization Letter",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "MRP",
       description: "Mine Emergency Response Plan",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
-    { now_application_document_type_code: "OTH", description: "Other", document_template: {} },
     {
       now_application_document_type_code: "RFE",
       description: "Record of First Nations Engagement",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "TAL",
       description: "Tenure Authorization Letter",
+      now_application_document_sub_type_code: null,
       document_template: {},
-    },
-    {
-      now_application_document_type_code: "TMP",
-      description: "Tenure Map / Property Map",
-      document_template: {},
-    },
-    {
-      now_application_document_type_code: "MPW",
-      description: "Map of Proposed Work",
-      document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "PUB",
       description: "Public Comment",
+      now_application_document_sub_type_code: null,
       document_template: {},
+      active_ind: true,
     },
-    { now_application_document_type_code: "REV", description: "Review", document_template: {} },
+    {
+      now_application_document_type_code: "REV",
+      description: "Review",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "NTR",
+      description: "Technical Review",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "LMA",
+      description: "Location Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "LTM",
+      description: "Land Title/Licence of Ocupation Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "OMA",
+      description: "Overview Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SMA",
+      description: "Supplemental Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SSF",
+      description: "Submitted Shape Files",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "CSL",
+      description: "Cross-sectional/Longitudinal",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "PFR",
+      description: "Preliminary Field Reconnaisance",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "AOA",
+      description: "Archaeological Overview Assessment",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "AIA",
+      description: "Archaeological Impact Assessment",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SOP",
+      description: "Standard/Safe Operating Procedures",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "RSP",
+      description: "Riparian Setbacks Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "WMP",
+      description: "Water Management Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "WPL",
+      description: "Wildlife Management Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "RPL",
+      description: "Reclamation Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "OMP",
+      description: "Other Management Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SEP",
+      description: "Sediment and Erosion Control Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "FDP",
+      description: "Fugitive Dust Management Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "VMP",
+      description: "Vegetation Management Plan",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "TSS",
+      description: "Terrain Stability Study",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "MAD",
+      description: "Metal Leaching/Acid Rock Drainage",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "LNO",
+      description: "Landowner Notification",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "DWP",
+      description: "Description of Work/Work Program",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "ARE",
+      description: "Agent Letter of Representation",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SRE",
+      description: "Status Report",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SOM",
+      description: "Status Report - Overlapping Interests Maps",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SRS",
+      description: "Status Report - Shape Files",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "ECC",
+      description: "Email Correspondence/Communications",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "RMI",
+      description: "Requst for More Information",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "WFI",
+      description: "30 day Warning for Information",
+      now_application_document_sub_type_code: "GDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "NPR",
+      description: "No Permit Required",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "NPI",
+      description: "No Permit Required IP",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "WFS",
+      description: "30 day Warning for Security",
+      now_application_document_sub_type_code: "SDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "PEL",
+      description: "Permit Enclosed Letter",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "RFD",
+      description: "Reasons for Decision",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "MPW",
+      description: "Proposed and/or Permitted Mine Area Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
+    },
     {
       now_application_document_type_code: "CAL",
       description: "Acknowledgement Letter",
+      now_application_document_sub_type_code: "GDO",
       document_template: {
         document_template_code: "NCL",
         form_spec: [
@@ -3792,10 +4110,19 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
           },
         ],
       },
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "TMP",
+      description: "Title/Tenure Map",
+      now_application_document_sub_type_code: "MDO",
+      document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "WDL",
       description: "Withdrawal Letter",
+      now_application_document_sub_type_code: "GDO",
       document_template: {
         document_template_code: "NWL",
         form_spec: [
@@ -3855,10 +4182,47 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
           },
         ],
       },
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SCD",
+      description: "Bond Calculator",
+      now_application_document_sub_type_code: "SDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "SRB",
+      description: "Scan of Reclamation Security Document",
+      now_application_document_sub_type_code: "SDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "NIA",
+      description: "No Interest Acknowledgement Form",
+      now_application_document_sub_type_code: "SDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "AKL",
+      description: "Acknowledgement of Security Letter",
+      now_application_document_sub_type_code: "SDO",
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "OTH",
+      description: "Other",
+      now_application_document_sub_type_code: "GDO",
+      document_template: {},
+      active_ind: true,
     },
     {
       now_application_document_type_code: "RJL",
       description: "Rejection Letter",
+      now_application_document_sub_type_code: "GDO",
       document_template: {
         document_template_code: "NRL",
         form_spec: [
@@ -3918,6 +4282,28 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
           },
         ],
       },
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "NPE",
+      description: "Permit Enclosed Letter",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "PMT",
+      description: "Working Permit",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
+    },
+    {
+      now_application_document_type_code: "PMA",
+      description: "Working Permit for Amendment",
+      now_application_document_sub_type_code: null,
+      document_template: {},
+      active_ind: true,
     },
   ],
   noticeOfWorkUndergroundExplorationTypeOptions: [
@@ -4029,6 +4415,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       display_order: 60,
     },
   ],
+  noticeOfWorkApplicationDelayOptions: [],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
@@ -4347,13 +4734,13 @@ export const MINE_REPORT_DEFINITION_HASH = {
 };
 
 export const DROPDOWN_BOND_TYPE_OPTIONS = [
-  { value: "CEC", label: "Certified Cheque", isActive: true },
-  { value: "CAS", label: "Cash", isActive: true },
-  { value: "ILC", label: "Irrevocable Letter of Credit", isActive: true },
-  { value: "MOR", label: "Money Order", isActive: true },
-  { value: "BDA", label: "Bank Draft", isActive: true },
-  { value: "SBO", label: "Surety Bond", isActive: true },
-  { value: "SAG", label: "Safekeeping Agreement", isActive: true },
+  { value: "BDA", label: "Bank Draft", subType: null, isActive: true },
+  { value: "CAS", label: "Cash", subType: null, isActive: true },
+  { value: "CEC", label: "Certified Cheque", subType: null, isActive: true },
+  { value: "ILC", label: "Irrevocable Letter of Credit", subType: null, isActive: true },
+  { value: "MOR", label: "Money Order", subType: null, isActive: true },
+  { value: "SAG", label: "Safekeeping Agreement", subType: null, isActive: true },
+  { value: "SBO", label: "Surety Bond", subType: null, isActive: true },
 ];
 
 export const BOND_TYPE_OPTIONS_HASH = {
@@ -4367,9 +4754,9 @@ export const BOND_TYPE_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_STATUS_OPTIONS = [
-  { value: "REL", label: "Released", isActive: true },
-  { value: "CON", label: "Confiscated", isActive: true },
-  { value: "ACT", label: "Active", isActive: true },
+  { value: "ACT", label: "Active", subType: null, isActive: true },
+  { value: "CON", label: "Confiscated", subType: null, isActive: true },
+  { value: "REL", label: "Released", subType: null, isActive: true },
 ];
 
 export const BOND_STATUS_OPTIONS_HASH = {
@@ -4379,13 +4766,13 @@ export const BOND_STATUS_OPTIONS_HASH = {
 };
 
 export const DROPDOWN_BOND_DOCUMENT_TYPE_OPTIONS = [
-  { value: "SRB", label: "Scan of Reclamation Security Bond", isActive: true },
-  { value: "RSF", label: "Release of Security Form", isActive: true },
-  { value: "RSL", label: "Release of Security Letter", isActive: true },
-  { value: "CSF", label: "Confiscation of Security Form", isActive: true },
-  { value: "CSL", label: "Confiscation of Security Letter", isActive: true },
-  { value: "REL", label: "Reminder Letter", isActive: true },
-  { value: "AKL", label: "Acknowledgement Letter", isActive: true },
+  { value: "AKL", label: "Acknowledgement Letter", subType: null, isActive: true },
+  { value: "CSF", label: "Confiscation of Security Form", subType: null, isActive: true },
+  { value: "CSL", label: "Confiscation of Security Letter", subType: null, isActive: true },
+  { value: "RSF", label: "Release of Security Form", subType: null, isActive: true },
+  { value: "RSL", label: "Release of Security Letter", subType: null, isActive: true },
+  { value: "REL", label: "Reminder Letter", subType: null, isActive: true },
+  { value: "SRB", label: "Scan of Reclamation Security Bond", subType: null, isActive: true },
 ];
 
 export const BOND_DOCUMENT_TYPE_OPTIONS_HASH = {

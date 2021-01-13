@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
-import { required } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
@@ -20,7 +22,7 @@ const propTypes = {
 export const TransferBondForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="permit_guid"
@@ -30,7 +32,14 @@ export const TransferBondForm = (props) => (
             data={props.permits.map((p) => {
               return { value: p.permit_guid, label: p.permit_no };
             })}
-            validate={[required]}
+            validate={[
+              required,
+              validateSelectOptions(
+                props.permits.map((p) => {
+                  return { value: p.permit_guid, label: p.permit_no };
+                })
+              ),
+            ]}
           />
         </Form.Item>
       </Col>

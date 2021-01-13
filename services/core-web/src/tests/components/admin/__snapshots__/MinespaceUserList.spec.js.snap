@@ -28,12 +28,6 @@ exports[`MinespaceUserList renders properly 1`] = `
   tableProps={
     Object {
       "align": "center",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="no-results"
-        />,
-      },
       "pagination": false,
     }
   }

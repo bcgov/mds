@@ -32,10 +32,10 @@ exports[`ViewBondModal renders properly 1`] = `
   </div>
   <br />
   <div
-    className="content--light-grey padding-small"
+    className="content--light-grey padding-sm"
   >
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -47,7 +47,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -59,7 +59,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -71,7 +71,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -83,7 +83,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -95,7 +95,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -107,7 +107,7 @@ exports[`ViewBondModal renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -126,7 +126,7 @@ exports[`ViewBondModal renders properly 1`] = `
       />
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -154,7 +154,6 @@ exports[`ViewBondModal renders properly 1`] = `
         documents={Array []}
         isViewOnly={true}
         removeDocument={[Function]}
-        tableEmptyMessage="There are no attached documents."
       />
     </div>
   </div>

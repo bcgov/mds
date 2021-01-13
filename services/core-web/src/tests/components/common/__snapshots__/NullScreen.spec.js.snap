@@ -16,9 +16,6 @@ exports[`NullScreen renders properly 1`] = `
     <h3>
       No data available
     </h3>
-    <p>
-      Please try again later
-    </p>
   </div>
 </div>
 `;

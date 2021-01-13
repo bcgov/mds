@@ -18,11 +18,10 @@ class ReclamationInvoice(Base, AuditMixin):
     reclamation_invoice_guid = db.Column(
         UUID(as_uuid=True), nullable=False, unique=True, server_default=FetchedValue())
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
-    project_id = db.Column(db.String, nullable=False)
     amount = db.Column(db.Numeric(14, 2), nullable=False)
     vendor = db.Column(db.String, nullable=False)
     note = db.Column(db.String)
-
+    paid_date = db.Column(db.Date)
     permit = db.relationship('Permit', lazy='joined')
     documents = db.relationship('ReclamationInvoiceDocument', lazy='select')
 

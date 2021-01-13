@@ -20,10 +20,11 @@ class Config(object):
             }
         },
         'handlers': {
-            'wsgi': {
+            'console': {
                 'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default'
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
             },
             'file': {
                 'class': 'logging.handlers.RotatingFileHandler',
@@ -36,7 +37,7 @@ class Config(object):
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['file']
+            'handlers': ['file', 'console']
         }
     }
 
@@ -106,19 +107,6 @@ class Config(object):
     COMPRESS_LEVEL = 9
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
-
-    # Elastic config
-    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
-    ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
-    ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
-    ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', False)
-    ELASTIC_APM = {
-        'SERVICE_NAME': ELASTIC_SERVICE_NAME,
-        'SECRET_TOKEN': ELASTIC_SECRET_TOKEN,
-        'SERVER_URL': ELASTIC_SERVER_URL,
-        'DEBUG': ELASTIC_DEBUG,
-    }
 
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)

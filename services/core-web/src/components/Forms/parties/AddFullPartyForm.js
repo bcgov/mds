@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row, Radio } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row, Radio } from "antd";
 import {
   required,
   email,
@@ -9,6 +11,7 @@ import {
   maxLength,
   number,
   postalCode,
+  validateSelectOptions,
 } from "@common/utils/Validate";
 import { normalizePhone, upperCase } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -166,6 +169,7 @@ export const AddFullPartyForm = (props) => (
                   label="Province"
                   component={renderConfig.SELECT}
                   data={props.provinceOptions}
+                  validate={[validateSelectOptions(props.provinceOptions)]}
                 />
               </Form.Item>
             </Col>

@@ -37,13 +37,6 @@ def random_key_gen(prefix='', key_length=10, numbers=True, letters=True):
     return prefix + ''.join(random.choices(choices, k=key_length))
 
 
-def generate_mine_no():
-    mine_no = random_key_gen(prefix='B', key_length=6, letters=False)
-    while Mine.find_by_mine_no(mine_no):
-        mine_no = random_key_gen(prefix='B', key_length=6, letters=False)
-    return mine_no
-
-
 def generate_mine_name():
     name_list = []
     for i in range(random.randint(1, 2)):

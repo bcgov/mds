@@ -277,6 +277,7 @@ export class ViewPartyRelationships extends Component {
       {partyRelationshipGroupingLevels.map((group) => [
         this.props.partyRelationshipTypes
           .filter((x) => x.grouping_level === group)
+          .filter((x) => x.mine_party_appt_type_code !== "AGT")
           .map((value) => (
             <Menu.Item key={value.mine_party_appt_type_code}>
               <button

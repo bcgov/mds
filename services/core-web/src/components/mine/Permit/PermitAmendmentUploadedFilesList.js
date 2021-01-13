@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Icon } from "antd";
+import { Col, Row, Popconfirm } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 import CustomPropTypes from "@/customPropTypes";
 
@@ -13,10 +14,10 @@ export const PermitAmendmentUploadedFilesList = (props) => (
   <div>
     {props.relatedDocuments.map((file) => (
       <div
-        className="padding-small margin-small lightest-grey-bg"
+        className="padding-sm margin-small lightest-grey-bg"
         key={file.permit_amendment_document_guid}
       >
-        <Row className="padding-small">
+        <Row className="padding-sm">
           <Col span={21}>
             <p className="uploaded-file left">{file.document_name}</p>
           </Col>
@@ -37,7 +38,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
               }}
             >
               <button type="button">
-                <Icon type="close" />
+                <CloseOutlined />
               </button>
             </Popconfirm>
           </Col>

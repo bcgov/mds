@@ -8,7 +8,7 @@ export const permitAmendment = shape({
   received_date: PropTypes.string,
   issue_date: PropTypes.string,
   authorization_end_date: PropTypes.string,
-  security_total: PropTypes.number,
+  liability_adjustment: PropTypes.number,
 });
 
 export const permit = shape({
@@ -29,7 +29,7 @@ export const permitGenObj = shape({
   current_year: PropTypes.string,
   conditions: PropTypes.string,
   lead_inspector: PropTypes.string,
-  lead_inspector_title: PropTypes.string,
+  issuing_inspector_title: PropTypes.string,
   permittee: PropTypes.string,
   permittee_email: PropTypes.string,
   property: PropTypes.string,

@@ -4,14 +4,16 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form, Button, Popconfirm, Row, Col } from "antd";
-import { required } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, Row, Col } from "antd";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
+import VarianceFileUpload from "./VarianceFileUpload";
 import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
 
 const propTypes = {
@@ -106,7 +108,7 @@ export class EditVarianceForm extends Component {
                 label="Application Status"
                 placeholder="Select a status"
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.varianceStatusOptions)]}
                 data={this.props.varianceStatusOptions}
               />
             </Form.Item>
@@ -151,7 +153,11 @@ export class EditVarianceForm extends Component {
             label={filesUploaded ? "Document Category*" : "Document Category"}
             placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={filesUploaded ? [required] : []}
+            validate={
+              filesUploaded
+                ? [required, validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+                : [validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+            }
             data={this.props.varianceDocumentCategoryOptions}
           />
         </Form.Item>

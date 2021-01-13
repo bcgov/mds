@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row } from "antd";
-import { required, maxLength, number, dateNotInFuture } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row } from "antd";
+import {
+  required,
+  maxLength,
+  number,
+  dateNotInFuture,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -35,7 +43,7 @@ class AddIncidentDetailForm extends Component {
     return (
       <Form layout="vertical">
         <Row gutter={48}>
-          <Col>
+          <Col span={24}>
             <h4>Incident Details</h4>
             <Row gutter={16}>
               <Col md={12} xs={24}>
@@ -124,7 +132,10 @@ class AddIncidentDetailForm extends Component {
                 label="Inspectors Determination*"
                 component={renderConfig.SELECT}
                 data={this.props.incidentDeterminationOptions}
-                validate={[required]}
+                validate={[
+                  required,
+                  validateSelectOptions(this.props.incidentDeterminationOptions),
+                ]}
               />
             </Form.Item>
             {this.props.doDetermination !== Strings.INCIDENT_DETERMINATION_TYPES.pending ? (
@@ -161,6 +172,7 @@ class AddIncidentDetailForm extends Component {
                 name="mine_determination_type_code"
                 label="Mine's Determination"
                 component={renderConfig.SELECT}
+                validate={[validateSelectOptions(this.props.incidentDeterminationOptions)]}
                 data={this.props.incidentDeterminationOptions.filter(
                   ({ value }) => value !== Strings.INCIDENT_DETERMINATION_TYPES.pending
                 )}
@@ -212,6 +224,7 @@ class AddIncidentDetailForm extends Component {
                     name="status_code"
                     label="Incident status?*"
                     component={renderConfig.SELECT}
+                    validate={[validateSelectOptions(this.props.incidentStatusCodeOptions)]}
                     data={this.props.incidentStatusCodeOptions}
                   />
                 </Form.Item>

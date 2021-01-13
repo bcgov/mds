@@ -3,10 +3,10 @@
 exports[`VarianceDetails renders properly 1`] = `
 <div>
   <div
-    className="content--light-grey padding-small"
+    className="content--light-grey padding-sm"
   >
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -19,7 +19,7 @@ exports[`VarianceDetails renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -32,7 +32,7 @@ exports[`VarianceDetails renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -44,7 +44,7 @@ exports[`VarianceDetails renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -56,7 +56,7 @@ exports[`VarianceDetails renders properly 1`] = `
       </p>
     </div>
     <div
-      className="inline-flex padding-small"
+      className="inline-flex padding-sm"
     >
       <p
         className="field-title"
@@ -76,7 +76,6 @@ exports[`VarianceDetails renders properly 1`] = `
     documents={Array []}
     isViewOnly={false}
     removeDocument={[MockFunction]}
-    tableEmptyMessage="There are no attached documents."
   />
 </div>
 `;

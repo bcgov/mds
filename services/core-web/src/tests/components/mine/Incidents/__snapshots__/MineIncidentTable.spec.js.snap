@@ -90,7 +90,7 @@ exports[`MineIncidentTable renders properly 1`] = `
         "key": "followup_action",
         "onFilter": [Function],
         "render": [Function],
-        "title": "EMPR Action",
+        "title": "EMLI Action",
       },
       Object {
         "className": "",
@@ -156,12 +156,6 @@ exports[`MineIncidentTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="incidents"
-        />,
-      },
       "onChange": null,
       "pagination": false,
     }

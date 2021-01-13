@@ -46,6 +46,6 @@ class SimpleSearchResource(Resource, UserMixin):
 
         search_results = list(grouped_results.values())
         search_results.sort(key=lambda x: x.score, reverse=True)
-        search_results = search_results[0:10]
+        search_results = search_results[0:4]
 
         return {'search_terms': search_terms, 'search_results': search_results}

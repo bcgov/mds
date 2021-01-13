@@ -5,13 +5,13 @@ from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.extensions import db
 from app.api.constants import *
 
 
-class PermitAmendmentDocument(AuditMixin, Base):
+class PermitAmendmentDocument(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "permit_amendment_document"
     _edit_groups = [PERMIT_EDIT_GROUP, PERMIT_AMENDMENT_EDIT_GROUP]
 
@@ -23,7 +23,6 @@ class PermitAmendmentDocument(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     document_manager_guid = db.Column(UUID(as_uuid=True))
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     permit_amendment = db.relationship(
         'PermitAmendment',
@@ -33,7 +32,7 @@ class PermitAmendmentDocument(AuditMixin, Base):
         'and_(PermitAmendment.permit_amendment_id == PermitAmendmentDocument.permit_amendment_id, PermitAmendmentDocument.deleted_ind==False)',
     )
 
-    mine = db.relationship('Mine', lazy='selectin')
+    mine = db.relationship('Mine', lazy='select')
     mine_name = association_proxy('mine', 'mine_name')
 
     @classmethod

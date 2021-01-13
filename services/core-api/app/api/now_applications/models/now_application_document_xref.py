@@ -26,12 +26,16 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
 
     description = db.Column(db.String)
     is_final_package = db.Column(db.Boolean)
+    is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
+    is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())
 
     now_application_review_id = db.Column(
         db.Integer, db.ForeignKey('now_application_review.now_application_review_id'))
     # NOWApplicationDocumentType
     now_application_document_type = db.relationship('NOWApplicationDocumentType', lazy='joined')
     now_application = db.relationship('NOWApplication', lazy='select')
+    now_application_document_sub_type_code = association_proxy(
+        'now_application_document_type', 'now_application_document_sub_type_code')
     # MineDocument
     mine_document = db.relationship(
         'MineDocument',

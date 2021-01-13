@@ -58,7 +58,7 @@
     },
     {
       "name": "MEMORY_LIMIT",
-      "value": "1.5Gi"
+      "value": "2.5Gi"
     },
     {
       "name": "CPU_REQUEST",
@@ -66,7 +66,7 @@
     },
     {
       "name": "MEMORY_REQUEST",
-      "value": "1Gi"
+      "value": "1.5Gi"
     }
   ],
   "objects": [
@@ -83,7 +83,12 @@
           {
             "name": "test",
             "image": "${IMAGE}",
-            "command": ["container-entrypoint", "bash", "-c", "./run_tests.sh"],
+            "command": [
+              "container-entrypoint",
+              "bash",
+              "-c",
+              "./run_tests.sh"
+            ],
             "resources": {
               "limits": {
                 "cpu": "${CPU_LIMIT}",

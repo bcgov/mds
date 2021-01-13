@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { Menu, Icon, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
+import { Menu, Button, Dropdown, Popconfirm, Tooltip, Drawer } from "antd";
+import { DownOutlined, MessageOutlined, CloseOutlined } from "@ant-design/icons";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import {
   fetchMineRecordById,
@@ -77,11 +78,6 @@ export class MineDashboard extends Component {
     const { id } = this.props.match.params;
     this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
-    this.props.fetchPartyRelationships({
-      mine_guid: id,
-      relationships: "party",
-      include_permittees: "true",
-    });
     this.props.fetchSubscribedMinesByUser();
   }
 
@@ -181,7 +177,7 @@ export class MineDashboard extends Component {
         <AuthorizationWrapper inTesting>
           <div className="custom-menu-item">
             <button type="button" className="full" onClick={this.toggleDrawer}>
-              <Icon type="message" className="padding-small icon-sm" />
+              <MessageOutlined className="padding-sm icon-sm" />
               Communication
             </button>
           </div>
@@ -196,7 +192,7 @@ export class MineDashboard extends Component {
               cancelText="No"
             >
               <button type="button" className="full">
-                <img alt="document" className="padding-small" src={UNSUBSCRIBE} />
+                <img alt="document" className="padding-sm" src={UNSUBSCRIBE} />
                 Unsubscribe from mine
               </button>
             </Popconfirm>
@@ -204,7 +200,7 @@ export class MineDashboard extends Component {
         ) : (
           <div className="custom-menu-item">
             <button type="button" className="full" onClick={this.handleSubscription}>
-              <img alt="document" className="padding-small" src={SUBSCRIBE} />
+              <img alt="document" className="padding-sm" src={SUBSCRIBE} />
               Subscribe to mine
             </button>
           </div>
@@ -232,12 +228,7 @@ export class MineDashboard extends Component {
                 cancelText="No"
               >
                 <button type="button" className="full">
-                  <img
-                    alt="checkmark"
-                    className="padding-small"
-                    src={SUCCESS_CHECKMARK}
-                    width="30"
-                  />
+                  <img alt="checkmark" className="padding-sm" src={SUCCESS_CHECKMARK} width="30" />
                   Verify mine data
                 </button>
               </Popconfirm>
@@ -253,7 +244,7 @@ export class MineDashboard extends Component {
                 cancelText="No"
               >
                 <button type="button" className="full">
-                  <img alt="hazard" className="padding-small" src={YELLOW_HAZARD} width="30" />
+                  <img alt="hazard" className="padding-sm" src={YELLOW_HAZARD} width="30" />
                   Re-verify mine data
                 </button>
               </Popconfirm>
@@ -273,7 +264,7 @@ export class MineDashboard extends Component {
                 alt="mineSpace"
                 width="30"
                 height="30"
-                className="padding-small"
+                className="padding-sm"
               />
               View on MineSpace
             </a>
@@ -292,7 +283,7 @@ export class MineDashboard extends Component {
           visible={this.state.isDrawerVisible}
         >
           <Button ghost className="modal__close" onClick={this.toggleDrawer}>
-            <Icon type="close" />
+            <CloseOutlined />
           </Button>
           <MineComments mineGuid={mine.mine_guid} />
         </Drawer>
@@ -301,7 +292,7 @@ export class MineDashboard extends Component {
             <div className="tab__content">
               <div className="inline-flex block-mobile between">
                 <div className="inline-flex horizontal-center block-tablet">
-                  <h1 className="padding-large--right">{mine.mine_name}</h1>
+                  <h1 className="padding-lg--right">{mine.mine_name}</h1>
                   <div id="mine-no">Mine No. {mine.mine_no || Strings.EMPTY_FIELD}</div>
 
                   {mine.verified_status.healthy_ind !== null && (
@@ -318,7 +309,7 @@ export class MineDashboard extends Component {
                     >
                       <img
                         alt=""
-                        className="padding-small"
+                        className="padding-sm"
                         src={mine.verified_status.healthy_ind ? SUCCESS_CHECKMARK : YELLOW_HAZARD}
                         width="30"
                       />
@@ -326,7 +317,7 @@ export class MineDashboard extends Component {
                   )}
                   {this.props.subscribed && (
                     <Tooltip title="Subscribed" placement="top" mouseEnterDelay={1}>
-                      <img src={SUBSCRIBE} alt="SUBSCRIBE" className="padding-small" />
+                      <img src={SUBSCRIBE} alt="SUBSCRIBE" className="padding-sm" />
                     </Tooltip>
                   )}
                   {mine.has_minespace_users && (
@@ -347,7 +338,7 @@ export class MineDashboard extends Component {
                 >
                   <Button type="secondary">
                     Options
-                    <Icon type="down" />
+                    <DownOutlined />
                   </Button>
                 </Dropdown>
               </div>

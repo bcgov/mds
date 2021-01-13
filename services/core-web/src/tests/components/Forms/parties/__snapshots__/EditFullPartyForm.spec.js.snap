@@ -6,7 +6,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
     colon={true}
     hideRequiredMark={false}
     layout="horizontal"
-    onSubmit={[MockFunction]}
+    onSubmit={[Function]}
   >
     <Row
       gutter={48}
@@ -230,11 +230,13 @@ exports[`EditFullPartyForm renders properly 1`] = `
                     Object {
                       "isActive": true,
                       "label": "AB",
+                      "subType": null,
                       "value": "AB",
                     },
                     Object {
                       "isActive": true,
                       "label": "BC",
+                      "subType": null,
                       "value": "BC",
                     },
                   ]
@@ -243,6 +245,11 @@ exports[`EditFullPartyForm renders properly 1`] = `
                 id="sub_division_code"
                 label="Province"
                 name="sub_division_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </FormItem>
           </Col>
@@ -299,20 +306,102 @@ exports[`EditFullPartyForm renders properly 1`] = `
     <Row
       gutter={48}
     >
-      <Col />
+      <Col
+        span={24}
+      />
     </Row>
+    <br />
+    <Divider />
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={24}
+      >
+        <h5>
+          Assign Inspector Role
+        </h5>
+      </Col>
+    </Row>
+    <Connect(AuthorizationWrapper)
+      permission="role_admin"
+    >
+      <Row>
+        <p>
+          By setting this checkbox you grant inspector role to this party. Please note that removing this checkbox will not delete party from associated entities.
+        </p>
+        <Col
+          md={12}
+          sm={24}
+        >
+          <Field
+            component={[Function]}
+            id="set_to_inspector"
+            label="Set to inspector"
+            name="set_to_inspector"
+            type="checkbox"
+          />
+        </Col>
+      </Row>
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={12}
+        >
+          <Field
+            component={[Function]}
+            id="inspector_start_date"
+            label="Start Date"
+            name="inspector_start_date"
+            placeholder="yyyy-mm-dd"
+          />
+        </Col>
+        <Col
+          span={12}
+        >
+          <Field
+            component={[Function]}
+            id="inspector_end_date"
+            label="End Date"
+            name="inspector_end_date"
+            placeholder="yyyy-mm-dd"
+          />
+        </Col>
+      </Row>
+      <br />
+      <Divider />
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h5>
+            Upload Signature
+          </h5>
+        </Col>
+      </Row>
+      <Row>
+        <Col
+          span={24}
+        >
+          <Field
+            component={[Function]}
+            id="PartySignatureUpload"
+            name="PartySignatureUpload"
+            onFileChange={[Function]}
+          />
+        </Col>
+      </Row>
+    </Connect(AuthorizationWrapper)>
     <div
       className="right center-mobile"
     >
-      <Popconfirm
+      <ForwardRef
         cancelText="No"
         disabled={false}
-        icon={
-          <Icon
-            theme="filled"
-            type="exclamation-circle"
-          />
-        }
+        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
         okType="primary"
         onConfirm={[MockFunction]}
@@ -330,7 +419,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
         >
           Cancel
         </Button>
-      </Popconfirm>
+      </ForwardRef>
       <Button
         block={false}
         className="full-mobile"

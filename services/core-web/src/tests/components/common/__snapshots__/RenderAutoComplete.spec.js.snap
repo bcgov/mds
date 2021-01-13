@@ -3,13 +3,20 @@
 exports[`RenderAutoComplete renders properly 1`] = `
 <FormItem
   hasFeedback={false}
-  label=""
   validateStatus=""
 >
-  <AutoComplete
+  <Select
     allowClear={true}
-    choiceTransitionName="zoom"
-    dataSource={
+    bordered={true}
+    choiceTransitionName=""
+    defaultActiveFirstOption={false}
+    disabled={false}
+    dropdownMatchSelectWidth={true}
+    filterOption={[Function]}
+    notFoundContent="Not Found"
+    onSearch={[Function]}
+    onSelect={[MockFunction]}
+    options={
       Object {
         "mines": Array [
           Object {
@@ -36,23 +43,15 @@ exports[`RenderAutoComplete renders properly 1`] = `
         ],
       }
     }
-    defaultActiveFirstOption={false}
-    defaultValue=""
-    disabled={false}
-    dropdownMatchSelectWidth={true}
-    filterOption={[Function]}
-    notFoundContent="Not Found"
-    onChange={[Function]}
-    onSelect={[MockFunction]}
-    optionLabelProp="children"
     placeholder=""
-    showSearch={false}
+    showSearch={true}
     style={
       Object {
         "width": "100%",
       }
     }
     transitionName="slide-up"
+    virtual={false}
   />
 </FormItem>
 `;

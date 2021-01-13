@@ -225,6 +225,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(PermitRequiredReports)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/reports/permit-required-reports"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineTailingsInfo)",
         "type": [Function],
       }
@@ -379,19 +392,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/dashboard/notice-of-work/application/:id/:tab"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(ViewNoticeOfWorkApplication)",
-        "type": [Function],
-      }
-    }
-    exact={true}
-    path="/dashboard/notice-of-work/view-application/:id/:tab"
   />
   <Route
     exact={true}

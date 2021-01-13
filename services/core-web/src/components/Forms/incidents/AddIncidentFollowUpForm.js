@@ -6,8 +6,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, FieldArray } from "redux-form";
-import { Form, Col, Row, Icon } from "antd";
-import { required, dateNotInFuture } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { required, dateNotInFuture, validateSelectOptions } from "@common/utils/Validate";
 import { MINE_INCIDENT_DOCUMENT } from "@common/constants/API";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -42,7 +45,7 @@ const renderRecommendations = ({ fields }) => [
     />
   )),
   <LinkButton onClick={() => fields.push({})}>
-    <Icon type="plus" className="padding-small--right padding-large--bottom" />
+    <PlusOutlined className="padding-sm--right padding-lg--bottom" />
     {fields.length ? `Add another recommendation` : `Add a recommendation`}
   </LinkButton>,
 ];
@@ -69,7 +72,7 @@ export class AddIncidentFollowUpForm extends Component {
       <div>
         <Form layout="vertical">
           <Row gutter={48}>
-            <Col>
+            <Col span={24}>
               <h4>Follow-up Information</h4>
 
               {!this.props.hasFatalities && (
@@ -101,11 +104,11 @@ export class AddIncidentFollowUpForm extends Component {
                 <Field
                   id="followup_investigation_type_code"
                   name="followup_investigation_type_code"
-                  label="Was it escalated to EMPR investigation?*"
+                  label="Was it escalated to EMLI investigation?*"
                   placeholder="Please choose one"
                   component={renderConfig.SELECT}
                   data={this.filteredFollowupActions()}
-                  validate={[required]}
+                  validate={[required, validateSelectOptions(this.filteredFollowupActions())]}
                 />
               </Form.Item>
 
@@ -152,6 +155,7 @@ export class AddIncidentFollowUpForm extends Component {
                   label="Incident status*"
                   component={renderConfig.SELECT}
                   data={this.props.incidentStatusCodeOptions}
+                  validate={[validateSelectOptions(this.props.incidentStatusCodeOptions)]}
                 />
               </Form.Item>
             </Col>

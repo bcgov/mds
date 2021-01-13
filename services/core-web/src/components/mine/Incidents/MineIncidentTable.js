@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { Button, Icon, Popconfirm } from "antd";
+import { Button, Popconfirm } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import {
   getIncidentDeterminationHash,
@@ -23,7 +24,6 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
@@ -265,12 +265,12 @@ export class MineIncidentTable extends Component {
         ),
       },
       {
-        title: "EMPR Action",
+        title: "EMLI Action",
         key: "followup_action",
         dataIndex: "followup_action",
         className: hideColumn(true),
         render: (action, record) => (
-          <div title="EMPR Action" className={hideColumn(true)}>
+          <div title="EMLI Action" className={hideColumn(true)}>
             {action ? action.description : record.incident.followup_type_code}
           </div>
         ),
@@ -343,7 +343,7 @@ export class MineIncidentTable extends Component {
               ghost
               onClick={(event) => record.openViewMineIncidentModal(event, record.incident)}
             >
-              <Icon type="eye" className="icon-lg icon-svg-filter" />
+              <EyeOutlined className="icon-lg icon-svg-filter" />
             </Button>
             <AuthorizationWrapper permission={Permission.ADMIN}>
               <Popconfirm
@@ -388,11 +388,6 @@ export class MineIncidentTable extends Component {
             : null,
           align: "left",
           pagination: this.props.isPaginated,
-          locale: {
-            emptyText: (
-              <NullScreen type={this.props.isDashboardView ? "no-results" : "incidents"} />
-            ),
-          },
         }}
       />
     );

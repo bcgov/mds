@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Radio, Icon, Divider } from "antd";
+import { Radio, Divider } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 // Ant design Carousel is based on react-slick and kind of sucks. Tabbing breaks it, dynamically rendering content breaks it,
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
 import { Carousel } from "react-responsive-carousel";
@@ -10,24 +11,28 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { createParty, setAddPartyFormState } from "@common/actionCreators/partiesActionCreator";
 import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import AddQuickPartyForm from "@/components/Forms/parties/AddQuickPartyForm";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import LinkButton from "../LinkButton";
 
 const propTypes = {
   childProps: PropTypes.objectOf(PropTypes.any),
   content: PropTypes.func,
   clearOnSubmit: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
   createParty: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
   // addPartyFormState is selected from the partiesReducer
   addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
   childProps: {
     title: "",
   },
+  closeModal: () => {},
   content: () => {},
   initialValues: {},
 };
@@ -60,7 +65,10 @@ export class AddPartyComponentWrapper extends Component {
   };
 
   resetAddPartyForm = () => {
-    this.props.setAddPartyFormState(defaultAddPartyFormState);
+    this.props.setAddPartyFormState({
+      ...this.props.addPartyFormState,
+      ...defaultAddPartyFormState,
+    });
   };
 
   showAddPartyForm = () => {
@@ -90,7 +98,7 @@ export class AddPartyComponentWrapper extends Component {
     <div>
       <h2>Add new {this.props.addPartyFormState.partyLabel}</h2>
       <LinkButton onClick={this.resetAddPartyForm}>
-        <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+        <ArrowLeftOutlined className="padding-sm--right" />
         Back to: {this.props.childProps.title}
       </LinkButton>
       <Divider />
@@ -107,7 +115,11 @@ export class AddPartyComponentWrapper extends Component {
             <Radio.Button value={false}>Company</Radio.Button>
           </Radio.Group>
         )}
-        <AddQuickPartyForm onSubmit={this.handlePartySubmit} isPerson={this.state.isPerson} />
+        <AddQuickPartyForm
+          onSubmit={this.handlePartySubmit}
+          isPerson={this.state.isPerson}
+          provinceOptions={this.props.provinceOptions}
+        />
       </div>
     </div>
   );
@@ -149,6 +161,7 @@ export class AddPartyComponentWrapper extends Component {
 
 const mapStateToProps = (state) => ({
   addPartyFormState: getAddPartyFormState(state),
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -163,7 +176,4 @@ const mapDispatchToProps = (dispatch) =>
 AddPartyComponentWrapper.propTypes = propTypes;
 AddPartyComponentWrapper.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPartyComponentWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPartyComponentWrapper);

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Icon, Button } from "antd";
+import { Button } from "antd";
+import { SyncOutlined } from "@ant-design/icons";
 import { store } from "@/App";
 
 /**
@@ -42,12 +43,12 @@ const RefreshButton = (props) => {
 
   return props.isNestedButton ? (
     <button type="button" className="full" onClick={triggerRefresh}>
-      <Icon type="sync" theme="outlined" style={{ fontSize: "18px" }} className="padding-small" />
+      <SyncOutlined style={{ fontSize: "18px" }} className="padding-sm" />
       Refresh mine data
     </button>
   ) : (
     <Button type="primary" onClick={triggerRefresh} className="btn--middle">
-      <Icon type="sync" theme="outlined" className="icon-sm" />
+      <SyncOutlined className="icon-sm" />
     </Button>
   );
 };

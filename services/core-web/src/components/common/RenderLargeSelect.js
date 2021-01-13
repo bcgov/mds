@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, AutoComplete, Input, Icon } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 
 /**
  * @constant RenderLargeSelect - Ant Design `AutoComplete` component for redux-form -- being used instead of 'RenderSelect' for large data sets that require a limit.
@@ -11,8 +13,16 @@ const propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   dataSource: PropTypes.arrayOf(PropTypes.any).isRequired,
-  selectedOption: PropTypes.shape({ key: PropTypes.string, label: PropTypes.label }).isRequired,
-  input: PropTypes.shape({ value: PropTypes.string, onChange: PropTypes.func }).isRequired,
+  selectedOption: PropTypes.shape({
+    key: PropTypes.string,
+    label: PropTypes.label,
+    value: PropTypes.string,
+  }).isRequired,
+  input: PropTypes.shape({
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+  }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.string,
@@ -20,6 +30,7 @@ const propTypes = {
   }).isRequired,
   handleSearch: PropTypes.func,
   handleSelect: PropTypes.func,
+  handleFocus: PropTypes.func,
 };
 
 const doNothing = () => {};
@@ -28,6 +39,7 @@ const defaultProps = {
   placeholder: "",
   handleSelect: doNothing,
   handleSearch: doNothing,
+  handleFocus: doNothing,
 };
 
 const RenderLargeSelect = (props) => (
@@ -42,28 +54,28 @@ const RenderLargeSelect = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <AutoComplete
+    <Select
+      virtual={false}
+      showSearch
       id={props.id}
       defaultActiveFirstOption={false}
       notFoundContent="Not Found"
       dropdownMatchSelectWidth
       backfill
       style={{ width: "100%" }}
-      dataSource={props.input.value.length > 0 ? props.dataSource : []}
+      options={props.dataSource}
       placeholder={props.placeholder}
       filterOption={() => true}
       onSearch={props.handleSearch}
       onSelect={props.handleSelect}
       onChange={props.input.onChange}
-      onBlur={props.input.onChange(props.selectedOption.key)}
-      value={props.selectedOption.key}
+      onBlur={props.input.onChange(props.selectedOption.value)}
       {...props.input}
-    >
-      <Input
-        suffix={<Icon type="search" className="certain-category-icon" />}
-        value={props.selectedOption.label}
-      />
-    </AutoComplete>
+      onFocus={(event) => {
+        props.handleFocus();
+        props.input.onFocus(event);
+      }}
+    />
   </Form.Item>
 );
 

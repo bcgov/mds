@@ -40,24 +40,6 @@ describe("MineSecurityInfo", () => {
     expect(component).toMatchSnapshot();
   });
 
-  it("GetSum is called for confiscated bonds", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
-    const instance = component.instance();
-    const getSumSpy = jest.spyOn(instance, "getSum");
-    instance.getSum("CON", props.permits[0]);
-    expect(getSumSpy).toHaveBeenCalledWith("CON", props.permits[0]);
-    expect(instance.getSum("CON", props.permits[0])).toEqual(1000);
-  });
-
-  it("GetSum is called for active bonds", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
-    const instance = component.instance();
-    const getSumSpy = jest.spyOn(instance, "getSum");
-    instance.getSum("ACT", props.permits[0]);
-    expect(getSumSpy).toHaveBeenCalledWith("ACT", props.permits[0]);
-    expect(instance.getSum("ACT", props.permits[0])).toEqual(1200);
-  });
-
   it("getAmountSum is called for invoice amounts", () => {
     const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
     const instance = component.instance();
@@ -65,16 +47,5 @@ describe("MineSecurityInfo", () => {
     instance.getAmountSum(props.permits[0]);
     expect(getAmountSumSpy).toHaveBeenCalledWith(props.permits[0]);
     expect(instance.getAmountSum(props.permits[0])).toEqual(1451);
-  });
-
-  it("getBalance is called to calculate the amount remaining from the confiscated total", () => {
-    const component = shallow(<MineSecurityInfo {...dispatchProps} {...props} />);
-    const instance = component.instance();
-    const getBalanceSpy = jest.spyOn(instance, "getBalance");
-    instance.getBalance(props.permits[0]);
-    instance.getSum("CON", props.permits[0]);
-    instance.getAmountSum(props.permits[0]);
-    expect(getBalanceSpy).toHaveBeenCalledWith(props.permits[0]);
-    expect(instance.getBalance(props.permits[0])).toEqual(-451);
   });
 });

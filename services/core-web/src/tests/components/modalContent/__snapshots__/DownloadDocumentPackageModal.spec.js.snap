@@ -3,14 +3,18 @@
 exports[`DownloadDocumentPackageModal renders properly 1`] = `
 <div>
   <h4>
-    Submission Documents (vFCBC/NROS)
+    vFCBC/NROS Application Files
   </h4>
   <NOWSubmissionDocuments
+    displayTableDescription={false}
     documents={Array []}
+    hideImportStatusColumn={false}
+    hideJobStatusColumn={false}
+    importNowSubmissionDocumentsJob={Object {}}
     now_application_guid=""
     selectedRows={
       Object {
-        "selectedSubmissionRows": Array [],
+        "selectedSubmissionRows": undefined,
         "setSelectedSubmissionRows": [Function],
       }
     }
@@ -22,11 +26,9 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <Connect(NOWDocuments)
     documents={Array []}
     isViewMode={true}
-    mine_guid=""
-    now_application_guid=""
     selectedRows={
       Object {
-        "selectedCoreRows": Array [],
+        "selectedCoreRows": undefined,
         "setSelectedCoreRows": [Function],
       }
     }
@@ -35,15 +37,10 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <div
     className="right center-mobile padding-md--top"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       placement="topRight"
@@ -60,7 +57,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"
@@ -68,15 +65,28 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
       htmlType="button"
       loading={false}
       onClick={[Function]}
-      type="primary"
+      type="tertiary"
     >
-      <Icon
-        className="padding-small--right icon-sm"
-        theme="outlined"
-        type="download"
+      <ForwardRef(DownloadOutlined)
+        className="padding-sm--right icon-sm"
       />
       Download Referral Package
     </Button>
+    <Connect(NOWActionWrapper)
+      permission="role_edit_permits"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="primary"
+      >
+        Save and Exit
+      </Button>
+    </Connect(NOWActionWrapper)>
   </div>
 </div>
 `;

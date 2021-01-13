@@ -2,43 +2,44 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
-  <withStore(Table)
-    align="left"
-    columns={
+  <CoreEditableTable
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "supply_source_description",
-          "key": "supply_source_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Source",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "supply_source_description",
         },
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Activity",
+          "value": "activity_type_description",
         },
         Object {
-          "dataIndex": "water_use_description",
-          "key": "water_use_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Water Use",
+          "value": "water_use_description",
         },
         Object {
-          "dataIndex": "estimate_rate",
-          "key": "estimate_rate",
-          "render": [Function],
-          "title": "Estimate (m/s)",
+          "component": [Function],
+          "title": "Estimate(m/s)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "estimate_rate",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No data",
-      }
-    }
-    pagination={false}
+    type="Activity"
   />
   <br />
   <h4>

@@ -1,31 +1,45 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Button, Progress, Icon, Popconfirm } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import { Button, Progress, Popconfirm } from "antd";
 import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications/NOWSubmissionDocuments";
-import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import * as Permission from "@/constants/permissions";
+import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {
   submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  mineGuid: PropTypes.string.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   noticeOfWorkGuid: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  handleSavePackage: PropTypes.func.isRequired,
   cancelDownload: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   closeModal: PropTypes.func.isRequired,
+  coreDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
+  submissionDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
+  type: PropTypes.string.isRequired,
 };
+
+const defaultProps = {
+  importNowSubmissionDocumentsJob: {},
+};
+
 export const DownloadDocumentPackageModal = (props) => {
-  const [selectedCoreRows, setSelectedCoreRows] = useState([]);
-  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState([]);
+  const [selectedCoreRows, setSelectedCoreRows] = useState(props.coreDocumentsInPackage);
+  const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
+    props.submissionDocumentsInPackage
+  );
   return props.documentDownloadState.downloading ? (
     <div className="inline-flex flex-flow-column horizontal-center">
       <h4>Downloading Selected Files...</h4>
       <Progress
-        className="padding-md--top padding-large--bottom"
+        className="padding-md--top padding-lg--bottom"
         strokeColor={COLOR.violet}
         type="circle"
         percent={Math.round(
@@ -38,17 +52,16 @@ export const DownloadDocumentPackageModal = (props) => {
     </div>
   ) : (
     <div>
-      <h4>Submission Documents (vFCBC/NROS)</h4>
+      <h4>vFCBC/NROS Application Files</h4>
       <NOWSubmissionDocuments
         now_application_guid={props.noticeOfWorkGuid}
         documents={props.submissionDocuments}
+        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
         selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
       />
       <br />
       <h4>Additional Documents</h4>
       <NOWDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        mine_guid={props.mineGuid}
         documents={props.coreDocuments}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
@@ -66,12 +79,24 @@ export const DownloadDocumentPackageModal = (props) => {
         </Popconfirm>
         <Button
           className="full-mobile"
-          type="primary"
+          type="tertiary"
           onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
         >
-          <Icon type="download" theme="outlined" className="padding-small--right icon-sm" />
+          <DownloadOutlined className="padding-sm--right icon-sm" />
           Download Referral Package
         </Button>
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={props.type === "FNC" ? "CON" : props.type}
+        >
+          <Button
+            type="primary"
+            className="full-mobile"
+            onClick={() => props.handleSavePackage(selectedCoreRows, selectedSubmissionRows)}
+          >
+            Save and Exit
+          </Button>
+        </NOWActionWrapper>
       </div>
     </div>
   );
@@ -82,4 +107,6 @@ const mapStateToProps = (state) => ({
 });
 
 DownloadDocumentPackageModal.propTypes = propTypes;
+DownloadDocumentPackageModal.defaultProps = defaultProps;
+
 export default connect(mapStateToProps)(DownloadDocumentPackageModal);

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { AutoComplete } from "antd";
 import { connect } from "react-redux";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import { getMineWithoutStore } from "@common/utils/actionlessNetworkCalls";
@@ -26,7 +25,6 @@ const propTypes = {
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
-  showCard: PropTypes.bool,
   majorMineOnly: PropTypes.bool,
   onMineSelect: PropTypes.func,
   fullWidth: PropTypes.bool,
@@ -36,9 +34,8 @@ const propTypes = {
 const defaultProps = {
   placeholder: "Search for a mine by name",
   disabled: false,
-  showCard: false,
   majorMineOnly: undefined,
-  onMineSelect: () => {},
+  onMineSelect: () => { },
   meta: {},
   label: "Select a mine",
   input: { value: "" },
@@ -82,11 +79,10 @@ export class RenderMineSelect extends Component {
   };
 
   transformData = (data) =>
-    data.map(({ mine_guid, mine_name, mine_no }) => (
-      <AutoComplete.Option key={mine_guid} value={mine_guid}>
-        {`${mine_name} - ${mine_no}`}
-      </AutoComplete.Option>
-    ));
+    data.map(({ mine_guid, mine_name, mine_no }) => ({
+      label: `${mine_name} - ${mine_no}`,
+      value: mine_guid,
+    }));
 
   render() {
     const isLoaded = this.state.selectedMine || false;
@@ -97,6 +93,7 @@ export class RenderMineSelect extends Component {
           {...this.props}
           placeholder="Search for a mine by name"
           handleSelect={this.handleSelect}
+          {...this.props.input}
           data={this.transformData(this.props.mineNameList)}
           handleChange={this.handleChange}
         />

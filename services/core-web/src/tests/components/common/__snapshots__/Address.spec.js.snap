@@ -11,12 +11,9 @@ exports[`Address renders properly 1`] = `
   <div
     className="inline-flex"
   >
-    <div>
-      <Icon
-        className="icon-sm"
-        type="contacts"
-      />
-    </div>
+    <ForwardRef(ContactsOutlined)
+      className="icon-sm padding-sm--right"
+    />
     <p>
       <span
         key="N/A"

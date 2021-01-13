@@ -179,6 +179,6 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_application_status_code='REC',
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
-
+        new_now.originating_system = 'VFCBC'
         new_now.save()
         return new_now, 201

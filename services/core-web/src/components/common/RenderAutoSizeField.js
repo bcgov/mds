@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Input } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Input } from "antd";
 
 /**
  * @constant  RenderAutoSizeField - Ant Design `Input` autosize component for redux-form. (useful for notes/description)
@@ -13,15 +15,16 @@ const propTypes = {
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
+  minRows: PropTypes.number,
 };
 
 const defaultProps = {
   placeholder: "",
   label: "",
   disabled: false,
+  minRows: 4,
 };
 
-const { TextArea } = Input;
 const RenderAutoSizeField = (props) => (
   <Form.Item
     label={props.label}
@@ -35,11 +38,11 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea
+    <Input.TextArea
       disabled={props.disabled}
       id={props.id}
       {...props.input}
-      autoSize={{ minRows: 4 }}
+      autoSize={{ minRows: props.minRows }}
       placeholder={props.placeholder}
     />
   </Form.Item>

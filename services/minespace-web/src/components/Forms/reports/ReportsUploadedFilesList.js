@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Icon, Button } from "antd";
+import { Col, Row, Popconfirm, Button, Icon } from "antd";
 
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -11,8 +11,8 @@ export const ReportsUploadedFilesList = (props) =>
   (props.files &&
     props.files.length > 0 &&
     props.files.map((file) => (
-      <div key={file.mine_document_guid} className="padding-small margin-small background-bg">
-        <Row className="padding-small">
+      <div key={file.mine_document_guid} className="padding-sm margin-small background-bg">
+        <Row className="padding-sm">
           <Col span={21}>
             <p className="uploaded-file left">{file.document_name}</p>
           </Col>

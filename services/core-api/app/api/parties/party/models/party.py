@@ -10,11 +10,11 @@ from sqlalchemy.orm import validates
 from app.extensions import db
 from werkzeug.exceptions import BadRequest
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.parties.party.models.address import Address
 
 
-class Party(AuditMixin, Base):
+class Party(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'party'
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String, nullable=True)
@@ -23,18 +23,27 @@ class Party(AuditMixin, Base):
     phone_no = db.Column(db.String, nullable=False)
     phone_ext = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
-    effective_date = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
-    expiry_date = db.Column(db.DateTime)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
     address = db.relationship('Address', lazy='joined')
     job_title = db.Column(db.String, nullable=True)
     postnominal_letters = db.Column(db.String, nullable=True)
     idir_username = db.Column(db.String, nullable=True)
+    signature = db.Column(db.String, nullable=True)
+    now_party_appt = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        "and_(NOWPartyAppointment.party_guid == Party.party_guid, NOWPartyAppointment.deleted_ind==False)"
+    )
 
-    business_role_appts = db.relationship('PartyBusinessRoleAppointment', lazy='joined')
+    business_role_appts = db.relationship(
+        'PartyBusinessRoleAppointment',
+        lazy='dynamic',
+        primaryjoin=
+        "and_(Party.party_guid == PartyBusinessRoleAppointment.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)",
+    )
     party_orgbook_entity = db.relationship(
         'PartyOrgBookEntity', backref='party_orgbook_entity', uselist=False, lazy='select')
 
@@ -43,10 +52,21 @@ class Party(AuditMixin, Base):
         return self.first_name + ' ' + self.party_name if self.first_name else self.party_name
 
     @hybrid_property
+    def phone(self):
+        if (self.phone_no is not None):
+            return self.phone_no + (f' x{self.phone_ext}' if self.phone_ext else '')
+        else:
+            return None
+
+    @hybrid_property
+    def first_address(self):
+        return self.address[0] if self.address else None
+
+    @hybrid_property
     def business_roles_codes(self):
         return [
             x.party_business_role_code for x in self.business_role_appts
-            if (not x.end_date or x.end_date > datetime.utcnow())
+            if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
 
     @name.expression
@@ -64,8 +84,6 @@ class Party(AuditMixin, Base):
             'phone_no': self.phone_no,
             'phone_ext': self.phone_ext,
             'email': self.email,
-            'effective_date': self.effective_date.isoformat(),
-            'expiry_date': self.expiry_date.isoformat() if self.expiry_date is not None else None,
             'party_name': self.party_name,
             'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}],
@@ -82,7 +100,6 @@ class Party(AuditMixin, Base):
             context.update({
                 'mine_party_appt': [item.json() for item in self.mine_party_appt],
             })
-
         return context
 
     @classmethod
@@ -117,24 +134,24 @@ class Party(AuditMixin, Base):
 
     @classmethod
     def create(
-        cls,
+            cls,
                                                  # Required fields
-        party_name,
-        phone_no,
-        party_type_code,
+            party_name,
+            phone_no,
+            party_type_code,
                                                  # Optional fields
-        address_type_code=None,
+            address_type_code=None,
                                                  # Nullable fields
-        email=None,
-        first_name=None,
-        phone_ext=None,
-        suite_no=None,
-        address_line_1=None,
-        address_line_2=None,
-        city=None,
-        sub_division_code=None,
-        post_code=None,
-        add_to_session=True):
+            email=None,
+            first_name=None,
+            phone_ext=None,
+            suite_no=None,
+            address_line_1=None,
+            address_line_2=None,
+            city=None,
+            sub_division_code=None,
+            post_code=None,
+            add_to_session=True):
         party = cls(
                                                  # Required fields
             party_name=party_name,

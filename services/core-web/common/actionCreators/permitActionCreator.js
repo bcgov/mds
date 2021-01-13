@@ -22,7 +22,10 @@ export const createPermit = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -229,10 +232,15 @@ export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatc
 
 export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(null, null, permitAmdendmentGuid, permitConditionGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+        null,
+        null,
+        permitAmdendmentGuid,
+        permitConditionGuid
+      )}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -244,9 +252,37 @@ export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid)
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const setEditingConditionFlag = (payload) => (dispatch) => {
   dispatch(permitActions.storeEditingConditionFlag(payload));
-}
+};
+
+export const updatePermitCondition = (permitConditionGuid, permitAmdendmentGuid, payload) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+        null,
+        null,
+        permitAmdendmentGuid,
+        permitConditionGuid
+      )}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated permit condition`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading()));
+};

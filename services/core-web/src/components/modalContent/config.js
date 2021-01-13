@@ -15,7 +15,6 @@ import AddReportModal from "./AddReportModal";
 import ViewIncidentModal from "./ViewIncidentModal";
 import EditNoticeOfWorkDocumentModal from "./EditNoticeOfWorkDocumentModal";
 import ChangeNOWMineModal from "./ChangeNOWMineModal";
-import UpdateNOWLeadInspectorModal from "./UpdateNOWLeadInspectorModal";
 import UpdateNOWStatusModal from "./UpdateNOWStatusModal";
 import DownloadDocumentPackageModal from "./DownloadDocumentPackageModal";
 import EditFinalPermitDocumentPackage from "./EditFinalPermitDocumentPackage";
@@ -27,11 +26,19 @@ import ViewBondModal from "./ViewBondModal";
 import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
+import DeleteConditionModal from "./DeleteConditionModal";
+import ViewConditionModal from "./ViewConditionModal";
+import AddQuickPartyModal from "./AddQuickPartyModal";
+import UpdateStatusGenerateLetterModal from "./UpdateStatusGenerateLetterModal";
+import NOWProgressModal from "./NOWProgressModal";
+import NOWStatusReasonModal from "./NOWStatusReasonModal";
+import NOWDelayModal from "./NOWDelayModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
+  ADD_QUICK_PARTY: AddQuickPartyModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,
@@ -50,7 +57,6 @@ export const modalConfig = {
   DOWNLOAD_DOC_PACKAGE: DownloadDocumentPackageModal,
   EDIT_FINAL_PERMIT_DOC_PACKAGE: EditFinalPermitDocumentPackage,
   NOW_REVIEW: NOWReviewModal,
-  UPDATE_NOW_LEAD_INSPECTOR: UpdateNOWLeadInspectorModal,
   UPDATE_NOW_STATUS: UpdateNOWStatusModal,
   CHANGE_NOW_LOCATION: ChangeNOWLocationModal,
   ADD_BOND_MODAL: AddBondModal,
@@ -58,6 +64,12 @@ export const modalConfig = {
   TRANSFER_BOND_MODAL: TransferBondModal,
   CLOSE_BOND_MODAL: CloseBondModal,
   ADD_RECLAMATION_INVOICE_MODAL: AddReclamationInvoiceModal,
+  DELETE_CONDITION_MODAL: DeleteConditionModal,
+  NOW_STATUS_LETTER_MODAL: UpdateStatusGenerateLetterModal,
+  NOW_PROGRESS_MODAL: NOWProgressModal,
+  NOW_STATUS_REASON_MODAL: NOWStatusReasonModal,
+  NOW_DELAY_MODAL: NOWDelayModal,
+  VIEW_CONDITION_MODAL: ViewConditionModal,
 };
 
 export default modalConfig;

@@ -76,11 +76,16 @@ exports[`MineSummary renders properly 1`] = `
     minePermits={
       Array [
         Object {
-          "amendments": Array [
+          "active_bond_total": 700,
+          "assessed_liability_total": 8000000,
+          "confiscated_bond_total": 500,
+          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+          "permit_amendments": Array [
             Object {
               "authorization_end_date": null,
               "description": "Initial permit issued.",
               "issue_date": "2019-04-01",
+              "liability_adjustment": "1000000",
               "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
               "permit_amendment_status_code": "ACT",
               "permit_amendment_type_code": "OGP",
@@ -94,10 +99,27 @@ exports[`MineSummary renders properly 1`] = `
                   "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                 },
               ],
-              "security_total": "1000000",
+            },
+            Object {
+              "authorization_end_date": null,
+              "description": "Amendment",
+              "issue_date": "2020-04-01",
+              "liability_adjustment": "7000000",
+              "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+              "permit_amendment_status_code": "ACT",
+              "permit_amendment_type_code": "AMD",
+              "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+              "received_date": null,
+              "related_documents": Array [
+                Object {
+                  "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                  "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                  "document_name": "Adams_amendment_1.pdf",
+                  "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                },
+              ],
             },
           ],
-          "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
           "permit_guid": "1628847c-060b-45f2-990f-815877174801",
           "permit_id": "283",
           "permit_no": "C-12345",
@@ -213,9 +235,7 @@ exports[`MineSummary renders properly 1`] = `
   />
   <br />
   <div>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -241,11 +261,16 @@ exports[`MineSummary renders properly 1`] = `
           PartyRelationships={Array []}
           permit={
             Object {
-              "amendments": Array [
+              "active_bond_total": 700,
+              "assessed_liability_total": 8000000,
+              "confiscated_bond_total": 500,
+              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              "permit_amendments": Array [
                 Object {
                   "authorization_end_date": null,
                   "description": "Initial permit issued.",
                   "issue_date": "2019-04-01",
+                  "liability_adjustment": "1000000",
                   "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
                   "permit_amendment_status_code": "ACT",
                   "permit_amendment_type_code": "OGP",
@@ -259,10 +284,27 @@ exports[`MineSummary renders properly 1`] = `
                       "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
                     },
                   ],
-                  "security_total": "1000000",
+                },
+                Object {
+                  "authorization_end_date": null,
+                  "description": "Amendment",
+                  "issue_date": "2020-04-01",
+                  "liability_adjustment": "7000000",
+                  "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+                  "permit_amendment_status_code": "ACT",
+                  "permit_amendment_type_code": "AMD",
+                  "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                  "received_date": null,
+                  "related_documents": Array [
+                    Object {
+                      "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                      "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                      "document_name": "Adams_amendment_1.pdf",
+                      "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                    },
+                  ],
                 },
               ],
-              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
               "permit_guid": "1628847c-060b-45f2-990f-815877174801",
               "permit_id": "283",
               "permit_no": "C-12345",
@@ -272,9 +314,7 @@ exports[`MineSummary renders properly 1`] = `
         />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -314,9 +354,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -329,7 +368,7 @@ exports[`MineSummary renders properly 1`] = `
                   No inspections in NRIS
                 </span>
               </div>
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -349,9 +388,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -372,7 +410,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -392,9 +430,8 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <Row
+            <ForwardRef
               align="middle"
-              gutter={0}
               justify="center"
               type="flex"
             >
@@ -415,7 +452,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </Row>
+            </ForwardRef>
           }
         >
           <div
@@ -428,9 +465,7 @@ exports[`MineSummary renders properly 1`] = `
         </Card>
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -459,9 +494,7 @@ exports[`MineSummary renders properly 1`] = `
         <Divider />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         key="e2629897-053e-4218-9299-479375e47f34"
         lg={8}
@@ -482,9 +515,7 @@ exports[`MineSummary renders properly 1`] = `
         />
       </Col>
     </Row>
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >

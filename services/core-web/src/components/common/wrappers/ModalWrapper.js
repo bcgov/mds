@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Modal, Icon, Button, Popconfirm } from "antd";
+import { Modal, Button, Popconfirm } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import { closeModal } from "@common/actions/modalActions";
 import {
   getIsModalOpen,
@@ -63,7 +64,7 @@ export class ModalWrapper extends Component {
       >
         {this.props.isViewOnly ? (
           <Button ghost className="modal__close" onClick={(event) => this.closeModal(event)}>
-            <Icon type="close" />
+            <CloseOutlined className="icon-sm" />
           </Button>
         ) : (
           <Popconfirm
@@ -74,7 +75,7 @@ export class ModalWrapper extends Component {
             onConfirm={(event) => this.closeModal(event)}
           >
             <Button ghost className="modal__close">
-              <Icon type="close" />
+              <CloseOutlined className="icon-sm" />
             </Button>
           </Popconfirm>
         )}

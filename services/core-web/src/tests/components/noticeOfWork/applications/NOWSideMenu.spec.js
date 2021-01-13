@@ -9,6 +9,7 @@ const setupReducerProps = () => {
   reducerProps.history = { push: jest.fn() };
   reducerProps.location = {};
   reducerProps.noticeOfWorkType = "PLA";
+  reducerProps.tabSection = "application";
 };
 
 beforeEach(() => {

@@ -25,7 +25,9 @@ class Validator {
 
   LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
 
-  CURRENCY_REGEX = /^\d{1,8}(?:\.\d{0,2})?$/;
+  CURRENCY_REGEX = /^-?\d{1,8}(?:\.\d{0,2})?$/;
+
+  PROTOCOL_REGEX = /^https?:\/\/(.*)$/;
 
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
@@ -50,14 +52,18 @@ class Validator {
   checkCurrency(number) {
     return this.CURRENCY_REGEX.test(number);
   }
+
+  checkProtocol(url) {
+    return this.PROTOCOL_REGEX.test(url);
+  }
 }
 
 export const Validate = new Validator();
 
-export const required = (value) => (value ? undefined : "This is a required field");
+export const required = (value) => (value || value === 0 ? undefined : "This is a required field");
 
 export const requiredRadioButton = (value) =>
-  value !== null ? undefined : "This is a required field";
+  value !== null && value !== undefined ? undefined : "This is a required field";
 
 export const requiredList = (value) =>
   value && value.length > 0 ? undefined : "This is a required field";
@@ -101,6 +107,9 @@ export const phoneNumber = (value) =>
 export const postalCode = (value) =>
   value && !Validate.checkPostalCode(value) ? "Invalid postal code e.g. X1X1X1" : undefined;
 
+export const protocol = (value) =>
+  value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;
+
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;
 
@@ -139,6 +148,15 @@ export const validateIncidentDate = memoize((reportedDate) => (value) =>
     ? "Incident date and time cannot occur before reporting occurence."
     : undefined
 );
+
+// eslint-disable-next-line consistent-return
+export const validateSelectOptions = memoize((data) => (value) => {
+  if (value && data.length > 0) {
+    return data.find((opt) => opt.value === value) !== undefined
+      ? undefined
+      : "Invalid. Select an option provided in the dropdown.";
+  }
+});
 
 export const validateDateRanges = (
   existingAppointments,

@@ -65,8 +65,43 @@ export const generateNoticeOfWorkApplicationDocument = (
       };
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export default generateNoticeOfWorkApplicationDocument;
+export const exportNoticeOfWorkApplicationDocument = (
+  documentTypeCode,
+  payload,
+  message = "Successfully exported Notice of Work document",
+  onDocumentRetrieved = () => {}
+) => (dispatch) => {
+  dispatch(request(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      const token = { token: response.data.token };
+      const docWindow = window.open(
+        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
+        "_blank"
+      );
+      docWindow.onbeforeunload = () => {
+        notification.success({
+          message,
+          duration: 10,
+        });
+        dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+        onDocumentRetrieved();
+      };
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .finally(() => dispatch(hideLoading("modal")));
+};

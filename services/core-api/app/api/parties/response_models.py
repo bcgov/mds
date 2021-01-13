@@ -1,6 +1,12 @@
 from app.extensions import api
 from flask_restplus import fields
 
+
+class Date(fields.Raw):
+    def format(self, value):
+        return value.strftime("%Y-%m-%d") if value else None
+
+
 MINE_DOCUMENT = api.model(
     'MineDocument', {
         'mine_document_guid': fields.String,
@@ -21,6 +27,13 @@ MINE_PARTY_APPT_TYPE_MODEL = api.model(
         'active_ind': fields.Boolean
     })
 
+PARTY_BUSINESS_ROLE = api.model(
+    'PartyBusinessRoleCode', {
+        'party_business_role_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
+
 MINE_PARTY_APPT = api.model(
     'MinePartyAppointment', {
         'mine_party_appt_guid': fields.String,
@@ -32,6 +45,21 @@ MINE_PARTY_APPT = api.model(
         'start_date': fields.Date,
         'end_date': fields.Date,
         'documents': fields.Nested(MINE_DOCUMENT)
+    })
+
+NOW_APPLICATION_MODEL = api.model('NOWApplication', {
+    'now_application_guid': fields.String,
+    'now_number': fields.String,
+    'submitted_date': Date,
+})
+
+NOW_PARTY_APPOINTMENT = api.model(
+    'NOW_PARTY_APPOINTMENT', {
+        'now_party_appointment_id': fields.Integer,
+        'mine_party_appt_type_code': fields.String,
+        'mine_party_appt_type_code_description': fields.String,
+        'party_guid': fields.String,
+        'now_application': fields.Nested(NOW_APPLICATION_MODEL),
     })
 
 ADDRESS = api.model(
@@ -59,6 +87,14 @@ PARTY_ORGBOOK_ENTITY = api.model(
         'association_timestamp': fields.DateTime
     })
 
+PARTY_BUSINESS_ROLE_APPT = api.model(
+    'PartyBusinessRoleAppointment', {
+        'party_business_role_appt_id': fields.Integer,
+        'party_business_role_code': fields.String,
+        'start_date': fields.DateTime,
+        'end_date': fields.DateTime,
+    })
+
 PARTY = api.model(
     'Party', {
         'party_guid': fields.String,
@@ -66,8 +102,6 @@ PARTY = api.model(
         'phone_no': fields.String,
         'phone_ext': fields.String,
         'email': fields.String,
-        'effective_date': fields.Date,
-        'expiry_date': fields.Date,
         'party_name': fields.String,
         'name': fields.String,
         'first_name': fields.String,
@@ -76,7 +110,10 @@ PARTY = api.model(
         'job_title': fields.String,
         'postnominal_letters': fields.String,
         'idir_username': fields.String,
-        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True)
+        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
+        'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
+        'signature': fields.String,
+        'now_party_appt': fields.Nested(NOW_PARTY_APPOINTMENT),
     })
 
 PAGINATED_LIST = api.model(

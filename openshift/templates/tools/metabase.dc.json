@@ -314,6 +314,15 @@
                       "pg_isready -h localhost -p 5432"
                     ]
                   },
+                  "preStop": {
+                    "exec": {
+                      "command": [
+                        "/bin/bash",
+                        "-c",
+                        "pg_ctl stop -D /var/lib/pgsql/data/userdata"
+                      ]
+                    }
+                  },
                   "initialDelaySeconds": 20,
                   "timeoutSeconds": 15
                 },

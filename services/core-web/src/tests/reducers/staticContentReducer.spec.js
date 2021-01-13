@@ -25,6 +25,7 @@ const baseExpectedValue = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   partyRelationshipTypes: [],
+  partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],
@@ -40,6 +41,7 @@ const baseExpectedValue = {
   exemptionFeeStatusOptions: [],
   permitConditionTypeOptions: [],
   permitConditionCategoryOptions: [],
+  noticeOfWorkApplicationDelayOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

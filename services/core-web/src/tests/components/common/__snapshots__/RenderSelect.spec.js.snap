@@ -4,23 +4,51 @@ exports[`RenderSelect renders properly 1`] = `
 <FormItem
   hasFeedback={false}
   help={false}
+  id="1"
   label=""
+  onSelect={[Function]}
   validateStatus=""
+  value={null}
 >
   <Select
-    choiceTransitionName="zoom"
+    allowClear={true}
+    bordered={true}
+    choiceTransitionName=""
     disabled={false}
+    dropdownMatchSelectWidth={true}
+    dropdownStyle={
+      Object {
+        "position": "relative",
+        "zIndex": "10000",
+      }
+    }
     filterOption={[Function]}
     getPopupContainer={[Function]}
     id="1"
     onSelect={[Function]}
     optionFilterProp="children"
-    placeholder=""
+    placeholder="Please select"
     showSearch={true}
     transitionName="slide-up"
+    value={null}
+    virtual={false}
   >
-    <Option />
-    <Option />
+    <Option
+      disabled={false}
+      style={
+        Object {
+          "zIndex": "10000",
+        }
+      }
+    />
+    <Option
+      disabled={false}
+      style={
+        Object {
+          "zIndex": "10000",
+        }
+      }
+    />
   </Select>
 </FormItem>
 `;

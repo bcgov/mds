@@ -5,7 +5,6 @@ import { uniqBy, map, toArray, isEmpty } from "lodash";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
@@ -44,7 +43,7 @@ const columns = [
           {!isEmpty(record.party_orgbook_entity) && (
             <img
               alt="Verified"
-              className="padding-small"
+              className="padding-sm"
               src={SUCCESS_CHECKMARK}
               width="25"
               title={`Party verified by ${
@@ -130,9 +129,6 @@ export const ContactList = (props) => (
     tableProps={{
       align: "left",
       pagination: false,
-      locale: {
-        emptyText: <NullScreen type="no-results" />,
-      },
       onChange: handleTableChange(props.handleSearch),
     }}
   />

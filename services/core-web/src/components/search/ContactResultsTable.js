@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
@@ -43,46 +43,33 @@ export const ContactResultsTable = (props) => {
       dataIndex: "party_guid",
       key: "party_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
+        <Descriptions
+          column={{ sm: 1, md: 2 }}
+          title={
             <Link to={router.PARTY_PROFILE.dynamicRoute(record.party_guid)}>
               <Highlight search={props.highlightRegex}>{record.name}</Highlight>
             </Link>
-          </Col>
-        </Row>,
-        <Row className="padding-small--top">
-          <Col xs={24} md={8} lg={4}>
-            <p>Roles</p>
-          </Col>
-          <Col xs={24} md={16} lg={8}>
+          }
+        >
+          <Descriptions.Item label="Roles">
             {props.partyRelationshipTypeHash.PMT &&
               record.mine_party_appt.map((pr) => (
                 <p>
                   {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
-                  <span className="padding-small--left" style={{ fontStyle: "italic" }}>
+                  <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
                     ({pr.mine.mine_name})
                   </span>
                 </p>
               ))}
-          </Col>
-          <Col xs={24} md={8} lg={6} xxl={4}>
-            <p>Email</p>
-          </Col>
-          <Col xs={24} md={16} lg={12} xxl={8}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.email}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={8} lg={6} xxl={4}>
-            <p>Phone</p>
-          </Col>
-          <Col xs={24} md={16} lg={12} xxl={8}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
-              {record.phone_ext}
-            </p>
-          </Col>
-        </Row>,
+          </Descriptions.Item>
+          <Descriptions.Item label="Email">
+            <Highlight search={props.highlightRegex}>{record.email}</Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Phone">
+            <Highlight search={props.highlightRegex}>{record.phone_no}</Highlight>
+            {record.phone_ext}
+          </Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];
@@ -91,7 +78,7 @@ export const ContactResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider style={{ padding: "0" }} />
       <Table
-        className="nested-table padding-large--bottom"
+        className="nested-table padding-lg--bottom"
         align="left"
         showHeader={false}
         pagination={false}
@@ -100,7 +87,7 @@ export const ContactResultsTable = (props) => {
       />
       {props.showAdvancedLookup && (
         <Link
-          className="padding-large--left float-right"
+          className="padding-lg--left float-right"
           to={router.CONTACT_HOME_PAGE.dynamicRoute({
             ...parseQuery(props.query),
             page: Strings.DEFAULT_PAGE,
