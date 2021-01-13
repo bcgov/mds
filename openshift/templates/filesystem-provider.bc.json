@@ -112,14 +112,14 @@
       "displayName": "Source Image Name",
       "description": "The name of the source image.",
       "required": true,
-      "value": "registry.access.redhat.com/dotnet/dotnet-22-rhel7"
+      "value": "openshift/dotnet"
     },
     {
       "name": "SOURCE_IMAGE_TAG",
       "displayName": "Source Image Tag",
       "description": "The tag of the source image.",
       "required": true,
-      "value": "latest"
+      "value": "2.2"
     },
     {
       "name": "DOTNET_STARTUP_PROJECT",
