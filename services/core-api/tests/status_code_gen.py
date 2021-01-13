@@ -34,23 +34,33 @@ from app.api.now_applications.models.now_application_review_type import NOWAppli
 def RandomMineRegionCode():
     return random.choice([x.mine_region_code for x in db.session.query(MineRegionCode).all()])
 
+
 def RandomPermitStatusCode():
-    return random.choice([x.permit_status_code for x in db.session.query(PermitStatusCode).filter(PermitStatusCode.permit_status_code != 'D').all()])
+    return random.choice([
+        x.permit_status_code for x in db.session.query(PermitStatusCode).filter(
+            PermitStatusCode.permit_status_code != 'D').all()
+    ])
+
 
 def RandomExemptionFeeStatusCode():
     return random.choice([x.exemption_fee_status_code for x in ExemptionFeeStatus.get_all()])
 
+
 def RandomBondStatusCode():
     return random.choice([x.bond_status_code for x in BondStatus.get_all()])
+
 
 def RandomBondTypeCode():
     return random.choice([x.bond_type_code for x in BondType.get_all()])
 
+
 def RandomConditionCategoryCode():
     return random.choice([x.condition_category_code for x in PermitConditionCategory.get_all()])
 
+
 def RandomConditionTypeCode():
     return random.choice([x.condition_type_code for x in PermitConditionType.get_all()])
+
 
 def RandomTenureTypeCode():
     return random.choice(
@@ -100,9 +110,8 @@ def RandomComplianceArticleId():
 
 
 def RandomIncidentDeterminationTypeCode():
-    return random.choice([
-        x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_all()
-    ])
+    return random.choice(
+        [x.mine_incident_determination_type_code for x in MineIncidentDeterminationType.get_all()])
 
 
 def RandomIncidentStatusCode():
@@ -159,7 +168,7 @@ def RandomNOWTypeCode():
 
 
 def RandomNOWStatusCode():
-    return random.choice([x.now_application_status_code for x in NOWApplicationStatus.get_all()])
+    return random.choice([x.now_application_status_code for x in NOWApplicationStatus.get_active()])
 
 
 def RandomNOWReviewCode():
