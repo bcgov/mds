@@ -185,7 +185,7 @@ export class NOWProgressTable extends Component {
             moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
           )
         )
-      : null;
+      : "";
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
