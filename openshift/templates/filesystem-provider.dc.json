@@ -112,6 +112,63 @@
                   {
                     "name": "SUFFIX",
                     "value": "${SUFFIX}"
+                  },
+                  {
+                    "name": "S3_PREFIX",
+                    "value": "mms-archive/"
+                  },
+                  {
+                    "name": "OBJECT_STORE_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "object-store-credentials",
+                        "key": "endpoint"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "object-store-credentials",
+                        "key": "key-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "object-store-credentials",
+                        "key": "secret-access-key"
+                      }
+                    }
+                  },
+                  {
+                    "name": "OBJECT_STORE_BUCKET",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "object-store-credentials",
+                        "key": "bucket-id"
+                      }
+                    }
+                  },
+                  {
+                    "name": "SYNCFUSION_LICENSE_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "syncfusion-license",
+                        "key": "license"
+                      }
+                    }
+                  },
+                  {
+                    "name": "JWT_OIDC_AUTHORITY",
+                    "value": "https://test.oidc.gov.bc.ca/auth/realms/mds"
+                  },
+                  {
+                    "name": "JWT_OIDC_AUDIENCE",
+                    "value": "mines-application-dev"
                   }
                 ],
                 "resources": {
