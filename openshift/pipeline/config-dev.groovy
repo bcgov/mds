@@ -321,10 +321,10 @@ app {
                              'SCHEDULER_PVC_SIZE':"200Mi",
                              'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                              'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
-                             'CPU_REQUEST':"${vars.resources.filesystem-provider.cpu_request}",
-                             'CPU_LIMIT':"${vars.resources.filesystem-provider.cpu_limit}",
-                             'MEMORY_REQUEST':"${vars.resources.filesystem-provider.memory_request}",
-                             'MEMORY_LIMIT':"${vars.resources.filesystem-provider.memory_limit}",
+                             'CPU_REQUEST':"${vars.resources.'filesystem-provider'.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.'filesystem-provider'.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.'filesystem-provider'.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.'filesystem-provider'.memory_limit}",
                              'ASPNETCORE_ENVIRONMENT': "Development"
                      ]
                 ]
