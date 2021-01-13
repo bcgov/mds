@@ -105,7 +105,7 @@
       "displayName": "Source Image Kind",
       "description": "The 'kind' (type) of the  source image; typically ImageStreamTag, or DockerImage.",
       "required": true,
-      "value": "DockerImage"
+      "value": "ImageStreamTag"
     },
     {
       "name": "SOURCE_IMAGE_NAME",
