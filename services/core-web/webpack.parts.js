@@ -135,7 +135,14 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          "sass-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+              },
+            },
+          },
         ],
       },
       {
