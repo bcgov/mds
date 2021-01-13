@@ -117,27 +117,28 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             mine_guid=now_application_identity.mine.mine_guid
                             if contact.mine_party_appt_type_code == 'MMG' else None,
                             mine_party_appt_type_code=contact.mine_party_appt_type_code)
-                        if len(current_apt) != 1:
+                        if len(current_apt) > 1:
                             raise BadRequest(
                                 'This mine has more than one mine manager. Resolve this and try again.'
                                 if contact.mine_party_appt_type_code == 'MMG' else
                                 'This permit has more than one permittee. Resolve this and try again.'
                             )
-                        if current_apt[0].party_guid != contact.party_guid:
+                        if len(cuurent_apt
+                               ) == 1 and current_apt[0].party_guid != contact.party_guid:
                             current_apt[0].end_date = permit_amendment.issue_date - timedelta(
                                 days=1)
-                            new_mpa = MinePartyAppointment.create(
-                                mine=now_application_identity.mine
-                                if contact.mine_party_appt_type_code == 'MMG' else None,
-                                permit=permit
-                                if contact.mine_party_appt_type_code == 'PMT' else None,
-                                party_guid=contact.party_guid,
-                                mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                                start_date=permit_amendment.issue_date,
-                                end_date=None,
-                                processed_by=self.get_user_info())
                             current_apt[0].save()
-                            new_mpa.save()
+
+                        new_mpa = MinePartyAppointment.create(
+                            mine=now_application_identity.mine
+                            if contact.mine_party_appt_type_code == 'MMG' else None,
+                            permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
+                            party_guid=contact.party_guid,
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
+                            start_date=permit_amendment.issue_date,
+                            end_date=None,
+                            processed_by=self.get_user_info())
+                        new_mpa.save()
 
             #TODO: Documents / CRR
             # Update NoW application and save status
