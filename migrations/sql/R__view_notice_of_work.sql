@@ -21,6 +21,7 @@ END) AS is_historic,
     WHEN sub.originating_system IS NOT NULL THEN sub.originating_system
     WHEN msub.mms_cid IS NOT NULL THEN 'MMS'
     WHEN nid.now_application_id IS NOT NULL THEN 'Core'
+	WHEN nid.messageid IS NOT NULL THEN 'VFCBC'
     ELSE NULL
 END) as originating_system
 FROM now_application_identity nid 
