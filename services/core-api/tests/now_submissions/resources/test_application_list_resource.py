@@ -257,7 +257,7 @@ NOW_APPLICATION_DATA = {
     "messagecreateddate":
     "2020-02-27T19:14:23.368Z",
     "processed":
-    "s",
+    "Y",
     "processeddate":
     "2020-02-27T19:14:23.368Z",
     "cutlinesexplgriddisturbedarea":
