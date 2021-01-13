@@ -242,6 +242,8 @@ export class ProcessPermit extends Component {
     permitGenObject.regional_office = !amendment.regional_office
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
+    permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
+    permitGenObject.now_number = noticeOfWork.now_number;
 
     if (amendment && !isEmpty(amendment)) {
       permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
@@ -287,7 +289,6 @@ export class ProcessPermit extends Component {
   };
 
   afterSuccess = (values, message, code) => {
-    values.application_date = formatDate(values.application_date);
     return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -325,13 +326,13 @@ export class ProcessPermit extends Component {
           this.props.draftPermit,
           this.props.draftAmendment
         );
-        permitObj.auth_end_date = formatDate(values.auth_end_date);
-        permitObj.issue_date = formatDate(values.issue_date);
-
         return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
+            auth_end_date: formatDate(values.auth_end_date),
+            issue_date: formatDate(values.issue_date),
+            application_dated: formatDate(permitObj.application_date),
             document_list: this.createDocList(this.props.noticeOfWork),
           },
           values,
