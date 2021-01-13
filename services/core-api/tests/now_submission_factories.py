@@ -190,6 +190,7 @@ class NOWSubmissionFactory(BaseFactory):
     minenumber = factory.Faker('word')
     originating_system = factory.LazyFunction(randomNOWOriginatingSystem)
     typeofapplication = factory.LazyFunction(randomNOWApplicationType)
+    processed = "Y"
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
