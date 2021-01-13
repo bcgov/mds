@@ -260,10 +260,10 @@ export class NOWPermitGeneration extends Component {
       }
     }
 
-    newValues.auth_end_date = formatDate(this.props.formValues.auth_end_date);
-    newValues.application_date = formatDate(newValues.application_date);
     this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
       ...newValues,
+      auth_end_date: formatDate(this.props.formValues.auth_end_date),
+      application_dated: formatDate(newValues.application_date),
       document_list: this.createDocList(this.props.noticeOfWork),
     });
   };
