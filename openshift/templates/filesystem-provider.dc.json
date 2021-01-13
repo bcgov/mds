@@ -51,29 +51,6 @@
       }
     },
     {
-      "kind": "Route",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${NAME}${SUFFIX}"
-      },
-      "spec": {
-        "host": "${APPLICATION_DOMAIN}",
-        "tls": {
-          "insecureEdgeTerminationPolicy": "Redirect",
-          "termination": "edge"
-        },
-        "path": "/",
-        "to": {
-          "kind": "Service",
-          "name": "${NAME}${SUFFIX}"
-        },
-        "port": {
-          "targetPort": "8080-tcp"
-        },
-        "wildcardPolicy": "None"
-      }
-    },
-    {
       "kind": "DeploymentConfig",
       "apiVersion": "v1",
       "metadata": {
@@ -169,8 +146,7 @@
                   "timeoutSeconds": 1
                 }
               }
-            ],
-            "restartPolicy": "Always"
+            ]
           }
         }
       }
