@@ -44,6 +44,7 @@ def randomUnitDescription():
 def randomNOWOriginatingSystem():
     return random.choice(['NROS', 'VFCBC', 'Core', 'MMS'])
 
+
 def randomNOWApplicationType():
     return random.choice(['New Permit', 'Amendment'])
 
@@ -174,6 +175,7 @@ class NOWSubmissionFactory(BaseFactory):
     all_activites = True
 
     application_guid = GUID
+    processed = "Y"
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
