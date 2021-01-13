@@ -436,10 +436,10 @@ environments {
                     memory_limit = "32Mi"
                 }
                 fsprovider {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
                     memory_request = "128Mi"
-                    memory_limit = "256Gi"
+                    memory_limit = "256Mi"
                 }
                 // digdag {
                 //     cpu_request = "100m"
