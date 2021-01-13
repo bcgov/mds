@@ -50,6 +50,15 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
         now_delay.start_date = datetime.now(tz=timezone.utc)
         now_app.application_delays.append(now_delay)
 
+        # update now status
+        if now_app.now_application is not None:
+            if now_delay.delay_type_code is not None and now_delay.delay_type_code == "OAB":
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "GVD"
+            else:
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "CDI"
+
         now_app.save()
         return now_delay, 201
 
@@ -62,6 +71,11 @@ class NOWApplicationDelayResource(Resource, UserMixin):
         now_app = NOWApplicationIdentity.find_by_guid(now_application_guid)
         if not now_app:
             raise NotFound('Notice of Work Application not found')
+
+        # change NoW status back to previous state
+        if now_app.now_application is not None:
+            now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
+        now_app.save()
 
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))

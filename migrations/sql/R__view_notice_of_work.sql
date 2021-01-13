@@ -8,7 +8,10 @@ nid.now_number,
 app.lead_inspector_party_guid,
 concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
 COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
-COALESCE(nows.description, sub.status) as now_application_status_description,
+CASE COALESCE(nows.description, sub.status)
+  WHEN 'Under Review' THEN 'Pending Verification'
+  ElSE COALESCE(nows.description, sub.status)
+END as now_application_status_description,
 COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
 (CASE
 	WHEN nid.now_application_id IS NOT NULL THEN FALSE

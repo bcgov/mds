@@ -148,6 +148,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     delay.end_date = datetime.now(tz=timezone.utc)
 
             now_application_identity.now_application.status_updated_date = datetime.utcnow()
+            # set previous status
+            now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
             now_application_identity.save()
