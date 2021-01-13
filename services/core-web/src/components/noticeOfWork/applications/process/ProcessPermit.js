@@ -132,8 +132,12 @@ export class ProcessPermit extends Component {
   openStatusModal = () => {
     this.props.openModal({
       props: {
-        title: "Undo-Reject Application",
+        title: "Revert to Previous Status",
         onSubmit: this.updateApplicationStatus,
+        initialValues: {
+          now_application_status_code: this.props.noticeOfWork.previous_application_status_code,
+        },
+        closeModal: this.props.closeModal,
       },
       width: "50vw",
       content: modalConfig.UPDATE_NOW_STATUS,
@@ -671,7 +675,7 @@ export class ProcessPermit extends Component {
               {isProcessed && !isApproved && (
                 <AuthorizationWrapper permission={Permission.ADMIN}>
                   <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
-                    Undo-Reject Application
+                    Revert Status
                   </Button>
                 </AuthorizationWrapper>
               )}
