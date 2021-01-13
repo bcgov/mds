@@ -317,7 +317,6 @@ app {
                      'params':[
                              'NAME':"filesystem-provider",
                              'VERSION':"${app.deployment.version}",
-                             'NAMESPACE':"${vars.deployment.namespace}",
                              'SUFFIX': "${vars.deployment.suffix}",
                              'SCHEDULER_PVC_SIZE':"200Mi",
                              'ENVIRONMENT_NAME':"${app.deployment.env.name}",
