@@ -119,7 +119,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             mine_party_appt_type_code=contact.mine_party_appt_type_code)
                         if len(current_apt) != 1:
                             raise BadRequest(
-                                'This permittee or mine manager has more than one active appointee. Please resolve this and try again.'
+                                'This mine has more than one active permittee or mine manager. Please resolve this and try again.'
                             )
                         if current_apt[0].party_guid != contact.party_guid:
                             current_apt[0].end_date = permit_amendment.issue_date - timedelta(
