@@ -110,42 +110,32 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
-                    new_permittee = False
-
-                    if contact.mine_party_appt_type_code == 'PMT':
-                        current_mpa = MinePartyAppointment.find_current_appointments(
-                            mine_party_appt_type_code='PMT', permit_id=permit.permit_id)
-
-                        if current_mpa is None or len(current_mpa) == 0:
-                            new_permittee = True
-
-                        if len(current_mpa) == 1:
-                            if current_mpa[0].party_guid != contact.party_guid:
-                                current_mpa[0].end_date = current_mpa[0].start_date - timedelta(
-                                    days=1)
-                                current_mpa[0].save()
-                                new_permittee = True
-
-                        if len(current_mpa) > 1:
+                    if contact.mine_party_appt_type_code == 'PMT' or contact.mine_party_appt_type_code == 'MMG':
+                        current_apt = MinePartyAppointment.find_current_appointments(
+                            permit_id=permit.permit_id
+                            if contact.mine_party_appt_type_code == 'PMT' else None,
+                            mine_guid=now_application_identity.mine.mine_guid
+                            if contact.mine_party_appt_type_code == 'MMG' else None,
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code)
+                        if len(current_apt) != 1:
                             raise BadRequest(
-                                'This permit has more than one active permittee. Please resolve this and try again.'
+                                'This permittee or mine manager has more than one active appointee. Please resolve this and try again.'
                             )
-
-                    if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
-                        current_mpa = permit.permittee_appointments[0]
-                        if current_mpa.party_guid != contact.party_guid:
-                            current_mpa.end_date = datetime.now(tz=timezone.utc) - timedelta(days=1)
-                            mine_party_appointment = MinePartyAppointment.create(
+                        if current_apt[0].party_guid != contact.party_guid:
+                            current_apt[0].end_date = permit_amendment.issue_date - timedelta(
+                                days=1)
+                            new_mpa = MinePartyAppointment.create(
                                 mine=now_application_identity.mine
-                                if contact.mine_party_appt_type_code != 'PMT' else None,
-                                permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
+                                if contact.mine_party_appt_type_code == 'MMG' else None,
+                                permit=permit
+                                if contact.mine_party_appt_type_code == 'PMT' else None,
                                 party_guid=contact.party_guid,
                                 mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                                start_date=datetime.now(tz=timezone.utc),
+                                start_date=permit_amendment.issue_date,
                                 end_date=None,
                                 processed_by=self.get_user_info())
-                            current_mpa.save()
-                            mine_party_appointment.save()
+                            current_apt[0].save()
+                            new_mpa.save()
 
             #TODO: Documents / CRR
             # Update NoW application and save status
