@@ -198,7 +198,7 @@ app {
                 [
                     'file':'openshift/templates/filesystem-provider.bc.json',
                     'params':[
-                            'NAME':"syncfusion-filesystem-provider",
+                            'NAME':"filesystem-provider",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/syncfusion-filesystem-provider",
