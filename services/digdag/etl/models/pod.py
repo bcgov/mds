@@ -62,13 +62,17 @@ class POD():
         Returns a JSON object representing an Pod template
         """
         json_data = self.create_pod_template()
+        env_dict = []
 
-        # Update env from existing pod
-        current_running_pod = self.v1_pod.get(
-            label_selector=self.env_pod_label, namespace=self.namespace)
-        env_dict = (
-            current_running_pod.to_dict()["items"][0]["spec"]["containers"][self.env_container_id]
-            ["env"] if current_running_pod else [])
+        try:
+            current_running_pod = self.v1_pod.get(
+                label_selector=self.env_pod_label, namespace=self.namespace)
+            if 
+            env_dict = (
+                current_running_pod.to_dict()["items"][0]["spec"]["containers"][self.env_container_id]
+                ["env"])
+        except:
+            print("Issue with getting env_dict from existing pod.")
 
         if (self.env is not None and env_pod == 'digdag-mds-job'):
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env) + env_dict
