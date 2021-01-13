@@ -44,8 +44,8 @@ namespace EJ2FileManagerService
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = Configuration["Jwt:Authority"];
-                o.Audience = Configuration["Jwt:Audience"];
+                o.Authority = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUTHORITY");;
+                o.Audience = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUDIENCE");;
             });
 
             services.AddAuthorization(options =>
