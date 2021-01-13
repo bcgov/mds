@@ -119,9 +119,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             mine_party_appt_type_code=contact.mine_party_appt_type_code)
                         if len(current_apt) != 1:
                             raise BadRequest(
-                                'This mine has more than one mine manager. Please resolve this and try again.'
+                                'This mine has more than one mine manager. Resolve this and try again.'
                                 if contact.mine_party_appt_type_code == 'MMG' else
-                                'This permit has more than one permittee. Please resolve this and try again.'
+                                'This permit has more than one permittee. Resolve this and try again.'
                             )
                         if current_apt[0].party_guid != contact.party_guid:
                             current_apt[0].end_date = permit_amendment.issue_date - timedelta(
