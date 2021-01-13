@@ -123,7 +123,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 if contact.mine_party_appt_type_code == 'MMG' else
                                 'This permit has more than one permittee. Resolve this and try again.'
                             )
-                        if len(cuurent_apt
+                        if len(current_apt
                                ) == 1 and current_apt[0].party_guid != contact.party_guid:
                             current_apt[0].end_date = permit_amendment.issue_date - timedelta(
                                 days=1)
