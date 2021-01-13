@@ -270,6 +270,7 @@ class NOWApplication(Base, AuditMixin):
                 continue
             else:
                 docs.append({
+                    'id': doc.id,
                     'now_application_document_xref_guid': None,
                     'mine_document_guid': None,
                     'messageid': doc.messageid,
