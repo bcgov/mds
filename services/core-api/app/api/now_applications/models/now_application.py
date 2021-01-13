@@ -59,6 +59,10 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    previous_application_status_code = db.Column(
+        db.String,
+        db.ForeignKey('now_application_status.now_application_status_code'),
+        nullable=True)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
@@ -162,7 +166,12 @@ class NOWApplication(Base, AuditMixin):
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
 
-    status = db.relationship('NOWApplicationStatus', lazy='selectin')
+    status = db.relationship(
+        'NOWApplicationStatus',
+        lazy='selectin',
+        primaryjoin=
+        'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
+    )
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid

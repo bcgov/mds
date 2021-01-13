@@ -521,11 +521,12 @@ VALUES
   ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
   ('REC', 'Received', 90, true, 'system-mds', 'system-mds'),
-  ('PAP', 'Pending Approval', 50, true, 'system-mds', 'system-mds'),
-	('REI', 'Rejected-Initial', 100, true, 'system-mds', 'system-mds'),
-	('PCO', 'Permit Closed', 40, true, 'system-mds', 'system-mds'),
+  ('PAP', 'Pending Approval', 50, false, 'system-mds', 'system-mds'),
+	('REI', 'Rejected-Initial', 100, false, 'system-mds', 'system-mds'),
+	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
-	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds')
+	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
+  ('PEV', 'Pending Verificaton', 130, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category

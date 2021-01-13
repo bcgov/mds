@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "antd";
 import { isEmpty } from "lodash";
 import NOWReasonForDelay from "@/components/noticeOfWork/applications/NOWReasonForDelay";
-import NOWRejectionReason from "@/components/noticeOfWork/applications/NOWRejectionReason";
+import NOWStatusReason from "@/components/noticeOfWork/applications/NOWStatusReason";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
@@ -15,7 +15,7 @@ export const NOWStatusReasonModal = (props) => (
     {!isEmpty(props.applicationDelay) && (
       <NOWReasonForDelay applicationDelay={props.applicationDelay} />
     )}
-    <NOWRejectionReason />
+    <NOWStatusReason />
     <div className="right center-mobile">
       <Button type="primary" onClick={props.closeModal}>
         Okay

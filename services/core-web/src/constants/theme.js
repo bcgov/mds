@@ -6,6 +6,7 @@ const badgeStatusTypes = {
   noticeOfWork: {
     Submitted: "warning",
     "Under Review": "processing",
+    "Pending Verification": "processing",
     Referred: "processing",
     "Client Delay Info": "processing",
     "Client Delay Bond": "processing",
