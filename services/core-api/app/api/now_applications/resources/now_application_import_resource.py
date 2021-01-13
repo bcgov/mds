@@ -95,6 +95,9 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.save()
         db.session.refresh(now_application_identity)
         now_application_identity.mine_guid = mine_guid
+        # update application status to received once imported
+        now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
+        now_application_identity.now_application.now_application_status_code = "REC"
         now_application_identity.save()
 
         NROSNOWStatusService.nros_now_status_update(
