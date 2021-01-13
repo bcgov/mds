@@ -306,6 +306,7 @@ NOW_PARTY_APPOINTMENT = api.model(
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'id':fields.Integer,
         'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
