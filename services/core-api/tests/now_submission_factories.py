@@ -44,6 +44,7 @@ def randomUnitDescription():
 def randomNOWOriginatingSystem():
     return random.choice(['NROS', 'VFCBC', 'Core', 'MMS'])
 
+
 def randomNOWApplicationType():
     return random.choice(['New Permit', 'Amendment'])
 
@@ -174,6 +175,7 @@ class NOWSubmissionFactory(BaseFactory):
     all_activites = True
 
     application_guid = GUID
+    processed = "Y"
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
@@ -181,7 +183,8 @@ class NOWSubmissionFactory(BaseFactory):
     noticeofworktype = factory.LazyFunction(
         lambda: random.choice([x.description for x in NOWApplicationType.query.all()]))
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
-    status = factory.LazyFunction(lambda: random.choice(['Accepted', 'Withdrawn', 'Under Review']))
+    status = factory.LazyFunction(
+        lambda: random.choice(['Accepted', 'Withdrawn', 'Pending Verification']))
     submitteddate = factory.Faker('past_datetime')
     receiveddate = factory.Faker('past_datetime')
     minenumber = factory.Faker('word')
