@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Alert } from "antd";
-import Highlight from "react-highlighter";
+import { Col, Row } from "antd";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { getDropdownNoticeOfWorkApplicationStatusOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import UpdateNOWStatusForm from "@/components/Forms/noticeOfWork/UpdateNOWStatusForm";
-import NOWRejectionReason from "@/components/noticeOfWork/applications/NOWRejectionReason";
+import NOWStatusReason from "@/components/noticeOfWork/applications/NOWStatusReason";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  now_application_status_code: PropTypes.string.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  closeModal: PropTypes.func.isRequired,
   updateStatusFormValues: PropTypes.objectOf(PropTypes.any),
   dropdownNoticeOfWorkApplicationStatusOptions: CustomPropTypes.options.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -33,31 +33,18 @@ export class UpdateNOWStatusModal extends Component {
   render() {
     return (
       <div>
-        <p>
-          The Notice of Work application was <Highlight search="Rejected">Rejected</Highlight> for
-          the following reason:
-        </p>
-        <br />
-        <NOWRejectionReason />
-        <Alert
-          message="This action is final"
-          description="No changes or additions can be made to this application after the permit has been issued. Ensure the issues above are resolved after reverting rejection."
-          type="warning"
-          showIcon
-          style={{ textAlign: "left" }}
-        />
+        <NOWStatusReason />
         <br />
         <Row gutter={16}>
           <Col span={24}>
             <UpdateNOWStatusForm
-              initialValues={{
-                now_application_status_code: this.props.now_application_status_code,
-              }}
+              initialValues={this.props.initialValues}
               dropdownNoticeOfWorkApplicationStatusOptions={
                 this.props.dropdownNoticeOfWorkApplicationStatusOptions
               }
               disabled={this.invalidUpdateStatusPayload(this.props.updateStatusFormValues)}
               onSubmit={this.props.onSubmit}
+              closeModal={this.props.closeModal}
               title={this.props.title}
             />
           </Col>
