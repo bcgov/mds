@@ -57,8 +57,6 @@ export const getTotalApplicationDelayDuration = createSelector([getApplicationDe
   });
   const total = getAmountSum(totalArr);
   const newMoment = moment.duration(total, "milliseconds");
-  console.log(total);
-  console.log(newMoment);
   return { duration: getDurationTextInDays(newMoment), milliseconds: total };
 });
 
@@ -72,7 +70,6 @@ export const getNOWProgress = createSelector(
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));
         // eslint-disable-next-line no-underscore-dangle
-        console.log(delayDurations.milliseconds);
         const difference = duration._milliseconds - delayDurations.milliseconds;
         const durationDifference = moment.duration(difference, "milliseconds");
         return {
