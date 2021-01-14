@@ -10,6 +10,8 @@ concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
 COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
 CASE COALESCE(nows.description, sub.status)
   WHEN 'Under Review' THEN 'Pending Verification'
+  WHEN 'Rejected-Initial' THEN 'Rejected'
+  WHEN 'Withdrawn' THEN 'Rejected'
   ElSE COALESCE(nows.description, sub.status)
 END as now_application_status_description,
 COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
