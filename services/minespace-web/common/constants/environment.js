@@ -5,7 +5,7 @@ export const DEFAULT_ENVIRONMENT = {
   matomoUrl: "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/",
   environment: "development",
   firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
-  syncfusionFilesystemProviderUrl: "http://localhost:62870/api/AmazonS3Provider/",
+  filesystemProviderUrl: "http://localhost:62870/api/AmazonS3Provider/",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
@@ -16,7 +16,7 @@ export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
   matomoUrl: "<MATOMO_URL>",
-  syncfusionFilesystemProviderUrl: "<SYNCFUSION_FILESYSTEM_PROVIDER_URL>",
+  filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
   firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };

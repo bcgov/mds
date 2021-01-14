@@ -80,10 +80,16 @@
       "value": "idir"
     },
     {
-      "name": "API_URL",
-      "displayName": "API Url",
-      "description": "URL for the backend API",
+      "name": "FILESYSTEM_PROVIDER_URL",
+      "displayName": "Filesystem Provider Url",
+      "description": "URL for the MMS archive filesystem, should generally be same as API",
       "value": "http://localhost:3000"
+    },
+    {
+      "name": "DOCUMENT_MANAGER_URL",
+      "displayName": "Document Manager Url",
+      "description": "URL for the document manager",
+      "value": "http://localhost:5001"
     },
     {
       "name": "DOCUMENT_MANAGER_URL",
@@ -221,6 +227,10 @@
                   {
                     "name": "DOCUMENT_MANAGER_URL",
                     "value": "${DOCUMENT_MANAGER_URL}"
+                  },
+                  {
+                    "name": "FILESYSTEM_PROVIDER_URL",
+                    "value": "${FILESYSTEM_PROVIDER_URL}"
                   },
                   {
                     "name": "FN_LAYER_URL",

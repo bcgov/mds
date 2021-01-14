@@ -19,7 +19,7 @@ const propTypes = {
 export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
-    this.hostUrl = ENVIRONMENT.syncfusionFilesystemProviderUrl;
+    this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
     this.pathPrefix = `/${this.props.mineNumber}`;
   }
 
