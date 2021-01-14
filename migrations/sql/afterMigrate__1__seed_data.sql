@@ -516,7 +516,7 @@ INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay', 30, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delayed', 30, true, 'system-mds', 'system-mds'),
   ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
   ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
