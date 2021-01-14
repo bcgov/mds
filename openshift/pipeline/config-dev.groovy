@@ -321,10 +321,10 @@ app {
                              'SCHEDULER_PVC_SIZE':"200Mi",
                              'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                              'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
-                             'CPU_REQUEST':"${vars.resources.'filesystem-provider'.cpu_request}",
-                             'CPU_LIMIT':"${vars.resources.'filesystem-provider'.cpu_limit}",
-                             'MEMORY_REQUEST':"${vars.resources.'filesystem-provider'.memory_request}",
-                             'MEMORY_LIMIT':"${vars.resources.'filesystem-provider'.memory_limit}",
+                             'CPU_REQUEST':"${vars.resources.fsprovider.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
                              'ASPNETCORE_ENVIRONMENT': "Development"
                      ]
                 ]
@@ -435,11 +435,11 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
-                filesystem-provider {
-                    cpu_request = "100m"
-                    cpu_limit = "200m"
+                fsprovider {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
                     memory_request = "128Mi"
-                    memory_limit = "256Gi"
+                    memory_limit = "256Mi"
                 }
                 // digdag {
                 //     cpu_request = "100m"
