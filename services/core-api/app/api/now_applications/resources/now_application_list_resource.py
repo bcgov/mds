@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_sort
-from sqlalchemy import desc, func, or_, and_, not_
+from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest
 
 from app.extensions import api
@@ -40,7 +40,6 @@ class NOWApplicationListResource(Resource, UserMixin):
             'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
             'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
-            'mms_streamlined': 'Whether or not to include streamlined Notices of Work from MMS',
             'mine_guid': 'filter by a given mine guid'
         })
     @requires_role_view_all
@@ -62,8 +61,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
-            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'],
-            mms_streamlined=request.args.get('mms_streamlined', type=str) in ['true', 'True'])
+            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
 
         data = records.all()
 
@@ -89,16 +87,9 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       mine_search=None,
                                       now_application_status_description=[],
                                       originating_system=[],
-                                      submissions_only=None,
-                                      mms_streamlined=None):
+                                      submissions_only=None):
         filters = []
         base_query = NoticeOfWorkView.query
-
-        if not mms_streamlined:
-            filters.append(
-                not_(
-                    and_(NoticeOfWorkView.originating_system == 'MMS',
-                         NoticeOfWorkView.now_number == None)))
 
         if submissions_only:
             filters.append(
