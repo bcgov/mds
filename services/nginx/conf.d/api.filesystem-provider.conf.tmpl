@@ -9,15 +9,6 @@ location ${PATH_PREFIX}/file-api/ {
                 return 503;
         }
 
-        proxy_pass ${FILE_API_SERVICE_URL}${PATH_PREFIX}/file-api/;
-        include /opt/app-root/etc/nginx.conf.d/proxy.params;
-}
-
-location ${PATH_PREFIX}/file-api/v1/ {
-        if (-f /opt/app-root/src/html/maintenance_on.html){
-                return 503;
-        }
-
-        proxy_pass ${FILE_API_SERVICE_URL}${PATH_PREFIX}/file-api/;
+        proxy_pass ${FILE_API_SERVICE_URL}${PATH_PREFIX}/api/;
         include /opt/app-root/etc/nginx.conf.d/proxy.params;
 }

@@ -83,7 +83,7 @@
       "name": "FILESYSTEM_PROVIDER_URL",
       "displayName": "Filesystem Provider Url",
       "description": "URL for the MMS archive filesystem, should generally be same as API",
-      "value": "http://localhost:3000"
+      "value": "http://host/file-api/AmazonS3Provider/"
     },
     {
       "name": "DOCUMENT_MANAGER_URL",
