@@ -4409,11 +4409,6 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       description: "Reclamation and Closure Program Conditions",
       display_order: 50,
     },
-    {
-      condition_category_code: "ADC",
-      description: "Additional Conditions",
-      display_order: 60,
-    },
   ],
   noticeOfWorkApplicationDelayOptions: [],
 };

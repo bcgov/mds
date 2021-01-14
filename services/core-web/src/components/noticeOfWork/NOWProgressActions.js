@@ -169,6 +169,9 @@ export class NOWProgressActions extends Component {
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
@@ -182,6 +185,9 @@ export class NOWProgressActions extends Component {
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
@@ -238,7 +244,7 @@ export class NOWProgressActions extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
-    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Reason for Rejection";
+    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
     const menu = (
       <Menu>
         <Menu.Item
