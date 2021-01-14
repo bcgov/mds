@@ -365,11 +365,13 @@ export const getDurationTextInDays = (duration) => {
   const days = duration.days();
   const hours = duration.hours();
   const minutes = duration.minutes();
+  const seconds = duration.seconds();
 
   const daysText = getDurationTextOrDefault(days, "Day");
   const hourText = getDurationTextOrDefault(hours, "Hour");
   const minuteText = getDurationTextOrDefault(minutes, "Minute");
-  const value = `${daysText} ${hourText} ${minuteText}`;
+  const secondText = getDurationTextOrDefault(seconds, "Second");
+  const value = `${daysText} ${hourText} ${minuteText} ${secondText}`;
   return value;
 };
 
