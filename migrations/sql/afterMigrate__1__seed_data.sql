@@ -526,7 +526,7 @@ VALUES
 	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
 	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
-  ('PEV', 'Pending Verificaton', 130, true, 'system-mds', 'system-mds')
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
