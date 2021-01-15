@@ -4,12 +4,14 @@ import { Table, Badge, Tooltip } from "antd";
 import { ImportOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
+import { Field } from "redux-form";
 import {
   downloadNowDocument,
   downloadFileFromDocumentManager,
 } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
@@ -19,6 +21,8 @@ const propTypes = {
   displayTableDescription: PropTypes.bool,
   hideImportStatusColumn: PropTypes.bool,
   hideJobStatusColumn: PropTypes.bool,
+  showPreambleFileMetadata: PropTypes.bool,
+  editPreambleFileMetadata: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -28,6 +32,8 @@ const defaultProps = {
   displayTableDescription: false,
   hideImportStatusColumn: false,
   hideJobStatusColumn: false,
+  showPreambleFileMetadata: false,
+  editPreambleFileMetadata: false,
 };
 
 const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
@@ -88,6 +94,54 @@ export const NOWSubmissionDocuments = (props) => {
         ),
       };
 
+  const fileMetadataColumns = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      render: (text, record) => (
+        <div title="Proponent Description">
+          <Field
+            id={`${record.key}_title`}
+            name={`${record.key}_title`}
+            placeholder="Enter Title"
+            component={renderConfig.FIELD}
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Author",
+      dataIndex: "author",
+      key: "author",
+      render: (text, record) => (
+        <div title="Proponent Description">
+          <Field
+            id={`${record.key}_author`}
+            name={`${record.key}_author`}
+            placeholder="Enter Author"
+            component={renderConfig.FIELD}
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text, record) => (
+        <div title="Proponent Description">
+          <Field
+            id={`${record.key}_date`}
+            name={`${record.key}_date`}
+            component={renderConfig.DATE}
+            placeholder="YYYY-MM-DD"
+          />
+        </div>
+      ),
+    },
+  ];
+
   let otherColumns = [
     {
       title: "Category",
@@ -142,7 +196,12 @@ export const NOWSubmissionDocuments = (props) => {
     ];
   }
 
-  const columns = [fileNameColumn, ...otherColumns];
+  let columns = [fileNameColumn, ...otherColumns];
+
+  if (props.showPreambleFileMetadata) {
+    columns = [...fileMetadataColumns, ...columns];
+  }
+
   const dataSource = transformDocuments(
     props.documents,
     props.importNowSubmissionDocumentsJob,

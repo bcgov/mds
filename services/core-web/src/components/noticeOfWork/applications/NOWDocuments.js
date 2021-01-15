@@ -7,6 +7,7 @@ import moment from "moment";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
+import { Field } from "redux-form";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -25,6 +26,7 @@ import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import { TRASHCAN } from "@/constants/assets";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -39,16 +41,21 @@ const propTypes = {
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
   addDescriptionColumn: PropTypes.bool,
+  showPreambleFileMetadata: PropTypes.bool,
+  editPreambleFileMetadata: PropTypes.bool,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
 };
+
 const defaultProps = {
   selectedRows: null,
   categoriesToShow: [],
   disclaimerText: "",
   isAdminView: false,
   addDescriptionColumn: true,
+  showPreambleFileMetadata: false,
+  editPreambleFileMetadata: false,
 };
 
 export const NOWDocuments = (props) => {
@@ -148,7 +155,58 @@ export const NOWDocuments = (props) => {
       render: (text) => <div title="Proponent Description">{text}</div>,
     };
 
-    const tableColumns = [
+    const fileMetadataColumns = [
+      {
+        title: "Title",
+        dataIndex: "preamble_title",
+        key: "preamble_title",
+        render: (text, record) => (
+          <div title="Title">
+            <Field
+              id={`${record.now_application_document_xref_guid}_preamble_title`}
+              name={`${record.now_application_document_xref_guid}_preamble_title`}
+              placeholder={(props.editPreambleFileMetadata && "Enter Title") || null}
+              component={renderConfig.FIELD}
+              disabled={!props.editPreambleFileMetadata}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Author",
+        dataIndex: "preamble_author",
+        key: "preamble_author",
+        render: (text, record) => (
+          <div title="Author">
+            <Field
+              id={`${record.now_application_document_xref_guid}_preamble_author`}
+              name={`${record.now_application_document_xref_guid}_preamble_author`}
+              placeholder={(props.editPreambleFileMetadata && "Enter Author") || null}
+              component={renderConfig.FIELD}
+              disabled={!props.editPreambleFileMetadata}
+            />
+          </div>
+        ),
+      },
+      {
+        title: "Date",
+        dataIndex: "preamble_date",
+        key: "preamble_date",
+        render: (text, record) => (
+          <div title="Date">
+            <Field
+              id={`${record.now_application_document_xref_guid}_preamble_date`}
+              name={`${record.now_application_document_xref_guid}_preamble_date`}
+              component={renderConfig.DATE}
+              placeholder={(props.editPreambleFileMetadata && "YYYY-MM-DD") || null}
+              disabled={!props.editPreambleFileMetadata}
+            />
+          </div>
+        ),
+      },
+    ];
+
+    let tableColumns = [
       fileNameColumn,
       {
         title: "Category",
@@ -177,6 +235,10 @@ export const NOWDocuments = (props) => {
 
     if (props.addDescriptionColumn) {
       tableColumns.splice(2, 0, descriptionColumn);
+    }
+
+    if (props.showPreambleFileMetadata) {
+      tableColumns = [...fileMetadataColumns, ...tableColumns];
     }
 
     const deleteButtonColumn = {
@@ -243,6 +305,7 @@ export const NOWDocuments = (props) => {
     documents &&
     documents.map((document) => ({
       key: document.now_application_document_xref_guid,
+      now_application_document_xref_guid: document.now_application_document_xref_guid,
       mine_document_guid: document.mine_document.mine_document_guid,
       now_application_guid,
       filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
@@ -261,6 +324,8 @@ export const NOWDocuments = (props) => {
         !document.is_referral_package &&
         !document.is_consultation_package,
     }));
+
+  // console.log("NOWDocuments props", props);
 
   return (
     <div>
@@ -292,6 +357,7 @@ export const NOWDocuments = (props) => {
               }
             : null
         }
+        {...props}
       />
       <br />
 
@@ -311,8 +377,6 @@ export const NOWDocuments = (props) => {
   );
 };
 
-NOWDocuments.propTypes = propTypes;
-NOWDocuments.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   noticeOfWorkApplicationDocumentTypeOptionsHash: getNoticeOfWorkApplicationDocumentTypeOptionsHash(
     state
@@ -334,5 +398,8 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
+
+NOWDocuments.propTypes = propTypes;
+NOWDocuments.defaultProps = defaultProps;
 
 export default connect(mapStateToProps, mapDispatchToProps)(NOWDocuments);

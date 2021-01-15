@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { Field, FormSection, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
@@ -242,10 +242,15 @@ export const GeneratePermitForm = (props) => (
           </Col>
         </Row>
         <br />
-        <FinalPermitDocuments
-          mineGuid={props.noticeOfWork.mine_guid}
-          noticeOfWork={props.noticeOfWork}
-        />
+        <FormSection name="final_documents_file_metadata">
+          <FinalPermitDocuments
+            mineGuid={props.noticeOfWork.mine_guid}
+            noticeOfWork={props.noticeOfWork}
+            showPreambleFileMetadata
+            editPreambleFileMetadata={!props.isViewMode}
+            initialValues={props.initialValues}
+          />
+        </FormSection>
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
@@ -272,4 +277,5 @@ export default reduxForm({
   form: FORM.GENERATE_PERMIT,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
+  enableReinitialize: true,
 })(GeneratePermitForm);

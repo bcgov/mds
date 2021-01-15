@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
@@ -17,6 +19,7 @@ from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_A
 from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -252,6 +255,12 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='The regional office for this permit.')
+    parser.add_argument(
+        'final_documents_file_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each file in the final application package.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
@@ -278,7 +287,6 @@ class PermitAmendmentResource(Resource, UserMixin):
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
-        current_app.logger.info(f'updating {permit_amendment} with >> {data}')
 
         validate_issue_date(
             data.get('issue_date'), data.get('permit_amendment_type_code'),
@@ -295,6 +303,15 @@ class PermitAmendmentResource(Resource, UserMixin):
                     permit_amendment.related_documents.append(new_pa_doc)
             else:
                 setattr(permit_amendment, key, value)
+
+        # Update file metadata for the final application package files.
+        final_documents_file_metadata = data.get('final_documents_file_metadata', {})
+        for now_application_document_xref_guid, values in final_documents_file_metadata.items():
+            doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+            doc.preamble_title = values.get('preamble_title')
+            doc.preamble_author = values.get('preamble_author')
+            doc.preamble_date = values.get('preamble_date')
+            doc.save()
 
         permit_amendment.save()
 
@@ -317,5 +334,3 @@ class PermitAmendmentResource(Resource, UserMixin):
             permit_amendment.delete()
         except Exception as e:
             raise BadRequest(e)
-
-        return

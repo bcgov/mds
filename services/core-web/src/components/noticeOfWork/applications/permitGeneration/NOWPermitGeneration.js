@@ -12,6 +12,7 @@ import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
+// import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
 import {
   fetchPermits,
   updatePermitAmendment,
@@ -68,6 +69,17 @@ const regionHash = {
   NE: "Prince George",
   NW: "Smithers",
   SW: "Victoria",
+};
+
+const getFinalPermitDocumentsInitialValues = (noticeOfWork) => {
+  const initialValues = {};
+  noticeOfWork?.documents.map((doc) => {
+    initialValues[`${doc.now_application_document_xref_guid}_preamble_title`] = doc.preamble_title;
+    initialValues[`${doc.now_application_document_xref_guid}_preamble_author`] =
+      doc.preamble_author;
+    initialValues[`${doc.now_application_document_xref_guid}_preamble_date`] = doc.preamble_date;
+  });
+  return initialValues;
 };
 
 export class NOWPermitGeneration extends Component {
@@ -274,11 +286,29 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
+    const transformFinalDocumentsFileMetadata = (finalDocumentsFileMetadata) => {
+      const allFileMetadata = {};
+      for (let [key, value] of Object.entries(finalDocumentsFileMetadata)) {
+        // Extract required information from the field ID (e.g., 1c943015-29ed-433c-bfb1-d5ed14db103e_preamble_title).
+        const fieldIdParts = key.split(/_(.+)/);
+        const nowApplicationDocumentXrefGuid = fieldIdParts[0];
+        const fieldName = fieldIdParts[1];
+        if (!(nowApplicationDocumentXrefGuid in allFileMetadata)) {
+          allFileMetadata[nowApplicationDocumentXrefGuid] = {};
+        }
+        allFileMetadata[nowApplicationDocumentXrefGuid][fieldName] = value;
+      }
+      return allFileMetadata;
+    };
+
     this.setState({ isLoaded: false });
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
       permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
+      final_documents_file_metadata: JSON.stringify(
+        transformFinalDocumentsFileMetadata(this.props.formValues.final_documents_file_metadata)
+      ),
     };
     this.props
       .updatePermitAmendment(
@@ -287,6 +317,7 @@ export class NOWPermitGeneration extends Component {
         this.props.draftPermitAmendment.permit_amendment_guid,
         payload
       )
+      .then(() => this.props.onPermitDraftSave())
       .then(() => {
         this.handleDraftPermit();
         this.props.toggleEditMode();
@@ -383,7 +414,12 @@ export class NOWPermitGeneration extends Component {
                   <NullScreen type="draft-permit" />
                 ) : (
                   <GeneratePermitForm
-                    initialValues={this.state.permitGenObj}
+                    initialValues={{
+                      ...this.state.permitGenObj,
+                      final_documents_file_metadata: {
+                        ...getFinalPermitDocumentsInitialValues(this.props.noticeOfWork),
+                      },
+                    }}
                     isAmendment={this.props.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}

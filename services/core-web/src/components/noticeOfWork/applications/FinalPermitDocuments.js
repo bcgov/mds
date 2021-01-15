@@ -36,11 +36,15 @@ const propTypes = {
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   adminView: PropTypes.bool,
+  showPreambleFileMetadata: PropTypes.bool,
+  editPreambleFileMetadata: PropTypes.bool,
 };
 
 const defaultProps = {
   adminView: false,
   importNowSubmissionDocumentsJob: {},
+  showPreambleFileMetadata: false,
+  editPreambleFileMetadata: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -213,6 +217,8 @@ export class FinalPermitDocuments extends Component {
   };
 
   render() {
+    // console.log("FinalPermitDocument initialValues", this.props.initialValues);
+
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
     );
@@ -280,6 +286,9 @@ export class FinalPermitDocuments extends Component {
           importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
           hideImportStatusColumn
           hideJobStatusColumn
+          initialValues={this.props.initialValues}
+          showPreambleFileMetadata={this.props.showPreambleFileMetadata}
+          editPreambleFileMetadata={this.props.editPreambleFileMetadata}
         />
         <br />
         <h4>Requested Documents</h4>
@@ -292,6 +301,9 @@ export class FinalPermitDocuments extends Component {
           mine_guid={this.props.mineGuid}
           documents={permitDocuments}
           isViewMode
+          initialValues={this.props.initialValues}
+          showPreambleFileMetadata={this.props.showPreambleFileMetadata}
+          editPreambleFileMetadata={this.props.editPreambleFileMetadata}
         />
       </div>
     );
