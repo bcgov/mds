@@ -12,7 +12,7 @@ CASE COALESCE(nows.description, sub.status)
   WHEN 'Under Review' THEN 'Pending Verification'
   ElSE COALESCE(nows.description, sub.status)
 END as now_application_status_description,
-COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
+COALESCE(app.received_date, sub.receiveddate, msub.receiveddate, msub.submitteddate) as received_date,
 (CASE
 	WHEN nid.now_application_id IS NOT NULL THEN FALSE
 	WHEN sub.originating_system IS NULL AND msub.mms_cid IS NOT NULL THEN TRUE
