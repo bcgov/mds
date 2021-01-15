@@ -466,10 +466,7 @@ export class ProcessPermit extends Component {
         validationMessages.push({
           message: "The permittee must have an address. Update the contact to add an address.",
           route:
-            this.props.noticeOfWork?.issuing_inspector &&
-            route.PARTY_PROFILE.dynamicRoute(
-              this.props.noticeOfWork?.issuing_inspector?.party_guid
-            ),
+            permittees[0].party_guid && route.PARTY_PROFILE.dynamicRoute(permittees[0].party_guid),
         });
       }
     } else {
