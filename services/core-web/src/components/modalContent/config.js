@@ -33,6 +33,7 @@ import UpdateStatusGenerateLetterModal from "./UpdateStatusGenerateLetterModal";
 import NOWProgressModal from "./NOWProgressModal";
 import NOWStatusReasonModal from "./NOWStatusReasonModal";
 import NOWDelayModal from "./NOWDelayModal";
+import GeneratePermitNumberModal from "./GeneratePermitNumberModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -70,6 +71,7 @@ export const modalConfig = {
   NOW_STATUS_REASON_MODAL: NOWStatusReasonModal,
   NOW_DELAY_MODAL: NOWDelayModal,
   VIEW_CONDITION_MODAL: ViewConditionModal,
+  GENERATE_PERMIT_NUMBER_MODAL: GeneratePermitNumberModal,
 };
 
 export default modalConfig;
