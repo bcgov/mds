@@ -325,6 +325,22 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                     ]
+                ],
+                [
+                     'file':'openshift/templates/filesystem-provider.dc.json',
+                     'params':[
+                             'NAME':"filesystem-provider",
+                             'VERSION':"${app.deployment.version}",
+                             'SUFFIX': "${vars.deployment.suffix}",
+                             'SCHEDULER_PVC_SIZE':"200Mi",
+                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                             'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
+                             'CPU_REQUEST':"${vars.resources.fsprovider.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
+                             'ASPNETCORE_ENVIRONMENT': "Development"
+                     ]
                 ]
         ]
     }
@@ -432,6 +448,12 @@ environments {
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
                 }
+                fsprovider {
+                    cpu_request = "50m"
+                    cpu_limit = "150m"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
+                }
             }
             deployment {
                 env {
@@ -487,6 +509,10 @@ environments {
                 }
                 'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'filesystem-provider' {
+                    HOST = "mds-filesystem-provider${vars.deployment.suffix}:8080"
+                    PATH = "/file-api"
                 }
             }
         }
