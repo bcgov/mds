@@ -494,7 +494,7 @@ environments {
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
-                'filesystem-provider' {
+                'mds-filesystem-provider' {
                     HOST = "http://mds-filesystem-provider${vars.deployment.suffix}:8080"
                     PATH = "/${vars.git.changeId}/file-api"
                 }
