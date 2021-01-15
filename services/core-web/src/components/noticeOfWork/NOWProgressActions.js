@@ -136,9 +136,7 @@ export class NOWProgressActions extends Component {
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        {
-          end_date: new Date(),
-        },
+        {},
         message
       )
       .then(() => {
@@ -167,31 +165,29 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    const payload = {
-      ...values,
-      start_date: new Date().toISOString(),
-    };
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
 
   handleStopDelay = (values) => {
-    const payload = {
-      ...values,
-      end_date: new Date().toISOString(),
-    };
     this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
-        payload
+        values
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
   };
@@ -248,7 +244,7 @@ export class NOWProgressActions extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
-    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Reason for Rejection";
+    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
     const menu = (
       <Menu>
         <Menu.Item

@@ -1,5 +1,6 @@
 from flask_restplus import Resource
 from flask import request, current_app
+from datetime import datetime, timezone
 
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from app.extensions import api
@@ -46,11 +47,17 @@ class NOWApplicationDelayListResource(Resource, UserMixin):
             raise BadRequest("Close existing 'open' delay before opening a new one")
 
         now_delay = NOWApplicationDelay._schema().load(request.json)
+        now_delay.start_date = datetime.now(tz=timezone.utc)
         now_app.application_delays.append(now_delay)
 
-        ##ensure this starts after most recent edit
-        if (now_delay.start_date < now_app.now_application.last_updated_date):
-            raise BadRequest("Delay cannot start before last updated date")
+        # update now status
+        if now_app.now_application is not None:
+            if now_delay.delay_type_code is not None and now_delay.delay_type_code == "OAB":
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "GVD"
+            else:
+                now_app.now_application.previous_application_status_code = now_app.now_application.now_application_status_code
+                now_app.now_application.now_application_status_code = "CDI"
 
         now_app.save()
         return now_delay, 201
@@ -65,8 +72,14 @@ class NOWApplicationDelayResource(Resource, UserMixin):
         if not now_app:
             raise NotFound('Notice of Work Application not found')
 
+        # change NoW status back to previous state
+        if now_app.now_application is not None:
+            now_app.now_application.now_application_status_code = now_app.now_application.previous_application_status_code
+        now_app.save()
+
         now_delay = NOWApplicationDelay._schema().load(
             request.json, instance=NOWApplicationDelay.find_by_guid(now_application_delay_guid))
+        now_delay.end_date = datetime.now(tz=timezone.utc)
         now_delay.save()
 
         return now_delay

@@ -46,7 +46,7 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
           })
         : null;
     return {
-      key: document.mine_document_guid,
+      key: document.mine_document_guid ?? document.id,
       now_application_guid,
       filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,

@@ -516,16 +516,17 @@ INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay', 30, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delayed', 30, true, 'system-mds', 'system-mds'),
   ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
   ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
   ('REC', 'Received', 90, true, 'system-mds', 'system-mds'),
-  ('PAP', 'Pending Approval', 50, true, 'system-mds', 'system-mds'),
-	('REI', 'Rejected-Initial', 100, true, 'system-mds', 'system-mds'),
-	('PCO', 'Permit Closed', 40, true, 'system-mds', 'system-mds'),
+  ('PAP', 'Pending Approval', 50, false, 'system-mds', 'system-mds'),
+	('REI', 'Rejected-Initial', 100, false, 'system-mds', 'system-mds'),
+	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
-	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds')
+	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -1318,8 +1319,7 @@ VALUES
 	('HSC', 'B.', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
 	('GOC', 'C.', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
 	('ELC', 'D.', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
-  ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds'),
-	('ADC', 'F.', 'Additional Conditions', true, 60, 'system-mds', 'system-mds')
+  ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO permit_condition_type

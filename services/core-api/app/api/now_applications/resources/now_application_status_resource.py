@@ -1,11 +1,13 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.now_application_progress import NOWApplicationProgress
 from app.api.now_applications.response_models import NOW_APPLICATION_STATUS_CODES
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -108,42 +110,58 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
-                    new_permittee = False
-
-                    if contact.mine_party_appt_type_code == 'PMT':
-                        current_mpa = MinePartyAppointment.find_current_appointments(
-                            mine_party_appt_type_code='PMT', permit_id=permit.permit_id)
-
-                        if current_mpa is None or len(current_mpa) == 0:
-                            new_permittee = True
-
-                        if len(current_mpa) == 1:
-                            if current_mpa[0].party_guid != contact.party_guid:
-                                current_mpa[0].end_date = current_mpa[0].start_date - timedelta(
-                                    days=1)
-                                current_mpa[0].save()
-                                new_permittee = True
-
-                        if len(current_mpa) > 1:
+                    if contact.mine_party_appt_type_code == 'PMT' or contact.mine_party_appt_type_code == 'MMG':
+                        new_appt_needed = False
+                        current_apt = MinePartyAppointment.find_current_appointments(
+                            permit_id=permit.permit_id
+                            if contact.mine_party_appt_type_code == 'PMT' else None,
+                            mine_guid=now_application_identity.mine.mine_guid
+                            if contact.mine_party_appt_type_code == 'MMG' else None,
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code)
+                        # A mine can only have one active Mine manager and a permit can only have oneactive permittee
+                        if len(current_apt) > 1:
                             raise BadRequest(
-                                'This permit has more than one active permittee. Please resolve this and try again.'
+                                'This mine has more than one mine manager. Resolve this and try again.'
+                                if contact.mine_party_appt_type_code == 'MMG' else
+                                'This permit has more than one permittee. Resolve this and try again.'
                             )
 
-                    if contact.mine_party_appt_type_code != 'PMT' or new_permittee == True:
-                        mine_party_appointment = MinePartyAppointment.create(
-                            mine=now_application_identity.mine
-                            if contact.mine_party_appt_type_code != 'PMT' else None,
-                            permit=permit if contact.mine_party_appt_type_code == 'PMT' else None,
-                            party_guid=contact.party_guid,
-                            mine_party_appt_type_code=contact.mine_party_appt_type_code,
-                            start_date=datetime.utcnow(),
-                            end_date=None,
-                            processed_by=self.get_user_info())
-                        mine_party_appointment.save()
+                        # If there is a current appointment and it does not match the proposed appointment end the current and create a new one.
+                        if len(current_apt) == 1:
+                            if current_apt[0].party_guid != contact.party_guid:
+                                new_appt_needed = True
+                                current_apt[0].end_date = permit_amendment.issue_date - timedelta(
+                                    days=1)
+                                current_apt[0].save()
+
+                        #if there is no current appointment create a new one.
+                        if len(current_apt) == 0:
+                            new_appt_needed = True
+
+                        if new_appt_needed:
+                            new_mpa = MinePartyAppointment.create(
+                                mine=now_application_identity.mine
+                                if contact.mine_party_appt_type_code == 'MMG' else None,
+                                permit=permit
+                                if contact.mine_party_appt_type_code == 'PMT' else None,
+                                party_guid=contact.party_guid,
+                                mine_party_appt_type_code=contact.mine_party_appt_type_code,
+                                start_date=permit_amendment.issue_date,
+                                end_date=None,
+                                processed_by=self.get_user_info())
+                            new_mpa.save()
 
             #TODO: Documents / CRR
             # Update NoW application and save status
-            now_application_identity.now_application.status_updated_date = datetime.today()
+            if now_application_status_code == 'REJ':
+                for progress in now_application_identity.now_application.application_progress:
+                    progress.end_date = datetime.now(tz=timezone.utc)
+                for delay in now_application_identity.application_delays:
+                    delay.end_date = datetime.now(tz=timezone.utc)
+
+            now_application_identity.now_application.status_updated_date = datetime.utcnow()
+            # set previous status
+            now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
             now_application_identity.now_application.now_application_status_code = now_application_status_code
             now_application_identity.now_application.status_reason = status_reason
             now_application_identity.save()

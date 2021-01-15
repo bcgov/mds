@@ -379,8 +379,6 @@ class NOWApplicationDelayFactory(BaseFactory):
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
-
-    end_date = factory.Faker('future_datetime')
     end_comment = factory.Faker('name')
 
 
@@ -407,7 +405,8 @@ class NOWApplicationFactory(BaseFactory):
     issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
-    now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
+    now_application_status_code = "REC"
+    previous_application_status_code = "PEV"
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
@@ -469,12 +468,12 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
-    @factory.post_generation
-    def application_delays(obj, create, extracted, **kwargs):
-        if not create:
-            return
+    # @factory.post_generation
+    # def application_delays(obj, create, extracted, **kwargs):
+    #     if not create:
+    #         return
 
-        if not isinstance(extracted, int):
-            extracted = 1
+    #     if not isinstance(extracted, int):
+    #         extracted = 1
 
-        NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
+    #     NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
