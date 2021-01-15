@@ -287,9 +287,9 @@ export const updatePermitCondition = (permitConditionGuid, permitAmdendmentGuid,
     .finally(() => dispatch(hideLoading()));
 };
 
-export const patchPermit = (permitGuid, mineGuid, payload) => (dispatch) => {
+export const patchPermitNumber = (permitGuid, mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.PATCH_PERMIT));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .patch(
       `${ENVIRONMENT.apiUrl}${API.PERMITS(mineGuid)}/${permitGuid}`,

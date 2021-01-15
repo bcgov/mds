@@ -10,7 +10,7 @@ import {
   deletePermitAmendment,
   deletePermit,
   fetchDraftPermitByNOW,
-  patchPermit,
+  patchPermitNumber,
 } from "@common/actionCreators/permitActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -339,7 +339,7 @@ describe("`deletePermitAmendment` action creator", () => {
   });
 });
 
-describe("`patchPermit` action creator", () => {
+describe("`patchPermitNumber` action creator", () => {
   const application_guid = "12345-6789";
   const permit_guid = "12345-6789";
   const mine_guid = "12345-6789";
@@ -351,7 +351,7 @@ describe("`patchPermit` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPatch(url, mockPayload).reply(200, mockResponse);
-    return patchPermit(
+    return patchPermitNumber(
       permit_guid,
       mine_guid,
       mockPayload
@@ -364,7 +364,7 @@ describe("`patchPermit` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPatch(url).reply(418, MOCK.ERROR);
-    return patchPermit(
+    return patchPermitNumber(
       permit_guid,
       mine_guid,
       mockPayload

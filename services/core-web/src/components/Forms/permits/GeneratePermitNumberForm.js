@@ -31,7 +31,7 @@ export const GeneratePermitNumberForm = (props) => (
       <Col span={24}>
         <br />
         <div>
-          <p>You will be able to generate Acknowledgment Letter and Permit afterwards</p>
+          <p>You will be able to generate Letter and Permit afterwards.</p>
         </div>
       </Col>
     </Row>

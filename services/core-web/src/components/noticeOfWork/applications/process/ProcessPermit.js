@@ -13,7 +13,10 @@ import {
   LinkOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { patchPermit, fetchDraftPermitByNOW } from "@common/actionCreators/permitActionCreator";
+import {
+  patchPermitNumber,
+  fetchDraftPermitByNOW,
+} from "@common/actionCreators/permitActionCreator";
 import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
@@ -86,7 +89,7 @@ const propTypes = {
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  patchPermit: PropTypes.func.isRequired,
+  patchPermitNumber: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
 
@@ -346,7 +349,7 @@ export class ProcessPermit extends Component {
 
   generatePermitNumber = () => {
     return this.props
-      .patchPermit(this.props.draftPermit.permit_guid, this.props.noticeOfWork.mine_guid, {
+      .patchPermitNumber(this.props.draftPermit.permit_guid, this.props.noticeOfWork.mine_guid, {
         now_application_guid: this.props.noticeOfWork.now_application_guid,
       })
       .then(() => this.props.closeModal())
@@ -873,7 +876,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
-      patchPermit,
+      patchPermitNumber,
       fetchDraftPermitByNOW,
     },
     dispatch
