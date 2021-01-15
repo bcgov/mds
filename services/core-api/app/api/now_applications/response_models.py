@@ -47,15 +47,15 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
         'disturbed_area': fields.Fixed(decimals=2),
         'timber_volume': fields.Fixed(decimals=2),
         'number_of_sites': fields.Integer,
-        'width': fields.Integer,
-        'length': fields.Integer,
-        'depth': fields.Integer,
-        'height': fields.Integer,
-        'quantity': fields.Integer,
+        'length': fields.Fixed(decimals=2),
+        'width': fields.Fixed(decimals=2),
+        'depth': fields.Fixed(decimals=2),
+        'height': fields.Fixed(decimals=2),
+        'quantity': fields.Fixed(decimals=2),
         'incline': fields.Fixed(decimals=2),
         'incline_unit_type_code': fields.String,
-        'cut_line_length': fields.Integer,
-        'water_quantity': fields.Integer,
+        'cut_line_length': fields.Fixed(decimals=2),
+        'water_quantity': fields.Fixed(decimals=2),
         'water_quantity_unit_type_code': fields.String,
         'cut_line_length_unit_type_code': fields.String,
         'length_unit_type_code': fields.String,
@@ -83,7 +83,7 @@ NOW_APPLICATION_CAMP = api.inherit(
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
-        'volume_fuel_stored': fields.Integer,
+        'volume_fuel_stored': fields.Fixed(decimals=2),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -139,9 +139,9 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'community_plan': fields.String,
         'land_use_zoning': fields.String,
         'proposed_land_use': fields.String,
-        'total_mineable_reserves': fields.Integer,
+        'total_mineable_reserves': fields.Fixed(decimals=2),
         'total_mineable_reserves_unit_type_code': fields.String,
-        'total_annual_extraction': fields.Integer,
+        'total_annual_extraction': fields.Fixed(decimals=2),
         'total_annual_extraction_unit_type_code': fields.String,
         'average_groundwater_depth': fields.Fixed(decimals=2),
         'has_groundwater_from_existing_area': fields.Boolean,
@@ -149,9 +149,9 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'has_groundwater_from_test_wells': fields.Boolean,
         'groundwater_from_other_description': fields.String,
         'groundwater_protection_plan': fields.String,
-        'nearest_residence_distance': fields.Integer,
+        'nearest_residence_distance': fields.Fixed(decimals=2),
         'nearest_residence_distance_unit_type_code': fields.String,
-        'nearest_water_source_distance': fields.Integer,
+        'nearest_water_source_distance': fields.Fixed(decimals=2),
         'nearest_water_source_distance_unit_type_code': fields.String,
         'noise_impact_plan': fields.String,
         'secure_access_plan': fields.String,
@@ -194,11 +194,11 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
 NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'total_ore_amount':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'total_ore_unit_type_code':
         fields.String,
         'total_waste_amount':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'total_waste_unit_type_code':
         fields.String,
         'proposed_activity':
@@ -387,9 +387,9 @@ NOW_APPLICATION_MODEL = api.model(
         'type_of_application':
         fields.String,
         'proposed_annual_maximum_tonnage':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'adjusted_annual_maximum_tonnage':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'crown_grant_or_district_lot_numbers':
         fields.String,
         'req_access_authorization_numbers':
@@ -498,8 +498,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'directions_to_site': fields.String,
         'work_plan': fields.String,
         'type_of_application': fields.String,
-        'proposed_annual_maximum_tonnage': fields.Integer,
-        'adjusted_annual_maximum_tonnage': fields.Integer,
+        'proposed_annual_maximum_tonnage': fields.Fixed(decimals=2),
+        'adjusted_annual_maximum_tonnage': fields.Fixed(decimals=2),
         'crown_grant_or_district_lot_numbers': fields.String,
         'req_access_authorization_numbers': fields.String,
         'has_surface_disturbance_outside_tenure': fields.Boolean,

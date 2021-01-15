@@ -23,7 +23,7 @@ class Camp(ActivitySummaryBase):
     has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     has_fuel_stored_in_barrels = db.Column(
         db.Boolean, nullable=False, server_default=FetchedValue())
-    volume_fuel_stored = db.Column(db.Integer)
+    volume_fuel_stored = db.Column(db.Numeric(14, 2))
 
     details = db.relationship(
         'CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
