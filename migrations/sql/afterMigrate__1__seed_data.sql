@@ -516,7 +516,7 @@ INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay', 30, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delayed', 30, true, 'system-mds', 'system-mds'),
   ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
   ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
@@ -526,7 +526,7 @@ VALUES
 	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
 	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
-  ('PEV', 'Pending Verificaton', 130, true, 'system-mds', 'system-mds')
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
