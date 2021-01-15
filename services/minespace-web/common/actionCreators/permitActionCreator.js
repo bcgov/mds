@@ -286,3 +286,24 @@ export const updatePermitCondition = (permitConditionGuid, permitAmdendmentGuid,
     .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const patchPermit = (permitGuid, mineGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.PATCH_PERMIT));
+  dispatch(showLoading());
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${API.PERMITS(mineGuid)}/${permitGuid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated permit",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PATCH_PERMIT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.PATCH_PERMIT)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
