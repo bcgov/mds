@@ -13,6 +13,10 @@ import {
   LinkOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import {
+  patchPermitNumber,
+  fetchDraftPermitByNOW,
+} from "@common/actionCreators/permitActionCreator";
 import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
@@ -85,6 +89,8 @@ const propTypes = {
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  patchPermitNumber: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -169,6 +175,12 @@ export class ProcessPermit extends Component {
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
       )
+      .then(() =>
+        this.props.fetchDraftPermitByNOW(
+          this.props.noticeOfWork.mine_guid,
+          this.props.noticeOfWork.now_application_guid
+        )
+      )
       .then(() => {
         const initialValues = {};
         this.props.documentContextTemplate.document_template.form_spec.map(
@@ -190,6 +202,28 @@ export class ProcessPermit extends Component {
           width: "50vw",
           content: modalConfig.NOW_STATUS_LETTER_MODAL,
         });
+      });
+  };
+
+  openGeneratePermitNumberModal = () => {
+    this.props
+      .fetchDraftPermitByNOW(
+        this.props.noticeOfWork.mine_guid,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        if (this.props.draftPermit.permit_no.includes("DRAFT")) {
+          return this.props.openModal({
+            props: {
+              title: "Generate Permit Number",
+              onSubmit: this.generatePermitNumber,
+              signature: this.props.noticeOfWork?.issuing_inspector?.signature,
+            },
+            width: "50vw",
+            content: modalConfig.GENERATE_PERMIT_NUMBER_MODAL,
+          });
+        }
+        return this.openUpdateStatusGenerateLetterModal(approvedCode);
       });
   };
 
@@ -311,6 +345,15 @@ export class ProcessPermit extends Component {
       return this.handleApprovedApplication(values);
     }
     return this.afterSuccess(values, "This application has been successfully rejected.", code);
+  };
+
+  generatePermitNumber = () => {
+    return this.props
+      .patchPermitNumber(this.props.draftPermit.permit_guid, this.props.noticeOfWork.mine_guid, {
+        now_application_guid: this.props.noticeOfWork.now_application_guid,
+      })
+      .then(() => this.props.closeModal())
+      .then(() => this.openUpdateStatusGenerateLetterModal(approvedCode));
   };
 
   handleApprovedApplication = (values) => {
@@ -625,7 +668,7 @@ export class ProcessPermit extends Component {
     <Menu>
       <Menu.Item
         key="issue-permit"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(approvedCode)}
+        onClick={this.openGeneratePermitNumberModal}
         disabled={validationErrors}
       >
         Issue permit
@@ -833,6 +876,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
+      patchPermitNumber,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );
