@@ -1,0 +1,1 @@
+DELETE FROM mine_report_submission WHERE mine_report_id IN (SELECT mine_report_id FROM mine_report where permit_condition_category_code = 'ADC');
