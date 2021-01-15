@@ -80,6 +80,12 @@
       "value": "idir"
     },
     {
+      "name": "API_URL",
+      "displayName": "API Url",
+      "description": "URL for the backend API",
+      "value": "http://localhost:3000"
+    },
+    {
       "name": "FILESYSTEM_PROVIDER_URL",
       "displayName": "Filesystem Provider Url",
       "description": "URL for the MMS archive filesystem, should generally be same as API",
