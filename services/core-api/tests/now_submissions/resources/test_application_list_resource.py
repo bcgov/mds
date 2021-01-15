@@ -13,7 +13,7 @@ NOW_APPLICATION_DATA = {
     "applicationtype":
     "str",
     "status":
-    "Pending Verification",
+    "Under Review",
     "submitteddate":
     "2020-02-27T19:14:23.368Z",
     "receiveddate":
