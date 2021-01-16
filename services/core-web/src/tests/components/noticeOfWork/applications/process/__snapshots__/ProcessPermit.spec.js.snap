@@ -5,6 +5,7 @@ exports[`ProcessPermit renders properly 1`] = `
   <NOWTabHeader
     handleDraftPermit={null}
     isEditMode={false}
+    showProgressButton={true}
     tab="PRO"
     tabActions={
       <React.Fragment>

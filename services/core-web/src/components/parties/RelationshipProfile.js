@@ -73,13 +73,15 @@ export class RelationshipProfile extends Component {
     const mine = this.props.mines[id];
 
     // Fetch any props not provided
-    if (this.props.partyRelationships.length === 0) {
-      this.props.fetchPartyRelationships({
-        mine_guid: id,
-        types: typeCode,
-        relationships: "party",
-      });
-    }
+
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      types: typeCode,
+      relationships: "party",
+      include_permittees: "true",
+      active_only: "false",
+    });
+
     if (!mine) {
       this.props.fetchMineRecordById(id);
       this.props.fetchPermits(id);

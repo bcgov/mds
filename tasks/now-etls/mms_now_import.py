@@ -44,7 +44,7 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.fromdb(
             connection,
-            f'SELECT msg_id as messageid, cid as mms_cid, mine_no as minenumber, apl_dt as submitteddate, lat_dec, lon_dec, multi_year_ind, multi_year_area_ind, str_Dt as ProposedStartDate, end_dt as ProposedEndDate, site_desc as SiteDirections, prpty_nm as NameOfProperty, apl_typ from mms.mmsnow'
+            r"""SELECT now.msg_id as messageid, now.cid as mms_cid, now.mine_no as minenumber, now.apl_dt as submitteddate, now.lat_dec, now.lon_dec, now.multi_year_ind, now.multi_year_area_ind, now.str_dt as ProposedStartDate, now.end_dt as ProposedEndDate, now.site_desc as SiteDirections, now.prpty_nm as NameOfProperty, now.apl_typ, CASE WHEN vw.status = 'ACCEPTED' THEN 'Pending Verification' WHEN vw.status = 'APPROVED' THEN 'Approved' WHEN vw.status = 'CLIENT DELAYED' THEN 'Client Delayed' WHEN vw.status = 'GOV. ACTION REQ.' THEN 'Govt. Action Required' WHEN vw.status = 'NO PERMIT REQUIRED' THEN 'No Permit Required' WHEN vw.status = 'PENDING APPROVAL' THEN 'Pending Approval' WHEN vw.status = 'PERMIT CLOSED' THEN 'Approved' WHEN vw.status = 'RECEIVED' THEN 'Received' WHEN vw.status = 'REFERRAL COMPLETE' THEN 'Referral Complete' WHEN vw.status = 'REFERRED' THEN 'Referred' WHEN vw.status = 'REJECTED' THEN 'Rejected' ELSE NULL END AS status from mms.mmsnow now JOIN mms.mmsnow_vw vw ON now.cid=vw.cid"""
         )
         # grab the coal and mineral now numbers.
         now_number_mineral = etl.fromdb(
