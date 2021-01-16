@@ -294,6 +294,7 @@ class PermitAmendmentResource(Resource, UserMixin):
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
         data = self.parser.parse_args()
+        current_app.logger.info(f'updating {permit_amendment} with >> {data}')
 
         validate_issue_date(
             data.get('issue_date'), data.get('permit_amendment_type_code'),
