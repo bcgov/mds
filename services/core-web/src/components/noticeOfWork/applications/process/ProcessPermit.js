@@ -271,19 +271,26 @@ export class ProcessPermit extends Component {
     return previousAmendment;
   };
 
-  createDocList = (noticeOfWork) => {
+  getFinalApplicationPackage = (noticeOfWork) => {
+    const getDocumentInfo = (doc) => {
+      const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
+      const author = doc.preamble_author;
+      const date = doc.preamble_date;
+      let info = `${title}, `;
+      info += date ? `dated ${formatDate(date)}` : "not dated";
+      info += author ? `, prepared by ${author}` : "";
+      return info;
+    };
     const documents = noticeOfWork.filtered_submission_documents
-      .filter((document) => document.is_final_package)
-      .map((document) => ({
-        document_name: document.filename,
-        document_upload_date: "",
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        document_info: getDocumentInfo(doc),
       }));
     return documents.concat(
       noticeOfWork.documents
-        .filter((document) => document.is_final_package)
-        .map((document) => ({
-          document_name: document.mine_document.document_name,
-          document_upload_date: formatDate(document.mine_document.upload_date),
+        .filter(({ is_final_package }) => is_final_package)
+        .map((doc) => ({
+          document_info: getDocumentInfo(doc),
         }))
     );
   };
@@ -333,7 +340,7 @@ export class ProcessPermit extends Component {
             auth_end_date: formatDate(values.auth_end_date),
             issue_date: formatDate(values.issue_date),
             application_dated: formatDate(permitObj.application_date),
-            document_list: this.createDocList(this.props.noticeOfWork),
+            final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
           },
           values,
           this.afterSuccess
@@ -430,7 +437,7 @@ export class ProcessPermit extends Component {
       });
     }
 
-    // Final application document titles
+    // Final Application Package document titles
     const requestedDocuments = this.props.noticeOfWork?.documents?.filter(
       ({ is_final_package }) => is_final_package
     );
