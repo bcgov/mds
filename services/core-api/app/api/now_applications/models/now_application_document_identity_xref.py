@@ -24,9 +24,14 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
     documenturl = db.Column(db.String, primary_key=True)
     documenttype = db.Column(db.String, primary_key=True)
     description = db.Column(db.String)
+
     is_final_package = db.Column(db.Boolean, server_default=FetchedValue())
     is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
     is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())
+
+    preamble_title = db.Column(db.String)
+    preamble_author = db.Column(db.String)
+    preamble_date = db.Column(db.DateTime)
 
     now_application_id = db.Column(
         db.Integer,
@@ -44,3 +49,7 @@ class NOWApplicationDocumentIdentityXref(AuditMixin, Base):
 
     def __repr__(self):
         return '<NOWApplicationDocumentIdentityXref %r>' % self.now_application_document_xref_guid
+
+    @classmethod
+    def find_by_guid(cls, guid):
+        return cls.query.filter_by(now_application_document_xref_guid=guid).one_or_none()

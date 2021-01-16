@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, FormSection, reduxForm } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
@@ -242,15 +242,13 @@ export const GeneratePermitForm = (props) => (
           </Col>
         </Row>
         <br />
-        <FormSection name="final_documents_file_metadata">
-          <FinalPermitDocuments
-            mineGuid={props.noticeOfWork.mine_guid}
-            noticeOfWork={props.noticeOfWork}
-            showPreambleFileMetadata
-            editPreambleFileMetadata={!props.isViewMode}
-            initialValues={props.initialValues}
-          />
-        </FormSection>
+        <FinalPermitDocuments
+          mineGuid={props.noticeOfWork.mine_guid}
+          noticeOfWork={props.noticeOfWork}
+          showPreambleFileMetadata
+          editPreambleFileMetadata={!props.isViewMode}
+          initialValues={props.initialValues}
+        />
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
@@ -263,7 +261,7 @@ export const GeneratePermitForm = (props) => (
             now_application_document_sub_type_code === "MDO"
         )}
         isViewMode={props.isViewMode}
-        disclaimerText="In this table you can see all map related Notice of Work documents."
+        disclaimerText="In this table you can see all map-related Notice of Work documents."
         categoriesToShow={["MDO"]}
         addDescriptionColumn={false}
       />

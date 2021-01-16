@@ -53,6 +53,7 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
         : null;
     return {
       key: document.mine_document_guid ?? document.id,
+      now_application_document_xref_guid: document.now_application_document_xref_guid,
       now_application_guid,
       filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,
@@ -97,45 +98,48 @@ export const NOWSubmissionDocuments = (props) => {
   const fileMetadataColumns = [
     {
       title: "Title",
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "preamble_title",
+      key: "preamble_title",
       render: (text, record) => (
-        <div title="Proponent Description">
+        <div title="Title">
           <Field
-            id={`${record.key}_title`}
-            name={`${record.key}_title`}
-            placeholder="Enter Title"
+            id={`${record.now_application_document_xref_guid}_preamble_title`}
+            name={`${record.now_application_document_xref_guid}_preamble_title`}
+            placeholder={(props.editPreambleFileMetadata && "Enter Title") || null}
             component={renderConfig.FIELD}
+            disabled={!props.editPreambleFileMetadata}
           />
         </div>
       ),
     },
     {
       title: "Author",
-      dataIndex: "author",
-      key: "author",
+      dataIndex: "preamble_author",
+      key: "preamble_author",
       render: (text, record) => (
-        <div title="Proponent Description">
+        <div title="Author">
           <Field
-            id={`${record.key}_author`}
-            name={`${record.key}_author`}
-            placeholder="Enter Author"
+            id={`${record.now_application_document_xref_guid}_preamble_author`}
+            name={`${record.now_application_document_xref_guid}_preamble_author`}
+            placeholder={(props.editPreambleFileMetadata && "Enter Author") || null}
             component={renderConfig.FIELD}
+            disabled={!props.editPreambleFileMetadata}
           />
         </div>
       ),
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "preamble_date",
+      key: "preamble_date",
       render: (text, record) => (
-        <div title="Proponent Description">
+        <div title="Date">
           <Field
-            id={`${record.key}_date`}
-            name={`${record.key}_date`}
+            id={`${record.now_application_document_xref_guid}_preamble_date`}
+            name={`${record.now_application_document_xref_guid}_preamble_date`}
             component={renderConfig.DATE}
-            placeholder="YYYY-MM-DD"
+            placeholder={(props.editPreambleFileMetadata && "YYYY-MM-DD") || null}
+            disabled={!props.editPreambleFileMetadata}
           />
         </div>
       ),
@@ -207,6 +211,8 @@ export const NOWSubmissionDocuments = (props) => {
     props.importNowSubmissionDocumentsJob,
     props.now_application_guid
   );
+
+  console.log(props);
 
   const renderImportJobStatus = () => {
     const importJobExists = !isEmpty(props.importNowSubmissionDocumentsJob);

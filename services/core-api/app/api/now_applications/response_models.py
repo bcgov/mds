@@ -252,7 +252,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
-        'preamble_date': fields.Date,
+        'preamble_date': fields.DateTime,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -322,7 +322,26 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
-        'preamble_date': fields.Date,
+        'preamble_date': fields.DateTime,
+        'now_application_document_xref_guid': fields.String,
+        'now_application_id': fields.Integer,
+    })
+
+IMPORTED_NOW_SUBMISSION_DOCUMENT_X = api.model(
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'messageid': fields.Integer,
+        'documenturl': fields.String,
+        'filename': fields.String,
+        'documenttype': fields.String,
+        'description': fields.String,
+        'mine_document_guid': fields.String,
+        'document_manager_guid': fields.String,
+        'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })

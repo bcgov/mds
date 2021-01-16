@@ -71,9 +71,9 @@ const regionHash = {
   SW: "Victoria",
 };
 
-const getFinalPermitDocumentsInitialValues = (noticeOfWork) => {
+const getDocumentsMetadataInitialValues = (documents) => {
   const initialValues = {};
-  noticeOfWork?.documents.map((doc) => {
+  documents?.map((doc) => {
     initialValues[`${doc.now_application_document_xref_guid}_preamble_title`] = doc.preamble_title;
     initialValues[`${doc.now_application_document_xref_guid}_preamble_author`] =
       doc.preamble_author;
@@ -286,9 +286,11 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
-    const transformFinalDocumentsFileMetadata = (finalDocumentsFileMetadata) => {
+    console.log("this.props.formValues", this.props.formValues);
+
+    const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
-      for (let [key, value] of Object.entries(finalDocumentsFileMetadata)) {
+      for (let [key, value] of Object.entries(documentsMetadata)) {
         // Extract required information from the field ID (e.g., 1c943015-29ed-433c-bfb1-d5ed14db103e_preamble_title).
         const fieldIdParts = key.split(/_(.+)/);
         const nowApplicationDocumentXrefGuid = fieldIdParts[0];
@@ -306,8 +308,11 @@ export class NOWPermitGeneration extends Component {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
       permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
-      final_documents_file_metadata: JSON.stringify(
-        transformFinalDocumentsFileMetadata(this.props.formValues.final_documents_file_metadata)
+      final_original_documents_metadata: JSON.stringify(
+        transformDocumentsMetadata(this.props.formValues.final_original_documents_metadata)
+      ),
+      final_requested_documents_metadata: JSON.stringify(
+        transformDocumentsMetadata(this.props.formValues.final_requested_documents_metadata)
       ),
     };
     this.props
@@ -416,9 +421,12 @@ export class NOWPermitGeneration extends Component {
                   <GeneratePermitForm
                     initialValues={{
                       ...this.state.permitGenObj,
-                      final_documents_file_metadata: {
-                        ...getFinalPermitDocumentsInitialValues(this.props.noticeOfWork),
-                      },
+                      final_requested_documents_metadata: getDocumentsMetadataInitialValues(
+                        this.props.noticeOfWork?.documents
+                      ),
+                      final_original_documents_metadata: getDocumentsMetadataInitialValues(
+                        this.props.noticeOfWork?.filtered_submission_documents
+                      ),
                     }}
                     isAmendment={this.props.isAmendment}
                     noticeOfWork={this.props.noticeOfWork}
