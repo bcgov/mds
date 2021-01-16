@@ -430,6 +430,30 @@ export class ProcessPermit extends Component {
       });
     }
 
+    // Final application document titles
+    const requestedDocuments = this.props.noticeOfWork?.documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const originalDocuments = this.props.noticeOfWork?.filtered_submission_documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
+    let titlesMissing = 0;
+    finalApplicationDocuments?.map((doc) => {
+      if (!doc.preamble_title) {
+        titlesMissing++;
+      }
+    });
+    if (titlesMissing !== 0) {
+      validationMessages.push({
+        message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit/#preamble"
+        ),
+      });
+    }
+
     // Inspector signature
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     if (!signature) {

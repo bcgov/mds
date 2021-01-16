@@ -12,7 +12,6 @@ import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-// import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
 import {
   fetchPermits,
   updatePermitAmendment,

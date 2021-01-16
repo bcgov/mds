@@ -325,8 +325,6 @@ export const NOWDocuments = (props) => {
         !document.is_consultation_package,
     }));
 
-  // console.log("NOWDocuments props", props);
-
   return (
     <div>
       <p>{props.disclaimerText}</p>
@@ -357,7 +355,6 @@ export const NOWDocuments = (props) => {
               }
             : null
         }
-        {...props}
       />
       <br />
 
