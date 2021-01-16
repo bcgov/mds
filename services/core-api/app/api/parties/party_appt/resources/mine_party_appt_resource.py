@@ -61,12 +61,14 @@ class MinePartyApptResource(Resource, UserMixin):
             party_guid = request.args.get('party_guid')
             permit_guid = request.args.get('permit_guid')
             incl_pmt = request.args.get('include_permittees', 'false').lower() == 'true'
+            act_only = request.args.get('active_only', 'true').lower() == 'true'
             types = request.args.getlist('types') #list
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid,
                 party_guid=party_guid,
                 mine_party_appt_type_codes=types,
-                include_permittees=incl_pmt)
+                include_permittees=incl_pmt,
+                active_only=act_only)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
 
