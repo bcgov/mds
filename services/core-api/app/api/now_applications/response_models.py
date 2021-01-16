@@ -308,7 +308,8 @@ NOW_PARTY_APPOINTMENT = api.model(
     })
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
-    'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+    'IMPORTED_NOW_SUBMISSION_DOCUMENT',
+    {
         'id': fields.Integer,
         'messageid': fields.Integer,
         'documenturl': fields.String,
