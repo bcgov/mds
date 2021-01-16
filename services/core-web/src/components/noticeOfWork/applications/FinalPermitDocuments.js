@@ -218,8 +218,6 @@ export class FinalPermitDocuments extends Component {
   };
 
   render() {
-    // console.log("FinalPermitDocument initialValues", this.props.initialValues);
-
     const permitDocuments = this.props.noticeOfWork.documents.filter(
       ({ is_final_package }) => is_final_package
     );

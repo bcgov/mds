@@ -293,8 +293,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleSaveDraftEdit = () => {
-    console.log("this.props.formValues", this.props.formValues);
-
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
       for (let [key, value] of Object.entries(documentsMetadata)) {

@@ -212,8 +212,6 @@ export const NOWSubmissionDocuments = (props) => {
     props.now_application_guid
   );
 
-  console.log(props);
-
   const renderImportJobStatus = () => {
     const importJobExists = !isEmpty(props.importNowSubmissionDocumentsJob);
 

@@ -488,12 +488,8 @@ export class ProcessPermit extends Component {
       ({ is_final_package }) => is_final_package
     );
     const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
-    let titlesMissing = 0;
-    finalApplicationDocuments?.map((doc) => {
-      if (!doc.preamble_title) {
-        titlesMissing++;
-      }
-    });
+    const titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
+      .length;
     if (titlesMissing !== 0) {
       validationMessages.push({
         message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
