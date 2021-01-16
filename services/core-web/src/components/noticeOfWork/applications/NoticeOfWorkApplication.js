@@ -563,6 +563,7 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitted && this.props.submitFailed;
     return (
       <NOWTabHeader
+        showProgressButton={this.props.noticeOfWork.lead_inspector_party_guid}
         tab="REV"
         tabActions={
           this.props.noticeOfWork.lead_inspector_party_guid && (

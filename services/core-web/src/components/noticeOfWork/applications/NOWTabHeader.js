@@ -20,6 +20,7 @@ const propTypes = {
   tabEditActions: PropTypes.any,
   tab: PropTypes.string.isRequired,
   tabName: PropTypes.string.isRequired,
+  showProgressButton: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -27,6 +28,7 @@ const defaultProps = {
   isEditMode: false,
   tabActions: "",
   tabEditActions: "",
+  showProgressButton: true,
 };
 
 export const NOWTabHeader = (props) => (
@@ -40,7 +42,9 @@ export const NOWTabHeader = (props) => (
             </Popover>
           </h2>
           <div className="view--header--content--actions">
-            <NOWProgressActions tab={props.tab} handleDraftPermit={props.handleDraftPermit} />
+            {props.showProgressButton && (
+              <NOWProgressActions tab={props.tab} handleDraftPermit={props.handleDraftPermit} />
+            )}
             <>{props.tabActions}</>
           </div>
         </div>

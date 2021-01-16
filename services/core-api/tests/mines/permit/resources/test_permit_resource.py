@@ -153,3 +153,56 @@ def test_delete_permit_fail(test_client, db_session, auth_headers):
         f'/mines/{permit.mine_guid}/permits/{permit_guid}',
         headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 400
+
+
+# PATCH
+def test_patch_permit_updates_permit_number(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_guid = permit.permit_guid
+    now_application = NOWApplicationIdentityFactory(mine=mine)
+
+    permit.permit_status_code = 'D'
+    permit.permit_no = 'DRAFT'
+    permit.save()
+
+    data = {'now_application_guid': now_application.now_application_guid}
+    patch_resp = test_client.patch(
+        f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    patch_data = json.loads(patch_resp.data.decode())
+    assert patch_resp.status_code == 200
+    assert patch_data.get('permit_no') != 'DRAFT'
+
+
+def test_patch_permit_does_not_update_permit_number(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_guid = permit.permit_guid
+    now_application = NOWApplicationIdentityFactory(mine=mine)
+
+    permit.permit_status_code = 'C'
+    permit.permit_no = 'some number'
+    permit.save()
+
+    data = {'now_application_guid': now_application.now_application_guid}
+    patch_resp = test_client.patch(
+        f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    patch_data = json.loads(patch_resp.data.decode())
+    assert patch_resp.status_code == 200
+    assert patch_data.get('permit_no') != 'DRAFT'
+
+
+def test_patch_permit_bad_permit_guid(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_guid = '1ad6d13a-91d4-48e3-a8c7-6c1d84ea6bb7'
+    now_application = NOWApplicationIdentityFactory(mine=mine)
+
+    data = {'now_application_guid': now_application.now_application_guid}
+    patch_resp = test_client.patch(
+        f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}',
+        headers=auth_headers['full_auth_header'],
+        json=data)
+    patch_data = json.loads(patch_resp.data.decode())
+    assert patch_resp.status_code == 404
