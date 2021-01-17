@@ -26,6 +26,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
   const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
     props.finalSubmissionDocuments
   );
+
   return (
     <div>
       <h4>vFCBC/NROS Application Files</h4>

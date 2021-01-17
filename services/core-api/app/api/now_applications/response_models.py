@@ -250,6 +250,9 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'is_final_package': fields.Boolean,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -306,7 +309,7 @@ NOW_PARTY_APPOINTMENT = api.model(
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
-        'id':fields.Integer,
+        'id': fields.Integer,
         'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
@@ -317,6 +320,9 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'is_final_package': fields.Boolean,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })
@@ -355,7 +361,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_application_status_code':
         fields.String,
-        'previous_application_status_code': fields.String,
+        'previous_application_status_code':
+        fields.String,
         'status_updated_date':
         Date,
         'status_reason':

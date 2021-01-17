@@ -38,7 +38,6 @@ import {
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, flattenObject } from "@common/utils/helpers";
-
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -537,6 +536,11 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        onPermitDraftSave={() =>
+          this.props.fetchImportedNoticeOfWorkApplication(
+            this.props.noticeOfWork.now_application_guid
+          )
+        }
         importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         isAmendment={isAmendment}
         documentType={

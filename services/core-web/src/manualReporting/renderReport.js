@@ -9,8 +9,6 @@
 // 3. specify data in json format (it is prepopulated with NOW json)
 // 4. node .\renderReport.js
 
-console.log("Generating Report!!!");
-
 const fs = require("fs");
 const carbone = require("carbone");
 

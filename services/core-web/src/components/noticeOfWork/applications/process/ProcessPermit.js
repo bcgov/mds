@@ -128,6 +128,16 @@ const ProgressRouteFor = (code, now_application_guid) =>
     DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
   }[code]);
 
+const getDocumentInfo = (doc) => {
+  const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
+  const author = doc.preamble_author;
+  const date = doc.preamble_date;
+  let info = `${title}, `;
+  info += date ? `dated ${formatDate(date)}` : "not dated";
+  info += author ? `, prepared by ${author}` : "";
+  return info;
+};
+
 export class ProcessPermit extends Component {
   state = {};
 
@@ -243,7 +253,7 @@ export class ProcessPermit extends Component {
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-    const originalAmendment = draftPermit.permit_amendments.filter(
+    const originalAmendment = draftPermit.permit_amendments?.filter(
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
@@ -269,7 +279,7 @@ export class ProcessPermit extends Component {
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
-    permitGenObject.application_type = this.props.appOptions.filter(
+    permitGenObject.application_type = this.props.appOptions?.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
@@ -297,27 +307,32 @@ export class ProcessPermit extends Component {
         .filter((a) => a.permit_amendment_status_code !== "DFT")
         // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
-    const previousAmendment = {
-      ...amendments[0],
-      issue_date: formatDate(amendments[0].issue_date),
-      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    const previousAmendment = amendments && amendments.length > 0 ? amendments[0] : {};
+    if (!isEmpty(previousAmendment)) {
+      previousAmendment.related_documents = previousAmendment.related_documents.map((doc) => ({
+        document_info: getDocumentInfo(doc),
+        ...doc,
+      }));
+    }
+    const previousAmendmentGenObject = {
+      ...previousAmendment,
+      issue_date: formatDate(previousAmendment.issue_date),
+      authorization_end_date: formatDate(previousAmendment.authorization_end_date),
     };
-    return previousAmendment;
+    return previousAmendmentGenObject;
   };
 
-  createDocList = (noticeOfWork) => {
+  getFinalApplicationPackage = (noticeOfWork) => {
     const documents = noticeOfWork.filtered_submission_documents
-      .filter((document) => document.is_final_package)
-      .map((document) => ({
-        document_name: document.filename,
-        document_upload_date: "",
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        document_info: getDocumentInfo(doc),
       }));
     return documents.concat(
       noticeOfWork.documents
-        .filter((document) => document.is_final_package)
-        .map((document) => ({
-          document_name: document.mine_document.document_name,
-          document_upload_date: formatDate(document.mine_document.upload_date),
+        .filter(({ is_final_package }) => is_final_package)
+        .map((doc) => ({
+          document_info: getDocumentInfo(doc),
         }))
     );
   };
@@ -376,7 +391,7 @@ export class ProcessPermit extends Component {
             auth_end_date: formatDate(values.auth_end_date),
             issue_date: formatDate(values.issue_date),
             application_dated: formatDate(permitObj.application_date),
-            document_list: this.createDocList(this.props.noticeOfWork),
+            final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
           },
           values,
           this.afterSuccess
@@ -471,6 +486,47 @@ export class ProcessPermit extends Component {
           "application"
         ),
       });
+    }
+
+    // Final Application Package document titles
+    const requestedDocuments = this.props.noticeOfWork?.documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const originalDocuments = this.props.noticeOfWork?.filtered_submission_documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
+    const titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
+      .length;
+    if (titlesMissing !== 0) {
+      validationMessages.push({
+        message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit/#preamble"
+        ),
+      });
+    }
+
+    // Previous permit amendment document titles
+    const previousAmendment = this.createPermitGenObject(
+      this.props.noticeOfWork,
+      this.props.draftPermit,
+      this.props.draftAmendment
+    ).previous_amendment;
+    if (!isEmpty(previousAmendment)) {
+      const titlesMissing = previousAmendment.related_documents?.filter(
+        ({ preamble_title }) => !preamble_title
+      ).length;
+      if (titlesMissing !== 0) {
+        validationMessages.push({
+          message: `The previous amendment has ${titlesMissing} documents that require a title.`,
+          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.noticeOfWork.now_application_guid,
+            "draft-permit/#preamble"
+          ),
+        });
+      }
     }
 
     // Inspector signature

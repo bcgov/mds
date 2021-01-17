@@ -57,7 +57,9 @@ exports[`NOWSecurities renders properly 1`] = `
             "exploration_surface_drilling": Object {
               "details": Array [],
             },
+            "filtered_submission_documents": Array [],
             "latitude": "",
+            "lead_inspector": Object {},
             "longitude": "",
             "mechanical_trenching": Object {
               "details": Array [],
