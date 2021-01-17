@@ -11,11 +11,13 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
+import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
+  previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
@@ -249,6 +251,13 @@ export const GeneratePermitForm = (props) => (
           editPreambleFileMetadata={!props.isViewMode}
           initialValues={props.initialValues}
         />
+        {props.previousAmendmentDocuments && (
+          <PreviousAmendmentDocuments
+            previousAmendmentDocuments={props.previousAmendmentDocuments}
+            editPreambleFileMetadata={!props.isViewMode}
+            initialValues={props.initialValues}
+          />
+        )}
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">

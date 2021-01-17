@@ -128,6 +128,16 @@ const ProgressRouteFor = (code, now_application_guid) =>
     DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
   }[code]);
 
+const getDocumentInfo = (doc) => {
+  const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
+  const author = doc.preamble_author;
+  const date = doc.preamble_date;
+  let info = `${title}, `;
+  info += date ? `dated ${formatDate(date)}` : "not dated";
+  info += author ? `, prepared by ${author}` : "";
+  return info;
+};
+
 export class ProcessPermit extends Component {
   state = {};
 
@@ -297,24 +307,23 @@ export class ProcessPermit extends Component {
         .filter((a) => a.permit_amendment_status_code !== "DFT")
         // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
-    const previousAmendment = {
-      ...amendments[0],
-      issue_date: formatDate(amendments[0].issue_date),
-      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    const previousAmendment = amendments && amendments.length > 0 ? amendments[0] : {};
+    if (previousAmendment) {
+      previousAmendment.related_documents = previousAmendment.related_documents.map((doc) => ({
+        document_info: getDocumentInfo(doc),
+        ...doc,
+      }));
+    }
+    console.log("previousAmendment related_documents", previousAmendment.related_documents);
+    const previousAmendmentGenObject = {
+      ...previousAmendment,
+      issue_date: formatDate(previousAmendment.issue_date),
+      authorization_end_date: formatDate(previousAmendment.authorization_end_date),
     };
-    return previousAmendment;
+    return previousAmendmentGenObject;
   };
 
   getFinalApplicationPackage = (noticeOfWork) => {
-    const getDocumentInfo = (doc) => {
-      const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
-      const author = doc.preamble_author;
-      const date = doc.preamble_date;
-      let info = `${title}, `;
-      info += date ? `dated ${formatDate(date)}` : "not dated";
-      info += author ? `, prepared by ${author}` : "";
-      return info;
-    };
     const documents = noticeOfWork.filtered_submission_documents
       .filter(({ is_final_package }) => is_final_package)
       .map((doc) => ({
