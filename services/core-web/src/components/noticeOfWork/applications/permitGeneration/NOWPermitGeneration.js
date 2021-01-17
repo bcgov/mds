@@ -242,7 +242,7 @@ export class NOWPermitGeneration extends Component {
         // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
     const previousAmendment = amendments && amendments.length > 0 ? amendments[0] : {};
-    if (previousAmendment) {
+    if (!isEmpty(previousAmendment)) {
       previousAmendment.related_documents = previousAmendment.related_documents.map((doc) => ({
         document_info: getDocumentInfo(doc),
         ...doc,
