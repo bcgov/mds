@@ -191,7 +191,7 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
-    permitGenObject.application_type = this.props.appOptions.filter(
+    permitGenObject.application_type = this.props.appOptions?.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;

@@ -270,7 +270,7 @@ export const GeneratePermitForm = (props) => (
             now_application_document_sub_type_code === "MDO"
         )}
         isViewMode={props.isViewMode}
-        disclaimerText="In this table you can see all map-related Notice of Work documents."
+        disclaimerText="In this table, you can see all the map-related Notice of Work documents."
         categoriesToShow={["MDO"]}
         addDescriptionColumn={false}
       />
