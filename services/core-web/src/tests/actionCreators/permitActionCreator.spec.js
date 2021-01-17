@@ -10,6 +10,7 @@ import {
   deletePermitAmendment,
   deletePermit,
   fetchDraftPermitByNOW,
+  patchPermitNumber,
 } from "@common/actionCreators/permitActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -330,6 +331,43 @@ describe("`deletePermitAmendment` action creator", () => {
       mineGuid,
       permitGuid,
       permitAmdendmentGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`patchPermitNumber` action creator", () => {
+  const application_guid = "12345-6789";
+  const permit_guid = "12345-6789";
+  const mine_guid = "12345-6789";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMITS(mine_guid)}/${permit_guid}`;
+
+  const mockPayload = { now_application_guid: application_guid };
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPatch(url, mockPayload).reply(200, mockResponse);
+    return patchPermitNumber(
+      permit_guid,
+      mine_guid,
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPatch(url).reply(418, MOCK.ERROR);
+    return patchPermitNumber(
+      permit_guid,
+      mine_guid,
+      mockPayload
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

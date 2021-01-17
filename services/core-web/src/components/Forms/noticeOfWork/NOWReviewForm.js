@@ -100,9 +100,9 @@ export class NOWReviewForm extends Component {
                   <Field
                     id="response_date"
                     name="response_date"
-                    label="Date Received*"
+                    label="Date Received"
                     component={renderConfig.DATE}
-                    validate={[required, dateNotInFuture]}
+                    validate={[dateNotInFuture]}
                   />
                 </Form.Item>
               </>
@@ -175,7 +175,7 @@ export class NOWReviewForm extends Component {
               </>
             )}
             <br />
-            <h5>Document Upload*</h5>
+            <h5>Document Upload</h5>
             {this.props.type !== ADVERTISEMENT && (
               <p className="p-light">
                 All files uploaded will be classified using the selected Category. To upload other
