@@ -248,7 +248,6 @@ export class NOWPermitGeneration extends Component {
         ...doc,
       }));
     }
-    console.log("previousAmendment related_documents", previousAmendment.related_documents);
     const previousAmendmentGenObject = {
       ...previousAmendment,
       issue_date: formatDate(previousAmendment.issue_date),
@@ -348,20 +347,19 @@ export class NOWPermitGeneration extends Component {
     // If applicable, get the previous amendment documents and their form's initial values.
     let previousAmendmentDocuments;
     let previousAmendmentDocumentsMetadataInitialValues;
-    if (this.props.isAmendment) {
-      if (
-        this.props.formValues?.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
-      ) {
-        const permit = this.props.permits.find(
-          (p) => p.permit_no === this.props.formValues?.permit_number
-        );
-        const previousAmendment = this.createPreviousAmendmentGenObject(permit);
-        previousAmendmentDocuments = previousAmendment.related_documents;
-        previousAmendmentDocumentsMetadataInitialValues = getDocumentsMetadataInitialValues(
-          previousAmendmentDocuments,
-          "permit_amendment_document_guid"
-        );
-      }
+    if (
+      this.props.isAmendment &&
+      this.props.formValues?.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
+    ) {
+      const permit = this.props.permits.find(
+        (p) => p.permit_no === this.props.formValues?.permit_number
+      );
+      const previousAmendment = this.createPreviousAmendmentGenObject(permit);
+      previousAmendmentDocuments = previousAmendment.related_documents;
+      previousAmendmentDocumentsMetadataInitialValues = getDocumentsMetadataInitialValues(
+        previousAmendmentDocuments,
+        "permit_amendment_document_guid"
+      );
     }
 
     const nowType = this.props.noticeOfWork.type_of_application

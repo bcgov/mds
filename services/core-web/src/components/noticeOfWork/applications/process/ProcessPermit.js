@@ -253,7 +253,7 @@ export class ProcessPermit extends Component {
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-    const originalAmendment = draftPermit.permit_amendments.filter(
+    const originalAmendment = draftPermit.permit_amendments?.filter(
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
@@ -314,7 +314,6 @@ export class ProcessPermit extends Component {
         ...doc,
       }));
     }
-    console.log("previousAmendment related_documents", previousAmendment.related_documents);
     const previousAmendmentGenObject = {
       ...previousAmendment,
       issue_date: formatDate(previousAmendment.issue_date),
@@ -507,6 +506,27 @@ export class ProcessPermit extends Component {
           "draft-permit/#preamble"
         ),
       });
+    }
+
+    // Previous permit amendment document titles
+    const previousAmendment = this.createPermitGenObject(
+      this.props.noticeOfWork,
+      this.props.draftPermit,
+      this.props.draftAmendment
+    ).previous_amendment;
+    if (previousAmendment) {
+      const titlesMissing = previousAmendment.related_documents?.filter(
+        ({ preamble_title }) => !preamble_title
+      ).length;
+      if (titlesMissing !== 0) {
+        validationMessages.push({
+          message: `The previous amendment has ${titlesMissing} documents that require a title.`,
+          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.noticeOfWork.now_application_guid,
+            "draft-permit/#preamble"
+          ),
+        });
+      }
     }
 
     // Inspector signature
