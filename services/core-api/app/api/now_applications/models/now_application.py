@@ -82,8 +82,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    proposed_annual_maximum_tonnage = db.Column(db.Integer)
-    adjusted_annual_maximum_tonnage = db.Column(db.Integer)
+    proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
+    adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
     now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
@@ -266,7 +266,13 @@ class NOWApplication(Base, AuditMixin):
                 'now_application_id':
                 doc.now_application_id,
                 'document_manager_guid':
-                doc.document_manager_guid
+                doc.document_manager_guid,
+                'preamble_title':
+                doc.preamble_title,
+                'preamble_author':
+                doc.preamble_author,
+                'preamble_date':
+                doc.preamble_date
             })
 
         for doc in now_application.submission_documents:

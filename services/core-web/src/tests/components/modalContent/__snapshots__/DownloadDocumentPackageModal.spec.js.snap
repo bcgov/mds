@@ -8,6 +8,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
   <NOWSubmissionDocuments
     displayTableDescription={false}
     documents={Array []}
+    editPreambleFileMetadata={false}
     hideImportStatusColumn={false}
     hideJobStatusColumn={false}
     importNowSubmissionDocumentsJob={Object {}}
@@ -18,6 +19,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
         "setSelectedSubmissionRows": [Function],
       }
     }
+    showPreambleFileMetadata={false}
   />
   <br />
   <h4>

@@ -219,6 +219,12 @@ class PermitResource(Resource, UserMixin):
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        help='GUID of the NoW application for the specified permit.',
+        location='json',
+        store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -262,3 +268,25 @@ class PermitResource(Resource, UserMixin):
             raise BadRequest(e)
 
         return None, 204
+
+    @api.doc(params={'permit_guid': 'Permit guid.', 'now_application_guid': 'NoW application guid'})
+    @requires_role_edit_securities
+    @api.marshal_with(PERMIT_MODEL, code=200)
+    def patch(self, permit_guid, mine_guid):
+        permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
+
+        if not permit:
+            raise NotFound('Permit not found.')
+
+        now_application_guid = self.parser.parse_args()['now_application_guid']
+        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+
+        if not now_application:
+            raise NotFound('NoW application not found')
+
+        if permit.permit_status_code == 'D':
+            #assign permit_no
+            permit.assign_permit_no(now_application.notice_of_work_type_code[0])
+
+        permit.save()
+        return permit

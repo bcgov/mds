@@ -116,7 +116,10 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'mine_guid': fields.String,
         'document_manager_guid': fields.String,
         'document_name': fields.String,
-        'active_ind': fields.Boolean
+        'active_ind': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(
