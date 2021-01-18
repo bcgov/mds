@@ -48,7 +48,7 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+          disclaimerText="Upload securities-related files here."
           categoriesToShow={["SDO"]}
         />
       </ScrollContentWrapper>
@@ -70,7 +70,7 @@ export const NOWApplicationAdministrative = (props) => {
             exportedDocuments.includes(now_application_document_type_code)
           )}
           isViewMode
-          disclaimerText="In this table, you can see all the exported Notice of Work documents."
+          disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
           categoriesToShow={exportedDocuments}
           addDescriptionColumn={false}
         />
