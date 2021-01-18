@@ -326,6 +326,7 @@ app {
                              'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
                              'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
                              'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
+                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                              'ASPNETCORE_ENVIRONMENT': "Development"
                      ]
                 ]
