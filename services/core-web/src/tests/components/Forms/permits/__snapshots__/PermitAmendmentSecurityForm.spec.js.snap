@@ -11,56 +11,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
     gutter={16}
   >
     <Col
-      md={8}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Assessed Liability Adjustment
-        <CoreTooltip
-          title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
-        />
-      </div>
-      <Field
-        allowClear={true}
-        autoComplete="off"
-        component={[Function]}
-        disabled={false}
-        format={[Function]}
-        id="liability_adjustment"
-        name="liability_adjustment"
-        normalize={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={8}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Security Received
-        <CoreTooltip
-          title="Do not mark as received until the security amount is paid in full."
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={false}
-        id="security_received_date"
-        name="security_received_date"
-      />
-    </Col>
-    <Col
-      span={8}
+      span={12}
     >
       <div
         className="field-title"
@@ -76,6 +27,100 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
         id="security_not_required"
         label="No increase required"
         name="security_not_required"
+        onChange={[Function]}
+      />
+    </Col>
+    <Col
+      span={12}
+    >
+      <div
+        className="field-title"
+      >
+        Reason*
+      </div>
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "label": "Administrative Amendment",
+              "value": "Administrative Amendment",
+            },
+            Object {
+              "label": "ALC Holds Bond",
+              "value": "ALC Holds Bond",
+            },
+            Object {
+              "label": "Bonding is a Permit Condition",
+              "value": "Bonding is a Permit Condition",
+            },
+            Object {
+              "label": "Sufficient Bond in Place",
+              "value": "Sufficient Bond in Place",
+            },
+          ]
+        }
+        disabled={true}
+        id="security_not_required_reason"
+        name="security_not_required_reason"
+        placeholder="Please select a reason"
+        validate={
+          Array [
+            [Function],
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Assessed Liability Adjustment
+        <CoreTooltip
+          title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
+        />
+      </div>
+      <Field
+        allowClear={true}
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="liability_adjustment"
+        name="liability_adjustment"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Security Received
+        <CoreTooltip
+          title="Do not mark as received until the security amount is paid in full."
+        />
+      </div>
+      <Field
+        component={[Function]}
+        id="security_received_date"
+        name="security_received_date"
       />
     </Col>
   </Row>
