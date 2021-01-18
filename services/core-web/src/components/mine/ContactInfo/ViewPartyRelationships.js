@@ -455,10 +455,7 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <AuthorizationWrapper
-              permission={Permission.EDIT_PARTIES}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
+            <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
               <Dropdown
                 className="full-height"
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}

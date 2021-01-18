@@ -336,10 +336,7 @@ export class MinePermitInfo extends Component {
           <div className="inline-flex between">
             <div />
             <div className="inline-flex between">
-              <AuthorizationWrapper
-                permission={Permission.EDIT_PERMITS}
-                isMajorMine={mine.major_mine_ind}
-              >
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                 <AddButton
                   onClick={(event) =>
                     this.openAddPermitModal(

@@ -257,18 +257,26 @@ export class NOWPermitGeneration extends Component {
   };
 
   getFinalApplicationPackage = (noticeOfWork) => {
-    const documents = noticeOfWork.filtered_submission_documents
-      .filter(({ is_final_package }) => is_final_package)
-      .map((doc) => ({
-        document_info: getDocumentInfo(doc),
-      }));
-    return documents.concat(
-      noticeOfWork.documents
-        .filter(({ is_final_package }) => is_final_package)
+    let documents = [];
+    let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
+    let requestedDocuments = noticeOfWork?.documents;
+    if (!isEmpty(filteredSubmissionDocuments)) {
+      filteredSubmissionDocuments = filteredSubmissionDocuments
+        ?.filter(({ is_final_package }) => is_final_package)
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
-        }))
-    );
+        }));
+      documents = filteredSubmissionDocuments;
+    }
+    if (!isEmpty(requestedDocuments)) {
+      requestedDocuments = requestedDocuments
+        ?.filter(({ is_final_package }) => is_final_package)
+        .map((doc) => ({
+          document_info: getDocumentInfo(doc),
+        }));
+      documents = [...documents, ...requestedDocuments];
+    }
+    return documents;
   };
 
   handlePermitGenSubmit = () => {
@@ -301,6 +309,9 @@ export class NOWPermitGeneration extends Component {
   handleSaveDraftEdit = () => {
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
+      if (isEmpty(documentsMetadata)) {
+        return allFileMetadata;
+      }
       for (let [key, value] of Object.entries(documentsMetadata)) {
         // Extract required information from the field ID (e.g., 1c943015-29ed-433c-bfb1-d5ed14db103e_preamble_title).
         const fieldIdParts = key.split(/_(.+)/);
