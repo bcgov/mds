@@ -44,8 +44,8 @@ namespace EJ2FileManagerService
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                o.Authority = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUTHORITY");;
-                o.Audience = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUDIENCE");;
+                o.Authority = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUTHORITY"); ;
+                o.Audience = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUDIENCE"); ;
             });
 
             services.AddAuthorization(options =>
@@ -75,7 +75,7 @@ namespace EJ2FileManagerService
 
             app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection(); 
             app.UseMvc();
         }
     }
