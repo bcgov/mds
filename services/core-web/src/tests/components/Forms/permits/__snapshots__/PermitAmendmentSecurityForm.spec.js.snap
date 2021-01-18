@@ -36,7 +36,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       <div
         className="field-title"
       >
-        Reason*
+        Reason
       </div>
       <Field
         component={[Function]}
@@ -64,12 +64,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
         id="security_not_required_reason"
         name="security_not_required_reason"
         placeholder="Please select a reason"
-        validate={
-          Array [
-            [Function],
-            [Function],
-          ]
-        }
+        validate={Array []}
       />
     </Col>
   </Row>

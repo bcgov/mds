@@ -48,6 +48,34 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       </FormItem>
       <FormItem
         hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="description"
+          label="Description"
+          name="description"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <Divider />
+      <FormItem
+        hasFeedback={false}
+        label="Securities"
+      >
+        <Field
+          component={[Function]}
+          id="security_not_required"
+          label="Security Not Required"
+          name="security_not_required"
+          onChange={[Function]}
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
         label="Assessed Liability Adjustment"
       >
         <p
@@ -79,31 +107,6 @@ exports[`PermitAmendmentForm renders properly 1`] = `
           id="security_received_date"
           label="Security Received"
           name="security_received_date"
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="security_not_required"
-          label="Security Not Required"
-          name="security_not_required"
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          component={[Function]}
-          id="description"
-          label="Description"
-          name="description"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>

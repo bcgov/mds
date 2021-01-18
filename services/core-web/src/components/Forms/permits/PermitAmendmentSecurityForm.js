@@ -31,7 +31,7 @@ export const PermitAmendmentSecurityForm = (props) => {
     if (e.target.value) {
       props.change("security_not_required_reason", null);
     } else {
-      props.change("liability_adjustment", "");
+      props.change("liability_adjustment", null);
       props.change("security_received_date", null);
     }
   };
@@ -54,14 +54,18 @@ export const PermitAmendmentSecurityForm = (props) => {
           />
         </Col>
         <Col span={12}>
-          <div className="field-title">Reason*</div>
+          <div className="field-title">{!props.securityNotRequired ? "Reason" : "Reason*"}</div>
           <Field
             id="security_not_required_reason"
             name="security_not_required_reason"
             component={RenderSelect}
             placeholder="Please select a reason"
             data={securityNotRequiredReasonOptions}
-            validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+            validate={
+              !props.securityNotRequired
+                ? []
+                : [required, validateSelectOptions(securityNotRequiredReasonOptions)]
+            }
             disabled={!props.isEditMode || !props.securityNotRequired}
           />
         </Col>
