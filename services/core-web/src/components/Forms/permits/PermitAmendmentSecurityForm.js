@@ -31,7 +31,7 @@ export const PermitAmendmentSecurityForm = (props) => {
     if (e.target.value) {
       props.change("security_not_required_reason", null);
     } else {
-      props.change("liability_adjustment", "");
+      props.change("liability_adjustment", null);
       props.change("security_received_date", null);
     }
   };
