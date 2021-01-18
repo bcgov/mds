@@ -19,7 +19,6 @@ exports[`MinePermitInfo renders properly 1`] = `
         className="inline-flex between"
       >
         <Connect(AuthorizationWrapper)
-          isMajorMine={true}
           permission="role_edit_permits"
         >
           <AddButton

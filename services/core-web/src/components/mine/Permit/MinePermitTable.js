@@ -58,11 +58,11 @@ const renderDocumentLink = (file, text) => (
 
 const finalApplicationPackage = (amendment) => {
   const finalAppPackageCore =
-    amendment.now_application_documents?.length > 0
+    amendment?.now_application_documents?.length > 0
       ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   const finalAppPackageImported =
-    amendment.imported_now_application_documents?.length > 0
+    amendment?.imported_now_application_documents?.length > 0
       ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   return finalAppPackageCore.concat(finalAppPackageImported);
@@ -296,10 +296,7 @@ const columns = [
 
       return (
         <div className="btn--middle flex">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_PERMITS}
-            isMajorMine={text.major_mine_ind}
-          >
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               <Button type="secondary" className="permit-table-button">
                 <div className="padding-sm">
@@ -403,7 +400,7 @@ const childColumns = [
     render: (text) => (
       <div title="Permit Files">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
               {renderDocumentLink(file, truncateFilename(file.document_name))}
             </li>
@@ -540,7 +537,7 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
 
 export const MinePermitTable = (props) => {
   const amendmentHistory = (permit) => {
-    const childRowData = permit.permit_amendments.map((amendment, index) =>
+    const childRowData = permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
         amendment,
         permit,
@@ -556,7 +553,7 @@ export const MinePermitTable = (props) => {
     );
   };
 
-  const rowData = props.permits.map((permit) =>
+  const rowData = props.permits?.map((permit) =>
     transformRowData(
       permit,
       props.partyRelationships,

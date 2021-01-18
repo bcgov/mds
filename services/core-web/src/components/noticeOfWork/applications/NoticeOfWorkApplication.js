@@ -38,7 +38,6 @@ import {
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { formatDate, flattenObject } from "@common/utils/helpers";
-
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
@@ -537,6 +536,11 @@ export class NoticeOfWorkApplication extends Component {
         toggleEditMode={this.toggleEditMode}
         fixedTop={this.state.fixedTop}
         noticeOfWork={this.props.noticeOfWork}
+        onPermitDraftSave={() =>
+          this.props.fetchImportedNoticeOfWorkApplication(
+            this.props.noticeOfWork.now_application_guid
+          )
+        }
         importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         isAmendment={isAmendment}
         documentType={
@@ -563,6 +567,7 @@ export class NoticeOfWorkApplication extends Component {
     const showErrors = errorsLength > 0 && this.state.submitted && this.props.submitFailed;
     return (
       <NOWTabHeader
+        showProgressButton={this.props.noticeOfWork.lead_inspector_party_guid}
         tab="REV"
         tabActions={
           this.props.noticeOfWork.lead_inspector_party_guid && (
@@ -809,15 +814,134 @@ export class NoticeOfWorkApplication extends Component {
               key="application"
               disabled={!isImported}
             >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <div>
-                    {this.renderEditModeNav()}
+              {isImported && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <div>
+                      {this.renderEditModeNav()}
+                      <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                        <NOWSideMenu
+                          route={routes.NOTICE_OF_WORK_APPLICATION}
+                          noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                          tabSection="application"
+                        />
+                      </div>
+                      <div
+                        className={
+                          this.state.fixedTop
+                            ? "side-menu--content with-fixed-top"
+                            : "side-menu--content"
+                        }
+                      >
+                        {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
+                          <>
+                            <ScrollContentWrapper
+                              id="inspectors"
+                              title="Assign Inspectors"
+                              isActive
+                            >
+                              <AssignInspectors
+                                inspectors={this.props.inspectors}
+                                noticeOfWork={this.props.noticeOfWork}
+                                setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                                setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                                handleUpdateInspectors={this.handleUpdateInspectors}
+                                title="Assign Inspectors"
+                                isEditMode
+                              />
+                            </ScrollContentWrapper>
+                            <Divider />
+                          </>
+                        )}
+                        <ReviewNOWApplication
+                          reclamationSummary={this.props.reclamationSummary}
+                          isViewMode={this.state.isViewMode}
+                          noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                          initialValues={
+                            this.state.showOriginalValues
+                              ? this.props.originalNoticeOfWork
+                              : this.props.noticeOfWork
+                          }
+                          noticeOfWork={this.props.noticeOfWork}
+                          importNowSubmissionDocumentsJob={
+                            this.props.importNowSubmissionDocumentsJob
+                          }
+                          renderOriginalValues={this.renderOriginalValues}
+                        />
+                      </div>
+                    </div>
+                  </LoadingWrapper>
+                </>
+              )}
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Referral", "REF")}
+              key="referral"
+              disabled={!verificationComplete}
+            >
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <NOWTabHeader
+                      tab="REF"
+                      tabActions={<ReferralConsultationPackage type="REF" />}
+                      tabName="Referral"
+                      fixedTop={this.state.fixedTop}
+                    />
                     <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
                       <NOWSideMenu
                         route={routes.NOTICE_OF_WORK_APPLICATION}
                         noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                        tabSection="application"
+                        tabSection="referral"
+                      />
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={Strings.E_REFERRALS_URL}
+                        alt="E-Referrals"
+                      >
+                        <ExportOutlined className="padding-small--right" />
+                        Link to E-referrals homepage
+                      </a>
+                    </div>
+                    <div
+                      className={
+                        this.state.fixedTop
+                          ? "side-menu--content with-fixed-top"
+                          : "side-menu--content"
+                      }
+                    >
+                      <NOWApplicationReviews
+                        mineGuid={this.props.noticeOfWork.mine_guid}
+                        noticeOfWork={this.props.noticeOfWork}
+                        type="REF"
+                      />
+                    </div>
+                  </LoadingWrapper>
+                </>
+              )}
+            </Tabs.TabPane>
+
+            <Tabs.TabPane
+              tab={this.renderTabTitle("Consultation", "CON")}
+              key="consultation"
+              disabled={!verificationComplete}
+            >
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <NOWTabHeader
+                      tab="CON"
+                      tabActions={<ReferralConsultationPackage type="CON" />}
+                      tabName="Consultation"
+                      fixedTop={this.state.fixedTop}
+                    />
+                    <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                      <NOWSideMenu
+                        route={routes.NOTICE_OF_WORK_APPLICATION}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        tabSection="consultation"
                       />
                     </div>
                     <div
@@ -827,154 +951,53 @@ export class NoticeOfWorkApplication extends Component {
                           : "side-menu--content"
                       }
                     >
-                      {isImported && !this.props.noticeOfWork.lead_inspector_party_guid && (
-                        <>
-                          <ScrollContentWrapper id="inspectors" title="Assign Inspectors" isActive>
-                            <AssignInspectors
-                              inspectors={this.props.inspectors}
-                              noticeOfWork={this.props.noticeOfWork}
-                              setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                              setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
-                              handleUpdateInspectors={this.handleUpdateInspectors}
-                              title="Assign Inspectors"
-                              isEditMode
-                            />
-                          </ScrollContentWrapper>
-                          <Divider />
-                        </>
-                      )}
-                      <ReviewNOWApplication
-                        reclamationSummary={this.props.reclamationSummary}
-                        isViewMode={this.state.isViewMode}
-                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                        initialValues={
-                          this.state.showOriginalValues
-                            ? this.props.originalNoticeOfWork
-                            : this.props.noticeOfWork
-                        }
+                      <NOWApplicationReviews
+                        mineGuid={this.props.noticeOfWork.mine_guid}
                         noticeOfWork={this.props.noticeOfWork}
-                        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
-                        renderOriginalValues={this.renderOriginalValues}
+                        type="FNC"
                       />
                     </div>
-                  </div>
-                </LoadingWrapper>
-              </>
-            </Tabs.TabPane>
-
-            <Tabs.TabPane
-              tab={this.renderTabTitle("Referral", "REF")}
-              key="referral"
-              disabled={!verificationComplete}
-            >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <NOWTabHeader
-                    tab="REF"
-                    tabActions={<ReferralConsultationPackage type="REF" />}
-                    tabName="Referral"
-                    fixedTop={this.state.fixedTop}
-                  />
-                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="referral"
-                    />
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      href={Strings.E_REFERRALS_URL}
-                      alt="E-Referrals"
-                    >
-                      <ExportOutlined className="padding-small--right" />
-                      Link to E-referrals homepage
-                    </a>
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop
-                        ? "side-menu--content with-fixed-top"
-                        : "side-menu--content"
-                    }
-                  >
-                    <NOWApplicationReviews
-                      mineGuid={this.props.noticeOfWork.mine_guid}
-                      noticeOfWork={this.props.noticeOfWork}
-                      type="REF"
-                    />
-                  </div>
-                </LoadingWrapper>
-              </>
-            </Tabs.TabPane>
-
-            <Tabs.TabPane
-              tab={this.renderTabTitle("Consultation", "CON")}
-              key="consultation"
-              disabled={!verificationComplete}
-            >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <NOWTabHeader
-                    tab="CON"
-                    tabActions={<ReferralConsultationPackage type="CON" />}
-                    tabName="Consultation"
-                    fixedTop={this.state.fixedTop}
-                  />
-                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="consultation"
-                    />
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop
-                        ? "side-menu--content with-fixed-top"
-                        : "side-menu--content"
-                    }
-                  >
-                    <NOWApplicationReviews
-                      mineGuid={this.props.noticeOfWork.mine_guid}
-                      noticeOfWork={this.props.noticeOfWork}
-                      type="FNC"
-                    />
-                  </div>
-                </LoadingWrapper>
-              </>
+                  </LoadingWrapper>
+                </>
+              )}
             </Tabs.TabPane>
             <Tabs.TabPane
               tab={this.renderTabTitle("Public Comment", "PUB")}
               key="public-comment"
               disabled={!verificationComplete}
             >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <NOWTabHeader tab="PUB" tabName="Public Comment" fixedTop={this.state.fixedTop} />
-                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="public-comment"
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <NOWTabHeader
+                      tab="PUB"
+                      tabName="Public Comment"
+                      fixedTop={this.state.fixedTop}
                     />
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop
-                        ? "side-menu--content with-fixed-top"
-                        : "side-menu--content"
-                    }
-                  >
-                    <NOWApplicationReviews
-                      mineGuid={this.props.noticeOfWork.mine_guid}
-                      noticeOfWork={this.props.noticeOfWork}
-                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
-                      type="PUB"
-                    />
-                  </div>
-                </LoadingWrapper>
-              </>
+                    <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                      <NOWSideMenu
+                        route={routes.NOTICE_OF_WORK_APPLICATION}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        tabSection="public-comment"
+                      />
+                    </div>
+                    <div
+                      className={
+                        this.state.fixedTop
+                          ? "side-menu--content with-fixed-top"
+                          : "side-menu--content"
+                      }
+                    >
+                      <NOWApplicationReviews
+                        mineGuid={this.props.noticeOfWork.mine_guid}
+                        noticeOfWork={this.props.noticeOfWork}
+                        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+                        type="PUB"
+                      />
+                    </div>
+                  </LoadingWrapper>
+                </>
+              )}
             </Tabs.TabPane>
 
             <Tabs.TabPane
@@ -982,23 +1005,27 @@ export class NoticeOfWorkApplication extends Component {
               key="draft-permit"
               disabled={!verificationComplete}
             >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  {this.renderPermitGeneration()}
-                </LoadingWrapper>
-              </>
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    {this.renderPermitGeneration()}
+                  </LoadingWrapper>
+                </>
+              )}
             </Tabs.TabPane>
 
             <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <ProcessPermit
-                    mineGuid={this.props.noticeOfWork.mine_guid}
-                    noticeOfWork={this.props.noticeOfWork}
-                    fixedTop={this.state.fixedTop}
-                  />
-                </LoadingWrapper>
-              </>
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <ProcessPermit
+                      mineGuid={this.props.noticeOfWork.mine_guid}
+                      noticeOfWork={this.props.noticeOfWork}
+                      fixedTop={this.state.fixedTop}
+                    />
+                  </LoadingWrapper>
+                </>
+              )}
             </Tabs.TabPane>
 
             <Tabs.TabPane
@@ -1006,55 +1033,57 @@ export class NoticeOfWorkApplication extends Component {
               key="administrative"
               disabled={!verificationComplete}
             >
-              <>
-                <LoadingWrapper condition={this.state.isTabLoaded}>
-                  <NOWTabHeader
-                    tab="ADMIN"
-                    tabName="Administrative"
-                    fixedTop={this.state.fixedTop}
-                    tabActions={
-                      <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-                        <Dropdown
-                          overlay={this.menu(false)}
-                          placement="bottomLeft"
-                          onVisibleChange={this.handleAdminVisibleChange}
-                          visible={this.state.adminMenuVisible}
-                        >
-                          <Button type="secondary" className="full-mobile">
-                            Actions
-                            <DownOutlined />
-                          </Button>
-                        </Dropdown>
-                      </NOWActionWrapper>
-                    }
-                  />
-                  <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                    <NOWSideMenu
-                      route={routes.NOTICE_OF_WORK_APPLICATION}
-                      noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                      tabSection="administrative"
+              {verificationComplete && (
+                <>
+                  <LoadingWrapper condition={this.state.isTabLoaded}>
+                    <NOWTabHeader
+                      tab="ADMIN"
+                      tabName="Administrative"
+                      fixedTop={this.state.fixedTop}
+                      tabActions={
+                        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+                          <Dropdown
+                            overlay={this.menu(false)}
+                            placement="bottomLeft"
+                            onVisibleChange={this.handleAdminVisibleChange}
+                            visible={this.state.adminMenuVisible}
+                          >
+                            <Button type="secondary" className="full-mobile">
+                              Actions
+                              <DownOutlined />
+                            </Button>
+                          </Dropdown>
+                        </NOWActionWrapper>
+                      }
                     />
-                  </div>
-                  <div
-                    className={
-                      this.state.fixedTop
-                        ? "side-menu--content with-fixed-top"
-                        : "side-menu--content"
-                    }
-                  >
-                    <NOWApplicationAdministrative
-                      mineGuid={this.props.noticeOfWork.mine_guid}
-                      noticeOfWork={this.props.noticeOfWork}
-                      inspectors={this.props.inspectors}
-                      setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                      setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
-                      handleUpdateInspectors={this.handleUpdateInspectors}
-                      importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
-                      handleSaveNOWEdit={this.handleSaveNOWEdit}
-                    />
-                  </div>
-                </LoadingWrapper>
-              </>
+                    <div className={this.state.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                      <NOWSideMenu
+                        route={routes.NOTICE_OF_WORK_APPLICATION}
+                        noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                        tabSection="administrative"
+                      />
+                    </div>
+                    <div
+                      className={
+                        this.state.fixedTop
+                          ? "side-menu--content with-fixed-top"
+                          : "side-menu--content"
+                      }
+                    >
+                      <NOWApplicationAdministrative
+                        mineGuid={this.props.noticeOfWork.mine_guid}
+                        noticeOfWork={this.props.noticeOfWork}
+                        inspectors={this.props.inspectors}
+                        setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
+                        setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
+                        handleUpdateInspectors={this.handleUpdateInspectors}
+                        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+                        handleSaveNOWEdit={this.handleSaveNOWEdit}
+                      />
+                    </div>
+                  </LoadingWrapper>
+                </>
+              )}
             </Tabs.TabPane>
           </Tabs>
         </div>

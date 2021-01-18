@@ -30,7 +30,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "exploration_surface_drilling": Object {
             "details": Array [],
           },
+          "filtered_submission_documents": Array [],
           "latitude": "",
+          "lead_inspector": Object {},
           "longitude": "",
           "mechanical_trenching": Object {
             "details": Array [],
@@ -101,7 +103,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "GDO",
         ]
       }
-      disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
+      disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
       documents={Array []}
       isAdminView={true}
       isViewMode={false}
@@ -118,7 +120,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "NTR",
         ]
       }
-      disclaimerText="In this table you can see all exported Notice of Work documents."
+      disclaimerText="In this table, you can see all the exported Notice of Work documents."
       documents={Array []}
       isViewMode={true}
     />
@@ -150,7 +152,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "exploration_surface_drilling": Object {
             "details": Array [],
           },
+          "filtered_submission_documents": Array [],
           "latitude": "",
+          "lead_inspector": Object {},
           "longitude": "",
           "mechanical_trenching": Object {
             "details": Array [],

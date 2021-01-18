@@ -46,3 +46,12 @@ def create_and_update_now_identities(connection):
         and pa.now_application_guid is null;
         """
         cursor.execute(INSERT_NOW_IDENTITIES_FOR_MMS_ONLY_APPLICATIONS)
+
+        print('UPDATE NOW_NUMBER FROM MMS')
+        UPDATE_NOW_NUMBER_FOR_MMS_ONLY_APPLICATIONS = """
+        UPDATE public.now_application_identity SET now_number = (
+            CONCAT(LEFT(mms_cid::varchar, length(mms_cid::varchar)-6), '-', LEFT(RIGHT(mms_cid::varchar,6),4), '-',RIGHT(mms_cid::varchar,2) )
+        )
+        WHERE now_number is null and mms_cid is not null;
+        """
+        cursor.execute(UPDATE_NOW_NUMBER_FOR_MMS_ONLY_APPLICATIONS)

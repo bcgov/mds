@@ -75,7 +75,6 @@ export const sideMenuOptions = {
         { href: "GOC", title: "Geotechnical" },
         { href: "ELC", title: "Environmental Land" },
         { href: "RCC", title: "Reclamation and Closure" },
-        { href: "ADC", title: "Additional Conditions" },
       ],
     },
     { href: "maps", title: "Maps", alwaysVisible: true, children: [] },

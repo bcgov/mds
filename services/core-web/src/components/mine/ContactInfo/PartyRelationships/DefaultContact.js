@@ -104,10 +104,7 @@ export const DefaultContact = (props) => (
     {props.otherDetails}
     <div className="right">
       {props.isEditable && !props.compact && (
-        <AuthorizationWrapper
-          permission={props.editPermission}
-          isMajorMine={props.mine.major_mine_ind}
-        >
+        <AuthorizationWrapper permission={props.editPermission}>
           <Button
             type="primary"
             onClick={() =>
