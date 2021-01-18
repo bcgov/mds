@@ -321,20 +321,27 @@ export class ProcessPermit extends Component {
     };
     return previousAmendmentGenObject;
   };
-
   getFinalApplicationPackage = (noticeOfWork) => {
-    const documents = noticeOfWork.filtered_submission_documents
-      .filter(({ is_final_package }) => is_final_package)
-      .map((doc) => ({
-        document_info: getDocumentInfo(doc),
-      }));
-    return documents.concat(
-      noticeOfWork.documents
-        .filter(({ is_final_package }) => is_final_package)
+    let documents = [];
+    let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
+    let requestedDocuments = noticeOfWork?.documents;
+    if (!isEmpty(filteredSubmissionDocuments)) {
+      filteredSubmissionDocuments = filteredSubmissionDocuments
+        ?.filter(({ is_final_package }) => is_final_package)
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
-        }))
-    );
+        }));
+      documents = filteredSubmissionDocuments;
+    }
+    if (!isEmpty(requestedDocuments)) {
+      requestedDocuments = requestedDocuments
+        ?.filter(({ is_final_package }) => is_final_package)
+        .map((doc) => ({
+          document_info: getDocumentInfo(doc),
+        }));
+      documents = [...documents, ...requestedDocuments];
+    }
+    return documents;
   };
 
   afterSuccess = (values, message, code) => {
