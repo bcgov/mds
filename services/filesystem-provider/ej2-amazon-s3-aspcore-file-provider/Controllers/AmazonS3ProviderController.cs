@@ -10,7 +10,7 @@ using Amazon;
 namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("file-api/[controller]")]
     [EnableCors("AllowAllOrigins")]
     public class AmazonS3ProviderController : Controller
     {
