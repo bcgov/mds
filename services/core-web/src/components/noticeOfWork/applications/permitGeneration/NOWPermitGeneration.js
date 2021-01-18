@@ -309,6 +309,9 @@ export class NOWPermitGeneration extends Component {
   handleSaveDraftEdit = () => {
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
+      if (isEmpty(documentsMetadata)) {
+        return allFileMetadata;
+      }
       for (let [key, value] of Object.entries(documentsMetadata)) {
         // Extract required information from the field ID (e.g., 1c943015-29ed-433c-bfb1-d5ed14db103e_preamble_title).
         const fieldIdParts = key.split(/_(.+)/);
