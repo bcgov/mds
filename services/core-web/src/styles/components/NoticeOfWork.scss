@@ -87,7 +87,6 @@
 
 .view {
   &--header {
-    height: 100px;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
@@ -237,7 +236,7 @@
 
 .status-banner {
   position: relative;
-  bottom: 3px;
+  bottom: 0;
   height: 22px;
   z-index: 100;
   .ant-alert-message {

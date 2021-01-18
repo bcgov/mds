@@ -75,8 +75,18 @@ export class MinePermitInfo extends Component {
 
   componentWillMount = () => {
     const { id } = this.props.match.params;
-    if (this.props.permits === []) {
-      this.props.fetchPermits(id).then(() => {});
+    if (this.props.permits.length === 0) {
+      this.props.fetchPermits(id).then(() => {
+        this.props
+          .fetchPartyRelationships({
+            mine_guid: this.props.mineGuid,
+            relationships: "party",
+            include_permittees: "true",
+          })
+          .then(() => {
+            this.setState({ isLoaded: true });
+          });
+      });
     } else {
       this.setState({ isLoaded: true });
     }
@@ -84,12 +94,16 @@ export class MinePermitInfo extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.modifiedPermits && nextProps.permits !== this.props.permits) {
-      const currentPermits = this.props.permits
-        .filter((p) => p.mine_guid === this.props.mineGuid)
-        .map((x) => x.permit_guid);
-      const nextPermits = nextProps.permits
-        .filter((p) => p.mine_guid === this.props.mineGuid)
-        .map((x) => x.permit_guid);
+      const currentPermits =
+        this.props.permits &&
+        this.props.permits
+          .filter((p) => p.mine_guid === this.props.mineGuid)
+          .map((x) => x.permit_guid);
+      const nextPermits =
+        nextProps.permits &&
+        nextProps.permits
+          .filter((p) => p.mine_guid === this.props.mineGuid)
+          .map((x) => x.permit_guid);
 
       this.setState((prevState) => ({
         expandedRowKeys: prevState.modifiedPermitGuid
@@ -110,8 +124,6 @@ export class MinePermitInfo extends Component {
       include_permittees: "true",
     });
   };
-
-  // Permit Modals
 
   openAddPermitModal = (event, onSubmit, title) => {
     event.preventDefault();
