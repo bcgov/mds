@@ -320,7 +320,7 @@ export class BondForm extends Component {
                 label="Postal Code"
                 placeholder="e.g xxxxxx"
                 component={RenderField}
-                validate={[maxLength(6), postalCode]}
+                validate={[maxLength(10), postalCode]}
                 normalize={upperCase}
               />
             </Form.Item>

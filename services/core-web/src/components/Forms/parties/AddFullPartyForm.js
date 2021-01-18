@@ -194,7 +194,7 @@ export const AddFullPartyForm = (props) => (
                   label="Postal Code"
                   placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(6), postalCode]}
+                  validate={[maxLength(10), postalCode]}
                   normalize={upperCase}
                 />
               </Form.Item>

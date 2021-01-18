@@ -19,7 +19,6 @@ exports[`MinePermitInfo renders properly 1`] = `
         className="inline-flex between"
       >
         <Connect(AuthorizationWrapper)
-          isMajorMine={true}
           permission="role_edit_permits"
         >
           <AddButton
@@ -37,7 +36,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     handleAddPermitAmendmentApplication={[Function]}
     handleDeletePermit={[Function]}
     handleDeletePermitAmendment={[Function]}
-    isLoaded={true}
+    isLoaded={false}
     major_mine_ind={true}
     onExpand={[Function]}
     openAddAmalgamatedPermitModal={[Function]}

@@ -296,10 +296,7 @@ const columns = [
 
       return (
         <div className="btn--middle flex">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_PERMITS}
-            isMajorMine={text.major_mine_ind}
-          >
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               <Button type="secondary" className="permit-table-button">
                 <div className="padding-sm">

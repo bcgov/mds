@@ -84,7 +84,9 @@ class Address(SoftDeleteMixin, AuditMixin, Base):
     def validate_post_code(self, key, post_code):
         if post_code and len(post_code) > 6:
             raise AssertionError('post_code must not exceed 6 characters.')
-        validPostalCode = re.compile(r"\s*([a-zA-Z]\s*\d\s*){3}$")
+        validPostalCode = re.compile(
+            r"(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)"
+        )
         if post_code and not validPostalCode.match(post_code):
             raise AssertionError('Invalid post_code format.')
         return post_code

@@ -7,7 +7,7 @@ import moment from "moment";
 class Validator {
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
 
-  CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+  CAN_POSTAL_CODE_REGEX = /(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)/;
 
   EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+$/;
 
@@ -105,7 +105,7 @@ export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
 export const postalCode = (value) =>
-  value && !Validate.checkPostalCode(value) ? "Invalid postal code e.g. X1X1X1" : undefined;
+  value && !Validate.checkPostalCode(value) ? "Invalid postal code or zip code" : undefined;
 
 export const protocol = (value) =>
   value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;
