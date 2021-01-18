@@ -67,10 +67,10 @@ class POD():
         try:
             current_running_pod = self.v1_pod.get(
                 label_selector=self.env_pod_label, namespace=self.namespace)
-            if 
-            env_dict = (
-                current_running_pod.to_dict()["items"][0]["spec"]["containers"][self.env_container_id]
-                ["env"])
+            if current_running_pod:
+                env_dict = (
+                    current_running_pod.to_dict()["items"][0]["spec"]["containers"][
+                        self.env_container_id]["env"])
         except:
             print("Issue with getting env_dict from existing pod.")
 
