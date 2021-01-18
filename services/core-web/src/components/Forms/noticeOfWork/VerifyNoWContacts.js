@@ -143,68 +143,62 @@ const renderContacts = ({
                   <Col span={3}>
                     <DoubleRightOutlined className="icon-xxl--lightgrey" />
                   </Col>
-                  <Col span={12}>
-                    <Form.Item label="Role*">
-                      <Field
-                        usedOptions={rolesUsedOnce}
-                        id={`${field}.mine_party_appt_type_code`}
-                        name={`${field}.mine_party_appt_type_code`}
-                        component={RenderSelect}
-                        data={filteredRelationships}
-                        disabled={confirmedContacts?.includes(fields.get(index).id)}
-                        validate={[required, validateSelectOptions(filteredRelationships)]}
-                      />
-                    </Form.Item>
-                    <Form.Item>
-                      <Form.Item>
-                        <Field
-                          id={`${field}.party_guid`}
-                          name={`${field}.party_guid`}
-                          label="Matching Core Contact*"
-                          partyLabel="Contact"
-                          validate={[required]}
-                          component={NOWPartySelectField}
-                          allowAddingParties
-                          disabled={confirmedContacts?.includes(fields.get(index).id)}
-                          initialValues={
-                            contactExists
-                              ? {
-                                  ...fields.get(index).party,
-                                  ...(fields.get(index).party.address.length > 0
-                                    ? { ...fields.get(index).party.address[0], ...initialParty }
-                                    : initialParty),
-                                }
-                              : {}
-                          }
-                          initialSearch={contactExists ? fields.get(index).party.name : undefined}
-                          wasFormReset={wasFormReset}
+                  <Col span={9}>
+                    <Field
+                      usedOptions={rolesUsedOnce}
+                      id={`${field}.mine_party_appt_type_code`}
+                      name={`${field}.mine_party_appt_type_code`}
+                      label="Role*"
+                      component={RenderSelect}
+                      data={filteredRelationships}
+                      disabled={confirmedContacts?.includes(fields.get(index).id)}
+                      validate={[required, validateSelectOptions(filteredRelationships)]}
+                    />
+                    <Field
+                      id={`${field}.party_guid`}
+                      name={`${field}.party_guid`}
+                      label="Matching Core Contact*"
+                      partyLabel="Contact"
+                      validate={[required]}
+                      component={NOWPartySelectField}
+                      allowAddingParties
+                      disabled={confirmedContacts?.includes(fields.get(index).id)}
+                      initialValues={
+                        contactExists
+                          ? {
+                              ...fields.get(index).party,
+                              ...(fields.get(index).party.address.length > 0
+                                ? { ...fields.get(index).party.address[0], ...initialParty }
+                                : initialParty),
+                            }
+                          : {}
+                      }
+                      initialSearch={contactExists ? fields.get(index).party.name : undefined}
+                      wasFormReset={wasFormReset}
+                    />
+                    {!confirmedContacts?.includes(fields.get(index).id) ? (
+                      <Button
+                        type="primary"
+                        disabled={
+                          !contactFormValues[index]?.party_guid ||
+                          !contactFormValues[index]?.mine_party_appt_type_code
+                        }
+                        style={{ float: "right" }}
+                        onClick={(event) => updateConfirmedList(event, fields.get(index).id)}
+                      >
+                        Confirm
+                      </Button>
+                    ) : (
+                      <div className="confirm-success">
+                        <Result
+                          className="position-right no-margin"
+                          status="success"
+                          title="Confirmed"
                         />
-                      </Form.Item>
-                    </Form.Item>
+                      </div>
+                    )}
                   </Col>
                 </Row>
-                <br />
-                {!confirmedContacts?.includes(fields.get(index).id) ? (
-                  <Button
-                    type="primary"
-                    className="position-right"
-                    disabled={
-                      !contactFormValues[index]?.party_guid ||
-                      !contactFormValues[index]?.mine_party_appt_type_code
-                    }
-                    onClick={(event) => updateConfirmedList(event, fields.get(index).id)}
-                  >
-                    Confirm
-                  </Button>
-                ) : (
-                  <div className="confirm-success">
-                    <Result
-                      className="position-right no-margin"
-                      status="success"
-                      title="Confirmed"
-                    />
-                  </div>
-                )}
               </Card>
             </Col>
           );
