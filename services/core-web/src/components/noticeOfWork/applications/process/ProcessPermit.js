@@ -13,6 +13,10 @@ import {
   LinkOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import {
+  patchPermitNumber,
+  fetchDraftPermitByNOW,
+} from "@common/actionCreators/permitActionCreator";
 import { getNoticeOfWork, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import {
@@ -85,6 +89,8 @@ const propTypes = {
   fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  patchPermitNumber: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
 
 const TimelineItem = (progress, progressStatus) => {
@@ -122,6 +128,16 @@ const ProgressRouteFor = (code, now_application_guid) =>
     DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
   }[code]);
 
+const getDocumentInfo = (doc) => {
+  const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
+  const author = doc.preamble_author;
+  const date = doc.preamble_date;
+  let info = `${title}, `;
+  info += date ? `dated ${formatDate(date)}` : "not dated";
+  info += author ? `, prepared by ${author}` : "";
+  return info;
+};
+
 export class ProcessPermit extends Component {
   state = {};
 
@@ -132,8 +148,12 @@ export class ProcessPermit extends Component {
   openStatusModal = () => {
     this.props.openModal({
       props: {
-        title: "Undo-Reject Application",
+        title: "Revert to Previous Status",
         onSubmit: this.updateApplicationStatus,
+        initialValues: {
+          now_application_status_code: this.props.noticeOfWork.previous_application_status_code,
+        },
+        closeModal: this.props.closeModal,
       },
       width: "50vw",
       content: modalConfig.UPDATE_NOW_STATUS,
@@ -165,6 +185,12 @@ export class ProcessPermit extends Component {
         content[type].letterCode,
         this.props.noticeOfWork.now_application_guid
       )
+      .then(() =>
+        this.props.fetchDraftPermitByNOW(
+          this.props.noticeOfWork.mine_guid,
+          this.props.noticeOfWork.now_application_guid
+        )
+      )
       .then(() => {
         const initialValues = {};
         this.props.documentContextTemplate.document_template.form_spec.map(
@@ -189,6 +215,28 @@ export class ProcessPermit extends Component {
       });
   };
 
+  openGeneratePermitNumberModal = () => {
+    this.props
+      .fetchDraftPermitByNOW(
+        this.props.noticeOfWork.mine_guid,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        if (this.props.draftPermit.permit_no.includes("DRAFT")) {
+          return this.props.openModal({
+            props: {
+              title: "Generate Permit Number",
+              onSubmit: this.generatePermitNumber,
+              signature: this.props.noticeOfWork?.issuing_inspector?.signature,
+            },
+            width: "50vw",
+            content: modalConfig.GENERATE_PERMIT_NUMBER_MODAL,
+          });
+        }
+        return this.openUpdateStatusGenerateLetterModal(approvedCode);
+      });
+  };
+
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
@@ -205,7 +253,7 @@ export class ProcessPermit extends Component {
     const permittee = noticeOfWork.contacts.filter(
       (contact) => contact.mine_party_appt_type_code_description === "Permittee"
     )[0];
-    const originalAmendment = draftPermit.permit_amendments.filter(
+    const originalAmendment = draftPermit.permit_amendments?.filter(
       (org) => org.permit_amendment_type_code === originalPermit
     )[0];
 
@@ -231,13 +279,15 @@ export class ProcessPermit extends Component {
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
-    permitGenObject.application_type = this.props.appOptions.filter(
+    permitGenObject.application_type = this.props.appOptions?.filter(
       (option) => option.notice_of_work_type_code === noticeOfWork.notice_of_work_type_code
     )[0].description;
     permitGenObject.lead_inspector = noticeOfWork.lead_inspector.name;
     permitGenObject.regional_office = !amendment.regional_office
       ? regionHash[noticeOfWork.mine_region]
       : amendment.regional_office;
+    permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
+    permitGenObject.now_number = noticeOfWork.now_number;
 
     if (amendment && !isEmpty(amendment)) {
       permitGenObject.permit_amendment_type_code = amendment.permit_amendment_type_code;
@@ -257,33 +307,37 @@ export class ProcessPermit extends Component {
         .filter((a) => a.permit_amendment_status_code !== "DFT")
         // eslint-disable-next-line no-nested-ternary
         .sort((a, b) => (a.issue_date < b.issue_date ? 1 : b.issue_date < a.issue_date ? -1 : 0));
-    const previousAmendment = {
-      ...amendments[0],
-      issue_date: formatDate(amendments[0].issue_date),
-      authorization_end_date: formatDate(amendments[0].authorization_end_date),
+    const previousAmendment = amendments && amendments.length > 0 ? amendments[0] : {};
+    if (!isEmpty(previousAmendment)) {
+      previousAmendment.related_documents = previousAmendment.related_documents.map((doc) => ({
+        document_info: getDocumentInfo(doc),
+        ...doc,
+      }));
+    }
+    const previousAmendmentGenObject = {
+      ...previousAmendment,
+      issue_date: formatDate(previousAmendment.issue_date),
+      authorization_end_date: formatDate(previousAmendment.authorization_end_date),
     };
-    return previousAmendment;
+    return previousAmendmentGenObject;
   };
 
-  createDocList = (noticeOfWork) => {
+  getFinalApplicationPackage = (noticeOfWork) => {
     const documents = noticeOfWork.filtered_submission_documents
-      .filter((document) => document.is_final_package)
-      .map((document) => ({
-        document_name: document.filename,
-        document_upload_date: "",
+      .filter(({ is_final_package }) => is_final_package)
+      .map((doc) => ({
+        document_info: getDocumentInfo(doc),
       }));
     return documents.concat(
       noticeOfWork.documents
-        .filter((document) => document.is_final_package)
-        .map((document) => ({
-          document_name: document.mine_document.document_name,
-          document_upload_date: formatDate(document.mine_document.upload_date),
+        .filter(({ is_final_package }) => is_final_package)
+        .map((doc) => ({
+          document_info: getDocumentInfo(doc),
         }))
     );
   };
 
   afterSuccess = (values, message, code) => {
-    values.application_date = formatDate(values.application_date);
     return this.props
       .updateNoticeOfWorkStatus(this.props.noticeOfWork.now_application_guid, {
         ...values,
@@ -308,6 +362,15 @@ export class ProcessPermit extends Component {
     return this.afterSuccess(values, "This application has been successfully rejected.", code);
   };
 
+  generatePermitNumber = () => {
+    return this.props
+      .patchPermitNumber(this.props.draftPermit.permit_guid, this.props.noticeOfWork.mine_guid, {
+        now_application_guid: this.props.noticeOfWork.now_application_guid,
+      })
+      .then(() => this.props.closeModal())
+      .then(() => this.openUpdateStatusGenerateLetterModal(approvedCode));
+  };
+
   handleApprovedApplication = (values) => {
     const docType = this.props.noticeOfWork.type_of_application === "New Permit" ? "PMT" : "PMA";
     return this.props
@@ -321,14 +384,14 @@ export class ProcessPermit extends Component {
           this.props.draftPermit,
           this.props.draftAmendment
         );
-        permitObj.auth_end_date = formatDate(values.auth_end_date);
-        permitObj.issue_date = formatDate(values.issue_date);
-
         return this.handleGenerateDocumentFormSubmit(
           this.props.documentContextTemplate,
           {
             ...permitObj,
-            document_list: this.createDocList(this.props.noticeOfWork),
+            auth_end_date: formatDate(values.auth_end_date),
+            issue_date: formatDate(values.issue_date),
+            application_dated: formatDate(permitObj.application_date),
+            final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
           },
           values,
           this.afterSuccess
@@ -425,6 +488,47 @@ export class ProcessPermit extends Component {
       });
     }
 
+    // Final Application Package document titles
+    const requestedDocuments = this.props.noticeOfWork?.documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const originalDocuments = this.props.noticeOfWork?.filtered_submission_documents?.filter(
+      ({ is_final_package }) => is_final_package
+    );
+    const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
+    const titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
+      .length;
+    if (titlesMissing !== 0) {
+      validationMessages.push({
+        message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit/#preamble"
+        ),
+      });
+    }
+
+    // Previous permit amendment document titles
+    const previousAmendment = this.createPermitGenObject(
+      this.props.noticeOfWork,
+      this.props.draftPermit,
+      this.props.draftAmendment
+    ).previous_amendment;
+    if (!isEmpty(previousAmendment)) {
+      const titlesMissing = previousAmendment.related_documents?.filter(
+        ({ preamble_title }) => !preamble_title
+      ).length;
+      if (titlesMissing !== 0) {
+        validationMessages.push({
+          message: `The previous amendment has ${titlesMissing} documents that require a title.`,
+          route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.noticeOfWork.now_application_guid,
+            "draft-permit/#preamble"
+          ),
+        });
+      }
+    }
+
     // Inspector signature
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
     if (!signature) {
@@ -461,10 +565,7 @@ export class ProcessPermit extends Component {
         validationMessages.push({
           message: "The permittee must have an address. Update the contact to add an address.",
           route:
-            this.props.noticeOfWork?.issuing_inspector &&
-            route.PARTY_PROFILE.dynamicRoute(
-              this.props.noticeOfWork?.issuing_inspector?.party_guid
-            ),
+            permittees[0].party_guid && route.PARTY_PROFILE.dynamicRoute(permittees[0].party_guid),
         });
       }
     } else {
@@ -620,7 +721,7 @@ export class ProcessPermit extends Component {
     <Menu>
       <Menu.Item
         key="issue-permit"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(approvedCode)}
+        onClick={this.openGeneratePermitNumberModal}
         disabled={validationErrors}
       >
         Issue permit
@@ -670,7 +771,7 @@ export class ProcessPermit extends Component {
               {isProcessed && !isApproved && (
                 <AuthorizationWrapper permission={Permission.ADMIN}>
                   <Button type="secondary" className="full-mobile" onClick={this.openStatusModal}>
-                    Undo-Reject Application
+                    Revert Status
                   </Button>
                 </AuthorizationWrapper>
               )}
@@ -828,6 +929,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
       fetchNoticeOfWorkApplicationContextTemplate,
+      patchPermitNumber,
+      fetchDraftPermitByNOW,
     },
     dispatch
   );

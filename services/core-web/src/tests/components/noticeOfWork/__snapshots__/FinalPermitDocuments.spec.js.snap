@@ -65,12 +65,14 @@ exports[`FinalPermitDocuments renders properly 1`] = `
   <NOWSubmissionDocuments
     displayTableDescription={false}
     documents={Array []}
+    editPreambleFileMetadata={false}
     hideImportStatusColumn={true}
     hideJobStatusColumn={true}
     importNowSubmissionDocumentsJob={Object {}}
     mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
     now_application_guid="1346wesrt22"
     selectedRows={null}
+    showPreambleFileMetadata={false}
   />
   <br />
   <h4>
@@ -81,9 +83,11 @@ exports[`FinalPermitDocuments renders properly 1`] = `
   </p>
   <Connect(NOWDocuments)
     documents={Array []}
+    editPreambleFileMetadata={false}
     isViewMode={true}
     mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
     now_application_guid="1346wesrt22"
+    showPreambleFileMetadata={false}
   />
 </div>
 `;

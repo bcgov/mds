@@ -9,7 +9,12 @@ from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
 
-status_code_mapping = {"Accepted": "AIA", "Withdrawn": "REI", "Under Review": "REC", None: "REC"}
+vfcbc_status_code_mapping = {
+    "Accepted": "AIA",
+    "Withdrawn": "REJ",
+    "Under Review": "PEV",
+    None: "PEV",
+}
 
 
 def code_lookup(model, description, code_column_name):
@@ -61,7 +66,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.notice_of_work_type_code = code_lookup(
         app_models.NOWApplicationType, mms_now_sub.noticeofworktype or now_sub.noticeofworktype,
         'notice_of_work_type_code')
-    now_app.now_application_status_code = status_code_mapping[now_sub.status]
+    # TODO: Determine if we should always set the code the PEV (Pending Verifiation) here.
+    now_app.now_application_status_code = vfcbc_status_code_mapping[now_sub.status]
     now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
 
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate

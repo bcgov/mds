@@ -59,6 +59,10 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    previous_application_status_code = db.Column(
+        db.String,
+        db.ForeignKey('now_application_status.now_application_status_code'),
+        nullable=True)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
@@ -78,8 +82,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    proposed_annual_maximum_tonnage = db.Column(db.Integer)
-    adjusted_annual_maximum_tonnage = db.Column(db.Integer)
+    proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
+    adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
     now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
@@ -162,7 +166,12 @@ class NOWApplication(Base, AuditMixin):
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
 
-    status = db.relationship('NOWApplicationStatus', lazy='selectin')
+    status = db.relationship(
+        'NOWApplicationStatus',
+        lazy='selectin',
+        primaryjoin=
+        'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
+    )
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
@@ -257,7 +266,13 @@ class NOWApplication(Base, AuditMixin):
                 'now_application_id':
                 doc.now_application_id,
                 'document_manager_guid':
-                doc.document_manager_guid
+                doc.document_manager_guid,
+                'preamble_title':
+                doc.preamble_title,
+                'preamble_author':
+                doc.preamble_author,
+                'preamble_date':
+                doc.preamble_date
             })
 
         for doc in now_application.submission_documents:
@@ -270,6 +285,7 @@ class NOWApplication(Base, AuditMixin):
                 continue
             else:
                 docs.append({
+                    'id': doc.id,
                     'now_application_document_xref_guid': None,
                     'mine_document_guid': None,
                     'messageid': doc.messageid,

@@ -451,7 +451,9 @@ export const IMPORTED_NOTICE_OF_WORK = {
   placer_operation: { details: [] },
   documents: [],
   submission_documents: [],
+  filtered_submission_documents: [],
   application_documents: [],
+  lead_inspector: {},
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {

@@ -260,7 +260,7 @@ export class ReviewApplicationFeeContent extends Component {
           <br />
           <div className="field-title">
             Proposed Start Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit." />
           </div>
           <Field
             id="proposed_start_date"
@@ -271,7 +271,7 @@ export class ReviewApplicationFeeContent extends Component {
           />
           <div className="field-title">
             Proposed Authorization End Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit." />
           </div>
           <Field
             id="proposed_end_date"
