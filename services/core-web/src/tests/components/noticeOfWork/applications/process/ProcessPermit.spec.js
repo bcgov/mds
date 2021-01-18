@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { ProcessPermit } from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import * as NOWMocks from "@/tests/mocks/noticeOfWorkMocks";
+import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
 const dispatchProps = {};
@@ -17,7 +18,8 @@ const setupDispatchProps = () => {
 
 const setupProps = () => {
   props.noticeOfWork = NOWMocks.IMPORTED_NOTICE_OF_WORK;
-  props.draftAmendment = NOWMocks.draftAmendment;
+  props.draftPermit = MOCK.PERMITS[0];
+  props.draftAmendment = MOCK.PERMITS[0].permit_amendments;
   props.progress = [];
   props.progressStatusCodes = [];
 };
