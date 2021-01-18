@@ -99,7 +99,7 @@ class NOWApplicationResource(Resource, UserMixin):
             del data['filtered_submission_documents']
         if 'imported_submission_documents' in data:
             del data['imported_submission_documents']
-        if 'submission_documents':
+        if 'submission_documents' in data:
             del data['submission_documents']
 
         if filtered_submission_documents:
