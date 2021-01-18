@@ -36,7 +36,7 @@ exports[`PermitAmendmentSecurityForm renders properly 1`] = `
       <div
         className="field-title"
       >
-        Reason*
+        Reason
       </div>
       <Field
         component={[Function]}
