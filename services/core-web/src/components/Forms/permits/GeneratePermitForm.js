@@ -11,11 +11,13 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
+import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
+  previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
@@ -245,7 +247,17 @@ export const GeneratePermitForm = (props) => (
         <FinalPermitDocuments
           mineGuid={props.noticeOfWork.mine_guid}
           noticeOfWork={props.noticeOfWork}
+          showPreambleFileMetadata
+          editPreambleFileMetadata={!props.isViewMode}
+          initialValues={props.initialValues}
         />
+        {props.previousAmendmentDocuments && (
+          <PreviousAmendmentDocuments
+            previousAmendmentDocuments={props.previousAmendmentDocuments}
+            editPreambleFileMetadata={!props.isViewMode}
+            initialValues={props.initialValues}
+          />
+        )}
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
@@ -258,7 +270,7 @@ export const GeneratePermitForm = (props) => (
             now_application_document_sub_type_code === "MDO"
         )}
         isViewMode={props.isViewMode}
-        disclaimerText="In this table you can see all map related Notice of Work documents."
+        disclaimerText="In this table, you can see all the map-related Notice of Work documents."
         categoriesToShow={["MDO"]}
         addDescriptionColumn={false}
       />
@@ -272,4 +284,5 @@ export default reduxForm({
   form: FORM.GENERATE_PERMIT,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
+  enableReinitialize: true,
 })(GeneratePermitForm);
