@@ -75,7 +75,7 @@ namespace EJ2FileManagerService
 
             app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
-            // app.UseHttpsRedirection(); 
+            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
