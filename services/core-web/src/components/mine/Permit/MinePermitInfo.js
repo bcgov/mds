@@ -77,7 +77,15 @@ export class MinePermitInfo extends Component {
     const { id } = this.props.match.params;
     if (this.props.permits.length === 0) {
       this.props.fetchPermits(id).then(() => {
-        this.setState({ isLoaded: true });
+        this.props
+          .fetchPartyRelationships({
+            mine_guid: this.props.mineGuid,
+            relationships: "party",
+            include_permittees: "true",
+          })
+          .then(() => {
+            this.setState({ isLoaded: true });
+          });
       });
     } else {
       this.setState({ isLoaded: true });
