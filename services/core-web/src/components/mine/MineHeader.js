@@ -180,10 +180,7 @@ export class MineHeader extends Component {
           <div className="inline-flex between horizontal-center">
             <h4>Mine Details</h4>
             <div>
-              <AuthorizationWrapper
-                permission={Permission.EDIT_MINES}
-                isMajorMine={this.props.mine.major_mine_ind}
-              >
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <Dropdown className="full-height" overlay={menu} placement="bottomLeft">
                   <Button type="primary">
                     <div className="padding-sm">
