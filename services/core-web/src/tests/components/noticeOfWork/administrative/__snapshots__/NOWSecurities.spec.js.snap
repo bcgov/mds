@@ -31,7 +31,7 @@ exports[`NOWSecurities renders properly 1`] = `
     </Connect(NOWActionWrapper)>
   </div>
   <LoadingWrapper
-    condition={false}
+    condition={true}
   >
     <div
       style={Object {}}
