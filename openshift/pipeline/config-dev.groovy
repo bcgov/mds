@@ -139,6 +139,7 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'FILESYSTEM_PROVIDER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/file-api/",
                             'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
@@ -325,6 +326,7 @@ app {
                              'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
                              'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
                              'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
+                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
                              'ASPNETCORE_ENVIRONMENT': "Development"
                      ]
                 ]
@@ -493,8 +495,8 @@ environments {
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
-                'filesystem-provider' {
-                    HOST = "mds-filesystem-provider${vars.deployment.suffix}:8080"
+                'mds-filesystem-provider' {
+                    HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
                     PATH = "/${vars.git.changeId}/file-api"
                 }
                 // 'digdag' {

@@ -8,11 +8,15 @@ nid.now_number,
 app.lead_inspector_party_guid,
 concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
 COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
-CASE COALESCE(nows.description, sub.status)
+-- TODO: Map all MMS and vFCBC statuses to their corresponding Core status.
+CASE COALESCE(nows.description, msub.status, sub.status)
+  WHEN 'Accepted' THEN 'Approved'
   WHEN 'Under Review' THEN 'Pending Verification'
-  ElSE COALESCE(nows.description, sub.status)
+  WHEN 'Rejected-Initial' THEN 'Rejected'
+  WHEN 'Withdrawn' THEN 'Rejected'
+  ElSE COALESCE(nows.description, msub.status, sub.status)
 END as now_application_status_description,
-COALESCE(app.received_date, sub.receiveddate, msub.receiveddate) as received_date,
+COALESCE(app.received_date, sub.receiveddate, msub.receiveddate, msub.submitteddate) as received_date,
 (CASE
 	WHEN nid.now_application_id IS NOT NULL THEN FALSE
 	WHEN sub.originating_system IS NULL AND msub.mms_cid IS NOT NULL THEN TRUE
@@ -24,6 +28,7 @@ END) AS is_historic,
     WHEN sub.originating_system IS NOT NULL THEN sub.originating_system
     WHEN msub.mms_cid IS NOT NULL THEN 'MMS'
     WHEN nid.now_application_id IS NOT NULL THEN 'Core'
+	WHEN nid.messageid IS NOT NULL THEN 'VFCBC'
     ELSE NULL
 END) as originating_system
 FROM now_application_identity nid 

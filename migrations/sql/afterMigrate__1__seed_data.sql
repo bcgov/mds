@@ -516,7 +516,7 @@ INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay', 30, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delayed', 30, true, 'system-mds', 'system-mds'),
   ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
   ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
@@ -526,7 +526,7 @@ VALUES
 	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
 	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
-  ('PEV', 'Pending Verificaton', 130, true, 'system-mds', 'system-mds')
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -626,11 +626,9 @@ VALUES
     ('RFE', 'Record of First Nations Engagement', true, null, 'system-mds', 'system-mds'),
     ('TAL', 'Tenure Authorization Letter', true, null, 'system-mds', 'system-mds'),
     ('REV', 'Review', true, null, 'system-mds','system-mds'),
-    ('PUB', 'Public Comment', true, null, 'system-mds','system-mds'),
     ('CAL', 'Acknowledgement Letter', true, 'GDO', 'system-mds', 'system-mds'),
     ('WDL', 'Withdrawl Letter', true, 'GDO', 'system-mds', 'system-mds'),
     ('RJL', 'Rejection Letter', true, 'GDO', 'system-mds', 'system-mds'),
-    ('NPE', 'Permit Enclosed Letter', true, null, 'system-mds', 'system-mds'),
     ('PMT','Working Permit', true, null, 'system-mds','system-mds'),
     ('PMA','Working Permit for Amendment', true, null, 'system-mds','system-mds'),
     ('SRB', 'Scan of Reclamation Security Document', true, 'SDO', 'system-mds','system-mds'),
@@ -671,7 +669,7 @@ VALUES
     ('NPR', 'No Permit Required', true, NULL, 'system-mds', 'system-mds'),
     ('NPI', 'No Permit Required IP', true, NULL, 'system-mds', 'system-mds'),
     ('WFS', '30 day Warning for Security', true, 'SDO', 'system-mds', 'system-mds'),
-    ('PEL', 'Permit Enclosed Letter', true, NULL, 'system-mds', 'system-mds'),
+    ('NPE', 'Permit Enclosed Letter', true, NULL, 'system-mds', 'system-mds'),
     ('RFD', 'Reasons for Decision', true, NULL, 'system-mds', 'system-mds'),
     ('CRS', 'Consultation Report/Summary', true, 'CDO', 'system-mds', 'system-mds'),
     ('BCR', 'Begin Consultation Request', true, 'CDO', 'system-mds', 'system-mds'),

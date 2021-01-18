@@ -76,7 +76,7 @@ services:
       - nris_backend
       - document_manager_backend
       - tusd
-      - syncfusion_filesystem_provider
+      - filesystem_provider
 
   ####################### Redis Definition #######################
   redis:
@@ -155,13 +155,13 @@ services:
     env_file: ./services/tusd/.env
 
   ####################### Syncfusion Filesystem Provider Definition #######################
-  syncfusion_filesystem_provider:
-    container_name: syncfusion_filesystem_provider
+  filesystem_provider:
+    container_name: filesystem_provider
     build:
-      context: services/syncfusion-filesystem-provider
+      context: services/filesystem-provider
     ports:
       - 62870:62870
-    env_file: ./services/syncfusion-filesystem-provider/.env
+    env_file: ./services/filesystem-provider/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:

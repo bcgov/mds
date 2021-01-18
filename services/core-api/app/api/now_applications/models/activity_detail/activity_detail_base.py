@@ -33,26 +33,26 @@ class ActivityDetailBase(AuditMixin, Base):
     timber_volume_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
     number_of_sites = db.Column(db.Integer)
-    width = db.Column(db.Integer)
+    width = db.Column(db.Numeric(14, 2))
     width_unit_type_code = db.Column(db.String,
                                      db.ForeignKey('unit_type.unit_type_code'))
-    length = db.Column(db.Integer)
+    length = db.Column(db.Numeric(14, 2))
     length_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
-    depth = db.Column(db.Integer)
+    depth = db.Column(db.Numeric(14, 2))
     depth_unit_type_code = db.Column(db.String,
                                      db.ForeignKey('unit_type.unit_type_code'))
-    height = db.Column(db.Integer)
+    height = db.Column(db.Numeric(14, 2))
     height_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
-    quantity = db.Column(db.Integer)
+    quantity = db.Column(db.Numeric(14, 2))
     incline = db.Column(db.Numeric(14, 2))
     incline_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
-    cut_line_length = db.Column(db.Integer)
+    cut_line_length = db.Column(db.Numeric(14, 2))
     cut_line_length_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
-    water_quantity = db.Column(db.Integer)
+    water_quantity = db.Column(db.Numeric(14, 2))
     water_quantity_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'))
 

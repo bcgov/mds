@@ -201,7 +201,7 @@ app {
                             'NAME':"filesystem-provider",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/syncfusion-filesystem-provider",
+                            'SOURCE_CONTEXT_DIR': "services/filesystem-provider",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],

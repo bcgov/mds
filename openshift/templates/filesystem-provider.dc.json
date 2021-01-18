@@ -168,7 +168,7 @@
                   },
                   {
                     "name": "JWT_OIDC_AUDIENCE",
-                    "value": "mines-application-dev"
+                    "value": "${JWT_OIDC_AUDIENCE}"
                   }
                 ],
                 "resources": {
@@ -257,6 +257,11 @@
       "description": "The ASP Net Core deployment environment setting.",
       "required": true,
       "value": "Development"
+    },
+    {
+      "name": "JWT_OIDC_AUDIENCE",
+      "displayName": "Keycloak clientId",
+      "required": true
     }
   ]
 }

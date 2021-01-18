@@ -17,7 +17,7 @@ export default function fetchEnv() {
       ENVIRONMENT.apiUrl = env.apiUrl;
       ENVIRONMENT.docManUrl = env.docManUrl;
       ENVIRONMENT.firstNationsLayerUrl = env.firstNationsLayerUrl;
-      ENVIRONMENT.syncfusionFilesystemProviderUrl = env.syncfusionFilesystemProviderUrl;
+      ENVIRONMENT.filesystemProviderUrl = env.filesystemProviderUrl;
       ENVIRONMENT.matomoUrl = env.matomoUrl;
       KEYCLOAK.clientId = env.keycloak_clientId;
       KEYCLOAK.resource = env.keycloak_resource;
