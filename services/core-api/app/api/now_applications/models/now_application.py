@@ -266,7 +266,13 @@ class NOWApplication(Base, AuditMixin):
                 'now_application_id':
                 doc.now_application_id,
                 'document_manager_guid':
-                doc.document_manager_guid
+                doc.document_manager_guid,
+                'preamble_title':
+                doc.preamble_title,
+                'preamble_author':
+                doc.preamble_author,
+                'preamble_date':
+                doc.preamble_date
             })
 
         for doc in now_application.submission_documents:
