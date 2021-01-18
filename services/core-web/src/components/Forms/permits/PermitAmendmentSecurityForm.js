@@ -61,7 +61,11 @@ export const PermitAmendmentSecurityForm = (props) => {
             component={RenderSelect}
             placeholder="Please select a reason"
             data={securityNotRequiredReasonOptions}
-            validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+            validate={
+              !props.securityNotRequired
+                ? []
+                : [required, validateSelectOptions(securityNotRequiredReasonOptions)]
+            }
             disabled={!props.isEditMode || !props.securityNotRequired}
           />
         </Col>
