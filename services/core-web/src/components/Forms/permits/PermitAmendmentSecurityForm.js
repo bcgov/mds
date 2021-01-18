@@ -54,7 +54,7 @@ export const PermitAmendmentSecurityForm = (props) => {
           />
         </Col>
         <Col span={12}>
-          <div className="field-title">Reason*</div>
+          <div className="field-title">{!props.securityNotRequired ? "Reason" : "Reason*"}</div>
           <Field
             id="security_not_required_reason"
             name="security_not_required_reason"
