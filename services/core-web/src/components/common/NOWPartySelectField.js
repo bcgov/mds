@@ -271,6 +271,7 @@ export class NOWPartySelectField extends Component {
         }
       >
         <Select
+          {...this.props.input}
           virtual={false}
           showSearch
           id={this.props.id}
@@ -287,7 +288,6 @@ export class NOWPartySelectField extends Component {
           onSelect={this.handleSelect}
           onChange={this.props.input.onChange}
           onBlur={this.props.input.onChange(this.state.selectedOption.value)}
-          {...this.props.input}
           onFocus={(event) => {
             this.handleFocus();
             this.props.input.onFocus(event);
