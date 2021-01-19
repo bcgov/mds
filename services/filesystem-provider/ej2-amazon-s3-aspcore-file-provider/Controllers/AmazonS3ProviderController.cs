@@ -31,31 +31,9 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         [HttpPost]
         [Route("AmazonS3FileOperations")]
-        // [Authorize("View")]
-        public object AmazonS3FileOperations([FromBody] string args)
+        [Authorize("View")]
+        public object AmazonS3FileOperations([FromBody] FileManagerDirectoryContent args)
         {
-            return args;
-            // switch (args.Action)
-            // {
-            //     case "read":
-            //         // Reads the file(s) or folder(s) from the given path
-            //         return this.operation.ToCamelCase(this.operation.GetFiles(args.Path, false, args.Data));
-            //     case "details":
-            //         // Gets the details of the selected file(s) or folder(s)
-            //         return this.operation.ToCamelCase(this.operation.Details(args.Path, args.Names, args.Data));
-            //     case "search":
-            //         // Gets the list of file(s) or folder(s) from a given path based on the searched key string
-            //         return this.operation.ToCamelCase(this.operation.Search(args.Path, args.SearchString, args.ShowHiddenItems, args.CaseSensitive));
-            // }
-            // return null;
-        }
-
-        [HttpPost]
-        [Route("AmazonS3FileOperations2")]
-        // [Authorize("View")]
-        public object AmazonS3FileOperations2(string fileOpsInput)
-        {
-            FileManagerDirectoryContent args = JsonConvert.DeserializeObject<FileManagerDirectoryContent>(fileOpsInput);
             switch (args.Action)
             {
                 case "read":
@@ -71,17 +49,10 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             return null;
         }
 
-        [HttpPost]
-        [Route("Test")]
-        public object Test()
-        {
-            return null;
-        }
-
         // Downloads the selected file(s) and folder(s)
         [HttpPost]
         [Route("AmazonS3Download")]
-        // [Authorize("View")]
+        [Authorize("View")]
         public IActionResult AmazonS3Download(string downloadInput)
         {
             Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");

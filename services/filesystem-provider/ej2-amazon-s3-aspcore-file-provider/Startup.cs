@@ -36,22 +36,22 @@ namespace EJ2FileManagerService
                 });
             });
 
-            // services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
+            services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
 
-            // services.AddAuthentication(options =>
-            // {
-            //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            // }).AddJwtBearer(o =>
-            // {
-            //     o.Authority = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUTHORITY"); ;
-            //     o.Audience = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUDIENCE"); ;
-            // });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Authority = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUTHORITY"); ;
+                o.Audience = System.Environment.GetEnvironmentVariable("JWT_OIDC_AUDIENCE"); ;
+            });
 
-            // services.AddAuthorization(options =>
-            // {
-            //     options.AddPolicy("View", policy => { policy.RequireClaim(ClaimTypes.Role, new string[] { "core_view_all" }); });
-            // });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("View", policy => { policy.RequireClaim(ClaimTypes.Role, new string[] { "core_view_all" }); });
+            });
 
             services.AddSwaggerGen();
         }
@@ -66,16 +66,16 @@ namespace EJ2FileManagerService
             string syncfusionLicenseKey = System.Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
 
-            // if (env.IsDevelopment())
-            // {
-            app.UseDeveloperExceptionPage();
-            // }
-            // else
-            // {
-            //     app.UseHsts();
-            // }
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
 
-            // app.UseAuthentication();
+            app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
             app.UseMvc();
 
@@ -91,27 +91,27 @@ namespace EJ2FileManagerService
         }
     }
 
-    // public class ClaimsTransformer : IClaimsTransformation
-    // {
-    //     public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
-    //     {
-    //         ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
+    public class ClaimsTransformer : IClaimsTransformation
+    {
+        public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+        {
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)principal.Identity;
 
-    //         // Flatten realm_access because Microsoft identity model doesn't support nested claims
-    //         if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "realm_access"))
-    //         {
-    //             var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "realm_access");
-    //             var realmAccessAsDict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(realmAccessClaim.Value);
-    //             if (realmAccessAsDict["roles"] != null)
-    //             {
-    //                 foreach (var role in realmAccessAsDict["roles"])
-    //                 {
-    //                     claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
-    //                 }
-    //             }
-    //         }
+            // Flatten realm_access because Microsoft identity model doesn't support nested claims
+            if (claimsIdentity.IsAuthenticated && claimsIdentity.HasClaim((claim) => claim.Type == "realm_access"))
+            {
+                var realmAccessClaim = claimsIdentity.FindFirst((claim) => claim.Type == "realm_access");
+                var realmAccessAsDict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(realmAccessClaim.Value);
+                if (realmAccessAsDict["roles"] != null)
+                {
+                    foreach (var role in realmAccessAsDict["roles"])
+                    {
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+            }
 
-    //         return Task.FromResult(principal);
-    //     }
-    // }
+            return Task.FromResult(principal);
+        }
+    }
 }
