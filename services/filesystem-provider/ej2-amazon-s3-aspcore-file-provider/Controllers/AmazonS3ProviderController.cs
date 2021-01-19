@@ -29,6 +29,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             this.operation.RegisterAmazonS3(name, awsAccessKeyId, awsSecretAccessKey, serviceName);
         }
 
+        [HttpPost]
         [Route("AmazonS3FileOperations")]
         [Authorize("View")]
         public object AmazonS3FileOperations([FromBody] FileManagerDirectoryContent args)
@@ -49,6 +50,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         }
 
         // Downloads the selected file(s) and folder(s)
+        [HttpGet]
         [Route("AmazonS3Download")]
         [Authorize("View")]
         public IActionResult AmazonS3Download(string downloadInput)
@@ -59,6 +61,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         }
 
         // Gets the image(s) from the given path
+        [HttpGet]
         [Route("AmazonS3GetImage")]
         public IActionResult AmazonS3GetImage(FileManagerDirectoryContent args)
         {
