@@ -76,6 +76,7 @@ services:
       - nris_backend
       - document_manager_backend
       - tusd
+      - filesystem_provider
 
   ####################### Redis Definition #######################
   redis:
@@ -152,6 +153,15 @@ services:
     expose:
       - 1080
     env_file: ./services/tusd/.env
+
+  ####################### Syncfusion Filesystem Provider Definition #######################
+  filesystem_provider:
+    container_name: filesystem_provider
+    build:
+      context: services/filesystem-provider
+    ports:
+      - 62870:62870
+    env_file: ./services/filesystem-provider/.env
 
   ####################### DOCUMENT_MANAGER_BACKEND Definition #######################
   document_manager_backend:

@@ -25,6 +25,7 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
+import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
 import HomePage from "@/components/dashboard/HomePage";
@@ -114,6 +115,12 @@ export const MINE_GENERAL = {
   route: "/mine-dashboard/:id/mine-information/general",
   dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/general`,
   component: MineSummary,
+};
+
+export const MINE_DOCUMENTS = {
+  route: "/mine-dashboard/:id/mine-information/mms-archive",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/mms-archive`,
+  component: MineDocuments,
 };
 
 export const MINE_PERMITS = {

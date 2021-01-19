@@ -137,6 +137,7 @@ class ApplicationListResource(Resource, UserMixin):
             mine_guid=mine.mine_guid,
             now_submission=application,
             now_number=NOWApplicationIdentity.create_now_number(mine))
+        application.processed = 'Y'
         current_app.logger.debug('Attempting to Save')
         application.save()
 
