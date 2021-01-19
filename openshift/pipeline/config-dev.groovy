@@ -139,6 +139,7 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'FILESYSTEM_PROVIDER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/file-api/AmazonS3Provider/",
                             'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
@@ -188,6 +189,7 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'FILE_API_SERVICE_URL': "${vars.modules.'mds-filesystem-provider'.HOST}",
                             'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
                             'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}"
@@ -310,7 +312,25 @@ app {
                             'BASE_PATH': "${vars.modules.'mds-docgen-api'.PATH}",
                             'NODE_ENV': "${vars.deployment.node_env}"
                     ]
+                ],
+                [
+                     'file':'openshift/templates/filesystem-provider.dc.json',
+                     'params':[
+                             'NAME':"filesystem-provider",
+                             'VERSION':"${app.deployment.version}",
+                             'SUFFIX': "${vars.deployment.suffix}",
+                             'SCHEDULER_PVC_SIZE':"200Mi",
+                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                             'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
+                             'CPU_REQUEST':"${vars.resources.fsprovider.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
+                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
+                             'ASPNETCORE_ENVIRONMENT': "Development"
+                     ]
                 ]
+
                 // [
                 //     'file':'openshift/templates/digdag/digdag.dc.json',
                 //     'params':[
@@ -417,6 +437,12 @@ environments {
                     memory_request = "16Mi"
                     memory_limit = "32Mi"
                 }
+                fsprovider {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "128Mi"
+                    memory_limit = "256Mi"
+                }
                 // digdag {
                 //     cpu_request = "100m"
                 //     cpu_limit = "200m"
@@ -468,6 +494,10 @@ environments {
                 }
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
+                }
+                'mds-filesystem-provider' {
+                    HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
+                    PATH = "/${vars.git.changeId}/file-api"
                 }
                 // 'digdag' {
                 //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"

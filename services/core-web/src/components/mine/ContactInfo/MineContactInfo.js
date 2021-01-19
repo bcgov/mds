@@ -12,7 +12,7 @@ import CustomPropTypes from "@/customPropTypes";
 import ViewPartyRelationships from "./ViewPartyRelationships";
 
 /**
- * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MnieDashboard - houses all the redux logic/state and passes props into children,;
+ * @class MineContactInfo.js contains all information under the 'Contact Information' tab on the MineDashboard - houses all the redux logic/state and passes props into children.
  */
 
 const propTypes = {
@@ -57,7 +57,6 @@ export class MineContactInfo extends Component {
   }
 }
 
-MineContactInfo.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
@@ -74,5 +73,7 @@ const mapDispatchToProps = (dispatch) =>
     },
     dispatch
   );
+
+MineContactInfo.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MineContactInfo);
