@@ -1,5 +1,5 @@
-import { request, success, error } from "../actions/genericActions";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
+import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as staticContentActions from "../actions/staticContentActions";
 import * as partyActions from "../actions/partyActions";
