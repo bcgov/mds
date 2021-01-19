@@ -87,7 +87,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "SDO",
         ]
       }
-      disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+      disclaimerText="Upload securities-related files here."
       documents={Array []}
       isAdminView={true}
       isViewMode={false}
@@ -120,7 +120,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "NTR",
         ]
       }
-      disclaimerText="In this table, you can see all the exported Notice of Work documents."
+      disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
       documents={Array []}
       isViewMode={true}
     />
