@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
+from operator import attrgetter
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -69,6 +70,41 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment = PermitAmendment.find_by_now_application_guid(application_guid)
                 if not permit_amendment:
                     raise NotFound('No permit amendment found for this application.')
+
+                # TODO improve this dates validation
+                for contact in now_application_identity.now_application.contacts:
+                    if contact.mine_party_appt_type_code == 'PMT' or contact.mine_party_appt_type_code == 'MMG':
+                        new_appt_needed = False
+                        current_apt = MinePartyAppointment.find_current_appointments(
+                            permit_id=permit.permit_id
+                            if contact.mine_party_appt_type_code == 'PMT' else None,
+                            mine_guid=now_application_identity.mine.mine_guid
+                            if contact.mine_party_appt_type_code == 'MMG' else None,
+                            mine_party_appt_type_code=contact.mine_party_appt_type_code)
+                        # A mine can only have one active Mine manager and a permit can only have oneactive permittee
+                        if len(current_apt) > 1:
+                            raise BadRequest(
+                                'This mine has more than one mine manager. Resolve this and try again.'
+                                if contact.mine_party_appt_type_code == 'MMG' else
+                                'This permit has more than one permittee. Resolve this and try again.'
+                            )
+
+                        amendments = [
+                            amendment for amendment in permit.permit_amendments
+                            if amendment and amendment.issue_date
+                        ]
+                        if amendments:
+                            latest_amendment = max(amendments, key=attrgetter('issue_date'))
+
+                            if latest_amendment and latest_amendment.issue_date > issue_date.date():
+                                raise BadRequest(
+                                    f'You cannot set the issue date of permit {permit.permit_no} before the issue date of its most recent amendment, dated {latest_amendment.issue_date}.'
+                                )
+
+                        if len(current_apt) == 1 and current_apt[0].start_date > issue_date.date():
+                            raise BadRequest(
+                                f'You cannot set the issue date prior to the start date of {current_apt[0].start_date}.'
+                            )
 
                 #move out of draft, draft status on permit indicates that the permit amendment is first (original)
                 if permit.permit_status_code == 'D':
