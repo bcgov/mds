@@ -43,6 +43,10 @@
       "value": "/"
     },
     {
+      "name": "FILE_API_SERVICE_URL",
+      "value": "/"
+    },
+    {
       "name": "DOCUMENT_MANAGER_SERVICE_URL",
       "value": "/"
     },
@@ -134,7 +138,9 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": ["nginx"],
+              "containerNames": [
+                "nginx"
+              ],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -173,6 +179,10 @@
                   {
                     "name": "NRIS_API_SERVICE_URL",
                     "value": "${NRIS_API_SERVICE_URL}"
+                  },
+                  {
+                    "name": "FILE_API_SERVICE_URL",
+                    "value": "${FILE_API_SERVICE_URL}"
                   },
                   {
                     "name": "DOCUMENT_MANAGER_SERVICE_URL",
@@ -273,7 +283,10 @@
               }
             ],
             "volumes": [
-              { "emptyDir": {}, "name": "${NAME}${SUFFIX}-log" },
+              {
+                "emptyDir": {},
+                "name": "${NAME}${SUFFIX}-log"
+              },
               {
                 "name": "promtail-config",
                 "configMap": {

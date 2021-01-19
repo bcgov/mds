@@ -28,6 +28,7 @@ END) AS is_historic,
     WHEN sub.originating_system IS NOT NULL THEN sub.originating_system
     WHEN msub.mms_cid IS NOT NULL THEN 'MMS'
     WHEN nid.now_application_id IS NOT NULL THEN 'Core'
+  	WHEN nid.messageid IS NOT NULL THEN 'VFCBC'
     ELSE NULL
 END) as originating_system
 FROM now_application_identity nid 
@@ -39,5 +40,5 @@ LEFT JOIN party p on app.lead_inspector_party_guid=p.party_guid
 LEFT JOIN notice_of_work_type nowt on app.notice_of_work_type_code=nowt.notice_of_work_type_code
 LEFT JOIN now_application_status nows on app.now_application_status_code=nows.now_application_status_code
 LEFT JOIN permit_amendment pa ON nid.now_application_guid = pa.now_application_guid
-WHERE sub.originating_system IS NULL 
-	OR (sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);
+WHERE ((nid.messageid IS NOT NULL AND sub.processed = 'Y') OR nid.messageid IS NULL)
+AND (sub.originating_system IS NULL OR (sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL));
