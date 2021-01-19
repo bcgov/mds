@@ -1,4 +1,5 @@
 import { request, success, error } from "../actions/genericActions";
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 import * as reducerTypes from "../constants/reducerTypes";
 import * as staticContentActions from "../actions/staticContentActions";
 import * as partyActions from "../actions/partyActions";
@@ -10,13 +11,15 @@ import CustomAxios from "../customAxios";
 
 export const loadBulkStaticContent = () => (dispatch) => {
   dispatch(request(reducerTypes.LOAD_ALL_STATIC_CONTENT));
+  dispatch(showLoading());
   return CustomAxios()
     .get(ENVIRONMENT.apiUrl + API.CORE_STATIC_CONTENT, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.LOAD_ALL_STATIC_CONTENT));
       dispatch(staticContentActions.storeBulkStaticContent(response.data));
     })
-    .catch(() => dispatch(error(reducerTypes.LOAD_ALL_STATIC_CONTENT)));
+    .catch(() => dispatch(error(reducerTypes.LOAD_ALL_STATIC_CONTENT)))
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const fetchInspectors = () => (dispatch) => {
