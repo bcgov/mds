@@ -66,14 +66,14 @@ namespace EJ2FileManagerService
             string syncfusionLicenseKey = System.Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            // if (env.IsDevelopment())
+            // {
+            app.UseDeveloperExceptionPage();
+            // }
+            // else
+            // {
+            //     app.UseHsts();
+            // }
 
             // app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
