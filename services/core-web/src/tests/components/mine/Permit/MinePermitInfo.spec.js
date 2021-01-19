@@ -9,6 +9,7 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchPermits = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn();
+  dispatchProps.fetchMineRecordById = jest.fn();
 };
 
 const setupProps = () => {
