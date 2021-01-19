@@ -327,7 +327,7 @@ app {
                              'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
                              'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
                              'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
-                             'JWT_OIDC_AUTHORITY': "${vars.keycloak.url}/realms/mds"
+                             'JWT_OIDC_AUTHORITY': "${vars.keycloak.url}/realms/mds",
                              'ASPNETCORE_ENVIRONMENT': "Development"
                      ]
                 ]
