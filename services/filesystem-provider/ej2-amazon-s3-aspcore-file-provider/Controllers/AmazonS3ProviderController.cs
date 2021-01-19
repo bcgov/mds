@@ -50,7 +50,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         }
 
         // Downloads the selected file(s) and folder(s)
-        [HttpGet]
+        [HttpPost]
         [Route("AmazonS3Download")]
         [Authorize("View")]
         public IActionResult AmazonS3Download(string downloadInput)
