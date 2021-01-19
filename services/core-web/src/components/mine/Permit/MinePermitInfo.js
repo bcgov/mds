@@ -73,7 +73,7 @@ export class MinePermitInfo extends Component {
     isLoaded: false,
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     if (this.props.permits.length === 0 || !this.props.mineGuid) {
       this.handleFetchData();
     } else {
