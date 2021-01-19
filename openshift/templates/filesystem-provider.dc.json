@@ -164,7 +164,7 @@
                   },
                   {
                     "name": "JWT_OIDC_AUTHORITY",
-                    "value": "https://test.oidc.gov.bc.ca/auth/realms/mds"
+                    "value": "${JWT_OIDC_AUTHORITY}"
                   },
                   {
                     "name": "JWT_OIDC_AUDIENCE",
@@ -261,6 +261,11 @@
     {
       "name": "JWT_OIDC_AUDIENCE",
       "displayName": "Keycloak clientId",
+      "required": true
+    },
+    {
+      "name": "JWT_OIDC_AUTHORITY",
+      "displayName": "Token issuer",
       "required": true
     }
   ]
