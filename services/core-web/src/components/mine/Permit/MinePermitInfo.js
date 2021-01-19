@@ -103,11 +103,6 @@ export class MinePermitInfo extends Component {
     }
   };
 
-  closePermitModal = () => {
-    this.props.closeModal();
-    this.handleFetchData();
-  };
-
   handleFetchData = () => {
     const { id } = this.props.match.params;
     return this.props.fetchMineRecordById(id).then(() => {
