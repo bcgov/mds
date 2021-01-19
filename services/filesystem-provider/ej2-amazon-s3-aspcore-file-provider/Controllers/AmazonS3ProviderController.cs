@@ -35,19 +35,19 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         public object AmazonS3FileOperations()
         {
             return null;
-            switch (args.Action)
-            {
-                case "read":
-                    // Reads the file(s) or folder(s) from the given path
-                    return this.operation.ToCamelCase(this.operation.GetFiles(args.Path, false, args.Data));
-                case "details":
-                    // Gets the details of the selected file(s) or folder(s)
-                    return this.operation.ToCamelCase(this.operation.Details(args.Path, args.Names, args.Data));
-                case "search":
-                    // Gets the list of file(s) or folder(s) from a given path based on the searched key string
-                    return this.operation.ToCamelCase(this.operation.Search(args.Path, args.SearchString, args.ShowHiddenItems, args.CaseSensitive));
-            }
-            return null;
+            // switch (args.Action)
+            // {
+            //     case "read":
+            //         // Reads the file(s) or folder(s) from the given path
+            //         return this.operation.ToCamelCase(this.operation.GetFiles(args.Path, false, args.Data));
+            //     case "details":
+            //         // Gets the details of the selected file(s) or folder(s)
+            //         return this.operation.ToCamelCase(this.operation.Details(args.Path, args.Names, args.Data));
+            //     case "search":
+            //         // Gets the list of file(s) or folder(s) from a given path based on the searched key string
+            //         return this.operation.ToCamelCase(this.operation.Search(args.Path, args.SearchString, args.ShowHiddenItems, args.CaseSensitive));
+            // }
+            // return null;
         }
 
         // Downloads the selected file(s) and folder(s)
