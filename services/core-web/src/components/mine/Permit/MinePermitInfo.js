@@ -73,20 +73,9 @@ export class MinePermitInfo extends Component {
     isLoaded: false,
   };
 
-  componentWillMount = () => {
-    const { id } = this.props.match.params;
-    if (this.props.permits.length === 0) {
-      this.props.fetchPermits(id).then(() => {
-        this.props
-          .fetchPartyRelationships({
-            mine_guid: this.props.mineGuid,
-            relationships: "party",
-            include_permittees: "true",
-          })
-          .then(() => {
-            this.setState({ isLoaded: true });
-          });
-      });
+  componentDidMount = () => {
+    if (this.props.permits.length === 0 || !this.props.mineGuid) {
+      this.handleFetchData();
     } else {
       this.setState({ isLoaded: true });
     }
@@ -114,15 +103,22 @@ export class MinePermitInfo extends Component {
     }
   };
 
+  handleFetchData = () => {
+    const { id } = this.props.match.params;
+    return this.props.fetchMineRecordById(id).then(() => {
+      this.props.fetchPermits(id);
+      this.props.fetchPartyRelationships({
+        mine_guid: id,
+        relationships: "party",
+        include_permittees: "true",
+      });
+      this.setState({ isLoaded: true });
+    });
+  };
+
   closePermitModal = () => {
     this.props.closeModal();
-    this.props.fetchMineRecordById(this.props.mineGuid);
-    this.props.fetchPermits(this.props.mineGuid);
-    this.props.fetchPartyRelationships({
-      mine_guid: this.props.mineGuid,
-      relationships: "party",
-      include_permittees: "true",
-    });
+    this.handleFetchData();
   };
 
   openAddPermitModal = (event, onSubmit, title) => {
@@ -273,7 +269,6 @@ export class MinePermitInfo extends Component {
     );
 
   // Amendment Handlers
-
   handleEditPermitAmendment = (values) =>
     this.props
       .updatePermitAmendment(
