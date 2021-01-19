@@ -32,8 +32,9 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [HttpPost]
         [Route("AmazonS3FileOperations")]
         // [Authorize("View")]
-        public object AmazonS3FileOperations([FromBody] FileManagerDirectoryContent args)
+        public object AmazonS3FileOperations()
         {
+            return null;
             switch (args.Action)
             {
                 case "read":
