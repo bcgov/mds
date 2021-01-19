@@ -382,7 +382,7 @@ class AddressFactory(BaseFactory):
     address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
     city = factory.Faker('city')
     sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
-    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCEGHJKLMNPRSTVXY')
 
 
 class PartyFactory(BaseFactory):

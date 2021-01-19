@@ -198,22 +198,24 @@ export class Conditions extends Component {
                         (value) => value === "CON"
                       ).length
                     } conditions)`}
-                    <Button
-                      ghost
-                      onClick={(event) =>
-                        this.openViewConditionModal(
-                          event,
-                          this.props.conditions.filter(
-                            (condition) =>
-                              condition.condition_category_code ===
-                              conditionCategory.condition_category_code
-                          ),
-                          conditionCategory.description
-                        )
-                      }
-                    >
-                      <ReadOutlined className="padding-sm--right icon-sm violet" />
-                    </Button>
+                    <span onClick={(event) => event.stopPropagation()}>
+                      <Button
+                        ghost
+                        onClick={(event) =>
+                          this.openViewConditionModal(
+                            event,
+                            this.props.conditions.filter(
+                              (condition) =>
+                                condition.condition_category_code ===
+                                conditionCategory.condition_category_code
+                            ),
+                            conditionCategory.description
+                          )
+                        }
+                      >
+                        <ReadOutlined className="padding-sm--right icon-sm violet" />
+                      </Button>
+                    </span>
                   </span>
                 }
                 key={conditionCategory.condition_category_code}
