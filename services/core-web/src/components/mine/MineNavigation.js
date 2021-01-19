@@ -39,6 +39,11 @@ export class MineNavigation extends Component {
                 Contacts
               </Link>
             </Menu.Item>
+            <Menu.Item key="mms-archive">
+              <Link to={routes.MINE_DOCUMENTS.dynamicRoute(this.props.mine.mine_guid)}>
+                Archived MMS Files
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu
