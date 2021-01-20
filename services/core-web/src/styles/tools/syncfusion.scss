@@ -39,3 +39,7 @@ $error-font: $error-color; //#f44336;
 @import "../../../node_modules/@syncfusion/ej2-layouts/styles/material.scss";
 @import "../../../node_modules/@syncfusion/ej2-grids/styles/material.scss";
 @import "../../../node_modules/@syncfusion/ej2-react-filemanager/styles/material.scss";
+
+.e-empty-inner-content {
+  display: none;
+}

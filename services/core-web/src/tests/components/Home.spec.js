@@ -6,7 +6,9 @@ const props = {};
 
 const setupReducerProps = () => {
   props.location = { pathname: " " };
-  props.dispatch = jest.fn();
+  props.loadBulkStaticContent = jest.fn();
+  props.fetchInspectors = jest.fn();
+  props.staticContentLoadingIsComplete = true;
 };
 
 beforeEach(() => {
