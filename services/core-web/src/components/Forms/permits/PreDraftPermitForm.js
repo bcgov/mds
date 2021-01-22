@@ -7,7 +7,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Tooltip } from "antd";
 import { required, requiredRadioButton } from "@common/utils/Validate";
-import { resetForm, createDropDownList } from "@common/utils/helpers";
+import { createDropDownList } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -15,21 +15,23 @@ import { getDropdownPermitAmendmentTypeOptions } from "@common/selectors/staticC
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 const propTypes = {
-  isAmendment: PropTypes.bool.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   isCoalOrMineral: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
+  applicationType: PropTypes.string.isRequired,
 };
 
 export const PreDraftPermitForm = (props) => {
   const [permitType, setPermitType] = useState(PERMIT_AMENDMENT_TYPES.original);
+  const [isAmendment, setIsAmendment] = useState(props.applicationType !== "New Permit");
 
   useEffect(() => {
-    if (!props.isAmendment) {
+    if (isAmendment) {
       props.change("permit_amendment_type_code", permitType);
     }
-  });
+    setIsAmendment(props.applicationType !== "New Permit");
+  }, [props.applicationType]);
 
   const getPermitType = (selectedPermitGuid) => {
     if (props.permits && props.permits.length > 0) {
@@ -72,13 +74,13 @@ export const PreDraftPermitForm = (props) => {
     <Form layout="vertical">
       <Row gutter={16}>
         <Col span={24}>
-          {props.isAmendment && (
+          {isAmendment && (
             <div className="left">
               <Form.Item>
                 <Field
                   id="permit_guid"
                   name="permit_guid"
-                  placeholder="Select a Permit*"
+                  label="Select a Permit*"
                   doNotPinDropdown
                   component={renderConfig.SELECT}
                   data={permitDropdown}
@@ -88,7 +90,7 @@ export const PreDraftPermitForm = (props) => {
               </Form.Item>
             </div>
           )}
-          {!props.isAmendment && props.isCoalOrMineral && (
+          {!isAmendment && props.isCoalOrMineral && (
             <div className="left">
               <Form.Item>
                 <Field
@@ -102,7 +104,7 @@ export const PreDraftPermitForm = (props) => {
             </div>
           )}
           <Tooltip title={tooltip} placement="left" mouseEnterDelay={0.3}>
-            <p>Please select a permit type.*</p>
+            <p>Select Permit Type*</p>
           </Tooltip>
           <div className="left">
             <Form.Item>
@@ -144,7 +146,6 @@ export default compose(
   reduxForm({
     form: FORM.PRE_DRAFT_PERMIT,
     touchOnBlur: true,
-    onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
     onSubmit: () => {},
   })
 )(PreDraftPermitForm);
