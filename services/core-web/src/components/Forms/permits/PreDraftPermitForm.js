@@ -56,6 +56,10 @@ export const PreDraftPermitForm = (props) => {
   let isPermitAmendmentTypeDropDownDisabled = true;
   let permitAmendmentDropdown = props.permitAmendmentTypeDropDownOptions;
 
+  if (!isAmendment && permitType !== PERMIT_AMENDMENT_TYPES.original) {
+    setPermitType(PERMIT_AMENDMENT_TYPES.original);
+  }
+
   if (permitType === PERMIT_AMENDMENT_TYPES.amalgamated) {
     tooltip = "You can issue only amalgamated permits";
   }
