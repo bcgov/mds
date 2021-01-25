@@ -19,6 +19,8 @@ END as now_application_status_description,
 COALESCE(app.received_date, sub.receiveddate, msub.receiveddate, msub.submitteddate) as received_date,
 (CASE
 	WHEN nid.now_application_id IS NOT NULL THEN FALSE
+  WHEN pa.now_application_guid IS NOT NULL THEN TRUE
+  WHEN sub.originating_system IS NULL and msub.mms_cid IS NOT NULL AND msub.status NOT IN ('No Permit Required', 'Approved') THEN FALSE
 	WHEN sub.originating_system IS NULL AND msub.mms_cid IS NOT NULL THEN TRUE
 	WHEN sub.originating_system IS NOT NULL AND nid.now_number IS NULL THEN TRUE
 	WHEN pa.now_application_guid IS NULL THEN FALSE
