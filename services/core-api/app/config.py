@@ -125,6 +125,12 @@ class Config(object):
     # OrgBook
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
+    # MDT-Issuer-Controller
+    ISSUER_CONTROLLER_URL = os.environ.get(
+        'ISSUER_CONTROLLER_URL',
+        'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
+    ISSUER_SECRET_KEY = os.environ.get('ISSUER_SECRET_KEY', 'super_secret_key')
+
 
 class TestConfig(Config):
     # The following configs are for testing purposes and all variables and keys are generated using dummy data.
