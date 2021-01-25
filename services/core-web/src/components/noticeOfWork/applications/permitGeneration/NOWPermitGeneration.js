@@ -206,7 +206,6 @@ export class NOWPermitGeneration extends Component {
       : amendment.regional_office;
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
-    // permitGenObject.application_last_updated_date = formatDate(noticeOfWork.last_updated_date);
 
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
