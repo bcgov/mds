@@ -126,10 +126,10 @@ class Config(object):
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
     # MDT-Issuer-Controller
-    ISSUER_CONTROLLER_URL = os.environ.get(
-        'ISSUER_CONTROLLER_URL',
+    VCR_ISSUER_URL = os.environ.get(
+        'VCR_ISSUER_URL',
         'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
-    ISSUER_SECRET_KEY = os.environ.get('ISSUER_SECRET_KEY', 'super_secret_key')
+    VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
 
 
 class TestConfig(Config):

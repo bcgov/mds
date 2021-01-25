@@ -11,8 +11,8 @@ class OrgBookIssuerControllerService():
     verifiable credentials to a Verifiable Credential Registry (VRC), OrgBook is an instance of aries-vrc (https://github.com/bcgov/aries-vcr).
     Mines-Digital-Trust has stood up an Issuer Controller API (https://github.com/bcgov/aries-vcr-issuer-controller) to serve CORE to issue 
     Mines Act Permits as VC's."""
-    issuer_controller_url = Config.ISSUER_CONTROLLER_URL #FROM DeployConfig
-    issuer_secret_key = Config.ISSUER_SECRET_KEY         #FROM SECRET
+    issuer_controller_url = Config.VCR_ISSUER_URL    #FROM DeployConfig
+    issuer_secret_key = Config.VCR_ISSUER_SECRET_KEY #FROM SECRET
     vc_schema_name = "bcgov-mines-act-permit.bcgov-mines-permitting"
     vc_schema_version = "0.2.0"
 
