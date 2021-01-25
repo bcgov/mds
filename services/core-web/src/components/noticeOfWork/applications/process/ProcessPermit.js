@@ -321,6 +321,7 @@ export class ProcessPermit extends Component {
     };
     return previousAmendmentGenObject;
   };
+
   getFinalApplicationPackage = (noticeOfWork) => {
     let documents = [];
     let filteredSubmissionDocuments = noticeOfWork?.filtered_submission_documents;
@@ -679,28 +680,29 @@ export class ProcessPermit extends Component {
       });
     }
 
+    // TO DO: re-add logic when the Orgbook functionality is in prod.
     // Permittee
-    if (
-      this.props.noticeOfWork.contacts &&
-      this.props.noticeOfWork.contacts.some(
-        (contact) => contact.mine_party_appt_type_code === "PMT"
-      )
-    ) {
-      const permittee = this.props.noticeOfWork.contacts.filter(
-        (contact) => contact.mine_party_appt_type_code === "PMT"
-      )[0];
-      if (isEmpty(permittee.party.party_orgbook_entity)) {
-        validationMessages.push({
-          message:
-            "Permittee has not been verified with OrgBook. Update the contact to associate them with an entity on OrgBook.",
-          route:
-            this.props.noticeOfWork?.issuing_inspector &&
-            route.PARTY_PROFILE.dynamicRoute(
-              this.props.noticeOfWork?.issuing_inspector?.party_guid
-            ),
-        });
-      }
-    }
+    // if (
+    //   this.props.noticeOfWork.contacts &&
+    //   this.props.noticeOfWork.contacts.some(
+    //     (contact) => contact.mine_party_appt_type_code === "PMT"
+    //   )
+    // ) {
+    //   const permittee = this.props.noticeOfWork.contacts.filter(
+    //     (contact) => contact.mine_party_appt_type_code === "PMT"
+    //   )[0];
+    //   if (isEmpty(permittee.party.party_orgbook_entity)) {
+    //     validationMessages.push({
+    //       message:
+    //         "Permittee has not been verified with OrgBook. Update the contact to associate them with an entity on OrgBook.",
+    //       route:
+    //         !isEmpty(permittee.party) &&
+    //         route.PARTY_PROFILE.dynamicRoute(
+    //           permittee.party.party_guid
+    //         ),
+    //     });
+    //   }
+    // }
 
     // Progress
     this.props.progressStatusCodes
