@@ -247,6 +247,9 @@ export class ProcessPermit extends Component {
       current_year: moment().format("YYYY"),
       conditions: "",
       issuing_inspector_title: "Inspector of Mines",
+      application_last_updated_date: noticeOfWork.last_updated_date
+        ? formatDate(noticeOfWork.last_updated_date)
+        : formatDate(noticeOfWork.submitted_date),
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
     permitGenObject.is_draft = false;
