@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { flattenObject } from "@common/utils/helpers";
 import { PropTypes } from "prop-types";
-import { getFormValues, submit, getFormSyncErrors } from "redux-form";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
@@ -27,7 +25,6 @@ import {
   getDelayTypeDropDownOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import * as FORM from "@/constants/forms";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -56,10 +53,6 @@ const propTypes = {
   handleDraftPermit: PropTypes.func,
   createPermit: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
-  formErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  preDraftFormValues: PropTypes.objectOf(PropTypes.oneOfType[(PropTypes.string, PropTypes.bool)])
-    .isRequired,
 };
 
 const defaultProps = { handleDraftPermit: () => {} };
@@ -74,59 +67,46 @@ export class NOWProgressActions extends Component {
       this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
   };
 
-  createPermit = (isExploration, tab, trigger) => {
+  createPermit = (isExploration) => {
     const payload = {
       permit_status_code: "D",
       is_exploration: isExploration,
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
     this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
-      this.startOrResumeProgress(tab, trigger);
+      this.startOrResumeProgress("DFT", "Start");
       this.props.handleDraftPermit();
     });
   };
 
-  startDraftPermit = (tab, trigger, isAmendment) => {
+  startDraftPermit = (isAmendment, permitPayload) => {
     if (isAmendment) {
       const payload = {
         permit_amendment_status_code: "DFT",
         now_application_guid: this.props.noticeOfWork.now_application_guid,
-        permit_amendment_type_code: this.props.preDraftFormValues.permit_amendment_type_code,
+        permit_amendment_type_code: permitPayload.permit_amendment_type_code,
       };
       this.props
         .createPermitAmendment(
           this.props.noticeOfWork.mine_guid,
-          this.props.preDraftFormValues.permit_guid,
+          permitPayload.permit_guid,
           payload
         )
         .then(() => {
           this.props.handleDraftPermit();
-          this.startOrResumeProgress(tab, trigger);
+          this.startOrResumeProgress("DFT", "Start");
         });
     } else {
-      this.createPermit(this.props.preDraftFormValues.is_exploration, tab, trigger);
+      const isExploration = permitPayload.is_exploration ?? false;
+      this.createPermit(isExploration);
     }
   };
 
-  handleProgress = (tab, trigger, isAmendment) => {
+  handleProgress = (tab, trigger) => {
     if (trigger === "Complete") {
       this.stopProgress(tab);
-    } else if (trigger === "Resume") {
+    } else {
       this.startOrResumeProgress(tab, trigger);
-    } else if (trigger === "Start") {
-      if (tab === "DFT") {
-        this.handlePermit(tab, trigger, isAmendment);
-      } else {
-        this.startOrResumeProgress(tab, trigger);
-      }
-    }
-  };
-
-  handlePermit = (tab, trigger, isAmendment) => {
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    this.props.submit(FORM.PRE_DRAFT_PERMIT);
-    if (errors.length === 0) {
-      this.startDraftPermit(tab, trigger, isAmendment);
     }
   };
 
@@ -201,13 +181,27 @@ export class NOWProgressActions extends Component {
         closeModal: this.props.closeModal,
         trigger,
         handleProgress: this.handleProgress,
+      },
+      content: modalConfig.NOW_PROGRESS_MODAL,
+    });
+  };
+
+  openDraftPermitProgressModal = () => {
+    this.props.openModal({
+      props: {
+        title: `Start ${this.props.progressStatusHash[this.props.tab]}`,
+        tab: this.props.progressStatusHash[this.props.tab],
+        tabCode: this.props.tab,
+        closeModal: this.props.closeModal,
+        handleProgress: this.handlePermit,
         permits: this.props.permits,
-        isAmendment: this.props.noticeOfWork.type_of_application !== "New Permit",
         isCoalOrMineral:
           this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
+        noticeOfWork: this.props.noticeOfWork,
+        startDraftPermit: this.startDraftPermit,
       },
-      content: modalConfig.NOW_PROGRESS_MODAL,
+      content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });
   };
 
@@ -271,7 +265,14 @@ export class NOWProgressActions extends Component {
             <>
               {!this.props.progress[this.props.tab] && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                  <Button
+                    type="primary"
+                    onClick={() =>
+                      this.props.tab === "DFT"
+                        ? this.openDraftPermitProgressModal()
+                        : this.openProgressModal("Start")
+                    }
+                  >
                     <ClockCircleOutlined />
                     Start {this.props.progressStatusHash[this.props.tab]}
                   </Button>
@@ -328,8 +329,6 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
-  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  formErrors: getFormSyncErrors(FORM.PRE_DRAFT_PERMIT)(state),
   permits: getPermits(state),
 });
 
@@ -346,7 +345,6 @@ const mapDispatchToProps = (dispatch) =>
       updateApplicationDelay,
       createApplicationDelay,
       fetchApplicationDelay,
-      submit,
     },
     dispatch
   );
