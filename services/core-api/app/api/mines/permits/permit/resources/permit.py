@@ -270,7 +270,7 @@ class PermitResource(Resource, UserMixin):
         return None, 204
 
     @api.doc(params={'permit_guid': 'Permit guid.', 'now_application_guid': 'NoW application guid'})
-    @requires_role_edit_securities
+    @requires_role_edit_permit
     @api.marshal_with(PERMIT_MODEL, code=200)
     def patch(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid(permit_guid, mine_guid)

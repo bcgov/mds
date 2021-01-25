@@ -112,6 +112,8 @@ class NOWApplicationResource(Resource, UserMixin):
                     None)
                 if filtered_doc:
                     doc.is_final_package = filtered_doc['is_final_package']
+                    doc.is_consultation_package = filtered_doc['is_consultation_package']
+                    doc.is_referral_package = filtered_doc['is_referral_package']
 
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)
