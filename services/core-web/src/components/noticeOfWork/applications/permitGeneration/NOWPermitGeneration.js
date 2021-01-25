@@ -58,9 +58,12 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  onPermitDraftSave: PropTypes.func,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  onPermitDraftSave: () => {},
+};
 
 const regionHash = {
   SE: "Cranbrook",
@@ -157,6 +160,7 @@ export class NOWPermitGeneration extends Component {
       current_year: moment().format("YYYY"),
       conditions: "",
       issuing_inspector_title: "Inspector of Mines",
+      application_last_updated_date: formatDate(noticeOfWork.last_updated_date),
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -200,6 +204,7 @@ export class NOWPermitGeneration extends Component {
       : amendment.regional_office;
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
+    // permitGenObject.application_last_updated_date = formatDate(noticeOfWork.last_updated_date);
 
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
@@ -229,7 +234,6 @@ export class NOWPermitGeneration extends Component {
 
       this.setState({ permitAmendmentDropdown, isPermitAmendmentTypeDropDownDisabled });
     }
-
     return permitGenObject;
   };
 
@@ -312,7 +316,8 @@ export class NOWPermitGeneration extends Component {
       if (isEmpty(documentsMetadata)) {
         return allFileMetadata;
       }
-      for (let [key, value] of Object.entries(documentsMetadata)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(documentsMetadata)) {
         // Extract required information from the field ID (e.g., 1c943015-29ed-433c-bfb1-d5ed14db103e_preamble_title).
         const fieldIdParts = key.split(/_(.+)/);
         const guid = fieldIdParts[0];
@@ -380,6 +385,7 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
+
     return (
       <div>
         <NOWTabHeader
