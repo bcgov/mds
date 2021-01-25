@@ -1,6 +1,11 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
-import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
+import {
+  MinusSquareFilled,
+  PlusOutlined,
+  PlusSquareFilled,
+  SafetyCertificateOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
@@ -43,6 +48,7 @@ const propTypes = {
   handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
   handleDeletePermit: PropTypes.func.isRequired,
   handleDeletePermitAmendment: PropTypes.func.isRequired,
+  handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
@@ -416,6 +422,27 @@ const childColumns = [
     align: "right",
     render: (text, record) => (
       <div>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Popconfirm
+            placement="topLeft"
+            title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook ${record.email}?`}
+            onConfirm={() => text(record.user_id)}
+            okText="Issue"
+            cancelText="Cancel"
+          >
+            <Button
+              className="permit-table-button"
+              type="ghost"
+              onClick={(event) =>
+                record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
+              }
+            >
+              <div>
+                <SafetyCertificateOutlined className="icon-sm" />
+              </div>
+            </Button>
+          </Popconfirm>
+        </AuthorizationWrapper>
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Button
             className="permit-table-button"
@@ -489,6 +516,7 @@ const transformChildRowData = (
   major_mine_ind,
   openEditAmendmentModal,
   handleDeletePermitAmendment,
+  handlePermitAmendmentIssueVC,
   permitAmendmentTypeOptionsHash
 ) => ({
   amendmentNumber,
@@ -507,6 +535,7 @@ const transformChildRowData = (
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
+  handlePermitAmendmentIssueVC,
   finalApplicationPackage: finalApplicationPackage(amendment),
   maps: amendment.now_application_documents?.filter(
     (doc) => doc.now_application_document_sub_type_code === "MDO"
@@ -545,6 +574,7 @@ export const MinePermitTable = (props) => {
         props.major_mine_ind,
         props.openEditAmendmentModal,
         props.handleDeletePermitAmendment,
+        props.handlePermitAmendmentIssueVC,
         props.permitAmendmentTypeOptionsHash
       )
     );
