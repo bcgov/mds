@@ -404,6 +404,7 @@ class NOWApplicationFactory(BaseFactory):
     lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
     issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
+    type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = "REC"
     previous_application_status_code = "PEV"

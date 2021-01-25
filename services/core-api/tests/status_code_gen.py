@@ -194,3 +194,6 @@ def RandomNOWProgressStatusCode():
         x.application_progress_status_code
         for x in db.session.query(NOWApplicationProgressStatus).all()
     ])
+
+def RandomApplicationType():
+        return random.choice(['New Permit', 'Amendment'])
