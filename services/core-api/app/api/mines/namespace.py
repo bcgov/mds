@@ -16,6 +16,7 @@ from app.api.mines.permits.permit.resources.permit import PermitResource, Permit
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_issue_vc import PermitAmendmentIssueVCResource
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
@@ -110,6 +111,11 @@ api.add_resource(PermitAmendmentListResource,
 api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+
+api.add_resource(
+    PermitAmendmentIssueVCResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/issue-vc-to-orgbook'
+)
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
