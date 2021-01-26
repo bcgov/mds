@@ -426,21 +426,13 @@ const childColumns = [
           <Popconfirm
             placement="topLeft"
             title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook ${record.email}?`}
-            onConfirm={() => text(record.user_id)}
+            onConfirm={(event) =>
+              record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
+            }
             okText="Issue"
             cancelText="Cancel"
           >
-            <Button
-              className="permit-table-button"
-              type="ghost"
-              onClick={(event) =>
-                record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
-              }
-            >
-              <div>
-                <SafetyCertificateOutlined className="icon-sm" />
-              </div>
-            </Button>
+            <SafetyCertificateOutlined className="icon-sm" />
           </Popconfirm>
         </AuthorizationWrapper>
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>

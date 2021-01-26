@@ -1,4 +1,4 @@
-import requests, json, pprint
+import requests, json, pprint, time, threading
 
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
@@ -11,14 +11,35 @@ class OrgBookIssuerControllerService():
     verifiable credentials to a Verifiable Credential Registry (VRC), OrgBook is an instance of aries-vrc (https://github.com/bcgov/aries-vcr).
     Mines-Digital-Trust has stood up an Issuer Controller API (https://github.com/bcgov/aries-vcr-issuer-controller) to serve CORE to issue 
     Mines Act Permits as VC's."""
+
     issuer_controller_url = Config.VCR_ISSUER_URL    #FROM DeployConfig
     issuer_secret_key = Config.VCR_ISSUER_SECRET_KEY #FROM SECRET
     vc_schema_name = "bcgov-mines-act-permit.bcgov-mines-permitting"
     vc_schema_version = "0.2.0"
+    issuer_controller_ready = False
 
     def __init__(self):
-        #TODO RUN LIVENESS CHECK
-        pass
+        retry_count = 0
+        while retry_count < 5:
+            retry_count += 1
+            response = requests.get(self.issuer_controller_url + 'liveness')
+            if response.status_code != 200:
+                time.sleep(.500 * retry_count)
+                continue
+            #check api key
+            response = requests.get(
+                self.issuer_controller_url + 'status',
+                headers={
+                    'issuer_secret_key': self.issuer_secret_key,
+                })
+            if response.status_code == 200:
+                self.issuer_controller_ready = True
+                current_app.logger.info('Issuer Controller ready and secret-key correct!')
+                return
+            elif response.status_code != 503:
+                current_app.logger.error('Livenesscheck failed: ' + str(response.status_code))
+            time.sleep(.500 * retry_count)
+        current_app.logger.error('Issuer Controller liveness check failed, nothing will be issued')
 
     def publish_schema(self, new_schema, new_schema_version):
         raise NotImplementedError(
@@ -38,7 +59,9 @@ class OrgBookIssuerControllerService():
                 """)
 
     def issue_permit_amendment_vc(self, permit_amendment):
-
+        if not self.issuer_controller_ready:
+            current_app.logger.warn(
+                'Issuer Controller liveness check failed on init, this call did nothing')
         permittee_orgbook_entity = permit_amendment.permit.permittee_appointments[
             0].party.party_orgbook_entity
         if not permittee_orgbook_entity:
@@ -63,9 +86,7 @@ class OrgBookIssuerControllerService():
                 "inspector_name": "Best Inspector"
             }
         }])
-        current_app.logger.info('sending VC with payload')
-        # pprint.pprint(payload)
-        current_app.logger.info(self.issuer_controller_url)
+        current_app.logger.debug('issuing-credential')
         response = requests.post(
             self.issuer_controller_url + 'issue-credential',
             data=payload,
@@ -73,10 +94,7 @@ class OrgBookIssuerControllerService():
                 'issuer_secret_key': self.issuer_secret_key,
                 'Content-Type': 'application/json'
             })
-        current_app.logger.info('request')
-        # pprint.pprint(response.request.__dict__)
-        current_app.logger.info('vc issuer response')
-        # pprint.pprint(response.__dict__)
+        current_app.logger.debug('credential-issued')
 
         assert response.status_code == 200
         return response
