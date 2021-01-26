@@ -219,7 +219,8 @@ class Base(db.Model):
 
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
-                    assert isinstance(v, (UUID, str))
+                    if v is not None:
+                        assert isinstance(v, (UUID, str))
                     setattr(self, k, v)
                 else:
                     py_type = col.type.python_type
