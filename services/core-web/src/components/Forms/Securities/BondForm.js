@@ -196,7 +196,7 @@ export class BondForm extends Component {
                   required,
                   date,
                   dateNotInFuture,
-                  dateNotAfterOther(this.props.bond.closed_date),
+                  isBondClosed && dateNotAfterOther(this.props.bond.closed_date),
                 ]}
               />
             </Form.Item>
