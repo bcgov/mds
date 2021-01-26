@@ -24,6 +24,7 @@ class OrgBookIssuerControllerService():
             retry_count += 1
             response = requests.get(self.issuer_controller_url + 'liveness')
             if response.status_code != 200:
+                current_app.logger.warn('Issuer Controller not live: ' + str(response.status_code))
                 time.sleep(.500 * retry_count)
                 continue
             #check api key
