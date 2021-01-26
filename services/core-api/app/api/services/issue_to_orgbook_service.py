@@ -87,7 +87,9 @@ class OrgBookIssuerControllerService():
                 "inspector_name": "Best Inspector"
             }
         }])
-        current_app.logger.debug('issuing-credential')
+        current_app.logger.debug('issuing-credential to OrgBook business \'' +
+                                 permittee_orgbook_entity.registration_id + ',' +
+                                 permittee_orgbook_entity.name_text + '\'')
         response = requests.post(
             self.issuer_controller_url + 'issue-credential',
             data=payload,
@@ -95,7 +97,6 @@ class OrgBookIssuerControllerService():
                 'issuer_secret_key': self.issuer_secret_key,
                 'Content-Type': 'application/json'
             })
-        current_app.logger.debug('credential-issued')
-
-        assert response.status_code == 200
+        assert response.status_code == 200, response.request
+        current_app.logger.debug('issue-credential call returned successfully')
         return response
