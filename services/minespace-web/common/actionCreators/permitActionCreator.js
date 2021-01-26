@@ -100,6 +100,33 @@ export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatc
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const createPermitAmendmentVC = (mineGuid, permitGuid, permitAmdendmentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_ISSUE_VC(
+        mineGuid,
+        permitGuid,
+        permitAmdendmentGuid
+      )}`,
+      {},
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully Issued Permit Verifiable Credentials, Thanks Jason`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (
   dispatch
 ) => {
