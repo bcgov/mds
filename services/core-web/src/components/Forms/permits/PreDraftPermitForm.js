@@ -6,8 +6,9 @@ import { Field, reduxForm, getFormValues, change } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Tooltip } from "antd";
+import { resetForm, createDropDownList } from "@common/utils/helpers";
 import { required, requiredRadioButton } from "@common/utils/Validate";
-import { createDropDownList } from "@common/utils/helpers";
+
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -19,19 +20,22 @@ const propTypes = {
   isCoalOrMineral: PropTypes.bool.isRequired,
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
   change: PropTypes.func.isRequired,
-  applicationType: PropTypes.string.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const PreDraftPermitForm = (props) => {
   const [permitType, setPermitType] = useState(PERMIT_AMENDMENT_TYPES.original);
-  const [isAmendment, setIsAmendment] = useState(props.applicationType !== "New Permit");
+  const [isAmendment, setIsAmendment] = useState(
+    props.initialValues?.type_of_application !== "New Permit"
+  );
 
   useEffect(() => {
     if (isAmendment) {
       props.change("permit_amendment_type_code", permitType);
     }
-    setIsAmendment(props.applicationType !== "New Permit");
-  }, [props.applicationType]);
+    setIsAmendment(props.formValues?.type_of_application !== "New Permit");
+  }, [props.formValues?.type_of_application]);
 
   const getPermitType = (selectedPermitGuid) => {
     if (props.permits && props.permits.length > 0) {
@@ -77,6 +81,21 @@ export const PreDraftPermitForm = (props) => {
   return (
     <Form layout="vertical">
       <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item>
+            <Field
+              id="type_of_application"
+              name="type_of_application"
+              label="Application Type*"
+              component={renderConfig.SELECT}
+              data={[
+                { value: "New Permit", label: "New Permit" },
+                { value: "Amendment", label: "Amendment" },
+              ]}
+              validate={[required]}
+            />
+          </Form.Item>
+        </Col>
         <Col span={24}>
           {isAmendment && (
             <div className="left">
@@ -151,5 +170,8 @@ export default compose(
     form: FORM.PRE_DRAFT_PERMIT,
     touchOnBlur: true,
     onSubmit: () => {},
+    destroyOnUnmount: false,
+    forceUnregisterOnUnmount: false,
+    onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
   })
 )(PreDraftPermitForm);
