@@ -75,6 +75,7 @@ class OrgBookIssuerService():
         if not inspector:
             current_app.logger.warning(
                 'skipping issue_permit_amendment_vc, No issuing inspector set')
+            return
 
         payload = json.dumps([{
             "schema": self.vc_schema_name,
