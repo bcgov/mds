@@ -425,7 +425,7 @@ const childColumns = [
         <AuthorizationWrapper permission={Permission.ADMIN}>
           <Popconfirm
             placement="topLeft"
-            title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook ${record.email}?`}
+            title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.permittee}?`}
             onConfirm={(event) =>
               record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
             }
