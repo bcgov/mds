@@ -155,6 +155,10 @@
       "required": true
     },
     {
+      "name": "VCR_ISSUER_URL",
+      "required": true
+    },
+    {
       "name": "DOCUMENT_MANAGER_URL",
       "required": true
     },
