@@ -27,5 +27,7 @@ class PermitAmendmentIssueVCResource(Resource, UserMixin):
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
-        OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
+        response = OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
+        if not response:
+            return "Credential Not Issued, ensure permittee is associated with OrgBook Entity", 400
         return
