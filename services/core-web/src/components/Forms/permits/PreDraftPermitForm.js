@@ -171,7 +171,8 @@ export default compose(
     touchOnBlur: true,
     onSubmit: () => {},
     destroyOnUnmount: false,
-    forceUnregisterOnUnmount: false,
+    forceUnregisterOnUnmount: true,
+    enableReinitialize: true,
     onSubmitSuccess: resetForm(FORM.PRE_DRAFT_PERMIT),
   })
 )(PreDraftPermitForm);

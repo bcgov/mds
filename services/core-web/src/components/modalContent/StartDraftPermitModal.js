@@ -30,6 +30,7 @@ const propTypes = {
   preDraftFormValues: PropTypes.objectOf(PropTypes.oneOfType[(PropTypes.string, PropTypes.bool)])
     .isRequired,
   permitType: PropTypes.string.isRequired,
+  submit: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func.isRequired,
   createPermit: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
@@ -52,6 +53,7 @@ export const StartDraftPermitModal = (props) => {
     return props.createPermit(props.noticeOfWork.mine_guid, payload).then(() => {
       props.startOrResumeProgress("DFT", "Start");
       props.handleDraftPermit();
+      props.submit(FORM.PRE_DRAFT_PERMIT);
       props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
     });
   };
@@ -68,6 +70,8 @@ export const StartDraftPermitModal = (props) => {
         .then(() => {
           props.handleDraftPermit();
           props.startOrResumeProgress("DFT", "Start");
+          // submitting to clear the form after success
+          props.submit(FORM.PRE_DRAFT_PERMIT);
         });
     }
     const isExploration = permitPayload.is_exploration ?? false;
@@ -159,6 +163,7 @@ export const StartDraftPermitModal = (props) => {
               is_exploration: false,
               permit_amendment_type_code: props.permitType,
               type_of_application: props.noticeOfWork?.type_of_application,
+              permit_guid: null,
             }}
             permits={props.permits}
             isCoalOrMineral={props.isCoalOrMineral}
