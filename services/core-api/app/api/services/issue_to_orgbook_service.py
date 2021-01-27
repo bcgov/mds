@@ -6,7 +6,7 @@ from flask import request, current_app
 from app.config import Config
 
 
-class OrgBookIssuerControllerService():
+class OrgBookIssuerService():
     """This class is used to connect to an issuer controller, which handles the nuance and handshakes involved with issuing
     verifiable credentials to a Verifiable Credential Registry (VRC), OrgBook is an instance of aries-vrc (https://github.com/bcgov/aries-vcr).
     Mines-Digital-Trust has stood up an Issuer Controller API (https://github.com/bcgov/aries-vcr-issuer-controller) to serve CORE to issue 
@@ -98,6 +98,5 @@ class OrgBookIssuerControllerService():
                 'issuer_secret_key': self.issuer_secret_key,
                 'Content-Type': 'application/json'
             })
-        assert response.status_code == 200, response.request
         current_app.logger.debug('issue-credential call returned successfully')
         return response

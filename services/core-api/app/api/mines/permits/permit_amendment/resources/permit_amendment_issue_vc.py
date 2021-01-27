@@ -18,7 +18,7 @@ from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 
-from app.api.services.issue_to_orgbook_service import OrgBookIssuerControllerService
+from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 
 
 class PermitAmendmentIssueVCResource(Resource, UserMixin):
@@ -27,5 +27,5 @@ class PermitAmendmentIssueVCResource(Resource, UserMixin):
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
 
-        OrgBookIssuerControllerService().issue_permit_amendment_vc(permit_amendment)
+        OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
         return
