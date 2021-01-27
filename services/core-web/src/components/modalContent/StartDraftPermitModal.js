@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Alert, Popconfirm, Button, Steps } from "antd";
-import { getFormValues, submit, getFormSyncErrors } from "redux-form";
-import { flattenObject } from "@common/utils/helpers";
+import { getFormValues, submit } from "redux-form";
+import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
 import Highlight from "react-highlighter";
 import { connect } from "react-redux";
@@ -10,29 +10,31 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { createPermit, createPermitAmendment } from "@common/actionCreators/permitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
+import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
-import ChangeApplicationTypeForm from "@/components/Forms/noticeOfWork/ChangeApplicationTypeForm";
 
 const propTypes = {
   title: PropTypes.string,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   closeModal: PropTypes.func.isRequired,
   tab: PropTypes.string.isRequired,
-  startDraftPermit: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   isCoalOrMineral: PropTypes.bool.isRequired,
-  formErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   preDraftFormValues: PropTypes.objectOf(PropTypes.oneOfType[(PropTypes.string, PropTypes.bool)])
     .isRequired,
-  applicationType: PropTypes.string.isRequired,
   permitType: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,
+  handleDraftPermit: PropTypes.func.isRequired,
+  createPermit: PropTypes.func.isRequired,
+  createPermitAmendment: PropTypes.func.isRequired,
+  startOrResumeProgress: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -41,18 +43,47 @@ const defaultProps = {
 
 export const StartDraftPermitModal = (props) => {
   const [currentStep, setStep] = useState(0);
-  const [permitFormData, setPermitFormData] = useState({});
 
-  // eslint-disable-next-line consistent-return
-  const handlePermit = () => {
-    setPermitFormData(props.preDraftFormValues);
+  const handleCreatePermit = (isExploration) => {
     const payload = {
-      ...props.noticeOfWork,
-      type_of_application: props.applicationType,
+      permit_status_code: "D",
+      is_exploration: isExploration,
+      now_application_guid: props.noticeOfWork.now_application_guid,
     };
-    const errors = Object.keys(flattenObject(props.formErrors));
-    props.submit(FORM.PRE_DRAFT_PERMIT);
-    if (errors.length === 0) {
+    return props.createPermit(props.noticeOfWork.mine_guid, payload).then(() => {
+      props.startOrResumeProgress("DFT", "Start");
+      props.handleDraftPermit();
+      props.submit(FORM.PRE_DRAFT_PERMIT);
+      props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+    });
+  };
+
+  const startDraftPermit = (isAmendment, permitPayload) => {
+    if (isAmendment) {
+      const payload = {
+        permit_amendment_status_code: "DFT",
+        now_application_guid: props.noticeOfWork.now_application_guid,
+        permit_amendment_type_code: permitPayload.permit_amendment_type_code,
+      };
+      return props
+        .createPermitAmendment(props.noticeOfWork.mine_guid, permitPayload.permit_guid, payload)
+        .then(() => {
+          props.handleDraftPermit();
+          props.startOrResumeProgress("DFT", "Start");
+          // submitting to clear the form after success
+          props.submit(FORM.PRE_DRAFT_PERMIT);
+        });
+    }
+    const isExploration = permitPayload.is_exploration ?? false;
+    return handleCreatePermit(isExploration);
+  };
+
+  const handleSubmit = (isAmendment) => {
+    if (props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application) {
+      const payload = {
+        ...props.noticeOfWork,
+        type_of_application: props.preDraftFormValues.type_of_application,
+      };
       return props
         .updateNoticeOfWorkApplication(
           payload,
@@ -60,13 +91,31 @@ export const StartDraftPermitModal = (props) => {
           "Successfully Updated the Application Type."
         )
         .then(() => {
-          setStep(currentStep + 1);
-          props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+          startDraftPermit(isAmendment, props.preDraftFormValues);
         });
     }
+    return startDraftPermit(isAmendment, props.preDraftFormValues);
+  };
+
+  // eslint-disable-next-line import/prefer-default-export
+  const invalidUpdateStatusPayload = (values) => {
+    if (!isEmpty(values)) {
+      if (values.type_of_application === "New Permit") {
+        return (
+          !values.type_of_application ||
+          !values.permit_amendment_type_code ||
+          values.is_exploration === null
+        );
+      }
+      return (
+        !values.type_of_application || !values.permit_guid || !values.permit_amendment_type_code
+      );
+    }
+    return true;
   };
 
   const prev = () => setStep(currentStep - 1);
+  const next = () => setStep(currentStep + 1);
 
   const renderDisclaimer = () => (
     <>
@@ -90,17 +139,18 @@ export const StartDraftPermitModal = (props) => {
       <br />
     </>
   );
-  const isAmendment = props.applicationType !== "New Permit";
+
+  const isAmendment = props.preDraftFormValues?.type_of_application !== "New Permit";
   const steps = [
     {
       title: "Confirm Permit",
       content: (
         <>
-          {props.applicationType && (
+          {props.preDraftFormValues?.type_of_application && (
             <Alert
               description={
                 isAmendment
-                  ? `This is an Amendment to an existing permit, which must be selected before drafting it's conditions. This cannot be changed once drafting has started.`
+                  ? `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`
                   : `This is a New Permit. A new permit number will be generated once ready to issue. This cannot be changed once drafting has started.`
               }
               type="info"
@@ -108,14 +158,14 @@ export const StartDraftPermitModal = (props) => {
             />
           )}
           <br />
-          <ChangeApplicationTypeForm initialValues={props.noticeOfWork} />
           <PreDraftPermitForm
             initialValues={{
               is_exploration: false,
               permit_amendment_type_code: props.permitType,
+              type_of_application: props.noticeOfWork?.type_of_application,
+              permit_guid: null,
             }}
             permits={props.permits}
-            applicationType={props.applicationType}
             isCoalOrMineral={props.isCoalOrMineral}
           />
         </>
@@ -149,8 +199,13 @@ export const StartDraftPermitModal = (props) => {
           </Button>
         </Popconfirm>
         {currentStep === 0 && (
-          <Button className="full-mobile" type="primary" onClick={handlePermit}>
-            Update Application and Proceed
+          <Button
+            className="full-mobile"
+            type="primary"
+            onClick={next}
+            disabled={invalidUpdateStatusPayload(props.preDraftFormValues)}
+          >
+            Proceed
           </Button>
         )}
         {currentStep === 1 && (
@@ -159,10 +214,7 @@ export const StartDraftPermitModal = (props) => {
               Back
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <Button
-                type="primary"
-                onClick={() => props.startDraftPermit(isAmendment, permitFormData)}
-              >
+              <Button type="primary" onClick={() => handleSubmit(isAmendment)}>
                 {props.title}
               </Button>
             </AuthorizationWrapper>
@@ -178,8 +230,7 @@ StartDraftPermitModal.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  applicationType: (getFormValues(FORM.CHANGE_NOW_TYPE)(state) || {}).type_of_application,
-  formErrors: getFormSyncErrors(FORM.PRE_DRAFT_PERMIT)(state),
+  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -188,6 +239,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       updateNoticeOfWorkApplication,
       submit,
+      createPermit,
+      createPermitAmendment,
     },
     dispatch
   );
