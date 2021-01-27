@@ -75,7 +75,10 @@ export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -96,7 +99,10 @@ export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatc
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
@@ -146,7 +152,10 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -176,7 +185,10 @@ export const removePermitAmendmentDocument = (
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -196,7 +208,10 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -216,7 +231,10 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
       dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
