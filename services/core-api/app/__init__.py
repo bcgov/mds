@@ -26,7 +26,8 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api as frp_api, cache
+#alias api to avoid confusion with api folder (speifically on unittest.mock.patch calls)
+from app.extensions import db, jwt, api as root_api_namespace, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
@@ -52,12 +53,12 @@ def create_app(test_config=None):
 
 def register_extensions(app):
 
-    frp_api.app = app
+    root_api_namespace.app = app
 
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
-    frp_api.init_app(app)
+    root_api_namespace.init_app(app)
 
     try:
         jwt.init_app(app)
@@ -77,30 +78,30 @@ def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
-    frp_api.add_namespace(compliance_api)
-    frp_api.add_namespace(mines_api)
-    frp_api.add_namespace(parties_api)
-    frp_api.add_namespace(download_token_api)
-    frp_api.add_namespace(users_api)
-    frp_api.add_namespace(search_api)
-    frp_api.add_namespace(variances_api)
-    frp_api.add_namespace(incidents_api)
-    frp_api.add_namespace(reporting_api)
-    frp_api.add_namespace(now_sub_api)
-    frp_api.add_namespace(now_app_api)
-    frp_api.add_namespace(exports_api)
-    frp_api.add_namespace(doc_gen_api)
-    frp_api.add_namespace(securities_api)
-    frp_api.add_namespace(verify_api)
-    frp_api.add_namespace(orgbook_api)
+    root_api_namespace.add_namespace(compliance_api)
+    root_api_namespace.add_namespace(mines_api)
+    root_api_namespace.add_namespace(parties_api)
+    root_api_namespace.add_namespace(download_token_api)
+    root_api_namespace.add_namespace(users_api)
+    root_api_namespace.add_namespace(search_api)
+    root_api_namespace.add_namespace(variances_api)
+    root_api_namespace.add_namespace(incidents_api)
+    root_api_namespace.add_namespace(reporting_api)
+    root_api_namespace.add_namespace(now_sub_api)
+    root_api_namespace.add_namespace(now_app_api)
+    root_api_namespace.add_namespace(exports_api)
+    root_api_namespace.add_namespace(doc_gen_api)
+    root_api_namespace.add_namespace(securities_api)
+    root_api_namespace.add_namespace(verify_api)
+    root_api_namespace.add_namespace(orgbook_api)
 
     # Healthcheck endpoint
-    @frp_api.route('/health')
+    @root_api_namespace.route('/health')
     class Healthcheck(Resource):
         def get(self):
             return {'status': 'pass'}
 
-    @frp_api.errorhandler(AuthError)
+    @root_api_namespace.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
         app.logger.error('REQUEST\n' + str(request))
@@ -110,7 +111,7 @@ def register_routes(app):
             'message': str(error),
         }, getattr(error, 'status_code', 401)
 
-    @frp_api.errorhandler(Forbidden)
+    @root_api_namespace.errorhandler(Forbidden)
     def forbidden_error_handler(error):
         app.logger.error(str(error))
         app.logger.error('REQUEST\n' + str(request))
@@ -120,7 +121,7 @@ def register_routes(app):
             'message': str(error),
         }, getattr(error, 'status_code', 403)
 
-    @frp_api.errorhandler(AssertionError)
+    @root_api_namespace.errorhandler(AssertionError)
     def assertion_error_handler(error):
         app.logger.error(str(error))
         return {
@@ -139,14 +140,14 @@ def register_routes(app):
 
     def _add_sqlalchemy_error_handlers(classname):
         for subclass in classname.__subclasses__():
-            (frp_api.errorhandler(subclass))(sqlalchemy_error_handler)
+            (root_api_namespace.errorhandler(subclass))(sqlalchemy_error_handler)
 
             if len(subclass.__subclasses__()) != 0:
                 _add_sqlalchemy_error_handlers(subclass)
 
     _add_sqlalchemy_error_handlers(SQLAlchemyError)
 
-    @frp_api.errorhandler(Exception)
+    @root_api_namespace.errorhandler(Exception)
     def default_error_handler(error):
         app.logger.error(str(error))
         return {
