@@ -5,7 +5,6 @@ import { PropTypes } from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
-import { createPermit, createPermitAmendment } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import {
   createNoticeOfWorkApplicationProgress,
@@ -15,7 +14,6 @@ import {
   createApplicationDelay,
   fetchApplicationDelay,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getPermits } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getNOWProgress,
@@ -42,7 +40,6 @@ const propTypes = {
   delayTypeOptions: CustomPropTypes.options.isRequired,
   tab: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
@@ -51,8 +48,6 @@ const propTypes = {
   createApplicationDelay: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func,
-  createPermit: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
 };
 
 const defaultProps = { handleDraftPermit: () => {} };
@@ -65,41 +60,6 @@ export class NOWProgressActions extends Component {
   componentDidUpdate = (prevProps) => {
     if (prevProps.noticeOfWork !== this.props.noticeOfWork)
       this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
-  };
-
-  createPermit = (isExploration) => {
-    const payload = {
-      permit_status_code: "D",
-      is_exploration: isExploration,
-      now_application_guid: this.props.noticeOfWork.now_application_guid,
-    };
-    this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
-      this.startOrResumeProgress("DFT", "Start");
-      this.props.handleDraftPermit();
-    });
-  };
-
-  startDraftPermit = (isAmendment, permitPayload) => {
-    if (isAmendment) {
-      const payload = {
-        permit_amendment_status_code: "DFT",
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
-        permit_amendment_type_code: permitPayload.permit_amendment_type_code,
-      };
-      this.props
-        .createPermitAmendment(
-          this.props.noticeOfWork.mine_guid,
-          permitPayload.permit_guid,
-          payload
-        )
-        .then(() => {
-          this.props.handleDraftPermit();
-          this.startOrResumeProgress("DFT", "Start");
-        });
-    } else {
-      const isExploration = permitPayload.is_exploration ?? false;
-      this.createPermit(isExploration);
-    }
   };
 
   handleProgress = (tab, trigger) => {
@@ -193,13 +153,12 @@ export class NOWProgressActions extends Component {
         tab: this.props.progressStatusHash[this.props.tab],
         tabCode: this.props.tab,
         closeModal: this.props.closeModal,
-        handleProgress: this.handlePermit,
-        permits: this.props.permits,
+        handleDraftPermit: this.props.handleDraftPermit,
         isCoalOrMineral:
           this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
         noticeOfWork: this.props.noticeOfWork,
-        startDraftPermit: this.startDraftPermit,
+        startOrResumeProgress: this.startOrResumeProgress,
       },
       content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });
@@ -329,7 +288,6 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
-  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -340,8 +298,6 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationProgress,
       updateNoticeOfWorkApplicationProgress,
       fetchImportedNoticeOfWorkApplication,
-      createPermit,
-      createPermitAmendment,
       updateApplicationDelay,
       createApplicationDelay,
       fetchApplicationDelay,
