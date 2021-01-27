@@ -91,9 +91,9 @@ export class NOWReviewForm extends Component {
                   <Field
                     id="referral_number"
                     name="referral_number"
-                    label="E-Referral Number*"
+                    label="E-Referral Number"
                     component={renderConfig.FIELD}
-                    validate={[required, maxLength(16)]}
+                    validate={[maxLength(16)]}
                   />
                 </Form.Item>
                 <Form.Item>

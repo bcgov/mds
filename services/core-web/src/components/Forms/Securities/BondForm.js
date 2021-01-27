@@ -192,12 +192,16 @@ export class BondForm extends Component {
                 label="Issue Date*"
                 showTime
                 component={RenderDate}
-                validate={[
-                  required,
-                  date,
-                  dateNotInFuture,
-                  isBondClosed && dateNotAfterOther(this.props.bond.closed_date),
-                ]}
+                validate={
+                  isBondClosed
+                    ? [required, date, dateNotInFuture]
+                    : [
+                        required,
+                        date,
+                        dateNotInFuture,
+                        dateNotAfterOther(this.props.bond.closed_date),
+                      ]
+                }
               />
             </Form.Item>
           </Col>
