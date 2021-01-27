@@ -129,7 +129,10 @@ export const createPermitAmendmentVC = (mineGuid, permitGuid, permitAmdendmentGu
       dispatch(success(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.PERMIT_AMENDMENT_ISSUE_VC));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
