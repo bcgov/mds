@@ -47,8 +47,8 @@ export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
 export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
 
-export const PERMIT_AMENDMENT_ISSUE_VC = (mineGuid, permitGuid, permitAmendmentGuid) =>
-  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/issue-vc-to-orgbook`;
+export const PERMIT_AMENDMENT_VC = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/verifiable-credential`;
 export const PERMIT_AMENDMENT_DOCUMENT = (
   mineGuid,
   permitGuid,

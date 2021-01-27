@@ -12,7 +12,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 
 
-class PermitAmendmentIssueVCResource(Resource, UserMixin):
+class PermitAmendmentVCResource(Resource, UserMixin):
     @requires_role_mine_admin
     @api.response(200, "VC Issued to OrgBook, no local data created")
     def post(self, mine_guid, permit_guid, permit_amendment_guid):
