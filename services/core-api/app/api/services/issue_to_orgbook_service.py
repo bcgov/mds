@@ -24,7 +24,8 @@ class OrgBookIssuerControllerService():
             retry_count += 1
             response = requests.get(self.issuer_controller_url + 'liveness')
             if response.status_code != 200:
-                current_app.logger.warn('Issuer Controller not live: ' + str(response.status_code))
+                current_app.logger.warning('Issuer Controller not live: ' +
+                                           str(response.status_code))
                 time.sleep(.500 * retry_count)
                 continue
             #check api key
@@ -61,12 +62,12 @@ class OrgBookIssuerControllerService():
 
     def issue_permit_amendment_vc(self, permit_amendment):
         if not self.issuer_controller_ready:
-            current_app.logger.warn(
+            current_app.logger.warning(
                 'Issuer Controller liveness check failed on init, this call did nothing')
         permittee_orgbook_entity = permit_amendment.permit.permittee_appointments[
             0].party.party_orgbook_entity
         if not permittee_orgbook_entity:
-            current_app.logger.warn(
+            current_app.logger.warning(
                 'skipping issue_permit_amendment_vc, permittee not link to orgbook business')
             return
 

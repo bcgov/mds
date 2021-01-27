@@ -26,7 +26,7 @@ from app.api.orgbook.namespace import api as orgbook_api
 
 from app.commands import register_commands
 from app.config import Config
-from app.extensions import db, jwt, api, cache
+from app.extensions import db, jwt, api as frp_api, cache
 from app.api.utils.setup_marshmallow import setup_marshmallow
 
 
@@ -52,12 +52,12 @@ def create_app(test_config=None):
 
 def register_extensions(app):
 
-    api.app = app
+    frp_api.app = app
 
     # Overriding swaggerUI base path to serve content under a prefix
     apidoc.apidoc.static_url_path = '{}/swaggerui'.format(Config.BASE_PATH)
 
-    api.init_app(app)
+    frp_api.init_app(app)
 
     try:
         jwt.init_app(app)
@@ -77,30 +77,30 @@ def register_routes(app):
     # Set URL rules for resources
     app.add_url_rule('/', endpoint='index')
 
-    api.add_namespace(compliance_api)
-    api.add_namespace(mines_api)
-    api.add_namespace(parties_api)
-    api.add_namespace(download_token_api)
-    api.add_namespace(users_api)
-    api.add_namespace(search_api)
-    api.add_namespace(variances_api)
-    api.add_namespace(incidents_api)
-    api.add_namespace(reporting_api)
-    api.add_namespace(now_sub_api)
-    api.add_namespace(now_app_api)
-    api.add_namespace(exports_api)
-    api.add_namespace(doc_gen_api)
-    api.add_namespace(securities_api)
-    api.add_namespace(verify_api)
-    api.add_namespace(orgbook_api)
+    frp_api.add_namespace(compliance_api)
+    frp_api.add_namespace(mines_api)
+    frp_api.add_namespace(parties_api)
+    frp_api.add_namespace(download_token_api)
+    frp_api.add_namespace(users_api)
+    frp_api.add_namespace(search_api)
+    frp_api.add_namespace(variances_api)
+    frp_api.add_namespace(incidents_api)
+    frp_api.add_namespace(reporting_api)
+    frp_api.add_namespace(now_sub_api)
+    frp_api.add_namespace(now_app_api)
+    frp_api.add_namespace(exports_api)
+    frp_api.add_namespace(doc_gen_api)
+    frp_api.add_namespace(securities_api)
+    frp_api.add_namespace(verify_api)
+    frp_api.add_namespace(orgbook_api)
 
     # Healthcheck endpoint
-    @api.route('/health')
+    @frp_api.route('/health')
     class Healthcheck(Resource):
         def get(self):
             return {'status': 'pass'}
 
-    @api.errorhandler(AuthError)
+    @frp_api.errorhandler(AuthError)
     def jwt_oidc_auth_error_handler(error):
         app.logger.error(str(error))
         app.logger.error('REQUEST\n' + str(request))
@@ -110,7 +110,7 @@ def register_routes(app):
             'message': str(error),
         }, getattr(error, 'status_code', 401)
 
-    @api.errorhandler(Forbidden)
+    @frp_api.errorhandler(Forbidden)
     def forbidden_error_handler(error):
         app.logger.error(str(error))
         app.logger.error('REQUEST\n' + str(request))
@@ -120,7 +120,7 @@ def register_routes(app):
             'message': str(error),
         }, getattr(error, 'status_code', 403)
 
-    @api.errorhandler(AssertionError)
+    @frp_api.errorhandler(AssertionError)
     def assertion_error_handler(error):
         app.logger.error(str(error))
         return {
@@ -139,14 +139,14 @@ def register_routes(app):
 
     def _add_sqlalchemy_error_handlers(classname):
         for subclass in classname.__subclasses__():
-            (api.errorhandler(subclass))(sqlalchemy_error_handler)
+            (frp_api.errorhandler(subclass))(sqlalchemy_error_handler)
 
             if len(subclass.__subclasses__()) != 0:
                 _add_sqlalchemy_error_handlers(subclass)
 
     _add_sqlalchemy_error_handlers(SQLAlchemyError)
 
-    @api.errorhandler(Exception)
+    @frp_api.errorhandler(Exception)
     def default_error_handler(error):
         app.logger.error(str(error))
         return {
