@@ -69,10 +69,9 @@ export const StartDraftPermitModal = (props) => {
           props.handleDraftPermit();
           props.startOrResumeProgress("DFT", "Start");
         });
-    } 
-      const isExploration = permitPayload.is_exploration ?? false;
-      return handleCreatePermit(isExploration);
-    
+    }
+    const isExploration = permitPayload.is_exploration ?? false;
+    return handleCreatePermit(isExploration);
   };
 
   const handleSubmit = (isAmendment) => {
@@ -90,9 +89,8 @@ export const StartDraftPermitModal = (props) => {
         .then(() => {
           startDraftPermit(isAmendment, props.preDraftFormValues);
         });
-    } 
-      return startDraftPermit(isAmendment, props.preDraftFormValues);
-    
+    }
+    return startDraftPermit(isAmendment, props.preDraftFormValues);
   };
 
   // eslint-disable-next-line import/prefer-default-export
