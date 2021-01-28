@@ -20,8 +20,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
 
     party_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     first_name = db.Column(db.String)
-    # TODO: Determine if this column is necessary; it appears to not be used by anything.
-    middle_name = db.Column(db.String)
     party_name = db.Column(db.String, nullable=False)
     phone_no = db.Column(db.String)
     phone_ext = db.Column(db.String)
