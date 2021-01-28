@@ -1,6 +1,5 @@
 from datetime import datetime
 import re
-from flask import current_app
 
 from sqlalchemy import func, case, and_
 from sqlalchemy.schema import FetchedValue
@@ -145,16 +144,9 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                party_name,
                phone_no,
                party_type_code,
-               address_type_code=None,
                email=None,
                first_name=None,
                phone_ext=None,
-               suite_no=None,
-               address_line_1=None,
-               address_line_2=None,
-               city=None,
-               sub_division_code=None,
-               post_code=None,
                add_to_session=True):
         party = cls(
             party_name=party_name,
