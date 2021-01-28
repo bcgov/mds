@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 from flask import current_app
 
-from sqlalchemy import func, case
+from sqlalchemy import func, case, and_
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -75,14 +75,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             if (not x.end_date or x.end_date > datetime.utcnow().date())
         ]
 
-    @name.expression
-    def name(cls):
-        return case([
-            (cls.first_name != None
-             and cls.party_type_code == 'PER', f'{cls.first_name} {cls.party_name}'),
-        ],
-                    else_=cls.party_name)
-
     def __repr__(self):
         return '<Party %r>' % self.party_guid
 
@@ -113,6 +105,14 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             })
 
         return context
+
+    @name.expression
+    def name(cls):
+        return case([
+            (and_(cls.first_name != None, cls.party_type_code
+                  == 'PER'), f'{cls.first_name} {cls.party_name}'),
+        ],
+                    else_=cls.party_name)
 
     @classmethod
     def find_by_party_guid(cls, party_guid):
