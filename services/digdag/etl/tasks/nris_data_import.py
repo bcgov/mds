@@ -9,7 +9,7 @@ def run_job():
     builder.add_value(key='APP_FILE', value='/opt/app-root/src/run_etl.py')
     env = builder.to_json()
 
-    pod = POD(pod_name='digdag-nris-job', env_pod='mds-nris-backend', env=env)
+    pod = POD(pod_name='digdag-nris-job', env_pod='mds-nris-backend', env=env, command=None)
 
     pod.create_pod()
     print("Job finished")
