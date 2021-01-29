@@ -19,6 +19,8 @@ from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
 
+CACHE_TIMEOUT = TIMEOUT_24_HOURS
+
 
 @api.route('/documents')
 class DocumentListResource(Resource):
@@ -93,8 +95,8 @@ class DocumentListResource(Resource):
             object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
             cache.set(
                 OBJECT_STORE_UPLOAD_RESOURCE(document_guid), object_store_upload_resource,
-                TIMEOUT_24_HOURS)
-            cache.set(OBJECT_STORE_PATH(document_guid), object_store_path, TIMEOUT_24_HOURS)
+                CACHE_TIMEOUT)
+            cache.set(OBJECT_STORE_PATH(document_guid), object_store_path, CACHE_TIMEOUT)
 
         # Else, create an empty file at this path in the file system
         else:
@@ -109,11 +111,11 @@ class DocumentListResource(Resource):
                 raise InternalServerError('Unable to create file')
 
         # Cache data to be used in future PATCH requests
-        upload_expiry = format_date_time(time.time() + TIMEOUT_24_HOURS)
-        cache.set(FILE_UPLOAD_EXPIRY(document_guid), upload_expiry, TIMEOUT_24_HOURS)
-        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, TIMEOUT_24_HOURS)
-        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, TIMEOUT_24_HOURS)
-        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, TIMEOUT_24_HOURS)
+        upload_expiry = format_date_time(time.time() + CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_EXPIRY(document_guid), upload_expiry, CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_SIZE(document_guid), file_size, CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_OFFSET(document_guid), 0, CACHE_TIMEOUT)
+        cache.set(FILE_UPLOAD_PATH(document_guid), file_path, CACHE_TIMEOUT)
 
         # Create document record
         document = Document(
@@ -244,7 +246,7 @@ class DocumentResource(Resource):
 
         # Else, the file upload is still in progress, update its upload offset in the cache
         else:
-            cache.set(FILE_UPLOAD_OFFSET(document_guid), new_offset, TIMEOUT_24_HOURS)
+            cache.set(FILE_UPLOAD_OFFSET(document_guid), new_offset, CACHE_TIMEOUT)
 
         response = make_response('', 204)
         response.headers['Tus-Resumable'] = TUS_API_VERSION
