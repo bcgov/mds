@@ -76,27 +76,24 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
     @hybrid_property
     def issuing_inspector_name(self):
+        title = "Inspector of Mines"
+
+        #with i had null propogation
+        now_identity = self.now_identity
+        if now_identity:
+            now_application = now_identity.now_application
+            if now_application:
+                issuing_inspector = now_application.issuing_inspector
+                if issuing_inspector:
+                    return issuing_inspector.party_name
+
         used_by_major_mine = any([m.mine.major_mine_ind for m in self.mine_permit_xref])
         if used_by_major_mine:
             if self.permit.issue_date >= datetime(2020, 7, 17):
                 return 'Chief Permitting Officer'
             else:
                 return 'Chief Inspector of Mines'
-
-        #with i had null propogation
-        now_identity = self.now_identity
-        if not now_identity:
-            return "Inspector of Mines"
-
-        now_application = now_identity.now_application
-        if not now_application:
-            return "Inspector of Mines"
-
-        issuing_inspector = now_application.issuing_inspector
-        if not issuing_inspector:
-            return "Inspector of Mines"
-
-        return issuing_inspector.party_name
+        return title
 
     @hybrid_property
     def now_application_documents(self):
