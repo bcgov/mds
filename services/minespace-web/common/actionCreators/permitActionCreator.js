@@ -113,11 +113,7 @@ export const createPermitAmendmentVC = (mineGuid, permitGuid, permitAmdendmentGu
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_VC(
-        mineGuid,
-        permitGuid,
-        permitAmdendmentGuid
-      )}`,
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_VC(mineGuid, permitGuid, permitAmdendmentGuid)}`,
       {},
       createRequestHeader()
     )
