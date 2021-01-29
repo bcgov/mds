@@ -81,16 +81,25 @@ class DocumentListResource(Resource):
             headers['Upload-Metadata'] = f'{upload_metadata},path {path},doc_guid {doc_guid}'
 
             # Send the request
-            resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
-            if resp.status_code != requests.codes.created:
-                message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+            resp = None
+            try:
+                resp = requests.post(url=Config.TUSD_URL, headers=headers, data=request.data)
+            except Exception as e:
+                message = f'POST request to object store raised an exception:\n{e}'
                 current_app.logger.error(message)
+                raise InternalServerError(message)
+
+            # Validate the request
+            if resp.status_code != requests.codes.created:
+                message = f'POST request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(f'POST resp.request:\n{resp.request.__dict__}')
                 current_app.logger.error(f'POST resp:\n{resp.__dict__}')
+                current_app.logger.error(message)
                 if resp.status_code == requests.codes.not_found:
                     raise NotFound(message)
                 raise BadGateway(message)
 
+            # Set object store upload data in cache
             object_store_upload_resource = urlparse(resp.headers['Location']).path.split('/')[-1]
             object_store_path = Config.S3_PREFIX + object_store_upload_resource.split('+')[0]
             cache.set(
@@ -206,15 +215,23 @@ class DocumentResource(Resource):
         # If the object store is enabled, send the patch request through to TUSD to the object store
         if Config.OBJECT_STORE_ENABLED:
             object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
-            if not object_store_upload_resource:
+            if object_store_upload_resource is None:
                 raise NotFound(f'Cached file upload data (object_store_upload_resource) not found')
 
-            url = f'{Config.TUSD_URL}{object_store_upload_resource}'
-            headers = {key: value for (key, value) in request.headers if key != 'Host'}
-            resp = requests.patch(url=url, headers=headers, data=request.data)
+            # Send the request
+            resp = None
+            try:
+                url = f'{Config.TUSD_URL}{object_store_upload_resource}'
+                headers = {key: value for (key, value) in request.headers if key != 'Host'}
+                resp = requests.patch(url=url, headers=headers, data=request.data)
+            except Exception as e:
+                message = f'PATCH request to object store raised an exception:\n{e}'
+                current_app.logger.error(message)
+                raise InternalServerError(message)
 
+            # Validate the request
             if resp.status_code not in [requests.codes.ok, requests.codes.no_content]:
-                message = f'Cannot upload file. Object store responded with {resp.status_code} ({resp.reason}): {resp._content}'
+                message = f'PATCH request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
                 current_app.logger.error(f'PATCH resp.request:\n{resp.request.__dict__}')
                 current_app.logger.error(f'PATCH resp:\n{resp.__dict__}')
                 current_app.logger.error(message)
@@ -260,7 +277,36 @@ class DocumentResource(Resource):
     @requires_any_of(DOCUMENT_UPLOAD_ROLES)
     def head(self, document_guid):
         file_path = cache.get(FILE_UPLOAD_PATH(document_guid))
-        if file_path is None:
+        object_store_upload_resource = cache.get(OBJECT_STORE_UPLOAD_RESOURCE(document_guid))
+
+        # If the object store is enabled, validate the file exists with the object store
+        if Config.OBJECT_STORE_ENABLED:
+            if object_store_upload_resource is None:
+                raise NotFound(f'Cached file upload data (object_store_upload_resource) not found')
+
+            # Send the request
+            resp = None
+            try:
+                url = f'{Config.TUSD_URL}{object_store_upload_resource}'
+                headers = {key: value for (key, value) in request.headers if key != 'Host'}
+                resp = requests.head(url=url, headers=headers, data=request.data)
+            except Exception as e:
+                message = f'HEAD request to object store raised an exception:\n{e}'
+                current_app.logger.error(message)
+                raise InternalServerError(message)
+
+            # Validate the request
+            if resp.status_code != requests.codes.ok:
+                message = f'HEAD request to object store failed: {resp.status_code} ({resp.reason}): {resp._content}'
+                current_app.logger.error(f'HEAD resp.request:\n{resp.request.__dict__}')
+                current_app.logger.error(f'HEAD resp:\n{resp.__dict__}')
+                current_app.logger.error(message)
+                if resp.status_code == requests.codes.not_found:
+                    raise NotFound(message)
+                raise BadGateway(message)
+
+        # Else, check that the file exists on the filesystem
+        elif file_path is None or not os.path.lexists(file_path):
             raise NotFound('File does not exist')
 
         response = make_response('', 200)
@@ -281,10 +327,9 @@ class DocumentResource(Resource):
         if request.headers.get('Access-Control-Request-Method') is not None:
             return response
 
-        response.headers['Tus-Resumable'] = self.tus_api_version
-        response.headers['Tus-Version'] = self.tus_api_supported_versions
-        response.headers['Tus-Extension'] = 'creation'
-        response.headers['Tus-Max-Size'] = self.max_file_size
+        response.headers['Tus-Resumable'] = TUS_API_VERSION
+        response.headers['Tus-Version'] = TUS_API_SUPPORTED_VERSIONS
+        response.headers['Tus-Extension'] = 'creation,expiration'
         response.headers[
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Tus-Extension,Tus-Max-Size'
         response.status_code = 204
