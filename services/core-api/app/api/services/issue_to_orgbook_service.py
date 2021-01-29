@@ -71,11 +71,7 @@ class OrgBookIssuerService():
                 'skipping issue_permit_amendment_vc, permittee not link to orgbook business')
             return
 
-        inspector = permit_amendment.now_identity.now_application.issuing_inspector
-        if not inspector:
-            current_app.logger.warning(
-                'skipping issue_permit_amendment_vc, No issuing inspector set')
-            return
+        inspector_name = permit_amendment.issuing_inspector_name
 
         payload = json.dumps([{
             "schema": self.vc_schema_name,
@@ -91,9 +87,10 @@ class OrgBookIssuerService():
                 "issued_date": str(permit_amendment.issue_date),
                 "effective_date": str(permit_amendment.issue_date),
                 "authorization_end_date": str(permit_amendment.authorization_end_date),
-                "inspector_name": str(inspector.name)
+                "inspector_name": inspector_name
             }
         }])
+
         current_app.logger.debug('issuing-credential to OrgBook business \'' +
                                  permittee_orgbook_entity.registration_id + ',' +
                                  permittee_orgbook_entity.name_text + '\'')
