@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "filepond-polyfill";
 import { FilePond, registerPlugin } from "react-filepond";
-import { Switch } from "antd";
+import { Switch, notification } from "antd";
 import { invert, uniq } from "lodash";
 import { FunnelPlotOutlined } from "@ant-design/icons";
 import "filepond/dist/filepond.min.css";
@@ -59,6 +59,10 @@ class FileUpload extends React.Component {
           },
           headers: createRequestHeader().headers,
           onError: (err) => {
+            notification.error({
+              message: `Failed to upload ${file.name}: ${err}`,
+              duration: 10,
+            });
             error(err);
           },
           onProgress: (bytesUploaded, bytesTotal) => {
