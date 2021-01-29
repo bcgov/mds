@@ -70,7 +70,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
-
+    all_mine_permit_xref = db.relationship('MinePermitXref')
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
 
@@ -87,7 +87,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                 if issuing_inspector:
                     return issuing_inspector.party_name
 
-        used_by_major_mine = any([m.mine.major_mine_ind for m in self.mine_permit_xref])
+        used_by_major_mine = any([m.mine.major_mine_ind for m in self.all_mine_permit_xref])
         if used_by_major_mine:
             if self.permit.issue_date >= datetime(2020, 7, 17):
                 return 'Chief Permitting Officer'
