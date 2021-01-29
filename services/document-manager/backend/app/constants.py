@@ -4,6 +4,7 @@ def OBJECT_STORE_UPLOAD_RESOURCE(document_guid): return f'document-manager:{docu
 def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
 def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
 def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'
+def FILE_UPLOAD_EXPIRY(document_guid): return f'document-manager:{document_guid}:file-upload-expiry'
 def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_guid}'
 
 # Document Upload constants
