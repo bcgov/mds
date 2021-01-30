@@ -92,7 +92,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
 
         used_by_major_mine = any([m.mine.major_mine_ind for m in self.all_mine_permit_xref])
         if used_by_major_mine:
-            if self.permit.issue_date >= datetime(2020, 7, 17):
+            if self.issue_date >= datetime(2020, 7, 17):
                 return 'Chief Permitting Officer'
             else:
                 return 'Chief Inspector of Mines'
