@@ -70,7 +70,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
-    all_mine_permit_xref = db.relationship('MinePermitXref')
+    all_mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
+
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
 
