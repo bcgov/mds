@@ -297,7 +297,7 @@ export class EditFullPartyForm extends Component {
                 </Row>
               )) ||
                 (!isPerson && (
-                  <AuthorizationWrapper inTesting>
+                  <AuthorizationWrapper permission={Permission.ADMIN}>
                     <Row>
                       <Col span={24}>
                         <h5>OrgBook Entity</h5>

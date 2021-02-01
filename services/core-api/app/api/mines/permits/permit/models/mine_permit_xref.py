@@ -14,3 +14,5 @@ class MinePermitXref(SoftDeleteMixin, AuditMixin, Base):
 
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime)
+
+    mine = db.relationship('Mine')
