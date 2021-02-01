@@ -9,6 +9,7 @@ import {
   updatePermit,
   updatePermitAmendment,
   createPermitAmendment,
+  createPermitAmendmentVC,
   removePermitAmendmentDocument,
   deletePermit,
   deletePermitAmendment,
@@ -53,6 +54,7 @@ const propTypes = {
   updatePermit: PropTypes.func.isRequired,
   updatePermitAmendment: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
+  createPermitAmendmentVC: PropTypes.func.isRequired,
   removePermitAmendmentDocument: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   deletePermit: PropTypes.func.isRequired,
@@ -296,6 +298,15 @@ export class MinePermitInfo extends Component {
       .then(this.closePermitModal);
   };
 
+  handlePermitAmendmentIssueVC = (event, permit_amendment, permit) => {
+    event.preventDefault();
+    return this.props.createPermitAmendmentVC(
+      this.props.mineGuid,
+      permit.permitGuid,
+      permit_amendment.permit_amendment_guid
+    );
+  };
+
   handleRemovePermitAmendmentDocument = (permitGuid, permitAmendmentGuid, documentGuid) =>
     this.props
       .removePermitAmendmentDocument(
@@ -371,6 +382,7 @@ export class MinePermitInfo extends Component {
           openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
           handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
+          handlePermitAmendmentIssueVC={this.handlePermitAmendmentIssueVC}
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}
           handleDeletePermit={this.handleDeletePermit}
@@ -396,6 +408,7 @@ const mapDispatchToProps = (dispatch) =>
       updatePermit,
       updatePermitAmendment,
       createPermitAmendment,
+      createPermitAmendmentVC,
       removePermitAmendmentDocument,
       fetchPartyRelationships,
       fetchMineRecordById,

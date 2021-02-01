@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 import uuid
 
@@ -70,9 +70,33 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
+    all_mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
 
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
+
+    @hybrid_property
+    def issuing_inspector_name(self):
+        title = "Inspector of Mines"
+
+        #with i had null propogation
+        now_identity = self.now_identity
+        if now_identity:
+            now_application = now_identity.now_application
+            if now_application:
+                issuing_inspector = now_application.issuing_inspector
+                if issuing_inspector:
+                    return issuing_inspector.party_name
+
+        used_by_major_mine = any([m.mine.major_mine_ind for m in self.all_mine_permit_xref])
+        if used_by_major_mine:
+            if self.issue_date >= date(2020, 7, 17):
+                return 'Chief Permitting Officer'
+            else:
+                return 'Chief Inspector of Mines'
+        return title
 
     @hybrid_property
     def now_application_documents(self):
@@ -80,7 +104,6 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if self.now_application_identity:
             _now_app_docs = self.now_application_identity.now_application.documents
         return _now_app_docs
-                
 
     @hybrid_property
     def imported_now_application_documents(self):

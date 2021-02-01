@@ -36,6 +36,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     handleAddPermitAmendmentApplication={[Function]}
     handleDeletePermit={[Function]}
     handleDeletePermitAmendment={[Function]}
+    handlePermitAmendmentIssueVC={[Function]}
     isLoaded={false}
     major_mine_ind={true}
     onExpand={[Function]}
