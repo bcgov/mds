@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, FieldArray } from "redux-form";
+import { Field, FieldArray, Fields } from "redux-form";
 import { Button } from "antd";
 import { TRASHCAN } from "@/constants/assets";
 import "@ant-design/compatible/assets/index.css";
@@ -68,26 +68,58 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
               <tbody className="ant-table-tbody">
                 {activeRecordsCount > 0 &&
                   fields.map((activity, index) => {
+                    console.log("activity", activity);
                     const activityObj = fields.get(index);
+                    console.log("activityObj", activityObj);
                     const key = activityObj && (activityObj[fieldID] || index);
                     return (
                       (isViewMode || (activityObj && !activityObj.state_modified)) && (
                         <tr className="ant-table-row ant-table-row-level-0" key={key}>
-                          {tableContent.map((content) => (
-                            <td className="ant-table-cell">
-                              <div title={content.title}>
-                                <Field
-                                  name={`${activity}.${content.value}`}
-                                  value={`${activity}.${content.value}`}
-                                  component={content.component}
-                                  disabled={isViewMode}
-                                  validate={content.validate}
-                                  data={content.data || []}
-                                  minRows={content.minRows}
-                                />
-                              </div>
-                            </td>
-                          ))}
+                          {tableContent.map((content) => {
+                            console.log("content.names:", content.names);
+                            console.log("content:", content);
+                            return (
+                              <td className="ant-table-cell">
+                                <div title={content.title}>
+                                  {isViewMode ? (
+                                    activityObj[content.value]
+                                  ) : (
+                                    <Field
+                                      name={`${activity}.${content.value}`}
+                                      value={`${activity}.${content.value}`}
+                                      component={content.component}
+                                      disabled={isViewMode}
+                                      validate={content.validate}
+                                      data={content.data || []}
+                                      minRows={content.minRows}
+                                    />
+                                    // ) : content.name && content.names.length === 2 ? (
+                                    //   <Fields
+                                    //     names={content.names}
+                                    //     // value={`${activity}.${content.value}`}
+                                    //     id={content.id}
+                                    //     dropdownID={content.dropdownID}
+                                    //     component={content.component}
+                                    //     disabled={isViewMode}
+                                    //     validate={content.validate}
+                                    //     data={content.data || []}
+                                    //     // minRows={content.minRows}
+                                    //   />
+                                    // ) : (
+                                    //   <Field
+                                    //     name={`${activity}.${content.value}`}
+                                    //     value={`${activity}.${content.value}`}
+                                    //     component={content.component}
+                                    //     disabled={isViewMode}
+                                    //     validate={content.validate}
+                                    //     data={content.data || []}
+                                    //     minRows={content.minRows}
+                                    //   />
+                                  )}
+                                </div>
+                              </td>
+                            );
+                          })}
                           {!isViewMode && (
                             <td className="ant-table-cell">
                               <div name="remove" title="remove">
@@ -109,7 +141,7 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
                   })}
                 {activeRecordsCount <= 0 && (
                   <tr className="ant-table-placeholder">
-                    <td colSpan="5" className="ant-table-cell" style={{ color: "#bfbfbf" }}>
+                    <td colSpan="100%" className="ant-table-cell" style={{ color: "#bfbfbf" }}>
                       No Data Yet
                     </td>
                   </tr>

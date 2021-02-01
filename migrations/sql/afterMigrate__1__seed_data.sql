@@ -496,9 +496,11 @@ VALUES
 	('MEC', 'm3', 'Meters cubed', true, 'system-mds', 'system-mds'),
 	('HA', 'ha', 'Hectares', true, 'system-mds', 'system-mds'),
 	('DEG',  'deg', 'Degrees', true, 'system-mds', 'system-mds'),
-    ('PER', '%', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
+  ('PER', '%', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
 	('MTR', 'm', 'Meters', true, 'system-mds', 'system-mds'),
-    ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds')
+  ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds'),
+  ('MES', 'm3/s', 'Meters cubed/s', true, 'system-mds', 'system-mds'),
+  ('MED', 'm3/day', 'Meters cubed/day', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO notice_of_work_type
