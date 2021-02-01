@@ -152,7 +152,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     current_app.logger.debug(str(e))
                 except Exception as ex:
                     current_app.logger.warning('VC Not issued due to unknown error')
-                    current_app.logger.info(str(e))
+                    current_app.logger.info(str(ex))
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
