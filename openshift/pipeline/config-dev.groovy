@@ -223,6 +223,7 @@ app {
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
                             'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'VCR_ISSUER_URL':"${vars.modules.'mds-vc-issuer-api'.HOST}",
                     ]
                 ],
                 [
@@ -495,6 +496,9 @@ environments {
                 }
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
+                }
+                'mds-vc-issuer-api'{
+                    HOST = "https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/"
                 }
                 'filesystem-provider' {
                     HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
