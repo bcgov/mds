@@ -56,7 +56,7 @@ export const WaterSupply = (props) => {
             title: "Estimate Rate Unit",
             value: "estimate_rate_unit_type_code",
             component: RenderSelect,
-            data: props.unitTypeOptions,
+            data: props.unitTypeOptions.filter(({ value }) => value === "MES" || value === "MED"),
             isUnit: true,
           },
         ]}
