@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
-import { Field, FieldArray, Fields } from "redux-form";
+import { getNoticeOfWorkUnitTypeOptionsHash } from "@common/selectors/staticContentSelectors";
+import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
 import { TRASHCAN } from "@/constants/assets";
 import "@ant-design/compatible/assets/index.css";
@@ -11,6 +13,7 @@ const propTypes = {
   tableContent: PropTypes.objectOf(PropTypes.any).isRequired,
   fieldID: PropTypes.string.isRequired,
   type: PropTypes.string,
+  unitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -37,7 +40,7 @@ const removeActivity = (fields, index, fieldID) => {
   }
 };
 
-const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) => {
+const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID, unitTypeHash }) => {
   // resets deleted state if users decided to cancel their changes
   if (isViewMode && fields.length !== 0) {
     fields.getAll().forEach((activity) => {
@@ -51,71 +54,60 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
   const activeRecordsCount =
     fields.length !== 0 ? fields.getAll().filter((activity) => !activity.state_modified).length : 0;
 
+  const renderViewField = (fieldObj, index, content) => {
+    const activityObj = fieldObj.get(index);
+    if (content.hasUnit) {
+      return `${activityObj[content.value]} ${
+        unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
+      }`;
+    }
+    return activityObj[content.value];
+  };
+
   return (
     <div>
-      <div className="ant-table-wrapper">
+      <div className="ant-table-wrapper" style={{ position: "relative", zIndex: 5 }}>
         <div className={`ant-table ${(!fields || fields.length <= 0) && "ant-table-empty"}`}>
           <div className="ant-table-content">
             <table style={{ tableLayout: "auto" }}>
               <thead className="ant-table-thead">
                 <tr>
-                  {tableContent.map(({ title }) => (
-                    <th className="ant-table-cell">{title}</th>
-                  ))}
+                  {tableContent.map(
+                    ({ title, isUnit }) =>
+                      (!isUnit || !isViewMode) && <th className="ant-table-cell">{title}</th>
+                  )}
                   <th className="ant-table-cell" />
                 </tr>
               </thead>
               <tbody className="ant-table-tbody">
                 {activeRecordsCount > 0 &&
                   fields.map((activity, index) => {
-                    console.log("activity", activity);
                     const activityObj = fields.get(index);
-                    console.log("activityObj", activityObj);
                     const key = activityObj && (activityObj[fieldID] || index);
                     return (
                       (isViewMode || (activityObj && !activityObj.state_modified)) && (
                         <tr className="ant-table-row ant-table-row-level-0" key={key}>
                           {tableContent.map((content) => {
-                            console.log("content.names:", content.names);
-                            console.log("content:", content);
-                            return (
+                            return isViewMode ? (
+                              !content.isUnit && (
+                                <td className="ant-table-cell">
+                                  <div title={content.title}>
+                                    {renderViewField(fields, index, content, tableContent)}
+                                  </div>
+                                </td>
+                              )
+                            ) : (
                               <td className="ant-table-cell">
                                 <div title={content.title}>
-                                  {isViewMode ? (
-                                    activityObj[content.value]
-                                  ) : (
-                                    <Field
-                                      name={`${activity}.${content.value}`}
-                                      value={`${activity}.${content.value}`}
-                                      component={content.component}
-                                      disabled={isViewMode}
-                                      validate={content.validate}
-                                      data={content.data || []}
-                                      minRows={content.minRows}
-                                    />
-                                    // ) : content.name && content.names.length === 2 ? (
-                                    //   <Fields
-                                    //     names={content.names}
-                                    //     // value={`${activity}.${content.value}`}
-                                    //     id={content.id}
-                                    //     dropdownID={content.dropdownID}
-                                    //     component={content.component}
-                                    //     disabled={isViewMode}
-                                    //     validate={content.validate}
-                                    //     data={content.data || []}
-                                    //     // minRows={content.minRows}
-                                    //   />
-                                    // ) : (
-                                    //   <Field
-                                    //     name={`${activity}.${content.value}`}
-                                    //     value={`${activity}.${content.value}`}
-                                    //     component={content.component}
-                                    //     disabled={isViewMode}
-                                    //     validate={content.validate}
-                                    //     data={content.data || []}
-                                    //     minRows={content.minRows}
-                                    //   />
-                                  )}
+                                  <Field
+                                    name={`${activity}.${content.value}`}
+                                    value={`${activity}.${content.value}`}
+                                    component={content.component}
+                                    disabled={isViewMode}
+                                    validate={content.validate}
+                                    data={content.data || []}
+                                    minRows={content.minRows}
+                                  />
                                 </div>
                               </td>
                             );
@@ -174,6 +166,7 @@ export const CoreEditableTable = (props) => {
           tableContent: props.tableContent,
           type: props.type,
           fieldID: props.fieldID,
+          unitTypeHash: props.unitTypeHash,
         }}
       />
     </div>
@@ -183,4 +176,9 @@ export const CoreEditableTable = (props) => {
 CoreEditableTable.propTypes = propTypes;
 CoreEditableTable.defaultProps = defaultProps;
 
-export default CoreEditableTable;
+export default connect(
+  (state) => ({
+    unitTypeHash: getNoticeOfWorkUnitTypeOptionsHash(state),
+  }),
+  null
+)(CoreEditableTable);

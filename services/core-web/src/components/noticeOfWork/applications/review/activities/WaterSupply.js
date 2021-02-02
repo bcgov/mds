@@ -8,12 +8,14 @@ import RenderField from "@/components/common/RenderField";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderSelect from "@/components/common/RenderSelect";
+import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const WaterSupply = (props) => {
@@ -47,17 +49,15 @@ export const WaterSupply = (props) => {
             title: "Estimate Rate",
             value: "estimate_rate",
             component: RenderField,
-            // id: "water_supply.estimate_rate",
-            // dropdownID: "water_supply.estimate_rate_unit_type_code",
             validate: [number],
-            // names: ["water_supply.estimate_rate", "water_supply.estimate_rate_unit_type_code"],
-            // data: props.unitTypeOptions,
+            hasUnit: true,
           },
           {
             title: "Estimate Rate Unit",
             value: "estimate_rate_unit_type_code",
             component: RenderSelect,
             data: props.unitTypeOptions,
+            isUnit: true,
           },
         ]}
       />
