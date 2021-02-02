@@ -515,4 +515,3 @@ CREATE TABLE IF NOT EXISTS activity_detail_xref (
 );
 
 COMMENT ON TABLE activity_detail_xref IS 'Records connecting activity details to the associated activity';
-

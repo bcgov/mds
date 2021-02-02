@@ -225,7 +225,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="water_supply"
     >
-      <WaterSupply
+      <Connect(WaterSupply)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
