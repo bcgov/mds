@@ -34,6 +34,7 @@ export const UNIQUELY_SPATIAL = {
   ".gml": "application/gml+xml",
   ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
+  ".cpg": APPLICATION_OCTET_STREAM,
   ".prj": APPLICATION_OCTET_STREAM,
   ".sbn": APPLICATION_OCTET_STREAM,
   ".sbx": APPLICATION_OCTET_STREAM,

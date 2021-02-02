@@ -4,9 +4,10 @@ def OBJECT_STORE_UPLOAD_RESOURCE(document_guid): return f'document-manager:{docu
 def FILE_UPLOAD_SIZE(document_guid): return f'document-manager:{document_guid}:file-size'
 def FILE_UPLOAD_OFFSET(document_guid): return f'document-manager:{document_guid}:offset'
 def FILE_UPLOAD_PATH(document_guid): return f'document-manager:{document_guid}:file-path'
+def FILE_UPLOAD_EXPIRY(document_guid): return f'document-manager:{document_guid}:file-upload-expiry'
 def DOWNLOAD_TOKEN(token_guid): return f'document-manager:download-token:{token_guid}'
 
-# Document Upload constants
+# Document upload
 TUS_API_VERSION = '1.0.0'
 TUS_API_SUPPORTED_VERSIONS = '1.0.0'
 FORBIDDEN_FILETYPES = ('js', 'php', 'pl', 'py', 'rb', 'sh', 'so', 'exe', 'dll')
@@ -15,7 +16,7 @@ FORBIDDEN_FILETYPES = ('js', 'php', 'pl', 'py', 'rb', 'sh', 'so', 'exe', 'dll')
 NROS_TOKEN = "nros:token"
 VFCBC_COOKIES = "vdcbc_cookies"
 
-# Cache Timeouts
+# Cache timeouts
 TIMEOUT_1_MINUTE = 60
 TIMEOUT_5_MINUTES = 300
 TIMEOUT_10_MINUTES = 600
