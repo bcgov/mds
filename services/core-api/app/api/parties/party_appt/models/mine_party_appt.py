@@ -13,6 +13,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
@@ -86,7 +87,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
-        elif self.mine_party_appt_type_code == "PMT":
+        elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             related_guid = str(self.permit.permit_guid)
         result["related_guid"] = related_guid
         return result
