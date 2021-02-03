@@ -213,6 +213,7 @@ NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
         'supply_source_type': fields.String,
         'water_use_description': fields.String,
         'estimate_rate': fields.Fixed(decimals=7),
+        'estimate_rate_unit_type_code': fields.String,
         'pump_size': fields.Fixed(decimals=2),
         'intake_location': fields.String
     })

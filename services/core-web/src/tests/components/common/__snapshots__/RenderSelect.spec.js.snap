@@ -19,7 +19,7 @@ exports[`RenderSelect renders properly 1`] = `
     dropdownStyle={
       Object {
         "position": "relative",
-        "zIndex": "10000",
+        "zIndex": 100000,
       }
     }
     filterOption={[Function]}
@@ -37,7 +37,8 @@ exports[`RenderSelect renders properly 1`] = `
       disabled={false}
       style={
         Object {
-          "zIndex": "10000",
+          "position": "relative",
+          "zIndex": 10000,
         }
       }
     />
@@ -45,7 +46,8 @@ exports[`RenderSelect renders properly 1`] = `
       disabled={false}
       style={
         Object {
-          "zIndex": "10000",
+          "position": "relative",
+          "zIndex": 10000,
         }
       }
     />
