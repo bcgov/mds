@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types";
 import { getNoticeOfWorkUnitTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
+import * as Strings from "@common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
 import "@ant-design/compatible/assets/index.css";
 
@@ -57,9 +58,10 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID, uni
   const renderViewField = (fieldObj, index, content) => {
     const activityObj = fieldObj.get(index);
     if (content.hasUnit) {
-      return `${activityObj[content.value]} ${
-        unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
-      }`;
+      const unit = activityObj[`${content.value}_unit_type_code`]
+        ? unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
+        : Strings.EMPTY_FIELD;
+      return `${activityObj[content.value]} ${unit}`;
     }
     return activityObj[content.value];
   };
