@@ -723,7 +723,9 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
                 app_models.SurfaceBulkSampleDetail(
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
-                    activity_type_description=detail.type))
+                    activity_type_description=detail.type,
+                    quantity=detail.quantity
+                    ))
 
         for e in now_sub.surface_bulk_sample_equip:
             equipment = _transmogrify_equipment(e)
@@ -827,6 +829,7 @@ def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
             water_supply.details.append(
                 app_models.WaterSupplyDetail(
                     supply_source_description=wsa.sourcewatersupply,
+                    activity_type_description=wsa.type,
                     supply_source_type=wsa.type,
                     water_use_description=wsa.useofwater,
                     estimate_rate=wsa.estimateratewater,

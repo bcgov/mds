@@ -14,6 +14,5 @@ class SurfaceBulkSampleDetail(ActivityDetailBase):
     }
 
     ## NO TABLE FOR THIS TYPE
-
     def __repr__(self):
         return '<SurfaceBulkSampleDetail %r>' % self.activity_detail_id
