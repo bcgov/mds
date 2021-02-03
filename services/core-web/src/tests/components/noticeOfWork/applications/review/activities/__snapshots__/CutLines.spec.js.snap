@@ -6,7 +6,7 @@ exports[`CutLines renders properly 1`] = `
   <h4>
     Exploration Grid
   </h4>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
     isViewMode={true}
@@ -38,7 +38,6 @@ exports[`CutLines renders properly 1`] = `
         },
       ]
     }
-    type="Activity"
   />
   <br />
   <h4>

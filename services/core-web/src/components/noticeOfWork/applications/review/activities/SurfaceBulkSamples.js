@@ -70,7 +70,7 @@ export const SurfaceBulkSamples = (props) => {
           <Field
             id="processing_method_description"
             name="processing_method_description"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
             validate={[required]}
           />
