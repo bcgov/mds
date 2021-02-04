@@ -411,7 +411,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="present_land_condition_description"
               name="present_land_condition_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -430,7 +430,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="means_of_access_description"
               name="means_of_access_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -451,7 +451,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="physiography_description"
               name="physiography_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -470,7 +470,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="old_equipment_description"
               name="old_equipment_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -491,7 +491,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="type_of_vegetation_description"
               name="type_of_vegetation_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -512,7 +512,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="recreational_trail_use_description"
               name="recreational_trail_use_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
