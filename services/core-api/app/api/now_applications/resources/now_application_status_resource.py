@@ -14,6 +14,8 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+
+from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 
@@ -140,6 +142,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.related_documents.append(new_pa_doc)
 
                 permit_amendment.save()
+
+                #Issue Permit as Verifiable Credential to OrgBook
+                try:
+                    OrgBookIssuerService().issue_permit_amendment_vc(permit_amendment)
+                except AssertionError as e:
+                    #non-blocking failure
+                    current_app.logger.info('VC Not issued due to non-200 status code')
+                    current_app.logger.debug(str(e))
+                except Exception as ex:
+                    current_app.logger.warning('VC Not issued due to unknown error')
+                    current_app.logger.info(str(ex))
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:

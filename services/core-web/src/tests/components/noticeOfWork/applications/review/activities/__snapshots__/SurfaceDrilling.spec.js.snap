@@ -6,7 +6,7 @@ exports[`SurfaceDrilling renders properly 1`] = `
   <h4>
     Drilling
   </h4>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
     isViewMode={true}
@@ -47,7 +47,6 @@ exports[`SurfaceDrilling renders properly 1`] = `
         },
       ]
     }
-    type="Activity"
   />
   <br />
   <h4>

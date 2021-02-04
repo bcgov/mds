@@ -1,7 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { getNoticeOfWorkUnitTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
+import * as Strings from "@common/constants/strings";
 import { TRASHCAN } from "@/constants/assets";
 import "@ant-design/compatible/assets/index.css";
 
@@ -11,6 +14,7 @@ const propTypes = {
   tableContent: PropTypes.objectOf(PropTypes.any).isRequired,
   fieldID: PropTypes.string.isRequired,
   type: PropTypes.string,
+  unitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -37,7 +41,7 @@ const removeActivity = (fields, index, fieldID) => {
   }
 };
 
-const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) => {
+const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID, unitTypeHash }) => {
   // resets deleted state if users decided to cancel their changes
   if (isViewMode && fields.length !== 0) {
     fields.getAll().forEach((activity) => {
@@ -51,17 +55,29 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
   const activeRecordsCount =
     fields.length !== 0 ? fields.getAll().filter((activity) => !activity.state_modified).length : 0;
 
+  const renderViewField = (fieldObj, index, content) => {
+    const activityObj = fieldObj.get(index);
+    if (content.hasUnit) {
+      const unit = activityObj[`${content.value}_unit_type_code`]
+        ? unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
+        : Strings.EMPTY_FIELD;
+      return `${activityObj[content.value]} ${unit}`;
+    }
+    return activityObj[content.value];
+  };
+
   return (
     <div>
-      <div className="ant-table-wrapper">
+      <div className="ant-table-wrapper" style={{ position: "relative", zIndex: 5 }}>
         <div className={`ant-table ${(!fields || fields.length <= 0) && "ant-table-empty"}`}>
           <div className="ant-table-content">
             <table style={{ tableLayout: "auto" }}>
               <thead className="ant-table-thead">
                 <tr>
-                  {tableContent.map(({ title }) => (
-                    <th className="ant-table-cell">{title}</th>
-                  ))}
+                  {tableContent.map(
+                    ({ title, isUnit }) =>
+                      (!isUnit || !isViewMode) && <th className="ant-table-cell">{title}</th>
+                  )}
                   <th className="ant-table-cell" />
                 </tr>
               </thead>
@@ -73,21 +89,31 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
                     return (
                       (isViewMode || (activityObj && !activityObj.state_modified)) && (
                         <tr className="ant-table-row ant-table-row-level-0" key={key}>
-                          {tableContent.map((content) => (
-                            <td className="ant-table-cell">
-                              <div title={content.title}>
-                                <Field
-                                  name={`${activity}.${content.value}`}
-                                  value={`${activity}.${content.value}`}
-                                  component={content.component}
-                                  disabled={isViewMode}
-                                  validate={content.validate}
-                                  data={content.data || []}
-                                  minRows={content.minRows}
-                                />
-                              </div>
-                            </td>
-                          ))}
+                          {tableContent.map((content) => {
+                            return isViewMode ? (
+                              !content.isUnit && (
+                                <td className="ant-table-cell">
+                                  <div title={content.title}>
+                                    {renderViewField(fields, index, content, tableContent)}
+                                  </div>
+                                </td>
+                              )
+                            ) : (
+                              <td className="ant-table-cell">
+                                <div title={content.title}>
+                                  <Field
+                                    name={`${activity}.${content.value}`}
+                                    value={`${activity}.${content.value}`}
+                                    component={content.component}
+                                    disabled={isViewMode}
+                                    validate={content.validate}
+                                    data={content.data || []}
+                                    minRows={content.minRows}
+                                  />
+                                </div>
+                              </td>
+                            );
+                          })}
                           {!isViewMode && (
                             <td className="ant-table-cell">
                               <div name="remove" title="remove">
@@ -109,7 +135,7 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID }) =
                   })}
                 {activeRecordsCount <= 0 && (
                   <tr className="ant-table-placeholder">
-                    <td colSpan="5" className="ant-table-cell" style={{ color: "#bfbfbf" }}>
+                    <td colSpan="100%" className="ant-table-cell" style={{ color: "#bfbfbf" }}>
                       No Data Yet
                     </td>
                   </tr>
@@ -142,6 +168,7 @@ export const CoreEditableTable = (props) => {
           tableContent: props.tableContent,
           type: props.type,
           fieldID: props.fieldID,
+          unitTypeHash: props.unitTypeHash,
         }}
       />
     </div>
@@ -151,4 +178,9 @@ export const CoreEditableTable = (props) => {
 CoreEditableTable.propTypes = propTypes;
 CoreEditableTable.defaultProps = defaultProps;
 
-export default CoreEditableTable;
+export default connect(
+  (state) => ({
+    unitTypeHash: getNoticeOfWorkUnitTypeOptionsHash(state),
+  }),
+  null
+)(CoreEditableTable);
