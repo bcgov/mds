@@ -155,32 +155,25 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     current_app.logger.warning('VC Not issued due to unknown error')
                     current_app.logger.info(str(ex))
 
-                # PMT - Permittee, MMG - Mine Manager, THD - Tenure holder, LDO - Land Owner, MOR - Site Operator
                 only_one_contact_of_type_allowed = ['PMT', 'MMG']
                 multiple_contact_type_allowed = ['THD', 'LDO', 'MOR']
 
-                # do we need to override all existing THD, LDO, MOR on permit
-                current_app.logger.debug('%%%%%%%% PARTY APPOINTMENT PROCESSING START %%%%%%%%')
-                appointments = []
+                mine_party_appointments = []
                 if permit:
-                    current_app.logger.debug('%%%%%%%% THD, LDO, MOR pre processing START %%%%%%%%')
-                    current_app.logger.debug(permit.permit_id)
-                    appointments = MinePartyAppointment.find_current_appointments(
+                    mine_party_appointments = MinePartyAppointment.find_current_appointments(
                         mine_party_appt_type_code=multiple_contact_type_allowed,
                         permit_id=permit.permit_id)
-                    current_app.logger.debug('%%%%%%%%%%%%%%%%')
 
                     filtered_contacts = [
                         c for c in now_application_identity.now_application.contacts
                         if c.mine_party_appt_type_code in multiple_contact_type_allowed
                     ]
 
-                    for apt in appointments:
+                    # end all THD, LDO, MOR appointments that do not present on current assignments
+                    for apt in mine_party_appointments:
                         if not next((contact for contact in filtered_contacts
                                      if contact.party_guid == apt.party_guid), None):
                             apt.end_date = permit_amendment.issue_date - timedelta(days=1)
-
-                current_app.logger.debug('%%%%%%%% THD, LDO, MOR pre processing END %%%%%%%%')
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
@@ -203,25 +196,15 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 )
 
                             # If there is a current appointment and it does not match the proposed appointment end the current and create a new one.
-                            if len(current_apt) == 1:
-                                if current_apt[0].party_guid != contact.party_guid:
-                                    new_appt_needed = True
-                                    current_apt[
-                                        0].end_date = permit_amendment.issue_date - timedelta(
-                                            days=1)
-                                    # current_apt[0].save()
+                            if len(current_apt
+                                   ) == 1 and current_apt[0].party_guid != contact.party_guid:
+                                new_appt_needed = True
+                                current_apt[0].end_date = permit_amendment.issue_date - timedelta(
+                                    days=1)
                         else:
-                            new_appt_needed = len(appointments) > 0 and next(
-                                (apt
-                                 for apt in appointments if apt.party_guid == contact.party_guid),
-                                None)
-                            # if len(appointments) > 0 and next(
-                            #     (apt
-                            #      for apt in appointments if apt.party_guid == contact.party_guid),
-                            #         None):
-                            #     new_appt_needed = False
-                            # else:
-                            #     new_appt_needed = True
+                            new_appt_needed = False if len(mine_party_appointments) > 0 and next(
+                                (apt for apt in mine_party_appointments
+                                 if apt.party_guid == contact.party_guid), None) else True
 
                         #if there is no current appointment create a new one.
                         if len(current_apt) == 0:
@@ -239,7 +222,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 end_date=None,
                                 processed_by=self.get_user_info())
                             db.session.add(new_mpa)
-                            # new_mpa.save()
 
                 db.session.commit()
 
