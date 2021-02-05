@@ -174,6 +174,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         if not next((contact for contact in filtered_contacts
                                      if contact.party_guid == apt.party_guid), None):
                             apt.end_date = permit_amendment.issue_date - timedelta(days=1)
+                            apt.save()
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
