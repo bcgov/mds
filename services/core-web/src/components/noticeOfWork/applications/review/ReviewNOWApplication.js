@@ -208,7 +208,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="crown_grant_or_district_lot_numbers"
             name="crown_grant_or_district_lot_numbers"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
           <div className="field-title">
@@ -263,7 +263,7 @@ export const ReviewNOWApplication = (props) => {
           <Field
             id="description_of_land"
             name="description_of_land"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
             validate={[maxLength(4000)]}
           />
@@ -701,7 +701,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="fn_engagement_activities"
               name="fn_engagement_activities"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -720,7 +720,7 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="cultural_heritage_description"
               name="cultural_heritage_description"
-              component={RenderField}
+              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -779,7 +779,7 @@ export const ReviewNOWApplication = (props) => {
         <Field
           id="work_plan"
           name="work_plan"
-          component={RenderField}
+          component={RenderAutoSizeField}
           disabled={props.isViewMode}
         />
       </Col>

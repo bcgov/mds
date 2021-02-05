@@ -89,7 +89,7 @@ export const AccessRoads = (props) => {
           <Field
             id="bridge_culvert_crossing_description"
             name="bridge_culvert_crossing_description"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>

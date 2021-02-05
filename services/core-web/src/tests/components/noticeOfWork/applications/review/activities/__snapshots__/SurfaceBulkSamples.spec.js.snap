@@ -2,7 +2,7 @@
 
 exports[`SurfaceBulkSamples renders properly 1`] = `
 <div>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
     isViewMode={true}
@@ -42,7 +42,6 @@ exports[`SurfaceBulkSamples renders properly 1`] = `
         },
       ]
     }
-    type="Activity"
   />
   <br />
   <br />

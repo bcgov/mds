@@ -1,16 +1,21 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
+import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { maxLength, number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
+import RenderSelect from "@/components/common/RenderSelect";
+import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const WaterSupply = (props) => {
@@ -41,10 +46,18 @@ export const WaterSupply = (props) => {
             minRows: 1,
           },
           {
-            title: "Estimate(m/s)",
+            title: "Estimate Rate",
             value: "estimate_rate",
             component: RenderField,
             validate: [number],
+            hasUnit: true,
+          },
+          {
+            title: "Estimate Rate Unit",
+            value: "estimate_rate_unit_type_code",
+            component: RenderSelect,
+            data: props.unitTypeOptions.filter(({ value }) => value === "MES" || value === "MED"),
+            isUnit: true,
           },
         ]}
       />
@@ -92,4 +105,9 @@ export const WaterSupply = (props) => {
 
 WaterSupply.propTypes = propTypes;
 
-export default WaterSupply;
+export default connect(
+  (state) => ({
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
+  }),
+  null
+)(WaterSupply);

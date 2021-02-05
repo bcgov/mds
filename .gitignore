@@ -6,6 +6,8 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+.vscode/launch.json
+.vscode/tasks.json
 __pycache__
 *.pytest_cache
 *.pyc
