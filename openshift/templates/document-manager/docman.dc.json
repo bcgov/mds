@@ -67,6 +67,10 @@
       "value": "core-api-authorization"
     },
     {
+      "name": "CELERY_AUTHENTICATION",
+      "value": "celery-flower-authentication"
+    },
+    {
       "name": "CORE_API_URL",
       "required": true
     },
@@ -438,6 +442,24 @@
                     "value": "http://${NAME}-worker${SUFFIX}:5555"
                   },
                   {
+                    "name": "FLOWER_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLOWER_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
                   },
@@ -741,6 +763,24 @@
                   {
                     "name": "CELERY_REST_API_URL",
                     "value": "http://${NAME}-worker${SUFFIX}:5555"
+                  },
+                  {
+                    "name": "FLOWER_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLOWER_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user-password"
+                      }
+                    }
                   },
                   {
                     "name": "NROS_TOKEN_URL",
