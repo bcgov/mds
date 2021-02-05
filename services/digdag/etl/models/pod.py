@@ -37,14 +37,12 @@ class POD():
         self.command = command if command else None
         self.env_container_id = env_container_id
 
-        # If env, creating container from scratch, pull from tools build suffix
-        if (env):
-            self.env = env
+        # If image_namespace, creating container from scratch, pull from tools build suffix
+        self.env = env ? env : None
+        if (image_namespace):
             self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
-
         # Else creating based on existing image and pod, requires tag
         else:
-            self.env = None
             self.image = f"docker-registry.default.svc:5000/{self.namespace}/{self.env_pod}:{self.image_tag}"
 
         self.job_pod_name = self.pod_name + self.suffix

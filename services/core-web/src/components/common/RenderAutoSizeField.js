@@ -22,7 +22,7 @@ const defaultProps = {
   placeholder: "",
   label: "",
   disabled: false,
-  minRows: 4,
+  minRows: 3,
 };
 
 const RenderAutoSizeField = (props) => (
