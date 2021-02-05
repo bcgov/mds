@@ -97,6 +97,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_access_gated = now_sub.isaccessgated == 'Yes'
     now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure == 'Yes'
 
+    now_app.is_historic = now_sub.is_historic
+
     return
 
 
@@ -724,8 +726,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
                     activity_type_description=detail.type,
-                    quantity=detail.quantity
-                    ))
+                    quantity=detail.quantity))
 
         for e in now_sub.surface_bulk_sample_equip:
             equipment = _transmogrify_equipment(e)

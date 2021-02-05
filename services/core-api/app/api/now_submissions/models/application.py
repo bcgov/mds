@@ -2,6 +2,7 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
 
@@ -323,6 +324,12 @@ class Application(Base):
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+
+    @hybrid_property
+    def is_historic(self):
+        if self.originating_system == None or self.originating_system == "":
+            return False
+        return True
 
     def __repr__(self):
         return '<Application %r>' % self.messageid
