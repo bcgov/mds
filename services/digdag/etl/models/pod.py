@@ -34,11 +34,11 @@ class POD():
                  env_container_id=0):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
+        self.env = env if env else None
         self.command = command if command else None
         self.env_container_id = env_container_id
 
         # If image_namespace, creating container from scratch, pull from tools build suffix
-        self.env = env ? env : None
         if (image_namespace):
             self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
         # Else creating based on existing image and pod, requires tag
