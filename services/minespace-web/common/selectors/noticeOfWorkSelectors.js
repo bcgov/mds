@@ -22,22 +22,20 @@ export const getNOWReclamationSummary = createSelector(
     const reclamationList = [];
     if (options.length > 0) {
       options.forEach(({ value, label }) => {
-        // options uses the value of the code table to map to the response_model names for activities, they all match except camps.
-        const newValue = value === "camp" ? "camps" : value;
         // If the object is empty - it means the NOW does not contain that specific activity.
         // if the object does not contain total_disturbed_area || reclamation_cost - it means the activity doesn't have any reclamation data
         if (
-          !isEmpty(noticeOfWork[newValue]) &&
-          noticeOfWork[newValue].total_disturbed_area !== undefined &&
-          noticeOfWork[newValue].reclamation_cost !== undefined
+          !isEmpty(noticeOfWork[value]) &&
+          noticeOfWork[value].total_disturbed_area !== undefined &&
+          noticeOfWork[value].reclamation_cost !== undefined
         ) {
           reclamationList.push({
             label,
-            total: noticeOfWork[newValue].total_disturbed_area
-              ? noticeOfWork[newValue].total_disturbed_area
+            total: noticeOfWork[value].total_disturbed_area
+              ? noticeOfWork[value].total_disturbed_area
               : "0.00",
-            cost: noticeOfWork[newValue].reclamation_cost
-              ? noticeOfWork[newValue].reclamation_cost
+            cost: noticeOfWork[value].reclamation_cost
+              ? noticeOfWork[value].reclamation_cost
               : "0.00",
           });
         }
