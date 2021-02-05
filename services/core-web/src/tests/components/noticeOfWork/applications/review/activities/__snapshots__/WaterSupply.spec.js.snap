@@ -49,6 +49,58 @@ exports[`WaterSupply renders properly 1`] = `
     }
   />
   <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Pump size in water (inches)
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="pump_size"
+        name="pump_size"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Location of water intake
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="intake_location"
+        name="intake_location"
+      />
+    </Col>
+  </Row>
+  <br />
   <h4>
     Reclamation Program
   </h4>
