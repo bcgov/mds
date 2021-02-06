@@ -420,7 +420,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'blasting_operation':
         fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
-        'camps':
+        'camp':
         fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey':
         fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
@@ -519,7 +519,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'first_aid_equipment_on_site': fields.String,
         'first_aid_cert_level': fields.String,
         'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION),
-        'camps': fields.Nested(NOW_APPLICATION_CAMP),
+        'camp': fields.Nested(NOW_APPLICATION_CAMP),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES),
         'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS),
         'exploration_surface_drilling': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL),

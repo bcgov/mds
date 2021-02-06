@@ -438,7 +438,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   contacts: [],
   blasting_operation: {},
   state_of_land: {},
-  camps: { details: [] },
+  camp: { details: [] },
   cut_lines_polarization_survey: { details: [] },
   exploration_access: { details: [] },
   exploration_surface_drilling: { details: [] },

@@ -117,7 +117,7 @@ class NOWApplication(Base, AuditMixin):
     security_not_required_reason = db.Column(db.String)
 
     # Activities
-    camps = db.relationship('Camp', lazy='selectin', uselist=False)
+    camp = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
         'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
