@@ -15,7 +15,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "adjusted_annual_maximum_tonnage": "",
           "application_documents": Array [],
           "blasting_operation": Object {},
-          "camps": Object {
+          "camp": Object {
             "details": Array [],
           },
           "contacts": Array [],
@@ -137,7 +137,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "adjusted_annual_maximum_tonnage": "",
           "application_documents": Array [],
           "blasting_operation": Object {},
-          "camps": Object {
+          "camp": Object {
             "details": Array [],
           },
           "contacts": Array [],

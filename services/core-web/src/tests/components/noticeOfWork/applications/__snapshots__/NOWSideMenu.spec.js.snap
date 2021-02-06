@@ -51,7 +51,7 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
-      href="#camps"
+      href="#camp"
       title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
     />
     <AnchorLink

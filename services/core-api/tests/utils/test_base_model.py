@@ -74,18 +74,18 @@ def test_update_field_in_nested_item(db_session):
     new_reclam_desc = "TEST DESCRIPTIONzzzz"
 
     now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
-    now_app_dict['camps']['reclamation_description'] = new_reclam_desc
+    now_app_dict['camp']['reclamation_description'] = new_reclam_desc
 
     now_app.deep_update_from_dict(now_app_dict)
 
     db_session.refresh(now_app)
-    assert now_app.camps.reclamation_description == new_reclam_desc
+    assert now_app.camp.reclamation_description == new_reclam_desc
 
 
 #schema implemented for now_application_activity_details only
 def test_update_new_now_application_activity_detail(db_session):
     now_app = NOWApplicationIdentityFactory()
-    assert len(now_app.now_application.camps.details) == 0
+    assert len(now_app.now_application.camp.details) == 0
 
     now_app_dict = marshal(now_app.now_application, NOW_APPLICATION_MODEL)
     new_camp_detail = CampDetail(length=10)
@@ -93,12 +93,12 @@ def test_update_new_now_application_activity_detail(db_session):
 
     del new_camp_detail_dict['activity_detail_id']
 
-    now_app_dict['camps']['details'].append(new_camp_detail_dict)
+    now_app_dict['camp']['details'].append(new_camp_detail_dict)
 
     now_app.now_application.deep_update_from_dict(now_app_dict)
 
     na = NOWApplication.query.filter_by(now_application_id=now_app.now_application_id).first()
-    assert len(na.camps.details) == 1
+    assert len(na.camp.details) == 1
 
 
 @pytest.mark.xfail(
@@ -135,35 +135,35 @@ def test_delete_flag_in_nested_item_fail_deleted_ind(db_session):
 
 def test_delete_flag_in_nested_item_success_nested(db_session):
     now_app = NOWApplicationIdentityFactory()
-    assert len(now_app.now_application.camps.details) == 0
+    assert len(now_app.now_application.camp.details) == 0
     new_camp_detail = CampDetail(length=10)
-    now_app.now_application.camps.details.append(new_camp_detail)
-    assert len(now_app.now_application.camps.details) == 1
+    now_app.now_application.camp.details.append(new_camp_detail)
+    assert len(now_app.now_application.camp.details) == 1
 
     now_app_dict = marshal(now_app.now_application, NOW_APPLICATION_MODEL)
-    now_app_dict['camps']['details'][0]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
+    now_app_dict['camp']['details'][0]['state_modified'] = STATE_MODIFIED_DELETE_ON_PUT
 
     now_app.now_application.deep_update_from_dict(now_app_dict)
 
     na = NOWApplication.query.filter_by(now_application_id=now_app.now_application_id).first()
-    assert len(na.camps.details) == 0
+    assert len(na.camp.details) == 0
 
 
 def test_missing_nested_list_item_not_deleted(db_session):
     init_length = 5
     now_app = NOWApplicationIdentityFactory().now_application
-    now_app.camps.details = CampDetailFactory.create_batch(size=init_length)
+    now_app.camp.details = CampDetailFactory.create_batch(size=init_length)
 
-    assert len(now_app.camps.details) == init_length
+    assert len(now_app.camp.details) == init_length
 
     now_app_dict = marshal(now_app, NOW_APPLICATION_MODEL)
     #remove some items
-    now_app_dict['camps']['details'] = now_app_dict['camps']['details'][:2]
+    now_app_dict['camp']['details'] = now_app_dict['camp']['details'][:2]
 
     now_app.deep_update_from_dict(now_app_dict)
 
     db_session.refresh(now_app)
-    assert len(now_app.camps.details) == init_length
+    assert len(now_app.camp.details) == init_length
 
 
 @pytest.mark.xfail(
