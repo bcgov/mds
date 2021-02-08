@@ -11,7 +11,7 @@ exports[`RenderAutoSizeField renders properly 1`] = `
   <TextArea
     autoSize={
       Object {
-        "minRows": 4,
+        "minRows": 3,
       }
     }
     disabled={false}

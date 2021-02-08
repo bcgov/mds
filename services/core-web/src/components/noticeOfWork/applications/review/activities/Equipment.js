@@ -1,6 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import RenderField from "@/components/common/RenderField";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { number } from "@common/utils/Validate";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 
@@ -27,7 +28,8 @@ export const Equipment = (props) => {
           {
             title: "Description",
             value: "description",
-            component: RenderField,
+            component: RenderAutoSizeField,
+            minRows: 1,
           },
           {
             title: "Capacity",
