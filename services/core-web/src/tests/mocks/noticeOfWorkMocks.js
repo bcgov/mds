@@ -327,6 +327,7 @@ export const NOTICE_OF_WORK = {
       type: null,
       disturbedarea: 1.11,
       timbervolume: null,
+      quantity: null,
     },
   ],
   sand_grv_qry_activity: [

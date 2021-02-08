@@ -101,6 +101,7 @@ SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
     'type': fields.String,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
+    'quantity': fields.Integer,
 })
 
 SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
