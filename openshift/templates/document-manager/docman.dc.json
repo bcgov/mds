@@ -812,12 +812,13 @@
                 },
                 "livenessProbe": {
                   "failureThreshold": 3,
-                  "exec":{   
+                  "exec": {
                     "command": [
-                    "bash",
-                    "-c",
-                    "celery inspect ping -A apps -d celery@${HOSTNAME}"
-                  ]},
+                      "bash",
+                      "-c",
+                      "celery inspect ping -A app.tasks.celery -d celery@${HOSTNAME}"
+                    ]
+                  },
                   "initialDelaySeconds": 30,
                   "periodSeconds": 60,
                   "timeoutSeconds": 10
