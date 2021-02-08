@@ -273,7 +273,7 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
     supply_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     supply_source_type = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     water_use_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
-    estimate_rate = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    estimate_rate = factory.Faker('pydecimal', right_digits=7, positive=True, max_value=500000)
     pump_size = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     intake_location = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
