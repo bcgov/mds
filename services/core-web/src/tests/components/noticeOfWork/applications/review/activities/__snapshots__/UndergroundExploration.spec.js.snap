@@ -45,7 +45,7 @@ exports[`UndergroundExploration renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Width(m)",
+          "title": "Width (m)",
           "validate": Array [
             [Function],
           ],
@@ -53,7 +53,7 @@ exports[`UndergroundExploration renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Length(km)",
+          "title": "Length (km)",
           "validate": Array [
             [Function],
           ],
@@ -61,7 +61,7 @@ exports[`UndergroundExploration renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Height(m)",
+          "title": "Height (m)",
           "validate": Array [
             [Function],
           ],

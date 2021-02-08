@@ -19,7 +19,7 @@ exports[`AccessRoads renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Length(km)",
+          "title": "Length (km)",
           "validate": Array [
             [Function],
           ],
