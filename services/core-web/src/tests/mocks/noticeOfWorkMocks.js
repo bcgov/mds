@@ -706,7 +706,7 @@ export const DROPDOWN_UNIT_TYPES = [
     isActive: true,
   },
   {
-    label: "m3",
+    label: "m³",
     value: "MEC",
     subType: null,
     isActive: true,
