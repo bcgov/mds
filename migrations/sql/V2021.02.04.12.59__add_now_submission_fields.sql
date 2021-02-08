@@ -1,0 +1,1 @@
+ALTER table NOW_Submissions.surface_bulk_sample_activity ADD column QUANTITY bigint;
