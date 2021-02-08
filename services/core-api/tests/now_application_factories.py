@@ -58,8 +58,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
-    total_disturbed_area = factory.Faker(
-        'pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     total_disturbed_area_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
 
@@ -68,7 +67,7 @@ class ActivityDetailBaseFactory(BaseFactory):
         model = app_models.ActivityDetailBase
 
     activity_type_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
-    disturbed_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     timber_volume = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     number_of_sites = factory.Faker('pyint', min_value=1, max_value=50)
     width = factory.Faker('pyint', min_value=1, max_value=5000)
