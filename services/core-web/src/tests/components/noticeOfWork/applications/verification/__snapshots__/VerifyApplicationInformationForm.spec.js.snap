@@ -365,6 +365,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "surface_bulk_sample_activity": Array [
           Object {
             "disturbedarea": 1.11,
+            "quantity": null,
             "timbervolume": null,
             "type": null,
           },
