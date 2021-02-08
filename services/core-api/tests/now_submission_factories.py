@@ -61,7 +61,7 @@ class NOWSubmissionFactory(BaseFactory):
         all_activites = factory.Trait(
             blasting_operation=True,
             state_of_land=True,
-            camps=True,
+            camp=True,
             cut_lines_polarization_survey=True,
             exploration_access=True,
             exploration_surface_drilling=True,
@@ -71,7 +71,7 @@ class NOWSubmissionFactory(BaseFactory):
             surface_bulk_sample=True,
             settling_pond=True,
             underground_exploration=True)
-        camps = factory.Trait(
+        camp = factory.Trait(
             cbsfreclamation=factory.Faker('sentence', nb_words=3),
             cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),

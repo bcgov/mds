@@ -58,12 +58,12 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
-        id="camps"
+        id="camp"
         title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
-        data={props.noticeOfWork.camps}
+        data={props.noticeOfWork.camp}
         isViewMode={props.isViewMode}
       >
-        <FormSection name="camps">
+        <FormSection name="camp">
           <Camps isViewMode={props.isViewMode} renderOriginalValues={props.renderOriginalValues} />
         </FormSection>
       </ScrollContentWrapper>
