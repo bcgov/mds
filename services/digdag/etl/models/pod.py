@@ -72,11 +72,14 @@ class POD():
         except:
             print("Issue with getting env_dict from existing pod.")
 
-        if (self.env is not None and self.env_pod == 'digdag-mds-job'):
+        if (self.env is not None and env_dict is not None):
+            # Running pod AND builder env
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env) + env_dict
         elif (self.env is not None):
+            # No running pod, use builder env
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env)
         else:
+            # Running pod, use existing env
             json_data["spec"]["containers"][0]["env"] = env_dict
 
         return json_data
