@@ -949,6 +949,29 @@
         "type": "ClusterIP",
         "sessionAffinity": "None"
       }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}${SUFFIX}"
+      },
+      "spec": {
+        "host": "${FLOWER_HOST}",
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "path": "/",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}${SUFFIX}"
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "wildcardPolicy": "None"
+      }
     }
   ]
 }

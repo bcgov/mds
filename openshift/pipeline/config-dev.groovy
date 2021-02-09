@@ -254,7 +254,8 @@ app {
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
                             'OBJECT_STORE_ENABLED': '0',
                             'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/",
-                            'CORE_API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api"
+                            'CORE_API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'FLOWER_HOST':"${vars.modules.'flower'.HOST}"
                     ]
                 ],
                 [
@@ -503,6 +504,9 @@ environments {
                 'filesystem-provider' {
                     HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
                     PATH = "/${vars.git.changeId}/file-api"
+                }
+                'flower'{
+                    HOST = "mds-flower-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
                 // 'digdag' {
                 //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
