@@ -71,6 +71,10 @@
       "value": "celery-flower-authentication"
     },
     {
+      "name": "FLOWER_HOST",
+      "required": true
+    },
+    {
       "name": "CORE_API_URL",
       "required": true
     },
