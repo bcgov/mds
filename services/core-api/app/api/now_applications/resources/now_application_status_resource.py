@@ -169,10 +169,11 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         if c.mine_party_appt_type_code in multiple_contact_type_allowed
                     ]
 
-                    # end all THD, LDO, MOR appointments that do not present on current assignments
+                    # end all THD, LDO, MOR appointments that do not present on current assignments and have linked permit
                     for apt in mine_party_appointments:
-                        if not next((contact for contact in filtered_contacts
-                                     if contact.party_guid == apt.party_guid), None):
+                        if apt.permit_id and not next(
+                            (contact for contact in filtered_contacts
+                             if contact.party_guid == apt.party_guid), None):
                             apt.end_date = permit_amendment.issue_date - timedelta(days=1)
                             apt.save()
 
