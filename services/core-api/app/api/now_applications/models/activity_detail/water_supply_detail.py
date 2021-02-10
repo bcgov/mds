@@ -23,7 +23,7 @@ class WaterSupplyDetail(ActivityDetailBase):
     supply_source_description = db.Column(db.String)
     supply_source_type = db.Column(db.String)
     water_use_description = db.Column(db.String)
-    estimate_rate = db.Column(db.Numeric(14, 2))
+    estimate_rate = db.Column(db.Numeric(14, 7))
     estimate_rate_unit_type_code = db.Column(db.String)
     pump_size = db.Column(db.Numeric(14, 2))
     intake_location = db.Column(db.String)

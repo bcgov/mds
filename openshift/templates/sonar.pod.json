@@ -155,7 +155,7 @@
           }
         ],
         "restartPolicy": "Never",
-        "activeDeadlineSeconds": 900,
+        "activeDeadlineSeconds": 1800,
         "dnsPolicy": "ClusterFirst"
       },
       "status": {}
