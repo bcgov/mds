@@ -506,7 +506,7 @@ environments {
                     PATH = "/${vars.git.changeId}/file-api"
                 }
                 'flower'{
-                    HOST = "mds-flower-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                    HOST = "mds-flower-${vars.deployment.suffix}.pathfinder.gov.bc.ca"
                 }
                 // 'digdag' {
                 //     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
