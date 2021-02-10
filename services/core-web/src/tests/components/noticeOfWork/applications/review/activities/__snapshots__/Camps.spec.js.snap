@@ -27,7 +27,7 @@ exports[`Camps renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Merchantable timber volume (m3)",
+          "title": "Merchantable timber volume (m³)",
           "validate": Array [
             [Function],
           ],
