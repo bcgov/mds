@@ -969,7 +969,7 @@
         "path": "/",
         "to": {
           "kind": "Service",
-          "name": "${NAME}${SUFFIX}"
+          "name": "${NAME}-worker${SUFFIX}"
         },
         "port": {
           "targetPort": "web"
