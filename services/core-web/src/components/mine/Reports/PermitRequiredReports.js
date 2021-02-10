@@ -200,7 +200,7 @@ export class PermitRequiredReports extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only = params.received_only || report.received_date; // this filters out reports, both parameters are undefined
+      const received_only = !params.received_only || report.received_date;
       const status =
         isEmpty(params.status) ||
         (report.mine_report_submissions &&

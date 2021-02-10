@@ -185,7 +185,7 @@ export class MineReportInfo extends Component {
           (definition) => definition.mine_report_definition_guid
         );
 
-    return reports.filter((report) => {
+    const filteredReports = reports.filter((report) => {
       const report_type =
         !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
       const report_name =
@@ -212,7 +212,7 @@ export class MineReportInfo extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only = params.received_only || report.received_date; // this filters out reports, both parameters are undefined
+      const received_only = !params.received_only || report.received_date;
       const status =
         isEmpty(params.status) ||
         (report.mine_report_submissions &&
@@ -234,6 +234,7 @@ export class MineReportInfo extends Component {
         status
       );
     });
+    return filteredReports;
   };
 
   handleReportFilterSubmit = (params) => {
