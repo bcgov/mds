@@ -100,7 +100,7 @@ export class MineReportInfo extends Component {
   };
 
   handleEditReport = (report) => {
-    this.props
+    return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() => this.fetchReports(report.mine_guid));
@@ -113,18 +113,18 @@ export class MineReportInfo extends Component {
       .then(() => this.fetchReports(this.props.mineGuid));
   };
 
-  fetchReports = (mineGuid) => {
-    this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
-      this.setState({
-        filteredReports: this.props.mineReports,
-      });
-    });
-  };
-
   handleRemoveReport = (report) => {
     return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
       .then(() => this.fetchReports(report.mine_guid));
+  };
+
+  fetchReports = (mineGuid) => {
+    return this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
+      this.setState({
+        filteredReports: this.props.mineReports,
+      });
+    });
   };
 
   openAddReportModal = (event) => {
