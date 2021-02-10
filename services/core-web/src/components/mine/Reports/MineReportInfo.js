@@ -59,7 +59,7 @@ const defaultParams = {
   due_date_end: undefined,
   received_date_start: undefined,
   received_date_end: undefined,
-  received_only: undefined,
+  received_only: "false",
   requested_by: undefined,
   status: [],
   sort_field: "received_date",
@@ -212,7 +212,8 @@ export class MineReportInfo extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only = !params.received_only || report.received_date;
+      const received_only =
+        !params.received_only || params.received_only === "false" || report.received_date;
       const status =
         isEmpty(params.status) ||
         (report.mine_report_submissions &&
