@@ -958,7 +958,7 @@
       "kind": "Route",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${NAME}${SUFFIX}"
+        "name": "${NAME}-worker${SUFFIX}"
       },
       "spec": {
         "host": "${FLOWER_HOST}",
