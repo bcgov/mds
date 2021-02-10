@@ -58,8 +58,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
-    total_disturbed_area = factory.Faker(
-        'pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     total_disturbed_area_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
 
@@ -68,7 +67,7 @@ class ActivityDetailBaseFactory(BaseFactory):
         model = app_models.ActivityDetailBase
 
     activity_type_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
-    disturbed_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     timber_volume = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     number_of_sites = factory.Faker('pyint', min_value=1, max_value=50)
     width = factory.Faker('pyint', min_value=1, max_value=5000)
@@ -274,7 +273,7 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
     supply_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     supply_source_type = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     water_use_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
-    estimate_rate = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    estimate_rate = factory.Faker('pydecimal', right_digits=7, positive=True, max_value=500000)
     pump_size = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     intake_location = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
