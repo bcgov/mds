@@ -298,7 +298,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
                 timber_volume=stgetimbervolume)
             camp.details.append(camp_detail)
 
-        now_app.camps = camp
+        now_app.camp = camp
 
     return
 

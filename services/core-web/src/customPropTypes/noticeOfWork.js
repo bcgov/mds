@@ -36,7 +36,7 @@ export const defaultActivity = shape({
   ...activitySummary,
 });
 
-export const camps = shape({
+export const camp = shape({
   camp_name: PropTypes.string,
   camp_number_people: PropTypes.number,
   camp_number_structures: PropTypes.number,
@@ -146,7 +146,7 @@ export const importedNOWApplication = shape({
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   blasting_operation: PropTypes.objectOf(PropTypes.any),
   state_of_land: statueOfLand,
-  camps,
+  camp,
   cut_lines_polarization_survey: defaultActivity,
   exploration_access: defaultActivity,
   exploration_surface_drilling: surfaceDrilling,

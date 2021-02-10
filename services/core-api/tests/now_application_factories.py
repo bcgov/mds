@@ -423,7 +423,7 @@ class NOWApplicationFactory(BaseFactory):
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
-    camps = factory.RelatedFactory(CampFactory, 'now_application')
+    camp = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
     exploration_surface_drilling = factory.RelatedFactory(ExplorationSurfaceDrillingFactory,
