@@ -106,13 +106,13 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                     if latest_amendment and latest_amendment.issue_date > issue_date.date():
                         raise BadRequest(
-                            f'You cannot set the issue date of permit {permit.permit_no} before the issue date of its most recent amendment, dated {latest_amendment.issue_date}.'
+                            f'Cannot set the issue date of permit {permit.permit_no} before the issue date of its most recent amendment, dated {latest_amendment.issue_date}.'
                         )
 
                 # Validate that the issue date is not before the appointment's start date
                 if len(current_apt) == 1 and current_apt[0].start_date > issue_date.date():
                     raise BadRequest(
-                        f'You cannot set the issue date prior to the start date of {current_apt[0].start_date}.'
+                        f'Cannot set the issue date prior to the start date of {current_apt[0].start_date}.'
                     )
 
             # Move the permit out of draft (draft status on permit indicates that the permit amendment is the first/original)
@@ -123,6 +123,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
             if permit_amendment.permit_amendment_status_code == 'DFT':
                 permit_amendment.permit_amendment_status_code = 'ACT'
+
+            if permit_amendment.permit_amendment_status_code != 'ACT':
+                raise BadRequest('Failed to set the permit status to active.')
 
             permit.save()
 
@@ -149,18 +152,15 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.related_documents.append(new_pa_doc)
             permit_amendment.save()
 
+            # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit
             only_one_contact_of_type_allowed = ['PMT', 'MMG']
             multiple_contact_type_allowed = ['THD', 'LDO', 'MOR']
-
             mine_party_appointments = MinePartyAppointment.find_current_appointments(
                 mine_party_appt_type_code=multiple_contact_type_allowed, permit_id=permit.permit_id)
-
             filtered_contacts = [
                 c for c in now_application_identity.now_application.contacts
                 if c.mine_party_appt_type_code in multiple_contact_type_allowed
             ]
-
-            # End all THD, LDO, MOR appointments that do not present on current assignments and have linked permit
             for apt in mine_party_appointments:
                 if apt.permit_id and not next(
                     (contact
@@ -181,7 +181,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         if contact.mine_party_appt_type_code == 'MMG' else None,
                         mine_party_appt_type_code=contact.mine_party_appt_type_code)
 
-                    # A mine can only have one active mine manager and a permit can only have one active permittee
+                    # A mine can only have one active Mine Manager and a permit can only have one active Permittee
                     if contact.mine_party_appt_type_code in only_one_contact_of_type_allowed:
                         if len(current_apt) > 1:
                             raise BadRequest(
@@ -190,7 +190,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 'This permit has more than one permittee. Resolve this and try again.'
                             )
 
-                        # If there is a current appointment and it does not match the proposed appointment end the current and create a new one
+                        # If there is a current appointment and it does not match the proposed appointment, end the current and create a new one
                         if len(current_apt
                                ) == 1 and current_apt[0].party_guid != contact.party_guid:
                             new_appt_needed = True
