@@ -67,6 +67,14 @@
       "value": "core-api-authorization"
     },
     {
+      "name": "CELERY_AUTHENTICATION",
+      "value": "celery-flower-authentication"
+    },
+    {
+      "name": "FLOWER_HOST",
+      "required": true
+    },
+    {
       "name": "CORE_API_URL",
       "required": true
     },
@@ -438,6 +446,24 @@
                     "value": "http://${NAME}-worker${SUFFIX}:5555"
                   },
                   {
+                    "name": "FLOWER_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLOWER_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "S3_PREFIX",
                     "value": "mds-files-${VERSION}/"
                   },
@@ -743,6 +769,24 @@
                     "value": "http://${NAME}-worker${SUFFIX}:5555"
                   },
                   {
+                    "name": "FLOWER_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user"
+                      }
+                    }
+                  },
+                  {
+                    "name": "FLOWER_USER_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${CELERY_AUTHENTICATION}",
+                        "key": "flower-user-password"
+                      }
+                    }
+                  },
+                  {
                     "name": "NROS_TOKEN_URL",
                     "valueFrom": {
                       "secretKeyRef": {
@@ -908,6 +952,29 @@
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-worker${SUFFIX}"
+      },
+      "spec": {
+        "host": "${FLOWER_HOST}",
+        "tls": {
+          "insecureEdgeTerminationPolicy": "Redirect",
+          "termination": "edge"
+        },
+        "path": "/",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}-worker${SUFFIX}"
+        },
+        "port": {
+          "targetPort": "web"
+        },
+        "wildcardPolicy": "None"
       }
     }
   ]
