@@ -47,6 +47,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         location='json',
         help='The new status of the application.')
 
+    # TODO: Improve this endpoint by making it a transaction.
     @api.doc(description='Update the status of an application.')
     @requires_role_edit_permit
     def put(self, application_guid):
@@ -103,7 +104,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 ]
                 if amendments:
                     latest_amendment = max(amendments, key=attrgetter('issue_date'))
-
                     if latest_amendment and latest_amendment.issue_date > issue_date.date():
                         raise BadRequest(
                             f'Cannot set the issue date of permit {permit.permit_no} before the issue date of its most recent amendment, dated {latest_amendment.issue_date}.'
