@@ -29,9 +29,10 @@ export const fetchNoticeOfWorkApplicationContextTemplate = (
       dispatch(documentActions.storeDocumentContextTemplate(response.data));
       return response;
     })
-    .catch(() =>
-      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE))
-    )
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -52,7 +53,7 @@ export const generateNoticeOfWorkApplicationDocument = (
     .then((response) => {
       const token = { token: response.data.token };
       const docWindow = window.open(
-        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
+        `${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(token)}`,
         "_blank"
       );
       docWindow.onbeforeunload = () => {
@@ -89,7 +90,7 @@ export const exportNoticeOfWorkApplicationDocument = (
     .then((response) => {
       const token = { token: response.data.token };
       const docWindow = window.open(
-        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
+        `${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(token)}`,
         "_blank"
       );
       docWindow.onbeforeunload = () => {
@@ -102,6 +103,9 @@ export const exportNoticeOfWorkApplicationDocument = (
       };
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from operator import attrgetter
+from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -15,9 +16,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
-
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
-from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
