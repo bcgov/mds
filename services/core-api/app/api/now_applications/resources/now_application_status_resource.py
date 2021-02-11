@@ -125,7 +125,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 permit_amendment.permit_amendment_status_code = 'ACT'
 
             if permit_amendment.permit_amendment_status_code != 'ACT':
-                raise BadRequest('Failed to set the permit status to active.')
+                raise AssertionError('The permit status was not set to Active.')
 
             permit.save()
 
