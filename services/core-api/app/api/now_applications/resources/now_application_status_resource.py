@@ -134,6 +134,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
             permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
 
+            # Attach the generated issued permit document to the permit
             permit_amendment_document = [
                 doc for doc in now_application_identity.now_application.documents
                 if doc.now_application_document_type_code == 'PMA'
