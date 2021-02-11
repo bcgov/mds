@@ -20,7 +20,7 @@ class TestNOWApplicationStatus:
     """PUT /now_applications/ID/status"""
 
     def test_put_application_status(self, test_client, db_session, auth_headers):
-        mine = MineFactory(major_mine_ind=True)
+        mine = MineFactory(major_mine_ind=True, mine_permit_amendments=1)
         now_application = NOWApplicationFactory(application_progress=None)
         now_application_identity = NOWApplicationIdentityFactory(
             now_application=now_application, mine=mine)

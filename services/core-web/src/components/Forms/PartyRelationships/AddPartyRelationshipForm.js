@@ -192,6 +192,9 @@ export class AddPartyRelationshipForm extends Component {
         options = <EngineerOfRecordOptions mine={this.props.mine} />;
         break;
       case "PMT":
+      case "THD":
+      case "LDO":
+      case "MOR":
         options = <PermitteeOptions minePermits={this.props.minePermits} />;
         break;
       default:
