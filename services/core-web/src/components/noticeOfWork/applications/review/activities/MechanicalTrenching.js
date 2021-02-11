@@ -42,7 +42,7 @@ export const MechanicalTrenching = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],
