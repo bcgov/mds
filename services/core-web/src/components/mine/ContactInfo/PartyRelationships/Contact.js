@@ -47,6 +47,9 @@ export const Contact = (props) => {
       component = <EngineerOfRecord {...props} />;
       break;
     case "PMT":
+    case "THD":
+    case "LDO":
+    case "MOR":
       component = <Permittee {...props} />;
       break;
     default:

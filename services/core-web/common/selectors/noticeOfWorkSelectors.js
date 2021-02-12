@@ -65,7 +65,7 @@ export const getNOWProgress = createSelector(
   (noticeOfWork, delayDurations) => {
     const today = new Date();
     let progress = {};
-    if (noticeOfWork.application_progress.length > 0) {
+    if (noticeOfWork.application_progress?.length > 0) {
       progress = noticeOfWork.application_progress.reduce((map, obj) => {
         const endDate = obj.end_date ? obj.end_date : today;
         const duration = moment.duration(moment(endDate).diff(moment(obj.start_date)));

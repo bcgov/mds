@@ -706,7 +706,7 @@ export const DROPDOWN_UNIT_TYPES = [
     isActive: true,
   },
   {
-    label: "m3",
+    label: "m³",
     value: "MEC",
     subType: null,
     isActive: true,
@@ -722,7 +722,7 @@ export const DROPDOWN_UNIT_TYPES = [
 export const UNIT_TYPES_HASH = {
   KMT: "km",
   MTN: "t",
-  MEC: "m3",
+  MEC: "m³",
   HA: "ha",
   DEG: "deg",
   PER: "%",

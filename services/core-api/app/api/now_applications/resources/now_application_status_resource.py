@@ -3,7 +3,7 @@ from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from operator import attrgetter
 
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
@@ -14,6 +14,7 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
@@ -154,31 +155,58 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                     current_app.logger.warning('VC Not issued due to unknown error')
                     current_app.logger.info(str(ex))
 
+                only_one_contact_of_type_allowed = ['PMT', 'MMG']
+                multiple_contact_type_allowed = ['THD', 'LDO', 'MOR']
+
+                mine_party_appointments = []
+                if permit:
+                    mine_party_appointments = MinePartyAppointment.find_current_appointments(
+                        mine_party_appt_type_code=multiple_contact_type_allowed,
+                        permit_id=permit.permit_id)
+
+                    filtered_contacts = [
+                        c for c in now_application_identity.now_application.contacts
+                        if c.mine_party_appt_type_code in multiple_contact_type_allowed
+                    ]
+
+                    # end all THD, LDO, MOR appointments that do not present on current assignments and have linked permit
+                    for apt in mine_party_appointments:
+                        if apt.permit_id and not next(
+                            (contact for contact in filtered_contacts
+                             if contact.party_guid == apt.party_guid), None):
+                            apt.end_date = permit_amendment.issue_date - timedelta(days=1)
+                            apt.save()
+
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
-                    if contact.mine_party_appt_type_code == 'PMT' or contact.mine_party_appt_type_code == 'MMG':
+                    if contact.mine_party_appt_type_code in ['PMT', 'MMG', 'THD', 'LDO', 'MOR']:
                         new_appt_needed = False
                         current_apt = MinePartyAppointment.find_current_appointments(
-                            permit_id=permit.permit_id
-                            if contact.mine_party_appt_type_code == 'PMT' else None,
+                            permit_id=permit.permit_id if contact.mine_party_appt_type_code
+                            in PERMIT_LINKED_CONTACT_TYPES else None,
                             mine_guid=now_application_identity.mine.mine_guid
                             if contact.mine_party_appt_type_code == 'MMG' else None,
                             mine_party_appt_type_code=contact.mine_party_appt_type_code)
-                        # A mine can only have one active Mine manager and a permit can only have oneactive permittee
-                        if len(current_apt) > 1:
-                            raise BadRequest(
-                                'This mine has more than one mine manager. Resolve this and try again.'
-                                if contact.mine_party_appt_type_code == 'MMG' else
-                                'This permit has more than one permittee. Resolve this and try again.'
-                            )
 
-                        # If there is a current appointment and it does not match the proposed appointment end the current and create a new one.
-                        if len(current_apt) == 1:
-                            if current_apt[0].party_guid != contact.party_guid:
+                        # A mine can only have one active Mine manager and a permit can only have oneactive permittee
+                        if contact.mine_party_appt_type_code in only_one_contact_of_type_allowed:
+                            if len(current_apt) > 1:
+                                raise BadRequest(
+                                    'This mine has more than one mine manager. Resolve this and try again.'
+                                    if contact.mine_party_appt_type_code == 'MMG' else
+                                    'This permit has more than one permittee. Resolve this and try again.'
+                                )
+
+                            # If there is a current appointment and it does not match the proposed appointment end the current and create a new one.
+                            if len(current_apt
+                                   ) == 1 and current_apt[0].party_guid != contact.party_guid:
                                 new_appt_needed = True
                                 current_apt[0].end_date = permit_amendment.issue_date - timedelta(
                                     days=1)
-                                current_apt[0].save()
+                        else:
+                            new_appt_needed = False if len(mine_party_appointments) > 0 and next(
+                                (apt for apt in mine_party_appointments
+                                 if apt.party_guid == contact.party_guid), None) else True
 
                         #if there is no current appointment create a new one.
                         if len(current_apt) == 0:
@@ -188,14 +216,16 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             new_mpa = MinePartyAppointment.create(
                                 mine=now_application_identity.mine
                                 if contact.mine_party_appt_type_code == 'MMG' else None,
-                                permit=permit
-                                if contact.mine_party_appt_type_code == 'PMT' else None,
+                                permit=permit if contact.mine_party_appt_type_code
+                                in PERMIT_LINKED_CONTACT_TYPES else None,
                                 party_guid=contact.party_guid,
                                 mine_party_appt_type_code=contact.mine_party_appt_type_code,
                                 start_date=permit_amendment.issue_date,
                                 end_date=None,
                                 processed_by=self.get_user_info())
-                            new_mpa.save()
+                            db.session.add(new_mpa)
+
+                db.session.commit()
 
             #TODO: Documents / CRR
             # Update NoW application and save status
