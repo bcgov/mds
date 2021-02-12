@@ -60,3 +60,9 @@ export const clearSearchBarResults = () => (dispatch) => {
   dispatch(searchActions.clearSearchBarResults());
   dispatch(success(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
 };
+
+export const clearAllSearchResults = () => (dispatch) => {
+  dispatch(clear(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
+  dispatch(searchActions.clearAllSearchResults());
+  dispatch(success(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
+};

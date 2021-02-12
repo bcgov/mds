@@ -179,6 +179,11 @@
 // CARDS
 .ant-card-now {
   height: 420px;
+
+  &.inherit-height {
+    height: inherit !important;
+  }
+
   .ant-card-head {
     height: 70px;
     align-items: "center";
@@ -193,6 +198,11 @@
 
 .ant-card-body {
   padding: 20px;
+}
+
+.white .ant-card-head {
+  min-height: 90px;
+  background: white;
 }
 
 .ant-card-head {

@@ -8,6 +8,7 @@ import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
 
 import * as FORM from "@/constants/forms";
+import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -24,6 +25,7 @@ const propTypes = {
   longitude: PropTypes.string,
   latitude: PropTypes.string,
   change: PropTypes.func.isRequired,
+  clearAllSearchResults: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 };
 
@@ -35,6 +37,7 @@ const defaultProps = {
 
 export const VerifyApplicationInformationForm = (props) => {
   const [wasFormReset, setReset] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
   const values = {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
@@ -45,6 +48,8 @@ export const VerifyApplicationInformationForm = (props) => {
     setReset(true);
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
     props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
+    setSelectedRows([]);
+    props.clearAllSearchResults();
   };
 
   return (
@@ -68,18 +73,14 @@ export const VerifyApplicationInformationForm = (props) => {
       />
       <br />
       <br />
-      <h4>Match Application Contacts to Core Contacts</h4>
-      <p>Select a Contact from Core for each person shown, or update the Roles if required.</p>
-      <p>
-        Click &quot;Confirm&quot; when you have finished matching the contact. Changes will not be
-        saved until you Click &quot;Verify Application&quot;
-      </p>
-      <p>Click &quot;Cancel&quot; to reset the form.</p>
+      <h4>Match the contacts from the Notice of Work application to contacts in CORE.</h4>
       <Divider />
       <VerifyNoWContacts
         initialValues={props.originalNoticeOfWork}
         contactFormValues={props.contactFormValues}
         wasFormReset={wasFormReset}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -109,6 +110,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       reset,
       change,
+      clearAllSearchResults,
     },
     dispatch
   );

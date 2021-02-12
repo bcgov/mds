@@ -306,3 +306,14 @@
     }
   }
 }
+
+.card--white {
+  border-radius: 5px;
+  min-height: 100px;
+  max-height: fit-content;
+  padding: 10px;
+  background-color: white;
+  .null {
+    @include center(true, true);
+  }
+}
