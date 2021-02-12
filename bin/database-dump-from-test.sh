@@ -26,19 +26,6 @@ then
 	exit
 fi
 
-# Ensure user only has psql container up
-#
-echo "Are you currently ONLY running the psql container?"
-echo "(y/n):"
-read INPUT
-if [ "$INPUT" != "y" ]
-then
-	echo
-	echo "Please bring down all of your containers EXCEPT mds_postgres"
-	echo
-	exit
-fi
-
 # Check login
 #
 if ! oc whoami
@@ -48,7 +35,6 @@ then
 	echo "https://console.pathfinder.gov.bc.ca:8443/console/project/empr-mds-dev/overview"
     exit
 fi
-
 
 # Check project availability
 #
@@ -62,7 +48,7 @@ then
 fi
 
 # # Identify database and take a backup
-# #
+#
 POD_DB=$( oc get pods -n ${PROJECT} -o name | grep -Eo "mds-postgresql-test-[[:digit:]]+-[[:alnum:]]+" )
 SAVE_FILE=$( basename ${SAVE_TO} )
 SAVE_PATH=$( dirname ${SAVE_TO} )
@@ -82,27 +68,3 @@ echo
 echo "Size: $( du -h ${SAVE_TO} | awk '{ print $1 }' )"
 echo "Name: ${SAVE_TO}"
 echo
-
-# Automate import into containerized db
-#
-echo "Perform automatic import to your local running psql container?"
-echo "NOTE: Your local containerized psql db will be dropped!"
-echo "(y/n):"
-read INPUT
-if [ "$INPUT" = "y" ]
-then
-	echo
-	echo "Performing automatic import"
-	docker cp $SAVE_PATH/$SAVE_FILE mds_postgres:docker-entrypoint-initdb.d/
-	docker exec -it mds_postgres sh -c "dropdb --user=mds --if-exists mds" || true
-	docker exec -it mds_postgres sh -c "createdb --user=mds mds" || true
-	docker exec -it mds_postgres sh -c "psql -U mds -ac 'GRANT ALL ON DATABASE "mds" TO "mds";'"
-	docker exec -it mds_postgres sh -c "gunzip -c  $SAVE_FILE | psql -v -U mds -d mds" || true
-	docker exec -it mds_postgres sh -c "psql -U mds -ac 'REASSIGN OWNED BY postgres TO mds;';"
-	echo
-fi
-
-echo
-echo "Removing local dump file..."
-echo
-rm $SAVE_PATH/$SAVE_FILE || true

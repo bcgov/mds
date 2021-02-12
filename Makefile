@@ -17,8 +17,7 @@ frontend: frontend-build | frontend-run
 project: project-build | project-run
 rebuild: project-build
 reset:  stop | clean
-database-seed: database-dump | database-dump-seed
-database-seed-local: database-dump | database-dump-seed-local
+database-seed: database-dump-from-test | database-dump-seed
 
 one-time-local-dev-env-setup:
 	@echo "+\n++ Setting up your local development environment"
@@ -130,18 +129,14 @@ database-dump-from-test:
 	@echo "+\n++ Getting database dump from test environment...\n+"
 	@sh ./bin/database-dump-from-test.sh empr-mds-test pgDump-test.sql
 
-database-dump:
-	@echo "+\n++ Getting database dump from test environment...\n+"
-	@sh ./bin/database-dump.sh empr-mds-test pgDump-test
-
 database-dump-seed:
 	@echo "+\n++ Seeding docker database...\n+"
-	@docker cp pgDump-test.pgCustom mds_postgres:/tmp/
-	@docker exec -it mds_postgres pg_restore -U mds -d mds -c /tmp/pgDump-test.pgCustom
-
-database-dump-seed-local:
-	@echo "+\n++ Seeding locally installed database...\n+"
-	@pg_restore -U mds -d mds -c pgDump-test.pgCustom
+	@docker cp pgDump-test.sql mds_postgres:/tmp/
+	@docker exec -it mds_postgres sh -c "dropdb --user=mds --if-exists mds" || true
+	@docker exec -it mds_postgres sh -c "createdb --user=mds mds" || true
+	@docker exec -it mds_postgres sh -c "psql -U mds -ac 'GRANT ALL ON DATABASE "mds" TO "mds";'"
+	@docker exec -it mds_postgres sh -c "gunzip -c  /tmp/pgDump-test.sql | psql -v -U mds -d mds" || true
+	@docker exec -it mds_postgres sh -c "psql -U mds -ac 'REASSIGN OWNED BY postgres TO mds;';"
 
 generate-rand1000:
 	@echo "+\n++ Generating 1000 random mine records in local database container...\n+"
@@ -153,7 +148,7 @@ generate-rand100:
 
 database-dump-clean:
 	@echo "+\n++ Removing dump file...\n+"
-	@rm -f pgDump-test.pgCustom
+	@rm -f pgDump-test.sql
 
 keycloak:
 	@echo "+\n++ Running keycloak...\n+"
