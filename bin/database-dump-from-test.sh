@@ -71,8 +71,8 @@ mkdir -p ${SAVE_PATH}
 # Use oc to rsync data and download locally
 #
 oc exec ${POD_DB} -n ${PROJECT} -- /bin/bash -c \
-	'pg_dump -Fp -U postgres mds \
-	> /tmp/'${SAVE_FILE}
+	'pg_dump -Fp --no-owner -U postgres mds \
+	| gzip > /tmp/'${SAVE_FILE}
 oc rsync ${POD_DB}:/tmp/${SAVE_FILE} ${SAVE_PATH} -n ${PROJECT} --progress=true --no-perms=true
 oc exec ${POD_DB} -n ${PROJECT} -- /bin/bash -c 'rm /tmp/'${SAVE_FILE}
 
@@ -97,9 +97,12 @@ then
 	docker exec -it mds_postgres sh -c "dropdb --user=mds --if-exists mds" || true
 	docker exec -it mds_postgres sh -c "createdb --user=mds mds" || true
 	docker exec -it mds_postgres sh -c "psql -U mds -ac 'GRANT ALL ON DATABASE "mds" TO "mds";'"
-	sleep 3;
-	docker exec -it mds_postgres sh -c "psql -v -U mds -d mds -f $SAVE_FILE" || true
-	sleep 3;
+	docker exec -it mds_postgres sh -c "gunzip -c  $SAVE_FILE | psql -v -U mds -d mds" || true
 	docker exec -it mds_postgres sh -c "psql -U mds -ac 'REASSIGN OWNED BY postgres TO mds;';"
 	echo
 fi
+
+echo
+echo "Removing local dump file..."
+echo
+rm $SAVE_PATH/$SAVE_FILE || true
