@@ -126,6 +126,10 @@ frontend-run:
 	@echo "+\n++ Running frontend...\n+"
 	@docker-compose up -d frontend
 
+database-dump-from-test:
+	@echo "+\n++ Getting database dump from test environment...\n+"
+	@sh ./bin/database-dump-from-test.sh empr-mds-test pgDump-test.sql
+
 database-dump:
 	@echo "+\n++ Getting database dump from test environment...\n+"
 	@sh ./bin/database-dump.sh empr-mds-test pgDump-test
