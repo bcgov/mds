@@ -66,9 +66,16 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if commit:
             if not (self.permit or self.permit_id or self.mine_guid or self.mine):
                 raise AssertionError("Must have a related permit or mine")
-            if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES and (
-                    self.mine_guid or self.mine) is not None:
-                raise AssertionError("Permittees are not related to mines")
+
+            if self.mine_party_appt_type_code == 'PMT' and (self.mine_guid
+                                                            or self.mine) is not None:
+                raise AssertionError("Contacts linked to a permit are not related to mines")
+
+            if self.mine_party_appt_type_code in [
+                    'THD', 'LDO', 'MOR'
+            ] and (self.mine_guid or self.mine) is not None and (self.permit_id
+                                                                 or self.permit) is not None:
+                raise AssertionError("Contacts linked to a permit are not related to mines")
 
         super(MinePartyAppointment, self).save(commit)
 
