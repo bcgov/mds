@@ -82,7 +82,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         now_application_identity.save()
 
         now_application = NOWApplication.find_by_application_guid(now_application_guid)
-        now_application_document_type.after_document_generated(template_data, now_doc,
+        now_application_document_type.after_template_generated(template_data, now_doc,
                                                                now_application)
 
         # Depending on the return_record param, return the document record or file content

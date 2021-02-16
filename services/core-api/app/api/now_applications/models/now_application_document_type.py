@@ -12,6 +12,7 @@ SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 
 class NOWApplicationDocumentType(AuditMixin, Base):
     __tablename__ = 'now_application_document_type'
+
     now_application_document_type_code = db.Column(db.String, primary_key=True)
     description = db.Column(db.String, nullable=False)
     now_application_document_sub_type_code = db.Column(
@@ -112,8 +113,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
 
         return template_data
 
-    def after_template_generation(self, template_data, now_doc, now_application):
-        def after_permit_generation(template_data, now_doc, now_application):
+    def after_template_generated(self, template_data, now_doc, now_application):
+        def after_permit_generated(template_data, now_doc, now_application):
             permit_amendment = PermitAmendment.find_by_now_application_guid(
                 now_application.now_application_guid)
             if not permit_amendment:
@@ -131,4 +132,4 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             permit_amendment.save()
 
         if self.now_application_document_type_code in ('PMT', 'PMA'):
-            return after_permit_generation(template_data, now_doc, now_application)
+            return after_permit_generated(template_data, now_doc, now_application)
