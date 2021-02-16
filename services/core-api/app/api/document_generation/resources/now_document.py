@@ -1,6 +1,6 @@
-import os, requests
+import os, requests, time
 from flask import current_app, request, Response, stream_with_context
-from flask_restplus import Resource
+from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
 from app.extensions import api, cache
 
@@ -14,16 +14,18 @@ from app.api.now_applications.models.now_application_document_type import NOWApp
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
     @api.doc(
         description=
-        'Returns the generated document associated with the received token and pushes it to the \
-        Document Manager and associates it with the Notice of Work.',
+        'Generates the document associated with the received token and pushes it to the Document Manager and associates it with the Notice of Work. Returns either the file content or the document record, depending on query parameters.',
         params={
             'token':
-            'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.'
+            'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.',
+            'return_record':
+            'If true, returns the created document record, otherwise, returns the generated file content.'
         })
     def get(self):
 
@@ -77,7 +79,10 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         now_application_identity.now_application.documents.append(now_doc)
         now_application_identity.save()
 
-        # Return the generated document
+        # Depending on the return_record param, return the document record or file content
+        return_record = request.args.get('return_record') == 'true'
+        if return_record:
+            return marshal(new_mine_doc, MINE_DOCUMENT_MODEL)
         file_gen_resp = Response(
             stream_with_context(
                 docgen_resp.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)),
