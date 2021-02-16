@@ -41,7 +41,8 @@ export const generateNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully generated Notice of Work document",
-  onDocumentGenerated = () => {}
+  onDocumentGenerated = () => {},
+  downloadGeneratedDocument = true
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -56,17 +57,19 @@ export const generateNoticeOfWorkApplicationDocument = (
       return CustomAxios()
         .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
         .then((response) => {
-          console.log(response);
+          const mineDocument = response.data;
           notification.success({
             message,
             duration: 10,
           });
           dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-          notification.info({
-            message: "Downloading generated document...",
-            duration: 10,
-          });
-          downloadFileFromDocumentManager(response.data);
+          if (downloadGeneratedDocument) {
+            notification.info({
+              message: "Downloading generated document...",
+              duration: 10,
+            });
+            downloadFileFromDocumentManager(mineDocument);
+          }
           onDocumentGenerated();
         })
         .catch((err) => {
@@ -85,7 +88,8 @@ export const exportNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully exported Notice of Work document",
-  onDocumentGenerated = () => {}
+  onDocumentGenerated = () => {},
+  downloadGeneratedDocument = true
 ) => (dispatch) => {
   dispatch(request(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -96,20 +100,29 @@ export const exportNoticeOfWorkApplicationDocument = (
       createRequestHeader()
     )
     .then((response) => {
-      const token = { token: response.data.token };
-      const docWindow = window.open(
-        `${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(token)}`,
-        "_blank"
-      );
-      docWindow.onbeforeunload = () => {
-        notification.success({
-          message,
-          duration: 10,
+      const params = { token: response.data.token, return_record: "true" };
+      return CustomAxios()
+        .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+        .then((response) => {
+          const mineDocument = response.data;
+          notification.success({
+            message,
+            duration: 10,
+          });
+          dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          if (downloadGeneratedDocument) {
+            notification.info({
+              message: "Downloading generated document...",
+              duration: 10,
+            });
+            downloadFileFromDocumentManager(mineDocument);
+          }
+          onDocumentGenerated();
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          throw new Error(err);
         });
-        dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-        onDocumentGenerated();
-      };
-      return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
