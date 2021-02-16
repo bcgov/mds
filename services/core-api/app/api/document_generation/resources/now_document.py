@@ -9,6 +9,7 @@ from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.config import Config
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
@@ -42,8 +43,9 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             document_type_code)
 
         # Generate the document using the template and template data
+        template_data = token_data['template_data']
         docgen_resp = DocumentGeneratorService.generate_document(
-            now_application_document_type.document_template, token_data['template_data'])
+            now_application_document_type.document_template, template_data)
         if docgen_resp.status_code != requests.codes.ok:
             raise BadGateway(f'Failed to generate document: {str(docgen_resp.content)}')
 
@@ -78,6 +80,10 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             update_user=username)
         now_application_identity.now_application.documents.append(now_doc)
         now_application_identity.save()
+
+        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+        now_application_document_type.after_document_generated(template_data, now_doc,
+                                                               now_application)
 
         # Depending on the return_record param, return the document record or file content
         return_record = request.args.get('return_record') == 'true'

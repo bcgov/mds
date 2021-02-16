@@ -137,18 +137,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.security_received_date = now_application_identity.now_application.security_received_date
             permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
             permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
-
-            # Attach the generated issued permit PDF to the permit's documents
-            permit_amendment_document = [
-                doc for doc in now_application_identity.now_application.documents
-                if doc.now_application_document_type_code == 'PMA'
-                or doc.now_application_document_type_code == 'PMT'
-            ][0]
-            new_pa_doc = PermitAmendmentDocument(
-                mine_guid=permit_amendment.mine_guid,
-                document_manager_guid=permit_amendment_document.mine_document.document_manager_guid,
-                document_name=permit_amendment_document.mine_document.document_name)
-            permit_amendment.related_documents.append(new_pa_doc)
             permit_amendment.save()
 
             # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit

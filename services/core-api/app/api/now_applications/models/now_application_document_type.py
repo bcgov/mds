@@ -4,6 +4,8 @@ from flask_restplus import marshal
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 
@@ -109,3 +111,24 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             return transform_letter(template_data, now_application)
 
         return template_data
+
+    def after_template_generation(self, template_data, now_doc, now_application):
+        def after_permit_generation(template_data, now_doc, now_application):
+            permit_amendment = PermitAmendment.find_by_now_application_guid(
+                now_application.now_application_guid)
+            if not permit_amendment:
+                raise Exception('No permit amendment found for this application.')
+
+            is_draft = template_data.get('is_draft', True)
+            if is_draft:
+                return
+
+            pa_doc = PermitAmendmentDocument(
+                mine_guid=permit_amendment.mine_guid,
+                document_manager_guid=now_doc.mine_document.document_manager_guid,
+                document_name=now_doc.mine_document.document_name)
+            permit_amendment.related_documents.append(pa_doc)
+            permit_amendment.save()
+
+        if self.now_application_document_type_code in ('PMT', 'PMA'):
+            return after_permit_generation(template_data, now_doc, now_application)
