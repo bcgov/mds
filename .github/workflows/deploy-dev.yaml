@@ -1,0 +1,43 @@
+name: Deploy Dev
+
+on:
+  workflow_run:
+    workflows:
+      - Push
+    types:
+      - completed
+
+env:
+  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/${{ secrets.CONTAINER_IMAGE }}
+
+  TF_VERSION: 0.13.5
+  TG_VERSION: 0.26.7
+  TG_SRC_PATH: terraform
+  TFC_WORKSPACE: dev
+
+jobs:
+  cd:
+    name: cd
+    runs-on: ubuntu-20.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - uses: peter-murray/terragrunt-github-action@v1.0.0
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Apply
+        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
+        env:
+          app_image: ${{ env.IMAGE_ID }}:${{ github.event.workflow_run.head_sha }}
+        run: terragrunt apply-all --terragrunt-non-interactive

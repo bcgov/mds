@@ -1,0 +1,109 @@
+name: Terraform Plan
+
+on:
+  workflow_run:
+    workflows:
+      - Pull Request
+    types:
+      - completed
+
+env:
+  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/${{ secrets.CONTAINER_IMAGE }}
+
+  TF_VERSION: 0.13.5
+  TG_VERSION: 0.26.7
+  TG_SRC_PATH: terraform
+  TFC_WORKSPACE: dev
+
+jobs:
+  plan:
+    name: terraform-plan
+    runs-on: ubuntu-20.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - uses: peter-murray/terragrunt-github-action@v1.0.0
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Plan
+        id: tg_plan
+        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
+        env:
+          TF_CLI_ARGS: -no-color
+          app_image: ${{ env.IMAGE_ID }}:${{ github.event.workflow_run.head_sha }}
+        run: terragrunt plan-all --terragrunt-non-interactive | tee /tmp/tg_plan
+        continue-on-error: true
+
+      - name: Get Terraform Plan Output
+        id: plan
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: /tmp/tg_plan
+
+      - name: "Download artifact"
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.event.workflow_run.id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+      - run: unzip pr.zip
+
+      - name: Update Pull Request
+        uses: actions/github-script@v3
+        env:
+          SUCCESS: '\u2705'
+          FAILURE: '\u274C'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            const plan =  `${{ steps.plan.outcome }}` == 'success' ? `${{ env.SUCCESS }}` : `${{ env.FAILURE }}`;
+            const output = `#### Terraform Plan: ${plan}
+
+            <details>
+            <summary>Show</summary>
+
+            \`\`\`terraform
+            ${{ steps.plan.outputs.content }}
+            \`\`\`
+
+            </details>
+
+            *Pusher:* @${{ github.actor }}, *Action:* [${process.env.GITHUB_WORKFLOW}: #${process.env.GITHUB_RUN_NUMBER}](https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})`;
+              
+            github.issues.createComment({
+              issue_number: issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terragrunt Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1

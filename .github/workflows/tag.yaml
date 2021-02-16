@@ -1,0 +1,35 @@
+name: Tag
+
+on:
+  push:
+    tags: ['*']
+
+env:
+  REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
+  REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+  IMAGE: ${{ secrets.CONTAINER_IMAGE }}
+  IMAGE_ID:  ${{ secrets.CONTAINER_REGISTRY }}/${{ secrets.CONTAINER_IMAGE }}
+
+jobs:
+  main:
+    name: main
+    runs-on: ubuntu-20.04
+    
+    steps:
+
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+
+      - name: Create Docker Tag
+        run: |
+          docker pull ${{ env.IMAGE_ID }}:${GITHUB_SHA}
+          docker tag ${{ env.IMAGE_ID }}:${GITHUB_SHA} ${{ env.IMAGE_ID }}:${GITHUB_REF#refs/tags/}
+          docker push ${{ env.IMAGE_ID }}:${GITHUB_REF#refs/tags/}
