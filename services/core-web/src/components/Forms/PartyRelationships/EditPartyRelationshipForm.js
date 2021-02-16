@@ -46,12 +46,16 @@ const checkDatesForOverlap = (values, props) => {
     }
   );
 
-  return validateDateRanges(
-    existingAppointments,
-    values,
-    props.partyRelationshipType.description,
-    false
-  );
+  if (values && ["MMG", "PMT"].includes(values.mine_party_appt_type_code)) {
+    return validateDateRanges(
+      existingAppointments,
+      values,
+      props.partyRelationshipType.description,
+      false
+    );
+  }
+
+  return {};
 };
 
 const validate = (values, props) => {
