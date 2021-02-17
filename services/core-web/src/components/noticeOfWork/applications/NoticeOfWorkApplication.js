@@ -521,7 +521,7 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
 
-    this.props.exportNoticeOfWorkApplicationDocument(
+    return this.props.exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       `Successfully exported ${documentType.description} for this Notice of Work`
