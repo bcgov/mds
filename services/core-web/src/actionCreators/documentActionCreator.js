@@ -64,10 +64,6 @@ export const generateNoticeOfWorkApplicationDocument = (
           });
           dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
           if (downloadGeneratedDocument) {
-            notification.info({
-              message: "Downloading generated document...",
-              duration: 10,
-            });
             downloadFileFromDocumentManager(mineDocument);
           }
           onDocumentGenerated();
@@ -111,10 +107,6 @@ export const exportNoticeOfWorkApplicationDocument = (
           });
           dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
           if (downloadGeneratedDocument) {
-            notification.info({
-              message: "Downloading generated document...",
-              duration: 10,
-            });
             downloadFileFromDocumentManager(mineDocument);
           }
           onDocumentGenerated();
