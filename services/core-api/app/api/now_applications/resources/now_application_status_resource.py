@@ -175,7 +175,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             (contact for contact in filtered_contacts
                              if contact.party_guid == apt.party_guid), None):
                             apt.end_date = permit_amendment.issue_date - timedelta(days=1)
-                            apt.save()
+                            db.session.add(apt)
+                    db.session.commit()
 
                 #create contacts
                 for contact in now_application_identity.now_application.contacts:
@@ -203,6 +204,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                                 new_appt_needed = True
                                 current_apt[0].end_date = permit_amendment.issue_date - timedelta(
                                     days=1)
+                                db.session.add_all(current_apt)
                         else:
                             new_appt_needed = False if len(mine_party_appointments) > 0 and next(
                                 (apt for apt in mine_party_appointments
