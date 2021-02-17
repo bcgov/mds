@@ -152,7 +152,14 @@ class MinePartyApptResource(Resource, UserMixin):
             if key in ['party_guid', 'mine_guid']:
                 continue
             elif key == "related_guid":
-                mpa.assign_related_guid(data.get('related_guid'))
+                related_guid = data.get('related_guid', None)
+                if mpa.mine_party_appt_type_code in ['THD', 'LDO', 'MOR'
+                                                     ] and mpa.mine_guid and not related_guid:
+                    continue
+                else:
+                    mpa.assign_related_guid(data.get('related_guid'))
+                    mpa.mine_guid = None
+                    mpa.mine = None
             else:
                 setattr(mpa, key, value)
         try:
