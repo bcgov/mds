@@ -1,4 +1,4 @@
-import os, requests, time
+import os, requests
 from flask import current_app, request, Response, stream_with_context
 from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
