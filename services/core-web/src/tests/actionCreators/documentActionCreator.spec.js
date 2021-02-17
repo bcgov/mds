@@ -30,15 +30,18 @@ describe("`documentActionCreator` action creator: exported Notice of Work ", () 
   };
 
   const url = `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}`;
-  it("Request failure, dispatches `error` with correct response", () => {
-    const mockResponse = { data: { token: "token" } };
-    mockAxios.onPost(url, payload).reply(200, mockResponse);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const params = { token: "token", return_record: "true" };
+    mockAxios
+      .onPost(url, payload)
+      .reply(200, { data: { token: "token" } })
+      .onGet(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, MOCK.createMockHeader())
+      .reply(200);
     return exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(errorSpy).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
