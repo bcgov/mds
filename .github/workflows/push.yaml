@@ -5,11 +5,9 @@ on:
     branches: [master]
     paths:
       - ".github/workflows/push.yaml"
-      - "client/**"
-      - "server/**"
+      - "services/core-web/**"
       - "terraform/**"
-      - "Dockerfile"
-      - "!**/README.md"
+      - "aws/docker/nodejs-10/Dockerfile"
 
 env:
   REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
