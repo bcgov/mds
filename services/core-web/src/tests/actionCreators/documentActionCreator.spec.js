@@ -3,7 +3,6 @@ import axios from "axios";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as COMMON_API from "@common/constants/API";
-import * as API from "@/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 import { exportNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
@@ -30,18 +29,16 @@ describe("`documentActionCreator` action creator: exported Notice of Work ", () 
   };
 
   const url = `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}`;
-  it("Request successful, dispatches `success` with correct response", () => {
-    const params = { token: "token", return_record: "true" };
-    mockAxios
-      .onPost(url, payload)
-      .reply(200, { data: { token: "token" } })
-      .onGet(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, MOCK.createMockHeader())
-      .reply(200);
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url, payload).reply(200, {
+      data: { token: "token" },
+    });
     return exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
