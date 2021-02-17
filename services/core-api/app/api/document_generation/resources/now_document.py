@@ -15,7 +15,7 @@ from app.api.now_applications.models.now_application_document_type import NOWApp
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
@@ -88,7 +88,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         # Depending on the return_record param, return the document record or file content
         return_record = request.args.get('return_record') == 'true'
         if return_record:
-            return marshal(new_mine_doc, MINE_DOCUMENT_MODEL)
+            return marshal(now_doc, NOW_APPLICATION_DOCUMENT)
         file_gen_resp = Response(
             stream_with_context(
                 docgen_resp.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)),

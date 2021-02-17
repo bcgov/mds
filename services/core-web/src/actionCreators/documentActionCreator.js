@@ -57,7 +57,7 @@ export const generateNoticeOfWorkApplicationDocument = (
       return CustomAxios()
         .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
         .then((response) => {
-          const mineDocument = response.data;
+          const mineDocument = response.data.mine_document;
           notification.success({
             message,
             duration: 10,
@@ -100,7 +100,7 @@ export const exportNoticeOfWorkApplicationDocument = (
       return CustomAxios()
         .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
         .then((response) => {
-          const mineDocument = response.data;
+          const mineDocument = response.data.mine_document;
           notification.success({
             message,
             duration: 10,
