@@ -1,7 +1,7 @@
 # alb.tf
 
 resource "aws_alb" "main" {
-  name            = "sample-load-balancer"
+  name            = "mds-load-balancer"
   subnets         = module.network.aws_subnet_ids.web.ids
   internal        = true
   security_groups = [aws_security_group.lb.id]
@@ -10,7 +10,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "app" {
-  name                 = "sample-target-group"
+  name                 = "mds-target-group"
   port                 = var.app_port
   protocol             = "HTTP"
   vpc_id               = module.network.aws_vpc.id
@@ -36,7 +36,7 @@ resource "aws_alb_listener" "front_end" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = data.aws_acm_certificate.sample_cert.arn
+  certificate_arn   = data.aws_acm_certificate.mds_cert.arn
 
 
   default_action {
@@ -46,7 +46,7 @@ resource "aws_alb_listener" "front_end" {
 }
 
 # Find a certificate that is issued
-data "aws_acm_certificate" "sample_cert" {
+data "aws_acm_certificate" "mds_cert" {
   domain   = var.alb_cert_domain
   statuses = ["ISSUED"]
 }

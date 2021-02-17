@@ -49,8 +49,8 @@ resource "aws_iam_role_policy" "ecs_task_execution_cwlogs" {
 EOF
 }
 
-resource "aws_iam_role" "sample_app_container_role" {
-  name = "sample_app_container_role"
+resource "aws_iam_role" "mds_app_container_role" {
+  name = "mds_app_container_role"
 
   assume_role_policy = <<EOF
 {
@@ -71,9 +71,9 @@ EOF
   tags = local.common_tags
 }
 
-resource "aws_iam_role_policy" "sample_app_container_cwlogs" {
-  name = "sample_app_container_cwlogs"
-  role = aws_iam_role.sample_app_container_role.id
+resource "aws_iam_role_policy" "mds_app_container_cwlogs" {
+  name = "mds_app_container_cwlogs"
+  role = aws_iam_role.mds_app_container_role.id
 
   policy = <<-EOF
   {
@@ -94,34 +94,4 @@ resource "aws_iam_role_policy" "sample_app_container_cwlogs" {
       ]
   }
 EOF
-}
-
-resource "aws_iam_role_policy" "sample_app_dynamodb" {
-  name = "sample_app_dynamodb"
-  role = aws_iam_role.sample_app_container_role.id
-
-  policy = <<-EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-          "Effect": "Allow",
-          "Action": [
-              "dynamodb:BatchGet*",
-              "dynamodb:DescribeStream",
-              "dynamodb:DescribeTable",
-              "dynamodb:Get*",
-              "dynamodb:Query",
-              "dynamodb:Scan",
-              "dynamodb:BatchWrite*",
-              "dynamodb:CreateTable",
-              "dynamodb:Delete*",
-              "dynamodb:Update*",
-              "dynamodb:PutItem"
-          ],
-          "Resource": "${aws_dynamodb_table.startup_sample_table.arn}"
-        }
-    ]
-  }
-  EOF  
 }

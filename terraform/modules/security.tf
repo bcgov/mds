@@ -2,7 +2,7 @@
 
 # ALB Security Group: Edit to restrict access to the application
 resource "aws_security_group" "lb" {
-  name        = "sample-load-balancer-security-group"
+  name        = "mds-load-balancer-security-group"
   description = "controls access to the ALB"
   vpc_id      = module.network.aws_vpc.id
 
@@ -32,7 +32,7 @@ resource "aws_security_group" "lb" {
 
 # Traffic to the ECS cluster should only come from the ALB
 resource "aws_security_group" "ecs_tasks" {
-  name        = "sample-ecs-tasks-security-group"
+  name        = "mds-ecs-tasks-security-group"
   description = "allow inbound access from the ALB only"
   vpc_id      = module.network.aws_vpc.id
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 
 resource "aws_security_group" "endpoints" {
-  name        = "sample-endpoints-security-group"
+  name        = "mds-endpoints-security-group"
   description = "allow inbound access"
   vpc_id      = module.network.aws_vpc.id
 

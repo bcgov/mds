@@ -1,7 +1,7 @@
 
 resource "aws_budgets_budget" "cost" {
 
-  name              = "startup-sample-monthly"
+  name              = "mds-monthly"
   budget_type       = "COST"
   limit_amount      = var.budget_amount
   limit_unit        = "USD"
@@ -17,11 +17,10 @@ resource "aws_budgets_budget" "cost" {
   }
 
   cost_filters = {
-    TagKeyValue = "user:Project$Startup Sample"
+    TagKeyValue = "user:Project$MDS Frontend Spike"
   }
 }
 
-
 resource "aws_sns_topic" "billing_alert_topic" {
-  name = "startup-sample-billing-alert-topic"
+  name = "mds-billing-alert-topic"
 }

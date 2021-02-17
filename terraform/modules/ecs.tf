@@ -1,7 +1,7 @@
 # ecs.tf
 
 resource "aws_ecs_cluster" "main" {
-  name               = "sample-cluster"
+  name               = "mds-cluster"
   capacity_providers = ["FARGATE_SPOT"]
 
   default_capacity_provider_strategy {
@@ -14,9 +14,9 @@ resource "aws_ecs_cluster" "main" {
 
 resource "aws_ecs_task_definition" "app" {
   count                    = local.create_ecs_service
-  family                   = "sample-app-task"
+  family                   = "mds-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn            = aws_iam_role.sample_app_container_role.arn
+  task_role_arn            = aws_iam_role.mds_app_container_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.fargate_cpu
@@ -39,10 +39,6 @@ resource "aws_ecs_task_definition" "app" {
       ]
       environment = [
         {
-          name  = "DB_NAME"
-          value = var.db_name
-        },
-        {
           name  = "AWS_REGION",
           value = var.aws_region
         }
@@ -64,7 +60,7 @@ resource "aws_ecs_task_definition" "app" {
 
 resource "aws_ecs_service" "main" {
   count                             = local.create_ecs_service
-  name                              = "sample-service"
+  name                              = "mds-service"
   cluster                           = aws_ecs_cluster.main.id
   task_definition                   = aws_ecs_task_definition.app[count.index].arn
   desired_count                     = var.app_count
