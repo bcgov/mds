@@ -50,8 +50,9 @@ export const GenerateDocumentForm = (props) => (
         onConfirm={props.closeModal}
         okText="Yes"
         cancelText="No"
+        disabled={props.submitting}
       >
-        <Button className="full-mobile" type="secondary">
+        <Button className="full-mobile" type="secondary" disabled={props.submitting}>
           Cancel
         </Button>
       </Popconfirm>

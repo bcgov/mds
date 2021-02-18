@@ -492,7 +492,7 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props
+    return this.props
       .generateNoticeOfWorkApplicationDocument(
         documentTypeCode,
         payload,
@@ -509,9 +509,12 @@ export class NoticeOfWorkApplication extends Component {
       });
   };
 
-  handleExportDocument = (documentTypeCode) => {
+  handleExportNowDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-    this.exportNowDocument(documentType, this.props.noticeOfWork);
+    this.setState({ exportingNow: true });
+    return this.exportNowDocument(documentType, this.props.noticeOfWork).finally(() =>
+      this.setState({ exportingNow: false })
+    );
   };
 
   exportNowDocument = (documentType) => {
@@ -521,7 +524,7 @@ export class NoticeOfWorkApplication extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
     };
 
-    this.props.exportNoticeOfWorkApplicationDocument(
+    return this.props.exportNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       `Successfully exported ${documentType.description} for this Notice of Work`
@@ -714,10 +717,12 @@ export class NoticeOfWorkApplication extends Component {
               .map((document) => {
                 return (
                   <Menu.Item
+                    key={document.now_application_document_type_code}
                     className="custom-menu-item"
-                    onClick={() => {
-                      this.handleExportDocument(document.now_application_document_type_code);
-                    }}
+                    onClick={() =>
+                      this.handleExportNowDocument(document.now_application_document_type_code)
+                    }
+                    disabled={this.state.exportingNow}
                   >
                     Edited Application
                   </Menu.Item>
