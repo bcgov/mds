@@ -511,7 +511,10 @@ export class NoticeOfWorkApplication extends Component {
 
   handleExportNowDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
-    this.exportNowDocument(documentType, this.props.noticeOfWork);
+    this.setState({ exportingNow: true });
+    return this.exportNowDocument(documentType, this.props.noticeOfWork).finally(() =>
+      this.setState({ exportingNow: false })
+    );
   };
 
   exportNowDocument = (documentType) => {
@@ -714,10 +717,12 @@ export class NoticeOfWorkApplication extends Component {
               .map((document) => {
                 return (
                   <Menu.Item
+                    key={document.now_application_document_type_code}
                     className="custom-menu-item"
-                    onClick={() => {
-                      this.handleExportNowDocument(document.now_application_document_type_code);
-                    }}
+                    onClick={() =>
+                      this.handleExportNowDocument(document.now_application_document_type_code)
+                    }
+                    disabled={this.state.exportingNow}
                   >
                     Edited Application
                   </Menu.Item>
