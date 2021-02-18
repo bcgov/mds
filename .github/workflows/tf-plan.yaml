@@ -8,9 +8,7 @@ on:
       - completed
 
 env:
-  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/${{ secrets.CONTAINER_IMAGE }}
-
-  TF_VERSION: 0.13.5
+  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/mds-frontend
   TG_VERSION: 0.26.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
