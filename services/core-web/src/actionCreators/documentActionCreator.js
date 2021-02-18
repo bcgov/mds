@@ -41,8 +41,7 @@ export const generateNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully generated Notice of Work document",
-  onDocumentGenerated = () => {},
-  downloadGeneratedDocument = true
+  onDocumentGenerated = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -63,9 +62,7 @@ export const generateNoticeOfWorkApplicationDocument = (
             duration: 10,
           });
           dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-          if (downloadGeneratedDocument) {
-            downloadFileFromDocumentManager(mineDocument);
-          }
+          downloadFileFromDocumentManager(mineDocument);
           onDocumentGenerated();
         })
         .catch((err) => {
@@ -84,11 +81,10 @@ export const exportNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully exported Notice of Work document",
-  onDocumentGenerated = () => {},
-  downloadGeneratedDocument = true
+  onDocumentGenerated = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}`,
@@ -106,9 +102,7 @@ export const exportNoticeOfWorkApplicationDocument = (
             duration: 10,
           });
           dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-          if (downloadGeneratedDocument) {
-            downloadFileFromDocumentManager(mineDocument);
-          }
+          downloadFileFromDocumentManager(mineDocument);
           onDocumentGenerated();
         })
         .catch((err) => {
@@ -120,5 +114,5 @@ export const exportNoticeOfWorkApplicationDocument = (
       dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
