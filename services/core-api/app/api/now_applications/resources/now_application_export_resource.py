@@ -89,6 +89,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
         if not document_type:
             raise NotFound('Document type not found')
 
+        if document_type.now_application_document_type_code != 'NTR':
+            raise BadRequest(f'This method can only export {document_type.description}')
+
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
