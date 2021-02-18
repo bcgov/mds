@@ -712,7 +712,7 @@ VALUES
   ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
   ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
   ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NTR', '[]', 'templates/now/Technical Review.docx', true, 'system-mds', 'system-mds'),
+  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
   ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
   ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
