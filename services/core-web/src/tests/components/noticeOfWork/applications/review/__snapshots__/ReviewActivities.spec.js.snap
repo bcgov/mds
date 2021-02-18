@@ -15,7 +15,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_access"
     >
-      <AccessRoads
+      <Connect(AccessRoads)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -69,7 +69,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="cut_lines_polarization_survey"
     >
-      <CutLines
+      <Connect(CutLines)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
