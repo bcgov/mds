@@ -39,7 +39,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          context: ${{ SERVICE_CONTEXT}}
+          context: ${{ env.SERVICE_CONTEXT }}
           volumes:
                 - ./src/:/app/src/
           push: false
