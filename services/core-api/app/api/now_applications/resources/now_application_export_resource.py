@@ -89,15 +89,19 @@ class NOWApplicationExportResource(Resource, UserMixin):
         if not document_type:
             raise NotFound('Document type not found')
 
-        if document_type.now_application_document_type_code != 'NTR':
-            raise BadRequest(f'This method can only export {document_type.description}')
-
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
-        data = self.parser.parse_args()
+        if document_type.now_application_document_type_code != 'NTR':
+            raise BadRequest(f'This method can only export {document_type.description}')
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(data['now_application_guid'])
+        data = self.parser.parse_args()
+        now_application_guid = data['now_application_guid']
+        return NOWApplicationExportResource.get_now_form_generate_token(now_application_guid)
+
+    @classmethod
+    def get_now_form_generate_token(cls, now_application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
 
         if not now_application_identity:
             raise NotFound('Notice of Work not found')
@@ -309,9 +313,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
         token = uuid.uuid4()
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
-                'document_type_code': document_type_code,
-                'now_application_guid': data['now_application_guid'],
-                'template_data': template_data,
+                'document_type_code': 'NTR',
+                'now_application_guid': now_application_guid,
+                'template_data': now_application_json,
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
