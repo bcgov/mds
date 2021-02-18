@@ -11,6 +11,7 @@ from app.api.now_applications.models.now_application_type import NOWApplicationT
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.unit_type import UnitType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -47,8 +48,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'first_aid_cert_level', 'exploration_access.reclamation_description',
     'exploration_access.reclamation_cost', 'blasting_operation.has_storage_explosive_on_site',
     'blasting_operation.explosive_permit_issued', 'blasting_operation.explosive_permit_expiry_date',
-    'blasting_operation.explosive_permit_number', 'camp.has_fuel_stored',
-    'camp.volume_fuel_stored', 'camp.has_fuel_stored_in_bulk', 'camp.has_fuel_stored_in_barrels',
+    'blasting_operation.explosive_permit_number', 'camp.has_fuel_stored', 'camp.volume_fuel_stored',
+    'camp.has_fuel_stored_in_bulk', 'camp.has_fuel_stored_in_barrels',
     'camp.reclamation_description', 'camp.reclamation_cost',
     'cut_lines_polarization_survey.reclamation_description',
     'cut_lines_polarization_survey.reclamation_cost',
@@ -73,6 +74,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code']
+
 
 class NOWApplicationExportResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -91,6 +94,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
+
+        unit_type_codes = UnitType.get_all()
 
         data = self.parser.parse_args()
 
@@ -223,6 +228,12 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
+                elif key in UNIT_TYPE_CODE_FIELDS:
+                    code_object = [
+                        code for code in unit_type_codes if code.unit_type_code == obj[key]
+                    ]
+                    obj[key] = code_object[0].short_description if code_object and len(
+                        code_object) > 0 else "N/A"
                 elif isinstance(obj[key], bool):
                     obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
