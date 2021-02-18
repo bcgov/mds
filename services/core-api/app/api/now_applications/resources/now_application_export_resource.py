@@ -303,24 +303,10 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
-        # Enforce that read-only fields do not change
-        template_data = now_application_json
-        enforced_data = [
-            x for x in document_type.document_template._form_spec_with_context(
-                data['now_application_guid']) if x.get('read-only', False)
-        ]
-        for enforced_item in enforced_data:
-            if template_data.get(enforced_item['id']) != enforced_item['context-value']:
-                current_app.logger.debug(
-                    f'OVERWRITING ENFORCED key={enforced_item["id"]}, value={template_data.get(enforced_item["id"])} -> {enforced_item["context-value"]}'
-                )
-            template_data[enforced_item['id']] = enforced_item['context-value']
-
-        token = uuid.uuid4()
-
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.
+        token = uuid.uuid4()
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
                 'document_type_code': document_type_code,
