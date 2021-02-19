@@ -239,6 +239,8 @@ class NOWApplication(Base, AuditMixin):
         self.last_updated_date = datetime.utcnow()
         super(NOWApplication, self).save(commit)
 
+
+    @classmethod
     def get_filtered_submissions_document(now_application):
         docs = []
 
