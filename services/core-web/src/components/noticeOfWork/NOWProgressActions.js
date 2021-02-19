@@ -64,15 +64,15 @@ export class NOWProgressActions extends Component {
 
   handleProgress = (tab, trigger) => {
     if (trigger === "Complete") {
-      this.stopProgress(tab);
+      return this.stopProgress(tab);
     } else {
-      this.startOrResumeProgress(tab, trigger);
+      return this.startOrResumeProgress(tab, trigger);
     }
   };
 
   stopProgress = (tab) => {
     const message = `Successfully Completed the ${this.props.progressStatusHash[tab]} Process.`;
-    this.props
+    return this.props
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
@@ -90,7 +90,7 @@ export class NOWProgressActions extends Component {
   startOrResumeProgress = (tab, trigger) => {
     const ending = trigger === "Start" ? "ed" : "d";
     const message = `Successfully ${trigger}${ending} the ${this.props.progressStatusHash[tab]} Process.`;
-    this.props
+    return this.props
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
@@ -105,7 +105,7 @@ export class NOWProgressActions extends Component {
   };
 
   handleStartDelay = (values) => {
-    this.props
+    return this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
@@ -117,7 +117,7 @@ export class NOWProgressActions extends Component {
   };
 
   handleStopDelay = (values) => {
-    this.props
+    return this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
