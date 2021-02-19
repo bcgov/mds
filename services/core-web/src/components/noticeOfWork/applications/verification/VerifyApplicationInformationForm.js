@@ -7,11 +7,11 @@ import { Button, Divider } from "antd";
 import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
 
-import * as FORM from "@/constants/forms";
 import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
 import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
+import * as FORM from "@/constants/forms";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 

@@ -282,19 +282,20 @@
     font-size: 40px;
   }
   .ant-result {
-    padding: 20px;
+    padding: 20px 0;
   }
   .ant-result-icon {
     margin-bottom: 0;
   }
   .ant-result-title {
-    font-size: 20px;
+    font-size: 15px;
   }
 }
 
 .show-on-hover {
   display: none;
 }
+
 .hover-row {
   .ant-row {
     margin: 0;
@@ -315,5 +316,17 @@
   background-color: white;
   .null {
     @include center(true, true);
+  }
+}
+
+.contact-rows {
+  background-color: #f3f0f0;
+  padding: 25px;
+  border-radius: 5px;
+}
+
+.party-table {
+  .ant-table-thead {
+    display: none;
   }
 }

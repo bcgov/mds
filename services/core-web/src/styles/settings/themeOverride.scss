@@ -180,8 +180,19 @@
 .ant-card-now {
   height: 420px;
 
+  &.ant-card-hoverable:hover {
+    box-shadow: 0px 4px 4px #7c66ad;
+  }
+
   &.inherit-height {
     height: inherit !important;
+  }
+
+  &.no-header {
+    .ant-card-head {
+      display: none;
+    }
+    padding-top: 20px;
   }
 
   .ant-card-head {
