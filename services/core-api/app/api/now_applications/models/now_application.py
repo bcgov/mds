@@ -240,7 +240,7 @@ class NOWApplication(Base, AuditMixin):
         super(NOWApplication, self).save(commit)
 
     # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
-    def add_now_form_to_fap(self):
+    def add_now_form_to_fap(self, description):
         from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
         from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
         from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
@@ -261,6 +261,7 @@ class NOWApplication(Base, AuditMixin):
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
+        now_doc.description = description
         now_doc.save()
 
     @classmethod

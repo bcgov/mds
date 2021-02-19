@@ -92,6 +92,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 identity.save()
 
         if application_progress_status_code == 'REV':
-            identity.now_application.add_now_form_to_fap()
+            identity.now_application.add_now_form_to_fap(
+                "This document was automatically created when Technical Review was completed.")
 
         return existing_now_progress, 200
