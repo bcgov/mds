@@ -50,4 +50,4 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
           context: ${{ env.SERVICE_CONTEXT }}
           push: true
-          tags: ${{ env.IMAGE_ID }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_ID }}:${{ github.sha }}

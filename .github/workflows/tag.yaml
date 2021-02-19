@@ -8,7 +8,6 @@ env:
   REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
   REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
   REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
-  IMAGE: mds-frontend
   IMAGE_ID:  ${{ secrets.CONTAINER_REGISTRY }}/mds-frontend
 
 jobs:
@@ -29,6 +28,6 @@ jobs:
 
       - name: Create Docker Tag
         run: |
-          docker pull ${{ env.IMAGE_ID }}:${GITHUB_SHA}
+          docker pull ${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_ID }}:${GITHUB_SHA}
           docker tag ${{ env.IMAGE_ID }}:${GITHUB_SHA} ${{ env.IMAGE_ID }}:${GITHUB_REF#refs/tags/}
-          docker push ${{ env.IMAGE_ID }}:${GITHUB_REF#refs/tags/}
+          docker push ${{ env.REGISTRY_USERNAME }}/${{ env.IMAGE_ID }}:${GITHUB_REF#refs/tags/}
