@@ -96,7 +96,7 @@ class NOWApplicationImportResource(Resource, UserMixin):
         db.session.refresh(now_application_identity)
         now_application_identity.mine_guid = mine_guid
         now_application_identity.now_application.add_now_form_to_fap(
-            "This document was automatically created when the Notice of Work was imported.")
+            "This document was automatically created when Verification was completed.")
 
         # update application status to received once imported
         now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
