@@ -7,9 +7,17 @@ import { required } from "@common/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import PropTypes from "prop-types";
 
 const propTypes = {
   minePermits: CustomPropTypes.mine.isRequired,
+  isPermitRequired: PropTypes.bool,
+  isPermitDropDownDisabled: PropTypes.bool,
+};
+
+const defaultProps = {
+  isPermitRequired: true,
+  isPermitDropDownDisabled: false,
 };
 
 export const PermitteeOptions = (props) => {
@@ -22,12 +30,13 @@ export const PermitteeOptions = (props) => {
           <Field
             id="related_guid"
             name="related_guid"
-            label="Permit *"
+            label={`Permit ${props.isPermitRequired ? "*" : ""}`}
             placeholder="Select a Permit"
             doNotPinDropdown
             component={renderConfig.SELECT}
             data={permitDropdown}
-            validate={[required]}
+            disabled={props.isPermitDropDownDisabled}
+            validate={props.isPermitRequired ? [required] : []}
           />
         </Form.Item>
       </Col>
@@ -36,5 +45,6 @@ export const PermitteeOptions = (props) => {
 };
 
 PermitteeOptions.propTypes = propTypes;
+PermitteeOptions.defaultProps = defaultProps;
 
 export default PermitteeOptions;
