@@ -138,7 +138,9 @@ const renderContacts = ({
                       }}
                     >
                       <span className="field-title">{`Application ${
-                        contactExists ? fields.get(index).mine_party_appt_type_code_description : ""
+                        contactExists
+                          ? fields.get(index).mine_party_appt_type_code_description
+                          : "Contact"
                       }`}</span>
                       {!confirmedContacts?.includes(fields.get(index).id) ? (
                         <Button
@@ -314,7 +316,11 @@ export class VerifyNoWContacts extends Component {
         title: ModalContent.ADD_CONTACT,
         partyRelationshipTypesList: this.props.partyRelationshipTypesList,
         closeModal: this.props.closeModal,
-        initialValues: this.state.selectedNOWContact,
+        afterSubmit: this.handleReSearch,
+        initialValues: {
+          ...this.state.selectedNOWContact.party?.address?.[0],
+          ...this.state.selectedNOWContact.party,
+        },
       },
       content: modalConfig.ADD_QUICK_PARTY,
     });
@@ -389,7 +395,10 @@ export class VerifyNoWContacts extends Component {
     });
   };
 
-  handleReSearch = () => {
+  handleReSearch = (partyGuid = null) => {
+    if (partyGuid) {
+      this.props.setSelectedRows([partyGuid, ...this.props.selectedRows]);
+    }
     this.setState({ isLoading: true });
     this.props.fetchSearchResults(this.state.searchTerm, "party").then(({ data }) => {
       const subSetResults = data?.search_results?.party.filter(({ result }) =>
@@ -554,7 +563,7 @@ export class VerifyNoWContacts extends Component {
                 allowClear
                 defaultValue={this.state.searchTerm}
                 onSearch={(searchTerm) => this.handlSimpleSearch(searchTerm)}
-                onEnter={(searchTerm) => this.handlSimpleSearch(searchTerm)}
+                onPressEnter={(event) => event.preventDefault()}
                 size="large"
               />
               <br />
