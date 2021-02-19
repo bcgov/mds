@@ -59,7 +59,7 @@ const defaultParams = {
   due_date_end: undefined,
   received_date_start: undefined,
   received_date_end: undefined,
-  received_only: undefined,
+  received_only: "false",
   requested_by: undefined,
   status: [],
   sort_field: "received_date",
@@ -100,7 +100,7 @@ export class MineReportInfo extends Component {
   };
 
   handleEditReport = (report) => {
-    this.props
+    return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
       .then(() => this.fetchReports(report.mine_guid));
@@ -113,18 +113,18 @@ export class MineReportInfo extends Component {
       .then(() => this.fetchReports(this.props.mineGuid));
   };
 
-  fetchReports = (mineGuid) => {
-    this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
-      this.setState({
-        filteredReports: this.props.mineReports,
-      });
-    });
-  };
-
   handleRemoveReport = (report) => {
     return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
       .then(() => this.fetchReports(report.mine_guid));
+  };
+
+  fetchReports = (mineGuid) => {
+    return this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
+      this.setState({
+        filteredReports: this.props.mineReports,
+      });
+    });
   };
 
   openAddReportModal = (event) => {
@@ -185,7 +185,7 @@ export class MineReportInfo extends Component {
           (definition) => definition.mine_report_definition_guid
         );
 
-    return reports.filter((report) => {
+    const filteredReports = reports.filter((report) => {
       const report_type =
         !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
       const report_name =
@@ -212,7 +212,8 @@ export class MineReportInfo extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only = params.received_only || report.received_date; // this filters out reports, both parameters are undefined
+      const received_only =
+        !params.received_only || params.received_only === "false" || report.received_date;
       const status =
         isEmpty(params.status) ||
         (report.mine_report_submissions &&
@@ -234,6 +235,7 @@ export class MineReportInfo extends Component {
         status
       );
     });
+    return filteredReports;
   };
 
   handleReportFilterSubmit = (params) => {

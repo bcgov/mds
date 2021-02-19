@@ -139,8 +139,8 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
-    )
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
     submission_documents = db.relationship(
         'Document',
@@ -150,14 +150,15 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
-        viewonly=True)
+        viewonly=True,
+        order_by='asc(Document.id)')
 
     imported_submission_documents = db.relationship(
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
-    )
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)',
+        order_by='asc(NOWApplicationDocumentIdentityXref.create_timestamp)')
 
     contacts = db.relationship(
         'NOWPartyAppointment',

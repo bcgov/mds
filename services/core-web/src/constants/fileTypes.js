@@ -27,6 +27,8 @@ export const IMAGE = {
   ".png": "image/png",
 };
 
+export const APPLICATION_OCTET_STREAM = "application/octet-stream";
+
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
   ".geoJSon": "application/vnd.geo+json",
@@ -51,5 +53,3 @@ export const UNIQUELY_SPATIAL = {
 };
 
 export const SPATIAL = { ...UNIQUELY_SPATIAL, ".csv": "text/csv", ".xml": "application/xml" };
-
-export const APPLICATION_OCTET_STREAM = "application/octet-stream";

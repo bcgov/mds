@@ -28,7 +28,7 @@ export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
     throw new Error("Must provide fileName");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId, fileName)}`,
       createRequestHeader()
@@ -60,7 +60,7 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
     throw new Error("Must provide fileName");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
       createRequestHeader()
@@ -85,7 +85,7 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
     throw new Error("Must provide document_manager_guid");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
@@ -105,7 +105,7 @@ export const getDocumentDownloadToken = (document_manager_guid, filename, URLArr
     throw new Error("Must provide document_manager_guid");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
