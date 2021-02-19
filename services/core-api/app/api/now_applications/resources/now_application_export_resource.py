@@ -97,7 +97,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         now_application_guid = data['now_application_guid']
-        return NOWApplicationExportResource.get_now_form_generate_token(now_application_guid)
+        token = NOWApplicationExportResource.get_now_form_generate_token(now_application_guid)
+        return {'token': token}
 
     @classmethod
     def get_now_form_generate_token(cls, now_application_guid):
@@ -320,4 +321,4 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
 
-        return {'token': token}
+        return token
