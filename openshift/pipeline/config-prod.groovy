@@ -563,6 +563,9 @@ environments {
                     HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
                     PATH = "/file-api"
                 }
+                'flower'{
+                    HOST = "mds-flower-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
             }
         }
     }

@@ -298,12 +298,15 @@ export class NOWPermitGeneration extends Component {
       }
     }
 
-    this.props.handleGenerateDocumentFormSubmit(this.props.documentType, {
-      ...newValues,
-      auth_end_date: formatDate(this.props.formValues.auth_end_date),
-      application_dated: formatDate(newValues.application_date),
-      final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
-    });
+    this.setState({ downloadingDraft: true });
+    return this.props
+      .handleGenerateDocumentFormSubmit(this.props.documentType, {
+        ...newValues,
+        auth_end_date: formatDate(this.props.formValues.auth_end_date),
+        application_dated: formatDate(newValues.application_date),
+        final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
+      })
+      .finally(() => this.setState({ downloadingDraft: false }));
   };
 
   handleCancelDraftEdit = () => {
@@ -404,6 +407,7 @@ export class NOWPermitGeneration extends Component {
                   className="full-mobile"
                   type="secondary"
                   onClick={this.handlePermitGenSubmit}
+                  loading={this.state.downloadingDraft}
                   disabled={isEmpty(this.state.permittee)}
                   title={
                     isEmpty(this.state.permittee)
