@@ -217,7 +217,7 @@ const renderContacts = ({
                           label="Selected CORE contact"
                           component={RenderSelect}
                           data={selectedData}
-                          disabled
+                          // disabled
                           validate={[required]}
                         />
                       )}

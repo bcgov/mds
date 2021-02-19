@@ -33,17 +33,8 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <br />
   <br />
   <h4>
-    Match Application Contacts to Core Contacts
+    Match the contacts from the Notice of Work application to contacts in CORE.
   </h4>
-  <p>
-    Select a Contact from Core for each person shown, or update the Roles if required.
-  </p>
-  <p>
-    Click "Confirm" when you have finished matching the contact. Changes will not be saved until you Click "Verify Application"
-  </p>
-  <p>
-    Click "Cancel" to reset the form.
-  </p>
   <Divider />
   <Connect(VerifyNoWContacts)
     contactFormValues={Array []}
@@ -434,6 +425,8 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
+    selectedRows={Array []}
+    setSelectedRows={[Function]}
     wasFormReset={false}
   />
   <div

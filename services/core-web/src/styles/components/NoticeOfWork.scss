@@ -283,11 +283,13 @@
   }
   .ant-result {
     padding: 20px 0;
+    display: inline-flex;
   }
   .ant-result-icon {
     margin-bottom: 0;
   }
   .ant-result-title {
+    margin-top: 6px;
     font-size: 15px;
   }
 }
