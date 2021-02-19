@@ -62,7 +62,7 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID, uni
       const unit = activityObj[`${content.value}_unit_type_code`]
         ? unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
         : Strings.EMPTY_FIELD;
-      return `${value} ${unit}`;
+      return value ? `${value} ${unit}` : "";
     }
     return value;
   };

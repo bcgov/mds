@@ -20,5 +20,9 @@ class UndergroundExplorationDetail(ActivityDetailBase):
     underground_exploration_type_code = db.Column(
         db.String, db.ForeignKey('underground_exploration_type.underground_exploration_type_code'))
 
+    def __init__(self, **kwargs):
+        self.length_unit_type_code = 'MTR'
+        super(UndergroundExplorationDetail, self).__init__(**kwargs)
+
     def __repr__(self):
         return '<UndergroundExplorationDetail %r>' % self.activity_detail_id

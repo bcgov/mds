@@ -74,7 +74,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
-UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code']
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code']
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
