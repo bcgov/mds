@@ -29,9 +29,13 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             'If true, returns the created document record, otherwise, returns the generated file content.'
         })
     def get(self):
-
-        # Ensure that the token is valid
         token = request.args.get('token', '')
+        return_record = request.args.get('return_record') == 'true'
+        return NoticeOfWorkDocumentResource.generate_now_document(token, return_record)
+
+    @classmethod
+    def generate_now_document(cls, token, return_record):
+        # Ensure that the token is valid
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         if not token_data:
@@ -86,7 +90,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
                                                                now_application)
 
         # Depending on the return_record param, return the document record or file content
-        return_record = request.args.get('return_record') == 'true'
         if return_record:
             return marshal(now_doc, NOW_APPLICATION_DOCUMENT)
         file_gen_resp = Response(
