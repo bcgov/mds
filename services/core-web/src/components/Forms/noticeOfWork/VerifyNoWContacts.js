@@ -288,8 +288,8 @@ export class VerifyNoWContacts extends Component {
     selectedData: [],
   };
 
-  formatPartyOption = (party) => {
-    const option = { value: party.party_guid, label: party.name, party };
+  formatPartyOption = (party, contactID) => {
+    const option = { value: party.party_guid, label: party.name, party, contactID };
     this.setState((prevState) => ({
       selectedData: [option, ...prevState.selectedData],
     }));
@@ -333,7 +333,7 @@ export class VerifyNoWContacts extends Component {
     this.props.change(
       FORM.VERIFY_NOW_APPLICATION_FORM,
       `contacts[${this.state.selectedNOWContactIndex}].party_guid`,
-      this.formatPartyOption(party)
+      this.formatPartyOption(party, this.state.selectedNOWContact.id)
     );
     this.setState({ isLoading: true });
     this.handleReSet();
@@ -354,7 +354,10 @@ export class VerifyNoWContacts extends Component {
       const updatedConfirmedContact = this.state.confirmedContacts.filter(
         (id) => id !== contact.id
       );
-      this.setState({ confirmedContacts: updatedConfirmedContact });
+      const updatedData = this.state.selectedData.filter(
+        ({ contactID }) => contactID !== contact.id
+      );
+      this.setState({ confirmedContacts: updatedConfirmedContact, selectedData: updatedData });
     }
     this.setState({
       searchTerm,
