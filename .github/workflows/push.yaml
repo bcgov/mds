@@ -12,7 +12,7 @@ env:
   REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
   REGISTRY_USERNAME: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
   REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
-  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/mds-frontend
+  IMAGE_ID: mds-frontend
   #TODO: create a switch for context based on editted service files
   SERVICE_CONTEXT: services/core-web
 
