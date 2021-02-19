@@ -58,26 +58,21 @@ export class NOWProgressActions extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.noticeOfWork !== this.props.noticeOfWork)
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
       this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
-  };
-
-  handleProgress = (tab, trigger) => {
-    if (trigger === "Complete") {
-      return this.stopProgress(tab);
-    } else {
-      return this.startOrResumeProgress(tab, trigger);
     }
   };
 
-  stopProgress = (tab) => {
-    const message = `Successfully Completed the ${this.props.progressStatusHash[tab]} Process.`;
-    return this.props
+  handleProgress = (tab, trigger) =>
+    trigger === "Complete" ? this.stopProgress(tab) : this.startOrResumeProgress(tab, trigger);
+
+  stopProgress = (tab) =>
+    this.props
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
         {},
-        message
+        `Successfully Completed the ${this.props.progressStatusHash[tab]} Process.`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -85,16 +80,15 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  startOrResumeProgress = (tab, trigger) => {
-    const ending = trigger === "Start" ? "ed" : "d";
-    const message = `Successfully ${trigger}${ending} the ${this.props.progressStatusHash[tab]} Process.`;
-    return this.props
+  startOrResumeProgress = (tab, trigger) =>
+    this.props
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        message
+        `Successfully ${trigger}${trigger === "Start" ? "ed" : "d"} the ${
+          this.props.progressStatusHash[tab]
+        } Process.`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -102,10 +96,9 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  handleStartDelay = (values) => {
-    return this.props
+  handleStartDelay = (values) =>
+    this.props
       .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
@@ -114,10 +107,9 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  handleStopDelay = (values) => {
-    return this.props
+  handleStopDelay = (values) =>
+    this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
@@ -130,9 +122,8 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  openProgressModal = (trigger) => {
+  openProgressModal = (trigger) =>
     this.props.openModal({
       props: {
         title: `${trigger} ${this.props.progressStatusHash[this.props.tab]}`,
@@ -144,9 +135,8 @@ export class NOWProgressActions extends Component {
       },
       content: modalConfig.NOW_PROGRESS_MODAL,
     });
-  };
 
-  openDraftPermitProgressModal = () => {
+  openDraftPermitProgressModal = () =>
     this.props.openModal({
       props: {
         title: `Start ${this.props.progressStatusHash[this.props.tab]}`,
@@ -162,9 +152,8 @@ export class NOWProgressActions extends Component {
       },
       content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });
-  };
 
-  openStatusReasonModal = (title) => {
+  openStatusReasonModal = (title) =>
     this.props.openModal({
       props: {
         title,
@@ -174,14 +163,12 @@ export class NOWProgressActions extends Component {
       isViewOnly: true,
       content: modalConfig.NOW_STATUS_REASON_MODAL,
     });
-  };
 
-  openHandleDelayModal = (stage) => {
-    const submitFunction = stage === "Start" ? this.handleStartDelay : this.handleStopDelay;
+  openHandleDelayModal = (stage) =>
     this.props.openModal({
       props: {
         title: `${stage} Delay`,
-        onSubmit: submitFunction,
+        onSubmit: stage === "Start" ? this.handleStartDelay : this.handleStopDelay,
         delayTypeOptions: this.props.delayTypeOptions,
         initialValues: stage === "Stop" ? this.props.applicationDelay : {},
         stage,
@@ -189,7 +176,6 @@ export class NOWProgressActions extends Component {
       },
       content: modalConfig.NOW_DELAY_MODAL,
     });
-  };
 
   render() {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
