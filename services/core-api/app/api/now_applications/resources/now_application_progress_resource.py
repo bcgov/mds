@@ -78,7 +78,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
 
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
-        
+
         existing_now_progress.end_date = datetime.now(tz=timezone.utc)
         existing_now_progress.save()
 

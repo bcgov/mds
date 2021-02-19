@@ -27,7 +27,7 @@ EMPTY_FIELD = '-'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
-EXCLUDED_APPLICATION_DOCUMENT_TYPES = ['NTR']
+EXCLUDED_APPLICATION_DOCUMENT_TYPES = []
 
 ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
