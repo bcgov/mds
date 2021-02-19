@@ -40,8 +40,6 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           context: ${{ env.SERVICE_CONTEXT }}
-          volumes:
-                - ./src/:/app/src/
           push: false
 
       - name: Save PR number
