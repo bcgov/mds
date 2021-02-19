@@ -91,4 +91,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 identity.now_application.now_application_status_code = "RCO"
                 identity.save()
 
+        if application_progress_status_code == 'REV':
+            identity.now_application.add_now_form_to_fap()
+
         return existing_now_progress, 200
