@@ -8,7 +8,7 @@ on:
       - completed
 
 env:
-  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY }}/mds-frontend
+  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}/mds-frontend
 
   TF_VERSION: 0.13.5
   TG_VERSION: 0.26.7
