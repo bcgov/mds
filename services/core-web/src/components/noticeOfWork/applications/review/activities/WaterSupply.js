@@ -62,40 +62,6 @@ export const WaterSupply = (props) => {
         ]}
       />
       <br />
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Pump size in water (inches)
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("water_supply.pump_size").value}
-              isVisible={props.renderOriginalValues("water_supply.pump_size").edited}
-            />
-          </div>
-          <Field
-            id="pump_size"
-            name="pump_size"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[number]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Location of water intake
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("water_supply.intake_location").value}
-              isVisible={props.renderOriginalValues("water_supply.intake_location").edited}
-            />
-          </div>
-          <Field
-            id="intake_location"
-            name="intake_location"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
