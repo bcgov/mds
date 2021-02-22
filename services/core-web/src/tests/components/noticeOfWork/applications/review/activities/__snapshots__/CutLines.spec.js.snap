@@ -14,7 +14,7 @@ exports[`CutLines renders properly 1`] = `
       Array [
         Object {
           "component": [Function],
-          "title": "Total Line(km)",
+          "title": "Total Line (km)",
           "validate": Array [
             [Function],
           ],
