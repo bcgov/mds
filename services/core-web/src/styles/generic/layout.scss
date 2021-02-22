@@ -2,6 +2,10 @@ body {
   font-family: $default-font;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .layout {
   min-height: 100vh;
 }

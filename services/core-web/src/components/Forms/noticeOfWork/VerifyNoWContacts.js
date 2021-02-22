@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { v4 as uuidv4 } from "uuid";
@@ -12,12 +11,11 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import * as FORM from "@/constants/forms";
 import "@ant-design/compatible/assets/index.css";
-import { getAddPartyFormState } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import {
   fetchSearchResults,
   clearAllSearchResults,
@@ -33,13 +31,10 @@ import * as Strings from "@common/constants/strings";
 
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/AddButton";
-
-import NOWPartySelectField from "@/components/common/NOWPartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  addPartyFormState: PropTypes.objectOf(PropTypes.any).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   contactFormValues: PropTypes.arrayOf(
@@ -48,8 +43,14 @@ const propTypes = {
   wasFormReset: PropTypes.bool.isRequired,
   fetchSearchResults: PropTypes.func.isRequired,
   clearAllSearchResults: PropTypes.func.isRequired,
-  searchResults: PropTypes.objectOf(PropTypes.any),
-  searchSubsetResults: PropTypes.objectOf(PropTypes.any),
+  searchResults: PropTypes.objectOf(PropTypes.any).isRequired,
+  searchSubsetResults: PropTypes.objectOf(PropTypes.any).isRequired,
+  change: PropTypes.func.isRequired,
+  setSelectedRows: PropTypes.func.isRequired,
+  updateParty: PropTypes.func.isRequired,
+  storeSubsetSearchResults: PropTypes.func.isRequired,
+  fetchPartyById: PropTypes.func.isRequired,
+  selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {};
@@ -84,9 +85,7 @@ const renderContacts = ({
   partyRelationshipTypes,
   rolesUsedOnce,
   confirmedContacts,
-  updateConfirmedList,
   contactFormValues,
-  wasFormReset,
   handleSearch,
   selectedContactIndex,
   selectedData,
@@ -102,8 +101,9 @@ const renderContacts = ({
             <h3>Application Contacts</h3>
             <p>
               Contacts listed here come from the original Notice of Work. Click &quot;Search
-              Contact&quot; to see a list of possible CORE matches in the &quot;Matching contact
-              options&quot; column.
+              Contact&quot; to see a list of possible Core matches in the &quot;Matching Contact
+              Options&quot; column. Ensure the correct role has been assigned to the application
+              contact.
             </p>
           </Col>
           {fields.map((field, index) => {
@@ -120,7 +120,7 @@ const renderContacts = ({
             const selectedCoreParty = selectedData
               .filter(({ value }) => selectedCorePartyGuid === value)
               .map((contact) => contact)[0];
-            const contactInformation = selectedCoreParty ? selectedCoreParty : fields.get(index);
+            const contactInformation = selectedCoreParty || fields.get(index);
             return (
               <Col span={24} key={fields.get(index).id}>
                 <Card
@@ -149,7 +149,7 @@ const renderContacts = ({
                             fields.remove(index);
                           }}
                         >
-                          <img name="remove" src={TRASHCAN} alt="Remove MineType" />
+                          <img name="remove" src={TRASHCAN} alt="Remove Application Contact" />
                         </Button>
                       ) : (
                         <div className="confirm-success">
@@ -216,17 +216,17 @@ const renderContacts = ({
                           usedOptions={rolesUsedOnce}
                           id={`${field}.party_guid`}
                           name={`${field}.party_guid`}
-                          label="Selected CORE contact"
+                          label="Selected Core contact"
                           component={RenderSelect}
                           data={selectedData}
-                          // disabled
+                          disabled
                           validate={[required]}
                         />
                       )}
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={12}></Col>
+                    <Col span={12} />
                     <Col span={12}>
                       {!confirmedContacts?.includes(fields.get(index).id) ? (
                         <Button
@@ -290,17 +290,41 @@ export class VerifyNoWContacts extends Component {
     selectedData: [],
   };
 
-  formatPartyOption = (party, contactID) => {
-    const option = { value: party.party_guid, label: party.name, party, contactID };
-    this.setState((prevState) => ({
-      selectedData: [option, ...prevState.selectedData],
-    }));
-    return option.value;
-  };
   componentDidMount() {
     // clear search redux state
     this.props.clearAllSearchResults();
     this.handleRoles(this.props.contactFormValues);
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    const formReset =
+      nextProps.contactFormValues === this.props.contactFormValues && nextProps.wasFormReset;
+    const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
+    const selectedRowsChanged = this.props.selectedRows !== nextProps.selectedRows;
+
+    if (contactsChanged) {
+      this.handleRoles(nextProps.contactFormValues);
+    }
+
+    if (formReset) {
+      this.setState({
+        confirmedContacts: [],
+        selectedNOWContact: {},
+        selectedNOWContactIndex: "",
+        allowSearch: false,
+      });
+    }
+
+    if (selectedRowsChanged && this.props.searchResults?.party?.length > 0) {
+      const subSetResults = this.props.searchResults?.party.filter(({ result }) =>
+        nextProps.selectedRows.includes(result.party_guid)
+      );
+      this.props.storeSubsetSearchResults(subSetResults);
+    }
+  };
+
+  componentWillUnmount() {
+    return this.props.clearAllSearchResults();
   }
 
   updateConfirmedContactList = (id) => {
@@ -318,7 +342,7 @@ export class VerifyNoWContacts extends Component {
         closeModal: this.props.closeModal,
         afterSubmit: this.handleReSearch,
         initialValues: {
-          ...this.state.selectedNOWContact.party?.address?.[0],
+          ...this.state.selectedNOWContact.party?.address[0],
           ...this.state.selectedNOWContact.party,
         },
       },
@@ -326,11 +350,15 @@ export class VerifyNoWContacts extends Component {
     });
   };
 
-  handleReSet = () => {
+  handleReset = () => {
     this.props.clearAllSearchResults();
-    this.setState({ selectedNOWContact: {}, selectedNOWContactIndex: "", allowSearch: false });
     this.props.setSelectedRows([]);
-    this.setState({ isLoading: false });
+    this.setState({
+      selectedNOWContact: {},
+      selectedNOWContactIndex: "",
+      allowSearch: false,
+      isLoading: false,
+    });
   };
 
   handleSelect = (e, party) => {
@@ -342,7 +370,7 @@ export class VerifyNoWContacts extends Component {
       this.formatPartyOption(party, this.state.selectedNOWContact.id)
     );
     this.setState({ isLoading: true });
-    this.handleReSet();
+    this.handleReset();
   };
 
   handleRoles = (contacts) => {
@@ -357,9 +385,11 @@ export class VerifyNoWContacts extends Component {
   handleSearch = (e, contact, index, reverify = false) => {
     const searchTerm = contact.party?.name ?? "";
     if (reverify) {
+      // eslint-disable-next-line react/no-access-state-in-setstate
       const updatedConfirmedContact = this.state.confirmedContacts.filter(
         (id) => id !== contact.id
       );
+      // eslint-disable-next-line react/no-access-state-in-setstate
       const updatedData = this.state.selectedData.filter(
         ({ contactID }) => contactID !== contact.id
       );
@@ -380,7 +410,7 @@ export class VerifyNoWContacts extends Component {
     });
   };
 
-  handlSimpleSearch = (searchTerm) => {
+  handleSimpleSearch = (searchTerm) => {
     this.setState({ isLoading: true, allowSearch: true });
     return this.props.fetchSearchResults(searchTerm, "party").then(() => {
       this.setState({ isLoading: false });
@@ -425,43 +455,13 @@ export class VerifyNoWContacts extends Component {
     });
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    const formReset =
-      nextProps.contactFormValues === this.props.contactFormValues && nextProps.wasFormReset;
-    const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
-    const selectedRowsChanged = this.props.selectedRows !== nextProps.selectedRows;
-    if (
-      nextProps.addPartyFormState.showingAddPartyForm &&
-      this.props.addPartyFormState.showingAddPartyForm !==
-        nextProps.addPartyFormState.showingAddPartyForm
-    ) {
-      this.showAddPartyModal();
-    }
-
-    if (contactsChanged) {
-      this.handleRoles(nextProps.contactFormValues);
-    }
-
-    if (formReset) {
-      this.setState({
-        confirmedContacts: [],
-        selectedNOWContact: {},
-        selectedNOWContactIndex: "",
-        allowSearch: false,
-      });
-    }
-
-    if (selectedRowsChanged && this.props.searchResults?.party?.length > 0) {
-      const subSetResults = this.props.searchResults?.party.filter(({ result }) =>
-        nextProps.selectedRows.includes(result.party_guid)
-      );
-      return this.props.storeSubsetSearchResults(subSetResults);
-    }
+  formatPartyOption = (party, contactID) => {
+    const option = { value: party.party_guid, label: party.name, party, contactID };
+    this.setState((prevState) => ({
+      selectedData: [option, ...prevState.selectedData],
+    }));
+    return option.value;
   };
-
-  componentWillUnmount() {
-    return this.props.clearAllSearchResults();
-  }
 
   renderCoreContacts = () => {
     return (
@@ -470,9 +470,9 @@ export class VerifyNoWContacts extends Component {
           <Col span={24} style={{ minHeight: "130px" }}>
             <h3>Contact Detail</h3>
             <p>
-              Use this information to determine if this is the correct contact to use in CORE for
+              Use this information to determine if this is the correct contact to use in Core for
               this application. Click &quot;Select Contact&quot; when you have found the right
-              match.
+              match. You may update the contact if the information is incorrect.
             </p>
           </Col>
 
@@ -546,7 +546,8 @@ export class VerifyNoWContacts extends Component {
             <h3>Matching Contact Options</h3>
             <p>
               Click on a contact(s) below to see their detailed information in the &quot;Contact
-              detail&quot; column. If you cannot find a match, you can create a new contact.
+              Detail&quot; column. If you cannot find a match, you can either search or create a new
+              contact.
             </p>
           </Col>
           {this.state.allowSearch || this.state.isLoading ? (
@@ -562,7 +563,7 @@ export class VerifyNoWContacts extends Component {
                 placeholder="Search"
                 allowClear
                 defaultValue={this.state.searchTerm}
-                onSearch={(searchTerm) => this.handlSimpleSearch(searchTerm)}
+                onSearch={(searchTerm) => this.handleSimpleSearch(searchTerm)}
                 onPressEnter={(event) => event.preventDefault()}
                 size="large"
               />
@@ -606,9 +607,7 @@ export class VerifyNoWContacts extends Component {
           partyRelationshipTypes={this.props.partyRelationshipTypesList}
           rolesUsedOnce={this.state.rolesUsedOnce}
           confirmedContacts={this.state.confirmedContacts}
-          updateConfirmedList={this.updateConfirmedContactList}
           contactFormValues={this.props.contactFormValues}
-          wasFormReset={this.props.wasFormReset}
           handleSearch={this.handleSearch}
           selectedContactIndex={this.state.selectedNOWContactIndex}
           selectedData={this.state.selectedData}
@@ -625,7 +624,6 @@ VerifyNoWContacts.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
-  addPartyFormState: getAddPartyFormState(state),
   searchResults: getSearchResults(state),
   searchSubsetResults: getSearchSubsetResults(state),
 });
