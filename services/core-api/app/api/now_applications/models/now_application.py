@@ -116,6 +116,8 @@ class NOWApplication(Base, AuditMixin):
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)
 
+    # is_historic = db.Column(db.Boolean)
+
     # Activities
     camp = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
@@ -206,7 +208,9 @@ class NOWApplication(Base, AuditMixin):
         ]
         return permittees[0] if permittees else None
 
-    is_historic = False
+    @hybrid_property
+    def is_historic(self):
+        return self.now_application_identity.is_historic 
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

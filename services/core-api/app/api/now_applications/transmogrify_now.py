@@ -97,8 +97,6 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_access_gated = now_sub.isaccessgated == 'Yes'
     now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure == 'Yes'
 
-    now_app.is_historic = now_sub.is_historic
-
     return
 
 
