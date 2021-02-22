@@ -44,7 +44,7 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
     'NOWApplicationActivityDetailBase', {
         'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
-        'disturbed_area': fields.Fixed(decimals=2),
+        'disturbed_area': fields.Fixed,
         'timber_volume': fields.Fixed(decimals=2),
         'number_of_sites': fields.Integer,
         'length': fields.Fixed(decimals=2),
@@ -70,7 +70,7 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
         'reclamation_description': fields.String,
         'reclamation_cost': fields.Fixed(decimals=2),
-        'total_disturbed_area': fields.Fixed(decimals=2),
+        'total_disturbed_area': fields.Fixed,
         'total_disturbed_area_unit_type_code': fields.String,
         'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })

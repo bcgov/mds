@@ -22,7 +22,7 @@ export const Permittee = (props) => {
   const permit =
     props.permits &&
     props.permits.find(({ permit_guid }) => permit_guid === props.partyRelationship.related_guid);
-  const subtitle = `${permit && permit.permit_no}`;
+  const subtitle = `${permit?.permit_no ?? "No permit assigned"}`;
 
   return (
     <DefaultContact

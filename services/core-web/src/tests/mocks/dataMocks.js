@@ -3657,7 +3657,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     {
-      short_description: "m3",
+      short_description: "m³",
       unit_type_code: "MEC",
       description: "Meters cubed",
       active_ind: true,
