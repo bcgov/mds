@@ -121,14 +121,12 @@ const renderContacts = ({
               .filter(({ value }) => selectedCorePartyGuid === value)
               .map((contact) => contact)[0];
             const contactInformation = selectedCoreParty || fields.get(index);
+            const selectedClass = isSelectedContact ? "selected" : "";
             return (
               <Col span={24} key={fields.get(index).id}>
                 <Card
                   hoverable
-                  style={
-                    isSelectedContact ? { boxShadow: "rgb(124 102 173) 0px 0px 10px 3px" } : {}
-                  }
-                  className="ant-card-now white inherit-height "
+                  className={`ant-card-now white inherit-height ${selectedClass}`}
                   title={
                     <div
                       className="inline-flex between"
