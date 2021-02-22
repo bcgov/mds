@@ -1,0 +1,145 @@
+name: Pull Request
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/pr.yaml"
+      - ".github/workflows/tf-plan.yaml"
+      - "terraform/**"
+      - "services/core-web/**"
+      - "!**/README.md"
+
+env:
+  #TODO: create a switch for context based on editted service files
+  SERVICE_CONTEXT: services/core-web
+
+jobs:
+  pr:
+    name: pr
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          context: ${{ env.SERVICE_CONTEXT }}
+          push: false
+
+      - name: Save PR number
+        working-directory: /tmp
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: /tmp/pr/
+
+  plan:
+    needs: pr
+    name: terraform-plan
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_sha }}
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - uses: peter-murray/terragrunt-github-action@v1.0.0
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Plan
+        id: tg_plan
+        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
+        env:
+          TF_CLI_ARGS: -no-color
+          app_image: ${{ env.IMAGE_ID }}:${{ github.head_sha }}
+        run: terragrunt plan-all --terragrunt-non-interactive | tee /tmp/tg_plan
+        continue-on-error: true
+
+      - name: Get Terraform Plan Output
+        id: plan
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: /tmp/tg_plan
+
+      - name: "Download artifact"
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            var artifacts = await github.actions.listWorkflowRunArtifacts({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               run_id: ${{github.run_id }},
+            });
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "pr"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/pr.zip', Buffer.from(download.data));
+      - run: unzip pr.zip
+
+      - name: Update Pull Request
+        uses: actions/github-script@v3
+        env:
+          SUCCESS: '\u2705'
+          FAILURE: '\u274C'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            var fs = require('fs');
+            var issue_number = Number(fs.readFileSync('./NR'));
+            const plan =  `${{ steps.plan.outcome }}` == 'success' ? `${{ env.SUCCESS }}` : `${{ env.FAILURE }}`;
+            const output = `#### Terraform Plan: ${plan}
+
+            <details>
+            <summary>Show</summary>
+
+            \`\`\`terraform
+            ${{ steps.plan.outputs.content }}
+            \`\`\`
+
+            </details>
+
+            *Pusher:* @${{ github.actor }}, *Action:* [${process.env.GITHUB_WORKFLOW}: #${process.env.GITHUB_RUN_NUMBER}](https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID})`;
+              
+            github.issues.createComment({
+              issue_number: issue_number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
+      - name: Terragrunt Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1

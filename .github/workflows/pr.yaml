@@ -3,11 +3,7 @@ name: Pull Request
 on:
   pull_request:
     paths:
-      - ".github/workflows/pr.yaml"
-      - ".github/workflows/tf-plan.yaml"
-      - "terraform/**"
-      - "services/core-web/**"
-      - "!**/README.md"
+      - "placeholder"
 
 env:
   #TODO: create a switch for context based on editted service files
