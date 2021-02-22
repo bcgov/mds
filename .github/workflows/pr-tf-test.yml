@@ -13,6 +13,11 @@ env:
   #TODO: create a switch for context based on editted service files
   SERVICE_CONTEXT: services/core-web
 
+  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}/mds-frontend
+  TG_VERSION: 0.26.7
+  TG_SRC_PATH: terraform
+  TFC_WORKSPACE: dev
+
 jobs:
   pr:
     name: pr
