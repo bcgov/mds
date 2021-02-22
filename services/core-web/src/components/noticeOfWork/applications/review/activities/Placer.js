@@ -70,13 +70,13 @@ export const Placer = (props) => {
             validate: [number],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(m)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],

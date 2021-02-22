@@ -45,7 +45,7 @@ exports[`SettlingPonds renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Width(m)",
+          "title": "Width (m)",
           "validate": Array [
             [Function],
           ],
@@ -53,7 +53,7 @@ exports[`SettlingPonds renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Length(m)",
+          "title": "Length (m)",
           "validate": Array [
             [Function],
           ],
@@ -61,7 +61,7 @@ exports[`SettlingPonds renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Depth(m)",
+          "title": "Depth (m)",
           "validate": Array [
             [Function],
           ],
