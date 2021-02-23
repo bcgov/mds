@@ -37,6 +37,7 @@ const defaultProps = {
 
 export const VerifyApplicationInformationForm = (props) => {
   const [wasFormReset, setReset] = useState(false);
+  const [confirmedContacts, setConfirmedContacts] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const values = {
     mine_guid: props.mineGuid,
@@ -49,9 +50,13 @@ export const VerifyApplicationInformationForm = (props) => {
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
     props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
     setSelectedRows([]);
+    setConfirmedContacts([]);
     props.clearAllSearchResults();
   };
 
+  // const contactLength = props.contactFormValues.length ===
+  const confirmed = `${confirmedContacts.length}/${props.contactFormValues.length} contacts confirmed`;
+  const disabled = props.contactFormValues.length > confirmedContacts.length;
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <h4>Verify Mine</h4>
@@ -81,16 +86,19 @@ export const VerifyApplicationInformationForm = (props) => {
         wasFormReset={wasFormReset}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
+        confirmedContacts={confirmedContacts}
+        setConfirmedContacts={setConfirmedContacts}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Button type="secondary" onClick={handleReset}>
             Cancel
           </Button>
-          <Button type="primary" htmlType="submit" loading={props.isImporting}>
+          <Button type="primary" htmlType="submit" loading={props.isImporting} disabled={disabled}>
             Verify Application
           </Button>
         </AuthorizationWrapper>
+        <p className="violet">{confirmed}</p>
       </div>
     </Form>
   );

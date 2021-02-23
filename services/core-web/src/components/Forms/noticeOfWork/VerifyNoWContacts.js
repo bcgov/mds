@@ -51,6 +51,8 @@ const propTypes = {
   storeSubsetSearchResults: PropTypes.func.isRequired,
   fetchPartyById: PropTypes.func.isRequired,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+  confirmedContacts: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setConfirmedContacts: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -122,6 +124,9 @@ const renderContacts = ({
               .map((contact) => contact)[0];
             const contactInformation = selectedCoreParty || fields.get(index);
             const selectedClass = isSelectedContact ? "selected" : "";
+            const appointmentCode = contactFormValues
+              .filter(({ id }) => id === fields.get(index).id)
+              .map(({ mine_party_appt_type_code }) => mine_party_appt_type_code)[0];
             return (
               <Col span={24} key={fields.get(index).id}>
                 <Card
@@ -230,7 +235,7 @@ const renderContacts = ({
                         <Button
                           type="primary"
                           style={{ float: "right" }}
-                          disabled={isSelectedContact}
+                          disabled={isSelectedContact || !appointmentCode}
                           onClick={(event) => handleSearch(event, fields.get(index), index)}
                         >
                           Search Contact
@@ -279,7 +284,6 @@ const renderContacts = ({
 export class VerifyNoWContacts extends Component {
   state = {
     rolesUsedOnce: [],
-    confirmedContacts: [],
     searchTerm: "",
     selectedNOWContact: {},
     selectedNOWContactIndex: "",
@@ -306,7 +310,6 @@ export class VerifyNoWContacts extends Component {
 
     if (formReset) {
       this.setState({
-        confirmedContacts: [],
         selectedNOWContact: {},
         selectedNOWContactIndex: "",
         allowSearch: false,
@@ -324,12 +327,6 @@ export class VerifyNoWContacts extends Component {
   componentWillUnmount() {
     return this.props.clearAllSearchResults();
   }
-
-  updateConfirmedContactList = (id) => {
-    this.setState((prevState) => ({
-      confirmedContacts: [id, ...prevState.confirmedContacts],
-    }));
-  };
 
   showAddPartyModal = (e) => {
     e.preventDefault();
@@ -361,7 +358,10 @@ export class VerifyNoWContacts extends Component {
 
   handleSelect = (e, party) => {
     e.preventDefault();
-    this.updateConfirmedContactList(this.state.selectedNOWContact.id);
+    this.props.setConfirmedContacts([
+      this.state.selectedNOWContact.id,
+      ...this.props.confirmedContacts,
+    ]);
     this.props.change(
       FORM.VERIFY_NOW_APPLICATION_FORM,
       `contacts[${this.state.selectedNOWContactIndex}].party_guid`,
@@ -384,15 +384,17 @@ export class VerifyNoWContacts extends Component {
     const searchTerm = contact.party?.name ?? "";
     if (reverify) {
       // eslint-disable-next-line react/no-access-state-in-setstate
-      const updatedConfirmedContact = this.state.confirmedContacts.filter(
+      const updatedConfirmedContact = this.props.confirmedContacts.filter(
         (id) => id !== contact.id
       );
       // eslint-disable-next-line react/no-access-state-in-setstate
       const updatedData = this.state.selectedData.filter(
         ({ contactID }) => contactID !== contact.id
       );
-      this.setState({ confirmedContacts: updatedConfirmedContact, selectedData: updatedData });
+      this.props.setConfirmedContacts(updatedConfirmedContact);
+      this.setState({ selectedData: updatedData });
     }
+
     this.setState({
       searchTerm,
       allowSearch: true,
@@ -604,7 +606,7 @@ export class VerifyNoWContacts extends Component {
           component={renderContacts}
           partyRelationshipTypes={this.props.partyRelationshipTypesList}
           rolesUsedOnce={this.state.rolesUsedOnce}
-          confirmedContacts={this.state.confirmedContacts}
+          confirmedContacts={this.props.confirmedContacts}
           contactFormValues={this.props.contactFormValues}
           handleSearch={this.handleSearch}
           selectedContactIndex={this.state.selectedNOWContactIndex}
