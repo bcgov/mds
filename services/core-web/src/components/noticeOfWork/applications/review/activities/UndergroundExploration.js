@@ -71,7 +71,7 @@ export const UndergroundExploration = (props) => {
             validate: [number],
           },
           {
-            title: "Length (km)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],

@@ -55,19 +55,19 @@ export const SettlingPonds = (props) => {
             validate: [required],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(m)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Depth(m)",
+            title: "Depth (m)",
             value: "depth",
             component: RenderField,
             validate: [number],
