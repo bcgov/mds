@@ -76,6 +76,8 @@ class Config(object):
 
     # celery REST API
     CELERY_REST_API_URL = os.environ.get('CELERY_REST_API_URL', '')
+    FLOWER_USER = os.environ.get('FLOWER_USER', '')
+    FLOWER_USER_PASSWORD = os.environ.get('FLOWER_USER_PASSWORD', '')
 
     def JWT_ROLE_CALLBACK(jwt_dict):
         return (jwt_dict['realm_access']['roles'])
