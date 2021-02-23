@@ -73,6 +73,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code']
+
 
 class NOWApplicationExportResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -231,6 +233,12 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
+                elif key in UNIT_TYPE_CODE_FIELDS:
+                    code_object = [
+                        code for code in unit_type_codes if code.unit_type_code == obj[key]
+                    ]
+                    obj[key] = code_object[0].short_description if code_object and len(
+                        code_object) > 0 else "N/A"
                 elif isinstance(obj[key], bool):
                     obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
