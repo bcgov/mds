@@ -43,6 +43,9 @@ exports[`WaterSupply renders properly 1`] = `
           "data": Array [],
           "isUnit": true,
           "title": "Estimate Rate Unit",
+          "validate": Array [
+            [Function],
+          ],
           "value": "estimate_rate_unit_type_code",
         },
       ]

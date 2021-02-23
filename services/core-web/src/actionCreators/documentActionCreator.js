@@ -8,6 +8,7 @@ import * as COMMON_API from "@common/constants/API";
 import * as API from "@/constants/API";
 import * as reducerTypes from "@/constants/reducerTypes";
 import * as documentActions from "@/actions/documentActions";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 export const fetchNoticeOfWorkApplicationContextTemplate = (
   documentTypeCode,
@@ -29,9 +30,10 @@ export const fetchNoticeOfWorkApplicationContextTemplate = (
       dispatch(documentActions.storeDocumentContextTemplate(response.data));
       return response;
     })
-    .catch(() =>
-      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE))
-    )
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -39,7 +41,7 @@ export const generateNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully generated Notice of Work document",
-  onDocumentRetrieved = () => {}
+  onDocumentGenerated = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
   dispatch(showLoading("modal"));
@@ -50,20 +52,23 @@ export const generateNoticeOfWorkApplicationDocument = (
       createRequestHeader()
     )
     .then((response) => {
-      const token = { token: response.data.token };
-      const docWindow = window.open(
-        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
-        "_blank"
-      );
-      docWindow.onbeforeunload = () => {
-        notification.success({
-          message,
-          duration: 10,
+      const params = { token: response.data.token, return_record: "true" };
+      return CustomAxios()
+        .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+        .then((response) => {
+          const mineDocument = response.data.mine_document;
+          notification.success({
+            message,
+            duration: 10,
+          });
+          dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          downloadFileFromDocumentManager(mineDocument);
+          onDocumentGenerated();
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          throw new Error(err);
         });
-        dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-        onDocumentRetrieved();
-      };
-      return response;
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
@@ -76,10 +81,10 @@ export const exportNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully exported Notice of Work document",
-  onDocumentRetrieved = () => {}
+  onDocumentGenerated = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-  dispatch(showLoading("modal"));
+  dispatch(showLoading());
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${COMMON_API.NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS}/${documentTypeCode}`,
@@ -87,21 +92,27 @@ export const exportNoticeOfWorkApplicationDocument = (
       createRequestHeader()
     )
     .then((response) => {
-      const token = { token: response.data.token };
-      const docWindow = window.open(
-        `${ENVIRONMENT.apiUrl + API.RETRIEVE_CORE_DOCUMENT(token)}`,
-        "_blank"
-      );
-      docWindow.onbeforeunload = () => {
-        notification.success({
-          message,
-          duration: 10,
+      const params = { token: response.data.token, return_record: "true" };
+      return CustomAxios()
+        .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+        .then((response) => {
+          const mineDocument = response.data.mine_document;
+          notification.success({
+            message,
+            duration: 10,
+          });
+          dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          downloadFileFromDocumentManager(mineDocument);
+          onDocumentGenerated();
+        })
+        .catch((err) => {
+          dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+          throw new Error(err);
         });
-        dispatch(success(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-        onDocumentRetrieved();
-      };
-      return response;
     })
-    .catch(() => dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .catch((err) => {
+      dispatch(error(reducerTypes.EXPORT_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };

@@ -3773,7 +3773,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     {
       now_application_document_type_code: "NTR",
-      description: "Technical Review",
+      description: "Notice of Work Form",
       now_application_document_sub_type_code: null,
       document_template: {},
       active_ind: true,

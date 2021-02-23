@@ -57,12 +57,18 @@ export const RejectApplicationForm = (props) => (
         onConfirm={props.closeModal}
         okText="Yes"
         cancelText="No"
+        disabled={props.submitting}
       >
-        <Button className="full-mobile" type="secondary">
+        <Button className="full-mobile" type="secondary" disabled={props.submitting}>
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="tertiary" onClick={props.prev}>
+      <Button
+        className="full-mobile"
+        type="tertiary"
+        onClick={props.prev}
+        disabled={props.submitting}
+      >
         Back
       </Button>
       <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>

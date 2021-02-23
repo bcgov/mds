@@ -101,15 +101,19 @@ class PermitListResource(Resource, UserMixin):
             now_application_guid = data.get('now_application_guid')
             if not now_application_guid:
                 raise NotFound('There was no Notice of Work found with the provided guid.')
+
             now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             now_application = now_application_identity.now_application
             notice_of_work_type_code = now_application.notice_of_work_type_code[0]
+
             permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
             if permit_prefix in ['M', 'C'] and data.get('is_exploration'):
                 permit_prefix = permit_prefix + 'X'
+
             if now_application_identity.now_number is not None:
                 permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
-            else:            #covering situation where 'P-DRAFT-None' causes a non-unique error
+            # Handle the situation where 'P-DRAFT-None' causes a non-unique error
+            else:
                 permit_no = permit_prefix + '-DRAFT-' + str(mine.mine_no)
 
         permit = Permit.find_by_permit_no(permit_no)

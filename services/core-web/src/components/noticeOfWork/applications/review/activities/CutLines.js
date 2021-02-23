@@ -24,7 +24,7 @@ export const CutLines = (props) => {
         fieldID="activity_detail_id"
         tableContent={[
           {
-            title: "Total Line(km)",
+            title: "Total Line (km)",
             value: "cut_line_length",
             component: RenderField,
             validate: [number],
