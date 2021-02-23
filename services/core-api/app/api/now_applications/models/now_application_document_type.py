@@ -4,6 +4,7 @@ from flask_restplus import marshal
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
@@ -81,8 +82,9 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             if not now_application.is_new_permit:
                 permit_amendment = PermitAmendment.find_by_now_application_guid(
                     now_application.now_application_guid)
-                permit = permit_amendment.mine_permit_xref.first().permit
-                total_liability = now_application.liability_adjustment + permit.assessed_liability_total
+                associated_permit = Permit.find_by_permit_id(
+                    permit_amendment.mine_permit_xref.permit_id)
+                total_liability = now_application.liability_adjustment + associated_permit.assessed_liability_total if associated_permit.assessed_liability_total else now_application.liability_adjustment
             else:
                 total_liability = now_application.liability_adjustment
 
