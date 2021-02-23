@@ -76,9 +76,18 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['latitude'] = str(now_application.latitude)
             template_data['longitude'] = str(now_application.longitude)
             template_data['mine_name'] = now_application.mine_name
+
+            # If amendment, get sum total security adjustment
+            if not now_application.is_new_permit:
+                permit_amendment = PermitAmendment.find_by_now_application_guid(
+                    now_application.now_application_guid)
+                permit = permit_amendment.mine_permit_xref.first().permit
+                total_liability = now_application.liability_adjustment + permit.assessed_liability_total
+            else:
+                total_liability = now_application.liability_adjustment
+
             template_data['security_adjustment'] = str(
-                now_application.liability_adjustment
-            ) if now_application.liability_adjustment else '0.00'
+                total_liability) if total_liability else '0.00'
 
             conditions = permit.conditions
             conditions_template_data = {}
