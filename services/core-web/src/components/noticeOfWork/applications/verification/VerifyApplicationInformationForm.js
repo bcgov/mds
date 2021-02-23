@@ -55,7 +55,6 @@ export const VerifyApplicationInformationForm = (props) => {
     props.clearAllSearchResults();
   };
 
-  // const contactLength = props.contactFormValues.length ===
   const confirmed = `${confirmedContacts.length}/${props.contactFormValues.length} contacts confirmed`;
   const disabled = props.contactFormValues.length > confirmedContacts.length || !props.mine_guid;
   const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
