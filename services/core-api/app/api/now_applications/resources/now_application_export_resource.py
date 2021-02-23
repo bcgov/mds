@@ -11,6 +11,7 @@ from app.api.now_applications.models.now_application_type import NOWApplicationT
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.unit_type import UnitType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -234,6 +235,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
                 elif key in UNIT_TYPE_CODE_FIELDS:
+                    unit_type_codes = UnitType.get_all()
                     code_object = [
                         code for code in unit_type_codes if code.unit_type_code == obj[key]
                     ]
