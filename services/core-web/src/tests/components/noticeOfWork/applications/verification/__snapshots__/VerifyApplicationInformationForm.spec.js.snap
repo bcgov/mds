@@ -37,6 +37,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   </h4>
   <Divider />
   <Connect(VerifyNoWContacts)
+    confirmedContacts={Array []}
     contactFormValues={Array []}
     initialValues={
       Object {
@@ -426,6 +427,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       }
     }
     selectedRows={Array []}
+    setConfirmedContacts={[Function]}
     setSelectedRows={[Function]}
     wasFormReset={false}
   />
@@ -447,6 +449,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       </Button>
       <Button
         block={false}
+        disabled={false}
         ghost={false}
         htmlType="submit"
         loading={false}
@@ -455,6 +458,11 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         Verify Application
       </Button>
     </Connect(AuthorizationWrapper)>
+    <p
+      className="violet"
+    >
+      0/0 contacts confirmed
+    </p>
   </div>
 </Form>
 `;
