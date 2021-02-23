@@ -22,3 +22,9 @@ class UndergroundExplorationDetail(ActivityDetailBase):
 
     def __repr__(self):
         return '<UndergroundExplorationDetail %r>' % self.activity_detail_id
+
+    def __init__(self, **kwargs):
+        self.length_unit_type_code = 'MTR'
+        self.height_unit_type_code = 'MTR'
+        self.width_unit_type_code = 'MTR'
+        super(UndergroundExplorationDetail, self).__init__(**kwargs)
