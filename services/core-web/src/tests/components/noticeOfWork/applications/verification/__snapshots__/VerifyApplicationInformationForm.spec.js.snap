@@ -449,7 +449,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       </Button>
       <Button
         block={false}
-        disabled={false}
+        disabled={true}
         ghost={false}
         htmlType="submit"
         loading={false}
@@ -462,6 +462,11 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
       className="violet"
     >
       0/0 contacts confirmed
+    </p>
+    <p
+      className="red"
+    >
+      A mine must be associated to this application
     </p>
   </div>
 </Form>

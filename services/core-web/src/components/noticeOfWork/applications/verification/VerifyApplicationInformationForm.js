@@ -27,7 +27,7 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   clearAllSearchResults: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  mine: PropTypes.string.isRequired,
+  mine_guid: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -57,8 +57,8 @@ export const VerifyApplicationInformationForm = (props) => {
 
   // const contactLength = props.contactFormValues.length ===
   const confirmed = `${confirmedContacts.length}/${props.contactFormValues.length} contacts confirmed`;
-  const disabled = props.contactFormValues.length > confirmedContacts.length || !props.mine;
-  const noMine = props.mine ? "" : "A mine must be associated to this application";
+  const disabled = props.contactFormValues.length > confirmedContacts.length || !props.mine_guid;
+  const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <h4>Verify Mine</h4>
@@ -113,7 +113,7 @@ const selector = formValueSelector(FORM.VERIFY_NOW_APPLICATION_FORM);
 const mapStateToProps = (state) => ({
   latitude: selector(state, "latitude"),
   longitude: selector(state, "longitude"),
-  mine: selector(state, "mine_guid"),
+  mine_guid: selector(state, "mine_guid"),
   contactFormValues: selector(state, "contacts"),
 });
 
