@@ -560,6 +560,8 @@ NOW_VIEW_MODEL = api.model(
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'import_timestamp': DateTime,
+        'update_timestamp': DateTime,
     })
 
 PAGINATED_LIST = api.model(

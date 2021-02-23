@@ -32,7 +32,9 @@ END) AS is_historic,
     WHEN nid.now_application_id IS NOT NULL THEN 'Core'
   	WHEN nid.messageid IS NOT NULL THEN 'VFCBC'
     ELSE NULL
-END) as originating_system
+END) as originating_system,
+app.create_timestamp as import_timestamp,
+app.update_timestamp as update_timestamp
 FROM now_application_identity nid 
 JOIN mine m on nid.mine_guid = m.mine_guid
 LEFT JOIN now_submissions.application sub on nid.messageid = sub.messageid and sub.processed = 'Y'
