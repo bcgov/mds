@@ -38,8 +38,6 @@ const defaultProps = {
 
 export const VerifyApplicationInformationForm = (props) => {
   const [wasFormReset, setReset] = useState(false);
-  const [confirmedContacts, setConfirmedContacts] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
   const values = {
     mine_guid: props.mineGuid,
     longitude: props.noticeOfWork.longitude,
@@ -50,13 +48,12 @@ export const VerifyApplicationInformationForm = (props) => {
     setReset(true);
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
     props.change(FORM.VERIFY_NOW_APPLICATION_FORM, "contacts", props.originalNoticeOfWork.contacts);
-    setSelectedRows([]);
-    setConfirmedContacts([]);
     props.clearAllSearchResults();
   };
 
-  const confirmed = `${confirmedContacts.length}/${props.contactFormValues.length} contacts confirmed`;
-  const disabled = props.contactFormValues.length > confirmedContacts.length || !props.mine_guid;
+  const formValuesWithParty = props.contactFormValues.filter(({ party_guid }) => party_guid).length;
+  const confirmed = `${formValuesWithParty}/${props.contactFormValues.length} contacts confirmed`;
+  const disabled = props.contactFormValues.length > formValuesWithParty.length || !props.mine_guid;
   const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -85,10 +82,6 @@ export const VerifyApplicationInformationForm = (props) => {
         initialValues={props.originalNoticeOfWork}
         contactFormValues={props.contactFormValues}
         wasFormReset={wasFormReset}
-        selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
-        confirmedContacts={confirmedContacts}
-        setConfirmedContacts={setConfirmedContacts}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
@@ -109,6 +102,7 @@ export const VerifyApplicationInformationForm = (props) => {
 VerifyApplicationInformationForm.propTypes = propTypes;
 VerifyApplicationInformationForm.defaultProps = defaultProps;
 const selector = formValueSelector(FORM.VERIFY_NOW_APPLICATION_FORM);
+
 const mapStateToProps = (state) => ({
   latitude: selector(state, "latitude"),
   longitude: selector(state, "longitude"),

@@ -46,13 +46,9 @@ const propTypes = {
   searchResults: PropTypes.objectOf(PropTypes.any).isRequired,
   searchSubsetResults: PropTypes.objectOf(PropTypes.any).isRequired,
   change: PropTypes.func.isRequired,
-  setSelectedRows: PropTypes.func.isRequired,
   updateParty: PropTypes.func.isRequired,
   storeSubsetSearchResults: PropTypes.func.isRequired,
   fetchPartyById: PropTypes.func.isRequired,
-  selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
-  confirmedContacts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setConfirmedContacts: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -290,6 +286,8 @@ export class VerifyNoWContacts extends Component {
     isLoading: false,
     allowSearch: false,
     selectedData: [],
+    confirmedContacts: [],
+    selectedRows: [],
   };
 
   componentDidMount() {
@@ -302,7 +300,6 @@ export class VerifyNoWContacts extends Component {
     const formReset =
       nextProps.contactFormValues === this.props.contactFormValues && nextProps.wasFormReset;
     const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
-    const selectedRowsChanged = this.props.selectedRows !== nextProps.selectedRows;
 
     if (contactsChanged) {
       this.handleRoles(nextProps.contactFormValues);
@@ -313,14 +310,9 @@ export class VerifyNoWContacts extends Component {
         selectedNOWContact: {},
         selectedNOWContactIndex: "",
         allowSearch: false,
+        confirmedContacts: [],
+        selectedRows: [],
       });
-    }
-
-    if (selectedRowsChanged && this.props.searchResults?.party?.length > 0) {
-      const subSetResults = this.props.searchResults?.party.filter(({ result }) =>
-        nextProps.selectedRows.includes(result.party_guid)
-      );
-      this.props.storeSubsetSearchResults(subSetResults);
     }
   };
 
@@ -347,27 +339,26 @@ export class VerifyNoWContacts extends Component {
 
   handleReset = () => {
     this.props.clearAllSearchResults();
-    this.props.setSelectedRows([]);
     this.setState({
       selectedNOWContact: {},
       selectedNOWContactIndex: "",
       allowSearch: false,
       isLoading: false,
+      selectedRows: [],
     });
   };
 
   handleSelect = (e, party) => {
     e.preventDefault();
-    this.props.setConfirmedContacts([
-      this.state.selectedNOWContact.id,
-      ...this.props.confirmedContacts,
-    ]);
+    this.setState((prevState) => ({
+      isLoading: true,
+      confirmedContacts: [prevState.selectedNOWContact.id, ...prevState.confirmedContacts],
+    }));
     this.props.change(
       FORM.VERIFY_NOW_APPLICATION_FORM,
       `contacts[${this.state.selectedNOWContactIndex}].party_guid`,
       this.formatPartyOption(party, this.state.selectedNOWContact.id)
     );
-    this.setState({ isLoading: true });
     this.handleReset();
   };
 
@@ -384,15 +375,16 @@ export class VerifyNoWContacts extends Component {
     const searchTerm = contact.party?.name ?? "";
     if (reverify) {
       // eslint-disable-next-line react/no-access-state-in-setstate
-      const updatedConfirmedContact = this.props.confirmedContacts.filter(
+      const updatedConfirmedContact = this.state.confirmedContacts.filter(
         (id) => id !== contact.id
       );
       // eslint-disable-next-line react/no-access-state-in-setstate
       const updatedData = this.state.selectedData.filter(
         ({ contactID }) => contactID !== contact.id
       );
-      this.props.setConfirmedContacts(updatedConfirmedContact);
-      this.setState({ selectedData: updatedData });
+      this.setState({ selectedData: updatedData, confirmedContacts: updatedConfirmedContact });
+
+      this.props.change(FORM.VERIFY_NOW_APPLICATION_FORM, `contacts[${index}].party_guid`, null);
     }
 
     this.setState({
@@ -404,9 +396,8 @@ export class VerifyNoWContacts extends Component {
     });
     e.preventDefault();
     this.props.clearAllSearchResults();
-    this.props.setSelectedRows([]);
     return this.props.fetchSearchResults(searchTerm, "party").then(() => {
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, selectedRows: [] });
     });
   };
 
@@ -427,12 +418,12 @@ export class VerifyNoWContacts extends Component {
 
   handleReSearch = (partyGuid = null) => {
     if (partyGuid) {
-      this.props.setSelectedRows([partyGuid, ...this.props.selectedRows]);
+      this.handleSelectedRows([partyGuid, ...this.state.selectedRows]);
     }
     this.setState({ isLoading: true });
     this.props.fetchSearchResults(this.state.searchTerm, "party").then(({ data }) => {
       const subSetResults = data?.search_results?.party.filter(({ result }) =>
-        this.props.selectedRows.includes(result.party_guid)
+        this.state.selectedRows.includes(result.party_guid)
       );
       this.setState({ isLoading: false });
       return this.props.storeSubsetSearchResults(subSetResults);
@@ -579,9 +570,9 @@ export class VerifyNoWContacts extends Component {
                     emptyText: "No Results",
                   }}
                   rowSelection={{
-                    selectedRowKeys: this.props.selectedRows,
+                    selectedRowKeys: this.state.selectedRows,
                     onChange: (selectedRowKeys) => {
-                      this.props.setSelectedRows(selectedRowKeys);
+                      this.handleSelectedRows(selectedRowKeys);
                     },
                   }}
                 />
@@ -597,6 +588,14 @@ export class VerifyNoWContacts extends Component {
     );
   };
 
+  handleSelectedRows = (rows) => {
+    const subSetResults = this.props.searchResults?.party.filter(({ result }) =>
+      rows.includes(result.party_guid)
+    );
+    this.props.storeSubsetSearchResults(subSetResults);
+    this.setState({ selectedRows: rows });
+  };
+
   render() {
     return (
       <Row gutter={[16, 16]}>
@@ -606,7 +605,7 @@ export class VerifyNoWContacts extends Component {
           component={renderContacts}
           partyRelationshipTypes={this.props.partyRelationshipTypesList}
           rolesUsedOnce={this.state.rolesUsedOnce}
-          confirmedContacts={this.props.confirmedContacts}
+          confirmedContacts={this.state.confirmedContacts}
           contactFormValues={this.props.contactFormValues}
           handleSearch={this.handleSearch}
           selectedContactIndex={this.state.selectedNOWContactIndex}
