@@ -146,11 +146,17 @@ const renderContacts = ({
                       {!confirmedContacts?.includes(fields.get(index).id) ? (
                         <Button
                           ghost
+                          disabled={isSelectedContact}
                           onClick={() => {
                             fields.remove(index);
                           }}
                         >
-                          <img name="remove" src={TRASHCAN} alt="Remove Application Contact" />
+                          <img
+                            name="remove"
+                            src={TRASHCAN}
+                            alt="Remove Application Contact"
+                            className={isSelectedContact ? "disabled-icon" : ""}
+                          />
                         </Button>
                       ) : (
                         <div className="confirm-success">
