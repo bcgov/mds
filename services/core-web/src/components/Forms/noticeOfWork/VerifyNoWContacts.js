@@ -162,7 +162,12 @@ const renderContacts = ({
                   <Row align="middle" justify="center">
                     <Col span={12}>
                       <div className="inline-flex">
-                        <img className="icon-sm" src={PROFILE_NOCIRCLE} alt="user" height={25} />
+                        <img
+                          className="icon-sm padding-sm--right"
+                          src={PROFILE_NOCIRCLE}
+                          alt="user"
+                          height={25}
+                        />
                         <h4>
                           {contactExists || selectedCoreParty
                             ? startCase(contactInformation.party.name)
@@ -172,7 +177,7 @@ const renderContacts = ({
                       {(contactExists || selectedCoreParty) && (
                         <div>
                           <div className="inline-flex">
-                            <div className="padding-right">
+                            <div className="padding-sm--right">
                               <MailOutlined className="icon-sm" />
                             </div>
                             {contactInformation.party.email &&
@@ -185,7 +190,7 @@ const renderContacts = ({
                             )}
                           </div>
                           <div className="inline-flex">
-                            <div className="padding-right">
+                            <div className="padding-sm--right">
                               <PhoneOutlined className="icon-sm" />
                             </div>
                             <p>
@@ -475,12 +480,17 @@ export class VerifyNoWContacts extends Component {
                     <Row>
                       <Col span={24}>
                         <div className="inline-flex">
-                          <img className="icon-sm" src={PROFILE_NOCIRCLE} alt="user" height={25} />
+                          <img
+                            className="icon-sm padding-sm--right"
+                            src={PROFILE_NOCIRCLE}
+                            alt="user"
+                            height={25}
+                          />
                           <h4>{startCase(result.name)}</h4>
                         </div>
                         <div>
                           <div className="inline-flex">
-                            <div className="padding-right">
+                            <div className="padding-sm--right">
                               <MailOutlined className="icon-sm" />
                             </div>
                             {result.email && result.email !== "Unknown" ? (
@@ -490,7 +500,7 @@ export class VerifyNoWContacts extends Component {
                             )}
                           </div>
                           <div className="inline-flex">
-                            <div className="padding-right">
+                            <div className="padding-sm--right">
                               <PhoneOutlined className="icon-sm" />
                             </div>
                             <p>{result.phone_no}</p>
