@@ -313,9 +313,6 @@ export class VerifyNoWContacts extends Component {
     }
 
     if (formReset) {
-      console.log("getting called??");
-      console.log(this.props.wasFormReset);
-      console.log(nextProps.wasFormReset);
       this.setState({
         selectedNOWContact: {},
         selectedNOWContactIndex: "",
@@ -568,9 +565,10 @@ export class VerifyNoWContacts extends Component {
               <Input.Search
                 placeholder="Search"
                 allowClear
-                defaultValue={this.state.searchTerm}
+                value={this.state.searchTerm}
                 onSearch={(searchTerm) => this.handleSimpleSearch(searchTerm)}
                 onPressEnter={(event) => event.preventDefault()}
+                onChange={(e) => this.setState({ searchTerm: e.target.value })}
                 size="large"
               />
               <br />

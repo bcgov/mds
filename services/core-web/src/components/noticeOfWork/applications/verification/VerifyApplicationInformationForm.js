@@ -3,7 +3,7 @@ import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
 import { reduxForm, formValueSelector, reset, change } from "redux-form";
-import { Button, Divider } from "antd";
+import { Button, Divider, Popconfirm } from "antd";
 import { Form } from "@ant-design/compatible";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -90,9 +90,15 @@ export const VerifyApplicationInformationForm = (props) => {
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <Button type="secondary" onClick={handleReset}>
-            Cancel
-          </Button>
+          <Popconfirm
+            placement="bottomRight"
+            title="Are you sure you want to cancel? The form will be reset to the origional state."
+            okText="Yes"
+            cancelText="No"
+            onConfirm={handleReset}
+          >
+            <Button type="secondary">Cancel</Button>
+          </Popconfirm>
           <Button type="primary" htmlType="submit" loading={props.isImporting} disabled={disabled}>
             Verify Application
           </Button>
