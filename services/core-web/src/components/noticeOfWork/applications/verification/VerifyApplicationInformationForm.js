@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -44,6 +44,10 @@ export const VerifyApplicationInformationForm = (props) => {
     latitude: props.noticeOfWork.latitude,
   };
 
+  useEffect(() => {
+    setReset(false);
+  }, [props.contactFormValues]);
+
   const handleReset = () => {
     setReset(true);
     props.reset(FORM.VERIFY_NOW_APPLICATION_FORM);
@@ -53,7 +57,7 @@ export const VerifyApplicationInformationForm = (props) => {
 
   const formValuesWithParty = props.contactFormValues.filter(({ party_guid }) => party_guid).length;
   const confirmed = `${formValuesWithParty}/${props.contactFormValues.length} contacts confirmed`;
-  const disabled = props.contactFormValues.length > formValuesWithParty.length || !props.mine_guid;
+  const disabled = props.contactFormValues.length > formValuesWithParty || !props.mine_guid;
   const noMine = props.mine_guid ? "" : "A mine must be associated to this application";
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -82,6 +86,7 @@ export const VerifyApplicationInformationForm = (props) => {
         initialValues={props.originalNoticeOfWork}
         contactFormValues={props.contactFormValues}
         wasFormReset={wasFormReset}
+        isImporting={props.isImporting}
       />
       <div className="right center-mobile">
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>

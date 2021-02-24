@@ -49,6 +49,7 @@ const propTypes = {
   updateParty: PropTypes.func.isRequired,
   storeSubsetSearchResults: PropTypes.func.isRequired,
   fetchPartyById: PropTypes.func.isRequired,
+  isImporting: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -87,6 +88,7 @@ const renderContacts = ({
   handleSearch,
   selectedContactIndex,
   selectedData,
+  isImporting,
 }) => {
   const filteredRelationships = partyRelationshipTypes.filter((pr) =>
     ["MMG", "PMT", "THD", "LDO", "AGT", "EMM", "MOR"].includes(pr.value)
@@ -245,6 +247,7 @@ const renderContacts = ({
                         <Button
                           type="secondary"
                           style={{ float: "right" }}
+                          disabled={isImporting}
                           onClick={(event) => handleSearch(event, fields.get(index), index, true)}
                         >
                           Re-Verify Contact
@@ -302,8 +305,7 @@ export class VerifyNoWContacts extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const formReset =
-      nextProps.contactFormValues === this.props.contactFormValues && nextProps.wasFormReset;
+    const formReset = nextProps.wasFormReset;
     const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
 
     if (contactsChanged) {
@@ -311,6 +313,9 @@ export class VerifyNoWContacts extends Component {
     }
 
     if (formReset) {
+      console.log("getting called??");
+      console.log(this.props.wasFormReset);
+      console.log(nextProps.wasFormReset);
       this.setState({
         selectedNOWContact: {},
         selectedNOWContactIndex: "",
@@ -620,6 +625,7 @@ export class VerifyNoWContacts extends Component {
           handleSearch={this.handleSearch}
           selectedContactIndex={this.state.selectedNOWContactIndex}
           selectedData={this.state.selectedData}
+          isImporting={this.props.isImporting}
         />
         {this.renderSearchResults()}
         {this.renderCoreContacts()}
