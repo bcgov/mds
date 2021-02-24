@@ -80,7 +80,7 @@ export const VerifyApplicationInformationForm = (props) => {
       />
       <br />
       <br />
-      <h4>Match the contacts from the Notice of Work application to contacts in CORE.</h4>
+      <h4>Match the contacts from the Notice of Work application to contacts in Core.</h4>
       <Divider />
       <VerifyNoWContacts
         initialValues={props.originalNoticeOfWork}

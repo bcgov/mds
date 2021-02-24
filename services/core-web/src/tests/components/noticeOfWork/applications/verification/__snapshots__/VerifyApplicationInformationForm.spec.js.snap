@@ -33,7 +33,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <br />
   <br />
   <h4>
-    Match the contacts from the Notice of Work application to contacts in CORE.
+    Match the contacts from the Notice of Work application to contacts in Core.
   </h4>
   <Divider />
   <Connect(VerifyNoWContacts)
@@ -441,7 +441,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         okType="primary"
         onConfirm={[Function]}
         placement="bottomRight"
-        title="Are you sure you want to cancel? The form will be reset to the origional state."
+        title="Are you sure you want to cancel? The form will be reset to the original state."
         transitionName="zoom-big"
         trigger="click"
       >
