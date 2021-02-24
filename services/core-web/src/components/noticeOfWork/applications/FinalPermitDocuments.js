@@ -202,12 +202,7 @@ export class FinalPermitDocuments extends Component {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
-        documents:
-          this.props.noticeOfWork &&
-          this.props.noticeOfWork.documents &&
-          this.props.noticeOfWork.documents.filter(
-            (doc) => doc.now_application_document_type_code !== "NTR"
-          ),
+        documents: this.props.noticeOfWork.documents,
         finalDocuments,
         finalSubmissionDocuments,
         onSubmit: this.createFinalDocumentPackage,

@@ -24,16 +24,12 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def post(self, application_guid, application_progress_status_code):
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
-        if not identity.now_application:
-            raise NotFound(
-                'There was no notice of work application found with the provided now_application_guid.'
-            )
-
-        progress_status_code = application_progress_status_code.upper()
+        if identity.now_application is None:
+            raise NotFound('Notice of Work not found')
 
         existing_now_progress = next(
             (p for p in identity.now_application.application_progress
-             if p.application_progress_status_code == progress_status_code), None)
+             if p.application_progress_status_code == application_progress_status_code), None)
 
         now_progress = None
         if existing_now_progress:
@@ -43,10 +39,12 @@ class NOWApplicationProgressResource(Resource, UserMixin):
         else:
             #Create new datespan - starting now
             new_now_progress = NOWApplicationProgress.create(identity.now_application,
-                                                             progress_status_code)
+                                                             application_progress_status_code)
             now_progress = new_now_progress
 
-        if identity.now_application is not None and identity.now_application.now_application_status_code != "REF" and progress_status_code == "REF" or progress_status_code == "CON" or progress_status_code == "PUB":
+        if identity.now_application.now_application_status_code != "REF" and application_progress_status_code in [
+                "REF", "CON", "PUB"
+        ]:
             identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
             identity.now_application.now_application_status_code = "REF"
         identity.save()
@@ -65,20 +63,18 @@ class NOWApplicationProgressResource(Resource, UserMixin):
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_PROGRESS, code=201)
     def put(self, application_guid, application_progress_status_code):
-        data = self.parser.parse_args()
         identity = NOWApplicationIdentity.find_by_guid(application_guid)
 
-        if not identity.now_application:
-            raise NotFound(
-                'There was no notice of work application found with the provided now_application_guid.'
-            )
+        if identity.now_application is None:
+            raise NotFound('Notice of Work not found')
+
         existing_now_progress = next(
             (p for p in identity.now_application.application_progress
              if p.application_progress_status_code == application_progress_status_code), None)
 
         if not existing_now_progress:
             raise NotFound('This progress object has not been created yet')
-        
+
         existing_now_progress.end_date = datetime.now(tz=timezone.utc)
         existing_now_progress.save()
 
@@ -94,5 +90,9 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
                 identity.now_application.now_application_status_code = "RCO"
                 identity.save()
+
+        if application_progress_status_code == 'REV':
+            identity.now_application.add_now_form_to_fap(
+                "This document was automatically created when Technical Review was completed.")
 
         return existing_now_progress, 200

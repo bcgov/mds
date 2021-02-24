@@ -122,7 +122,7 @@ export class AmazonS3Provider extends SampleBase {
             showHiddenItems={false}
             showThumbnail
             rootAliasName="Files"
-            view="LargeIcons"
+            view="Details"
             searchSettings={{
               allowSearchOnTyping: false,
               filterType: "contains",
