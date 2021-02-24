@@ -78,7 +78,10 @@ export const fetchPartyById = (id) => (dispatch) => {
       dispatch(success(reducerTypes.GET_PARTY));
       dispatch(partyActions.storeParty(response.data, id));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PARTY)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_PARTY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 

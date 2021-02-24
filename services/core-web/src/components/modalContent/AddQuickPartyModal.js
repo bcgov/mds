@@ -16,6 +16,7 @@ const propTypes = {
   addPartyFormState: PropTypes.objectOf(PropTypes.any),
   initialValues: PropTypes.objectOf(PropTypes.any),
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  afterSubmit: PropTypes.func,
 };
 
 const defaultProps = {
@@ -23,6 +24,7 @@ const defaultProps = {
     initialValues: undefined,
   },
   initialValues: undefined,
+  afterSubmit: () => {},
 };
 
 export class AddQuickPartyModal extends Component {
@@ -33,22 +35,28 @@ export class AddQuickPartyModal extends Component {
   };
 
   componentDidMount() {
+    const values = !isEmpty(this.props.addPartyFormState.initialValues)
+      ? this.props.addPartyFormState.initialValues
+      : this.props.initialValues;
     this.setState({
-      isPerson:
-        !isEmpty(this.props.addPartyFormState.initialValues) &&
-        this.props.addPartyFormState.initialValues.party_type_code !== "ORG",
+      isPerson: !isEmpty(values) && values.party_type_code !== "ORG",
     });
   }
 
   handlePartySubmit = (values) => {
     const party_type_code = this.state.isPerson ? "PER" : "ORG";
     const payload = { party_type_code, ...values };
+    let response;
     this.props
       .createParty(payload)
-      .then(() => {
+      .then(({ data }) => {
+        response = data;
         this.props.closeModal();
       })
-      .catch();
+      .catch()
+      .finally(() => {
+        this.props.afterSubmit(response?.party_guid);
+      });
   };
 
   togglePartyChange = (value) => {
@@ -56,6 +64,9 @@ export class AddQuickPartyModal extends Component {
   };
 
   render = () => {
+    const values = !isEmpty(this.props.addPartyFormState.initialValues)
+      ? this.props.addPartyFormState.initialValues
+      : this.props.initialValues;
     return (
       <div>
         <div className="center">
@@ -74,7 +85,7 @@ export class AddQuickPartyModal extends Component {
           <AddQuickPartyForm
             onSubmit={this.handlePartySubmit}
             isPerson={this.state.isPerson}
-            initialValues={this.props.addPartyFormState.initialValues}
+            initialValues={values}
             showAddress
             provinceOptions={this.props.provinceOptions}
           />
