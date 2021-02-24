@@ -749,7 +749,7 @@ export const DROPDOWN_APPLICATION_DOCUMENT_TYPES = [
   { value: "TAL", label: "Tenure Authorization Letter", subType: null, isActive: true },
   { value: "PUB", label: "Public Comment", subType: null, isActive: true },
   { value: "REV", label: "Review", subType: null, isActive: true },
-  { value: "NTR", label: "Technical Review", subType: null, isActive: true },
+  { value: "NTR", label: "Notice of Work Form", subType: null, isActive: true },
   { value: "LMA", label: "Location Map", subType: "MDO", isActive: true },
   { value: "LTM", label: "Land Title/Licence of Ocupation Map", subType: "MDO", isActive: true },
   { value: "OMA", label: "Overview Map", subType: "MDO", isActive: true },

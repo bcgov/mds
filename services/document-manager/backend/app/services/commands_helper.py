@@ -3,6 +3,7 @@ import uuid
 import os
 import requests
 import json
+from requests.auth import HTTPBasicAuth
 
 from flask import current_app
 from sqlalchemy import and_
@@ -143,6 +144,7 @@ def create_import_now_submission_documents(import_now_submission_documents_job_i
 def apply_task_async(task_name, data):
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/async-apply/{task_name}',
+        auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),
         headers={'Content-Type': 'application/json'},
         data=json.dumps(data))
 
@@ -152,6 +154,7 @@ def apply_task_async(task_name, data):
 def abort_task(task_id):
     response = requests.post(
         url=f'{Config.CELERY_REST_API_URL}/api/task/abort/{task_id}',
+        auth=HTTPBasicAuth(Config.FLOWER_USER, Config.FLOWER_USER_PASSWORD),
         headers={'Content-Type': 'application/json'})
 
     return json.loads(response.content)
