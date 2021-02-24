@@ -37,7 +37,6 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   </h4>
   <Divider />
   <Connect(VerifyNoWContacts)
-    confirmedContacts={Array []}
     contactFormValues={Array []}
     initialValues={
       Object {
@@ -426,9 +425,6 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
-    selectedRows={Array []}
-    setConfirmedContacts={[Function]}
-    setSelectedRows={[Function]}
     wasFormReset={false}
   />
   <div
