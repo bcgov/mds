@@ -92,7 +92,7 @@ export const VerifyApplicationInformationForm = (props) => {
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Popconfirm
             placement="bottomRight"
-            title="Are you sure you want to cancel? The form will be reset to the origional state."
+            title="Are you sure you want to cancel? The form will be reset to the original state."
             okText="Yes"
             cancelText="No"
             onConfirm={handleReset}

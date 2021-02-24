@@ -311,7 +311,7 @@ export class VerifyNoWContacts extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const formReset = nextProps.wasFormReset;
+    const formReset = this.props.wasFormReset !== nextProps.wasFormReset && nextProps.wasFormReset;
     const contactsChanged = nextProps.contactFormValues !== this.props.contactFormValues;
 
     if (contactsChanged) {
