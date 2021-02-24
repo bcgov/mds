@@ -571,9 +571,9 @@ export class VerifyNoWContacts extends Component {
               <Input.Search
                 placeholder="Search"
                 allowClear
+                type="buttom"
                 value={this.state.searchTerm}
                 onSearch={(searchTerm) => this.handleSimpleSearch(searchTerm)}
-                onPressEnter={(event) => event.preventDefault()}
                 onChange={(e) => this.setState({ searchTerm: e.target.value })}
                 size="large"
               />
