@@ -20,6 +20,17 @@ ALTER COLUMN society_number TYPE varchar USING society_number::varchar,
 ALTER COLUMN tax_registration_number TYPE varchar USING tax_registration_number::varchar,
 ALTER COLUMN fax_number TYPE varchar USING fax_number::varchar;
 
+ALTER TABLE "address" ALTER COLUMN suite_no TYPE varchar USING suite_no::varchar,
+ALTER COLUMN address_line_2 TYPE varchar USING address_line_2::varchar,
+ALTER COLUMN address_line_1 TYPE varchar USING address_line_1::varchar,
+ALTER COLUMN city TYPE varchar USING city::varchar,
+ALTER COLUMN sub_division_code TYPE varchar USING sub_division_code::varchar,
+ALTER COLUMN post_code TYPE varchar USING post_code::varchar,
+ALTER COLUMN address_type_code TYPE varchar USING address_type_code::varchar,
+ALTER COLUMN deleted_ind TYPE bool USING deleted_ind::bool,
+ALTER COLUMN create_user TYPE varchar USING create_user::varchar,
+ALTER COLUMN update_user TYPE varchar USING update_user::varchar;
+
 
 CREATE OR REPLACE VIEW public.mine_summary_view
 AS SELECT m.mine_guid::character varying AS mine_guid,
