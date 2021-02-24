@@ -208,9 +208,10 @@ class NOWApplication(Base, AuditMixin):
         ]
         return permittees[0] if permittees else None
 
-    @hybrid_property
-    def is_historic(self):
-        return self.now_application_identity.is_historic 
+    is_historic = False
+    # @hybrid_property
+    # def is_historic(self):
+    #     return self.now_application_identity.is_historic 
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

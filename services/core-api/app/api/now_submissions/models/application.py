@@ -6,6 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
 from flask import current_app
+from datetime import date
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -328,9 +329,10 @@ class Application(Base):
 
     @hybrid_property
     def is_historic(self):
-        if self.originating_system is None or self.originating_system == "":
-            return False
-        return True
+        current_app.logger.debug(self.receiveddate)
+        if self.receiveddate >= date(2020, 2, 1):
+            return True
+        return False
 
     def __repr__(self):
         return '<Application %r>' % self.messageid
