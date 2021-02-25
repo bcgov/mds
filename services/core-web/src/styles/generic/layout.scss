@@ -2,6 +2,10 @@ body {
   font-family: $default-font;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .layout {
   min-height: 100vh;
 }
@@ -47,6 +51,10 @@ body {
 
 .violet {
   color: $violet;
+}
+
+.red {
+  color: $alert-red;
 }
 
 .right {
@@ -445,7 +453,7 @@ body {
 }
 
 .add-content-block {
-  background-color: #f3f0f0;
+  background-color: white;
   border-radius: 5px;
   border: 2px dashed gray;
   margin: 50px;
@@ -454,7 +462,7 @@ body {
   cursor: pointer;
 
   &:hover {
-    background-color: darken(#f3f0f0, 2%);
+    background-color: darken(white, 2%);
   }
 }
 

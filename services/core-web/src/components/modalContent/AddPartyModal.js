@@ -11,6 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
@@ -296,6 +297,7 @@ const mapStateToProps = (state) => ({
   addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
   mineNameList: getMineNames(state),
   addPartyForm: state.form[FORM.ADD_FULL_PARTY],
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(

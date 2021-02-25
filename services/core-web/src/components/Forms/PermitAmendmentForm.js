@@ -178,7 +178,7 @@ export class PermitAmendmentForm extends Component {
             <Form.Item label="Assessed Liability Adjustment">
               <p className="p-light">
                 This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in CORE will not be updated in MMS.
+                Changes to this value in Core will not be updated in MMS.
               </p>
               <Field
                 id="liability_adjustment"

@@ -33,17 +33,8 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <br />
   <br />
   <h4>
-    Match Application Contacts to Core Contacts
+    Match the contacts from the Notice of Work application to contacts in Core.
   </h4>
-  <p>
-    Select a Contact from Core for each person shown, or update the Roles if required.
-  </p>
-  <p>
-    Click "Confirm" when you have finished matching the contact. Changes will not be saved until you Click "Verify Application"
-  </p>
-  <p>
-    Click "Cancel" to reset the form.
-  </p>
   <Divider />
   <Connect(VerifyNoWContacts)
     contactFormValues={Array []}
@@ -443,18 +434,31 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     <Connect(AuthorizationWrapper)
       permission="role_edit_permits"
     >
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        onClick={[Function]}
-        type="secondary"
+      <ForwardRef
+        cancelText="No"
+        disabled={false}
+        icon={<ForwardRef(ExclamationCircleFilled) />}
+        okText="Yes"
+        okType="primary"
+        onConfirm={[Function]}
+        placement="bottomRight"
+        title="Are you sure you want to cancel? The form will be reset to the original state."
+        transitionName="zoom-big"
+        trigger="click"
       >
-        Cancel
-      </Button>
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </ForwardRef>
       <Button
         block={false}
+        disabled={true}
         ghost={false}
         htmlType="submit"
         loading={false}
@@ -463,6 +467,16 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         Verify Application
       </Button>
     </Connect(AuthorizationWrapper)>
+    <p
+      className="violet"
+    >
+      0/0 contacts confirmed
+    </p>
+    <p
+      className="red"
+    >
+      A mine must be associated to this application
+    </p>
   </div>
 </Form>
 `;
