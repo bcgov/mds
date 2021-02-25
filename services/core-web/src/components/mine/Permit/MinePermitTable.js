@@ -88,7 +88,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         placement="topLeft"
         title={
           isLinkedToNowApplication
-            ? "You cannot delete permit amendment with associated NoW application imported to CORE."
+            ? "You cannot delete permit amendment with associated NoW application imported to Core."
             : "Are you sure you want to delete this amendment and all related documents?"
         }
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
@@ -261,7 +261,7 @@ const columns = [
 
       if (!isDeletionAllowed) {
         if (isLinkedToNowApplication) {
-          issues.push("Permit has amendments associated with a NoW application imported to CORE.");
+          issues.push("Permit has amendments associated with a NoW application imported to Core.");
         }
 
         if (isAnyBondsAssociatedTo) {
