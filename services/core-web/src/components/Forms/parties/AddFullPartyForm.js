@@ -49,7 +49,7 @@ export const AddFullPartyForm = (props) => (
                     name="first_name"
                     label="First Name *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
@@ -60,7 +60,7 @@ export const AddFullPartyForm = (props) => (
                     name="party_name"
                     label="Surname *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
