@@ -45,7 +45,7 @@ describe("`fetchSearchResults` action creator", () => {
     return fetchSearchResults(
       searchTerm,
       null
-    )(dispatch).then(() => {
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
