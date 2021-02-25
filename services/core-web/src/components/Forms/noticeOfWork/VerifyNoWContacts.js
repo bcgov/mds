@@ -32,6 +32,7 @@ import * as Strings from "@common/constants/strings";
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/AddButton";
 import RenderSelect from "@/components/common/RenderSelect";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -529,9 +530,13 @@ export class VerifyNoWContacts extends Component {
                         className="full-mobile"
                         type="primary"
                         onClick={(e) => this.handleSelect(e, result)}
+                        disabled={!result.phone_no}
                       >
                         Select Contact
                       </Button>
+                      {!result.phone_no && (
+                        <CoreTooltip title="Phone number must be specified." />
+                      )}
                     </div>
                   </Card>
                 </Col>
