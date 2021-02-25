@@ -168,7 +168,7 @@ const renderContacts = ({
                   bordered={false}
                 >
                   <Row align="middle" justify="center">
-                    <Col span={12}>
+                    <Col span={15}>
                       <div className="inline-flex">
                         <img
                           className="icon-sm padding-sm--right"
@@ -213,7 +213,7 @@ const renderContacts = ({
                       )}
                     </Col>
 
-                    <Col span={12}>
+                    <Col span={9}>
                       <Field
                         usedOptions={rolesUsedOnce}
                         id={`${field}.mine_party_appt_type_code`}
@@ -256,7 +256,7 @@ const renderContacts = ({
                           disabled={isImporting}
                           onClick={(event) => handleSearch(event, fields.get(index), index, true)}
                         >
-                          Re-Verify Contact
+                          Redo
                         </Button>
                       )}
                     </Col>
@@ -279,8 +279,8 @@ const renderContacts = ({
                 }
               >
                 <div className="inline-flex flex-center">
-                  <PlusOutlined className="icon-sm padding-small--right" />
-                  <p>Add New Contact</p>
+                  <PlusOutlined className="icon-sm padding-sm--right" />
+                  <p>Add New Application Contact</p>
                 </div>
               </div>
             </AuthorizationWrapper>
@@ -472,7 +472,7 @@ export class VerifyNoWContacts extends Component {
       <Col span={8}>
         <Row className="contact-rows">
           <Col span={24} style={{ minHeight: "130px" }}>
-            <h3>Contact Detail</h3>
+            <h3>Core Contact Detail</h3>
             <p>
               Use this information to determine if this is the correct contact to use in Core for
               this application. Click &quot;Select Contact&quot; when you have found the right
@@ -523,7 +523,7 @@ export class VerifyNoWContacts extends Component {
                         type="secondary"
                         onClick={(e) => this.openEditPartyModal(e, result.party_guid, result.name)}
                       >
-                        Update Contact
+                        Update Core Contact
                       </Button>
                       <Button
                         className="full-mobile"
@@ -566,7 +566,7 @@ export class VerifyNoWContacts extends Component {
                 onClick={(e) => this.showAddPartyModal(e)}
                 type="secondary"
               >
-                Add New Contact
+                Add New Core Contact
               </AddButton>
               <Input.Search
                 placeholder="Search"
