@@ -13,7 +13,7 @@ exports[`Logout renders properly 1`] = `
     }
   />
   <p>
-    If you would like to return to CORE, please log in below
+    If you would like to return to Core, please log in below
   </p>
   <Link
     to="/dashboard/mines"
