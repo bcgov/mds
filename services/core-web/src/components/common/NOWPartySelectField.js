@@ -42,7 +42,6 @@ const propTypes = {
     warning: PropTypes.string,
   }).isRequired,
   disabled: PropTypes.bool,
-  wasFormReset: PropTypes.bool,
   initialSearch: PropTypes.string,
   fetchSearchResults: PropTypes.func.isRequired,
   setAddPartyFormState: PropTypes.func.isRequired,
@@ -63,7 +62,6 @@ const defaultProps = {
   initialSearch: undefined,
   placeholder: "",
   disabled: false,
-  wasFormReset: null,
   initialValues: {},
   name: "party_guid",
   label: "Name*",
@@ -162,10 +160,6 @@ export class NOWPartySelectField extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const formReset =
-      this.props.wasFormReset !== null &&
-      this.props.wasFormReset !== nextProps.wasFormReset &&
-      nextProps.wasFormReset;
     const initialValuesChangedNotByUser =
       !isEmpty(this.props.initialValues) &&
       this.state.selectedOption.value &&
@@ -179,18 +173,6 @@ export class NOWPartySelectField extends Component {
         selectedOption: {
           value: nextProps.initialValues.value,
           label: nextProps.initialValues.label,
-        },
-        isUserEvent: false,
-      });
-    }
-
-    // if user cancels the form, clear the dropdown, reset the search with name
-    if (formReset) {
-      this.handleSearch(nextProps.initialValues.label);
-      this.setState({
-        selectedOption: {
-          value: "",
-          label: "",
         },
         isUserEvent: false,
       });
