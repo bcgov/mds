@@ -790,7 +790,7 @@
                     "name": "NROS_TOKEN_URL",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "template.mds-nros-now-secret",
+                        "name": "template.mds-nros-client-service",
                         "key": "token-url"
                       }
                     }
@@ -799,8 +799,8 @@
                     "name": "NROS_CLIENT_ID",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "template.mds-nros-now-secret",
-                        "key": "client-id"
+                        "name": "template.mds-nros-client-service",
+                        "key": "service-client"
                       }
                     }
                   },
@@ -808,8 +808,8 @@
                     "name": "NROS_CLIENT_SECRET",
                     "valueFrom": {
                       "secretKeyRef": {
-                        "name": "template.mds-nros-now-secret",
-                        "key": "secret"
+                        "name": "template.mds-nros-client-service",
+                        "key": "password"
                       }
                     }
                   },

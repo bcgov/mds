@@ -11,6 +11,7 @@ from app.api.now_applications.models.now_application_type import NOWApplicationT
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.unit_type import UnitType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -27,7 +28,7 @@ EMPTY_FIELD = '-'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
-EXCLUDED_APPLICATION_DOCUMENT_TYPES = ['NTR']
+EXCLUDED_APPLICATION_DOCUMENT_TYPES = []
 
 ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
@@ -47,8 +48,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'first_aid_cert_level', 'exploration_access.reclamation_description',
     'exploration_access.reclamation_cost', 'blasting_operation.has_storage_explosive_on_site',
     'blasting_operation.explosive_permit_issued', 'blasting_operation.explosive_permit_expiry_date',
-    'blasting_operation.explosive_permit_number', 'camp.has_fuel_stored',
-    'camp.volume_fuel_stored', 'camp.has_fuel_stored_in_bulk', 'camp.has_fuel_stored_in_barrels',
+    'blasting_operation.explosive_permit_number', 'camp.has_fuel_stored', 'camp.volume_fuel_stored',
+    'camp.has_fuel_stored_in_bulk', 'camp.has_fuel_stored_in_barrels',
     'camp.reclamation_description', 'camp.reclamation_cost',
     'cut_lines_polarization_survey.reclamation_description',
     'cut_lines_polarization_survey.reclamation_cost',
@@ -73,6 +74,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code']
+
 
 class NOWApplicationExportResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -92,9 +95,17 @@ class NOWApplicationExportResource(Resource, UserMixin):
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
-        data = self.parser.parse_args()
+        if document_type.now_application_document_type_code != 'NTR':
+            raise BadRequest(f'This method can only export {document_type.description}')
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(data['now_application_guid'])
+        data = self.parser.parse_args()
+        now_application_guid = data['now_application_guid']
+        token = NOWApplicationExportResource.get_now_form_generate_token(now_application_guid)
+        return {'token': token}
+
+    @classmethod
+    def get_now_form_generate_token(cls, now_application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
 
         if not now_application_identity:
             raise NotFound('Notice of Work not found')
@@ -223,6 +234,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
+                elif key in UNIT_TYPE_CODE_FIELDS:
+                    unit_type_codes = UnitType.get_all()
+                    code_object = [
+                        code for code in unit_type_codes if code.unit_type_code == obj[key]
+                    ]
+                    obj[key] = code_object[0].short_description if code_object and len(
+                        code_object) > 0 else "N/A"
                 elif isinstance(obj[key], bool):
                     obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
@@ -300,31 +318,17 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
-        # Enforce that read-only fields do not change
-        template_data = now_application_json
-        enforced_data = [
-            x for x in document_type.document_template._form_spec_with_context(
-                data['now_application_guid']) if x.get('read-only', False)
-        ]
-        for enforced_item in enforced_data:
-            if template_data.get(enforced_item['id']) != enforced_item['context-value']:
-                current_app.logger.debug(
-                    f'OVERWRITING ENFORCED key={enforced_item["id"]}, value={template_data.get(enforced_item["id"])} -> {enforced_item["context-value"]}'
-                )
-            template_data[enforced_item['id']] = enforced_item['context-value']
-
-        token = uuid.uuid4()
-
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.
+        token = uuid.uuid4()
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
-                'document_type_code': document_type_code,
-                'now_application_guid': data['now_application_guid'],
-                'template_data': template_data,
+                'document_type_code': 'NTR',
+                'now_application_guid': now_application_guid,
+                'template_data': now_application_json,
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
 
-        return {'token': token}
+        return token
