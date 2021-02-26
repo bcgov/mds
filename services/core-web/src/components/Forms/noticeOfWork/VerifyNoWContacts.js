@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty, startCase } from "lodash";
-import { Col, Row, Button, Card, Result, Table, Input } from "antd";
+import { Col, Row, Button, Card, Result, Table, Input, Alert } from "antd";
 import { PlusOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { FieldArray, Field, change } from "redux-form";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
@@ -32,7 +32,6 @@ import * as Strings from "@common/constants/strings";
 import Address from "@/components/common/Address";
 import AddButton from "@/components/common/AddButton";
 import RenderSelect from "@/components/common/RenderSelect";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   partyRelationshipTypesList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -515,6 +514,15 @@ export class VerifyNoWContacts extends Component {
                             <p>{result.phone_no}</p>
                           </div>
                           <Address address={result.address[0] || {}} />
+                          {!result.phone_no && (
+                            <Alert
+                              message="No Phone number"
+                              description="The Phone number must be specified."
+                              type="warning"
+                              showIcon
+                              style={{ display: "inline-block" }}
+                            />
+                          )}
                         </div>
                       </Col>
                     </Row>
@@ -534,9 +542,6 @@ export class VerifyNoWContacts extends Component {
                       >
                         Select Contact
                       </Button>
-                      {!result.phone_no && (
-                        <CoreTooltip title="Phone number must be specified." />
-                      )}
                     </div>
                   </Card>
                 </Col>
