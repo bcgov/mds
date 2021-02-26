@@ -833,7 +833,8 @@ def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
                     water_use_description=wsa.useofwater,
                     estimate_rate=wsa.estimateratewater,
                     pump_size=wsa.pumpsizeinwater,
-                    intake_location=wsa.locationwaterintake))
+                    intake_location=wsa.locationwaterintake,
+                    estimate_rate_unit_type_code='MES' if now_sub else None))
 
         now_app.water_supply = water_supply
     return

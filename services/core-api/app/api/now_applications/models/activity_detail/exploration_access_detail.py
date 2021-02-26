@@ -17,3 +17,7 @@ class ExplorationAccessDetail(ActivityDetailBase):
 
     def __repr__(self):
         return '<ExplorationAccessDetail %r>' % self.activity_detail_id
+
+    def __init__(self, **kwargs):
+        self.length_unit_type_code = 'KMT'
+        super(ExplorationAccessDetail, self).__init__(**kwargs)
