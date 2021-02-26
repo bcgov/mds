@@ -87,7 +87,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 total_liability = float(now_application.liability_adjustment or 0) + float(
                     associated_permit.assessed_liability_total or 0)
             else:
-                total_liability = now_application.liability_adjustment
+                total_liability = float(now_application.liability_adjustment or 0)
 
             template_data['security_adjustment'] = '${:,.2f}'.format(
                 total_liability) if total_liability else '$0.00'
