@@ -323,13 +323,17 @@
 
 .contact-rows {
   .scroll {
-    height: 1000px;
+    height: 100vh;
     padding: 20px 0;
     overflow-y: scroll;
+    .ant-col {
+      padding: 5px;
+    }
   }
   background-color: #f3f0f0;
   padding: 25px;
   border-radius: 5px;
+
 }
 
 .party-table {
