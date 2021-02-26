@@ -84,12 +84,13 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                     now_application.now_application_guid)
                 associated_permit = Permit.find_by_permit_id(
                     permit_amendment.mine_permit_xref.permit_id)
-                total_liability = now_application.liability_adjustment + associated_permit.assessed_liability_total if associated_permit.assessed_liability_total else now_application.liability_adjustment
+                total_liability = float(now_application.liability_adjustment or 0) + float(
+                    associated_permit.assessed_liability_total or 0)
             else:
                 total_liability = now_application.liability_adjustment
 
-            template_data['security_adjustment'] = str(
-                total_liability) if total_liability else '0.00'
+            template_data['security_adjustment'] = '${:,.2f}'.format(
+                total_liability) if total_liability else '$0.00'
 
             conditions = permit.conditions
             conditions_template_data = {}
