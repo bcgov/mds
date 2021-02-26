@@ -312,7 +312,7 @@
 
 .card--white {
   border-radius: 5px;
-  min-height: 100px;
+  min-height: 150px;
   max-height: fit-content;
   padding: 10px;
   background-color: white;
@@ -322,6 +322,11 @@
 }
 
 .contact-rows {
+  .scroll {
+    height: 1000px;
+    padding: 20px 0;
+    overflow-y: scroll;
+  }
   background-color: #f3f0f0;
   padding: 25px;
   border-radius: 5px;
