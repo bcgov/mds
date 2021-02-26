@@ -516,8 +516,7 @@ export class VerifyNoWContacts extends Component {
                           <Address address={result.address[0] || {}} />
                           {!result.phone_no && (
                             <Alert
-                              message="No Phone number"
-                              description="The Phone number must be specified."
+                              message="The Phone number must be specified."
                               type="warning"
                               showIcon
                               style={{ display: "inline-block" }}
