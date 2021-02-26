@@ -515,12 +515,7 @@ export class VerifyNoWContacts extends Component {
                           </div>
                           <Address address={result.address[0] || {}} />
                           {!result.phone_no && (
-                            <Alert
-                              message="The Phone number must be specified."
-                              type="warning"
-                              showIcon
-                              style={{ display: "inline-block" }}
-                            />
+                            <Alert message="Phone number is required." type="error" showIcon />
                           )}
                         </div>
                       </Col>
