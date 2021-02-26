@@ -98,7 +98,7 @@ const renderContacts = ({
       <Col span={8}>
         <Row className="contact-rows">
           <div className="scroll">
-            <Col span={24} style={{ minHeight: "130px" }}>
+            <Col span={24} style={{ minHeight: "150px" }}>
               <h3>Application Contacts</h3>
               <p>
                 Contacts listed here come from the original Notice of Work. Click &quot;Search
@@ -474,7 +474,7 @@ export class VerifyNoWContacts extends Component {
       <Col span={8}>
         <Row className="contact-rows">
           <div className="scroll">
-            <Col span={24} style={{ minHeight: "130px" }}>
+            <Col span={24} style={{ minHeight: "150px" }}>
               <h3>Core Contact Detail</h3>
               <p>
                 Use this information to determine if this is the correct contact to use in Core for
@@ -562,7 +562,7 @@ export class VerifyNoWContacts extends Component {
       <Col span={8}>
         <Row className="contact-rows">
           <div className="scroll">
-            <Col span={24} style={{ minHeight: "130px" }}>
+            <Col span={24} style={{ minHeight: "150px" }}>
               <h3>Matching Contact Options</h3>
               <p>
                 Click on a contact(s) below to see their detailed information in the &quot;Contact
