@@ -47,7 +47,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 
 @pytest.mark.parametrize("resource,method,expected_roles", [
     (ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-    (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+    (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
     (MineCommodityCodeResource, "get", [VIEW_ALL]),
     (MineComplianceSummaryResource, "get", [VIEW_ALL]),
     (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
@@ -106,9 +106,9 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
     (NOWActivityTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
-    (NOWApplicationListResource, 'get', [VIEW_ALL]),
+    (NOWApplicationListResource, 'get', [VIEW_ALL, GIS]),
     (NOWApplicationListResource, 'post', [EDIT_PERMIT]),
-    (NOWApplicationResource, 'get', [VIEW_ALL]),
+    (NOWApplicationResource, 'get', [VIEW_ALL, GIS]),
     (NOWApplicationResource, 'put', [EDIT_PERMIT]),
     (NOWApplicationDocumentUploadResource, 'post', [EDIT_PERMIT]),
     (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
