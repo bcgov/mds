@@ -155,6 +155,8 @@ export const normalizePhone = (value, previousValue) => {
   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
 };
 
+export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
+
 export const upperCase = (value) => value && value.toUpperCase();
 
 export const truncateFilename = (filename, max = 40) => {
