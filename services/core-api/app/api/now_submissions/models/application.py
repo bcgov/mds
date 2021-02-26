@@ -328,9 +328,9 @@ class Application(Base):
     mine_region = association_proxy('mine', 'mine_region')
 
     @hybrid_property
-    def is_historic(self):
+    def is_post_launch(self):
         current_app.logger.debug(self.receiveddate)
-        if self.receiveddate >= date(2020, 2, 1):
+        if self.receiveddate is not None and self.receiveddate >= date(2020, 2, 1):
             return True
         return False
 

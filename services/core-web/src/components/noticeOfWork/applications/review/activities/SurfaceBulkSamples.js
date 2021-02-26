@@ -14,7 +14,7 @@ import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/com
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
-  isHistoric: PropTypes.bool.isRequired,
+  isPostLaunch: PropTypes.bool.isRequired,
 };
 
 export const SurfaceBulkSamples = (props) => {
@@ -79,7 +79,7 @@ export const SurfaceBulkSamples = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Bedrock excavation
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.has_bedrock_excavation").value
@@ -102,7 +102,7 @@ export const SurfaceBulkSamples = (props) => {
           <div className="field-title">
             If the material has potential for spontaneous combustion, give details of separate
             handling.
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.handling_instructions").value

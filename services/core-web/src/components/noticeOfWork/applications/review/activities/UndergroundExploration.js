@@ -27,7 +27,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
-  isHistoric: PropTypes.bool.isRequired,
+  isPostLaunch: PropTypes.bool.isRequired,
 };
 
 export const UndergroundExploration = (props) => {
@@ -101,7 +101,7 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("underground_exploration.proposed_activity").value

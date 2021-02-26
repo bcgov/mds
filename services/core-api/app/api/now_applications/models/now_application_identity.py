@@ -56,11 +56,11 @@ class NOWApplicationIdentity(Base, AuditMixin):
     def mms_now_submission(self):
         return MMSApplication.query.filter_by(mms_cid=self.mms_cid).one_or_none()
     
-    @hybrid_property
-    def is_historic(self):
-        if self.now_submission: 
-            return self.now_submission.is_historic 
-        return False
+    # @hybrid_property
+    # def is_historic(self):
+    #     if self.now_submission: 
+    #         return self.now_submission.is_historic 
+    #     return False
 
     @classmethod
     def find_by_guid(cls, now_application_guid):

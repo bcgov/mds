@@ -69,7 +69,7 @@ const propTypes = {
   proposedStartDate: PropTypes.string.isRequired,
   proposedAuthorizationEndDate: PropTypes.string.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isHistoric: PropTypes.bool.isRequired,
+  isPostLaunch: PropTypes.bool.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -230,7 +230,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Individual or Company/Organization?
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("is_applicant_individual_or_company").value}
               isVisible={props.renderOriginalValues("is_applicant_individual_or_company").edited}
@@ -244,7 +244,7 @@ export const ReviewNOWApplication = (props) => {
           />
           <div className="field-title">
             Relationship to Individual or Company/Organization?
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("relationship_to_applicant").value}
               isVisible={props.renderOriginalValues("relationship_to_applicant").edited}
@@ -306,7 +306,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Do you have the required access authorizations in place?
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
               isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
@@ -325,7 +325,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title">
             Do you need to build a road, create stream crossings or other surface disturbance that
             will not be on your tenure?
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("has_surface_disturbance_outside_tenure").value
@@ -346,7 +346,7 @@ export const ReviewNOWApplication = (props) => {
           <div className="field-title--light">
             Provide the type and authorization numbers for each access authorization application or
             exemption to use the road(s).
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("req_access_authorization_numbers").value}
               isVisible={props.renderOriginalValues("req_access_authorization_numbers").edited}
@@ -364,7 +364,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Access presently gated
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("is_access_gated").value}
               isVisible={props.renderOriginalValues("is_access_gated").edited}
@@ -380,7 +380,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Key provided to the inspector
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("has_key_for_inspector").value}
               isVisible={props.renderOriginalValues("has_key_for_inspector").edited}
@@ -405,7 +405,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Present condition of the land
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.present_land_condition_description")
@@ -427,7 +427,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Current means of access
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.means_of_access_description").value
@@ -449,7 +449,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Physiography
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.physiography_description").value
@@ -469,7 +469,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Old Equipment
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.old_equipment_description").value
@@ -491,7 +491,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Type of vegetation
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.type_of_vegetation_description").value
@@ -511,7 +511,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Recreational trail/use
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.recreational_trail_use_description")
@@ -558,7 +558,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Activities in park
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_activity_in_park").value
@@ -578,7 +578,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Proposed activities on private land
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={props.renderOriginalValues("state_of_land.is_on_private_land").value}
                 isVisible={props.renderOriginalValues("state_of_land.is_on_private_land").edited}
@@ -594,7 +594,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Do you have authorization by the Lieutenant Governor in Council?
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").value
@@ -620,7 +620,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Are you aware of any protected archaeological sites that may be affected by the
               proposed project?
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_archaeology_sites_affected").value
@@ -639,7 +639,7 @@ export const ReviewNOWApplication = (props) => {
             />
             <div className="field-title">
               Plan to protect the archaeological site
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.arch_site_protection_plan").value
@@ -665,7 +665,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Have you shared information and engaged with First Nations in the area of the proposed
               activity?
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_shared_info_with_fn").value
@@ -686,7 +686,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_fn_cultural_heritage_sites_in_area")
@@ -710,7 +710,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe your First Nations engagement activities
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.fn_engagement_activities").value
@@ -730,7 +730,7 @@ export const ReviewNOWApplication = (props) => {
           <Col md={12} sm={24}>
             <div className="field-title">
               Describe any cultural heritage resources in the area
-              {props.isHistoric && <NOWFieldOriginTooltip />}
+              {props.isPostLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
                   props.renderOriginalValues("state_of_land.cultural_heritage_description").value
@@ -794,7 +794,7 @@ export const ReviewNOWApplication = (props) => {
       <Col md={12} sm={24}>
         <div className="field-title">
           Description of Work
-          {props.isHistoric && <NOWFieldOriginTooltip />}
+          {props.isPostLaunch && <NOWFieldOriginTooltip />}
           <NOWOriginalValueTooltip
             originalValue={props.renderOriginalValues("work_plan").value}
             isVisible={props.renderOriginalValues("work_plan").edited}
@@ -816,7 +816,7 @@ export const ReviewNOWApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Total merchantable timber volume
-            {props.isHistoric && <NOWFieldOriginTooltip />}
+            {props.isPostLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("merchantable_timber_volume").value}
               isVisible={props.renderOriginalValues("merchantable_timber_volume").edited}
@@ -871,7 +871,7 @@ export const ReviewNOWApplication = (props) => {
           noticeOfWorkType={props.noticeOfWorkType}
           noticeOfWork={props.initialValues}
           renderOriginalValues={props.renderOriginalValues}
-          isHistoric={props.isHistoric}
+          isPostLaunch={props.isPostLaunch}
         />
         <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
           <NOWSubmissionDocuments
