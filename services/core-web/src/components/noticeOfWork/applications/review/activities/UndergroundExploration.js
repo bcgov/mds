@@ -19,7 +19,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -27,6 +27,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const UndergroundExploration = (props) => {
@@ -100,6 +101,7 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("underground_exploration.proposed_activity").value

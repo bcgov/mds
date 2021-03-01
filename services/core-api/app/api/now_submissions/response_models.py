@@ -99,6 +99,7 @@ SETTLING_POND = api.model(
 
 SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
     'type': fields.String,
+    'quantity': fields.Integer,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
 })

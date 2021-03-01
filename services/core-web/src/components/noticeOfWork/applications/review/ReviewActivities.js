@@ -26,6 +26,7 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   renderOriginalValues: PropTypes.objectOf(PropTypes.strings).isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const ReviewActivities = (props) => {
@@ -41,6 +42,7 @@ export const ReviewActivities = (props) => {
           <AccessRoads
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -54,6 +56,7 @@ export const ReviewActivities = (props) => {
           <Blasting
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -64,7 +67,11 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="camp">
-          <Camps isViewMode={props.isViewMode} renderOriginalValues={props.renderOriginalValues} />
+          <Camps
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -78,6 +85,7 @@ export const ReviewActivities = (props) => {
           <CutLines
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -91,6 +99,7 @@ export const ReviewActivities = (props) => {
           <SurfaceDrilling
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -104,6 +113,7 @@ export const ReviewActivities = (props) => {
           <MechanicalTrenching
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -117,6 +127,7 @@ export const ReviewActivities = (props) => {
           <SettlingPonds
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -131,6 +142,7 @@ export const ReviewActivities = (props) => {
           <SurfaceBulkSamples
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -145,6 +157,7 @@ export const ReviewActivities = (props) => {
           <UndergroundExploration
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -159,6 +172,7 @@ export const ReviewActivities = (props) => {
           <SandGravelQuarry
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
@@ -170,7 +184,11 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="placer_operation">
-          <Placer isViewMode={props.isViewMode} renderOriginalValues={props.renderOriginalValues} />
+          <Placer
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -183,6 +201,7 @@ export const ReviewActivities = (props) => {
           <WaterSupply
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
           />
         </FormSection>
       </ScrollContentWrapper>
