@@ -502,7 +502,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <div
               className="field-title--light"
             >
-              Please provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
+              Provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
               <NOWOriginalValueTooltip
                 isVisible={true}
                 originalValue="N/A"
