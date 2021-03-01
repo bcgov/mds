@@ -206,8 +206,6 @@ class NOWApplication(Base, AuditMixin):
         ]
         return permittees[0] if permittees else None
 
-    # is_historic = False
-
     @classmethod
     def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).one_or_none()

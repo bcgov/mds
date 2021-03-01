@@ -183,7 +183,7 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=False)),
     })
 
 NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
@@ -204,7 +204,7 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         'proposed_activity':
         fields.String,
         'details':
-        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
+        fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=False)),
     })
 
 NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
@@ -474,7 +474,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
-        # 'is_historic': fields.Boolean,
+        'is_pre_launch': fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

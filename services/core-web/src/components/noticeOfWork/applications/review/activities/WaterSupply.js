@@ -35,7 +35,7 @@ export const WaterSupply = (props) => {
           },
           {
             title: "Activity",
-            value: "activity_type_description",
+            value: "supply_source_type",
             component: RenderAutoSizeField,
             minRows: 1,
           },
@@ -44,6 +44,17 @@ export const WaterSupply = (props) => {
             value: "water_use_description",
             component: RenderAutoSizeField,
             minRows: 1,
+          },
+          {
+            title: "Pump Size (in)",
+            value: "pump_size",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Intake Location",
+            value: "intake_location",
+            component: RenderAutoSizeField,
           },
           {
             title: "Estimate Rate",

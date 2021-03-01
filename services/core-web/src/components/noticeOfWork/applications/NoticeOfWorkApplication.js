@@ -872,7 +872,7 @@ export class NoticeOfWorkApplication extends Component {
                             this.props.importNowSubmissionDocumentsJob
                           }
                           renderOriginalValues={this.renderOriginalValues}
-                          isPostLaunch={this.props.originalNoticeOfWork.is_post_launch}
+                          isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
                         />
                       </div>
                     </div>

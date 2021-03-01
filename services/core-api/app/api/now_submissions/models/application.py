@@ -328,11 +328,11 @@ class Application(Base):
     mine_region = association_proxy('mine', 'mine_region')
 
     @hybrid_property
-    def is_post_launch(self):
-        current_app.logger.debug(self.receiveddate)
-        if self.receiveddate is not None and self.receiveddate >= date(2020, 2, 1):
-            return True
-        return False
+    def is_pre_launch(self):
+        # Selecting an arbitrary date based off when Regional permitting was launched in CORE
+        if self.receiveddate is not None and self.receiveddate >= date(2021, 2, 1):
+            return False
+        return True
 
     def __repr__(self):
         return '<Application %r>' % self.messageid

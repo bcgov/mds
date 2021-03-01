@@ -13,7 +13,7 @@ import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/com
 const propTypes = {
   renderOriginalValues: PropTypes.func.isRequired,
   isViewMode: PropTypes.bool.isRequired,
-  isPostLaunch: PropTypes.bool.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const AccessRoads = (props) => {
@@ -57,7 +57,7 @@ export const AccessRoads = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Are you proposing any bridges, culverts, and crossings?
-            {props.isPostLaunch && <NOWFieldOriginTooltip />}
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("exploration_access.has_proposed_bridges_or_culverts")
@@ -77,7 +77,7 @@ export const AccessRoads = (props) => {
           />
           <div className="field-title">
             Describe the changes and reference the locations needed on the map later.
-            {props.isPostLaunch && <NOWFieldOriginTooltip />}
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("exploration_access.bridge_culvert_crossing_description")

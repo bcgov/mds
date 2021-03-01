@@ -13,7 +13,7 @@ import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/com
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
-  isPostLaunch: PropTypes.bool.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const Placer = (props) => {
@@ -101,7 +101,7 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Production
-            {props.isPostLaunch && <NOWFieldOriginTooltip />}
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("placer_operation.proposed_production").value

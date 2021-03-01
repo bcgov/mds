@@ -12,7 +12,7 @@ import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/com
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
-  isPostLaunch: PropTypes.bool.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const SettlingPonds = (props) => {
@@ -23,7 +23,7 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            {props.isPostLaunch && <NOWFieldOriginTooltip />}
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("settling_pond.wastewater_facility_description").value
@@ -101,7 +101,7 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            {props.isPostLaunch && <NOWFieldOriginTooltip />}
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("settling_pond.disposal_from_clean_out").value
