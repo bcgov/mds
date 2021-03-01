@@ -320,7 +320,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     status = factory.LazyFunction(
         lambda: random.choice([x.description for x in NOWApplicationStatus.get_all()]))
     submitteddate = factory.Faker('past_datetime')
-    receiveddate = factory.Faker('past_datetime')
+    receiveddate = factory.Faker('past_date')
     minenumber = factory.SelfAttribute('mine.mine_no')
     originating_system = random.choice(['NROS', 'VFCBC'])
 
