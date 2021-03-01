@@ -1161,12 +1161,12 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         #Tables where the data only exists on the application------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        camps = etl.fromdb(
+        camp = etl.fromdb(
             connection,
             f'SELECT b.cid as mms_cid, act1_ar as campdisturbedarea, act1_vol as camptimbervolume, act2_ar as bldgdisturbedarea, act2_vol as bldgtimbervolume, act3_ar as stgedisturbedarea, act3_vol as stgetimbervolume, recl_desc as cbsfreclamation, recl_dol as cbsfreclamationcost from mms.mmssca_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
-        applications = etl.leftjoin(applications, camps, key='mms_cid')
+        applications = etl.leftjoin(applications, camp, key='mms_cid')
 
         timber_cutting = etl.fromdb(
             connection,

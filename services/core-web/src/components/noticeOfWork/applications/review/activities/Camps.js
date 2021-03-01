@@ -36,7 +36,7 @@ export const Camps = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],
@@ -50,8 +50,8 @@ export const Camps = (props) => {
           <div className="field-title">
             Do you propose to store fuel?
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.has_fuel_stored").value}
-              isVisible={props.renderOriginalValues("camps.has_fuel_stored").edited}
+              originalValue={props.renderOriginalValues("camp.has_fuel_stored").value}
+              isVisible={props.renderOriginalValues("camp.has_fuel_stored").edited}
             />
           </div>
           <Field
@@ -66,8 +66,8 @@ export const Camps = (props) => {
           <div className="field-title">
             Volume of fuel stored
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.volume_fuel_stored").value}
-              isVisible={props.renderOriginalValues("camps.volume_fuel_stored").edited}
+              originalValue={props.renderOriginalValues("camp.volume_fuel_stored").value}
+              isVisible={props.renderOriginalValues("camp.volume_fuel_stored").edited}
             />
           </div>
           <Field
@@ -89,10 +89,8 @@ export const Camps = (props) => {
                   Bulk
                   <NOWOriginalValueTooltip
                     style={{ marginLeft: "20%" }}
-                    originalValue={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_bulk").value
-                    }
-                    isVisible={props.renderOriginalValues("camps.has_fuel_stored_in_bulk").edited}
+                    originalValue={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").value}
+                    isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_bulk").edited}
                   />
                 </span>
               }
@@ -111,11 +109,9 @@ export const Camps = (props) => {
                   <NOWOriginalValueTooltip
                     style={{ marginLeft: "20%" }}
                     originalValue={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").value
+                      props.renderOriginalValues("camp.has_fuel_stored_in_barrels").value
                     }
-                    isVisible={
-                      props.renderOriginalValues("camps.has_fuel_stored_in_barrels").edited
-                    }
+                    isVisible={props.renderOriginalValues("camp.has_fuel_stored_in_barrels").edited}
                   />
                 </span>
               }
@@ -135,8 +131,8 @@ export const Camps = (props) => {
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.reclamation_description").value}
-              isVisible={props.renderOriginalValues("camps.reclamation_description").edited}
+              originalValue={props.renderOriginalValues("camp.reclamation_description").value}
+              isVisible={props.renderOriginalValues("camp.reclamation_description").edited}
             />
           </div>
           <Field
@@ -151,8 +147,8 @@ export const Camps = (props) => {
           <div className="field-title">
             Estimated Cost of reclamation activities described above
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("camps.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("camps.reclamation_cost").edited}
+              originalValue={props.renderOriginalValues("camp.reclamation_cost").value}
+              isVisible={props.renderOriginalValues("camp.reclamation_cost").edited}
             />
           </div>
           <Field

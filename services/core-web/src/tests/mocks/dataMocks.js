@@ -3657,7 +3657,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     {
-      short_description: "m3",
+      short_description: "m³",
       unit_type_code: "MEC",
       description: "Meters cubed",
       active_ind: true,
@@ -3773,7 +3773,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     {
       now_application_document_type_code: "NTR",
-      description: "Technical Review",
+      description: "Notice of Work Form",
       now_application_document_sub_type_code: null,
       document_template: {},
       active_ind: true,

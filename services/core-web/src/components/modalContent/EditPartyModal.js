@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { getParties } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import EditFullPartyForm from "@/components/Forms/parties/EditFullPartyForm";
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 import moment from "moment";
 import { formatDate } from "@common/utils/helpers";
 
@@ -17,7 +18,7 @@ const propTypes = {
 
 export const EditPartyModal = (props) => {
   const party = props.parties[props.partyGuid];
-  let today = moment().utc();
+  const today = moment().utc();
   const inspectorInfo = party.business_role_appts.find(
     (role) =>
       role.party_business_role_code === "INS" &&
@@ -54,6 +55,7 @@ export const EditPartyModal = (props) => {
 
 const mapStateToProps = (state) => ({
   parties: getParties(state),
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 
 EditPartyModal.propTypes = propTypes;

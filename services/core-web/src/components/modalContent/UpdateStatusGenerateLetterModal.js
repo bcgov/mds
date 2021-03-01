@@ -28,13 +28,13 @@ export class UpdateStatusGenerateLetterModal extends Component {
 
   handleGenerate = (values) => {
     this.setState({ submitting: true });
-    this.props.generateDocument(this.props.documentType, values);
-    this.next();
+    return this.props
+      .generateDocument(this.props.documentType, values)
+      .then(() => this.next())
+      .finally(() => this.setState({ submitting: false }));
   };
 
-  close = () => {
-    this.props.closeModal();
-  };
+  close = () => this.props.closeModal();
 
   next = () => this.setState((prevState) => ({ step: prevState.step + 1 }));
 

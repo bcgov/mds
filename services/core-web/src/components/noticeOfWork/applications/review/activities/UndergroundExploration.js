@@ -64,19 +64,19 @@ export const UndergroundExploration = (props) => {
             validate: [number],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(km)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Height(m)",
+            title: "Height (m)",
             value: "height",
             component: RenderField,
             validate: [number],
@@ -88,7 +88,7 @@ export const UndergroundExploration = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],

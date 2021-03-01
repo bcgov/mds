@@ -201,11 +201,11 @@ export class NOWProgressTable extends Component {
             <Steps current={5} className="progress-steps">
               <Steps.Step
                 direction="vertical"
-                title="Imported to CORE"
+                title="Imported to Core"
                 icon={
                   <Popover
                     content={
-                      <Descriptions column={1} title="Imported to CORE">
+                      <Descriptions column={1} title="Imported to Core">
                         <Descriptions.Item label="Status">Verified</Descriptions.Item>
                         <Descriptions.Item label="Imported by">
                           {this.props.noticeOfWork.imported_by || noImportMeta}

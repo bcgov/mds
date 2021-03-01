@@ -13,7 +13,7 @@ import {
   postalCode,
   validateSelectOptions,
 } from "@common/utils/Validate";
-import { normalizePhone, upperCase } from "@common/utils/helpers";
+import { normalizePhone, upperCase, normalizeExt } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
@@ -49,7 +49,7 @@ export const AddFullPartyForm = (props) => (
                     name="first_name"
                     label="First Name *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
@@ -60,7 +60,7 @@ export const AddFullPartyForm = (props) => (
                     name="party_name"
                     label="Surname *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
@@ -116,6 +116,7 @@ export const AddFullPartyForm = (props) => (
                   label="Ext"
                   component={renderConfig.FIELD}
                   validate={[number, maxLength(6)]}
+                  normalize={normalizeExt}
                 />
               </Form.Item>
             </Col>

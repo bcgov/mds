@@ -117,7 +117,7 @@ class NOWApplication(Base, AuditMixin):
     security_not_required_reason = db.Column(db.String)
 
     # Activities
-    camps = db.relationship('Camp', lazy='selectin', uselist=False)
+    camp = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
         'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
@@ -139,8 +139,8 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
-    )
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
     submission_documents = db.relationship(
         'Document',
@@ -150,14 +150,15 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
-        viewonly=True)
+        viewonly=True,
+        order_by='asc(Document.id)')
 
     imported_submission_documents = db.relationship(
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
-    )
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)',
+        order_by='asc(NOWApplicationDocumentIdentityXref.create_timestamp)')
 
     contacts = db.relationship(
         'NOWPartyAppointment',
@@ -238,7 +239,33 @@ class NOWApplication(Base, AuditMixin):
         self.last_updated_date = datetime.utcnow()
         super(NOWApplication, self).save(commit)
 
-    def get_filtered_submissions_document(now_application):
+    # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
+    def add_now_form_to_fap(self, description):
+        from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+        from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
+        from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
+
+        # Generate the Notice of Work Form document
+        token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
+        now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
+
+        # Exclude all previous Notice of Work Form documents from the final application package
+        now_form_docs = [
+            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+        ]
+        for doc in now_form_docs:
+            doc.is_final_package = False
+            doc.save()
+
+        # Add the newly generated Notice of Work Form document to the final application package
+        now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
+        now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+        now_doc.is_final_package = True
+        now_doc.description = description
+        now_doc.save()
+
+    @classmethod
+    def get_filtered_submissions_document(cls, now_application):
         docs = []
 
         for doc in now_application.imported_submission_documents:

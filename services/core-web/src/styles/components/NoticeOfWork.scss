@@ -282,19 +282,22 @@
     font-size: 40px;
   }
   .ant-result {
-    padding: 20px;
+    padding: 20px 0;
+    display: inline-flex;
   }
   .ant-result-icon {
     margin-bottom: 0;
   }
   .ant-result-title {
-    font-size: 20px;
+    margin-top: 6px;
+    font-size: 15px;
   }
 }
 
 .show-on-hover {
   display: none;
 }
+
 .hover-row {
   .ant-row {
     margin: 0;
@@ -304,5 +307,37 @@
     .show-on-hover {
       display: inherit;
     }
+  }
+}
+
+.card--white {
+  border-radius: 5px;
+  min-height: 150px;
+  max-height: fit-content;
+  padding: 10px;
+  background-color: white;
+  .null {
+    @include center(true, true);
+  }
+}
+
+.contact-rows {
+  .scroll {
+    height: 100vh;
+    padding: 20px 0;
+    overflow-y: scroll;
+    .ant-col {
+      padding: 5px;
+    }
+  }
+  background-color: #f3f0f0;
+  padding: 25px;
+  border-radius: 5px;
+
+}
+
+.party-table {
+  .ant-table-thead {
+    display: none;
   }
 }

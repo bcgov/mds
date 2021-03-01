@@ -53,19 +53,19 @@ export const SettlingPonds = (props) => {
             validate: [required],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(m)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Depth(m)",
+            title: "Depth (m)",
             value: "depth",
             component: RenderField,
             validate: [number],
@@ -77,7 +77,7 @@ export const SettlingPonds = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],

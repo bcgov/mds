@@ -43,7 +43,7 @@ const defaultParams = {
   due_date_before: undefined,
   received_date_after: undefined,
   received_date_before: undefined,
-  received_only: undefined,
+  received_only: "false",
   requested_by: undefined,
   status: [],
   compliance_year: undefined,

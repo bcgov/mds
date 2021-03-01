@@ -152,13 +152,13 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
     for c in now_sub.contacts:
         emailValidator = re.compile(r'[^@]+@[^@]+\.[^@]+')
         now_party_appt = None
-        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
+        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname:
             now_party = Party(
                 party_name=c.ind_lastname,
                 first_name=c.ind_firstname,
                 party_type_code='PER',
-                phone_no=c.ind_phonenumber[:3] + "-" + c.ind_phonenumber[3:6] + "-" +
-                c.ind_phonenumber[6:],
+                phone_no=None if c.ind_phonenumber is None else c.ind_phonenumber[:3] + "-" +
+                c.ind_phonenumber[3:6] + "-" + c.ind_phonenumber[6:],
                 email=c.email if c.email and emailValidator.match(c.email) else None,
             )
             now_party_mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
@@ -171,8 +171,8 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
             now_party = Party(
                 party_name=c.org_legalname,
                 party_type_code='ORG',
-                phone_no=c.dayphonenumber[:3] + "-" + c.dayphonenumber[3:6] + "-" +
-                c.dayphonenumber[6:],
+                phone_no=None if c.dayphonenumber is None else c.dayphonenumber[:3] + "-" +
+                c.dayphonenumber[3:6] + "-" + c.dayphonenumber[6:],
                 phone_ext=c.dayphonenumberext,
                 email=c.email if c.email and emailValidator.match(c.email) else None,
             )
@@ -298,7 +298,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
                 timber_volume=stgetimbervolume)
             camp.details.append(camp_detail)
 
-        now_app.camps = camp
+        now_app.camp = camp
 
     return
 
@@ -831,7 +831,8 @@ def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
                     water_use_description=wsa.useofwater,
                     estimate_rate=wsa.estimateratewater,
                     pump_size=wsa.pumpsizeinwater,
-                    intake_location=wsa.locationwaterintake))
+                    intake_location=wsa.locationwaterintake,
+                    estimate_rate_unit_type_code='MES' if now_sub else None))
 
         now_app.water_supply = water_supply
     return

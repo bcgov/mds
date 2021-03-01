@@ -34,11 +34,11 @@ class POD():
                  env_container_id=0):
         self.pod_name = pod_name if pod_name else "digdag-mds-job"
         self.env_pod = env_pod if env_pod else "digdag-mds-job"
+        self.env = env if env else None
         self.command = command if command else None
         self.env_container_id = env_container_id
 
         # If image_namespace, creating container from scratch, pull from tools build suffix
-        self.env = env ? env : None
         if (image_namespace):
             self.image = f"docker-registry.default.svc:5000/{image_namespace}/{self.env_pod}:build{self.suffix}"
         # Else creating based on existing image and pod, requires tag
@@ -72,11 +72,14 @@ class POD():
         except:
             print("Issue with getting env_dict from existing pod.")
 
-        if (self.env is not None and self.env_pod == 'digdag-mds-job'):
+        if (self.env is not None and env_dict is not None):
+            # Running pod AND builder env
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env) + env_dict
         elif (self.env is not None):
+            # No running pod, use builder env
             json_data["spec"]["containers"][0]["env"] = json.loads(self.env)
         else:
+            # Running pod, use existing env
             json_data["spec"]["containers"][0]["env"] = env_dict
 
         return json_data

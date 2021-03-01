@@ -68,8 +68,11 @@ class NOWApplicationImportResource(Resource, UserMixin):
         for contact in contacts:
             party_guid = contact['party_guid']
             now_party = Party.find_by_party_guid(party_guid)
+
             if not now_party:
                 raise NotFound(f'No party found for party with guid {party_guid}')
+
+            Party.validate_phone_no(now_party.phone_no)
 
             mine_party_appt_type_code = contact['mine_party_appt_type_code']
             mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
@@ -95,6 +98,9 @@ class NOWApplicationImportResource(Resource, UserMixin):
         application.save()
         db.session.refresh(now_application_identity)
         now_application_identity.mine_guid = mine_guid
+        now_application_identity.now_application.add_now_form_to_fap(
+            "This document was automatically created when Verification was completed.")
+
         # update application status to received once imported
         now_application_identity.now_application.previous_application_status_code = now_application_identity.now_application.now_application_status_code
         now_application_identity.now_application.now_application_status_code = "REC"
