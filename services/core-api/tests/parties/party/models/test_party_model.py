@@ -58,25 +58,3 @@ def test_party_model_validate_party_name_exceeds_char_limit():
             phone_no='123-123-1234',
             phone_ext='1234')
     assert f'Party name must not exceed {MAX_NAME_LENGTH} characters.' in str(e.value)
-
-
-def test_party_model_validate_phone_no_not_provided():
-    with pytest.raises(AssertionError) as e:
-        Party(
-            party_name='party_name_pass',
-            first_name='test_first_name_fail',
-            party_type_code='PER',
-            phone_no='',
-            phone_ext='1234')
-    assert 'Party phone number is not provided.' in str(e.value)
-
-
-def test_party_model_validate_phone_no_invalid_format():
-    with pytest.raises(AssertionError) as e:
-        Party(
-            party_name='party_name_pass',
-            first_name='test_first_name_fail',
-            party_type_code='PER',
-            phone_no='12--123-1234',
-            phone_ext='1234')
-    assert 'Invalid phone number format, must be of XXX-XXX-XXXX.' in str(e.value)

@@ -157,6 +157,14 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party.save(commit=False)
         return party
 
+    @classmethod
+    def validate_phone_no(cls, phone_no):
+        if not phone_no:
+            raise AssertionError('Party phone number is not provided.')
+        if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
+            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
+        return phone_no
+
     @validates('party_type_code')
     def validate_party_type_code(self, key, party_type_code):
         if not party_type_code:
@@ -182,14 +190,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         if len(party_name) > MAX_NAME_LENGTH:
             raise AssertionError(f'Party name must not exceed {MAX_NAME_LENGTH} characters.')
         return party_name
-
-    @validates('phone_no')
-    def validate_phone_no(self, key, phone_no):
-        if not phone_no:
-            raise AssertionError('Party phone number is not provided.')
-        if not re.match(r'[0-9]{3}-[0-9]{3}-[0-9]{4}', phone_no):
-            raise AssertionError('Invalid phone number format, must be of XXX-XXX-XXXX.')
-        return phone_no
 
     @validates('email')
     def validate_email(self, key, email):
