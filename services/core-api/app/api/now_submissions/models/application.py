@@ -331,6 +331,7 @@ class Application(Base):
     def is_pre_launch(self):
         # Selecting an arbitrary date based off when Regional permitting was launched in CORE
         if self.receiveddate is not None and self.receiveddate >= date(2021, 2, 1):
+
             return False
         return True
 
