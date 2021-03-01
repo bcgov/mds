@@ -2,8 +2,11 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
+from flask import current_app
+from datetime import date
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -323,6 +326,14 @@ class Application(Base):
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+
+    @hybrid_property
+    def is_pre_launch(self):
+        # Selecting an arbitrary date based off when Regional permitting was launched in CORE
+        if self.receiveddate is not None and self.receiveddate >= date(2021, 2, 1):
+
+            return False
+        return True
 
     def __repr__(self):
         return '<Application %r>' % self.messageid
