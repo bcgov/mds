@@ -76,8 +76,8 @@ const regionHash = {
 const getDocumentsMetadataInitialValues = (documents, guid_name) => {
   const initialValues = {};
   // eslint-disable-next-line no-unused-expressions
-  documents &&
-    documents.foreach((doc) => {
+  !isEmpty(documents) &&
+    documents.map((doc) => {
       initialValues[`${doc[guid_name]}_preamble_title`] = doc.preamble_title;
       initialValues[`${doc[guid_name]}_preamble_author`] = doc.preamble_author;
       initialValues[`${doc[guid_name]}_preamble_date`] = doc.preamble_date;

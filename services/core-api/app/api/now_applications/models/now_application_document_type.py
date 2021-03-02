@@ -4,6 +4,7 @@ from flask_restplus import marshal
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
+from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
@@ -76,9 +77,20 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['latitude'] = str(now_application.latitude)
             template_data['longitude'] = str(now_application.longitude)
             template_data['mine_name'] = now_application.mine_name
-            template_data['security_adjustment'] = str(
-                now_application.liability_adjustment
-            ) if now_application.liability_adjustment else '0.00'
+
+            # If amendment, get sum total security adjustment
+            if not now_application.is_new_permit:
+                permit_amendment = PermitAmendment.find_by_now_application_guid(
+                    now_application.now_application_guid)
+                associated_permit = Permit.find_by_permit_id(
+                    permit_amendment.mine_permit_xref.permit_id)
+                total_liability = float(now_application.liability_adjustment or 0) + float(
+                    associated_permit.assessed_liability_total or 0)
+            else:
+                total_liability = float(now_application.liability_adjustment or 0)
+
+            template_data['security_adjustment'] = '${:,.2f}'.format(
+                total_liability) if total_liability else '$0.00'
 
             conditions = permit.conditions
             conditions_template_data = {}
