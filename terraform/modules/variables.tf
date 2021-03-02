@@ -1,5 +1,16 @@
 # variables.tf
 
+variable "slug" {
+  description = "acronym of project"
+  default = "mds"
+}
+
+variable "repository_name" {
+  description = "Name for the container repository to be provisioned."
+  type        = string
+  default     = "mds"
+}
+
 variable "target_env" {
   description = "AWS workload account env (e.g. dev, test, prod, sandbox, unclass)"
 }
@@ -69,15 +80,9 @@ variable "fargate_memory" {
   default     = 1024
 }
 
-variable "repository_name" {
-  description = "Name for the container repository to be provisioned."
-  type        = string
-  default     = "mds"
-}
-
 variable "budget_amount" {
   description = "The amount of spend for the budget. Example: enter 100 to represent $100"
-  default     = "50.0"
+  default     = "100.0"
 }
 
 variable "budget_tag" {
@@ -87,7 +92,7 @@ variable "budget_tag" {
 
 variable "alb_cert_domain" {
   description = "The domain of cert to use for the internal ALB"
-  default     = "*.pathfinder.gov.bc.ca"
+  default     = "*.example.ca"
 }
 
 variable "common_tags" {

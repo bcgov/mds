@@ -1,7 +1,7 @@
 
 resource "aws_budgets_budget" "cost" {
 
-  name              = "mds-monthly"
+  name              = "${var.slug}-monthly"
   budget_type       = "COST"
   limit_amount      = var.budget_amount
   limit_unit        = "USD"
@@ -22,5 +22,5 @@ resource "aws_budgets_budget" "cost" {
 }
 
 resource "aws_sns_topic" "billing_alert_topic" {
-  name = "mds-billing-alert-topic"
+  name = "${var.slug}-billing-alert-topic"
 }

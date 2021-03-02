@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/pr.yaml"
       - ".github/workflows/tf-plan.yaml"
+      - ".github/workflows/pr-tf-test.yaml"
       - "terraform/**"
       - "services/core-web/**"
       - "!**/README.md"
@@ -13,13 +14,14 @@ env:
   #TODO: create a switch for context based on editted service files
   SERVICE_CONTEXT: services/core-web
 
-  IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}/mds-frontend
+  IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
   TF_VERSION: 0.13.5
   TG_VERSION: 0.26.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
 
 jobs:
+## Trigger on PR
   pr:
     name: pr
     runs-on: ubuntu-20.04
@@ -58,6 +60,7 @@ jobs:
           name: pr
           path: /tmp/pr/
 
+## Terraform plan on successful PR
   plan:
     needs: pr
     name: terraform-plan
@@ -83,8 +86,8 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           TF_CLI_ARGS: -no-color
-          app_image: ${{ env.IMAGE_ID }}:${{ github.head_sha }}
-        run: terragrunt plan-all --terragrunt-non-interactive | tee /tmp/tg_plan
+          app_image: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
+        run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
         continue-on-error: true
 
       - name: Get Terraform Plan Output

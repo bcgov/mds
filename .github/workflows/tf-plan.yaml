@@ -3,7 +3,7 @@ name: Terraform Plan
 on:
   workflow_run:
     workflows:
-      - Pull Request
+      - Placeholder
     types:
       - completed
 

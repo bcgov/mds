@@ -22,3 +22,9 @@ venv*
 *_BuildConfig.json
 *.local.*
 *.crt
+
+.terragrunt-cache
+.terraform
+credentials.tfrc.json
+backend.tfrc
+terragrunt.auto.tfvars
