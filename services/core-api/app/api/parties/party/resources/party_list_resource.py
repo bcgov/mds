@@ -126,6 +126,8 @@ class PartyListResource(Resource, UserMixin):
             raise BadRequest('Unexpected party id in Url.')
         data = PartyListResource.parser.parse_args()
 
+        Party.validate_phone_no(data.get('phone_no', None))
+
         party = Party.create(
             data.get('party_name'),
             data.get('phone_no'),

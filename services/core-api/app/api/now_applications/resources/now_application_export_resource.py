@@ -11,6 +11,7 @@ from app.api.now_applications.models.now_application_type import NOWApplicationT
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.unit_type import UnitType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -27,20 +28,29 @@ EMPTY_FIELD = '-'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
-EXCLUDED_APPLICATION_DOCUMENT_TYPES = ['NTR']
+EXCLUDED_APPLICATION_DOCUMENT_TYPES = []
 
 ORIGINAL_NOW_FIELD_PATHS = [
     'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
     'type_of_application', 'notice_of_work_type_code', 'application_permit_type_code',
     'proposed_start_date', 'crown_grant_or_district_lot_numbers', 'proposed_end_date',
-    'tenure_number', 'directions_to_site', 'state_of_land.has_community_water_shed',
+    'tenure_number', 'directions_to_site', 'has_req_access_authorizations',
+    'has_surface_disturbance_outside_tenure', 'req_access_authorization_numbers', 'is_access_gated',
+    'has_key_for_inspector', 'state_of_land.present_land_condition_description',
+    'state_of_land.means_of_access_description', 'state_of_land.physiography_description',
+    'state_of_land.old_equipment_description', 'state_of_land.has_community_water_shed',
+    'state_of_land.type_of_vegetation_description', 'state_of_land.has_activity_in_park',
+    'state_of_land.is_on_private_land', 'state_of_land.has_auth_lieutenant_gov_council',
+    'state_of_land.has_fn_cultural_heritage_sites_in_area',
+    'state_of_land.fn_engagement_activities', 'state_of_land.cultural_heritage_description',
+    'state_of_land.recreational_trail_use_description', 'state_of_land.has_shared_info_with_fn',
     'state_of_land.has_archaeology_sites_affected', 'first_aid_equipment_on_site',
     'first_aid_cert_level', 'exploration_access.reclamation_description',
     'exploration_access.reclamation_cost', 'blasting_operation.has_storage_explosive_on_site',
     'blasting_operation.explosive_permit_issued', 'blasting_operation.explosive_permit_expiry_date',
-    'blasting_operation.explosive_permit_number', 'camps.has_fuel_stored',
-    'camps.volume_fuel_stored', 'camps.has_fuel_stored_in_bulk', 'camps.has_fuel_stored_in_barrels',
-    'camps.reclamation_description', 'camps.reclamation_cost',
+    'blasting_operation.explosive_permit_number', 'camp.has_fuel_stored', 'camp.volume_fuel_stored',
+    'camp.has_fuel_stored_in_bulk', 'camp.has_fuel_stored_in_barrels',
+    'camp.reclamation_description', 'camp.reclamation_cost',
     'cut_lines_polarization_survey.reclamation_description',
     'cut_lines_polarization_survey.reclamation_cost',
     'mechanical_trenching.reclamation_description', 'mechanical_trenching.reclamation_cost',
@@ -64,6 +74,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code']
+
 
 class NOWApplicationExportResource(Resource, UserMixin):
     parser = CustomReqparser()
@@ -83,9 +95,17 @@ class NOWApplicationExportResource(Resource, UserMixin):
         if not document_type.document_template:
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
-        data = self.parser.parse_args()
+        if document_type.now_application_document_type_code != 'NTR':
+            raise BadRequest(f'This method can only export {document_type.description}')
 
-        now_application_identity = NOWApplicationIdentity.find_by_guid(data['now_application_guid'])
+        data = self.parser.parse_args()
+        now_application_guid = data['now_application_guid']
+        token = NOWApplicationExportResource.get_now_form_generate_token(now_application_guid)
+        return {'token': token}
+
+    @classmethod
+    def get_now_form_generate_token(cls, now_application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
 
         if not now_application_identity:
             raise NotFound('Notice of Work not found')
@@ -109,7 +129,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_contact(contact):
             def get_address(contact):
-                if not contact.get('party', None) and not contact['party'].get('address', None):
+                if not contact.get('party', None) or not contact['party'].get(
+                        'address', None) or not len(contact['party']['address']) > 0:
                     return ''
                 address = contact['party']['address'][0]
                 address_string = ''
@@ -118,7 +139,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if address.get('address_line_1', None):
                     address_string += f'{address["address_line_1"]} '
                 if address.get('address_line_2', None):
-                    address_string += f'{address["address_line_2"]} '
+                    address_string += address["address_line_2"]
                 address_string = address_string.strip()
 
                 if address['city'] or address['sub_division_code'] or address['post_code']:
@@ -213,6 +234,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
+                elif key in UNIT_TYPE_CODE_FIELDS:
+                    unit_type_codes = UnitType.get_all()
+                    code_object = [
+                        code for code in unit_type_codes if code.unit_type_code == obj[key]
+                    ]
+                    obj[key] = code_object[0].short_description if code_object and len(
+                        code_object) > 0 else "N/A"
                 elif isinstance(obj[key], bool):
                     obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
@@ -222,11 +250,33 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         transform_data(item)
             return obj
 
+        def remove_signature(party):
+            signature = party.get('signature')
+            if signature:
+                del party['signature']
+            return party
+
         # Transform and format various fields
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
+
+        # Remove signature images from parties
+        for contact in now_application_json.get('contacts', []):
+            party = contact.get('party')
+            if party:
+                contact['party'] = remove_signature(party)
+
+        # Remove signature image from the Lead Inspector
+        lead_inspector = now_application_json.get('lead_inspector')
+        if lead_inspector:
+            now_application_json['lead_inspector'] = remove_signature(lead_inspector)
+
+        # Remove signature image from the Issuing Inspector
+        issuing_inspector = now_application_json.get('issuing_inspector')
+        if issuing_inspector:
+            now_application_json['issuing_inspector'] = remove_signature(issuing_inspector)
 
         now_type = NOWApplicationType.query.filter_by(
             notice_of_work_type_code=now_application_json['notice_of_work_type_code']).first()
@@ -268,30 +318,17 @@ class NOWApplicationExportResource(Resource, UserMixin):
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
         now_application_json['exported_by_user'] = User().get_user_username()
 
-        # Enforce that read-only fields do not change
-        template_data = now_application_json
-        enforced_data = [
-            x for x in document_type.document_template._form_spec_with_context(
-                data['now_application_guid']) if x.get('read-only', False)
-        ]
-        for enforced_item in enforced_data:
-            if template_data.get(enforced_item['id']) != enforced_item['context-value']:
-                current_app.logger.debug(
-                    f'OVERWRITING ENFORCED key={enforced_item["id"]}, value={template_data.get(enforced_item["id"])} -> {enforced_item["context-value"]}'
-                )
-            template_data[enforced_item['id']] = enforced_item['context-value']
-
-        token = uuid.uuid4()
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.
+        token = uuid.uuid4()
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
-                'document_type_code': document_type_code,
-                'now_application_guid': data['now_application_guid'],
-                'template_data': template_data,
+                'document_type_code': 'NTR',
+                'now_application_guid': now_application_guid,
+                'template_data': now_application_json,
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
 
-        return {'token': token}
+        return token

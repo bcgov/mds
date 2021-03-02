@@ -15,7 +15,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
       </h4>
       <div>
         <Connect(AuthorizationWrapper)
-          isMajorMine={true}
           permission="role_edit_mines"
         >
           <Dropdown

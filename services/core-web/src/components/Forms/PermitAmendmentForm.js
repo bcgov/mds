@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { remove } from "lodash";
 import { connect } from "react-redux";
-import { compose } from "redux";
+import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Row, Popconfirm, Divider } from "antd";
 import {
   required,
   maxLength,
@@ -24,7 +24,6 @@ import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 import { USER_ROLES } from "@common/constants/environment";
 
 const originalPermit = "OGP";
-const amalgamtedPermit = "ALG";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -79,21 +78,8 @@ const validateBusinessRules = (values) => {
 
 export class PermitAmendmentForm extends Component {
   state = {
-    showUploadFiles: false,
     relatedDocuments: this.props.initialValues.related_documents || [],
     uploadedFiles: [],
-  };
-
-  componentDidMount() {
-    this.shouldShowUploadFiles(this.state.relatedDocuments);
-  }
-
-  shouldShowUploadFiles = (relatedDocuments) => {
-    this.setState({
-      showUploadFiles:
-        this.props.initialValues.permit_amendment_type_code !== amalgamtedPermit ||
-        relatedDocuments.length === 0,
-    });
   };
 
   // Attached files handlers
@@ -107,7 +93,6 @@ export class PermitAmendmentForm extends Component {
       (doc) => doc.permit_amendment_document_guid !== documentGuid
     );
     this.setState({ relatedDocuments: newRelatedDocuments });
-    this.shouldShowUploadFiles(newRelatedDocuments);
   };
 
   // File upload handlers
@@ -119,6 +104,15 @@ export class PermitAmendmentForm extends Component {
   onRemoveFile = (err, fileItem) => {
     remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
     this.props.change("uploadedFiles", this.state.uploadedFiles);
+  };
+
+  handleChange = (e) => {
+    if (e.target.value) {
+      this.props.change("security_not_required_reason", null);
+    } else {
+      this.props.change("liability_adjustment", null);
+      this.props.change("security_received_date", null);
+    }
   };
 
   render() {
@@ -148,17 +142,51 @@ export class PermitAmendmentForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
-            <Form.Item label="Assessed Liability">
+
+            <Form.Item>
+              <Field
+                id="description"
+                name="description"
+                label="Description"
+                component={renderConfig.AUTO_SIZE_FIELD}
+                validate={[maxLength(280)]}
+              />
+            </Form.Item>
+
+            <Divider />
+            <Form.Item label="Securities">
+              <Field
+                label="Security Not Required"
+                id="security_not_required"
+                name="security_not_required"
+                component={renderConfig.CHECKBOX}
+                onChange={(e) => this.handleChange(e)}
+              />
+            </Form.Item>
+            {this.props.securityNotRequired && (
+              <Field
+                id="security_not_required_reason"
+                label="Reason*"
+                name="security_not_required_reason"
+                component={renderConfig.SELECT}
+                placeholder="Please select a reason"
+                data={securityNotRequiredReasonOptions}
+                disabled={!this.props.securityNotRequired}
+                validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+              />
+            )}
+            <Form.Item label="Assessed Liability Adjustment">
               <p className="p-light">
                 This amount will be added to the Total Assessed Liability amount for this permit.
-                Changes to this value in CORE will not be updated in MMS.
+                Changes to this value in Core will not be updated in MMS.
               </p>
               <Field
-                id="security_adjustment"
-                name="security_adjustment"
+                id="liability_adjustment"
+                name="liability_adjustment"
                 component={renderConfig.FIELD}
                 {...currencyMask}
                 validate={[number]}
+                disabled={this.props.securityNotRequired}
               />
             </Form.Item>
             <Form.Item>
@@ -167,40 +195,9 @@ export class PermitAmendmentForm extends Component {
                 id="security_received_date"
                 name="security_received_date"
                 component={renderConfig.DATE}
+                disabled={this.props.securityNotRequired}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                label="Security Not Required"
-                id="security_not_required"
-                name="security_not_required"
-                component={renderConfig.CHECKBOX}
-              />
-            </Form.Item>
-            {this.props.securityNotRequired && (
-              <>
-                <Field
-                  id="security_not_required_reason"
-                  label="Reason*"
-                  name="security_not_required_reason"
-                  component={renderConfig.SELECT}
-                  placeholder="Please select a reason"
-                  data={securityNotRequiredReasonOptions}
-                  validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
-                />
-              </>
-            )}
-            {this.props.initialValues.permit_amendment_type_code !== originalPermit && (
-              <Form.Item>
-                <Field
-                  id="description"
-                  name="description"
-                  label="Description"
-                  component={renderConfig.AUTO_SIZE_FIELD}
-                  validate={[maxLength(280)]}
-                />
-              </Form.Item>
-            )}
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             {this.state.relatedDocuments.length > 0 && (
@@ -215,21 +212,17 @@ export class PermitAmendmentForm extends Component {
                 />
               </Form.Item>
             )}
-            {this.state.showUploadFiles && (
-              <Form.Item label="Upload files">
-                <Field
-                  id="PermitDocumentFileUpload"
-                  name="PermitDocumentFileUpload"
-                  onFileLoad={this.onFileLoad}
-                  onRemoveFile={this.onRemoveFile}
-                  mineGuid={this.props.mine_guid}
-                  component={PermitAmendmentFileUpload}
-                  allowMultiple={
-                    this.props.initialValues.permit_amendment_type_code !== amalgamtedPermit
-                  }
-                />
-              </Form.Item>
-            )}
+            <Form.Item label="Upload files">
+              <Field
+                id="PermitDocumentFileUpload"
+                name="PermitDocumentFileUpload"
+                onFileLoad={this.onFileLoad}
+                onRemoveFile={this.onRemoveFile}
+                mineGuid={this.props.mine_guid}
+                component={PermitAmendmentFileUpload}
+                allowMultiple
+              />
+            </Form.Item>
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
@@ -262,10 +255,20 @@ PermitAmendmentForm.propTypes = propTypes;
 PermitAmendmentForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.PERMIT_AMENDMENT);
+const mapStateToProps = (state) => ({
+  securityNotRequired: selector(state, "security_not_required"),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect((state) => ({
-    securityNotRequired: selector(state, "security_not_required"),
-  })),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.PERMIT_AMENDMENT,
     validate: validateBusinessRules,

@@ -14,6 +14,7 @@ import {
   dateNotInFuture,
   validateSelectOptions,
   maxLength,
+  protocol,
 } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import {
@@ -90,18 +91,18 @@ export class NOWReviewForm extends Component {
                   <Field
                     id="referral_number"
                     name="referral_number"
-                    label="E-Referral Number*"
+                    label="E-Referral Number"
                     component={renderConfig.FIELD}
-                    validate={[required, maxLength(16)]}
+                    validate={[maxLength(16)]}
                   />
                 </Form.Item>
                 <Form.Item>
                   <Field
                     id="response_date"
                     name="response_date"
-                    label="Date Received*"
+                    label="Date Received"
                     component={renderConfig.DATE}
-                    validate={[required, dateNotInFuture]}
+                    validate={[dateNotInFuture]}
                   />
                 </Form.Item>
               </>
@@ -115,6 +116,7 @@ export class NOWReviewForm extends Component {
                     name="response_url"
                     label="Link to CRTS"
                     component={renderConfig.FIELD}
+                    validate={[protocol]}
                   />
                 </Form.Item>
                 <Form.Item>
@@ -173,7 +175,7 @@ export class NOWReviewForm extends Component {
               </>
             )}
             <br />
-            <h5>Document Upload*</h5>
+            <h5>Document Upload</h5>
             {this.props.type !== ADVERTISEMENT && (
               <p className="p-light">
                 All files uploaded will be classified using the selected Category. To upload other
@@ -238,8 +240,9 @@ export class NOWReviewForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>

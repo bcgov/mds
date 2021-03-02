@@ -15,6 +15,7 @@ from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
 from app.api.utils.include.user_info import User
+from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -58,6 +59,10 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    previous_application_status_code = db.Column(
+        db.String,
+        db.ForeignKey('now_application_status.now_application_status_code'),
+        nullable=True)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
     status_reason = db.Column(db.String)
     last_updated_date = db.Column(db.DateTime)
@@ -77,8 +82,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    proposed_annual_maximum_tonnage = db.Column(db.Integer)
-    adjusted_annual_maximum_tonnage = db.Column(db.Integer)
+    proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
+    adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
     now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
@@ -106,13 +111,13 @@ class NOWApplication(Base, AuditMixin):
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Securities
-    security_adjustment = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)
 
     # Activities
-    camps = db.relationship('Camp', lazy='selectin', uselist=False)
+    camp = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
         'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
@@ -134,8 +139,8 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
-    )
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
     submission_documents = db.relationship(
         'Document',
@@ -145,14 +150,15 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
-        viewonly=True)
+        viewonly=True,
+        order_by='asc(Document.id)')
 
     imported_submission_documents = db.relationship(
         'NOWApplicationDocumentIdentityXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)'
-    )
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)',
+        order_by='asc(NOWApplicationDocumentIdentityXref.create_timestamp)')
 
     contacts = db.relationship(
         'NOWPartyAppointment',
@@ -160,15 +166,13 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
     )
-    # Contacts
-    contacts = db.relationship(
-        'NOWPartyAppointment',
+
+    status = db.relationship(
+        'NOWApplicationStatus',
         lazy='selectin',
         primaryjoin=
-        "and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)"
+        'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
     )
-
-    status = db.relationship('NOWApplicationStatus', lazy='selectin')
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
@@ -196,11 +200,11 @@ class NOWApplication(Base, AuditMixin):
         return self.type_of_application == 'New Permit'
 
     @hybrid_property
-    def permittee_name(self):
-        return [
-            contact.party.name for contact in self.contacts
-            if contact.mine_party_appt_type_code == 'PMT'
-        ][0]
+    def permittee(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
+        ]
+        return permittees[0] if permittees else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):
@@ -220,8 +224,9 @@ class NOWApplication(Base, AuditMixin):
     @validates('proposed_annual_maximum_tonnage')
     def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
         if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
-            if self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
-                raise AssertionError('proposed_annual_maximum_tonnage cannot be modified.')
+            if not get_user_is_admin(
+            ) and self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('Only admins can modify the proposed annual maximum tonnage.')
         return proposed_annual_maximum_tonnage
 
     def save_import_meta(self):
@@ -234,7 +239,33 @@ class NOWApplication(Base, AuditMixin):
         self.last_updated_date = datetime.utcnow()
         super(NOWApplication, self).save(commit)
 
-    def get_filtered_submissions_document(now_application):
+    # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
+    def add_now_form_to_fap(self, description):
+        from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+        from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
+        from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
+
+        # Generate the Notice of Work Form document
+        token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
+        now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
+
+        # Exclude all previous Notice of Work Form documents from the final application package
+        now_form_docs = [
+            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+        ]
+        for doc in now_form_docs:
+            doc.is_final_package = False
+            doc.save()
+
+        # Add the newly generated Notice of Work Form document to the final application package
+        now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
+        now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+        now_doc.is_final_package = True
+        now_doc.description = description
+        now_doc.save()
+
+    @classmethod
+    def get_filtered_submissions_document(cls, now_application):
         docs = []
 
         for doc in now_application.imported_submission_documents:
@@ -262,7 +293,13 @@ class NOWApplication(Base, AuditMixin):
                 'now_application_id':
                 doc.now_application_id,
                 'document_manager_guid':
-                doc.document_manager_guid
+                doc.document_manager_guid,
+                'preamble_title':
+                doc.preamble_title,
+                'preamble_author':
+                doc.preamble_author,
+                'preamble_date':
+                doc.preamble_date
             })
 
         for doc in now_application.submission_documents:
@@ -275,6 +312,7 @@ class NOWApplication(Base, AuditMixin):
                 continue
             else:
                 docs.append({
+                    'id': doc.id,
                     'now_application_document_xref_guid': None,
                     'mine_document_guid': None,
                     'messageid': doc.messageid,

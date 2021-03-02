@@ -131,6 +131,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 id="phone_ext"
                 label="Ext"
                 name="phone_ext"
+                normalize={[Function]}
                 validate={
                   Array [
                     [Function],

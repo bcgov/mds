@@ -2,7 +2,7 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
     isViewMode={true}
@@ -21,7 +21,7 @@ exports[`WaterSupply renders properly 1`] = `
           "component": [Function],
           "minRows": 1,
           "title": "Activity",
-          "value": "activity_type_description",
+          "value": "supply_source_type",
         },
         Object {
           "component": [Function],
@@ -31,15 +31,38 @@ exports[`WaterSupply renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Estimate(m/s)",
+          "title": "Pump Size (in)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "pump_size",
+        },
+        Object {
+          "component": [Function],
+          "title": "Intake Location",
+          "value": "intake_location",
+        },
+        Object {
+          "component": [Function],
+          "hasUnit": true,
+          "title": "Estimate Rate",
           "validate": Array [
             [Function],
           ],
           "value": "estimate_rate",
         },
+        Object {
+          "component": [Function],
+          "data": Array [],
+          "isUnit": true,
+          "title": "Estimate Rate Unit",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "estimate_rate_unit_type_code",
+        },
       ]
     }
-    type="Activity"
   />
   <br />
   <h4>

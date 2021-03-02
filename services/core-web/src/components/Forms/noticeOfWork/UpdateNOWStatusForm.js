@@ -28,13 +28,14 @@ const UpdateNOWStatusForm = (props) => {
           <Field
             id="now_application_status_code"
             name="now_application_status_code"
-            label="Status*"
+            label="Previous Status*"
             component={renderConfig.SELECT}
             placeholder="Select the status"
             validate={[required]}
             data={props.dropdownNoticeOfWorkApplicationStatusOptions.filter(
               ({ value }) => value !== "AIA"
             )}
+            disabled
           />
         </Form.Item>
         <div className="right center-mobile">

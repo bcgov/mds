@@ -9,7 +9,12 @@ from app.api.constants import type_of_permit_map, unit_type_map
 
 from flask import current_app
 
-status_code_mapping = {"Accepted": "AIA", "Withdrawn": "REI", "Under Review": "REC", None: "REC"}
+vfcbc_status_code_mapping = {
+    "Accepted": "AIA",
+    "Withdrawn": "REJ",
+    "Under Review": "PEV",
+    None: "PEV",
+}
 
 
 def code_lookup(model, description, code_column_name):
@@ -61,7 +66,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.notice_of_work_type_code = code_lookup(
         app_models.NOWApplicationType, mms_now_sub.noticeofworktype or now_sub.noticeofworktype,
         'notice_of_work_type_code')
-    now_app.now_application_status_code = status_code_mapping[now_sub.status]
+    # TODO: Determine if we should always set the code the PEV (Pending Verifiation) here.
+    now_app.now_application_status_code = vfcbc_status_code_mapping[now_sub.status]
     now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
 
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
@@ -91,12 +97,14 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_access_gated = now_sub.isaccessgated == 'Yes'
     now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure == 'Yes'
 
+    now_app.is_pre_launch = now_sub.is_pre_launch
+
     return
 
 
 def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     landcommunitywatershed = mms_now_sub.landcommunitywatershed or now_sub.landcommunitywatershed
-    archsitesaffected = mms_now_sub.archsitesaffected or now_sub.archsitesaffected
+    archsitesaffected = mms_now_sub.archsitesaffected or now_sub.hasarchaeologicalprotectionplan
     present_land_condition_description = now_sub.landpresentcondition
     means_of_access_description = now_sub.currentmeansofaccess
     physiography_description = now_sub.physiography
@@ -112,7 +120,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
 
-    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or is_on_private_land or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description:
+    if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
             has_community_water_shed=landcommunitywatershed == 'Yes',
             has_archaeology_sites_affected=archsitesaffected == 'Yes',
@@ -146,13 +154,13 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
     for c in now_sub.contacts:
         emailValidator = re.compile(r'[^@]+@[^@]+\.[^@]+')
         now_party_appt = None
-        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname and c.ind_phonenumber:
+        if c.type == 'Individual' and c.contacttype and c.ind_lastname and c.ind_firstname:
             now_party = Party(
                 party_name=c.ind_lastname,
                 first_name=c.ind_firstname,
                 party_type_code='PER',
-                phone_no=c.ind_phonenumber[:3] + "-" + c.ind_phonenumber[3:6] + "-" +
-                c.ind_phonenumber[6:],
+                phone_no=None if c.ind_phonenumber is None else c.ind_phonenumber[:3] + "-" +
+                c.ind_phonenumber[3:6] + "-" + c.ind_phonenumber[6:],
                 email=c.email if c.email and emailValidator.match(c.email) else None,
             )
             now_party_mine_party_appt_type = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
@@ -165,8 +173,8 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
             now_party = Party(
                 party_name=c.org_legalname,
                 party_type_code='ORG',
-                phone_no=c.dayphonenumber[:3] + "-" + c.dayphonenumber[3:6] + "-" +
-                c.dayphonenumber[6:],
+                phone_no=None if c.dayphonenumber is None else c.dayphonenumber[:3] + "-" +
+                c.dayphonenumber[3:6] + "-" + c.dayphonenumber[6:],
                 phone_ext=c.dayphonenumberext,
                 email=c.email if c.email and emailValidator.match(c.email) else None,
             )
@@ -292,7 +300,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
                 timber_volume=stgetimbervolume)
             camp.details.append(camp_detail)
 
-        now_app.camps = camp
+        now_app.camp = camp
 
     return
 
@@ -408,7 +416,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
         exploration_access = app_models.ExplorationAccess(
             reclamation_description=expaccessreclamation,
             reclamation_cost=expaccessreclamationcost,
-            has_proposed_bridges_or_culverts=hasproposedcrossings,
+            has_proposed_bridges_or_culverts=hasproposedcrossings == 'Yes',
             bridge_culvert_crossing_description=proposedcrossingschanges,
             total_disturbed_area=expaccesstotaldistarea,
             total_disturbed_area_unit_type_code='HA')
@@ -693,7 +701,6 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
     surfacebulksamplereclcost = mms_now_sub.surfacebulksamplereclcost or now_sub.surfacebulksamplereclcost
     surfacebulksampletotaldistarea = now_sub.surfacebulksampletotaldistarea
     bedrockexcavation = now_sub.bedrockexcavation
-    spontaneouscombustionhandling = now_sub.spontaneouscombustionhandling
 
     if (surfacebulksampleprocmethods or surfacebulksamplereclsephandl
             or surfacebulksamplereclamation or surfacebulksamplerecldrainmiti
@@ -706,8 +713,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             processing_method_description=surfacebulksampleprocmethods,
             handling_instructions=surfacebulksamplereclsephandl,
             drainage_mitigation_description=surfacebulksamplerecldrainmiti,
-            has_bedrock_excavation=bedrockexcavation == 'Yes',
-            spontaneous_combustion_handling=spontaneouscombustionhandling)
+            has_bedrock_excavation=bedrockexcavation == 'Yes')
 
         if (len(mms_now_sub.surface_bulk_sample_activity) > 0):
             surface_bulk_sample_activity = mms_now_sub.surface_bulk_sample_activity
@@ -718,6 +724,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             now_app.surface_bulk_sample.details.append(
                 app_models.SurfaceBulkSampleDetail(
                     disturbed_area=detail.disturbedarea,
+                    quantity=detail.quantity,
                     timber_volume=detail.timbervolume,
                     activity_type_description=detail.type))
 
@@ -764,15 +771,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=new_uea.type,
-                    incline=new_uea.incline if new_uea.incline else None,
+                    incline=getattr(new_uea, 'incline', None),
                     incline_unit_type_code=code_lookup(
-                        app_models.UnitType,
-                        unit_type_map[new_uea.inclineunits if new_uea.inclineunits else None],
+                        app_models.UnitType, unit_type_map[getattr(new_uea, 'inclineunits', None)],
                         'unit_type_code'),
                     quantity=new_uea.quantity,
-                    length=new_uea.length if new_uea.length else None,
-                    width=new_uea.width if new_uea.width else None,
-                    height=new_uea.height if new_uea.height else None,
+                    length=getattr(new_uea, 'length', None),
+                    width=getattr(new_uea, 'width', None),
+                    height=getattr(new_uea, 'height', None),
                     underground_exploration_type_code='NEW'))
 
         if (len(mms_now_sub.under_exp_rehab_activity) > 0):
@@ -784,15 +790,14 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             now_app.underground_exploration.details.append(
                 app_models.UndergroundExplorationDetail(
                     activity_type_description=rehab_uea.type,
-                    incline=rehab_uea.incline if rehab_uea.incline else None,
+                    incline=getattr(rehab_uea, 'incline', None),
                     incline_unit_type_code=code_lookup(
-                        app_models.UnitType,
-                        unit_type_map[rehab_uea.inclineunits if rehab_uea.inclineunits else None],
-                        'unit_type_code'),
+                        app_models.UnitType, unit_type_map[getattr(rehab_uea, 'inclineunits',
+                                                                   None)], 'unit_type_code'),
                     quantity=rehab_uea.quantity,
-                    length=rehab_uea.length if rehab_uea.length else None,
-                    width=rehab_uea.width if rehab_uea.width else None,
-                    height=rehab_uea.height if rehab_uea.height else None,
+                    length=getattr(rehab_uea, 'length', None),
+                    width=getattr(rehab_uea, 'width', None),
+                    height=getattr(rehab_uea, 'height', None),
                     underground_exploration_type_code='RHB'))
 
         if (len(mms_now_sub.under_exp_surface_activity) > 0):
@@ -829,7 +834,8 @@ def _transmogrify_water_supply(now_app, now_sub, mms_now_sub):
                     water_use_description=wsa.useofwater,
                     estimate_rate=wsa.estimateratewater,
                     pump_size=wsa.pumpsizeinwater,
-                    intake_location=wsa.locationwaterintake))
+                    intake_location=wsa.locationwaterintake,
+                    estimate_rate_unit_type_code='MES' if now_sub else None))
 
         now_app.water_supply = water_supply
     return

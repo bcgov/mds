@@ -5,6 +5,7 @@ exports[`ProcessPermit renders properly 1`] = `
   <NOWTabHeader
     handleDraftPermit={null}
     isEditMode={false}
+    showProgressButton={true}
     tab="PRO"
     tabActions={
       <React.Fragment>
@@ -208,31 +209,6 @@ exports[`ProcessPermit renders properly 1`] = `
                 span={16}
               >
                 The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
-                <LinkButton
-                  onClick={[Function]}
-                  style={null}
-                  tabIndex={0}
-                >
-                  <ForwardRef(LinkOutlined) />
-                   Resolve
-                </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
-              className="padding-md--bottom"
-            >
-              <ForwardRef
-                offset={2}
-                span={2}
-              >
-                <ForwardRef(WarningOutlined)
-                  className="icon-sm padding-sm--top"
-                />
-              </ForwardRef>
-              <ForwardRef
-                span={16}
-              >
-                Consultation has not been started.  
                 <LinkButton
                   onClick={[Function]}
                   style={null}

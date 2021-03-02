@@ -3,11 +3,11 @@
 exports[`EditNoWContacts renders properly 1`] = `
 <FieldArray
   component={[Function]}
+  editContact={Array []}
   id="contacts"
-  isEditView={false}
-  isVerifying={false}
   name="contacts"
   partyRelationshipTypes={Array []}
   rolesUsedOnce={Array []}
+  updateEditedList={[Function]}
 />
 `;

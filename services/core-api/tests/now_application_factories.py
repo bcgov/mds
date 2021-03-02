@@ -58,8 +58,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
-    total_disturbed_area = factory.Faker(
-        'pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     total_disturbed_area_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
 
@@ -68,7 +67,7 @@ class ActivityDetailBaseFactory(BaseFactory):
         model = app_models.ActivityDetailBase
 
     activity_type_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
-    disturbed_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     timber_volume = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     number_of_sites = factory.Faker('pyint', min_value=1, max_value=50)
     width = factory.Faker('pyint', min_value=1, max_value=5000)
@@ -274,7 +273,7 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
     supply_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     supply_source_type = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     water_use_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
-    estimate_rate = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    estimate_rate = factory.Faker('pydecimal', right_digits=7, positive=True, max_value=500000)
     pump_size = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     intake_location = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
@@ -379,8 +378,6 @@ class NOWApplicationDelayFactory(BaseFactory):
     delay_type_code = 'OAB'
     start_date = factory.Faker('past_datetime')
     start_comment = factory.Faker('name')
-
-    end_date = factory.Faker('future_datetime')
     end_comment = factory.Faker('name')
 
 
@@ -406,8 +403,10 @@ class NOWApplicationFactory(BaseFactory):
     lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
     issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
+    type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
-    now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
+    now_application_status_code = "REC"
+    previous_application_status_code = "PEV"
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
@@ -423,7 +422,7 @@ class NOWApplicationFactory(BaseFactory):
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
-    camps = factory.RelatedFactory(CampFactory, 'now_application')
+    camp = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
     exploration_surface_drilling = factory.RelatedFactory(ExplorationSurfaceDrillingFactory,
@@ -469,12 +468,12 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
-    @factory.post_generation
-    def application_delays(obj, create, extracted, **kwargs):
-        if not create:
-            return
+    # @factory.post_generation
+    # def application_delays(obj, create, extracted, **kwargs):
+    #     if not create:
+    #         return
 
-        if not isinstance(extracted, int):
-            extracted = 1
+    #     if not isinstance(extracted, int):
+    #         extracted = 1
 
-        NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)
+    #     NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)

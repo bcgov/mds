@@ -1,11 +1,19 @@
 import React from "react";
 import { Table, Menu, Dropdown, Button, Tooltip, Popconfirm } from "antd";
-import { MinusSquareFilled, PlusOutlined, PlusSquareFilled } from "@ant-design/icons";
+import {
+  MinusSquareFilled,
+  PlusOutlined,
+  PlusSquareFilled,
+  SafetyCertificateOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { getDropdownPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
+import {
+  getDropdownPermitStatusOptionsHash,
+  getPermitAmendmentTypeOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -15,13 +23,13 @@ import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/cons
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
+import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
  */
 
-const amalgamatedPermit = "ALG";
-const originalPermit = "OGP";
+const draftAmendment = "DFT";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -40,6 +48,8 @@ const propTypes = {
   handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
   handleDeletePermit: PropTypes.func.isRequired,
   handleDeletePermitAmendment: PropTypes.func.isRequired,
+  handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
+  permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -54,18 +64,18 @@ const renderDocumentLink = (file, text) => (
 
 const finalApplicationPackage = (amendment) => {
   const finalAppPackageCore =
-    amendment.now_application_documents.length > 0
+    amendment?.now_application_documents?.length > 0
       ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   const finalAppPackageImported =
-    amendment.imported_now_application_documents.length > 0
+    amendment?.imported_now_application_documents?.length > 0
       ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
       : [];
   return finalAppPackageCore.concat(finalAppPackageImported);
 };
 
 const renderDeleteButtonForPermitAmendments = (record) => {
-  if (record.amendmentType === originalPermit) {
+  if (record.amendmentType === PERMIT_AMENDMENT_TYPES.original) {
     return;
   }
 
@@ -78,7 +88,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
         placement="topLeft"
         title={
           isLinkedToNowApplication
-            ? "You cannot delete permit amendment with associated NoW application imported to CORE."
+            ? "You cannot delete permit amendment with associated NoW application imported to Core."
             : "Are you sure you want to delete this amendment and all related documents?"
         }
         okText={isLinkedToNowApplication ? "Ok" : "Delete"}
@@ -104,7 +114,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
 const renderPermitNo = (permit) => {
   const permitNoShouldLinkToDocument =
     permit.permit_amendments[0] &&
-    permit.permit_amendments[0].permit_amendment_type_code === amalgamatedPermit &&
+    permit.permit_amendments[0].permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated &&
     permit.permit_amendments[0].related_documents[0];
   return permitNoShouldLinkToDocument
     ? renderDocumentLink(permit.permit_amendments[0].related_documents[0], permit.permit_no)
@@ -199,23 +209,25 @@ const columns = [
               </button>
             </div>
           </AuthorizationWrapper>
-          <Menu.Item key="2">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) =>
-                record.openEditPermitModal(event, record.permit, record.description)
-              }
-            >
-              <img
-                alt="document"
-                className="padding-sm"
-                src={EDIT_OUTLINE_VIOLET}
-                style={{ paddingRight: "15px" }}
-              />
-              Edit Permit Status
-            </button>
-          </Menu.Item>
+          <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) =>
+                  record.openEditPermitModal(event, record.permit, record.description)
+                }
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Edit Permit Status
+              </button>
+            </div>
+          </AuthorizationWrapper>
           <div className="custom-menu-item" key="3">
             <button
               type="button"
@@ -249,7 +261,7 @@ const columns = [
 
       if (!isDeletionAllowed) {
         if (isLinkedToNowApplication) {
-          issues.push("Permit has amendments associated with a NoW application imported to CORE.");
+          issues.push("Permit has amendments associated with a NoW application imported to Core.");
         }
 
         if (isAnyBondsAssociatedTo) {
@@ -290,10 +302,7 @@ const columns = [
 
       return (
         <div className="btn--middle flex">
-          <AuthorizationWrapper
-            permission={Permission.EDIT_PERMITS}
-            isMajorMine={text.major_mine_ind}
-          >
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
               <Button type="secondary" className="permit-table-button">
                 <div className="padding-sm">
@@ -320,11 +329,18 @@ const columns = [
 
 const childColumns = [
   {
-    title: "Amendment",
+    title: "#",
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
     width: "130px",
     render: (text) => <div title="Amendment">{text}</div>,
+  },
+  {
+    title: "Type",
+    dataIndex: "amendmentType",
+    key: "amendmentType",
+    width: "130px",
+    render: (text, record) => <div title="Type">{record.permitAmendmentTypeOptionsHash[text]}</div>,
   },
   {
     title: "Date Issued",
@@ -352,7 +368,7 @@ const childColumns = [
     render: (text) => (
       <div title="Maps">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
               {renderDocumentLink(
                 file.mine_document,
@@ -371,7 +387,7 @@ const childColumns = [
     render: (text) => (
       <div title="Final Application Package">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
               {renderDocumentLink(
                 file.mine_document,
@@ -387,19 +403,12 @@ const childColumns = [
     title: "Permit Files",
     dataIndex: "documents",
     key: "documents",
-    render: (text, record) => (
+    render: (text) => (
       <div title="Permit Files">
         <ul>
-          {text.map((file) => (
+          {text?.map((file) => (
             <li className="wrapped-text">
-              {record.isAmalgamated ? (
-                <>
-                  {renderDocumentLink(file, file.document_name)}
-                  <span> (amalgamated)</span>
-                </>
-              ) : (
-                renderDocumentLink(file, truncateFilename(file.document_name))
-              )}
+              {renderDocumentLink(file, truncateFilename(file.document_name))}
             </li>
           ))}
         </ul>
@@ -413,6 +422,19 @@ const childColumns = [
     align: "right",
     render: (text, record) => (
       <div>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Popconfirm
+            placement="topLeft"
+            title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
+            onConfirm={(event) =>
+              record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
+            }
+            okText="Issue"
+            cancelText="Cancel"
+          >
+            <SafetyCertificateOutlined className="icon-sm" />
+          </Popconfirm>
+        </AuthorizationWrapper>
         <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Button
             className="permit-table-button"
@@ -447,7 +469,7 @@ const transformRowData = (
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
   const hasAmalgamated = permit.permit_amendments.find(
-    (pa) => pa.permit_amendment_type_code === amalgamatedPermit
+    (pa) => pa.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated
   );
 
   return {
@@ -459,7 +481,9 @@ const transformRowData = (
     authorizationEndDate:
       (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
       Strings.EMPTY_FIELD,
-    permit_amendments: permit.permit_amendments,
+    permit_amendments: permit.permit_amendments.filter(
+      (a) => a.permit_amendment_status_code !== draftAmendment
+    ),
     status: permit.permit_status_code,
     addEditButton: {
       major_mine_ind,
@@ -483,11 +507,13 @@ const transformChildRowData = (
   amendmentNumber,
   major_mine_ind,
   openEditAmendmentModal,
-  handleDeletePermitAmendment
+  handleDeletePermitAmendment,
+  handlePermitAmendmentIssueVC,
+  permitAmendmentTypeOptionsHash
 ) => ({
   amendmentNumber,
   amendmentType: amendment.permit_amendment_type_code,
-  isAmalgamated: amendment.permit_amendment_type_code === amalgamatedPermit,
+  isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
   receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
@@ -501,10 +527,12 @@ const transformChildRowData = (
   permit: record.permit,
   documents: amendment.related_documents,
   handleDeletePermitAmendment,
+  handlePermitAmendmentIssueVC,
   finalApplicationPackage: finalApplicationPackage(amendment),
-  maps: amendment.now_application_documents.filter(
+  maps: amendment.now_application_documents?.filter(
     (doc) => doc.now_application_document_sub_type_code === "MDO"
   ),
+  permitAmendmentTypeOptionsHash,
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (
@@ -530,14 +558,16 @@ export const RenderPermitTableExpandIcon = (rowProps) => (
 
 export const MinePermitTable = (props) => {
   const amendmentHistory = (permit) => {
-    const childRowData = permit.permit_amendments.map((amendment, index) =>
+    const childRowData = permit?.permit_amendments?.map((amendment, index) =>
       transformChildRowData(
         amendment,
         permit,
         permit.permit_amendments.length - index,
         props.major_mine_ind,
         props.openEditAmendmentModal,
-        props.handleDeletePermitAmendment
+        props.handleDeletePermitAmendment,
+        props.handlePermitAmendmentIssueVC,
+        props.permitAmendmentTypeOptionsHash
       )
     );
     return (
@@ -545,7 +575,7 @@ export const MinePermitTable = (props) => {
     );
   };
 
-  const rowData = props.permits.map((permit) =>
+  const rowData = props.permits?.map((permit) =>
     transformRowData(
       permit,
       props.partyRelationships,
@@ -584,6 +614,7 @@ export const MinePermitTable = (props) => {
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   permitStatusOptionsHash: getDropdownPermitStatusOptionsHash(state),
+  permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),
 });
 
 MinePermitTable.propTypes = propTypes;

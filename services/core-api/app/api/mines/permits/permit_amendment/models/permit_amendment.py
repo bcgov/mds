@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 import uuid
 
@@ -43,9 +43,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_guid = association_proxy('permit', 'permit_guid')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
-    #security_adjustment is the change of work assessed for the new amendment,
+    #liability_adjustment is the change of work assessed for the new amendment,
     # This value is added to previous amendments to create the new total assessment for the permit
-    security_adjustment = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.DateTime)
     security_not_required = db.Column(db.Boolean)
     security_not_required_reason = db.Column(db.String)
@@ -70,9 +70,33 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin=
         "and_(PermitAmendment.mine_guid==foreign(MinePermitXref.mine_guid), PermitAmendment.permit_id==foreign(MinePermitXref.permit_id))"
     )
+    all_mine_permit_xref = db.relationship(
+        'MinePermitXref',
+        primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
 
     now_application_identity = db.relationship(
         'NOWApplicationIdentity', lazy='selectin', uselist=False)
+
+    @hybrid_property
+    def issuing_inspector_name(self):
+        title = "Inspector of Mines"
+
+        #with i had null propogation
+        now_identity = self.now_identity
+        if now_identity:
+            now_application = now_identity.now_application
+            if now_application:
+                issuing_inspector = now_application.issuing_inspector
+                if issuing_inspector:
+                    return issuing_inspector.party_name
+
+        used_by_major_mine = any([m.mine.major_mine_ind for m in self.all_mine_permit_xref])
+        if used_by_major_mine:
+            if self.issue_date >= date(2020, 7, 17):
+                return 'Chief Permitting Officer'
+            else:
+                return 'Chief Inspector of Mines'
+        return title
 
     @hybrid_property
     def now_application_documents(self):
@@ -80,7 +104,6 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if self.now_application_identity:
             _now_app_docs = self.now_application_identity.now_application.documents
         return _now_app_docs
-                
 
     @hybrid_property
     def imported_now_application_documents(self):
@@ -119,7 +142,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                authorization_end_date,
                permit_amendment_type_code='AMD',
                description=None,
-               security_adjustment=None,
+               liability_adjustment=None,
                permit_amendment_status_code='ACT',
                issuing_inspector_title=None,
                regional_office=None,
@@ -135,7 +158,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             permit_amendment_status_code=permit_amendment_status_code
             if not permit.permit_status_code == 'D' else 'DFT',
             description=description,
-            security_adjustment=security_adjustment,
+            liability_adjustment=liability_adjustment,
             issuing_inspector_title=issuing_inspector_title,
             regional_office=regional_office,
             now_application_guid=now_application_guid)

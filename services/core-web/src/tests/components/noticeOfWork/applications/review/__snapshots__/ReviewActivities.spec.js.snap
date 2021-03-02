@@ -42,12 +42,12 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
-    id="camps"
+    id="camp"
     isViewMode={true}
     title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
   >
     <FormSection
-      name="camps"
+      name="camp"
     >
       <Camps
         isViewMode={true}
@@ -225,7 +225,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="water_supply"
     >
-      <WaterSupply
+      <Connect(WaterSupply)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />

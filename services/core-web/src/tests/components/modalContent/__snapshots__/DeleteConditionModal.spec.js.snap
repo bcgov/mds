@@ -12,36 +12,30 @@ exports[`DeleteConditionModal renders properly 1`] = `
     title="Are you sure you want to delete the following undefined"
   />
   <br />
-  <Condition
+  <ConditionLayerOne
     condition={Object {}}
+    handleCancel={[Function]}
+    handleDelete={[Function]}
+    handleSubmit={[Function]}
+    initialValues={Object {}}
     isViewOnly={true}
+    new={false}
+    reorderConditions={[Function]}
+    setConditionEditingFlag={[Function]}
   />
   <div
     className="right center-mobile"
   >
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
-      okText="Yes"
-      okType="primary"
-      onConfirm={[MockFunction]}
-      placement="topRight"
-      title="Are you sure you want to cancel?"
-      transitionName="zoom-big"
-      trigger="click"
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      type="secondary"
     >
-      <Button
-        block={false}
-        className="full-mobile"
-        ghost={false}
-        htmlType="button"
-        loading={false}
-        type="secondary"
-      >
-        Cancel
-      </Button>
-    </ForwardRef>
+      Cancel
+    </Button>
     <Button
       block={false}
       className="full-mobile"

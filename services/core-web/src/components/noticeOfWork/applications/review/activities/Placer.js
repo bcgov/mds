@@ -8,11 +8,12 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const Placer = (props) => {
@@ -70,13 +71,13 @@ export const Placer = (props) => {
             validate: [number],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(km)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
@@ -88,7 +89,7 @@ export const Placer = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],
@@ -100,7 +101,13 @@ export const Placer = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Production
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("placer_operation.proposed_production").value
+              }
+              isVisible={props.renderOriginalValues("placer_operation.proposed_production").edited}
+            />
           </div>
           <Field
             id="proposed_production"

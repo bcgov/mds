@@ -43,6 +43,7 @@ import {
 import RefreshButton from "@/components/common/RefreshButton";
 import * as router from "@/constants/routes";
 import MineComments from "@/components/mine/MineComments";
+
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
  */
@@ -155,13 +156,16 @@ export class MineDashboard extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       const mine = this.props.mines[id];
       this.props.fetchPermits(mine.mine_guid);
-      this.setState({ isLoaded: true });
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
-      this.props.fetchPartyRelationships({
-        mine_guid: id,
-        relationships: "party",
-        include_permittees: "true",
-      });
+      this.props
+        .fetchPartyRelationships({
+          mine_guid: id,
+          relationships: "party",
+          include_permittees: "true",
+        })
+        .then(() => {
+          this.setState({ isLoaded: true });
+        });
     });
   }
 

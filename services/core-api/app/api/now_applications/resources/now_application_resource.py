@@ -6,7 +6,7 @@ from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 
 from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
@@ -28,7 +28,7 @@ class NOWApplicationResource(Resource, UserMixin):
         params={
             'original': 'Retrieve the original version of the application. Default: false',
         })
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
@@ -99,6 +99,8 @@ class NOWApplicationResource(Resource, UserMixin):
             del data['filtered_submission_documents']
         if 'imported_submission_documents' in data:
             del data['imported_submission_documents']
+        if 'submission_documents' in data:
+            del data['submission_documents']
 
         if filtered_submission_documents:
             imported_documents = now_application_identity.now_application.imported_submission_documents
@@ -110,6 +112,8 @@ class NOWApplicationResource(Resource, UserMixin):
                     None)
                 if filtered_doc:
                     doc.is_final_package = filtered_doc['is_final_package']
+                    doc.is_consultation_package = filtered_doc['is_consultation_package']
+                    doc.is_referral_package = filtered_doc['is_referral_package']
 
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)

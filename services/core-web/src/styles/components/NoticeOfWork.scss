@@ -87,7 +87,6 @@
 
 .view {
   &--header {
-    height: 100px;
     &.fixed-scroll {
       top: 60px;
       position: fixed;
@@ -203,6 +202,7 @@
 }
 
 .now-menu-link.ant-anchor-link .ant-anchor-link {
+  line-height: 1;
   & .ant-anchor-link-title {
     font-weight: lighter;
     padding-left: 5px;
@@ -228,25 +228,6 @@
   height: 25px;
 }
 
-.tab-disclaimer {
-  width: 800px;
-  position: relative;
-  top: -10px;
-  margin: auto;
-
-  &.draft {
-    left: -120px;
-  }
-
-  @include mobile {
-    display: none;
-  }
-
-  @include tablet {
-    width: 400px;
-  }
-}
-
 .fee-determination--block {
   border: 2px solid #a09495;
   border-radius: 5px;
@@ -255,7 +236,7 @@
 
 .status-banner {
   position: relative;
-  bottom: -5px;
+  bottom: 0;
   height: 22px;
   z-index: 100;
   .ant-alert-message {
@@ -287,10 +268,76 @@
   margin-top: 10px;
   text-align: end;
 }
+
 .progress-actions {
   margin-left: 5px;
 
   @include tablet {
     margin-left: 0;
+  }
+}
+
+.confirm-success {
+  .ant-result-icon > .anticon {
+    font-size: 40px;
+  }
+  .ant-result {
+    padding: 20px 0;
+    display: inline-flex;
+  }
+  .ant-result-icon {
+    margin-bottom: 0;
+  }
+  .ant-result-title {
+    margin-top: 6px;
+    font-size: 15px;
+  }
+}
+
+.show-on-hover {
+  display: none;
+}
+
+.hover-row {
+  .ant-row {
+    margin: 0;
+  }
+  &.ant-row:hover {
+    background-color: rgb(244, 240, 240);
+    .show-on-hover {
+      display: inherit;
+    }
+  }
+}
+
+.card--white {
+  border-radius: 5px;
+  min-height: 150px;
+  max-height: fit-content;
+  padding: 10px;
+  background-color: white;
+  .null {
+    @include center(true, true);
+  }
+}
+
+.contact-rows {
+  .scroll {
+    height: 100vh;
+    padding: 20px 0;
+    overflow-y: scroll;
+    .ant-col {
+      padding: 5px;
+    }
+  }
+  background-color: #f3f0f0;
+  padding: 25px;
+  border-radius: 5px;
+
+}
+
+.party-table {
+  .ant-table-thead {
+    display: none;
   }
 }

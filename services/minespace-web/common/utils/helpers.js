@@ -86,6 +86,13 @@ export const currencyMask = createNumberMask({
   allowNegative: true,
 });
 
+export const isDateRangeValid = (start, end) => {
+  const duration = moment.duration(moment(end).diff(moment(start)));
+  // eslint-disable-next-line no-underscore-dangle
+  const isDateRangeValid = Math.sign(duration._milliseconds) !== -1;
+  return isDateRangeValid;
+};
+
 export const dateSorter = (key) => (a, b) => {
   if (a[key] === b[key]) {
     return 0;
@@ -147,6 +154,8 @@ export const normalizePhone = (value, previousValue) => {
   }
   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
 };
+
+export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
 
 export const upperCase = (value) => value && value.toUpperCase();
 
@@ -358,12 +367,14 @@ export const getDurationTextInDays = (duration) => {
   const days = duration.days();
   const hours = duration.hours();
   const minutes = duration.minutes();
+  const seconds = duration.seconds();
 
   const daysText = getDurationTextOrDefault(days, "Day");
   const hourText = getDurationTextOrDefault(hours, "Hour");
   const minuteText = getDurationTextOrDefault(minutes, "Minute");
-  const value = `${daysText} ${hourText} ${minuteText}`;
-  return `${daysText} ${hourText} ${minuteText}`;
+  const secondText = getDurationTextOrDefault(seconds, "Second");
+  const value = `${daysText} ${hourText} ${minuteText} ${secondText}`;
+  return value;
 };
 
 const getDurationTextOrDefault = (duration, unit) => {

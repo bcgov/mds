@@ -28,13 +28,13 @@ export class UpdateStatusGenerateLetterModal extends Component {
 
   handleGenerate = (values) => {
     this.setState({ submitting: true });
-    this.props.generateDocument(this.props.documentType, values);
-    this.next();
+    return this.props
+      .generateDocument(this.props.documentType, values)
+      .then(() => this.next())
+      .finally(() => this.setState({ submitting: false }));
   };
 
-  close = () => {
-    this.props.closeModal();
-  };
+  close = () => this.props.closeModal();
 
   next = () => this.setState((prevState) => ({ step: prevState.step + 1 }));
 
@@ -43,6 +43,11 @@ export class UpdateStatusGenerateLetterModal extends Component {
   renderCorrectFrom = () =>
     this.props.type === "AIA" ? (
       <IssuePermitForm
+        initialValues={{
+          issue_date: this.props.noticeOfWork.proposed_start_date,
+          auth_end_date: this.props.noticeOfWork.proposed_end_date,
+        }}
+        noticeOfWork={this.props.noticeOfWork}
         onSubmit={this.props.onSubmit}
         closeModal={this.props.closeModal}
         title={this.props.title}

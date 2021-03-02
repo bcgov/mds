@@ -18,7 +18,11 @@ import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkReviews, getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWorkReviews,
+  getNoticeOfWork,
+  getNOWProgress,
+} from "@common/selectors/noticeOfWorkSelectors";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 
 /**
@@ -28,12 +32,13 @@ import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/sel
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  type: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
@@ -212,8 +217,14 @@ export class ReferralConsultationPackage extends Component {
 
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
+    const disabled = !this.props.progress[this.props.type];
     return (
-      <Button type="secondary" className="full-mobile" onClick={this.openDownloadPackageModal}>
+      <Button
+        type="secondary"
+        className="full-mobile"
+        onClick={this.openDownloadPackageModal}
+        disabled={disabled}
+      >
         {label}
       </Button>
     );
@@ -224,6 +235,7 @@ const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
   noticeOfWorkReviewTypes: getDropdownNoticeOfWorkApplicationReviewTypeOptions(state),
+  progress: getNOWProgress(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

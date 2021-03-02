@@ -33,13 +33,10 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
   <br />
   <br />
   <h4>
-    Match Application Contacts to Core Contacts
+    Match the contacts from the Notice of Work application to contacts in Core.
   </h4>
-  <p>
-    Select a Contact from Core for each person shown, or update the Roles if required.
-  </p>
   <Divider />
-  <Connect(EditNoWContacts)
+  <Connect(VerifyNoWContacts)
     contactFormValues={Array []}
     initialValues={
       Object {
@@ -217,6 +214,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
@@ -358,6 +356,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "surface_bulk_sample_activity": Array [
           Object {
             "disturbedarea": 1.11,
+            "quantity": null,
             "timbervolume": null,
             "type": null,
           },
@@ -427,7 +426,7 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "yearroundseasonal": null,
       }
     }
-    isVerifying={true}
+    wasFormReset={false}
   />
   <div
     className="right center-mobile"
@@ -435,8 +434,31 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
     <Connect(AuthorizationWrapper)
       permission="role_edit_permits"
     >
+      <ForwardRef
+        cancelText="No"
+        disabled={false}
+        icon={<ForwardRef(ExclamationCircleFilled) />}
+        okText="Yes"
+        okType="primary"
+        onConfirm={[Function]}
+        placement="bottomRight"
+        title="Are you sure you want to cancel? The form will be reset to the original state."
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </ForwardRef>
       <Button
         block={false}
+        disabled={true}
         ghost={false}
         htmlType="submit"
         loading={false}
@@ -445,6 +467,16 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         Verify Application
       </Button>
     </Connect(AuthorizationWrapper)>
+    <p
+      className="violet"
+    >
+      0/0 contacts confirmed
+    </p>
+    <p
+      className="red"
+    >
+      A mine must be associated to this application
+    </p>
   </div>
 </Form>
 `;

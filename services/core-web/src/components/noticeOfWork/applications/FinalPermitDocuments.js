@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
+import { FormSection } from "redux-form";
 import { connect } from "react-redux";
 import { Button, Progress, notification } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -36,11 +37,15 @@ const propTypes = {
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
   adminView: PropTypes.bool,
+  showPreambleFileMetadata: PropTypes.bool,
+  editPreambleFileMetadata: PropTypes.bool,
 };
 
 const defaultProps = {
   adminView: false,
   importNowSubmissionDocumentsJob: {},
+  showPreambleFileMetadata: false,
+  editPreambleFileMetadata: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -197,12 +202,7 @@ export class FinalPermitDocuments extends Component {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
-        documents:
-          this.props.noticeOfWork &&
-          this.props.noticeOfWork.documents &&
-          this.props.noticeOfWork.documents.filter(
-            (doc) => doc.now_application_document_type_code !== "NTR"
-          ),
+        documents: this.props.noticeOfWork.documents,
         finalDocuments,
         finalSubmissionDocuments,
         onSubmit: this.createFinalDocumentPackage,
@@ -222,6 +222,32 @@ export class FinalPermitDocuments extends Component {
       this.props.noticeOfWork.filtered_submission_documents.filter(
         ({ is_final_package }) => is_final_package
       );
+
+    const nowSubmissionDocuments = (
+      <NOWSubmissionDocuments
+        now_application_guid={this.props.noticeOfWork.now_application_guid}
+        mine_guid={this.props.mineGuid}
+        documents={permitSubmissionDocuments}
+        importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+        hideImportStatusColumn
+        hideJobStatusColumn
+        initialValues={this.props.initialValues}
+        showPreambleFileMetadata={this.props.showPreambleFileMetadata}
+        editPreambleFileMetadata={this.props.editPreambleFileMetadata}
+      />
+    );
+
+    const nowDocuments = (
+      <NOWDocuments
+        now_application_guid={this.props.noticeOfWork.now_application_guid}
+        mine_guid={this.props.mineGuid}
+        documents={permitDocuments}
+        isViewMode
+        initialValues={this.props.initialValues}
+        showPreambleFileMetadata={this.props.showPreambleFileMetadata}
+        editPreambleFileMetadata={this.props.editPreambleFileMetadata}
+      />
+    );
 
     return this.props.documentDownloadState.downloading ? (
       <div className="inline-flex flex-flow-column horizontal-center">
@@ -273,26 +299,22 @@ export class FinalPermitDocuments extends Component {
         </div>
         <h4>Original Documents</h4>
         <p>These documents came in with the original application.</p>
-        <NOWSubmissionDocuments
-          now_application_guid={this.props.noticeOfWork.now_application_guid}
-          mine_guid={this.props.mineGuid}
-          documents={permitSubmissionDocuments}
-          importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
-          hideImportStatusColumn
-          hideJobStatusColumn
-        />
+        {(this.props.showPreambleFileMetadata && (
+          <FormSection name="final_original_documents_metadata">
+            {nowSubmissionDocuments}
+          </FormSection>
+        )) ||
+          nowSubmissionDocuments}
         <br />
         <h4>Requested Documents</h4>
         <p>
           These documents were added after the original application but were provided by the
           proponent.
         </p>
-        <NOWDocuments
-          now_application_guid={this.props.noticeOfWork.now_application_guid}
-          mine_guid={this.props.mineGuid}
-          documents={permitDocuments}
-          isViewMode
-        />
+        {(this.props.showPreambleFileMetadata && (
+          <FormSection name="final_requested_documents_metadata">{nowDocuments}</FormSection>
+        )) ||
+          nowDocuments}
       </div>
     );
   }

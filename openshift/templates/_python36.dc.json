@@ -69,6 +69,11 @@
       "value": "template.mds-vfcbc-client-service"
     },
     {
+      "name": "VCR_ISSUER_API_SECRET",
+      "required": false,
+      "value": "template.mds-issuer-api-secret"
+    },
+    {
       "name": "MDS_NRIS_API_SECRET",
       "required": false,
       "value": "template.mds-nris-secret"
@@ -147,6 +152,10 @@
     },
     {
       "name": "NRIS_API_URL",
+      "required": true
+    },
+    {
+      "name": "VCR_ISSUER_URL",
       "required": true
     },
     {
@@ -551,6 +560,19 @@
                         "key": "password"
                       }
                     }
+                  },
+                  {
+                    "name": "VCR_ISSUER_URL",
+                    "value": "${VCR_ISSUER_URL}"
+                  },
+                  {
+                    "name": "VCR_ISSUER_SECRET_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "name": "${VCR_ISSUER_API_SECRET}",
+                        "key": "vcr-issuer-secret-key"
+                      }
+                    }
                   }
                 ],
                 "resources": {
@@ -713,7 +735,7 @@
                 "resources": {
                   "limits": {
                     "cpu": "100m",
-                    "memory": "384Mi"
+                    "memory": "512Mi"
                   },
                   "requests": {
                     "cpu": "50m",

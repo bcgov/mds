@@ -1,32 +1,43 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { isNil } from "lodash";
 import { Drawer, Button, Table, Alert } from "antd";
 import RenderField from "@/components/common/RenderField";
 import RenderDate from "@/components/common/RenderDate";
-import { Field } from "redux-form";
+import { Field, change } from "redux-form";
 import { CloseOutlined } from "@ant-design/icons";
-import { number } from "@common/utils/Validate";
+import { number, dateNotBeforeOther, dateNotAfterOther } from "@common/utils/Validate";
 import {
   getDurationText,
   isPlacerAdjustmentFeeValid,
   isPitsQuarriesAdjustmentFeeValid,
+  isDateRangeValid,
 } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import moment from "moment";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.importedNOWApplication.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+  change: PropTypes.func.isRequired,
   adjustedTonnage: PropTypes.number,
   proposedTonnage: PropTypes.number,
+  proposedStartDate: PropTypes.string,
+  proposedAuthorizationEndDate: PropTypes.string,
 };
+
 const defaultProps = {
   adjustedTonnage: null,
   proposedTonnage: null,
+  proposedStartDate: null,
+  proposedAuthorizationEndDate: null,
 };
+
 const tableOneColumns = [
   {
     title: "Tonnes proposed to be moved in highest producing year",
@@ -95,66 +106,87 @@ const tableTwoData = [
 export class ReviewApplicationFeeContent extends Component {
   state = {
     isApplicationFeeValid: true,
+    isDateRangeValid: true,
     isFeeDrawerVisible: false,
-    isDateRangeInvalid: false,
   };
 
   componentDidMount() {
-    const duration = moment.duration(
-      moment(this.props.initialValues.proposed_end_date).diff(
-        moment(this.props.initialValues.proposed_start_date)
-      )
-    );
-    // eslint-disable-next-line no-underscore-dangle
-    const isDateRangeInvalid = Math.sign(duration._milliseconds) === -1;
-    this.setState({ isDateRangeInvalid });
+    this.setIsDateRangeValid(this.props.proposedStartDate, this.props.proposedAuthorizationEndDate);
     if (!isNil(this.props.proposedTonnage) && !isNil(this.props.adjustedTonnage)) {
-      this.typeDeterminesFee(
+      this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
         this.props.proposedTonnage,
-        this.props.adjustedTonnage
+        this.props.adjustedTonnage,
+        this.props.proposedStartDate,
+        this.props.proposedAuthorizationEndDate
       );
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    // Handle changes to proposed start and end dates.
+    const proposedStartDateChanged = this.props.proposedStartDate !== nextProps.proposedStartDate;
+    const proposedAuthorizationEndDateChanged =
+      this.props.proposedAuthorizationEndDate !== nextProps.proposedAuthorizationEndDate;
+    if (proposedStartDateChanged || proposedAuthorizationEndDateChanged) {
+      this.setIsDateRangeValid(nextProps.proposedStartDate, nextProps.proposedAuthorizationEndDate);
+      this.updateCalculatedTermOfApplication(
+        nextProps.proposedStartDate,
+        nextProps.proposedAuthorizationEndDate
+      );
+    }
+
+    // Handle changes to proposed and adjusted tonnage.
     const adjustedChanged = this.props.adjustedTonnage !== nextProps.adjustedTonnage;
     const proposedChanged = this.props.proposedTonnage !== nextProps.proposedTonnage;
-    const adjusted = !isNil(nextProps.adjustedTonnage);
-    if ((proposedChanged || adjustedChanged) && adjusted) {
-      this.typeDeterminesFee(
+    if (
+      proposedChanged ||
+      adjustedChanged ||
+      proposedStartDateChanged ||
+      proposedAuthorizationEndDateChanged
+    ) {
+      this.setIsApplicationFeeValid(
         this.props.initialValues.notice_of_work_type_code,
         nextProps.proposedTonnage,
-        nextProps.adjustedTonnage
+        nextProps.adjustedTonnage,
+        nextProps.proposedStartDate,
+        nextProps.proposedAuthorizationEndDate
       );
     }
   }
 
-  // eslint-disable-next-line consistent-return
-  typeDeterminesFee = (type, proposed, adjusted) => {
-    // application fees only apply to Placer, S&G, and Q mines
-    if (type === "PLA") {
-      return this.adjustmentExceedsFeePlacer(proposed, adjusted);
-    }
-    if (type === "SAG" || type === "QCA" || type === "QIM") {
-      return this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
-    }
+  setIsDateRangeValid = (start, end) => {
+    this.setState({ isDateRangeValid: isDateRangeValid(start, end) });
   };
 
-  adjustmentExceedsFeePlacer = (proposed, adjusted) =>
-    this.state.isDateRangeInvalid
-      ? this.setState({ isApplicationFeeValid: true })
-      : this.setState({
-          isApplicationFeeValid: isPlacerAdjustmentFeeValid(
-            proposed,
-            adjusted,
-            this.props.initialValues.proposed_start_date,
-            this.props.initialValues.proposed_end_date
-          ),
-        });
+  setIsApplicationFeeValid = (type, proposed, adjusted, start, end) => {
+    let isApplicationFeeValid = true;
+
+    // Application fee only apply to Placer, Sand and Gravel, and Quarry mines.
+    if (type === "PLA") {
+      isApplicationFeeValid = this.adjustmentExceedsFeePlacer(proposed, adjusted, start, end);
+    }
+    if (type === "SAG" || type === "QCA" || type === "QIM") {
+      isApplicationFeeValid = this.adjustmentExceedsFeePitsQuarries(proposed, adjusted);
+    }
+
+    this.setState({ isApplicationFeeValid });
+  };
+
+  updateCalculatedTermOfApplication = (start, end) =>
+    this.props.change(
+      FORM.EDIT_NOTICE_OF_WORK,
+      "calculated_term_of_application",
+      getDurationText(start, end)
+    );
+
+  adjustmentExceedsFeePlacer = (proposed, adjusted, start, end) =>
+    !this.state.isDateRangeValid
+      ? true
+      : isPlacerAdjustmentFeeValid(proposed, adjusted, start, end);
 
   adjustmentExceedsFeePitsQuarries = (proposed, adjusted) =>
-    this.setState({ isApplicationFeeValid: isPitsQuarriesAdjustmentFeeValid(proposed, adjusted) });
+    isPitsQuarriesAdjustmentFeeValid(proposed, adjusted);
 
   toggleFeeDrawer = () =>
     this.setState((prevState) => ({
@@ -193,14 +225,16 @@ export class ReviewApplicationFeeContent extends Component {
   );
 
   render() {
-    this.props.initialValues.calculated_term_of_application = getDurationText(
-      this.props.initialValues.proposed_start_date,
-      this.props.initialValues.proposed_end_date
+    this.updateCalculatedTermOfApplication(
+      this.props.proposedStartDate,
+      this.props.proposedAuthorizationEndDate
     );
+
     const showCalculationInvalidError =
-      this.state.isDateRangeInvalid &&
+      !this.state.isDateRangeValid &&
       !isNil(this.props.adjustedTonnage) &&
       this.props.initialValues.notice_of_work_type_code === "PLA";
+
     return (
       <>
         <Drawer
@@ -219,29 +253,36 @@ export class ReviewApplicationFeeContent extends Component {
           <div className="inline-flex between">
             <h4>
               Permit Application Fee Assessment
-              <CoreTooltip title="The application fee collected for this application was based on the Term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
+              <CoreTooltip title="The application fee collected for this application was based on the term of application and tonnage. If the tonnage field needs to be altered and the application fee should be increased, you must reject this application. See Fee Chart for reference." />
             </h4>
             <LinkButton onClick={this.toggleFeeDrawer}>View Fee Chart</LinkButton>
           </div>
           <br />
           <div className="field-title">
             Proposed Start Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit." />
           </div>
           <Field
             id="proposed_start_date"
             name="proposed_start_date"
             component={RenderDate}
-            disabled
+            disabled={this.props.isViewMode || !this.props.isAdmin}
+            validate={[dateNotAfterOther(this.props.proposedAuthorizationEndDate)]}
           />
           <div className="field-title">
-            Proposed End Date
-            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee that was previously paid. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            Proposed Authorization End Date
+            <CoreTooltip title="Altering this field requires the applicant to pay a different application fee than was previously paid. If this field is to be altered, the applicant must re-apply for a Notice of Work. You set the actual Start and End dates when you process the permit." />
           </div>
-          <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
+          <Field
+            id="proposed_end_date"
+            name="proposed_end_date"
+            component={RenderDate}
+            disabled={this.props.isViewMode || !this.props.isAdmin}
+            validate={[dateNotBeforeOther(this.props.proposedStartDate)]}
+          />
           <div className="field-title">
             Proposed Term of Application
-            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a notice of work." />
+            <CoreTooltip title="This field is calculated based on the proposed start and end dates. If this field is to be altered, the applicant must re-apply for a Notice of Work." />
           </div>
           <Field
             id="calculated_term_of_application"
@@ -257,8 +298,8 @@ export class ReviewApplicationFeeContent extends Component {
             id="proposed_annual_maximum_tonnage"
             name="proposed_annual_maximum_tonnage"
             component={RenderField}
-            disabled
             validate={[number]}
+            disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
             Adjusted Annual Maximum Tonnage
@@ -298,4 +339,12 @@ export class ReviewApplicationFeeContent extends Component {
 ReviewApplicationFeeContent.propTypes = propTypes;
 ReviewApplicationFeeContent.defaultProps = defaultProps;
 
-export default ReviewApplicationFeeContent;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(ReviewApplicationFeeContent);

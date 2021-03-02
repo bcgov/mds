@@ -24,7 +24,7 @@ export const CutLines = (props) => {
         fieldID="activity_detail_id"
         tableContent={[
           {
-            title: "Total Line(km)",
+            title: "Total Line (km)",
             value: "cut_line_length",
             component: RenderField,
             validate: [number],
@@ -36,7 +36,7 @@ export const CutLines = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],

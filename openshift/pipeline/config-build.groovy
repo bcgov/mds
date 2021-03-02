@@ -196,6 +196,16 @@ app {
                     ]
                 ],
                 [
+                    'file':'openshift/templates/filesystem-provider.bc.json',
+                    'params':[
+                            'NAME':"filesystem-provider",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "services/filesystem-provider",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
                     'file':'openshift/templates/tusd.bc.json',
                     'params':[
                             'NAME':"tusd",

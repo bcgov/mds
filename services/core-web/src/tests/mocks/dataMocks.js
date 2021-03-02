@@ -1029,7 +1029,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2019-04-01",
         authorization_end_date: null,
-        security_adjustment: "1000000",
+        liability_adjustment: "1000000",
         description: "Initial permit issued.",
         related_documents: [
           {
@@ -1048,7 +1048,7 @@ export const PERMITS = [
         received_date: null,
         issue_date: "2020-04-01",
         authorization_end_date: null,
-        security_adjustment: "7000000",
+        liability_adjustment: "7000000",
         description: "Amendment",
         related_documents: [
           {
@@ -2700,6 +2700,7 @@ export const NOW = {
       now_application_status_description: "Approved",
       received_date: "2019-08-14",
       application_documents: [],
+      is_historic: false,
     },
     {
       now_application_guid: "8e1536da-644c-4961-976b-b1326fa75825",
@@ -2711,6 +2712,7 @@ export const NOW = {
       now_application_status_description: "Approved",
       received_date: "2019-07-21",
       application_documents: [],
+      is_historic: true,
     },
   ],
 };
@@ -3655,7 +3657,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
     {
-      short_description: "m3",
+      short_description: "m³",
       unit_type_code: "MEC",
       description: "Meters cubed",
       active_ind: true,
@@ -3771,7 +3773,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
     },
     {
       now_application_document_type_code: "NTR",
-      description: "Technical Review",
+      description: "Notice of Work Form",
       now_application_document_sub_type_code: null,
       document_template: {},
       active_ind: true,
@@ -4406,11 +4408,6 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       condition_category_code: "RCC",
       description: "Reclamation and Closure Program Conditions",
       display_order: 50,
-    },
-    {
-      condition_category_code: "ADC",
-      description: "Additional Conditions",
-      display_order: 60,
     },
   ],
   noticeOfWorkApplicationDelayOptions: [],

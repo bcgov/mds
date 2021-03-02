@@ -309,7 +309,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
     isViewMode={true}
@@ -334,7 +334,7 @@ exports[`SandGravelQuarry renders properly 1`] = `
         },
         Object {
           "component": [Function],
-          "title": "Merchantable timber volume (m3)",
+          "title": "Merchantable timber volume (m³)",
           "validate": Array [
             [Function],
           ],
@@ -342,7 +342,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         },
       ]
     }
-    type="Activity"
   />
   <br />
   <Equipment

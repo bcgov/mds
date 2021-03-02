@@ -5,7 +5,7 @@ exports[`Equipment renders edit properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="equipment_id"
     fieldName="equipment"
     isViewMode={false}
@@ -21,6 +21,7 @@ exports[`Equipment renders edit properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Description",
           "value": "description",
         },
@@ -42,7 +43,7 @@ exports[`Equipment renders view properly 1`] = `
   <h4>
     Equipment
   </h4>
-  <CoreEditableTable
+  <Connect(CoreEditableTable)
     fieldID="equipment_id"
     fieldName="equipment"
     isViewMode={false}
@@ -58,6 +59,7 @@ exports[`Equipment renders view properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
           "title": "Description",
           "value": "description",
         },

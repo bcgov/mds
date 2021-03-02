@@ -31,6 +31,7 @@ export const NOTICE_OF_WORK = {
   landprivate: null,
   landlegaldesc: null,
   archsitesaffected: null,
+  isonprivateland: null,
   sandgravelquarryoperations: null,
   storeexplosivesonsite: null,
   bcexplosivespermitissued: null,
@@ -326,6 +327,7 @@ export const NOTICE_OF_WORK = {
       type: null,
       disturbedarea: 1.11,
       timbervolume: null,
+      quantity: null,
     },
   ],
   sand_grv_qry_activity: [
@@ -437,7 +439,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   contacts: [],
   blasting_operation: {},
   state_of_land: {},
-  camps: { details: [] },
+  camp: { details: [] },
   cut_lines_polarization_survey: { details: [] },
   exploration_access: { details: [] },
   exploration_surface_drilling: { details: [] },
@@ -450,7 +452,9 @@ export const IMPORTED_NOTICE_OF_WORK = {
   placer_operation: { details: [] },
   documents: [],
   submission_documents: [],
+  filtered_submission_documents: [],
   application_documents: [],
+  lead_inspector: {},
 };
 
 export const NOTICE_OF_WORK_ACTIVITY_TYPES = {
@@ -703,7 +707,7 @@ export const DROPDOWN_UNIT_TYPES = [
     isActive: true,
   },
   {
-    label: "m3",
+    label: "m³",
     value: "MEC",
     subType: null,
     isActive: true,
@@ -719,7 +723,7 @@ export const DROPDOWN_UNIT_TYPES = [
 export const UNIT_TYPES_HASH = {
   KMT: "km",
   MTN: "t",
-  MEC: "m3",
+  MEC: "m³",
   HA: "ha",
   DEG: "deg",
   PER: "%",
@@ -746,7 +750,7 @@ export const DROPDOWN_APPLICATION_DOCUMENT_TYPES = [
   { value: "TAL", label: "Tenure Authorization Letter", subType: null, isActive: true },
   { value: "PUB", label: "Public Comment", subType: null, isActive: true },
   { value: "REV", label: "Review", subType: null, isActive: true },
-  { value: "NTR", label: "Technical Review", subType: null, isActive: true },
+  { value: "NTR", label: "Notice of Work Form", subType: null, isActive: true },
   { value: "LMA", label: "Location Map", subType: "MDO", isActive: true },
   { value: "LTM", label: "Land Title/Licence of Ocupation Map", subType: "MDO", isActive: true },
   { value: "OMA", label: "Overview Map", subType: "MDO", isActive: true },

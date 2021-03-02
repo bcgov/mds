@@ -7,7 +7,7 @@ import moment from "moment";
 class Validator {
   ASCII_REGEX = /^[\x0-\x7F\s]*$/;
 
-  CAN_POSTAL_CODE_REGEX = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+  CAN_POSTAL_CODE_REGEX = /(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[a-zA-Z]{1} *\d{1}[a-zA-Z]{1}\d{1}$)/;
 
   EMAIL_REGEX = /^[a-zA-Z0-9`'’._%+-]+@[a-zA-Z0-9.-]+$/;
 
@@ -25,7 +25,9 @@ class Validator {
 
   LON_REGEX = /^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/;
 
-  CURRENCY_REGEX = /^-?\d{1,8}(?:\.\d{0,2})?$/;
+  CURRENCY_REGEX = /^-?\d{1,12}(?:\.\d{0,2})?$/;
+
+  PROTOCOL_REGEX = /^https?:\/\/(.*)$/;
 
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
@@ -49,6 +51,10 @@ class Validator {
 
   checkCurrency(number) {
     return this.CURRENCY_REGEX.test(number);
+  }
+
+  checkProtocol(url) {
+    return this.PROTOCOL_REGEX.test(url);
   }
 }
 
@@ -99,7 +105,10 @@ export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;
 
 export const postalCode = (value) =>
-  value && !Validate.checkPostalCode(value) ? "Invalid postal code e.g. X1X1X1" : undefined;
+  value && !Validate.checkPostalCode(value) ? "Invalid postal code or zip code" : undefined;
+
+export const protocol = (value) =>
+  value && !Validate.checkProtocol(value) ? "Invalid. Url must contain https://" : undefined;
 
 export const email = (value) =>
   value && !Validate.checkEmail(value) ? "Invalid email address" : undefined;

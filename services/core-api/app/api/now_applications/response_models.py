@@ -44,18 +44,18 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
     'NOWApplicationActivityDetailBase', {
         'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
-        'disturbed_area': fields.Fixed(decimals=2),
+        'disturbed_area': fields.Fixed,
         'timber_volume': fields.Fixed(decimals=2),
         'number_of_sites': fields.Integer,
-        'width': fields.Integer,
-        'length': fields.Integer,
-        'depth': fields.Integer,
-        'height': fields.Integer,
-        'quantity': fields.Integer,
+        'length': fields.Fixed(decimals=2),
+        'width': fields.Fixed(decimals=2),
+        'depth': fields.Fixed(decimals=2),
+        'height': fields.Fixed(decimals=2),
+        'quantity': fields.Fixed(decimals=2),
         'incline': fields.Fixed(decimals=2),
         'incline_unit_type_code': fields.String,
-        'cut_line_length': fields.Integer,
-        'water_quantity': fields.Integer,
+        'cut_line_length': fields.Fixed(decimals=2),
+        'water_quantity': fields.Fixed(decimals=2),
         'water_quantity_unit_type_code': fields.String,
         'cut_line_length_unit_type_code': fields.String,
         'length_unit_type_code': fields.String,
@@ -70,7 +70,7 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
     'NOWApplicationActivitySummaryBase', {
         'reclamation_description': fields.String,
         'reclamation_cost': fields.Fixed(decimals=2),
-        'total_disturbed_area': fields.Fixed(decimals=2),
+        'total_disturbed_area': fields.Fixed,
         'total_disturbed_area_unit_type_code': fields.String,
         'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
@@ -83,7 +83,7 @@ NOW_APPLICATION_CAMP = api.inherit(
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
-        'volume_fuel_stored': fields.Integer,
+        'volume_fuel_stored': fields.Fixed(decimals=2),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -139,9 +139,9 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'community_plan': fields.String,
         'land_use_zoning': fields.String,
         'proposed_land_use': fields.String,
-        'total_mineable_reserves': fields.Integer,
+        'total_mineable_reserves': fields.Fixed(decimals=2),
         'total_mineable_reserves_unit_type_code': fields.String,
-        'total_annual_extraction': fields.Integer,
+        'total_annual_extraction': fields.Fixed(decimals=2),
         'total_annual_extraction_unit_type_code': fields.String,
         'average_groundwater_depth': fields.Fixed(decimals=2),
         'has_groundwater_from_existing_area': fields.Boolean,
@@ -149,9 +149,9 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'has_groundwater_from_test_wells': fields.Boolean,
         'groundwater_from_other_description': fields.String,
         'groundwater_protection_plan': fields.String,
-        'nearest_residence_distance': fields.Integer,
+        'nearest_residence_distance': fields.Fixed(decimals=2),
         'nearest_residence_distance_unit_type_code': fields.String,
-        'nearest_water_source_distance': fields.Integer,
+        'nearest_water_source_distance': fields.Fixed(decimals=2),
         'nearest_water_source_distance_unit_type_code': fields.String,
         'noise_impact_plan': fields.String,
         'secure_access_plan': fields.String,
@@ -180,10 +180,9 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
 NOW_APPLICATION_SURFACE_BULK = api.inherit(
     'NOWApplicationSurfaceBulkSample', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'processing_method_description': fields.String,
+        'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
-        'has_bedrock_excavation': fields.Boolean,
-        'spontaneous_combustion_handling': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
@@ -195,11 +194,11 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL = api.inherit(
 NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
     'NOWApplicationUndergroundExploration', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'total_ore_amount':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'total_ore_unit_type_code':
         fields.String,
         'total_waste_amount':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'total_waste_unit_type_code':
         fields.String,
         'proposed_activity':
@@ -214,6 +213,7 @@ NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
         'supply_source_type': fields.String,
         'water_use_description': fields.String,
         'estimate_rate': fields.Fixed(decimals=7),
+        'estimate_rate_unit_type_code': fields.String,
         'pump_size': fields.Fixed(decimals=2),
         'intake_location': fields.String
     })
@@ -251,6 +251,9 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'is_final_package': fields.Boolean,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -307,6 +310,7 @@ NOW_PARTY_APPOINTMENT = api.model(
 
 IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
     'IMPORTED_NOW_SUBMISSION_DOCUMENT', {
+        'id': fields.Integer,
         'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
@@ -317,6 +321,9 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'is_final_package': fields.Boolean,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
+        'preamble_title': fields.String,
+        'preamble_author': fields.String,
+        'preamble_date': fields.DateTime,
         'now_application_document_xref_guid': fields.String,
         'now_application_id': fields.Integer,
     })
@@ -327,6 +334,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'now_number':
         fields.String,
+        'now_tracking_number':
+        fields.Integer,
         'mine_guid':
         fields.String,
         'mine_name':
@@ -345,15 +354,20 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
-        'imported_date': Date,
-        'imported_by':  fields.String,
+        'imported_date':
+        Date,
+        'imported_by':
+        fields.String,
         'notice_of_work_type_code':
         fields.String,
         'now_application_status_code':
         fields.String,
+        'previous_application_status_code':
+        fields.String,
         'status_updated_date':
         Date,
-        'status_reason': fields.String,
+        'status_reason':
+        fields.String,
         'submitted_date':
         Date,
         'received_date':
@@ -381,9 +395,9 @@ NOW_APPLICATION_MODEL = api.model(
         'type_of_application':
         fields.String,
         'proposed_annual_maximum_tonnage':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'adjusted_annual_maximum_tonnage':
-        fields.Integer,
+        fields.Fixed(decimals=2),
         'crown_grant_or_district_lot_numbers':
         fields.String,
         'req_access_authorization_numbers':
@@ -406,7 +420,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'blasting_operation':
         fields.Nested(NOW_APPLICATION_BLASTING_OPERATION, skip_none=True),
-        'camps':
+        'camp':
         fields.Nested(NOW_APPLICATION_CAMP, skip_none=True),
         'cut_lines_polarization_survey':
         fields.Nested(NOW_APPLICATION_CUT_LINES, skip_none=True),
@@ -434,7 +448,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'contacts':
         fields.List(fields.Nested(NOW_PARTY_APPOINTMENT), skip_none=True),
-        'security_adjustment':
+        'liability_adjustment':
         fields.Fixed(decimals=2),
         'security_received_date':
         Date,
@@ -460,6 +474,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'is_pre_launch': fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -492,8 +507,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'directions_to_site': fields.String,
         'work_plan': fields.String,
         'type_of_application': fields.String,
-        'proposed_annual_maximum_tonnage': fields.Integer,
-        'adjusted_annual_maximum_tonnage': fields.Integer,
+        'proposed_annual_maximum_tonnage': fields.Fixed(decimals=2),
+        'adjusted_annual_maximum_tonnage': fields.Fixed(decimals=2),
         'crown_grant_or_district_lot_numbers': fields.String,
         'req_access_authorization_numbers': fields.String,
         'has_surface_disturbance_outside_tenure': fields.Boolean,
@@ -505,7 +520,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'first_aid_equipment_on_site': fields.String,
         'first_aid_cert_level': fields.String,
         'blasting_operation': fields.Nested(NOW_APPLICATION_BLASTING_OPERATION),
-        'camps': fields.Nested(NOW_APPLICATION_CAMP),
+        'camp': fields.Nested(NOW_APPLICATION_CAMP),
         'cut_lines_polarization_survey': fields.Nested(NOW_APPLICATION_CUT_LINES),
         'exploration_access': fields.Nested(NOW_APPLICATION_EXP_ACCESS),
         'exploration_surface_drilling': fields.Nested(NOW_APPLICATION_EXP_SURFACE_DRILL),
@@ -519,7 +534,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
-        'security_adjustment': fields.Fixed(decimals=2),
+        'liability_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
@@ -542,9 +557,12 @@ NOW_VIEW_MODEL = api.model(
         'notice_of_work_type_description': fields.String,
         'now_application_status_description': fields.String,
         'received_date': Date,
+        'is_historic': fields.Boolean,
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'import_timestamp': DateTime,
+        'update_timestamp': DateTime,
     })
 
 PAGINATED_LIST = api.model(

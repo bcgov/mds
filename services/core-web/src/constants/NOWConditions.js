@@ -1,6 +1,6 @@
 /* eslint-disable */
 // The following activities can exist on every NoW
-// ["access-roads", "camps", "blasting_operation", "exploration_surface_drilling", "mechanical_trenching", "settling_pond", "water_supply"]
+// ["access-roads", "camp", "blasting_operation", "exploration_surface_drilling", "mechanical_trenching", "settling_pond", "water_supply"]
 // below outlines what activities are present on specific Now Types
 export const activityConditions = {
   QCA: ["sand-and-gravel"],
@@ -30,7 +30,7 @@ export const sideMenuOptions = {
     },
     { href: "blasting-operation", title: "Blasting", alwaysVisible: true },
     {
-      href: "camps",
+      href: "camp",
       title: "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage",
       alwaysVisible: true,
     },
@@ -75,7 +75,6 @@ export const sideMenuOptions = {
         { href: "GOC", title: "Geotechnical" },
         { href: "ELC", title: "Environmental Land" },
         { href: "RCC", title: "Reclamation and Closure" },
-        { href: "ADC", title: "Additional Conditions" },
       ],
     },
     { href: "maps", title: "Maps", alwaysVisible: true, children: [] },

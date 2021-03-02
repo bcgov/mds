@@ -1,16 +1,13 @@
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
-
-from app.api.now_applications.models.activity_summary.activity_type import ActivityType
-from app.api.now_applications.models.now_application import NOWApplication
-from app.api.constants import *
+from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 
 
 class ActivitySummaryBase(AuditMixin, Base):
-    __tablename__ = "activity_summary"
+    __tablename__ = 'activity_summary'
+
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     activity_summary_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
@@ -22,7 +19,7 @@ class ActivitySummaryBase(AuditMixin, Base):
 
     reclamation_description = db.Column(db.String)
     reclamation_cost = db.Column(db.Numeric(10, 2))
-    total_disturbed_area = db.Column(db.Numeric(14, 2))
+    total_disturbed_area = db.Column(db.Numeric)
     total_disturbed_area_unit_type_code = db.Column(db.String,
                                                     db.ForeignKey('unit_type.unit_type_code'))
 

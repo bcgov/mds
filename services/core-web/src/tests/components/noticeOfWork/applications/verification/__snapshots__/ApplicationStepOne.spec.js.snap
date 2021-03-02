@@ -181,6 +181,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
@@ -322,6 +323,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "surface_bulk_sample_activity": Array [
           Object {
             "disturbedarea": 1.11,
+            "quantity": null,
             "timbervolume": null,
             "type": null,
           },
@@ -569,6 +571,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
@@ -710,6 +713,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "surface_bulk_sample_activity": Array [
           Object {
             "disturbedarea": 1.11,
+            "quantity": null,
             "timbervolume": null,
             "type": null,
           },
@@ -956,6 +960,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "fuellubstoremethodbulk": null,
         "fuellubstoreonsite": null,
         "isblastselect": null,
+        "isonprivateland": null,
         "istimberselect": null,
         "landcommunitywatershed": null,
         "landlegaldesc": null,
@@ -1097,6 +1102,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         "surface_bulk_sample_activity": Array [
           Object {
             "disturbedarea": 1.11,
+            "quantity": null,
             "timbervolume": null,
             "type": null,
           },

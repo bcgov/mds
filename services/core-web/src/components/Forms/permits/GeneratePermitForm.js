@@ -11,13 +11,17 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
+import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
+  previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
+  permitAmendmentDropdown: CustomPropTypes.options.isRequired,
+  isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -30,7 +34,6 @@ export const GeneratePermitForm = (props) => (
               id="mine_no"
               name="mine_no"
               label="Mine Number"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -41,7 +44,28 @@ export const GeneratePermitForm = (props) => (
               id="permit_number"
               name="permit_number"
               label="Permit Number"
-              required
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="now_number"
+              name="now_number"
+              label="Application Number"
+              component={renderConfig.FIELD}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="now_tracking_number"
+              name="now_tracking_number"
+              label="Application Tracking Number"
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -54,7 +78,6 @@ export const GeneratePermitForm = (props) => (
               id="permittee"
               name="permittee"
               label="Permittee"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -65,7 +88,6 @@ export const GeneratePermitForm = (props) => (
               id="permittee_mailing_address"
               name="permittee_mailing_address"
               label="Permittee Mailing address"
-              required
               component={renderConfig.AUTO_SIZE_FIELD}
               validate={[required]}
               disabled
@@ -87,7 +109,6 @@ export const GeneratePermitForm = (props) => (
               id="mine_location"
               name="mine_location"
               label="Mine Location"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -100,7 +121,6 @@ export const GeneratePermitForm = (props) => (
               id="issue_date"
               name="issue_date"
               label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
-              required
               component={renderConfig.DATE}
               validate={[required]}
               disabled
@@ -126,7 +146,6 @@ export const GeneratePermitForm = (props) => (
               id="auth_end_date"
               name="auth_end_date"
               label="Authorization End Date"
-              required
               component={renderConfig.DATE}
               validate={[required]}
               disabled
@@ -137,7 +156,6 @@ export const GeneratePermitForm = (props) => (
               id="lead_inspector"
               name="lead_inspector"
               label="Lead Inspector Name"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -151,7 +169,6 @@ export const GeneratePermitForm = (props) => (
               id="issuing_inspector_title"
               name="issuing_inspector_title"
               label="Issuing Inspector Title"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -162,7 +179,6 @@ export const GeneratePermitForm = (props) => (
               id="regional_office"
               name="regional_office"
               label="Regional Office"
-              required
               component={renderConfig.SELECT}
               validate={[required]}
               data={[
@@ -186,7 +202,6 @@ export const GeneratePermitForm = (props) => (
               id="application_date"
               name="application_date"
               label="Application Date"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -197,7 +212,6 @@ export const GeneratePermitForm = (props) => (
               id="property"
               name="property"
               label="Property Name"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
@@ -210,10 +224,22 @@ export const GeneratePermitForm = (props) => (
               id="application_type"
               name="application_type"
               label="Notice of Work Permit Type"
-              required
               component={renderConfig.FIELD}
               validate={[required]}
               disabled
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="permit_amendment_type_code"
+              name="permit_amendment_type_code"
+              placeholder="Select a Permit amendment type"
+              label="Permit amendment type"
+              doNotPinDropdown
+              component={renderConfig.SELECT}
+              data={props.permitAmendmentDropdown}
+              validate={[required]}
+              disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
             />
           </Col>
         </Row>
@@ -221,7 +247,17 @@ export const GeneratePermitForm = (props) => (
         <FinalPermitDocuments
           mineGuid={props.noticeOfWork.mine_guid}
           noticeOfWork={props.noticeOfWork}
+          showPreambleFileMetadata
+          editPreambleFileMetadata={!props.isViewMode}
+          initialValues={props.initialValues}
         />
+        {props.previousAmendmentDocuments && (
+          <PreviousAmendmentDocuments
+            previousAmendmentDocuments={props.previousAmendmentDocuments}
+            editPreambleFileMetadata={!props.isViewMode}
+            initialValues={props.initialValues}
+          />
+        )}
       </>
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">
@@ -234,7 +270,7 @@ export const GeneratePermitForm = (props) => (
             now_application_document_sub_type_code === "MDO"
         )}
         isViewMode={props.isViewMode}
-        disclaimerText="In this table you can see all map related Notice of Work documents."
+        disclaimerText="In this table, you can see all the map-related Notice of Work documents."
         categoriesToShow={["MDO"]}
         addDescriptionColumn={false}
       />
@@ -248,4 +284,5 @@ export default reduxForm({
   form: FORM.GENERATE_PERMIT,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
+  enableReinitialize: true,
 })(GeneratePermitForm);

@@ -1,4 +1,3 @@
-/* eslint-disable no-dupe-keys */
 export const EXCEL = {
   ".xls": "application/vnd.ms-excel",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -28,12 +27,22 @@ export const IMAGE = {
   ".png": "image/png",
 };
 
+export const APPLICATION_OCTET_STREAM = "application/octet-stream";
+
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
   ".geoJSon": "application/vnd.geo+json",
   ".gml": "application/gml+xml",
   ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
+  ".ain": APPLICATION_OCTET_STREAM,
+  ".aih": APPLICATION_OCTET_STREAM,
+  ".atx": APPLICATION_OCTET_STREAM,
+  ".cpg": APPLICATION_OCTET_STREAM,
+  ".fbn": APPLICATION_OCTET_STREAM,
+  ".fbx": APPLICATION_OCTET_STREAM,
+  ".ixs": APPLICATION_OCTET_STREAM,
+  ".mxs": APPLICATION_OCTET_STREAM,
   ".prj": APPLICATION_OCTET_STREAM,
   ".sbn": APPLICATION_OCTET_STREAM,
   ".sbx": APPLICATION_OCTET_STREAM,
@@ -44,5 +53,3 @@ export const UNIQUELY_SPATIAL = {
 };
 
 export const SPATIAL = { ...UNIQUELY_SPATIAL, ".csv": "text/csv", ".xml": "application/xml" };
-
-export const APPLICATION_OCTET_STREAM = "application/octet-stream";

@@ -44,6 +44,7 @@ def randomUnitDescription():
 def randomNOWOriginatingSystem():
     return random.choice(['NROS', 'VFCBC', 'Core', 'MMS'])
 
+
 def randomNOWApplicationType():
     return random.choice(['New Permit', 'Amendment'])
 
@@ -60,7 +61,7 @@ class NOWSubmissionFactory(BaseFactory):
         all_activites = factory.Trait(
             blasting_operation=True,
             state_of_land=True,
-            camps=True,
+            camp=True,
             cut_lines_polarization_survey=True,
             exploration_access=True,
             exploration_surface_drilling=True,
@@ -70,7 +71,7 @@ class NOWSubmissionFactory(BaseFactory):
             surface_bulk_sample=True,
             settling_pond=True,
             underground_exploration=True)
-        camps = factory.Trait(
+        camp = factory.Trait(
             cbsfreclamation=factory.Faker('sentence', nb_words=3),
             cbsfreclamationcost=factory.fuzzy.FuzzyDecimal(100),
             campbuildstgetotaldistarea=factory.fuzzy.FuzzyDecimal(100),
@@ -86,7 +87,8 @@ class NOWSubmissionFactory(BaseFactory):
 
         state_of_land = factory.Trait(
             landcommunitywatershed=factory.LazyFunction(randomYesNo),
-            archsitesaffected=factory.LazyFunction(randomYesNo))
+            archsitesaffected=factory.LazyFunction(randomYesNo),
+            isonprivateland=factory.LazyFunction(randomYesNo))
 
         cut_lines_polarization_survey = factory.Trait(
             cutlinesreclamation=factory.Faker('sentence', nb_words=3),
@@ -173,6 +175,7 @@ class NOWSubmissionFactory(BaseFactory):
     all_activites = True
 
     application_guid = GUID
+    processed = "Y"
     mine_guid = factory.SelfAttribute('mine.mine_guid')
     messageid = factory.Sequence(lambda n: n)
     applicantclientid = factory.SelfAttribute('applicant.clientid')
@@ -182,10 +185,11 @@ class NOWSubmissionFactory(BaseFactory):
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = factory.LazyFunction(lambda: random.choice(['Accepted', 'Withdrawn', 'Under Review']))
     submitteddate = factory.Faker('past_datetime')
-    receiveddate = factory.Faker('past_datetime')
+    receiveddate = factory.Faker('past_date')
     minenumber = factory.Faker('word')
     originating_system = factory.LazyFunction(randomNOWOriginatingSystem)
     typeofapplication = factory.LazyFunction(randomNOWApplicationType)
+    processed = "Y"
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -316,7 +320,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     status = factory.LazyFunction(
         lambda: random.choice([x.description for x in NOWApplicationStatus.get_all()]))
     submitteddate = factory.Faker('past_datetime')
-    receiveddate = factory.Faker('past_datetime')
+    receiveddate = factory.Faker('past_date')
     minenumber = factory.SelfAttribute('mine.mine_no')
     originating_system = random.choice(['NROS', 'VFCBC'])
 

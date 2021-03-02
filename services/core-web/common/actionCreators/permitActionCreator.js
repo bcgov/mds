@@ -75,7 +75,10 @@ export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -96,8 +99,37 @@ export const createPermitAmendment = (mineGuid, permitGuid, payload) => (dispatc
       dispatch(success(reducerTypes.CREATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const createPermitAmendmentVC = (mineGuid, permitGuid, permitAmdendmentGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.PERMIT_AMENDMENT_VC));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.PERMIT_AMENDMENT_VC(mineGuid, permitGuid, permitAmdendmentGuid)}`,
+      {},
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully Issued Permit Verifiable Credentials, Thanks Jason`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PERMIT_AMENDMENT_VC));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.PERMIT_AMENDMENT_VC));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (
@@ -119,7 +151,10 @@ export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -149,7 +184,10 @@ export const removePermitAmendmentDocument = (
       dispatch(success(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PERMIT_AMENDMENT_DOCUMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -169,7 +207,10 @@ export const deletePermit = (mineGuid, permitGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_PERMIT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PERMIT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -189,7 +230,10 @@ export const deletePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid
       dispatch(success(reducerTypes.DELETE_PERMIT_AMENDMENT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PERMIT_AMENDMENT));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -232,7 +276,7 @@ export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatc
 
 export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
   dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .delete(
       `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
@@ -252,7 +296,7 @@ export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid)
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const setEditingConditionFlag = (payload) => (dispatch) => {
@@ -285,4 +329,25 @@ export const updatePermitCondition = (permitConditionGuid, permitAmdendmentGuid,
     })
     .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const patchPermitNumber = (permitGuid, mineGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.PATCH_PERMIT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .patch(
+      `${ENVIRONMENT.apiUrl}${API.PERMITS(mineGuid)}/${permitGuid}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated permit",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PATCH_PERMIT));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.PATCH_PERMIT)))
+    .finally(() => dispatch(hideLoading("modal")));
 };

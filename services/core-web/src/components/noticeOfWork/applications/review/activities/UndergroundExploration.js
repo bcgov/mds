@@ -19,7 +19,7 @@ import RenderSelect from "@/components/common/RenderSelect";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
@@ -27,6 +27,7 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const UndergroundExploration = (props) => {
@@ -64,19 +65,19 @@ export const UndergroundExploration = (props) => {
             validate: [number],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(km)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Height(m)",
+            title: "Height (m)",
             value: "height",
             component: RenderField,
             validate: [number],
@@ -88,7 +89,7 @@ export const UndergroundExploration = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],
@@ -100,7 +101,15 @@ export const UndergroundExploration = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed Activities
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("underground_exploration.proposed_activity").value
+              }
+              isVisible={
+                props.renderOriginalValues("underground_exploration.proposed_activity").edited
+              }
+            />
           </div>
           <Field
             id="proposed_activity"

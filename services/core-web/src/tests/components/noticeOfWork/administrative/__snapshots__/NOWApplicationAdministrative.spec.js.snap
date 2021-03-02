@@ -15,7 +15,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "adjusted_annual_maximum_tonnage": "",
           "application_documents": Array [],
           "blasting_operation": Object {},
-          "camps": Object {
+          "camp": Object {
             "details": Array [],
           },
           "contacts": Array [],
@@ -30,7 +30,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "exploration_surface_drilling": Object {
             "details": Array [],
           },
+          "filtered_submission_documents": Array [],
           "latitude": "",
+          "lead_inspector": Object {},
           "longitude": "",
           "mechanical_trenching": Object {
             "details": Array [],
@@ -85,7 +87,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "SDO",
         ]
       }
-      disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+      disclaimerText="Upload securities-related files here."
       documents={Array []}
       isAdminView={true}
       isViewMode={false}
@@ -101,7 +103,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "GDO",
         ]
       }
-      disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
+      disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
       documents={Array []}
       isAdminView={true}
       isViewMode={false}
@@ -118,7 +120,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "NTR",
         ]
       }
-      disclaimerText="In this table you can see all exported Notice of Work documents."
+      disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
       documents={Array []}
       isViewMode={true}
     />
@@ -135,7 +137,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "adjusted_annual_maximum_tonnage": "",
           "application_documents": Array [],
           "blasting_operation": Object {},
-          "camps": Object {
+          "camp": Object {
             "details": Array [],
           },
           "contacts": Array [],
@@ -150,7 +152,9 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "exploration_surface_drilling": Object {
             "details": Array [],
           },
+          "filtered_submission_documents": Array [],
           "latitude": "",
+          "lead_inspector": Object {},
           "longitude": "",
           "mechanical_trenching": Object {
             "details": Array [],

@@ -42,7 +42,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
 
     @api.doc(
         description=
-        'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to download the document.',
+        'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to generate the document.',
         params={'document_type_code': 'The code indicating the type of document to generate.'})
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit

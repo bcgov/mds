@@ -192,12 +192,16 @@ export class BondForm extends Component {
                 label="Issue Date*"
                 showTime
                 component={RenderDate}
-                validate={[
-                  required,
-                  date,
-                  dateNotInFuture,
-                  dateNotAfterOther(this.props.bond.closed_date),
-                ]}
+                validate={
+                  isBondClosed
+                    ? [
+                        required,
+                        date,
+                        dateNotInFuture,
+                        dateNotAfterOther(this.props.bond.closed_date),
+                      ]
+                    : [required, date, dateNotInFuture]
+                }
               />
             </Form.Item>
           </Col>
@@ -320,7 +324,7 @@ export class BondForm extends Component {
                 label="Postal Code"
                 placeholder="e.g xxxxxx"
                 component={RenderField}
-                validate={[maxLength(6), postalCode]}
+                validate={[maxLength(10), postalCode]}
                 normalize={upperCase}
               />
             </Form.Item>

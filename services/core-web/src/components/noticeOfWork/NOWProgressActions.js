@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { flattenObject } from "@common/utils/helpers";
 import { PropTypes } from "prop-types";
-import { getFormValues, submit, getFormSyncErrors } from "redux-form";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { Button, Dropdown, Menu } from "antd";
 import { isEmpty } from "lodash";
-import { createPermit, createPermitAmendment } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import {
   createNoticeOfWorkApplicationProgress,
@@ -17,7 +14,6 @@ import {
   createApplicationDelay,
   fetchApplicationDelay,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getPermits } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getNOWProgress,
@@ -27,7 +23,6 @@ import {
   getDelayTypeDropDownOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import * as FORM from "@/constants/forms";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -45,7 +40,6 @@ const propTypes = {
   delayTypeOptions: CustomPropTypes.options.isRequired,
   tab: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
-  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   closeModal: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
   updateNoticeOfWorkApplicationProgress: PropTypes.func.isRequired,
@@ -54,12 +48,6 @@ const propTypes = {
   createApplicationDelay: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func,
-  createPermit: PropTypes.func.isRequired,
-  createPermitAmendment: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
-  formErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  preDraftFormValues: PropTypes.objectOf(PropTypes.oneOfType[(PropTypes.string, PropTypes.bool)])
-    .isRequired,
 };
 
 const defaultProps = { handleDraftPermit: () => {} };
@@ -70,75 +58,21 @@ export class NOWProgressActions extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (prevProps.noticeOfWork !== this.props.noticeOfWork)
+    if (prevProps.noticeOfWork !== this.props.noticeOfWork) {
       this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
-  };
-
-  createPermit = (isExploration, tab, trigger) => {
-    const payload = {
-      permit_status_code: "D",
-      is_exploration: isExploration,
-      now_application_guid: this.props.noticeOfWork.now_application_guid,
-    };
-    this.props.createPermit(this.props.noticeOfWork.mine_guid, payload).then(() => {
-      this.startOrResumeProgress(tab, trigger);
-      this.props.handleDraftPermit();
-    });
-  };
-
-  startDraftPermit = (tab, trigger, isAmendment) => {
-    if (isAmendment) {
-      const payload = {
-        permit_amendment_status_code: "DFT",
-        now_application_guid: this.props.noticeOfWork.now_application_guid,
-      };
-      this.props
-        .createPermitAmendment(
-          this.props.noticeOfWork.mine_guid,
-          this.props.preDraftFormValues.permit_guid,
-          payload
-        )
-        .then(() => {
-          this.props.handleDraftPermit();
-          this.startOrResumeProgress(tab, trigger);
-        });
-    } else {
-      this.createPermit(this.props.preDraftFormValues.is_exploration, tab, trigger);
     }
   };
 
-  handleProgress = (tab, trigger, isAmendment) => {
-    if (trigger === "Complete") {
-      this.stopProgress(tab);
-    } else if (trigger === "Resume") {
-      this.startOrResumeProgress(tab, trigger);
-    } else if (trigger === "Start") {
-      if (tab === "DFT") {
-        this.handlePermit(tab, trigger, isAmendment);
-      } else {
-        this.startOrResumeProgress(tab, trigger);
-      }
-    }
-  };
+  handleProgress = (tab, trigger) =>
+    trigger === "Complete" ? this.stopProgress(tab) : this.startOrResumeProgress(tab, trigger);
 
-  handlePermit = (tab, trigger, isAmendment) => {
-    const errors = Object.keys(flattenObject(this.props.formErrors));
-    this.props.submit(FORM.PRE_DRAFT_PERMIT);
-    if (errors.length === 0) {
-      this.startDraftPermit(tab, trigger, isAmendment);
-    }
-  };
-
-  stopProgress = (tab) => {
-    const message = `Successfully Completed the ${this.props.progressStatusHash[tab]} Process.`;
+  stopProgress = (tab) =>
     this.props
       .updateNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        {
-          end_date: new Date(),
-        },
-        message
+        {},
+        `Successfully Completed the ${this.props.progressStatusHash[tab]} Process.`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -146,15 +80,15 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  startOrResumeProgress = (tab, trigger) => {
-    const message = `Successfully ${trigger}ed the ${this.props.progressStatusHash[tab]} Process.`;
+  startOrResumeProgress = (tab, trigger) =>
     this.props
       .createNoticeOfWorkApplicationProgress(
         this.props.noticeOfWork.now_application_guid,
         tab,
-        message
+        `Successfully ${trigger}${trigger === "Start" ? "ed" : "d"} the ${
+          this.props.progressStatusHash[tab]
+        } Process.`
       )
       .then(() => {
         this.props.fetchImportedNoticeOfWorkApplication(
@@ -162,39 +96,34 @@ export class NOWProgressActions extends Component {
         );
         this.props.closeModal();
       });
-  };
 
-  handleStartDelay = (values) => {
-    const payload = {
-      ...values,
-      start_date: new Date().toISOString(),
-    };
+  handleStartDelay = (values) =>
     this.props
-      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, payload)
+      .createApplicationDelay(this.props.noticeOfWork.now_application_guid, values)
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
-  };
 
-  handleStopDelay = (values) => {
-    const payload = {
-      ...values,
-      end_date: new Date().toISOString(),
-    };
+  handleStopDelay = (values) =>
     this.props
       .updateApplicationDelay(
         this.props.noticeOfWork.now_application_guid,
         this.props.applicationDelay.now_application_delay_guid,
-        payload
+        values
       )
       .then(() => {
         this.props.fetchApplicationDelay(this.props.noticeOfWork.now_application_guid);
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
         this.props.closeModal();
       });
-  };
 
-  openProgressModal = (trigger) => {
+  openProgressModal = (trigger) =>
     this.props.openModal({
       props: {
         title: `${trigger} ${this.props.progressStatusHash[this.props.tab]}`,
@@ -203,17 +132,28 @@ export class NOWProgressActions extends Component {
         closeModal: this.props.closeModal,
         trigger,
         handleProgress: this.handleProgress,
-        permits: this.props.permits,
-        isAmendment: this.props.noticeOfWork.type_of_application !== "New Permit",
-        isCoalOrMineral:
-          this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
-          this.props.noticeOfWork.notice_of_work_type_code === "COL",
       },
       content: modalConfig.NOW_PROGRESS_MODAL,
     });
-  };
 
-  openStatusReasonModal = (title) => {
+  openDraftPermitProgressModal = () =>
+    this.props.openModal({
+      props: {
+        title: `Start ${this.props.progressStatusHash[this.props.tab]}`,
+        tab: this.props.progressStatusHash[this.props.tab],
+        tabCode: this.props.tab,
+        closeModal: this.props.closeModal,
+        handleDraftPermit: this.props.handleDraftPermit,
+        isCoalOrMineral:
+          this.props.noticeOfWork.notice_of_work_type_code === "MIN" ||
+          this.props.noticeOfWork.notice_of_work_type_code === "COL",
+        noticeOfWork: this.props.noticeOfWork,
+        startOrResumeProgress: this.startOrResumeProgress,
+      },
+      content: modalConfig.START_DRAFT_PERMIT_MODAL,
+    });
+
+  openStatusReasonModal = (title) =>
     this.props.openModal({
       props: {
         title,
@@ -223,14 +163,12 @@ export class NOWProgressActions extends Component {
       isViewOnly: true,
       content: modalConfig.NOW_STATUS_REASON_MODAL,
     });
-  };
 
-  openHandleDelayModal = (stage) => {
-    const submitFunction = stage === "Start" ? this.handleStartDelay : this.handleStopDelay;
+  openHandleDelayModal = (stage) =>
     this.props.openModal({
       props: {
         title: `${stage} Delay`,
-        onSubmit: submitFunction,
+        onSubmit: stage === "Start" ? this.handleStartDelay : this.handleStopDelay,
         delayTypeOptions: this.props.delayTypeOptions,
         initialValues: stage === "Stop" ? this.props.applicationDelay : {},
         stage,
@@ -238,7 +176,6 @@ export class NOWProgressActions extends Component {
       },
       content: modalConfig.NOW_DELAY_MODAL,
     });
-  };
 
   render() {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
@@ -246,7 +183,7 @@ export class NOWProgressActions extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
-    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Reason for Rejection";
+    const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
     const menu = (
       <Menu>
         <Menu.Item
@@ -273,7 +210,14 @@ export class NOWProgressActions extends Component {
             <>
               {!this.props.progress[this.props.tab] && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Button type="primary" onClick={() => this.openProgressModal("Start")}>
+                  <Button
+                    type="primary"
+                    onClick={() =>
+                      this.props.tab === "DFT"
+                        ? this.openDraftPermitProgressModal()
+                        : this.openProgressModal("Start")
+                    }
+                  >
                     <ClockCircleOutlined />
                     Start {this.props.progressStatusHash[this.props.tab]}
                   </Button>
@@ -330,9 +274,6 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
-  preDraftFormValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
-  formErrors: getFormSyncErrors(FORM.PRE_DRAFT_PERMIT)(state),
-  permits: getPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -343,12 +284,9 @@ const mapDispatchToProps = (dispatch) =>
       createNoticeOfWorkApplicationProgress,
       updateNoticeOfWorkApplicationProgress,
       fetchImportedNoticeOfWorkApplication,
-      createPermit,
-      createPermitAmendment,
       updateApplicationDelay,
       createApplicationDelay,
       fetchApplicationDelay,
-      submit,
     },
     dispatch
   );

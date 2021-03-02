@@ -25,6 +25,7 @@ import * as Strings from "@common/constants/strings";
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
  */
 const noImportMeta = "Information not captured at time of Import";
+const clientDelayMessage = "Client delay exceeds time spent in progress.";
 const propTypes = {
   delayTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -106,10 +107,11 @@ const stepItem = (progress, progressStatus, delaysExist) => {
                 </Descriptions.Item>
                 {delaysExist && (
                   <Descriptions.Item label="Duration Minus Delays">
-                    {
-                      progress[progressStatus.application_progress_status_code]
-                        .durationWithoutDelays
-                    }
+                    {progress[progressStatus.application_progress_status_code]
+                      .durationWithoutDelays === "N/A"
+                      ? clientDelayMessage
+                      : progress[progressStatus.application_progress_status_code]
+                          .durationWithoutDelays}
                   </Descriptions.Item>
                 )}
               </Descriptions>
@@ -141,7 +143,10 @@ const stepItem = (progress, progressStatus, delaysExist) => {
               {delaysExist && (
                 <Descriptions.Item label="Duration Minus Delays">
                   {progress[progressStatus.application_progress_status_code]
-                    .durationWithoutDelays || "0 Days"}
+                    .durationWithoutDelays === "N/A"
+                    ? clientDelayMessage
+                    : progress[progressStatus.application_progress_status_code]
+                        .durationWithoutDelays}
                 </Descriptions.Item>
               )}
             </Descriptions>
@@ -178,10 +183,16 @@ export class NOWProgressTable extends Component {
     const firstProgress =
       this.props.noticeOfWork.application_progress.length > 0
         ? this.props.noticeOfWork.application_progress[0]
-        : { start_date: null, application_progress_status_code: null };
-    const duration = moment.duration(
-      moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
-    );
+        : { start_date: "", application_progress_status_code: "" };
+    const hasImportMeta = this.props.noticeOfWork.imported_date;
+    const duration =
+      firstProgress?.start_date && hasImportMeta
+        ? getDurationTextInDays(
+            moment.duration(
+              moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
+            )
+          )
+        : noImportMeta;
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
@@ -190,11 +201,11 @@ export class NOWProgressTable extends Component {
             <Steps current={5} className="progress-steps">
               <Steps.Step
                 direction="vertical"
-                title="Imported to CORE"
+                title="Imported to Core"
                 icon={
                   <Popover
                     content={
-                      <Descriptions column={1} title="Imported to CORE">
+                      <Descriptions column={1} title="Imported to Core">
                         <Descriptions.Item label="Status">Verified</Descriptions.Item>
                         <Descriptions.Item label="Imported by">
                           {this.props.noticeOfWork.imported_by || noImportMeta}
@@ -203,7 +214,7 @@ export class NOWProgressTable extends Component {
                           {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
                         </Descriptions.Item>
                         <Descriptions.Item label="Duration until Progress">
-                          {getDurationTextInDays(duration) || Strings.EMPTY_FIELD}
+                          {duration || Strings.EMPTY_FIELD}
                         </Descriptions.Item>
                         <Descriptions.Item label="First stage In Progress">
                           {this.props.progressStatusCodeHash[

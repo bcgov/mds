@@ -14,7 +14,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_edit_securities, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 
@@ -101,15 +101,19 @@ class PermitListResource(Resource, UserMixin):
             now_application_guid = data.get('now_application_guid')
             if not now_application_guid:
                 raise NotFound('There was no Notice of Work found with the provided guid.')
+
             now_application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             now_application = now_application_identity.now_application
             notice_of_work_type_code = now_application.notice_of_work_type_code[0]
+
             permit_prefix = notice_of_work_type_code if notice_of_work_type_code != 'S' else 'G'
             if permit_prefix in ['M', 'C'] and data.get('is_exploration'):
                 permit_prefix = permit_prefix + 'X'
+
             if now_application_identity.now_number is not None:
                 permit_no = permit_prefix + '-DRAFT-' + str(now_application_identity.now_number)
-            else:            #covering situation where 'P-DRAFT-None' causes a non-unique error
+            # Handle the situation where 'P-DRAFT-None' causes a non-unique error
+            else:
                 permit_no = permit_prefix + '-DRAFT-' + str(mine.mine_no)
 
         permit = Permit.find_by_permit_no(permit_no)
@@ -194,6 +198,8 @@ class PermitResource(Resource, UserMixin):
         help='Status of the permit being added.',
         store_missing=False)
     parser.add_argument(
+        'remaining_static_liability', type=str, location='json', store_missing=False)
+    parser.add_argument(
         'received_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         location='json',
@@ -217,6 +223,12 @@ class PermitResource(Resource, UserMixin):
     parser.add_argument(
         'description', type=str, location='json', help='Permit description', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        help='GUID of the NoW application for the specified permit.',
+        location='json',
+        store_missing=False)
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -230,7 +242,7 @@ class PermitResource(Resource, UserMixin):
         return permit
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
-    @requires_role_edit_permit
+    @requires_role_edit_securities
     @api.marshal_with(PERMIT_MODEL, code=200)
     def put(self, permit_guid, mine_guid):
         permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
@@ -260,3 +272,25 @@ class PermitResource(Resource, UserMixin):
             raise BadRequest(e)
 
         return None, 204
+
+    @api.doc(params={'permit_guid': 'Permit guid.', 'now_application_guid': 'NoW application guid'})
+    @requires_role_edit_permit
+    @api.marshal_with(PERMIT_MODEL, code=200)
+    def patch(self, permit_guid, mine_guid):
+        permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
+
+        if not permit:
+            raise NotFound('Permit not found.')
+
+        now_application_guid = self.parser.parse_args()['now_application_guid']
+        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+
+        if not now_application:
+            raise NotFound('NoW application not found')
+
+        if permit.permit_status_code == 'D':
+            #assign permit_no
+            permit.assign_permit_no(now_application.notice_of_work_type_code[0])
+
+        permit.save()
+        return permit

@@ -27,11 +27,14 @@ import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
+import ViewConditionModal from "./ViewConditionModal";
 import AddQuickPartyModal from "./AddQuickPartyModal";
 import UpdateStatusGenerateLetterModal from "./UpdateStatusGenerateLetterModal";
 import NOWProgressModal from "./NOWProgressModal";
 import NOWStatusReasonModal from "./NOWStatusReasonModal";
 import NOWDelayModal from "./NOWDelayModal";
+import GeneratePermitNumberModal from "./GeneratePermitNumberModal";
+import StartDraftPermitModal from "./StartDraftPermitModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -68,6 +71,9 @@ export const modalConfig = {
   NOW_PROGRESS_MODAL: NOWProgressModal,
   NOW_STATUS_REASON_MODAL: NOWStatusReasonModal,
   NOW_DELAY_MODAL: NOWDelayModal,
+  VIEW_CONDITION_MODAL: ViewConditionModal,
+  GENERATE_PERMIT_NUMBER_MODAL: GeneratePermitNumberModal,
+  START_DRAFT_PERMIT_MODAL: StartDraftPermitModal,
 };
 
 export default modalConfig;

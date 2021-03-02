@@ -1,6 +1,6 @@
 import os, requests
-from flask import current_app, request, Response, stream_with_context
-from flask_restplus import Resource
+from flask import request, Response, stream_with_context
+from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
 from app.extensions import api, cache
 
@@ -9,26 +9,33 @@ from app.api.constants import NOW_DOCUMENT_DOWNLOAD_TOKEN
 from app.config import Config
 
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.services.document_generator_service import DocumentGeneratorService
 from app.api.services.document_manager_service import DocumentManagerService
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT
 
 
 class NoticeOfWorkDocumentResource(Resource, UserMixin):
     @api.doc(
         description=
-        'Returns the generated document associated with the received token and pushes it to the \
-        Document Manager and associates it with the Notice of Work.',
+        'Generates the document associated with the received token and pushes it to the Document Manager and associates it with the Notice of Work. Returns either the file content or the document record, depending on query parameters.',
         params={
             'token':
-            'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.'
+            'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.',
+            'return_record':
+            'If true, returns the created document record, otherwise, returns the generated file content.'
         })
     def get(self):
-
-        # Ensure that the token is valid
         token = request.args.get('token', '')
+        return_record = request.args.get('return_record') == 'true'
+        return NoticeOfWorkDocumentResource.generate_now_document(token, return_record)
+
+    @classmethod
+    def generate_now_document(cls, token, return_record):
+        # Ensure that the token is valid
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         if not token_data:
@@ -40,8 +47,9 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             document_type_code)
 
         # Generate the document using the template and template data
+        template_data = token_data['template_data']
         docgen_resp = DocumentGeneratorService.generate_document(
-            now_application_document_type.document_template, token_data['template_data'])
+            now_application_document_type.document_template, template_data)
         if docgen_resp.status_code != requests.codes.ok:
             raise BadGateway(f'Failed to generate document: {str(docgen_resp.content)}')
 
@@ -77,7 +85,13 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         now_application_identity.now_application.documents.append(now_doc)
         now_application_identity.save()
 
-        # Return the generated document
+        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+        now_application_document_type.after_template_generated(template_data, now_doc,
+                                                               now_application)
+
+        # Depending on the return_record param, return the document record or file content
+        if return_record:
+            return marshal(now_doc, NOW_APPLICATION_DOCUMENT)
         file_gen_resp = Response(
             stream_with_context(
                 docgen_resp.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)),

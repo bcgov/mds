@@ -48,7 +48,7 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText="Upload a copy of the security into the table below before sending the original to the Securities Team."
+          disclaimerText="Upload securities-related files here."
           categoriesToShow={["SDO"]}
         />
       </ScrollContentWrapper>
@@ -60,7 +60,7 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText="In this table, please add all transitory, internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
+          disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
@@ -70,7 +70,7 @@ export const NOWApplicationAdministrative = (props) => {
             exportedDocuments.includes(now_application_document_type_code)
           )}
           isViewMode
-          disclaimerText="In this table you can see all exported Notice of Work documents."
+          disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
           categoriesToShow={exportedDocuments}
           addDescriptionColumn={false}
         />

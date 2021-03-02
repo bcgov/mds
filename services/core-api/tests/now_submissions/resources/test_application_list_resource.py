@@ -60,6 +60,10 @@ NOW_APPLICATION_DATA = {
     "str",
     "archsitesaffected":
     "Yes",
+    "isonprivateland":
+    "Yes",
+    "hasltgovauthorization":
+    "Yes",
     "sandgravelquarryoperations":
     "str",
     "storeexplosivesonsite":
@@ -253,7 +257,7 @@ NOW_APPLICATION_DATA = {
     "messagecreateddate":
     "2020-02-27T19:14:23.368Z",
     "processed":
-    "s",
+    "Y",
     "processeddate":
     "2020-02-27T19:14:23.368Z",
     "cutlinesexplgriddisturbedarea":
@@ -426,7 +430,8 @@ NOW_APPLICATION_DATA = {
     "surface_bulk_sample_activity": [{
         "type": "str",
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "quantity": 0,
     }],
     "sand_grv_qry_activity": [{
         "type": "str",
@@ -660,7 +665,7 @@ class TestGetApplicationListResource:
         assert post_data['messageid'] == NOW_APPLICATION_DATA['messageid']
         assert post_data['application_guid'] is not None
         assert post_data['mine_guid'] == str(mine.mine_guid)
-        
+
     def test_post_now_application_messageid_in_use(self, test_client, db_session, auth_headers):
         """Should return a 400 messageid in use"""
 

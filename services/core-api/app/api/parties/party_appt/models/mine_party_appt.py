@@ -13,6 +13,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
@@ -54,7 +55,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if self.mine_party_appt_type_code == "EOR":
             self.mine_tailings_storage_facility_guid = related_guid
 
-        if self.mine_party_appt_type_code == "PMT":
+        if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             permit = Permit.find_by_permit_guid(related_guid)
             if not permit:
                 raise AssertionError(f'Permit with guid {related_guid} not found')
@@ -65,9 +66,16 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         if commit:
             if not (self.permit or self.permit_id or self.mine_guid or self.mine):
                 raise AssertionError("Must have a related permit or mine")
-            if self.mine_party_appt_type_code == "PMT" and (self.mine_guid
+
+            if self.mine_party_appt_type_code == 'PMT' and (self.mine_guid
                                                             or self.mine) is not None:
-                raise AssertionError("Permittees are not related to mines")
+                raise AssertionError("Contacts linked to a permit are not related to mines")
+
+            if self.mine_party_appt_type_code in [
+                    'THD', 'LDO', 'MOR'
+            ] and (self.mine_guid or self.mine) is not None and (self.permit_id
+                                                                 or self.permit) is not None:
+                raise AssertionError("Contacts linked to a permit are not related to mines")
 
         super(MinePartyAppointment, self).save(commit)
 
@@ -86,7 +94,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         related_guid = ""
         if self.mine_party_appt_type_code == "EOR":
             related_guid = str(self.mine_tailings_storage_facility_guid)
-        elif self.mine_party_appt_type_code == "PMT":
+        elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES and self.permit:
             related_guid = str(self.permit.permit_guid)
         result["related_guid"] = related_guid
         return result
@@ -145,14 +153,17 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                                   mine_party_appt_type_code=None,
                                   permit_id=None,
                                   mine_tailings_storage_facility_guid=None):
-        built_query = cls.query.filter_by(deleted_ind=False).filter_by(
-            mine_guid=mine_guid).filter_by(
-                mine_party_appt_type_code=mine_party_appt_type_code).filter_by(end_date=None)
+        built_query = cls.query.filter_by(deleted_ind=False, mine_guid=mine_guid, end_date=None)
         if permit_id:
             built_query = built_query.filter_by(permit_id=permit_id)
         if mine_tailings_storage_facility_guid:
             built_query = built_query.filter_by(
                 mine_tailings_storage_facility_guid=mine_tailings_storage_facility_guid)
+        if isinstance(mine_party_appt_type_code, list):
+            built_query = built_query.filter(
+                cls.mine_party_appt_type_code.in_(mine_party_appt_type_code))
+        else:
+            built_query = built_query.filter_by(mine_party_appt_type_code=mine_party_appt_type_code)
         return built_query.all()
 
     @classmethod
@@ -160,7 +171,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                include_permittees=False):
+                include_permittees=False,
+                active_only=True):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
             built_query = built_query.filter_by(mine_guid=mine_guid)
@@ -177,11 +189,14 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_permittees = []
             for mp in mine.mine_permit:
-                for pa in mp.permittee_appointments:
-                    if pa.end_date is None or (
-                        (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
-                            and pa.end_date >= datetime.utcnow().date()):
-                        permit_permittees.append(pa)
+                if not active_only:
+                    permit_permittees = permit_permittees + mp.permittee_appointments
+                else:
+                    for pa in mp.permittee_appointments:
+                        if pa.end_date is None or (
+                            (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
+                                and pa.end_date >= datetime.utcnow().date()):
+                            permit_permittees.append(pa)
             results = results + permit_permittees
         return results
 
@@ -212,7 +227,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             start_date=start_date,
             end_date=end_date,
             processed_by=processed_by)
-        if mine_party_appt_type_code == 'PMT':
+        if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES or permit:
             mpa.permit = permit
         if add_to_session:
             mpa.save(commit=False)

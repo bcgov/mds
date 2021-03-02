@@ -4,12 +4,14 @@ import { Table, Badge, Tooltip } from "antd";
 import { ImportOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
+import { Field } from "redux-form";
 import {
   downloadNowDocument,
   downloadFileFromDocumentManager,
 } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
+import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
@@ -19,6 +21,8 @@ const propTypes = {
   displayTableDescription: PropTypes.bool,
   hideImportStatusColumn: PropTypes.bool,
   hideJobStatusColumn: PropTypes.bool,
+  showPreambleFileMetadata: PropTypes.bool,
+  editPreambleFileMetadata: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -28,6 +32,8 @@ const defaultProps = {
   displayTableDescription: false,
   hideImportStatusColumn: false,
   hideJobStatusColumn: false,
+  showPreambleFileMetadata: false,
+  editPreambleFileMetadata: false,
 };
 
 const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_application_guid) =>
@@ -46,7 +52,8 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
           })
         : null;
     return {
-      key: document.mine_document_guid,
+      key: document.mine_document_guid ?? document.id,
+      now_application_document_xref_guid: document.now_application_document_xref_guid,
       now_application_guid,
       filename: document.filename || Strings.EMPTY_FIELD,
       url: document.documenturl,
@@ -87,6 +94,57 @@ export const NOWSubmissionDocuments = (props) => {
           </div>
         ),
       };
+
+  const fileMetadataColumns = [
+    {
+      title: "Title",
+      dataIndex: "preamble_title",
+      key: "preamble_title",
+      render: (text, record) => (
+        <div title="Title">
+          <Field
+            id={`${record.now_application_document_xref_guid}_preamble_title`}
+            name={`${record.now_application_document_xref_guid}_preamble_title`}
+            placeholder={(props.editPreambleFileMetadata && "Enter Title") || null}
+            component={renderConfig.FIELD}
+            disabled={!props.editPreambleFileMetadata}
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Author",
+      dataIndex: "preamble_author",
+      key: "preamble_author",
+      render: (text, record) => (
+        <div title="Author">
+          <Field
+            id={`${record.now_application_document_xref_guid}_preamble_author`}
+            name={`${record.now_application_document_xref_guid}_preamble_author`}
+            placeholder={(props.editPreambleFileMetadata && "Enter Author") || null}
+            component={renderConfig.FIELD}
+            disabled={!props.editPreambleFileMetadata}
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "preamble_date",
+      key: "preamble_date",
+      render: (text, record) => (
+        <div title="Date">
+          <Field
+            id={`${record.now_application_document_xref_guid}_preamble_date`}
+            name={`${record.now_application_document_xref_guid}_preamble_date`}
+            component={renderConfig.DATE}
+            placeholder={(props.editPreambleFileMetadata && "YYYY-MM-DD") || null}
+            disabled={!props.editPreambleFileMetadata}
+          />
+        </div>
+      ),
+    },
+  ];
 
   let otherColumns = [
     {
@@ -142,7 +200,12 @@ export const NOWSubmissionDocuments = (props) => {
     ];
   }
 
-  const columns = [fileNameColumn, ...otherColumns];
+  let columns = [fileNameColumn, ...otherColumns];
+
+  if (props.showPreambleFileMetadata) {
+    columns = [...fileMetadataColumns, ...columns];
+  }
+
   const dataSource = transformDocuments(
     props.documents,
     props.importNowSubmissionDocumentsJob,

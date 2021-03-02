@@ -42,6 +42,7 @@ app.get(`${BASE_PATH}/env`, (req, res) => {
     docManUrl: process.env.DOCUMENT_MANAGER_URL,
     matomoUrl: process.env.MATOMO_URL,
     firstNationsLayerUrl: process.env.FN_LAYER_URL,
+    filesystemProviderUrl: process.env.FILESYSTEM_PROVIDER_URL,
     keycloak_resource: process.env.KEYCLOAK_RESOURCE,
     keycloak_clientId: process.env.KEYCLOAK_CLIENT_ID,
     keycloak_url: process.env.KEYCLOAK_URL,

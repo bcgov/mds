@@ -9,8 +9,6 @@
 // 3. specify data in json format (it is prepopulated with NOW json)
 // 4. node .\renderReport.js
 
-console.log("Generating Report!!!");
-
 const fs = require("fs");
 const carbone = require("carbone");
 
@@ -137,7 +135,7 @@ const simpleRender = () => {
       explosive_permit_number: "0",
       explosive_permit_expiry_date: "2020-09-29",
     },
-    camps: {
+    camp: {
       camp_name: "Reflect practice nation.",
       camp_number_people: "268",
       camp_number_structures: "8",
@@ -354,10 +352,9 @@ const simpleRender = () => {
         "Provide second political happen situation with study those ten stock company interesting expert billion imagine avoid shoulder pretty goal research poor government front just down thousand allow throughout common successful thank professional certainly performance wrong eat center will responsibility.",
       handling_instructions:
         "Skill property start soon billion ball two pass population cover mission spend serve still American call executive office maintain often decision begin interesting especially arrive however consider radio itself together middle light moment common white scientist start boy different fight their contain day.",
-      drainage_mitigation_description:
+      spontaneous_combustion_handling:
         "Glass participant as peace political part vote week party tree remember social above act front him individual wife deep ask ground production remain move sure law loss feeling American space mean country the would myself tell senior computer myself dream upon early paper theory eye your road inside toward.",
       has_bedrock_excavation: false,
-      spontaneous_combustion_handling: "123123",
       details: [
         {
           activity_detail_id: 314,
@@ -437,7 +434,7 @@ const simpleRender = () => {
       },
     ],
     contacts: [],
-    security_adjustment: null,
+    liability_adjustment: null,
     security_received_date: null,
     last_updated_date: "2020-09-23",
     last_updated_by: "idir\\lumitche",

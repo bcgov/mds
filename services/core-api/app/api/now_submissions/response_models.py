@@ -99,6 +99,7 @@ SETTLING_POND = api.model(
 
 SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
     'type': fields.String,
+    'quantity': fields.Integer,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
 })
@@ -335,7 +336,8 @@ APPLICATION = api.model(
         'recreationuse': fields.String,
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
-        'isonprivateland': fields.String,
+        'hasarchaeologicalprotectionplan':fields.String,
+        'isonprivateland':fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
@@ -349,7 +351,6 @@ APPLICATION = api.model(
         'isaccessgated': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'bedrockexcavation': fields.String,
-        'spontaneouscombustionhandling': fields.String,
         'hassurfacedisturbanceoutsidetenure': fields.String,
         'proposedactivites': fields.String,
         'applicant': fields.Nested(CLIENT),

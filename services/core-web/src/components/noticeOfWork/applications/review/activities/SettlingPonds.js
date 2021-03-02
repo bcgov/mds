@@ -7,11 +7,12 @@ import CoreEditableTable from "@/components/common/CoreEditableTable";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import { NOWFieldOriginTooltip, NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const SettlingPonds = (props) => {
@@ -22,7 +23,15 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").edited
+              }
+            />
           </div>
           <Field
             id="wastewater_facility_description"
@@ -46,19 +55,19 @@ export const SettlingPonds = (props) => {
             validate: [required],
           },
           {
-            title: "Width(m)",
+            title: "Width (m)",
             value: "width",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Length(m)",
+            title: "Length (m)",
             value: "length",
             component: RenderField,
             validate: [number],
           },
           {
-            title: "Depth(m)",
+            title: "Depth (m)",
             value: "depth",
             component: RenderField,
             validate: [number],
@@ -70,7 +79,7 @@ export const SettlingPonds = (props) => {
             validate: [number],
           },
           {
-            title: "Merchantable timber volume (m3)",
+            title: "Merchantable timber volume (m³)",
             value: "timber_volume",
             component: RenderField,
             validate: [number],
@@ -92,7 +101,13 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.disposal_from_clean_out").value
+              }
+              isVisible={props.renderOriginalValues("settling_pond.disposal_from_clean_out").edited}
+            />
           </div>
           <Field
             id="disposal_from_clean_out"

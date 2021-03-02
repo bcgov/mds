@@ -3,8 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Divider, Collapse, Button } from "antd";
-import { formatDateTime } from "@common/utils/helpers";
-import { UndoOutlined } from "@ant-design/icons";
+import { formatDateTime, flattenObject } from "@common/utils/helpers";
+import { ReadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   getPermitConditionCategoryOptions,
@@ -22,9 +22,9 @@ import {
   setEditingConditionFlag,
   fetchDraftPermitByNOW,
 } from "@common/actionCreators/permitActionCreator";
-import { maxBy, concat } from "lodash";
+import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
-import Condition from "@/components/Forms/permits/conditions/Condition";
+import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
@@ -92,6 +92,20 @@ export class Conditions extends Component {
       },
       width: "50vw",
       content: modalConfig.DELETE_CONDITION_MODAL,
+    });
+  };
+
+  openViewConditionModal = (event, conditions, conditionCategory) => {
+    event.preventDefault();
+    return this.props.openModal({
+      props: {
+        title: conditionCategory,
+        closeModal: this.props.closeModal,
+        conditions,
+      },
+      width: "50vw",
+      isViewOnly: true,
+      content: modalConfig.VIEW_CONDITION_MODAL,
     });
   };
 
@@ -177,14 +191,38 @@ export class Conditions extends Component {
             return (
               <Collapse.Panel
                 style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
-                header={`${conditionCategory.step} ${conditionCategory.description} (${
-                  conditions.reduce((a, e) => concat(a, e.sub_conditions), []).length
-                } conditions)`}
+                header={
+                  <span>
+                    {`${conditionCategory.step} ${conditionCategory.description} (${
+                      Object.values(flattenObject({ conditions })).filter(
+                        (value) => value === "CON"
+                      ).length
+                    } conditions)`}
+                    <span onClick={(event) => event.stopPropagation()}>
+                      <Button
+                        ghost
+                        onClick={(event) =>
+                          this.openViewConditionModal(
+                            event,
+                            this.props.conditions.filter(
+                              (condition) =>
+                                condition.condition_category_code ===
+                                conditionCategory.condition_category_code
+                            ),
+                            conditionCategory.description
+                          )
+                        }
+                      >
+                        <ReadOutlined className="padding-sm--right icon-sm violet" />
+                      </Button>
+                    </span>
+                  </span>
+                }
                 key={conditionCategory.condition_category_code}
                 id={conditionCategory.condition_category_code}
               >
                 {conditions.map((condition) => (
-                  <Condition
+                  <ConditionLayerOne
                     condition={condition}
                     reorderConditions={this.reorderConditions}
                     handleSubmit={this.handleEdit}
@@ -204,14 +242,12 @@ export class Conditions extends Component {
                         : maxBy(conditions, "display_order").display_order + 1,
                     parent_permit_condition_id: null,
                     permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id,
+                    parent_condition_type_code: "SEC",
+                    sibling_condition_type_code:
+                      conditions.length === 0 ? null : conditions[0].condition_type_code,
                   }}
+                  layer={0}
                 />
-                {false && (
-                  <Button type="secondary" className="full-mobile btn--middle">
-                    <UndoOutlined className="padding-sm--right icon-sm" />
-                    Restore Deleted Standard Conditions
-                  </Button>
-                )}
               </Collapse.Panel>
             );
           })}

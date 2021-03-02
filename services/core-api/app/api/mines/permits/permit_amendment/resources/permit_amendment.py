@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
@@ -9,11 +11,17 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment import Permi
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import api, jwt
+from app.extensions import api, jwt, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
 from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 
 ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
 
@@ -56,7 +64,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
         'now_application_guid',
@@ -151,6 +159,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         permit_amendment_type_code = data.get('permit_amendment_type_code')
         permit_amendment_status_code = data.get('permit_amendment_status_code')
+
+        now_application_guid = data.get('now_application_guid')
+
         new_pa = PermitAmendment.create(
             permit,
             mine,
@@ -160,7 +171,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
             permit_amendment_type_code=permit_amendment_type_code
             if permit_amendment_type_code else 'AMD',
             description=data.get('description'),
-            security_adjustment=data.get('security_adjustment'),
+            liability_adjustment=data.get('liability_adjustment'),
             permit_amendment_status_code=permit_amendment_status_code
             if permit_amendment_status_code else 'ACT',
             issuing_inspector_title=data.get('issuing_inspector_title'),
@@ -176,6 +187,20 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 mine_guid=mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
+
+        if now_application_guid is not None and permit_amendment_status_code == "DFT":
+            application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+            if application_identity.now_application:
+                now_type = application_identity.now_application.notice_of_work_type_code
+
+                standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
+                    now_type)
+                for condition in standard_conditions:
+                    PermitConditions.create(condition.condition_category_code,
+                                            condition.condition_type_code,
+                                            new_pa.permit_amendment_id, condition.condition,
+                                            condition.display_order, condition.sub_conditions)
+                db.session.commit()
 
         new_pa.save()
         return new_pa
@@ -210,7 +235,7 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument(
         'security_received_date',
         location='json',
@@ -232,6 +257,24 @@ class PermitAmendmentResource(Resource, UserMixin):
         location='json',
         store_missing=False,
         help='The regional office for this permit.')
+    parser.add_argument(
+        'final_original_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each original file in the final application package.')
+    parser.add_argument(
+        'final_requested_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each requested file in the final application package.')
+    parser.add_argument(
+        'previous_amendment_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each file from the previous permit amendment.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
@@ -276,6 +319,48 @@ class PermitAmendmentResource(Resource, UserMixin):
             else:
                 setattr(permit_amendment, key, value)
 
+        # Update file metadata for the original final application package files.
+        final_original_documents_metadata = data.get('final_original_documents_metadata', {})
+        if final_original_documents_metadata:
+            for now_application_document_xref_guid, values in final_original_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentIdentityXref.find_by_guid(
+                    now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date')
+                doc.save()
+
+        # Update file metadata for the requested final application package files.
+        final_requested_documents_metadata = data.get('final_requested_documents_metadata', {})
+        if final_requested_documents_metadata:
+            for now_application_document_xref_guid, values in final_requested_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date')
+                doc.save()
+
+        # Update file metadata for the previous amendment files.
+        previous_amendment_documents_metadata = data.get('previous_amendment_documents_metadata',
+                                                         {})
+        if previous_amendment_documents_metadata:
+            for permit_amendment_document_guid, values in previous_amendment_documents_metadata.items(
+            ):
+                doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
+                    permit_amendment_document_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date')
+                doc.save()
+
         permit_amendment.save()
 
         return permit_amendment
@@ -297,5 +382,3 @@ class PermitAmendmentResource(Resource, UserMixin):
             permit_amendment.delete()
         except Exception as e:
             raise BadRequest(e)
-
-        return

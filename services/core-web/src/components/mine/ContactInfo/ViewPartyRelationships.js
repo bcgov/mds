@@ -190,6 +190,7 @@ export class ViewPartyRelationships extends Component {
           ({ mine_party_appt_type_code }) =>
             mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
         ),
+        minePermits: this.props.permits,
         mine,
       },
       content: modalConfig.EDIT_PARTY_RELATIONSHIP,
@@ -455,10 +456,7 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <AuthorizationWrapper
-              permission={Permission.EDIT_PARTIES}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
+            <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
               <Dropdown
                 className="full-height"
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}

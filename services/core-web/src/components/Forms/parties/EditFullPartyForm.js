@@ -223,7 +223,7 @@ export class EditFullPartyForm extends Component {
                       label="Postal Code"
                       placeholder="e.g xxxxxx"
                       component={renderConfig.FIELD}
-                      validate={[maxLength(6), postalCode]}
+                      validate={[maxLength(10), postalCode]}
                       normalize={upperCase}
                     />
                   </Form.Item>
@@ -297,7 +297,7 @@ export class EditFullPartyForm extends Component {
                 </Row>
               )) ||
                 (!isPerson && (
-                  <AuthorizationWrapper inTesting>
+                  <AuthorizationWrapper permission={Permission.ADMIN}>
                     <Row>
                       <Col span={24}>
                         <h5>OrgBook Entity</h5>

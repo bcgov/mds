@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Result, Popconfirm, Button } from "antd";
-import Condition from "@/components/Forms/permits/conditions/Condition";
+import { Result, Button } from "antd";
+import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
 
 const propTypes = {
   handleDelete: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   condition: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -28,19 +27,11 @@ export const DeleteConditionModal = (props) => {
         }`}
       />
       <br />
-      <Condition condition={props.condition} isViewOnly />
+      <ConditionLayerOne condition={props.condition} isViewOnly />
       <div className="right center-mobile">
-        <Popconfirm
-          placement="topRight"
-          title="Are you sure you want to cancel?"
-          onConfirm={props.closeModal}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button className="full-mobile" type="secondary">
-            Cancel
-          </Button>
-        </Popconfirm>
+        <Button className="full-mobile" type="secondary">
+          Cancel
+        </Button>
         <Button
           className="full-mobile"
           type="primary"

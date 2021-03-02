@@ -7,7 +7,6 @@ import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
 import { isEmpty } from "lodash";
@@ -63,6 +62,7 @@ const transformRowData = (applications) =>
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
     document:
       application.application_documents.length >= 1 ? application.application_documents[0] : {},
+    is_historic: application.is_historic,
   }));
 
 const pageTitle = (mineName, isMajorMine) => {
@@ -143,11 +143,11 @@ export class MineNoticeOfWorkTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
-              </Link>
-            </AuthorizationWrapper>
+            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary" disabled={record.is_historic}>
+                Open
+              </Button>
+            </Link>
           </div>
         ),
     },
