@@ -97,6 +97,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_access_gated = now_sub.isaccessgated == 'Yes'
     now_app.has_surface_disturbance_outside_tenure = now_sub.hassurfacedisturbanceoutsidetenure == 'Yes'
 
+    now_app.is_pre_launch = now_sub.is_pre_launch
+
     return
 
 
@@ -722,6 +724,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
             now_app.surface_bulk_sample.details.append(
                 app_models.SurfaceBulkSampleDetail(
                     disturbed_area=detail.disturbedarea,
+                    quantity=detail.quantity,
                     timber_volume=detail.timbervolume,
                     activity_type_description=detail.type))
 

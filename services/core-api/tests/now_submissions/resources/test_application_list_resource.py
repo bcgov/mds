@@ -430,7 +430,8 @@ NOW_APPLICATION_DATA = {
     "surface_bulk_sample_activity": [{
         "type": "str",
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "quantity": 0,
     }],
     "sand_grv_qry_activity": [{
         "type": "str",
