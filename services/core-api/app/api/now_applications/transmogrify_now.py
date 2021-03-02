@@ -441,16 +441,16 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
 def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     placerundergroundoperations = now_sub.placerundergroundoperations
     placerhandoperations = now_sub.placerhandoperations
-    placerreclamationarea = now_sub.placerreclamationarea
+    placertotaldistarea = now_sub.placertotaldistarea
     placerreclamation = mms_now_sub.placerreclamation or now_sub.placerreclamation
     placerreclamationcost = mms_now_sub.placerreclamationcost or now_sub.placerreclamationcost
     expaccesstotaldistarea = now_sub.expaccesstotaldistarea
     proposedproduction = now_sub.proposedproduction
-    if placerundergroundoperations or placerhandoperations or placerreclamationarea or placerreclamation or placerreclamationcost or proposedproduction:
+    if placerundergroundoperations or placerhandoperations or placertotaldistarea or placerreclamation or placerreclamationcost or proposedproduction:
         placer = app_models.PlacerOperation(
             reclamation_description=placerreclamation,
             reclamation_cost=placerreclamationcost,
-            total_disturbed_area=placerreclamationarea,
+            total_disturbed_area=placertotaldistarea,
             total_disturbed_area_unit_type_code='HA',
             is_underground=placerundergroundoperations == 'Yes',
             is_hand_operation=placerhandoperations == 'Yes',
