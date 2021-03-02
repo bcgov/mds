@@ -152,9 +152,7 @@
         "name": "${NAME}${SUFFIX}"
       },
       "spec": {
-        "accessModes": [
-          "ReadWriteOnce"
-        ],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "${VOLUME_CAPACITY}"
@@ -330,23 +328,17 @@
                 ],
                 "readinessProbe": {
                   "exec": {
-                    "command": [
-                      "/bin/bash",
-                      "-c",
-                      "pg_isready -h localhost -p 5432"
-                    ]
-                  },
-                  "preStop": {
-                    "exec": {
-                      "command": [
-                        "/bin/bash",
-                        "-c",
-                        "pg_ctl stop -D /var/lib/pgsql/data/userdata"
-                      ]
-                    }
+                    "command": ["/bin/bash", "-c", "pg_isready -h localhost -p 5432"]
                   },
                   "initialDelaySeconds": 5,
                   "timeoutSeconds": 1
+                },
+                "lifecycle": {
+                  "preStop": {
+                    "exec": {
+                      "command": ["/bin/bash", "-c", "pg_ctl stop -D /var/lib/pgsql/data/userdata"]
+                    }
+                  }
                 },
                 "resources": {
                   "requests": {
@@ -395,9 +387,7 @@
           {
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "postgresql"
-              ],
+              "containerNames": ["postgresql"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${IMAGE_STREAM_NAME}:${IMAGE_STREAM_VERSION}",
