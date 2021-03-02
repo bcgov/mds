@@ -185,7 +185,7 @@ class NOWSubmissionFactory(BaseFactory):
     trackingnumber = factory.fuzzy.FuzzyInteger(1, 100)
     status = factory.LazyFunction(lambda: random.choice(['Accepted', 'Withdrawn', 'Under Review']))
     submitteddate = factory.Faker('past_datetime')
-    receiveddate = factory.Faker('past_datetime')
+    receiveddate = factory.Faker('past_date')
     minenumber = factory.Faker('word')
     originating_system = factory.LazyFunction(randomNOWOriginatingSystem)
     typeofapplication = factory.LazyFunction(randomNOWApplicationType)
@@ -320,7 +320,7 @@ class NOWApplicationNDAFactory(BaseFactory):
     status = factory.LazyFunction(
         lambda: random.choice([x.description for x in NOWApplicationStatus.get_all()]))
     submitteddate = factory.Faker('past_datetime')
-    receiveddate = factory.Faker('past_datetime')
+    receiveddate = factory.Faker('past_date')
     minenumber = factory.SelfAttribute('mine.mine_no')
     originating_system = random.choice(['NROS', 'VFCBC'])
 

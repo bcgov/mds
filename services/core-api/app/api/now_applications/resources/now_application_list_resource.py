@@ -1,8 +1,9 @@
-from flask_restplus import Resource
+from flask_restplus import Resource, inputs
 from flask import request
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest
+from datetime import datetime
 
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
@@ -11,7 +12,7 @@ from app.api.now_applications.models.notice_of_work_view import NoticeOfWorkView
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 
@@ -27,6 +28,8 @@ class NOWApplicationListResource(Resource, UserMixin):
     parser.add_argument('notice_of_work_type_code', type=str, required=True)
     parser.add_argument('submitted_date', type=str, required=True)
     parser.add_argument('received_date', type=str, required=True)
+    parser.add_argument('import_timestamp_since', type=str)
+    parser.add_argument('update_timestamp_since', type=str)
 
     @api.doc(
         description='Get a list of Core Notice of Work applications. Order: received_date DESC',
@@ -40,9 +43,11 @@ class NOWApplicationListResource(Resource, UserMixin):
             'now_number': 'Number of the NoW',
             'mine_search': 'Substring to match against a NoW mine number or mine name',
             'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
-            'mine_guid': 'filter by a given mine guid'
+            'mine_guid': 'filter by a given mine guid',
+            'import_timestamp_since': 'Filter by applications created since this date.',
+            'update_timestamp_since': 'Filter by applications updated since this date.'
         })
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_VIEW_LIST, code=200)
     def get(self):
         records, pagination_details = self._apply_filters_and_pagination(
@@ -61,7 +66,13 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
-            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'])
+            submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'],
+            import_timestamp_since=request.args.get(
+                'import_timestamp_since',
+                type=lambda x: inputs.datetime_from_iso8601(x) if x else None),
+            update_timestamp_since=request.args.get(
+                'update_timestamp_since',
+                type=lambda x: inputs.datetime_from_iso8601(x) if x else None))
 
         data = records.all()
 
@@ -87,7 +98,10 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       mine_search=None,
                                       now_application_status_description=[],
                                       originating_system=[],
-                                      submissions_only=None):
+                                      submissions_only=None,
+                                      import_timestamp_since=None,
+                                      update_timestamp_since=None):
+
         filters = []
         base_query = NoticeOfWorkView.query
 
@@ -136,6 +150,12 @@ class NOWApplicationListResource(Resource, UserMixin):
                 NoticeOfWorkView.now_application_status_description.in_(
                     now_application_status_description))
 
+        if import_timestamp_since:
+            filters.append(NoticeOfWorkView.import_timestamp >= import_timestamp_since)
+
+        if update_timestamp_since:
+            filters.append(NoticeOfWorkView.update_timestamp >= update_timestamp_since)
+
         base_query = base_query.filter(*filters)
 
         if sort_field and sort_dir:
@@ -174,6 +194,6 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_application_status_code='REC',
             submitted_date=data['submitted_date'],
             received_date=data['received_date'])
-        new_now.originating_system = 'VFCBC'
+        new_now.originating_system = 'Core'
         new_now.save()
         return new_now, 201

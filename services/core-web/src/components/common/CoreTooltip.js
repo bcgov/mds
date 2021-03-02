@@ -28,7 +28,7 @@ export const CoreTooltip = (props) => (
 
 export const NOWFieldOriginTooltip = () => (
   <Tooltip
-    title="This field is not being sent by NROS or vFCBC. Open the original PDF to see the data."
+    title="This field was not being sent by NROS or vFCBC. Only applications pushed directly from vFCBC will have this value. Open the original PDF to see the data."
     placement="right"
     mouseEnterDelay={0.3}
   >
