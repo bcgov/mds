@@ -6,7 +6,7 @@ from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, NotFound, NotImplemented
 
 from app.extensions import api, db
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 
 from app.api.utils.include.user_info import User
 from app.api.utils.resources_mixins import UserMixin
@@ -28,7 +28,7 @@ class NOWApplicationResource(Resource, UserMixin):
         params={
             'original': 'Retrieve the original version of the application. Default: false',
         })
-    @requires_role_view_all
+    @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_APPLICATION_MODEL, code=200)
     def get(self, application_guid):
         original = request.args.get('original', False, type=bool)
