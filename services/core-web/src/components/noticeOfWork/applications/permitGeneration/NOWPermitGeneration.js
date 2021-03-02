@@ -75,11 +75,13 @@ const regionHash = {
 
 const getDocumentsMetadataInitialValues = (documents, guid_name) => {
   const initialValues = {};
-  documents?.map((doc) => {
-    initialValues[`${doc[guid_name]}_preamble_title`] = doc.preamble_title;
-    initialValues[`${doc[guid_name]}_preamble_author`] = doc.preamble_author;
-    initialValues[`${doc[guid_name]}_preamble_date`] = doc.preamble_date;
-  });
+  // eslint-disable-next-line no-unused-expressions
+  documents &&
+    documents.foreach((doc) => {
+      initialValues[`${doc[guid_name]}_preamble_title`] = doc.preamble_title;
+      initialValues[`${doc[guid_name]}_preamble_author`] = doc.preamble_author;
+      initialValues[`${doc[guid_name]}_preamble_date`] = doc.preamble_date;
+    });
   return initialValues;
 };
 
@@ -326,10 +328,12 @@ export class NOWPermitGeneration extends Component {
         const fieldIdParts = key.split(/_(.+)/);
         const guid = fieldIdParts[0];
         const fieldName = fieldIdParts[1];
-        if (!(guid in allFileMetadata)) {
-          allFileMetadata[guid] = {};
+        if (guid && guid !== "null") {
+          if (!(guid in allFileMetadata)) {
+            allFileMetadata[guid] = {};
+          }
+          allFileMetadata[guid][fieldName] = value;
         }
-        allFileMetadata[guid][fieldName] = value;
       }
       return allFileMetadata;
     };

@@ -6,6 +6,7 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 from .now_application_identity import NOWApplicationIdentity
 from app.api.now_submissions.models.document import Document
+from datetime import datetime
 
 
 class NoticeOfWorkView(Base):
@@ -32,6 +33,9 @@ class NoticeOfWorkView(Base):
     originating_system = db.Column(db.String)
 
     is_historic = db.Column(db.Boolean)
+
+    import_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    update_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     submission_documents = db.relationship(
         'Document',
