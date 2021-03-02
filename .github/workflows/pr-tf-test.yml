@@ -15,7 +15,7 @@ env:
   SERVICE_CONTEXT: services/core-web
 
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
-  TF_VERSION: 0.13.5
+  TF_VERSION: 0.14.7
   TG_VERSION: 0.26.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
@@ -88,7 +88,7 @@ jobs:
           TF_CLI_ARGS: -no-color
           app_image: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
         run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Get Terraform Plan Output
         id: plan
