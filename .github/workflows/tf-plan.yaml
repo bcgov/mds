@@ -40,7 +40,7 @@ jobs:
         env:
           TF_CLI_ARGS: -no-color
           app_image: ${{ env.IMAGE_ID }}:${{ github.event.workflow_run.head_sha }}
-        run: terragrunt plan-all --terragrunt-non-interactive | tee /tmp/tg_plan
+        run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
         continue-on-error: true
 
       - name: Get Terraform Plan Output
@@ -49,8 +49,8 @@ jobs:
         with:
           path: /tmp/tg_plan
 
-      - name: "Download artifact"
-        uses: actions/github-script@v3.1.0
+      - name: Download artifact
+        uses: actions/github-script@v3
         with:
           script: |
             var artifacts = await github.actions.listWorkflowRunArtifacts({
@@ -81,7 +81,7 @@ jobs:
           script: |
             var fs = require('fs');
             var issue_number = Number(fs.readFileSync('./NR'));
-            const plan =  `${{ steps.plan.outcome }}` == 'success' ? `${{ env.SUCCESS }}` : `${{ env.FAILURE }}`;
+            const plan =  `${{ steps.tg_plan.outcome }}` == 'success' ? `${{ env.SUCCESS }}` : `${{ env.FAILURE }}`;
             const output = `#### Terraform Plan: ${plan}
 
             <details>
