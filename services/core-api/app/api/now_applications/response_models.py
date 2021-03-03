@@ -474,6 +474,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'is_pre_launch': fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -560,6 +561,8 @@ NOW_VIEW_MODEL = api.model(
         'originating_system': fields.String,
         'application_documents': fields.List(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'import_timestamp': DateTime,
+        'update_timestamp': DateTime,
     })
 
 PAGINATED_LIST = api.model(

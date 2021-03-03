@@ -125,7 +125,7 @@ export const SandGravelQuarry = (props) => {
           <Field
             id="land_use_zoning"
             name="land_use_zoning"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>
@@ -182,7 +182,7 @@ export const SandGravelQuarry = (props) => {
           <Field
             id="community_plan"
             name="community_plan"
-            component={RenderField}
+            component={RenderAutoSizeField}
             disabled={props.isViewMode}
           />
         </Col>

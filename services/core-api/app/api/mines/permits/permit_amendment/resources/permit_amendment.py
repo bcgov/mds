@@ -321,34 +321,45 @@ class PermitAmendmentResource(Resource, UserMixin):
 
         # Update file metadata for the original final application package files.
         final_original_documents_metadata = data.get('final_original_documents_metadata', {})
-        for now_application_document_xref_guid, values in final_original_documents_metadata.items():
-            doc = NOWApplicationDocumentIdentityXref.find_by_guid(
-                now_application_document_xref_guid)
-            doc.preamble_title = values.get('preamble_title')
-            doc.preamble_author = values.get('preamble_author')
-            doc.preamble_date = values.get('preamble_date')
-            doc.save()
+        if final_original_documents_metadata:
+            for now_application_document_xref_guid, values in final_original_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentIdentityXref.find_by_guid(
+                    now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
 
         # Update file metadata for the requested final application package files.
         final_requested_documents_metadata = data.get('final_requested_documents_metadata', {})
-        for now_application_document_xref_guid, values in final_requested_documents_metadata.items(
-        ):
-            doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
-            doc.preamble_title = values.get('preamble_title')
-            doc.preamble_author = values.get('preamble_author')
-            doc.preamble_date = values.get('preamble_date')
-            doc.save()
+        if final_requested_documents_metadata:
+            for now_application_document_xref_guid, values in final_requested_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
 
         # Update file metadata for the previous amendment files.
         previous_amendment_documents_metadata = data.get('previous_amendment_documents_metadata',
                                                          {})
-        for permit_amendment_document_guid, values in previous_amendment_documents_metadata.items():
-            doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
-                permit_amendment_document_guid)
-            doc.preamble_title = values.get('preamble_title')
-            doc.preamble_author = values.get('preamble_author')
-            doc.preamble_date = values.get('preamble_date')
-            doc.save()
+        if previous_amendment_documents_metadata:
+            for permit_amendment_document_guid, values in previous_amendment_documents_metadata.items(
+            ):
+                doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
+                    permit_amendment_document_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
 
         permit_amendment.save()
 
