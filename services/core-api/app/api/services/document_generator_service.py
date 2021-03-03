@@ -35,7 +35,9 @@ class DocumentGeneratorService():
 
         # Create the document generation request body
         date_string = datetime.date.today().strftime("%Y-%m-%d")
-        document_name = f'{document_template.template_name_no_extension} {date_string}.pdf'
+        draft_string = " DRAFT" if 'is_draft' in template_data and template_data[
+            'is_draft'] == True else ""
+        document_name = f'{document_template.template_name_no_extension}{draft_string} {date_string}.pdf'
         data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': 'pdf'}}
 
         # Send the document generation request and return the response
