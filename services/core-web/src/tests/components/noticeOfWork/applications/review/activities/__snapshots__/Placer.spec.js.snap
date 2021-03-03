@@ -160,8 +160,8 @@ exports[`Placer renders properly 1`] = `
       <Field
         component={[Function]}
         disabled={true}
-        id="total_disturbed_area"
-        name="total_disturbed_area"
+        id="planned_reclamation"
+        name="planned_reclamation"
         validate={
           Array [
             [Function],
