@@ -123,6 +123,7 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
         'reclamation_area': fields.Fixed(decimals=2),
         'reclamation_unit_type_code': fields.String,
         'proposed_production': fields.String,
+        'planned_reclamation': fields.Fixed(decimals=2),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 

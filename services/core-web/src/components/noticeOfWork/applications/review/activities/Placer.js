@@ -127,14 +127,14 @@ export const Placer = (props) => {
             Total area of planned reclamation this year
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("placer_operation.total_disturbed_area").value
+                props.renderOriginalValues("placer_operation.planned_reclamation").value
               }
-              isVisible={props.renderOriginalValues("placer_operation.total_disturbed_area").edited}
+              isVisible={props.renderOriginalValues("placer_operation.planned_reclamation").edited}
             />
           </div>
           <Field
-            id="total_disturbed_area"
-            name="total_disturbed_area"
+            id="planned_reclamation"
+            name="planned_reclamation"
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
