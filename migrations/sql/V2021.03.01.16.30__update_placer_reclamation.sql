@@ -1,5 +1,3 @@
-ALTER TABLE placer_operation ADD COLUMN planned_reclamation numeric(14,2);
-
 UPDATE activity_summary
 SET total_disturbed_area = (
 SELECT now_submissions.application.placertotaldistarea
