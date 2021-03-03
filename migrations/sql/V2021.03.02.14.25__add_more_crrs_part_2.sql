@@ -41,7 +41,7 @@ UPDATE tmp_report_definition_compliance tmp_dr SET mrd_id = (
 -- Insert into xref
 INSERT INTO public.mine_report_definition_compliance_article_xref
 (mine_report_definition_id,compliance_article_id)
-select mrd_id, compliance_article_id FROM tmp_report_definition_compliance WHERE compliance_article_id IS NOT NULL;
+SELECT mrd_id, compliance_article_id FROM tmp_report_definition_compliance WHERE compliance_article_id IS NOT NULL;
 
 -- Tag documents
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Annual Summary of Placer Activities' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
