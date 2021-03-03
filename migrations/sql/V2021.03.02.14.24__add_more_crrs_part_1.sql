@@ -22,7 +22,8 @@ VALUES
 	('Annual Summary of Work and Reclamation Report', 'AVA', null, 'HSRCM', '10', '4', '4'),
 	('Notification To Start', 'AVA', null, 'HSRCM', '6', '2', '1'),
 	('Notification To Stop', 'AVA', null, 'HSRCM', '6', '2', '2'),
-	('Application for Security Release', 'AVA', null, 'HSRCM', '10', '6', '16')
+	('Application for Security Release', 'AVA', null, 'HSRCM', '10', '6', '16'),
+	('Multi-Year Area Based Permit Updates', 'PMT', null, 'HSRCM', '10', '4', '5')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.mine_report_definition

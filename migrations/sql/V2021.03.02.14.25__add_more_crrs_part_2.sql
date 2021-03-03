@@ -22,7 +22,8 @@ VALUES
 	('Annual Summary of Work and Reclamation Report', 'AVA', null, 'HSRCM', '10', '4', '4'),
 	('Notification To Start', 'AVA', null, 'HSRCM', '6', '2', '1'),
 	('Notification To Stop', 'AVA', null, 'HSRCM', '6', '2', '2'),
-	('Application for Security Release', 'AVA', null, 'HSRCM', '10', '6', '16')
+	('Application for Security Release', 'AVA', null, 'HSRCM', '10', '6', '16'),
+	('Multi-Year Area Based Permit Updates', 'PMT', null, 'HSRCM', '10', '4', '5')
 ON CONFLICT DO NOTHING;
 
 -- Look up compliance_article_id
@@ -58,5 +59,8 @@ INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_ca
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Application for Security Release' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Application for Security Release' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
 INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Application for Security Release' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Multi-Year Area Based Permit Updates' LIMIT 1), 'GTC') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Multi-Year Area Based Permit Updates' LIMIT 1), 'OTH') ON CONFLICT DO NOTHING;
+INSERT INTO mine_report_category_xref (mine_report_definition_id, mine_report_category) values ((SELECT x.mine_report_definition_id FROM mine_report_definition x WHERE report_name = 'Multi-Year Area Based Permit Updates' LIMIT 1), 'GSE') ON CONFLICT DO NOTHING;
 
 DROP TABLE IF EXISTS tmp_report_definition_compliance;
