@@ -100,7 +100,7 @@ export const Placer = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed Production
+            Proposed Production (m³/year)
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
@@ -124,7 +124,7 @@ export const Placer = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Total area of planned reclamation this year
+            Total area of planned reclamation this year (ha)
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("placer_operation.planned_reclamation").value
