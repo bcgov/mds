@@ -182,7 +182,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         activity_type.description,
                         'total':
                         now_application[activity_type.activity_type_code].get(
-                            'total_disturbed_area', EMPTY_FIELD),
+                            'calculated_total_disturbance', EMPTY_FIELD),
                         'cost':
                         format_currency(now_application[activity_type.activity_type_code].get(
                             'reclamation_cost', None))

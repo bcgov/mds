@@ -84,6 +84,7 @@ NOW_APPLICATION_CAMP = api.inherit(
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
         'volume_fuel_stored': fields.Fixed(decimals=2),
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -97,24 +98,28 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
     'NOWApplicationCutLines', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
+    {   'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
 
 NOW_APPLICATION_EXP_ACCESS = api.inherit(
     'NOWApplicationExplorationAccess', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'has_proposed_bridges_or_culverts': fields.Boolean,
         'bridge_culvert_crossing_description': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
 NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
     'NOWApplicationExpSurfaceDrill', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'reclamation_core_storage': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
     'NOWApplicationMechTrenching', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
+    {   'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
 
 NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
@@ -123,7 +128,8 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
         'reclamation_area': fields.Fixed(decimals=2),
         'reclamation_unit_type_code': fields.String,
         'proposed_production': fields.String,
-        'planned_reclamation': fields.Fixed(decimals=2),
+        'proposed_production_unit_type_code': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
@@ -159,6 +165,7 @@ NOW_APPLICATION_SAND_AND_GRAVEL = api.inherit(
         'dust_impact_plan': fields.String,
         'visual_impact_plan': fields.String,
         'reclamation_backfill_detail': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit('NOWApplicationCampDetail',
@@ -175,6 +182,7 @@ NOW_APPLICATION_SETTLING_POND = api.inherit(
         'is_ponds_discharged': fields.Boolean,
         'wastewater_facility_description': fields.String,
         'disposal_from_clean_out': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_SETTLING_POND_DETAIL, skip_none=True)),
     })
 
@@ -184,6 +192,7 @@ NOW_APPLICATION_SURFACE_BULK = api.inherit(
         'has_bedrock_excavation': fields.Boolean,
         'handling_instructions': fields.String,
         'drainage_mitigation_description': fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True)),
     })
 
@@ -204,6 +213,7 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         fields.String,
         'proposed_activity':
         fields.String,
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details':
         fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
     })
@@ -221,7 +231,8 @@ NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
 
 NOW_APPLICATION_WATER_SUPPLY = api.inherit(
     'NOWApplicationWaterSupply', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
+    {'calculated_total_disturbance': fields.Fixed(decimals=5),
+    'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
 
 NOW_APPLICATION_STATE_OF_LAND = api.model(
     'NOWStateOfLand', {

@@ -456,9 +456,8 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
             is_underground=placerundergroundoperations == 'Yes',
             is_hand_operation=placerhandoperations == 'Yes',
             proposed_production=proposedproduction,
-            proposed_production_unit_type_code='HA',
-            reclamation_area=placerreclamationarea,
-            reclamation_area_unit_type_code='MED')
+            reclamation_unit_type_code='HA',
+            reclamation_area=placerreclamationarea)
 
         if (len(mms_now_sub.proposed_placer_activity) > 0):
             proposed_placer_activity = mms_now_sub.proposed_placer_activity

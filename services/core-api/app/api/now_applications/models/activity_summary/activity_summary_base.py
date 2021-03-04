@@ -27,3 +27,8 @@ class ActivitySummaryBase(AuditMixin, Base):
         'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
+
+    @classmethod
+    def calculate_total_disturbance_area(cls, details):
+        total = sum(item.disturbed_area for item in details)
+        return total if total else 0

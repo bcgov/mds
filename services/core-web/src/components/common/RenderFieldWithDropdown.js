@@ -34,7 +34,7 @@ const defaultProps = {
 const selectAfter = (data, id, isDisabled, input) => {
   return (
     <Select
-      style={{ width: 80 }}
+      style={{ width: 150 }}
       disabled={isDisabled}
       defaultValue={input.value}
       value={input.value ? input.value : null}

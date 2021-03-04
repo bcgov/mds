@@ -105,7 +105,7 @@ export const Placer = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed Production (m³/year)
+            Proposed Production
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
@@ -114,11 +114,14 @@ export const Placer = (props) => {
               isVisible={props.renderOriginalValues("placer_operation.proposed_production").edited}
             />
           </div>
-          <Field
+          <Fields
+            names={["proposed_production", "proposed_production_unit_type_code"]}
             id="proposed_production"
-            name="proposed_production"
-            component={RenderField}
+            dropdownID="proposed_production_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
+            validate={[numberWithUnitCode]}
+            data={props.unitTypeOptions.filter(({ value }) => value === "MED" || value === "MEY")}
           />
         </Col>
       </Row>
@@ -129,28 +132,21 @@ export const Placer = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Total area of planned reclamation this year (ha)
+            Total area of planned reclamation this year
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("placer_operation.reclamation_area").value}
               isVisible={props.renderOriginalValues("placer_operation.reclamation_area").edited}
             />
           </div>
           <Fields
-            names={["reclamation_area", "reclamation_area_unit_type_code"]}
+            names={["reclamation_area", "reclamation_unit_type_code"]}
             id="reclamation_area"
-            dropdownID="reclamation_area_unit_type_code"
+            dropdownID="reclamation_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
             validate={[numberWithUnitCode]}
-            data={props.unitTypeOptions}
+            data={props.unitTypeOptions.filter(({ value }) => value === "HA")}
           />
-          {/* <Field
-            id="reclamation_area"
-            name="reclamation_area"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[number]}
-          /> */}
         </Col>
       </Row>
       <Row gutter={16}>

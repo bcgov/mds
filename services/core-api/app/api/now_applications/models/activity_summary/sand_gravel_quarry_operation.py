@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -59,6 +60,9 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
         secondary='activity_summary_detail_xref',
         load_on_pending=True)
 
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
 
 def __repr__(self):
     return '<SandGravelQuarryOperation %r>' % self.activity_id
