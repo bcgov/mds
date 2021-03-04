@@ -206,7 +206,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="placer_operation"
     >
-      <Placer
+      <Connect(Placer)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />

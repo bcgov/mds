@@ -125,11 +125,30 @@ exports[`Placer renders properly 1`] = `
           style={Object {}}
         />
       </div>
-      <Field
+      <Fields
         component={[Function]}
+        data={
+          Array [
+            Object {
+              "lable": "Meters cubed/day",
+              "value": "MED",
+            },
+          ]
+        }
         disabled={true}
+        dropdownID="proposed_production_unit_type_code"
         id="proposed_production"
-        name="proposed_production"
+        names={
+          Array [
+            "proposed_production",
+            "proposed_production_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
       />
     </Col>
   </Row>
@@ -157,11 +176,18 @@ exports[`Placer renders properly 1`] = `
           style={Object {}}
         />
       </div>
-      <Field
+      <Fields
         component={[Function]}
+        data={Array []}
         disabled={true}
-        id="planned_reclamation"
-        name="planned_reclamation"
+        dropdownID="reclamation_unit_type_code"
+        id="reclamation_area"
+        names={
+          Array [
+            "reclamation_area",
+            "reclamation_unit_type_code",
+          ]
+        }
         validate={
           Array [
             [Function],
