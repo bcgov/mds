@@ -1,5 +1,5 @@
 ALTER TABLE placer_operation ADD COLUMN proposed_production_unit_type_code varchar;
-ALTER TABLE ONLY placer_operation ADD CONSTRAINT proposed_production_unit_type_codefkey FOREIGN KEY (proposed_production_unit_type_code) REFERENCES unit_type(unit_type_code);
+ALTER TABLE ONLY placer_operation ADD CONSTRAINT proposed_production_unit_type_code_fkey FOREIGN KEY (proposed_production_unit_type_code) REFERENCES unit_type(unit_type_code);
 
 INSERT INTO unit_type
 (unit_type_code, short_description, description, active_ind, create_user, update_user)
