@@ -77,7 +77,7 @@ const getDocumentsMetadataInitialValues = (documents, guid_name) => {
   const initialValues = {};
   // eslint-disable-next-line no-unused-expressions
   !isEmpty(documents) &&
-    documents.map((doc) => {
+    documents.forEach((doc) => {
       initialValues[`${doc[guid_name]}_preamble_title`] = doc.preamble_title;
       initialValues[`${doc[guid_name]}_preamble_author`] = doc.preamble_author;
       initialValues[`${doc[guid_name]}_preamble_date`] = doc.preamble_date;
