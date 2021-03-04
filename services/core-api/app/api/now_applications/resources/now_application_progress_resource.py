@@ -86,7 +86,7 @@ class NOWApplicationProgressResource(Resource, UserMixin):
                 if progress.application_progress_status_code in ["REF", "CON", "PUB"]
             ]
 
-            if all([x is not None for x in progress_end_dates]):
+            if progress_end_dates and all([x is not None for x in progress_end_dates]):
                 identity.now_application.previous_application_status_code = identity.now_application.now_application_status_code
                 identity.now_application.now_application_status_code = "RCO"
                 identity.save()
