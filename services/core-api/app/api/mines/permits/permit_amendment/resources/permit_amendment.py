@@ -330,7 +330,7 @@ class PermitAmendmentResource(Resource, UserMixin):
                     continue
                 doc.preamble_title = values.get('preamble_title')
                 doc.preamble_author = values.get('preamble_author')
-                doc.preamble_date = values.get('preamble_date')
+                doc.preamble_date = values.get('preamble_date') or None
                 doc.save()
 
         # Update file metadata for the requested final application package files.
@@ -343,7 +343,7 @@ class PermitAmendmentResource(Resource, UserMixin):
                     continue
                 doc.preamble_title = values.get('preamble_title')
                 doc.preamble_author = values.get('preamble_author')
-                doc.preamble_date = values.get('preamble_date')
+                doc.preamble_date = values.get('preamble_date') or None
                 doc.save()
 
         # Update file metadata for the previous amendment files.
@@ -358,7 +358,7 @@ class PermitAmendmentResource(Resource, UserMixin):
                     continue
                 doc.preamble_title = values.get('preamble_title')
                 doc.preamble_author = values.get('preamble_author')
-                doc.preamble_date = values.get('preamble_date')
+                doc.preamble_date = values.get('preamble_date') or None
                 doc.save()
 
         permit_amendment.save()
