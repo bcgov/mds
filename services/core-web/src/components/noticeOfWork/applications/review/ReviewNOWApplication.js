@@ -278,6 +278,7 @@ export const ReviewNOWApplication = (props) => {
             adjustedTonnage={props.adjustedTonnage}
             proposedStartDate={props.proposedStartDate}
             proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
+            isPreLaunch={props.isPreLaunch}
           />
         </Col>
       </Row>
@@ -425,6 +426,7 @@ export const ReviewNOWApplication = (props) => {
             />
           </Col>
           <Col md={12} sm={24}>
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <div className="field-title">
               Current means of access
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
