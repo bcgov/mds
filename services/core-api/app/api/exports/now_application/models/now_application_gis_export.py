@@ -9,21 +9,28 @@ class NowApplicationGisExport(Base):
     __tablename__ = 'now_application_gis_export_view'
 
     # TODO: Specify additional params (e.g., nullable) and proper data types
+    # Notice of Work General
     now_application_guid = db.Column(db.String, nullable=False) 
     now_number = db.Column(db.String, nullable=False)
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    now_application_type_description = db.Column(db.String)
     now_application_type_code = db.Column(db.String)
+    now_application_type_description = db.Column(db.String)
     now_application_submitted_date = db.Column(db.String)
     property_name = db.Column(db.String)
+    latitude = db.Column(db.String)
+    longitude = db.Column(db.String)
 
+    # Notice of Work Details
     is_applicant_individual_or_company = db.Column(db.String)
     relationship_to_applicant = db.Column(db.String)
     description_of_land = db.Column(db.String)
+    term_of_application = db.Column(db.String)
     proposed_start_date = db.Column(db.String)
     proposed_end_date = db.Column(db.String)
+    proposed_annual_maximum_tonnage = db.Column(db.String)
+    adjusted_annual_maximum_tonnage = db.Column(db.String)
     directions_to_site = db.Column(db.String)
     is_access_gated = db.Column(db.String)
     has_key_for_inspector = db.Column(db.String)
