@@ -96,7 +96,6 @@ class NowApplicationGisExport(Base):
     bond_status_codes = db.Column(db.String)
     bond_status_code_descriptions = db.Column(db.String)
 
-    # TODO: Use CSV library?
     def csv_row(self):
         model = inspect(self.__class__)
-        return [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]
+        return [str(getattr(self, c.name) or "") for c in model.columns]
