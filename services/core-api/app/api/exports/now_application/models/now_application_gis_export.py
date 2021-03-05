@@ -9,7 +9,7 @@ class NowApplicationGisExport(Base):
     __tablename__ = 'now_application_gis_export_view'
 
     # TODO: Specify additional params (e.g., nullable) and proper data types
-    now_application_guid = db.Column(db.String, nullable=False) 
+    now_application_guid = db.Column(db.String, nullable=False)
     now_number = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
@@ -94,5 +94,4 @@ class NowApplicationGisExport(Base):
     # TODO: Use CSV library?
     def csv_row(self):
         model = inspect(self.__class__)
-        return "\"" + '" = db.Column(db.String)"'.join(
-        [str(getattr(self = db.Column(db.String) c.name) or "").rstrip(' = db.Column(db.String)') for c in model.columns]) + "\""
+        return [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]
