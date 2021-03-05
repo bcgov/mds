@@ -19,8 +19,8 @@ class NowApplicationGisExport(Base):
     now_application_type_description = db.Column(db.String)
     now_application_submitted_date = db.Column(db.String)
     property_name = db.Column(db.String)
-    latitude = db.Column(db.String)
-    longitude = db.Column(db.String)
+    now_latitude = db.Column(db.String)
+    now_longitude = db.Column(db.String)
 
     # Notice of Work Details
     is_applicant_individual_or_company = db.Column(db.String)
