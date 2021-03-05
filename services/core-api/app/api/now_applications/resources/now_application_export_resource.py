@@ -74,7 +74,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'water_supply.reclamation_cost'
 ]
 
-UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code', 'proposed_production_unit_type_code', 'reclamation_unit_type_code']
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code', 'proposed_production_unit_type_code', 'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code', 'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code', 'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code', 'total_waste_unit_type_code']
+MONEY_FIELDS = ['reclamation_cost']
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
@@ -248,6 +249,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 elif isinstance(obj[key], list):
                     for item in obj[key]:
                         transform_data(item)
+                elif key in MONEY_FIELDS: 
+                    format_currency(obj[key])
             return obj
 
         def remove_signature(party):
