@@ -10,7 +10,7 @@ class NowApplicationGisExport(Base):
 
     # TODO: Specify additional params (e.g., nullable) and proper data types
     # Notice of Work General
-    now_application_guid = db.Column(db.String, nullable=False) 
+    now_application_guid = db.Column(db.String, primary_key=True)
     now_number = db.Column(db.String, nullable=False)
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)

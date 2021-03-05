@@ -11,12 +11,13 @@ from app.api.utils.access_decorators import requires_role_view_all
 from app.api.constants import NOW_APPLICATION_GIS_EXPORT, TIMEOUT_60_MINUTES
 
 
-class NowApplicationGISExportResource(Resource):
+class NowApplicationGisExportResource(Resource):
     # TODO: Write description
     @api.doc(description='')
-    @requires_role_view_all
+    # @requires_role_view_all
     def get(self):
         csv_string = cache.get(NOW_APPLICATION_GIS_EXPORT)
+        csv_string = None
         if not csv_string:
             model = inspect(NowApplicationGisExport)
             si = StringIO()
