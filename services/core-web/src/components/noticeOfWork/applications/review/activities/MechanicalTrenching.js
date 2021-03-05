@@ -4,6 +4,7 @@ import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import { maxLength, number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
+import { currencyMask } from "@common/utils/helpers";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
@@ -89,6 +90,7 @@ export const MechanicalTrenching = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

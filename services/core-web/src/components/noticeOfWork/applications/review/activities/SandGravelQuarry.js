@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, numberWithUnitCode, required } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderField from "@/components/common/RenderField";
@@ -318,6 +319,7 @@ export const SandGravelQuarry = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

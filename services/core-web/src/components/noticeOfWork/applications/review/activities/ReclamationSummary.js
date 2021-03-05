@@ -1,5 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
+import { formatMoney } from "@common/utils/helpers";
 import { Table } from "antd";
 
 const propTypes = {
@@ -24,7 +25,7 @@ export const ReclamationSummary = (props) => {
       title: "Estimated Cost of Reclamation",
       dataIndex: "cost",
       key: "cost",
-      render: (text) => <div title="Estimated Cost of Reclamation">{text}</div>,
+      render: (text) => <div title="Estimated Cost of Reclamation">{formatMoney(text)}</div>,
     },
   ];
 

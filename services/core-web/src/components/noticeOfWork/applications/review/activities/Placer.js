@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required, numberWithUnitCode } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -184,6 +185,7 @@ export const Placer = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

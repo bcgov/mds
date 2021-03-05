@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { Field, getFormValues } from "redux-form";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, requiredRadioButton, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -161,6 +162,7 @@ export const Camps = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

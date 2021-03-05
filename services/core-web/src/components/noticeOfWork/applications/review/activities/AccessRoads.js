@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required } from "@common/utils/Validate";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import RenderField from "@/components/common/RenderField";
@@ -138,6 +139,7 @@ export const AccessRoads = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>
