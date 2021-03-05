@@ -8,10 +8,12 @@ AS SELECT
     na.now_application_status_code AS now_application_status_code,
     nas.description AS now_application_status_description,
     na.type_of_application AS type_of_application,
-    nat.description AS now_application_type_description,
     na.notice_of_work_type_code AS now_application_type_code,
+    nat.description AS now_application_type_description,
     na.submitted_date AS now_application_submitted_date,
     na.property_name AS property_name,
+    na.latitude::varchar AS now_latitude,
+    na.longitude::varchar AS now_longitude,
 
     -- Notice of Work Details
     na.is_applicant_individual_or_company::varchar AS is_applicant_individual_or_company,
@@ -155,10 +157,12 @@ AS SELECT
     na.now_application_status_code,
     now_application_status_description,
     type_of_application,
-    now_application_type_description,
     now_application_type_code,
+    now_application_type_description,
     now_application_submitted_date,
     property_name,
+    now_latitude,
+    now_longitude,
     
     -- Notice of Work Details
     is_applicant_individual_or_company,
