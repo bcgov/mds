@@ -11,11 +11,12 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
-  campFormValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  campFormValues: PropTypes.objectOf(CustomPropTypes.camps).isRequired,
 };
 
 export const Camps = (props) => {
