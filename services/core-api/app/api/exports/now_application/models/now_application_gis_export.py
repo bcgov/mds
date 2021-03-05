@@ -92,5 +92,4 @@ class NowApplicationGisExport(Base):
     # TODO: Use CSV library?
     def csv_row(self):
         model = inspect(self.__class__)
-        return "\"" + '" = db.Column(db.String)"'.join(
-        [str(getattr(self = db.Column(db.String) c.name) or "").rstrip(' = db.Column(db.String)') for c in model.columns]) + "\""
+        return [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]
