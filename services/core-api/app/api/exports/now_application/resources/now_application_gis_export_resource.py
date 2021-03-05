@@ -7,14 +7,14 @@ from sqlalchemy.inspection import inspect
 from ..models.now_application_gis_export import NowApplicationGisExport
 
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_view_all
+from app.api.utils.access_decorators import VIEW_ALL, GIS, requires_any_of
 from app.api.constants import NOW_APPLICATION_GIS_EXPORT, TIMEOUT_60_MINUTES
 
 
 class NowApplicationGisExportResource(Resource):
     # TODO: Write description
     @api.doc(description='')
-    # @requires_role_view_all
+    @requires_any_of([VIEW_ALL, GIS])
     def get(self):
         csv_string = cache.get(NOW_APPLICATION_GIS_EXPORT)
         csv_string = None
