@@ -37,7 +37,9 @@ export const getNOWReclamationSummary = createSelector(
             cost: noticeOfWork[value].reclamation_cost
               ? noticeOfWork[value].reclamation_cost
               : "0.00",
-            originalTotal: noticeOfWork[value].total_disturbed_area ? noticeOfWork[value].total_disturbed_area : "N/A",
+            originalTotal: noticeOfWork[value].total_disturbed_area
+              ? noticeOfWork[value].total_disturbed_area
+              : "N/A",
           });
         }
       });
