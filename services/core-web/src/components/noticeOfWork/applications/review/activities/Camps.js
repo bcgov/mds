@@ -1,6 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { connect } from "react-redux";
+import { Field, getFormValues } from "redux-form";
 import { Row, Col } from "antd";
 import { maxLength, number, requiredRadioButton, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
@@ -8,13 +9,16 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  campFormValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const Camps = (props) => {
+  const hasFuel = props.campFormValues.has_fuel_stored;
   return (
     <div>
       <CoreEditableTable
@@ -75,7 +79,7 @@ export const Camps = (props) => {
             name="volume_fuel_stored"
             component={RenderField}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={hasFuel ? [number, required] : [number]}
           />
         </Col>
       </Row>
@@ -98,7 +102,7 @@ export const Camps = (props) => {
               name="has_fuel_stored_in_bulk"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[requiredRadioButton]}
+              validate={hasFuel ? [requiredRadioButton] : []}
             />
           </Col>
           <Col md={12} sm={24}>
@@ -119,7 +123,7 @@ export const Camps = (props) => {
               name="has_fuel_stored_in_barrels"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
-              validate={[requiredRadioButton]}
+              validate={hasFuel ? [requiredRadioButton] : []}
             />
           </Col>
         </Col>
@@ -166,4 +170,9 @@ export const Camps = (props) => {
 
 Camps.propTypes = propTypes;
 
-export default Camps;
+export default connect(
+  (state) => ({
+    campFormValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state).camp || {},
+  }),
+  null
+)(Camps);
