@@ -41,6 +41,7 @@ AS SELECT
     nap_ref.end_date AS now_progress_referral_end_date,
 
     -- Permit
+    -- TODO: Do we need to determine and provide "permit approved date" and "permit expiry date"?
     p.permit_guid::varchar AS permit_guid,
     p.permit_no AS permit_no,
     p.permit_status_code AS permit_status_code,
