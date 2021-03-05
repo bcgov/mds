@@ -34,7 +34,6 @@ AS SELECT
     pt.first_name AS permittee_first_name,
     pt.party_name AS permittee_name,
     pt.party_guid AS permittee_party_guid,
-    
 
     -- Mine General
     m.mine_guid::varchar AS mine_guid,
@@ -108,10 +107,9 @@ AS SELECT
     LEFT JOIN mine_disturbance_code mdc ON mtdx.mine_disturbance_code::text = mdc.mine_disturbance_code::text
     LEFT JOIN mine_commodity_code mcc ON mtdx.mine_commodity_code::text = mcc.mine_commodity_code::TEXT
     
-    -- TODO: Do we need to consider any other deleted indicators?
     WHERE m.deleted_ind = false
-    and now_number is not null
-    and nai.now_application_id is not null
+    AND now_number IS NOT NULL
+    AND nai.now_application_id IS NOT NULL
     
     GROUP BY
     -- Notice of Work General

@@ -10,7 +10,7 @@ class NowApplicationGisExport(Base):
 
     # TODO: Specify additional params (e.g., nullable) and proper data types
     now_application_guid = db.Column(db.String, nullable=False) 
-    now_number = db.Column(db.String)
+    now_number = db.Column(db.String, nullable=False)
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
     type_of_application = db.Column(db.String)
@@ -29,6 +29,7 @@ class NowApplicationGisExport(Base):
     has_key_for_inspector = db.Column(db.String)
 
     # Notice of Work Progress
+    # TODO: Are we removing these?
     now_progress_consultation_start_date = db.Column(db.String)
     now_progress_consultation_end_date = db.Column(db.String)
     now_progress_public_comment_start_date = db.Column(db.String)
@@ -46,8 +47,6 @@ class NowApplicationGisExport(Base):
     permit_status_code = db.Column(db.String)
     permit_status_code_description = db.Column(db.String)
     permit_issue_date = db.Column(db.String)
-
-    # Permittee Address?
 
     # Permittee
     permittee_first_name = db.Column(db.String)
