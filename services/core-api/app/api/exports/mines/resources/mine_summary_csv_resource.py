@@ -1,5 +1,5 @@
 import csv
-import StringIO
+from io import StringIO
 from flask import Response, current_app
 from flask_restplus import Resource
 from sqlalchemy.inspection import inspect
@@ -18,20 +18,14 @@ class MineSummaryCSVResource(Resource):
     )
     @requires_role_view_all
     def get(self):
-
         csv_string = cache.get(MINE_DETAILS_CSV)
         if not csv_string:
-
             model = inspect(MineSummaryView)
-
-            si = StringIO.StringIO()
+            si = StringIO()
             cw = csv.writer(si)
-
             cw.writerow([c.name or "" for c in model.columns])
-
             rows = MineSummaryView.query.all()
-            cw.writeRows([r.csv_row() for r in rows])
-
+            cw.writerows([r.csv_row() for r in rows])
+            csv_string = si.getvalue()
             cache.set(MINE_DETAILS_CSV, csv_string, timeout=TIMEOUT_60_MINUTES)
-
         return Response(csv_string, mimetype='text/csv')
