@@ -81,7 +81,7 @@ AS SELECT
     LEFT JOIN mine_region_code mrc on m.mine_region = mrc.mine_region_code
     LEFT JOIN now_application na on nai.now_application_id = na.now_application_id
     LEFT JOIN now_application_status nas ON na.now_application_status_code = nas.now_application_status_code
-    LEFT JOIN notice_of_work_type nat ON na.now_application_status_code = nat.notice_of_work_type_code
+    LEFT JOIN notice_of_work_type nat ON na.notice_of_work_type_code = nat.notice_of_work_type_code
     LEFT JOIN permit_amendment pa on nai.now_application_guid = pa.now_application_guid
     LEFT JOIN permit p ON pa.permit_id = p.permit_id
     LEFT JOIN permit_status_code psc ON p.permit_status_code = psc.permit_status_code
