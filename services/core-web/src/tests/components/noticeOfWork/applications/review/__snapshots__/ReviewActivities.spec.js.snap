@@ -49,7 +49,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="camp"
     >
-      <Camps
+      <Connect(Camps)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />

@@ -10,6 +10,9 @@ const setupReducerProps = () => {
   reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.camp;
   reducerProps.editRecord = jest.fn();
   reducerProps.addRecord = jest.fn();
+  reducerProps.campFormValues = {
+    has_fuel_stored: false,
+  };
   reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
 };
 

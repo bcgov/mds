@@ -131,11 +131,7 @@ exports[`Camps renders properly 1`] = `
             </span>
           }
           name="has_fuel_stored_in_bulk"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
+          validate={Array []}
         />
       </Col>
       <Col
@@ -161,11 +157,7 @@ exports[`Camps renders properly 1`] = `
             </span>
           }
           name="has_fuel_stored_in_barrels"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
+          validate={Array []}
         />
       </Col>
     </Col>
