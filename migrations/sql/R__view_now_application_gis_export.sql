@@ -23,6 +23,18 @@ AS SELECT
     na.is_access_gated::varchar AS is_access_gated,
     na.has_key_for_inspector::varchar AS has_key_for_inspector,
 
+    -- Notice of Work Progress
+    nap_con.start_date AS now_progress_consultation_start_date,
+    nap_con.end_date AS now_progress_consultation_end_date,
+    nap_pub.start_date AS now_progress_public_comment_start_date,
+    nap_pub.end_date AS now_progress_public_comment_end_date,
+    nap_dft.start_date AS now_progress_draft_start_date,
+    nap_dft.end_date AS now_progress_draft_end_date,
+    nap_rev.start_date AS now_progress_review_start_date,
+    nap_rev.end_date AS now_progress_review_end_date,
+    nap_ref.start_date AS now_progress_referral_start_date,
+    nap_ref.end_date AS now_progress_referral_end_date,
+
     -- Permit
     p.permit_guid::varchar AS permit_guid,
     p.permit_no AS permit_no,
@@ -96,9 +108,34 @@ AS SELECT
             mine_status.mine_status_xref_guid,
             mine_status.effective_date
         FROM mine_status
-        ORDER BY mine_status.mine_guid, mine_status.effective_date DESC) ms ON m.mine_guid = ms.mine_guid
+        ORDER BY mine_status.mine_guid, mine_status.effective_date DESC
+    ) ms ON m.mine_guid = ms.mine_guid
     LEFT JOIN mine_status_xref msx ON ms.mine_status_xref_guid = msx.mine_status_xref_guid    
-    
+    LEFT JOIN (
+        SELECT now_application_id, start_date, end_date
+        FROM now_application_progress
+        WHERE application_progress_status_code = 'CON'
+    ) nap_con ON nap_con.now_application_id = nai.now_application_id
+    LEFT JOIN (
+        SELECT now_application_id, start_date, end_date
+        FROM now_application_progress
+        WHERE application_progress_status_code = 'PUB'
+    ) nap_pub ON nap_pub.now_application_id = nai.now_application_id
+    LEFT JOIN (
+        SELECT now_application_id, start_date, end_date
+        FROM now_application_progress
+        WHERE application_progress_status_code = 'DFT'
+    ) nap_dft ON nap_dft.now_application_id = nai.now_application_id
+    LEFT JOIN (
+        SELECT now_application_id, start_date, end_date
+        FROM now_application_progress
+        WHERE application_progress_status_code = 'REV'
+    ) nap_rev ON nap_rev.now_application_id = nai.now_application_id
+    LEFT JOIN (
+        SELECT now_application_id, start_date, end_date
+        FROM now_application_progress
+        WHERE application_progress_status_code = 'REF'
+    ) nap_ref ON nap_ref.now_application_id = nai.now_application_id
     LEFT JOIN mine_operation_status_code mos ON msx.mine_operation_status_code::text = mos.mine_operation_status_code::text
     LEFT JOIN mine_operation_status_reason_code mosr ON msx.mine_operation_status_reason_code::text = mosr.mine_operation_status_reason_code::text
     LEFT JOIN mine_operation_status_sub_reason_code mossr ON msx.mine_operation_status_sub_reason_code::text = mossr.mine_operation_status_sub_reason_code::text
@@ -132,6 +169,18 @@ AS SELECT
     directions_to_site,
     is_access_gated,
     has_key_for_inspector,
+
+    -- Notice of Work Progress
+    now_progress_consultation_start_date,
+    now_progress_consultation_end_date,
+    now_progress_public_comment_start_date,
+    now_progress_public_comment_end_date,
+    now_progress_draft_start_date,
+    now_progress_draft_end_date,
+    now_progress_review_start_date,
+    now_progress_review_end_date,
+    now_progress_referral_start_date,
+    now_progress_referral_end_date,
 
     -- Permit
     permit_guid,

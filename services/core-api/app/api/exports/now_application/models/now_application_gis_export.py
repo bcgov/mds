@@ -29,7 +29,6 @@ class NowApplicationGisExport(Base):
     has_key_for_inspector = db.Column(db.String)
 
     # Notice of Work Progress
-    # TODO: Are we removing these?
     now_progress_consultation_start_date = db.Column(db.String)
     now_progress_consultation_end_date = db.Column(db.String)
     now_progress_public_comment_start_date = db.Column(db.String)
