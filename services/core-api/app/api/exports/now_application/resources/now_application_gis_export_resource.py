@@ -17,7 +17,6 @@ class NowApplicationGisExportResource(Resource):
     @requires_any_of([VIEW_ALL, GIS])
     def get(self):
         csv_string = cache.get(NOW_APPLICATION_GIS_EXPORT)
-        csv_string = None
         if not csv_string:
             model = inspect(NowApplicationGisExport)
             si = StringIO()
