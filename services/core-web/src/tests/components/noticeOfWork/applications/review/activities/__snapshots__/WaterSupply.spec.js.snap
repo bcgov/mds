@@ -112,10 +112,15 @@ exports[`WaterSupply renders properly 1`] = `
         />
       </div>
       <Field
+        autoComplete="off"
         component={[Function]}
         disabled={true}
+        format={[Function]}
         id="reclamation_cost"
         name="reclamation_cost"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
         validate={
           Array [
             [Function],
