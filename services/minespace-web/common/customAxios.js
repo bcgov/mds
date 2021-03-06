@@ -11,7 +11,7 @@ const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
 const formatErrorMessage = (errorMessage) => {
-  errorMessage = errorMessage.replace("(psycopg2.", "Database Error: ");
+  errorMessage = errorMessage.replace("(psycopg2.", "(DatabaseError.");
   return errorMessage;
 };
 
