@@ -91,9 +91,7 @@
         }
       },
       "spec": {
-        "accessModes": [
-          "ReadWriteOnce"
-        ],
+        "accessModes": ["ReadWriteOnce"],
         "resources": {
           "requests": {
             "storage": "${METABASE_PVC_SIZE}"
@@ -158,9 +156,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "${NAME}"
-              ],
+              "containerNames": ["${NAME}"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME}:${VERSION}"
@@ -171,9 +167,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "${NAME_DATABASE}"
-              ],
+              "containerNames": ["${NAME_DATABASE}"],
               "from": {
                 "kind": "ImageStreamTag",
                 "name": "${NAME_DATABASE}:${VERSION}"
@@ -308,23 +302,17 @@
                 ],
                 "readinessProbe": {
                   "exec": {
-                    "command": [
-                      "/bin/bash",
-                      "-c",
-                      "pg_isready -h localhost -p 5432"
-                    ]
-                  },
-                  "preStop": {
-                    "exec": {
-                      "command": [
-                        "/bin/bash",
-                        "-c",
-                        "pg_ctl stop -D /var/lib/pgsql/data/userdata"
-                      ]
-                    }
+                    "command": ["/bin/bash", "-c", "pg_isready -h localhost -p 5432"]
                   },
                   "initialDelaySeconds": 20,
                   "timeoutSeconds": 15
+                },
+                "lifecycle": {
+                  "preStop": {
+                    "exec": {
+                      "command": ["/bin/bash", "-c", "pg_ctl stop -D /var/lib/pgsql/data/userdata"]
+                    }
+                  }
                 },
                 "livenessProbe": {
                   "initialDelaySeconds": 30,

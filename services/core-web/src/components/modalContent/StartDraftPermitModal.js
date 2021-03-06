@@ -43,6 +43,7 @@ const defaultProps = {
 
 export const StartDraftPermitModal = (props) => {
   const [currentStep, setStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreatePermit = (isExploration) => {
     const payload = {
@@ -50,12 +51,15 @@ export const StartDraftPermitModal = (props) => {
       is_exploration: isExploration,
       now_application_guid: props.noticeOfWork.now_application_guid,
     };
-    return props.createPermit(props.noticeOfWork.mine_guid, payload).then(() => {
-      props.startOrResumeProgress("DFT", "Start");
-      props.handleDraftPermit();
-      props.submit(FORM.PRE_DRAFT_PERMIT);
-      props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
-    });
+    return props
+      .createPermit(props.noticeOfWork.mine_guid, payload)
+      .then(() => {
+        props.startOrResumeProgress("DFT", "Start");
+        props.handleDraftPermit();
+        props.submit(FORM.PRE_DRAFT_PERMIT);
+        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+      })
+      .finally(() => setIsSubmitting(false));
   };
 
   const startDraftPermit = (isAmendment, permitPayload) => {
@@ -72,13 +76,15 @@ export const StartDraftPermitModal = (props) => {
           props.startOrResumeProgress("DFT", "Start");
           // submitting to clear the form after success
           props.submit(FORM.PRE_DRAFT_PERMIT);
-        });
+        })
+        .finally(() => setIsSubmitting(false));
     }
     const isExploration = permitPayload.is_exploration ?? false;
     return handleCreatePermit(isExploration);
   };
 
   const handleSubmit = (isAmendment) => {
+    setIsSubmitting(true);
     if (props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application) {
       const payload = {
         ...props.noticeOfWork,
@@ -90,9 +96,8 @@ export const StartDraftPermitModal = (props) => {
           props.noticeOfWork.now_application_guid,
           "Successfully Updated the Application Type."
         )
-        .then(() => {
-          startDraftPermit(isAmendment, props.preDraftFormValues);
-        });
+        .then(() => startDraftPermit(isAmendment, props.preDraftFormValues))
+        .catch(() => setIsSubmitting(false));
     }
     return startDraftPermit(isAmendment, props.preDraftFormValues);
   };
@@ -193,8 +198,9 @@ export const StartDraftPermitModal = (props) => {
           onConfirm={() => props.closeModal()}
           okText="Yes"
           cancelText="No"
+          disabled={isSubmitting}
         >
-          <Button className="full-mobile" type="secondary">
+          <Button className="full-mobile" type="secondary" disabled={isSubmitting}>
             Cancel
           </Button>
         </Popconfirm>
@@ -210,11 +216,15 @@ export const StartDraftPermitModal = (props) => {
         )}
         {currentStep === 1 && (
           <>
-            <Button className="full-mobile" type="tertiary" onClick={prev}>
+            <Button className="full-mobile" type="tertiary" onClick={prev} disabled={isSubmitting}>
               Back
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <Button type="primary" onClick={() => handleSubmit(isAmendment)}>
+              <Button
+                type="primary"
+                onClick={() => handleSubmit(isAmendment)}
+                loading={isSubmitting}
+              >
                 {props.title}
               </Button>
             </AuthorizationWrapper>
