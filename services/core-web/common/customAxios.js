@@ -10,6 +10,11 @@ promiseFinally.shim();
 const UNAUTHORIZED = 401;
 const MAINTENANCE = 503;
 
+const formatErrorMessage = (errorMessage) => {
+  errorMessage = errorMessage.replace("(psycopg2.", "Database Error: ");
+  return errorMessage;
+};
+
 const CustomAxios = ({ errorToastMessage } = {}) => {
   const instance = axios.create();
 
@@ -25,7 +30,7 @@ const CustomAxios = ({ errorToastMessage } = {}) => {
         window.location.reload(false);
       } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
         notification.error({
-          message: error?.response?.data?.message ?? String.ERROR,
+          message: formatErrorMessage(error?.response?.data?.message ?? String.ERROR),
           duration: 10,
         });
       } else if (errorToastMessage) {
