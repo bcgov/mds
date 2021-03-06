@@ -426,7 +426,6 @@ export const ReviewNOWApplication = (props) => {
             />
           </Col>
           <Col md={12} sm={24}>
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <div className="field-title">
               Current means of access
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
