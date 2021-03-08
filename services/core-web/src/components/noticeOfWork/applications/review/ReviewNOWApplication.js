@@ -278,6 +278,7 @@ export const ReviewNOWApplication = (props) => {
             adjustedTonnage={props.adjustedTonnage}
             proposedStartDate={props.proposedStartDate}
             proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
+            isPreLaunch={props.isPreLaunch}
           />
         </Col>
       </Row>

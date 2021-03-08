@@ -357,7 +357,7 @@ export const getDurationText = (startDate, endDate) => {
   const weeksText = getDurationTextOrDefault(weeks, "Week");
   const daysText = getDurationTextOrDefault(days, "Day");
 
-  return `${yearsText}${monthsText}${weeksText}${daysText}`;
+  return `${yearsText} ${monthsText} ${weeksText} ${daysText}`;
 };
 
 export const getDurationTextInDays = (duration) => {

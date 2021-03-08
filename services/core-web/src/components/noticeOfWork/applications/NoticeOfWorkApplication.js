@@ -512,9 +512,13 @@ export class NoticeOfWorkApplication extends Component {
   handleExportNowDocument = (documentTypeCode) => {
     const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
     this.setState({ exportingNow: true });
-    return this.exportNowDocument(documentType, this.props.noticeOfWork).finally(() =>
-      this.setState({ exportingNow: false })
-    );
+    return this.exportNowDocument(documentType, this.props.noticeOfWork)
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      })
+      .finally(() => this.setState({ exportingNow: false }));
   };
 
   exportNowDocument = (documentType) => {
