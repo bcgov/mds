@@ -16,7 +16,7 @@ env:
 
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
   TF_VERSION: 0.14.7
-  TG_VERSION: 0.26.7
+  TG_VERSION: 0.28.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
 
