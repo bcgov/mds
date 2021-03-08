@@ -10,8 +10,8 @@ env:
   SERVICE_CONTEXT: services/core-web
 
 jobs:
-  pr:
-    name: pr
+  outdated-pr:
+    name: outdated-pr
     runs-on: ubuntu-20.04
 
     steps:

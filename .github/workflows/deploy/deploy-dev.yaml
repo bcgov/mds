@@ -10,8 +10,8 @@ on:
 env:
   IMAGE_ID: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}/mds-frontend
 
-  TF_VERSION: 0.13.5
-  TG_VERSION: 0.26.7
+  TF_VERSION: 0.14.7
+  TG_VERSION: 0.28.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
 
