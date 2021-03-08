@@ -127,5 +127,6 @@ jobs:
       - name: Terragrunt Apply
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
+          AWS_ACCOUNTS_ECR_READ_ACCESS: ${{ secrets.AWS_ACCOUNTS_ECR_READ_ACCESS }}
           APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
         run: terragrunt apply-all --terragrunt-non-interactive
