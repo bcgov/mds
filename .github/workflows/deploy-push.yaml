@@ -3,7 +3,7 @@ name: Push
 on:
   push:
     paths:
-      - ".github/workflows/deploy/push.yaml"
+      - ".github/workflows/deploy-push.yaml"
       - "terraform/**"
       - "services/core-web/**"
       - "!**/README.md"
