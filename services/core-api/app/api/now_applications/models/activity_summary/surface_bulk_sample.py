@@ -26,5 +26,9 @@ class SurfaceBulkSample(ActivitySummaryBase):
     details = db.relationship(
         'SurfaceBulkSampleDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
 
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
+
     def __repr__(self):
         return '<SurfaceBulkSurface %r>' % self.activity_summary_id

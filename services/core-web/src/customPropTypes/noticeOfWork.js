@@ -43,11 +43,13 @@ export const camp = shape({
   has_fuel_stored: PropTypes.boolean,
   has_fuel_stored_in_bulk: PropTypes.boolean,
   has_fuel_stored_in_barrels: PropTypes.boolean,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
 const surfaceDrilling = shape({
   reclamation_core_storage: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -56,6 +58,7 @@ const placer = shape({
   is_hand_operation: PropTypes.boolean,
   reclamation_area: PropTypes.number,
   reclamation_unit_type_code: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -88,6 +91,7 @@ export const sandGravelQuarry = shape({
   dust_impact_plan: PropTypes.string,
   visual_impact_plan: PropTypes.string,
   reclamation_backfill_detail: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -96,6 +100,7 @@ export const settlingPond = shape({
   is_ponds_exfiltrated: PropTypes.boolean,
   is_ponds_recycled: PropTypes.boolean,
   is_ponds_discharged: PropTypes.boolean,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -103,6 +108,7 @@ export const surfaceBulkSamples = shape({
   processing_method_description: PropTypes.string,
   handling_instructions: PropTypes.string,
   drainage_mitigation_description: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -113,6 +119,7 @@ export const waterSupply = shape({
   estimate_rate: PropTypes.number,
   pump_size: PropTypes.number,
   intake_location: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
