@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
@@ -108,6 +109,7 @@ export const WaterSupply = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

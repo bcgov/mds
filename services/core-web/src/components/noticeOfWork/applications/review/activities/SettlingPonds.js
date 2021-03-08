@@ -2,6 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Field } from "redux-form";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import { requiredRadioButton, maxLength, number, required } from "@common/utils/Validate";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import RenderField from "@/components/common/RenderField";
@@ -220,6 +221,7 @@ export const SettlingPonds = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>
