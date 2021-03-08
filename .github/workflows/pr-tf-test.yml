@@ -88,7 +88,7 @@ jobs:
           TF_CLI_ARGS: -no-color
           app_image: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
         run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
-        continue-on-error: false
+        continue-on-error: true
 
       - name: Get Terraform Plan Output
         id: plan
@@ -96,14 +96,14 @@ jobs:
         with:
           path: /tmp/tg_plan
 
-      - name: "Download artifact"
-        uses: actions/github-script@v3.1.0
+      - name: Download artifact
+        uses: actions/github-script@v3
         with:
           script: |
             var artifacts = await github.actions.listWorkflowRunArtifacts({
                owner: context.repo.owner,
                repo: context.repo.repo,
-               run_id: ${{github.run_id }},
+               run_id: ${{github.run_id}},
             });
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
               return artifact.name == "pr"
