@@ -176,7 +176,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
         def get_reclamation_summary(now_application):
             summary = []
             activity_types = ActivityType.get_all()
-            for activity_type in activity_types:
+
+            reclamation_activity_types = (activity_type for activity_type in activity_types if activity_type.activity_type_code not in ['water_supply', 'blasting_operation'])
+            for activity_type in reclamation_activity_types:
                 if now_application.get(activity_type.activity_type_code):
                     summary.append({
                         'activity':
