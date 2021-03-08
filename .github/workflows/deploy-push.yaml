@@ -73,7 +73,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.head_sha }}
+          ref: ${{ github.sha }}
 
       - uses: hashicorp/setup-terraform@v1
         with:
@@ -89,7 +89,7 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           TF_CLI_ARGS: -no-color
-          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
+          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.sha }}
         run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
         continue-on-error: true
 
@@ -113,7 +113,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.head_sha }}
+          ref: ${{ github.sha }}
 
       - uses: hashicorp/setup-terraform@v1
         with:
@@ -128,5 +128,5 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           AWS_ACCOUNTS_ECR_READ_ACCESS: ${{ secrets.AWS_ACCOUNTS_ECR_READ_ACCESS }}
-          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
+          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.sha }}
         run: terragrunt apply-all --terragrunt-non-interactive
