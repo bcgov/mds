@@ -17,7 +17,7 @@ import {
 } from "@common/utils/helpers";
 import LinkButton from "@/components/common/LinkButton";
 import CustomPropTypes from "@/customPropTypes";
-import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { CoreTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
@@ -29,6 +29,7 @@ const propTypes = {
   proposedTonnage: PropTypes.number,
   proposedStartDate: PropTypes.string,
   proposedAuthorizationEndDate: PropTypes.string,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -292,6 +293,7 @@ export class ReviewApplicationFeeContent extends Component {
           />
           <div className="field-title">
             Proposed Annual Maximum Tonnage
+            {this.props.isPreLaunch && <NOWFieldOriginTooltip />}
             <CoreTooltip title="The proposed annual maximum tonnage as submitted in the application. This cannot be changed." />
           </div>
           <Field

@@ -500,7 +500,8 @@ VALUES
 	('MTR', 'm', 'Meters', true, 'system-mds', 'system-mds'),
   ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds'),
   ('MES', 'm³/s', 'Meters cubed/s', true, 'system-mds', 'system-mds'),
-  ('MED', 'm³/day', 'Meters cubed/day', true, 'system-mds', 'system-mds')
+  ('MED', 'm³/day', 'Meters cubed/day', true, 'system-mds', 'system-mds'),
+  ('MEY', 'm³/year', 'Meters cubed/year', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO notice_of_work_type
