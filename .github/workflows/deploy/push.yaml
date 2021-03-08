@@ -166,5 +166,5 @@ jobs:
       - name: Terragrunt Apply
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
-          app_image: ${{ env.IMAGE_ID }}:${{ github.head_sha }}
+          app_image: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
         run: terragrunt apply-all --terragrunt-non-interactive
