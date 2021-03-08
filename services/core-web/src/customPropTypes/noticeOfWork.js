@@ -120,7 +120,7 @@ export const waterSupply = shape({
   pump_size: PropTypes.number,
   intake_location: PropTypes.string,
   calculated_total_disturbance: PropTypes.number,
-  ...defaultActivity,
+  details: activityDetails,
 });
 
 export const statueOfLand = shape({
