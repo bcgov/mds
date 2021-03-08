@@ -181,7 +181,7 @@ export const ReviewActivities = (props) => {
         title="Placer Operations"
         data={props.noticeOfWork.placer_operation}
         showContent={renderActivities(props.noticeOfWorkType, "placer-operation")}
-        isViewMode={props.isViewMode}
+        git={props.isViewMode}
       >
         <FormSection name="placer_operation">
           <Placer
