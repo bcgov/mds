@@ -89,7 +89,7 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           TF_CLI_ARGS: -no-color
-          app_image: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
+          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.head_sha }}
         run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
         continue-on-error: true
 
