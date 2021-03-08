@@ -198,8 +198,8 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
+    git={true}
     id="placer-operation"
-    isViewMode={true}
     showContent={false}
     title="Placer Operations"
   >
@@ -227,7 +227,6 @@ exports[`ReviewActivities renders properly 1`] = `
     >
       <Connect(WaterSupply)
         isViewMode={true}
-        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
