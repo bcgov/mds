@@ -2,7 +2,7 @@
 
 variable "slug" {
   description = "acronym of project"
-  default = "mds"
+  default     = "mds"
 }
 
 variable "repository_name" {
@@ -100,4 +100,9 @@ variable "common_tags" {
   default = {
     Application = "MDS Spike"
   }
+}
+
+variable "env_s3" {
+  description = "Bucket containing environment variables for environment to be deployed"
+  default     = "mds-env-dev-cacentral1-xbvyjgyklltkj9"
 }

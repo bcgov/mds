@@ -43,6 +43,12 @@ resource "aws_ecs_task_definition" "app" {
           value = var.aws_region
         }
       ]
+      environmentFile : [
+        {
+          value = "arn:aws:s3:::${var.env_s3}/envfile_object_name.env",
+          type  = "s3"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
