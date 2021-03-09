@@ -17,9 +17,5 @@ class WaterSupply(ActivitySummaryBase):
     ## NO TABLE FOR THIS TYPE
     details = db.relationship('WaterSupplyDetail', secondary='activity_summary_detail_xref')
 
-    @hybrid_property
-    def calculated_total_disturbance(self):
-        return self.calculate_total_disturbance_area(self.details)
-
     def __repr__(self):
         return '<WaterSupply %r>' % self.activity_summary_id
