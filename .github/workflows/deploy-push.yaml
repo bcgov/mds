@@ -52,6 +52,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Test
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          context: ${{ SERVICE_CONTEXT }}
+          file: ./Dockerfile
+          target: test
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -59,7 +69,9 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          context: ${{ env.SERVICE_CONTEXT }}
+          context: ${{ SERVICE_CONTEXT }}
+          file: ./Dockerfile
+          target: runtime
           push: true
           tags: ${{ env.IMAGE_URI }}:${{ github.sha }}
 

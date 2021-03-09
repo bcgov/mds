@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:10 AS frontend
 
 # Create working directory
 RUN mkdir /app
@@ -11,6 +11,10 @@ RUN npm ci
 
 COPY . .
 
+FROM frontend AS test
+RUN npm run test
+
 # Run the server
+FROM frontend as runtime
 EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "run", "start" ]
