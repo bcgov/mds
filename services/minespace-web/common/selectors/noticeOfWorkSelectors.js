@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { createSelector } from "reselect";
 import moment from "moment";
 import { getDurationTextInDays } from "@common/utils/helpers";
@@ -26,8 +26,9 @@ export const getNOWReclamationSummary = createSelector(
         // if the object does not contain total_disturbed_area || reclamation_cost - it means the activity doesn't have any reclamation data
         if (
           !isEmpty(noticeOfWork[value]) &&
-          (noticeOfWork[value].calculated_total_disturbance !== undefined ||
-            noticeOfWork[value].reclamation_cost !== undefined)
+          ((!isNil(noticeOfWork[value].calculated_total_disturbance) &&
+            !isNil(noticeOfWork[value].total_disturbed_area)) ||
+            !isNil(noticeOfWork[value].reclamation_cost))
         ) {
           reclamationList.push({
             label,
