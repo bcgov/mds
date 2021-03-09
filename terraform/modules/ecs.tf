@@ -74,7 +74,7 @@ resource "aws_ecs_service" "main" {
   propagate_tags                    = "TASK_DEFINITION"
   health_check_grace_period_seconds = 60
   wait_for_steady_state             = true
-
+  platform_version                  = "1.4.0"
 
   capacity_provider_strategy {
     capacity_provider = "FARGATE_SPOT"
