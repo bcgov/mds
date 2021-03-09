@@ -48,6 +48,36 @@ resource "aws_iam_role_policy" "ecs_task_execution_cwlogs" {
   }
 EOF
 }
+resource "aws_iam_role_policy" "ecs_task_execution_env_read" {
+  name = "ecs_task_execution_env_read"
+  role = aws_iam_role.ecs_task_execution_role.id
+
+  policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject"
+        ],
+        "Resource": [
+          "arn:aws:s3:::mds-env-dev-cacentral1-xbvyjgyklltkj9/*"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetBucketLocation"
+        ],
+        "Resource": [
+          "arn:aws:s3:::mds-env-dev-cacentral1-xbvyjgyklltkj9"
+        ]
+      }
+    ]
+  }
+EOF
+}
 
 resource "aws_iam_role" "mds_app_container_role" {
   name = "mds_app_container_role"
