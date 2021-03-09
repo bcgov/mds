@@ -230,9 +230,8 @@ NOW_APPLICATION_WATER_SUPPLY_DETAIL = api.inherit(
     })
 
 NOW_APPLICATION_WATER_SUPPLY = api.inherit(
-    'NOWApplicationWaterSupply', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {'calculated_total_disturbance': fields.Fixed(decimals=5),
-    'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
+    'NOWApplicationWaterSupply',
+    {'details': fields.List(fields.Nested(NOW_APPLICATION_WATER_SUPPLY_DETAIL, skip_none=True))})
 
 NOW_APPLICATION_STATE_OF_LAND = api.model(
     'NOWStateOfLand', {
