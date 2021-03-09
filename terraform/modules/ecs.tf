@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "app" {
           value = var.aws_region
         }
       ]
-      environmentFile : [
+      environmentFiles = [
         {
           value = "arn:aws:s3:::${var.env_s3}/core_frontend.env",
           type  = "s3"
