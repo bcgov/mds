@@ -17,4 +17,4 @@ RUN npm run test
 # Run the server
 FROM frontend as runtime
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "build-serve" ]
