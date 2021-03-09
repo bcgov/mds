@@ -45,7 +45,7 @@ resource "aws_ecs_task_definition" "app" {
       ]
       environmentFile : [
         {
-          value = "arn:aws:s3:::${var.env_s3}/envfile_object_name.env",
+          value = "arn:aws:s3:::${var.env_s3}/core_frontend.env",
           type  = "s3"
         }
       ]
