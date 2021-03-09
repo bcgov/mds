@@ -1,4 +1,4 @@
-name: Push
+name: Build and push to AWS (Dev)
 
 on:
   push:
@@ -63,7 +63,7 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_URI }}:${{ github.sha }}
 
-## Terraform plan on successful PR
+  ## Terraform plan on successful PR
   plan:
     needs: ci
     name: terraform-plan
@@ -103,7 +103,7 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-## waits for plan and runs apply
+  ## waits for plan and runs apply
   cd:
     name: cd
     runs-on: ubuntu-20.04
