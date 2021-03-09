@@ -70,8 +70,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'exploration_surface_drilling.reclamation_core_storage',
     'exploration_surface_drilling.reclamation_description',
     'exploration_surface_drilling.reclamation_cost', 'underground_exploration.total_ore_amount',
-    'underground_exploration.total_waste_amount', 'water_supply.reclamation_description',
-    'water_supply.reclamation_cost'
+    'underground_exploration.total_waste_amount',
 ]
 
 UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code', 'proposed_production_unit_type_code', 'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code', 'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code', 'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code', 'total_waste_unit_type_code']
