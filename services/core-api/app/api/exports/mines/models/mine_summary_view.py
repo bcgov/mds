@@ -48,5 +48,4 @@ class MineSummaryView(Base):
 
     def csv_row(self):
         model = inspect(self.__class__)
-        return "\"" + '","'.join(
-            [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]) + "\""
+        return [str(getattr(self, c.name) or "").rstrip(',') for c in model.columns]
