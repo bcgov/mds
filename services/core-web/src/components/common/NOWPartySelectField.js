@@ -227,7 +227,7 @@ export class NOWPartySelectField extends Component {
   };
 
   handleSearch = (value) => {
-    if (value.length > 2) {
+    if (value.length >= 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
     this.setState({ isUserEvent: true, selectedOption: { value, label: value } });

@@ -167,7 +167,7 @@ export class PartySelectField extends Component {
   };
 
   handleSearch = (value) => {
-    if (value.length > 2) {
+    if (value.length >= 2) {
       this.fetchSearchResultsThrottled(value, "party");
     }
     this.setState({ selectedOption: { value, label: value } });
