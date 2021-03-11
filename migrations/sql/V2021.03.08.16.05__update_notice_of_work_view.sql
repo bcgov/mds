@@ -1,6 +1,5 @@
-DROP VIEW IF EXISTS notice_of_work_view;
-CREATE OR REPLACE VIEW notice_of_work_view
-	AS
+CREATE OR REPLACE VIEW public.notice_of_work_view
+AS
 SELECT nid.now_application_guid,
 m.mine_guid,
 m.mine_no,

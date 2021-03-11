@@ -70,11 +70,11 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'exploration_surface_drilling.reclamation_core_storage',
     'exploration_surface_drilling.reclamation_description',
     'exploration_surface_drilling.reclamation_cost', 'underground_exploration.total_ore_amount',
-    'underground_exploration.total_waste_amount', 'water_supply.reclamation_description',
-    'water_supply.reclamation_cost'
+    'underground_exploration.total_waste_amount',
 ]
 
-UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code']
+UNIT_TYPE_CODE_FIELDS = ['estimate_rate_unit_type_code', 'length_unit_type_code', 'proposed_production_unit_type_code', 'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code', 'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code', 'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code', 'total_waste_unit_type_code']
+MONEY_FIELDS = ['reclamation_cost']
 
 
 class NOWApplicationExportResource(Resource, UserMixin):
@@ -175,14 +175,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
         def get_reclamation_summary(now_application):
             summary = []
             activity_types = ActivityType.get_all()
-            for activity_type in activity_types:
+            reclamation_activity_types = (activity_type for activity_type in activity_types if activity_type.activity_type_code not in ['water_supply', 'blasting_operation'])
+            for activity_type in reclamation_activity_types:
                 if now_application.get(activity_type.activity_type_code):
                     summary.append({
                         'activity':
                         activity_type.description,
                         'total':
                         now_application[activity_type.activity_type_code].get(
-                            'total_disturbed_area', EMPTY_FIELD),
+                            'calculated_total_disturbance', EMPTY_FIELD),
                         'cost':
                         format_currency(now_application[activity_type.activity_type_code].get(
                             'reclamation_cost', None))
@@ -248,6 +249,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 elif isinstance(obj[key], list):
                     for item in obj[key]:
                         transform_data(item)
+                elif key in MONEY_FIELDS: 
+                    format_currency(obj[key])
             return obj
 
         def remove_signature(party):

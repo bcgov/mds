@@ -49,7 +49,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="camp"
     >
-      <Camps
+      <Connect(Camps)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -206,7 +206,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="placer_operation"
     >
-      <Placer
+      <Connect(Placer)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -227,7 +227,6 @@ exports[`ReviewActivities renders properly 1`] = `
     >
       <Connect(WaterSupply)
         isViewMode={true}
-        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>

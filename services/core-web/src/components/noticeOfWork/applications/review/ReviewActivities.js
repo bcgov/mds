@@ -198,11 +198,7 @@ export const ReviewActivities = (props) => {
         isViewMode={props.isViewMode}
       >
         <FormSection name="water_supply">
-          <WaterSupply
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
+          <WaterSupply isViewMode={props.isViewMode} />
         </FormSection>
       </ScrollContentWrapper>
     </div>
