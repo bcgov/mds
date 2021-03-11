@@ -90,11 +90,6 @@ variable "budget_tag" {
   default     = "Project=MDS Frontend Spike"
 }
 
-variable "alb_cert_domain" {
-  description = "The domain of cert to use for the internal ALB"
-  default     = "*.example.ca"
-}
-
 variable "common_tags" {
   description = "Common tags for created resources"
   default = {
@@ -105,4 +100,16 @@ variable "common_tags" {
 variable "env_s3" {
   description = "Bucket containing environment variables for environment to be deployed"
   default     = "mds-env-dev-cacentral1-xbvyjgyklltkj9"
+}
+
+variable "service_names" {
+  description = "List of service names to use as subdomains"
+  default     = ["minesdigitalservices", "mds"]
+  type        = list(string)
+}
+
+variable "alb_name" {
+  description = "Name of the internal alb"
+  default     = "default"
+  type        = string
 }

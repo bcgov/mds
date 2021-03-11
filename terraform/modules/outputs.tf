@@ -1,7 +1,7 @@
 # outputs.tf
 
 output "alb_hostname" {
-  value = aws_alb.main.dns_name
+  value = data.aws_alb.main.dns_name
 }
 
 output "sns_topic" {
