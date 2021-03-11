@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
+import { ENVIRONMENT, KEYCLOAK, DEFAULT_ENVIRONMENT } from "@common/constants/environment";
 
 export default function fetchEnv() {
   return new Promise((resolve, reject) => {
