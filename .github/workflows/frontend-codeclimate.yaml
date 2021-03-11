@@ -1,0 +1,29 @@
+name: Code Climate Coverage
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/frontend-codeclimate.yaml"
+      - "services/**"
+      - "!**/README.md"
+
+jobs:
+  codeclimate:
+    name: codeclimate
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Install npm modules
+        run: |
+          cd services/core-web/ && npm ci
+
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.7.1 # 2.7.5 has a bug currently on the formatter
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TESTER_ID }}
+        with:
+          workingDirectory: services/core-web
+          coverageCommand: npm run test:coverage
+          debug: true
