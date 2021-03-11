@@ -1,28 +1,18 @@
 import axios from "axios";
-import { ENVIRONMENT, DEFAULT_ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
+import { ENVIRONMENT, KEYCLOAK } from "@common/constants/environment";
 
 export default function fetchEnv() {
-  return axios
-    .get(`${process.env.BASE_PATH}/env`)
-    .then((res) => {
-      try {
-        JSON.stringify(res.data);
-        return res.data;
-      } catch (err) {
-        return DEFAULT_ENVIRONMENT;
-      }
-    })
-    .catch(() => DEFAULT_ENVIRONMENT)
-    .then((env) => {
-      ENVIRONMENT.apiUrl = env.apiUrl;
-      ENVIRONMENT.docManUrl = env.docManUrl;
-      ENVIRONMENT.firstNationsLayerUrl = env.firstNationsLayerUrl;
-      ENVIRONMENT.filesystemProviderUrl = env.filesystemProviderUrl;
-      ENVIRONMENT.matomoUrl = env.matomoUrl;
-      KEYCLOAK.clientId = env.keycloak_clientId;
-      KEYCLOAK.resource = env.keycloak_resource;
-      KEYCLOAK.url = env.keycloak_url;
-      KEYCLOAK.idpHint = env.keycloak_idpHint;
-      ENVIRONMENT.environment = env.environment;
-    });
+  return new Promise((resolve, reject) => {
+    ENVIRONMENT.environment = window.env.environment;
+    ENVIRONMENT.apiUrl = window.env.apiUrl;
+    ENVIRONMENT.docManUrl = window.env.docManUrl;
+    ENVIRONMENT.firstNationsLayerUrl = window.env.firstNationsLayerUrl;
+    ENVIRONMENT.filesystemProviderUrl = window.env.filesystemProviderUrl;
+    ENVIRONMENT.matomoUrl = window.env.matomoUrl;
+    KEYCLOAK.clientId = window.env.keycloakClientId;
+    KEYCLOAK.resource = window.env.keycloakResource;
+    KEYCLOAK.url = window.env.keycloakUrl;
+    KEYCLOAK.idpHint = window.env.keycloakIdpHint;
+    resolve();
+  });
 }
