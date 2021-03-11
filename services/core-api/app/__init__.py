@@ -13,6 +13,7 @@ from app.api.incidents.namespace import api as incidents_api
 from app.api.mines.namespace import api as mines_api
 from app.api.now_submissions.namespace import api as now_sub_api
 from app.api.now_applications.namespace import api as now_app_api
+from app.api.administrative_amendments.namespace import api as administrative_amendment_api
 from app.api.parties.namespace import api as parties_api
 from app.api.reporting.namespace import api as reporting_api
 from app.api.search.namespace import api as search_api
@@ -89,6 +90,7 @@ def register_routes(app):
     root_api_namespace.add_namespace(reporting_api)
     root_api_namespace.add_namespace(now_sub_api)
     root_api_namespace.add_namespace(now_app_api)
+    root_api_namespace.add_namespace(administrative_amendment_api)
     root_api_namespace.add_namespace(exports_api)
     root_api_namespace.add_namespace(doc_gen_api)
     root_api_namespace.add_namespace(securities_api)
