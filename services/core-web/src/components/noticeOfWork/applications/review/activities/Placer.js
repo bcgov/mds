@@ -1,18 +1,24 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { Field, Fields } from "redux-form";
+import { connect } from "react-redux";
 import { Row, Col } from "antd";
-import { maxLength, number, required } from "@common/utils/Validate";
+import { currencyMask } from "@common/utils/helpers";
+import { maxLength, number, required, numberWithUnitCode } from "@common/utils/Validate";
+import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
 import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
+import CustomPropTypes from "@/customPropTypes";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  unitTypeOptions: CustomPropTypes.options.isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
 };
 
@@ -109,11 +115,14 @@ export const Placer = (props) => {
               isVisible={props.renderOriginalValues("placer_operation.proposed_production").edited}
             />
           </div>
-          <Field
+          <Fields
+            names={["proposed_production", "proposed_production_unit_type_code"]}
             id="proposed_production"
-            name="proposed_production"
-            component={RenderField}
+            dropdownID="proposed_production_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
+            validate={[numberWithUnitCode]}
+            data={props.unitTypeOptions.filter(({ value }) => value === "MED" || value === "MEY")}
           />
         </Col>
       </Row>
@@ -126,18 +135,18 @@ export const Placer = (props) => {
           <div className="field-title">
             Total area of planned reclamation this year
             <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("placer_operation.total_disturbed_area").value
-              }
-              isVisible={props.renderOriginalValues("placer_operation.total_disturbed_area").edited}
+              originalValue={props.renderOriginalValues("placer_operation.reclamation_area").value}
+              isVisible={props.renderOriginalValues("placer_operation.reclamation_area").edited}
             />
           </div>
-          <Field
-            id="total_disturbed_area"
-            name="total_disturbed_area"
-            component={RenderField}
+          <Fields
+            names={["reclamation_area", "reclamation_unit_type_code"]}
+            id="reclamation_area"
+            dropdownID="reclamation_unit_type_code"
+            component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[numberWithUnitCode]}
+            data={props.unitTypeOptions.filter(({ value }) => value === "HA")}
           />
         </Col>
       </Row>
@@ -176,6 +185,7 @@ export const Placer = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>
@@ -185,4 +195,9 @@ export const Placer = (props) => {
 
 Placer.propTypes = propTypes;
 
-export default Placer;
+export default connect(
+  (state) => ({
+    unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
+  }),
+  null
+)(Placer);

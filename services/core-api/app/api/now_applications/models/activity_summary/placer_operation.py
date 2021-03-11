@@ -25,9 +25,15 @@ class PlacerOperation(ActivitySummaryBase):
     reclamation_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     proposed_production = db.Column(db.String)
+    proposed_production_unit_type_code = db.Column(
+        db.String, db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship(
         'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
 
     def __repr__(self):
         return '<PlacerOperation %r>' % self.activity_summary_id
