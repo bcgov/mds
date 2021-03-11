@@ -1,0 +1,21 @@
+name: Test frontend
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/frontend-tests.yaml"
+      - "services/core-web/**"
+      - "!**/README.md"
+
+jobs:
+  fe-test:
+    name: fe-test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+    
+      - name: Run frontend tests
+        id: results
+        run: |
+          cd services/core-web/ && npm ci && npm run test

@@ -1,82 +1,23 @@
-name: Build and push to AWS (Dev)
+name: Deploy to dev workspace
 
 on:
-  push:
+  pull_request:
     paths:
-      - ".github/workflows/deploy-push.yaml"
+      - ".github/workflows/frontend-deploy-dev.yaml"
       - "terraform/**"
       - "services/core-web/**"
       - "!**/README.md"
 
 env:
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
-  #TODO: create a switch for context based on editted service files
-  SERVICE_CONTEXT: services/core-web
-
   TF_VERSION: 0.14.7
   TG_VERSION: 0.28.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
 
 jobs:
-  ci:
-    name: ci
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
-          role-session-name: mds-github-action
-          role-skip-session-tagging: true
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Test
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          context: ${{ env.SERVICE_CONTEXT }}
-          target: test
-
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          context: ${{ env.SERVICE_CONTEXT }}
-          target: runtime
-          push: true
-          tags: ${{ env.IMAGE_URI }}:${{ github.sha }}
-
-  ## Terraform plan on successful PR
-  plan:
-    needs: ci
-    name: terraform-plan
+  infra-plan:
+    name: infra-plan
     runs-on: ubuntu-20.04
 
     steps:
@@ -114,10 +55,10 @@ jobs:
         run: exit 1
 
   ## waits for plan and runs apply
-  cd:
-    name: cd
+  infra-deploy:
+    name: infra-deploy
     runs-on: ubuntu-20.04
-    needs: plan
+    needs: infra-plan
 
     steps:
       - name: Check out the repo
