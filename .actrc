@@ -1,0 +1,1 @@
+-P ubuntu-20.04=nektos/act-environments-ubuntu:18.04 --secret-file=.act.secrets

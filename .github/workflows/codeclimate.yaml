@@ -14,11 +14,13 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
       - name: Install npm modules
-        run: |
-          cd services/core-web/ && npm ci
-
+        run: npm ci
+        workingDirectory: services/core-web
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v2.7.1 # 2.7.5 has a bug currently on the formatter
         env:
