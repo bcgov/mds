@@ -10,6 +10,8 @@ data "aws_alb" "main" {
 data "aws_alb_listener" "front_end" {
   load_balancer_arn = data.aws_alb.main.id
   port              = 443
+
+  depends_on = [aws_alb_target_group.app]
 }
 
 resource "aws_alb_target_group" "app" {
@@ -35,6 +37,8 @@ resource "aws_alb_target_group" "app" {
 
 resource "aws_lb_listener_rule" "host_based_weighted_routing" {
   listener_arn = data.aws_alb_listener.front_end.arn
+
+  depends_on = [aws_alb_target_group.app]
 
   action {
     type             = "forward"
