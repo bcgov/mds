@@ -98,7 +98,7 @@ services:
     #   - ./services/core-web/src/:/app/src/
     ports:
       # - 3000:3000
-      - 80:80
+      - 3000:80
     depends_on:
       - backend
     env_file: ./services/core-web/.env

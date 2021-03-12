@@ -19,10 +19,11 @@ jobs:
         with:
           node-version: "12.x"
       - name: Install npm modules
-        run: npm ci
-        workingDirectory: services/core-web
+        # run: npm ci - switch to this for strict check, though it forces node_modules redownload
+        run: npm install
+        working-directory: services/core-web
       - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.7.1 # 2.7.5 has a bug currently on the formatter
+        uses: paambaati/codeclimate-action@v2.7.5 # 2.7.5 has a bug currently on the formatter
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TESTER_ID }}
         with:
