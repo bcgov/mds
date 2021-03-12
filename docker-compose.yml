@@ -93,11 +93,12 @@ services:
     container_name: mds_frontend
     build:
       context: services/core-web
-    command: ["npm", "run", "serve"]
-    volumes:
-      - ./services/core-web/src/:/app/src/
+    #   dockerfile: Dockerfile.dev
+    # volumes:
+    #   - ./services/core-web/src/:/app/src/
     ports:
-      - 3000:3000
+      # - 3000:3000
+      - 80:80
     depends_on:
       - backend
     env_file: ./services/core-web/.env
