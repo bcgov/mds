@@ -12,7 +12,6 @@ from app.api.constants import NOW_APPLICATION_GIS_EXPORT, TIMEOUT_60_MINUTES
 
 
 class NowApplicationGisExportResource(Resource):
-    # TODO: Write description
     @api.doc(description='')
     @requires_any_of([VIEW_ALL, GIS])
     def get(self):
