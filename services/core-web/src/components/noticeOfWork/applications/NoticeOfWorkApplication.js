@@ -146,12 +146,12 @@ export class NoticeOfWorkApplication extends Component {
     initialPermitGuid: "",
     isNewApplication: false,
     mineGuid: undefined,
-    submitting: false,
-    submitted: false,
+    // submitting: false,
+    // submitted: false,
     activeTab: "verification",
   };
 
-  count = 1;
+  // count = 1;
 
   componentDidMount() {
     if (this.props.location.state && this.props.location.state.noticeOfWorkPageFromRoute) {
@@ -262,13 +262,13 @@ export class NoticeOfWorkApplication extends Component {
   //   this.setState({ menuVisible: flag });
   // };
 
-  handleAdminVisibleChange = (flag) => {
-    this.setState({ adminMenuVisible: flag });
-  };
+  // handleAdminVisibleChange = (flag) => {
+  //   this.setState({ adminMenuVisible: flag });
+  // };
 
-  handleMenuClick = () => {
-    this.setState({ adminMenuVisible: false });
-  };
+  // handleMenuClick = () => {
+  //   this.setState({ adminMenuVisible: false });
+  // };
 
   // showApplicationForm = () => {
   //   const document = this.props.noticeOfWork.submission_documents.filter(
@@ -375,82 +375,82 @@ export class NoticeOfWorkApplication extends Component {
     }
   };
 
-  handleChangeNOWMineAndLocation = (values) => {
-    const message = values.latitude
-      ? "Successfully updated Notice of Work location"
-      : "Successfully transferred Notice of Work";
-    this.props
-      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
-      .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-      });
-    this.props.closeModal();
-  };
+  // handleChangeNOWMineAndLocation = (values) => {
+  //   const message = values.latitude
+  //     ? "Successfully updated Notice of Work location"
+  //     : "Successfully transferred Notice of Work";
+  //   this.props
+  //     .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
+  //     .then(() => {
+  //       this.props.fetchImportedNoticeOfWorkApplication(
+  //         this.props.noticeOfWork.now_application_guid
+  //       );
+  //     });
+  //   this.props.closeModal();
+  // };
 
-  handleUpdateInspectors = (finalAction) => {
-    if (
-      (!this.state.associatedLeadInspectorPartyGuid ||
-        this.state.associatedLeadInspectorPartyGuid ===
-          this.props.noticeOfWork.lead_inspector_party_guid) &&
-      (!this.state.associatedIssuingInspectorPartyGuid ||
-        this.state.associatedIssuingInspectorPartyGuid ===
-          this.props.noticeOfWork.issuing_inspector_party_guid)
-    ) {
-      finalAction();
-      return;
-    }
-    this.setState({ isLoaded: false });
-    this.props
-      .updateNoticeOfWorkApplication(
-        {
-          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
-          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
-        },
-        this.props.noticeOfWork.now_application_guid,
-        "Successfully updated the assigned inspectors"
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
-  };
+  // handleUpdateInspectors = (finalAction) => {
+  //   if (
+  //     (!this.state.associatedLeadInspectorPartyGuid ||
+  //       this.state.associatedLeadInspectorPartyGuid ===
+  //         this.props.noticeOfWork.lead_inspector_party_guid) &&
+  //     (!this.state.associatedIssuingInspectorPartyGuid ||
+  //       this.state.associatedIssuingInspectorPartyGuid ===
+  //         this.props.noticeOfWork.issuing_inspector_party_guid)
+  //   ) {
+  //     finalAction();
+  //     return;
+  //   }
+  //   this.setState({ isLoaded: false });
+  //   this.props
+  //     .updateNoticeOfWorkApplication(
+  //       {
+  //         lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
+  //         issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
+  //       },
+  //       this.props.noticeOfWork.now_application_guid,
+  //       "Successfully updated the assigned inspectors"
+  //     )
+  //     .then(() => {
+  //       this.props
+  //         .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+  //         .then(() => this.setState({ isLoaded: true }));
+  //     })
+  //     .then(() => finalAction());
+  // };
 
-  openChangeNOWMineModal = (noticeOfWork) => {
-    this.props.openModal({
-      props: {
-        initialValues: {
-          mine_guid: noticeOfWork.mine_guid,
-        },
-        onSubmit: this.handleChangeNOWMineAndLocation,
-        title: `Transfer Notice of Work`,
-        noticeOfWork,
-      },
-      width: "75vw",
-      content: modalConfig.CHANGE_NOW_MINE,
-    });
-  };
+  // openChangeNOWMineModal = (noticeOfWork) => {
+  //   this.props.openModal({
+  //     props: {
+  //       initialValues: {
+  //         mine_guid: noticeOfWork.mine_guid,
+  //       },
+  //       onSubmit: this.handleChangeNOWMineAndLocation,
+  //       title: `Transfer Notice of Work`,
+  //       noticeOfWork,
+  //     },
+  //     width: "75vw",
+  //     content: modalConfig.CHANGE_NOW_MINE,
+  //   });
+  // };
 
-  openChangeNOWLocationModal = (noticeOfWork) => {
-    this.props.openModal({
-      props: {
-        initialValues: {
-          mine_guid: noticeOfWork.mine_guid,
-          latitude: noticeOfWork.latitude,
-          longitude: noticeOfWork.longitude,
-        },
-        mineGuid: noticeOfWork.mine_guid,
-        onSubmit: this.handleChangeNOWMineAndLocation,
-        title: `Edit Location`,
-        noticeOfWork,
-      },
-      width: "75vw",
-      content: modalConfig.CHANGE_NOW_LOCATION,
-    });
-  };
+  // openChangeNOWLocationModal = (noticeOfWork) => {
+  //   this.props.openModal({
+  //     props: {
+  //       initialValues: {
+  //         mine_guid: noticeOfWork.mine_guid,
+  //         latitude: noticeOfWork.latitude,
+  //         longitude: noticeOfWork.longitude,
+  //       },
+  //       mineGuid: noticeOfWork.mine_guid,
+  //       onSubmit: this.handleChangeNOWMineAndLocation,
+  //       title: `Edit Location`,
+  //       noticeOfWork,
+  //     },
+  //     width: "75vw",
+  //     content: modalConfig.CHANGE_NOW_LOCATION,
+  //   });
+  // };
 
   handleGenerateDocument = (menuItem) => {
     const documentTypeCode = menuItem.key;
@@ -660,83 +660,83 @@ export class NoticeOfWorkApplication extends Component {
   //   );
   // };
 
-  menu = (isReview = false) => {
-    const isImported = this.props.noticeOfWork.imported_to_core;
-    return (
-      <Menu>
-        {isReview &&
-          isImported &&
-          this.props.noticeOfWork.submission_documents.filter(
-            (x) => x.filename === "ApplicationForm.pdf"
-          ).length > 0 && (
-            <Menu.Item key="open-original-application-form" onClick={this.showApplicationForm}>
-              Original Application
-            </Menu.Item>
-          )}
-        {!isReview && (
-          <>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item
-                key="transfer-to-a-different-mine"
-                className="custom-menu-item"
-                onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-              >
-                Transfer to a Different Mine
-              </Menu.Item>
-            </NOWActionWrapper>
-            <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-              <Menu.Item
-                key="edit-application-lat-long"
-                className="custom-menu-item"
-                onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
-              >
-                Edit Application Lat/Long
-              </Menu.Item>
-            </NOWActionWrapper>
-          </>
-        )}
-        {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
-          <Menu.SubMenu key="generate-documents" title="Generate Documents">
-            {Object.values(this.props.generatableApplicationDocuments)
-              .filter(
-                ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "CAL"
-              )
-              .map((document) => (
-                <Menu.Item
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleGenerateDocument}
-                >
-                  {document.description}
-                </Menu.Item>
-              ))}
-          </Menu.SubMenu>
-        )}
-        {/* <>
-          {isReview &&
-            Object.values(this.props.generatableApplicationDocuments)
-              .filter(
-                ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "NTR"
-              )
-              .map((document) => {
-                return (
-                  <Menu.Item
-                    key={document.now_application_document_type_code}
-                    className="custom-menu-item"
-                    onClick={() =>
-                      this.handleExportNowDocument(document.now_application_document_type_code)
-                    }
-                    disabled={this.state.exportingNow}
-                  >
-                    Edited Application
-                  </Menu.Item>
-                );
-              })}
-        </> */}
-      </Menu>
-    );
-  };
+  // menu = (isReview = false) => {
+  //   const isImported = this.props.noticeOfWork.imported_to_core;
+  //   return (
+  //     <Menu>
+  //       {isReview &&
+  //         isImported &&
+  //         this.props.noticeOfWork.submission_documents.filter(
+  //           (x) => x.filename === "ApplicationForm.pdf"
+  //         ).length > 0 && (
+  //           <Menu.Item key="open-original-application-form" onClick={this.showApplicationForm}>
+  //             Original Application
+  //           </Menu.Item>
+  //         )}
+  //       {!isReview && (
+  //         <>
+  //           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+  //             <Menu.Item
+  //               key="transfer-to-a-different-mine"
+  //               className="custom-menu-item"
+  //               onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+  //             >
+  //               Transfer to a Different Mine
+  //             </Menu.Item>
+  //           </NOWActionWrapper>
+  //           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+  //             <Menu.Item
+  //               key="edit-application-lat-long"
+  //               className="custom-menu-item"
+  //               onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+  //             >
+  //               Edit Application Lat/Long
+  //             </Menu.Item>
+  //           </NOWActionWrapper>
+  //         </>
+  //       )}
+  //       {!isReview && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+  //         <Menu.SubMenu key="generate-documents" title="Generate Documents">
+  //           {Object.values(this.props.generatableApplicationDocuments)
+  //             .filter(
+  //               ({ now_application_document_type_code }) =>
+  //                 now_application_document_type_code === "CAL"
+  //             )
+  //             .map((document) => (
+  //               <Menu.Item
+  //                 key={document.now_application_document_type_code}
+  //                 onClick={this.handleGenerateDocument}
+  //               >
+  //                 {document.description}
+  //               </Menu.Item>
+  //             ))}
+  //         </Menu.SubMenu>
+  //       )}
+  //       {/* <>
+  //         {isReview &&
+  //           Object.values(this.props.generatableApplicationDocuments)
+  //             .filter(
+  //               ({ now_application_document_type_code }) =>
+  //                 now_application_document_type_code === "NTR"
+  //             )
+  //             .map((document) => {
+  //               return (
+  //                 <Menu.Item
+  //                   key={document.now_application_document_type_code}
+  //                   className="custom-menu-item"
+  //                   onClick={() =>
+  //                     this.handleExportNowDocument(document.now_application_document_type_code)
+  //                   }
+  //                   disabled={this.state.exportingNow}
+  //                 >
+  //                   Edited Application
+  //                 </Menu.Item>
+  //               );
+  //             })}
+  //       </> */}
+  //     </Menu>
+  //   );
+  // };
 
   renderTabTitle = (title, tabSection) => (
     <span>

@@ -1,9 +1,13 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "antd";
+import { Button, Menu, Dropdown } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
+import { DownOutlined, ExportOutlined } from "@ant-design/icons";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -12,12 +16,14 @@ import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 import * as routes from "@/constants/routes";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
+import * as FORM from "@/constants/forms";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
@@ -41,6 +47,132 @@ export class AdministrativeTab extends Component {
     associatedLeadInspectorPartyGuid: undefined,
     associatedIssuingInspectorPartyGuid: undefined,
     adminMenuVisible: false,
+  };
+
+  handleAdminVisibleChange = (flag) => {
+    this.setState({ adminMenuVisible: flag });
+  };
+
+  handleMenuClick = () => {
+    this.setState({ adminMenuVisible: false });
+  };
+
+  handleChangeNOWMineAndLocation = (values) => {
+    const message = values.latitude
+      ? "Successfully updated Notice of Work location"
+      : "Successfully transferred Notice of Work";
+    this.props
+      .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      });
+    this.props.closeModal();
+  };
+
+  openChangeNOWMineModal = (noticeOfWork) => {
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+        },
+        onSubmit: this.handleChangeNOWMineAndLocation,
+        title: `Transfer Notice of Work`,
+        noticeOfWork,
+      },
+      width: "75vw",
+      content: modalConfig.CHANGE_NOW_MINE,
+    });
+  };
+
+  openChangeNOWLocationModal = (noticeOfWork) => {
+    this.props.openModal({
+      props: {
+        initialValues: {
+          mine_guid: noticeOfWork.mine_guid,
+          latitude: noticeOfWork.latitude,
+          longitude: noticeOfWork.longitude,
+        },
+        mineGuid: noticeOfWork.mine_guid,
+        onSubmit: this.handleChangeNOWMineAndLocation,
+        title: `Edit Location`,
+        noticeOfWork,
+      },
+      width: "75vw",
+      content: modalConfig.CHANGE_NOW_LOCATION,
+    });
+  };
+
+  menu = () => {
+    return (
+      <Menu>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="transfer-to-a-different-mine"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+          >
+            Transfer to a Different Mine
+          </Menu.Item>
+        </NOWActionWrapper>
+        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+          <Menu.Item
+            key="edit-application-lat-long"
+            className="custom-menu-item"
+            onClick={() => this.openChangeNOWLocationModal(this.props.noticeOfWork)}
+          >
+            Edit Application Lat/Long
+          </Menu.Item>
+        </NOWActionWrapper>
+        {Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+          <Menu.SubMenu key="generate-documents" title="Generate Documents">
+            {Object.values(this.props.generatableApplicationDocuments)
+              .filter(
+                ({ now_application_document_type_code }) =>
+                  now_application_document_type_code === "CAL"
+              )
+              .map((document) => (
+                <Menu.Item
+                  key={document.now_application_document_type_code}
+                  onClick={this.handleGenerateDocument}
+                >
+                  {document.description}
+                </Menu.Item>
+              ))}
+          </Menu.SubMenu>
+        )}
+      </Menu>
+    );
+  };
+
+  handleUpdateInspectors = (finalAction) => {
+    if (
+      (!this.state.associatedLeadInspectorPartyGuid ||
+        this.state.associatedLeadInspectorPartyGuid ===
+          this.props.noticeOfWork.lead_inspector_party_guid) &&
+      (!this.state.associatedIssuingInspectorPartyGuid ||
+        this.state.associatedIssuingInspectorPartyGuid ===
+          this.props.noticeOfWork.issuing_inspector_party_guid)
+    ) {
+      finalAction();
+      return;
+    }
+    this.props
+      .updateNoticeOfWorkApplication(
+        {
+          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
+          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
+        },
+        this.props.noticeOfWork.now_application_guid,
+        "Successfully updated the assigned inspectors"
+      )
+      .then(() => {
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        );
+      })
+      .then(() => finalAction());
   };
 
   setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
@@ -122,6 +254,7 @@ const mapStateToProps = (state) => ({
   inspectors: getDropdownInspectors(state),
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
+  generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -129,6 +262,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      openModal,
+      closeModal,
     },
     dispatch
   );
