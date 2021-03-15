@@ -1,5 +1,4 @@
-name: Build and push frontend
-
+name: Build and push to AWS
 on:
   pull_request:
     paths:
@@ -15,11 +14,39 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+        - service: services/core-web
+          repo: mds
+        - service: services/core-api
+          repo: mds
+
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
+      - name: Capture changes to build for
+        id: changes
+        # parses out special characters that cause hidden output truncation
+        # TODO: compare this branch to develop instead of just last commit
+        run: |
+          CHANGES=$(git diff --name-only HEAD HEAD~1)
+          CHANGES="${CHANGES//'%'/'%25'}"
+          CHANGES="${CHANGES//$'\n'/'%0A'}"
+          CHANGES="${CHANGES//$'\r'/'%0D'}"
+          echo "::set-output name=changelist::$CHANGES"
+
+      - name: Skip if no changes for this service
+        if: contains(steps.changes.outputs.changelist, matrix.service) == false
+        id: detected
+        run: |
+            echo "::set-output name=do_build::false"
+            echo "No changes in this service - skipping build..."
+
       - name: Configure AWS credentials
+        if: steps.detected.outputs.do_build != "false"
         uses: aws-actions/configure-aws-credentials@v1.5.8
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -31,10 +58,12 @@ jobs:
           role-skip-session-tagging: true
 
       - name: Login to Amazon ECR
+        if: steps.detected.outputs.do_build != "false"
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - uses: actions/cache@v2
+        if: steps.detected.outputs.do_build != "false"
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -42,9 +71,11 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Set up Docker Buildx
+        if: steps.detected.outputs.do_build != "false"
         uses: docker/setup-buildx-action@v1
 
       - name: Build and push
+        if: steps.detected.outputs.do_build != "false"
         id: docker_build
         uses: docker/build-push-action@v2
         with:
