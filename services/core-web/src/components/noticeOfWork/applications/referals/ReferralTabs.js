@@ -2,9 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { ExportOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
+import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
+import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
+import * as routes from "@/constants/routes";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
@@ -31,9 +36,10 @@ import {
   ADVERTISEMENT,
   ADVERTISEMENT_DOC,
 } from "@/constants/NOWConditions";
+import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 
 /**
- * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
+ * @constant ReferralTabs renders Referral/Consultation/PublicComment review logic
  */
 
 const propTypes = {
@@ -54,13 +60,14 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   type: PropTypes.func.isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
 };
 
-export class NOWApplicationReviews extends Component {
+export class ReferralTabs extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
@@ -208,37 +215,96 @@ export class NOWApplicationReviews extends Component {
       <div>
         {this.props.noticeOfWorkReviews && (
           <div>
-            {this.props.type === REFERRAL_CODE &&
-              this.props.noticeOfWorkReviewTypes.some(
-                (reviewType) => reviewType.value === REFERRAL_CODE
-              ) && (
-                <Referral
-                  {...commonApplicationReviewProps}
-                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
-                    (review) => review.now_application_review_type_code === REFERRAL_CODE
-                  )}
+            {this.props.type === REFERRAL_CODE && (
+              <>
+                <NOWTabHeader
+                  tab="REF"
+                  tabActions={<ReferralConsultationPackage type="REF" />}
+                  tabName="Referral"
+                  fixedTop={this.props.fixedTop}
                 />
-              )}
-            {this.props.type === CONSULTATION_REVIEW_CODE &&
-              this.props.noticeOfWorkReviewTypes.some(
-                (reviewType) => reviewType.value === CONSULTATION_REVIEW_CODE
-              ) && (
-                <Consultation
-                  {...commonApplicationReviewProps}
-                  noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
-                    (review) => review.now_application_review_type_code === CONSULTATION_REVIEW_CODE
-                  )}
+                <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                  <NOWSideMenu
+                    route={routes.NOTICE_OF_WORK_APPLICATION}
+                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                    tabSection="referral"
+                  />
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={Strings.E_REFERRALS_URL}
+                    alt="E-Referrals"
+                  >
+                    <ExportOutlined className="padding-small--right" />
+                    Link to E-referrals homepage
+                  </a>
+                </div>
+                <div
+                  className={
+                    this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
+                  }
+                >
+                  <Referral
+                    {...commonApplicationReviewProps}
+                    noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
+                      (review) => review.now_application_review_type_code === REFERRAL_CODE
+                    )}
+                  />
+                </div>
+              </>
+            )}
+            {this.props.type === CONSULTATION_REVIEW_CODE && (
+              <>
+                <NOWTabHeader
+                  tab="CON"
+                  tabActions={<ReferralConsultationPackage type="CON" />}
+                  tabName="Consultation"
+                  fixedTop={this.props.fixedTop}
                 />
-              )}
-            {this.props.type === PUBLIC_COMMENT &&
-              this.props.noticeOfWorkReviewTypes.some(
-                (reviewType) => reviewType.value === PUBLIC_COMMENT
-              ) && (
-                <PublicComment
-                  {...commonApplicationReviewProps}
-                  noticeOfWorkReviews={this.props.noticeOfWorkReviews}
-                />
-              )}
+                <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                  <NOWSideMenu
+                    route={routes.NOTICE_OF_WORK_APPLICATION}
+                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                    tabSection="consultation"
+                  />
+                </div>
+                <div
+                  className={
+                    this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
+                  }
+                >
+                  <Consultation
+                    {...commonApplicationReviewProps}
+                    noticeOfWorkReviews={this.props.noticeOfWorkReviews.filter(
+                      (review) =>
+                        review.now_application_review_type_code === CONSULTATION_REVIEW_CODE
+                    )}
+                  />
+                </div>
+              </>
+            )}
+            {this.props.type === PUBLIC_COMMENT && (
+              <>
+                <NOWTabHeader tab="PUB" tabName="Public Comment" fixedTop={this.props.fixedTop} />
+                <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
+                  <NOWSideMenu
+                    route={routes.NOTICE_OF_WORK_APPLICATION}
+                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+                    tabSection="public-comment"
+                  />
+                </div>
+                <div
+                  className={
+                    this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
+                  }
+                >
+                  <PublicComment
+                    {...commonApplicationReviewProps}
+                    noticeOfWorkReviews={this.props.noticeOfWorkReviews}
+                  />
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -269,7 +335,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-NOWApplicationReviews.propTypes = propTypes;
-NOWApplicationReviews.defaultProps = defaultProps;
+ReferralTabs.propTypes = propTypes;
+ReferralTabs.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NOWApplicationReviews);
+export default connect(mapStateToProps, mapDispatchToProps)(ReferralTabs);
