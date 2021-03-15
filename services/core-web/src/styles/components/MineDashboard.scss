@@ -38,7 +38,6 @@
           background: $default-overlay;
           position: relative;
           height: 80px;
-          top: -80px;
           opacity: 0.9;
           @include large {
             padding: $default-padding-lg;
