@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineApplications renders properly 1`] = `
+<div
+  className="tab__content"
+>
+  <h2>
+    Applications
+  </h2>
+  <Divider />
+  <div
+    className="inline-flex between"
+  >
+    <h4
+      className="uppercase"
+    >
+      Permit Application
+      s
+    </h4>
+    <Connect(AuthorizationWrapper)
+      isMajorMine={true}
+      permission="role_edit_permits"
+    >
+      <AddButton
+        onClick={[Function]}
+      >
+        Add 
+        Permit Application
+      </AddButton>
+    </Connect(AuthorizationWrapper)>
+  </div>
+  <withRouter(MineNoticeOfWorkTable)
+    handleSearch={[Function]}
+    isLoaded={false}
+    isMajorMine={true}
+    mineRegionHash={
+      Object {
+        "NE": "North East",
+        "NW": "North West",
+        "SC": "South Central",
+        "SE": "South East",
+        "SW": "South West",
+      }
+    }
+    noticeOfWorkApplications={Array []}
+    searchParams={Object {}}
+  />
+  <br />
+  <br />
+  <Connect(AuthorizationWrapper)
+    inTesting={true}
+  >
+    <div
+      className="inline-flex between"
+    >
+      <h4
+        className="uppercase"
+      >
+        Administrative Amendments
+      </h4>
+      <Connect(AuthorizationWrapper)
+        inTesting={true}
+        permission="role_edit_permits"
+      >
+        <AddButton
+          onClick={[Function]}
+        >
+          Add Administrative Amendment
+        </AddButton>
+      </Connect(AuthorizationWrapper)>
+    </div>
+    <withRouter(MineAdministrativeAmendmentTable)
+      administrativeAmendmentApplications={Array []}
+      handleSearch={[Function]}
+      isLoaded={false}
+      isMajorMine={true}
+      mineRegionHash={
+        Object {
+          "NE": "North East",
+          "NW": "North West",
+          "SC": "South Central",
+          "SE": "South East",
+          "SW": "South West",
+        }
+      }
+      onExpand={[Function]}
+      searchParams={Object {}}
+    />
+  </Connect(AuthorizationWrapper)>
+</div>
+`;
