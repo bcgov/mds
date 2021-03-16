@@ -592,6 +592,8 @@ NOW_VIEW_MODEL = api.model(
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'issuing_inspector_party_guid': fields.String,
         'issuing_inspector_name': fields.String,
+        'now_application_status_code': fields.String,
+        'status_updated_date': Date
     })
 
 PAGINATED_LIST = api.model(

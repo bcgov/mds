@@ -28,12 +28,18 @@ class NoticeOfWorkView(Base):
         UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
     lead_inspector_name = db.Column(db.String)
 
+    issuing_inspector_party_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('party.party_guid'), nullable=True)
+    issuing_inspector_name = db.Column(db.String)
+
     notice_of_work_type_description = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
 
     received_date = db.Column(db.Date)
     originating_system = db.Column(db.String)
     application_type_code = db.Column(db.String)
+    now_application_status_code = db.Column(db.String)
+    status_updated_date = db.Column(db.DateTime)
 
     is_historic = db.Column(db.Boolean)
 

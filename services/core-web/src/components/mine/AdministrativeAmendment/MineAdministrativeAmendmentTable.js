@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { Badge, Tooltip, Table } from "antd";
-import { withRouter } from "react-router-dom";
+import { Badge, Tooltip, Table, Button } from "antd";
+import { withRouter, Link } from "react-router-dom";
+import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
-
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
-import { isEmpty } from "lodash";
+// import { isEmpty } from "lodash";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications
@@ -58,13 +58,13 @@ const transformRowData = (applications) => {
 
     return {
       key: application.now_application_guid,
-      administrative_amendment_number: application.now_number || Strings.EMPTY_FIELD,
+      now_number: application.now_number || Strings.EMPTY_FIELD,
       mine_guid: application.mine_guid || Strings.EMPTY_FIELD,
       mine_name: application.mine_name || Strings.EMPTY_FIELD,
-      application_type_description:
+      notice_of_work_type_description:
         application.notice_of_work_type_description || Strings.EMPTY_FIELD,
       status_reason: application.status_reason || Strings.EMPTY_FIELD,
-      application_status_description:
+      now_application_status_description:
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       documents: application.documents,
@@ -73,8 +73,12 @@ const transformRowData = (applications) => {
           ? application.permit_amendments[0].amendment_number
           : Strings.EMPTY_FIELD,
       application_trigger_type_codes: application.application_trigger_type_codes,
-      issuing_inspector_name: application.issuing_inspector_name,
-      permittee_name: isEmpty(permittee_name) ? Strings.EMPTY_FIELD : permittee_name,
+      issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
+      permittee_name: permittee_name || Strings.EMPTY_FIELD,
+      approval_date:
+        application.now_application_status_code === "AIA"
+          ? formatDate(application.status_updated_date)
+          : Strings.EMPTY_FIELD,
     };
   });
 };
@@ -127,8 +131,8 @@ export class MineAdministrativeAmendmentTable extends Component {
   columns = () => [
     {
       title: "Application",
-      dataIndex: "administrative_amendment_number",
-      sortField: "administrative_amendment_number",
+      dataIndex: "now_number",
+      sortField: "now_number",
       render: (text) => <div title="Number">{text}</div>,
       sorter: true,
     },
@@ -154,8 +158,8 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
     {
       title: "Type",
-      dataIndex: "application_type_description",
-      sortField: "application_type_description",
+      dataIndex: "notice_of_work_type_description",
+      sortField: "notice_of_work_type_description",
       render: (text) => <div title="Type">{text}</div>,
       sorter: true,
     },
@@ -168,8 +172,8 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
     {
       title: "Status",
-      dataIndex: "application_status_description",
-      sortField: "application_status_description",
+      dataIndex: "now_application_status_description",
+      sortField: "now_application_status_description",
       render: (text) => (
         <div title="Status">
           <Badge status={getApplicationStatusType(text)} text={text} />
@@ -191,24 +195,27 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text) => <div title="Received">{text}</div>,
       sorter: true,
     },
-    // {
-    //   title: "Approval Date",
-    //   dataIndex: "",
-    //   sortField: "",
-    //   render: (text) => <div title="Number">{text}</div>,
-    //   sorter: true,
-    // },
-    // {
-    //   title: "Actions",
-    //   dataIndex: "",
-    //   sortField: "",
-    //   render: (text) => <div title="Number">{text}</div>,
-    //   sorter: true,
-    // },
+    {
+      title: "Approval Date",
+      dataIndex: "approval_date",
+      sortField: "approval_date",
+      render: (text) => <div title="Approval Date">{text}</div>,
+      sorter: true,
+    },
+    {
+      dataIndex: "operations",
+      render: (text, record) =>
+        record.key && (
+          <div className="btn--middle flex">
+            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary">View/Edit</Button>
+            </Link>
+          </div>
+        ),
+    },
   ];
 
   administrativeAmendmentDetail = (record) => {
-    // TODO remove mock
     const expandedColumns = [
       {
         title: "Reason For Status",
