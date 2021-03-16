@@ -52,7 +52,8 @@ class NowApplicationGisExport(Base):
     permit_no = db.Column(db.String)
     permit_status_code = db.Column(db.String)
     permit_status_code_description = db.Column(db.String)
-    permit_issue_date = db.Column(db.String)
+    amendment_issue_date = db.Column(db.String)
+    amendment_authorization_end_date = db.Column(db.String)
 
     # Permittee
     permittee_first_name = db.Column(db.String)

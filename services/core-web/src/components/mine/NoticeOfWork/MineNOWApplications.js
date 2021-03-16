@@ -15,6 +15,7 @@ import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
+import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -38,6 +39,7 @@ export class MineNOWApplications extends Component {
     params: {
       ...this.params,
     },
+    expandedRowKeys: [],
   };
 
   componentDidMount() {
@@ -80,6 +82,14 @@ export class MineNOWApplications extends Component {
     );
   };
 
+  onExpand = (expanded, record) =>
+    this.setState((prevState) => {
+      const expandedRowKeys = expanded
+        ? prevState.expandedRowKeys.concat(record.key)
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+      return { expandedRowKeys };
+    });
+
   handleSearch = (searchParams = {}, clear = false) => {
     const persistedParams = clear ? {} : this.state.params;
     const updatedParams = {
@@ -118,10 +128,35 @@ export class MineNOWApplications extends Component {
           isMajorMine={isMajorMine}
           isLoaded={this.state.isLoaded}
           handleSearch={this.handleSearch}
-          noticeOfWorkApplications={this.props.noticeOfWorkApplications}
+          noticeOfWorkApplications={this.props.noticeOfWorkApplications.filter(
+            (app) => app.application_type_code === "NOW"
+          )}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
           searchParams={this.state.params}
+          mineRegionHash={this.props.mineRegionHash}
+        />
+        <br />
+        <div>
+          <h2>Administrative Amendments</h2>
+          <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
+            {/* // eslint-disable-next-line no-alert */}
+            <AddButton onClick={() => alert("Create Admin Amendment")}>
+              Add a Administrative Amendments
+            </AddButton>
+          </AuthorizationWrapper>
+        </div>
+        <MineAdministrativeAmendmentTable
+          isMajorMine={isMajorMine}
+          isLoaded={this.state.isLoaded}
+          handleSearch={this.handleSearch}
+          administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
+            (app) => app.application_type_code === "ADA"
+          )}
+          sortField={this.state.params.sort_field}
+          sortDir={this.state.params.sort_dir}
+          searchParams={this.state.params}
+          onExpand={this.onExpand}
           mineRegionHash={this.props.mineRegionHash}
         />
       </div>

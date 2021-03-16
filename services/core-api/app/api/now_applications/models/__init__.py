@@ -1,8 +1,10 @@
 from .activity_detail import *
 from .activity_summary import *
+from .administrative_amendments import *
 from .notice_of_work_view import NoticeOfWorkView
 from .now_application import NOWApplication
 from .now_application_identity import NOWApplicationIdentity
+from .application_type_code import ApplicationType
 from .now_application_type import NOWApplicationType
 from .now_application_delay import NOWApplicationDelay
 from .now_application_delay_type import NOWApplicationDelayType
@@ -26,6 +28,7 @@ model_list = [
     NoticeOfWorkView,
     NOWApplication,
     NOWApplicationIdentity,
+    ApplicationType,
     NOWApplicationType,
     NOWApplicationDelay,
     NOWApplicationDelayType,

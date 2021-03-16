@@ -36,6 +36,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     description = db.Column(db.String)
     issuing_inspector_title = db.Column(db.String)
     regional_office = db.Column(db.String)
+    # TODO discuss this
+    amendment_number = db.Column(db.String)
 
     permit_amendment_status = db.relationship('PermitAmendmentStatusCode')
     permit_amendment_status_description = association_proxy('permit_amendment_status',

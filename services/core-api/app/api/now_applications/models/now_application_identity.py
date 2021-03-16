@@ -25,6 +25,8 @@ class NOWApplicationIdentity(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     messageid = db.Column(db.Integer)
     mms_cid = db.Column(db.Integer)
+    application_type_code = db.Column(
+        db.String(3), db.ForeignKey('application_type_code.application_type_code'))
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine = db.relationship('Mine', lazy='joined')
