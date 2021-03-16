@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ApplicationStepOne } from "@/components/noticeOfWork/applications/verification/ApplicationStepOne";
+import { VerificationTab } from "@/components/noticeOfWork/applications/verification/VerificationTab";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
@@ -33,10 +33,10 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("ApplicationStepOne", () => {
+describe("VerificationTab", () => {
   it("renders properly", () => {
     const component = shallow(
-      <ApplicationStepOne {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
+      <VerificationTab {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
     );
     expect(component).toMatchSnapshot();
   });

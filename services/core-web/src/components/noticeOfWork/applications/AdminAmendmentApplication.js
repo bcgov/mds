@@ -6,13 +6,12 @@ import { connect } from "react-redux";
 import { kebabCase } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
-  fetchOriginalNoticeOfWorkApplication,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
-import { getNoticeOfWork, getOriginalNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import {
   getDropdownNoticeOfWorkApplicationStatusOptions,
@@ -22,7 +21,6 @@ import {
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import * as routes from "@/constants/routes";
 import DraftPermitTab from "@/components/noticeOfWork/applications/permitGeneration/DraftPermitTab";
-import VerificationTab from "@/components/noticeOfWork/applications/verification/VerificationTab";
 import ApplicationTab from "@/components/noticeOfWork/applications/review/ApplicationTab";
 import ReferralTabs from "@/components/noticeOfWork/applications/referals/ReferralTabs";
 import CustomPropTypes from "@/customPropTypes";
@@ -40,10 +38,8 @@ import ProcessPermit from "@/components/noticeOfWork/applications/process/Proces
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication,
-  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -72,18 +68,14 @@ const defaultProps = {
   noticeOfWork: {},
 };
 
-export class NoticeOfWorkApplication extends Component {
+export class AdminAmendmentApplication extends Component {
   state = {
     isLoaded: false,
     isTabLoaded: false,
-    isMajorMine: undefined,
     fixedTop: false,
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
-    initialPermitGuid: "",
-    isNewApplication: false,
-    mineGuid: undefined,
-    activeTab: "verification",
+    activeTab: "application",
   };
 
   componentDidMount() {
@@ -93,12 +85,8 @@ export class NoticeOfWorkApplication extends Component {
       });
     }
 
-    const isNewApplication = !!this.props.history.location.state;
     if (this.props.match.params.id) {
       this.loadNoticeOfWork(this.props.match.params.id);
-    } else if (isNewApplication) {
-      this.loadCreatePermitApplication();
-      this.setState({ isNewApplication });
     }
 
     if (this.props.match.params.tab) {
@@ -130,8 +118,7 @@ export class NoticeOfWorkApplication extends Component {
   }
 
   loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
-    this.props.fetchMineRecordById(mineGuid).then(({ data }) => {
-      this.setState({ isMajorMine: data.major_mine_ind, mineGuid: data.mine_guid });
+    this.props.fetchMineRecordById(mineGuid).then(() => {
       onMineInfoLoaded();
     });
   };
@@ -140,19 +127,9 @@ export class NoticeOfWorkApplication extends Component {
     this.setState({ activeTab: tab, isTabLoaded: true });
   };
 
-  loadCreatePermitApplication = () => {
-    const { mineGuid, permitGuid } = this.props.history.location.state;
-    this.loadMineInfo(mineGuid);
-    this.setState({
-      initialPermitGuid: permitGuid,
-      isLoaded: true,
-    });
-  };
-
   loadNoticeOfWork = async (id) => {
     this.setState({ isLoaded: false });
     await Promise.all([
-      this.props.fetchOriginalNoticeOfWorkApplication(id),
       this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
         if (data.imported_to_core && this.props.match.params.tab === "verification") {
           this.handleTabChange("application");
@@ -173,7 +150,7 @@ export class NoticeOfWorkApplication extends Component {
 
   handleTabChange = (key) => {
     this.props.history.replace(
-      routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+      routes.ADMIN_AMENDMENT_APPLICATION.dynamicRoute(
         this.props.noticeOfWork.now_application_guid,
         kebabCase(key)
       )
@@ -194,8 +171,6 @@ export class NoticeOfWorkApplication extends Component {
     if (!this.state.isLoaded) {
       return <Loading />;
     }
-    const isImported = this.props.noticeOfWork.imported_to_core;
-    const verificationComplete = isImported && this.props.noticeOfWork.lead_inspector_party_guid;
     return (
       <div className="page">
         <NoticeOfWorkPageHeader
@@ -216,111 +191,52 @@ export class NoticeOfWorkApplication extends Component {
           style={{ margin: "0" }}
           centered
         >
-          {!isImported && (
-            <Tabs.TabPane tab="Verification" key="verification">
-              <VerificationTab
-                isNewApplication={this.state.isNewApplication}
-                loadMineData={this.loadMineInfo}
-                isMajorMine={this.state.isMajorMine}
+          <Tabs.TabPane tab={this.renderTabTitle("Application", "REV")} key="application">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <ApplicationTab fixedTop={this.state.fixedTop} />
+            </LoadingWrapper>
+          </Tabs.TabPane>
+
+          <Tabs.TabPane tab={this.renderTabTitle("Referral", "REF")} key="referral">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <ReferralTabs
+                mineGuid={this.props.noticeOfWork.mine_guid}
                 noticeOfWork={this.props.noticeOfWork}
-                mineGuid={this.state.mineGuid}
-                loadNoticeOfWork={this.loadNoticeOfWork}
-                initialPermitGuid={this.state.initialPermitGuid}
-                originalNoticeOfWork={this.props.originalNoticeOfWork}
-                handleTabChange={this.handleTabChange}
+                type="REF"
+                fixedTop={this.state.fixedTop}
               />
-            </Tabs.TabPane>
-          )}
-
-          <Tabs.TabPane
-            tab={this.renderTabTitle("Application", "REV")}
-            key="application"
-            disabled={!isImported}
-          >
-            {isImported && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ApplicationTab fixedTop={this.state.fixedTop} />
-              </LoadingWrapper>
-            )}
+            </LoadingWrapper>
           </Tabs.TabPane>
 
-          <Tabs.TabPane
-            tab={this.renderTabTitle("Referral", "REF")}
-            key="referral"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  type="REF"
-                  fixedTop={this.state.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
+          <Tabs.TabPane tab={this.renderTabTitle("Consultation", "CON")} key="consultation">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <ReferralTabs
+                mineGuid={this.props.noticeOfWork.mine_guid}
+                noticeOfWork={this.props.noticeOfWork}
+                type="FNC"
+                fixedTop={this.state.fixedTop}
+              />
+            </LoadingWrapper>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab={this.renderTabTitle("Draft", "DFT")} key="draft-permit">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <DraftPermitTab fixedTop={this.state.fixedTop} />
+            </LoadingWrapper>
           </Tabs.TabPane>
 
-          <Tabs.TabPane
-            tab={this.renderTabTitle("Consultation", "CON")}
-            key="consultation"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  type="FNC"
-                  fixedTop={this.state.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
+          <Tabs.TabPane tab="Process" key="process-permit">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <ProcessPermit
+                mineGuid={this.props.noticeOfWork.mine_guid}
+                noticeOfWork={this.props.noticeOfWork}
+                fixedTop={this.state.fixedTop}
+              />
+            </LoadingWrapper>
           </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={this.renderTabTitle("Public Comment", "PUB")}
-            key="public-comment"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ReferralTabs
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  type="PUB"
-                  fixedTop={this.state.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={this.renderTabTitle("Draft", "DFT")}
-            key="draft-permit"
-            disabled={!verificationComplete}
-          >
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <DraftPermitTab fixedTop={this.state.fixedTop} />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-
-          <Tabs.TabPane tab="Process" key="process-permit" disabled={!verificationComplete}>
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ProcessPermit
-                  mineGuid={this.props.noticeOfWork.mine_guid}
-                  noticeOfWork={this.props.noticeOfWork}
-                  fixedTop={this.state.fixedTop}
-                />
-              </LoadingWrapper>
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Administrative" key="administrative" disabled={!verificationComplete}>
-            {verificationComplete && (
-              <LoadingWrapper condition={this.state.isTabLoaded}>
-                <AdministrativeTab fixedTop={this.state.fixedTop} />
-              </LoadingWrapper>
-            )}
+          <Tabs.TabPane tab="Administrative" key="administrative">
+            <LoadingWrapper condition={this.state.isTabLoaded}>
+              <AdministrativeTab fixedTop={this.state.fixedTop} />
+            </LoadingWrapper>
           </Tabs.TabPane>
         </Tabs>
       </div>
@@ -330,7 +246,6 @@ export class NoticeOfWorkApplication extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
-  originalNoticeOfWork: getOriginalNoticeOfWork(state),
   mines: getMines(state),
   inspectorsHash: getInspectorsHash(state),
   applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
@@ -343,7 +258,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchImportedNoticeOfWorkApplication,
-      fetchOriginalNoticeOfWorkApplication,
       fetchImportNoticeOfWorkSubmissionDocumentsJob,
       fetchMineRecordById,
       clearNoticeOfWorkApplication,
@@ -351,7 +265,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-NoticeOfWorkApplication.propTypes = propTypes;
-NoticeOfWorkApplication.defaultProps = defaultProps;
+AdminAmendmentApplication.propTypes = propTypes;
+AdminAmendmentApplication.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminAmendmentApplication);

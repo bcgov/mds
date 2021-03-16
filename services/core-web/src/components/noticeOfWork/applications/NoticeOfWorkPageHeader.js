@@ -31,7 +31,7 @@ const NoticeOfWorkPageHeader = (props) => {
     ] || Strings.UNASSIGNED;
 
   return (
-    <div>
+    <div className="padding-lg">
       <h1>
         NoW Number:&nbsp;{nowNumber}&nbsp;
         <span>

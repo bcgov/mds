@@ -26,7 +26,7 @@ const propTypes = {
 const defaultProps = {
   initialPermitGuid: "",
 };
-export class ApplicationStepOne extends Component {
+export class VerificationTab extends Component {
   state = {
     isImported: false,
     isImporting: false,
@@ -108,7 +108,7 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-ApplicationStepOne.propTypes = propTypes;
-ApplicationStepOne.defaultProps = defaultProps;
+VerificationTab.propTypes = propTypes;
+VerificationTab.defaultProps = defaultProps;
 
-export default connect(null, mapDispatchToProps)(ApplicationStepOne);
+export default connect(null, mapDispatchToProps)(VerificationTab);
