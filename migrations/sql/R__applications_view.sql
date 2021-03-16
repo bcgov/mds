@@ -51,7 +51,9 @@ AS SELECT nid.now_application_guid,
         END AS originating_system,
     app.create_timestamp AS import_timestamp,
     app.update_timestamp,
-    nowt.description AS application_type_description
+    nowt.description AS application_type_description,
+    app.now_application_status_code,
+    app.status_updated_date
    FROM now_application_identity nid
      JOIN mine m ON nid.mine_guid = m.mine_guid
      LEFT JOIN now_submissions.application sub ON nid.messageid = sub.messageid AND sub.processed::text = 'Y'::text
