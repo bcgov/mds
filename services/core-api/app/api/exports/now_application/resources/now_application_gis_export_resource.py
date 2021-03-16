@@ -12,8 +12,10 @@ from app.api.constants import NOW_APPLICATION_GIS_EXPORT, TIMEOUT_60_MINUTES
 
 
 class NowApplicationGisExportResource(Resource):
-    # TODO: Write description
-    @api.doc(description='')
+    @api.doc(
+        description=
+        'This endpoint returns a CSV export of Notice of Work details indended for uses by the GIS team.'
+    )
     @requires_any_of([VIEW_ALL, GIS])
     def get(self):
         csv_string = cache.get(NOW_APPLICATION_GIS_EXPORT)
