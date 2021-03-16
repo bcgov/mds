@@ -207,7 +207,7 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
               <Button type="primary">View/Edit</Button>
             </Link>
           </div>

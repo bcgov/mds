@@ -1,0 +1,114 @@
+import React from "react";
+import PropTypes from "prop-types";
+import { Field, reduxForm, getFormValues } from "redux-form";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
+import { required, dateNotInFuture } from "@common/utils/Validate";
+import CustomPropTypes from "@/customPropTypes";
+import { resetForm, createDropDownList } from "@common/utils/helpers";
+import * as FORM from "@/constants/forms";
+import { renderConfig } from "@/components/common/config";
+import { getPermits } from "@common/selectors/permitSelectors";
+
+const propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any),
+  permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+};
+
+const defaultProps = {
+  formValues: {},
+};
+
+export const AdministrativeAmendmentForm = (props) => {
+  const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_id");
+  const filetedPermitAmendments = props.permits.filter(
+    ({ permit_id }) => permit_id === props.formValues.permit_id
+  )[0];
+
+  const amendmentDropdown = props.formValues.permit_id
+    ? createDropDownList(
+        filetedPermitAmendments.permit_amendments,
+        "issue_date",
+        "permit_amendment_guid"
+      )
+    : [];
+  return (
+    <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Row>
+        <Col span={24}>
+          <Form.Item>
+            <Field
+              id="permit_id"
+              name="permit_id"
+              placeholder="Select a Permit"
+              label="Select a Permit*"
+              component={renderConfig.SELECT}
+              data={permitDropdown}
+              validate={[required]}
+            />
+          </Form.Item>
+          {props.formValues.permit_id && (
+            <Form.Item>
+              <Field
+                id="permit_amendment_guid"
+                name="permit_amendment_guid"
+                label="Select Source Amendment*"
+                component={renderConfig.SELECT}
+                data={amendmentDropdown}
+                validate={[required]}
+              />
+            </Form.Item>
+          )}
+          <Form.Item>
+            <Field
+              id="received_date"
+              name="received_date"
+              label="Received Date*"
+              component={renderConfig.DATE}
+              validate={[required, dateNotInFuture]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <div className="right center-mobile">
+        <Popconfirm
+          placement="topRight"
+          title="Are you sure you want to cancel?"
+          onConfirm={props.closeModal}
+          okText="Yes"
+          cancelText="No"
+          disabled={props.submitting}
+        >
+          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
+            Cancel
+          </Button>
+        </Popconfirm>
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
+          Proceed
+        </Button>
+      </div>
+    </Form>
+  );
+};
+
+AdministrativeAmendmentForm.propTypes = propTypes;
+AdministrativeAmendmentForm.defaultProps = defaultProps;
+
+export default compose(
+  connect((state) => ({
+    formValues: getFormValues(FORM.ADMINISTRATIVE_AMENDMENT_FORM)(state),
+    permits: getPermits(state),
+  })),
+  reduxForm({
+    form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
+    enableReinitialize: false,
+  })
+)(AdministrativeAmendmentForm);

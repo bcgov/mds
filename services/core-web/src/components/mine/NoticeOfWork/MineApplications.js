@@ -5,8 +5,12 @@ import { Divider } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
-import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
+import {
+  fetchMineNoticeOfWorkApplications,
+  createAdminAmendmentApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
@@ -16,6 +20,7 @@ import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
+import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -25,9 +30,12 @@ const propTypes = {
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  createAdminAmendmentApplication: PropTypes.func.isRequired,
 };
 
-export class MineNOWApplications extends Component {
+export class MineApplications extends Component {
   params = queryString.parse(this.props.location.search);
 
   listQueryParams = [];
@@ -104,13 +112,38 @@ export class MineNOWApplications extends Component {
     );
   };
 
+  handleAddAdminAmendment = (values) => {
+    return this.props
+      .createAdminAmendmentApplication(values)
+      .then(() => {
+        this.renderDataFromURL(this.props.location.search);
+      })
+      .finally(() => {
+        this.props.closeModal();
+      });
+  };
+
+  handleOpenAddAdminAmendmentModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleAddAdminAmendment,
+        title: "Add Administrative Amendment ",
+      },
+      content: modalConfig.ADD_ADMIN_AMENDMENT_MODAL,
+    });
+  };
+
   render() {
     const isMajorMine = this.props.mines[this.props.mineGuid].major_mine_ind;
     const type = isMajorMine ? "Permit Application" : "Notice of Work Application";
     return (
       <div className="tab__content">
-        <div>
-          <h2>{type}s</h2>
+        <h2>Applications</h2>
+        <Divider />
+
+        <div className="inline-flex between">
+          <h4 className="uppercase">{type}s</h4>
           <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
             <AddButton
               onClick={() =>
@@ -119,11 +152,10 @@ export class MineNOWApplications extends Component {
                 })
               }
             >
-              Add a {type}
+              Add {type}
             </AddButton>
           </AuthorizationWrapper>
         </div>
-        <Divider />
         <MineNoticeOfWorkTable
           isMajorMine={isMajorMine}
           isLoaded={this.state.isLoaded}
@@ -137,28 +169,32 @@ export class MineNOWApplications extends Component {
           mineRegionHash={this.props.mineRegionHash}
         />
         <br />
-        <div>
-          <h2>Administrative Amendments</h2>
-          <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
-            {/* // eslint-disable-next-line no-alert */}
-            <AddButton onClick={() => alert("Create Admin Amendment")}>
-              Add a Administrative Amendments
-            </AddButton>
-          </AuthorizationWrapper>
-        </div>
-        <MineAdministrativeAmendmentTable
-          isMajorMine={isMajorMine}
-          isLoaded={this.state.isLoaded}
-          handleSearch={this.handleSearch}
-          administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
-            (app) => app.application_type_code === "ADA"
-          )}
-          sortField={this.state.params.sort_field}
-          sortDir={this.state.params.sort_dir}
-          searchParams={this.state.params}
-          onExpand={this.onExpand}
-          mineRegionHash={this.props.mineRegionHash}
-        />
+        <br />
+        <AuthorizationWrapper inTesting>
+          <>
+            <div className="inline-flex between">
+              <h4 className="uppercase">Administrative Amendments</h4>
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS} inTesting>
+                <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
+                  Add Administrative Amendment
+                </AddButton>
+              </AuthorizationWrapper>
+            </div>
+            <MineAdministrativeAmendmentTable
+              isMajorMine={isMajorMine}
+              isLoaded={this.state.isLoaded}
+              handleSearch={this.handleSearch}
+              administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
+                (app) => app.application_type_code === "ADA"
+              )}
+              sortField={this.state.params.sort_field}
+              sortDir={this.state.params.sort_dir}
+              searchParams={this.state.params}
+              onExpand={this.onExpand}
+              mineRegionHash={this.props.mineRegionHash}
+            />
+          </>
+        </AuthorizationWrapper>
       </div>
     );
   }
@@ -175,10 +211,13 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchMineNoticeOfWorkApplications,
+      openModal,
+      closeModal,
+      createAdminAmendmentApplication,
     },
     dispatch
   );
 
-MineNOWApplications.propTypes = propTypes;
+MineApplications.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MineNOWApplications);
+export default connect(mapStateToProps, mapDispatchToProps)(MineApplications);

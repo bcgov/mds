@@ -478,3 +478,27 @@ export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocum
     .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const createAdminAmendmentApplication = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.ADMINISTRATIVE_AMENDMENT_APPLICATION()}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      notification.success({
+        message: "Successfully created an Administrative Amendment Application",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
