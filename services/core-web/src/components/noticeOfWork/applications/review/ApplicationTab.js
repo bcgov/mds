@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import { Prompt, withRouter } from "react-router-dom";
-import { Button, Dropdown, Menu, Popconfirm, Alert, Tabs, Divider } from "antd";
-import { DownOutlined, ExportOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Popconfirm, Alert, Divider } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {
   getFormValues,
@@ -14,65 +14,80 @@ import {
 } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { get, isNull, isUndefined, kebabCase } from "lodash";
+import { get, isNull, isUndefined } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
   fetchOriginalNoticeOfWorkApplication,
-  fetchImportNoticeOfWorkSubmissionDocumentsJob,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { openModal, closeModal } from "@common/actions/modalActions";
-import { getDropdownInspectors, getInspectorsHash } from "@common/selectors/partiesSelectors";
+import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
   getOriginalNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNOWReclamationSummary,
 } from "@common/selectors/noticeOfWorkSelectors";
-import { getMines } from "@common/selectors/mineSelectors";
 import {
-  getDropdownNoticeOfWorkApplicationStatusOptions,
   getGeneratableNoticeOfWorkApplicationDocumentTypeOptions,
   getNoticeOfWorkApplicationStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { formatDate, flattenObject } from "@common/utils/helpers";
+import { flattenObject } from "@common/utils/helpers";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
 import {
-  generateNoticeOfWorkApplicationDocument,
   exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import * as routes from "@/constants/routes";
-import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
-import NullScreen from "@/components/common/NullScreen";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
-import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import * as FORM from "@/constants/forms";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import { modalConfig } from "@/components/modalContent/config";
-import { NOWApplicationAdministrative } from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
-import Loading from "@/components/common/Loading";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
-import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
-import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
  * @constant ApplicationTab renders All content under the Application Tab
  */
 
-const propTypes = {};
+const propTypes = {
+  updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
+  exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  clearNoticeOfWorkApplication: PropTypes.func.isRequired,
+  focus: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
+  formErrors: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
+  ),
+  fixedTop: PropTypes.bool.isRequired,
+  submitFailed: PropTypes.bool.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
+  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+    state: PropTypes.shape({
+      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+    }),
+  }).isRequired,
+};
 const defaultProps = {};
 
 export class ApplicationTab extends Component {
@@ -174,7 +189,7 @@ export class ApplicationTab extends Component {
     );
   };
 
-  menu = (isReview = false) => {
+  menu = () => {
     const isImported = this.props.noticeOfWork.imported_to_core;
     return (
       <Menu>
@@ -215,6 +230,18 @@ export class ApplicationTab extends Component {
         </>
       </Menu>
     );
+  };
+
+  handleCancelNOWEdit = () => {
+    if (this.props.formValues.contacts.length > 0) {
+      // eslint-disable-next-line array-callback-return
+      this.props.formValues.contacts.map((contact) => delete contact.state_modified);
+    }
+
+    this.props.reset(FORM.EDIT_NOTICE_OF_WORK);
+    this.setState((prevState) => ({
+      isViewMode: !prevState.isViewMode,
+    }));
   };
 
   renderEditModeNav = () => {
@@ -455,11 +482,8 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   formErrors: getFormSyncErrors(FORM.EDIT_NOTICE_OF_WORK)(state),
   submitFailed: hasSubmitFailed(FORM.EDIT_NOTICE_OF_WORK)(state),
-  mines: getMines(state),
   inspectors: getDropdownInspectors(state),
-  inspectorsHash: getInspectorsHash(state),
   reclamationSummary: getNOWReclamationSummary(state),
-  applicationStatusOptions: getDropdownNoticeOfWorkApplicationStatusOptions(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
   documentContextTemplate: getDocumentContextTemplate(state),

@@ -20,7 +20,11 @@ import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkReviews } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  getNoticeOfWork,
+  getImportNowSubmissionDocumentsJob,
+  getNoticeOfWorkReviews,
+} from "@common/selectors/noticeOfWorkSelectors";
 import {
   getDropdownNoticeOfWorkApplicationReviewTypeOptions,
   getNoticeOfWorkApplicationApplicationReviewTypeHash,
@@ -314,6 +318,8 @@ export class ReferralTabs extends Component {
 
 const mapStateToProps = (state) => ({
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
+  noticeOfWork: getNoticeOfWork(state),
+  importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   noticeOfWorkReviewTypes: getDropdownNoticeOfWorkApplicationReviewTypeOptions(state),
   noticeOfWorkReviewTypesHash: getNoticeOfWorkApplicationApplicationReviewTypeHash(state),
 });

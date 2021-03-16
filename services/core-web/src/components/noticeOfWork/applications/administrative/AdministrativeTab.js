@@ -5,6 +5,7 @@ import { Button, Menu, Dropdown } from "antd";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
+import { formatDate } from "@common/utils/helpers";
 import { DownOutlined, ExportOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
@@ -16,6 +17,12 @@ import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
 } from "@common/selectors/noticeOfWorkSelectors";
+import {
+  generateNoticeOfWorkApplicationDocument,
+  exportNoticeOfWorkApplicationDocument,
+  fetchNoticeOfWorkApplicationContextTemplate,
+} from "@/actionCreators/documentActionCreator";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
@@ -55,6 +62,64 @@ export class AdministrativeTab extends Component {
 
   handleMenuClick = () => {
     this.setState({ adminMenuVisible: false });
+  };
+
+  handleGenerateDocument = (menuItem) => {
+    const documentTypeCode = menuItem.key;
+    const documentType = this.props.generatableApplicationDocuments[documentTypeCode];
+    const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
+    this.props
+      .fetchNoticeOfWorkApplicationContextTemplate(
+        documentTypeCode,
+        this.props.noticeOfWork.now_application_guid
+      )
+      .then(() => {
+        const initialValues = {};
+        this.props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
+        this.props.openModal({
+          props: {
+            initialValues,
+            documentType: this.props.documentContextTemplate,
+            onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
+            title: `Generate ${documentType.description}`,
+            signature,
+          },
+          width: "75vw",
+          content: modalConfig.GENERATE_DOCUMENT,
+        });
+      });
+  };
+
+  handleGenerateDocumentFormSubmit = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: newValues,
+    };
+    return this.props
+      .generateNoticeOfWorkApplicationDocument(
+        documentTypeCode,
+        payload,
+        "Successfully created document and attached it to Notice of Work",
+        () => {
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+            .then(() => this.setState({ isLoaded: true }));
+        }
+      )
+      .then(() => {
+        this.props.closeModal();
+      });
   };
 
   handleChangeNOWMineAndLocation = (values) => {
@@ -255,6 +320,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
+  documentContextTemplate: getDocumentContextTemplate(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -264,6 +330,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchImportedNoticeOfWorkApplication,
       openModal,
       closeModal,
+      fetchNoticeOfWorkApplicationContextTemplate,
+      generateNoticeOfWorkApplicationDocument,
     },
     dispatch
   );
