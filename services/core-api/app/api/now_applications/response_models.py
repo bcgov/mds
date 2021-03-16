@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL
 
 DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
     'DocumentTemplateFieldModel', {
@@ -97,9 +97,10 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
-    'NOWApplicationCutLines', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {   'calculated_total_disturbance': fields.Fixed(decimals=5),
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
+    'NOWApplicationCutLines', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
+    })
 
 NOW_APPLICATION_EXP_ACCESS = api.inherit(
     'NOWApplicationExplorationAccess', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
@@ -117,9 +118,10 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
     })
 
 NOW_APPLICATION_MECH_TRENCHING = api.inherit(
-    'NOWApplicationMechTrenching', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE,
-    {   'calculated_total_disturbance': fields.Fixed(decimals=5),
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))})
+    'NOWApplicationMechTrenching', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
+        'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
+    })
 
 NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
@@ -213,7 +215,8 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         fields.String,
         'proposed_activity':
         fields.String,
-        'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'calculated_total_disturbance':
+        fields.Fixed(decimals=5),
         'details':
         fields.List(fields.Nested(NOW_APPLICATION_UNDERGROUND_EXPLORATION_DETAIL, skip_none=True)),
     })
@@ -485,7 +488,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(NOW_SUBMISSION_DOCUMENT)),
         'filtered_submission_documents':
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
-        'is_pre_launch': fields.Boolean,
+        'is_pre_launch':
+        fields.Boolean,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -553,6 +557,11 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'last_updated_by': fields.String
     })
 
+APPLICATION_TRIGGER_TYPE_CODE = api.model('APPLICATION_TRIGGER_TYPE_CODE', {
+    'application_trigger_type_code': fields.String,
+    'description': fields.String
+})
+
 NOW_VIEW_MODEL = api.model(
     'NOW_VIEW_MODEL', {
         'now_application_guid': fields.String,
@@ -574,6 +583,15 @@ NOW_VIEW_MODEL = api.model(
             fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'import_timestamp': DateTime,
         'update_timestamp': DateTime,
+        'application_type_code': fields.String,
+        'application_type_description': fields.String,
+        'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL)),
+        'application_trigger_type_codes': fields.List(fields.Nested(APPLICATION_TRIGGER_TYPE_CODE)),
+        'permittee': fields.Nested(PARTY, skip_none=True),
+        'status_reason': fields.String,
+        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'issuing_inspector_party_guid': fields.String,
+        'issuing_inspector_name': fields.String,
     })
 
 PAGINATED_LIST = api.model(
