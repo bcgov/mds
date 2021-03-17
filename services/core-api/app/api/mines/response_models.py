@@ -142,8 +142,6 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'now_application_guid': fields.String,
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
-                                                                                  # TODO discuss this
-        'amendment_number': fields.String
     })
 
 PERMIT_AMENDMENT_MODEL = api.model(

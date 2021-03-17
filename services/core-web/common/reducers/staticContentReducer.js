@@ -42,6 +42,7 @@ const initialState = {
   permitConditionTypeOptions: [],
   permitConditionCategoryOptions: [],
   noticeOfWorkApplicationDelayOptions: [],
+  amendmentReasonCodeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -117,6 +118,8 @@ export const getPartyBusinessRoleOptions = (state) =>
   state[STATIC_CONTENT].partyBusinessRoleOptions;
 export const getDelayTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationDelayOptions;
+export const getAmendmentReasonCodeOptions = (state) =>
+  state[STATIC_CONTENT].amendmentReasonCodeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
