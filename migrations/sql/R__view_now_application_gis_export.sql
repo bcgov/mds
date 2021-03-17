@@ -199,6 +199,8 @@ AS SELECT
     permit_no,
     p.permit_status_code,
     permit_status_code_description,
+	pa.issue_date,
+	pa.authorization_end_date,
 
     -- Permittee
     permittee_first_name,
