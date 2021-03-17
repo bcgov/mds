@@ -14,9 +14,9 @@ ON CONFLICT DO NOTHING;
 ALTER TABLE now_application_identity ADD COLUMN application_type_code varchar(3);
 ALTER TABLE now_application_identity ADD CONSTRAINT application_type_code_fk FOREIGN KEY (application_type_code) REFERENCES application_type_code (application_type_code);
 
-INSERT INTO application_trigger_type_code
+INSERT INTO amendment_reason_code
 (
-    application_trigger_type_code,
+    amendment_reason_code,
     description,
     create_user,
     update_user,

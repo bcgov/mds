@@ -70,15 +70,15 @@ class NoticeOfWorkView(Base):
         'and_(foreign(PermitAmendment.now_application_guid)==NoticeOfWorkView.now_application_guid )'
     )
 
-    application_trigger_type_codes = db.relationship(
-        'ApplicationTriggerTypeCode',
+    amendment_reason_codes = db.relationship(
+        'ApplicationReasonCode',
         lazy='selectin',
         primaryjoin=
         'and_(foreign(ApplicationTriggerXref.now_application_guid)==NoticeOfWorkView.now_application_guid)',
         secondary=
-        'join(ApplicationTriggerXref, ApplicationTriggerTypeCode, foreign(ApplicationTriggerXref.application_trigger_type_code)==remote(ApplicationTriggerTypeCode.application_trigger_type_code))',
+        'join(ApplicationTriggerXref, ApplicationReasonCode, foreign(ApplicationTriggerXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
         secondaryjoin=
-        'foreign(ApplicationTriggerXref.application_trigger_type_code)==remote(ApplicationTriggerTypeCode.application_trigger_type_code)',
+        'foreign(ApplicationTriggerXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code)',
         viewonly=True)
 
     contacts = db.relationship(
@@ -101,6 +101,10 @@ class NoticeOfWorkView(Base):
         ]
 
         return permittees[0] if permittees else None
+
+    @hybrid_property
+    def permit_amendment(self):
+        return self.permit_amendments[0] if self.permit_amendments else None
 
     def __repr__(self):
         return '<NoticeOfWorkView %r>' % self.now_application_guid

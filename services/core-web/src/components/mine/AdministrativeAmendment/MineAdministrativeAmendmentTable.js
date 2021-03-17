@@ -10,7 +10,6 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
-// import { isEmpty } from "lodash";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications
@@ -68,11 +67,10 @@ const transformRowData = (applications) => {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       documents: application.documents,
-      amendment_number:
-        application.permit_amendments && application.permit_amendments.length > 0
-          ? application.permit_amendments[0].amendment_number
-          : Strings.EMPTY_FIELD,
-      application_trigger_type_codes: application.application_trigger_type_codes,
+      permit_amendment_issue_date: application.permit_amendment
+        ? formatDate(application.permit_amendment.issue_date)
+        : Strings.EMPTY_FIELD,
+      amendment_reason_codes: application.amendment_reason_codes,
       issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
       permittee_name: permittee_name || Strings.EMPTY_FIELD,
       approval_date:
@@ -138,14 +136,14 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
     {
       title: "Source Amendment",
-      dataIndex: "amendment_number",
-      sortField: "amendment_number",
+      dataIndex: "permit_amendment_issue_date",
+      sortField: "permit_amendment_issue_date",
       render: (text) => <div title="Amendment Number">{text}</div>,
       sorter: true,
     },
     {
       title: "Trigger Types",
-      dataIndex: "application_trigger_type_codes",
+      dataIndex: "amendment_reason_codes",
       sorter: false,
       render: (trigger) => (
         <div className="cap-col-height">

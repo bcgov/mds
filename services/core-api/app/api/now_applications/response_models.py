@@ -557,13 +557,14 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'last_updated_by': fields.String
     })
 
-APPLICATION_TRIGGER_TYPE_CODE = api.model('APPLICATION_TRIGGER_TYPE_CODE', {
-    'application_trigger_type_code': fields.String,
+AMENDMENT_REASON_CODE = api.model('AMENDMENT_REASON_CODE', {
+    'amendment_reason_code': fields.String,
     'description': fields.String
 })
 
 NOW_VIEW_MODEL = api.model(
-    'NOW_VIEW_MODEL', {
+    'NOW_VIEW_MODEL',
+    {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_no': fields.String,
@@ -585,8 +586,8 @@ NOW_VIEW_MODEL = api.model(
         'update_timestamp': DateTime,
         'application_type_code': fields.String,
         'application_type_description': fields.String,
-        'permit_amendments': fields.List(fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL)),
-        'application_trigger_type_codes': fields.List(fields.Nested(APPLICATION_TRIGGER_TYPE_CODE)),
+        'permit_amendment':fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
+        'amendment_reason_codes': fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
         'permittee': fields.Nested(PARTY, skip_none=True),
         'status_reason': fields.String,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),

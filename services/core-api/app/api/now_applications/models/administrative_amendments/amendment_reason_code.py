@@ -7,14 +7,14 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class ApplicationTriggerTypeCode(Base):
-    __tablename__ = 'application_trigger_type_code'
-    application_trigger_type_code = db.Column(db.String(3), nullable=False, primary_key=True)
+class ApplicationReasonCode(Base):
+    __tablename__ = 'amendment_reason_code'
+    amendment_reason_code = db.Column(db.String(3), nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<ApplicationTriggerTypeCode %r>' % self.application_trigger_type_code
+        return '<ApplicationReasonCode %r>' % self.amendment_reason_code
 
     @classmethod
     def get_all(cls):
