@@ -16,9 +16,6 @@ export const AddAdministrativeAmendmentModal = (props) => (
     <p>
       Creating an <Highlight search="Administrative Amendment">Administrative Amendment</Highlight>{" "}
       allows you to update/change the selected permit amendment.
-      <br />
-      The <Highlight search="Draft Permit">Draft Permit</Highlight> process with be tracked from
-      when you click &quot;Proceed&quot; until the new permit is issued.
     </p>
     <br />
     <AdministrativeAmendmentForm {...props} />

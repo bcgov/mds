@@ -484,7 +484,7 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.ADMINISTRATIVE_AMENDMENT_APPLICATION()}`,
+      `${ENVIRONMENT.apiUrl}${API.ADMINISTRATIVE_AMENDMENT_APPLICATION}`,
       payload,
       createRequestHeader()
     )

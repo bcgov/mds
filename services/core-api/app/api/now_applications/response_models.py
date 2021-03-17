@@ -559,7 +559,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
 
 AMENDMENT_REASON_CODE = api.model('AMENDMENT_REASON_CODE', {
     'amendment_reason_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean,
 })
 
 NOW_VIEW_MODEL = api.model(

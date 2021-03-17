@@ -8,10 +8,11 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, dateNotInFuture } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm, createDropDownList } from "@common/utils/helpers";
+import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { getPermits } from "@common/selectors/permitSelectors";
+import { getAmendmentReasonCodeDropdownOptions } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -19,6 +20,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
+  amendmentReasonCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -27,17 +29,23 @@ const defaultProps = {
 
 export const AdministrativeAmendmentForm = (props) => {
   const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_id");
-  const filetedPermitAmendments = props.permits.filter(
+  const permitAmendments = props.permits.filter(
     ({ permit_id }) => permit_id === props.formValues.permit_id
   )[0];
 
   const amendmentDropdown = props.formValues.permit_id
     ? createDropDownList(
-        filetedPermitAmendments.permit_amendments,
+        permitAmendments.permit_amendments.filter(
+          ({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT"
+        ),
         "issue_date",
-        "permit_amendment_guid"
+        "permit_amendment_guid",
+        false,
+        null,
+        formatDate
       )
     : [];
+
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row>
@@ -47,7 +55,7 @@ export const AdministrativeAmendmentForm = (props) => {
               id="permit_id"
               name="permit_id"
               placeholder="Select a Permit"
-              label="Select a Permit*"
+              label="Permit*"
               component={renderConfig.SELECT}
               data={permitDropdown}
               validate={[required]}
@@ -58,13 +66,23 @@ export const AdministrativeAmendmentForm = (props) => {
               <Field
                 id="permit_amendment_guid"
                 name="permit_amendment_guid"
-                label="Select Source Amendment*"
+                label="Source Amendment by Issue Date*"
                 component={renderConfig.SELECT}
                 data={amendmentDropdown}
                 validate={[required]}
               />
             </Form.Item>
           )}
+          <Form.Item>
+            <Field
+              id="amendment_reason_codes"
+              name="amendment_reason_codes"
+              label="Reason for Amendment*"
+              component={renderConfig.MULTI_SELECT}
+              data={props.amendmentReasonCodeOptions}
+              validate={[required]}
+            />
+          </Form.Item>
           <Form.Item>
             <Field
               id="received_date"
@@ -104,6 +122,7 @@ export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.ADMINISTRATIVE_AMENDMENT_FORM)(state),
     permits: getPermits(state),
+    amendmentReasonCodeOptions: getAmendmentReasonCodeDropdownOptions(state),
   })),
   reduxForm({
     form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,

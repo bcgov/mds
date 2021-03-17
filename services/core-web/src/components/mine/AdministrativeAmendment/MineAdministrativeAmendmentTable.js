@@ -10,6 +10,7 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications
@@ -73,8 +74,10 @@ const transformRowData = (applications) => {
       amendment_reason_codes: application.amendment_reason_codes,
       issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
       permittee_name: permittee_name || Strings.EMPTY_FIELD,
-      approval_date:
-        application.now_application_status_code === "AIA"
+      decision_date:
+        application.now_application_status_code === "AIA" ||
+        application.now_application_status_code === "REJ" ||
+        application.now_application_status_code === "NPR"
           ? formatDate(application.status_updated_date)
           : Strings.EMPTY_FIELD,
     };
@@ -131,18 +134,18 @@ export class MineAdministrativeAmendmentTable extends Component {
       title: "Application",
       dataIndex: "now_number",
       sortField: "now_number",
-      render: (text) => <div title="Number">{text}</div>,
+      render: (text) => <div title="Application">{text}</div>,
       sorter: true,
     },
     {
-      title: "Source Amendment",
+      title: "Source Amendment Issue Date",
       dataIndex: "permit_amendment_issue_date",
       sortField: "permit_amendment_issue_date",
-      render: (text) => <div title="Amendment Number">{text}</div>,
+      render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
       sorter: true,
     },
     {
-      title: "Trigger Types",
+      title: "Amendment Reason",
       dataIndex: "amendment_reason_codes",
       sorter: false,
       render: (trigger) => (
@@ -190,14 +193,14 @@ export class MineAdministrativeAmendmentTable extends Component {
       title: "Application Date",
       dataIndex: "received_date",
       sortField: "received_date",
-      render: (text) => <div title="Received">{text}</div>,
+      render: (text) => <div title="Application Date">{text}</div>,
       sorter: true,
     },
     {
-      title: "Approval Date",
-      dataIndex: "approval_date",
-      sortField: "approval_date",
-      render: (text) => <div title="Approval Date">{text}</div>,
+      title: "Decision Date",
+      dataIndex: "decision_date",
+      sortField: "decision_date",
+      render: (text) => <div title="Decision Date">{text}</div>,
       sorter: true,
     },
     {
@@ -205,9 +208,11 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
-              <Button type="primary">View/Edit</Button>
-            </Link>
+            <AuthorizationWrapper inTesting>
+              <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
+                <Button type="primary">Open</Button>
+              </Link>
+            </AuthorizationWrapper>
           </div>
         ),
     },

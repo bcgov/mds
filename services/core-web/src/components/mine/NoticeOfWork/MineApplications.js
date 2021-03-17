@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Divider } from "antd";
+import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
@@ -21,6 +21,7 @@ import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
 import { modalConfig } from "@/components/modalContent/config";
+import { detectProdEnvironment } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -113,8 +114,12 @@ export class MineApplications extends Component {
   };
 
   handleAddAdminAmendment = (values) => {
+    const payload = {
+      mine_guid: this.props.mineGuid,
+      ...values,
+    };
     return this.props
-      .createAdminAmendmentApplication(values)
+      .createAdminAmendmentApplication(payload)
       .then(() => {
         this.renderDataFromURL(this.props.location.search);
       })
@@ -137,64 +142,74 @@ export class MineApplications extends Component {
   render() {
     const isMajorMine = this.props.mines[this.props.mineGuid].major_mine_ind;
     const type = isMajorMine ? "Permit Application" : "Notice of Work Application";
+    const isProd = detectProdEnvironment();
     return (
       <div className="tab__content">
         <h2>Applications</h2>
         <Divider />
-
-        <div className="inline-flex between">
-          <h4 className="uppercase">{type}s</h4>
-          <AuthorizationWrapper isMajorMine={isMajorMine} permission={Permission.EDIT_PERMITS}>
-            <AddButton
-              onClick={() =>
-                this.props.history.replace(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
-                  mineGuid: this.props.mineGuid,
-                })
-              }
-            >
-              Add {type}
-            </AddButton>
-          </AuthorizationWrapper>
-        </div>
-        <MineNoticeOfWorkTable
-          isMajorMine={isMajorMine}
-          isLoaded={this.state.isLoaded}
-          handleSearch={this.handleSearch}
-          noticeOfWorkApplications={this.props.noticeOfWorkApplications.filter(
-            (app) => app.application_type_code === "NOW"
+        <Tabs type="card" style={{ textAlign: "left !important" }}>
+          <Tabs.TabPane tab="Notice of Work" key="1">
+            <>
+              <br />
+              <div className="inline-flex between">
+                <h4 className="uppercase">{type}s</h4>
+                <AuthorizationWrapper
+                  isMajorMine={isMajorMine}
+                  permission={Permission.EDIT_PERMITS}
+                >
+                  <AddButton
+                    onClick={() =>
+                      this.props.history.replace(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
+                        mineGuid: this.props.mineGuid,
+                      })
+                    }
+                  >
+                    Add {type}
+                  </AddButton>
+                </AuthorizationWrapper>
+              </div>
+              <MineNoticeOfWorkTable
+                isMajorMine={isMajorMine}
+                isLoaded={this.state.isLoaded}
+                handleSearch={this.handleSearch}
+                noticeOfWorkApplications={this.props.noticeOfWorkApplications.filter(
+                  (app) => app.application_type_code === "NOW"
+                )}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                searchParams={this.state.params}
+                mineRegionHash={this.props.mineRegionHash}
+              />
+            </>
+          </Tabs.TabPane>
+          {!isProd && (
+            <Tabs.TabPane tab="Administrative Amendments" key="2">
+              <>
+                <br />
+                <div className="inline-flex between">
+                  <h4 className="uppercase">Administrative Amendments</h4>
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS} inTesting>
+                    <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
+                      Add Administrative Amendment
+                    </AddButton>
+                  </AuthorizationWrapper>
+                </div>
+                <MineAdministrativeAmendmentTable
+                  isLoaded={this.state.isLoaded}
+                  handleSearch={this.handleSearch}
+                  administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
+                    (app) => app.application_type_code === "ADA"
+                  )}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
+                  searchParams={this.state.params}
+                  onExpand={this.onExpand}
+                  mineRegionHash={this.props.mineRegionHash}
+                />
+              </>
+            </Tabs.TabPane>
           )}
-          sortField={this.state.params.sort_field}
-          sortDir={this.state.params.sort_dir}
-          searchParams={this.state.params}
-          mineRegionHash={this.props.mineRegionHash}
-        />
-        <br />
-        <br />
-        <AuthorizationWrapper inTesting>
-          <>
-            <div className="inline-flex between">
-              <h4 className="uppercase">Administrative Amendments</h4>
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS} inTesting>
-                <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
-                  Add Administrative Amendment
-                </AddButton>
-              </AuthorizationWrapper>
-            </div>
-            <MineAdministrativeAmendmentTable
-              isMajorMine={isMajorMine}
-              isLoaded={this.state.isLoaded}
-              handleSearch={this.handleSearch}
-              administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
-                (app) => app.application_type_code === "ADA"
-              )}
-              sortField={this.state.params.sort_field}
-              sortDir={this.state.params.sort_dir}
-              searchParams={this.state.params}
-              onExpand={this.onExpand}
-              mineRegionHash={this.props.mineRegionHash}
-            />
-          </>
-        </AuthorizationWrapper>
+        </Tabs>
       </div>
     );
   }
