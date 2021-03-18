@@ -3,7 +3,7 @@ from flask import request, current_app
 from sqlalchemy_filters import apply_pagination, apply_sort
 from sqlalchemy import desc, func, or_, and_
 from werkzeug.exceptions import BadRequest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.extensions import api, db
 from app.api.mines.mine.models.mine import Mine
@@ -69,11 +69,6 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         # create a now_application_identity
         # create a application (copy all contacts, documents, conditions from original amendment)
         # copy permit conditions and if not present then copy standart conditions
-
-        # create draft amendment and copy everything from amendment in parameters to the draft amendment
-
-        # create a progress record if everything ran successfully
-
         data = self.parser.parse_args()
 
         try:
@@ -83,7 +78,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 notice_of_work_type_code = application.notice_of_work_type_code
             else:
                 notice_of_work_type_code = map_notice_of_work_type_from_permit_number(
-                    permit.permit_number)
+                    permit.permit_no)
 
             # create a now_application_identity
             # create an application
@@ -92,12 +87,15 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 mine_guid=data['mine_guid'],
                 permit=permit,
                 permit_id=permit.permit_id,
+                now_number=NOWApplicationIdentity.create_now_number(mine),
                 application_type_code='ADA')
             new_app.now_application = NOWApplication(
                 notice_of_work_type_code=notice_of_work_type_code,
                 now_application_status_code='REC',
                 submitted_date=data['received_date'],
-                received_date=data['received_date'])
+                received_date=data['received_date'],
+                proposed_start_date=permit_amendment.issue_date,
+                proposed_end_date=permit_amendment.authorization_end_date)
             new_app.originating_system = 'Core'
 
             db.session.add(new_app)
@@ -108,8 +106,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 # TODO clarify
                 # this will cope all permittees, even the ones for this permit
                 for mine_appt in [
-                        party for party in permit.permittee_appointments
-                        if party.mine_guid == mine.mine_guid
+                        party for party in permit.permittee_appointments if not party.end_date
+                        or party.end_date >= datetime.now(timezone.utc).date()
                 ]:
                     new_app_appt = NOWPartyAppointment(
                         mine_party_appt_type_code=mine_appt.mine_party_appt_type_code,
