@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
@@ -31,6 +32,7 @@ import AdministrativeTab from "@/components/noticeOfWork/applications/administra
 import Loading from "@/components/common/Loading";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
+import ApplicationGuard from "@/HOC/ApplicationGuard";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -62,6 +64,7 @@ const propTypes = {
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   clearNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -70,9 +73,9 @@ const defaultProps = {
 
 export class AdminAmendmentApplication extends Component {
   state = {
-    isLoaded: false,
+    // isLoaded: false,
     isTabLoaded: false,
-    fixedTop: false,
+    // fixedTop: false,
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
     activeTab: "application",
@@ -97,14 +100,14 @@ export class AdminAmendmentApplication extends Component {
       this.setState({ showNullScreen: true });
     }
 
-    window.addEventListener("scroll", this.handleScroll);
-    this.handleScroll();
+    // window.addEventListener("scroll", this.handleScroll);
+    // this.handleScroll();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.loadNoticeOfWork(nextProps.match.params.id);
-    }
+    // if (nextProps.match.params.id !== this.props.match.params.id) {
+    //   this.loadNoticeOfWork(nextProps.match.params.id);
+    // }
 
     if (nextProps.match.params.tab !== this.props.match.params.tab) {
       this.setState({ isTabLoaded: false });
@@ -114,7 +117,7 @@ export class AdminAmendmentApplication extends Component {
 
   componentWillUnmount() {
     this.props.clearNoticeOfWorkApplication();
-    window.removeEventListener("scroll", this.handleScroll);
+    // window.removeEventListener("scroll", this.handleScroll);
   }
 
   loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
@@ -140,13 +143,13 @@ export class AdminAmendmentApplication extends Component {
     ]);
   };
 
-  handleScroll = () => {
-    if (window.pageYOffset > 170 && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
-    }
-  };
+  // handleScroll = () => {
+  //   if (window.pageYOffset > 170 && !this.props.fixedTop) {
+  //     this.setState({ fixedTop: true });
+  //   } else if (window.pageYOffset <= 170 && this.props.fixedTop) {
+  //     this.setState({ fixedTop: false });
+  //   }
+  // };
 
   handleTabChange = (key) => {
     this.props.history.replace(
@@ -168,7 +171,7 @@ export class AdminAmendmentApplication extends Component {
     if (this.state.showNullScreen) {
       return <NullScreen type="unauthorized-page" />;
     }
-    if (!this.state.isLoaded) {
+    if (!this.props.isLoaded) {
       return <Loading />;
     }
     return (
@@ -180,7 +183,7 @@ export class AdminAmendmentApplication extends Component {
           noticeOfWorkApplicationStatusOptionsHash={
             this.props.noticeOfWorkApplicationStatusOptionsHash
           }
-          fixedTop={this.state.fixedTop}
+          fixedTop={this.props.fixedTop}
         />
         <Tabs
           size="large"
@@ -193,7 +196,7 @@ export class AdminAmendmentApplication extends Component {
         >
           <Tabs.TabPane tab={this.renderTabTitle("Application", "REV")} key="application">
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <ApplicationTab fixedTop={this.state.fixedTop} />
+              <ApplicationTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
           </Tabs.TabPane>
 
@@ -203,7 +206,7 @@ export class AdminAmendmentApplication extends Component {
                 mineGuid={this.props.noticeOfWork.mine_guid}
                 noticeOfWork={this.props.noticeOfWork}
                 type="REF"
-                fixedTop={this.state.fixedTop}
+                fixedTop={this.props.fixedTop}
               />
             </LoadingWrapper>
           </Tabs.TabPane>
@@ -214,13 +217,13 @@ export class AdminAmendmentApplication extends Component {
                 mineGuid={this.props.noticeOfWork.mine_guid}
                 noticeOfWork={this.props.noticeOfWork}
                 type="FNC"
-                fixedTop={this.state.fixedTop}
+                fixedTop={this.props.fixedTop}
               />
             </LoadingWrapper>
           </Tabs.TabPane>
           <Tabs.TabPane tab={this.renderTabTitle("Draft", "DFT")} key="draft-permit">
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <DraftPermitTab fixedTop={this.state.fixedTop} />
+              <DraftPermitTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
           </Tabs.TabPane>
 
@@ -229,13 +232,13 @@ export class AdminAmendmentApplication extends Component {
               <ProcessPermit
                 mineGuid={this.props.noticeOfWork.mine_guid}
                 noticeOfWork={this.props.noticeOfWork}
-                fixedTop={this.state.fixedTop}
+                fixedTop={this.props.fixedTop}
               />
             </LoadingWrapper>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Administrative" key="administrative">
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <AdministrativeTab fixedTop={this.state.fixedTop} />
+              <AdministrativeTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
           </Tabs.TabPane>
         </Tabs>
@@ -268,4 +271,7 @@ const mapDispatchToProps = (dispatch) =>
 AdminAmendmentApplication.propTypes = propTypes;
 AdminAmendmentApplication.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminAmendmentApplication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApplicationGuard(AdminAmendmentApplication));

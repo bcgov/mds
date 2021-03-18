@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
@@ -33,6 +34,7 @@ import AdministrativeTab from "@/components/noticeOfWork/applications/administra
 import Loading from "@/components/common/Loading";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
+import ApplicationGuard from "@/HOC/ApplicationGuard";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -66,6 +68,7 @@ const propTypes = {
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   clearNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -77,7 +80,7 @@ export class NoticeOfWorkApplication extends Component {
     isLoaded: false,
     isTabLoaded: false,
     isMajorMine: undefined,
-    fixedTop: false,
+    // fixedTop: false,
     noticeOfWorkPageFromRoute: undefined,
     showNullScreen: false,
     initialPermitGuid: "",
@@ -109,8 +112,8 @@ export class NoticeOfWorkApplication extends Component {
       this.setState({ showNullScreen: true });
     }
 
-    window.addEventListener("scroll", this.handleScroll);
-    this.handleScroll();
+    // window.addEventListener("scroll", this.handleScroll);
+    // this.handleScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -126,7 +129,7 @@ export class NoticeOfWorkApplication extends Component {
 
   componentWillUnmount() {
     this.props.clearNoticeOfWorkApplication();
-    window.removeEventListener("scroll", this.handleScroll);
+    // window.removeEventListener("scroll", this.handleScroll);
   }
 
   loadMineInfo = (mineGuid, onMineInfoLoaded = () => {}) => {
@@ -163,13 +166,13 @@ export class NoticeOfWorkApplication extends Component {
     ]);
   };
 
-  handleScroll = () => {
-    if (window.pageYOffset > 170 && !this.state.fixedTop) {
-      this.setState({ fixedTop: true });
-    } else if (window.pageYOffset <= 170 && this.state.fixedTop) {
-      this.setState({ fixedTop: false });
-    }
-  };
+  // handleScroll = () => {
+  //   if (window.pageYOffset > 170 && !this.props.fixedTop) {
+  //     this.setState({ fixedTop: true });
+  //   } else if (window.pageYOffset <= 170 && this.props.fixedTop) {
+  //     this.setState({ fixedTop: false });
+  //   }
+  // };
 
   handleTabChange = (key) => {
     this.props.history.replace(
@@ -205,7 +208,7 @@ export class NoticeOfWorkApplication extends Component {
           noticeOfWorkApplicationStatusOptionsHash={
             this.props.noticeOfWorkApplicationStatusOptionsHash
           }
-          fixedTop={this.state.fixedTop}
+          fixedTop={this.props.fixedTop}
         />
         <Tabs
           size="large"
@@ -239,7 +242,7 @@ export class NoticeOfWorkApplication extends Component {
           >
             {isImported && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <ApplicationTab fixedTop={this.state.fixedTop} />
+                <ApplicationTab fixedTop={this.props.fixedTop} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>
@@ -255,7 +258,7 @@ export class NoticeOfWorkApplication extends Component {
                   mineGuid={this.props.noticeOfWork.mine_guid}
                   noticeOfWork={this.props.noticeOfWork}
                   type="REF"
-                  fixedTop={this.state.fixedTop}
+                  fixedTop={this.props.fixedTop}
                 />
               </LoadingWrapper>
             )}
@@ -272,7 +275,7 @@ export class NoticeOfWorkApplication extends Component {
                   mineGuid={this.props.noticeOfWork.mine_guid}
                   noticeOfWork={this.props.noticeOfWork}
                   type="FNC"
-                  fixedTop={this.state.fixedTop}
+                  fixedTop={this.props.fixedTop}
                 />
               </LoadingWrapper>
             )}
@@ -287,7 +290,7 @@ export class NoticeOfWorkApplication extends Component {
                 <ReferralTabs
                   mineGuid={this.props.noticeOfWork.mine_guid}
                   type="PUB"
-                  fixedTop={this.state.fixedTop}
+                  fixedTop={this.props.fixedTop}
                 />
               </LoadingWrapper>
             )}
@@ -299,7 +302,7 @@ export class NoticeOfWorkApplication extends Component {
           >
             {verificationComplete && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <DraftPermitTab fixedTop={this.state.fixedTop} />
+                <DraftPermitTab fixedTop={this.props.fixedTop} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>
@@ -310,7 +313,7 @@ export class NoticeOfWorkApplication extends Component {
                 <ProcessPermit
                   mineGuid={this.props.noticeOfWork.mine_guid}
                   noticeOfWork={this.props.noticeOfWork}
-                  fixedTop={this.state.fixedTop}
+                  fixedTop={this.props.fixedTop}
                 />
               </LoadingWrapper>
             )}
@@ -318,7 +321,7 @@ export class NoticeOfWorkApplication extends Component {
           <Tabs.TabPane tab="Administrative" key="administrative" disabled={!verificationComplete}>
             {verificationComplete && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
-                <AdministrativeTab fixedTop={this.state.fixedTop} />
+                <AdministrativeTab fixedTop={this.props.fixedTop} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>
@@ -354,4 +357,7 @@ const mapDispatchToProps = (dispatch) =>
 NoticeOfWorkApplication.propTypes = propTypes;
 NoticeOfWorkApplication.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoticeOfWorkApplication);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApplicationGuard(NoticeOfWorkApplication));
