@@ -83,7 +83,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 notice_of_work_type_code = application.notice_of_work_type_code
             else:
                 notice_of_work_type_code = map_notice_of_work_type_from_permit_number(
-                    permit.permit_number)
+                    permit.permit_no)
 
             # create a now_application_identity
             # create an application
