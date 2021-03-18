@@ -5,7 +5,7 @@ from app.extensions import db
 from app.api.utils.models_mixins import Base
 
 
-class ApplicationTriggerXref(Base):
+class AmendmentReasonXref(Base):
     __tablename__ = "amendment_reason_xref"
 
     now_application_guid = db.Column(

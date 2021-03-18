@@ -74,11 +74,11 @@ class NoticeOfWorkView(Base):
         'ApplicationReasonCode',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(ApplicationTriggerXref.now_application_guid)==NoticeOfWorkView.now_application_guid)',
+        'and_(foreign(AmendmentReasonXref.now_application_guid)==NoticeOfWorkView.now_application_guid)',
         secondary=
-        'join(ApplicationTriggerXref, ApplicationReasonCode, foreign(ApplicationTriggerXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
+        'join(AmendmentReasonXref, ApplicationReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
         secondaryjoin=
-        'foreign(ApplicationTriggerXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code)',
+        'foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code)',
         viewonly=True)
 
     contacts = db.relationship(
