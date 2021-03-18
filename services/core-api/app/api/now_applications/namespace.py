@@ -39,7 +39,7 @@ api.add_resource(NOWApplicationDocumentIdentityResource,
 api.add_resource(NOWApplicationDocumentGenerateResource,
                  '/application-document-types/<string:document_type_code>/generate')
 api.add_resource(NOWApplicationDelayListResource, '/<string:now_application_guid>/delays')
-api.add_resource(AdministrativeAmendmentListResource, '/administrative-amendment')
+api.add_resource(AdministrativeAmendmentListResource, '/administrative-amendments')
 api.add_resource(NOWApplicationDelayResource,
                  '/<string:now_application_guid>/delays/<string:now_application_delay_guid>')
 
