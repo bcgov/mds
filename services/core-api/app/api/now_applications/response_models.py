@@ -595,7 +595,8 @@ NOW_VIEW_MODEL = api.model(
         'issuing_inspector_party_guid': fields.String,
         'issuing_inspector_name': fields.String,
         'now_application_status_code': fields.String,
-        'status_updated_date': Date
+        'status_updated_date': Date,
+        'administrative_amendment_documents':fields.String
     })
 
 PAGINATED_LIST = api.model(
