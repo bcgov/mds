@@ -1,5 +1,5 @@
 terraform {
-  source = "git::https://github.com/BCDevOps/terraform-octk-aws-workload-ecr.git//.?ref=v0.0.1"
+  source = "git::https://github.com/BCDevOps/terraform-octk-aws-workload-ecr.git//.?ref=v0.0.2"
 }
 
 locals {
@@ -7,8 +7,8 @@ locals {
   tfc_hostname     = local.common["tfc_hostname"]
   tfc_organization = local.common["tfc_organization"]
   project          = local.common["license_plate"]
-  environment      = reverse(split("/", get_terragrunt_dir()))[2] # pattern: mds-*, multi-repo-ecr, sandbox
-  repository_name  = reverse(split("/", get_terragrunt_dir()))[0]
+  ecrs             = local.common["ecrs"]
+  environment      = reverse(split("/", get_terragrunt_dir()))[1] # pattern: mds-*, multi-repo-ecr, sandbox
   read_principals  = get_env("AWS_ACCOUNTS_ECR_READ_ACCESS", "")
 }
 
@@ -17,7 +17,7 @@ generate "tfvars" {
   if_exists         = "overwrite"
   disable_signature = true
   contents          = <<-EOF
-repository_name = "${local.repository_name}"
+repository_names = ["${join("\", \"", local.ecrs)}"]
 read_principals = ${local.read_principals}
 EOF
 }

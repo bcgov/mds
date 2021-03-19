@@ -5,12 +5,6 @@ variable "slug" {
   default     = "mds"
 }
 
-variable "repository_name" {
-  description = "Name for the container repository to be provisioned."
-  type        = string
-  default     = "mds"
-}
-
 variable "target_env" {
   description = "AWS workload account env (e.g. dev, test, prod, sandbox, unclass)"
 }
