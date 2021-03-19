@@ -67,18 +67,15 @@ const transformRowData = (applications) => {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       documents: application.documents,
-      permit_amendment_issue_date: application.source_permit_amendment
-        ? formatDate(application.source_permit_amendment.issue_date)
-        : Strings.EMPTY_FIELD,
+      source_permit_amendment_issue_date:
+        (application.source_permit_amendment_issue_date &&
+          formatDate(application.source_permit_amendment_issue_date)) ||
+        Strings.EMPTY_FIELD,
       amendment_reason_codes: application.amendment_reason_codes,
       issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
       permittee_name: permittee_name || Strings.EMPTY_FIELD,
       decision_date:
-        application.now_application_status_code === "AIA" ||
-        application.now_application_status_code === "REJ" ||
-        application.now_application_status_code === "NPR"
-          ? formatDate(application.status_updated_date)
-          : Strings.EMPTY_FIELD,
+        (application.decision_date && formatDate(application.decision_date)) || Strings.EMPTY_FIELD,
     };
   });
 };
@@ -138,8 +135,8 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
     {
       title: "Source Amendment Issue Date",
-      dataIndex: "permit_amendment_issue_date",
-      sortField: "permit_amendment_issue_date",
+      dataIndex: "source_permit_amendment_issue_date",
+      sortField: "source_permit_amendment_issue_date",
       render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
       sorter: true,
     },
@@ -186,7 +183,6 @@ export class MineAdministrativeAmendmentTable extends Component {
       dataIndex: "permittee_name",
       sortField: "permittee_name",
       render: (text) => <div title="Permittee">{text}</div>,
-      sorter: true,
     },
     {
       title: "Application Date",

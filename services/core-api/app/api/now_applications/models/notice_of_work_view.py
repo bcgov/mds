@@ -23,6 +23,7 @@ class NoticeOfWorkView(Base):
     mine_region = association_proxy('mine', 'mine_region')
     source_permit_amendment_id = db.Column(
         UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_id'))
+    source_permit_amendment_issue_date = db.Column(db.Date)
 
     now_number = db.Column(db.String)
 
@@ -41,7 +42,7 @@ class NoticeOfWorkView(Base):
     originating_system = db.Column(db.String)
     application_type_code = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
-    status_updated_date = db.Column(db.DateTime)
+    decision_date = db.Column(db.DateTime)
 
     is_historic = db.Column(db.Boolean)
 
@@ -92,12 +93,6 @@ class NoticeOfWorkView(Base):
         'join(NOWPartyAppointment, Party, foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid))',
         secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
     )
-
-    source_permit_amendment = db.relationship(
-        'PermitAmendment',
-        lazy='selectin',
-        primaryjoin=
-        'NoticeOfWorkView.source_permit_amendment_id == PermitAmendment.permit_amendment_id')
 
     @hybrid_property
     def permittee(self):
