@@ -29,7 +29,6 @@ def map_notice_of_work_type_from_permit_number(permit_number):
 
 class AdministrativeAmendmentListResource(Resource, UserMixin):
     parser = CustomReqparser()
-    #required because only allowed on Major Mine Permit Amendment Application
     parser.add_argument('mine_guid', type=str, required=True)
     parser.add_argument('received_date', type=str, required=True)
     parser.add_argument('permit_amendment_guid', type=str, required=True)
@@ -37,7 +36,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
     parser.add_argument('amendment_reason_codes', type=list, location='json', required=True)
 
     @api.doc(description='Adds a Notice of Work to a mine/permit.', params={})
-    # @requires_role_edit_permit
+    @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=201)
     def post(self):
         data = self.parser.parse_args()
@@ -123,7 +122,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                     application_appt.append(new_app_appt)
                 new_app.contacts = application_appt
 
-            def get_documents_to_attach(db, documents, is_document_type_present):
+            def get_documents_to_attach(db, documents):
                 res_documents = []
                 for doc in [doc for doc in documents if doc.is_final_package]:
                     mine_doc = MineDocument(
@@ -131,6 +130,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                         document_manager_guid=doc.mine_document.document_manager_guid,
                         mine_guid=mine.mine_guid)
                     db.session.add(mine_doc)
+
+                    doc_type_code = doc.now_application_document_type_code if doc.now_application_document_type_code else "OTH"
 
                     new_appt_doc = NOWApplicationDocumentXref(
                         mine_document=mine_doc,
@@ -140,11 +141,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                         preamble_author=doc.preamble_author,
                         preamble_date=doc.preamble_date,
                         mine_document_guid=doc.mine_document_guid,
-                        description=doc.description)
-
-                    # TODO ask about default doc category
-                    if is_document_type_present:
-                        new_appt_doc.now_application_document_type_code = doc.now_application_document_type_code
+                        description=doc.description,
+                        now_application_document_type_code=doc_type_code)
 
                     db.session.add(new_appt_doc)
 
@@ -155,13 +153,11 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 documents_to_copy = []
 
                 if application.documents:
-                    documents_to_copy.append(
-                        get_documents_to_attach(db, application.documents, True))
+                    documents_to_copy.append(get_documents_to_attach(db, application.documents))
 
                 if application.imported_submission_documents:
                     documents_to_copy.append(
-                        get_documents_to_attach(db, application.imported_submission_documents,
-                                                False))
+                        get_documents_to_attach(db, application.imported_submission_documents))
 
                 new_app.documents = documents_to_copy
 

@@ -597,7 +597,6 @@ NOW_VIEW_MODEL = api.model(
         'issuing_inspector_name': fields.String,
         'now_application_status_code': fields.String,
         'status_updated_date': Date,
-        'administrative_amendment_documents':fields.String,
         'source_permit_no': fields.String,
         'source_permit_amendment':fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
     })

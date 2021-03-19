@@ -121,13 +121,6 @@ class NoticeOfWorkView(Base):
     def application_documents(self):
         return [doc for doc in self.submission_documents if doc.filename == 'ApplicationForm.pdf']
 
-
-# ARD - Application Request Document
-
-    @hybrid_property
-    def administrative_amendment_documents(self):
-        return [doc for doc in self.documents if doc.now_application_document_type_code == 'ARD']
-
     @hybrid_property
     def source_permit_no(self):
         return self.source_permit_amendment.permit.permit_no if self.source_permit_amendment and self.source_permit_amendment.permit else None
