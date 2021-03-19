@@ -83,16 +83,16 @@ const transformRowData = (applications) => {
   });
 };
 
-const transformExpandedRowData = (record) => {
-  return {
-    ...record,
-    documents: record.documents.map((doc) => ({
+const transformExpandedRowData = (record) => ({
+  ...record,
+  documents: record.documents
+    .filter((doc) => doc.now_application_document_type_code === "ADR")
+    .map((doc) => ({
       mine_guid: doc.mine_document.mine_guid,
       document_manager_guid: doc.mine_document.document_manager_guid,
       document_name: doc.mine_document.document_name,
     })),
-  };
-};
+});
 
 const RenderTableExpandIcon = (rowProps) => (
   <a

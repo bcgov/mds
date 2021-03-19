@@ -29,3 +29,8 @@ VALUES
     ('TRP', 'Transfer a permit to another party','system-mds', 'system-mds', 'true'),
     ('INR', 'Inspector requests','system-mds', 'system-mds', 'true')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO now_application_document_type
+(now_application_document_type_code, description, active_ind, now_application_document_sub_type_code, create_user, update_user)
+VALUES
+    ('ADR', 'Application Request Document', true, null, 'system-mds', 'system-mds');
