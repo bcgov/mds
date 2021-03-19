@@ -481,7 +481,7 @@ export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocum
 
 export const createAdminAmendmentApplication = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
       `${ENVIRONMENT.apiUrl}${API.ADMINISTRATIVE_AMENDMENT_APPLICATION}`,
@@ -500,5 +500,5 @@ export const createAdminAmendmentApplication = (payload) => (dispatch) => {
       dispatch(error(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
       throw new Error(err);
     })
-    .finally(() => dispatch(hideLoading()));
+    .finally(() => dispatch(hideLoading("modal")));
 };

@@ -7,7 +7,6 @@ import {
   importNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import CustomPropTypes from "@/customPropTypes";
-import MajorMinePermitApplicationCreate from "@/components/noticeOfWork/applications/verification/MajorMinePermitApplicationCreate";
 import VerifyApplicationInformationForm from "@/components/noticeOfWork/applications/verification/VerifyApplicationInformationForm";
 
 const propTypes = {
@@ -16,31 +15,13 @@ const propTypes = {
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  handleTabChange: PropTypes.func.isRequired,
-  loadNoticeOfWork: PropTypes.func.isRequired,
-  initialPermitGuid: PropTypes.string,
-  loadMineData: PropTypes.func.isRequired,
-  isNewApplication: PropTypes.bool.isRequired,
 };
 
-const defaultProps = {
-  initialPermitGuid: "",
-};
+const defaultProps = {};
 export class VerificationTab extends Component {
   state = {
-    isImported: false,
     isImporting: false,
   };
-
-  componentDidMount() {
-    this.setState({ isImported: this.props.noticeOfWork.imported_to_core });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.noticeOfWork.imported_to_core !== nextProps.noticeOfWork.imported_to_core) {
-      this.setState({ isImported: nextProps.noticeOfWork.imported_to_core });
-    }
-  }
 
   handleNOWImport = (values) => {
     this.setState({ isImporting: true });
@@ -60,13 +41,9 @@ export class VerificationTab extends Component {
     return this.props
       .importNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid, payload)
       .then(() =>
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(({ data }) => {
-            this.props.loadMineData(values.mine_guid);
-            this.setState({ isImported: data.imported_to_core });
-            this.props.handleTabChange("application");
-          })
+        this.props.fetchImportedNoticeOfWorkApplication(
+          this.props.noticeOfWork.now_application_guid
+        )
       )
       .finally(() => {
         this.setState({ isImporting: false });
@@ -76,24 +53,14 @@ export class VerificationTab extends Component {
   render() {
     return (
       <div className="tab__content">
-        {!this.state.isImported &&
-          this.props.mineGuid &&
-          ((this.props.isNewApplication && (
-            <MajorMinePermitApplicationCreate
-              initialPermitGuid={this.props.initialPermitGuid}
-              mineGuid={this.props.mineGuid}
-              loadNoticeOfWork={this.props.loadNoticeOfWork}
-            />
-          )) || (
-            <VerifyApplicationInformationForm
-              isImporting={this.state.isImporting}
-              originalNoticeOfWork={this.props.originalNoticeOfWork}
-              noticeOfWork={this.props.noticeOfWork}
-              mineGuid={this.props.mineGuid}
-              onSubmit={this.handleNOWImport}
-              initialValues={this.props.originalNoticeOfWork}
-            />
-          ))}
+        <VerifyApplicationInformationForm
+          isImporting={this.state.isImporting}
+          originalNoticeOfWork={this.props.originalNoticeOfWork}
+          noticeOfWork={this.props.noticeOfWork}
+          mineGuid={this.props.mineGuid}
+          onSubmit={this.handleNOWImport}
+          initialValues={this.props.originalNoticeOfWork}
+        />
       </div>
     );
   }

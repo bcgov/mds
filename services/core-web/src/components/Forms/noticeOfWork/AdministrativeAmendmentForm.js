@@ -128,6 +128,6 @@ export default compose(
     form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,
     touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.ADMINISTRATIVE_AMENDMENT_FORM),
-    enableReinitialize: false,
+    enableReinitialize: true,
   })
 )(AdministrativeAmendmentForm);

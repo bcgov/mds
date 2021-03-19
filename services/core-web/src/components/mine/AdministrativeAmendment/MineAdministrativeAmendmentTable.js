@@ -55,7 +55,6 @@ const transformRowData = (applications) => {
     const permittee_name = application.permittee
       ? [permittee.first_name, permittee.party_name].filter(Boolean).join(" ")
       : null;
-
     return {
       key: application.now_application_guid,
       now_number: application.now_number || Strings.EMPTY_FIELD,
@@ -121,9 +120,9 @@ export class MineAdministrativeAmendmentTable extends Component {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        administrativeAmendmentPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
-          title: "Administrative amendments",
+          title: `${record.mine_name} Administrative Amendments`,
         },
       },
     };

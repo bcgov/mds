@@ -271,7 +271,7 @@ export const ADMIN_AMENDMENT_APPLICATION = {
   dynamicRoute: (guid, tab) =>
     tab
       ? `/dashboard/administrative-amendment/app/${guid}/${tab}`
-      : `/dashboard/administrative-amendment/app/${guid}/verification`,
+      : `/dashboard/administrative-amendment/app/${guid}/application`,
   hashRoute: (guid, tab, link) => `/dashboard/administrative-amendment/app/${guid}/${tab}/${link}`,
   component: AdminAmendmentApplication,
 };

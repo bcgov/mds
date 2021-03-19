@@ -86,7 +86,7 @@ export class NoticeOfWorkTable extends Component {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
           title: pageTitle,
         },

@@ -11,12 +11,15 @@ import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
+import { getNoticeOfWorkApplicationStatusOptionsHash } from "@common/selectors/staticContentSelectors";
+import { connect } from "react-redux";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
+  applicationPageFromRoute: CustomPropTypes.ApplicationPageFromRoute.isRequired,
   fixedTop: PropTypes.bool.isRequired,
 };
 
@@ -61,10 +64,10 @@ const NoticeOfWorkPageHeader = (props) => {
           </Tag>
         </span>
       </h1>
-      {props.noticeOfWorkPageFromRoute && !props.fixedTop && (
-        <Link to={props.noticeOfWorkPageFromRoute.route}>
+      {props.applicationPageFromRoute && !props.fixedTop && (
+        <Link to={props.applicationPageFromRoute.route}>
           <ArrowLeftOutlined className="padding-sm--right" />
-          Back to: {props.noticeOfWorkPageFromRoute.title}
+          Back to: {props.applicationPageFromRoute.title}
         </Link>
       )}
     </div>
@@ -73,4 +76,9 @@ const NoticeOfWorkPageHeader = (props) => {
 
 NoticeOfWorkPageHeader.propTypes = propTypes;
 
-export default NoticeOfWorkPageHeader;
+const mapStateToProps = (state) => ({
+  inspectorsHash: getInspectorsHash(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(NoticeOfWorkPageHeader);

@@ -11,7 +11,7 @@ import {
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
+import { getMineGuid } from "@common/selectors/mineSelectors";
 import { formatQueryListParams } from "@common/utils/helpers";
 import * as router from "@/constants/routes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -25,7 +25,6 @@ import { detectProdEnvironment } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
-  mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -140,8 +139,6 @@ export class MineApplications extends Component {
   };
 
   render() {
-    const isMajorMine = this.props.mines[this.props.mineGuid].major_mine_ind;
-    const type = isMajorMine ? "Permit Application" : "Notice of Work Application";
     const isProd = detectProdEnvironment();
     return (
       <div className="tab__content">
@@ -152,24 +149,9 @@ export class MineApplications extends Component {
             <>
               <br />
               <div className="inline-flex between">
-                <h4 className="uppercase">{type}s</h4>
-                <AuthorizationWrapper
-                  isMajorMine={isMajorMine}
-                  permission={Permission.EDIT_PERMITS}
-                >
-                  <AddButton
-                    onClick={() =>
-                      this.props.history.replace(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
-                        mineGuid: this.props.mineGuid,
-                      })
-                    }
-                  >
-                    Add {type}
-                  </AddButton>
-                </AuthorizationWrapper>
+                <h4 className="uppercase">Notice of Work Applications</h4>
               </div>
               <MineNoticeOfWorkTable
-                isMajorMine={isMajorMine}
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 noticeOfWorkApplications={this.props.noticeOfWorkApplications.filter(
@@ -217,7 +199,6 @@ export class MineApplications extends Component {
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
-  mines: getMines(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
 });

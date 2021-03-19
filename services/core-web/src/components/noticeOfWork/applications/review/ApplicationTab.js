@@ -84,7 +84,7 @@ const propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
     state: PropTypes.shape({
-      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+      applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
     }),
   }).isRequired,
 };
@@ -159,6 +159,22 @@ export class ApplicationTab extends Component {
             submitting: false,
           }));
         });
+    }
+  };
+
+  focusErrorInput = (skip = false) => {
+    this.props.submit(FORM.EDIT_NOTICE_OF_WORK);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (skip) {
+      if (this.count < errors.length) {
+        this.count += 1;
+      } else if (this.count === errors.length) {
+        this.count = 1;
+      }
+    }
+    const errorElement = document.querySelector(`[name="${errors[this.count - 1]}"]`);
+    if (errorElement && errorElement.focus) {
+      errorElement.focus();
     }
   };
 

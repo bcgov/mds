@@ -24,7 +24,7 @@ const propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
     state: PropTypes.shape({
-      noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute,
+      applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
     }),
   }).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,

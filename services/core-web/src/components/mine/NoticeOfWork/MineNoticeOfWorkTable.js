@@ -25,7 +25,6 @@ const propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  isMajorMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -65,20 +64,14 @@ const transformRowData = (applications) =>
     is_historic: application.is_historic,
   }));
 
-const pageTitle = (mineName, isMajorMine) => {
-  // TODO MDS-3136 look here
-  const applicationType = isMajorMine ? "Permit Applications" : "Notice of Work Applications";
-  return `${mineName} ${applicationType}`;
-};
-
 export class MineNoticeOfWorkTable extends Component {
   createLinkTo = (route, record) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
-          title: pageTitle(record.mine_name, this.props.isMajorMine),
+          title: `${record.mine_name} Notice of Work Applications`,
         },
       },
     };
