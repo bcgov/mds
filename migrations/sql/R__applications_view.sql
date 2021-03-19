@@ -14,6 +14,7 @@ AS SELECT nid.now_application_guid,
     app.issuing_inspector_party_guid,
     concat_ws(' '::text, pis.first_name, pis.party_name) AS issuing_inspector_name,
     nid.application_type_code,
+    nid.source_permit_amendment_id,
     COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) AS notice_of_work_type_description,
     atc.description,
         CASE

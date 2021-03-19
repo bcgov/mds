@@ -86,8 +86,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
             new_app = NOWApplicationIdentity(
                 mine_guid=data['mine_guid'],
                 permit=permit,
-                permit_id=permit.permit_id,
                 now_number=NOWApplicationIdentity.create_now_number(mine),
+                source_permit_amendment_id=permit_amendment.permit_amendment_id,
                 application_type_code='ADA')
             new_app.now_application = NOWApplication(
                 notice_of_work_type_code=notice_of_work_type_code,

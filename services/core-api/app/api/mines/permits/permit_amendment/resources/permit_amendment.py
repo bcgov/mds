@@ -190,9 +190,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
         if now_application_guid is not None and permit_amendment_status_code == "DFT":
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
-            if application_identity.now_application:
-                now_type = application_identity.now_application.notice_of_work_type_code
 
+            def create_standart_conditions(application_identity):
+                now_type = application_identity.now_application.notice_of_work_type_code
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
                     now_type)
                 for condition in standard_conditions:
@@ -200,6 +200,25 @@ class PermitAmendmentListResource(Resource, UserMixin):
                                             condition.condition_type_code,
                                             new_pa.permit_amendment_id, condition.condition,
                                             condition.display_order, condition.sub_conditions)
+
+            if application_identity.now_application:
+                if application_identity.application_type_code == "ADA":
+
+                    conditions = PermitConditions.find_all_by_permit_amendment_id(
+                        application_identity.source_permit_amendment_id
+                    )                                                                                # this should be source amendment
+                    if conditions:
+                        for condition in conditions:
+                            PermitConditions.create(condition.condition_category_code,
+                                                    condition.condition_type_code,
+                                                    new_pa.permit_amendment_id, condition.condition,
+                                                    condition.display_order,
+                                                    condition.sub_conditions)
+                    else:
+                        create_standart_conditions(application_identity)
+                else:
+                    create_standart_conditions(application_identity)
+
                 db.session.commit()
 
         new_pa.save()

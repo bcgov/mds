@@ -21,6 +21,8 @@ class NoticeOfWorkView(Base):
     mine_no = db.Column(db.String)
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+    source_permit_amendment_id = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_id'))
 
     now_number = db.Column(db.String)
 
@@ -91,6 +93,12 @@ class NoticeOfWorkView(Base):
         secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
     )
 
+    source_permit_amendment = db.relationship(
+        'PermitAmendment',
+        lazy='selectin',
+        primaryjoin=
+        'NoticeOfWorkView.source_permit_amendment_id == PermitAmendment.permit_amendment_id')
+
     @hybrid_property
     def permittee(self):
         if self.application_type_code == 'NOW':
@@ -120,6 +128,6 @@ class NoticeOfWorkView(Base):
     def administrative_amendment_documents(self):
         return [doc for doc in self.documents if doc.now_application_document_type_code == 'ARD']
 
-    # TODO add this to response
-    # source_amendment
-    # permit_no
+    @hybrid_property
+    def source_permit_no(self):
+        return self.source_permit_amendment.permit.permit_no if self.source_permit_amendment and self.source_permit_amendment.permit else None
