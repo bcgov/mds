@@ -96,6 +96,13 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 received_date=data['received_date'],
                 proposed_start_date=permit_amendment.issue_date,
                 proposed_end_date=permit_amendment.authorization_end_date)
+
+            if application:
+                new_app.now_application.property_name = application.property_name
+                new_app.now_application.longitude = application.longitude
+                new_app.now_application.latitude = application.latitude
+                new_app.now_application.type_of_application = "Amendment"
+
             new_app.originating_system = 'Core'
 
             db.session.add(new_app)
@@ -103,8 +110,6 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
             # copy contacts
             if permit.permittee_appointments:
                 application_appt = []
-                # TODO clarify
-                # this will cope all permittees, even the ones for this permit
                 for mine_appt in [
                         party for party in permit.permittee_appointments if not party.end_date
                         or party.end_date >= datetime.now(timezone.utc).date()
@@ -137,6 +142,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                         mine_document_guid=doc.mine_document_guid,
                         description=doc.description)
 
+                    # TODO ask about default doc category
                     if is_document_type_present:
                         new_appt_doc.now_application_document_type_code = doc.now_application_document_type_code
 
