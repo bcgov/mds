@@ -490,6 +490,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'is_pre_launch':
         fields.Boolean,
+        'application_type_code': fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

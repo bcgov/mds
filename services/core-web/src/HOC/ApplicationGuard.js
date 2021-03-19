@@ -10,6 +10,7 @@ import {
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import CustomPropTypes from "@/customPropTypes";
+import * as routes from "@/constants/routes";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NullScreen from "@/components/common/NullScreen";
@@ -98,8 +99,8 @@ export const ApplicationGuard = (WrappedComponent) => {
       this.setState({ isLoaded: false });
       await Promise.all([
         this.props.fetchOriginalNoticeOfWorkApplication(id),
-        this.props.fetchImportedNoticeOfWorkApplication(id).then(() => {
-          this.handleCorrectRouteByApplicationType();
+        this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+          this.handleCorrectRouteByApplicationType(data);
         }),
         this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id),
       ]);
@@ -112,9 +113,26 @@ export const ApplicationGuard = (WrappedComponent) => {
       </span>
     );
 
-    handleCorrectRouteByApplicationType = () => {
-      // TODO: add routing logic by type
-      this.setState({ isLoaded: true });
+    handleCorrectRouteByApplicationType = (data) => {
+      const onNoWApp = this.props.location.pathname.includes("notice-of-work");
+      const onAAApp = this.props.location.pathname.includes("administrative-amendment");
+      if (data.application_type_code === "NOW" && onAAApp) {
+        this.props.history.replace(
+          routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.match.params.id,
+            this.props.match.params.tab
+          )
+        );
+      } else if (data.application_type_code === "ADA" && onNoWApp) {
+        this.props.history.replace(
+          routes.ADMIN_AMENDMENT_APPLICATION.dynamicRoute(
+            this.props.match.params.id,
+            this.props.match.params.tab
+          )
+        );
+      } else {
+        this.setState({ isLoaded: true });
+      }
     };
 
     render() {
