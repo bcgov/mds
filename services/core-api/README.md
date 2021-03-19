@@ -80,6 +80,10 @@ complete app.
 To see the list of all click commands, checkout `register_commands` method
 under the `__init__.py` file.
 
+## Document Generator Service
+
+The MDS document generator service makes use of the Common Services team's [Document Generator Service](https://github.com/bcgov/common-services-team-library/tree/master/images/doc-gen-api/app).
+
 ### Click commands workflow to transfer files to the object store 
 *Pre-requisite to running the transfer-files, verify-files, and reorganize-files commands: ensure that a Celery worker is running. You can use the command `ps aux` to check.
 
