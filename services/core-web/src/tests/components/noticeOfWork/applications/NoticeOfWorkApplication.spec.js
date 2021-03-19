@@ -22,6 +22,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchNoticeOfWorkApplicationPermitTypes = jest.fn();
   dispatchProps.fetchNoticeOfWorkApplicationProgressStatusCodes = jest.fn();
   dispatchProps.fetchInspectors = jest.fn();
+  dispatchProps.renderTabTitle = jest.fn();
   dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn(() => Promise.resolve());
 };
 

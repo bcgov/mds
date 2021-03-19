@@ -27,25 +27,12 @@ exports[`MineApplications renders properly 1`] = `
         <h4
           className="uppercase"
         >
-          Permit Application
-          s
+          Notice of Work Applications
         </h4>
-        <Connect(AuthorizationWrapper)
-          isMajorMine={true}
-          permission="role_edit_permits"
-        >
-          <AddButton
-            onClick={[Function]}
-          >
-            Add 
-            Permit Application
-          </AddButton>
-        </Connect(AuthorizationWrapper)>
       </div>
       <withRouter(MineNoticeOfWorkTable)
         handleSearch={[Function]}
         isLoaded={false}
-        isMajorMine={true}
         mineRegionHash={
           Object {
             "NE": "North East",

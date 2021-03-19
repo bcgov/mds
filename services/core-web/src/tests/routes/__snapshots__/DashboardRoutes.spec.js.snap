@@ -386,7 +386,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(NoticeOfWorkApplication)",
+        "displayName": "Connect(Connect(applicationGuard))",
         "type": [Function],
       }
     }
@@ -399,7 +399,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(NoticeOfWorkApplication)",
+        "displayName": "Connect(Connect(applicationGuard))",
         "type": [Function],
       }
     }
@@ -412,7 +412,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(AdminAmendmentApplication)",
+        "displayName": "Connect(Connect(applicationGuard))",
         "type": [Function],
       }
     }
