@@ -51,6 +51,7 @@ import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import AssignInspectors from "@/components/noticeOfWork/applications/verification/AssignInspectors";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import ReviewAdminAmendmentApplication from "@/components/noticeOfWork/applications/review/ReviewAdminAmendmentApplication";
 import { EDIT_OUTLINE } from "@/constants/assets";
 
 /**
@@ -424,6 +425,7 @@ export class ApplicationTab extends Component {
 
   render() {
     const isImported = this.props.noticeOfWork.imported_to_core;
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (
       <React.Fragment>
         <Prompt
@@ -473,16 +475,29 @@ export class ApplicationTab extends Component {
               <Divider />
             </>
           )}
-          <ReviewNOWApplication
-            reclamationSummary={this.props.reclamationSummary}
-            isViewMode={this.state.isViewMode}
-            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-            initialValues={this.props.noticeOfWork}
-            noticeOfWork={this.props.noticeOfWork}
-            importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
-            renderOriginalValues={this.renderOriginalValues}
-            isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
-          />
+          {isNoWApplication ? (
+            <ReviewNOWApplication
+              reclamationSummary={this.props.reclamationSummary}
+              isViewMode={this.state.isViewMode}
+              noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+              initialValues={this.props.noticeOfWork}
+              noticeOfWork={this.props.noticeOfWork}
+              importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+              renderOriginalValues={this.renderOriginalValues}
+              isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+            />
+          ) : (
+            <ReviewAdminAmendmentApplication
+              reclamationSummary={this.props.reclamationSummary}
+              isViewMode={this.state.isViewMode}
+              noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
+              initialValues={this.props.noticeOfWork}
+              noticeOfWork={this.props.noticeOfWork}
+              importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
+              renderOriginalValues={this.renderOriginalValues}
+              isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+            />
+          )}
         </div>
       </React.Fragment>
     );

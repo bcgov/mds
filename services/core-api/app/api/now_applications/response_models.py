@@ -342,6 +342,12 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'now_application_id': fields.Integer,
     })
 
+AMENDMENT_REASON_CODE = api.model('AMENDMENT_REASON_CODE', {
+    'amendment_reason_code': fields.String,
+    'description': fields.String,
+    'active_ind': fields.Boolean,
+})
+
 NOW_APPLICATION_MODEL = api.model(
     'NOW_APPLICATION_MODEL', {
         'now_application_guid':
@@ -491,6 +497,7 @@ NOW_APPLICATION_MODEL = api.model(
         'is_pre_launch':
         fields.Boolean,
         'application_type_code': fields.String,
+        'amendment_reason_codes': fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -558,11 +565,6 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'last_updated_by': fields.String
     })
 
-AMENDMENT_REASON_CODE = api.model('AMENDMENT_REASON_CODE', {
-    'amendment_reason_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean,
-})
 
 NOW_VIEW_MODEL = api.model(
     'NOW_VIEW_MODEL',
