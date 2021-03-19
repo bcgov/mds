@@ -25,6 +25,7 @@ class NOWApplicationIdentity(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     messageid = db.Column(db.Integer)
     mms_cid = db.Column(db.Integer)
+    source_permit_amendment_id = db.Column(db.Integer)
     application_type_code = db.Column(
         db.String(3), db.ForeignKey('application_type_code.application_type_code'))
 

@@ -25,3 +25,6 @@ CREATE TABLE IF NOT EXISTS public.amendment_reason_code (
 ALTER TABLE public.amendment_reason_code OWNER TO mds;
 ALTER TABLE ONLY amendment_reason_code
 ADD CONSTRAINT amendment_reason_code_pkey PRIMARY key (amendment_reason_code);
+
+ALTER TABLE public.now_application_identity ADD source_permit_amendment_id integer NULL;
+ALTER TABLE now_application_identity ADD CONSTRAINT source_permit_amendment_id_fk FOREIGN KEY (source_permit_amendment_id) REFERENCES permit_amendment(permit_amendment_id);

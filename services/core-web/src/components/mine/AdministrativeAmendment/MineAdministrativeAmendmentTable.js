@@ -68,8 +68,8 @@ const transformRowData = (applications) => {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       documents: application.documents,
-      permit_amendment_issue_date: application.permit_amendment
-        ? formatDate(application.permit_amendment.issue_date)
+      permit_amendment_issue_date: application.source_permit_amendment
+        ? formatDate(application.source_permit_amendment.issue_date)
         : Strings.EMPTY_FIELD,
       amendment_reason_codes: application.amendment_reason_codes,
       issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
