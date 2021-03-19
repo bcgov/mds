@@ -558,15 +558,15 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'last_updated_by': fields.String
     })
 
-AMENDMENT_REASON_CODE = api.model('AMENDMENT_REASON_CODE', {
-    'amendment_reason_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean,
-})
+AMENDMENT_REASON_CODE = api.model(
+    'AMENDMENT_REASON_CODE', {
+        'amendment_reason_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    })
 
 NOW_VIEW_MODEL = api.model(
-    'NOW_VIEW_MODEL',
-    {
+    'NOW_VIEW_MODEL', {
         'now_application_guid': fields.String,
         'mine_guid': fields.String,
         'mine_no': fields.String,
@@ -588,7 +588,7 @@ NOW_VIEW_MODEL = api.model(
         'update_timestamp': DateTime,
         'application_type_code': fields.String,
         'application_type_description': fields.String,
-        'permit_amendment':fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
+        'permit_amendment': fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
         'amendment_reason_codes': fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
         'permittee': fields.Nested(PARTY, skip_none=True),
         'status_reason': fields.String,
@@ -596,9 +596,9 @@ NOW_VIEW_MODEL = api.model(
         'issuing_inspector_party_guid': fields.String,
         'issuing_inspector_name': fields.String,
         'now_application_status_code': fields.String,
-        'status_updated_date': Date,
+        'decision_date': Date,
         'source_permit_no': fields.String,
-        'source_permit_amendment':fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
+        'source_permit_amendment_issue_date': fields.Date,
     })
 
 PAGINATED_LIST = api.model(
