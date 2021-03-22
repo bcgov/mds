@@ -131,7 +131,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                         mine_guid=mine.mine_guid)
                     db.session.add(mine_doc)
 
-                    doc_type_code = doc.now_application_document_type_code if doc.now_application_document_type_code else "OTH"
+                    doc_type_code = doc.now_application_document_type_code if hasattr(
+                        doc, 'now_application_document_type_code') else "OTH"
 
                     new_appt_doc = NOWApplicationDocumentXref(
                         mine_document=mine_doc,

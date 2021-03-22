@@ -351,7 +351,8 @@ AMENDMENT_REASON_CODE = api.model(
 
 AMENDMENT_REASON_XREF = api.model('AMENDMENT_REASON_CODE', {
     'amendment_reason_code': fields.String,
-    'now_application_id': fields.Integer
+    'now_application_id': fields.Integer,
+    'state_modified':fields.String
 })
 
 NOW_APPLICATION_MODEL = api.model(

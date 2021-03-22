@@ -118,6 +118,35 @@ class NOWApplicationResource(Resource, UserMixin):
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)
 
+        def map_amendment_reason_codes(data):
+            reason_codes = data.get('amendment_reason_codes')
+            del data['amendment_reason_codes']
+
+            existing_reasons = [
+                code.amendment_reason_code
+                for code in now_application_identity.now_application.amendment_reason_codes
+            ]
+            reason_code_entities = []
+            for code in reason_codes:
+                reason_code_entities.append({
+                    'amendment_reason_code':
+                    code,
+                    'now_application_id':
+                    now_application_identity.now_application_id
+                })
+            for code in existing_reasons:
+                if code not in reason_codes:
+                    reason_code_entities.append({
+                        'amendment_reason_code': code,
+                        'now_application_id': now_application_identity.now_application_id,
+                        'state_modified': 'delete'
+                    })
+
+            return marshal(reason_code_entities, AMENDMENT_REASON_XREF)
+
+        if now_application_identity.application_type_code == 'ADA' and 'amendment_reason_codes' in data:
+            data['amendment_reason_codes'] = map_amendment_reason_codes(data)
+
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,
