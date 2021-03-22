@@ -15,6 +15,7 @@ AS SELECT nid.now_application_guid,
     concat_ws(' '::text, pis.first_name, pis.party_name) AS issuing_inspector_name,
     nid.application_type_code,
     nid.source_permit_amendment_id,
+    sp.permit_no as source_permit_no,
     spa.issue_date as source_permit_amendment_issue_date, 
     COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) AS notice_of_work_type_description,
     atc.description,
@@ -69,6 +70,7 @@ AS SELECT nid.now_application_guid,
      LEFT JOIN now_application_status nows ON app.now_application_status_code::text = nows.now_application_status_code::text
      LEFT JOIN permit_amendment pa ON nid.now_application_guid = pa.now_application_guid
      LEFT JOIN permit_amendment spa ON nid.source_permit_amendment_id = spa.permit_amendment_id 
+     LEFT JOIN permit sp ON sp.permit_id = spa.permit_id
      LEFT JOIN application_type_code atc ON atc.application_type_code::text = nid.application_type_code::text
      LEFT JOIN party pis ON app.issuing_inspector_party_guid = pis.party_guid
   WHERE (nid.messageid IS NOT NULL AND sub.processed::text = 'Y'::text OR nid.messageid IS NULL) AND (sub.originating_system IS NULL OR sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL);

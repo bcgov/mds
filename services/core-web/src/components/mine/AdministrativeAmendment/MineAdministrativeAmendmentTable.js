@@ -56,6 +56,7 @@ const transformRowData = (applications) => {
       ? [permittee.first_name, permittee.party_name].filter(Boolean).join(" ")
       : null;
     return {
+      ...application,
       key: application.now_application_guid,
       now_number: application.now_number || Strings.EMPTY_FIELD,
       mine_guid: application.mine_guid || Strings.EMPTY_FIELD,
@@ -137,6 +138,15 @@ export class MineAdministrativeAmendmentTable extends Component {
       title: "Source Amendment Issue Date",
       dataIndex: "source_permit_amendment_issue_date",
       sortField: "source_permit_amendment_issue_date",
+      width: 200,
+      render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
+      sorter: true,
+    },
+    {
+      title: "Permit Number",
+      dataIndex: "source_permit_no",
+      sortField: "source_permit_no",
+      width: 200,
       render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
       sorter: true,
     },
