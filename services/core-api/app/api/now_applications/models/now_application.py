@@ -37,7 +37,8 @@ class NOWApplication(Base, AuditMixin):
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
     application_type_code = association_proxy('now_application_identity', 'application_type_code')
-
+    source_permit_amendment_guid = association_proxy('now_application_identity',
+                                                     'permit_amendment.permit_amendment_guid')
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship(
         'Party',
@@ -142,6 +143,12 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
+
+    amendment_reason_codes = db.relationship(
+        'AmendmentReasonXref',
+        lazy='selectin',
+        uselist=True,
+        primaryjoin='AmendmentReasonXref.now_application_id == NOWApplication.now_application_id')
 
     submission_documents = db.relationship(
         'Document',

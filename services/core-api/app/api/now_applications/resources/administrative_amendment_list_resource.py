@@ -93,6 +93,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 now_application_status_code='REC',
                 submitted_date=data['received_date'],
                 received_date=data['received_date'],
+                type_of_application="Amendment",
                 proposed_start_date=permit_amendment.issue_date,
                 proposed_end_date=permit_amendment.authorization_end_date)
 
@@ -100,7 +101,6 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 new_app.now_application.property_name = application.property_name
                 new_app.now_application.longitude = application.longitude
                 new_app.now_application.latitude = application.latitude
-                new_app.now_application.type_of_application = "Amendment"
 
             new_app.originating_system = 'Core'
 
@@ -163,7 +163,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
 
             for reason in data['amendment_reason_codes']:
                 app_reason = AmendmentReasonXref(
-                    now_application_guid=new_app.now_application_guid, amendment_reason_code=reason)
+                    now_application_id=new_app.now_application_id, amendment_reason_code=reason)
                 db.session.add(app_reason)
 
             db.session.add(new_app)

@@ -43,6 +43,7 @@ class NoticeOfWorkView(Base):
     application_type_code = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
     decision_date = db.Column(db.DateTime)
+    source_permit_no = db.Column(db.String)
 
     is_historic = db.Column(db.Boolean)
 
@@ -77,7 +78,7 @@ class NoticeOfWorkView(Base):
         'ApplicationReasonCode',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(AmendmentReasonXref.now_application_guid)==NoticeOfWorkView.now_application_guid)',
+        'and_(foreign(AmendmentReasonXref.now_application_id)==NoticeOfWorkView.now_application_id)',
         secondary=
         'join(AmendmentReasonXref, ApplicationReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
         secondaryjoin=
@@ -115,7 +116,3 @@ class NoticeOfWorkView(Base):
     @hybrid_property
     def application_documents(self):
         return [doc for doc in self.submission_documents if doc.filename == 'ApplicationForm.pdf']
-
-    @hybrid_property
-    def source_permit_no(self):
-        return self.source_permit_amendment.permit.permit_no if self.source_permit_amendment and self.source_permit_amendment.permit else None
