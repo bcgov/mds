@@ -3,10 +3,15 @@ name: Deploy to dev workspace
 on:
   pull_request:
     paths:
-      - ".github/workflows/frontend-deploy-dev.yaml"
+      - ".github/workflows/deploy-dev.yaml"
       - "terraform/**"
-      - "services/core-web/**"
       - "!**/README.md"
+    branches:
+      - "**"
+      - "!master"
+      - "!develop"
+      # in final cut, uncomment so that dev infra is created for feature branches
+      # - "feature/*"
 
 env:
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
@@ -40,7 +45,7 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           TF_CLI_ARGS: -no-color
-          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.sha }}
+          APP_IMAGE: ${{ env.IMAGE_URI }}mds-web:${{ env.TFC_WORKSPACE }}
         run: terragrunt run-all plan --terragrunt-non-interactive | tee /tmp/tg_plan
         continue-on-error: true
 
@@ -79,5 +84,5 @@ jobs:
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
           AWS_ACCOUNTS_ECR_READ_ACCESS: ${{ secrets.AWS_ACCOUNTS_ECR_READ_ACCESS }}
-          APP_IMAGE: ${{ env.IMAGE_URI }}:${{ github.sha }}
+          APP_IMAGE: ${{ env.IMAGE_URI }}mds-web:${{ env.TFC_WORKSPACE }}
         run: terragrunt apply-all --terragrunt-non-interactive

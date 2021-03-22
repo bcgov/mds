@@ -2,13 +2,15 @@ name: Build and push to AWS
 on:
   pull_request:
     paths:
-      - ".github/workflows/frontend-build.yaml"
-      - "services/core-web/**"
+      - ".github/workflows/build.yaml"
       - "!**/README.md"
+    branches:
+      - "**"
+      - "!master"
+      - "!develop"
 
 env:
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
-  SERVICE_CONTEXT: services/core-web
 
 jobs:
   build:
@@ -18,10 +20,10 @@ jobs:
       fail-fast: true
       matrix:
         include:
-        - service: services/core-web
-          repo: mds
-        - service: services/core-api
-          repo: mds
+          - service: services/core-web
+            repo: mds-web
+          - service: services/core-api
+            repo: mds-api
 
     steps:
       - name: Check out the repo
@@ -29,10 +31,10 @@ jobs:
 
       - name: Capture changes to build for
         id: changes
+        # gets list of files changed between this branch and develop
         # parses out special characters that cause hidden output truncation
-        # TODO: compare this branch to develop instead of just last commit
         run: |
-          CHANGES=$(git diff --name-only HEAD HEAD~1)
+          CHANGES=$(git diff --name-only HEAD..develop)
           CHANGES="${CHANGES//'%'/'%25'}"
           CHANGES="${CHANGES//$'\n'/'%0A'}"
           CHANGES="${CHANGES//$'\r'/'%0D'}"
@@ -42,11 +44,11 @@ jobs:
         if: contains(steps.changes.outputs.changelist, matrix.service) == false
         id: detected
         run: |
-            echo "::set-output name=do_build::false"
-            echo "No changes in this service - skipping build..."
+          echo "::set-output name=do_build::no"
+          echo "No changes in this service - skipping build..."
 
       - name: Configure AWS credentials
-        if: steps.detected.outputs.do_build != "false"
+        if: steps.detected.outputs.do_build != "no"
         uses: aws-actions/configure-aws-credentials@v1.5.8
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -58,12 +60,12 @@ jobs:
           role-skip-session-tagging: true
 
       - name: Login to Amazon ECR
-        if: steps.detected.outputs.do_build != "false"
+        if: steps.detected.outputs.do_build != "no"
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - uses: actions/cache@v2
-        if: steps.detected.outputs.do_build != "false"
+        if: steps.detected.outputs.do_build != "no"
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -71,17 +73,18 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Set up Docker Buildx
-        if: steps.detected.outputs.do_build != "false"
+        if: steps.detected.outputs.do_build != "no"
         uses: docker/setup-buildx-action@v1
 
+      # TODO: seperate real push to avoid half-built release
       - name: Build and push
-        if: steps.detected.outputs.do_build != "false"
+        if: steps.detected.outputs.do_build != "no"
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-          context: ${{ env.SERVICE_CONTEXT }}
+          context: ${{ matrix.service }}
           push: true
-          tags: ${{ env.IMAGE_URI }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_URI }}${{ matrix.repo }}:${{ github.sha }}, ${{ env.IMAGE_URI }}${{ matrix.repo }}:dev
