@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+
+      - name: fetch working tree info
         run: |
           git fetch --no-tags --prune origin ${{ github.base_ref }}
 
