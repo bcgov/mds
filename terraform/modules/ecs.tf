@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "app" {
     {
       essential   = true
       name        = var.container_name
-      image       = var.app_image
+      image       = "${var.ecr_arn}${var.mds_web_repo}:${var.target_env}"
       cpu         = var.fargate_cpu
       memory      = var.fargate_memory
       networkMode = "awsvpc"

@@ -39,10 +39,15 @@ variable "app_name" {
   default     = "minesdigitalservices"
 }
 
-variable "app_image" {
-  description = "Docker image to run in the ECS cluster. _Note_: there is a blank default value, which will cause service and task resource creation to be supressed unless an image is specified."
+variable "ecr_arn" {
+  description = "The base URI of the ECR for looking up image repos"
+  type = string
+}
+
+variable "mds_web_repo" {
+  description = "Specifies the repo to reference for mds-web images"
   type        = string
-  default     = ""
+  default     = "mds-web"
 }
 
 variable "app_port" {

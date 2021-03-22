@@ -4,13 +4,14 @@ on:
     paths:
       - ".github/workflows/build.yaml"
       - "!**/README.md"
-    branches:
-      - "**"
-      - "!master"
-      - "!develop"
+    # branches:
+    #   - "**"
+    # - "!master"
+    # - "!develop"
 
 env:
   IMAGE_URI: ${{ secrets.AWS_ECR_URI }}
+  ENV_TAG: dev
 
 jobs:
   build:
@@ -87,4 +88,4 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
           context: ${{ matrix.service }}
           push: true
-          tags: ${{ env.IMAGE_URI }}${{ matrix.repo }}:${{ github.sha }}, ${{ env.IMAGE_URI }}${{ matrix.repo }}:dev
+          tags: ${{ env.IMAGE_URI }}${{ matrix.repo }}:${{ github.sha }}, ${{ env.IMAGE_URI }}${{ matrix.repo }}:${{ env.ENV_TAG }}

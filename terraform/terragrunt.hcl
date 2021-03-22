@@ -4,7 +4,7 @@ locals {
   tfc_organization = local.common["tfc_organization"]
   project          = local.common["license_plate"]
   environment      = reverse(split("/", get_terragrunt_dir()))[0]
-  app_image        = get_env("APP_IMAGE", "")
+  ecr_arn          = get_env("ECR_ARN", "")
 }
 
 generate "remote_state" {
@@ -28,6 +28,6 @@ generate "tfvars" {
   if_exists         = "overwrite"
   disable_signature = true
   contents          = <<-EOF
-app_image = "${local.app_image}"
+ecr_arn = "${local.ecr_arn}"
 EOF
 }
