@@ -43,6 +43,7 @@ const initialState = {
   permitConditionCategoryOptions: [],
   noticeOfWorkApplicationDelayOptions: [],
   amendmentReasonCodeOptions: [],
+  amendmentSourceTypeCodeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -120,6 +121,8 @@ export const getDelayTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationDelayOptions;
 export const getAmendmentReasonCodeOptions = (state) =>
   state[STATIC_CONTENT].amendmentReasonCodeOptions;
+export const getAmendmentSourceTypeCodeOptions = (state) =>
+  state[STATIC_CONTENT].amendmentSourceTypeCodeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

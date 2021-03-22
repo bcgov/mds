@@ -42,6 +42,7 @@ export const {
   getDelayTypeOptions,
   getPermitAmendmentTypeOptions,
   getAmendmentReasonCodeOptions,
+  getAmendmentSourceTypeCodeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -667,6 +668,17 @@ export const getAmendmentReasonCodeDropdownOptions = createSelectorWrapper(
 
 export const getAmendmentReasonCodeOptionsHash = createSelector(
   [getAmendmentReasonCodeDropdownOptions],
+  createLabelHash
+);
+
+export const getAmendmentSourceTypeCodeDropdownOptions = createSelectorWrapper(
+  getAmendmentSourceTypeCodeOptions,
+  createDropDownList,
+  ["description", "amendment_source_type_code", "active_ind"]
+);
+
+export const getAmendmentSourceTypeCodeOptionsHash = createSelector(
+  [getAmendmentSourceTypeCodeDropdownOptions],
   createLabelHash
 );
 

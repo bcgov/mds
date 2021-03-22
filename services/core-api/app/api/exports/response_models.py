@@ -6,7 +6,7 @@ from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE_INCIDENT_DETERMINATION_TYPE_MODEL, MINE_INCIDENT_STATUS_CODE_MODEL, MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL, PARTY_BUSINESS_ROLE
 from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, VARIANCE_DOCUMENT_CATEGORY_CODE
-from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES, NOW_APPLICATION_DELAY_TYPE, AMENDMENT_REASON_CODE
+from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES, NOW_APPLICATION_DELAY_TYPE, AMENDMENT_REASON_CODE,AMENDMENT_SOURCE_TYPE_CODE
 from app.api.securities.response_models import BOND_STATUS, BOND_TYPE, BOND_DOCUMENT_TYPE
 
 MINE_SUMMARY_MODEL = api.model(
@@ -148,7 +148,9 @@ STATIC_CONTENT_MODEL = api.model(
         'noticeOfWorkApplicationDelayOptions':
         fields.List(fields.Nested(NOW_APPLICATION_DELAY_TYPE), attribute='NOWApplicationDelayType'),
         'permitAmendmentTypeCodeOptions':
-        fields.List(fields.Nested(PERMIT_AMENDEMENT_TYPE_CODE_MODEL), attribute='PermitAmendmentTypeCode'),
+        fields.List(
+            fields.Nested(PERMIT_AMENDEMENT_TYPE_CODE_MODEL), attribute='PermitAmendmentTypeCode'),
         'amendmentReasonCodeOptions':
-        fields.List(fields.Nested(AMENDMENT_REASON_CODE), attribute='ApplicationReasonCode'),
+        fields.List(fields.Nested(AMENDMENT_REASON_CODE), attribute='AmendmentReasonCode'),
+        'amendmentSourceTypeCodeOptions':fields.List(fields.Nested(AMENDMENT_SOURCE_TYPE_CODE), attribute='AmendmentSourceTypeCode')
     })

@@ -7,7 +7,7 @@ from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 
 
 class AmendmentReasonXref(Base):
-    __tablename__ = "amendment_reason_xref"
+    __tablename__ = "amendment_reason_code_xref"
 
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP

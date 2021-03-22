@@ -15,7 +15,7 @@ from app.api.now_applications.models.now_application_identity import NOWApplicat
 from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
-from app.api.now_applications.models.administrative_amendments.amendment_reason_xref import AmendmentReasonXref
+from app.api.now_applications.models.administrative_amendments.amendment_reason_code_xref import AmendmentReasonXref
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
 from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 from app.api.utils.resources_mixins import UserMixin
@@ -33,6 +33,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
     parser.add_argument('received_date', type=str, required=True)
     parser.add_argument('permit_amendment_guid', type=str, required=True)
     parser.add_argument('permit_id', type=int, required=True)
+    parser.add_argument('amendment_source_type_code', type=str, required=True)
     parser.add_argument('amendment_reason_codes', type=list, location='json', required=True)
 
     @api.doc(description='Adds a Notice of Work to a mine/permit.', params={})
@@ -94,6 +95,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 submitted_date=data['received_date'],
                 received_date=data['received_date'],
                 type_of_application="Amendment",
+                amendment_source_type_code=data['amendment_source_type_code'],
                 proposed_start_date=permit_amendment.issue_date,
                 proposed_end_date=permit_amendment.authorization_end_date)
 

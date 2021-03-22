@@ -12,7 +12,10 @@ import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { getPermits } from "@common/selectors/permitSelectors";
-import { getAmendmentReasonCodeDropdownOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getAmendmentReasonCodeDropdownOptions,
+  getAmendmentSourceTypeCodeDropdownOptions,
+} from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -21,6 +24,7 @@ const propTypes = {
   formValues: PropTypes.objectOf(PropTypes.any),
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   amendmentReasonCodeOptions: CustomPropTypes.options.isRequired,
+  amendmentSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -75,6 +79,16 @@ export const AdministrativeAmendmentForm = (props) => {
           )}
           <Form.Item>
             <Field
+              id="amendment_source_type_code"
+              name="amendment_source_type_code"
+              label="Source of Amendment*"
+              component={renderConfig.SELECT}
+              data={props.amendmentSourceTypeCodeOptions}
+              validate={[required]}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Field
               id="amendment_reason_codes"
               name="amendment_reason_codes"
               label="Reason for Amendment*"
@@ -123,6 +137,7 @@ export default compose(
     formValues: getFormValues(FORM.ADMINISTRATIVE_AMENDMENT_FORM)(state),
     permits: getPermits(state),
     amendmentReasonCodeOptions: getAmendmentReasonCodeDropdownOptions(state),
+    amendmentSourceTypeCodeOptions: getAmendmentSourceTypeCodeDropdownOptions(state),
   })),
   reduxForm({
     form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,

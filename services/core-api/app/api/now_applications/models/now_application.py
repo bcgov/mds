@@ -19,6 +19,7 @@ from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 
 class NOWApplication(Base, AuditMixin):
@@ -84,6 +85,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+    amendment_source_type_code = db.Column(
+        db.String, db.ForeignKey('amendment_source_type_code.amendment_source_type_code'))
     proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
     adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
@@ -221,6 +224,14 @@ class NOWApplication(Base, AuditMixin):
             permit_amendment = PermitAmendment.find_by_permit_amendment_id(
                 self.source_permit_amendment_id)
         return permit_amendment.permit_guid if permit_amendment else None
+
+    @hybrid_property
+    def has_source_conditions(self):
+        source_conditions = PermitConditions.query.filter_by(
+            permit_amendment_id=self.source_permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).count()
+        return source_conditions > 0
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

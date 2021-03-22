@@ -4412,6 +4412,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   noticeOfWorkApplicationDelayOptions: [],
   amendmentReasonCodeOptions: [],
+  amendmentSourceTypeCodeOptions: [],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {

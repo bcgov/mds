@@ -8,7 +8,7 @@ from datetime import datetime
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
-from app.api.now_applications.models.notice_of_work_view import NoticeOfWorkView
+from app.api.now_applications.models.notice_of_work_view import ApplicationsView
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL
@@ -103,28 +103,28 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       update_timestamp_since=None):
 
         filters = []
-        base_query = NoticeOfWorkView.query
+        base_query = ApplicationsView.query
 
         if submissions_only:
             filters.append(
-                and_(NoticeOfWorkView.originating_system != None,
-                     NoticeOfWorkView.originating_system != 'MMS'))
+                and_(ApplicationsView.originating_system != None,
+                     ApplicationsView.originating_system != 'MMS'))
 
         if mine_guid:
-            filters.append(NoticeOfWorkView.mine_guid == mine_guid)
+            filters.append(ApplicationsView.mine_guid == mine_guid)
 
         if lead_inspector_name:
             filters.append(
-                func.lower(NoticeOfWorkView.lead_inspector_name).contains(
+                func.lower(ApplicationsView.lead_inspector_name).contains(
                     func.lower(lead_inspector_name)))
 
         if notice_of_work_type_description:
             filters.append(
-                NoticeOfWorkView.notice_of_work_type_description.in_(
+                ApplicationsView.notice_of_work_type_description.in_(
                     notice_of_work_type_description))
 
         if now_number:
-            filters.append(NoticeOfWorkView.now_number == now_number)
+            filters.append(ApplicationsView.now_number == now_number)
 
         if mine_region or mine_search or mine_name:
             base_query = base_query.join(Mine)
@@ -133,7 +133,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             filters.append(Mine.mine_region.in_(mine_region))
 
         if originating_system:
-            filters.append(NoticeOfWorkView.originating_system.in_(originating_system))
+            filters.append(ApplicationsView.originating_system.in_(originating_system))
 
         if mine_name:
             filters.append(func.lower(Mine.mine_name).contains(func.lower(mine_name)))
@@ -141,20 +141,20 @@ class NOWApplicationListResource(Resource, UserMixin):
         if mine_search:
             filters.append(
                 or_(
-                    func.lower(NoticeOfWorkView.mine_no).contains(func.lower(mine_search)),
+                    func.lower(ApplicationsView.mine_no).contains(func.lower(mine_search)),
                     func.lower(Mine.mine_name).contains(func.lower(mine_search)),
                     func.lower(Mine.mine_no).contains(func.lower(mine_search))))
 
         if now_application_status_description:
             filters.append(
-                NoticeOfWorkView.now_application_status_description.in_(
+                ApplicationsView.now_application_status_description.in_(
                     now_application_status_description))
 
         if import_timestamp_since:
-            filters.append(NoticeOfWorkView.import_timestamp >= import_timestamp_since)
+            filters.append(ApplicationsView.import_timestamp >= import_timestamp_since)
 
         if update_timestamp_since:
-            filters.append(NoticeOfWorkView.update_timestamp >= update_timestamp_since)
+            filters.append(ApplicationsView.update_timestamp >= update_timestamp_since)
 
         base_query = base_query.filter(*filters)
 
@@ -164,7 +164,7 @@ class NOWApplicationListResource(Resource, UserMixin):
                 sort_criteria = [{'model': 'Mine', 'field': sort_field, 'direction': sort_dir}]
             else:
                 sort_criteria = [{
-                    'model': 'NoticeOfWorkView',
+                    'model': 'ApplicationsView',
                     'field': sort_field,
                     'direction': sort_dir,
                 }]

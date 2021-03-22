@@ -1,7 +1,7 @@
 from .activity_detail import *
 from .activity_summary import *
 from .administrative_amendments import *
-from .notice_of_work_view import NoticeOfWorkView
+from .notice_of_work_view import ApplicationsView
 from .now_application import NOWApplication
 from .now_application_identity import NOWApplicationIdentity
 from .application_type_code import ApplicationType
@@ -25,7 +25,7 @@ from .now_party_appointment import NOWPartyAppointment
 from .now_application_progress import NOWApplicationProgress
 
 model_list = [
-    NoticeOfWorkView,
+    ApplicationsView,
     NOWApplication,
     NOWApplicationIdentity,
     ApplicationType,

@@ -16,6 +16,7 @@ import {
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
   getAmendmentReasonCodeDropdownOptions,
+  getAmendmentSourceTypeCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
@@ -66,6 +67,7 @@ const propTypes = {
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
   amendmentReasonCodeOptions: CustomPropTypes.options.isRequired,
+  amendmentSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewAdminAmendmentApplication = (props) => {
@@ -80,6 +82,15 @@ export const ReviewAdminAmendmentApplication = (props) => {
     <div>
       <Row gutter={16}>
         <Col md={12} sm={24}>
+          <div className="field-title">Source of Amendment</div>
+          <Field
+            id="amendment_source_type_code"
+            name="amendment_source_type_code"
+            component={RenderSelect}
+            disabled={props.isViewMode}
+            validate={[required]}
+            data={props.amendmentSourceTypeCodeOptions}
+          />
           <div className="field-title">Reason for Amendment</div>
           <Field
             id="amendment_reason_codes"
@@ -203,6 +214,7 @@ export default compose(
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
     amendmentReasonCodeOptions: getAmendmentReasonCodeDropdownOptions(state),
+    amendmentSourceTypeCodeOptions: getAmendmentSourceTypeCodeDropdownOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

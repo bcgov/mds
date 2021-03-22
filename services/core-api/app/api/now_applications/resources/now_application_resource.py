@@ -17,7 +17,7 @@ from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
 from app.api.now_applications.transmogrify_now import transmogrify_now
-from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT, AMENDMENT_REASON_XREF
+from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT, AMENDMENT_REASON_CODE_XREF
 from app.api.services.nros_now_status_service import NROSNOWStatusService
 from app.api.services.document_manager_service import DocumentManagerService
 
@@ -142,7 +142,7 @@ class NOWApplicationResource(Resource, UserMixin):
                         'state_modified': 'delete'
                     })
 
-            return marshal(reason_code_entities, AMENDMENT_REASON_XREF)
+            return marshal(reason_code_entities, AMENDMENT_REASON_CODE_XREF)
 
         if now_application_identity.application_type_code == 'ADA' and 'amendment_reason_codes' in data:
             data['amendment_reason_codes'] = map_amendment_reason_codes(data)

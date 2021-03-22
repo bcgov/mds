@@ -18,7 +18,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from app.api.now_applications.models.activity_detail.activity_detail_base import ActivityDetailBase
 from app.api.now_applications.models.equipment import Equipment
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
-from app.api.now_applications.models.administrative_amendments.amendment_reason_xref import AmendmentReasonXref
+from app.api.now_applications.models.administrative_amendments.amendment_reason_code_xref import AmendmentReasonXref
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 from app.api.now_applications.models.now_application_delay import NOWApplicationDelay
 from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment

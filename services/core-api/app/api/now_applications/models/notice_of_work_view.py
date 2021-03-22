@@ -10,7 +10,7 @@ from app.api.now_submissions.models.document import Document
 from datetime import datetime
 
 
-class NoticeOfWorkView(Base):
+class ApplicationsView(Base):
     __tablename__ = 'applications_view'
 
     now_application_guid = db.Column(UUID(as_uuid=True), primary_key=True)
@@ -56,7 +56,7 @@ class NoticeOfWorkView(Base):
         secondary=
         'join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         primaryjoin=
-        'and_(NoticeOfWorkView.now_application_guid==NOWApplicationIdentity.now_application_guid, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
+        'and_(ApplicationsView.now_application_guid==NOWApplicationIdentity.now_application_guid, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
         viewonly=True)
 
@@ -64,32 +64,32 @@ class NoticeOfWorkView(Base):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(NOWApplicationDocumentXref.now_application_id)==NoticeOfWorkView.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        'and_(foreign(NOWApplicationDocumentXref.now_application_id)==ApplicationsView.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
     permit_amendments = db.relationship(
         'PermitAmendment',
         lazy='select',
         primaryjoin=
-        'and_(foreign(PermitAmendment.now_application_guid)==NoticeOfWorkView.now_application_guid )'
+        'and_(foreign(PermitAmendment.now_application_guid)==ApplicationsView.now_application_guid )'
     )
 
     amendment_reason_codes = db.relationship(
-        'ApplicationReasonCode',
+        'AmendmentReasonCode',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(AmendmentReasonXref.now_application_id)==NoticeOfWorkView.now_application_id)',
+        'and_(foreign(AmendmentReasonXref.now_application_id)==ApplicationsView.now_application_id)',
         secondary=
-        'join(AmendmentReasonXref, ApplicationReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
+        'join(AmendmentReasonXref, AmendmentReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(AmendmentReasonCode.amendment_reason_code))',
         secondaryjoin=
-        'foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code)',
+        'foreign(AmendmentReasonXref.amendment_reason_code)==remote(AmendmentReasonCode.amendment_reason_code)',
         viewonly=True)
 
     contacts = db.relationship(
         'NOWPartyAppointment',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(NOWPartyAppointment.now_application_id) == NoticeOfWorkView.now_application_id, NOWPartyAppointment.deleted_ind==False)',
+        'and_(foreign(NOWPartyAppointment.now_application_id) == ApplicationsView.now_application_id, NOWPartyAppointment.deleted_ind==False)',
         secondary=
         'join(NOWPartyAppointment, Party, foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid))',
         secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
@@ -111,7 +111,7 @@ class NoticeOfWorkView(Base):
         return self.permit_amendments[0] if self.permit_amendments else None
 
     def __repr__(self):
-        return '<NoticeOfWorkView %r>' % self.now_application_guid
+        return '<ApplicationsView %r>' % self.now_application_guid
 
     @hybrid_property
     def application_documents(self):
