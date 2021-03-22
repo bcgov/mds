@@ -35,7 +35,7 @@ jobs:
         # gets list of files changed between this branch and develop
         # parses out special characters that cause hidden output truncation
         run: |
-          CHANGES=$(git diff --name-only HEAD..develop)
+          CHANGES=$(git diff --name-only ${{ github.sha }}..develop)
           CHANGES="${CHANGES//'%'/'%25'}"
           CHANGES="${CHANGES//$'\n'/'%0A'}"
           CHANGES="${CHANGES//$'\r'/'%0D'}"
