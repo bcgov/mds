@@ -28,7 +28,6 @@ import CustomPropTypes from "@/customPropTypes";
 import GeneratePermitForm from "@/components/Forms/permits/GeneratePermitForm";
 import { EDIT_OUTLINE } from "@/constants/assets";
 import NullScreen from "@/components/common/NullScreen";
-import * as routes from "@/constants/routes";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
@@ -455,11 +454,7 @@ export class NOWPermitGeneration extends Component {
           isEditMode={!this.props.isViewMode}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu
-            route={routes.NOTICE_OF_WORK_APPLICATION}
-            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-            tabSection="draft-permit"
-          />
+          <NOWSideMenu tabSection="draft-permit" />
         </div>
         <div
           className={
