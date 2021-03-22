@@ -138,6 +138,11 @@ const getDocumentInfo = (doc) => {
   return info;
 };
 
+const applicationProgress = {
+  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
+  ADA: ["REF", "CON", "DFT"],
+};
+
 export class ProcessPermit extends Component {
   state = {};
 
@@ -614,7 +619,10 @@ export class ProcessPermit extends Component {
           progressStatus.application_progress_status_code !== "REF" &&
           progressStatus.application_progress_status_code !== "PUB" &&
           (!this.props.progress[progressStatus.application_progress_status_code] ||
-            !this.props.progress[progressStatus.application_progress_status_code].end_date)
+            !this.props.progress[progressStatus.application_progress_status_code].end_date) &&
+          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
@@ -633,7 +641,10 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
           this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
-          !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.end_date &&
+          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
@@ -714,7 +725,10 @@ export class ProcessPermit extends Component {
           (progressStatus.application_progress_status_code === "CON" ||
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
-          !this.props.progress[progressStatus.application_progress_status_code]?.start_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
+          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
@@ -798,6 +812,11 @@ export class ProcessPermit extends Component {
           <Timeline>
             {this.props.progressStatusCodes
               .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+              .filter(({ application_progress_status_code }) =>
+                applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+                  application_progress_status_code
+                )
+              )
               .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
           </Timeline>
         </div>
