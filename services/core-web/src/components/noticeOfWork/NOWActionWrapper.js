@@ -30,11 +30,21 @@ const defaultProps = {
   tab: null,
   applicationDelay: {},
 };
+
+const applicationProgress = {
+  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
+  ADA: ["REF", "CON", "DFT"],
+};
 export class NOWActionWrapper extends Component {
   state = { disableTab: false };
 
   componentDidMount() {
-    this.handleDisableTab(this.props.tab, this.props.progress);
+    const tabShouldIncludeProgress = applicationProgress[
+      this.props.noticeOfWork.application_type_code
+    ].includes(this.props.tab);
+    if (tabShouldIncludeProgress) {
+      this.handleDisableTab(this.props.tab, this.props.progress);
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -46,7 +56,11 @@ export class NOWActionWrapper extends Component {
       this.props.progress[this.props.tab]
     );
 
-    if (tabChanged || progressNoWExists || progressChanged) {
+    const tabShouldIncludeProgress = applicationProgress[
+      this.props.noticeOfWork.application_type_code
+    ].includes(nextProps.tab);
+
+    if ((tabChanged || progressNoWExists || progressChanged) && tabShouldIncludeProgress) {
       this.handleDisableTab(nextProps.tab, nextProps.progress);
     }
   };
@@ -71,7 +85,14 @@ export class NOWActionWrapper extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
+    const tabShouldIncludeProgress = applicationProgress[
+      this.props.noticeOfWork.application_type_code
+    ].includes(this.props.tab);
+    const disabled =
+      isApplicationDelayed ||
+      isApplicationComplete ||
+      this.state.disableTab ||
+      tabShouldIncludeProgress;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}

@@ -498,6 +498,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Boolean,
         'application_type_code': fields.String,
         'amendment_reason_codes': fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
+        'source_permit_guid':
+        fields.String,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

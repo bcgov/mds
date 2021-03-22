@@ -170,17 +170,20 @@ export class AdministrativeTab extends Component {
   };
 
   menu = () => {
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (
       <Menu>
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
-          <Menu.Item
-            key="transfer-to-a-different-mine"
-            className="custom-menu-item"
-            onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
-          >
-            Transfer to a Different Mine
-          </Menu.Item>
-        </NOWActionWrapper>
+        {isNoWApplication && (
+          <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item
+              key="transfer-to-a-different-mine"
+              className="custom-menu-item"
+              onClick={() => this.openChangeNOWMineModal(this.props.noticeOfWork)}
+            >
+              Transfer to a Different Mine
+            </Menu.Item>
+          </NOWActionWrapper>
+        )}
         <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
           <Menu.Item
             key="edit-application-lat-long"
@@ -190,7 +193,7 @@ export class AdministrativeTab extends Component {
             Edit Application Lat/Long
           </Menu.Item>
         </NOWActionWrapper>
-        {Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+        {isNoWApplication && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
           <Menu.SubMenu key="generate-documents" title="Generate Documents">
             {Object.values(this.props.generatableApplicationDocuments)
               .filter(

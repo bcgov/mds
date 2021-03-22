@@ -264,9 +264,10 @@ export class ApplicationTab extends Component {
   renderEditModeNav = () => {
     const errorsLength = Object.keys(flattenObject(this.props.formErrors)).length;
     const showErrors = errorsLength > 0 && this.state.submitted && this.props.submitFailed;
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (
       <NOWTabHeader
-        showProgressButton={this.props.noticeOfWork.lead_inspector_party_guid}
+        showProgressButton={this.props.noticeOfWork.lead_inspector_party_guid && isNoWApplication}
         tab="REV"
         tabActions={
           this.props.noticeOfWork.lead_inspector_party_guid && (
@@ -277,17 +278,19 @@ export class ApplicationTab extends Component {
                   Edit
                 </Button>
               </NOWActionWrapper>
-              <Dropdown
-                overlay={this.menu(true)}
-                placement="bottomLeft"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.menuVisible}
-              >
-                <Button type="secondary" className="full-mobile">
-                  Download
-                  <DownOutlined />
-                </Button>
-              </Dropdown>
+              {isNoWApplication && (
+                <Dropdown
+                  overlay={this.menu(true)}
+                  placement="bottomLeft"
+                  onVisibleChange={this.handleVisibleChange}
+                  visible={this.state.menuVisible}
+                >
+                  <Button type="secondary" className="full-mobile">
+                    Download
+                    <DownOutlined />
+                  </Button>
+                </Dropdown>
+              )}
             </>
           )
         }

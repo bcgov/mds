@@ -37,15 +37,6 @@ class NOWApplication(Base, AuditMixin):
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
     application_type_code = association_proxy('now_application_identity', 'application_type_code')
-    # amendment_reason_codes = db.relationship(
-    #     'ApplicationReasonCode',
-    #     lazy='selectin',
-    #     primaryjoin=
-    #     'and_(foreign(AmendmentReasonXref.now_application_guid)==NOWApplicationIdentity.now_application_guid)',
-    #     secondary=
-    #     'join(AmendmentReasonXref, ApplicationReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code))',
-    #     secondaryjoin=
-    #     'foreign(AmendmentReasonXref.amendment_reason_code)==remote(ApplicationReasonCode.amendment_reason_code)')
 
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship(
@@ -208,6 +199,14 @@ class NOWApplication(Base, AuditMixin):
     @hybrid_property
     def is_new_permit(self):
         return self.type_of_application == 'New Permit'
+
+    @hybrid_property
+    def source_permit_guid(self):
+        permit_amendment = None
+        if self.source_permit_amendment_guid:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
+                self.source_permit_amendment_guid)
+        return permit_amendment.permit_guid if permit_amendment else None
 
     @hybrid_property
     def permittee(self):

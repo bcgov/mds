@@ -27,12 +27,13 @@ const propTypes = {
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   tab: PropTypes.string.isRequired,
   progressStatusHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  showProgress: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = { showProgress: true };
 
 export const NOWProgressStatus = (props) => {
-  const showStatus = props.tab !== "ADMIN" && props.tab !== "PRO";
+  const showStatus = props.tab !== "ADMIN" && props.tab !== "PRO" && props.showProgress;
   return (
     <div>
       {isEmpty(props.progress[props.tab]) && showStatus && (

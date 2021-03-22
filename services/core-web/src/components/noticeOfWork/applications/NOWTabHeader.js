@@ -49,7 +49,7 @@ export const NOWTabHeader = (props) => (
           </div>
         </div>
         <div>
-          <NOWProgressStatus tab={props.tab} />
+          <NOWProgressStatus tab={props.tab} showProgress={props.showProgressButton} />
         </div>
       </div>
     ) : (
