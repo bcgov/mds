@@ -37,8 +37,8 @@ class NOWApplication(Base, AuditMixin):
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
     application_type_code = association_proxy('now_application_identity', 'application_type_code')
-    source_permit_amendment_guid = association_proxy('now_application_identity',
-                                                     'permit_amendment.permit_amendment_guid')
+    source_permit_amendment_id = association_proxy('now_application_identity',
+                                                   'source_permit_amendment_id')
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship(
         'Party',
@@ -213,6 +213,14 @@ class NOWApplication(Base, AuditMixin):
             contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
         ]
         return permittees[0] if permittees else None
+
+    @hybrid_property
+    def source_permit_guid(self):
+        permit_amendment = None
+        if self.source_permit_amendment_id:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_id(
+                self.source_permit_amendment_id)
+        return permit_amendment.permit_guid if permit_amendment else None
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

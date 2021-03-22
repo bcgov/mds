@@ -504,7 +504,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Boolean,
         'application_type_code':
         fields.String,
-        'source_permit_amendment_guid':
+        'source_permit_guid':
         fields.String,
         'amendment_reason_codes':
         fields.List(fields.Nested(AMENDMENT_REASON_XREF), skip_none=True),
