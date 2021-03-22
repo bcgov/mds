@@ -9,7 +9,6 @@ import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
-import * as routes from "@/constants/routes";
 import {
   createNoticeOfWorkApplicationReview,
   fetchNoticeOfWorkApplicationReviews,
@@ -228,11 +227,7 @@ export class ReferralTabs extends Component {
                   fixedTop={this.props.fixedTop}
                 />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                  <NOWSideMenu
-                    route={routes.NOTICE_OF_WORK_APPLICATION}
-                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                    tabSection="referral"
-                  />
+                  <NOWSideMenu tabSection="referral" />
                   <a
                     target="_blank"
                     rel="noreferrer"
@@ -266,11 +261,7 @@ export class ReferralTabs extends Component {
                   fixedTop={this.props.fixedTop}
                 />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                  <NOWSideMenu
-                    route={routes.NOTICE_OF_WORK_APPLICATION}
-                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                    tabSection="consultation"
-                  />
+                  <NOWSideMenu tabSection="consultation" />
                 </div>
                 <div
                   className={
@@ -291,11 +282,7 @@ export class ReferralTabs extends Component {
               <>
                 <NOWTabHeader tab="PUB" tabName="Public Comment" fixedTop={this.props.fixedTop} />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-                  <NOWSideMenu
-                    route={routes.NOTICE_OF_WORK_APPLICATION}
-                    noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-                    tabSection="public-comment"
-                  />
+                  <NOWSideMenu tabSection="public-comment" />
                 </div>
                 <div
                   className={

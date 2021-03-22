@@ -287,11 +287,7 @@ export class AdministrativeTab extends Component {
           }
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu
-            route={routes.NOTICE_OF_WORK_APPLICATION}
-            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-            tabSection="administrative"
-          />
+          <NOWSideMenu tabSection="administrative" />
         </div>
         <div
           className={

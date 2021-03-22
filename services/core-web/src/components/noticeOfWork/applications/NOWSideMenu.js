@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
 import { Anchor } from "antd";
+import * as routes from "@/constants/routes";
+import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import CustomPropTypes from "@/customPropTypes";
 import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
 
 /**
@@ -21,9 +25,9 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
-  noticeOfWorkType: PropTypes.string.isRequired,
+  // route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
   tabSection: PropTypes.string.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export class NOWSideMenu extends Component {
@@ -76,7 +80,11 @@ export class NOWSideMenu extends Component {
 
   updateUrlRoute = (route) => {
     const nowGuid = this.props.match.params.id;
-    this.urlRoute = this.props.route.hashRoute(nowGuid, this.props.tabSection, route);
+    const applicationRoute =
+      this.props.noticeOfWork.application_type_code === "NOW"
+        ? routes.NOTICE_OF_WORK_APPLICATION
+        : routes.ADMIN_AMENDMENT_APPLICATION;
+    this.urlRoute = applicationRoute.hashRoute(nowGuid, this.props.tabSection, route);
 
     if (route === this.props.history.location.hash) {
       return;
@@ -112,8 +120,11 @@ export class NOWSideMenu extends Component {
         >
           {sideMenuOptions[this.props.tabSection]
             .filter(
-              ({ href, alwaysVisible }) =>
-                alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
+              ({ href, alwaysVisible, applicationType }) =>
+                (alwaysVisible ||
+                  renderActivities(this.props.noticeOfWork.notice_of_work_type_code, href)) &&
+                applicationType &&
+                applicationType.includes(this.props.noticeOfWork.application_type_code)
             )
             .map(({ href, title, children }) => (
               <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
@@ -137,4 +148,8 @@ export class NOWSideMenu extends Component {
 
 NOWSideMenu.propTypes = propTypes;
 
-export default withRouter(NOWSideMenu);
+const mapStateToProps = (state) => ({
+  noticeOfWork: getNoticeOfWork(state),
+});
+
+export default withRouter(connect(mapStateToProps)(NOWSideMenu));

@@ -456,11 +456,7 @@ export class ApplicationTab extends Component {
         />
         {this.renderEditModeNav(this.props.fixedTop)}
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu
-            route={routes.NOTICE_OF_WORK_APPLICATION}
-            noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-            tabSection="application"
-          />
+          <NOWSideMenu tabSection="application" />
         </div>
         <div
           className={
