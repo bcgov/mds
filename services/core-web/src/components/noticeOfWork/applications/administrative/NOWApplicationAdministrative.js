@@ -64,17 +64,20 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="generated-documents" title="Application Export Files">
-        <NOWDocuments
-          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
-            exportedDocuments.includes(now_application_document_type_code)
-          )}
-          isViewMode
-          disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
-          categoriesToShow={exportedDocuments}
-          addDescriptionColumn={false}
-        />
-      </ScrollContentWrapper>
+      {props.noticeOfWork.application_type_code === "NOW" && (
+        <ScrollContentWrapper id="generated-documents" title="Application Export Files">
+          <NOWDocuments
+            documents={props.noticeOfWork.documents.filter(
+              ({ now_application_document_type_code }) =>
+                exportedDocuments.includes(now_application_document_type_code)
+            )}
+            isViewMode
+            disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
+            categoriesToShow={exportedDocuments}
+            addDescriptionColumn={false}
+          />
+        </ScrollContentWrapper>
+      )}
       <ScrollContentWrapper id="inspectors" title="Inspectors">
         <AssignInspectors
           inspectors={props.inspectors}

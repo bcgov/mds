@@ -119,14 +119,19 @@ const TimelineItem = (progress, progressStatus) => {
   );
 };
 
-const ProgressRouteFor = (code, now_application_guid) =>
-  ({
-    REV: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "application"),
-    REF: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "referral"),
-    CON: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "consultation"),
-    PUB: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "public-comment"),
-    DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
-  }[code]);
+const ProgressRouteFor = (code, now_application_guid, application_type_code) => {
+  const applicationRoute =
+    application_type_code === "NOW"
+      ? route.NOTICE_OF_WORK_APPLICATION
+      : route.ADMIN_AMENDMENT_APPLICATION;
+  return {
+    REV: applicationRoute.dynamicRoute(now_application_guid, "application"),
+    REF: applicationRoute.dynamicRoute(now_application_guid, "referral"),
+    CON: applicationRoute.dynamicRoute(now_application_guid, "consultation"),
+    PUB: applicationRoute.dynamicRoute(now_application_guid, "public-comment"),
+    DFT: applicationRoute.dynamicRoute(now_application_guid, "draft-permit"),
+  }[code];
+};
 
 const getDocumentInfo = (doc) => {
   const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
@@ -629,7 +634,8 @@ export class ProcessPermit extends Component {
           message: `${progressStatus.description} must be completed.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );
@@ -651,7 +657,8 @@ export class ProcessPermit extends Component {
           message: `${progressStatus.description} must be completed.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );
@@ -735,7 +742,8 @@ export class ProcessPermit extends Component {
           message: `${progressStatus.description} has not been started.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );

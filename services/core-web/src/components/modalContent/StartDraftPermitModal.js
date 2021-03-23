@@ -146,6 +146,20 @@ export const StartDraftPermitModal = (props) => {
   );
 
   const isAmendment = props.preDraftFormValues?.type_of_application !== "New Permit";
+  const initialValues = {
+    is_exploration: false,
+    permit_amendment_type_code: props.permitType,
+    type_of_application: props.noticeOfWork?.type_of_application,
+    permit_guid: props.noticeOfWork.source_permit_guid || null,
+    disabled: props.noticeOfWork.source_permit_guid,
+  };
+
+  const populatedWithConditionsMessage = props.noticeOfWork.has_source_conditions
+    ? `populated with the conditions listed on the source amendment.`
+    : `populated with the standard permit conditions as the source permit was not generated in Core.`;
+  const amendmentMessage = props.noticeOfWork.source_permit_guid
+    ? `This is an amendment to an existing permit. Once created, the draft permit will be ${populatedWithConditionsMessage}`
+    : `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`;
   const steps = [
     {
       title: "Confirm Permit",
@@ -155,7 +169,7 @@ export const StartDraftPermitModal = (props) => {
             <Alert
               description={
                 isAmendment
-                  ? `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`
+                  ? amendmentMessage
                   : `This is a New Permit. A new permit number will be generated once ready to issue. This cannot be changed once drafting has started.`
               }
               type="info"
@@ -164,12 +178,7 @@ export const StartDraftPermitModal = (props) => {
           )}
           <br />
           <PreDraftPermitForm
-            initialValues={{
-              is_exploration: false,
-              permit_amendment_type_code: props.permitType,
-              type_of_application: props.noticeOfWork?.type_of_application,
-              permit_guid: null,
-            }}
+            initialValues={initialValues}
             permits={props.permits}
             isCoalOrMineral={props.isCoalOrMineral}
           />

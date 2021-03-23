@@ -14,6 +14,7 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   submissionDocuments: PropTypes.arrayOf(PropTypes.strings),
+  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -29,14 +30,18 @@ export const EditFinalPermitDocumentPackage = (props) => {
 
   return (
     <div>
-      <h4>vFCBC/NROS Application Files</h4>
-      <NOWSubmissionDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        documents={props.submissionDocuments}
-        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
-      />
-      <br />
+      {props.isNoWApplication && (
+        <>
+          <h4>vFCBC/NROS Application Files</h4>
+          <NOWSubmissionDocuments
+            now_application_guid={props.noticeOfWorkGuid}
+            documents={props.submissionDocuments}
+            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+            selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
+          />
+          <br />
+        </>
+      )}
       <h4>Additional Documents</h4>
       <NOWDocuments
         documents={props.documents}
