@@ -27,7 +27,10 @@ class NOWApplicationIdentity(Base, AuditMixin):
     mms_cid = db.Column(db.Integer)
     source_permit_amendment_id = db.Column(db.Integer)
     application_type_code = db.Column(
-        db.String(3), db.ForeignKey('application_type_code.application_type_code'))
+        db.String,
+        db.ForeignKey('application_type_code.application_type_code'),
+        nullable=False,
+        server_default=FetchedValue())
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine = db.relationship('Mine', lazy='joined')

@@ -50,6 +50,7 @@ from app.api.now_applications.models.now_application_delay_type import NOWApplic
 from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code import PermitAmendmentTypeCode
 from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
 from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 
 from app.api.parties.party.models.party import Party
 
@@ -64,7 +65,7 @@ MODELS_GET_ACTIVE = [
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
-    ApplicationSourceTypeCode
+    ApplicationSourceTypeCode, ApplicationTypeCode
 ]
 
 

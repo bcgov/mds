@@ -8,7 +8,7 @@ from datetime import datetime
 from app.extensions import api
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
-from app.api.now_applications.models.notice_of_work_view import ApplicationsView
+from app.api.now_applications.models.applications_view import ApplicationsView
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.response_models import NOW_VIEW_LIST, NOW_APPLICATION_MODEL

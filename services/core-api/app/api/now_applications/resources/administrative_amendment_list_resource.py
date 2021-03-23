@@ -17,6 +17,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
 from app.api.now_applications.models.administrative_amendments.application_reason_code_xref import ApplicationReasonXref
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL
+from app.api.now_applications.models.applications_view import ApplicationsView
 from app.api.utils.access_decorators import requires_role_edit_permit, requires_any_of, VIEW_ALL, GIS
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
@@ -43,13 +44,14 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         data = self.parser.parse_args()
         current_app.logger.debug("this is administrative amendment post endpoint")
 
-        # proposed start source issue date
-        # proposed end and end date
-
         mine = Mine.find_by_mine_guid(data['mine_guid'])
         permit = Permit.find_by_permit_id(data['permit_id'])
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(
             data['permit_amendment_guid'])
+        has_existing_administrative_amendments = ApplicationsView.query.filter_by(
+            source_permit_amendment_guid=permit_amendment.permit_amendment_guid,
+            application_type_code='ADA').filter(
+                ApplicationsView.now_application_status_code.in_(['AIA', 'REJ'])).count() > 0
 
         application = None
         if permit_amendment.now_application_guid:
@@ -62,13 +64,13 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         if not permit:
             err_str += 'Permit not found. '
         if not permit_amendment:
-            err_str += "Permit amendment not found"
+            err_str += 'Permit amendment not found '
+        if has_existing_administrative_amendments:
+            err_str += 'You cannot have multiple in progress administrative amendments '
+
         if err_str:
             raise BadRequest(err_str)
 
-        # create a now_application_identity
-        # create a application (copy all contacts, documents, conditions from original amendment)
-        # copy permit conditions and if not present then copy standart conditions
         data = self.parser.parse_args()
 
         try:
