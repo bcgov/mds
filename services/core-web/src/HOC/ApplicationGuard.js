@@ -98,11 +98,13 @@ export const ApplicationGuard = (WrappedComponent) => {
     loadApplication = async (id) => {
       this.setState({ isLoaded: false });
       await Promise.all([
-        this.props.fetchOriginalNoticeOfWorkApplication(id),
         this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+          if (data.application_type_code === "NOW") {
+            this.props.fetchOriginalNoticeOfWorkApplication(id);
+            this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id);
+          }
           this.handleCorrectRouteByApplicationType(data);
         }),
-        this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id),
       ]);
     };
 

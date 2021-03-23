@@ -32,6 +32,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
+import { AdminAmendmentNoDataTooltip, CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import * as Strings from "@common/constants/strings";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
@@ -100,7 +101,10 @@ export const ReviewAdminAmendmentApplication = (props) => {
             validate={[requiredList]}
             data={props.amendmentReasonCodeOptions}
           />
-          <div className="field-title">Name of Property</div>
+          <div className="field-title">
+            Name of Property
+            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
+          </div>
           <Field
             id="property_name"
             name="property_name"
@@ -119,9 +123,17 @@ export const ReviewAdminAmendmentApplication = (props) => {
             validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
-          <div className="field-title">Lat</div>
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Lat
+            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
+          </div>
           <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
-          <div className="field-title">Long</div>
+          <div className="field-title">
+            Long
+            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
+          </div>
           <Field
             id="longitude"
             name="longitude"
@@ -129,9 +141,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             disabled
             validate={[lon]}
           />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">Type of Notice of Work</div>
+          <div className="field-title">Type of Administrative Amendment</div>
           <Field
             id="notice_of_work_type_code"
             name="notice_of_work_type_code"
@@ -147,14 +157,20 @@ export const ReviewAdminAmendmentApplication = (props) => {
             component={RenderField}
             disabled
           />
-          <div className="field-title">Proposed Start Date</div>
+          <div className="field-title">
+            Proposed Start Date
+            <CoreTooltip title="This value was populated using the source amendment issue date, This value can be changed with the issuing the amendment" />
+          </div>
           <Field
             id="proposed_start_date"
             name="proposed_start_date"
             component={RenderDate}
             disabled
           />
-          <div className="field-title">Proposed End Date</div>
+          <div className="field-title">
+            Proposed End Date
+            <CoreTooltip title="This value was populated using the source amendment authorization end date, This value can be changed with the issuing the amendment" />
+          </div>
           <Field id="proposed_end_date" name="proposed_end_date" component={RenderDate} disabled />
         </Col>
       </Row>

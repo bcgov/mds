@@ -32,11 +32,15 @@ const NoticeOfWorkPageHeader = (props) => {
     props.noticeOfWorkApplicationStatusOptionsHash[
       props.noticeOfWork.now_application_status_code
     ] || Strings.UNASSIGNED;
+  const headerName =
+    props.noticeOfWork.application_type_code === "NOW"
+      ? "Notice of Work"
+      : "Administrative Amendment";
 
   return (
     <div className="padding-lg">
       <h1>
-        NoW Number:&nbsp;{nowNumber}&nbsp;
+        {headerName}:&nbsp;{nowNumber}&nbsp;
         <span>
           <Tag title={`Mine: ${nowMineName}`}>
             <Link

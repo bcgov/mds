@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Divider, Collapse, Button } from "antd";
+import { Divider, Collapse, Button, Alert } from "antd";
 import { formatDateTime, flattenObject } from "@common/utils/helpers";
 import { ReadOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -41,6 +41,7 @@ const propTypes = {
   deletePermitCondition: PropTypes.func.isRequired,
   updatePermitCondition: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
+  hasSourceConditions: PropTypes.bool.isRequired,
 };
 
 export class Conditions extends Component {
@@ -156,6 +157,16 @@ export class Conditions extends Component {
       : null;
     return (
       <>
+        {!this.props.hasSourceConditions && (
+          <>
+            <Alert
+              description={`The source permit was not issued in Core. Conditions below are standard and require updating.`}
+              type="info"
+              showIcon
+            />
+            <br />
+          </>
+        )}
         <div
           style={{
             display: "inline-block",
@@ -181,7 +192,6 @@ export class Conditions extends Component {
             </p>
           </div>
         </div>
-
         <Collapse>
           {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
             const conditions = this.props.conditions.filter(
