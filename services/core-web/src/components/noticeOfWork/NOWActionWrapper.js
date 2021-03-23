@@ -44,6 +44,8 @@ export class NOWActionWrapper extends Component {
     ].includes(this.props.tab);
     if (tabShouldIncludeProgress) {
       this.handleDisableTab(this.props.tab, this.props.progress);
+    } else {
+      this.setState({ disableTab: false });
     }
   }
 
@@ -85,14 +87,7 @@ export class NOWActionWrapper extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    const tabShouldIncludeProgress = applicationProgress[
-      this.props.noticeOfWork.application_type_code
-    ].includes(this.props.tab);
-    const disabled =
-      isApplicationDelayed ||
-      isApplicationComplete ||
-      this.state.disableTab ||
-      tabShouldIncludeProgress;
+    const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
     return !disabled ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
