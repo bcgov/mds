@@ -85,8 +85,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
-    amendment_source_type_code = db.Column(
-        db.String, db.ForeignKey('amendment_source_type_code.amendment_source_type_code'))
+    application_source_type_code = db.Column(
+        db.String, db.ForeignKey('application_source_type_code.application_source_type_code'))
     proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
     adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
@@ -147,11 +147,11 @@ class NOWApplication(Base, AuditMixin):
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
 
-    amendment_reason_codes = db.relationship(
-        'AmendmentReasonXref',
+    application_reason_codes = db.relationship(
+        'ApplicationReasonXref',
         lazy='selectin',
         uselist=True,
-        primaryjoin='AmendmentReasonXref.now_application_id == NOWApplication.now_application_id')
+        primaryjoin='ApplicationReasonXref.now_application_id == NOWApplication.now_application_id')
 
     submission_documents = db.relationship(
         'Document',

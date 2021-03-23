@@ -74,15 +74,15 @@ class ApplicationsView(Base):
         'and_(foreign(PermitAmendment.now_application_guid)==ApplicationsView.now_application_guid )'
     )
 
-    amendment_reason_codes = db.relationship(
-        'AmendmentReasonCode',
+    application_reason_codes = db.relationship(
+        'ApplicationReasonCode',
         lazy='selectin',
         primaryjoin=
-        'and_(foreign(AmendmentReasonXref.now_application_id)==ApplicationsView.now_application_id)',
+        'and_(foreign(ApplicationReasonXref.now_application_id)==ApplicationsView.now_application_id)',
         secondary=
-        'join(AmendmentReasonXref, AmendmentReasonCode, foreign(AmendmentReasonXref.amendment_reason_code)==remote(AmendmentReasonCode.amendment_reason_code))',
+        'join(ApplicationReasonXref, ApplicationReasonCode, foreign(ApplicationReasonXref.application_reason_code)==remote(ApplicationReasonCode.application_reason_code))',
         secondaryjoin=
-        'foreign(AmendmentReasonXref.amendment_reason_code)==remote(AmendmentReasonCode.amendment_reason_code)',
+        'foreign(ApplicationReasonXref.application_reason_code)==remote(ApplicationReasonCode.application_reason_code)',
         viewonly=True)
 
     contacts = db.relationship(

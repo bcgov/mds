@@ -7,14 +7,14 @@ from app.api.utils.models_mixins import Base
 from app.extensions import db
 
 
-class AmendmentReasonCode(Base):
-    __tablename__ = 'amendment_reason_code'
-    amendment_reason_code = db.Column(db.String(3), nullable=False, primary_key=True)
+class ApplicationSourceTypeCode(Base):
+    __tablename__ = 'application_source_type_code'
+    application_source_type_code = db.Column(db.String(3), nullable=False, primary_key=True)
     description = db.Column(db.String, nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     def __repr__(self):
-        return '<AmendmentReasonCode %r>' % self.amendment_reason_code
+        return '<ApplicationSourceTypeCode %r>' % self.application_source_type_code
 
     @classmethod
     def get_all(cls):

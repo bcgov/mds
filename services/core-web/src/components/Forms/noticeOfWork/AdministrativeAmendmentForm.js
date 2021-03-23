@@ -13,8 +13,8 @@ import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import { getPermits } from "@common/selectors/permitSelectors";
 import {
-  getAmendmentReasonCodeDropdownOptions,
-  getAmendmentSourceTypeCodeDropdownOptions,
+  getApplicationReasonCodeDropdownOptions,
+  getApplicationSourceTypeCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
@@ -23,8 +23,8 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
-  amendmentReasonCodeOptions: CustomPropTypes.options.isRequired,
-  amendmentSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
+  applicationReasonCodeOptions: CustomPropTypes.options.isRequired,
+  applicationSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 const defaultProps = {
@@ -79,21 +79,21 @@ export const AdministrativeAmendmentForm = (props) => {
           )}
           <Form.Item>
             <Field
-              id="amendment_source_type_code"
-              name="amendment_source_type_code"
+              id="application_source_type_code"
+              name="application_source_type_code"
               label="Source of Amendment*"
               component={renderConfig.SELECT}
-              data={props.amendmentSourceTypeCodeOptions}
+              data={props.applicationSourceTypeCodeOptions}
               validate={[required]}
             />
           </Form.Item>
           <Form.Item>
             <Field
-              id="amendment_reason_codes"
-              name="amendment_reason_codes"
+              id="application_reason_codes"
+              name="application_reason_codes"
               label="Reason for Amendment*"
               component={renderConfig.MULTI_SELECT}
-              data={props.amendmentReasonCodeOptions}
+              data={props.applicationReasonCodeOptions}
               validate={[required]}
             />
           </Form.Item>
@@ -136,8 +136,8 @@ export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.ADMINISTRATIVE_AMENDMENT_FORM)(state),
     permits: getPermits(state),
-    amendmentReasonCodeOptions: getAmendmentReasonCodeDropdownOptions(state),
-    amendmentSourceTypeCodeOptions: getAmendmentSourceTypeCodeDropdownOptions(state),
+    applicationReasonCodeOptions: getApplicationReasonCodeDropdownOptions(state),
+    applicationSourceTypeCodeOptions: getApplicationSourceTypeCodeDropdownOptions(state),
   })),
   reduxForm({
     form: FORM.ADMINISTRATIVE_AMENDMENT_FORM,

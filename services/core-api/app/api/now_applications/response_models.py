@@ -342,23 +342,23 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'now_application_id': fields.Integer,
     })
 
-AMENDMENT_SOURCE_TYPE_CODE = api.model(
-    'AMENDMENT_SOURCE_TYPE_CODE', {
-        'amendment_source_type_code': fields.String,
+APPLICATION_SOURCE_TYPE_CODE = api.model(
+    'application_source_type_code', {
+        'application_source_type_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean,
     })
 
-AMENDMENT_REASON_CODE = api.model(
-    'AMENDMENT_REASON_CODE', {
-        'amendment_reason_code': fields.String,
+APPLICATION_REASON_CODE = api.model(
+    'APPLICATION_REASON_CODE', {
+        'application_reason_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean,
     })
 
-AMENDMENT_REASON_CODE_XREF = api.model(
-    'AMENDMENT_REASON_CODE', {
-        'amendment_reason_code': fields.String,
+APPLICATION_REASON_CODE_XREF = api.model(
+    'APPLICATION_REASON_CODE', {
+        'application_reason_code': fields.String,
         'now_application_id': fields.Integer,
         'state_modified': fields.String
     })
@@ -513,10 +513,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Boolean,
         'application_type_code':
         fields.String,
-        'amendment_source_type_code':
+        'application_source_type_code':
         fields.String,
-        'amendment_reason_codes':
-        fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
+        'application_reason_codes':
+        fields.List(fields.Nested(APPLICATION_REASON_CODE)),
         'source_permit_guid':
         fields.String,
         'source_permit_amendment_guid':
@@ -614,7 +614,7 @@ NOW_VIEW_MODEL = api.model(
         'application_type_code': fields.String,
         'application_type_description': fields.String,
         'permit_amendment': fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
-        'amendment_reason_codes': fields.List(fields.Nested(AMENDMENT_REASON_CODE)),
+        'application_reason_codes': fields.List(fields.Nested(APPLICATION_REASON_CODE)),
         'permittee': fields.Nested(PARTY, skip_none=True),
         'status_reason': fields.String,
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),

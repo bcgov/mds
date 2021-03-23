@@ -72,7 +72,7 @@ const transformRowData = (applications) => {
         (application.source_permit_amendment_issue_date &&
           formatDate(application.source_permit_amendment_issue_date)) ||
         Strings.EMPTY_FIELD,
-      amendment_reason_codes: application.amendment_reason_codes,
+      application_reason_codes: application.application_reason_codes,
       issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
       permittee_name: permittee_name || Strings.EMPTY_FIELD,
       decision_date:
@@ -152,7 +152,7 @@ export class MineAdministrativeAmendmentTable extends Component {
     },
     {
       title: "Amendment Reason",
-      dataIndex: "amendment_reason_codes",
+      dataIndex: "application_reason_codes",
       sorter: false,
       render: (trigger) => (
         <div className="cap-col-height">

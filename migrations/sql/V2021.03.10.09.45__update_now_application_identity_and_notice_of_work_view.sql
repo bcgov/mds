@@ -3,8 +3,8 @@ update now_application_identity
 set application_type_code = 'NOW';
 
 /* set type column as not null*/
-
-ALTER TABLE now_application_identity ALTER COLUMN application_type_code SET NOT NULL;
+ALTER TABLE now_application_identity ALTER COLUMN application_type_code SET DEFAULT 'NOW'; 
+ALTER TABLE now_application_identity ALTER COLUMN application_type_code SET NOT NULL ;
 
 DROP VIEW IF EXISTS notice_of_work_view;
 CREATE OR REPLACE VIEW notice_of_work_view

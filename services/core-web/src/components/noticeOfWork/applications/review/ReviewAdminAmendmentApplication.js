@@ -15,8 +15,8 @@ import {
   getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
   getNoticeOfWorkApplicationTypeOptionsHash,
-  getAmendmentReasonCodeDropdownOptions,
-  getAmendmentSourceTypeCodeDropdownOptions,
+  getApplicationReasonCodeDropdownOptions,
+  getApplicationSourceTypeCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import {
@@ -67,8 +67,8 @@ const propTypes = {
   proposedAuthorizationEndDate: PropTypes.string.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
-  amendmentReasonCodeOptions: CustomPropTypes.options.isRequired,
-  amendmentSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
+  applicationReasonCodeOptions: CustomPropTypes.options.isRequired,
+  applicationSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewAdminAmendmentApplication = (props) => {
@@ -85,21 +85,21 @@ export const ReviewAdminAmendmentApplication = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">Source of Amendment</div>
           <Field
-            id="amendment_source_type_code"
-            name="amendment_source_type_code"
+            id="application_source_type_code"
+            name="application_source_type_code"
             component={RenderSelect}
             disabled={props.isViewMode}
             validate={[required]}
-            data={props.amendmentSourceTypeCodeOptions}
+            data={props.applicationSourceTypeCodeOptions}
           />
           <div className="field-title">Reason for Amendment</div>
           <Field
-            id="amendment_reason_codes"
-            name="amendment_reason_codes"
+            id="application_reason_codes"
+            name="application_reason_codes"
             component={RenderMultiSelect}
             disabled={props.isViewMode}
             validate={[requiredList]}
-            data={props.amendmentReasonCodeOptions}
+            data={props.applicationReasonCodeOptions}
           />
           <div className="field-title">
             Name of Property
@@ -229,8 +229,8 @@ export default compose(
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
-    amendmentReasonCodeOptions: getAmendmentReasonCodeDropdownOptions(state),
-    amendmentSourceTypeCodeOptions: getAmendmentSourceTypeCodeDropdownOptions(state),
+    applicationReasonCodeOptions: getApplicationReasonCodeDropdownOptions(state),
+    applicationSourceTypeCodeOptions: getApplicationSourceTypeCodeDropdownOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

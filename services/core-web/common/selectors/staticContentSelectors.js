@@ -41,8 +41,8 @@ export const {
   getPermitConditionTypeOptions,
   getDelayTypeOptions,
   getPermitAmendmentTypeOptions,
-  getAmendmentReasonCodeOptions,
-  getAmendmentSourceTypeCodeOptions,
+  getApplicationReasonCodeOptions,
+  getApplicationSourceTypeCodeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -660,25 +660,25 @@ export const getDelayTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getAmendmentReasonCodeDropdownOptions = createSelectorWrapper(
-  getAmendmentReasonCodeOptions,
+export const getApplicationReasonCodeDropdownOptions = createSelectorWrapper(
+  getApplicationReasonCodeOptions,
   createDropDownList,
-  ["description", "amendment_reason_code", "active_ind"]
+  ["description", "application_reason_code", "active_ind"]
 );
 
-export const getAmendmentReasonCodeOptionsHash = createSelector(
-  [getAmendmentReasonCodeDropdownOptions],
+export const getApplicationReasonCodeOptionsHash = createSelector(
+  [getApplicationReasonCodeDropdownOptions],
   createLabelHash
 );
 
-export const getAmendmentSourceTypeCodeDropdownOptions = createSelectorWrapper(
-  getAmendmentSourceTypeCodeOptions,
+export const getApplicationSourceTypeCodeDropdownOptions = createSelectorWrapper(
+  getApplicationSourceTypeCodeOptions,
   createDropDownList,
-  ["description", "amendment_source_type_code", "active_ind"]
+  ["description", "application_source_type_code", "active_ind"]
 );
 
-export const getAmendmentSourceTypeCodeOptionsHash = createSelector(
-  [getAmendmentSourceTypeCodeDropdownOptions],
+export const getApplicationSourceTypeCodeOptionsHash = createSelector(
+  [getApplicationSourceTypeCodeDropdownOptions],
   createLabelHash
 );
 

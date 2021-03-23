@@ -48,8 +48,8 @@ from app.api.mines.permits.permit_conditions.models.permit_condition_type import
 from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
 from app.api.now_applications.models.now_application_delay_type import NOWApplicationDelayType
 from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code import PermitAmendmentTypeCode
-from app.api.now_applications.models.administrative_amendments.amendment_reason_code import AmendmentReasonCode
-from app.api.now_applications.models.administrative_amendments.amendment_source_type_code import AmendmentSourceTypeCode
+from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
+from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
 
 from app.api.parties.party.models.party import Party
 
@@ -63,7 +63,8 @@ MODELS_GET_ACTIVE = [
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
-    NOWApplicationDelayType, PermitAmendmentTypeCode, AmendmentReasonCode, AmendmentSourceTypeCode
+    NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
+    ApplicationSourceTypeCode
 ]
 
 
