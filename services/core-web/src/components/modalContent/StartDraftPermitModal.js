@@ -154,11 +154,11 @@ export const StartDraftPermitModal = (props) => {
     disabled: props.noticeOfWork.source_permit_guid,
   };
 
-  const populatedWithConditionsMessage = props.noticeOfWork.has_source_conditions
+  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions
     ? `populated with the conditions from the source amendment.`
     : `populated with the standard permit conditions as the source permit was not generated in Core.`;
   const amendmentMessage = props.noticeOfWork.source_permit_guid
-    ? `This is an amendment to an existing permit. The Application Type and Permit have been pre-populated based on the source amendment. Once created, the draft permit will be ${populatedWithConditionsMessage}`
+    ? sourceAmendmentMessage
     : `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`;
   const steps = [
     {

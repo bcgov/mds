@@ -7,8 +7,8 @@ INSERT INTO application_type_code
     active_ind
 )
 VALUES 
-    ('NOW', 'Notice of Work Application','system-mds', 'system-mds', 'true'),
-    ('ADA', 'Admin Amendment','system-mds', 'system-mds', 'true')
+    ('NOW', 'Notice of Work','system-mds', 'system-mds', 'true'),
+    ('ADA', 'Administrative Amendment','system-mds', 'system-mds', 'true')
 ON CONFLICT DO NOTHING;
 
 ALTER TABLE now_application_identity ADD COLUMN application_type_code varchar(3);
