@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Menu, Dropdown } from "antd";
@@ -6,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { formatDate } from "@common/utils/helpers";
-import { DownOutlined, ExportOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import {
@@ -19,25 +18,18 @@ import {
 } from "@common/selectors/noticeOfWorkSelectors";
 import {
   generateNoticeOfWorkApplicationDocument,
-  exportNoticeOfWorkApplicationDocument,
   fetchNoticeOfWorkApplicationContextTemplate,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import * as Strings from "@common/constants/strings";
-import * as routes from "@/constants/routes";
-import { EDIT_OUTLINE } from "@/constants/assets";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWApplicationAdministrative from "@/components/noticeOfWork/applications/administrative/NOWApplicationAdministrative";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
-import PermitAmendmentSecurityForm from "@/components/Forms/permits/PermitAmendmentSecurityForm";
 
 /**
  * @class AdministrativeTab- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
@@ -47,6 +39,16 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  fixedTop: PropTypes.bool.isRequired,
+  importNowSubmissionDocumentsJob: PropTypes.bool.isRequired,
+  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
+  formValues: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export class AdministrativeTab extends Component {

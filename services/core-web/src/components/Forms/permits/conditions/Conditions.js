@@ -160,7 +160,7 @@ export class Conditions extends Component {
         {!this.props.hasSourceConditions && (
           <>
             <Alert
-              description="The source permit was not issued in Core. Conditions below are standard and require updating."
+              description="The source authorization was not written in Core. The conditions below are defaults, not specific to this application or site."
               type="info"
               showIcon
             />
