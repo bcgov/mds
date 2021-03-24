@@ -21,8 +21,11 @@ class ApplicationsView(Base):
     mine_no = db.Column(db.String)
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
-    source_permit_amendment_id = db.Column(
+    source_permit_amendment_id = db.Column(db.Integer,
+                                           db.ForeignKey('permit_amendment.permit_amendment_id'))
+    source_permit_amendment_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('permit_amendment.permit_amendment_id'))
+
     source_permit_amendment_issue_date = db.Column(db.Date)
 
     now_number = db.Column(db.String)
