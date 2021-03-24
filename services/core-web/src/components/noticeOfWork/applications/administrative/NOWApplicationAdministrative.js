@@ -16,10 +16,9 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
@@ -82,11 +81,10 @@ export const NOWApplicationAdministrative = (props) => {
         <AssignInspectors
           inspectors={props.inspectors}
           noticeOfWork={props.noticeOfWork}
-          setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-          setIssuingInspectorPartyGuid={props.setIssuingInspectorPartyGuid}
           handleUpdateInspectors={props.handleUpdateInspectors}
           title="Update Inspectors"
           isAdminView
+          isLoaded={props.isLoaded}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="progress-tracking" title="Application Progress Tracking">

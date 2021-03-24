@@ -51,9 +51,8 @@ const propTypes = {
 
 export class AdministrativeTab extends Component {
   state = {
-    associatedLeadInspectorPartyGuid: undefined,
-    associatedIssuingInspectorPartyGuid: undefined,
     adminMenuVisible: false,
+    isInspectorsLoaded: true,
   };
 
   handleAdminVisibleChange = (flag) => {
@@ -214,44 +213,23 @@ export class AdministrativeTab extends Component {
     );
   };
 
-  handleUpdateInspectors = (finalAction) => {
-    if (
-      (!this.state.associatedLeadInspectorPartyGuid ||
-        this.state.associatedLeadInspectorPartyGuid ===
-          this.props.noticeOfWork.lead_inspector_party_guid) &&
-      (!this.state.associatedIssuingInspectorPartyGuid ||
-        this.state.associatedIssuingInspectorPartyGuid ===
-          this.props.noticeOfWork.issuing_inspector_party_guid)
-    ) {
-      finalAction();
-      return;
-    }
-    this.props
+  handleUpdateInspectors = (values, finalAction) => {
+    this.setState({ isInspectorsLoaded: false });
+    return this.props
       .updateNoticeOfWorkApplication(
-        {
-          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
-          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
-        },
+        values,
         this.props.noticeOfWork.now_application_guid,
         "Successfully updated the assigned inspectors"
       )
       .then(() => {
-        this.props.fetchImportedNoticeOfWorkApplication(
-          this.props.noticeOfWork.now_application_guid
-        );
-      })
-      .then(() => finalAction());
+        this.props
+          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
+          .then(() => {
+            this.setState({ isInspectorsLoaded: true });
+            finalAction();
+          });
+      });
   };
-
-  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
-    this.setState({
-      associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
-    });
-
-  setIssuingInspectorPartyGuid = (issuingInspectorPartyGuid) =>
-    this.setState({
-      associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
-    });
 
   handleSaveNOWEdit = () => {
     return this.props
@@ -301,11 +279,10 @@ export class AdministrativeTab extends Component {
             mineGuid={this.props.noticeOfWork.mine_guid}
             noticeOfWork={this.props.noticeOfWork}
             inspectors={this.props.inspectors}
-            setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-            setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
             handleUpdateInspectors={this.handleUpdateInspectors}
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
+            isLoaded={this.state.isInspectorsLoaded}
           />
         </div>
       </div>

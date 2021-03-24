@@ -50,6 +50,14 @@ export class NOWSecurities extends Component {
   };
 
   render() {
+    const amendmentReasonCodes = {
+      ...this.props.noticeOfWork,
+      amendment_reason_codes:
+        this.props.noticeOfWork.amendment_reason_codes &&
+        this.props.noticeOfWork.amendment_reason_codes.length > 0
+          ? this.props.noticeOfWork.amendment_reason_codes.map((c) => c.amendment_reason_code)
+          : [],
+    };
     return (
       <div>
         <div className="right">
@@ -66,7 +74,7 @@ export class NOWSecurities extends Component {
           <div style={this.state.isEditMode ? { backgroundColor: "#f3f0f0", padding: "20px" } : {}}>
             <PermitAmendmentSecurityForm
               isEditMode={this.state.isEditMode}
-              initialValues={this.props.noticeOfWork}
+              initialValues={amendmentReasonCodes}
               onSubmit={this.handleAddSecurity}
               onCancel={this.toggleEditMode}
             />

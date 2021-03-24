@@ -93,9 +93,7 @@ const defaultProps = {};
 
 export class ApplicationTab extends Component {
   state = {
-    associatedLeadInspectorPartyGuid: undefined,
-    associatedIssuingInspectorPartyGuid: undefined,
-    isLoaded: true,
+    isInspectorsLoaded: true,
     isViewMode: true,
     menuVisible: false,
     submitting: false,
@@ -382,44 +380,19 @@ export class ApplicationTab extends Component {
     return toolTipValue;
   };
 
-  setLeadInspectorPartyGuid = (leadInspectorPartyGuid) =>
-    this.setState({
-      associatedLeadInspectorPartyGuid: leadInspectorPartyGuid,
-    });
-
-  setIssuingInspectorPartyGuid = (issuingInspectorPartyGuid) =>
-    this.setState({
-      associatedIssuingInspectorPartyGuid: issuingInspectorPartyGuid,
-    });
-
-  handleUpdateInspectors = (finalAction) => {
-    if (
-      (!this.state.associatedLeadInspectorPartyGuid ||
-        this.state.associatedLeadInspectorPartyGuid ===
-          this.props.noticeOfWork.lead_inspector_party_guid) &&
-      (!this.state.associatedIssuingInspectorPartyGuid ||
-        this.state.associatedIssuingInspectorPartyGuid ===
-          this.props.noticeOfWork.issuing_inspector_party_guid)
-    ) {
-      finalAction();
-      return;
-    }
-    this.setState({ isLoaded: false });
-    this.props
+  handleUpdateInspectors = (values) => {
+    this.setState({ isInspectorsLoaded: false });
+    return this.props
       .updateNoticeOfWorkApplication(
-        {
-          lead_inspector_party_guid: this.state.associatedLeadInspectorPartyGuid,
-          issuing_inspector_party_guid: this.state.associatedIssuingInspectorPartyGuid,
-        },
+        values,
         this.props.noticeOfWork.now_application_guid,
         "Successfully updated the assigned inspectors"
       )
       .then(() => {
         this.props
           .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => this.setState({ isLoaded: true }));
-      })
-      .then(() => finalAction());
+          .then(() => this.setState({ isInspectorsLoaded: true }));
+      });
   };
 
   handleResetNOWForm = () => {
@@ -472,11 +445,10 @@ export class ApplicationTab extends Component {
                 <AssignInspectors
                   inspectors={this.props.inspectors}
                   noticeOfWork={this.props.noticeOfWork}
-                  setLeadInspectorPartyGuid={this.setLeadInspectorPartyGuid}
-                  setIssuingInspectorPartyGuid={this.setIssuingInspectorPartyGuid}
                   handleUpdateInspectors={this.handleUpdateInspectors}
                   title="Assign Inspectors"
                   isEditMode
+                  isLoaded={this.state.isInspectorsLoaded}
                 />
               </ScrollContentWrapper>
               <Divider />
