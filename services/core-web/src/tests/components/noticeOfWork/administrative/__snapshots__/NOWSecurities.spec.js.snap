@@ -40,6 +40,7 @@ exports[`NOWSecurities renders properly 1`] = `
         initialValues={
           Object {
             "adjusted_annual_maximum_tonnage": "",
+            "amendment_reason_codes": Array [],
             "application_documents": Array [],
             "blasting_operation": Object {},
             "camp": Object {
