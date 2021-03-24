@@ -29,6 +29,7 @@ from app.api.now_applications.models.unit_type import UnitType
 from app.api.now_applications.models.activity_detail.underground_exploration_type import UndergroundExplorationType
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 
 
 def RandomMineRegionCode():
@@ -195,5 +196,11 @@ def RandomNOWProgressStatusCode():
         for x in db.session.query(NOWApplicationProgressStatus).all()
     ])
 
+
 def RandomApplicationType():
-        return random.choice(['New Permit', 'Amendment'])
+    return random.choice(['New Permit', 'Amendment'])
+
+
+def RandomApplicationTypeCode():
+    return random.choice(
+        [x.application_type_code for x in db.session.query(ApplicationTypeCode).all()])
