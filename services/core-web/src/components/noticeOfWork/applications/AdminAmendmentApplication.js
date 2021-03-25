@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";

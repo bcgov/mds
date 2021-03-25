@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { Prompt, withRouter } from "react-router-dom";
@@ -14,10 +13,7 @@ import { generateNoticeOfWorkApplicationDocument } from "@/actionCreators/docume
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import PropTypes from "prop-types";
 import { reset } from "redux-form";
-import {
-  fetchImportedNoticeOfWorkApplication,
-  importNoticeOfWorkApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchImportedNoticeOfWorkApplication } from "@common/actionCreators/noticeOfWorkActionCreator";
 import NOWPermitGeneration from "@/components/noticeOfWork/applications/permitGeneration/NOWPermitGeneration";
 
 const propTypes = {
@@ -29,12 +25,12 @@ const propTypes = {
   }).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
-  importNoticeOfWorkApplication: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -136,7 +132,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       fetchImportedNoticeOfWorkApplication,
       generateNoticeOfWorkApplicationDocument,
-      importNoticeOfWorkApplication,
       reset,
     },
     dispatch

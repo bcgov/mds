@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
@@ -11,10 +10,7 @@ import {
   getNoticeOfWorkApplicationProgressStatusCodeOptions,
   getMineRegionDropdownOptions,
   getDropdownNoticeOfWorkApplicationTypeOptions,
-  getDropdownNoticeOfWorkApplicationPermitTypeOptions,
-  getMineRegionHash,
   getNoticeOfWorkApplicationPermitTypeOptionsHash,
-  getNoticeOfWorkApplicationTypeOptionsHash,
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
@@ -34,7 +30,6 @@ import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import { AdminAmendmentNoDataTooltip, CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
-import * as Strings from "@common/constants/strings";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
 import ReviewNOWContacts from "./ReviewNOWContacts";
@@ -46,39 +41,15 @@ import ReviewNOWContacts from "./ReviewNOWContacts";
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
-  now_application_guid: PropTypes.string.isRequired,
   documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  filtered_submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   regionDropdownOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
-  noticeOfWorkType: PropTypes.string.isRequired,
-  renderOriginalValues: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  permitTypeHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  regionHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  applicationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  permitTypeOptions: CustomPropTypes.options.isRequired,
-  initialValues: CustomPropTypes.importedNOWApplication.isRequired,
-  proposedTonnage: PropTypes.number.isRequired,
-  adjustedTonnage: PropTypes.number.isRequired,
-  proposedStartDate: PropTypes.string.isRequired,
-  proposedAuthorizationEndDate: PropTypes.string.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isPreLaunch: PropTypes.bool.isRequired,
   applicationReasonCodeOptions: CustomPropTypes.options.isRequired,
   applicationSourceTypeCodeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewAdminAmendmentApplication = (props) => {
-  const renderCodeValues = (codeHash, value) => {
-    if (value === Strings.EMPTY_FIELD) {
-      return value;
-    }
-    return codeHash[value];
-  };
-
   const renderApplicationInfo = () => (
     <div>
       <Row gutter={16}>
@@ -216,7 +187,6 @@ export default compose(
     documents: selector(state, "documents"),
     submission_documents: selector(state, "submission_documents"),
     imported_submission_documents: selector(state, "imported_submission_documents"),
-    filtered_submission_documents: selector(state, "filtered_submission_documents"),
     proposedTonnage: selector(state, "proposed_annual_maximum_tonnage"),
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     proposedStartDate: selector(state, "proposed_start_date"),
@@ -224,10 +194,7 @@ export default compose(
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
-    permitTypeOptions: getDropdownNoticeOfWorkApplicationPermitTypeOptions(state),
-    regionHash: getMineRegionHash(state),
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
-    applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
     applicationReasonCodeOptions: getApplicationReasonCodeDropdownOptions(state),
     applicationSourceTypeCodeOptions: getApplicationSourceTypeCodeDropdownOptions(state),
