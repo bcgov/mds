@@ -269,3 +269,8 @@ export const TAB_DISCLAIMERS = {
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
 };
+
+export const APPLICATION_PROGRESS_TRACKING = {
+  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
+  ADA: ["REF", "CON", "DFT"],
+};

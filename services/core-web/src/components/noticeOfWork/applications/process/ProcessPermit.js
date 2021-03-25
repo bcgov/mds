@@ -52,6 +52,7 @@ import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -141,11 +142,6 @@ const getDocumentInfo = (doc) => {
   info += date ? `dated ${formatDate(date)}` : "not dated";
   info += author ? `, prepared by ${author}` : "";
   return info;
-};
-
-const applicationProgress = {
-  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
-  ADA: ["REF", "CON", "DFT"],
 };
 
 export class ProcessPermit extends Component {
@@ -625,7 +621,7 @@ export class ProcessPermit extends Component {
           progressStatus.application_progress_status_code !== "PUB" &&
           (!this.props.progress[progressStatus.application_progress_status_code] ||
             !this.props.progress[progressStatus.application_progress_status_code].end_date) &&
-          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
             progressStatus.application_progress_status_code
           )
       )
@@ -733,7 +729,7 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
           !this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
-          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
             progressStatus.application_progress_status_code
           )
       )
@@ -821,9 +817,9 @@ export class ProcessPermit extends Component {
             {this.props.progressStatusCodes
               .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
               .filter(({ application_progress_status_code }) =>
-                applicationProgress[this.props.noticeOfWork.application_type_code].includes(
-                  application_progress_status_code
-                )
+                APPLICATION_PROGRESS_TRACKING[
+                  this.props.noticeOfWork.application_type_code
+                ].includes(application_progress_status_code)
               )
               .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
           </Timeline>

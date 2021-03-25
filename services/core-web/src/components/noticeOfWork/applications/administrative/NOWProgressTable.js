@@ -20,6 +20,7 @@ import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
+import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
@@ -34,11 +35,6 @@ const propTypes = {
   progressStatusCodes: CustomPropTypes.options.isRequired,
   applicationDelays: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   totalApplicationDelayDuration: PropTypes.objectOf(PropTypes.string).isRequired,
-};
-
-const applicationProgress = {
-  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
-  ADA: ["REF", "CON", "DFT"],
 };
 
 const columns = [
@@ -267,9 +263,9 @@ export class NOWProgressTable extends Component {
               {this.props.progressStatusCodes
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
                 .filter(({ application_progress_status_code }) =>
-                  applicationProgress[this.props.noticeOfWork.application_type_code].includes(
-                    application_progress_status_code
-                  )
+                  APPLICATION_PROGRESS_TRACKING[
+                    this.props.noticeOfWork.application_type_code
+                  ].includes(application_progress_status_code)
                 )
                 .map((progressStatus) =>
                   stepItem(this.props.progress, progressStatus, delaysExist)

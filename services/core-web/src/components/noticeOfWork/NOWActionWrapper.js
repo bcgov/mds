@@ -9,6 +9,7 @@ import {
   getApplicationDelay,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @constant NOWActionWrapper conditionally renders NoW actions based on various conditions (ie, Rejected, Permit issued, client delay, stages not started, etc)
@@ -31,15 +32,11 @@ const defaultProps = {
   applicationDelay: {},
 };
 
-const applicationProgress = {
-  NOW: ["REV", "REF", "CON", "PUB", "DFT"],
-  ADA: ["REF", "CON", "DFT"],
-};
 export class NOWActionWrapper extends Component {
   state = { disableTab: false };
 
   componentDidMount() {
-    const tabShouldIncludeProgress = applicationProgress[
+    const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
       this.props.noticeOfWork.application_type_code
     ].includes(this.props.tab);
     if (tabShouldIncludeProgress) {
@@ -58,7 +55,7 @@ export class NOWActionWrapper extends Component {
       this.props.progress[this.props.tab]
     );
 
-    const tabShouldIncludeProgress = applicationProgress[
+    const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
       this.props.noticeOfWork.application_type_code
     ].includes(nextProps.tab);
 
