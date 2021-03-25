@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { NoticeOfWorkApplication } from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
+import { AdminAmendmentApplication } from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const dispatchProps = {};
@@ -23,10 +23,10 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("NoticeOfWorkApplication", () => {
+describe("AdminAmendmentApplication", () => {
   it("renders properly", () => {
     const component = shallow(
-      <NoticeOfWorkApplication
+      <AdminAmendmentApplication
         {...dispatchProps}
         {...reducerProps}
         match={{ params: { id: 1, tab: "application" } }}

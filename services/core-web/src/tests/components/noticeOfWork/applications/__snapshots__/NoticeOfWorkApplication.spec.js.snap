@@ -5,7 +5,8 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
   className="page"
 >
   <Connect(NoticeOfWorkPageHeader)
-    applicationPageFromRoute=""
+    applicationPageFromRoute="mock/url"
+    fixedTop={false}
     noticeOfWork={
       Object {
         "anyotherinformation": null,
@@ -396,7 +397,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
     }
   />
   <Tabs
-    activeKey="verification"
+    activeKey="application"
     animated={
       Object {
         "inkBar": true,

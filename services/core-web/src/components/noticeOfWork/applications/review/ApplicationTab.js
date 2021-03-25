@@ -1,27 +1,16 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Prompt, withRouter } from "react-router-dom";
 import { Button, Dropdown, Menu, Popconfirm, Alert, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import {
-  getFormValues,
-  reset,
-  getFormSyncErrors,
-  focus,
-  submit,
-  hasSubmitFailed,
-} from "redux-form";
+import { getFormValues, reset, getFormSyncErrors, submit, hasSubmitFailed } from "redux-form";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { get, isNull, isUndefined } from "lodash";
 import {
   fetchImportedNoticeOfWorkApplication,
-  fetchOriginalNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import {
   getNoticeOfWork,
@@ -37,12 +26,7 @@ import { flattenObject } from "@common/utils/helpers";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import * as Permission from "@/constants/permissions";
-import {
-  exportNoticeOfWorkApplicationDocument,
-  fetchNoticeOfWorkApplicationContextTemplate,
-} from "@/actionCreators/documentActionCreator";
-import { getDocumentContextTemplate } from "@/reducers/documentReducer";
-import * as routes from "@/constants/routes";
+import { exportNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import ReviewNOWApplication from "@/components/noticeOfWork/applications/review/ReviewNOWApplication";
 import NOWSideMenu from "@/components/noticeOfWork/applications/NOWSideMenu";
@@ -61,27 +45,21 @@ import { EDIT_OUTLINE } from "@/constants/assets";
 const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   exportNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
-  fetchNoticeOfWorkApplicationContextTemplate: PropTypes.func.isRequired,
-  fetchMineRecordById: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  clearNoticeOfWorkApplication: PropTypes.func.isRequired,
-  focus: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   originalNoticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any).isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   formErrors: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
-  ),
+  ).isRequired,
   fixedTop: PropTypes.bool.isRequired,
   submitFailed: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
   generatableApplicationDocuments: PropTypes.objectOf(PropTypes.objectOf(PropTypes.any)).isRequired,
-  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
   location: PropTypes.shape({
     pathname: PropTypes.string,
     state: PropTypes.shape({
@@ -127,6 +105,7 @@ export class ApplicationTab extends Component {
     );
   };
 
+  // eslint-disable-next-line consistent-return
   handleSaveNOWEdit = (endEditSession) => {
     this.setState({ submitted: true });
     const errors = Object.keys(flattenObject(this.props.formErrors));
@@ -496,7 +475,6 @@ const mapStateToProps = (state) => ({
   reclamationSummary: getNOWReclamationSummary(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
-  documentContextTemplate: getDocumentContextTemplate(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -504,13 +482,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
-      fetchOriginalNoticeOfWorkApplication,
       exportNoticeOfWorkApplicationDocument,
-      fetchNoticeOfWorkApplicationContextTemplate,
-      fetchMineRecordById,
       reset,
-      clearNoticeOfWorkApplication,
-      focus,
       submit,
     },
     dispatch
