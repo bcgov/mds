@@ -419,7 +419,6 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       tab="Verification"
     >
       <Connect(VerificationTab)
-        mineGuid="20af050d-2a1a-4870-9016-eacabaa68f02"
         noticeOfWork={
           Object {
             "anyotherinformation": null,
