@@ -46,7 +46,6 @@ import ReferralConsultationPackage from "@/components/noticeOfWork/applications/
  */
 
 const propTypes = {
-  mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
   noticeOfWorkReviewTypes: CustomPropTypes.options.isRequired,

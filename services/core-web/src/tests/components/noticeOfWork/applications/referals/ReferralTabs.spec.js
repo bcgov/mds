@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ApplicationTab } from "@/components/noticeOfWork/applications/review/ApplicationTab";
+import { ReferralTabs } from "@/components/noticeOfWork/applications/referals/ReferralTabs";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
 
 const dispatchProps = {};
@@ -33,9 +33,9 @@ beforeEach(() => {
   setupReducerProps();
 });
 
-describe("ApplicationTab", () => {
+describe("ReferralTabs", () => {
   it("renders properly", () => {
-    const component = shallow(<ApplicationTab {...dispatchProps} {...reducerProps} />);
+    const component = shallow(<ReferralTabs {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });

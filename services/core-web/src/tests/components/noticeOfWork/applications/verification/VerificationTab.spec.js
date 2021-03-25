@@ -10,22 +10,12 @@ const reducerProps = {};
 const setupDispatchProps = () => {
   dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
   dispatchProps.importNoticeOfWorkApplication = jest.fn();
-  dispatchProps.handleUpdateLeadInspector = jest.fn();
-  dispatchProps.setLeadInspectorPartyGuid = jest.fn();
-  dispatchProps.loadNoticeOfWork = jest.fn();
-  dispatchProps.loadMineData = jest.fn();
 };
 
 const setupReducerProps = () => {
-  reducerProps.inspectors = "";
-  reducerProps.initialPermitGuid = "";
   reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.initialValues = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.inspectors = [];
   reducerProps.originalNoticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
   [reducerProps.mineGuid] = MOCK.MINES.mineIds;
-  reducerProps.isMajorMine = false;
-  reducerProps.isNewApplication = false;
 };
 
 beforeEach(() => {
@@ -35,9 +25,7 @@ beforeEach(() => {
 
 describe("VerificationTab", () => {
   it("renders properly", () => {
-    const component = shallow(
-      <VerificationTab {...dispatchProps} {...reducerProps} match={{ params: { id: 1 } }} />
-    );
+    const component = shallow(<VerificationTab {...dispatchProps} {...reducerProps} />);
     expect(component).toMatchSnapshot();
   });
 });
