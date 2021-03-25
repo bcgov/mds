@@ -58,6 +58,7 @@ export const ApplicationGuard = (WrappedComponent) => {
       isLoaded: false,
       applicationPageFromRoute: undefined,
       showNullScreen: false,
+      mineGuid: undefined,
     };
 
     componentDidMount() {
@@ -99,6 +100,7 @@ export const ApplicationGuard = (WrappedComponent) => {
       this.setState({ isLoaded: false });
       await Promise.all([
         this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
+          this.setState({ mineGuid: data.mine_guid });
           if (data.application_type_code === "NOW") {
             this.props.fetchOriginalNoticeOfWorkApplication(id);
             this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id);
@@ -117,8 +119,8 @@ export const ApplicationGuard = (WrappedComponent) => {
 
     handleCorrectRouteByApplicationType = (data) => {
       const onNoWApp = this.props.location.pathname.includes("notice-of-work");
-      const onAAApp = this.props.location.pathname.includes("administrative-amendment");
-      if (data.application_type_code === "NOW" && onAAApp) {
+      const onAApp = this.props.location.pathname.includes("administrative-amendment");
+      if (data.application_type_code === "NOW" && onAApp) {
         this.props.history.replace(
           routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
             this.props.match.params.id,
@@ -135,6 +137,7 @@ export const ApplicationGuard = (WrappedComponent) => {
       } else {
         this.setState({ isLoaded: true });
       }
+      this.setState({ isLoaded: true });
     };
 
     render() {
@@ -145,6 +148,7 @@ export const ApplicationGuard = (WrappedComponent) => {
         return (
           <WrappedComponent
             {...this.props}
+            mineGuid={this.state.mineGuid}
             fixedTop={this.state.fixedTop}
             loadNoticeOfWork={this.loadNoticeOfWork}
             applicationPageFromRoute={this.state.applicationPageFromRoute}

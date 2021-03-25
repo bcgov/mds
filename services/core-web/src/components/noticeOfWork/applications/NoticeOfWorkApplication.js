@@ -38,6 +38,7 @@ const propTypes = {
   fixedTop: PropTypes.bool.isRequired,
   renderTabTitle: PropTypes.func.isRequired,
   applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const defaultProps = { applicationPageFromRoute: "" };
@@ -107,7 +108,7 @@ export class NoticeOfWorkApplication extends Component {
             <Tabs.TabPane tab="Verification" key="verification">
               <VerificationTab
                 noticeOfWork={this.props.noticeOfWork}
-                mineGuid={this.props.noticeOfWork.mine_guid}
+                mineGuid={this.props.mineGuid}
                 initialPermitGuid={this.state.initialPermitGuid}
                 originalNoticeOfWork={this.props.originalNoticeOfWork}
               />

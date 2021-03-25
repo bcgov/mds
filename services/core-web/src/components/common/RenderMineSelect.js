@@ -35,7 +35,7 @@ const defaultProps = {
   placeholder: "Search for a mine by name",
   disabled: false,
   majorMineOnly: undefined,
-  onMineSelect: () => { },
+  onMineSelect: () => {},
   meta: {},
   label: "Select a mine",
   input: { value: "" },
@@ -51,6 +51,16 @@ export class RenderMineSelect extends Component {
   componentDidMount() {
     if (this.props.input.value) {
       getMineWithoutStore(this.props.input.value).then((data) => {
+        this.setState({ selectedMine: data.data });
+        this.handleChange(data.data.mine_name);
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const inputChanged = this.props.input.value !== nextProps.input.value;
+    if (inputChanged && !this.props.input.value) {
+      getMineWithoutStore(nextProps.input.value).then((data) => {
         this.setState({ selectedMine: data.data });
         this.handleChange(data.data.mine_name);
       });

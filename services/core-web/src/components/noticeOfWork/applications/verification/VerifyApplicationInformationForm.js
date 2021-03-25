@@ -138,6 +138,5 @@ export default compose(
     form: FORM.VERIFY_NOW_APPLICATION_FORM,
     enableReinitialize: true,
     onSubmitSuccess: resetForm(FORM.VERIFY_NOW_APPLICATION_FORM),
-    destroyOnUnmount: true,
   })
 )(VerifyApplicationInformationForm);
