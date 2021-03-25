@@ -60,7 +60,7 @@ const propTypes = {
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
-  type: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
   noticeOfWorkReviewTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   fixedTop: PropTypes.bool.isRequired,
 };

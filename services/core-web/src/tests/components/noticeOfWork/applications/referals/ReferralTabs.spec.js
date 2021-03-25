@@ -7,25 +7,26 @@ const dispatchProps = {};
 const reducerProps = {};
 
 const setupDispatchProps = () => {
+  dispatchProps.openModal = jest.fn();
+  dispatchProps.closeModal = jest.fn();
+  dispatchProps.createNoticeOfWorkApplicationReview = jest.fn();
+  dispatchProps.fetchNoticeOfWorkApplicationReviews = jest.fn();
+  dispatchProps.updateNoticeOfWorkApplicationReview = jest.fn();
+  dispatchProps.deleteNoticeOfWorkApplicationReview = jest.fn();
+  dispatchProps.deleteNoticeOfWorkApplicationDocument = jest.fn();
   dispatchProps.updateNoticeOfWorkApplication = jest.fn();
+  dispatchProps.setNoticeOfWorkApplicationDocumentDownloadState = jest.fn();
   dispatchProps.fetchImportedNoticeOfWorkApplication = jest.fn();
-  dispatchProps.exportNoticeOfWorkApplicationDocument = jest.fn();
-  dispatchProps.reset = jest.fn();
-  dispatchProps.submit = jest.fn();
 };
 
 const setupReducerProps = () => {
-  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.originalNoticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.importNowSubmissionDocumentsJob = {};
-  reducerProps.formValues = NOW_MOCK.NOTICE_OF_WORK;
-  reducerProps.formErrors = {};
   reducerProps.fixedTop = false;
-  reducerProps.submitFailed = false;
-  reducerProps.inspectors = [];
-  reducerProps.reclamationSummary = [];
-  reducerProps.generatableApplicationDocuments = {};
-  reducerProps.location = {};
+  reducerProps.noticeOfWork = NOW_MOCK.NOTICE_OF_WORK;
+  reducerProps.noticeOfWorkReviewTypesHash = {};
+  reducerProps.type = "REF";
+  reducerProps.importNowSubmissionDocumentsJob = {};
+  reducerProps.noticeOfWorkReviewTypes = [];
+  reducerProps.noticeOfWorkReviews = [];
 };
 
 beforeEach(() => {
