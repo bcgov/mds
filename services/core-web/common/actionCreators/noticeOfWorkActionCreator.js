@@ -106,7 +106,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
 export const importNoticeOfWorkApplication = (
   applicationGuid,
   payload,
-  message = "Successfully verified the Notice of Work's location"
+  message = "Successfully verified the Notice of Work"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
@@ -168,7 +168,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 export const updateNoticeOfWorkApplication = (
   payload,
   nowApplicationGuid,
-  message = "Successfully updated Notice of Work"
+  message = "Successfully updated the permit application."
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
