@@ -644,7 +644,7 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "PUB") &&
           this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
           !this.props.progress[progressStatus.application_progress_status_code]?.end_date &&
-          applicationProgress[this.props.noticeOfWork.application_type_code].includes(
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
             progressStatus.application_progress_status_code
           )
       )
