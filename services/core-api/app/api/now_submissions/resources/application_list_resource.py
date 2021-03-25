@@ -114,6 +114,7 @@ class ApplicationListResource(Resource, UserMixin):
     @api.marshal_with(APPLICATION, code=201)
     def post(self):
         current_app.logger.debug('Attempting to load application')
+        current_app.logger.info("*****VFCBC Request Payload*****")
         current_app.logger.info(request.json)
         try:
             application = Application._schema().load(request.json)
