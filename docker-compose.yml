@@ -214,7 +214,7 @@ services:
   docgen-api:
     restart: always
     container_name: docgen_api
-    image: bcgovimages/doc-gen-api:v2.1.2
+    image: bcgovimages/doc-gen-api:v2.1.3
     command: ["npm", "run", "start"]
     environment:
       - APP_PORT=3030
