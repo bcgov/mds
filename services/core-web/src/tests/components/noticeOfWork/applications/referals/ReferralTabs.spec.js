@@ -10,7 +10,7 @@ const setupDispatchProps = () => {
   dispatchProps.openModal = jest.fn();
   dispatchProps.closeModal = jest.fn();
   dispatchProps.createNoticeOfWorkApplicationReview = jest.fn();
-  dispatchProps.fetchNoticeOfWorkApplicationReviews = jest.fn();
+  dispatchProps.fetchNoticeOfWorkApplicationReviews = jest.fn(() => Promise.resolve());
   dispatchProps.updateNoticeOfWorkApplicationReview = jest.fn();
   dispatchProps.deleteNoticeOfWorkApplicationReview = jest.fn();
   dispatchProps.deleteNoticeOfWorkApplicationDocument = jest.fn();
