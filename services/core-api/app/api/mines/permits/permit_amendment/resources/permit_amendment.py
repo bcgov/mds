@@ -205,8 +205,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 if application_identity.application_type_code == "ADA":
 
                     conditions = PermitConditions.find_all_by_permit_amendment_id(
-                        application_identity.source_permit_amendment_id
-                    )                                                                                # this should be source amendment
+                        application_identity.source_permit_amendment_id)
                     if conditions:
                         for condition in conditions:
                             PermitConditions.create(condition.condition_category_code,
