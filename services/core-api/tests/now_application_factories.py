@@ -473,6 +473,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
+    # TODO check if we have anything dependent on it and if we need this
     # @factory.post_generation
     # def application_delays(obj, create, extracted, **kwargs):
     #     if not create:

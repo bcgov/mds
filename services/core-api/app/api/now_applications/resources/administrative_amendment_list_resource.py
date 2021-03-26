@@ -63,7 +63,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         if not permit:
             err_str += 'Permit not found. '
         if not permit_amendment:
-            err_str += 'Permit amendment not found '
+            err_str += 'Permit amendment not found. '
         if has_existing_administrative_amendments:
             err_str += 'You cannot have multiple in-progress administrative amendment '
 
