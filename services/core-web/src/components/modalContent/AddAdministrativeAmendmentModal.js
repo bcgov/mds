@@ -15,7 +15,7 @@ export const AddAdministrativeAmendmentModal = (props) => (
   <div>
     <p>
       Creating an <Highlight search="Administrative Amendment">Administrative Amendment</Highlight>{" "}
-      allows you to update/change the selected permit amendment.
+      allows you to update the selected permit amendment.
     </p>
     <br />
     <AdministrativeAmendmentForm {...props} />
