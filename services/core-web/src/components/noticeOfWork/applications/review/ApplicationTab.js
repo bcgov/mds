@@ -381,14 +381,6 @@ export class ApplicationTab extends Component {
   render() {
     const isImported = this.props.noticeOfWork.imported_to_core;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
-    const applicationReasonCodes = {
-      ...this.props.noticeOfWork,
-      application_reason_codes:
-        this.props.noticeOfWork.application_reason_codes &&
-        this.props.noticeOfWork.application_reason_codes.length > 0
-          ? this.props.noticeOfWork.application_reason_codes.map((c) => c.application_reason_code)
-          : [],
-    };
     return (
       <React.Fragment>
         <Prompt
@@ -449,7 +441,7 @@ export class ApplicationTab extends Component {
               reclamationSummary={this.props.reclamationSummary}
               isViewMode={this.state.isViewMode}
               noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
-              initialValues={applicationReasonCodes}
+              initialValues={this.props.noticeOfWork}
               noticeOfWork={this.props.noticeOfWork}
               importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
               renderOriginalValues={this.renderOriginalValues}

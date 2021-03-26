@@ -28,7 +28,14 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,
-        noticeOfWork: action.payload,
+        noticeOfWork: {
+          ...action.payload,
+          application_reason_codes:
+            action.payload.application_reason_codes &&
+            action.payload.application_reason_codes.length > 0
+              ? action.payload.application_reason_codes.map((c) => c.application_reason_code)
+              : [],
+        },
       };
     case actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION:
       return {
