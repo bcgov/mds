@@ -100,6 +100,7 @@ class ApplicationsView(Base):
 
     @hybrid_property
     def permittee(self):
+        # this check is for performance reason, NOWs do not display permittees
         if self.application_type_code == 'NOW':
             return None
 

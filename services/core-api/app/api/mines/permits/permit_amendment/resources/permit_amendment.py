@@ -191,7 +191,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if now_application_guid is not None and permit_amendment_status_code == "DFT":
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
 
-            def create_standart_conditions(application_identity):
+            def create_standard_conditions(application_identity):
                 now_type = application_identity.now_application.notice_of_work_type_code
                 standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
                     now_type)
@@ -205,8 +205,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 if application_identity.application_type_code == "ADA":
 
                     conditions = PermitConditions.find_all_by_permit_amendment_id(
-                        application_identity.source_permit_amendment_id
-                    )                                                                                # this should be source amendment
+                        application_identity.source_permit_amendment_id)
                     if conditions:
                         for condition in conditions:
                             PermitConditions.create(condition.condition_category_code,
@@ -215,9 +214,9 @@ class PermitAmendmentListResource(Resource, UserMixin):
                                                     condition.display_order,
                                                     condition.sub_conditions)
                     else:
-                        create_standart_conditions(application_identity)
+                        create_standard_conditions(application_identity)
                 else:
-                    create_standart_conditions(application_identity)
+                    create_standard_conditions(application_identity)
 
                 db.session.commit()
 

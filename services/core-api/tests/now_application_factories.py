@@ -458,7 +458,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
             now_application=None,
             now_application_id=None,
             mms_cid=None,
-            application_type_code=factory.LazyFunction(RandomApplicationTypeCode))
+            application_type_code="NOW")
 
     now_application_guid = GUID
     application_type_code = None
@@ -473,6 +473,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
+    # TODO check if we have anything dependent on it and if we need this
     # @factory.post_generation
     # def application_delays(obj, create, extracted, **kwargs):
     #     if not create:
