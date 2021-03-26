@@ -24,8 +24,8 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 
 def map_notice_of_work_type_from_permit_number(permit_number):
-    first_charecter = permit_number[0]
-    return {'P': 'PLA', 'G': 'SAG', 'M': 'MIN', 'C': 'COL', 'Q': 'QCA'}.get(first_charecter, None)
+    first_character = permit_number[0]
+    return {'P': 'PLA', 'G': 'SAG', 'M': 'MIN', 'C': 'COL', 'Q': 'QCA'}.get(first_character, None)
 
 
 class AdministrativeAmendmentListResource(Resource, UserMixin):
@@ -37,12 +37,11 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
     parser.add_argument('application_source_type_code', type=str, required=True)
     parser.add_argument('application_reason_codes', type=list, location='json', required=True)
 
-    @api.doc(description='Adds a Notice of Work to a mine/permit.', params={})
+    @api.doc(description='Adds a Administrative Amendment to a mine/permit.', params={})
     @requires_role_edit_permit
     @api.marshal_with(NOW_APPLICATION_MODEL, code=201)
     def post(self):
         data = self.parser.parse_args()
-        current_app.logger.debug("this is administrative amendment post endpoint")
 
         mine = Mine.find_by_mine_guid(data['mine_guid'])
         permit = Permit.find_by_permit_id(data['permit_id'])
@@ -66,7 +65,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         if not permit_amendment:
             err_str += 'Permit amendment not found '
         if has_existing_administrative_amendments:
-            err_str += 'You cannot have multiple in progress administrative amendments '
+            err_str += 'You cannot have multiple in-progress administrative amendment '
 
         if err_str:
             raise BadRequest(err_str)
@@ -83,14 +82,13 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                     permit.permit_no)
 
             # create a now_application_identity
-            # create an application
-
             new_app = NOWApplicationIdentity(
                 mine_guid=data['mine_guid'],
                 permit=permit,
                 now_number=NOWApplicationIdentity.create_now_number(mine),
                 source_permit_amendment_id=permit_amendment.permit_amendment_id,
                 application_type_code='ADA')
+            # create an application
             new_app.now_application = NOWApplication(
                 notice_of_work_type_code=notice_of_work_type_code,
                 now_application_status_code='REC',

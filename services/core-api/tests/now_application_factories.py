@@ -458,7 +458,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
             now_application=None,
             now_application_id=None,
             mms_cid=None,
-            application_type_code=factory.LazyFunction(RandomApplicationTypeCode))
+            application_type_code="NOW")
 
     now_application_guid = GUID
     application_type_code = None

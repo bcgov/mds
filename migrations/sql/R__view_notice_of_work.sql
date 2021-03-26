@@ -9,7 +9,6 @@ app.lead_inspector_party_guid,
 concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
 COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
 atc.description as application_entity_type_description,
--- TODO: Map all MMS and vFCBC statuses to their corresponding Core status.
 CASE WHEN nows.description is NULL 
     THEN 
         CASE COALESCE(msub.status, sub.status)
