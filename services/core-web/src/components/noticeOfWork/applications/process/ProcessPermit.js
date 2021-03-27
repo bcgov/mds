@@ -52,6 +52,7 @@ import * as Permission from "@/constants/permissions";
 import * as route from "@/constants/routes";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @class ProcessPermit - Process the permit. We've got to process this permit. Process this permit, proactively!
@@ -119,14 +120,19 @@ const TimelineItem = (progress, progressStatus) => {
   );
 };
 
-const ProgressRouteFor = (code, now_application_guid) =>
-  ({
-    REV: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "application"),
-    REF: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "referral"),
-    CON: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "consultation"),
-    PUB: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "public-comment"),
-    DFT: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(now_application_guid, "draft-permit"),
-  }[code]);
+const ProgressRouteFor = (code, now_application_guid, application_type_code) => {
+  const applicationRoute =
+    application_type_code === "NOW"
+      ? route.NOTICE_OF_WORK_APPLICATION
+      : route.ADMIN_AMENDMENT_APPLICATION;
+  return {
+    REV: applicationRoute.dynamicRoute(now_application_guid, "application"),
+    REF: applicationRoute.dynamicRoute(now_application_guid, "referral"),
+    CON: applicationRoute.dynamicRoute(now_application_guid, "consultation"),
+    PUB: applicationRoute.dynamicRoute(now_application_guid, "public-comment"),
+    DFT: applicationRoute.dynamicRoute(now_application_guid, "draft-permit"),
+  }[code];
+};
 
 const getDocumentInfo = (doc) => {
   const title = doc.preamble_title || "<DOCUMENT TITLE MISSING!>";
@@ -614,14 +620,18 @@ export class ProcessPermit extends Component {
           progressStatus.application_progress_status_code !== "REF" &&
           progressStatus.application_progress_status_code !== "PUB" &&
           (!this.props.progress[progressStatus.application_progress_status_code] ||
-            !this.props.progress[progressStatus.application_progress_status_code].end_date)
+            !this.props.progress[progressStatus.application_progress_status_code].end_date) &&
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
           message: `${progressStatus.description} must be completed.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );
@@ -633,14 +643,18 @@ export class ProcessPermit extends Component {
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
           this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
-          !this.props.progress[progressStatus.application_progress_status_code]?.end_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.end_date &&
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
           message: `${progressStatus.description} must be completed.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );
@@ -714,14 +728,18 @@ export class ProcessPermit extends Component {
           (progressStatus.application_progress_status_code === "CON" ||
             progressStatus.application_progress_status_code === "REF" ||
             progressStatus.application_progress_status_code === "PUB") &&
-          !this.props.progress[progressStatus.application_progress_status_code]?.start_date
+          !this.props.progress[progressStatus.application_progress_status_code]?.start_date &&
+          APPLICATION_PROGRESS_TRACKING[this.props.noticeOfWork.application_type_code].includes(
+            progressStatus.application_progress_status_code
+          )
       )
       .forEach((progressStatus) =>
         validationMessages.push({
           message: `${progressStatus.description} has not been started.`,
           route: ProgressRouteFor(
             progressStatus.application_progress_status_code,
-            this.props.noticeOfWork?.now_application_guid
+            this.props.noticeOfWork?.now_application_guid,
+            this.props.noticeOfWork.application_type_code
           ),
         })
       );
@@ -798,6 +816,11 @@ export class ProcessPermit extends Component {
           <Timeline>
             {this.props.progressStatusCodes
               .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+              .filter(({ application_progress_status_code }) =>
+                APPLICATION_PROGRESS_TRACKING[
+                  this.props.noticeOfWork.application_type_code
+                ].includes(application_progress_status_code)
+              )
               .map((progressStatus) => TimelineItem(this.props.progress, progressStatus))}
           </Timeline>
         </div>

@@ -1,0 +1,219 @@
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Divider, Tabs } from "antd";
+import PropTypes from "prop-types";
+import queryString from "query-string";
+import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
+import {
+  fetchMineNoticeOfWorkApplications,
+  createAdminAmendmentApplication,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { getMineGuid } from "@common/selectors/mineSelectors";
+import { formatQueryListParams } from "@common/utils/helpers";
+import * as router from "@/constants/routes";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import AddButton from "@/components/common/AddButton";
+import CustomPropTypes from "@/customPropTypes";
+import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
+import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
+import { modalConfig } from "@/components/modalContent/config";
+import { detectProdEnvironment } from "@common/utils/environmentUtils";
+
+const propTypes = {
+  mineGuid: PropTypes.string.isRequired,
+  fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
+  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
+  location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
+  mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  createAdminAmendmentApplication: PropTypes.func.isRequired,
+};
+
+export class MineApplications extends Component {
+  params = queryString.parse(this.props.location.search);
+
+  listQueryParams = [];
+
+  splitListParams = formatQueryListParams("split", this.listQueryParams);
+
+  state = {
+    isLoaded: false,
+    params: {
+      ...this.params,
+    },
+    expandedRowKeys: [],
+  };
+
+  componentDidMount() {
+    const params = this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    const { page = this.state.params.page, per_page = this.state.params.per_page } = parsedParams;
+    if (params) {
+      this.renderDataFromURL();
+    } else {
+      this.props.history.replace(
+        router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, {
+          page,
+          per_page,
+        })
+      );
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const locationChanged = nextProps.location !== this.props.location;
+    if (locationChanged) {
+      this.renderDataFromURL(nextProps.location.search);
+    }
+  }
+
+  renderDataFromURL = (queryParams) => {
+    const params = queryParams || this.props.location.search;
+    const parsedParams = queryString.parse(params);
+    this.setState(
+      {
+        params: this.splitListParams(parsedParams),
+        isLoaded: false,
+      },
+      () =>
+        this.props
+          .fetchMineNoticeOfWorkApplications({ mine_guid: this.props.mineGuid, ...parsedParams })
+          .then(() => {
+            this.setState({ isLoaded: true });
+          })
+    );
+  };
+
+  onExpand = (expanded, record) =>
+    this.setState((prevState) => {
+      const expandedRowKeys = expanded
+        ? prevState.expandedRowKeys.concat(record.key)
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+      return { expandedRowKeys };
+    });
+
+  handleSearch = (searchParams = {}, clear = false) => {
+    const persistedParams = clear ? {} : this.state.params;
+    const updatedParams = {
+      // Start from existing state
+      ...persistedParams,
+      // Overwrite prev params with any newly provided search params
+      ...searchParams,
+    };
+
+    this.props.history.replace(
+      router.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mineGuid, updatedParams)
+    );
+  };
+
+  handleAddAdminAmendment = (values) => {
+    const payload = {
+      mine_guid: this.props.mineGuid,
+      ...values,
+    };
+    return this.props
+      .createAdminAmendmentApplication(payload)
+      .then(() => {
+        this.renderDataFromURL(this.props.location.search);
+      })
+      .finally(() => {
+        this.props.closeModal();
+      });
+  };
+
+  handleOpenAddAdminAmendmentModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleAddAdminAmendment,
+        title: "Add Administrative Amendment ",
+      },
+      content: modalConfig.ADD_ADMIN_AMENDMENT_MODAL,
+    });
+  };
+
+  render() {
+    const isProd = detectProdEnvironment();
+    return (
+      <div className="tab__content">
+        <h2>Applications</h2>
+        <Divider />
+        <Tabs type="card" style={{ textAlign: "left !important" }}>
+          <Tabs.TabPane tab="Notice of Work" key="1">
+            <>
+              <br />
+              <div className="inline-flex between">
+                <h4 className="uppercase">Notice of Work Applications</h4>
+              </div>
+              <MineNoticeOfWorkTable
+                isLoaded={this.state.isLoaded}
+                handleSearch={this.handleSearch}
+                noticeOfWorkApplications={this.props.noticeOfWorkApplications.filter(
+                  (app) => app.application_type_code === "NOW"
+                )}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                searchParams={this.state.params}
+                mineRegionHash={this.props.mineRegionHash}
+              />
+            </>
+          </Tabs.TabPane>
+          {!isProd && (
+            <Tabs.TabPane tab="Administrative Amendments" key="2">
+              <>
+                <br />
+                <div className="inline-flex between">
+                  <h4 className="uppercase">Administrative Amendments</h4>
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS} inTesting>
+                    <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
+                      Add Administrative Amendment
+                    </AddButton>
+                  </AuthorizationWrapper>
+                </div>
+                <MineAdministrativeAmendmentTable
+                  isLoaded={this.state.isLoaded}
+                  handleSearch={this.handleSearch}
+                  administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
+                    (app) => app.application_type_code === "ADA"
+                  )}
+                  sortField={this.state.params.sort_field}
+                  sortDir={this.state.params.sort_dir}
+                  searchParams={this.state.params}
+                  onExpand={this.onExpand}
+                  mineRegionHash={this.props.mineRegionHash}
+                />
+              </>
+            </Tabs.TabPane>
+          )}
+        </Tabs>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  mineGuid: getMineGuid(state),
+  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  mineRegionHash: getMineRegionHash(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      fetchMineNoticeOfWorkApplications,
+      openModal,
+      closeModal,
+      createAdminAmendmentApplication,
+    },
+    dispatch
+  );
+
+MineApplications.propTypes = propTypes;
+
+export default connect(mapStateToProps, mapDispatchToProps)(MineApplications);

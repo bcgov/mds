@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReferralTabs renders properly 1`] = `
+<div>
+  <div>
+    <NOWTabHeader
+      fixedTop={false}
+      handleDraftPermit={null}
+      isEditMode={false}
+      showProgressButton={true}
+      tab="REF"
+      tabActions={
+        <UNDEFINED
+          type="REF"
+        />
+      }
+      tabEditActions=""
+      tabName="Referral"
+    />
+    <div
+      className="side-menu"
+    >
+      <withRouter(Connect(NOWSideMenu))
+        tabSection="referral"
+      />
+      <a
+        alt="E-Referrals"
+        href="https://j200.gov.bc.ca/int/ereferral/Default.aspx?PosseMenuName=EIMain"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <ForwardRef(ExportOutlined)
+          className="padding-small--right"
+        />
+        Link to E-referrals homepage
+      </a>
+    </div>
+    <div
+      className="side-menu--content"
+    >
+      <Referral
+        handleAddReview={[Function]}
+        handleDelete={[Function]}
+        handleDocumentDelete={[Function]}
+        handleEdit={[Function]}
+        isLoaded={false}
+        noticeOfWorkReviewTypes={Array []}
+        noticeOfWorkReviews={Array []}
+        openAddReviewModal={[Function]}
+        openEditModal={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;

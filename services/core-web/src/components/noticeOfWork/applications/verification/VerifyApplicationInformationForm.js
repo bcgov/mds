@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import * as FORM from "@/constants/forms";
+import { resetForm } from "@common/utils/helpers";
 import EditNOWMineAndLocation from "@/components/Forms/noticeOfWork/EditNOWMineAndLocation";
 import VerifyNoWContacts from "@/components/Forms/noticeOfWork/VerifyNoWContacts";
 
@@ -136,5 +137,6 @@ export default compose(
   reduxForm({
     form: FORM.VERIFY_NOW_APPLICATION_FORM,
     enableReinitialize: true,
+    onSubmitSuccess: resetForm(FORM.VERIFY_NOW_APPLICATION_FORM),
   })
 )(VerifyApplicationInformationForm);

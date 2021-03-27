@@ -7,7 +7,7 @@ import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
-import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
@@ -25,7 +25,6 @@ const propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  isMajorMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -65,19 +64,14 @@ const transformRowData = (applications) =>
     is_historic: application.is_historic,
   }));
 
-const pageTitle = (mineName, isMajorMine) => {
-  const applicationType = isMajorMine ? "Permit Applications" : "Notice of Work Applications";
-  return `${mineName} ${applicationType}`;
-};
-
 export class MineNoticeOfWorkTable extends Component {
   createLinkTo = (route, record) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
-          title: pageTitle(record.mine_name, this.props.isMajorMine),
+          title: `${record.mine_name} Notice of Work Applications`,
         },
       },
     };
@@ -104,7 +98,7 @@ export class MineNoticeOfWorkTable extends Component {
       sortField: "now_application_status_description",
       render: (text) => (
         <div title="Status">
-          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
+          <Badge status={getApplicationStatusType(text)} text={text} />
         </div>
       ),
       sorter: true,

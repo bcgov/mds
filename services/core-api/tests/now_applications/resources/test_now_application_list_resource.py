@@ -7,6 +7,7 @@ from tests.factories import MineFactory
 class TestApplicationResource:
     """GET /now-applications/"""
     def test_get_now_application_success(self, test_client, db_session, auth_headers):
+
         num_created = 3
         NOWApplicationIdentityFactory.create_batch(size=num_created)
 
@@ -28,6 +29,7 @@ class TestApplicationResource:
         assert len(get_data['records']) == 1
 
     """POST /now-applications/"""
+
     def test_post_major_mine_now_application_success(self, test_client, db_session, auth_headers):
         mine = MineFactory(major_mine_ind=True)
         payload = {

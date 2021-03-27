@@ -57,25 +57,6 @@ exports[`FinalPermitDocuments renders properly 1`] = `
     </div>
   </div>
   <h4>
-    Original Documents
-  </h4>
-  <p>
-    These documents came in with the original application.
-  </p>
-  <NOWSubmissionDocuments
-    displayTableDescription={false}
-    documents={Array []}
-    editPreambleFileMetadata={false}
-    hideImportStatusColumn={true}
-    hideJobStatusColumn={true}
-    importNowSubmissionDocumentsJob={Object {}}
-    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
-    now_application_guid="1346wesrt22"
-    selectedRows={null}
-    showPreambleFileMetadata={false}
-  />
-  <br />
-  <h4>
     Requested Documents
   </h4>
   <p>

@@ -14,7 +14,7 @@ import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
-import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
 
 /**
@@ -86,7 +86,7 @@ export class NoticeOfWorkTable extends Component {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
           title: pageTitle,
         },
@@ -245,7 +245,7 @@ export class NoticeOfWorkTable extends Component {
       ),
       render: (text) => (
         <div title="Status">
-          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
+          <Badge status={getApplicationStatusType(text)} text={text} />
         </div>
       ),
     },

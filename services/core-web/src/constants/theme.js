@@ -33,7 +33,7 @@ const badgeStatusTypes = {
   },
 };
 
-export const getNoticeOfWorkApplicationBadgeStatusType = (status) =>
+export const getApplicationStatusType = (status) =>
   badgeStatusTypes.noticeOfWork[status] || undefinedStatusStyleType;
 
 export const getVarianceApplicationBadgeStatusType = (status) =>

@@ -810,8 +810,13 @@ UPDATE document_template SET form_spec_json = '[
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
+      "read-only": true
     }
-  ]' 
+  ]'
 where document_template_code = 'NRL';
 
 UPDATE document_template SET form_spec_json = '[
@@ -902,6 +907,11 @@ UPDATE document_template SET form_spec_json = '[
     {
       "id": "rc_office_mailing_address_line_2",
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
       "read-only": true
     }
   ]'
@@ -1110,6 +1120,11 @@ UPDATE document_template SET form_spec_json = '[
       "id": "rc_office_mailing_address_line_2",
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
+      "read-only": true
     }
   ]'
 where document_template_code = 'NPE';
@@ -1144,6 +1159,11 @@ UPDATE document_template SET form_spec_json = '[
       "id": "application_type",
       "relative-data-path": "now_application.notice_of_work_type.description",
       "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
+      "read-only": true
     }
   ]'
 where document_template_code = 'PMT';
@@ -1177,6 +1197,11 @@ UPDATE document_template SET form_spec_json = '[
     {
       "id": "application_type",
       "relative-data-path": "now_application.notice_of_work_type.description",
+      "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
       "read-only": true
     }
   ]'
