@@ -25,7 +25,11 @@ const propTypes = {
 };
 
 export const PreDraftPermitForm = (props) => {
-  const [permitType, setPermitType] = useState(PERMIT_AMENDMENT_TYPES.original);
+  const [permitType, setPermitType] = useState(
+    props.initialValues.disabled
+      ? PERMIT_AMENDMENT_TYPES.amendment
+      : PERMIT_AMENDMENT_TYPES.original
+  );
   const [isAmendment, setIsAmendment] = useState(
     props.initialValues?.type_of_application !== "New Permit"
   );
@@ -93,6 +97,7 @@ export const PreDraftPermitForm = (props) => {
                 { value: "Amendment", label: "Amendment" },
               ]}
               validate={[required]}
+              disabled={props.initialValues.disabled}
             />
           </Form.Item>
         </Col>
@@ -108,6 +113,7 @@ export const PreDraftPermitForm = (props) => {
                   component={renderConfig.SELECT}
                   data={permitDropdown}
                   validate={[required]}
+                  disabled={props.initialValues.disabled}
                   onChange={(permitGuid) => getPermitType(permitGuid)}
                 />
               </Form.Item>

@@ -6,16 +6,16 @@ import UpdateNOWInspectorsForm from "@/components/Forms/noticeOfWork/UpdateNOWIn
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import { EDIT_OUTLINE } from "@/constants/assets";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   isEditMode: PropTypes.bool,
   isAdminView: PropTypes.bool,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -26,7 +26,7 @@ const defaultProps = {
 const AssignInspectors = (props) => {
   const [isEditMode, setEditMode] = useState(props.isEditMode);
   return (
-    <div>
+    <LoadingWrapper condition={props.isLoaded}>
       {!isEditMode && props.isAdminView && (
         <div className="right">
           <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
@@ -47,9 +47,7 @@ const AssignInspectors = (props) => {
               }}
               noticeOfWork={props.noticeOfWork}
               inspectors={props.inspectors}
-              setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-              setIssuingInspectorPartyGuid={props.setIssuingInspectorPartyGuid}
-              onSubmit={props.handleUpdateInspectors}
+              onSubmit={(values) => props.handleUpdateInspectors(values, setEditMode(false))}
               title={props.title}
               isAdminView={props.isAdminView}
               isEditMode={isEditMode}
@@ -58,7 +56,7 @@ const AssignInspectors = (props) => {
           </div>
         </Col>
       </Row>
-    </div>
+    </LoadingWrapper>
   );
 };
 

@@ -70,7 +70,7 @@ const noticeOfWorkReducerObject = {
 };
 
 export const getNoticeOfWorkList = (state) => state[NOTICE_OF_WORK].noticeOfWorkList;
-export const getNoticeOfWork = (state) => state[NOTICE_OF_WORK].noticeOfWork;
+export const getNoticeOfWorkUnformatted = (state) => state[NOTICE_OF_WORK].noticeOfWork;
 export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].originalNoticeOfWork;
 export const getImportNowSubmissionDocumentsJob = (state) =>
   state[NOTICE_OF_WORK].importNowSubmissionDocumentsJob;

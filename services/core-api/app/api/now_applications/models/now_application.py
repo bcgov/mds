@@ -19,6 +19,7 @@ from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 
 class NOWApplication(Base, AuditMixin):
@@ -36,7 +37,9 @@ class NOWApplication(Base, AuditMixin):
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
-
+    application_type_code = association_proxy('now_application_identity', 'application_type_code')
+    source_permit_amendment_id = association_proxy('now_application_identity',
+                                                   'source_permit_amendment_id')
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     lead_inspector = db.relationship(
         'Party',
@@ -82,6 +85,8 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+    application_source_type_code = db.Column(
+        db.String, db.ForeignKey('application_source_type_code.application_source_type_code'))
     proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
     adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
@@ -141,6 +146,12 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin=
         'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
         order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
+
+    application_reason_codes = db.relationship(
+        'ApplicationReasonXref',
+        lazy='selectin',
+        uselist=True,
+        primaryjoin='ApplicationReasonXref.now_application_id == NOWApplication.now_application_id')
 
     submission_documents = db.relationship(
         'Document',
@@ -205,6 +216,22 @@ class NOWApplication(Base, AuditMixin):
             contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
         ]
         return permittees[0] if permittees else None
+
+    @hybrid_property
+    def source_permit_guid(self):
+        permit_amendment = None
+        if self.source_permit_amendment_id:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_id(
+                self.source_permit_amendment_id)
+        return permit_amendment.permit_guid if permit_amendment else None
+
+    @hybrid_property
+    def has_source_conditions(self):
+        source_conditions = PermitConditions.query.filter_by(
+            permit_amendment_id=self.source_permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).count()
+        return source_conditions > 0
 
     @classmethod
     def find_by_application_id(cls, now_application_id):

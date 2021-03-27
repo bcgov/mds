@@ -8,7 +8,7 @@ nid.now_number,
 app.lead_inspector_party_guid,
 concat_ws (' ', p.first_name, p.party_name) AS lead_inspector_name,
 COALESCE(nowt.description, sub.noticeofworktype, msub.noticeofworktype) as notice_of_work_type_description,
--- TODO: Map all MMS and vFCBC statuses to their corresponding Core status.
+atc.description as application_type_description,
 CASE WHEN nows.description is NULL 
     THEN 
         CASE COALESCE(msub.status, sub.status)
@@ -53,5 +53,7 @@ LEFT JOIN party p on app.lead_inspector_party_guid=p.party_guid
 LEFT JOIN notice_of_work_type nowt on app.notice_of_work_type_code=nowt.notice_of_work_type_code
 LEFT JOIN now_application_status nows on app.now_application_status_code=nows.now_application_status_code
 LEFT JOIN permit_amendment pa ON nid.now_application_guid = pa.now_application_guid
+LEFT JOIN application_type_code atc ON atc.application_type_code = nid.application_type_code
 WHERE ((nid.messageid IS NOT NULL AND sub.processed = 'Y') OR nid.messageid IS NULL)
-AND (sub.originating_system IS NULL OR (sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL));
+AND (sub.originating_system IS NULL OR (sub.originating_system IS NOT NULL AND nid.now_number IS NOT NULL))
+AND nid.application_type_code = 'NOW';

@@ -71,7 +71,7 @@ const NullScreen = (props) => (
     {props.type === "now-contacts" && (
       <div>
         <img alt="mine_img" src={GROUP_MINERS} />
-        <h3>No contacts associated with this Notice of Work</h3>
+        <h3>No contacts associated with this Application</h3>
       </div>
     )}
     {props.type === "add-now-activity" && (

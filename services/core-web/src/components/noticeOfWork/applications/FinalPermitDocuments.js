@@ -187,6 +187,8 @@ export class FinalPermitDocuments extends Component {
   openFinalDocumentPackageModal = (event) => {
     event.preventDefault();
 
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+
     const finalDocuments = this.props.noticeOfWork.documents
       .filter(({ is_final_package }) => is_final_package)
       .map(({ now_application_document_xref_guid }) => now_application_document_xref_guid);
@@ -207,6 +209,7 @@ export class FinalPermitDocuments extends Component {
         finalSubmissionDocuments,
         onSubmit: this.createFinalDocumentPackage,
         title: "Create Final Application Package",
+        isNoWApplication,
       },
       content: modalConfig.EDIT_FINAL_PERMIT_DOC_PACKAGE,
     });
@@ -231,7 +234,6 @@ export class FinalPermitDocuments extends Component {
         importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
         hideImportStatusColumn
         hideJobStatusColumn
-        initialValues={this.props.initialValues}
         showPreambleFileMetadata={this.props.showPreambleFileMetadata}
         editPreambleFileMetadata={this.props.editPreambleFileMetadata}
       />
@@ -243,11 +245,12 @@ export class FinalPermitDocuments extends Component {
         mine_guid={this.props.mineGuid}
         documents={permitDocuments}
         isViewMode
-        initialValues={this.props.initialValues}
         showPreambleFileMetadata={this.props.showPreambleFileMetadata}
         editPreambleFileMetadata={this.props.editPreambleFileMetadata}
       />
     );
+
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
 
     return this.props.documentDownloadState.downloading ? (
       <div className="inline-flex flex-flow-column horizontal-center">
@@ -297,15 +300,19 @@ export class FinalPermitDocuments extends Component {
             </NOWActionWrapper>
           </div>
         </div>
-        <h4>Original Documents</h4>
-        <p>These documents came in with the original application.</p>
-        {(this.props.showPreambleFileMetadata && (
-          <FormSection name="final_original_documents_metadata">
-            {nowSubmissionDocuments}
-          </FormSection>
-        )) ||
-          nowSubmissionDocuments}
-        <br />
+        {isNoWApplication && (
+          <>
+            <h4>Original Documents</h4>
+            <p>These documents came in with the original application.</p>
+            {(this.props.showPreambleFileMetadata && (
+              <FormSection name="final_original_documents_metadata">
+                {nowSubmissionDocuments}
+              </FormSection>
+            )) ||
+              nowSubmissionDocuments}
+            <br />
+          </>
+        )}
         <h4>Requested Documents</h4>
         <p>
           These documents were added after the original application but were provided by the
