@@ -28,14 +28,7 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
     case actionTypes.STORE_NOTICE_OF_WORK_APPLICATION:
       return {
         ...state,
-        noticeOfWork: {
-          ...action.payload,
-          application_reason_codes:
-            action.payload.application_reason_codes &&
-            action.payload.application_reason_codes.length > 0
-              ? action.payload.application_reason_codes.map((c) => c.application_reason_code)
-              : [],
-        },
+        noticeOfWork: action.payload,
       };
     case actionTypes.CLEAR_NOTICE_OF_WORK_APPLICATION:
       return {
@@ -77,7 +70,7 @@ const noticeOfWorkReducerObject = {
 };
 
 export const getNoticeOfWorkList = (state) => state[NOTICE_OF_WORK].noticeOfWorkList;
-export const getNoticeOfWork = (state) => state[NOTICE_OF_WORK].noticeOfWork;
+export const getNoticeOfWorkUnformatted = (state) => state[NOTICE_OF_WORK].noticeOfWork;
 export const getOriginalNoticeOfWork = (state) => state[NOTICE_OF_WORK].originalNoticeOfWork;
 export const getImportNowSubmissionDocumentsJob = (state) =>
   state[NOTICE_OF_WORK].importNowSubmissionDocumentsJob;

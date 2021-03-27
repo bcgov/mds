@@ -41,7 +41,6 @@ exports[`NOWSecurities renders properly 1`] = `
           Object {
             "adjusted_annual_maximum_tonnage": "",
             "application_documents": Array [],
-            "application_reason_codes": Array [],
             "blasting_operation": Object {},
             "camp": Object {
               "details": Array [],

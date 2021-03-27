@@ -42,6 +42,7 @@ const propTypes = {
   updatePermitCondition: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
   hasSourceConditions: PropTypes.bool.isRequired,
+  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 export class Conditions extends Component {
@@ -157,7 +158,7 @@ export class Conditions extends Component {
       : null;
     return (
       <>
-        {!this.props.hasSourceConditions && (
+        {!this.props.hasSourceConditions && !this.props.isNoWApplication && (
           <>
             <Alert
               description="The source authorization was not written in Core. The conditions below are defaults, not specific to this application or site."
