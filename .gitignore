@@ -22,3 +22,6 @@ venv*
 *_BuildConfig.json
 *.local.*
 *.crt
+.github/act.secrets
+
+act/
