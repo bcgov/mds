@@ -454,9 +454,14 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory')
-        submission_only = factory.Trait(now_application=None, now_application_id=None, mms_cid=None)
+        submission_only = factory.Trait(
+            now_application=None,
+            now_application_id=None,
+            mms_cid=None,
+            application_type_code="NOW")
 
     now_application_guid = GUID
+    application_type_code = None
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)
@@ -468,6 +473,7 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
 
+    # TODO check if we have anything dependent on it and if we need this
     # @factory.post_generation
     # def application_delays(obj, create, extracted, **kwargs):
     #     if not create:

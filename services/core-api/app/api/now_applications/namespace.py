@@ -18,6 +18,7 @@ from app.api.now_applications.resources.now_application_permit_type_resource imp
 from app.api.now_applications.resources.now_application_review_resource import NOWApplicationReviewListResource, NOWApplicationReviewResource
 from app.api.now_applications.resources.now_application_review_type_resource import NOWApplicationReviewTypeResource
 from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
+from app.api.now_applications.resources.administrative_amendment_list_resource import AdministrativeAmendmentListResource
 
 api = Namespace('now-applications', description='Core Notice of Work operations')
 
@@ -38,6 +39,7 @@ api.add_resource(NOWApplicationDocumentIdentityResource,
 api.add_resource(NOWApplicationDocumentGenerateResource,
                  '/application-document-types/<string:document_type_code>/generate')
 api.add_resource(NOWApplicationDelayListResource, '/<string:now_application_guid>/delays')
+api.add_resource(AdministrativeAmendmentListResource, '/administrative-amendments')
 api.add_resource(NOWApplicationDelayResource,
                  '/<string:now_application_guid>/delays/<string:now_application_delay_guid>')
 

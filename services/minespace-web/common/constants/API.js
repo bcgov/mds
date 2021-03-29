@@ -123,6 +123,7 @@ export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
+export const ADMINISTRATIVE_AMENDMENT_APPLICATION = `/now-applications/administrative-amendments`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>

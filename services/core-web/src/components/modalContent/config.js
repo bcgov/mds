@@ -35,6 +35,7 @@ import NOWStatusReasonModal from "./NOWStatusReasonModal";
 import NOWDelayModal from "./NOWDelayModal";
 import GeneratePermitNumberModal from "./GeneratePermitNumberModal";
 import StartDraftPermitModal from "./StartDraftPermitModal";
+import AddAdministrativeAmendmentModal from "./AddAdministrativeAmendmentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -74,6 +75,7 @@ export const modalConfig = {
   VIEW_CONDITION_MODAL: ViewConditionModal,
   GENERATE_PERMIT_NUMBER_MODAL: GeneratePermitNumberModal,
   START_DRAFT_PERMIT_MODAL: StartDraftPermitModal,
+  ADD_ADMIN_AMENDMENT_MODAL: AddAdministrativeAmendmentModal,
 };
 
 export default modalConfig;

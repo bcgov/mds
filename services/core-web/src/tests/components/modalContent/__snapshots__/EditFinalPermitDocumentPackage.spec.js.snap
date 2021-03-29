@@ -3,26 +3,6 @@
 exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
 <div>
   <h4>
-    vFCBC/NROS Application Files
-  </h4>
-  <NOWSubmissionDocuments
-    displayTableDescription={false}
-    documents={Array []}
-    editPreambleFileMetadata={false}
-    hideImportStatusColumn={false}
-    hideJobStatusColumn={false}
-    importNowSubmissionDocumentsJob={Object {}}
-    now_application_guid=""
-    selectedRows={
-      Object {
-        "selectedSubmissionRows": undefined,
-        "setSelectedSubmissionRows": [Function],
-      }
-    }
-    showPreambleFileMetadata={false}
-  />
-  <br />
-  <h4>
     Additional Documents
   </h4>
   <Connect(NOWDocuments)

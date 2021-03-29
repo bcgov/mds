@@ -42,6 +42,7 @@ const defaultParams = {
   mine_search: undefined,
   now_number: undefined,
   mine_name: undefined,
+  application_type: "NOW",
   originating_system: [],
   lead_inspector_name: undefined,
   now_application_status_description: [],

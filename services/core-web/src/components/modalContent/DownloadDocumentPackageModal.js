@@ -24,6 +24,7 @@ const propTypes = {
   coreDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
   submissionDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
   type: PropTypes.string.isRequired,
+  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -52,14 +53,18 @@ export const DownloadDocumentPackageModal = (props) => {
     </div>
   ) : (
     <div>
-      <h4>vFCBC/NROS Application Files</h4>
-      <NOWSubmissionDocuments
-        now_application_guid={props.noticeOfWorkGuid}
-        documents={props.submissionDocuments}
-        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
-      />
-      <br />
+      {props.isNoWApplication && (
+        <>
+          <h4>vFCBC/NROS Application Files</h4>
+          <NOWSubmissionDocuments
+            now_application_guid={props.noticeOfWorkGuid}
+            documents={props.submissionDocuments}
+            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+            selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
+          />
+          <br />
+        </>
+      )}
       <h4>Additional Documents</h4>
       <NOWDocuments
         documents={props.coreDocuments}

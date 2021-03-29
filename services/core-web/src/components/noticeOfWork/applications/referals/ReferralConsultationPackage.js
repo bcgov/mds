@@ -160,6 +160,8 @@ export class ReferralConsultationPackage extends Component {
       .filter((document) => document[column])
       .map(({ mine_document_guid }) => mine_document_guid);
 
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+
     this.props.openModal({
       width: 910,
       props: {
@@ -174,6 +176,7 @@ export class ReferralConsultationPackage extends Component {
         coreDocumentsInPackage,
         handleSavePackage: this.handleSavePackage,
         type: this.props.type,
+        isNoWApplication,
       },
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
     });

@@ -1,8 +1,8 @@
 import { PropTypes, shape } from "prop-types";
 
-export const noticeOfWorkPageFromRoute = shape({
+export const ApplicationPageFromRoute = shape({
   title: PropTypes.string.isRequired,
   route: PropTypes.string.isRequired,
 });
 
-export default noticeOfWorkPageFromRoute;
+export default ApplicationPageFromRoute;

@@ -8,7 +8,7 @@ import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelec
 export const {
   getNoticeOfWorkList,
   getNoticeOfWorkPageData,
-  getNoticeOfWork,
+  getNoticeOfWorkUnformatted,
   getOriginalNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
   getNoticeOfWorkReviews,
@@ -17,7 +17,7 @@ export const {
 } = noticeOfWorkReducer;
 
 export const getNOWReclamationSummary = createSelector(
-  [getNoticeOfWork, getDropdownNoticeOfWorkActivityTypeOptions],
+  [getNoticeOfWorkUnformatted, getDropdownNoticeOfWorkActivityTypeOptions],
   (noticeOfWork, options) => {
     const reclamationList = [];
     if (options.length > 0) {
@@ -65,7 +65,7 @@ export const getTotalApplicationDelayDuration = createSelector([getApplicationDe
 });
 
 export const getNOWProgress = createSelector(
-  [getNoticeOfWork, getTotalApplicationDelayDuration],
+  [getNoticeOfWorkUnformatted, getTotalApplicationDelayDuration],
   (noticeOfWork, delayDurations) => {
     const today = new Date();
     let progress = {};
@@ -103,4 +103,14 @@ export const getApplicationDelaysWithDuration = createSelector([getApplicationDe
     return { duration: getDurationTextInDays(duration), ...delay };
   });
   return delayWithDuration;
+});
+
+export const getNoticeOfWork = createSelector([getNoticeOfWorkUnformatted], (noticeOfWork) => {
+  return {
+    ...noticeOfWork,
+    application_reason_codes:
+      noticeOfWork.application_reason_codes && noticeOfWork.application_reason_codes.length > 0
+        ? noticeOfWork.application_reason_codes.map((c) => c.application_reason_code)
+        : [],
+  };
 });

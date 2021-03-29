@@ -125,6 +125,7 @@ export const NOTICE_OF_WORK = {
   reclareaexist: null,
   reclarearecl: null,
   reclareatotal: null,
+  application_reason_codes: [],
   anyotherinformation: null,
   vfcbcapplicationurl: null,
   messagecreateddate: null,

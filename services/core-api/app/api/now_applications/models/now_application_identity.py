@@ -10,6 +10,7 @@ from app.extensions import db
 
 from app.api.now_submissions.models.application import Application
 from app.api.mms_now_submissions.models.application import MMSApplication
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.constants import *
 
 
@@ -25,6 +26,13 @@ class NOWApplicationIdentity(Base, AuditMixin):
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     messageid = db.Column(db.Integer)
     mms_cid = db.Column(db.Integer)
+    source_permit_amendment_id = db.Column(db.Integer,
+                                           db.ForeignKey('permit_amendment.permit_amendment_id'))
+    application_type_code = db.Column(
+        db.String,
+        db.ForeignKey('application_type_code.application_type_code'),
+        nullable=False,
+        server_default=FetchedValue())
 
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine = db.relationship('Mine', lazy='joined')
