@@ -23,6 +23,11 @@ _export:
     interval: 20
     interval_type: exponential
   py>: tasks.nris_data_import.run_job
+  _error:
+    mail>: {data: "NRIS ETL Job Failed at ${moment(session_time).format("YYYY-MM-DD HH:mm:ss Z")}"}
+    host: apps.smtp.gov.bc.ca
+    subject: NRIS ETL Job Failed
+    to: [Paul.Dittaro@nttdata.com, mds@gov.bc.ca]
 
 +teardown:
   echo>: finish ${session_time}
