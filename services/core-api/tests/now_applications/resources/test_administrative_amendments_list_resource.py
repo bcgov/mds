@@ -41,7 +41,7 @@ class TestApplicationResource:
             'permit_id': permit.permit_id,
             'permit_amendment_guid': permit_amendment.permit_amendment_guid,
             'received_date': "2021-01-01",
-            'application_reason_codes': ['EXT', 'CHP', 'MYA', 'TRP', 'INR'],
+            'application_reason_codes': ['EXT', 'CHP', 'MYA'],
             'application_source_type_code': "PRI"
         }
 
