@@ -233,7 +233,6 @@ export const NOWSubmissionDocuments = (props) => {
       ? props.importNowSubmissionDocumentsJob.start_timestamp
       : null;
     const jobEndTime = importJobExists ? props.importNowSubmissionDocumentsJob.end_timestamp : null;
-    console.log(props.importNowSubmissionDocumentsJob);
     let jobStatusDescription = "Not Applicable";
     let jobStatusMessage =
       "An import job will be started once the Notice of Work has been verified.";
