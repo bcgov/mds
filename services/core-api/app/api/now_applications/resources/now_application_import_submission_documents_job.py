@@ -4,15 +4,14 @@ from flask import request
 from flask_restplus import Resource
 from werkzeug.exceptions import NotFound
 
-from app.api.utils.access_decorators import requires_role_edit_permit
+from app.api.utils.access_decorators import requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.services.document_manager_service import DocumentManagerService
 
 
 class NOWApplicationImportSubmissionDocumentsJobResource(Resource, UserMixin):
-    # TODO: Set for admin only
-    @requires_role_edit_permit
+    @requires_role_mine_admin
     def post(self, application_guid):
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
