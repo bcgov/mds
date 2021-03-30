@@ -25,9 +25,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
         from app.services.commands_helper import create_import_now_submission_documents, abort_task
         from app.tasks.celery import celery
 
-        current_app.logger.info(f'******************')
-        current_app.logger.info(f'IN HERE!')
-
         # Get the NoW Application ID and its submission documents to transfer.
         data = self.parser.parse_args()
         now_application_id = data.get('now_application_id', None)
