@@ -50,7 +50,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             now_application_id=now_application_id,
             now_application_guid=now_application_guid,
             create_user=User().get_user_username())
-        # import_job.save()
 
         # Only import documents that have not already been added to an import job and transfer any in-progress documents from the cancelled in-progress jobs to this one.
         for doc in submission_documents:
@@ -72,7 +71,8 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             # Only import this existing document if it has not already been imported successfully.
             if existing_doc:
                 if existing_doc.document_id is None:
-                    # existing_doc.import_now_submission_documents_job_id = import_job.import_now_submission_documents_job_id
+                    # TODO: Determine if the error should be set to null here.
+                    # existing_doc.error = None
                     import_job.import_now_submission_documents.append(existing_doc)
                 continue
             import_job.import_now_submission_documents.append(
