@@ -102,6 +102,7 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading()));
 };
+
 export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applicationGuid) => (
   dispatch
 ) => {

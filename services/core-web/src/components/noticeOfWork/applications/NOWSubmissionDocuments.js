@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { Table, Badge, Tooltip, Button } from "antd";
 import { connect } from "react-redux";
@@ -16,7 +16,10 @@ import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { renderConfig } from "@/components/common/config";
 import * as Permission from "@/constants/permissions";
-import { createNoticeOfWorkApplicationImportSubmissionDocumentsJob } from "@common/actionCreators/noticeOfWorkActionCreator";
+import {
+  createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
@@ -71,6 +74,8 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
   });
 
 export const NOWSubmissionDocuments = (props) => {
+  const [isLoaded, setIsLoaded] = useState(true);
+
   const fileNameColumn = props.selectedRows
     ? {
         title: "File Name",
@@ -260,6 +265,27 @@ export const NOWSubmissionDocuments = (props) => {
     const amountToImport = importDocuments.length;
     const amountImported = importDocuments.filter((doc) => doc.document_id).length;
 
+    const triggerImportJob = () => {
+      setIsLoaded(false);
+      return props
+        .createNoticeOfWorkApplicationImportSubmissionDocumentsJob(props.now_application_guid)
+        .then(() => props.fetchImportNoticeOfWorkSubmissionDocumentsJob(props.now_application_guid))
+        .finally(() => setIsLoaded(true));
+    };
+
+    const ReimportButton = () => (
+      <AuthorizationWrapper permission={Permission.ADMIN}>
+        <Button
+          icon={<ReloadOutlined />}
+          style={{ float: "right", marginTop: 0 }}
+          onClick={triggerImportJob}
+          loading={!isLoaded}
+        >
+          Reimport
+        </Button>
+      </AuthorizationWrapper>
+    );
+
     return (
       <div
         style={{
@@ -274,19 +300,7 @@ export const NOWSubmissionDocuments = (props) => {
         <p style={{ fontWeight: "bold" }}>
           <ImportOutlined style={{ marginRight: 8 }} />
           Submission Documents Import Job
-          <AuthorizationWrapper permission={Permission.ADMIN}>
-            <Button
-              icon={<ReloadOutlined />}
-              style={{ float: "right", marginTop: 0 }}
-              onClick={() =>
-                props.createNoticeOfWorkApplicationImportSubmissionDocumentsJob(
-                  props.now_application_guid
-                )
-              }
-            >
-              Restart
-            </Button>
-          </AuthorizationWrapper>
+          <ReimportButton />
         </p>
         <div style={{ marginLeft: 24 }}>
           <p>{jobStatusMessage}</p>
@@ -357,6 +371,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
+      fetchImportNoticeOfWorkSubmissionDocumentsJob,
     },
     dispatch
   );
