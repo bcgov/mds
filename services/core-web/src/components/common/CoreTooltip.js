@@ -36,16 +36,6 @@ export const NOWFieldOriginTooltip = () => (
   </Tooltip>
 );
 
-export const AdminAmendmentNoDataTooltip = () => (
-  <Tooltip
-    title="The selected source amendment was not issued in Core. Only permits issued in Core will have this value."
-    placement="right"
-    mouseEnterDelay={0.3}
-  >
-    <WarningOutlined className="info-tooltip icon-sm" />
-  </Tooltip>
-);
-
 export const NOWOriginalValueTooltip = (props) => (
   <Tooltip
     title={`Original Value: ${props.originalValue}`}
