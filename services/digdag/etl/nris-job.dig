@@ -29,7 +29,7 @@ _export:
     port: 25
     from: noreply@gov.bc.ca
     subject: NRIS ETL Job Failed
-    to: [Paul.Dittaro@nttdata.com, mds@gov.bc.ca]
+    to: [mds@gov.bc.ca]
 
 +teardown:
   echo>: finish ${session_time}
