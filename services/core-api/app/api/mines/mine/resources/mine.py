@@ -74,6 +74,13 @@ class MineListResource(Resource, UserMixin):
         'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
     parser.add_argument(
         'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
+    parser.add_argument(
+        'government_agency_type_code',
+        type=str,
+        help='Government agency the mine belongs to.',
+        trim=True,
+        store_missing=True,
+        location='json')
 
     @api.doc(
         params={
@@ -127,7 +134,8 @@ class MineListResource(Resource, UserMixin):
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
             latitude=lat,
-            longitude=lon)
+            longitude=lon,
+            government_agency_type_code=data.get('government_agency_type_code'))
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         mine.save()
@@ -303,6 +311,13 @@ class MineResource(Resource, UserMixin):
         trim=True,
         store_missing=False,
         location='json')
+    parser.add_argument(
+        'government_agency_type_code',
+        type=str,
+        help='Government agency the mine belongs to.',
+        trim=True,
+        store_missing=True,
+        location='json')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
@@ -355,6 +370,9 @@ class MineResource(Resource, UserMixin):
             mine.exemption_fee_status_code = data['exemption_fee_status_code']
         if 'exemption_fee_status_code' in data:
             mine.exemption_fee_status_note = data['exemption_fee_status_note']
+
+        mine.government_agency_type_code = data.get('government_agency_type_code', None)
+
         mine.save()
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)

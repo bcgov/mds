@@ -116,6 +116,7 @@ export class MineHeader extends Component {
       mine_note: mine.mine_note,
       exemption_fee_status_code: mine.exemption_fee_status_code,
       exemption_fee_status_note: mine.exemption_fee_status_note,
+      government_agency_type_code: mine.government_agency_type_code,
     };
     this.props.openModal({
       props: {
