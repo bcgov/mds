@@ -50,7 +50,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         has_existing_administrative_amendments = ApplicationsView.query.filter_by(
             source_permit_amendment_guid=permit_amendment.permit_amendment_guid,
             application_type_code='ADA').filter(
-                ApplicationsView.now_application_status_code.in_(['AIA', 'REJ'])).count() > 0
+                ApplicationsView.now_application_status_code.notin_(['AIA', 'REJ'])).count() > 0
 
         application = None
         if permit_amendment.now_application_guid:
@@ -88,6 +88,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 now_number=NOWApplicationIdentity.create_now_number(mine),
                 source_permit_amendment_id=permit_amendment.permit_amendment_id,
                 application_type_code='ADA')
+
             # create an application
             new_app.now_application = NOWApplication(
                 notice_of_work_type_code=notice_of_work_type_code,
@@ -97,12 +98,10 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                 type_of_application="Amendment",
                 application_source_type_code=data['application_source_type_code'],
                 proposed_start_date=permit_amendment.issue_date,
-                proposed_end_date=permit_amendment.authorization_end_date)
-
-            if application:
-                new_app.now_application.property_name = application.property_name
-                new_app.now_application.longitude = application.longitude
-                new_app.now_application.latitude = application.latitude
+                proposed_end_date=permit_amendment.authorization_end_date,
+                property_name=mine.mine_name,
+                longitude=mine.longitude,
+                latitude=mine.latitude)
 
             new_app.originating_system = 'Core'
 
@@ -112,8 +111,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
             if permit.permittee_appointments:
                 application_appt = []
                 for mine_appt in [
-                        party for party in permit.permittee_appointments if not party.end_date
-                        or party.end_date >= datetime.now(timezone.utc).date()
+                        party for party in permit.permittee_appointments
+                        if not party.end_date or party.end_date > datetime.now(timezone.utc).date()
                 ]:
                     new_app_appt = NOWPartyAppointment(
                         mine_party_appt_type_code=mine_appt.mine_party_appt_type_code,
