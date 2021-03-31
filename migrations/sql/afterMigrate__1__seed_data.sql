@@ -113,7 +113,8 @@ VALUES
     ('COL', 'Coal', TRUE, 'system-mds', 'system-mds'),
     ('MIN', 'Mineral', TRUE, 'system-mds', 'system-mds'),
     ('PLR', 'Placer', TRUE, 'system-mds', 'system-mds'),
-    ('BCL', 'BC Land', TRUE, 'system-mds', 'system-mds')
+    ('BCL', 'Public Land', TRUE, 'system-mds', 'system-mds'),
+    ('PRL', 'Private Land', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 

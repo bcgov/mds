@@ -50,6 +50,7 @@ const propTypes = {
   handleDeletePermitAmendment: PropTypes.func.isRequired,
   handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openEditSitePropertiesModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -225,6 +226,23 @@ const columns = [
                   style={{ paddingRight: "15px" }}
                 />
                 Edit Permit Status
+              </button>
+            </div>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => record.openEditSitePropertiesModal(event, record.permit)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Edit Site Properties
               </button>
             </div>
           </AuthorizationWrapper>
@@ -463,7 +481,8 @@ const transformRowData = (
   permitStatusOptionsHash,
   handleDeletePermit,
   handleDeletePermitAmendment,
-  openAddPermitHistoricalAmendmentModal
+  openAddPermitHistoricalAmendmentModal,
+  openEditSitePropertiesModal
 ) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -498,6 +517,7 @@ const transformRowData = (
     handleDeletePermit,
     handleDeletePermitAmendment,
     openAddPermitHistoricalAmendmentModal,
+    openEditSitePropertiesModal,
   };
 };
 
@@ -587,7 +607,8 @@ export const MinePermitTable = (props) => {
       props.permitStatusOptionsHash,
       props.handleDeletePermit,
       props.handleDeletePermitAmendment,
-      props.openAddPermitHistoricalAmendmentModal
+      props.openAddPermitHistoricalAmendmentModal,
+      props.openEditSitePropertiesModal
     )
   );
 

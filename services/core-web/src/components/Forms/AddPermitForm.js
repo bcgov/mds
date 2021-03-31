@@ -161,6 +161,8 @@ export class AddPermitForm extends Component {
               />
             </Form.Item>
           </Col>
+          {/* <SitePropertiesForm {...this.props} /> */}
+
           <Col md={12} sm={24}>
             <Form.Item label="Upload files">
               <Field

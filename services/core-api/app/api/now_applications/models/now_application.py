@@ -138,6 +138,12 @@ class NOWApplication(Base, AuditMixin):
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
+    # site_properties = db.relationship(
+    #     'MineType',
+    #     backref='mine',
+    #     order_by='desc(MineType.update_timestamp)',
+    #     primaryjoin="and_(MineType.mine_guid == NOWApplicationIdentity.mine_guid, MineType.active_ind==True)",
+    #     lazy='selectin')
 
     # Documents that are not associated with a review
     documents = db.relationship(

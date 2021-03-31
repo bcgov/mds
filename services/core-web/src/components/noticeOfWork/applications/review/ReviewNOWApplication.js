@@ -34,12 +34,17 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
-import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import {
+  NOWOriginalValueTooltip,
+  NOWFieldOriginTooltip,
+  CoreTooltip,
+} from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
 import ReviewNOWContacts from "./ReviewNOWContacts";
+import ReviewSiteProperties from "./ReviewSiteProperties";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
 /**
@@ -841,6 +846,20 @@ export const ReviewNOWApplication = (props) => {
       <Form layout="vertical">
         <ScrollContentWrapper id="application-info" title="Application Info">
           {renderApplicationInfo()}
+        </ScrollContentWrapper>
+        <ScrollContentWrapper
+          id="site-properties"
+          title={
+            <>
+              Site Properties
+              <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
+            </>
+          }
+        >
+          <ReviewSiteProperties
+            noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
+            isViewMode={props.isViewMode}
+          />
         </ScrollContentWrapper>
         <ScrollContentWrapper id="contacts" title="Contacts">
           <ReviewNOWContacts

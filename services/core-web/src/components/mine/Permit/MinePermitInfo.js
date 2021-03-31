@@ -151,6 +151,19 @@ export class MinePermitInfo extends Component {
     });
   };
 
+  openEditSitePropertiesModal = (event, permit) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: permit,
+        permit,
+        onSubmit: this.handleEditPermit,
+        title: `Edit Site Properties for ${permit.permit_no}`,
+      },
+      content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
+    });
+  };
+
   // Permit Handlers
   handleAddPermit = (values) => {
     const permit_no = values.is_exploration
@@ -378,6 +391,7 @@ export class MinePermitInfo extends Component {
           major_mine_ind={mine.major_mine_ind}
           openEditPermitModal={this.openEditPermitModal}
           openEditAmendmentModal={this.openEditAmendmentModal}
+          openEditSitePropertiesModal={this.openEditSitePropertiesModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}

@@ -39,6 +39,7 @@ export const createMineRecord = (payload) => (dispatch) => {
 };
 
 export const updateMineRecord = (id, payload, mineName) => (dispatch) => {
+  console.log(payload);
   dispatch(request(reducerTypes.UPDATE_MINE_RECORD));
   dispatch(showLoading("modal"));
   return CustomAxios()

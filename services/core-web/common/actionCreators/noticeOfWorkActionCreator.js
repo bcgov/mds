@@ -170,6 +170,7 @@ export const updateNoticeOfWorkApplication = (
   nowApplicationGuid,
   message = "Successfully updated the permit application."
 ) => (dispatch) => {
+  console.log(payload);
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
   return CustomAxios()
