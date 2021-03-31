@@ -10,6 +10,7 @@ class MineType(AuditMixin, Base):
     __tablename__ = "mine_type"
     mine_type_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
+    permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
     mine_tenure_type_code = db.Column(
         db.String, db.ForeignKey('mine_tenure_type_code.mine_tenure_type_code'), nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, default=True)

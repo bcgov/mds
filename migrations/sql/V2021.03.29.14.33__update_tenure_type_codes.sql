@@ -1,4 +1,4 @@
-UPDATE mine_tenure_type_code SET description = "Public Land" WHERE mine_tenure_type_code = 'BCL';
+UPDATE mine_tenure_type_code SET description = 'Public Land' WHERE mine_tenure_type_code = 'BCL';
 
 INSERT INTO mine_tenure_type_code
     (

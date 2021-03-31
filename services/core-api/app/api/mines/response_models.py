@@ -266,6 +266,7 @@ MINE_TYPE_MODEL = api.model(
     'MineType', {
         'mine_type_guid': fields.String,
         'mine_guid': fields.String,
+        'permit_guid': fields.String,
         'mine_tenure_type_code': fields.String,
         'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
     })
