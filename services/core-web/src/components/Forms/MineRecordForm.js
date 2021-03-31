@@ -198,6 +198,9 @@ export class MineRecordForm extends Component {
     this.setState((prevState) => {
       if (!prevState.hasGovernmentAgency) {
         this.props.change("exemption_fee_status_code", "Y");
+      } else {
+        this.props.change("exemption_fee_status_code", null);
+        this.props.change("exemption_fee_status_note", null);
       }
       return { hasGovernmentAgency: !prevState.hasGovernmentAgency };
     });
@@ -474,7 +477,7 @@ export class MineRecordForm extends Component {
         {this.state.hasGovernmentAgency && (
           <>
             <Row gutter={16}>
-              <Col span={24}>
+              <Col md={12} xs={24}>
                 <Field
                   id="government_agency_type_code"
                   name="government_agency_type_code"
@@ -487,6 +490,17 @@ export class MineRecordForm extends Component {
                     validateSelectOptions(this.props.governmentAgencyTypeOptions),
                   ]}
                 />
+              </Col>
+              <Col md={12} xs={24}>
+                <Form.Item>
+                  <Field
+                    id="exemption_fee_status_note"
+                    name="exemption_fee_status_note"
+                    label="Fee Exemption Note"
+                    component={renderConfig.AUTO_SIZE_FIELD}
+                    validate={[maxLength(300)]}
+                  />
+                </Form.Item>
               </Col>
             </Row>
             <Form.Item label="Mine Type" />
@@ -520,19 +534,6 @@ export class MineRecordForm extends Component {
             </Form.Item>
           </Col>
         </Row>
-        {/* <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item>
-              <Field
-                id="exemption_fee_status_note"
-                name="exemption_fee_status_note"
-                label="Fee Exemption Note"
-                component={renderConfig.AUTO_SIZE_FIELD}
-                validate={[maxLength(300)]}
-              />
-            </Form.Item>
-          </Col>
-        </Row> */}
         <div className="right center-mobile">
           <Popconfirm
             placement="topRight"
