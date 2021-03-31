@@ -119,7 +119,7 @@ export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applic
         success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
       );
       notification.success({
-        message: "Successfully created the import job",
+        message: "Successfully created the Notice of Work Submission Documents Import Job",
         duration: 10,
       });
       return response;
