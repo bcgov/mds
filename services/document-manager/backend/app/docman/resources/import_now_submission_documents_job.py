@@ -68,8 +68,6 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             # Only import this existing document if it has not already been imported successfully.
             if existing_doc:
                 if existing_doc.document_id is None:
-                    # TODO: Determine if the error should be set to null here.
-                    # existing_doc.error = None
                     import_job.import_now_submission_documents.append(existing_doc)
                 continue
             import_job.import_now_submission_documents.append(
