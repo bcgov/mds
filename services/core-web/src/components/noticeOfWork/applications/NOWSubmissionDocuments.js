@@ -268,7 +268,11 @@ export const NOWSubmissionDocuments = (props) => {
       setIsLoaded(false);
       return props
         .createNoticeOfWorkApplicationImportSubmissionDocumentsJob(props.now_application_guid)
-        .then(() => props.fetchImportNoticeOfWorkSubmissionDocumentsJob(props.now_application_guid))
+        .then(() =>
+          new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+            props.fetchImportNoticeOfWorkSubmissionDocumentsJob(props.now_application_guid)
+          )
+        )
         .finally(() => setIsLoaded(true));
     };
 
