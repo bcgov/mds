@@ -156,7 +156,7 @@ export class MineRecordForm extends Component {
   // addField allows users to create a max of 4 mine Types.
   addField = (event, fields) => {
     const totalTypes = fields.length + this.props.currentMineTypes.length;
-    // event.preventDefault();
+    event.preventDefault();
     if (totalTypes >= 1) {
       notification.error({
         message:
@@ -445,7 +445,6 @@ export class MineRecordForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          {/* TODO government agency section */}
           <Col md={12} xs={24}>
             <Form.Item label="Does this mine site belong to a government agency?">
               <Radio.Group
