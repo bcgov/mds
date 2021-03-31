@@ -28,7 +28,7 @@ import RenderField from "@/components/common/RenderField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
-import { AdminAmendmentNoDataTooltip, CoreTooltip } from "@/components/common/CoreTooltip";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
@@ -73,10 +73,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             validate={[requiredList]}
             data={props.applicationReasonCodeOptions}
           />
-          <div className="field-title">
-            Name of Property
-            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
-          </div>
+          <div className="field-title">Name of Property</div>
           <Field
             id="property_name"
             name="property_name"
@@ -97,15 +94,9 @@ export const ReviewAdminAmendmentApplication = (props) => {
           />
         </Col>
         <Col md={12} sm={24}>
-          <div className="field-title">
-            Lat
-            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
-          </div>
+          <div className="field-title">Lat</div>
           <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
-          <div className="field-title">
-            Long
-            {!props.noticeOfWork.has_source_conditions && <AdminAmendmentNoDataTooltip />}
-          </div>
+          <div className="field-title">Long</div>
           <Field
             id="longitude"
             name="longitude"

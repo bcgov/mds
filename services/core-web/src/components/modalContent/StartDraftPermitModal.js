@@ -162,7 +162,7 @@ export const StartDraftPermitModal = (props) => {
       you are amending. The Preamble will not include the files from the original authorization. You
       need to:
       <br />
-      1. Attach the files that made up the original approved work for the authorization
+      1. Attach the files that made up the original approved work for the authorization.
       <br />
       2. Update the conditions to match what was authorized in the original.
     </>
