@@ -25,6 +25,10 @@
     width: 2px;
     background-color: $v-divider-color;
   }
+  &.ant-divider-plain {
+    height: 100%;
+    background-color: $light-grey;
+  }
 }
 .custom-large-divider {
   border: 2px solid $h-divider-color;
@@ -612,4 +616,8 @@ select {
   .ant-timeline-item-tail {
     display: none;
   }
+}
+
+.ant-typography-expand {
+  color: $violet !important;
 }
