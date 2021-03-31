@@ -155,16 +155,3 @@ class NOWApplicationResource(Resource, UserMixin):
                 "%Y-%m-%dT%H:%M:%S"))
 
         return now_application_identity.now_application
-
-    # NOTE: This is a method created for testing purposes and isn't used by our application.
-    @requires_role_edit_permit
-    def post(self, application_guid):
-        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
-        if not now_application_identity:
-            raise NotFound('No identity record for this application guid.')
-
-        now_application = now_application_identity.now_application
-        if now_application:
-            resp = DocumentManagerService.importNoticeOfWorkSubmissionDocuments(
-                request, now_application)
-            return resp

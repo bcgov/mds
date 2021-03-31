@@ -47,22 +47,36 @@ class ImportNowSubmissionDocumentsJobListResource(Resource):
             now_application_id=now_application_id,
             now_application_guid=now_application_guid,
             create_user=User().get_user_username())
+
+        # Only import documents that have not already been added to an import job and transfer any in-progress documents from the cancelled in-progress jobs to this one.
         for doc in submission_documents:
-            already_imported = ImportNowSubmissionDocument.query.filter(
-                and_(ImportNowSubmissionDocument.submission_document_url == doc['documenturl'],
-                     ImportNowSubmissionDocument.submission_document_file_name == doc['filename'],
-                     ImportNowSubmissionDocument.submission_document_message_id == doc['messageid'],
-                     ImportNowSubmissionDocument.submission_document_type ==
-                     doc['documenttype'])).one_or_none()
-            if already_imported:
+            documenturl = doc['documenturl']
+            filename = doc['filename']
+            messageid = doc['messageid']
+            documenttype = doc['documenttype']
+            description = doc['description']
+
+            # Get the possible already-existing record for this document.
+            existing_doc = ImportNowSubmissionDocument.query.filter(
+                and_(ImportNowSubmissionDocument.submission_document_url == documenturl,
+                     ImportNowSubmissionDocument.submission_document_file_name == filename,
+                     ImportNowSubmissionDocument.submission_document_message_id == messageid,
+                     ImportNowSubmissionDocument.submission_document_type == documenttype,
+                     ImportNowSubmissionDocument.submission_document_description ==
+                     description)).one_or_none()
+
+            # Only import this existing document if it has not already been imported successfully.
+            if existing_doc:
+                if existing_doc.document_id is None:
+                    import_job.import_now_submission_documents.append(existing_doc)
                 continue
             import_job.import_now_submission_documents.append(
                 ImportNowSubmissionDocument(
-                    submission_document_url=doc['documenturl'],
-                    submission_document_file_name=doc['filename'],
-                    submission_document_message_id=doc['messageid'],
-                    submission_document_type=doc['documenttype'],
-                    submission_document_description=doc['description']))
+                    submission_document_url=documenturl,
+                    submission_document_file_name=filename,
+                    submission_document_message_id=messageid,
+                    submission_document_type=documenttype,
+                    submission_document_description=description))
         import_job.save()
 
         # Create the Import NoW Submission Documents job.

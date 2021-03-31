@@ -144,12 +144,7 @@ def import_now_submission_documents(self, import_now_submission_documents_job_id
                     db.session.commit()
                     raise e
 
-                success_imports.append({
-                    import_doc.submission_document_file_name,
-                    import_doc.submission_document_url,
-                    import_doc.submission_document_message_id,
-                    import_doc.submission_document_type,
-                })
+                success_imports.append(import_doc.import_now_submission_document_id)
 
                 logger.info(f'{doc_prefix} Import {"COMPLETE" if uploaded else "UNNECESSARY"}')
             except Exception as e:

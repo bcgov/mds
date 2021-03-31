@@ -14,6 +14,7 @@ import {
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
   deleteNoticeOfWorkApplicationDocument,
   createAdminAmendmentApplication,
+  createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";

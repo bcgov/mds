@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
-import { Table, Badge, Tooltip } from "antd";
-import { ImportOutlined } from "@ant-design/icons";
+import { Table, Badge, Tooltip, Button } from "antd";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { ImportOutlined, ReloadOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { Field } from "redux-form";
@@ -9,9 +11,15 @@ import {
   downloadNowDocument,
   downloadFileFromDocumentManager,
 } from "@common/utils/actionlessNetworkCalls";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import { renderConfig } from "@/components/common/config";
+import * as Permission from "@/constants/permissions";
+import {
+  createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob,
+} from "@common/actionCreators/noticeOfWorkActionCreator";
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
@@ -66,6 +74,8 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
   });
 
 export const NOWSubmissionDocuments = (props) => {
+  const [isLoaded, setIsLoaded] = useState(true);
+
   const fileNameColumn = props.selectedRows
     ? {
         title: "File Name",
@@ -223,7 +233,6 @@ export const NOWSubmissionDocuments = (props) => {
       ? props.importNowSubmissionDocumentsJob.start_timestamp
       : null;
     const jobEndTime = importJobExists ? props.importNowSubmissionDocumentsJob.end_timestamp : null;
-
     let jobStatusDescription = "Not Applicable";
     let jobStatusMessage =
       "An import job will be started once the Notice of Work has been verified.";
@@ -255,6 +264,31 @@ export const NOWSubmissionDocuments = (props) => {
     const amountToImport = importDocuments.length;
     const amountImported = importDocuments.filter((doc) => doc.document_id).length;
 
+    const triggerImportJob = () => {
+      setIsLoaded(false);
+      return props
+        .createNoticeOfWorkApplicationImportSubmissionDocumentsJob(props.now_application_guid)
+        .then(() =>
+          new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+            props.fetchImportNoticeOfWorkSubmissionDocumentsJob(props.now_application_guid)
+          )
+        )
+        .finally(() => setIsLoaded(true));
+    };
+
+    const ReimportButton = () => (
+      <AuthorizationWrapper permission={Permission.ADMIN}>
+        <Button
+          icon={<ReloadOutlined />}
+          style={{ float: "right", marginTop: 0 }}
+          onClick={triggerImportJob}
+          loading={!isLoaded}
+        >
+          Reimport
+        </Button>
+      </AuthorizationWrapper>
+    );
+
     return (
       <div
         style={{
@@ -269,6 +303,7 @@ export const NOWSubmissionDocuments = (props) => {
         <p style={{ fontWeight: "bold" }}>
           <ImportOutlined style={{ marginRight: 8 }} />
           Submission Documents Import Job
+          <ReimportButton />
         </p>
         <div style={{ marginLeft: 24 }}>
           <p>{jobStatusMessage}</p>
@@ -333,7 +368,18 @@ export const NOWSubmissionDocuments = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
+      fetchImportNoticeOfWorkSubmissionDocumentsJob,
+    },
+    dispatch
+  );
+
 NOWSubmissionDocuments.propTypes = propTypes;
 NOWSubmissionDocuments.defaultProps = defaultProps;
 
-export default NOWSubmissionDocuments;
+export default connect(mapStateToProps, mapDispatchToProps)(NOWSubmissionDocuments);
