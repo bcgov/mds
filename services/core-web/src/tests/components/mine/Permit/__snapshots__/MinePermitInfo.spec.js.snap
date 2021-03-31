@@ -45,6 +45,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     openAddPermitHistoricalAmendmentModal={[Function]}
     openEditAmendmentModal={[Function]}
     openEditPermitModal={[Function]}
+    openEditSitePropertiesModal={[Function]}
     partyRelationships={Array []}
     permits={Array []}
   />

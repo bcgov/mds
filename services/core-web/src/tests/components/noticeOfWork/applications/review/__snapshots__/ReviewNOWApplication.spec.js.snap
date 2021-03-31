@@ -345,6 +345,22 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       </div>
     </withRouter(Connect(ScrollContentWrapper))>
     <withRouter(Connect(ScrollContentWrapper))
+      id="site-properties"
+      title={
+        <React.Fragment>
+          Site Properties
+          <CoreTooltip
+            title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns."
+          />
+        </React.Fragment>
+      }
+    >
+      <Connect(ReviewSiteProperties)
+        isViewMode={true}
+        noticeOfWorkType="MIN"
+      />
+    </withRouter(Connect(ScrollContentWrapper))>
+    <withRouter(Connect(ScrollContentWrapper))
       id="contacts"
       title="Contacts"
     >
