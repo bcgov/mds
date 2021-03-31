@@ -31,7 +31,7 @@ export const APPLICATION_OCTET_STREAM = "application/octet-stream";
 
 export const UNIQUELY_SPATIAL = {
   ".dbf": "application/dbf",
-  ".geoJSon": "application/vnd.geo+json",
+  ".geojson": "application/vnd.geo+json",
   ".gml": "application/gml+xml",
   ".kml": "application/vnd.google-earth.kml+xml",
   ".kmz": "application/vnd.google-earth.kmz",
