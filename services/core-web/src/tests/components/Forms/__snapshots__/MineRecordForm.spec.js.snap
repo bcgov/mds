@@ -218,6 +218,53 @@ exports[`MineRecordForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="mine_note"
+          label="Notes"
+          name="mine_note"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="major_mine_ind"
+          label="Major Mine"
+          name="major_mine_ind"
+          type="checkbox"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <div
     className="right center-mobile"
   >

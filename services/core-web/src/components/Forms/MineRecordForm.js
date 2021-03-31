@@ -157,9 +157,10 @@ export class MineRecordForm extends Component {
   addField = (event, fields) => {
     const totalTypes = fields.length + this.props.currentMineTypes.length;
     // event.preventDefault();
-    if (totalTypes === 4) {
+    if (totalTypes >= 1) {
       notification.error({
-        message: "You cannot have more than 4 tenures associated with a mine",
+        message:
+          "You cannot have more than 1 tenures associated with this site. If you want to edit, please delete the existing tenures and add a new one.",
         duration: 10,
       });
     } else {
@@ -490,35 +491,35 @@ export class MineRecordForm extends Component {
             </Row>
             <Form.Item label="Mine Type" />
             <FieldArray name="mine_types" component={renderTypeSelect} />
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id="mine_note"
-                    name="mine_note"
-                    label="Notes"
-                    component={renderConfig.AUTO_SIZE_FIELD}
-                    validate={[maxLength(300)]}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item>
-                  <Field
-                    id="major_mine_ind"
-                    name="major_mine_ind"
-                    label="Major Mine"
-                    type="checkbox"
-                    component={renderConfig.CHECKBOX}
-                    validate={[maxLength(300)]}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
           </>
         )}
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id="mine_note"
+                name="mine_note"
+                label="Notes"
+                component={renderConfig.AUTO_SIZE_FIELD}
+                validate={[maxLength(300)]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id="major_mine_ind"
+                name="major_mine_ind"
+                label="Major Mine"
+                type="checkbox"
+                component={renderConfig.CHECKBOX}
+                validate={[maxLength(300)]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         {/* <Row gutter={16}>
           <Col span={24}>
             <Form.Item>
