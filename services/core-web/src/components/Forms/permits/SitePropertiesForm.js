@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Popconfirm, Button } from "antd";
-import { Field, formValueSelector, FormSection, reduxForm, Form } from "redux-form";
+import { Field, formValueSelector, FormSection, reduxForm, Form, change } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
@@ -25,8 +25,7 @@ const propTypes = {
   noticeOfWorkType: PropTypes.string.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  permitPrefix: PropTypes.string.isRequired,
-  isExploration: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 const mapApplicationTypeToTenureType = (permitPrefix) =>
@@ -38,6 +37,32 @@ const mapApplicationTypeToTenureType = (permitPrefix) =>
     Q: ["BCL", "PRL", "MIN"],
   }[permitPrefix]);
 export class SitePropertiesForm extends Component {
+  componentDidMount() {
+    this.handleSiteProperty(this.props.initialValues.site_properties);
+  }
+
+  handleSiteProperty = (siteProperties) => {
+    const activePermitSiteProperty = siteProperties
+      .filter(({ mine_guid }) => mine_guid === this.props.mineGuid)
+      .map((type) => {
+        const mine_types = {
+          mine_tenure_type_code: "",
+          mine_commodity_code: [],
+          mine_disturbance_code: [],
+        };
+        mine_types.mine_tenure_type_code = type.mine_tenure_type_code;
+        type.mine_type_detail.forEach((detail) => {
+          if (detail.mine_commodity_code) {
+            mine_types.mine_commodity_code.push(detail.mine_commodity_code);
+          } else if (detail.mine_disturbance_code) {
+            mine_types.mine_disturbance_code.push(detail.mine_disturbance_code);
+          }
+        });
+        return mine_types;
+      });
+    return this.props.change("site_properties", activePermitSiteProperty[0]);
+  };
+
   render() {
     const permitPrefix = this.props.permit.permit_no.charAt(0);
     return (
@@ -47,10 +72,12 @@ export class SitePropertiesForm extends Component {
             <Col span={24}>
               <div className="field-title">Tenure*</div>
               <Field
-                id="tenure_type_code"
-                name="tenure_type_code"
+                id="mine_tenure_type_code"
+                name="mine_tenure_type_code"
                 component={RenderSelect}
+                // disabled
                 validate={[requiredList]}
+                // data={this.props.mineTenureTypes}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
                   mapApplicationTypeToTenureType(permitPrefix).includes(value)
                 )}
@@ -65,9 +92,9 @@ export class SitePropertiesForm extends Component {
                 name="mine_disturbance_code"
                 component={RenderMultiSelect}
                 data={
-                  this.props.site_properties?.tenure_type_code
+                  this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalCommodityOptions[
-                        this.props.site_properties?.tenure_type_code
+                        this.props.site_properties?.mine_tenure_type_code
                       ]
                     : null
                 }
@@ -82,9 +109,9 @@ export class SitePropertiesForm extends Component {
                 name="mine_commodity_code"
                 component={RenderMultiSelect}
                 data={
-                  this.props.site_properties?.tenure_type_code
+                  this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalDisturbanceOptions[
-                        this.props.site_properties?.tenure_type_code
+                        this.props.site_properties?.mine_tenure_type_code
                       ]
                     : null
                 }

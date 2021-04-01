@@ -159,6 +159,7 @@ export class MinePermitInfo extends Component {
         permit,
         onSubmit: this.handleEditPermit,
         title: `Edit Site Properties for ${permit.permit_no}`,
+        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
     });
