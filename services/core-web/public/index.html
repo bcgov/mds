@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#000000" />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="theme-color" content="#000000" />
+  <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
       <link rel="manifest" href="/public/manifest.json">
     -->
-    <link rel="shortcut icon" href="/public/faviconCORE.ico" />
-    <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css" />
-    <title>CORE</title>
-  </head>
-  <body>
-    <noscript> You need to enable JavaScript to run this app. </noscript>
-    <div id="root"></div>
-    <!--
+  <link rel="shortcut icon" href="/public/faviconCORE.ico" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css" />
+  <title>CORE</title>
+</head>
+
+<body>
+  <noscript> You need to enable JavaScript to run this app. </noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -27,5 +29,23 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+<script>
+  if (window.location.href.indexOf("localhost") > -1) {
+    var random = Math.floor(Math.random() * 20) + 1
+    if (random === 1) {
+      setTimeout(function () {
+        var text = new SpeechSynthesisUtterance('did you remember to add unit tests?');
+        speechSynthesis.speak(text);
+      }, 30000);
+    }
+    else if (random === 2) {
+      document.body.style = 'cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/np_cursor_740125_000000.png), default;'
+    }
+    else if (random === 3) {
+      window.location.replace("http://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    }
+  }
+</script>
+
 </html>
