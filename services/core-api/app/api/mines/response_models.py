@@ -189,6 +189,23 @@ PERMIT_AMENDMENT_MODEL = api.model(
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
 
+MINE_TYPE_DETAIL_MODEL = api.model(
+    'MineTypeDetail', {
+        'mine_type_detail_xref_guid': fields.String,
+        'mine_type_guid': fields.String,
+        'mine_disturbance_code': fields.String,
+        'mine_commodity_code': fields.String,
+    })
+
+MINE_TYPE_MODEL = api.model(
+    'MineType', {
+        'mine_type_guid': fields.String,
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'mine_tenure_type_code': fields.String,
+        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
+    })
+
 PERMIT_MODEL = api.model(
     'Permit', {
         'permit_id': fields.Integer,
@@ -205,6 +222,7 @@ PERMIT_MODEL = api.model(
         'bonds': fields.List(fields.Nested(BOND_MODEL)),
         'exemption_fee_status_code': fields.String,
         'exemption_fee_status_note': fields.String,
+        'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
@@ -253,23 +271,6 @@ MINE_TSF_MODEL = api.model(
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
-    })
-
-MINE_TYPE_DETAIL_MODEL = api.model(
-    'MineTypeDetail', {
-        'mine_type_detail_xref_guid': fields.String,
-        'mine_type_guid': fields.String,
-        'mine_disturbance_code': fields.String,
-        'mine_commodity_code': fields.String,
-    })
-
-MINE_TYPE_MODEL = api.model(
-    'MineType', {
-        'mine_type_guid': fields.String,
-        'mine_guid': fields.String,
-        'permit_guid': fields.String,
-        'mine_tenure_type_code': fields.String,
-        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
     })
 
 MINE_VERIFIED_MODEL = api.model(

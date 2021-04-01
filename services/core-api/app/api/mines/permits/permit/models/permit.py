@@ -60,6 +60,11 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
 
+    site_properties = db.relationship(
+        'MineType',
+        lazy='select',
+        primaryjoin='and_(Permit.permit_guid == MineType.permit_guid, MineType.active_ind==True)')
+
     _mine_associations = db.relationship('MinePermitXref')
 
     # Liability on permit after permit is closed
@@ -189,12 +194,19 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         return
 
     @classmethod
-    def create(cls, mine, permit_no, permit_status_code, is_exploration, exemption_fee_status_code, exemption_fee_status_note, add_to_session=True):
+    def create(cls,
+               mine,
+               permit_no,
+               permit_status_code,
+               is_exploration,
+               exemption_fee_status_code,
+               exemption_fee_status_note,
+               add_to_session=True):
         permit = cls(
             permit_no=permit_no,
             permit_status_code=permit_status_code,
-            is_exploration=is_exploration, 
-            exemption_fee_status_code=exemption_fee_status_code, 
+            is_exploration=is_exploration,
+            exemption_fee_status_code=exemption_fee_status_code,
             exemption_fee_status_note=exemption_fee_status_note)
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
