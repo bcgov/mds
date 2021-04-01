@@ -365,7 +365,6 @@ UPDATE document_template SET form_spec_json = '[
     }
   ]' WHERE document_template_code ='NPE';
   
-  
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
@@ -417,7 +416,7 @@ UPDATE document_template SET form_spec_json = '[
 	{ 
       "id": "letter_body_label",
       "type": "LABEL",
-	  "context-value": to withdraw your Notice of Work application and confirm that all further processing of your application has now been terminated."
+	  "context-value": "to withdraw your Notice of Work application and confirm that all further processing of your application has now been terminated."
 	},
     { 
       "id": "letter_body",
