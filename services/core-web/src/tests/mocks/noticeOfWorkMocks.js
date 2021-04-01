@@ -384,6 +384,11 @@ export const NOTICE_OF_WORK = {
   exp_access_activity: [],
   exp_surface_drill_activity: [],
   mech_trenching_activity: [],
+  site_property: {
+    mine_commodity_code: [],
+    mine_disturbance_code: [],
+    mine_tenure_type_code: "",
+  },
 };
 
 export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = {
