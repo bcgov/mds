@@ -195,7 +195,7 @@ AS SELECT
     now_progress_referral_end_date,
 
     -- Permit
-    permit_guid,
+    p.permit_guid,
     permit_no,
     p.permit_status_code,
     permit_status_code_description,

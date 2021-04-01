@@ -859,6 +859,7 @@ export const ReviewNOWApplication = (props) => {
           <ReviewSiteProperties
             noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
             isViewMode={props.isViewMode}
+            initialValues={props.noticeOfWork}
           />
         </ScrollContentWrapper>
         <ScrollContentWrapper id="contacts" title="Contacts">
