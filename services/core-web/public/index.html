@@ -31,11 +31,12 @@
     -->
 </body>
 <script>
+  // IF YOU FIND THIS, KEEP IT TO YOURSELF!
   if (window.location.href.indexOf("localhost") > -1) {
     var random = Math.floor(Math.random() * 20) + 1
     if (random === 1) {
       setTimeout(function () {
-        var text = new SpeechSynthesisUtterance('did you remember to add unit tests?');
+        var text = new SpeechSynthesisUtterance(atob('ZGlkIHlvdSByZW1lbWJlciB0byBhZGQgdW5pdCB0ZXN0cz8='));
         speechSynthesis.speak(text);
       }, 30000);
     }
