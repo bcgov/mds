@@ -784,7 +784,7 @@ export const DROPDOWN_APPLICATION_DOCUMENT_TYPES = [
   },
   { value: "SRS", label: "Status Report - Shape Files", subType: "GDO", isActive: true },
   { value: "ECC", label: "Email Correspondence/Communications", subType: null, isActive: true },
-  { value: "RMI", label: "Requst for More Information", subType: null, isActive: true },
+  { value: "RMI", label: "Request for More Information", subType: null, isActive: true },
   { value: "WFI", label: "30 day Warning for Information", subType: "GDO", isActive: true },
   { value: "NPR", label: "No Permit Required", subType: null, isActive: true },
   { value: "NPI", label: "No Permit Required IP", subType: null, isActive: true },
