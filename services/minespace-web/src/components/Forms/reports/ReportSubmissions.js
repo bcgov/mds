@@ -1,3 +1,4 @@
+import { uniq } from "lodash";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form } from "antd";
@@ -7,7 +8,7 @@ import FileUpload from "@/components/common/FileUpload";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import LinkButton from "@/components/common/LinkButton";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
-import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
+import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -61,7 +62,7 @@ export const ReportSubmissions = (props) => {
     props.updateMineReportSubmissions(updatedSubmissions);
   };
 
-  const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL };
+  const acceptedFileTypesMap = { ...DOCUMENT, ...EXCEL, ...IMAGE, ...SPATIAL };
 
   return (
     <div>
@@ -87,7 +88,7 @@ export const ReportSubmissions = (props) => {
         <ul style={{ paddingLeft: 20 }}>
           <li>You can attach multiple files for the report in the box below</li>
           <li>You cannot upload ZIP files</li>
-          <li>The allowed file types are: {Object.values(acceptedFileTypesMap).join(", ")}</li>
+          <li>The allowed file types are: {uniq(Object.keys(acceptedFileTypesMap)).join(", ")}</li>
           <li>Maximum individual file size is 400 MB</li>
         </ul>
         <Field
@@ -95,6 +96,7 @@ export const ReportSubmissions = (props) => {
           name="ReportFileUpload"
           component={FileUpload}
           allowRevert
+          allowMultiple
           acceptedFileTypesMap={acceptedFileTypesMap}
           uploadUrl={MINE_REPORT_DOCUMENT(props.mineGuid)}
           onFileLoad={handleFileLoad}
