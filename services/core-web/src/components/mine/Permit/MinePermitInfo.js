@@ -176,10 +176,11 @@ export class MinePermitInfo extends Component {
     return this.props.createPermit(this.props.mineGuid, payload).then(this.closePermitModal);
   };
 
-  handleEditPermit = (values) =>
-    this.props
+  handleEditPermit = (values) => {
+    return this.props
       .updatePermit(this.props.mineGuid, values.permit_guid, values)
       .then(this.closePermitModal);
+  };
 
   handleDeletePermit = (permitGuid) =>
     this.props.deletePermit(this.props.mineGuid, permitGuid).then(() => this.closePermitModal());

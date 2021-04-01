@@ -56,6 +56,9 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     bonds = db.relationship(
         'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
+    exemption_fee_status_code = db.Column(
+        db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
+    exemption_fee_status_note = db.Column(db.String)
 
     _mine_associations = db.relationship('MinePermitXref')
 
@@ -186,11 +189,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         return
 
     @classmethod
-    def create(cls, mine, permit_no, permit_status_code, is_exploration, add_to_session=True):
+    def create(cls, mine, permit_no, permit_status_code, is_exploration, exemption_fee_status_code, exemption_fee_status_note, add_to_session=True):
         permit = cls(
             permit_no=permit_no,
             permit_status_code=permit_status_code,
-            is_exploration=is_exploration)
+            is_exploration=is_exploration, 
+            exemption_fee_status_code=exemption_fee_status_code, 
+            exemption_fee_status_note=exemption_fee_status_note)
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
             permit.save(commit=False)

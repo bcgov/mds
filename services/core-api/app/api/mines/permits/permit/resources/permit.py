@@ -65,6 +65,20 @@ class PermitListResource(Resource, UserMixin):
         help='Whether the permit is an exploration permit or not.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'exemption_fee_status_code',
+        type=str,
+        help='Fee exemption status for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'exemption_fee_status_note',
+        type=str,
+        help='Fee exemption status note for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -123,7 +137,7 @@ class PermitListResource(Resource, UserMixin):
         uploadedFiles = data.get('uploadedFiles', [])
 
         permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
-                               data.get('is_exploration'))
+                               data.get('is_exploration'), data.get('exemption_fee_status_code'), data.get('exemption_fee_status_note'))
 
         amendment = PermitAmendment.create(
             permit,
@@ -229,6 +243,20 @@ class PermitResource(Resource, UserMixin):
         help='GUID of the NoW application for the specified permit.',
         location='json',
         store_missing=False)
+    parser.add_argument(
+        'exemption_fee_status_code',
+        type=str,
+        help='Fee exemption status for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
+    parser.add_argument(
+        'exemption_fee_status_note',
+        type=str,
+        help='Fee exemption status note for the mine.',
+        trim=True,
+        store_missing=False,
+        location='json')
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all

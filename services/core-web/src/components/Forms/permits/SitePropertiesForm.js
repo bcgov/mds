@@ -41,7 +41,7 @@ export class SitePropertiesForm extends Component {
   render() {
     const permitPrefix = this.props.permit.permit_no.charAt(0);
     return (
-      <Form layout="vertical" onSubmit={() => console.log("logging")}>
+      <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <FormSection name="site_properties">
           <Row gutter={16}>
             <Col span={24}>
@@ -94,7 +94,6 @@ export class SitePropertiesForm extends Component {
         </FormSection>
         <Row gutter={16}>
           <Col span={24}>
-            {/* <Form.Item> */}
             <Field
               id="exemption_fee_status_code"
               name="exemption_fee_status_code"
@@ -104,7 +103,6 @@ export class SitePropertiesForm extends Component {
               disabled
               data={this.props.exemptionFeeSatusDropDownOptions}
             />
-            {/* </Form.Item> */}
           </Col>
         </Row>
         <Row gutter={16}>

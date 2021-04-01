@@ -203,7 +203,9 @@ PERMIT_MODEL = api.model(
         'assessed_liability_total': fields.Float,
         'confiscated_bond_total': fields.Float,
         'active_bond_total': fields.Float,
-        'bonds': fields.List(fields.Nested(BOND_MODEL))
+        'bonds': fields.List(fields.Nested(BOND_MODEL)),
+        'exemption_fee_status_code': fields.String,
+        'exemption_fee_status_note': fields.String,
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {
