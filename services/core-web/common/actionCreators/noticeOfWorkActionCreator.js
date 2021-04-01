@@ -103,6 +103,36 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applicationGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORT_SUBMISSION_DOCUMENTS_JOB(applicationGuid)}`,
+      {},
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(
+        success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+      );
+      notification.success({
+        message: "Successfully created the Notice of Work Submission Documents Import Job",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch((err) => {
+      dispatch(
+        error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+      );
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const importNoticeOfWorkApplication = (
   applicationGuid,
   payload,

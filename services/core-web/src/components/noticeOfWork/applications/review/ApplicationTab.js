@@ -443,7 +443,6 @@ export class ApplicationTab extends Component {
               noticeOfWorkType={this.props.noticeOfWork.notice_of_work_type_code}
               initialValues={this.props.noticeOfWork}
               noticeOfWork={this.props.noticeOfWork}
-              importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
             />

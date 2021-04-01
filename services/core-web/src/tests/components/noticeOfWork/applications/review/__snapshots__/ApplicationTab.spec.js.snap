@@ -83,7 +83,6 @@ exports[`ApplicationTab renders properly 1`] = `
     className="side-menu--content"
   >
     <Connect(ReduxForm)
-      importNowSubmissionDocumentsJob={Object {}}
       initialValues={
         Object {
           "anyotherinformation": null,
