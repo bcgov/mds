@@ -20,6 +20,7 @@ import {
   getDisturbanceOptionHash,
   getCommodityOptionHash,
   getExemptionFeeStatusOptionsHash,
+  getGovernmentAgencyHash,
 } from "@common/selectors/staticContentSelectors";
 import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/mineSelectors";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
@@ -53,6 +54,7 @@ const propTypes = {
   transformedMineTypes: CustomPropTypes.transformedMineTypes.isRequired,
   userInfo: PropTypes.shape({ preferred_username: PropTypes.string.isRequired }).isRequired,
   exemptionFeeStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  governmentAgencyHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class MineHeader extends Component {
@@ -116,6 +118,7 @@ export class MineHeader extends Component {
       mine_note: mine.mine_note,
       exemption_fee_status_code: mine.exemption_fee_status_code,
       exemption_fee_status_note: mine.exemption_fee_status_note,
+      government_agency_type_code: mine.government_agency_type_code,
     };
     this.props.openModal({
       props: {
@@ -292,19 +295,30 @@ export class MineHeader extends Component {
             <p className="field-title">Legacy Alias</p>
             <p>{this.props.mine.mms_alias ? this.props.mine.mms_alias : String.EMPTY_FIELD}</p>
           </div>
-          <div className="inline-flex padding-sm wrap">
-            <p className="field-title">Exemption Status</p>
-            <div>
-              {this.props.mine.exemption_fee_status_code
-                ? this.props.exemptionFeeStatusOptionsHash[
-                    this.props.mine.exemption_fee_status_code
-                  ]
-                : String.EMPTY_FIELD}
-              {this.props.mine.exemption_fee_status_note && (
-                <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
-              )}
-            </div>
-          </div>
+          {this.props.mine.government_agency_type_code && (
+            <>
+              <div className="inline-flex padding-sm wrap">
+                <p className="field-title">Exemption Status</p>
+                <div>
+                  {this.props.mine.exemption_fee_status_code
+                    ? this.props.exemptionFeeStatusOptionsHash[
+                        this.props.mine.exemption_fee_status_code
+                      ]
+                    : String.EMPTY_FIELD}
+                  {this.props.mine.exemption_fee_status_note && (
+                    <CoreTooltip title={this.props.mine.exemption_fee_status_note} />
+                  )}
+                </div>
+              </div>
+
+              <div className="inline-flex padding-sm wrap">
+                <p className="field-title">Government Agency type</p>
+                <div>
+                  {this.props.governmentAgencyHash[this.props.mine.government_agency_type_code]}
+                </div>
+              </div>
+            </>
+          )}
         </div>
         <div className="dashboard__header--card__map">
           <MineHeaderMapLeaflet mine={this.props.mine} />
@@ -350,6 +364,7 @@ const mapStateToProps = (state) => ({
   currentMineTypes: getCurrentMineTypes(state),
   transformedMineTypes: getTransformedMineTypes(state),
   exemptionFeeStatusOptionsHash: getExemptionFeeStatusOptionsHash(state),
+  governmentAgencyHash: getGovernmentAgencyHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

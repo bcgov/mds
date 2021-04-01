@@ -123,8 +123,7 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(
-    'PermitAmendment',
-    {
+    'PermitAmendment', {
         'permit_amendment_id': fields.Integer,
         'permit_amendment_guid': fields.String,
         'permit_amendment_status_code': fields.String,
@@ -312,6 +311,7 @@ MINE_MODEL = api.inherit(
         'mine_location': fields.Nested(MINE_LOCATION_MODEL),
         'exemption_fee_status_code': fields.String,
         'exemption_fee_status_note': fields.String,
+        'government_agency_type_code': fields.String
     })
 
 MINE_LIST_MODEL = api.model(
@@ -605,4 +605,10 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'condition_type_code': fields.String,
     'description': fields.String,
     'display_order': fields.Integer
+})
+
+GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
+    'government_agency_type_code': fields.String,
+    'description': fields.String,
+    'is_active': fields.Integer
 })
