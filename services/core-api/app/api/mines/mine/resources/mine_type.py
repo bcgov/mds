@@ -4,7 +4,7 @@ from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.extensions import api
+from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin
 
@@ -16,23 +16,21 @@ from app.api.mines.response_models import MINE_TYPE_MODEL
 
 class MineTypeListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('mine_tenure_type_code',
-                        type=str,
-                        help='Mine tenure type identifier.',
-                        location='json',
-                        required=True)
-    parser.add_argument('mine_disturbance_code',
-                        location='json',
-                        type=list,
-                        help='Mine disturbance type identifier.')
-    parser.add_argument('mine_commodity_code',
-                        location='json',
-                        type=list,
-                        help='Mine commodity type identifier.')
-    parser.add_argument('permit_guid',
-                        location='json',
-                        type=str,
-                        help='Guid of the associated permit.')
+    parser.add_argument(
+        'mine_tenure_type_code',
+        type=str,
+        help='Mine tenure type identifier.',
+        location='json',
+        required=True)
+    parser.add_argument(
+        'mine_disturbance_code',
+        location='json',
+        type=list,
+        help='Mine disturbance type identifier.')
+    parser.add_argument(
+        'mine_commodity_code', location='json', type=list, help='Mine commodity type identifier.')
+    parser.add_argument(
+        'permit_guid', location='json', type=str, help='Guid of the associated permit.')
 
     @api.expect(parser)
     @api.marshal_with(MINE_TYPE_MODEL, code=201)

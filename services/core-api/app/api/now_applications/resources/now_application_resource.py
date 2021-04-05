@@ -20,6 +20,7 @@ from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT, APPLICATION_REASON_CODE_XREF
 from app.api.services.nros_now_status_service import NROSNOWStatusService
 from app.api.services.document_manager_service import DocumentManagerService
+from app.api.mines.mine.models.mine_type import MineType
 
 
 class NOWApplicationResource(Resource, UserMixin):
@@ -146,6 +147,11 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if now_application_identity.application_type_code == 'ADA' and 'application_reason_codes' in data:
             data['application_reason_codes'] = map_application_reason_codes(data)
+
+        MineType.update_mine_type_details(
+            mine_guid=data['mine_guid'],
+            mine_disturbance_codes=data['site_property']['mine_disturbance_code'],
+            mine_commodity_codes=data['site_property']['mine_commodity_code'])
 
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(

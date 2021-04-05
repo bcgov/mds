@@ -59,7 +59,7 @@ export class ReviewSiteProperties extends Component {
                 mapApplicationTypeToTenureType(this.props.noticeOfWorkType).includes(value)
               )}
             />
-            <div className="field-title">Disturbance</div>
+            <div className="field-title">Commodity</div>
             <Field
               id="mine_commodity_code"
               name="mine_commodity_code"
@@ -67,7 +67,7 @@ export class ReviewSiteProperties extends Component {
               disabled={this.props.isViewMode}
               data={
                 this.props.site_property?.mine_tenure_type_code
-                  ? this.props.conditionalDisturbanceOptions[
+                  ? this.props.conditionalCommodityOptions[
                       this.props.site_property?.mine_tenure_type_code
                     ]
                   : null
@@ -75,7 +75,7 @@ export class ReviewSiteProperties extends Component {
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">Commodity</div>
+            <div className="field-title">Disturbance</div>
             <Field
               id="mine_disturbance_code"
               name="mine_disturbance_code"
@@ -83,7 +83,7 @@ export class ReviewSiteProperties extends Component {
               disabled={this.props.isViewMode}
               data={
                 this.props.site_property?.mine_tenure_type_code
-                  ? this.props.conditionalCommodityOptions[
+                  ? this.props.conditionalDisturbanceOptions[
                       this.props.site_property?.mine_tenure_type_code
                     ]
                   : null
