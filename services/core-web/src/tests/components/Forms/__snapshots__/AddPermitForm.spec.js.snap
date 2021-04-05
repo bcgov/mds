@@ -140,8 +140,8 @@ exports[`AddPermitForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           disabled={true}
-          id="tenure_type_code"
-          name="tenure_type_code"
+          id="mine_tenure_type_code"
+          name="mine_tenure_type_code"
           validate={
             Array [
               [Function],
