@@ -31,7 +31,7 @@ class MineTypeListResource(Resource, UserMixin):
                         help='Mine commodity type identifier.')
     parser.add_argument('permit_guid',
                         location='json',
-                        type=list,
+                        type=str,
                         help='Guid of the associated permit.')
 
     @api.expect(parser)

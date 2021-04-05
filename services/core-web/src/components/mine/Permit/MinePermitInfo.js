@@ -176,7 +176,7 @@ export class MinePermitInfo extends Component {
     this.setState({ modifiedPermits: true });
 
     return this.props.createPermit(this.props.mineGuid, payload).then((data) => {
-      const siteProperties = { ...values.site_properties, permit_guid: data.permit_guid };
+      const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
       this.props.createMineTypes(this.props.mineGuid, [siteProperties]).then(this.closePermitModal);
     });
   };
