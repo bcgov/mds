@@ -17,6 +17,7 @@ from app.extensions import api, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_edit_securities, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
+from app.api.mines.mine.resources.mine_type import MineType
 
 
 class PermitListResource(Resource, UserMixin):
@@ -137,7 +138,8 @@ class PermitListResource(Resource, UserMixin):
         uploadedFiles = data.get('uploadedFiles', [])
 
         permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
-                               data.get('is_exploration'), data.get('exemption_fee_status_code'), data.get('exemption_fee_status_note'))
+                               data.get('is_exploration'), data.get('exemption_fee_status_code'),
+                               data.get('exemption_fee_status_note'))
 
         amendment = PermitAmendment.create(
             permit,
@@ -258,6 +260,12 @@ class PermitResource(Resource, UserMixin):
         store_missing=False,
         location='json')
 
+    parser.add_argument(
+        'site_properties',
+        type=str,
+        help='{ mine_commodity_code, mine_disturbance_code}.',
+        location='json')
+
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
     @api.marshal_with(PERMIT_MODEL, code=200)
@@ -279,9 +287,15 @@ class PermitResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         for key, value in data.items():
-            if key in ['permit_no', 'mine_guid', 'uploadedFiles']:
-                continue     # non-editable fields from put
+            if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
+                continue     # non-editable fields from put or should be handled separately
             setattr(permit, key, value)
+
+        json_data = request.json
+        MineType.update_mine_type_details(
+            permit_guid=permit_guid,
+            mine_commodity_codes=json_data['site_properties']['mine_commodity_code'],
+            mine_disturbance_codes=json_data['site_properties']['mine_disturbance_code'])
 
         permit.save()
         return permit

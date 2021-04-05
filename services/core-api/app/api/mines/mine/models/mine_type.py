@@ -1,5 +1,4 @@
 import uuid
-from flask import current_app
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -49,7 +48,7 @@ class MineType(AuditMixin, Base):
         uuid.UUID(_id, version=4)
         return cls.query.filter_by(mine_type_guid=_id).first()
 
-    def expire_record(self):
+    def expire_record(self, commit=True):
         for detail in self.mine_type_detail:
             detail.expire_record()
         self.active_ind = False
@@ -59,23 +58,22 @@ class MineType(AuditMixin, Base):
     def update_mine_type_details(cls,
                                  mine_type_guid=None,
                                  mine_guid=None,
+                                 permit_guid=None,
                                  mine_disturbance_codes=[],
                                  mine_commodity_codes=[]):
         mine_type = None
-        current_app.logger.debug('$$$$$$$$$$$$$$$$$$$$$$')
-        current_app.logger.debug(f'mine_type_guid: {mine_type_guid}  mine_guid: {mine_guid}')
 
-        def find_mine_type(mine_type_guid, mine_guid):
+        def find_mine_type(mine_type_guid, mine_guid, permit_guid):
             if mine_type_guid:
-                uuid.UUID(mine_type_guid, version=4)
                 return cls.find_by_guid(mine_type_guid)
             elif mine_guid:
-                uuid.UUID(mine_guid, version=4)
                 return cls.query.filter_by(mine_guid=mine_guid).first()
+            elif permit_guid:
+                return cls.query.filter_by(permit_guid=permit_guid).first()
             else:
-                raise Exception('Mine type does not exist')
+                raise Exception('Mine type does not exist.')
 
-        mine_type = find_mine_type(mine_type_guid, mine_guid)
+        mine_type = find_mine_type(mine_type_guid, mine_guid, permit_guid)
 
         existing_disturbance_codes = [
             dist_code.mine_disturbance_code for dist_code in mine_type.mine_type_detail
@@ -86,27 +84,24 @@ class MineType(AuditMixin, Base):
                 detail for detail in mine_type.mine_type_detail if detail.mine_disturbance_code
                 and detail.mine_disturbance_code not in mine_disturbance_codes
         ]:
-            detail.expire_record()
+            detail.active_ind = False
+            db.session.add(detail)
 
-        current_app.logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         for code in mine_disturbance_codes:
             if code in existing_disturbance_codes:
-                current_app.logger.debug(f'continue {code}')
                 continue
             else:
                 disturbance = MineTypeDetail.query.filter_by(
                     mine_type_guid=mine_type.mine_type_guid,
                     mine_disturbance_code=code,
                     active_ind=False).first()
-                current_app.logger.debug(f'disturbance code {code}')
                 if disturbance:
-                    current_app.logger.debug(f'in if statement')
-                    current_app.logger.debug(f'disturbance {disturbance.__dict__}')
                     disturbance.active_ind = True
-                    disturbance.save()
+                    db.session.add(disturbance)
                 else:
-                    current_app.logger.debug(f'in else statement')
-                    MineTypeDetail.create(mine_type, mine_disturbance_code=code)
+                    db.session.add(
+                        MineTypeDetail.create(
+                            mine_type, mine_disturbance_code=code, add_to_session=False))
 
         existing_commodity_codes = [
             comm_code.mine_commodity_code for comm_code in mine_type.mine_type_detail
@@ -117,27 +112,25 @@ class MineType(AuditMixin, Base):
                 detail for detail in mine_type.mine_type_detail if detail.mine_commodity_code
                 and detail.mine_commodity_code not in mine_commodity_codes
         ]:
-            detail.expire_record()
+            detail.active_ind = False
+            db.session.add(detail)
 
-        current_app.logger.debug("^^^^^^^^^^^^^^^^^^^^^^^^^")
         for code in mine_commodity_codes:
             if code in existing_commodity_codes:
-                current_app.logger.debug(f'continue {code}')
                 continue
             else:
                 commodity = MineTypeDetail.query.filter_by(
                     mine_type_guid=mine_type.mine_type_guid,
                     mine_commodity_code=code,
                     active_ind=False).first()
-                current_app.logger.debug(f'commodity code {code}')
 
                 if commodity:
-                    current_app.logger.debug(f'in if statement')
-                    current_app.logger.debug(f'commodity {commodity.__dict__}')
                     commodity.active_ind = True
-                    commodity.save()
+                    db.session.add(commodity)
                 else:
-                    current_app.logger.debug(f'in else statement')
-                    MineTypeDetail.create(mine_type, mine_commodity_code=code)
+                    db.session.add(
+                        MineTypeDetail.create(
+                            mine_type, mine_commodity_code=code, add_to_session=False))
 
-        return find_mine_type(mine_type_guid, mine_guid)
+        db.session.commit()
+        return find_mine_type(mine_type_guid, mine_guid, permit_guid)

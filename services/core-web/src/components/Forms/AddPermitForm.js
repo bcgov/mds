@@ -196,8 +196,8 @@ export class AddPermitForm extends Component {
               />
               <div className="field-title">Commodity</div>
               <Field
-                id="mine_disturbance_code"
-                name="mine_disturbance_code"
+                id="mine_commodity_code"
+                name="mine_commodity_code"
                 component={renderConfig.MULTI_SELECT}
                 data={
                   this.props.site_properties?.mine_tenure_type_code
@@ -209,8 +209,8 @@ export class AddPermitForm extends Component {
               />
               <div className="field-title">Disturbance</div>
               <Field
-                id="mine_commodity_code"
-                name="mine_commodity_code"
+                id="mine_disturbance_code"
+                name="mine_disturbance_code"
                 component={renderConfig.MULTI_SELECT}
                 data={
                   this.props.site_properties?.mine_tenure_type_code
