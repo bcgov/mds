@@ -226,8 +226,8 @@ class NOWApplication(Base, AuditMixin):
         else:
             permit_amendment = PermitAmendment.query.filter_by(
                 now_application_guid=self.now_application_guid, deleted_ind=False).first()
-
-            if self.type_of_application == 'Amendment' and permit_amendment:
+            # TODO found cases where the application is listed as New Permit but it is linked to a Permit
+            if self.type_of_application in ['Amendment', 'New Permit'] and permit_amendment:
                 site_property = MineType.query.filter_by(
                     mine_guid=self.mine_guid,
                     permit_guid=permit_amendment.permit_guid,
@@ -254,6 +254,12 @@ class NOWApplication(Base, AuditMixin):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
             permit_amendment_status_code='RMT').one_or_none()
+
+    @hybrid_property
+    def related_permit_guid(self):
+        permit_amendment = PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid, deleted_ind=False).first()
+        return permit_amendment.permit_guid if permit_amendment else None
 
     @hybrid_property
     def is_new_permit(self):

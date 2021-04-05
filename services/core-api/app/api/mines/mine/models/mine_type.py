@@ -71,9 +71,12 @@ class MineType(AuditMixin, Base):
             elif permit_guid:
                 return cls.query.filter_by(permit_guid=permit_guid).first()
             else:
-                raise Exception('Mine type does not exist.')
+                raise Exception('mine_guid or mine_type_guid or permit_guid must be specified.')
 
         mine_type = find_mine_type(mine_type_guid, mine_guid, permit_guid)
+
+        if not mine_type:
+            raise Exception('Mine type does not exist')
 
         existing_disturbance_codes = [
             dist_code.mine_disturbance_code for dist_code in mine_type.mine_type_detail

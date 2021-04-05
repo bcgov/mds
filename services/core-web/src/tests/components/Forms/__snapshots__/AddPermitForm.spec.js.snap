@@ -156,8 +156,8 @@ exports[`AddPermitForm renders properly 1`] = `
         <Field
           component={[Function]}
           data={null}
-          id="mine_disturbance_code"
-          name="mine_disturbance_code"
+          id="mine_commodity_code"
+          name="mine_commodity_code"
         />
         <div
           className="field-title"
@@ -167,8 +167,8 @@ exports[`AddPermitForm renders properly 1`] = `
         <Field
           component={[Function]}
           data={null}
-          id="mine_commodity_code"
-          name="mine_commodity_code"
+          id="mine_disturbance_code"
+          name="mine_disturbance_code"
         />
       </FormSection>
       <Field
