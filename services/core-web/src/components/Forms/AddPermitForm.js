@@ -185,8 +185,8 @@ export class AddPermitForm extends Component {
             <FormSection name="site_properties">
               <div className="field-title">Tenure*</div>
               <Field
-                id="tenure_type_code"
-                name="tenure_type_code"
+                id="mine_tenure_type_code"
+                name="mine_tenure_type_code"
                 component={renderConfig.SELECT}
                 validate={[requiredList]}
                 disabled={!this.props.permitTypeCode}
@@ -200,9 +200,9 @@ export class AddPermitForm extends Component {
                 name="mine_disturbance_code"
                 component={renderConfig.MULTI_SELECT}
                 data={
-                  this.props.site_properties?.tenure_type_code
+                  this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalCommodityOptions[
-                        this.props.site_properties?.tenure_type_code
+                        this.props.site_properties?.mine_tenure_type_code
                       ]
                     : null
                 }
@@ -213,9 +213,9 @@ export class AddPermitForm extends Component {
                 name="mine_commodity_code"
                 component={renderConfig.MULTI_SELECT}
                 data={
-                  this.props.site_properties?.tenure_type_code
+                  this.props.site_properties?.mine_tenure_type_code
                     ? this.props.conditionalDisturbanceOptions[
-                        this.props.site_properties?.tenure_type_code
+                        this.props.site_properties?.mine_tenure_type_code
                       ]
                     : null
                 }

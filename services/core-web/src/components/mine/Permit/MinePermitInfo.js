@@ -15,7 +15,7 @@ import {
   deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchMineRecordById, createMineTypes } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/reducers/permitReducer";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
@@ -60,6 +60,7 @@ const propTypes = {
   deletePermit: PropTypes.func.isRequired,
   deletePermitAmendment: PropTypes.func.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  createMineTypes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -174,7 +175,10 @@ export class MinePermitInfo extends Component {
 
     this.setState({ modifiedPermits: true });
 
-    return this.props.createPermit(this.props.mineGuid, payload).then(this.closePermitModal);
+    return this.props.createPermit(this.props.mineGuid, payload).then((data) => {
+      const siteProperties = { ...values.site_properties, permit_guid: data.permit_guid };
+      this.props.createMineTypes(this.props.mineGuid, [siteProperties]).then(this.closePermitModal);
+    });
   };
 
   handleEditPermit = (values) => {
@@ -432,6 +436,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       deletePermit,
       deletePermitAmendment,
+      createMineTypes,
     },
     dispatch
   );

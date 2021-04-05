@@ -243,20 +243,6 @@ class PermitResource(Resource, UserMixin):
         help='GUID of the NoW application for the specified permit.',
         location='json',
         store_missing=False)
-    parser.add_argument(
-        'exemption_fee_status_code',
-        type=str,
-        help='Fee exemption status for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
-    parser.add_argument(
-        'exemption_fee_status_note',
-        type=str,
-        help='Fee exemption status note for the mine.',
-        trim=True,
-        store_missing=False,
-        location='json')
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all

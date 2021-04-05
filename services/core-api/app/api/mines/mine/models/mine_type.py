@@ -30,8 +30,8 @@ class MineType(AuditMixin, Base):
         return list(filter(lambda x: x.active_ind, records))
 
     @classmethod
-    def create(cls, mine_guid, mine_tenure_type_code, add_to_session=True):
-        mine_type = cls(mine_guid=mine_guid, mine_tenure_type_code=mine_tenure_type_code)
+    def create(cls, mine_guid, mine_tenure_type_code, permit_guid, add_to_session=True):
+        mine_type = cls(mine_guid=mine_guid, mine_tenure_type_code=mine_tenure_type_code, permit_guid=permit_guid)
         if add_to_session:
             mine_type.save(commit=False)
         return mine_type
