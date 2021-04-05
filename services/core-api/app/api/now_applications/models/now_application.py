@@ -198,7 +198,6 @@ class NOWApplication(Base, AuditMixin):
 
     @hybrid_property
     def site_property(self):
-        # TODO verify logic here
         site_property = None
 
         def get_mapped_tenure_type(notice_of_work_type_code):
@@ -217,30 +216,28 @@ class NOWApplication(Base, AuditMixin):
 
         def get_site_property_based_on_mine(mine_guid, tenure_type):
             return MineType.query.filter_by(
-                mine_guid=self.mine_guid, permit_guid=None,
-                mine_tenure_type_code=tenure_type).first()
+                mine_guid=self.mine_guid,
+                permit_guid=None,
+                mine_tenure_type_code=tenure_type,
+                active_ind=True).first()
 
         tenure_type = get_mapped_tenure_type(self.notice_of_work_type_code)
 
-        current_app.logger.debug('@@@@@@@@@@@@@@@@@@')
-        current_app.logger.debug(
-            f'self.application_type_code : {self.application_type_code}, self.type_of_application: {self.type_of_application}'
-        )
-        current_app.logger.debug(
-            f'self.active_permit.permit_guid : {self.active_permit.permit_guid}, tenure_type : {tenure_type}'
-        )
-
         if self.application_type_code == 'ADA':
-            # TODO if the permit does not have the mine-types then skip it in filtering
             site_property = MineType.query.filter_by(
-                mine_guid=self.mine_guid, permit_guid=self.source_permit_guid).one_or_none()
+                mine_guid=self.mine_guid, permit_guid=self.source_permit_guid,
+                active_ind=True).one_or_none()
             if not site_property:
                 site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
         else:
-            if self.type_of_application == 'Amendment' and self.active_permit.permit_guid:
+            permit_amendment = PermitAmendment.query.filter_by(
+                now_application_guid=self.now_application_guid, deleted_ind=False).first()
+
+            if self.type_of_application == 'Amendment' and permit_amendment:
                 site_property = MineType.query.filter_by(
                     mine_guid=self.mine_guid,
-                    permit_guid=self.active_permit.permit_guid).one_or_none()
+                    permit_guid=permit_amendment.permit_guid,
+                    active_ind=True).one_or_none()
             else:
                 site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
 

@@ -45,20 +45,20 @@ export class SitePropertiesForm extends Component {
     const activePermitSiteProperty = siteProperties
       .filter(({ mine_guid }) => mine_guid === this.props.mineGuid)
       .map((type) => {
-        const mine_types = {
+        const site_properties = {
           mine_tenure_type_code: "",
           mine_commodity_code: [],
           mine_disturbance_code: [],
         };
-        mine_types.mine_tenure_type_code = type.mine_tenure_type_code;
+        site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
         type.mine_type_detail.forEach((detail) => {
           if (detail.mine_commodity_code) {
-            mine_types.mine_commodity_code.push(detail.mine_commodity_code);
+            site_properties.mine_commodity_code.push(detail.mine_commodity_code);
           } else if (detail.mine_disturbance_code) {
-            mine_types.mine_disturbance_code.push(detail.mine_disturbance_code);
+            site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
           }
         });
-        return mine_types;
+        return site_properties;
       });
     return this.props.change("site_properties", activePermitSiteProperty[0]);
   };

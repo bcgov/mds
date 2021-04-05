@@ -42,7 +42,7 @@ const mapApplicationTypeToTenureType = (code) =>
 export class ReviewSiteProperties extends Component {
   render() {
     return (
-      <FormSection name="site_properties">
+      <FormSection name="site_property">
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">
@@ -50,8 +50,8 @@ export class ReviewSiteProperties extends Component {
               <CoreTooltip title="The Tenure is based on the Application Type" />
             </div>
             <Field
-              id="tenure_type_code"
-              name="tenure_type_code"
+              id="mine_tenure_type_code"
+              name="mine_tenure_type_code"
               component={RenderSelect}
               disabled={this.props.isViewMode}
               validate={[requiredList]}
@@ -66,9 +66,9 @@ export class ReviewSiteProperties extends Component {
               component={RenderMultiSelect}
               disabled={this.props.isViewMode}
               data={
-                this.props.site_properties?.tenure_type_code
+                this.props.site_property?.mine_tenure_type_code
                   ? this.props.conditionalDisturbanceOptions[
-                      this.props.site_properties?.tenure_type_code
+                      this.props.site_property?.mine_tenure_type_code
                     ]
                   : null
               }
@@ -82,9 +82,9 @@ export class ReviewSiteProperties extends Component {
               component={RenderMultiSelect}
               disabled={this.props.isViewMode}
               data={
-                this.props.site_properties?.tenure_type_code
+                this.props.site_property?.mine_tenure_type_code
                   ? this.props.conditionalCommodityOptions[
-                      this.props.site_properties?.tenure_type_code
+                      this.props.site_property?.mine_tenure_type_code
                     ]
                   : null
               }
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => ({
   mineTenureTypes: getMineTenureTypeDropdownOptions(state),
   conditionalCommodityOptions: getConditionalCommodityOptions(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
-  site_properties: selector(state, "site_properties"),
+  site_property: selector(state, "site_property"),
 });
 
 export default connect(mapStateToProps)(ReviewSiteProperties);
