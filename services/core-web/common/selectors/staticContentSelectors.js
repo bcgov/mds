@@ -43,6 +43,7 @@ export const {
   getPermitAmendmentTypeOptions,
   getApplicationReasonCodeOptions,
   getApplicationSourceTypeCodeOptions,
+  getGovernmentAgencyTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -100,6 +101,16 @@ export const getMineRegionDropdownOptions = createSelector([getMineRegionOptions
 );
 
 export const getMineRegionHash = createSelector([getMineRegionDropdownOptions], createLabelHash);
+
+export const getGovernmentAgencyDropdownOptions = createSelector(
+  [getGovernmentAgencyTypeOptions],
+  (options) => createDropDownList(options, "description", "government_agency_type_code")
+);
+
+export const getGovernmentAgencyHash = createSelector(
+  [getGovernmentAgencyDropdownOptions],
+  createLabelHash
+);
 
 const createConditionalMineDetails = (optionsObject, key, isShowActiveOnly) => {
   const newArr = {};
