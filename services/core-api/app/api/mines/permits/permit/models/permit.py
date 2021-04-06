@@ -226,3 +226,17 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         if not permit_no:
             raise AssertionError('Permit number is not provided.')
         return permit_no
+
+    @classmethod
+    def validate_exemption_fee_status(cls,
+                                      is_exploration,
+                                      permit_status,
+                                      mine_tenure_type_code=None):
+        current_app.logger.debug('@@@@@@@@@@@@@@@@@@@@@@@@')
+        current_app.logger.debug(
+            f'self.is_exploration {is_exploration}, self.site_properties[0].mine_tenure_type_code {site_properties} self.exemption_fee_status_code {exemption_fee_status_code}'
+        )
+        if (is_exploration or mine_tenure_type_code == 'PLR'
+                or permit_status == 'C') and exemption_fee_status_code != 'Y':
+            raise AssertionError('Exemption fee should be "Yes" for this permit')
+        return exemption_fee_status_code
