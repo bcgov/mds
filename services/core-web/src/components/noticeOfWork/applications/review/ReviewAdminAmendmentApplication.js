@@ -158,7 +158,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
           title="Additional Application Files"
         >
           <NOWDocuments
-            documents={props.documents.filter(
+            documents={props.documents?.filter(
               ({ now_application_document_sub_type_code }) =>
                 now_application_document_sub_type_code === "AAF"
             )}
