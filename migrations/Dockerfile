@@ -15,8 +15,8 @@ RUN curl -sLo ./flyway-commandline-${FLYWAY_VERSION}.tar.gz $FLYWAY_PKGS &&\
 
 
 # Download and install postgres-client and envsubst utility
-RUN yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-42.0-14.noarch.rpm &&\
-    yum install -y postgresql96 gettext
+RUN yum install -y https://yum.postgresql.org/9.6/redhat/rhel-7-x86_64/postgresql96-9.6.21-1PGDG.rhel7.x86_64.rpm &&\
+    yum install -y gettext
 
 # Copy over the SQL files and scripts
 COPY sql/* $FLYWAY_HOME/sql/
