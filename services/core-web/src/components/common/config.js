@@ -13,6 +13,7 @@ import RenderMultiSelect from "./RenderMultiSelect";
 import RenderRadioButtons from "./RenderRadioButtons";
 import RenderGroupedSelect from "./RenderGroupedSelect";
 import RenderMineSelect from "./RenderMineSelect";
+import RenderLabel from "./RenderLabel";
 
 // This file is anticipated to have multiple exports
 // eslint-disable-next-line import/prefer-default-export
@@ -32,4 +33,5 @@ export const renderConfig = {
   RADIO: RenderRadioButtons,
   GROUPED_SELECT: RenderGroupedSelect,
   MINE_SELECT: RenderMineSelect,
+  LABEL: RenderLabel,
 };
