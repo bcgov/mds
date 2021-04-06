@@ -173,7 +173,6 @@ exports[`AddPermitForm renders properly 1`] = `
       </FormSection>
       <Field
         component={[Function]}
-        disabled={true}
         id="exemption_fee_status_code"
         label="Fee Exemption"
         name="exemption_fee_status_code"
