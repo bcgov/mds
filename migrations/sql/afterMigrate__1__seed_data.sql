@@ -1148,7 +1148,7 @@ UPDATE document_template SET form_spec_json = '[
 	{ 
       "id": "issuing_inspector_name_label",
       "type": "LABEL",
-	  "context-value": Sincerely,"
+	  "context-value": "Sincerely,"
 	},
     {
       "id": "issuing_inspector_name",
@@ -1196,6 +1196,7 @@ UPDATE document_template SET form_spec_json = '[
       "read-only": true
     }
   ]' WHERE document_template_code ='NWL';
+
 
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
