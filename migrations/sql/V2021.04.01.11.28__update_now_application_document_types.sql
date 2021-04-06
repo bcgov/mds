@@ -30,7 +30,7 @@ UPDATE now_application_document_type SET now_application_document_sub_type_code 
 UPDATE now_application_document_type SET now_application_document_sub_type_code = 'AEF' WHERE now_application_document_type_code IN ('NTR', 'PMT', 'PMA');
 
 -- Set "Additional Application Files" sub-type for some documents
-UPDATE now_application_document_type SET now_application_document_sub_type_code = 'AAF' WHERE now_application_document_type_code IN ('ARE', 'ANS', 'ACP', 'AIA', 'AOA', 'BLP', 'DWP', 'EMS', 'FDP', 'LAL', 'LNO', 'MAD', 'MRP', 'OMP', 'PFR', 'RPL', 'RFE', 'RSP', 'SEP', 'SOP', 'TAL', 'TSS', 'VMP', 'WMP', 'WPL');
+UPDATE now_application_document_type SET now_application_document_sub_type_code = 'AAF' WHERE now_application_document_type_code IN ('ARE', 'ANS', 'ACP', 'AIA', 'AOA', 'BLP', 'DWP', 'EMS', 'FDP', 'LAL', 'LNO', 'MAD', 'MRP', 'OMP', 'PFR', 'RPL', 'RFE', 'RSP', 'SEP', 'SOP', 'TAL', 'TSS', 'VMP', 'WMP', 'WPL', 'AMR', 'MYA', 'SUD');
 
 -- Fix typo in description: 'Requst for More Information' --> 'Request for More Information'
 UPDATE now_application_document_type SET description = 'Request for More Information' WHERE now_application_document_type_code = 'RMI';
