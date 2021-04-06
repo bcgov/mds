@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { getMineTenureTypesHash } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   permit: PropTypes.objectOf(CustomPropTypes.permit),
   PartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -36,6 +40,19 @@ export const PermitCard = (props) => {
       <span>{pmt ? pmt.party.name : <i>None Assigned</i>}</span>
       <br />
       <br />
+      <h6>Site Property Tenure</h6>
+      <span>
+        {props.mineTenureHash[props.permit.site_properties[0]?.mine_tenure_type_code] || <i>N/A</i>}
+      </span>
+      <br />
+      <br />
+      <h6>
+        Inspection Fee Exemption
+        <CoreTooltip title="Indicates whether an Inspection Fee filing is required for this permit" />
+      </h6>
+      <span>{props.permit.exemption_fee_status_code === "Y" ? "Yes" : "No"}</span>
+      <br />
+      <br />
     </div>
   );
 };
@@ -43,4 +60,8 @@ export const PermitCard = (props) => {
 PermitCard.propTypes = propTypes;
 PermitCard.defaultProps = defaultProps;
 
-export default PermitCard;
+const mapStateToProps = (state) => ({
+  mineTenureHash: getMineTenureTypesHash(state),
+});
+
+export default connect(mapStateToProps)(PermitCard);

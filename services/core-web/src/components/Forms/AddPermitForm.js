@@ -227,7 +227,7 @@ export class AddPermitForm extends Component {
               label="Fee Exemption"
               placeholder="Exemption Fee Status will be automatically populated based on Tenure"
               component={renderConfig.SELECT}
-              disabled
+              // disabled
               data={this.props.exemptionFeeSatusDropDownOptions}
             />
             <Field

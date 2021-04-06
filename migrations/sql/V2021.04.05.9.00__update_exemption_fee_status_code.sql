@@ -8,6 +8,6 @@ INSERT INTO exemption_fee_status
     active_ind
     )
 VALUES
-    ('MIM', 'Mineral/Coal', 10, 'system-mds', 'system-mds', true),
-    ('MIP', 'Pits/Quarry’', 20, 'system-mds', 'system-mds', true)
+    ('MIM', 'Mineral/Coal', 130, 'system-mds', 'system-mds', true),
+    ('MIP', 'Pits/Quarry', 140, 'system-mds', 'system-mds', true)
 ON CONFLICT DO NOTHING;

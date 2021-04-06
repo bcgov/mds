@@ -34,17 +34,12 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
 import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
-import {
-  NOWOriginalValueTooltip,
-  NOWFieldOriginTooltip,
-  CoreTooltip,
-} from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import ReviewSiteProperties from "./ReviewSiteProperties";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
 /**
@@ -847,7 +842,8 @@ export const ReviewNOWApplication = (props) => {
         <ScrollContentWrapper id="application-info" title="Application Info">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
-        <ScrollContentWrapper
+        {/* TODO - Add Site_properties to now flow when follow up work is completed */}
+        {/* <ScrollContentWrapper
           id="site-properties"
           title={
             <>
@@ -861,7 +857,7 @@ export const ReviewNOWApplication = (props) => {
             isViewMode={props.isViewMode}
             initialValues={props.noticeOfWork}
           />
-        </ScrollContentWrapper>
+        </ScrollContentWrapper> */}
         <ScrollContentWrapper id="contacts" title="Contacts">
           <ReviewNOWContacts
             contacts={props.noticeOfWork.contacts}

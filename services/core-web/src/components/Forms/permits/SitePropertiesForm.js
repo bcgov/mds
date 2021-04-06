@@ -77,7 +77,6 @@ export class SitePropertiesForm extends Component {
                 component={RenderSelect}
                 // disabled
                 validate={[requiredList]}
-                // data={this.props.mineTenureTypes}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
                   mapApplicationTypeToTenureType(permitPrefix).includes(value)
                 )}
@@ -127,7 +126,7 @@ export class SitePropertiesForm extends Component {
               label="Fee Exemption"
               placeholder="Exemption Fee Status will be automatically populated based on Tenure"
               component={RenderSelect}
-              disabled
+              // disabled
               data={this.props.exemptionFeeSatusDropDownOptions}
             />
           </Col>

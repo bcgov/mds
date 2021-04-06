@@ -27,7 +27,7 @@ export const sideMenuOptions = {
       href: "site-properties",
       title: "Site Properties",
       alwaysVisible: true,
-      applicationType: ["NOW", "ADA"],
+      applicationType: ["ADA"],
     },
     { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
     { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },

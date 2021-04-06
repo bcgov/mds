@@ -14,7 +14,7 @@ import * as String from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";
 import * as router from "@/constants/routes";
-import { PermitCard } from "@/components/mine/Permit/MinePermitCard";
+import PermitCard from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";

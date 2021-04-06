@@ -1282,8 +1282,8 @@ VALUES
     ('B', 'Abandoned', 100, 'system-mds', 'system-mds', false),
     ('N', 'Not Permitted', 110, 'system-mds', 'system-mds', false),
     ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds', false),
-    ('MIM', 'Mineral/Coal', 10, 'system-mds', 'system-mds', true),
-    ('MIP', 'Pits/Quarry’', 20, 'system-mds', 'system-mds', true)
+    ('MIM', 'Mineral/Coal', 130, 'system-mds', 'system-mds', true),
+    ('MIP', 'Pits/Quarry', 140, 'system-mds', 'system-mds', true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO bond_document_type(
