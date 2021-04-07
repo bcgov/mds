@@ -4,7 +4,7 @@ from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound
 
-from app.extensions import api, db
+from app.extensions import api
 from app.api.utils.access_decorators import requires_role_mine_edit
 from app.api.utils.resources_mixins import UserMixin
 

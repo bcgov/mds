@@ -48,7 +48,7 @@ class MineType(AuditMixin, Base):
         uuid.UUID(_id, version=4)
         return cls.query.filter_by(mine_type_guid=_id).first()
 
-    def expire_record(self, commit=True):
+    def expire_record(self):
         for detail in self.mine_type_detail:
             detail.expire_record()
         self.active_ind = False

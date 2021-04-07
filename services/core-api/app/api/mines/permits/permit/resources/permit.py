@@ -293,12 +293,7 @@ class PermitResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         for key, value in data.items():
-            if key in [
-                    'permit_no',
-                    'mine_guid',
-                    'uploadedFiles',
-                    'site_properties',
-            ]:
+            if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
                 continue     # non-editable fields from put or should be handled separately
             setattr(permit, key, value)
 
