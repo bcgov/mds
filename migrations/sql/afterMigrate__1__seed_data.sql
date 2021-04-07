@@ -1152,7 +1152,7 @@ UPDATE document_template SET form_spec_json = '[
 	{ 
       "id": "issuing_inspector_name_label",
       "type": "LABEL",
-	  "context-value": Sincerely,"
+	  "context-value": "Sincerely,"
 	},
     {
       "id": "issuing_inspector_name",
