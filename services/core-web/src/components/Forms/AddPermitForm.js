@@ -15,7 +15,7 @@ import {
   validateSelectOptions,
   requiredList,
 } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { resetForm, determineInspectionFeeStatus } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getConditionalDisturbanceOptionsHash,
@@ -106,7 +106,35 @@ export class AddPermitForm extends Component {
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    const permitTypeChanged =
+      this.props.permitTypeCode && this.props.permitTypeCode !== nextProps.permitTypeCode;
+    if (permitTypeChanged) {
+      this.props.change("site_properties.mine_tenure_type_code", null);
+      this.props.change("site_properties.mine_disturbance_code", null);
+      this.props.change("site_properties.mine_commodity_code", null);
+    }
+    const statusSelected = this.props.permitStatusCode || nextProps.permitStatusCode;
+    const permitTypeSelected = this.props.permitTypeCode || nextProps.permitTypeCode;
+    const tenureSelected =
+      this.props.site_properties?.mine_tenure_type_code ||
+      nextProps.site_properties?.mine_tenure_type_code;
+    if (permitTypeSelected && tenureSelected && statusSelected) {
+      const statusCode = determineInspectionFeeStatus(
+        nextProps.permitStatusCode,
+        nextProps.permitTypeCode,
+        nextProps.site_properties?.mine_tenure_type_code,
+        nextProps.permitIsExploration,
+        nextProps.site_properties?.mine_disturbance_code
+      );
+      this.props.change("exemption_fee_status_code", statusCode);
+    }
+  };
+
   render() {
+    const isCoalOrMineral =
+      this.props.site_properties?.mine_tenure_type_code === "COL" ||
+      this.props.site_properties?.mine_tenure_type_code === "MIN";
     const permitPrefix = this.props.permitTypeCode ? this.props.permitTypeCode : null;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -219,6 +247,7 @@ export class AddPermitForm extends Component {
                       ]
                     : null
                 }
+                validate={isCoalOrMineral ? [required] : []}
               />
             </FormSection>
             <Field
@@ -227,7 +256,7 @@ export class AddPermitForm extends Component {
               label="Fee Exemption"
               placeholder="Exemption Fee Status will be automatically populated based on Tenure"
               component={renderConfig.SELECT}
-              // disabled
+              disabled
               data={this.props.exemptionFeeSatusDropDownOptions}
             />
             <Field
@@ -282,6 +311,7 @@ export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
     permitTypeCode: selector(state, "permit_type"),
+    permitStatusCode: selector(state, "permit_status_code"),
     permitIsExploration: selector(state, "is_exploration"),
     mineTenureTypes: getMineTenureTypeDropdownOptions(state),
     conditionalCommodityOptions: getConditionalCommodityOptions(state),

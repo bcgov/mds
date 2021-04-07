@@ -42,25 +42,29 @@ export class SitePropertiesForm extends Component {
   }
 
   handleSiteProperty = (siteProperties) => {
-    const activePermitSiteProperty = siteProperties
-      .filter(({ mine_guid }) => mine_guid === this.props.mineGuid)
-      .map((type) => {
-        const site_properties = {
-          mine_tenure_type_code: "",
-          mine_commodity_code: [],
-          mine_disturbance_code: [],
-        };
-        site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
-        type.mine_type_detail.forEach((detail) => {
-          if (detail.mine_commodity_code) {
-            site_properties.mine_commodity_code.push(detail.mine_commodity_code);
-          } else if (detail.mine_disturbance_code) {
-            site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
-          }
-        });
-        return site_properties;
-      });
-    return this.props.change("site_properties", activePermitSiteProperty[0]);
+    const site_properties = {
+      mine_tenure_type_code: "",
+      mine_commodity_code: [],
+      mine_disturbance_code: [],
+    };
+
+    let activePermitSiteProperty = site_properties;
+    if (siteProperties.length > 0) {
+      activePermitSiteProperty = siteProperties
+        .filter(({ mine_guid }) => mine_guid === this.props.mineGuid)
+        .map((type) => {
+          site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
+          type.mine_type_detail.forEach((detail) => {
+            if (detail.mine_commodity_code) {
+              site_properties.mine_commodity_code.push(detail.mine_commodity_code);
+            } else if (detail.mine_disturbance_code) {
+              site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
+            }
+          });
+          return site_properties;
+        })[0];
+    }
+    return this.props.change("site_properties", activePermitSiteProperty);
   };
 
   render() {
@@ -75,7 +79,6 @@ export class SitePropertiesForm extends Component {
                 id="mine_tenure_type_code"
                 name="mine_tenure_type_code"
                 component={RenderSelect}
-                // disabled
                 validate={[requiredList]}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
                   mapApplicationTypeToTenureType(permitPrefix).includes(value)

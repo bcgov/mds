@@ -464,3 +464,26 @@ export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => 
   // Anything above 170,000 is valid as the applicant already paid the max fee.
   return isFeeValid;
 };
+
+export const determineInspectionFeeStatus = (
+  permitStatus,
+  permitPrefix,
+  tenure,
+  isExploration = null,
+  disturbance = []
+) => {
+  let exemptionStatus;
+  if (tenure === "PLA" || permitStatus === "C") {
+    exemptionStatus = "Y";
+  } else if (isExploration && disturbance.length === 1 && disturbance.includes("SUR")) {
+    exemptionStatus = "Y";
+  } else if (
+    (permitPrefix === "M" || permitPrefix === "C") &&
+    (tenure === "MIN" || tenure === "COL")
+  ) {
+    exemptionStatus = "MIM";
+  } else if (permitPrefix === "Q" && (tenure === "BLC" || tenure === "MIN" || tenure === "PVL")) {
+    exemptionStatus = "MIP";
+  }
+  return exemptionStatus;
+};
