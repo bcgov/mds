@@ -111,8 +111,9 @@ export class AddPermitForm extends Component {
       this.props.permitTypeCode && this.props.permitTypeCode !== nextProps.permitTypeCode;
     if (permitTypeChanged) {
       this.props.change("site_properties.mine_tenure_type_code", null);
-      this.props.change("site_properties.mine_disturbance_code", null);
-      this.props.change("site_properties.mine_commodity_code", null);
+      this.props.change("site_properties.mine_disturbance_code", []);
+      this.props.change("site_properties.mine_commodity_code", []);
+      this.props.change("exemption_fee_status_code", null);
     }
     const statusSelected = this.props.permitStatusCode || nextProps.permitStatusCode;
     const permitTypeSelected = this.props.permitTypeCode || nextProps.permitTypeCode;
@@ -235,7 +236,7 @@ export class AddPermitForm extends Component {
                     : null
                 }
               />
-              <div className="field-title">Disturbance</div>
+              <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
               <Field
                 id="mine_disturbance_code"
                 name="mine_disturbance_code"

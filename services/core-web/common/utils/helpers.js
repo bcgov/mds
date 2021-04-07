@@ -472,8 +472,13 @@ export const determineInspectionFeeStatus = (
   isExploration = null,
   disturbance = []
 ) => {
+  console.log("permitStatus", permitStatus);
+  console.log("permitPrefix", permitPrefix);
+  console.log("tenure", tenure);
+  console.log("isExploration", isExploration);
+  console.log("disturbance", disturbance);
   let exemptionStatus;
-  if (tenure === "PLA" || permitStatus === "C") {
+  if ((permitPrefix === "P" && tenure === "PLR") || permitStatus === "C") {
     exemptionStatus = "Y";
   } else if (isExploration && disturbance.length === 1 && disturbance.includes("SUR")) {
     exemptionStatus = "Y";
@@ -482,7 +487,10 @@ export const determineInspectionFeeStatus = (
     (tenure === "MIN" || tenure === "COL")
   ) {
     exemptionStatus = "MIM";
-  } else if (permitPrefix === "Q" && (tenure === "BLC" || tenure === "MIN" || tenure === "PVL")) {
+  } else if (
+    (permitPrefix === "Q" || permitPrefix === "G") &&
+    (tenure === "BCL" || tenure === "MIN" || tenure === "PRL")
+  ) {
     exemptionStatus = "MIP";
   }
   return exemptionStatus;
