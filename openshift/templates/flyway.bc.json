@@ -56,7 +56,7 @@
         },
         "tags": [
           {
-            "name": "1.4-6",
+            "name": "1.8-26",
             "from": {
               "kind": "DockerImage",
               "name": "registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.8-26"
@@ -118,7 +118,7 @@
           "dockerStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "openjdk18-openshift:1.4-6"
+              "name": "openjdk18-openshift:1.8-26"
             }
           }
         },
