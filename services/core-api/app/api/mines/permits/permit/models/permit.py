@@ -231,7 +231,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def validate_exemption_fee_status(cls,
                                       is_exploration,
                                       permit_status,
-                                      mine_tenure_type_code=None):
+                                      mine_tenure_type_code=None,
+                                      exemption_fee_status_code=None):
         current_app.logger.debug('@@@@@@@@@@@@@@@@@@@@@@@@')
         current_app.logger.debug(
             f'self.is_exploration {is_exploration}, self.site_properties[0].mine_tenure_type_code {site_properties} self.exemption_fee_status_code {exemption_fee_status_code}'
