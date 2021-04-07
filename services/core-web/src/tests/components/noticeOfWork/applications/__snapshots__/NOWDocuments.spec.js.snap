@@ -19,12 +19,7 @@ exports[`NOWDocuments renders properly 1`] = `
         },
         Object {
           "dataIndex": "category",
-          "filters": Array [
-            Object {
-              "text": "Annual Summary",
-              "value": "ANS",
-            },
-          ],
+          "filters": Array [],
           "key": "category",
           "onFilter": [Function],
           "render": [Function],
