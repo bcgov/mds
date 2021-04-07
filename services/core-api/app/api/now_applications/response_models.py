@@ -523,7 +523,7 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'has_source_conditions':
         fields.Boolean,
-        'site_property': fields.Nested(MINE_TYPE_MODEL),
+        # 'site_property': fields.Nested(MINE_TYPE_MODEL),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
