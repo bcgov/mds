@@ -169,10 +169,12 @@ exports[`AddPermitForm renders properly 1`] = `
           data={null}
           id="mine_disturbance_code"
           name="mine_disturbance_code"
+          validate={Array []}
         />
       </FormSection>
       <Field
         component={[Function]}
+        disabled={true}
         id="exemption_fee_status_code"
         label="Fee Exemption"
         name="exemption_fee_status_code"
