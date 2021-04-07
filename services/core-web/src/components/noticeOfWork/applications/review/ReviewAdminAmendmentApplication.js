@@ -33,7 +33,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-import ReviewSiteProperties from "./ReviewSiteProperties";
+// import ReviewSiteProperties from "./ReviewSiteProperties";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -146,7 +146,8 @@ export const ReviewAdminAmendmentApplication = (props) => {
         <ScrollContentWrapper id="application-info" title="Application Info">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
-        <ScrollContentWrapper
+        {/* TODO - Add Site_properties to now flow when follow up work is completed */}
+        {/* <ScrollContentWrapper
           id="site-properties"
           title={
             <>
@@ -160,7 +161,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             isViewMode={props.isViewMode}
             initialValues={props.noticeOfWork}
           />
-        </ScrollContentWrapper>
+        </ScrollContentWrapper> */}
         <ScrollContentWrapper id="contacts" title="Contacts">
           <ReviewNOWContacts
             contacts={props.noticeOfWork.contacts}
