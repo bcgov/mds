@@ -1,5 +1,4 @@
 import uuid
-from flask import current_app
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
