@@ -4,8 +4,6 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Typography, Divider, Row, Col } from "antd";
 
-const { Paragraph } = Typography;
-
 /**
  * @constant RenderLabel
  */
@@ -28,7 +26,7 @@ const RenderLabel = (props) => {
         {props.indentText && (
           <>
             <Col span={2}>
-              <Paragraph disabled>{props.indentText}</Paragraph>
+              <Typography.Paragraph disabled>{props.indentText}</Typography.Paragraph>
             </Col>
             <Col span={1}>
               <Divider type="vertical" plain />
@@ -36,14 +34,14 @@ const RenderLabel = (props) => {
           </>
         )}
         <Col span={props.indentText ? 21 : 24}>
-          <Paragraph
+          <Typography.Paragraph
             ellipsis={{
               expandable: true,
               rows: 3,
             }}
           >
             {props.input.value}
-          </Paragraph>
+          </Typography.Paragraph>
         </Col>
       </Row>
     </Form.Item>
