@@ -1,4 +1,4 @@
-FROM docker-registry.pathfinder.gov.bc.ca/empr-mds-tools/openjdk18-openshift:1.8-26
+FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 USER 0
 
@@ -13,10 +13,9 @@ RUN curl -sLo ./flyway-commandline-${FLYWAY_VERSION}.tar.gz $FLYWAY_PKGS &&\
     mkdir -p /var/flyway/data  && \
     tar -xzf flyway-commandline-$FLYWAY_VERSION.tar.gz -C $FLYWAY_HOME  --strip-components=1
 
-
 # Download and install postgres-client and envsubst utility
-RUN yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm &&\
-    yum install -y gettext postgresql96 
+RUN yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-42.0-9.noarch.rpm &&\
+    yum install -y postgresql96 gettext
 
 # Copy over the SQL files and scripts
 COPY sql/* $FLYWAY_HOME/sql/
