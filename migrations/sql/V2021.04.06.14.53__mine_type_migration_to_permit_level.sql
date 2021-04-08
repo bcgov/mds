@@ -36,10 +36,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, p.permit_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and mt.mine_tenure_type_code = ('PLR');
 
@@ -58,10 +59,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'P'
 and nai.now_application_id is not null
@@ -85,10 +87,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'C'
 and nai.now_application_id is null
@@ -107,10 +110,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'C'
 and nai.now_application_id is not null
@@ -134,10 +138,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'M'
 and nai.now_application_id is null
@@ -156,10 +161,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'M'
 and nai.now_application_id is not null
@@ -183,10 +189,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'G'
 and nai.now_application_id is null
@@ -205,10 +212,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'G'
 and nai.now_application_id is not null
@@ -232,10 +240,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'Q'
 and nai.now_application_id is null
@@ -254,10 +263,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'Q'
 and nai.now_application_id is not null
@@ -281,10 +291,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'Q'
 and nai.now_application_id is null
@@ -303,10 +314,11 @@ CREATE TEMP TABLE mine_types AS
 SELECT m.mine_guid, mt.mine_tenure_type_code, nai.now_application_guid, na.notice_of_work_type_code, p.permit_guid, p.permit_no
 from mine_type mt
 join mine m on m.mine_guid = mt.mine_guid and mt.active_ind = true
-left join now_application_identity nai on nai.mine_guid = m.mine_guid
-left join now_application na on na.now_application_id = nai.now_application_id
 left join mine_permit_xref mpx on mpx.mine_guid = m.mine_guid
 left join permit p on p.permit_id = mpx.permit_id
+left join lateral (select permit_amendment_guid, now_application_guid FROM permit_amendment WHERE permit_id = p.permit_id ORDER BY issue_date DESC NULLS LAST LIMIT 1) pa ON true
+left join now_application_identity nai on pa.now_application_guid = nai.now_application_guid
+left join now_application na on na.now_application_id = nai.now_application_id
 where p.permit_status_code = 'O' 
 and LEFT(p.permit_no, 1) = 'Q'
 and nai.now_application_id is not null
