@@ -51,7 +51,7 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
             now_application_guid)
         template_data = token_data['template_data']
-        template_data['document_name_extra'] = now_application_identity.now_number
+        template_data['document_name_start_extra'] = now_application_identity.now_number
         docgen_resp = DocumentGeneratorService.generate_document(
             now_application_document_type.document_template, template_data)
         if docgen_resp.status_code != requests.codes.ok:
