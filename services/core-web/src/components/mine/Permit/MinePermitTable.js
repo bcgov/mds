@@ -45,7 +45,6 @@ const propTypes = {
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   onExpand: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
   handleDeletePermit: PropTypes.func.isRequired,
   handleDeletePermitAmendment: PropTypes.func.isRequired,
   handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
@@ -246,23 +245,6 @@ const columns = [
               </button>
             </div>
           </AuthorizationWrapper>
-          <div className="custom-menu-item" key="3">
-            <button
-              type="button"
-              className="full"
-              onClick={() => {
-                record.handleAddPermitAmendmentApplication(record.key);
-              }}
-            >
-              <img
-                alt="document"
-                className="padding-sm"
-                src={EDIT_OUTLINE_VIOLET}
-                style={{ paddingRight: "15px" }}
-              />
-              Initiate Permit Amendment Application
-            </button>
-          </div>
         </Menu>
       );
 
@@ -477,7 +459,6 @@ const transformRowData = (
   openEditPermitModal,
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal,
-  handleAddPermitAmendmentApplication,
   permitStatusOptionsHash,
   handleDeletePermit,
   handleDeletePermitAmendment,
@@ -511,7 +492,6 @@ const transformRowData = (
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
-    handleAddPermitAmendmentApplication,
     permitStatusOptionsHash,
     permit,
     handleDeletePermit,
@@ -603,7 +583,6 @@ export const MinePermitTable = (props) => {
       props.openEditPermitModal,
       props.openAddPermitAmendmentModal,
       props.openAddAmalgamatedPermitModal,
-      props.handleAddPermitAmendmentApplication,
       props.permitStatusOptionsHash,
       props.handleDeletePermit,
       props.handleDeletePermitAmendment,

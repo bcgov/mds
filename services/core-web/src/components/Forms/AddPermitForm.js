@@ -254,8 +254,8 @@ export class AddPermitForm extends Component {
             <Field
               id="exemption_fee_status_code"
               name="exemption_fee_status_code"
-              label="Fee Exemption"
-              placeholder="Exemption Fee Status will be automatically populated based on Tenure"
+              label="Inspection Fee Status"
+              placeholder="Inspection Fee Status will be automatically populated."
               component={renderConfig.SELECT}
               disabled
               data={this.props.exemptionFeeSatusDropDownOptions}

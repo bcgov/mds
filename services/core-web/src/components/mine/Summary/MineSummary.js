@@ -9,7 +9,7 @@ import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypes } from "@common/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import * as String from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { Contact } from "@/components/mine/ContactInfo/PartyRelationships/Contact";

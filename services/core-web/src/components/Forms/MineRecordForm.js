@@ -463,7 +463,7 @@ export class MineRecordForm extends Component {
                 <Field
                   id="exemption_fee_status_code"
                   name="exemption_fee_status_code"
-                  label="Fee Exemption"
+                  label="Inspection Fee Status"
                   disabled
                   component={renderConfig.SELECT}
                   validate={[validateSelectOptions(this.props.exemptionFeeSatusDropDownOptions)]}

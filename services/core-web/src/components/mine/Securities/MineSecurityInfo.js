@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Tabs } from "antd";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import {
   getBonds,
   getBondTotals,

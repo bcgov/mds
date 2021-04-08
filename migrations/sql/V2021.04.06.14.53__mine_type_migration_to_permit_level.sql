@@ -1,4 +1,4 @@
-DROP INDEX IF EXISTS mine_guid_mine_tenure_type_code_active_uniqeness;
+DROP INDEX IF EXISTS mine_guid_mine_tenure_type_code_permit_guid_active_uniqeness;
 
 CREATE OR REPLACE FUNCTION max (uuid, uuid)
 RETURNS uuid AS $$

@@ -1,20 +1,20 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Popconfirm, Button } from "antd";
-import { Field, formValueSelector, FormSection, reduxForm, Form, change } from "redux-form";
+import { Field, formValueSelector, FormSection, reduxForm, Form } from "redux-form";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
-import { requiredList, maxLength } from "@common/utils/Validate";
+import { requiredList, maxLength, required } from "@common/utils/Validate";
 import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
   getMineTenureTypeDropdownOptions,
   getExemptionFeeSatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
+import { determineInspectionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 /**
@@ -22,10 +22,18 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
  */
 
 const propTypes = {
-  noticeOfWorkType: PropTypes.string.isRequired,
-  isViewMode: PropTypes.bool.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
-  mineGuid: PropTypes.string.isRequired,
+  permit: CustomPropTypes.permit.isRequired,
+  mineTenureTypes: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  site_properties: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
+  ).isRequired,
+  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  submitting: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  change: PropTypes.func.isRequired,
 };
 
 const mapApplicationTypeToTenureType = (permitPrefix) =>
@@ -37,37 +45,25 @@ const mapApplicationTypeToTenureType = (permitPrefix) =>
     Q: ["BCL", "PRL", "MIN"],
   }[permitPrefix]);
 export class SitePropertiesForm extends Component {
-  componentDidMount() {
-    this.handleSiteProperty(this.props.initialValues.site_properties);
-  }
-
-  handleSiteProperty = (siteProperties) => {
-    const site_properties = {
-      mine_tenure_type_code: "",
-      mine_commodity_code: [],
-      mine_disturbance_code: [],
-    };
-
-    let activePermitSiteProperty = site_properties;
-    if (siteProperties.length > 0) {
-      activePermitSiteProperty = siteProperties
-        .filter(({ mine_guid }) => mine_guid === this.props.mineGuid)
-        .map((type) => {
-          site_properties.mine_tenure_type_code = type.mine_tenure_type_code;
-          type.mine_type_detail.forEach((detail) => {
-            if (detail.mine_commodity_code) {
-              site_properties.mine_commodity_code.push(detail.mine_commodity_code);
-            } else if (detail.mine_disturbance_code) {
-              site_properties.mine_disturbance_code.push(detail.mine_disturbance_code);
-            }
-          });
-          return site_properties;
-        })[0];
+  componentWillReceiveProps = (nextProps) => {
+    const permitIsExploration = this.props.permit.permit_no.charAt(1) === "X";
+    const permitTypeCode = this.props.permit.permit_no.charAt(0);
+    if (nextProps.site_properties !== this.props.site_properties) {
+      const statusCode = determineInspectionFeeStatus(
+        this.props.permit.permit_status_code,
+        permitTypeCode,
+        nextProps.site_properties?.mine_tenure_type_code,
+        permitIsExploration,
+        nextProps.site_properties?.mine_disturbance_code
+      );
+      this.props.change("exemption_fee_status_code", statusCode);
     }
-    return this.props.change("site_properties", activePermitSiteProperty);
   };
 
   render() {
+    const isCoalOrMineral =
+      this.props.site_properties?.mine_tenure_type_code === "COL" ||
+      this.props.site_properties?.mine_tenure_type_code === "MIN";
     const permitPrefix = this.props.permit.permit_no.charAt(0);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -105,7 +101,7 @@ export class SitePropertiesForm extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <div className="field-title">Disturbance</div>
+              <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
               <Field
                 id="mine_disturbance_code"
                 name="mine_disturbance_code"
@@ -117,6 +113,7 @@ export class SitePropertiesForm extends Component {
                       ]
                     : null
                 }
+                validate={isCoalOrMineral ? [required] : []}
               />
             </Col>
           </Row>
@@ -126,10 +123,10 @@ export class SitePropertiesForm extends Component {
             <Field
               id="exemption_fee_status_code"
               name="exemption_fee_status_code"
-              label="Fee Exemption"
-              placeholder="Exemption Fee Status will be automatically populated based on Tenure"
+              label="Inspection Fee Status"
+              placeholder="Inspection Fee Status will be automatically populated."
               component={RenderSelect}
-              // disabled
+              disabled
               data={this.props.exemptionFeeSatusDropDownOptions}
             />
           </Col>

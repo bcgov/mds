@@ -18,6 +18,7 @@ from app.api.utils.access_decorators import requires_role_view_all, requires_rol
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 from app.api.mines.mine.resources.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 
 
 class PermitListResource(Resource, UserMixin):
@@ -286,10 +287,27 @@ class PermitResource(Resource, UserMixin):
             raise NotFound('Permit not found.')
 
         json_data = request.json
-        MineType.update_mine_type_details(
-            permit_guid=permit_guid,
-            mine_commodity_codes=json_data['site_properties']['mine_commodity_code'],
-            mine_disturbance_codes=json_data['site_properties']['mine_disturbance_code'])
+
+        if 'site_properties' in json_data:
+            site_properties = permit.site_properties
+            if not site_properties:
+                mine_type = MineType.create(
+                            mine_guid,
+                            json_data['site_properties']['mine_tenure_type_code'],
+                            permit.permit_guid)
+
+                for d_code in json_data['site_properties']['mine_disturbance_code']:
+                    MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
+
+                for c_code in json_data['site_properties']['mine_commodity_code']:
+                    MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
+
+            else:
+                MineType.update_mine_type_details(
+                    permit_guid=permit_guid,
+                    mine_tenure_type_code=json_data['site_properties']['mine_tenure_type_code'],
+                    mine_disturbance_codes=json_data['site_properties']['mine_disturbance_code'],
+                    mine_commodity_codes=json_data['site_properties']['mine_commodity_code'])
 
         data = self.parser.parse_args()
         for key, value in data.items():

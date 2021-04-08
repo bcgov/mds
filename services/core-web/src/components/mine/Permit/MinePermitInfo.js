@@ -17,10 +17,9 @@ import {
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineRecordById, createMineTypes } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
@@ -338,12 +337,6 @@ export class MinePermitInfo extends Component {
         this.props.fetchPermits(this.props.mineGuid);
       });
 
-  handleAddPermitAmendmentApplication = (permitGuid) =>
-    this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
-      mineGuid: this.props.mineGuid,
-      permitGuid,
-    });
-
   handleDeletePermitAmendment = (record) =>
     this.props
       .deletePermitAmendment(
@@ -401,7 +394,6 @@ export class MinePermitInfo extends Component {
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
-          handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
           handlePermitAmendmentIssueVC={this.handlePermitAmendmentIssueVC}
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}

@@ -59,6 +59,7 @@ class MineType(AuditMixin, Base):
                                  mine_type_guid=None,
                                  mine_guid=None,
                                  permit_guid=None,
+                                 mine_tenure_type_code=None,
                                  mine_disturbance_codes=[],
                                  mine_commodity_codes=[]):
         mine_type = None
@@ -76,8 +77,11 @@ class MineType(AuditMixin, Base):
         mine_type = find_mine_type(mine_type_guid, mine_guid, permit_guid)
 
         if not mine_type:
-            raise Exception('Mine type does not exist')
-
+            raise Exception('Site Property does not exist')
+        
+        if mine_tenure_type_code: 
+            mine_type.mine_tenure_type_code = mine_tenure_type_code
+            
         existing_disturbance_codes = [
             dist_code.mine_disturbance_code for dist_code in mine_type.mine_type_detail
             if dist_code.mine_disturbance_code and dist_code.active_ind
