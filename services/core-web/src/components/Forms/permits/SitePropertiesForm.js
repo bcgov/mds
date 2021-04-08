@@ -58,6 +58,15 @@ export class SitePropertiesForm extends Component {
       );
       this.props.change("exemption_fee_status_code", statusCode);
     }
+    const tenureChanged =
+      this.props.site_properties?.mine_tenure_type_code &&
+      this.props.site_properties?.mine_tenure_type_code !==
+        nextProps.site_properties?.mine_tenure_type_code;
+
+    if (tenureChanged) {
+      this.props.change("site_properties.mine_disturbance_code", []);
+      this.props.change("site_properties.mine_commodity_code", []);
+    }
   };
 
   render() {

@@ -472,11 +472,6 @@ export const determineInspectionFeeStatus = (
   isExploration = null,
   disturbance = []
 ) => {
-  console.log("permitStatus", permitStatus);
-  console.log("permitPrefix", permitPrefix);
-  console.log("tenure", tenure);
-  console.log("isExploration", isExploration);
-  console.log("disturbance", disturbance);
   let exemptionStatus;
   if ((permitPrefix === "P" && tenure === "PLR") || permitStatus === "C") {
     exemptionStatus = "Y";
