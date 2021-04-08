@@ -319,7 +319,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         # Set "export" information
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
-        now_application_json['exported_by_user'] = User().get_user_username()
 
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
