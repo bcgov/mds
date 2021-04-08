@@ -81,6 +81,11 @@ class PermitListResource(Resource, UserMixin):
         trim=True,
         store_missing=False,
         location='json')
+    parser.add_argument(
+        'site_properties',
+        type=str,
+        help='{ mine_commodity_code, mine_disturbance_code}.',
+        location='json')
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -137,6 +142,11 @@ class PermitListResource(Resource, UserMixin):
             raise BadRequest("That permit number is already in use.")
 
         uploadedFiles = data.get('uploadedFiles', [])
+
+        permit_prefix = permit_no[0];
+        json_data = request.json
+        current_app.logger.debug(data.site_properties)
+        Permit.validate_exemption_fee_status(data.get('is_exploration'), data.get('permit_status_code'), permit_prefix, json_data['site_properties']['mine_disturbance_code'], json_data['site_properties']['mine_tenure_type_code'], data.get('exemption_fee_status_code'))
 
         permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
                                data.get('is_exploration'), data.get('exemption_fee_status_code'),
@@ -287,6 +297,10 @@ class PermitResource(Resource, UserMixin):
             raise NotFound('Permit not found.')
 
         json_data = request.json
+
+        permit_prefix = permit.permit_no[0]
+        is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
+        Permit.validate_exemption_fee_status(is_exploration, json_data.get('permit_status_code'), permit_prefix, json_data['site_properties']['mine_disturbance_code'], json_data['site_properties']['mine_tenure_type_code'], json_data.get('exemption_fee_status_code'))
 
         if 'site_properties' in json_data:
             site_properties = permit.site_properties

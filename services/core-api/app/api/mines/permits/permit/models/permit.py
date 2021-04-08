@@ -231,13 +231,27 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def validate_exemption_fee_status(cls,
                                       is_exploration,
                                       permit_status,
-                                      mine_tenure_type_code=None,
+                                      permit_prefix,
+                                      mine_disturbance_codes=None,
+                                      mine_tenure_type_codes=None,
                                       exemption_fee_status_code=None):
-        current_app.logger.debug('@@@@@@@@@@@@@@@@@@@@@@@@')
-        current_app.logger.debug(
-            f'self.is_exploration {is_exploration}, self.site_properties[0].mine_tenure_type_code {site_properties} self.exemption_fee_status_code {exemption_fee_status_code}'
-        )
-        if (is_exploration or mine_tenure_type_code == 'PLR'
-                or permit_status == 'C') and exemption_fee_status_code != 'Y':
+        current_app.logger.debug(is_exploration)
+        current_app.logger.debug(permit_status)
+        current_app.logger.debug(permit_prefix)
+        current_app.logger.debug(mine_disturbance_codes)
+        current_app.logger.debug(mine_tenure_type_codes)
+        current_app.logger.debug(exemption_fee_status_code)
+
+        if (permit_status == 'C' and exemption_fee_status_code != 'Y'): 
             raise AssertionError('Exemption fee should be "Yes" for this permit')
+        elif (permit_status != 'C'):
+            if (permit_prefix == "Q" and mine_tenure_type_code == 'PLR') and exemption_fee_status_code != 'Y':
+                raise AssertionError('Exemption fee should be "Yes" for this permit')
+            elif is_exploration and len(mine_disturbance_codes) == 1 and all(x == 'SUR' for x in mine_disturbance_codes) and exemption_fee_status_code != 'Y':
+                raise AssertionError('Exemption fee should be "Yes" for this permit')
+            elif (permit_prefix == "M" or permit_prefix == "C") and (mine_tenure_type_codes == "MIN" or mine_tenure_type_codes == "COL") and exemption_fee_status_code != 'MIM' and not is_exploration:
+                raise AssertionError('Exemption fee should be "Mineral/Coal" for this permit')
+            elif  (permit_prefix == "Q" or permit_prefix == "G") and (mine_tenure_type_codes == "BCL" or mine_tenure_type_codes == "MIN" or mine_tenure_type_codes == "PRL") and exemption_fee_status_code != 'MIM':
+                raise AssertionError('Exemption fee should be "Pits/Quarry" for this permit')
+
         return exemption_fee_status_code
