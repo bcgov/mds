@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
