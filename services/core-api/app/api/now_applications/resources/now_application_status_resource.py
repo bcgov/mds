@@ -141,11 +141,10 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.save()
 
             # transfer site_properties to permit
-            # enable this when the site_properties flow for NOW is ready
-            if now_application_identity.application_type_code == 'ADA':
-                mine_type = now_application_identity.now_application.site_property
-                mine_type.permit_guid = permit.permit_guid
-                mine_type.save()
+            # enable this when the site_properties flow for NOW and ADA is ready
+            #     mine_type = now_application_identity.now_application.site_property
+            #     mine_type.permit_guid = permit.permit_guid
+            #     mine_type.save()
 
             # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit
             only_one_contact_of_type_allowed = ['PMT', 'MMG']
