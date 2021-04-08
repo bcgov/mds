@@ -176,9 +176,9 @@ exports[`AddPermitForm renders properly 1`] = `
         component={[Function]}
         disabled={true}
         id="exemption_fee_status_code"
-        label="Fee Exemption"
+        label="Inspection Fee Status"
         name="exemption_fee_status_code"
-        placeholder="Exemption Fee Status will be automatically populated based on Tenure"
+        placeholder="Inspection Fee Status will be automatically populated."
       />
       <Field
         component={[Function]}
