@@ -51,7 +51,8 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     security_not_required_reason = db.Column(db.String)
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
-    now_identity = db.relationship('NOWApplicationIdentity', lazy='select')
+    now_identity = db.relationship(
+        'NOWApplicationIdentity', lazy='select', foreign_keys=[now_application_guid])
     mine = db.relationship('Mine', lazy='select')
     conditions = db.relationship(
         'PermitConditions',
@@ -75,7 +76,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         primaryjoin="PermitAmendment.permit_id==foreign(MinePermitXref.permit_id)")
 
     now_application_identity = db.relationship(
-        'NOWApplicationIdentity', lazy='selectin', uselist=False)
+        'NOWApplicationIdentity',
+        lazy='selectin',
+        uselist=False,
+        foreign_keys=[now_application_guid])
 
     @hybrid_property
     def issuing_inspector_name(self):

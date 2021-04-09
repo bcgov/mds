@@ -462,7 +462,7 @@ environments {
                 application_suffix = "-pr-${vars.git.changeId}"
                 node_env = "development"
                 fn_layer_url = "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
-                matomo_url = "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/"
+                matomo_url = "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/"
 
             }
             modules {

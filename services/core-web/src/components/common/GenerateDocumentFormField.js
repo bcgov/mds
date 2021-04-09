@@ -26,6 +26,7 @@ const FIELDS_COMPONENT = {
   RADIO: renderConfig.RADIO,
   GROUPED_SELECT: renderConfig.GROUPED_SELECT,
   MINE_SELECT: renderConfig.MINE_SELECT,
+  LABEL: renderConfig.LABEL,
 };
 
 const GenerateDocumentFormField = (props) => (
@@ -47,6 +48,13 @@ const GenerateDocumentFormFieldCurrency = (props) => (
     validate={props.field.required ? [required, number, currency] : [number, currency]}
   />
 );
+const GenerateDocumentFormLabel = (props) => (
+  <GenerateDocumentFormField
+    {...props}
+    className="template-letter-content"
+    indentText="Letter Content:"
+  />
+);
 
 const FIELDS = {
   CHECKBOX: GenerateDocumentFormField,
@@ -65,6 +73,7 @@ const FIELDS = {
   RADIO: GenerateDocumentFormField,
   GROUPED_SELECT: GenerateDocumentFormField,
   MINE_SELECT: GenerateDocumentFormField,
+  LABEL: GenerateDocumentFormLabel,
 };
 
 GenerateDocumentFormField.propTypes = propTypes;

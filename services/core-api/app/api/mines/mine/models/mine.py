@@ -12,6 +12,7 @@ from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -95,6 +96,9 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
+
+    government_agency_type_code = db.Column(
+        db.String, db.ForeignKey('government_agency_type.government_agency_type_code'))
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid

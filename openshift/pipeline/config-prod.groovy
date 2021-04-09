@@ -513,7 +513,7 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 fn_layer_url = "https://apps.gov.bc.ca/ext/sgw/geo.allgov"
-                matomo_url = "https://matomo-empr-mds-prod.pathfinder.gov.bc.ca/"
+                matomo_url = "https://matomo-4c2ba9-prod.apps.silver.devops.gov.bc.ca/"
             }
             modules {
                 'mds-frontend' {

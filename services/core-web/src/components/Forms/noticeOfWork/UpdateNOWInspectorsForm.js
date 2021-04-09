@@ -15,8 +15,6 @@ import * as Permission from "@/constants/permissions";
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   isAdminView: PropTypes.bool.isRequired,
   isEditMode: PropTypes.bool.isRequired,
@@ -43,7 +41,6 @@ const UpdateNOWInspectorsForm = (props) => {
             validate={[required]}
             data={props.inspectors}
             disabled={!props.isEditMode}
-            onSelect={props.setLeadInspectorPartyGuid}
           />
         </Form.Item>
         <div className="field-title">Issuing Inspector</div>
@@ -60,7 +57,6 @@ const UpdateNOWInspectorsForm = (props) => {
             placeholder="Start typing the Issuing Inspector's name"
             data={props.inspectors}
             disabled={!props.isEditMode}
-            onSelect={props.setIssuingInspectorPartyGuid}
           />
         </Form.Item>
         {!props.isEditMode && (

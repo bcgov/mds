@@ -20,6 +20,7 @@ import CoreTable from "@/components/common/CoreTable";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
+import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
 
 /**
  * @class NOWProgressTable- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
@@ -185,52 +186,87 @@ export class NOWProgressTable extends Component {
         ? this.props.noticeOfWork.application_progress[0]
         : { start_date: "", application_progress_status_code: "" };
     const hasImportMeta = this.props.noticeOfWork.imported_date;
-    const duration =
+    const getDuration = (date) =>
       firstProgress?.start_date && hasImportMeta
         ? getDurationTextInDays(
-            moment.duration(
-              moment(firstProgress.start_date).diff(moment(this.props.noticeOfWork.imported_date))
-            )
+            moment.duration(moment(firstProgress.start_date).diff(moment(date)))
           )
-        : noImportMeta;
+        : Strings.EMPTY_FIELD;
     const delaysExist = this.props.applicationDelays.length > 0;
     return (
       <div>
         <Row gutter={16} justify="left">
           <Col span={24}>
             <Steps current={5} className="progress-steps">
-              <Steps.Step
-                direction="vertical"
-                title="Imported to Core"
-                icon={
-                  <Popover
-                    content={
-                      <Descriptions column={1} title="Imported to Core">
-                        <Descriptions.Item label="Status">Verified</Descriptions.Item>
-                        <Descriptions.Item label="Imported by">
-                          {this.props.noticeOfWork.imported_by || noImportMeta}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Import Date">
-                          {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="Duration until Progress">
-                          {duration || Strings.EMPTY_FIELD}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="First stage In Progress">
-                          {this.props.progressStatusCodeHash[
-                            firstProgress.application_progress_status_code
-                          ] || Strings.EMPTY_FIELD}
-                        </Descriptions.Item>
-                      </Descriptions>
-                    }
-                  >
-                    <CheckCircleOutlined className="icon-lg--green" />
-                  </Popover>
-                }
-                description="Verified"
-              />
+              {this.props.noticeOfWork.application_type_code === "NOW" ? (
+                <Steps.Step
+                  direction="vertical"
+                  title="Imported to Core"
+                  icon={
+                    <Popover
+                      content={
+                        <Descriptions column={1} title="Imported to Core">
+                          <Descriptions.Item label="Status">Verified</Descriptions.Item>
+                          <Descriptions.Item label="Imported by">
+                            {this.props.noticeOfWork.imported_by || noImportMeta}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="Import Date">
+                            {formatDate(this.props.noticeOfWork.imported_date) || noImportMeta}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="Duration until Progress">
+                            {getDuration(this.props.noticeOfWork.imported_date) ||
+                              Strings.EMPTY_FIELD}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="First stage In Progress">
+                            {this.props.progressStatusCodeHash[
+                              firstProgress.application_progress_status_code
+                            ] || Strings.EMPTY_FIELD}
+                          </Descriptions.Item>
+                        </Descriptions>
+                      }
+                    >
+                      <CheckCircleOutlined className="icon-lg--green" />
+                    </Popover>
+                  }
+                  description="Verified"
+                />
+              ) : (
+                <Steps.Step
+                  direction="vertical"
+                  title="Application Initiated"
+                  icon={
+                    <Popover
+                      content={
+                        <Descriptions column={1} title="Application Initiated">
+                          <Descriptions.Item label="Status">Created</Descriptions.Item>
+                          <Descriptions.Item label="Received Date">
+                            {formatDate(this.props.noticeOfWork.received_date)}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="Duration until Progress">
+                            {getDuration(this.props.noticeOfWork.received_date) ||
+                              Strings.EMPTY_FIELD}
+                          </Descriptions.Item>
+                          <Descriptions.Item label="First stage In Progress">
+                            {this.props.progressStatusCodeHash[
+                              firstProgress.application_progress_status_code
+                            ] || Strings.EMPTY_FIELD}
+                          </Descriptions.Item>
+                        </Descriptions>
+                      }
+                    >
+                      <CheckCircleOutlined className="icon-lg--green" />
+                    </Popover>
+                  }
+                  description="Created"
+                />
+              )}
               {this.props.progressStatusCodes
                 .sort((a, b) => (a.display_order > b.display_order ? 1 : -1))
+                .filter(({ application_progress_status_code }) =>
+                  APPLICATION_PROGRESS_TRACKING[
+                    this.props.noticeOfWork.application_type_code
+                  ].includes(application_progress_status_code)
+                )
                 .map((progressStatus) =>
                   stepItem(this.props.progress, progressStatus, delaysExist)
                 )}

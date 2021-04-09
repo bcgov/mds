@@ -16,10 +16,9 @@ const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  setLeadInspectorPartyGuid: PropTypes.func.isRequired,
-  setIssuingInspectorPartyGuid: PropTypes.func.isRequired,
   handleUpdateInspectors: PropTypes.func.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
@@ -64,26 +63,28 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="generated-documents" title="Application Export Files">
-        <NOWDocuments
-          documents={props.noticeOfWork.documents.filter(({ now_application_document_type_code }) =>
-            exportedDocuments.includes(now_application_document_type_code)
-          )}
-          isViewMode
-          disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
-          categoriesToShow={exportedDocuments}
-          addDescriptionColumn={false}
-        />
-      </ScrollContentWrapper>
+      {props.noticeOfWork.application_type_code === "NOW" && (
+        <ScrollContentWrapper id="generated-documents" title="Application Export Files">
+          <NOWDocuments
+            documents={props.noticeOfWork.documents.filter(
+              ({ now_application_document_type_code }) =>
+                exportedDocuments.includes(now_application_document_type_code)
+            )}
+            isViewMode
+            disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
+            categoriesToShow={exportedDocuments}
+            addDescriptionColumn={false}
+          />
+        </ScrollContentWrapper>
+      )}
       <ScrollContentWrapper id="inspectors" title="Inspectors">
         <AssignInspectors
           inspectors={props.inspectors}
           noticeOfWork={props.noticeOfWork}
-          setLeadInspectorPartyGuid={props.setLeadInspectorPartyGuid}
-          setIssuingInspectorPartyGuid={props.setIssuingInspectorPartyGuid}
           handleUpdateInspectors={props.handleUpdateInspectors}
           title="Update Inspectors"
           isAdminView
+          isLoaded={props.isLoaded}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="progress-tracking" title="Application Progress Tracking">

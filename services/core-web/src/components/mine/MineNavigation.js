@@ -17,7 +17,6 @@ export class MineNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
-    const isMajorMine = this.props.mine.major_mine_ind;
     const isTailingsVisible = this.props.mine.mine_tailings_storage_facilities.length >= 1;
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
@@ -71,7 +70,7 @@ export class MineNavigation extends Component {
             </Menu.Item>
             <Menu.Item key="notices-of-work">
               <Link to={routes.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.mine.mine_guid)}>
-                {isMajorMine ? "Permit Applications" : "Notice of Work Applications"}
+                Applications
               </Link>
             </Menu.Item>
           </Menu>

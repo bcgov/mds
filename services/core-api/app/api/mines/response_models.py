@@ -122,7 +122,7 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'preamble_date': fields.DateTime
     })
 
-PERMIT_AMENDMENT_MODEL = api.model(
+PERMIT_AMENDMENT_SHORT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id': fields.Integer,
         'permit_amendment_guid': fields.String,
@@ -139,11 +139,52 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'issuing_inspector_title': fields.String,
         'regional_office': fields.String,
         'now_application_guid': fields.String,
-        'now_application_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
-        'imported_now_application_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
-        'related_documents': fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
+    })
+
+PERMIT_AMENDMENT_MODEL = api.model(
+    'PermitAmendment', {
+        'permit_amendment_id':
+        fields.Integer,
+        'permit_amendment_guid':
+        fields.String,
+        'permit_amendment_status_code':
+        fields.String,
+        'permit_amendment_type_code':
+        fields.String,
+        'received_date':
+        fields.DateTime(dt_format='iso8601'),
+        'issue_date':
+        fields.DateTime(dt_format='iso8601'),
+        'authorization_end_date':
+        fields.DateTime(dt_format='iso8601'),
+        'liability_adjustment':
+        fields.Fixed(description='Currency', decimals=2),
+        'security_received_date':
+        fields.DateTime(dt_format='iso8601'),
+        'security_not_required':
+        fields.Boolean,
+        'security_not_required_reason':
+        fields.String,
+        'description':
+        fields.String,
+        'issuing_inspector_title':
+        fields.String,
+        'regional_office':
+        fields.String,
+        'now_application_guid':
+        fields.String,
+        'now_application_documents':
+        fields.List(fields.Nested(PERMIT_AMENDMENT_NOW_DOCUMENT)),
+        'imported_now_application_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'related_documents':
+        fields.List(fields.Nested(PERMIT_AMENDMENT_DOCUMENT_MODEL)),
+        'permit_conditions_last_updated_by':
+        fields.String,
+        'permit_conditions_last_updated_date':
+        fields.DateTime,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -267,6 +308,7 @@ MINE_MODEL = api.inherit(
         'mine_location': fields.Nested(MINE_LOCATION_MODEL),
         'exemption_fee_status_code': fields.String,
         'exemption_fee_status_note': fields.String,
+        'government_agency_type_code': fields.String
     })
 
 MINE_LIST_MODEL = api.model(
@@ -560,4 +602,10 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'condition_type_code': fields.String,
     'description': fields.String,
     'display_order': fields.Integer
+})
+
+GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
+    'government_agency_type_code': fields.String,
+    'description': fields.String,
+    'is_active': fields.Integer
 })

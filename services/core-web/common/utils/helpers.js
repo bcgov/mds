@@ -43,11 +43,12 @@ export const createDropDownList = (
   labelField,
   valueField,
   isActiveField = false,
-  subType = null
+  subType = null,
+  labelFormatter = null
 ) => {
   const options = array.map((item) => ({
     value: item[valueField],
-    label: item[labelField],
+    label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
     isActive: isActiveField ? item[isActiveField] : true,
     subType: subType ? item[subType] : null,
   }));
