@@ -75,7 +75,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             update_timestamp_since=request.args.get(
                 'update_timestamp_since',
                 type=lambda x: inputs.datetime_from_iso8601(x) if x else None),
-            application_type=request.args.get('application_type', 'NOW', type=str))
+            application_type=request.args.get('application_type', type=str))
 
         data = records.all()
 
@@ -108,7 +108,8 @@ class NOWApplicationListResource(Resource, UserMixin):
 
         filters = []
         base_query = ApplicationsView.query
-        filters.append((and_(ApplicationsView.application_type_code == application_type)))
+        if application_type:
+            filters.append((and_(ApplicationsView.application_type_code == application_type)))
 
         if submissions_only:
             filters.append(
