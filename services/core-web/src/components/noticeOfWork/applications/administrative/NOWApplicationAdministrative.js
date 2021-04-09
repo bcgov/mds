@@ -76,7 +76,7 @@ export const NOWApplicationAdministrative = (props) => {
                   mine_document.document_name.includes("DRAFT"))
             )}
             isViewMode
-            disclaimerText="This table shows PDFs generated from edited Notice or Work forms and Draft Permits."
+            disclaimerText="This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
             categoriesToShow={["AEF"]}
             addDescriptionColumn={false}
           />
