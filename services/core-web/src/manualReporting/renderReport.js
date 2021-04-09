@@ -437,7 +437,6 @@ const simpleRender = () => {
     liability_adjustment: null,
     security_received_date: null,
     last_updated_date: "2020-09-23",
-    last_updated_by: "idir\\lumitche",
     is_applicant_individual_or_company: "Individual",
     relationship_to_applicant: "Agent",
     term_of_application: 7,
