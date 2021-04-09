@@ -47,7 +47,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             'mine_guid': 'filter by a given mine guid',
             'import_timestamp_since': 'Filter by applications created since this date.',
             'update_timestamp_since': 'Filter by applications updated since this date.',
-            'application_type': 'Application type NOW or ADA'
+            'application_type': 'Application type NOW or ADA.'
         })
     @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_VIEW_LIST, code=200)
