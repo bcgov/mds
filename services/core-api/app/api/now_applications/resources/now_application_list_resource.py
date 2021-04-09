@@ -109,7 +109,7 @@ class NOWApplicationListResource(Resource, UserMixin):
         filters = []
         base_query = ApplicationsView.query
         if application_type:
-            filters.append((and_(ApplicationsView.application_type_code == application_type)))
+            filters.append(ApplicationsView.application_type_code == application_type)
 
         if submissions_only:
             filters.append(
