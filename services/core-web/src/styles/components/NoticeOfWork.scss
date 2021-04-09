@@ -333,11 +333,19 @@
   background-color: #f3f0f0;
   padding: 25px;
   border-radius: 5px;
-
 }
 
 .party-table {
   .ant-table-thead {
     display: none;
   }
+}
+
+.template-letter-content {
+  padding-top: 15px;
+}
+
+.template-letter-content 
+.ant-typography {
+  padding-top: 10px;
 }

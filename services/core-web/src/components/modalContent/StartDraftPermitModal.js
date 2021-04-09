@@ -146,6 +146,30 @@ export const StartDraftPermitModal = (props) => {
   );
 
   const isAmendment = props.preDraftFormValues?.type_of_application !== "New Permit";
+  const initialValues = {
+    is_exploration: false,
+    permit_amendment_type_code: props.permitType,
+    type_of_application: props.noticeOfWork?.type_of_application,
+    permit_guid: props.noticeOfWork.source_permit_guid || null,
+    disabled: props.noticeOfWork.source_permit_guid,
+  };
+
+  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions ? (
+    `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
+  ) : (
+    <>
+      When you start the Draft Permit, it will include the default conditions for the type of permit
+      you are amending. The Preamble will not include the files from the original authorization. You
+      need to:
+      <br />
+      1. Attach the files that made up the original approved work for the authorization.
+      <br />
+      2. Update the conditions to match what was authorized in the original.
+    </>
+  );
+  const amendmentMessage = props.noticeOfWork.source_permit_guid
+    ? sourceAmendmentMessage
+    : `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`;
   const steps = [
     {
       title: "Confirm Permit",
@@ -155,7 +179,7 @@ export const StartDraftPermitModal = (props) => {
             <Alert
               description={
                 isAmendment
-                  ? `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`
+                  ? amendmentMessage
                   : `This is a New Permit. A new permit number will be generated once ready to issue. This cannot be changed once drafting has started.`
               }
               type="info"
@@ -164,12 +188,7 @@ export const StartDraftPermitModal = (props) => {
           )}
           <br />
           <PreDraftPermitForm
-            initialValues={{
-              is_exploration: false,
-              permit_amendment_type_code: props.permitType,
-              type_of_application: props.noticeOfWork?.type_of_application,
-              permit_guid: null,
-            }}
+            initialValues={initialValues}
             permits={props.permits}
             isCoalOrMineral={props.isCoalOrMineral}
           />

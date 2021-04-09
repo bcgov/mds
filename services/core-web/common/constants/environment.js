@@ -2,7 +2,7 @@
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
-  matomoUrl: "https://matomo-empr-mds-test.pathfinder.gov.bc.ca/",
+  matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
   firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
   filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",

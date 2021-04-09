@@ -1,8 +1,10 @@
 from .activity_detail import *
 from .activity_summary import *
-from .notice_of_work_view import NoticeOfWorkView
+from .administrative_amendments import *
+from .applications_view import ApplicationsView
 from .now_application import NOWApplication
 from .now_application_identity import NOWApplicationIdentity
+from .application_type_code import ApplicationTypeCode
 from .now_application_type import NOWApplicationType
 from .now_application_delay import NOWApplicationDelay
 from .now_application_delay_type import NOWApplicationDelayType
@@ -23,9 +25,10 @@ from .now_party_appointment import NOWPartyAppointment
 from .now_application_progress import NOWApplicationProgress
 
 model_list = [
-    NoticeOfWorkView,
+    ApplicationsView,
     NOWApplication,
     NOWApplicationIdentity,
+    ApplicationTypeCode,
     NOWApplicationType,
     NOWApplicationDelay,
     NOWApplicationDelayType,

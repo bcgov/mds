@@ -41,6 +41,9 @@ export const {
   getPermitConditionTypeOptions,
   getDelayTypeOptions,
   getPermitAmendmentTypeOptions,
+  getApplicationReasonCodeOptions,
+  getApplicationSourceTypeCodeOptions,
+  getGovernmentAgencyTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -98,6 +101,16 @@ export const getMineRegionDropdownOptions = createSelector([getMineRegionOptions
 );
 
 export const getMineRegionHash = createSelector([getMineRegionDropdownOptions], createLabelHash);
+
+export const getGovernmentAgencyDropdownOptions = createSelector(
+  [getGovernmentAgencyTypeOptions],
+  (options) => createDropDownList(options, "description", "government_agency_type_code")
+);
+
+export const getGovernmentAgencyHash = createSelector(
+  [getGovernmentAgencyDropdownOptions],
+  createLabelHash
+);
 
 const createConditionalMineDetails = (optionsObject, key, isShowActiveOnly) => {
   const newArr = {};
@@ -655,6 +668,28 @@ export const getDelayTypeDropDownOptions = createSelectorWrapper(
 
 export const getDelayTypeOptionsHash = createSelector(
   [getDelayTypeDropDownOptions],
+  createLabelHash
+);
+
+export const getApplicationReasonCodeDropdownOptions = createSelectorWrapper(
+  getApplicationReasonCodeOptions,
+  createDropDownList,
+  ["description", "application_reason_code", "active_ind"]
+);
+
+export const getApplicationReasonCodeOptionsHash = createSelector(
+  [getApplicationReasonCodeDropdownOptions],
+  createLabelHash
+);
+
+export const getApplicationSourceTypeCodeDropdownOptions = createSelectorWrapper(
+  getApplicationSourceTypeCodeOptions,
+  createDropDownList,
+  ["description", "application_source_type_code", "active_ind"]
+);
+
+export const getApplicationSourceTypeCodeOptionsHash = createSelector(
+  [getApplicationSourceTypeCodeDropdownOptions],
   createLabelHash
 );
 

@@ -42,6 +42,8 @@ const initialState = {
   permitConditionTypeOptions: [],
   permitConditionCategoryOptions: [],
   noticeOfWorkApplicationDelayOptions: [],
+  applicationReasonCodeOptions: [],
+  applicationSourceTypeCodeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -59,6 +61,8 @@ const staticContentReducerObject = {
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
+export const getGovernmentAgencyTypeOptions = (state) =>
+  state[STATIC_CONTENT].governmentAgencyTypeOptions;
 export const getMineTenureTypeOptions = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
@@ -117,6 +121,10 @@ export const getPartyBusinessRoleOptions = (state) =>
   state[STATIC_CONTENT].partyBusinessRoleOptions;
 export const getDelayTypeOptions = (state) =>
   state[STATIC_CONTENT].noticeOfWorkApplicationDelayOptions;
+export const getApplicationReasonCodeOptions = (state) =>
+  state[STATIC_CONTENT].applicationReasonCodeOptions;
+export const getApplicationSourceTypeCodeOptions = (state) =>
+  state[STATIC_CONTENT].applicationSourceTypeCodeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

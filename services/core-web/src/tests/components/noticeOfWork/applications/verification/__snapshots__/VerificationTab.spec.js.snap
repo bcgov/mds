@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ApplicationStepOne renders properly 1`] = `
+exports[`VerificationTab renders properly 1`] = `
 <div
   className="tab__content"
 >
@@ -34,6 +34,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         },
         "applicantclientid": 42,
         "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
         "applicationtype": null,
         "archsitesaffected": null,
         "bcexplosivespermitexpiry": null,
@@ -424,6 +425,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         },
         "applicantclientid": 42,
         "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
         "applicationtype": null,
         "archsitesaffected": null,
         "bcexplosivespermitexpiry": null,
@@ -813,6 +815,7 @@ exports[`ApplicationStepOne renders properly 1`] = `
         },
         "applicantclientid": 42,
         "application_guid": "89ce70bc-a34b-4ec6-aff0-704ba68c4606",
+        "application_reason_codes": Array [],
         "applicationtype": null,
         "archsitesaffected": null,
         "bcexplosivespermitexpiry": null,

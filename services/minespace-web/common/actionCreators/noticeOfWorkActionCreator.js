@@ -103,10 +103,40 @@ export const createNoticeOfWorkApplication = (payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const createNoticeOfWorkApplicationImportSubmissionDocumentsJob = (applicationGuid) => (
+  dispatch
+) => {
+  dispatch(request(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.NOTICE_OF_WORK_IMPORT_SUBMISSION_DOCUMENTS_JOB(applicationGuid)}`,
+      {},
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(
+        success(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+      );
+      notification.success({
+        message: "Successfully created the Notice of Work Submission Documents Import Job",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch((err) => {
+      dispatch(
+        error(reducerTypes.CREATE_NOTICE_OF_WORK_APPLICATION_IMPORT_SUBMISSION_DOCUMENTS_JOB)
+      );
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const importNoticeOfWorkApplication = (
   applicationGuid,
   payload,
-  message = "Successfully verified the Notice of Work's location"
+  message = "Successfully verified the Notice of Work"
 ) => (dispatch) => {
   dispatch(request(reducerTypes.IMPORT_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
@@ -168,7 +198,7 @@ export const fetchOriginalNoticeOfWorkApplication = (applicationGuid) => (dispat
 export const updateNoticeOfWorkApplication = (
   payload,
   nowApplicationGuid,
-  message = "Successfully updated Notice of Work"
+  message = "Successfully updated the permit application."
 ) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_APPLICATION));
   dispatch(showLoading());
@@ -477,4 +507,28 @@ export const deleteNoticeOfWorkApplicationDocument = (applicationGuid, mineDocum
     })
     .catch(() => dispatch(error(reducerTypes.REMOVE_NOTICE_OF_WORK_APPLICATION_DOCUMENT)))
     .finally(() => dispatch(hideLoading()));
+};
+
+export const createAdminAmendmentApplication = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.ADMINISTRATIVE_AMENDMENT_APPLICATION}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      notification.success({
+        message: "Successfully created an Administrative Amendment Application",
+        duration: 10,
+      });
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_ADMIN_AMENDMENT_APPLICATION));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };

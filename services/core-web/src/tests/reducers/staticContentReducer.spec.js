@@ -42,6 +42,8 @@ const baseExpectedValue = {
   permitConditionTypeOptions: [],
   permitConditionCategoryOptions: [],
   noticeOfWorkApplicationDelayOptions: [],
+  applicationReasonCodeOptions: [],
+  applicationSourceTypeCodeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

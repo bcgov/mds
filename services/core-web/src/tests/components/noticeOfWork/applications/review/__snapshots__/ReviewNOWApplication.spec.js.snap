@@ -1892,15 +1892,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       id="application-files"
       title="vFCBC/NROS Application Files"
     >
-      <NOWSubmissionDocuments
+      <Connect(NOWSubmissionDocuments)
         displayTableDescription={true}
-        documents={Array []}
-        editPreambleFileMetadata={false}
-        hideImportStatusColumn={false}
-        hideJobStatusColumn={false}
-        importNowSubmissionDocumentsJob={Object {}}
-        selectedRows={null}
-        showPreambleFileMetadata={false}
       />
     </withRouter(Connect(ScrollContentWrapper))>
     <withRouter(Connect(ScrollContentWrapper))

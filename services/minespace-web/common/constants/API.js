@@ -123,6 +123,7 @@ export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
+export const ADMINISTRATIVE_AMENDMENT_APPLICATION = `/now-applications/administrative-amendments`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
 export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>
@@ -133,6 +134,8 @@ export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
+export const NOTICE_OF_WORK_IMPORT_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/import-submission-documents-job`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 export const NOTICE_OF_WORK_UNIT_TYPE_OPTIONS = "/now-applications/unit-types";
 export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/application-types";

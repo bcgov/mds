@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MineNOWApplications } from "@/components/mine/NoticeOfWork/MineNOWApplications";
+import { MineApplications } from "@/components/mine/NoticeOfWork/MineApplications";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -25,9 +25,9 @@ beforeEach(() => {
   setupDispatchProps();
 });
 
-describe("MineNOWApplications", () => {
+describe("MineApplications", () => {
   it("renders properly", () => {
-    const component = shallow(<MineNOWApplications {...props} {...dispatchProps} />);
+    const component = shallow(<MineApplications {...props} {...dispatchProps} />);
     expect(component).toMatchSnapshot();
   });
 });

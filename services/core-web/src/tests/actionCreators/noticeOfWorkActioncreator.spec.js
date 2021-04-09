@@ -13,6 +13,8 @@ import {
   createApplicationDelay,
   fetchImportNoticeOfWorkSubmissionDocumentsJob,
   deleteNoticeOfWorkApplicationDocument,
+  createAdminAmendmentApplication,
+  createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -378,6 +380,30 @@ describe("`deleteNoticeOfWorkApplicationDocument` action creator", () => {
       applicationGuid,
       mineDocumentGuid
     )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createAdminAmendmentApplication` action creator", () => {
+  const payload = {};
+  const url = `${ENVIRONMENT.apiUrl + API.ADMINISTRATIVE_AMENDMENT_APPLICATION}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, payload).reply(200, mockResponse);
+    return createAdminAmendmentApplication(payload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createAdminAmendmentApplication(payload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
