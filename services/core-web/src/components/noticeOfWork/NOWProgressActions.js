@@ -179,10 +179,10 @@ export class NOWProgressActions extends Component {
 
   render() {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const isProcessed =
-      this.props.noticeOfWork.now_application_status_code === "AIA" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
-    const rejected = this.props.noticeOfWork.now_application_status_code === "REJ";
+    const isProcessed = ["AIA", "REJ", "WDN"].includes(
+      this.props.noticeOfWork.now_application_status_code
+    );
+    const rejected = ["REJ", "WDN"].includes(this.props.noticeOfWork.now_application_status_code);
     const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
     const menu = (
       <Menu>

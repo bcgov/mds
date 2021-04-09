@@ -31,7 +31,7 @@ AS SELECT nid.now_application_guid,
                 WHEN 'No Permit Required'::text THEN 'Pending Verification'::character varying
                 WHEN 'Govt. Action Required'::text THEN 'Pending Verification'::character varying
                 WHEN 'Rejected-Initial'::text THEN 'Rejected'::character varying
-                WHEN 'Withdrawn'::text THEN 'Rejected'::character varying
+                WHEN 'Withdrawn'::text THEN 'Withdrawn'::character varying
                 ELSE COALESCE(msub.status, sub.status)
             END
             ELSE COALESCE(nows.description, msub.status, sub.status)
