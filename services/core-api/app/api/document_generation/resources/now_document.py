@@ -47,7 +47,11 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             document_type_code)
 
         # Generate the document using the template and template data
+        now_application_guid = token_data['now_application_guid']
+        now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
+            now_application_guid)
         template_data = token_data['template_data']
+        template_data['document_name_start_extra'] = now_application_identity.now_number
         docgen_resp = DocumentGeneratorService.generate_document(
             now_application_document_type.document_template, template_data)
         if docgen_resp.status_code != requests.codes.ok:
@@ -55,9 +59,6 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
 
         # Push the document to the Document Manager
         filename = docgen_resp.headers['X-Report-Name']
-        now_application_guid = token_data['now_application_guid']
-        now_application_identity = NOWApplicationIdentity.query.unbound_unsafe().get(
-            now_application_guid)
         document_manager_guid = DocumentManagerService.pushFileToDocumentManager(
             file_content=docgen_resp.content,
             filename=filename,
