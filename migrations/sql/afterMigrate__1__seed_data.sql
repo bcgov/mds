@@ -689,7 +689,7 @@ VALUES
     ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds'),
     ('AMR', 'Amendment Request', true, 'AAF', 'system-mds', 'system-mds'),
     ('MYA', 'MYAB Update Form', true, 'AAF', 'system-mds', 'system-mds'),
-    ('SUD', 'Supporting Documents', true, 'AAF', 'system-mds', 'system-mds');
+    ('SUD', 'Supporting Documents', true, 'AAF', 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
