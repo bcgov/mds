@@ -715,8 +715,8 @@ VALUES
   ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
   ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
   ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
+  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 UPDATE document_template SET form_spec_json = '[
     {
