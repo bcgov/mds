@@ -253,7 +253,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                 raise AssertionError('Exemption fee should be "Mineral/Coal" for this permit')
             elif (permit_prefix == "Q" or permit_prefix == "G") and (
                     mine_tenure_type_code == "BCL" or mine_tenure_type_code == "MIN"
-                    or mine_tenure_type_code == "PRL") and exemption_fee_status_code != 'MIM':
+                    or mine_tenure_type_code == "PRL") and exemption_fee_status_code != 'MIP':
                 raise AssertionError('Exemption fee should be "Pits/Quarry" for this permit')
 
         return exemption_fee_status_code
