@@ -14,7 +14,7 @@ import {
   getMineTenureTypeDropdownOptions,
   getExemptionFeeSatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
-import { determineInspectionFeeStatus } from "@common/utils/helpers";
+import { determineExemptionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 /**
@@ -47,11 +47,10 @@ const mapApplicationTypeToTenureType = (permitPrefix) =>
 export class SitePropertiesForm extends Component {
   componentWillReceiveProps = (nextProps) => {
     const permitIsExploration = this.props.permit.permit_no.charAt(1) === "X";
-    const permitTypeCode = this.props.permit.permit_no.charAt(0);
     if (nextProps.site_properties !== this.props.site_properties) {
-      const statusCode = determineInspectionFeeStatus(
+      const statusCode = determineExemptionFeeStatus(
         this.props.permit.permit_status_code,
-        permitTypeCode,
+        this.props.permit.permit_prefix,
         nextProps.site_properties?.mine_tenure_type_code,
         permitIsExploration,
         nextProps.site_properties?.mine_disturbance_code
@@ -73,7 +72,6 @@ export class SitePropertiesForm extends Component {
     const isCoalOrMineral =
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
-    const permitPrefix = this.props.permit.permit_no.charAt(0);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <FormSection name="site_properties">
@@ -86,7 +84,7 @@ export class SitePropertiesForm extends Component {
                 component={RenderSelect}
                 validate={[requiredList]}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
-                  mapApplicationTypeToTenureType(permitPrefix).includes(value)
+                  mapApplicationTypeToTenureType(this.props.permit.permit_prefix).includes(value)
                 )}
               />
             </Col>
@@ -191,5 +189,6 @@ export default compose(
   })),
   reduxForm({
     form: FORM.EDIT_SITE_PROPERTIES,
+    enableReinitialize: true,
   })
 )(SitePropertiesForm);

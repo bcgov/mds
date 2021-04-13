@@ -7,7 +7,7 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { currency, required, validateSelectOptions, maxLength } from "@common/utils/Validate";
-import { resetForm, determineInspectionFeeStatus, currencyMask } from "@common/utils/helpers";
+import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getExemptionFeeSatusDropDownOptions,
@@ -33,11 +33,10 @@ const propTypes = {
 
 export const EditPermitForm = (props) => {
   useEffect(() => {
-    const permitPrefix = props.initialValues.permit_no.charAt(0);
     const isExploration = props.initialValues.permit_no.charAt(1) === "X";
-    const feeStatus = determineInspectionFeeStatus(
+    const feeStatus = determineExemptionFeeStatus(
       props.formValues?.permit_status_code,
-      permitPrefix,
+      props.initialValues.permit_prefix,
       props.initialValues.site_properties?.mine_tenure_type_code,
       isExploration,
       props.initialValues.site_properties?.mine_disturbance_code

@@ -15,7 +15,7 @@ import {
   validateSelectOptions,
   requiredList,
 } from "@common/utils/Validate";
-import { resetForm, determineInspectionFeeStatus } from "@common/utils/helpers";
+import { resetForm, determineExemptionFeeStatus } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getConditionalDisturbanceOptionsHash,
@@ -36,15 +36,14 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
-  permitTypeCode: PropTypes.string,
+  permitPrefix: PropTypes.string,
   permitIsExploration: PropTypes.bool,
-  change: PropTypes.func,
+  change: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  permitTypeCode: "",
+  permitPrefix: "",
   permitIsExploration: false,
-  change,
 };
 
 const permitTypes = [
@@ -108,7 +107,7 @@ export class AddPermitForm extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const permitTypeChanged =
-      this.props.permitTypeCode && this.props.permitTypeCode !== nextProps.permitTypeCode;
+      this.props.permitPrefix && this.props.permitPrefix !== nextProps.permitPrefix;
     if (permitTypeChanged) {
       this.props.change("site_properties.mine_tenure_type_code", null);
       this.props.change("site_properties.mine_disturbance_code", []);
@@ -116,14 +115,14 @@ export class AddPermitForm extends Component {
       this.props.change("exemption_fee_status_code", null);
     }
     const statusSelected = this.props.permitStatusCode || nextProps.permitStatusCode;
-    const permitTypeSelected = this.props.permitTypeCode || nextProps.permitTypeCode;
+    const permitTypeSelected = this.props.permitPrefix || nextProps.permitPrefix;
     const tenureSelected =
       this.props.site_properties?.mine_tenure_type_code ||
       nextProps.site_properties?.mine_tenure_type_code;
     if (permitTypeSelected && tenureSelected && statusSelected) {
-      const statusCode = determineInspectionFeeStatus(
+      const statusCode = determineExemptionFeeStatus(
         nextProps.permitStatusCode,
-        nextProps.permitTypeCode,
+        nextProps.permitPrefix,
         nextProps.site_properties?.mine_tenure_type_code,
         nextProps.permitIsExploration,
         nextProps.site_properties?.mine_disturbance_code
@@ -136,7 +135,7 @@ export class AddPermitForm extends Component {
     const isCoalOrMineral =
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
-    const permitPrefix = this.props.permitTypeCode ? this.props.permitTypeCode : null;
+    const permitPrefix = this.props.permitPrefix ? this.props.permitPrefix : null;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
@@ -162,8 +161,8 @@ export class AddPermitForm extends Component {
                 data={permitTypes}
               />
             </Form.Item>
-            {(this.props.permitTypeCode === "C" ||
-              this.props.permitTypeCode === "M" ||
+            {(this.props.permitPrefix === "C" ||
+              this.props.permitPrefix === "M" ||
               this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
@@ -183,8 +182,8 @@ export class AddPermitForm extends Component {
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(9)]}
                 inlineLabel={
-                  this.props.permitTypeCode &&
-                  `${this.props.permitTypeCode}${this.props.permitIsExploration ? "X" : ""} -`
+                  this.props.permitPrefix &&
+                  `${this.props.permitPrefix}${this.props.permitIsExploration ? "X" : ""} -`
                 }
               />
             </Form.Item>
@@ -218,7 +217,7 @@ export class AddPermitForm extends Component {
                 name="mine_tenure_type_code"
                 component={renderConfig.SELECT}
                 validate={[requiredList]}
-                disabled={!this.props.permitTypeCode}
+                disabled={!this.props.permitPrefix}
                 data={this.props.mineTenureTypes.filter(({ value }) =>
                   mapApplicationTypeToTenureType(permitPrefix).includes(value)
                 )}
@@ -311,7 +310,7 @@ AddPermitForm.defaultProps = defaultProps;
 export default compose(
   connect((state) => ({
     permitStatusOptions: getDropdownPermitStatusOptions(state),
-    permitTypeCode: selector(state, "permit_type"),
+    permitPrefix: selector(state, "permit_type"),
     permitStatusCode: selector(state, "permit_status_code"),
     permitIsExploration: selector(state, "is_exploration"),
     mineTenureTypes: getMineTenureTypeDropdownOptions(state),

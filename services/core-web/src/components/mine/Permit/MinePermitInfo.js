@@ -159,7 +159,6 @@ export class MinePermitInfo extends Component {
         permit,
         onSubmit: this.handleEditPermit,
         title: `Edit Site Properties for ${permit.permit_no}`,
-        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
     });
@@ -180,11 +179,10 @@ export class MinePermitInfo extends Component {
     });
   };
 
-  handleEditPermit = (values) => {
-    return this.props
+  handleEditPermit = (values) =>
+    this.props
       .updatePermit(this.props.mineGuid, values.permit_guid, values)
       .then(this.closePermitModal);
-  };
 
   handleDeletePermit = (permitGuid) =>
     this.props.deletePermit(this.props.mineGuid, permitGuid).then(() => this.closePermitModal());
