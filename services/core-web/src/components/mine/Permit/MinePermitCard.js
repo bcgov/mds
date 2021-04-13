@@ -21,7 +21,6 @@ export const PermitCard = (props) => {
   const pmt = props.PartyRelationships.filter((pr) => pr.mine_party_appt_type_code === "PMT")
     .filter((pmts) => pmts.related_guid.includes(props.permit.permit_guid))
     .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
-
   return (
     <div>
       <h4>{formatTitleString(props.permit.permit_no)}</h4>
@@ -42,7 +41,7 @@ export const PermitCard = (props) => {
       <br />
       <h6>Site Property Tenure</h6>
       <span>
-        {props.mineTenureHash[props.permit.site_properties[0]?.mine_tenure_type_code] || <i>N/A</i>}
+        {props.mineTenureHash[props.permit.site_properties?.mine_tenure_type_code] || <i>N/A</i>}
       </span>
       <br />
       <br />
