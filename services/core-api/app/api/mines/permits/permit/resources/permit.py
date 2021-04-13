@@ -80,11 +80,11 @@ class PermitListResource(Resource, UserMixin):
         type=str,
         help='Fee exemption status note for the mine.',
         trim=True,
-        store_missing=False,
         location='json')
     parser.add_argument(
         'site_properties',
-        type=json.loads,
+        type=json.dumps,
+        store_missing=False,
         help='It includes object of string codes for mine_commodity_code and mine_disturbance_code.',
         location='json')
 
@@ -108,6 +108,7 @@ class PermitListResource(Resource, UserMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         permit_no = data.get('permit_no')
+        data['site_properties'] = json.loads(data.get('site_properties', '{}'))
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
@@ -276,9 +277,10 @@ class PermitResource(Resource, UserMixin):
 
     parser.add_argument(
         'site_properties',
-        type=json.loads,
-        help='{ mine_commodity_code, mine_disturbance_code}.',
-        location='json')
+        type=json.dumps,
+        location='json',
+        store_missing=False,
+        help='{ mine_commodity_code, mine_disturbance_code}.')
 
     @api.doc(params={'permit_guid': 'Permit guid.'})
     @requires_role_view_all
@@ -297,9 +299,10 @@ class PermitResource(Resource, UserMixin):
     def put(self, permit_guid, mine_guid):
         data = self.parser.parse_args()
         permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
+        data['site_properties'] = json.loads(data.get('site_properties', '{}'))
         if not permit:
             raise NotFound('Permit not found.')
-        
+
         permit_prefix = permit.permit_no[0]
         is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
         Permit.validate_exemption_fee_status(
@@ -325,8 +328,10 @@ class PermitResource(Resource, UserMixin):
             else:
                 MineType.update_mine_type_details(
                     permit_guid=permit_guid,
-                    mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
-                    mine_disturbance_codes=data.get('site_properties', {}).get('mine_disturbance_code'),
+                    mine_tenure_type_code=data.get('site_properties',
+                                                   {}).get('mine_tenure_type_code'),
+                    mine_disturbance_codes=data.get('site_properties',
+                                                    {}).get('mine_disturbance_code'),
                     mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code'))
 
         for key, value in data.items():
