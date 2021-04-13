@@ -235,7 +235,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                                       permit_status,
                                       permit_prefix,
                                       mine_disturbance_codes=None,
-                                      mine_tenure_type_codes=None,
+                                      mine_tenure_type_code=None,
                                       exemption_fee_status_code=None):
         if (permit_status == 'C' and exemption_fee_status_code != 'Y'):
             raise AssertionError('Exemption fee should be "Yes" for this permit')
@@ -248,12 +248,12 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                     for x in mine_disturbance_codes) and exemption_fee_status_code != 'Y':
                 raise AssertionError('Exemption fee should be "Yes" for this permit')
             elif (permit_prefix == "M" or permit_prefix == "C") and (
-                    mine_tenure_type_codes == "MIN" or mine_tenure_type_codes
+                    mine_tenure_type_code == "MIN" or mine_tenure_type_code
                     == "COL") and exemption_fee_status_code != 'MIM' and not is_exploration:
                 raise AssertionError('Exemption fee should be "Mineral/Coal" for this permit')
             elif (permit_prefix == "Q" or permit_prefix == "G") and (
-                    mine_tenure_type_codes == "BCL" or mine_tenure_type_codes == "MIN"
-                    or mine_tenure_type_codes == "PRL") and exemption_fee_status_code != 'MIM':
+                    mine_tenure_type_code == "BCL" or mine_tenure_type_code == "MIN"
+                    or mine_tenure_type_code == "PRL") and exemption_fee_status_code != 'MIM':
                 raise AssertionError('Exemption fee should be "Pits/Quarry" for this permit')
 
         return exemption_fee_status_code
