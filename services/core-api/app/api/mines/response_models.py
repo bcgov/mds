@@ -223,6 +223,7 @@ PERMIT_MODEL = api.model(
         'exemption_fee_status_code': fields.String,
         'exemption_fee_status_note': fields.String,
         'site_properties': fields.List(fields.Nested(MINE_TYPE_MODEL)),
+        'permit_prefix': fields.String,
     })
 
 PERMIT_STATUS_CODE_MODEL = api.model('PermitStatusCode', {

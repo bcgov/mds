@@ -122,6 +122,10 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def active_bond_total(self):
         return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "ACT"])
 
+    @hybrid_property
+    def permit_prefix(self):
+        return self.permit_no[0]
+
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
 
