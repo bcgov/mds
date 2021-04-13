@@ -20,4 +20,9 @@ where p2.permit_status_code <> 'D'
 update permit
 set exemption_fee_status_code=query.exemption_status
 from query
-WHERE permit.permit_guid = query.permit_guid and query.exemption_status <> 'NaN'
+WHERE permit.permit_guid = query.permit_guid and query.exemption_status <> 'NaN';
+
+
+update permit
+set exemption_fee_status_code = 'Y'
+where permit.permit_status_code in ('C', 'D');
