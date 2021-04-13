@@ -465,7 +465,7 @@ export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => 
   return isFeeValid;
 };
 
-export const  determineExemptionFeeStatus = (
+export const determineExemptionFeeStatus = (
   permitStatus,
   permitPrefix,
   tenure,
