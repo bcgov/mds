@@ -22,9 +22,8 @@ DROP TABLE IF EXISTS multiple_permits;
 CREATE TEMP TABLE multiple_permits AS 
 	SELECT mine_guid, permit_guid FROM mine_permit_xref mpx JOIN permit p ON mpx.permit_id = p.permit_id WHERE mine_guid IN (
 	SELECT mine_guid FROM mine_permit_xref mpx JOIN permit p ON mpx.permit_id = p.permit_id
-	WHERE p.permit_status_code = 'O'
 	GROUP BY mine_guid 
-	HAVING count(p.permit_id) > 2
+	HAVING count(p.permit_id) > 1
 );
 
 
