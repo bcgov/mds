@@ -1,3 +1,4 @@
+import json
 from flask_restplus import Resource, reqparse
 from datetime import datetime
 from flask import current_app, request
@@ -83,8 +84,8 @@ class PermitListResource(Resource, UserMixin):
         location='json')
     parser.add_argument(
         'site_properties',
-        type=str,
-        help='{ mine_commodity_code, mine_disturbance_code}.',
+        type=json.loads,
+        help='It includes object of string codes for mine_commodity_code and mine_disturbance_code.',
         location='json')
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
@@ -143,10 +144,12 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit_prefix = permit_no[0];
-        json_data = request.json
-        current_app.logger.debug(data.site_properties)
-        Permit.validate_exemption_fee_status(data.get('is_exploration'), data.get('permit_status_code'), permit_prefix, json_data['site_properties']['mine_disturbance_code'], json_data['site_properties']['mine_tenure_type_code'], data.get('exemption_fee_status_code'))
+        permit_prefix = permit_no[0]
+        Permit.validate_exemption_fee_status(
+            data.get('is_exploration'), data.get('permit_status_code'), permit_prefix,
+            data.get('site_properties', {}).get('mine_disturbance_code'),
+            data.get('site_properties', {}).get('mine_tenure_type_code'),
+            data.get('exemption_fee_status_code'))
 
         permit = Permit.create(mine, permit_no, data.get('permit_status_code'),
                                data.get('is_exploration'), data.get('exemption_fee_status_code'),
@@ -273,7 +276,7 @@ class PermitResource(Resource, UserMixin):
 
     parser.add_argument(
         'site_properties',
-        type=str,
+        type=json.loads,
         help='{ mine_commodity_code, mine_disturbance_code}.',
         location='json')
 
@@ -292,38 +295,40 @@ class PermitResource(Resource, UserMixin):
     @requires_role_edit_securities
     @api.marshal_with(PERMIT_MODEL, code=200)
     def put(self, permit_guid, mine_guid):
+        data = self.parser.parse_args()
         permit = Permit.find_by_permit_guid(permit_guid, mine_guid)
         if not permit:
             raise NotFound('Permit not found.')
-
-        json_data = request.json
-
+        
         permit_prefix = permit.permit_no[0]
         is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
-        Permit.validate_exemption_fee_status(is_exploration, json_data.get('permit_status_code'), permit_prefix, json_data['site_properties']['mine_disturbance_code'], json_data['site_properties']['mine_tenure_type_code'], json_data.get('exemption_fee_status_code'))
+        Permit.validate_exemption_fee_status(
+            is_exploration, data.get('permit_status_code'), permit_prefix,
+            data.get('site_properties', {}).get('mine_disturbance_code'),
+            data.get('site_properties', {}).get('mine_tenure_type_code'),
+            data.get('exemption_fee_status_code'))
 
-        if 'site_properties' in json_data:
+        if 'site_properties' in data:
             site_properties = permit.site_properties
             if not site_properties:
                 mine_type = MineType.create(
-                            mine_guid,
-                            json_data['site_properties']['mine_tenure_type_code'],
-                            permit.permit_guid)
+                    mine_guid,
+                    data.get('site_properties', {}).get('mine_tenure_type_code'),
+                    permit.permit_guid)
 
-                for d_code in json_data['site_properties']['mine_disturbance_code']:
+                for d_code in data.get('site_properties', {}).get('mine_disturbance_code'):
                     MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
 
-                for c_code in json_data['site_properties']['mine_commodity_code']:
+                for c_code in data.get('site_properties', {}).get('mine_commodity_code'):
                     MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
 
             else:
                 MineType.update_mine_type_details(
                     permit_guid=permit_guid,
-                    mine_tenure_type_code=json_data['site_properties']['mine_tenure_type_code'],
-                    mine_disturbance_codes=json_data['site_properties']['mine_disturbance_code'],
-                    mine_commodity_codes=json_data['site_properties']['mine_commodity_code'])
+                    mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
+                    mine_disturbance_codes=data.get('site_properties', {}).get('mine_disturbance_code'),
+                    mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code'))
 
-        data = self.parser.parse_args()
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
                 continue     # non-editable fields from put or should be handled separately

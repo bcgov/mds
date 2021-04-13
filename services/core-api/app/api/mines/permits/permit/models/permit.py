@@ -1,5 +1,3 @@
-from flask import current_app
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -239,17 +237,23 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                                       mine_disturbance_codes=None,
                                       mine_tenure_type_codes=None,
                                       exemption_fee_status_code=None):
-
-        if (permit_status == 'C' and exemption_fee_status_code != 'Y'): 
+        if (permit_status == 'C' and exemption_fee_status_code != 'Y'):
             raise AssertionError('Exemption fee should be "Yes" for this permit')
         elif (permit_status != 'C'):
-            if (permit_prefix == "Q" and mine_tenure_type_code == 'PLR') and exemption_fee_status_code != 'Y':
+            if (permit_prefix == "Q"
+                    and mine_tenure_type_code == 'PLR') and exemption_fee_status_code != 'Y':
                 raise AssertionError('Exemption fee should be "Yes" for this permit')
-            elif is_exploration and len(mine_disturbance_codes) == 1 and all(x == 'SUR' for x in mine_disturbance_codes) and exemption_fee_status_code != 'Y':
+            elif is_exploration and len(mine_disturbance_codes) == 1 and all(
+                    x == 'SUR'
+                    for x in mine_disturbance_codes) and exemption_fee_status_code != 'Y':
                 raise AssertionError('Exemption fee should be "Yes" for this permit')
-            elif (permit_prefix == "M" or permit_prefix == "C") and (mine_tenure_type_codes == "MIN" or mine_tenure_type_codes == "COL") and exemption_fee_status_code != 'MIM' and not is_exploration:
+            elif (permit_prefix == "M" or permit_prefix == "C") and (
+                    mine_tenure_type_codes == "MIN" or mine_tenure_type_codes
+                    == "COL") and exemption_fee_status_code != 'MIM' and not is_exploration:
                 raise AssertionError('Exemption fee should be "Mineral/Coal" for this permit')
-            elif  (permit_prefix == "Q" or permit_prefix == "G") and (mine_tenure_type_codes == "BCL" or mine_tenure_type_codes == "MIN" or mine_tenure_type_codes == "PRL") and exemption_fee_status_code != 'MIM':
+            elif (permit_prefix == "Q" or permit_prefix == "G") and (
+                    mine_tenure_type_codes == "BCL" or mine_tenure_type_codes == "MIN"
+                    or mine_tenure_type_codes == "PRL") and exemption_fee_status_code != 'MIM':
                 raise AssertionError('Exemption fee should be "Pits/Quarry" for this permit')
 
         return exemption_fee_status_code
