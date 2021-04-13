@@ -37,8 +37,8 @@ class MineTypeListResource(Resource, UserMixin):
     def post(self, mine_guid):
         data = self.parser.parse_args()
         mine_tenure_type_code = data.get('mine_tenure_type_code')
-        mine_disturbance_code = data.get('mine_disturbance_code', [])
-        mine_commodity_code = data.get('mine_commodity_code', [])
+        mine_disturbance_code = data.get('mine_disturbance_code')
+        mine_commodity_code = data.get('mine_commodity_code')
         permit_guid = data.get('permit_guid')
 
         mine_type = MineType.create(mine_guid, mine_tenure_type_code, permit_guid)
