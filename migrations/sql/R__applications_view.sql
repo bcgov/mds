@@ -58,7 +58,7 @@ AS SELECT nid.now_application_guid,
     nowt.description AS application_type_description,
     app.now_application_status_code,
     CASE
-        WHEN app.now_application_status_code in ('AIA', 'REJ', 'NPR') THEN app.status_updated_date
+        WHEN app.now_application_status_code in ('AIA', 'REJ', 'NPR', 'WDN') THEN app.status_updated_date
         ELSE NULL
     END AS decision_date
    FROM now_application_identity nid
