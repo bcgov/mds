@@ -235,12 +235,6 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
                                       mine_disturbance_codes=None,
                                       mine_tenure_type_codes=None,
                                       exemption_fee_status_code=None):
-        current_app.logger.debug(is_exploration)
-        current_app.logger.debug(permit_status)
-        current_app.logger.debug(permit_prefix)
-        current_app.logger.debug(mine_disturbance_codes)
-        current_app.logger.debug(mine_tenure_type_codes)
-        current_app.logger.debug(exemption_fee_status_code)
 
         if (permit_status == 'C' and exemption_fee_status_code != 'Y'): 
             raise AssertionError('Exemption fee should be "Yes" for this permit')
