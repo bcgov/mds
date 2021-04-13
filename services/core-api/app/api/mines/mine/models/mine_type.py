@@ -78,13 +78,13 @@ class MineType(AuditMixin, Base):
 
         if not mine_type:
             raise Exception('Site Property does not exist')
-        
-        if mine_tenure_type_code: 
+
+        if mine_tenure_type_code:
             mine_type.mine_tenure_type_code = mine_tenure_type_code
-            
+
         existing_disturbance_codes = [
-            dist_code.mine_disturbance_code for dist_code in mine_type.mine_type_detail
-            if dist_code.mine_disturbance_code and dist_code.active_ind
+            detail.mine_disturbance_code for detail in mine_type.mine_type_detail
+            if detail.mine_disturbance_code and detail.active_ind
         ]
 
         for detail in [
@@ -111,8 +111,8 @@ class MineType(AuditMixin, Base):
                             mine_type, mine_disturbance_code=code, add_to_session=False))
 
         existing_commodity_codes = [
-            comm_code.mine_commodity_code for comm_code in mine_type.mine_type_detail
-            if comm_code.mine_commodity_code and comm_code.active_ind
+            detail.mine_commodity_code for detail in mine_type.mine_type_detail
+            if detail.mine_commodity_code and detail.active_ind
         ]
 
         for detail in [

@@ -1,5 +1,3 @@
-import uuid
-from flask import current_app
 from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound
@@ -38,10 +36,10 @@ class MineTypeListResource(Resource, UserMixin):
     @requires_role_mine_edit
     def post(self, mine_guid):
         data = self.parser.parse_args()
-        mine_tenure_type_code = data['mine_tenure_type_code']
-        mine_disturbance_code = data['mine_disturbance_code'] or []
-        mine_commodity_code = data['mine_commodity_code'] or []
-        permit_guid = data['permit_guid']
+        mine_tenure_type_code = data.get('mine_tenure_type_code')
+        mine_disturbance_code = data.get('mine_disturbance_code', [])
+        mine_commodity_code = data.get('mine_commodity_code', [])
+        permit_guid = data.get('permit_guid')
 
         mine_type = MineType.create(mine_guid, mine_tenure_type_code, permit_guid)
 
