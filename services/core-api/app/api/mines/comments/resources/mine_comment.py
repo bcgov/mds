@@ -1,7 +1,7 @@
 import uuid
 from flask_restplus import Resource, reqparse, fields, inputs
 from flask import request, current_app
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from sqlalchemy.exc import DBAPIError
 
@@ -31,10 +31,12 @@ class MineCommentListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         current_app.logger.info(f'Retrieving comments for {mine}')
+        
+        year = datetime.now(timezone.utc) - timedelta(days=365)
 
-        comments = [comment.__dict__ for comment in mine.comments]
+        new_comments = [x for x in mine.comments if x.comment_datetime >= year]
 
-        return comments, 200
+        return new_comments, 200
 
     @api.expect(MINE_COMMENT_MODEL)
     @api.doc(description='creates a new comment for the Mine')
