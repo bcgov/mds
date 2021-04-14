@@ -377,7 +377,11 @@ export class ProcessPermit extends Component {
     if (code === approvedCode) {
       return this.handleApprovedApplication(values);
     }
-    return this.afterSuccess(values, "This application has been successfully rejected.", code);
+    return this.afterSuccess(
+      values,
+      `This application has been successfully ${code === "WDN" ? "withdrawn" : "rejected"}.`,
+      code
+    );
   };
 
   generatePermitNumber = () => {
