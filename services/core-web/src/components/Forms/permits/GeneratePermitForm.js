@@ -17,6 +17,7 @@ import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
+  initialValues: PropTypes.any.isRequired,
   previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
@@ -118,41 +119,6 @@ export const GeneratePermitForm = (props) => (
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
-              id="issue_date"
-              name="issue_date"
-              label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
-              component={renderConfig.DATE}
-              validate={[required]}
-              disabled
-            />
-          </Col>
-          {props.isAmendment && (
-            <Col xs={24} md={12}>
-              <Field
-                id="original_permit_issue_date"
-                name="original_permit_issue_date"
-                label="Original Permit Issue Date"
-                required
-                component={renderConfig.DATE}
-                validate={[required]}
-                disabled
-              />
-            </Col>
-          )}
-        </Row>
-        <Row gutter={32}>
-          <Col xs={24} md={12}>
-            <Field
-              id="auth_end_date"
-              name="auth_end_date"
-              label="Authorization End Date"
-              component={renderConfig.DATE}
-              validate={[required]}
-              disabled
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <Field
               id="lead_inspector"
               name="lead_inspector"
               label="Lead Inspector Name"
@@ -161,10 +127,8 @@ export const GeneratePermitForm = (props) => (
               disabled
             />
           </Col>
-        </Row>
-        {/* this will be converted to a drop-down menu with pre-populated title options, currently defaulting to "Inspector of Mines" and disabled */}
-        <Row gutter={32}>
           <Col xs={24} md={12}>
+            {/* this will be converted to a drop-down menu with pre-populated title options, currently defaulting to "Inspector of Mines" and disabled */}
             <Field
               id="issuing_inspector_title"
               name="issuing_inspector_title"
@@ -174,6 +138,9 @@ export const GeneratePermitForm = (props) => (
               disabled
             />
           </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12} />
           <Col xs={24} md={12}>
             <Field
               id="regional_office"
@@ -189,6 +156,74 @@ export const GeneratePermitForm = (props) => (
                 { value: "Victoria", label: "Victoria" },
               ]}
               disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+      </>
+    </ScrollContentWrapper>
+
+    <ScrollContentWrapper id="authorization" title="Permit Authorizations">
+      <>
+        <Row gutter={32}>
+          {props.isAmendment && (
+            <Col xs={24} md={12}>
+              <Field
+                id="original_permit_issue_date"
+                name="original_permit_issue_date"
+                label="Original Permit Issue Date"
+                required
+                component={renderConfig.DATE}
+                validate={[required]}
+                disabled
+              />
+            </Col>
+          )}
+          <Col xs={24} md={12}>
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
+              component={renderConfig.DATE}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="auth_end_date"
+              name="auth_end_date"
+              label="Authorization End Date"
+              component={renderConfig.DATE}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+        </Row>
+        <br />
+        <div className="field-title">
+          Issue Date and Authorization End Date for the newly issued permit amendment.
+        </div>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label={props.isAmendment ? "Issue Date" : "Issue Date"}
+              component={renderConfig.DATE}
+              validate={[required]}
+              disabled
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="auth_end_date"
+              name="auth_end_date"
+              label="Authorization End Date"
+              component={renderConfig.DATE}
+              validate={[required]}
+              disabled
             />
           </Col>
         </Row>

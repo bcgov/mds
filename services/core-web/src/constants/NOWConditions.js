@@ -127,6 +127,13 @@ export const sideMenuOptions = {
       applicationType: ["NOW", "ADA"],
     },
     {
+      href: "authorization",
+      title: "Permit Authorizations",
+      alwaysVisible: true,
+      children: [],
+      applicationType: ["NOW", "ADA"],
+    },
+    {
       href: "preamble",
       title: "Preamble",
       alwaysVisible: true,
