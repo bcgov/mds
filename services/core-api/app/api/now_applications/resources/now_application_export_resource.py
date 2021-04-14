@@ -28,6 +28,8 @@ EMPTY_FIELD = '-'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
+IGNORE_EMPTY_FIELDS = ['details', 'equipment']
+
 EXCLUDED_APPLICATION_DOCUMENT_TYPES = []
 
 ORIGINAL_NOW_FIELD_PATHS = [
@@ -230,7 +232,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_data(obj):
             for key in obj:
-                if obj[key] is None:
+                if obj[key] is None and key not in IGNORE_EMPTY_FIELDS:
                     obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
