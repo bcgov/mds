@@ -242,11 +242,12 @@ class NOWApplicationExportResource(Resource, UserMixin):
             return summary
 
         def get_renderable_now_sections(now_application):
+            conditional_sections = [
+                'sand_gravel_quarry_operation', 'surface_bulk_sample',
+                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
+            ]
+
             def get_applicable_now_sections(now_application):
-                conditional_sections = [
-                    'sand_gravel_quarry_operation', 'surface_bulk_sample',
-                    'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
-                ]
                 now_type_conditional_sections = {
                     'QCA': ['sand_gravel_quarry_operation'],
                     'SAG': ['sand_gravel_quarry_operation'],
@@ -293,9 +294,11 @@ class NOWApplicationExportResource(Resource, UserMixin):
             applicable_sections = get_applicable_now_sections(now_application)
             populated_sections = get_populated_hideable_now_sections(now_application)
 
-            render_sections = applicable_sections
+            render_sections = {}
             for section in populated_sections:
-                render_sections[section] = render_sections[section] and populated_sections[section]
+                render_sections[section] = applicable_sections.get(
+                    section, False
+                    if section in conditional_sections else True) and populated_sections[section]
             return render_sections
 
         def transform_documents(now_application):
@@ -378,9 +381,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
         ).first()
         now_application_json['application_permit_type_description'] = get_description(
             permit_type, now_application_json['application_permit_type_code'])
-        now_application_json = transform_data(now_application_json)
 
         now_application_json['render'] = get_renderable_now_sections(now_application_json)
+        now_application_json = transform_data(now_application_json)
 
         # Determine what fields have changed from the original application
         original_now_application_json = transform_data(original_now_application_json)
