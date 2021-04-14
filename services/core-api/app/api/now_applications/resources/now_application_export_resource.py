@@ -306,13 +306,13 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if not edited_fields.get(paths[0]):
                     edited_fields[paths[0]] = {}
                 current_value = now_application_json[paths[0]][paths[1]]
-                original_value = original_now_application_json[paths[0]][paths[1]]
-                if current_value != original_value and original_value != EMPTY_FIELD:
+                original_value = original_now_application_json[paths[0]][paths[1]]             
+                if current_value != original_value:
                     edited_fields[paths[0]][paths[1]] = True
             else:
                 current_value = now_application_json[path]
                 original_value = original_now_application_json[path]
-                if current_value != original_value and original_value != EMPTY_FIELD:
+                if current_value != original_value:
                     edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
 
