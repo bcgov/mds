@@ -1,8 +1,8 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { compose } from "redux";
+import { compose, bindActionCreators } from "redux";
 import { remove } from "lodash";
+
 import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
 import { Form } from "@ant-design/compatible";
@@ -39,11 +39,21 @@ const propTypes = {
   permitPrefix: PropTypes.string,
   permitIsExploration: PropTypes.bool,
   change: PropTypes.func.isRequired,
+  conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  exemptionFeeSatusDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  mineTenureTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  permitStatusCode: PropTypes.string,
+  site_properties: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
+  ),
 };
 
 const defaultProps = {
   permitPrefix: "",
+  permitStatusCode: "",
   permitIsExploration: false,
+  site_properties: {},
 };
 
 const permitTypes = [
@@ -307,18 +317,28 @@ export class AddPermitForm extends Component {
 AddPermitForm.propTypes = propTypes;
 AddPermitForm.defaultProps = defaultProps;
 
+const mapStateToProps = (state) => ({
+  permitStatusOptions: getDropdownPermitStatusOptions(state),
+  permitPrefix: selector(state, "permit_type"),
+  permitStatusCode: selector(state, "permit_status_code"),
+  permitIsExploration: selector(state, "is_exploration"),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
+  conditionalCommodityOptions: getConditionalCommodityOptions(state),
+  conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
+  site_properties: selector(state, "site_properties"),
+  exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+});
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect((state) => ({
-    permitStatusOptions: getDropdownPermitStatusOptions(state),
-    permitPrefix: selector(state, "permit_type"),
-    permitStatusCode: selector(state, "permit_status_code"),
-    permitIsExploration: selector(state, "is_exploration"),
-    mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-    conditionalCommodityOptions: getConditionalCommodityOptions(state),
-    conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
-    site_properties: selector(state, "site_properties"),
-    exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
-  })),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.ADD_PERMIT,
     validate: validateBusinessRules,
