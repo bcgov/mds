@@ -22,6 +22,7 @@ VALUES
     ('SUR', 'PRL')
 ON CONFLICT DO NOTHING;
 
+
 INSERT INTO mine_commodity_tenure_type
 (
     mine_commodity_code,

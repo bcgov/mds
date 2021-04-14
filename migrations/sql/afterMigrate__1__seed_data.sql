@@ -334,7 +334,9 @@ VALUES
     ('TO','COL'),
     ('MC','COL'),
     ('CG','BCL'),
-    ('SA','BCL')
+    ('SA','BCL'),
+    ('CG','PRL'),
+    ('SA','PRL')
 ON CONFLICT DO NOTHING;
 --Everything else gets Mineral tenure type
 INSERT INTO mine_commodity_tenure_type
@@ -363,6 +365,7 @@ VALUES
     ('SUR', 'MIN'),
     ('SUR', 'PLR'),
     ('SUR', 'BCL'),
+    ('SUR', 'PRL'),
     ('UND', 'COL'),
     ('UND', 'MIN'),
     ('UND', 'PLR'),
