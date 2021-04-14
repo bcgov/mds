@@ -31,7 +31,7 @@ CURRENCY_FIELDS = ['reclamation_cost']
 EXCLUDED_APPLICATION_DOCUMENT_TYPES = []
 
 ORIGINAL_NOW_FIELD_PATHS = [
-    'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude',
+    'property_name', 'mine_no', 'mine_region', 'latitude', 'description_of_land', 'longitude', 'work_plan',
     'type_of_application', 'notice_of_work_type_code', 'application_permit_type_code',
     'proposed_start_date', 'crown_grant_or_district_lot_numbers', 'proposed_end_date',
     'tenure_number', 'directions_to_site', 'has_req_access_authorizations',
