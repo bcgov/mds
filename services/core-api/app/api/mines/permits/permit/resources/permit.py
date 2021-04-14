@@ -145,7 +145,7 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit_prefix = permit_no[0]
+        permit_prefix = permit.permit_prefix
         Permit.validate_exemption_fee_status(
             data.get('is_exploration'), data.get('permit_status_code'), permit_prefix,
             data.get('site_properties', {}).get('mine_disturbance_code'),
@@ -303,10 +303,9 @@ class PermitResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit not found.')
 
-        permit_prefix = permit.permit_no[0]
         is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
         Permit.validate_exemption_fee_status(
-            is_exploration, data.get('permit_status_code'), permit_prefix,
+            is_exploration, data.get('permit_status_code'), permit.permit_prefix,
             data.get('site_properties', {}).get('mine_disturbance_code'),
             data.get('site_properties', {}).get('mine_tenure_type_code'),
             data.get('exemption_fee_status_code'))
