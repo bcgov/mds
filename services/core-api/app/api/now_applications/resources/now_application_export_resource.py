@@ -251,26 +251,34 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     'QCA': ['sand_gravel_quarry_operation'],
                     'SAG': ['sand_gravel_quarry_operation'],
                     'QIM': ['sand_gravel_quarry_operation'],
-                    'COL':
-                    ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
-                    'MIN':
-                    ['surface_bulk_sample', 'cut_lines_polarization_survey', 'underground_exploration'],
-                    'PLA':
-                    ['placer_operation', 'cut_lines_polarization_survey', 'underground_exploration']
+                    'COL': [
+                        'surface_bulk_sample', 'cut_lines_polarization_survey',
+                        'underground_exploration'
+                    ],
+                    'MIN': [
+                        'surface_bulk_sample', 'cut_lines_polarization_survey',
+                        'underground_exploration'
+                    ],
+                    'PLA': [
+                        'placer_operation', 'cut_lines_polarization_survey',
+                        'underground_exploration'
+                    ]
                 }
                 applicable = {}
                 activity_types = ActivityType.get_all()
                 notice_of_work_type_code = now_application['notice_of_work_type_code']
                 for activity_type in activity_types:
-                    if activity_type.activity_type_code in conditional_sections and activity_type.activity_type_code in now_type_conditional_sections[
-                            notice_of_work_type_code] and :
-                        applicable[activity_type.activity_type_code] = True
+                    activity_type_code = activity_type.activity_type_code
+                    if activity_type_code in conditional_sections and activity_type_code in now_type_conditional_sections[
+                            notice_of_work_type_code]:
+                        applicable[activity_type_code] = True
                 return applicable
 
             def get_populated_hideable_now_sections(now_application):
                 hideable_now_sections = [
-                    'sand_gravel_quarry_operation', 'exploration_access', 'blasting_operation', 'camp', 'cut_lines_polarization_survey',
-                    'exploration_surface_drilling', 'mechanical_trenching', 'settling_pond', 'surface_bulk_sample',
+                    'sand_gravel_quarry_operation', 'exploration_access', 'blasting_operation',
+                    'camp', 'cut_lines_polarization_survey', 'exploration_surface_drilling',
+                    'mechanical_trenching', 'settling_pond', 'surface_bulk_sample',
                     'underground_exploration', 'sand_and_gravel', 'placer_operation', 'water_supply'
                 ]
                 populated = {}
