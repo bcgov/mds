@@ -23,8 +23,6 @@ const propTypes = {
 
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
-const exportedDocuments = ["NTR"];
-
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div>
@@ -67,12 +65,19 @@ export const NOWApplicationAdministrative = (props) => {
         <ScrollContentWrapper id="generated-documents" title="Application Export Files">
           <NOWDocuments
             documents={props.noticeOfWork.documents.filter(
-              ({ now_application_document_type_code }) =>
-                exportedDocuments.includes(now_application_document_type_code)
+              ({
+                now_application_document_sub_type_code,
+                now_application_document_type_code,
+                mine_document,
+              }) =>
+                now_application_document_sub_type_code === "AEF" &&
+                (now_application_document_type_code !== "PMT" ||
+                  now_application_document_type_code !== "PMA" ||
+                  mine_document.document_name.includes("DRAFT"))
             )}
             isViewMode
-            disclaimerText="This table shows all of the PDF files created from the edited Notice of Work form."
-            categoriesToShow={exportedDocuments}
+            disclaimerText="This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
+            categoriesToShow={["AEF"]}
             addDescriptionColumn={false}
           />
         </ScrollContentWrapper>
