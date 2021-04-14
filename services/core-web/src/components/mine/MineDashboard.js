@@ -43,6 +43,7 @@ import {
 import RefreshButton from "@/components/common/RefreshButton";
 import * as router from "@/constants/routes";
 import MineComments from "@/components/mine/MineComments";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class MineDashboard.js is an individual mines dashboard, gets Mine data from redux and passes into children.
@@ -178,14 +179,12 @@ export class MineDashboard extends Component {
 
     const menu = (
       <Menu>
-        <AuthorizationWrapper inTesting>
-          <div className="custom-menu-item">
-            <button type="button" className="full" onClick={this.toggleDrawer}>
-              <MessageOutlined className="padding-sm icon-sm" />
-              Communication
-            </button>
-          </div>
-        </AuthorizationWrapper>
+        <div className="custom-menu-item">
+          <button type="button" className="full" onClick={this.toggleDrawer}>
+            <MessageOutlined className="padding-sm icon-sm" />
+            Communication
+          </button>
+        </div>
         {this.props.subscribed ? (
           <div className="custom-menu-item">
             <Popconfirm
@@ -280,7 +279,12 @@ export class MineDashboard extends Component {
     return (
       <div>
         <Drawer
-          title={`Internal Communication for ${mine.mine_name}`}
+          title={
+            <>
+              Internal Communication for {mine.mine_name}
+              <CoreTooltip title="Anything written in Internal Communications may be requested under FOIPPA. Keep it professional and concise." />
+            </>
+          }
           placement="right"
           closable={false}
           onClose={this.toggleDrawer}
