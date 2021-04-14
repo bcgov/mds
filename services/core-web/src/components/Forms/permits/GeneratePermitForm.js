@@ -203,17 +203,19 @@ export const GeneratePermitForm = (props) => (
         </Row>
         <br />
         <div className="field-title">
-          Issue Date and Authorization End Date for the newly issued permit amendment.
+          {props.isAmendment
+            ? "Issue Date and Authorization End Date for the Permit Amendment in Process."
+            : "Issue Date and Authorization End Date for the Initial Permit in Process."}
         </div>
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
               id="issue_date"
               name="issue_date"
-              label={props.isAmendment ? "Issue Date" : "Issue Date"}
+              label="Issue Date"
               component={renderConfig.DATE}
               validate={[required]}
-              disabled
+              disabled={props.isViewMode}
             />
           </Col>
           <Col xs={24} md={12}>
@@ -223,7 +225,7 @@ export const GeneratePermitForm = (props) => (
               label="Authorization End Date"
               component={renderConfig.DATE}
               validate={[required]}
-              disabled
+              disabled={props.isViewMode}
             />
           </Col>
         </Row>

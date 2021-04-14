@@ -151,6 +151,8 @@ export class NOWPermitGeneration extends Component {
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
+    console.log("draftPermit", draftPermit);
+    console.log("amendment", amendment);
     const permitGenObject = {
       permit_number: "",
       issue_date: moment().format("MMM DD YYYY"),
@@ -341,6 +343,8 @@ export class NOWPermitGeneration extends Component {
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
+      issue_date: this.props.formValues.issue_date,
+      authorization_end_date: this.props.formValues.auth_end_date,
       permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
       final_original_documents_metadata: JSON.stringify(
         transformDocumentsMetadata(this.props.formValues.final_original_documents_metadata)
@@ -352,6 +356,8 @@ export class NOWPermitGeneration extends Component {
         transformDocumentsMetadata(this.props.formValues.previous_amendment_documents_metadata)
       ),
     };
+
+    console.log(payload);
     return this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,

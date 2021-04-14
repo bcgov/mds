@@ -222,7 +222,7 @@ export const sideMenuOptions = {
       title: "Application Export Files",
       alwaysVisible: true,
       children: [],
-      applicationType: ["NOW"],
+      applicationType: ["NOW", "ADA"],
     },
     {
       href: "inspectors",

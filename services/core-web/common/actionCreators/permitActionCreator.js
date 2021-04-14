@@ -135,6 +135,7 @@ export const createPermitAmendmentVC = (mineGuid, permitGuid, permitAmdendmentGu
 export const updatePermitAmendment = (mineGuid, permitGuid, permitAmdendmentGuid, payload) => (
   dispatch
 ) => {
+  console.log("updatePermitAmendment payload:", payload);
   dispatch(request(reducerTypes.UPDATE_PERMIT_AMENDMENT));
   dispatch(showLoading());
   return CustomAxios()
