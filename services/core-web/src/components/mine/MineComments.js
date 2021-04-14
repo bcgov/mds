@@ -46,7 +46,6 @@ export class MineComments extends Component {
   }
 
   render() {
-    console.log(this.props.comments);
     return (
       <div>
         <span className="ant-comment-content-author-time inline-flex flex-center">
