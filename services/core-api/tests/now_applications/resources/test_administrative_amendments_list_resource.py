@@ -15,7 +15,7 @@ class TestApplicationResource:
         get_data = json.loads(get_resp.data.decode())
         assert len(get_data['records']) == num_created
 
-    def test_get_now_application_success_filter_by_guid(self, test_client, db_session,
+    def test_get_ada_application_success_filter_by_guid(self, test_client, db_session,
                                                         auth_headers):
         num_created = 3
         NOWApplicationlist = NOWApplicationIdentityFactory.create_batch(
