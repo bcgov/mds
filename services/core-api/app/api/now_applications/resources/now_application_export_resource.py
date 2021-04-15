@@ -317,9 +317,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def transform_data(obj):
             ignore_empty_fields = ['details', 'equipment']
-
+            ignore_keys = ['render']
             for key in obj:
-                if not obj[key] and key in ignore_empty_fields:
+                if key in ignore_keys or (not obj[key] and key in ignore_empty_fields):
                     continue
                 if obj[key] is None:
                     obj[key] = EMPTY_FIELD
