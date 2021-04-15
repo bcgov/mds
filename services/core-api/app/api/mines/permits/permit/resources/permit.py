@@ -145,7 +145,8 @@ class PermitListResource(Resource, UserMixin):
 
         uploadedFiles = data.get('uploadedFiles', [])
 
-        permit_prefix = permit.permit_prefix
+        # we do not have permit yet so we will use the hybrid property logic at this point
+        permit_prefix = permit_no[0]
         Permit.validate_exemption_fee_status(
             data.get('is_exploration'), data.get('permit_status_code'), permit_prefix,
             data.get('site_properties', {}).get('mine_disturbance_code'),
@@ -310,7 +311,7 @@ class PermitResource(Resource, UserMixin):
             data.get('site_properties', {}).get('mine_tenure_type_code'),
             data.get('exemption_fee_status_code'))
 
-        if 'site_properties' in data:
+        if data.get('site_properties') != {}:
             site_properties = permit.site_properties
             if not site_properties:
                 mine_type = MineType.create(
@@ -318,12 +319,11 @@ class PermitResource(Resource, UserMixin):
                     data.get('site_properties', {}).get('mine_tenure_type_code'),
                     permit.permit_guid)
 
-                for d_code in data.get('site_properties', {}).get('mine_disturbance_code'):
+                for d_code in data.get('site_properties', {}).get('mine_disturbance_code', []):
                     MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
 
-                for c_code in data.get('site_properties', {}).get('mine_commodity_code'):
+                for c_code in data.get('site_properties', {}).get('mine_commodity_code', []):
                     MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-
             else:
                 MineType.update_mine_type_details(
                     permit_guid=permit_guid,
