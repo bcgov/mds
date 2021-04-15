@@ -233,6 +233,33 @@ def RandomPermitNumber():
     return random.choice(['C-', 'CX-', 'M-', 'M-', 'P-', 'PX-', 'G-', 'Q-']) + str(
         random.randint(1, 9999999))
 
+def ExemptionFeeStatus(permit_prefix, status, tenure):
+     if status == 'C' or :
+            return "Y"
+        elif status != 'C':
+            if permit_prefix == "P"
+                    and tenure == 'PLR':
+                return "Y"
+            elif (permit_prefix == "M" or permit_prefix == "C") and (
+                    tenure == "MIN" or tenure
+                    == "COL"):
+                return "MIM"
+            elif (permit_prefix == "Q" or permit_prefix == "G") and (
+                    tenure == "BCL" or tenure == "MIN"
+                    or tenure == "PRL"):
+                return "MIP"
+
+def RandomTenureTypeCode(permit_prefix):
+    tenure = ""
+    if permit_prefix == "P":
+        tenure = "PLR"
+    elif permit_prefix == "C": 
+        tenure = "COL"
+    elif permit_prefix == "M": 
+        tenrue = "MIN"
+    elif permit_prefix == "G" or permit_prefix == "Q": 
+        tenure = "BCL"
+    return {mine_tenure_type_code: tenure}
 
 class MineVerifiedStatusFactory(BaseFactory):
     class Meta:
@@ -618,6 +645,10 @@ class PermitFactory(BaseFactory):
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
+    permit_prefix = permit_no[0]
+    site_properties = RandomTenureTypeCode(permit_prefix)
+    exemption_fee_status = ExemptionFeeStatus(permit_prefix, permit_status_code, site_properties.mine_tenure_type_code)
+
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):

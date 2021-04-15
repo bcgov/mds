@@ -240,7 +240,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         if (permit_status == 'C' and exemption_fee_status_code != 'Y'):
             raise AssertionError('Exemption fee should be "Yes" for this permit')
         elif (permit_status != 'C'):
-            if (permit_prefix == "Q"
+            if (permit_prefix == "P"
                     and mine_tenure_type_code == 'PLR') and exemption_fee_status_code != 'Y':
                 raise AssertionError('Exemption fee should be "Yes" for this permit')
             elif is_exploration and len(mine_disturbance_codes) == 1 and all(
