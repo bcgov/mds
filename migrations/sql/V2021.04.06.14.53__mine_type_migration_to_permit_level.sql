@@ -331,3 +331,5 @@ WHERE mine_tenure_type_code = ('MIN') AND permit_guid IS NULL;
 INSERT INTO mine_type (mine_guid, mine_tenure_type_code, create_user, update_user, permit_guid)
 SELECT mine_guid, 'MIN' AS mine_tenure_type_code, 'system-mds' AS create_user, 'system-mds' AS update_user, permit_guid FROM mine_types 
 WHERE permit_guid NOT IN (SELECT permit_guid FROM mine_type WHERE permit_guid IS NOT NULL);
+
+CREATE UNIQUE INDEX mine_guid_mine_tenure_type_code_permit_guid_active_uniqeness ON mine_type USING btree (mine_guid, mine_tenure_type_code, permit_guid, active_ind) WHERE (active_ind = true);
