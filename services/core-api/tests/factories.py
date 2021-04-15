@@ -234,7 +234,7 @@ def RandomPermitNumber():
         random.randint(1, 9999999))
 
 def ExemptionFeeStatus(permit_prefix, status, tenure):
-     if status == 'C':
+    if status == 'C':
             return "Y"
         elif status != 'C':
             if permit_prefix == "P"
