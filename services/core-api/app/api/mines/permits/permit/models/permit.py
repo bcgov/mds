@@ -1,5 +1,3 @@
-from flask import current_app
-
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -56,6 +54,14 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     bonds = db.relationship(
         'Bond', lazy='select', secondary='bond_permit_xref', order_by='desc(Bond.issue_date)')
     reclamation_invoices = db.relationship('ReclamationInvoice', lazy='select')
+    exemption_fee_status_code = db.Column(
+        db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
+    exemption_fee_status_note = db.Column(db.String)
+
+    site_properties = db.relationship(
+        'MineType',
+        lazy='select',
+        primaryjoin='and_(Permit.permit_guid == MineType.permit_guid, MineType.active_ind==True)')
 
     _mine_associations = db.relationship('MinePermitXref')
 
@@ -113,6 +119,10 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def active_bond_total(self):
         return sum([b.amount for b in self.bonds if b.amount and b.bond_status_code == "ACT"])
+
+    @hybrid_property
+    def permit_prefix(self):
+        return self.permit_no[0]
 
     def get_amendments_by_mine_guid(self, mine_guid):
         return [pa for pa in self._all_permit_amendments if pa.mine_guid == mine_guid]
@@ -186,11 +196,20 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         return
 
     @classmethod
-    def create(cls, mine, permit_no, permit_status_code, is_exploration, add_to_session=True):
+    def create(cls,
+               mine,
+               permit_no,
+               permit_status_code,
+               is_exploration,
+               exemption_fee_status_code,
+               exemption_fee_status_note,
+               add_to_session=True):
         permit = cls(
             permit_no=permit_no,
             permit_status_code=permit_status_code,
-            is_exploration=is_exploration)
+            is_exploration=is_exploration,
+            exemption_fee_status_code=exemption_fee_status_code,
+            exemption_fee_status_note=exemption_fee_status_note)
         permit._mine_associations.append(MinePermitXref(mine_guid=mine.mine_guid))
         if add_to_session:
             permit.save(commit=False)
@@ -209,3 +228,32 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         if not permit_no:
             raise AssertionError('Permit number is not provided.')
         return permit_no
+
+    @classmethod
+    def validate_exemption_fee_status(cls,
+                                      is_exploration,
+                                      permit_status,
+                                      permit_prefix,
+                                      mine_disturbance_codes=None,
+                                      mine_tenure_type_code=None,
+                                      exemption_fee_status_code=None):
+        if (permit_status == 'C' and exemption_fee_status_code != 'Y'):
+            raise AssertionError('Exemption fee should be "Yes" for this permit')
+        elif (permit_status != 'C'):
+            if (permit_prefix == "P"
+                    and mine_tenure_type_code == 'PLR') and exemption_fee_status_code != 'Y':
+                raise AssertionError('Exemption fee should be "Yes" for this permit')
+            elif is_exploration and len(mine_disturbance_codes) == 1 and all(
+                    x == 'SUR'
+                    for x in mine_disturbance_codes) and exemption_fee_status_code != 'Y':
+                raise AssertionError('Exemption fee should be "Yes" for this permit')
+            elif (permit_prefix == "M" or permit_prefix == "C") and (
+                    mine_tenure_type_code == "MIN" or mine_tenure_type_code
+                    == "COL") and exemption_fee_status_code != 'MIM' and not is_exploration:
+                raise AssertionError('Exemption fee should be "Mineral/Coal" for this permit')
+            elif (permit_prefix == "Q" or permit_prefix == "G") and (
+                    mine_tenure_type_code == "BCL" or mine_tenure_type_code == "MIN"
+                    or mine_tenure_type_code == "PRL") and exemption_fee_status_code != 'MIP':
+                raise AssertionError('Exemption fee should be "Pits/Quarry" for this permit')
+
+        return exemption_fee_status_code

@@ -1,5 +1,3 @@
-import uuid
-from flask import current_app
 from sqlalchemy import exc
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, NotFound
@@ -16,19 +14,21 @@ from app.api.mines.response_models import MINE_TYPE_MODEL
 
 class MineTypeListResource(Resource, UserMixin):
     parser = reqparse.RequestParser(trim=True)
-    parser.add_argument('mine_tenure_type_code',
-                        type=str,
-                        help='Mine tenure type identifier.',
-                        location='json',
-                        required=True)
-    parser.add_argument('mine_disturbance_code',
-                        location='json',
-                        type=list,
-                        help='Mine disturbance type identifier.')
-    parser.add_argument('mine_commodity_code',
-                        location='json',
-                        type=list,
-                        help='Mine commodity type identifier.')
+    parser.add_argument(
+        'mine_tenure_type_code',
+        type=str,
+        help='Mine tenure type identifier.',
+        location='json',
+        required=True)
+    parser.add_argument(
+        'mine_disturbance_code',
+        location='json',
+        type=list,
+        help='Mine disturbance type identifier.')
+    parser.add_argument(
+        'mine_commodity_code', location='json', type=list, help='Mine commodity type identifier.')
+    parser.add_argument(
+        'permit_guid', location='json', type=str, help='Guid of the associated permit.')
 
     @api.expect(parser)
     @api.marshal_with(MINE_TYPE_MODEL, code=201)
@@ -36,11 +36,12 @@ class MineTypeListResource(Resource, UserMixin):
     @requires_role_mine_edit
     def post(self, mine_guid):
         data = self.parser.parse_args()
-        mine_tenure_type_code = data['mine_tenure_type_code']
-        mine_disturbance_code = data['mine_disturbance_code'] or []
-        mine_commodity_code = data['mine_commodity_code'] or []
+        mine_tenure_type_code = data.get('mine_tenure_type_code')
+        mine_disturbance_code = data.get('mine_disturbance_code') or []
+        mine_commodity_code = data.get('mine_commodity_code') or []
+        permit_guid = data.get('permit_guid')
 
-        mine_type = MineType.create(mine_guid, mine_tenure_type_code)
+        mine_type = MineType.create(mine_guid, mine_tenure_type_code, permit_guid)
 
         for d_code in mine_disturbance_code:
             MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)

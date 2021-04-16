@@ -257,7 +257,7 @@ exports[`MineSummary renders properly 1`] = `
         xl={6}
         xxl={4}
       >
-        <PermitCard
+        <Connect(PermitCard)
           PartyRelationships={Array []}
           permit={
             Object {

@@ -2,7 +2,7 @@ from app.extensions import api
 from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
-from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL
 
 DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
     'DocumentTemplateFieldModel', {
@@ -522,7 +522,8 @@ NOW_APPLICATION_MODEL = api.model(
         'source_permit_amendment_guid':
         fields.String,
         'has_source_conditions':
-        fields.Boolean
+        fields.Boolean,
+        # 'site_property': fields.Nested(MINE_TYPE_MODEL),
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
