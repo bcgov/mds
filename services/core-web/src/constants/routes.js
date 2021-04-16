@@ -251,6 +251,11 @@ export const NOTICE_OF_WORK_APPLICATIONS = {
   component: NoticeOfWorkHomePage,
 };
 
+export const CREATE_NOTICE_OF_WORK_APPLICATION = {
+  route: "/dashboard/notice-of-work/application/",
+  component: NoticeOfWorkApplication,
+};
+
 export const NOTICE_OF_WORK_APPLICATION = {
   route: "/dashboard/notice-of-work/app/:id/:tab",
   dynamicRoute: (guid, tab) =>

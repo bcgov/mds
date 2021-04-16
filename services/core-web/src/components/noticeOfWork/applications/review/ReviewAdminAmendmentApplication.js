@@ -33,7 +33,6 @@ import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderDate from "@/components/common/RenderDate";
 import ReviewNOWContacts from "./ReviewNOWContacts";
-// import ReviewSiteProperties from "./ReviewSiteProperties";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -146,22 +145,6 @@ export const ReviewAdminAmendmentApplication = (props) => {
         <ScrollContentWrapper id="application-info" title="Application Info">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
-        {/* TODO - Add Site_properties to now flow when follow up work is completed */}
-        {/* <ScrollContentWrapper
-          id="site-properties"
-          title={
-            <>
-              Site Properties
-              <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
-            </>
-          }
-        >
-          <ReviewSiteProperties
-            noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
-            isViewMode={props.isViewMode}
-            initialValues={props.noticeOfWork}
-          />
-        </ScrollContentWrapper> */}
         <ScrollContentWrapper id="contacts" title="Contacts">
           <ReviewNOWContacts
             contacts={props.noticeOfWork.contacts}
