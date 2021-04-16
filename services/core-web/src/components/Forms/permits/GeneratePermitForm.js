@@ -14,6 +14,7 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitGeneration/PermitAmendmentTable";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -164,6 +165,7 @@ export const GeneratePermitForm = (props) => (
 
     <ScrollContentWrapper id="authorization" title="Permit Authorizations">
       <>
+        <PermitAmendmentTable permit={props.permit} />
         <Row gutter={32}>
           {props.isAmendment && (
             <Col xs={24} md={12}>
