@@ -221,24 +221,20 @@ class NOWApplicationExportResource(Resource, UserMixin):
         def format_boolean(value):
             return 'Yes' if value else 'No'
 
-        def get_reclamation_summary(now_application):
+        def get_reclamation_summary(now_application, render):
             summary = []
             activity_types = ActivityType.get_all()
             reclamation_activity_types = (
                 activity_type for activity_type in activity_types
                 if activity_type.activity_type_code not in ['water_supply', 'blasting_operation'])
             for activity_type in reclamation_activity_types:
-                if now_application.get(activity_type.activity_type_code):
-                    summary.append({
-                        'activity':
-                        activity_type.description,
-                        'total':
-                        now_application[activity_type.activity_type_code].get(
-                            'calculated_total_disturbance', EMPTY_FIELD),
-                        'cost':
-                        format_currency(now_application[activity_type.activity_type_code].get(
-                            'reclamation_cost', None))
-                    })
+                activity_type_code = activity_type.activity_type_code
+                if now_application.get(activity_type_code) and render.get(activity_type_code):
+                    activity = activity_type.description
+                    total = now_application[activity_type_code].get('calculated_total_disturbance')
+                    cost = format_currency(
+                        now_application[activity_type_code].get('reclamation_cost'))
+                    summary.append({'activity': activity, 'total': total, 'cost': cost})
             return summary
 
         def get_renderable_now_sections(now_application):
@@ -350,7 +346,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
         # Transform and format various fields
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
-        now_application_json['summary'] = get_reclamation_summary(now_application_json)
         now_application_json['documents'] = transform_documents(now_application_json)
 
         # Remove signature images from parties
@@ -383,6 +378,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
             permit_type, now_application_json['application_permit_type_code'])
 
         now_application_json['render'] = get_renderable_now_sections(now_application_json)
+        now_application_json['summary'] = get_reclamation_summary(now_application_json,
+                                                                  now_application_json['render'])
         now_application_json = transform_data(now_application_json)
 
         # Determine what fields have changed from the original application
