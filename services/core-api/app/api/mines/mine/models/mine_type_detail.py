@@ -12,16 +12,14 @@ from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 
 class MineTypeDetail(AuditMixin, Base):
     __tablename__ = 'mine_type_detail_xref'
-    mine_type_detail_xref_guid = db.Column(UUID(as_uuid=True),
-                                           primary_key=True,
-                                           server_default=FetchedValue())
-    mine_type_guid = db.Column(UUID(as_uuid=True),
-                               db.ForeignKey('mine_type.mine_type_guid'),
-                               nullable=False)
-    mine_disturbance_code = db.Column(db.String(3),
-                                      db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
-    mine_commodity_code = db.Column(db.String(2),
-                                    db.ForeignKey('mine_commodity_code.mine_commodity_code'))
+    mine_type_detail_xref_guid = db.Column(
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    mine_type_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('mine_type.mine_type_guid'), nullable=False)
+    mine_disturbance_code = db.Column(
+        db.String(3), db.ForeignKey('mine_disturbance_code.mine_disturbance_code'))
+    mine_commodity_code = db.Column(
+        db.String(2), db.ForeignKey('mine_commodity_code.mine_commodity_code'))
 
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
 

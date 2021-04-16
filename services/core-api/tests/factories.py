@@ -234,6 +234,37 @@ def RandomPermitNumber():
         random.randint(1, 9999999))
 
 
+def ExemptionFeeStatus(permit_no, status, tenure):
+    permit_prefix = permit_no[0]
+    if status == 'C':
+        return "Y"
+    elif status != 'C':
+        if permit_prefix == "P" and tenure == 'PLR':
+            return "Y"
+        elif (permit_prefix == "M" or permit_prefix == "C") and (tenure == "MIN"
+                                                                 or tenure == "COL"):
+            return "MIM"
+        elif (permit_prefix == "Q" or permit_prefix == "G") and (tenure == "BCL" or tenure == "MIN"
+                                                                 or tenure == "PRL"):
+            return "MIP"
+
+
+def RandomTenureTypeCode(permit_no):
+    permit_prefix = permit_no[0]
+    tenure = ""
+    if permit_prefix == "P":
+        tenure = "PLR"
+    elif permit_prefix == "C":
+        tenure = "COL"
+    elif permit_prefix == "M":
+        tenure = "MIN"
+    elif permit_prefix == "G" or permit_prefix == "Q":
+        tenure = "BCL"
+
+    obj = {'mine_tenure_type_code': tenure}
+    return obj
+
+
 class MineVerifiedStatusFactory(BaseFactory):
     class Meta:
         model = MineVerifiedStatus
@@ -618,6 +649,35 @@ class PermitFactory(BaseFactory):
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
+
+    @factory.post_generation
+    def permit_prefix(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = {}
+        obj.permit_no[0]
+
+    @factory.post_generation
+    def site_properties(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = {}
+        RandomTenureTypeCode(obj.permit_no)
+
+    @factory.post_generation
+    def exemption_fee_status_code(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = {}
+
+        ExemptionFeeStatus(obj.permit_no, obj.permit_status_code,
+                           RandomTenureTypeCode(obj.permit_no))
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):
