@@ -216,7 +216,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
             return contact
 
         def format_currency(value):
-            return f'${float(value):,.2f}' if value and is_number(value) else value
+            return f'${float(value):,.2f}' if value != None and is_number(value) else value
 
         def format_boolean(value):
             return 'Yes' if value else 'No'
