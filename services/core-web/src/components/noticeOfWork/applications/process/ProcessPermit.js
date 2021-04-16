@@ -61,6 +61,7 @@ const approvedCode = "AIA";
 const approvedLetterCode = "NPE";
 const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
+const withdrawnCode = "WDN";
 const withdrawnLetterCode = "WDL";
 const originalPermit = "OGP";
 const regionHash = {
@@ -178,9 +179,9 @@ export class ProcessPermit extends Component {
         statusCode: approvedCode,
         letterCode: approvedLetterCode,
       },
-      WDL: {
+      WDN: {
         title: "Withdraw Application",
-        statusCode: rejectedCode,
+        statusCode: withdrawnCode,
         letterCode: withdrawnLetterCode,
       },
     };
@@ -376,7 +377,11 @@ export class ProcessPermit extends Component {
     if (code === approvedCode) {
       return this.handleApprovedApplication(values);
     }
-    return this.afterSuccess(values, "This application has been successfully rejected.", code);
+    return this.afterSuccess(
+      values,
+      `This application has been successfully ${code === "WDN" ? "withdrawn" : "rejected"}.`,
+      code
+    );
   };
 
   generatePermitNumber = () => {
@@ -513,7 +518,7 @@ export class ProcessPermit extends Component {
       ({ is_final_package }) => is_final_package
     );
     const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
-    const titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
+    let titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
       .length;
     if (titlesMissing !== 0) {
       validationMessages.push({
@@ -532,7 +537,7 @@ export class ProcessPermit extends Component {
       this.props.draftAmendment
     ).previous_amendment;
     if (!isEmpty(previousAmendment)) {
-      const titlesMissing = previousAmendment.related_documents?.filter(
+      titlesMissing = previousAmendment.related_documents?.filter(
         ({ preamble_title }) => !preamble_title
       ).length;
       if (titlesMissing !== 0) {
@@ -764,7 +769,7 @@ export class ProcessPermit extends Component {
       </Menu.Item>
       <Menu.Item
         key="withdraw-application"
-        onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnLetterCode)}
+        onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnCode)}
       >
         Withdraw application
       </Menu.Item>

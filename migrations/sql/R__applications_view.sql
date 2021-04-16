@@ -31,7 +31,7 @@ AS SELECT nid.now_application_guid,
                 WHEN 'No Permit Required'::text THEN 'Pending Verification'::character varying
                 WHEN 'Govt. Action Required'::text THEN 'Pending Verification'::character varying
                 WHEN 'Rejected-Initial'::text THEN 'Rejected'::character varying
-                WHEN 'Withdrawn'::text THEN 'Rejected'::character varying
+                WHEN 'Withdrawn'::text THEN 'Withdrawn'::character varying
                 ELSE COALESCE(msub.status, sub.status)
             END
             ELSE COALESCE(nows.description, msub.status, sub.status)
@@ -58,7 +58,7 @@ AS SELECT nid.now_application_guid,
     nowt.description AS application_type_description,
     app.now_application_status_code,
     CASE
-        WHEN app.now_application_status_code in ('AIA', 'REJ', 'NPR') THEN app.status_updated_date
+        WHEN app.now_application_status_code in ('AIA', 'REJ', 'NPR', 'WDN') THEN app.status_updated_date
         ELSE NULL
     END AS decision_date
    FROM now_application_identity nid

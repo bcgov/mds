@@ -34,3 +34,19 @@ class TestNOWApplicationStatus:
             },
             headers=auth_headers['full_auth_header'])
         assert put_resp.status_code == 200, put_resp.response
+
+    def test_put_application_status_WDN(self, test_client, db_session, auth_headers):
+        mine = MineFactory(major_mine_ind=True, mine_permit_amendments=1)
+        now_application = NOWApplicationFactory(application_progress=None)
+        now_application_identity = NOWApplicationIdentityFactory(
+            now_application=now_application, mine=mine)
+
+        put_resp = test_client.put(
+            f'/now-applications/{now_application_identity.now_application_guid}/status',
+            json={
+                'issue_date': datetime.now().isoformat(),
+                'auth_end_date': (datetime.now() + timedelta(days=30)).isoformat(),
+                'now_application_status_code': 'WDN'
+            },
+            headers=auth_headers['full_auth_header'])
+        assert put_resp.status_code == 200, put_resp.response
