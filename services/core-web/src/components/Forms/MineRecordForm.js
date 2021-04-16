@@ -171,12 +171,12 @@ export class MineRecordForm extends Component {
 
   createPanelHeader = (index, fields) => (
     <div className="inline-flex between">
-      <Form.Item style={{ marginTop: "15px" }} label={`New Site Property: ${index + 1}`} />
+      <Form.Item style={{ marginTop: "15px" }} label={`New Mine Type: ${index + 1}`} />
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={`Are you sure you want to remove Site Property ${index + 1}?`}
+          title={`Are you sure you want to remove Mine Type ${index + 1}?`}
           onConfirm={(event) => {
             this.removeField(event, fields, index);
           }}
@@ -218,19 +218,19 @@ export class MineRecordForm extends Component {
     <div className="inline-flex between">
       <Form.Item
         style={{ marginTop: "15px" }}
-        label={`Existing Site Property: ${this.props.mineTenureHash[mineTenureCode]}`}
+        label={`Existing Mine Type: ${this.props.mineTenureHash[mineTenureCode]}`}
       />
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={`Are you sure you want to remove Site Property ${this.props.mineTenureHash[mineTenureCode]}?`}
+          title={`Are you sure you want to remove Mine Type ${this.props.mineTenureHash[mineTenureCode]}?`}
           onConfirm={(event) => this.props.handleDelete(event, mineTenureCode)}
           okText="Yes"
           cancelText="No"
         >
           <Button ghost>
-            <img name="remove" src={TRASHCAN} alt="Remove Site Property" />
+            <img name="remove" src={TRASHCAN} alt="Remove Mine Type" />
           </Button>
         </Popconfirm>
       </div>
@@ -335,8 +335,8 @@ export class MineRecordForm extends Component {
         <Button className="btn--dropdown" onClick={(event) => this.addField(event, fields)}>
           <PlusOutlined style={{ color: Styles.COLOR.violet }} />
           {fields.length === 0 && !this.props.currentMineTypes
-            ? "Add Site Property"
-            : "Add Another Site Property"}
+            ? "Add Mine Type"
+            : "Add Another Mine Type"}
         </Button>
       </div>
     );
@@ -463,7 +463,7 @@ export class MineRecordForm extends Component {
                 <Field
                   id="exemption_fee_status_code"
                   name="exemption_fee_status_code"
-                  label="Inspection Fee Status"
+                  label="Fee Exemption"
                   disabled
                   component={renderConfig.SELECT}
                   validate={[validateSelectOptions(this.props.exemptionFeeSatusDropDownOptions)]}
@@ -502,7 +502,7 @@ export class MineRecordForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item label="Site Property" />
+            <Form.Item label="Mine Type" />
             <FieldArray name="mine_types" component={renderTypeSelect} />
           </>
         )}
