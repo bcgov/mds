@@ -136,13 +136,8 @@ class DocumentTemplate(Base, AuditMixin):
                 # If this section is visible, remove the render tags and continue.
                 if visible:
                     for paragraph in doc.paragraphs:
-                        if paragraph.text == showBegin:
+                        if paragraph.text in (showBegin, showEnd):
                             delete_paragraph(paragraph)
-                            break
-                    for paragraph in doc.paragraphs:
-                        if paragraph.text == showEnd:
-                            delete_paragraph(paragraph)
-                            break
                     continue
 
                 # Else, remove the render tags and all tables and paragraphs between them.
