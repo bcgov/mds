@@ -404,9 +404,6 @@ class NOWApplicationExportResource(Resource, UserMixin):
         # Set "export" information
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
 
-        # current_app.logger.info(f'original\n{json.dumps(original_now_application_json)}')
-        current_app.logger.info(f'render\n{json.dumps(now_application_json["render"])}')
-
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
         # later). A ticket (MDS-2744) to set something else up as been created.
