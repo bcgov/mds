@@ -239,15 +239,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def get_renderable_now_sections(now_application):
             conditional_sections = [
-                'sand_gravel_quarry_operation', 'surface_bulk_sample',
-                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
+                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
+                'underground_exploration', 'placer_operation'
             ]
 
             def get_applicable_now_sections(now_application):
                 now_type_conditional_sections = {
-                    'QCA': ['sand_gravel_quarry_operation'],
-                    'SAG': ['sand_gravel_quarry_operation'],
-                    'QIM': ['sand_gravel_quarry_operation'],
+                    'QCA': ['sand_and_gravel'],
+                    'SAG': ['sand_and_gravel'],
+                    'QIM': ['sand_and_gravel'],
                     'COL': [
                         'surface_bulk_sample', 'cut_lines_polarization_survey',
                         'underground_exploration'
@@ -273,8 +273,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
             def get_populated_hideable_now_sections(now_application):
                 hideable_now_sections = [
-                    'sand_gravel_quarry_operation', 'exploration_access', 'blasting_operation',
-                    'camp', 'cut_lines_polarization_survey', 'exploration_surface_drilling',
+                    'exploration_access', 'blasting_operation', 'camp',
+                    'cut_lines_polarization_survey', 'exploration_surface_drilling',
                     'mechanical_trenching', 'settling_pond', 'surface_bulk_sample',
                     'underground_exploration', 'sand_and_gravel', 'placer_operation', 'water_supply'
                 ]
@@ -403,6 +403,9 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         # Set "export" information
         now_application_json['exported_date_utc'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M')
+
+        # current_app.logger.info(f'original\n{json.dumps(original_now_application_json)}')
+        current_app.logger.info(f'render\n{json.dumps(now_application_json["render"])}')
 
         # For now, we don't have a "proper" means of authorizing communication between our microservices, so this temporary solution
         # has been put in place to authorize with the document manager (pass the authorization headers into the token and re-use them
