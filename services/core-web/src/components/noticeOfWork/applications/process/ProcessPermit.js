@@ -213,6 +213,7 @@ export class ProcessPermit extends Component {
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             noticeOfWork: this.props.noticeOfWork,
+            draftAmendment:  this.props.draftAmendment,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },

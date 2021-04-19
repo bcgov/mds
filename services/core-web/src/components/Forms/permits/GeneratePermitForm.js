@@ -4,11 +4,12 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row } from "antd";
-import { required } from "@common/utils/Validate";
+import { required, dateNotAfterOther, dateNotInFuture } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import { isPlacerAdjustmentFeeValid } from "@common/utils/helpers";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
@@ -26,7 +27,29 @@ const propTypes = {
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
 };
 
-export const GeneratePermitForm = (props) => (
+export const GeneratePermitForm = (props) => { 
+
+const dateRangeIsValidStart = (value, allValues, props) =>
+  dateRangeIsValid(value, allValues.auth_end_date, props);
+
+const dateRangeIsValidEnd = (value, allValues, props) =>
+  dateRangeIsValid(allValues.issue_date, value, props);
+
+const dateRangeIsValid = (start, end, props) => {
+  const type = props.noticeOfWork.notice_of_work_type_code;
+  const proposedTonnage = props.noticeOfWork.proposed_annual_maximum_tonnage;
+  const adjustedTonnage = props.noticeOfWork.adjusted_annual_maximum_tonnage;
+
+  if (type === "PLA") {
+    return isPlacerAdjustmentFeeValid(proposedTonnage, adjustedTonnage, start, end)
+      ? undefined
+      : "This value would create an invalid date range for the paid permit fee.";
+  }
+
+  return undefined;
+};
+
+  return (
   <Form layout="vertical">
     <ScrollContentWrapper id="general-info" title="General Information">
       <>
@@ -166,7 +189,7 @@ export const GeneratePermitForm = (props) => (
     <ScrollContentWrapper id="authorization" title="Permit Authorizations">
       <>
         <PermitAmendmentTable permit={props.permit} />
-        <Row gutter={32}>
+        {/* <Row gutter={32}>
           {props.isAmendment && (
             <Col xs={24} md={12}>
               <Field
@@ -202,7 +225,7 @@ export const GeneratePermitForm = (props) => (
               disabled
             />
           </Col>
-        </Row>
+        </Row> */}
         <br />
         <div className="field-title">
           {props.isAmendment
@@ -216,7 +239,13 @@ export const GeneratePermitForm = (props) => (
               name="issue_date"
               label="Issue Date"
               component={renderConfig.DATE}
-              validate={[required]}
+               validate={[
+                required,
+                dateNotInFuture,
+                // dateNotAfterOther(props.formValues.auth_end_date),
+                dateRangeIsValidStart,
+              ]}
+              // validate={[required, dateRangeIsValidStart]}
               disabled={props.isViewMode}
             />
           </Col>
@@ -226,7 +255,11 @@ export const GeneratePermitForm = (props) => (
               name="auth_end_date"
               label="Authorization End Date"
               component={renderConfig.DATE}
-              validate={[required]}
+               validate={[
+                required,
+                // dateNotBeforeOther(props.formValues.issue_date),
+                dateRangeIsValidEnd,
+              ]}
               disabled={props.isViewMode}
             />
           </Col>
@@ -320,6 +353,7 @@ export const GeneratePermitForm = (props) => (
     </ScrollContentWrapper>
   </Form>
 );
+}
 
 GeneratePermitForm.propTypes = propTypes;
 

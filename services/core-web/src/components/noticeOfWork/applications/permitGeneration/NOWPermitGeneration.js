@@ -155,7 +155,7 @@ export class NOWPermitGeneration extends Component {
     console.log("amendment", amendment);
     const permitGenObject = {
       permit_number: "",
-      issue_date: moment().format("MMM DD YYYY"),
+      issue_date: amendment.issue_date,
       auth_end_date: "",
       regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
@@ -196,7 +196,7 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
     permitGenObject.permit_number = draftPermit.permit_no;
-    permitGenObject.auth_end_date = noticeOfWork.proposed_end_date;
+    permitGenObject.auth_end_date = amendment.authorization_end_date;
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
@@ -357,7 +357,7 @@ export class NOWPermitGeneration extends Component {
       ),
     };
 
-    console.log(payload);
+
     return this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,

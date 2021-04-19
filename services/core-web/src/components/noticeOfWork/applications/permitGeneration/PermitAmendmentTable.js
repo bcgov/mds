@@ -4,11 +4,6 @@ import { Button, Badge, Popconfirm } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  getVarianceStatusOptionsHash,
-  getHSRCMComplianceCodesHash,
-} from "@common/selectors/staticContentSelectors";
-import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
@@ -19,6 +14,9 @@ import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
+import {
+  getPermitAmendmentTypeOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {};
@@ -31,31 +29,36 @@ const renderDocumentLink = (file, text) => (
   </LinkButton>
 );
 
+const amendmentStatusHash = {
+  "ACT": "Active"
+}
+
 export class PermitAmendmentTable extends Component {
   transformRowData = (permitAmendments) =>
-    permitAmendments.map((amendment) => ({
+    permitAmendments.filter(({permit_amendment_status_code}) => permit_amendment_status_code !== "DFT").map((amendment) => ({
       key: amendment.permit_amendment_guid,
       ...amendment,
     }));
 
   render() {
     const columns = [
-      // {
-      //   title: "",
-      //   dataIndex: "is_overdue",
-      //   render: (isOverdue) => (
-      //     <div title="Expired">
-      //       {isOverdue ? <img className="padding-sm" src={RED_CLOCK} alt="Expired" /> : ""}
-      //     </div>
-      //   ),
-      // },
+      {
+        title: "Type of Amendment",
+        dataIndex: "permit_amendment_type_code",
+        sortField: "permit_amendment_type_code",
+        render: (text) => (
+          <div title="Type of Amendment">
+            {this.props.permitAmendmentTypeOptionsHash[text]}
+          </div>
+        ),
+      },
       {
         title: "Issue Date",
         dataIndex: "issue_date",
         sortField: "issue_date",
         render: (text) => (
           <div title="Issue Date">
-            {formatDate(text)}
+            {formatDate(text)|| "N/A"}
           </div>
         ),
       },
@@ -65,16 +68,16 @@ export class PermitAmendmentTable extends Component {
         sortField: "authorization_end_date",
         render: (text) => (
           <div title="Expiry Date">
-            {formatDate(text)}
+            {formatDate(text) || "N/A"}
           </div>
         ),
       },
       {
-        title: "Permit Files",
+        title: "Documents",
         dataIndex: "related_documents",
         key: "related_documents",
         render: (text) => (
-          <div title="Permit Files">
+          <div title="Documents">
             <ul>
               {text?.map((file) => (
                 <li className="wrapped-text">
@@ -95,7 +98,6 @@ export class PermitAmendmentTable extends Component {
         tableProps={{
           align: "center",
           pagination: false,
-          scroll: { y: 500 },
         }}
       />
     );
@@ -106,9 +108,7 @@ PermitAmendmentTable.propTypes = propTypes;
 PermitAmendmentTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  // complianceCodesHash: getHSRCMComplianceCodesHash(state),
-  // inspectorsHash: getInspectorsHash(state),
-  // varianceStatusOptionsHash: getVarianceStatusOptionsHash(state),
+  permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(PermitAmendmentTable);

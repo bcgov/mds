@@ -44,8 +44,8 @@ export class UpdateStatusGenerateLetterModal extends Component {
     this.props.type === "AIA" ? (
       <IssuePermitForm
         initialValues={{
-          issue_date: this.props.noticeOfWork.proposed_start_date,
-          auth_end_date: this.props.noticeOfWork.proposed_end_date,
+          issue_date: this.props.draftAmendment.issue_date,
+          auth_end_date: this.props.draftAmendment.authorization_end_date,
         }}
         noticeOfWork={this.props.noticeOfWork}
         onSubmit={this.props.onSubmit}
