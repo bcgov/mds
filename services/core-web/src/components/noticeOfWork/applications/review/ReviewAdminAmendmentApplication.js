@@ -158,9 +158,13 @@ export const ReviewAdminAmendmentApplication = (props) => {
           title="Additional Application Files"
         >
           <NOWDocuments
-            documents={props.documents}
+            documents={props.documents?.filter(
+              ({ now_application_document_sub_type_code }) =>
+                now_application_document_sub_type_code === "AAF"
+            )}
             isViewMode={!props.isViewMode}
             disclaimerText="Attach any file revisions or new files requested from the proponent here."
+            categoriesToShow={["AAF"]}
           />
         </ScrollContentWrapper>
       </Form>

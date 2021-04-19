@@ -19,6 +19,11 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  draftAmendment: PropTypes.objectOf(PropTypes.any),
+};
+
+const defaultProps = {
+  draftAmendment: {},
 };
 
 export const RejectApplicationForm = (props) => (
@@ -43,7 +48,11 @@ export const RejectApplicationForm = (props) => (
           <Field
             id="status_reason"
             name="status_reason"
-            label={props.type === "REJ" ? "Reason for Rejection" : "Reason for Withdrawal"}
+            label={
+              (props.type === "REJ" && "Reason for Rejection") ||
+              (props.type === "WDN" && "Reason for Withdrawal") ||
+              ""
+            }
             component={renderConfig.AUTO_SIZE_FIELD}
             validate={[maxLength(4000)]}
           />
@@ -79,6 +88,7 @@ export const RejectApplicationForm = (props) => (
 );
 
 RejectApplicationForm.propTypes = propTypes;
+RejectApplicationForm.defaultProps = defaultProps;
 
 export default reduxForm({
   form: FORM.REJECT_APPLICATION,

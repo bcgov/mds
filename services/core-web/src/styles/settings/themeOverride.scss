@@ -40,6 +40,18 @@
   }
 }
 
+// DRAWER
+.ant-drawer-body {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  padding: 24px;
+  height: 100vh;
+  overflow: scroll;
+  font-size: 1rem;
+  line-height: 1.5715;
+  word-wrap: break-word;
+}
 // BUTTON
 .ant-btn,
 .ant-btn-sm,
