@@ -478,6 +478,7 @@ export class NOWPermitGeneration extends Component {
                   <NullScreen type="draft-permit" />
                 ) : (
                   <GeneratePermitForm
+                    permit={this.props.draftPermit}
                     initialValues={{
                       ...this.state.permitGenObj,
                       final_requested_documents_metadata: getDocumentsMetadataInitialValues(

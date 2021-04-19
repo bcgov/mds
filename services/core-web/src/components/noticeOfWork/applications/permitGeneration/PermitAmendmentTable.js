@@ -40,22 +40,22 @@ export class PermitAmendmentTable extends Component {
 
   render() {
     const columns = [
-      {
-        title: "",
-        dataIndex: "is_overdue",
-        render: (isOverdue) => (
-          <div title="Expired">
-            {isOverdue ? <img className="padding-sm" src={RED_CLOCK} alt="Expired" /> : ""}
-          </div>
-        ),
-      },
+      // {
+      //   title: "",
+      //   dataIndex: "is_overdue",
+      //   render: (isOverdue) => (
+      //     <div title="Expired">
+      //       {isOverdue ? <img className="padding-sm" src={RED_CLOCK} alt="Expired" /> : ""}
+      //     </div>
+      //   ),
+      // },
       {
         title: "Issue Date",
         dataIndex: "issue_date",
         sortField: "issue_date",
         render: (text) => (
-          <div title="Issue Date" className={hideColumn(this.props.isApplication)}>
-            {text}
+          <div title="Issue Date">
+            {formatDate(text)}
           </div>
         ),
       },
@@ -64,15 +64,15 @@ export class PermitAmendmentTable extends Component {
         dataIndex: "authorization_end_date",
         sortField: "authorization_end_date",
         render: (text) => (
-          <div title="Expiry Date" className={hideColumn(this.props.isApplication)}>
-            {text}
+          <div title="Expiry Date">
+            {formatDate(text)}
           </div>
         ),
       },
       {
         title: "Permit Files",
-        dataIndex: "documents",
-        key: "documents",
+        dataIndex: "related_documents",
+        key: "related_documents",
         render: (text) => (
           <div title="Permit Files">
             <ul>
