@@ -227,8 +227,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 current_app.logger.warning('VC not issued due to unknown error')
                 current_app.logger.info(str(ex))
 
-        # Handle rejected status
-        elif now_application_status_code == 'REJ':
+        # Handle rejected and withdrawn statuses
+        elif now_application_status_code in ['REJ', 'WDN']:
             for progress in now_application_identity.now_application.application_progress:
                 progress.end_date = datetime.now(tz=timezone.utc)
             for delay in now_application_identity.application_delays:
