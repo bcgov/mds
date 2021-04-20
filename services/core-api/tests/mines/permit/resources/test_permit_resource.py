@@ -114,7 +114,7 @@ def test_put_permit(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     permit_guid = permit.permit_guid
 
-    data = {'permit_status_code': 'C'}
+    data = {'permit_status_code': 'C', 'exemption_fee_status_code': 'Y'}
     put_resp = test_client.put(
         f'/mines/{permit.mine.mine_guid}/permits/{permit_guid}',
         headers=auth_headers['full_auth_header'],

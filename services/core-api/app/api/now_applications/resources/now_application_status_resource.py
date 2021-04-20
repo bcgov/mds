@@ -17,6 +17,7 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
+from app.api.mines.mine.models.mine_type import MineType
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -138,6 +139,12 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.security_not_required = now_application_identity.now_application.security_not_required
             permit_amendment.security_not_required_reason = now_application_identity.now_application.security_not_required_reason
             permit_amendment.save()
+
+            # transfer site_properties to permit
+            # enable this when the site_properties flow for NOW and ADA is ready
+            #     mine_type = now_application_identity.now_application.site_property
+            #     mine_type.permit_guid = permit.permit_guid
+            #     mine_type.save()
 
             # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit
             only_one_contact_of_type_allowed = ['PMT', 'MMG']

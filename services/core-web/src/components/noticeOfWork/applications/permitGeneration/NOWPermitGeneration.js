@@ -20,8 +20,9 @@ import {
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
+  getPermits,
 } from "@common/selectors/permitSelectors";
-import { getPermits } from "@common/reducers/permitReducer";
+
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
