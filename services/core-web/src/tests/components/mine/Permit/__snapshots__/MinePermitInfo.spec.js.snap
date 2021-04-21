@@ -33,7 +33,6 @@ exports[`MinePermitInfo renders properly 1`] = `
   <br />
   <Connect(MinePermitTable)
     expandedRowKeys={Array []}
-    handleAddPermitAmendmentApplication={[Function]}
     handleDeletePermit={[Function]}
     handleDeletePermitAmendment={[Function]}
     handlePermitAmendmentIssueVC={[Function]}
@@ -45,6 +44,7 @@ exports[`MinePermitInfo renders properly 1`] = `
     openAddPermitHistoricalAmendmentModal={[Function]}
     openEditAmendmentModal={[Function]}
     openEditPermitModal={[Function]}
+    openEditSitePropertiesModal={[Function]}
     partyRelationships={Array []}
     permits={Array []}
   />

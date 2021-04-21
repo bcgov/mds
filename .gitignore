@@ -17,6 +17,7 @@ __pycache__
 microservices/document_manager/backend/document_uploads/
 *last-backup
 venv*
+[~][$]*
 
 *_DeploymentConfig.json
 *_BuildConfig.json

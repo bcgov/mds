@@ -15,12 +15,11 @@ import {
   deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
+import { fetchMineRecordById, createMineTypes } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
@@ -60,6 +59,7 @@ const propTypes = {
   deletePermit: PropTypes.func.isRequired,
   deletePermitAmendment: PropTypes.func.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  createMineTypes: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -151,6 +151,19 @@ export class MinePermitInfo extends Component {
     });
   };
 
+  openEditSitePropertiesModal = (event, permit) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: permit,
+        permit,
+        onSubmit: this.handleEditPermit,
+        title: `Edit Site Properties for ${permit.permit_no}`,
+      },
+      content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
+    });
+  };
+
   // Permit Handlers
   handleAddPermit = (values) => {
     const permit_no = values.is_exploration
@@ -160,7 +173,10 @@ export class MinePermitInfo extends Component {
 
     this.setState({ modifiedPermits: true });
 
-    return this.props.createPermit(this.props.mineGuid, payload).then(this.closePermitModal);
+    return this.props.createPermit(this.props.mineGuid, payload).then((data) => {
+      const siteProperties = { ...values.site_properties, permit_guid: data.data.permit_guid };
+      this.props.createMineTypes(this.props.mineGuid, [siteProperties]).then(this.closePermitModal);
+    });
   };
 
   handleEditPermit = (values) =>
@@ -319,12 +335,6 @@ export class MinePermitInfo extends Component {
         this.props.fetchPermits(this.props.mineGuid);
       });
 
-  handleAddPermitAmendmentApplication = (permitGuid) =>
-    this.props.history.push(router.CREATE_NOTICE_OF_WORK_APPLICATION.route, {
-      mineGuid: this.props.mineGuid,
-      permitGuid,
-    });
-
   handleDeletePermitAmendment = (record) =>
     this.props
       .deletePermitAmendment(
@@ -378,10 +388,10 @@ export class MinePermitInfo extends Component {
           major_mine_ind={mine.major_mine_ind}
           openEditPermitModal={this.openEditPermitModal}
           openEditAmendmentModal={this.openEditAmendmentModal}
+          openEditSitePropertiesModal={this.openEditSitePropertiesModal}
           openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
           openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
           openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
-          handleAddPermitAmendmentApplication={this.handleAddPermitAmendmentApplication}
           handlePermitAmendmentIssueVC={this.handlePermitAmendmentIssueVC}
           expandedRowKeys={this.state.expandedRowKeys}
           onExpand={this.onExpand}
@@ -416,6 +426,7 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       deletePermit,
       deletePermitAmendment,
+      createMineTypes,
     },
     dispatch
   );

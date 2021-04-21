@@ -11,7 +11,8 @@ from flask import current_app
 
 vfcbc_status_code_mapping = {
     "Accepted": "AIA",
-    "Withdrawn": "REJ",
+    "Withdrawn": "WDN",
+    "Rejected": "RJN",
     "Under Review": "PEV",
     None: "PEV",
 }

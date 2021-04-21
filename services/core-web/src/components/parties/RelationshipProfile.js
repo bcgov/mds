@@ -9,7 +9,7 @@ import { isEmpty } from "lodash";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
 

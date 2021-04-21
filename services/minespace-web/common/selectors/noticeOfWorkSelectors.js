@@ -106,11 +106,33 @@ export const getApplicationDelaysWithDuration = createSelector([getApplicationDe
 });
 
 export const getNoticeOfWork = createSelector([getNoticeOfWorkUnformatted], (noticeOfWork) => {
+  // TODO: Add back when follow up work is completed for NoW applications & site properties
+  // const siteProperty = noticeOfWork.site_property;
+  // const siteProperties = {
+  //   mine_tenure_type_code: "",
+  //   mine_commodity_code: [],
+  //   mine_disturbance_code: [],
+  // };
+
+  // if (siteProperty) {
+  //   siteProperties.mine_tenure_type_code = siteProperty.mine_tenure_type_code;
+  //   if (siteProperty.mine_type_detail) {
+  //     siteProperty.mine_type_detail.forEach((detail) => {
+  //       if (detail.mine_commodity_code) {
+  //         siteProperties.mine_commodity_code.push(detail.mine_commodity_code);
+  //       } else if (detail.mine_disturbance_code) {
+  //         siteProperties.mine_disturbance_code.push(detail.mine_disturbance_code);
+  //       }
+  //     });
+  //   }
+  // }
+
   return {
     ...noticeOfWork,
     application_reason_codes:
       noticeOfWork.application_reason_codes && noticeOfWork.application_reason_codes.length > 0
         ? noticeOfWork.application_reason_codes.map((c) => c.application_reason_code)
         : [],
+    // site_property: siteProperties,
   };
 });
