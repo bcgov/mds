@@ -30,5 +30,7 @@ class ActivitySummaryBase(AuditMixin, Base):
 
     @classmethod
     def calculate_total_disturbance_area(cls, details):
-        total = sum(item.disturbed_area if item.disturbed_area else 0 for item in details)
-        return total if total else 0
+        if details:
+            total = sum(item.disturbed_area if item.disturbed_area else 0 for item in details)
+            return total if total else 0
+        return None

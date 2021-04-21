@@ -113,7 +113,8 @@ VALUES
     ('COL', 'Coal', TRUE, 'system-mds', 'system-mds'),
     ('MIN', 'Mineral', TRUE, 'system-mds', 'system-mds'),
     ('PLR', 'Placer', TRUE, 'system-mds', 'system-mds'),
-    ('BCL', 'BC Land', TRUE, 'system-mds', 'system-mds')
+    ('BCL', 'Public Land', TRUE, 'system-mds', 'system-mds'),
+    ('PRL', 'Private Land', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -333,7 +334,9 @@ VALUES
     ('TO','COL'),
     ('MC','COL'),
     ('CG','BCL'),
-    ('SA','BCL')
+    ('SA','BCL'),
+    ('CG','PRL'),
+    ('SA','PRL')
 ON CONFLICT DO NOTHING;
 --Everything else gets Mineral tenure type
 INSERT INTO mine_commodity_tenure_type
@@ -362,6 +365,7 @@ VALUES
     ('SUR', 'MIN'),
     ('SUR', 'PLR'),
     ('SUR', 'BCL'),
+    ('SUR', 'PRL'),
     ('UND', 'COL'),
     ('UND', 'MIN'),
     ('UND', 'PLR'),
@@ -1260,21 +1264,24 @@ INSERT INTO exemption_fee_status
     description,
     display_order,
     create_user,
-    update_user
+    update_user,
+    active_ind
     )
 VALUES
-    ('Y', 'Yes', 10, 'system-mds', 'system-mds'),
-    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds'),
-    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds'),
-    ('M', 'Municipality', 40, 'system-mds', 'system-mds'),
-    ('O', 'OGC', 50, 'system-mds', 'system-mds'),
-    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds'),
-    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds'),
-    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds'),
-    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds'),
-    ('B', 'Abandoned', 100, 'system-mds', 'system-mds'),
-    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
-    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
+    ('Y', 'Yes', 10, 'system-mds', 'system-mds', true),
+    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds', false),
+    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds', false),
+    ('M', 'Municipality', 40, 'system-mds', 'system-mds', false),
+    ('O', 'OGC', 50, 'system-mds', 'system-mds', false),
+    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds', false),
+    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds', false),
+    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds', false),
+    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds', false),
+    ('B', 'Abandoned', 100, 'system-mds', 'system-mds', false),
+    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds', false),
+    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds', false),
+    ('MIM', 'Mineral/Coal', 130, 'system-mds', 'system-mds', true),
+    ('MIP', 'Pits/Quarry', 140, 'system-mds', 'system-mds', true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO bond_document_type(
