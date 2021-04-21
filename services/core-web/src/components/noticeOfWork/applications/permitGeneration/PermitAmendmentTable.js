@@ -14,9 +14,7 @@ import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import LinkButton from "@/components/common/LinkButton";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
-import {
-  getPermitAmendmentTypeOptionsHash,
-} from "@common/selectors/staticContentSelectors";
+import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {};
@@ -30,15 +28,17 @@ const renderDocumentLink = (file, text) => (
 );
 
 const amendmentStatusHash = {
-  "ACT": "Active"
-}
+  ACT: "Active",
+};
 
 export class PermitAmendmentTable extends Component {
   transformRowData = (permitAmendments) =>
-    permitAmendments.filter(({permit_amendment_status_code}) => permit_amendment_status_code !== "DFT").map((amendment) => ({
-      key: amendment.permit_amendment_guid,
-      ...amendment,
-    }));
+    permitAmendments
+      .filter(({ permit_amendment_status_code }) => permit_amendment_status_code !== "DFT")
+      .map((amendment) => ({
+        key: amendment.permit_amendment_guid,
+        ...amendment,
+      }));
 
   render() {
     const columns = [
@@ -47,30 +47,20 @@ export class PermitAmendmentTable extends Component {
         dataIndex: "permit_amendment_type_code",
         sortField: "permit_amendment_type_code",
         render: (text) => (
-          <div title="Type of Amendment">
-            {this.props.permitAmendmentTypeOptionsHash[text]}
-          </div>
+          <div title="Type of Amendment">{this.props.permitAmendmentTypeOptionsHash[text]}</div>
         ),
       },
       {
         title: "Issue Date",
         dataIndex: "issue_date",
         sortField: "issue_date",
-        render: (text) => (
-          <div title="Issue Date">
-            {formatDate(text)|| "N/A"}
-          </div>
-        ),
+        render: (text) => <div title="Issue Date">{formatDate(text) || "N/A"}</div>,
       },
       {
-        title: "Expiry Date",
+        title: "Authorization End Date",
         dataIndex: "authorization_end_date",
         sortField: "authorization_end_date",
-        render: (text) => (
-          <div title="Expiry Date">
-            {formatDate(text) || "N/A"}
-          </div>
-        ),
+        render: (text) => <div title="Authorization End Date">{formatDate(text) || "N/A"}</div>,
       },
       {
         title: "Documents",

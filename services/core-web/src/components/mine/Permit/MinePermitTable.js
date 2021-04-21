@@ -350,6 +350,13 @@ const childColumns = [
     render: (text) => <div title="Issue Date">{text}</div>,
   },
   {
+    title: "Authorization End Date",
+    dataIndex: "endDate",
+    key: "endDate",
+    width: "90px",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
+  },
+  {
     title: "Description",
     dataIndex: "description",
     key: "description",

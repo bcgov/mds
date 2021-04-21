@@ -160,6 +160,15 @@ export class AddPermitForm extends Component {
                 validate={[required, dateNotInFuture]}
               />
             </Form.Item>
+            <Form.Item>
+              <Field
+                id="authorization_end_date"
+                name="authorization_end_date"
+                label="Authorization End Date*"
+                component={renderConfig.DATE}
+                validate={[required]}
+              />
+            </Form.Item>
           </Col>
           <Col md={12} sm={24}>
             <Form.Item label="Upload files">
