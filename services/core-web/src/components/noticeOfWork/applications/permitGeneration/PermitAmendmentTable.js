@@ -82,7 +82,7 @@ export class PermitAmendmentTable extends Component {
 
     return (
       <CoreTable
-        condition={true}
+        condition
         columns={columns}
         dataSource={this.transformRowData(this.props.permit.permit_amendments || [])}
         tableProps={{
