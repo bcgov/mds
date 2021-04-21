@@ -124,9 +124,9 @@ export class Reports extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           <Row>
-            <Col>
+            <Col span={24}>
               <Title level={4}>Reports</Title>
               <Paragraph>
                 This table shows&nbsp;
@@ -170,10 +170,11 @@ export class Reports extends Component {
             </Row>
           )}
           <Row gutter={[16, 32]}>
-            <Col>
+            <Col span={24}>
               <AuthorizationWrapper>
                 <Button
-                  style={{ float: "right", zIndex: 1 }}
+                  style={{ zIndex: 1 }}
+                  className="float-right"
                   type="primary"
                   onClick={(event) => this.openAddReportModal(event, this.props.mine.mine_name)}
                 >
@@ -184,7 +185,7 @@ export class Reports extends Component {
             </Col>
           </Row>
           <Row gutter={[16, 32]}>
-            <Col>
+            <Col span={24}>
               <ReportsTable
                 openEditReportModal={this.openEditReportModal}
                 mineReports={this.props.mineReports}

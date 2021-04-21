@@ -9,7 +9,6 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 #app imports
 from app.extensions import api, cache, db
-from app.api.utils.random import generate_mine_no
 from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
@@ -17,10 +16,12 @@ from app.api.constants import MINE_MAP_CACHE
 #namespace imports
 from app.api.mines.response_models import MINE_LIST_MODEL, MINE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
+from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
@@ -73,6 +74,27 @@ class MineListResource(Resource, UserMixin):
         'ohsc_ind', type=bool, store_missing=False, help='Indicates if the mine has an OHSC.')
     parser.add_argument(
         'union_ind', type=bool, store_missing=False, help='Indicates if the mine has a union.')
+    parser.add_argument(
+        'government_agency_type_code',
+        type=str,
+        help='Government agency the mine belongs to.',
+        trim=True,
+        store_missing=True,
+        location='json')
+    parser.add_argument(
+        'exemption_fee_status_code',
+        type=str,
+        help='Exemption fee status code.',
+        trim=True,
+        store_missing=True,
+        location='json')
+    parser.add_argument(
+        'exemption_fee_status_note',
+        type=str,
+        help='Exemption fee status note.',
+        trim=True,
+        store_missing=True,
+        location='json')
 
     @api.doc(
         params={
@@ -85,6 +107,7 @@ class MineListResource(Resource, UserMixin):
             'region': 'A specific mine region to filter the mine list on.',
             'major': 'Filters the mine list by major mines or regional mines.',
             'tsf': 'Filters the mine list by mines with or without a TSF.',
+            'verified': 'Filters the mine list by verified mines.',
             'sort_field':
             'enum[mine_name, mine_no, mine_operation_status_code, mine_region] Default: mine_name',
             'sort_dir': 'enum[asc, desc] Default: asc'
@@ -118,7 +141,6 @@ class MineListResource(Resource, UserMixin):
         # query the mine tables and check if that mine name exists
         _throw_error_if_mine_exists(data.get('mine_name'))
         mine = Mine(
-            mine_no=generate_mine_no(),
             mine_name=data.get('mine_name'),
             mine_note=data.get('mine_note'),
             major_mine_ind=data.get('major_mine_ind'),
@@ -126,7 +148,10 @@ class MineListResource(Resource, UserMixin):
             ohsc_ind=data.get('ohsc_ind'),
             union_ind=data.get('union_ind'),
             latitude=lat,
-            longitude=lon)
+            longitude=lon,
+            government_agency_type_code=data.get('government_agency_type_code'),
+            exemption_fee_status_code=data.get('exemption_fee_status_code'),
+            exemption_fee_status_note=data.get('exemption_fee_status_note'))
 
         mine_status = _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
         mine.save()
@@ -156,6 +181,7 @@ class MineListResource(Resource, UserMixin):
         region_code_filter_term = args.getlist('region', type=str)
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
+        verified_only_term = args.get('verified', None, type=str)
         # Base query:
         mines_query = Mine.query
         # Filter by search_term if provided
@@ -165,7 +191,9 @@ class MineListResource(Resource, UserMixin):
             number_filter = Mine.mine_no.ilike('%{}%'.format(search_term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(search_term))
             mines_name_query = Mine.query.filter(name_filter | number_filter)
-            permit_query = Mine.query.join(Permit).filter(permit_filter)
+
+            permit_query = Mine.query.join(MinePermitXref).join(Permit).filter(
+                permit_filter, Permit.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
@@ -200,6 +228,13 @@ class MineListResource(Resource, UserMixin):
                 .join(MineType) \
                 .filter(tenure_filter, mine_type_active_filter)
             mines_query = mines_query.intersect(tenure_query)
+
+        #Create a filter on verified mine status
+        if verified_only_term == "true" or verified_only_term == "false":
+            verified_only_filter = MineVerifiedStatus.healthy_ind.is_(verified_only_term == "true")
+            verified_only_query = Mine.query.join(MineVerifiedStatus).filter(verified_only_filter)
+            mines_query = mines_query.intersect(verified_only_query)
+
         # Create a filter on mine status if one is provided
         if status_filter_term:
             status_filter = MineStatusXref.mine_operation_status_code.in_(status_filter_term)
@@ -282,15 +317,22 @@ class MineResource(Resource, UserMixin):
         'exemption_fee_status_code',
         type=str,
         help='Fee exemption status for the mine.',
-        trim=True,
         store_missing=False,
+        trim=True,
         location='json')
     parser.add_argument(
         'exemption_fee_status_note',
         type=str,
         help='Fee exemption status note for the mine.',
-        trim=True,
         store_missing=False,
+        trim=True,
+        location='json')
+    parser.add_argument(
+        'government_agency_type_code',
+        type=str,
+        help='Government agency the mine belongs to.',
+        store_missing=False,
+        trim=True,
         location='json')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
@@ -340,10 +382,11 @@ class MineResource(Resource, UserMixin):
             mine.latitude = data['latitude']
             mine.longitude = data['longitude']
             refresh_cache = True
-        if 'exemption_fee_status_code' in data:
-            mine.exemption_fee_status_code = data['exemption_fee_status_code']
-        if 'exemption_fee_status_code' in data:
-            mine.exemption_fee_status_note = data['exemption_fee_status_note']
+
+        mine.government_agency_type_code = data.get('government_agency_type_code')
+        mine.exemption_fee_status_code = data.get('exemption_fee_status_code')
+        mine.exemption_fee_status_note = data.get('exemption_fee_status_note')
+
         mine.save()
 
         _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)

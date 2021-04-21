@@ -39,7 +39,7 @@ export class MinesPage extends Component {
       return (
         (this.state.isLoaded && (
           <Row>
-            <Col>
+            <Col span={24}>
               <Title>My Mines</Title>
               <Divider />
               <Title level={4}>Welcome, {this.props.userInfo.preferred_username}.</Title>
@@ -82,19 +82,19 @@ export class MinesPage extends Component {
                   </Col>
                 </Row>
               )) || (
-                <Row>
-                  <Col>
-                    <Paragraph>
-                      You are not authorized to manage information for any mines. Please
-                      contact&nbsp;
+                  <Row>
+                    <Col span={24}>
+                      <Paragraph>
+                        You are not authorized to manage information for any mines. Please
+                        contact&nbsp;
                       <a className="underline" href={Strings.MDS_EMAIL}>
-                        {Strings.MDS_EMAIL}
-                      </a>
+                          {Strings.MDS_EMAIL}
+                        </a>
                       &nbsp;for assistance.
                     </Paragraph>
-                  </Col>
-                </Row>
-              )}
+                    </Col>
+                  </Row>
+                )}
             </Col>
           </Row>
         )) || <Loading />

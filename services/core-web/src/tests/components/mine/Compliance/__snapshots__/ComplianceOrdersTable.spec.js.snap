@@ -96,12 +96,6 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
     Object {
       "align": "left",
       "className": "center-pagination page-count-1",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="no-results"
-        />,
-      },
       "pagination": true,
     }
   }

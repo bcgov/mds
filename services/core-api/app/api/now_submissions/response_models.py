@@ -61,10 +61,15 @@ CONTACT = api.model(
 DOCUMENT = api.model(
     'DOCUMENT', {
         'id': fields.Integer,
+        'messageid': fields.Integer,
         'documenturl': fields.String,
         'filename': fields.String,
         'documenttype': fields.String,
         'description': fields.String,
+        'document_manager_document_guid': fields.String,
+        'is_final_package': fields.Boolean,
+        'is_referral_package': fields.Boolean,
+        'is_consultation_package': fields.Boolean
     })
 
 PLACER_ACTIVITY = api.model(
@@ -94,6 +99,7 @@ SETTLING_POND = api.model(
 
 SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
     'type': fields.String,
+    'quantity': fields.Integer,
     'disturbedarea': fields.Arbitrary,
     'timbervolume': fields.Arbitrary,
 })
@@ -173,7 +179,7 @@ WATER_SOURCE_ACTIVITY = api.model(
 
 APPLICATION = api.model(
     'Application', {
-        "messageid": fields.Integer,
+        'messageid': fields.Integer,
         'application_guid': fields.String,
         'now_application_guid': fields.String,
         'now_number': fields.String,
@@ -316,6 +322,37 @@ APPLICATION = api.model(
         'nrsosapplicationid': fields.String,
         'isblastselect': fields.String,
         'istimberselect': fields.String,
+        'applicantindividualorcompany': fields.String,
+        'applicantrelationship': fields.String,
+        'termofapplication': fields.Arbitrary,
+        'hasaccessauthorizations': fields.String,
+        'accessauthorizationsdetails': fields.String,
+        'accessauthorizationskeyprovided': fields.String,
+        'landpresentcondition': fields.String,
+        'currentmeansofaccess': fields.String,
+        'physiography': fields.String,
+        'oldequipment': fields.String,
+        'typeofvegetation': fields.String,
+        'recreationuse': fields.String,
+        'isparkactivities': fields.String,
+        'hasltgovauthorization': fields.String,
+        'hasarchaeologicalprotectionplan':fields.String,
+        'isonprivateland':fields.String,
+        'hasengagedfirstnations': fields.String,
+        'hasculturalheritageresources': fields.String,
+        'archaeologicalprotectionplan': fields.String,
+        'firstnationsactivities': fields.String,
+        'curturalheritageresources': fields.String,
+        'hasproposedcrossings': fields.String,
+        'proposedcrossingschanges': fields.String,
+        'cleanoutdisposalplan': fields.String,
+        'maxannualtonnage': fields.Arbitrary,
+        'proposedproduction': fields.Arbitrary,
+        'isaccessgated': fields.String,
+        'hassurfacedisturbanceoutsidetenure': fields.String,
+        'bedrockexcavation': fields.String,
+        'hassurfacedisturbanceoutsidetenure': fields.String,
+        'proposedactivites': fields.String,
         'applicant': fields.Nested(CLIENT),
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT)),
@@ -363,7 +400,7 @@ PAGINATED_APPLICATION_LIST = api.inherit('PaginatedApplicationList', PAGINATED_L
 
 APPLICATIONNDA = api.model(
     'ApplicationNDA', {
-        "messageid": fields.Integer,
+        'messageid': fields.Integer,
         'application_nda_guid': fields.String,
         'originating_system': fields.String,
         'mine_guid': fields.String,
@@ -393,4 +430,36 @@ APPLICATIONNDA = api.model(
         'applicant': fields.Nested(CLIENT),
         'submitter': fields.Nested(CLIENT),
         'documents': fields.List(fields.Nested(DOCUMENT))
+    })
+
+APPLICATIONSTARTSTOP = api.model(
+    'ApplicationStartStop', {
+        'termOfPermit': fields.String,
+        'permitIssuedDate': fields.String,
+        'portalApplicationPackageId': fields.String,
+        'nowNumber': fields.String,
+        'applicationId': fields.String,
+        'permitExpiryDate': fields.String,
+        'noticeOfWorkType': fields.String,
+        'applicationType': fields.String,
+        'processedDate': fields.String,
+        'contacts': fields.List(fields.Nested(CLIENT)),
+        'mineNumber': fields.String,
+        'typeOfApplication': fields.String,
+        'applicationDescription': fields.String,
+        'attachments': fields.List(fields.Nested(DOCUMENT)),
+        'status': fields.String,
+        'approvalNumber': fields.String,
+        'links': fields.List(fields.String),
+        'stopWorkDate': fields.String,
+        'startWorkDate': fields.String,
+        'receivedDate': fields.String,
+        'portalApplicationPackageNumber': fields.String,
+        'typeOfPermit': fields.String,
+        'proposedStartDate': fields.String,
+        'otherInformation': fields.String,
+        'permitStartDate': fields.String,
+        'submittedDate': fields.String,
+        'portalApplicationId': fields.String,
+        'proposedEndDate': fields.String
     })

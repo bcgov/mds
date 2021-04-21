@@ -4,6 +4,7 @@ from flask import Response, stream_with_context, request, current_app
 from requests.auth import HTTPBasicAuth
 from app.extensions import cache
 from app.api.constants import NROS_TOKEN, TIMEOUT_60_MINUTES
+from app.config import Config
 
 
 class NROSDownloadService():
@@ -22,13 +23,21 @@ class NROSDownloadService():
 
         file_info_req = requests.get(
             file_url, stream=True, headers={"Authorization": f"Bearer {_nros_token}"})
+        if file_info_req.status_code != requests.codes.ok:
+            raise Exception(
+                f'NROS file info request failed! Error {file_info_req.status_code}: {file_info_req.content}'
+            )
         file_info_body = json.loads(file_info_req.text)
 
         file_download_req = requests.get(
             f'{file_url}/content', stream=True, headers={"Authorization": f"Bearer {_nros_token}"})
-
+        if file_download_req.status_code != requests.codes.ok:
+            raise Exception(
+                f'NROS file download request failed! Error {file_download_req.status_code}: {file_download_req.content}'
+            )
         file_download_resp = Response(
-            stream_with_context(file_download_req.iter_content(chunk_size=2048)))
+            stream_with_context(
+                file_download_req.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)))
 
         file_download_resp.headers['Content-Type'] = file_download_req.headers['Content-Type']
         file_download_resp.headers[

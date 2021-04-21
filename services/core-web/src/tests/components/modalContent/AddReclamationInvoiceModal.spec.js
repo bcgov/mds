@@ -15,8 +15,8 @@ const setupProps = () => {
   props.title = "Add Bond";
   props.permitGuid = "462562457";
   props.mineGuid = "1436613";
-  props.invoice = MOCK.RECLAMATION_INVOICE;
-  props.formValues = MOCK.RECLAMATION_INVOICE;
+  [props.invoice] = MOCK.RECLAMATION_INVOICES.records;
+  [props.formValues] = MOCK.RECLAMATION_INVOICES.records;
   props.edit = false;
 };
 

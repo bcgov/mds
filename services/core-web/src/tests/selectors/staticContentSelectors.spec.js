@@ -47,6 +47,10 @@ import {
   getBondStatusOptionsHash,
   getBondTypeOptionsHash,
   getBondDocumentTypeOptionsHash,
+  getPermitConditionTypeOptions,
+  getPermitConditionCategoryOptions,
+  getApplicationReasonCodeDropdownOptions,
+  getApplicationSourceTypeCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -299,5 +303,29 @@ describe("staticContentSelectors", () => {
 
   it("`getBondDocumentTypeOptionsHash` calls `staticContentReducer.getBondDocumentTypeDropDownOptions`", () => {
     expect(getBondDocumentTypeOptionsHash(mockState)).toEqual(Mock.BOND_DOCUMENT_TYPE_OPTIONS_HASH);
+  });
+
+  it("`getPermitConditionTypeOptions` calls `staticContentReducer.getPermitConditionTypeOptions`", () => {
+    expect(getPermitConditionTypeOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].permitConditionTypeOptions
+    );
+  });
+
+  it("`getPermitConditionCategoryOptions` calls `staticContentReducer.getPermitConditionCategoryOptions`", () => {
+    expect(getPermitConditionCategoryOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].permitConditionCategoryOptions
+    );
+  });
+
+  it("`getApplicationSourceTypeCodeDropdownOptions` calls `staticContentReducer.getPermitConditionCategoryOptions`", () => {
+    expect(getApplicationSourceTypeCodeDropdownOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].applicationSourceTypeCodeOptions
+    );
+  });
+
+  it("`getApplicationReasonCodeDropdownOptions` calls `staticContentReducer.getPermitConditionCategoryOptions`", () => {
+    expect(getApplicationReasonCodeDropdownOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].applicationReasonCodeOptions
+    );
   });
 });

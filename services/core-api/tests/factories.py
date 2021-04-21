@@ -22,7 +22,9 @@ from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
@@ -35,11 +37,25 @@ from app.api.parties.party_appt.models.party_business_role_appt import PartyBusi
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
+from app.api.mines.comments.models.mine_comment import MineComment
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
 
 FACTORY_LIST = []
+
+
+def create_mine_and_permit(mine_kwargs={},
+                           permit_kwargs={},
+                           num_permits=1,
+                           num_permit_amendments=1):
+    mine = MineFactory(mine_permit_amendments=0, **mine_kwargs)
+    for x in range(num_permits):
+        permit = PermitFactory(_context_mine=mine, **permit_kwargs)
+        permit._all_mines.append(mine)           ##create mine_permit_xref
+        PermitAmendmentFactory.create_batch(size=num_permit_amendments, mine=mine, permit=permit)
+        permit._context_mine = mine              # possibly redundant
+    return mine, permit
 
 
 class FactoryRegistry:
@@ -148,6 +164,17 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 
+class MineCommentFactory(BaseFactory):
+    class Meta:
+        model = MineComment
+
+    class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    mine_comment = factory.Faker('paragraph')
+
+
 class VarianceFactory(BaseFactory):
     class Meta:
         model = Variance
@@ -172,6 +199,7 @@ class VarianceFactory(BaseFactory):
     parties_notified_ind = factory.Faker('boolean', chance_of_getting_true=50)
     received_date = TODAY
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -206,6 +234,37 @@ def RandomPermitNumber():
         random.randint(1, 9999999))
 
 
+def ExemptionFeeStatus(permit_no, status, tenure):
+    permit_prefix = permit_no[0]
+    if status == 'C':
+        return "Y"
+    elif status != 'C':
+        if permit_prefix == "P" and tenure == 'PLR':
+            return "Y"
+        elif (permit_prefix == "M" or permit_prefix == "C") and (tenure == "MIN"
+                                                                 or tenure == "COL"):
+            return "MIM"
+        elif (permit_prefix == "Q" or permit_prefix == "G") and (tenure == "BCL" or tenure == "MIN"
+                                                                 or tenure == "PRL"):
+            return "MIP"
+
+
+def RandomTenureTypeCode(permit_no):
+    permit_prefix = permit_no[0]
+    tenure = ""
+    if permit_prefix == "P":
+        tenure = "PLR"
+    elif permit_prefix == "C":
+        tenure = "COL"
+    elif permit_prefix == "M":
+        tenure = "MIN"
+    elif permit_prefix == "G" or permit_prefix == "Q":
+        tenure = "BCL"
+
+    obj = {'mine_tenure_type_code': tenure}
+    return obj
+
+
 class MineVerifiedStatusFactory(BaseFactory):
     class Meta:
         model = MineVerifiedStatus
@@ -222,6 +281,7 @@ class MineIncidentFactory(BaseFactory):
         model = MineIncident
 
     class Params:
+
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
         do_subparagraph_count = 2
 
@@ -239,6 +299,7 @@ class MineIncidentFactory(BaseFactory):
         lambda o: SampleDangerousOccurrenceSubparagraphs(o.do_subparagraph_count)
         if o.determination_type_code == 'DO' else [])
     documents = []
+    deleted_ind = False
 
     @factory.post_generation
     def documents(obj, create, extracted, **kwargs):
@@ -273,16 +334,23 @@ class MineReportFactory(BaseFactory):
         model = MineReport
 
     class Params:
+        permit_required_reports = factory.Trait(
+            mine_report_definition_id=None,
+            permit_condition_category_code=factory.LazyFunction(RandomConditionCategoryCode))
+
         mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     mine_report_guid = GUID
     mine_guid = factory.SelfAttribute('mine.mine_guid')
-    mine_report_definition_id = factory.LazyFunction(RandomMineReportDefinition)
+    mine_report_definition_id = factory.LazyFunction(
+        RandomMineReportDefinition
+    )                                                                        #None if not factory.SelfAttribute('set_permit_condition_category_code') else factory.LazyFunction(RandomMineReportDefinition)
     received_date = factory.Faker('date_between', start_date='-15d', end_date='+15d')
     due_date = factory.Faker('future_datetime', end_date='+30d')
     submission_year = factory.fuzzy.FuzzyInteger(datetime.utcnow().year - 2,
                                                  datetime.utcnow().year + 11)
     mine_report_submissions = []
+    permit_condition_category_code = None
 
     @factory.post_generation
     def mine_report_submissions(obj, create, extracted, **kwargs):
@@ -345,7 +413,7 @@ class AddressFactory(BaseFactory):
     address_line_2 = factory.Iterator([None, 'Apt. 123', None, 'Apt. 123'])
     city = factory.Faker('city')
     sub_division_code = factory.LazyFunction(RandomSubDivisionCode)
-    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    post_code = factory.Faker('bothify', text='?#?#?#', letters='ABCEGHJKLMNPRSTVXY')
 
 
 class PartyFactory(BaseFactory):
@@ -371,8 +439,6 @@ class PartyFactory(BaseFactory):
     phone_no = factory.Faker('numerify', text='###-###-####')
     phone_ext = factory.Iterator([None, '123'])
     email = None
-    effective_date = TODAY
-    expiry_date = None
     party_type_code = None
 
     mine_party_appt = []
@@ -395,7 +461,7 @@ class PartyBusinessRoleFactory(BaseFactory):
 
     party_business_role_code = factory.LazyFunction(RandomPartyBusinessRole)
     party = factory.SubFactory(PartyFactory, person=True)
-    start_date = TODAY
+    start_date = datetime.utcnow().date()
     end_date = None
 
 
@@ -403,22 +469,23 @@ class MinePartyAppointmentFactory(BaseFactory):
     class Meta:
         model = MinePartyAppointment
 
+    class Params:
+        permittee = factory.Trait(mine_guid=None, mine_party_appt_type_code='PMT')
+
     mine_party_appt_guid = GUID
     mine = factory.SubFactory('tests.factories.MineFactory')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     party = factory.SubFactory(PartyFactory, person=True)
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
+    permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[
+        0].permit_id if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
-
-    permit_guid = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_guid if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
 
 
 class CoreUserFactory(BaseFactory):
@@ -449,7 +516,7 @@ class MinespaceUserFactory(BaseFactory):
         model = MinespaceUser
 
     keycloak_guid = GUID
-    email = factory.Faker('email')
+    email_or_username = factory.Faker('email')
 
 
 class SubscriptionFactory(BaseFactory):
@@ -480,10 +547,11 @@ class MineFactory(BaseFactory):
             verified_status=None,
             mine_status=None,
             mine_tailings_storage_facilities=0,
-            mine_permit=0,
+            mine_permit_amendments=0,
             mine_incidents=0,
             mine_variance=0,
-            mine_reports=0)
+            mine_reports=0,
+            comments=0)
         operating = factory.Trait(
             mine_status=factory.RelatedFactory(MineStatusFactory, 'mine', operating=True))
 
@@ -505,10 +573,11 @@ class MineFactory(BaseFactory):
     exemption_fee_status_code = factory.LazyFunction(RandomExemptionFeeStatusCode)
     exemption_fee_status_note = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     mine_tailings_storage_facilities = []
-    mine_permit = []
+    mine_permit_amendments = []
     mine_incidents = []
     mine_variance = []
     mine_reports = []
+    comments = []
 
     @factory.post_generation
     def mine_tailings_storage_facilities(obj, create, extracted, **kwargs):
@@ -521,14 +590,16 @@ class MineFactory(BaseFactory):
         MineTailingsStorageFacilityFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
     @factory.post_generation
-    def mine_permit(obj, create, extracted, **kwargs):
+    def mine_permit_amendments(obj, create, extracted, **kwargs):
         if not create:
             return
 
         if not isinstance(extracted, int):
             extracted = 1
 
-        PermitFactory.create_batch(size=extracted, mine=obj, **kwargs)
+        permit = PermitFactory()
+        permit._all_mines.append(obj)
+        PermitAmendmentFactory.create_batch(size=extracted, mine=obj, permit=permit, **kwargs)
 
     @factory.post_generation
     def mine_incidents(obj, create, extracted, **kwargs):
@@ -560,6 +631,16 @@ class MineFactory(BaseFactory):
 
         MineReportFactory.create_batch(size=extracted, mine=obj, **kwargs)
 
+    @factory.post_generation
+    def comments(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        MineCommentFactory.create_batch(size=extracted, mine=obj, **kwargs)
+
 
 class PermitFactory(BaseFactory):
     class Meta:
@@ -568,19 +649,35 @@ class PermitFactory(BaseFactory):
     permit_guid = GUID
     permit_no = factory.LazyFunction(RandomPermitNumber)
     permit_status_code = factory.LazyFunction(RandomPermitStatusCode)
-    permit_amendments = []
-    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     @factory.post_generation
-    def permit_amendments(obj, create, extracted, **kwargs):
+    def permit_prefix(obj, create, extracted, **kwargs):
         if not create:
             return
 
         if not isinstance(extracted, int):
-            extracted = 1
+            extracted = {}
+        obj.permit_no[0]
 
-        for n in range(extracted):
-            PermitAmendmentFactory(permit=obj, initial_permit=(n == 0), **kwargs)
+    @factory.post_generation
+    def site_properties(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = {}
+        RandomTenureTypeCode(obj.permit_no)
+
+    @factory.post_generation
+    def exemption_fee_status_code(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = {}
+
+        ExemptionFeeStatus(obj.permit_no, obj.permit_status_code,
+                           RandomTenureTypeCode(obj.permit_no))
 
     @factory.post_generation
     def bonds(obj, create, extracted, **kwargs):
@@ -605,6 +702,18 @@ class PermitFactory(BaseFactory):
             ReclamationInvoiceFactory(permit=obj, **kwargs)
 
 
+class MinePermitXrefFactory(BaseFactory):
+    class Meta:
+        model = MinePermitXref
+
+    class Params:
+        permit = factory.SubFactory(PermitFactory)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+
+    permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+
+
 class PermitAmendmentFactory(BaseFactory):
     class Meta:
         model = PermitAmendment
@@ -615,16 +724,31 @@ class PermitAmendmentFactory(BaseFactory):
             permit_amendment_type_code='OGP',
         )
         permit = factory.SubFactory(PermitFactory, permit_amendments=0)
+        mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
     permit_amendment_guid = GUID
     permit_id = factory.SelfAttribute('permit.permit_id')
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
     received_date = TODAY
     issue_date = TODAY
-    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+90d')
+    authorization_end_date = factory.Faker('date_between', start_date='+31d', end_date='+89d')
     permit_amendment_status_code = 'ACT'
     permit_amendment_type_code = 'AMD'
     description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     related_documents = []
+    mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
+    deleted_ind = False
+
+    @factory.post_generation
+    def conditions(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 5
+
+        PermitConditionsFactory.create_batch(size=extracted, permit_amendment=obj, **kwargs)
+        PermitConditionsFactory.reset_sequence()
 
 
 class PermitAmendmentDocumentFactory(BaseFactory):
@@ -634,9 +758,25 @@ class PermitAmendmentDocumentFactory(BaseFactory):
     permit_amendment_document_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     document_name = factory.Faker('file_name')
-    mine_guid = factory.SelfAttribute('permit_amendment.permit.mine.mine_guid')
+    mine_guid = factory.SelfAttribute('permit_amendment.mine_guid')
     document_manager_guid = GUID
     permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+
+class PermitConditionsFactory(BaseFactory):
+    class Meta:
+        model = PermitConditions
+
+    class Params:
+        permit_amendment = factory.SubFactory(PermitAmendmentFactory)
+
+    permit_condition_guid = GUID
+    permit_condition_guid = GUID
+    permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
+    condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
+    condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    display_order = factory.Sequence(lambda n: n + 1)
 
 
 class BondFactory(BaseFactory):
@@ -669,7 +809,6 @@ class ReclamationInvoiceFactory(BaseFactory):
         model = ReclamationInvoice
 
     reclamation_invoice_guid = GUID
-    project_id = factory.Faker('numerify', text='#######')
     amount = factory.Faker(
         'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
     vendor = factory.Faker('company')

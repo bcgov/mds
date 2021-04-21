@@ -1,0 +1,2 @@
+ALTER TABLE surface_bulk_sample RENAME COLUMN has_bedrock_expansion TO has_bedrock_excavation;
+ALTER TABLE surface_bulk_sample DROP COLUMN surface_water_damage;

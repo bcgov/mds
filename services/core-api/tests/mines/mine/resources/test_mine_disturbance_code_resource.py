@@ -4,7 +4,7 @@ from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 
 
 def test_get_all_mine_disturbance_types(test_client, db_session, auth_headers):
-    disturbances = MineDisturbanceCode.query.filter_by(active_ind=True).all()
+    disturbances = MineDisturbanceCode.query.all()
     disturbance_codes = map(lambda c: c.mine_disturbance_code, disturbances)
     discriptions = map(lambda c: c.description, disturbances)
 

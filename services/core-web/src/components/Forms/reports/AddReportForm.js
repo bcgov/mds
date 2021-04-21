@@ -5,14 +5,17 @@ import { compose } from "redux";
 import PropTypes from "prop-types";
 import { flatMap, uniqBy } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm, List } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm, List } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
-import { required } from "@common/utils/Validate";
+import { required, date } from "@common/utils/Validate";
 import {
   resetForm,
   createDropDownList,
   formatComplianceCodeValueOrLabel,
+  sortListObjectsByPropertyLocaleCompare,
 } from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
@@ -33,7 +36,6 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   selectedMineReportCategory: PropTypes.string,
   selectedMineReportDefinition: PropTypes.string,
-  disableAddReport: PropTypes.bool,
   mineReportStatusOptions: CustomPropTypes.options.isRequired,
   formMeta: PropTypes.any,
   showReportHistory: PropTypes.func.isRequired,
@@ -45,7 +47,6 @@ const defaultProps = {
   initialValues: {},
   selectedMineReportDefinition: undefined,
   selectedMineReportCategory: undefined,
-  disableAddReport: false,
 };
 
 const requiredReceivedDateIfUploadedFiles = (value, formValues) =>
@@ -72,20 +73,26 @@ export class AddReportForm extends Component {
   };
 
   updateMineReportDefinitionOptions = (mineReportDefinitionOptions, selectedMineReportCategory) => {
-    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions;
+    let mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      (option) => option.active_ind
+    );
 
     if (selectedMineReportCategory) {
-      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptions.filter(
+      mineReportDefinitionOptionsFiltered = mineReportDefinitionOptionsFiltered.filter(
         (rd) =>
           rd.categories.filter((c) => c.mine_report_category === selectedMineReportCategory)
             .length > 0
       );
     }
 
-    const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
+    );
+    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      dropdownMineReportDefinitionOptionsFiltered,
+      "label"
     );
 
     this.setState({
@@ -150,7 +157,7 @@ export class AddReportForm extends Component {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={16}>
-          <Col>
+          <Col span={24}>
             {!this.props.initialValues.mine_report_definition_guid && (
               <Form.Item>
                 <Field
@@ -222,7 +229,7 @@ export class AddReportForm extends Component {
                 label="Due Date*"
                 placeholder="Select due date"
                 component={renderConfig.DATE}
-                validate={[required]}
+                validate={[required, date]}
               />
             </Form.Item>
             <Form.Item>
@@ -232,7 +239,7 @@ export class AddReportForm extends Component {
                 label="Received Date"
                 placeholder="Select received date"
                 component={renderConfig.DATE}
-                validate={[requiredReceivedDateIfUploadedFiles]}
+                validate={[requiredReceivedDateIfUploadedFiles, date]}
               />
             </Form.Item>
             <ReportSubmissions
@@ -260,16 +267,17 @@ export class AddReportForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
           <Button
-            disabled={this.props.disableAddReport}
             className="full-mobile"
             type="primary"
             htmlType="submit"
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

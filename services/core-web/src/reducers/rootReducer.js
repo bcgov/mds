@@ -43,6 +43,7 @@ import {
   noticeOfWorkReducer,
   securitiesReducer,
   activityReducer,
+  orgbookReducer,
 } from "@common/reducers";
 import * as reducerTypes from "@common/constants/reducerTypes";
 import { createReducer } from "@common/utils/helpers";
@@ -69,6 +70,7 @@ export const reducerObject = {
   ...documentReducer,
   ...securitiesReducer,
   ...activityReducer,
+  ...orgbookReducer,
   [reducerTypes.CREATE_PARTY]: createReducer(networkReducer, reducerTypes.CREATE_PARTY),
   [reducerTypes.UPDATE_PARTY]: createReducer(networkReducer, reducerTypes.UPDATE_PARTY),
   [reducerTypes.GET_PARTIES]: createReducer(networkReducer, reducerTypes.GET_PARTIES),

@@ -22,7 +22,7 @@ import {
 
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
@@ -116,6 +116,7 @@ export class ViewPartyRelationships extends Component {
         this.props.fetchPartyRelationships({
           mine_guid: this.props.mine.mine_guid,
           relationships: "party",
+          include_permittees: "true",
         });
       });
   };
@@ -189,6 +190,7 @@ export class ViewPartyRelationships extends Component {
           ({ mine_party_appt_type_code }) =>
             mine_party_appt_type_code === partyRelationship.mine_party_appt_type_code
         ),
+        minePermits: this.props.permits,
         mine,
       },
       content: modalConfig.EDIT_PARTY_RELATIONSHIP,
@@ -206,6 +208,7 @@ export class ViewPartyRelationships extends Component {
       this.props.fetchPartyRelationships({
         mine_guid: this.props.mine.mine_guid,
         relationships: "party",
+        include_permittees: "true",
       });
       this.props.closeModal();
     });
@@ -217,6 +220,7 @@ export class ViewPartyRelationships extends Component {
       this.props.fetchPartyRelationships({
         mine_guid: this.props.mine.mine_guid,
         relationships: "party",
+        include_permittees: "true",
       });
     });
   };
@@ -274,6 +278,7 @@ export class ViewPartyRelationships extends Component {
       {partyRelationshipGroupingLevels.map((group) => [
         this.props.partyRelationshipTypes
           .filter((x) => x.grouping_level === group)
+          .filter((x) => x.mine_party_appt_type_code !== "AGT")
           .map((value) => (
             <Menu.Item key={value.mine_party_appt_type_code}>
               <button
@@ -451,10 +456,7 @@ export class ViewPartyRelationships extends Component {
                 style={{ width: "1px", height: "1px" }}
               />
             </Popconfirm>
-            <AuthorizationWrapper
-              permission={Permission.EDIT_PARTIES}
-              isMajorMine={this.props.mine.major_mine_ind}
-            >
+            <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
               <Dropdown
                 className="full-height"
                 overlay={this.renderMenu(partyRelationshipGroupingLevels)}

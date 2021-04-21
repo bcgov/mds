@@ -15,8 +15,8 @@ class MineIncidentCategory(AuditMixin, Base):
     active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).order_by(cls.display_order).all()
+    def get_all(cls):
+        return cls.query.order_by(cls.display_order).all()
 
     @classmethod
     def find_by_code(cls, code):

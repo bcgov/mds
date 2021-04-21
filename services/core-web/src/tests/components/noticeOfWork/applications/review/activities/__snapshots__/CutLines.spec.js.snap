@@ -6,37 +6,38 @@ exports[`CutLines renders properly 1`] = `
   <h4>
     Exploration Grid
   </h4>
-  <withStore(Table)
-    align="left"
-    columns={
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "cut_line_length",
-          "key": "cut_line_length",
-          "render": [Function],
-          "title": "Total Line(km)",
+          "component": [Function],
+          "title": "Total Line (km)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "cut_line_length",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
-          "title": "Merchantable timber volume (m3)",
+          "component": [Function],
+          "title": "Merchantable timber volume (m³)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "timber_volume",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No data",
-      }
-    }
-    pagination={false}
   />
   <br />
   <h4>
@@ -53,6 +54,11 @@ exports[`CutLines renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -74,12 +80,22 @@ exports[`CutLines renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
+        autoComplete="off"
         component={[Function]}
         disabled={true}
+        format={[Function]}
         id="reclamation_cost"
         name="reclamation_cost"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
         validate={
           Array [
             [Function],

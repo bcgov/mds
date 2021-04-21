@@ -114,6 +114,8 @@ class ApplicationListResource(Resource, UserMixin):
     @api.marshal_with(APPLICATION, code=201)
     def post(self):
         current_app.logger.debug('Attempting to load application')
+        current_app.logger.info("*****VFCBC Request Payload*****")
+        current_app.logger.info(request.json)
         try:
             application = Application._schema().load(request.json)
         except MarshmallowError as e:
@@ -137,6 +139,9 @@ class ApplicationListResource(Resource, UserMixin):
             mine_guid=mine.mine_guid,
             now_submission=application,
             now_number=NOWApplicationIdentity.create_now_number(mine))
+        application.processed = 'Y'
+        application.originating_system = 'VFCBC'
         current_app.logger.debug('Attempting to Save')
         application.save()
+
         return application, 201

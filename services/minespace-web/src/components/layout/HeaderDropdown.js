@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { Menu, Dropdown, Button, Icon, Divider } from "antd";
+import { Menu, Dropdown, Button, Divider, Icon } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";

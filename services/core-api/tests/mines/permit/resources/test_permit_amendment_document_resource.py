@@ -4,12 +4,13 @@ from app.api.mines.permits.permit_amendment.models.permit_amendment_document imp
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit.models.permit import Permit
 
-from tests.factories import PermitAmendmentFactory, PermitAmendmentDocumentFactory
+from tests.factories import PermitAmendmentFactory, PermitAmendmentDocumentFactory, create_mine_and_permit
 
 
 # PUT
 def test_put_new_file(test_client, db_session, auth_headers):
-    permit_amendment = PermitAmendmentFactory()
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
     document_count = len(permit_amendment.related_documents)
 
     data = {'document_manager_guid': str(uuid.uuid4()), 'filename': 'a_file.pdf'}
@@ -23,8 +24,9 @@ def test_put_new_file(test_client, db_session, auth_headers):
 
 
 def test_happy_path_file_removal(test_client, db_session, auth_headers):
-    doc = PermitAmendmentDocumentFactory()
-    permit_amendment = doc.permit_amendment
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    doc = PermitAmendmentDocumentFactory(permit_amendment=permit_amendment)
     assert doc in permit_amendment.related_documents
 
     del_resp = test_client.delete(
@@ -36,7 +38,9 @@ def test_happy_path_file_removal(test_client, db_session, auth_headers):
 
 
 def test_remove_file_no_doc_guid(test_client, db_session, auth_headers):
-    doc = PermitAmendmentDocumentFactory()
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    doc = PermitAmendmentDocumentFactory(permit_amendment=permit_amendment)
 
     del_resp = test_client.delete(
         f'/mines/{doc.permit_amendment.mine_guid}/permits/{doc.permit_amendment.permit.permit_guid}/amendments/{doc.permit_amendment.permit_amendment_guid}/documents',
@@ -47,7 +51,9 @@ def test_remove_file_no_doc_guid(test_client, db_session, auth_headers):
 
 
 def test_remove_file_no_doc(test_client, db_session, auth_headers):
-    doc = PermitAmendmentDocumentFactory()
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    doc = PermitAmendmentDocumentFactory(permit_amendment=permit_amendment)
 
     del_resp = test_client.delete(
         f'/mines/{doc.permit_amendment.mine_guid}/permits/{doc.permit_amendment.permit.permit_guid}/amendments/{doc.permit_amendment.permit_amendment_guid}/documents/{uuid.uuid4()}',
@@ -57,7 +63,9 @@ def test_remove_file_no_doc(test_client, db_session, auth_headers):
 
 
 def test_remove_file_no_exp_doc(test_client, db_session, auth_headers):
-    doc = PermitAmendmentDocumentFactory()
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    doc = PermitAmendmentDocumentFactory(permit_amendment=permit_amendment)
 
     del_resp = test_client.delete(
         f'/mines/{doc.permit_amendment.mine_guid}/permits/{uuid.uuid4()}/amendments/{uuid.uuid4()}/documents/{doc.permit_amendment_document_guid}',

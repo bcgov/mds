@@ -16,6 +16,7 @@ import Variances from "@/components/dashboard/mine/variances/Variances";
 import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
+import Bonds from "@/components/dashboard/mine/bonds/Bonds";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
@@ -47,7 +48,11 @@ export class MineDashboard extends Component {
 
   componentDidMount() {
     const { id, activeTab } = this.props.match.params;
-    this.props.fetchPartyRelationships({ mine_guid: id, relationships: "party" });
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      relationships: "party",
+      include_permittees: "true",
+    });
     if (activeTab) {
       this.setState({ activeTab });
     } else {
@@ -58,7 +63,7 @@ export class MineDashboard extends Component {
       .then(() => {
         this.setState({ isLoaded: true });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ mineNotFound: true });
       });
   }
@@ -97,9 +102,9 @@ export class MineDashboard extends Component {
     return (
       (this.state.isLoaded && this.props.staticContentLoadingIsComplete && (
         <Row>
-          <Col>
+          <Col span={24}>
             <Row gutter={[0, 48]}>
-              <Col>
+              <Col span={24}>
                 <Title style={{ marginBottom: 8 }}>{mine.mine_name || Strings.UNKNOWN}</Title>
                 <Title level={4} style={{ margin: 0 }}>
                   Mine Number: {mine.mine_no || Strings.UNKNOWN}
@@ -107,7 +112,7 @@ export class MineDashboard extends Component {
               </Col>
             </Row>
             <Row gutter={[0, 48]}>
-              <Col>
+              <Col span={24}>
                 <Tabs
                   activeKey={this.state.activeTab}
                   defaultActiveKey={initialTab}
@@ -117,11 +122,9 @@ export class MineDashboard extends Component {
                   <TabPane tab="Overview" key={initialTab}>
                     <Overview mine={mine} match={this.props.match} />
                   </TabPane>
-                  {mine.major_mine_ind && (
-                    <TabPane tab="Permits" key="permits">
-                      <Permits mine={mine} match={this.props.match} />
-                    </TabPane>
-                  )}
+                  <TabPane tab="Permits" key="permits">
+                    <Permits mine={mine} match={this.props.match} />
+                  </TabPane>
                   <TabPane tab="Inspections" key="inspections">
                     <Inspections mine={mine} match={this.props.match} />
                   </TabPane>
@@ -133,6 +136,9 @@ export class MineDashboard extends Component {
                   </TabPane>
                   <TabPane tab="Reports" key="reports">
                     <Reports mine={mine} match={this.props.match} />
+                  </TabPane>
+                  <TabPane tab="Bonds" key="bonds">
+                    <Bonds mine={mine} match={this.props.match} />
                   </TabPane>
                 </Tabs>
               </Col>

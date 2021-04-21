@@ -137,12 +137,6 @@ exports[`MineVarianceTable renders properly 1`] = `
   tableProps={
     Object {
       "align": "left",
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="approved-variances"
-        />,
-      },
       "onChange": [Function],
       "pagination": false,
     }

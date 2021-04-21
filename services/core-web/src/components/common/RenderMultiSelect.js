@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Select } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 import { caseInsensitiveLabelFilter } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -43,15 +45,19 @@ export const RenderMultiSelect = (props) => (
       }
     >
       <Select
+        virtual={false}
         disabled={!props.data || props.disabled}
         mode="multiple"
-        getPopupContainer={() => document.getElementById(props.id)}
+        size="small"
+        getPopupContainer={(trigger) => trigger.parentNode}
         placeholder={props.placeholder}
         id={props.id}
         onSearch={props.onSearch}
-        {...props.input}
+        value={props.input.value ? props.input.value : undefined}
+        onChange={props.input.onChange}
         filterOption={props.filterOption || caseInsensitiveLabelFilter}
         showArrow
+        placement="bottomCenter"
       >
         {props.data &&
           props.data.map(({ value, label, tooltip }) => (

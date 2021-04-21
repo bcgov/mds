@@ -24,6 +24,7 @@ from app.api.incidents.models.mine_incident_determination_type import MineIncide
 from app.api.incidents.models.mine_incident_status_code import MineIncidentStatusCode
 from app.api.incidents.models.mine_incident_category import MineIncidentCategory
 from app.api.parties.party.models.sub_division_code import SubDivisionCode
+from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.compliance.models.compliance_article import ComplianceArticle
 from app.api.variances.models.variance_application_status_code import VarianceApplicationStatusCode
 from app.api.variances.models.variance_document_category_code import VarianceDocumentCategoryCode
@@ -39,10 +40,18 @@ from app.api.now_applications.models.activity_detail.underground_exploration_typ
 from app.api.now_applications.models.now_application_progress_status import NOWApplicationProgressStatus
 from app.api.now_applications.models.now_application_permit_type import NOWApplicationPermitType
 from app.api.now_applications.models.now_application_review_type import NOWApplicationReviewType
-from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
 from app.api.securities.models.bond_document_type import BondDocumentType
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
+from app.api.mines.permits.permit_conditions.models.permit_condition_type import PermitConditionType
+from app.api.parties.party_appt.models.party_business_role_code import PartyBusinessRoleCode
+from app.api.now_applications.models.now_application_delay_type import NOWApplicationDelayType
+from app.api.mines.permits.permit_amendment.models.permit_amendment_type_code import PermitAmendmentTypeCode
+from app.api.now_applications.models.administrative_amendments.application_reason_code import ApplicationReasonCode
+from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
+from app.api.now_applications.models.application_type_code import ApplicationTypeCode
+from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 
 from app.api.parties.party.models.party import Party
 
@@ -54,14 +63,17 @@ MODELS_GET_ACTIVE = [
     MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
     UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
     UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
-    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType, ExemptionFeeStatus
+    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
+    ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
+    NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
+    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType
 ]
 
 
 def generate_static_content_dict():
     static_content = {}
     for model in MODELS_GET_ACTIVE:
-        static_content[model.__name__] = model.get_active()
+        static_content[model.__name__] = model.get_all()
 
     return static_content
 

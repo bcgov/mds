@@ -18,7 +18,7 @@ class TestPostApplicationImportResource:
         na = transmogrify_now(now_application_identity)
         assert na.blasting_operation
         assert na.state_of_land
-        assert na.camps
+        assert na.camp
         assert na.cut_lines_polarization_survey
         assert na.exploration_surface_drilling
         assert na.exploration_access
@@ -36,7 +36,7 @@ class TestPostApplicationImportResource:
         na = transmogrify_now(now_application_identity)
         assert not na.blasting_operation
         assert not na.state_of_land
-        assert not na.camps
+        assert not na.camp
         assert not na.cut_lines_polarization_survey
         assert not na.exploration_surface_drilling
         assert not na.exploration_access

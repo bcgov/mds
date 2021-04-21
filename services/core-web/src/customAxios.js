@@ -42,7 +42,7 @@ const CustomAxios = ({ errorToastMessage, selector, envelope = defaultEnvelope }
         window.location.reload(false);
       } else if (errorToastMessage === "default" || errorToastMessage === undefined) {
         notification.error({
-          message: error.response ? error.response.data.message : String.ERROR,
+          message: error?.response?.data?.message ?? String.ERROR,
           duration: 10,
         });
       } else if (errorToastMessage) {

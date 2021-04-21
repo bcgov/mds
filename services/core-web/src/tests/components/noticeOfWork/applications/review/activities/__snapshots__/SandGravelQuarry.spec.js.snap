@@ -16,6 +16,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Average Depth Overburden
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}
@@ -42,7 +47,12 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Average Depth of top soil
+        Average Depth of topsoil
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}
@@ -74,6 +84,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Measures to stabilize soil overburden stockpiles and control noxious weeds
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -98,6 +113,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Is this site within the Agricultural Land Reserve?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -113,7 +133,12 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <div
         className="field-title"
       >
-        Current land use zoning for the site 
+        Current land use zoning for the site
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -134,6 +159,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title--light"
       >
         Permit Application Number
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -150,6 +180,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Proposed land use
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -170,6 +205,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Official community plan for the site
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -186,6 +226,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Does the local government have a soil removal bylaw?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -206,6 +251,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Total mineable reserves over the life of the mine
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}
@@ -233,6 +283,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Annual extraction from site
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Fields
         component={[Function]}
@@ -254,44 +309,42 @@ exports[`SandGravelQuarry renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <withStore(Table)
-    align="left"
-    columns={
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Activity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
         },
         Object {
-          "dataIndex": "disturbed_area",
-          "key": "disturbed_area",
-          "render": [Function],
+          "component": [Function],
           "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "disturbed_area",
         },
         Object {
-          "dataIndex": "timber_volume",
-          "key": "timber_volume",
-          "render": [Function],
-          "title": "Merchantable timber volume (m3)",
+          "component": [Function],
+          "title": "Merchantable timber volume (m³)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "timber_volume",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No data",
-      }
-    }
-    pagination={false}
   />
   <br />
   <Equipment
-    activity="sand_and_gravel"
-    addRecord={[MockFunction]}
-    editRecord={[MockFunction]}
-    equipment={Array []}
     isViewMode={true}
   />
   <br />
@@ -309,6 +362,11 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
         component={[Function]}
@@ -330,12 +388,22 @@ exports[`SandGravelQuarry renders properly 1`] = `
         className="field-title"
       >
         Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
       </div>
       <Field
+        autoComplete="off"
         component={[Function]}
         disabled={true}
+        format={[Function]}
         id="reclamation_cost"
         name="reclamation_cost"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
         validate={
           Array [
             [Function],

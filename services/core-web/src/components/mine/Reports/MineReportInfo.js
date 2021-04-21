@@ -4,8 +4,8 @@ import moment from "moment";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row } from "antd";
-import { isEmpty, debounce } from "lodash";
+import { Row, Divider } from "antd";
+import { isEmpty } from "lodash";
 import {
   fetchMineReports,
   updateMineReport,
@@ -23,7 +23,6 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import AddButton from "@/components/common/AddButton";
 import MineReportTable from "@/components/mine/Reports/MineReportTable";
 import ReportFilterForm from "@/components/Forms/reports/ReportFilterForm";
-import * as ModalContent from "@/constants/modalContent";
 import * as routes from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";
 
@@ -60,11 +59,12 @@ const defaultParams = {
   due_date_end: undefined,
   received_date_start: undefined,
   received_date_end: undefined,
-  received_only: undefined,
+  received_only: "false",
   requested_by: undefined,
   status: [],
   sort_field: "received_date",
   sort_dir: "desc",
+  mine_reports_type: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
 };
 
 export class MineReportInfo extends Component {
@@ -73,13 +73,12 @@ export class MineReportInfo extends Component {
     params: defaultParams,
     filteredReports: [],
     isLoaded: false,
-    disableAddReport: false,
   };
 
   componentDidMount = () => {
     this.setState({ mine: this.props.mines[this.props.mineGuid] });
     const params = queryString.parse(this.props.location.search);
-    this.props.fetchMineReports(this.props.mineGuid).then(() => {
+    this.props.fetchMineReports(this.props.mineGuid, defaultParams.mine_reports_type).then(() => {
       this.setState(
         (prevState) => ({
           isLoaded: true,
@@ -101,53 +100,42 @@ export class MineReportInfo extends Component {
   };
 
   handleEditReport = (report) => {
-    this.props
+    return this.props
       .updateMineReport(report.mine_guid, report.mine_report_guid, report)
       .then(() => this.props.closeModal())
-      .then(() =>
-        this.props.fetchMineReports(report.mine_guid).then(() => {
-          this.setState({
-            filteredReports: this.props.mineReports,
-          });
-        })
-      );
+      .then(() => this.fetchReports(report.mine_guid));
   };
 
   handleAddReport = (values) => {
-    this.setState({ disableAddReport: true }, () => {
-      this.props
-        .createMineReport(this.props.mineGuid, values)
-        .then(() => this.props.closeModal())
-        .then(() =>
-          this.props.fetchMineReports(this.props.mineGuid).then(() => {
-            this.setState({
-              filteredReports: this.props.mineReports,
-            });
-          })
-        )
-        .finally(this.setState({ disableAddReport: false }));
-    });
+    return this.props
+      .createMineReport(this.props.mineGuid, values)
+      .then(() => this.props.closeModal())
+      .then(() => this.fetchReports(this.props.mineGuid));
   };
 
   handleRemoveReport = (report) => {
-    this.props.deleteMineReport(report.mine_guid, report.mine_report_guid).then(() =>
-      this.props.fetchMineReports(report.mine_guid).then(() => {
-        this.setState({
-          filteredReports: this.props.mineReports,
-        });
-      })
-    );
+    return this.props
+      .deleteMineReport(report.mine_guid, report.mine_report_guid)
+      .then(() => this.fetchReports(report.mine_guid));
+  };
+
+  fetchReports = (mineGuid) => {
+    return this.props.fetchMineReports(mineGuid, defaultParams.mine_reports_type).then(() => {
+      this.setState({
+        filteredReports: this.props.mineReports,
+      });
+    });
   };
 
   openAddReportModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        disableAddReport: this.state.disableAddReport,
-        onSubmit: debounce(this.handleAddReport, 2000),
+        onSubmit: this.handleAddReport,
         title: `Add report for ${this.state.mine.mine_name}`,
         mineGuid: this.props.mineGuid,
         changeModalTitle: this.props.changeModalTitle,
+        mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
       },
       content: modalConfig.ADD_REPORT,
     });
@@ -164,6 +152,7 @@ export class MineReportInfo extends Component {
               ? report.mine_report_submissions[report.mine_report_submissions.length - 1]
                   .mine_report_submission_status_code
               : "NRQ",
+          mineReportsType: Strings.MINE_REPORTS_TYPE.codeRequiredReports,
         },
         onSubmit,
         title: `Edit ${report.submission_year} ${report.report_name}`,
@@ -196,13 +185,14 @@ export class MineReportInfo extends Component {
           (definition) => definition.mine_report_definition_guid
         );
 
-    return reports.filter((report) => {
+    const filteredReports = reports.filter((report) => {
       const report_type =
         !params.report_type || reportDefinitionGuids.includes(report.mine_report_definition_guid);
       const report_name =
         !params.report_name || report.mine_report_definition_guid === params.report_name;
       const compliance_year =
-        !params.compliance_year || report.submission_year === params.compliance_year;
+        !params.compliance_year ||
+        Number(report.submission_year) === Number(params.compliance_year);
       const due_date_start =
         !params.due_date_start ||
         moment(report.due_date, Strings.DATE_FORMAT) >=
@@ -222,7 +212,8 @@ export class MineReportInfo extends Component {
       const requested_by =
         !params.requested_by ||
         report.created_by_idir.toLowerCase().includes(params.requested_by.toLowerCase());
-      const received_only = params.received_only || report.received_date;
+      const received_only =
+        !params.received_only || params.received_only === "false" || report.received_date;
       const status =
         isEmpty(params.status) ||
         (report.mine_report_submissions &&
@@ -244,6 +235,7 @@ export class MineReportInfo extends Component {
         status
       );
     });
+    return filteredReports;
   };
 
   handleReportFilterSubmit = (params) => {
@@ -273,18 +265,14 @@ export class MineReportInfo extends Component {
   render() {
     return (
       <div className="tab__content">
+        <div>
+          <h2>Code Required Reports</h2>
+          <Divider />
+        </div>
         <div className="inline-flex flex-end">
           <Row>
             <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-              <AddButton
-                onClick={(event) =>
-                  this.openAddReportModal(
-                    event,
-                    debounce(this.handleAddReport, 2000),
-                    `${ModalContent.ADD_REPORT} to ${this.state.mine.mine_name}`
-                  )
-                }
-              >
+              <AddButton onClick={(event) => this.openAddReportModal(event)}>
                 Add a Report
               </AddButton>
             </AuthorizationWrapper>
@@ -299,6 +287,7 @@ export class MineReportInfo extends Component {
             onSubmit={this.handleReportFilterSubmit}
             handleReset={this.handleReportFilterReset}
             initialValues={this.state.params}
+            mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
           />
         </div>
         <MineReportTable
@@ -311,6 +300,7 @@ export class MineReportInfo extends Component {
           filters={this.state.params}
           sortField={this.state.params.sort_field}
           sortDir={this.state.params.sort_dir}
+          mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
         />
       </div>
     );

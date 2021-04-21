@@ -29,6 +29,7 @@ import {
   getDropdownCommodityOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
+import { PageTracker } from "@common/utils/trackers";
 import ResponsivePagination from "@/components/common/ResponsivePagination";
 import CustomPropTypes from "@/customPropTypes";
 import MineList from "@/components/dashboard/minesHomePage/MineList";
@@ -46,8 +47,6 @@ import AddButton from "@/components/common/AddButton";
 /**
  * @class Dashboard is the main landing page of the application, currently contains a List and Map View, ability to create a new mine, and search for a mine by name or lat/long.
  */
-
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -84,6 +83,7 @@ const defaultListParams = {
   commodity: [],
   major: undefined,
   tsf: undefined,
+  verified: undefined,
 };
 
 export class Dashboard extends Component {
@@ -252,7 +252,7 @@ export class Dashboard extends Component {
 
   handleCreateMineRecordSubmit = (value) => {
     const mineStatus = value.mine_status.join(",");
-    this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
+    return this.props.createMineRecord({ ...value, mine_status: mineStatus }).then((response) => {
       this.props.createMineTypes(response.data.mine_guid, value.mine_types).then(() => {
         this.props.closeModal();
         const params = this.props.location.search;
@@ -278,14 +278,15 @@ export class Dashboard extends Component {
     const { map } = queryString.parse(this.props.location.search);
     return (
       <div>
+        <PageTracker title="Mines Page" />
         <Tabs
-          className="center-tabs"
           activeKey={map ? "map" : "list"}
           size="large"
           animated={{ inkBar: false, tabPane: false }}
           onTabClick={this.handleTabChange}
+          centered
         >
-          <TabPane tab="List" key="list">
+          <Tabs.TabPane tab="List" key="list">
             <MineSearch
               initialValues={this.state.listParams}
               handleSearch={this.handleListViewSearch}
@@ -316,8 +317,8 @@ export class Dashboard extends Component {
                 />
               </div>
             </div>
-          </TabPane>
-          <TabPane tab="Map" key="map">
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Map" key="map">
             <div>
               <div className="landing-page__content--search">
                 <Col md={10} xs={24}>
@@ -330,7 +331,7 @@ export class Dashboard extends Component {
                   <br />
                   <Card>
                     <div>
-                      <h3>EMPR GIS Links</h3>
+                      <h3>EMLI GIS Links</h3>
                       <a
                         href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
                         target="_blank"
@@ -340,6 +341,7 @@ export class Dashboard extends Component {
                       </a>
                       <span> - Not set up to use this? Contact the GIS team.</span>
                       <br />
+                      {/* TODO: Change this to be the correct URL, if and when they change EMPR to EMLI */}
                       <a
                         href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
                         target="_blank"
@@ -412,7 +414,7 @@ export class Dashboard extends Component {
                 </Element>
               </LoadingWrapper>
             </div>
-          </TabPane>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );
@@ -457,10 +459,10 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
-  mineStatusDropDownOptions: getMineStatusDropDownOptions(state),
+  mineStatusDropDownOptions: getMineStatusDropDownOptions(state, false),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  mineTenureTypes: getMineTenureTypeDropdownOptions(state),
-  mineCommodityOptions: getDropdownCommodityOptions(state),
+  mineTenureTypes: getMineTenureTypeDropdownOptions(state, false),
+  mineCommodityOptions: getDropdownCommodityOptions(state, false),
   transformedMineTypes: getTransformedMineTypes(state),
 });
 

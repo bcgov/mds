@@ -5,7 +5,7 @@ import NullScreen from "@/components/common/NullScreen";
 const props = {};
 
 const setupProps = () => {
-  props.type = "dashboard";
+  props.type = "generic";
 };
 
 beforeEach(() => {

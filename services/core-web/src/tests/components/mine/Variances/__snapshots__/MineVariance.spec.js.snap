@@ -38,6 +38,7 @@ exports[`MineVariance renders properly 1`] = `
           "306": "2.3.8 - Flammable Waste Storage",
         }
       }
+      handleDeleteVariance={[Function]}
       isApplication={true}
       isLoaded={false}
       mine={
@@ -139,6 +140,7 @@ exports[`MineVariance renders properly 1`] = `
           "306": "2.3.8 - Flammable Waste Storage",
         }
       }
+      handleDeleteVariance={[Function]}
       isLoaded={false}
       mine={
         Object {

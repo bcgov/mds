@@ -22,5 +22,5 @@ class MineReportSubmissionStatusCode(Base, AuditMixin):
         return cls.query.filter_by(mine_report_submission_status_code=_code).first()
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+    def get_all(cls):
+        return cls.query.all()

@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required, number, currency } from "@common/utils/Validate";
 import { currencyMask } from "@common/utils/helpers";
 import { RECLAMATION_INVOICE_DOCUMENTS } from "@common/constants/API";
+import RenderDate from "@/components/common/RenderDate";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
 import DocumentTable from "@/components/common/DocumentTable";
 import CustomPropTypes from "@/customPropTypes";
 import FileUpload from "@/components/common/FileUpload";
+import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import { DOCUMENT, EXCEL } from "@/constants/fileTypes";
 
 const propTypes = {
@@ -34,7 +38,10 @@ export class ReclamationInvoiceForm extends Component {
 
   onFileLoad = (document_name, document_manager_guid) => {
     this.setState((prevState) => ({
-      uploadedFiles: [{ document_manager_guid, document_name }, ...prevState.uploadedFiles],
+      uploadedFiles: [
+        { document_manager_guid, document_name, mine_guid: this.props.mineGuid },
+        ...prevState.uploadedFiles,
+      ],
     }));
   };
 
@@ -100,6 +107,7 @@ export class ReclamationInvoiceForm extends Component {
                 label="Project ID*"
                 component={RenderField}
                 validate={[required]}
+                disabled
               />
             </Form.Item>
           </Col>
@@ -128,6 +136,17 @@ export class ReclamationInvoiceForm extends Component {
               />
             </Form.Item>
           </Col>
+          <Col md={12} sm={24}>
+            <Form.Item>
+              <Field
+                id="paid_date"
+                name="paid_date"
+                label="Paid Date*"
+                component={RenderDate}
+                validate={[required]}
+              />
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={16}>
           <Col md={12} xs={24}>
@@ -140,6 +159,13 @@ export class ReclamationInvoiceForm extends Component {
               documents={documentTableRecords}
               removeDocument={this.onRemoveExistingFile}
             />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={24}>
+            <Form.Item>
+              <Field id="note" name="note" label="Notes" component={RenderAutoSizeField} />
+            </Form.Item>
           </Col>
         </Row>
         <br />
@@ -177,7 +203,7 @@ export class ReclamationInvoiceForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             Save Reclamation Invoice
           </Button>

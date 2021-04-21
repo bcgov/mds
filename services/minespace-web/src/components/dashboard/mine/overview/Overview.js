@@ -40,7 +40,7 @@ const getMineManager = (partyRelationships) => {
         (pr) => pr.mine_party_appt_type_code === "MMG" && isPartyRelationshipActive(pr)
       )
     : null;
-  const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0].party : null;
+  const mineManager = mineManagers && mineManagers.length > 0 ? mineManagers[0] : null;
   return mineManager;
 };
 
@@ -55,7 +55,7 @@ export const Overview = (props) => (
     <Col lg={{ span: 14 }} xl={{ span: 16 }}>
       <Title level={4}>Overview</Title>
       <Paragraph>
-        This tab contains general information about your mine and important contacts at EMPR. The
+        This tab contains general information about your mine and important contacts at EMLI. The
         information is pulled from current Ministry resources. If anything is incorrect, please
         notify one of the Ministry contacts.
       </Paragraph>
@@ -103,7 +103,7 @@ export const Overview = (props) => (
         <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
           <ContactCard
             title="Mine Manager"
-            party={getMineManager(props.partyRelationships)}
+            partyRelationship={getMineManager(props.partyRelationships)}
             dateLabel="Mine Manager Since"
           />
         </Col>
@@ -111,13 +111,13 @@ export const Overview = (props) => (
     </Col>
     <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
       <Row gutter={[0, 16]}>
-        <Col>
+        <Col span={24}>
           <div style={{ height: "200px" }}>
             <Map mine={props.mine} controls={false} />
           </div>
         </Col>
         {(props.mine.major_mine_ind && (
-          <Col>
+          <Col span={24}>
             <Card title="Ministry Contacts">
               <MinistryContactItem contact={Contacts.MM_OFFICE} />
               <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
@@ -128,14 +128,14 @@ export const Overview = (props) => (
             </Card>
           </Col>
         )) || [
-          <Col>
+          <Col span={24}>
             <Card title="Regional Ministry Contacts">
               {getRegionalMineRegionalContacts(props.mine.mine_region).map((contact) => (
                 <MinistryContactItem contact={contact} key={contact.title} />
               ))}
             </Card>
           </Col>,
-          <Col>
+          <Col span={24}>
             <Card title="General Ministry Contacts">
               <MinistryContactItem contact={Contacts.CHIEF_INSPECTOR} />
               <MinistryContactItem contact={Contacts.EXEC_LEAD_AUTH} />

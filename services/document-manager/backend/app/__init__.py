@@ -16,9 +16,11 @@ from app.docman.resources import *
 
 from app.commands import register_commands
 from app.routes import register_routes
-from app.extensions import api, cache, db, jwt, apm, migrate
+from app.extensions import api, cache, db, jwt, migrate
 
 from .config import Config
+
+from celery import Celery
 
 
 def create_app(config_object=None):
@@ -52,14 +54,32 @@ def register_extensions(app):
     apidoc.static_url_path = f'{Config.BASE_PATH}/swaggerui'
     api.init_app(app)
 
-    if app.config['ELASTIC_ENABLED'] == '1':
-        apm.init_app(app)
-
     cache.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-
     CORS(app)
 
     return None
+
+
+def make_celery(app=None):
+    app = app or create_app()
+    celery = Celery(
+        app.import_name,
+        backend=app.config['CELERY_RESULT_BACKEND'],
+        broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+
+    TaskBase = celery.Task
+
+    class ContextTask(TaskBase):
+        abstract = True
+        track_started = True
+
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return TaskBase.__call__(self, *args, **kwargs)
+
+    celery.Task = ContextTask
+    return celery

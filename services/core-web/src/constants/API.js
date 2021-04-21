@@ -9,4 +9,4 @@ export const GET_NOTICE_OF_WORK_APPLICATION_DOCUMENT_CONTEXT_TEMPLATE = (
   `/now-applications/application-document-types/${documentTypeCode}?${queryString.stringify({
     context_guid,
   })}`;
-export const RETRIEVE_CORE_DOCUMENT = (token) => `/documents?${queryString.stringify(token)}`;
+export const DOCUMENT_GENERATION = (token) => `/documents?${queryString.stringify(token)}`;

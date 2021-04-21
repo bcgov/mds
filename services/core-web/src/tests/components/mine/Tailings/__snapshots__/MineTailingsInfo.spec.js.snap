@@ -44,6 +44,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
       handleRemoveReport={[Function]}
       handleTableChange={[Function]}
       isLoaded={false}
+      mineReportType="CRR"
       openEditReportModal={[Function]}
       sortDir="desc"
       sortField="received_date"

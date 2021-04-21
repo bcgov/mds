@@ -8,9 +8,11 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from geoalchemy2 import Geometry
 from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
+from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -19,7 +21,7 @@ from app.api.constants import *
 # that may be best in different situations: https://docs.sqlalchemy.org/en/latest/orm/loading_relationships.html
 
 
-class Mine(AuditMixin, Base):
+class Mine(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine'
     _edit_key = MINE_EDIT_GROUP
 
@@ -29,7 +31,6 @@ class Mine(AuditMixin, Base):
     mine_note = db.Column(db.String(300), default='')
     legacy_mms_mine_status = db.Column(db.String(50))
     major_mine_ind = db.Column(db.Boolean, nullable=False, default=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     mine_region = db.Column(db.String(2), db.ForeignKey('mine_region_code.mine_region_code'))
     ohsc_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
@@ -40,6 +41,7 @@ class Mine(AuditMixin, Base):
     exemption_fee_status_code = db.Column(
         db.String, db.ForeignKey('exemption_fee_status.exemption_fee_status_code'))
     exemption_fee_status_note = db.Column(db.String)
+    mms_alias = db.Column(db.String)
 
     # Relationships
     #Almost always used and 1:1, so these are joined
@@ -52,8 +54,17 @@ class Mine(AuditMixin, Base):
         lazy='joined')
 
     #Almost always used, but faster to use selectin to load related data
-    mine_permit = db.relationship(
-        'Permit', backref='mine', order_by='desc(Permit.create_timestamp)', lazy='selectin')
+    _permit_identities = db.relationship(
+        'Permit',
+        order_by='desc(Permit.create_timestamp)',
+        lazy='select',
+        secondary='mine_permit_xref',
+        secondaryjoin=
+        'and_(foreign(MinePermitXref.permit_id) == remote(Permit.permit_id),Permit.deleted_ind == False)'
+    )
+
+    #across all permit_identities
+    _mine_permit_amendments = db.relationship('PermitAmendment', lazy='selectin')
 
     mine_type = db.relationship(
         'MineType',
@@ -65,14 +76,29 @@ class Mine(AuditMixin, Base):
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
-        primaryjoin="and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.active_ind==True)",
+        primaryjoin=
+        "and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)",
         lazy='select')
 
     mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
-    mine_incidents = db.relationship('MineIncident', backref="mine", lazy='select')
+    mine_incidents = db.relationship(
+        'MineIncident',
+        backref="mine",
+        lazy='select',
+        primaryjoin="and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)"
+    )
     mine_reports = db.relationship('MineReport', lazy='select')
 
+    comments = db.relationship(
+        'MineComment',
+        order_by='MineComment.comment_datetime',
+        primaryjoin="and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
+        lazy='joined')
+
     region = db.relationship('MineRegionCode', lazy='select')
+
+    government_agency_type_code = db.Column(
+        db.String, db.ForeignKey('government_agency_type.government_agency_type_code'))
 
     def __repr__(self):
         return '<Mine %r>' % self.mine_guid
@@ -114,10 +140,19 @@ class Mine(AuditMixin, Base):
         }
 
     @hybrid_property
+    def mine_permit(self):
+        permits_w_context = []
+        for p in self._permit_identities:
+            p._context_mine = self
+            permits_w_context.append(p)
+        filtered_permits = [x for x in permits_w_context if x.permit_status_code != 'D']
+        return filtered_permits
+
+    @hybrid_property
     def mine_permit_numbers(self):
-        rows = db.session.query(
-            Permit.permit_no).filter(Permit.mine_guid == self.mine_guid).distinct().all()
-        p_numbers = [permit_no for permit_no, in rows]
+        p_numbers = [
+            mpi.permit_no for mpi in self._permit_identities if mpi.permit_status_code != 'D'
+        ]
         return p_numbers
 
     @hybrid_property
@@ -131,7 +166,7 @@ class Mine(AuditMixin, Base):
         try:
             uuid.UUID(_id, version=4)
             return cls.query.filter_by(mine_guid=_id).filter_by(deleted_ind=False).first()
-        except ValueError:
+        except (ValueError, TypeError):
             return None
 
     @classmethod
@@ -159,7 +194,7 @@ class Mine(AuditMixin, Base):
             number_filter = Mine.mine_no.ilike('%{}%'.format(term))
             permit_filter = Permit.permit_no.ilike('%{}%'.format(term))
             mines_q = Mine.query.filter(name_filter | number_filter).filter_by(deleted_ind=False)
-            permit_q = Mine.query.join(Permit).filter(permit_filter)
+            permit_q = Mine.query.join(MinePermitXref).join(Permit).filter(permit_filter)
             mines_q = mines_q.union(permit_q)
         else:
             mines_q = Mine.query
@@ -171,7 +206,7 @@ class Mine(AuditMixin, Base):
 
     @classmethod
     def find_all_major_mines(cls):
-        return cls.query.filter_by(major_mine_ind=True).filter_by(deleted_ind=False).all()
+        return cls.query.filter_by(major_mine_ind=True, deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_no_or_guid(cls, _id):

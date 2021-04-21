@@ -5,8 +5,7 @@ exports[`AddReportModal renders properly 1`] = `
   <SlidingForms
     formContent={
       Array [
-        <Memo(ConnectFunction)
-          disableAddReport={false}
+        <UNDEFINED
           initialValues={Object {}}
           onSubmit={[MockFunction]}
           showReportHistory={[Function]}

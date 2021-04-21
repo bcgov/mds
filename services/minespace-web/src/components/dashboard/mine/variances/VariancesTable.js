@@ -69,7 +69,7 @@ export class VariancesTable extends Component {
       width: 10,
       render: (text, record) => (
         <div title="Overdue">
-          {record.isOverdue ? <img className="padding-small" src={RED_CLOCK} alt="expired" /> : ""}
+          {record.isOverdue ? <img className="padding-sm" src={RED_CLOCK} alt="expired" /> : ""}
         </div>
       ),
     },

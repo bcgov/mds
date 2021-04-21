@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty, some, negate } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Icon, Row } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,8 +37,8 @@ export class AdvancedMineSearchForm extends Component {
       expandAdvancedSearch: !prevState.expandAdvancedSearch,
     }));
 
-  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major }) =>
-    tsf || major || some([status, region, tenure, commodity], negate(isEmpty));
+  haveAdvancedSearchFilters = ({ status, region, tenure, commodity, tsf, major, verified }) =>
+    tsf || major || verified || some([status, region, tenure, commodity], negate(isEmpty));
 
   componentWillReceiveProps = (nextProps) => {
     if (
@@ -131,12 +134,27 @@ export class AdvancedMineSearchForm extends Component {
                 />
               </Col>
             </Row>
+            <Row gutter={6}>
+              <Col md={12} xs={24}>
+                <Field
+                  id="verified"
+                  name="verified"
+                  component={renderConfig.SELECT}
+                  data={[
+                    { value: "", label: "Verified and Un-verified Mines" },
+                    { value: "true", label: "Verified Mine" },
+                    { value: "false", label: "Un-verified" },
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24} />
+            </Row>
           </div>
         )}
         <div className="left center-mobile">
           <Button className="btn--dropdown" onClick={this.toggleIsAdvancedSearch}>
             {this.state.expandAdvancedSearch ? "Collapse Filters" : "Expand Filters"}
-            <Icon type={this.state.expandAdvancedSearch ? "up" : "down"} />
+            {this.state.expandAdvancedSearch ? <UpOutlined /> : <DownOutlined />}
           </Button>
         </div>
         <div className="right center-mobile">

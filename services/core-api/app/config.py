@@ -1,5 +1,6 @@
 import os
 
+from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -19,15 +20,24 @@ class Config(object):
             }
         },
         'handlers': {
-            'wsgi': {
+            'console': {
                 'class': 'logging.StreamHandler',
-                'stream': 'ext://flask.logging.wsgi_errors_stream',
-                'formatter': 'default'
+                'stream': 'ext://sys.stdout',
+                'formatter': 'default',
+                'level': 'DEBUG'
+            },
+            'file': {
+                'class': 'logging.handlers.RotatingFileHandler',
+                'mode': 'a',
+                'backupCount': 0,
+                'maxBytes': 100000000,
+                'filename': '/var/log/core-api.log',
+                'formatter': 'default',
             }
         },
         'root': {
             'level': FLASK_LOGGING_LEVEL,
-            'handlers': ['wsgi']
+            'handlers': ['file', 'console']
         }
     }
 
@@ -42,7 +52,12 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
+
+    # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+
     JWT_OIDC_WELL_KNOWN_CONFIG = os.environ.get(
         'JWT_OIDC_WELL_KNOWN_CONFIG',
         'https://URL/auth/realms/mds/.well-known/openid-configuration')
@@ -67,8 +82,16 @@ class Config(object):
     DOCUMENT_MANAGER_URL = os.environ.get('DOCUMENT_MANAGER_URL',
                                           'http://document_manager_backend:5001')
     DOCUMENT_GENERATOR_URL = os.environ.get('DOCUMENT_GENERATOR_URL', 'http://docgen-api:3030')
+    DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES = int(
+        os.environ.get('DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES', '1048576'))
     NRIS_TOKEN_URL = os.environ.get('NRIS_TOKEN_URL', None)
     NRIS_API_URL = os.environ.get('NRIS_API_URL', 'http://nris_backend:5500')
+
+    NROS_NOW_URL = os.environ.get('NROS_NOW_URL', None)
+    NROS_NOW_CLIENT_ID = os.environ.get('NROS_NOW_CLIENT_ID', None)
+    NROS_NOW_TOKEN_URL = os.environ.get('NROS_NOW_TOKEN_URL', None)
+    NROS_NOW_CLIENT_SECRET = os.environ.get('NROS_NOW_CLIENT_SECRET', None)
+
     # Cache settings
     CACHE_TYPE = os.environ.get('CACHE_TYPE', 'redis')
     CACHE_REDIS_HOST = os.environ.get('CACHE_REDIS_HOST', 'redis')
@@ -85,32 +108,28 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'pool_timeout': 300, 'max_overflow': 20}
 
-    # Elastic config
-    ELASTIC_ENABLED = os.environ.get('ELASTIC_ENABLED', '0')
-    ELASTIC_SERVICE_NAME = os.environ.get('ELASTIC_SERVICE_NAME', 'Local-Dev')
-    ELASTIC_SECRET_TOKEN = os.environ.get('ELASTIC_SECRET_TOKEN', None)
-    ELASTIC_SERVER_URL = os.environ.get('ELASTIC_SERVER_URL', 'http://localhost:8200')
-    ELASTIC_DEBUG = os.environ.get('ELASTIC_DEBUG', False)
-    ELASTIC_APM = {
-        'SERVICE_NAME': ELASTIC_SERVICE_NAME,
-        'SECRET_TOKEN': ELASTIC_SECRET_TOKEN,
-        'SERVER_URL': ELASTIC_SERVER_URL,
-        'DEBUG': ELASTIC_DEBUG,
-    }
-
     # NROS
     NROS_CLIENT_SECRET = os.environ.get('NROS_CLIENT_SECRET', None)
     NROS_CLIENT_ID = os.environ.get('NROS_CLIENT_ID', None)
     NROS_TOKEN_URL = os.environ.get('NROS_TOKEN_URL', None)
 
-    # VFCBC
+    # vFCBC
     VFCBC_CLIENT_SECRET = os.environ.get('VFCBC_CLIENT_SECRET', None)
     VFCBC_CLIENT_ID = os.environ.get('VFCBC_CLIENT_ID', None)
 
-    # NRIS Remote API
+    # NRIS
     NRIS_REMOTE_CLIENT_SECRET = os.environ.get('NRIS_REMOTE_CLIENT_SECRET', None)
     NRIS_REMOTE_CLIENT_ID = os.environ.get('NRIS_REMOTE_CLIENT_ID', None)
     NRIS_REMOTE_TOKEN_URL = os.environ.get('NRIS_REMOTE_TOKEN_URL', None)
+
+    # OrgBook
+    ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
+
+    # MDT-Issuer-Controller
+    VCR_ISSUER_URL = os.environ.get(
+        'VCR_ISSUER_URL',
+        'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
+    VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
 
 
 class TestConfig(Config):

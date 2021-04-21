@@ -534,7 +534,6 @@
       }
     ],
     "client": {
-      "fider": [],
       "realm-management": [
         {
           "id": "a8daece2-a7b4-4356-9cd1-8eb4cd55a75b",
@@ -745,7 +744,6 @@
       "security-admin-console": [],
       "admin-cli": [],
       "mds-nris-client": [],
-      "minespace-prod": [],
       "broker": [
         {
           "id": "69238ae4-b9d6-47a7-b042-8e99a7fb6455",
@@ -790,18 +788,7 @@
           "containerId": "b95ee810-557b-4c47-b6b8-e290e7994d36",
           "attributes": {}
         }
-      ],
-      "central-scheduler": [
-        {
-          "id": "dd49fced-aff8-42ff-992d-a56480666698",
-          "name": "admin",
-          "composite": false,
-          "clientRole": true,
-          "containerId": "73bc62be-db77-414b-8a19-d158500423c7",
-          "attributes": {}
-        }
-      ],
-      "mines-application-prod": []
+      ]
     }
   },
   "groups": [

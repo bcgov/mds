@@ -1,0 +1,2 @@
+DELETE FROM mine_report_document_xref where mine_report_submission_id IN (SELECT mine_report_submission_id FROM mine_report_submission WHERE mine_report_id IN (SELECT mine_report_id FROM mine_report where permit_condition_category_code = 'ADC'));
+DELETE FROM mine_report_comment WHERE mine_report_submission_id IN (SELECT mine_report_submission_id FROM mine_report_submission WHERE mine_report_id IN (SELECT mine_report_id FROM mine_report where permit_condition_category_code = 'ADC'));

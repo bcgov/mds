@@ -5,7 +5,6 @@ import { formatDate } from "@common/utils/helpers";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class AdminVerifiedMinesList displays list of mineVerifiedStatuses for the admin page.
@@ -58,7 +57,6 @@ export const AdminVerifiedMinesList = (props) => (
         align: "center",
         pagination: false,
         scroll: { y: 500 },
-        locale: { emptyText: <NullScreen type="no-results" /> },
       }}
     />
   </div>

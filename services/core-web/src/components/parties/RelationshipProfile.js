@@ -9,7 +9,7 @@ import { isEmpty } from "lodash";
 import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import { fetchPermits } from "@common/actionCreators/permitActionCreator";
 import { fetchMineRecordById } from "@common/actionCreators/mineActionCreator";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
 
@@ -19,13 +19,10 @@ import * as String from "@common/constants/strings";
 import Loading from "@/components/common/Loading";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 
 /**
  * @class RelationshipProfile - profile view for party relationship types
  */
-
-const { TabPane } = Tabs;
 
 const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -76,13 +73,15 @@ export class RelationshipProfile extends Component {
     const mine = this.props.mines[id];
 
     // Fetch any props not provided
-    if (this.props.partyRelationships.length === 0) {
-      this.props.fetchPartyRelationships({
-        mine_guid: id,
-        types: typeCode,
-        relationships: "party",
-      });
-    }
+
+    this.props.fetchPartyRelationships({
+      mine_guid: id,
+      types: typeCode,
+      relationships: "party",
+      include_permittees: "true",
+      active_only: "false",
+    });
+
     if (!mine) {
       this.props.fetchMineRecordById(id);
       this.props.fetchPermits(id);
@@ -217,22 +216,22 @@ export class RelationshipProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content">
                   <Table
                     align="left"
                     pagination={false}
                     columns={columns}
                     dataSource={transformRowData(filteredRelationships)}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>

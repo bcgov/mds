@@ -2,8 +2,11 @@ import uuid
 from werkzeug.exceptions import NotFound
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from marshmallow import fields, validate
+from flask import current_app
+from datetime import date
 
 from app.extensions import db
 from app.api.utils.models_mixins import Base
@@ -78,6 +81,14 @@ class Application(Base):
         sandgrvqrygrdwtrtestpits = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         sandgrvqrygrdwtrtestwells = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hassurfacedisturbanceoutsidetenure = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        isaccessgated = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        accessauthorizationskeyprovided = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
+        hasaccessauthorizations = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSIONS_YES_NO), allow_none=True)
         status = fields.String(
             validate=validate.OneOf(choices=NOW_SUBMISSION_STATUS), allow_none=True)
@@ -234,6 +245,37 @@ class Application(Base):
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
 
+    applicantindividualorcompany = db.Column(db.String)
+    applicantrelationship = db.Column(db.String)
+    termofapplication = db.Column(db.Numeric(14, 0))
+    hasaccessauthorizations = db.Column(db.String)
+    accessauthorizationsdetails = db.Column(db.String)
+    accessauthorizationskeyprovided = db.Column(db.String)
+    landpresentcondition = db.Column(db.String)
+    currentmeansofaccess = db.Column(db.String)
+    physiography = db.Column(db.String)
+    oldequipment = db.Column(db.String)
+    typeofvegetation = db.Column(db.String)
+    recreationuse = db.Column(db.String)
+    isparkactivities = db.Column(db.String)
+    hasltgovauthorization = db.Column(db.String)
+    hasengagedfirstnations = db.Column(db.String)
+    hasculturalheritageresources = db.Column(db.String)
+    firstnationsactivities = db.Column(db.String)
+    curturalheritageresources = db.Column(db.String)
+    hasproposedcrossings = db.Column(db.String)
+    proposedcrossingschanges = db.Column(db.String)
+    cleanoutdisposalplan = db.Column(db.String)
+    maxannualtonnage = db.Column(db.Numeric(14, 0))
+    proposedproduction = db.Column(db.Numeric(14, 0))
+    isaccessgated = db.Column(db.String)
+    hassurfacedisturbanceoutsidetenure = db.Column(db.String)
+    bedrockexcavation = db.Column(db.String)
+    proposedactivites = db.Column(db.String)
+    archaeologicalprotectionplan = db.Column(db.String)
+    hasarchaeologicalprotectionplan = db.Column(db.String)
+    isonprivateland = db.Column(db.String)
+
     mine = db.relationship(
         'Mine',
         lazy='joined',
@@ -284,6 +326,14 @@ class Application(Base):
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')
+
+    @hybrid_property
+    def is_pre_launch(self):
+        # Selecting an arbitrary date based off when Regional permitting was launched in CORE
+        if self.receiveddate is not None and self.receiveddate >= date(2021, 2, 1):
+
+            return False
+        return True
 
     def __repr__(self):
         return '<Application %r>' % self.messageid

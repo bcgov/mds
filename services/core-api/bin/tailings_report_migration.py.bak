@@ -2,10 +2,8 @@ import uuid
 import petl as etl
 from petl import timeparser
 from datetime import datetime, time, timedelta
-from app.api.utils.apm import register_apm
 
 
-@register_apm()
 def append_tailings_reports_to_code_required_reports(connection, commit=False):
     src_table = etl.fromdb(
         connection,
@@ -117,7 +115,6 @@ def append_tailings_reports_to_code_required_reports(connection, commit=False):
         print('NO DATA CREATED: add --commit=true to insert report rows')
 
 
-@register_apm()
 def delete_tailings_data(connection, commit=False):
     cursor = connection.cursor()
     cursor.execute(

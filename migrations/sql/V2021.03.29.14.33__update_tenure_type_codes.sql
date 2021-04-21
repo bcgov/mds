@@ -1,0 +1,1 @@
+UPDATE mine_tenure_type_code SET description = 'Public Land' WHERE mine_tenure_type_code = 'BCL';

@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { required, validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -190,6 +192,9 @@ export class AddPartyRelationshipForm extends Component {
         options = <EngineerOfRecordOptions mine={this.props.mine} />;
         break;
       case "PMT":
+      case "THD":
+      case "LDO":
+      case "MOR":
         options = <PermitteeOptions minePermits={this.props.minePermits} />;
         break;
       default:
@@ -254,7 +259,7 @@ export class AddPartyRelationshipForm extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col md={12} xs={24}>
+          <Col span={24}>
             {options}
             {this.props.partyRelationshipType.mine_party_appt_type_code === "MMG" && (
               <div>
@@ -280,8 +285,9 @@ export class AddPartyRelationshipForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
@@ -289,7 +295,7 @@ export class AddPartyRelationshipForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             {this.props.title}
           </Button>

@@ -15,11 +15,11 @@ class TestGetNOWApplicationDocumentTypeResource:
             headers=auth_headers['full_auth_header'])
         assert get_resp.status_code == 200, get_resp.response
         get_data = json.loads(get_resp.data.decode())
-        assert len(get_data['records']) == len(NOWApplicationDocumentType.get_active())
+        assert len(get_data['records']) == len(NOWApplicationDocumentType.get_all())
 
     def test_get_application_document_type(self, test_client, db_session, auth_headers):
         """Should return the a single document_type"""
-        code = NOWApplicationDocumentType.get_active()[0].now_application_document_type_code
+        code = NOWApplicationDocumentType.get_all()[0].now_application_document_type_code
         get_resp = test_client.get(
             f'/now-applications/application-document-types/{code}',
             headers=auth_headers['full_auth_header'])
@@ -56,7 +56,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         get_data = json.loads(get_resp.data.decode())
         assert len([x for x in get_data['records'] if x['document_template']]) > 0
         assert len([x for x in get_data['records'] if x['document_template']]) == len(
-            [x for x in NOWApplicationDocumentType.get_active() if x.document_template_code])
+            [x for x in NOWApplicationDocumentType.get_all() if x.document_template_code])
 
     def test_generate_document_not_found(self, test_client, db_session, auth_headers):
         """Should error is document type doesn't exist"""
@@ -76,8 +76,16 @@ class TestGetNOWApplicationDocumentTypeResource:
 
     def test_generate_document_returns_token(self, test_client, db_session, auth_headers):
         """Should return the a token for successful generation"""
+        now_application = NOWApplicationFactory()
+        now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
+        now_application.issuing_inspector.signature = 'data:image/png;base64,'
 
-        data = {'now_application_guid': uuid.uuid4(), 'template_data': {'help': 'test'}}
+        data = {
+            'now_application_guid': now_application_identity.now_application_guid,
+            'template_data': {
+                'help': 'test'
+            }
+        }
 
         post_resp = test_client.post(
             f'/now-applications/application-document-types/CAL/generate',
@@ -91,6 +99,7 @@ class TestGetNOWApplicationDocumentTypeResource:
         """Should return the a token for successful generation"""
         now_application = NOWApplicationFactory()
         now_application_identity = NOWApplicationIdentityFactory(now_application=now_application)
+        now_application.issuing_inspector.signature = 'data:image/png;base64,'
 
         changed_mine_no = str(now_application_identity.mine.mine_no + '1')
         data = {

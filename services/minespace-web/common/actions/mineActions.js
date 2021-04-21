@@ -35,3 +35,8 @@ export const storeCurrentUserMineVerifiedStatuses = (payload) => ({
   type: ActionTypes.STORE_CURRENT_USER_MINE_VERIFIED_STATUS,
   payload,
 });
+
+export const storeMineComments = (payload) => ({
+  type: ActionTypes.STORE_MINE_COMMENTS,
+  payload,
+});

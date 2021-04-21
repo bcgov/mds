@@ -153,14 +153,14 @@ export class Variances extends Component {
   render() {
     return (
       <Row>
-        <Col>
+        <Col span={24}>
           {/* Disabled for now, until we want variance creation enabled. */}
           {/* <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
             onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
           >
-            <Icon type="plus-circle" theme="filled" />
+          <Icon type="plus-circle" theme="filled" />
             Create Variance
           </Button> */}
           <Title level={4}>Variances</Title>

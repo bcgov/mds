@@ -6,7 +6,7 @@ const { Paragraph, Text } = Typography;
 
 const UnauthenticatedNotice = () => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Result
         title="Access Denied"
         status="error"

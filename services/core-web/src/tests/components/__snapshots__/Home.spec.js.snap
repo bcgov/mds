@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home renders properly 1`] = `
-<Adapter
+<Layout
   className="layout"
 >
   <div
@@ -22,7 +22,6 @@ exports[`Home renders properly 1`] = `
           "height": 8,
           "position": "fixed",
           "top": 53,
-          "width": "100%",
           "zIndex": 999,
         }
       }
@@ -36,13 +35,11 @@ exports[`Home renders properly 1`] = `
       type="mobile"
     />
   </MediaQuery>
-  <Adapter
+  <Content
     className="content"
   >
     <DashboardRoutes />
-    <BackTop
-      visibilityHeight={400}
-    >
+    <Memo(BackTop)>
       <Button
         block={false}
         ghost={false}
@@ -50,15 +47,12 @@ exports[`Home renders properly 1`] = `
         loading={false}
         type="primary"
       >
-        <Icon
-          theme="outlined"
-          type="arrow-up"
-        />
+        <ForwardRef(ArrowUpOutlined) />
       </Button>
-    </BackTop>
-  </Adapter>
+    </Memo(BackTop)>
+  </Content>
   <div
     className="footer"
   />
-</Adapter>
+</Layout>
 `;

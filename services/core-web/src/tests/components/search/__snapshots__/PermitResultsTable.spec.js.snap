@@ -6,9 +6,9 @@ exports[`PermitResultsTable renders properly 1`] = `
     Permits
   </h2>
   <Divider />
-  <withStore(Table)
+  <Table
     align="left"
-    className="nested-table padding-large--bottom"
+    className="nested-table padding-lg--bottom"
     columns={
       Array [
         Object {
@@ -66,6 +66,7 @@ exports[`PermitResultsTable renders properly 1`] = `
       ]
     }
     pagination={false}
+    rowKey="key"
     showHeader={false}
   />
 </div>

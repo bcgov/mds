@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { Icon, Input, Button, Badge } from "antd";
+import { Input, Button, Badge } from "antd";
+import { isEmpty } from "lodash";
+import { SearchOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
 import {
   formatDate,
@@ -10,11 +13,9 @@ import {
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -25,7 +26,8 @@ const propTypes = {
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
-  searchParams: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  searchParams: PropTypes.objectOf(PropTypes.any).isRequired,
+  defaultParams: PropTypes.objectOf(PropTypes.any).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   applicationStatusOptions: CustomPropTypes.options.isRequired,
@@ -38,20 +40,27 @@ const propTypes = {
 };
 
 const defaultProps = {
-  sortField: null,
-  sortDir: null,
+  sortField: undefined,
+  sortDir: undefined,
   noticeOfWorkApplications: [],
 };
 
-const handleTableChange = (updateApplicationList) => (pagination, filters, sorter) => {
+const handleTableChange = (updateNOWList, tableFilters) => (pagination, filters, sorter) => {
   const params = {
-    results: pagination.pageSize,
-    page: pagination.current,
-    sort_field: sorter.order ? sorter.field : undefined,
-    sort_dir: sorter.order ? sorter.order.replace("end", "") : sorter.order,
+    ...tableFilters,
     ...filters,
+    now_application_status_description: filters.now_application_status_description
+      ? filters.now_application_status_description
+      : [],
+    mine_region: filters.mine_region ? filters.mine_region : [],
+    originating_system: filters.originating_system ? filters.originating_system : [],
+    notice_of_work_type_description: filters.notice_of_work_type_description
+      ? filters.notice_of_work_type_description
+      : [],
+    sort_field: sorter.order ? sorter.field : undefined,
+    sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
   };
-  updateApplicationList(params);
+  updateNOWList(params);
 };
 
 const applySortIndicator = (_columns, field, dir) =>
@@ -63,11 +72,21 @@ const applySortIndicator = (_columns, field, dir) =>
 const pageTitle = "Browse Notices of Work";
 
 export class NoticeOfWorkTable extends Component {
+  ensureListValue = (value) => {
+    if (Array.isArray(value)) {
+      return value;
+    }
+    if (value) {
+      return [value];
+    }
+    return [];
+  };
+
   createLinkTo = (route, record) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
           title: pageTitle,
         },
@@ -93,6 +112,9 @@ export class NoticeOfWorkTable extends Component {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       originating_system: application.originating_system || Strings.EMPTY_FIELD,
+      document:
+        application.application_documents.length >= 1 ? application.application_documents[0] : {},
+      is_historic: application.is_historic,
     }));
 
   filterProperties = (name, field) => ({
@@ -108,7 +130,7 @@ export class NoticeOfWorkTable extends Component {
             value={selectedKeys[0] || this.props.searchParams[field]}
             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={() => {
-              this.props.handleSearch({ [field]: this.searchInput });
+              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
             style={{ width: 188, marginBottom: 8, display: "block" }}
             allowClear
@@ -116,9 +138,9 @@ export class NoticeOfWorkTable extends Component {
           <Button
             type="primary"
             onClick={() => {
-              this.props.handleSearch({ [field]: this.searchInput });
+              this.props.handleSearch({ ...this.props.searchParams, [field]: this.searchInput });
             }}
-            icon="search"
+            icon={<SearchOutlined />}
             size="small"
             style={{ width: 90, marginRight: 8 }}
           >
@@ -126,7 +148,10 @@ export class NoticeOfWorkTable extends Component {
           </Button>
           <Button
             onClick={() => {
-              this.props.handleSearch({ [field]: null });
+              this.props.handleSearch({
+                ...this.props.searchParams,
+                [field]: this.props.defaultParams[field],
+              });
             }}
             size="small"
             style={{ width: 90 }}
@@ -137,7 +162,7 @@ export class NoticeOfWorkTable extends Component {
       );
     },
     filterIcon: (filtered) => (
-      <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
   });
 
@@ -171,15 +196,10 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "mine_region",
       sortField: "mine_region",
       sorter: true,
-      filtered: true,
-      filteredValue: this.props.searchParams.mine_region
-        ? [this.props.searchParams.mine_region]
-        : [],
-      filters: this.props.mineRegionOptions
-        ? optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
-            a.value > b.value ? 1 : -1
-          )
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.mine_region),
+      filters: optionsFilterLabelAndValue(this.props.mineRegionOptions).sort((a, b) =>
+        a.value > b.value ? 1 : -1
+      ),
       render: (text) => <div title="Region">{text}</div>,
     },
     {
@@ -188,10 +208,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "notice_of_work_type_description",
       sortField: "notice_of_work_type_description",
       sorter: true,
-      filtered: true,
-      filteredValue: this.props.searchParams.notice_of_work_type_description
-        ? [this.props.searchParams.notice_of_work_type_description]
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.notice_of_work_type_description),
       filters: optionsFilterLabelOnly(this.props.applicationTypeOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
@@ -220,16 +237,15 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "now_application_status_description",
       sortField: "now_application_status_description",
       sorter: true,
-      filtered: true,
-      filteredValue: this.props.searchParams.now_application_status_description
-        ? [this.props.searchParams.now_application_status_description]
-        : [],
+      filteredValue: this.ensureListValue(
+        this.props.searchParams.now_application_status_description
+      ),
       filters: optionsFilterLabelOnly(this.props.applicationStatusOptions).sort((a, b) =>
         a.value > b.value ? 1 : -1
       ),
       render: (text) => (
         <div title="Status">
-          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
+          <Badge status={getApplicationStatusType(text)} text={text} />
         </div>
       ),
     },
@@ -247,10 +263,7 @@ export class NoticeOfWorkTable extends Component {
       dataIndex: "originating_system",
       sortField: "originating_system",
       sorter: true,
-      filtered: true,
-      filteredValue: this.props.searchParams.originating_system
-        ? [this.props.searchParams.originating_system]
-        : [],
+      filteredValue: this.ensureListValue(this.props.searchParams.originating_system),
       filters: [
         { text: "Core", value: "Core" },
         { text: "NROS", value: "NROS" },
@@ -260,26 +273,29 @@ export class NoticeOfWorkTable extends Component {
       render: (text) => <div title="Source">{text}</div>,
     },
     {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
+    },
+    {
       key: "operations",
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                <img
-                  src={EDIT_OUTLINE_VIOLET}
-                  title="Edit"
-                  alt="Edit"
-                  className="padding-md--right"
-                />
-              </Link>
-            </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon
-                type="eye"
-                title="View"
-                className="icon-lg icon-svg-filter padding-large--left"
-              />
+            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary" disabled={record.is_historic}>
+                Open
+              </Button>
             </Link>
           </div>
         ),
@@ -299,8 +315,7 @@ export class NoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: { emptyText: <NullScreen type="no-results" /> },
-          onChange: handleTableChange(this.props.handleSearch),
+          onChange: handleTableChange(this.props.handleSearch, this.props.searchParams),
         }}
       />
     );

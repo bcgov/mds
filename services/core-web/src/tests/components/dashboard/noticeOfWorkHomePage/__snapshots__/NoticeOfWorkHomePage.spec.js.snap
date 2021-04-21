@@ -4,6 +4,9 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
 <div
   className="landing-page"
 >
+  <PageTracker
+    title="NoW Page"
+  />
   <div
     className="landing-page__header"
   >
@@ -11,9 +14,6 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
       <h1>
         Browse Notices of Work
       </h1>
-      <p>
-        Applications shown are from Core, NROS, and vFCBC only.
-      </p>
     </div>
   </div>
   <div
@@ -29,17 +29,53 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             "mine_search": undefined,
           }
         }
+        searchParams={
+          Object {
+            "application_type": "NOW",
+            "lead_inspector_name": undefined,
+            "mine_name": undefined,
+            "mine_region": "SW,NE",
+            "mine_search": undefined,
+            "notice_of_work_type_description": Array [],
+            "now_application_status_description": Array [],
+            "now_number": undefined,
+            "originating_system": Array [],
+            "page": "1",
+            "per_page": "25",
+            "sort_dir": "desc",
+            "sort_field": "received_date",
+          }
+        }
       />
       <div>
         <div
           className="tab__content"
         >
           <withRouter(NoticeOfWorkTable)
+            defaultParams={
+              Object {
+                "application_type": "NOW",
+                "lead_inspector_name": undefined,
+                "mine_name": undefined,
+                "mine_region": Array [],
+                "mine_search": undefined,
+                "notice_of_work_type_description": Array [],
+                "now_application_status_description": Array [],
+                "now_number": undefined,
+                "originating_system": Array [],
+                "page": "1",
+                "per_page": "25",
+                "sort_dir": "desc",
+                "sort_field": "received_date",
+              }
+            }
             handleSearch={[Function]}
             isLoaded={false}
             noticeOfWorkApplications={
               Array [
                 Object {
+                  "application_documents": Array [],
+                  "is_historic": false,
                   "mine_guid": "6e9d3426-ebf1-413f-9e5f-c3a71ab56797",
                   "mine_name": "Hamilton, Herrera and Mccormick",
                   "mine_no": "brother",
@@ -50,6 +86,8 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
                   "received_date": "2019-08-14",
                 },
                 Object {
+                  "application_documents": Array [],
+                  "is_historic": true,
                   "mine_guid": "60300a07-376c-46f1-a984-88a813f91438",
                   "mine_name": "Thompson-Sullivan",
                   "mine_no": "other",
@@ -63,16 +101,30 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
             }
             searchParams={
               Object {
+                "application_type": "NOW",
+                "lead_inspector_name": undefined,
+                "mine_name": undefined,
                 "mine_region": "SW,NE",
+                "mine_search": undefined,
+                "notice_of_work_type_description": Array [],
+                "now_application_status_description": Array [],
+                "now_number": undefined,
+                "originating_system": Array [],
+                "page": "1",
+                "per_page": "25",
+                "sort_dir": "desc",
+                "sort_field": "received_date",
               }
             }
+            sortDir="desc"
+            sortField="received_date"
           />
           <div
             className="center"
           >
             <ResponsivePagination
-              currentPage={NaN}
-              itemsPerPage={NaN}
+              currentPage={1}
+              itemsPerPage={25}
               onPageChange={[Function]}
               pageTotal={9000}
             />

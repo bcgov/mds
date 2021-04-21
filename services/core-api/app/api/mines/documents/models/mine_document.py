@@ -7,10 +7,10 @@ from datetime import datetime
 from marshmallow import fields
 
 from app.extensions import db
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
 
-class MineDocument(AuditMixin, Base):
+class MineDocument(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_document'
 
     class _ModelSchema(Base._ModelSchema):
@@ -24,9 +24,9 @@ class MineDocument(AuditMixin, Base):
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(255), nullable=False)
+    document_date = db.Column(db.DateTime)
     document_class = db.Column(db.String)
 
-    active_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')
@@ -35,12 +35,12 @@ class MineDocument(AuditMixin, Base):
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
-        return cls.query.filter_by(mine_guid=mine_guid).filter_by(active_ind=True).all()
+        return cls.query.filter_by(mine_guid=mine_guid).filter_by(deleted_ind=False).all()
 
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
         return cls.query.filter_by(mine_document_guid=mine_document_guid).filter_by(
-            active_ind=True).first()
+            deleted_ind=False).first()
 
     # TODO: Remove when mine_party_appt is refactored
     def json(self):

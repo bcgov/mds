@@ -10,7 +10,12 @@ import { Form, Button, Popconfirm, List, Typography } from "antd";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { required, yearNotInFuture } from "@common/utils/Validate";
-import { resetForm, createDropDownList, formatComplianceCodeValueOrLabel } from "@/utils/helpers";
+import {
+  resetForm,
+  createDropDownList,
+  formatComplianceCodeValueOrLabel,
+  sortListObjectsByPropertyLocaleCompare,
+} from "@common/utils/helpers";
 import {
   getDropdownMineReportCategoryOptions,
   getMineReportDefinitionOptions,
@@ -73,10 +78,14 @@ export class AddReportForm extends Component {
       );
     }
 
-    const dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
+    let dropdownMineReportDefinitionOptionsFiltered = createDropDownList(
       mineReportDefinitionOptionsFiltered,
       "report_name",
       "mine_report_definition_guid"
+    );
+    dropdownMineReportDefinitionOptionsFiltered = sortListObjectsByPropertyLocaleCompare(
+      dropdownMineReportDefinitionOptionsFiltered,
+      "label"
     );
 
     this.setState({

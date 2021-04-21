@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { reduxForm, Field } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { required } from "@common/utils/Validate";
 import * as FORM from "@/constants/forms";
@@ -17,14 +19,13 @@ const propTypes = {
 export const ChangeNOWMineForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
     <Row gutter={16}>
-      <Col>
+      <Col span={24}>
         <Form.Item>
           <Field
             id="mine_guid"
             name="mine_guid"
             component={RenderMineSelect}
             validate={[required]}
-            showCard
           />
         </Form.Item>
       </Col>
@@ -41,7 +42,7 @@ export const ChangeNOWMineForm = (props) => (
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" disabled={props.submitting}>
+      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
         {props.title}
       </Button>
     </div>

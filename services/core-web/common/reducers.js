@@ -15,6 +15,7 @@ import userReducerObject from "./reducers/userReducer";
 import varianceReducerObject from "./reducers/varianceReducer";
 import securitiesReducerObject from "./reducers/securitiesReducer";
 import activityReducerObject from "./reducers/activityReducer";
+import orgbookReducerObject from "./reducers/orgbookReducer";
 
 export const complianceReducer = complianceReducerObject;
 export const authenticationReducer = authenticationReducerObject;
@@ -32,3 +33,4 @@ export const userReducer = userReducerObject;
 export const varianceReducer = varianceReducerObject;
 export const securitiesReducer = securitiesReducerObject;
 export const activityReducer = activityReducerObject;
+export const orgbookReducer = orgbookReducerObject;

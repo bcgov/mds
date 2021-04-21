@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row, Radio } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row, Radio } from "antd";
 import {
   required,
   email,
@@ -9,8 +11,9 @@ import {
   maxLength,
   number,
   postalCode,
+  validateSelectOptions,
 } from "@common/utils/Validate";
-import { normalizePhone, upperCase } from "@common/utils/helpers";
+import { normalizePhone, upperCase, normalizeExt } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
@@ -46,7 +49,7 @@ export const AddFullPartyForm = (props) => (
                     name="first_name"
                     label="First Name *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
@@ -57,7 +60,7 @@ export const AddFullPartyForm = (props) => (
                     name="party_name"
                     label="Surname *"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    validate={[required, maxLength(100)]}
                   />
                 </Form.Item>
               </Col>
@@ -113,6 +116,7 @@ export const AddFullPartyForm = (props) => (
                   label="Ext"
                   component={renderConfig.FIELD}
                   validate={[number, maxLength(6)]}
+                  normalize={normalizeExt}
                 />
               </Form.Item>
             </Col>
@@ -166,6 +170,7 @@ export const AddFullPartyForm = (props) => (
                   label="Province"
                   component={renderConfig.SELECT}
                   data={props.provinceOptions}
+                  validate={[validateSelectOptions(props.provinceOptions)]}
                 />
               </Form.Item>
             </Col>
@@ -190,7 +195,7 @@ export const AddFullPartyForm = (props) => (
                   label="Postal Code"
                   placeholder="e.g xxxxxx"
                   component={renderConfig.FIELD}
-                  validate={[maxLength(6), postalCode]}
+                  validate={[maxLength(10), postalCode]}
                   normalize={upperCase}
                 />
               </Form.Item>

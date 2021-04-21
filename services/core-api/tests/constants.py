@@ -10,6 +10,7 @@ BASE_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "realm_access": {
         "roles": ["idir"]
     }
@@ -47,6 +48,7 @@ VIEW_ONLY_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "email": "test-email",
     "realm_access": {
         "roles": ["core_view_all", "idir"]
@@ -62,6 +64,7 @@ CREATE_ONLY_AUTH_CLAIMS = {
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
     "username": "test-user",
+    "preferred_username": "test-user",
     "realm_access": {
         "roles": ["core_edit_mines", "idir"]
     }
@@ -75,6 +78,7 @@ ADMIN_ONLY_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-user",
     "username": "test-user",
     "realm_access": {
         "roles": ["core_admin", "idir"]
@@ -89,6 +93,7 @@ PROPONENT_ONLY_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-proponent",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
     "realm_access": {
@@ -104,9 +109,26 @@ NROS_VFCBC_AUTH_CLAIMS = {
     "iat": 1531718745,
     "jti": "flask-jwt-oidc-test-support",
     "typ": "Bearer",
+    "preferred_username": "test-user",
     "username": "test-proponent",
     "email": "test-proponent-email@minespace.ca",
     "realm_access": {
         "roles": ["core_edit_submissions"]
+    }
+}
+
+CORE_EDIT_PARTIES_AUTH_CLAIMS = {
+    "iss": "test_issuer",
+    "sub": "43e6a245-0bf7-4ccf-9bd0-e7fb85fd18cc",
+    "aud": "test_audience",
+    "exp": 21531718745,
+    "iat": 1531718745,
+    "jti": "flask-jwt-oidc-test-support",
+    "typ": "Bearer",
+    "preferred_username": "test-user",
+    "username": "test-edit-parties",
+    "email": "test-proponent-email@minespace.ca",
+    "realm_access": {
+        "roles": ["core_edit_parties"]
     }
 }

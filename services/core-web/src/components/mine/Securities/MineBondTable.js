@@ -1,9 +1,9 @@
 import React from "react";
-import { Menu, Dropdown, Button, Icon, Tooltip, Table, Popconfirm } from "antd";
+import { Menu, Dropdown, Button, Tooltip, Table } from "antd";
+import { EyeOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatDate, dateSorter, formatMoney } from "@common/utils/helpers";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -21,6 +21,7 @@ const propTypes = {
   bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   bondTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   isLoaded: PropTypes.bool.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -29,11 +30,17 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   openViewBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
+  openTransferBondModal: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   openAddBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  releaseOrConfiscateBond: PropTypes.func.isRequired,
+  openCloseBondModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recordsByPermit: PropTypes.func.isRequired,
+  activeBondCount: PropTypes.func.isRequired,
+  getBalance: PropTypes.func.isRequired,
 };
 
 export const MineBondTable = (props) => {
@@ -45,20 +52,28 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Permit No.">{text}</div>,
     },
     {
-      // commenting out code for now as it introduces a new bug (adds an additional )
-      // title: (
-      //   <div>
-      //     Total Assessed
-      //     <CoreTooltip title="Total Assessed: This is the total value of all bond assessments for the permit, including amendments. Assessed values are determined by permitting inspectors and come from the permits." />
-      //   </div>
-      // ),
-      title: "Total Assessed",
-      dataIndex: "security_total",
-      key: "security_total",
-      render: (text, record) => (
-        <div title="Total Assessed">
-          {formatMoney(record.permit_amendments[0].security_total) || Strings.EMPTY_FIELD}
-        </div>
+      title: "Project ID",
+      dataIndex: "project_id",
+      key: "project_id",
+      render: (text) => <div title="Project ID">{text}</div>,
+    },
+    {
+      title: "Active Bonds",
+      dataIndex: "total_bonds",
+      key: "total_bonds",
+      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
+    },
+    {
+      dataIndex: "total_assessed",
+      key: "total_assessed",
+      title: (
+        <span>
+          Assessed Liability
+          <CoreTooltip title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit." />
+        </span>
+      ),
+      render: (text) => (
+        <div title="Assessed Liability">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
     },
     {
@@ -68,27 +83,19 @@ export const MineBondTable = (props) => {
       render: (text) => <div title="Total Held">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Active Bonds",
-      dataIndex: "total_bonds",
-      key: "total_bonds",
-      render: (text) => <div title="No. of Active Bonds">{text || 0}</div>,
-    },
-    {
       title: (
         <div>
-          Total Confiscated
-          <CoreTooltip title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit" />
+          Confiscated Cash On Hand
+          <CoreTooltip title="Confiscated Cash On Hand: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
         </div>
       ),
-      dataIndex: "amount_confiscated",
-      key: "amount_confiscated",
+      dataIndex: "balance",
+      key: "balance",
       render: (text) => (
-        <div title="Total Confiscated">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
+        <div title="Confiscated Cash On Hand">{formatMoney(text) || Strings.EMPTY_FIELD}</div>
       ),
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -99,8 +106,8 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openAddBondModal(event, record.permit_guid)}
             >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+              <div className="padding-sm">
+                <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add Bond
               </div>
             </Button>
@@ -123,12 +130,6 @@ export const MineBondTable = (props) => {
       dataIndex: "payer_party_guid",
       key: "payer_party_guid",
       render: (text, record) => <div title="Payer">{record.payer.name || Strings.EMPTY_FIELD}</div>,
-    },
-    {
-      title: "Institution",
-      dataIndex: "institution_name",
-      key: "institution_name",
-      render: (text) => <div title="Institution">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Type",
@@ -156,44 +157,42 @@ export const MineBondTable = (props) => {
       defaultSortOrder: "descend",
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
         const menu = (
           <Menu>
             {record.bond_status_code === "ACT" && (
-              <span>
-                <div className="custom-menu-item">
-                  <Popconfirm
-                    placement="leftTop"
-                    title={`Are you sure you want to release Bond ${record.bond_id}?`}
-                    onConfirm={() => props.releaseOrConfiscateBond("REL", record.bond_guid, record)}
-                    okText="Release"
-                    cancelText="Cancel"
+              <>
+                <Menu.Item key="release" className="custom-menu-item">
+                  <button
+                    type="button"
+                    onClick={(event) => props.openCloseBondModal(event, record, "REL")}
                   >
-                    <button type="button" className="full">
-                      Release Bond
-                    </button>
-                  </Popconfirm>
-                </div>
-                <div className="custom-menu-item">
-                  <Popconfirm
-                    placement="leftTop"
-                    title="Are you sure you want to confiscate this bond? Doing so will convert the bond type to cash."
-                    onConfirm={() => props.releaseOrConfiscateBond("CON", record.bond_guid, record)}
-                    okText="Confiscate"
-                    cancelText="Cancel"
+                    Release Bond
+                  </button>
+                </Menu.Item>
+                <Menu.Item key="confiscate" className="custom-menu-item">
+                  <button
+                    type="button"
+                    onClick={(event) => props.openCloseBondModal(event, record, "CON")}
                   >
-                    <button type="button" className="full">
-                      Confiscate Bond
+                    Confiscate Bond
+                  </button>
+                </Menu.Item>
+                {props.permits.length > 1 && (
+                  <Menu.Item key="transfer" className="custom-menu-item">
+                    <button
+                      type="button"
+                      onClick={(event) => props.openTransferBondModal(event, record)}
+                    >
+                      Transfer Bond
                     </button>
-                  </Popconfirm>
-                </div>
-              </span>
+                  </Menu.Item>
+                )}
+              </>
             )}
-            <Menu.Item key="2">
+            <Menu.Item key="edit" className="custom-menu-item">
               <button
                 type="button"
                 className="full"
@@ -211,16 +210,16 @@ export const MineBondTable = (props) => {
               className="permit-table-button"
               onClick={(event) => props.openViewBondModal(event, record)}
             >
-              <div className="padding-small">
-                <Icon type="eye" alt="View" className="icon-lg icon-svg-filter" />
+              <div className="padding-sm">
+                <EyeOutlined className="icon-lg icon-svg-filter" />
               </div>
             </Button>
             <AuthorizationWrapper permission={Permission.EDIT_SECURITIES}>
               <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
                 <Button type="secondary" className="permit-table-button">
-                  <div className="padding-small">
+                  <div className="padding-sm">
                     <img
-                      className="padding-small--right icon-svg-filter"
+                      className="padding-sm--right icon-svg-filter"
                       src={CARAT}
                       alt="Menu"
                       style={{ paddingLeft: "5px" }}
@@ -235,28 +234,14 @@ export const MineBondTable = (props) => {
     },
   ];
 
-  const bondsByPermit = (permit) =>
-    props.bonds.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
-  const activeBondCount = (permit) =>
-    props.bonds.filter(
-      ({ permit_guid, bond_status_code }) =>
-        permit_guid === permit.permit_guid && bond_status_code === "ACT"
-    ).length;
-  const getSum = (status, permit) =>
-    props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permit.permit_guid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-
   const bonds = (record) => {
     return (
       <Table
         align="left"
         pagination={false}
         columns={bondColumns}
-        dataSource={bondsByPermit(record)}
+        dataSource={props.recordsByPermit(record, props.bonds)}
+        locale={{ emptyText: "No Data Yet" }}
       />
     );
   };
@@ -272,11 +257,11 @@ export const MineBondTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       )}
     </a>
@@ -286,9 +271,10 @@ export const MineBondTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        total_bonds: activeBondCount(permit),
-        amount_confiscated: getSum("CON", permit),
-        amount_held: getSum("ACT", permit),
+        total_bonds: props.activeBondCount(permit),
+        balance: props.getBalance(permit),
+        amount_held: permit.active_bond_total,
+        total_assessed: permit.assessed_liability_total,
         ...permit,
       };
     });
@@ -303,7 +289,6 @@ export const MineBondTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="securities" /> },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: bonds,

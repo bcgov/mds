@@ -2,93 +2,68 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
-  <withStore(Table)
-    align="left"
-    columns={
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
       Array [
         Object {
-          "dataIndex": "supply_source_description",
-          "key": "supply_source_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Source",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "supply_source_description",
         },
         Object {
-          "dataIndex": "activity_type_description",
-          "key": "activity_type_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Activity",
+          "value": "supply_source_type",
         },
         Object {
-          "dataIndex": "water_use_description",
-          "key": "water_use_description",
-          "render": [Function],
+          "component": [Function],
+          "minRows": 1,
           "title": "Water Use",
+          "value": "water_use_description",
         },
         Object {
-          "dataIndex": "estimate_rate",
-          "key": "estimate_rate",
-          "render": [Function],
-          "title": "Estimate",
+          "component": [Function],
+          "title": "Pump Size (in)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "pump_size",
+        },
+        Object {
+          "component": [Function],
+          "title": "Intake Location",
+          "value": "intake_location",
+        },
+        Object {
+          "component": [Function],
+          "hasUnit": true,
+          "title": "Estimate Rate",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "estimate_rate",
+        },
+        Object {
+          "component": [Function],
+          "data": Array [],
+          "isUnit": true,
+          "title": "Estimate Rate Unit",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "estimate_rate_unit_type_code",
         },
       ]
     }
-    dataSource={Array []}
-    locale={
-      Object {
-        "emptyText": "No data",
-      }
-    }
-    pagination={false}
   />
   <br />
-  <h4>
-    Reclamation Program
-  </h4>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Proposed reclamation and timing for this specific activity
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_description"
-        name="reclamation_description"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Estimated Cost of reclamation activities described above
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="reclamation_cost"
-        name="reclamation_cost"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
 </div>
 `;

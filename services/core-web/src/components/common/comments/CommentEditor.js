@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Input, Form, Button, Checkbox } from "antd";
-
-const { TextArea } = Input;
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Input, Button, Checkbox } from "antd";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -45,7 +45,7 @@ export class CommentEditor extends Component {
     return (
       <div>
         <Form.Item>
-          <TextArea
+          <Input.TextArea
             rows={4}
             onChange={this.handleChange}
             value={this.state.comment}

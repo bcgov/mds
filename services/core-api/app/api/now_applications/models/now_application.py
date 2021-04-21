@@ -1,9 +1,11 @@
 import uuid
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.exceptions import NotFound
 from sqlalchemy.ext.hybrid import hybrid_property
+from datetime import datetime
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -12,12 +14,17 @@ from .now_application_type import NOWApplicationType
 from .now_application_status import NOWApplicationStatus
 from .now_application_identity import NOWApplicationIdentity
 from app.api.constants import *
+from app.api.utils.include.user_info import User
+from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
+from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 
 class NOWApplication(Base, AuditMixin):
-    __tablename__ = "now_application"
+    __tablename__ = 'now_application'
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
     _edit_key = NOW_APPLICATION_EDIT_GROUP
 
@@ -31,9 +38,21 @@ class NOWApplication(Base, AuditMixin):
     mine_no = association_proxy('now_application_identity', 'mine.mine_no')
     mine_region = association_proxy('now_application_identity', 'mine.mine_region')
     now_number = association_proxy('now_application_identity', 'now_number')
-
+    application_type_code = association_proxy('now_application_identity', 'application_type_code')
+    source_permit_amendment_id = association_proxy('now_application_identity',
+                                                   'source_permit_amendment_id')
     lead_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    lead_inspector = db.relationship('Party', lazy='selectin', uselist=False)
+    lead_inspector = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.lead_inspector_party_guid')
+    issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    issuing_inspector = db.relationship(
+        'Party',
+        lazy='selectin',
+        uselist=False,
+        primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
 
     now_tracking_number = db.Column(db.Integer)
     notice_of_work_type_code = db.Column(
@@ -44,7 +63,16 @@ class NOWApplication(Base, AuditMixin):
         db.String,
         db.ForeignKey('now_application_status.now_application_status_code'),
         nullable=False)
+    previous_application_status_code = db.Column(
+        db.String,
+        db.ForeignKey('now_application_status.now_application_status_code'),
+        nullable=True)
     status_updated_date = db.Column(db.Date, nullable=False, server_default=FetchedValue())
+    status_reason = db.Column(db.String)
+    last_updated_date = db.Column(db.DateTime)
+    last_updated_by = db.Column(db.String)
+    imported_by = db.Column(db.String)
+    imported_date = db.Column(db.DateTime)
     submitted_date = db.Column(db.Date, nullable=False)
     received_date = db.Column(db.Date, nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
@@ -58,6 +86,10 @@ class NOWApplication(Base, AuditMixin):
     proposed_end_date = db.Column(db.Date)
     directions_to_site = db.Column(db.String)
     type_of_application = db.Column(db.String)
+    application_source_type_code = db.Column(
+        db.String, db.ForeignKey('application_source_type_code.application_source_type_code'))
+    proposed_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
+    adjusted_annual_maximum_tonnage = db.Column(db.Numeric(14, 2))
 
     now_application_identity = db.relationship('NOWApplicationIdentity', uselist=False)
 
@@ -73,21 +105,25 @@ class NOWApplication(Base, AuditMixin):
     has_key_for_inspector = db.Column(db.Boolean, nullable=True)
     has_req_access_authorizations = db.Column(db.Boolean, nullable=True)
 
-    ready_for_review_date = db.Column(db.Date)
-    referral_closed_on_date = db.Column(db.Date)
-    consultation_closed_on_date = db.Column(db.Date)
-    public_comment_closed_on_date = db.Column(db.Date)
+    permit_status = db.Column(db.String)
+    term_of_application = db.Column(db.Numeric(14, 0))
+    is_applicant_individual_or_company = db.Column(db.String)
+    relationship_to_applicant = db.Column(db.String)
+    merchantable_timber_volume = db.Column(db.Numeric(14, 2))
+
     reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
 
     blasting_operation = db.relationship('BlastingOperation', lazy='joined', uselist=False)
     state_of_land = db.relationship('StateOfLand', lazy='joined', uselist=False)
 
     # Securities
-    security_total = db.Column(db.Numeric(16, 2))
+    liability_adjustment = db.Column(db.Numeric(16, 2))
     security_received_date = db.Column(db.Date)
+    security_not_required = db.Column(db.Boolean)
+    security_not_required_reason = db.Column(db.String)
 
     # Activities
-    camps = db.relationship('Camp', lazy='selectin', uselist=False)
+    camp = db.relationship('Camp', lazy='selectin', uselist=False)
     cut_lines_polarization_survey = db.relationship(
         'CutLinesPolarizationSurvey', lazy='selectin', uselist=False)
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
@@ -109,34 +145,155 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplicationDocumentXref',
         lazy='selectin',
         primaryjoin=
-        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)'
-    )
+        'and_(NOWApplicationDocumentXref.now_application_id==NOWApplication.now_application_id, NOWApplicationDocumentXref.now_application_review_id==None)',
+        order_by='desc(NOWApplicationDocumentXref.create_timestamp)')
+
+    application_reason_codes = db.relationship(
+        'ApplicationReasonXref',
+        lazy='selectin',
+        uselist=True,
+        primaryjoin='ApplicationReasonXref.now_application_id == NOWApplication.now_application_id')
+
     submission_documents = db.relationship(
         'Document',
         lazy='selectin',
         secondary=
-        "join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))",
+        'join(NOWApplicationIdentity, Document, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         primaryjoin=
         'and_(NOWApplication.now_application_id==NOWApplicationIdentity.now_application_id, foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid))',
         secondaryjoin='foreign(NOWApplicationIdentity.messageid)==remote(Document.messageid)',
-        viewonly=True)
+        viewonly=True,
+        order_by='asc(Document.id)')
 
-    # Contacts
-    contacts = db.relationship('NOWPartyAppointment', lazy='selectin')
+    imported_submission_documents = db.relationship(
+        'NOWApplicationDocumentIdentityXref',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWApplicationDocumentIdentityXref.now_application_id==NOWApplication.now_application_id)',
+        order_by='asc(NOWApplicationDocumentIdentityXref.create_timestamp)')
 
-    @hybrid_property
-    def permittee_name(self):
-        return [
-            contact.party.name for contact in self.contacts
-            if contact.mine_party_appt_type_code == 'PMT'
-        ][0]
+    contacts = db.relationship(
+        'NOWPartyAppointment',
+        lazy='selectin',
+        primaryjoin=
+        'and_(NOWPartyAppointment.now_application_id == NOWApplication.now_application_id, NOWPartyAppointment.deleted_ind==False)'
+    )
+
+    status = db.relationship(
+        'NOWApplicationStatus',
+        lazy='selectin',
+        primaryjoin=
+        'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
+    )
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
 
+    # @hybrid_property
+    # def site_property(self):
+    #     site_property = None
+
+    # TODO uncomment this when the NOW and ADA flow is ready
+    # def get_mapped_tenure_type(notice_of_work_type_code):
+    #     tenure_type = None
+
+    #     if notice_of_work_type_code == 'PLA':
+    #         tenure_type = 'PLR'
+    #     if notice_of_work_type_code == 'COL':
+    #         tenure_type = 'COL'
+    #     if notice_of_work_type_code == 'MIN' or notice_of_work_type_code == 'QIM':
+    #         tenure_type = 'MIN'
+    #     if notice_of_work_type_code == 'SAG' or notice_of_work_type_code == 'QCA':
+    #         tenure_type = 'BCL'
+
+    #     return tenure_type
+
+    # def get_site_property_based_on_mine(mine_guid, tenure_type):
+    #     return MineType.query.filter_by(
+    #         mine_guid=self.mine_guid,
+    #         permit_guid=None,
+    #         mine_tenure_type_code=tenure_type,
+    #         active_ind=True).first()
+
+    # tenure_type = get_mapped_tenure_type(self.notice_of_work_type_code)
+
+    # if self.application_type_code == 'ADA':
+    #     site_property = MineType.query.filter_by(
+    #         mine_guid=self.mine_guid, permit_guid=self.source_permit_guid,
+    #         active_ind=True).one_or_none()
+    #     if not site_property:
+    #         site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
+    # else:
+    #     permit_amendment = PermitAmendment.query.filter_by(
+    #         now_application_guid=self.now_application_guid, deleted_ind=False).first()
+    #     if self.type_of_application in ['Amendment', 'New Permit'] and permit_amendment:
+    #         site_property = MineType.query.filter_by(
+    #             mine_guid=self.mine_guid,
+    #             permit_guid=permit_amendment.permit_guid,
+    #             active_ind=True).one_or_none()
+    #     else:
+    #         site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
+
+    # return site_property
+
+    @hybrid_property
+    def active_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='ACT').one_or_none()
+
+    @hybrid_property
+    def draft_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='DFT').one_or_none()
+
+    @hybrid_property
+    def remitted_permit(self):
+        return PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid,
+            permit_amendment_status_code='RMT').one_or_none()
+
+    @hybrid_property
+    def related_permit_guid(self):
+        permit_amendment = PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid, deleted_ind=False).first()
+        return permit_amendment.permit_guid if permit_amendment else None
+
+    @hybrid_property
+    def is_new_permit(self):
+        return self.type_of_application == 'New Permit'
+
+    @hybrid_property
+    def permittee(self):
+        permittees = [
+            contact.party for contact in self.contacts if contact.mine_party_appt_type_code == 'PMT'
+        ]
+        return permittees[0] if permittees else None
+
+    @hybrid_property
+    def source_permit_guid(self):
+        permit_amendment = None
+        if self.source_permit_amendment_id:
+            permit_amendment = PermitAmendment.find_by_permit_amendment_id(
+                self.source_permit_amendment_id)
+        return permit_amendment.permit_guid if permit_amendment else None
+
+    @hybrid_property
+    def has_source_conditions(self):
+        source_conditions = PermitConditions.query.filter_by(
+            permit_amendment_id=self.source_permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).count()
+        return source_conditions > 0
+
     @classmethod
     def find_by_application_id(cls, now_application_id):
-        return cls.query.filter_by(now_application_id=now_application_id).first()
+        return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
+
+    @classmethod
+    def find_by_application_guid(cls, now_application_guid):
+        return cls.query.filter_by(now_application_guid=now_application_guid).one_or_none()
 
     @classmethod
     def validate_guid(cls, guid, msg='Invalid guid.'):
@@ -144,3 +301,111 @@ class NOWApplication(Base, AuditMixin):
             uuid.UUID(str(guid), version=4)
         except ValueError:
             raise AssertionError(msg)
+
+    @validates('proposed_annual_maximum_tonnage')
+    def validate_proposed_annual_maximum_tonnage(self, key, proposed_annual_maximum_tonnage):
+        if proposed_annual_maximum_tonnage and self.proposed_annual_maximum_tonnage:
+            if not get_user_is_admin(
+            ) and self.proposed_annual_maximum_tonnage != proposed_annual_maximum_tonnage:
+                raise AssertionError('Only admins can modify the proposed annual maximum tonnage.')
+        return proposed_annual_maximum_tonnage
+
+    def save_import_meta(self):
+        self.imported_by = User().get_user_username()
+        self.imported_date = datetime.utcnow()
+        self.save()
+
+    def save(self, commit=True):
+        self.last_updated_by = User().get_user_username()
+        self.last_updated_date = datetime.utcnow()
+        super(NOWApplication, self).save(commit)
+
+    # Generates a Notice of Work Form (NTR) document and includes it in the final application package while excluding all previous NTR documents.
+    def add_now_form_to_fap(self, description):
+        from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+        from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
+        from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
+
+        # Generate the Notice of Work Form document
+        token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)
+        now_doc_dict = NoticeOfWorkDocumentResource.generate_now_document(token, True)
+
+        # Exclude all previous Notice of Work Form documents from the final application package
+        now_form_docs = [
+            doc for doc in self.documents if doc.now_application_document_type_code == 'NTR'
+        ]
+        for doc in now_form_docs:
+            doc.is_final_package = False
+            doc.save()
+
+        # Add the newly generated Notice of Work Form document to the final application package
+        now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
+        now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+        now_doc.is_final_package = True
+        now_doc.description = description
+        now_doc.save()
+
+    @classmethod
+    def get_filtered_submissions_document(cls, now_application):
+        docs = []
+
+        for doc in now_application.imported_submission_documents:
+            docs.append({
+                'messageid':
+                doc.messageid,
+                'now_application_document_xref_guid':
+                str(doc.now_application_document_xref_guid),
+                'mine_document_guid':
+                str(doc.mine_document_guid),
+                'documenturl':
+                doc.documenturl,
+                'documenttype':
+                doc.documenttype,
+                'description':
+                doc.description,
+                'is_final_package':
+                doc.is_final_package,
+                'is_consultation_package':
+                doc.is_consultation_package,
+                'is_referral_package':
+                doc.is_referral_package,
+                'filename':
+                doc.filename,
+                'now_application_id':
+                doc.now_application_id,
+                'document_manager_guid':
+                doc.document_manager_guid,
+                'preamble_title':
+                doc.preamble_title,
+                'preamble_author':
+                doc.preamble_author,
+                'preamble_date':
+                doc.preamble_date
+            })
+
+        for doc in now_application.submission_documents:
+            imported = any(
+                (imported_doc.messageid == doc.messageid and imported_doc.filename == doc.filename
+                 and imported_doc.documenturl == doc.documenturl
+                 and imported_doc.documenttype == doc.documenttype
+                 for imported_doc in now_application.imported_submission_documents))
+            if imported:
+                continue
+            else:
+                docs.append({
+                    'id': doc.id,
+                    'now_application_document_xref_guid': None,
+                    'mine_document_guid': None,
+                    'messageid': doc.messageid,
+                    'documenturl': doc.documenturl,
+                    'documenttype': doc.documenttype,
+                    'description': doc.description,
+                    'is_final_package': False,
+                    'is_referral_package': False,
+                    'is_consultation_package': False,
+                    'filename': doc.filename,
+                    'now_application_id': now_application.now_application_id,
+                    'document_manager_guid': None
+                })
+
+        return docs

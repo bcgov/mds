@@ -175,9 +175,7 @@ exports[`VarianceSearchForm form renders properly 1`] = `
       loading={false}
     >
       Collapse Filters
-      <Icon
-        type="up"
-      />
+      <ForwardRef(UpOutlined) />
     </Button>
   </div>
   <div

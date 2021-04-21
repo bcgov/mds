@@ -49,10 +49,12 @@ PAGINATED_VARIANCE_LIST = api.inherit('VarianceList', PAGINATED_LIST, {
 
 VARIANCE_APPLICATION_STATUS_CODE = api.model('VarianceApplicationStatusCode', {
     'variance_application_status_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })
 
 VARIANCE_DOCUMENT_CATEGORY_CODE = api.model('VarianceDocumentCategoryCode', {
     'variance_document_category_code': fields.String,
-    'description': fields.String
+    'description': fields.String,
+    'active_ind': fields.Boolean
 })

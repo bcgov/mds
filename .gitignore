@@ -6,6 +6,8 @@ node_modules/
 pipeline/build/
 coverage/
 .idea/
+.vscode/launch.json
+.vscode/tasks.json
 __pycache__
 *.pytest_cache
 *.pyc
@@ -15,3 +17,12 @@ __pycache__
 microservices/document_manager/backend/document_uploads/
 *last-backup
 venv*
+[~][$]*
+
+*_DeploymentConfig.json
+*_BuildConfig.json
+*.local.*
+*.crt
+.github/act.secrets
+
+act/

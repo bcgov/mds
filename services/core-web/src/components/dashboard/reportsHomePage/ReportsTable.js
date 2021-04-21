@@ -47,9 +47,9 @@ export const ReportsTable = (props) => {
       <div className="center">
         <ResponsivePagination
           onPageChange={props.handlePageChange}
-          currentPage={props.pageData.current_page}
-          pageTotal={props.pageData.total}
-          itemsPerPage={props.pageData.items_per_page}
+          currentPage={Number(props.pageData.current_page)}
+          pageTotal={Number(props.pageData.total)}
+          itemsPerPage={Number(props.pageData.items_per_page)}
         />
       </div>
     </div>

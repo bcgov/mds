@@ -5,6 +5,7 @@ import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as API from "@common/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
+import * as Strings from "@common/constants/strings";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -22,12 +23,16 @@ beforeEach(() => {
 
 describe("`fetchMineReports` action creator", () => {
   const mineGuid = "1234567";
+  const reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports;
 
-  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`;
+  const url = `${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, reportsType)}`;
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onGet(url).reply(200, mockResponse);
-    return fetchMineReports(mineGuid)(dispatch).then(() => {
+    return fetchMineReports(
+      mineGuid,
+      reportsType
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(5);

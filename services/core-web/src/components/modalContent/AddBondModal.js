@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Alert } from "antd";
+import { getFormValues } from "redux-form";
 import {
   getDropdownProvinceOptions,
   getBondTypeDropDownOptions,
   getBondDocumentTypeDropDownOptions,
   getBondDocumentTypeOptionsHash,
+  getBondStatusOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import * as FORM from "@/constants/forms";
 import BondForm from "@/components/Forms/Securities/BondForm";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -19,10 +22,12 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   bondDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  bondStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   permitGuid: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   bond: CustomPropTypes.bond,
   editBond: PropTypes.bool,
+  formValues: CustomPropTypes.invoice.isRequired,
 };
 
 const defaultProps = {
@@ -37,10 +42,11 @@ export const AddBondModal = (props) => {
       : props.onSubmit(values, props.permitGuid);
   const initialPartyValue = props.editBond
     ? {
-        key: props.bond.payer_party_guid,
-        label: props.bond.payer.name,
-      }
+      value: props.bond.payer_party_guid,
+      label: props.bond.payer.name,
+    }
     : "";
+  const projectIdChanged = props.bond.project_id !== props.formValues.project_id;
   return (
     <div>
       {props.editBond && (
@@ -56,6 +62,15 @@ export const AddBondModal = (props) => {
           <br />
         </div>
       )}
+      {projectIdChanged && (
+        <div>
+          <Alert
+            message="Changing this number will change the Project ID for all bonds under this permit Number."
+            type="warning"
+            showIcon
+          />
+        </div>
+      )}
       <BondForm
         onSubmit={handleAddBond}
         closeModal={props.closeModal}
@@ -65,9 +80,11 @@ export const AddBondModal = (props) => {
         bondTypeDropDownOptions={props.bondTypeDropDownOptions}
         bondDocumentTypeDropDownOptions={props.bondDocumentTypeDropDownOptions}
         bondDocumentTypeOptionsHash={props.bondDocumentTypeOptionsHash}
+        bondStatusOptionsHash={props.bondStatusOptionsHash}
         initialValues={props.bond}
         bond={props.bond}
         mineGuid={props.mineGuid}
+        editBond={props.editBond}
       />
     </div>
   );
@@ -81,6 +98,8 @@ const mapStateToProps = (state) => ({
   bondTypeDropDownOptions: getBondTypeDropDownOptions(state),
   bondDocumentTypeDropDownOptions: getBondDocumentTypeDropDownOptions(state),
   bondDocumentTypeOptionsHash: getBondDocumentTypeOptionsHash(state),
+  bondStatusOptionsHash: getBondStatusOptionsHash(state),
+  formValues: getFormValues(FORM.ADD_BOND)(state) || {},
 });
 
 export default connect(mapStateToProps)(AddBondModal);

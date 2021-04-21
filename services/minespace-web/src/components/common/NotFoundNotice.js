@@ -6,7 +6,7 @@ const { Paragraph, Text } = Typography;
 
 const NotFoundNotice = () => (
   <Row>
-    <Col>
+    <Col span={24}>
       <Result
         title="Mine Not Found"
         status="error"

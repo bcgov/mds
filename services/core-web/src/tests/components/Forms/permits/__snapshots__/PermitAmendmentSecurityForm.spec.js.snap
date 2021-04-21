@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PermitAmendmentSecurityForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={12}
+    >
+      <div
+        className="field-title"
+      >
+        Security Not Required
+        <CoreTooltip
+          title="This only applies if a prior security is held covering this application and no increase is required, or another agency holds the bond."
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={false}
+        id="security_not_required"
+        label="No increase required"
+        name="security_not_required"
+        onChange={[Function]}
+      />
+    </Col>
+    <Col
+      span={12}
+    >
+      <div
+        className="field-title"
+      >
+        Reason
+      </div>
+      <Field
+        component={[Function]}
+        data={
+          Array [
+            Object {
+              "label": "Administrative Amendment",
+              "value": "Administrative Amendment",
+            },
+            Object {
+              "label": "ALC Holds Bond",
+              "value": "ALC Holds Bond",
+            },
+            Object {
+              "label": "Bonding is a Permit Condition",
+              "value": "Bonding is a Permit Condition",
+            },
+            Object {
+              "label": "Sufficient Bond in Place",
+              "value": "Sufficient Bond in Place",
+            },
+          ]
+        }
+        disabled={true}
+        id="security_not_required_reason"
+        name="security_not_required_reason"
+        placeholder="Please select a reason"
+        validate={Array []}
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Assessed Liability Adjustment
+        <CoreTooltip
+          title="Amount assessed for this application will be added to the total assessed liability amount on the permit."
+        />
+      </div>
+      <Field
+        allowClear={true}
+        autoComplete="off"
+        component={[Function]}
+        format={[Function]}
+        id="liability_adjustment"
+        name="liability_adjustment"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Security Received
+        <CoreTooltip
+          title="Do not mark as received until the security amount is paid in full."
+        />
+      </div>
+      <Field
+        component={[Function]}
+        id="security_received_date"
+        name="security_received_date"
+      />
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[Function]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Save
+    </Button>
+  </div>
+</Form>
+`;

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from os import path
 from sqlalchemy.orm.scoping import scoped_session
 
@@ -58,8 +58,7 @@ class ActivitySummaryBaseFactory(BaseFactory):
 
     reclamation_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
     reclamation_cost = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
-    total_disturbed_area = factory.Faker(
-        'pydecimal', right_digits=2, positive=True, max_value=500000)
+    total_disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     total_disturbed_area_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
 
@@ -68,7 +67,7 @@ class ActivityDetailBaseFactory(BaseFactory):
         model = app_models.ActivityDetailBase
 
     activity_type_description = factory.Faker('sentence', nb_words=40, variable_nb_words=True)
-    disturbed_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    disturbed_area = factory.Faker('pydecimal', positive=True, max_value=500000)
     timber_volume = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     number_of_sites = factory.Faker('pyint', min_value=1, max_value=50)
     width = factory.Faker('pyint', min_value=1, max_value=5000)
@@ -145,7 +144,7 @@ class ExplorationSurfaceDrillingFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.ExplorationSurfaceDrilling
 
-    reclamation_core_storage = factory.Faker('boolean', chance_of_getting_true=50)
+    reclamation_core_storage = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
 
     @factory.post_generation
     def details(obj, create, extracted, **kwargs):
@@ -274,7 +273,7 @@ class WaterSupplyDetailFactory(ActivityDetailBaseFactory):
     supply_source_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     supply_source_type = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
     water_use_description = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
-    estimate_rate = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
+    estimate_rate = factory.Faker('pydecimal', right_digits=7, positive=True, max_value=500000)
     pump_size = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     intake_location = factory.Faker('sentence', nb_words=50, variable_nb_words=True)
 
@@ -362,11 +361,24 @@ class NOWApplicationProgressFactory(BaseFactory):
         now_application = factory.SubFactory('tests.factories.NOWApplicationFactory')
 
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
-    #application_progress_id = factory.Sequence(lambda n: n)
     application_progress_status_code = 'REV'
     start_date = factory.Faker('past_datetime')
     created_by = factory.Faker('company')
     active_ind = True
+
+
+class NOWApplicationDelayFactory(BaseFactory):
+    class Meta:
+        model = app_models.NOWApplicationDelay
+
+    class Params:
+        now_application = factory.SubFactory('tests.factories.NOWApplicationIdentityFactory')
+
+    now_application_guid = factory.SelfAttribute('now_application.now_application_guid')
+    delay_type_code = 'OAB'
+    start_date = factory.Faker('past_datetime')
+    start_comment = factory.Faker('name')
+    end_comment = factory.Faker('name')
 
 
 class NOWApplicationReviewFactory(BaseFactory):
@@ -384,13 +396,17 @@ class NOWApplicationFactory(BaseFactory):
         model = app_models.NOWApplication
 
     class Params:
-        inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        lead_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
+        issuing_inspector = factory.SubFactory('tests.factories.PartyBusinessRoleFactory')
 
     application_progress = factory.RelatedFactory(NOWApplicationProgressFactory, 'now_application')
-    lead_inspector_party_guid = factory.SelfAttribute('inspector.party.party_guid')
+    lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
+    type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
-    now_application_status_code = factory.LazyFunction(RandomNOWStatusCode)
+    now_application_status_code = "REC"
+    previous_application_status_code = "PEV"
     submitted_date = factory.Faker('past_datetime')
     received_date = factory.Faker('past_datetime')
     # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
@@ -401,11 +417,12 @@ class NOWApplicationFactory(BaseFactory):
     tenure_number = factory.Sequence(lambda n: str(n))
     description_of_land = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
     proposed_start_date = factory.Faker('past_datetime')
+    last_updated_date = datetime.utcnow()
     proposed_end_date = factory.Faker('past_datetime')
 
     blasting_operation = factory.RelatedFactory(BlastingOperationFactory, 'now_application')
     state_of_land = factory.RelatedFactory(StateOfLandFactory, 'now_application')
-    camps = factory.RelatedFactory(CampFactory, 'now_application')
+    camp = factory.RelatedFactory(CampFactory, 'now_application')
     cut_lines_polarization_survey = factory.RelatedFactory(CutLinesPolarizationSurveyFactory,
                                                            'now_application')
     exploration_surface_drilling = factory.RelatedFactory(ExplorationSurfaceDrillingFactory,
@@ -437,9 +454,14 @@ class NOWApplicationIdentityFactory(BaseFactory):
 
     class Params:
         mine = factory.SubFactory('tests.factories.MineFactory')
-        submission_only = factory.Trait(now_application=None, now_application_id=None, mms_cid=None)
+        submission_only = factory.Trait(
+            now_application=None,
+            now_application_id=None,
+            mms_cid=None,
+            application_type_code="NOW")
 
     now_application_guid = GUID
+    application_type_code = None
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     messageid = factory.SelfAttribute('now_submission.messageid')
     mms_cid = factory.Sequence(lambda n: n)
@@ -448,4 +470,16 @@ class NOWApplicationIdentityFactory(BaseFactory):
     now_number = factory.Sequence(lambda n: n)
 
     now_application = factory.SubFactory('tests.now_application_factories.NOWApplicationFactory')
+
     now_submission = factory.SubFactory('tests.now_submission_factories.NOWSubmissionFactory')
+
+    # TODO check if we have anything dependent on it and if we need this
+    # @factory.post_generation
+    # def application_delays(obj, create, extracted, **kwargs):
+    #     if not create:
+    #         return
+
+    #     if not isinstance(extracted, int):
+    #         extracted = 1
+
+    #     NOWApplicationDelayFactory.create_batch(size=extracted, now_application=obj, **kwargs)

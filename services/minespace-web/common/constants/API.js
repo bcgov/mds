@@ -13,6 +13,7 @@ export const MINE_BASIC_INFO_LIST = `/mines/basicinfo`;
 export const PARTY = "/parties";
 export const MANAGER = "/parties/managers";
 export const PARTY_RELATIONSHIP = "/parties/mines";
+export const PARTY_ORGBOOK_ENTITY = (partyGuid) => `/parties/${partyGuid}/orgbook-entity`;
 export const PERMITTEE = "/permits/permittees";
 export const MINE_NAME_LIST = (params = {}) => `/mines/search?${queryString.stringify(params)}`;
 export const MINE_STATUS = "/mines/status";
@@ -39,14 +40,29 @@ export const MINE_VERIFIED_STATUSES = (params = {}) =>
 export const MINE_VERIFIED_STATUS = (mine_guid) => `/mines/${mine_guid}/verified-status`;
 
 // Permits
-export const PERMITSTATUSCODES = () => `/mines/permits/status-codes`;
+export const PERMIT_STATUS_CODES = () => `/mines/permits/status-codes`;
 export const PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
-export const PERMITAMENDMENTS = (mineGuid, permitGuid) =>
+export const PERMIT_AMENDMENTS = (mineGuid, permitGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments`;
-export const PERMITAMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
+export const PERMIT_AMENDMENT = (mineGuid, permitGuid, permitAmendmentGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}`;
-export const PERMITAMENDMENTDOCUMENT = (mineGuid, permitGuid, permitAmendmentGuid, documentGuid) =>
+
+export const PERMIT_AMENDMENT_VC = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/verifiable-credential`;
+export const PERMIT_AMENDMENT_DOCUMENT = (
+  mineGuid,
+  permitGuid,
+  permitAmendmentGuid,
+  documentGuid
+) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/documents/${documentGuid}`;
+export const PERMIT_DELETE = (mineGuid, permitGuid) => `/mines/${mineGuid}/permits/${permitGuid}`;
+export const DRAFT_PERMITS = (mineGuid, nowApplicationGuid) =>
+  `/mines/${mineGuid}/permits?now_application_guid=${nowApplicationGuid}`;
+export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions`;
+export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
+  `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
@@ -84,11 +100,16 @@ export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
+export const INCIDENT_DELETE = (mineGuid, incidentGuid) =>
+  `/mines/${mineGuid}/incidents/${incidentGuid}`;
 
 // Reports
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
-export const MINE_REPORTS = (mineGuid) => `/mines/${mineGuid}/reports`;
+export const MINE_REPORTS = (mineGuid, reportsType) =>
+  `/mines/${mineGuid}/reports?${queryString.stringify({
+    mine_reports_type: reportsType,
+  })}`;
 export const MINE_REPORT = (mineGuid, mineReportGuid) =>
   `/mines/${mineGuid}/reports/${mineReportGuid}`;
 export const MINE_REPORT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/reports/documents`;
@@ -102,24 +123,30 @@ export const MINE_REPORT_CATEGORY = "/mines/reports/category-codes";
 // Notice Of Work
 export const NOTICE_OF_WORK_APPLICATION_LIST = (params = {}) =>
   `/now-applications?${queryString.stringify(params)}`;
+export const ADMINISTRATIVE_AMENDMENT_APPLICATION = `/now-applications/administrative-amendments`;
 export const NOTICE_OF_WORK_APPLICATION = (applicationGuid) =>
   `/now-applications/${applicationGuid}`;
+export const NOTICE_OF_WORK_APPLICATION_STATUS = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/status`;
 export const NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL = (id, applicationGuid, token = {}) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}?${queryString.stringify(token)}`;
 export const NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL = (id, applicationGuid) =>
   `/now-submissions/applications/${applicationGuid}/document/${id}/token`;
 export const NOTICE_OF_WORK_APPLICATION_IMPORT = (applicationGuid) =>
   `/now-applications/${applicationGuid}/import`;
+export const NOTICE_OF_WORK_IMPORT_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
+  `${NOTICE_OF_WORK_APPLICATION(applicationGuid)}/import-submission-documents-job`;
 export const NOTICE_OF_WORK_ACTIVITY_TYPE_OPTIONS = "/now-applications/activity-types";
 export const NOTICE_OF_WORK_UNIT_TYPE_OPTIONS = "/now-applications/unit-types";
 export const NOTICE_OF_WORK_APPLICATION_TYPE_OPTIONS = "/now-applications/application-types";
 export const NOTICE_OF_WORK_APPLICATION_STATUS_OPTIONS =
   "/now-applications/application-status-codes";
 export const NOW_APPLICATION_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-document-types";
+export const NOW_APPLICATION_EXPORT_DOCUMENT_TYPE_OPTIONS = "/now-applications/application-export";
 export const NOW_UNDERGROUND_EXPLORATION_TYPE_OPTIONS =
   "/now-applications/underground-exploration-types";
-export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid) =>
-  `/now-applications/${applicationGuid}/progress`;
+export const NOTICE_OF_WORK_APPLICATION_PROGRESS = (applicationGuid, progressCode) =>
+  `/now-applications/${applicationGuid}/progress/${progressCode}`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW = (applicationGuid) =>
   `/now-applications/${applicationGuid}/reviews`;
 export const NOTICE_OF_WORK_APPLICATION_REVIEW_TYPES = `/now-applications/review-types`;
@@ -128,6 +155,12 @@ export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
 export const NOTICE_OF_WORK_DOCUMENT = (now_document_guid) =>
   `/now-applications/${now_document_guid}/document`;
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
+export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
+  `/import-now-submission-documents?now_application_guid=${applicationGuid}&most_recent_only=true`;
+export const NOTICE_OF_WORK_APPLICATION_DELAY = (applicationGuid, delayGuid) =>
+  delayGuid
+    ? `/now-applications/${applicationGuid}/delays/${delayGuid}`
+    : `/now-applications/${applicationGuid}/delays`;
 
 // Mine Party Appointments
 export const MINE_PARTY_APPOINTMENT_DOCUMENTS = (mineGuid, minePartyAppointmentGuid) =>
@@ -143,6 +176,7 @@ export const NRIS_DOCUMENT_FILE_GET_URL = (externalId, inspectionId, token) =>
 export const MINE_BONDS = (mineGuid) => `/securities/bonds?mine_guid=${mineGuid}`;
 export const BOND = (bondGuid) =>
   bondGuid ? `/securities/bonds/${bondGuid}` : "/securities/bonds";
+export const BOND_TRANSFER = (bondGuid) => `/securities/bonds/${bondGuid}/transfer`;
 export const BOND_DOCUMENTS = (mineGuid) => `/securities/${mineGuid}/bonds/documents`;
 export const MINE_RECLAMATION_INVOICES = (mineGuid) =>
   `/securities/reclamation-invoices?mine_guid=${mineGuid}`;
@@ -152,3 +186,10 @@ export const RECLAMATION_INVOICE = (invoiceGuid) =>
     : "/securities/reclamation-invoices";
 export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
+
+export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
+export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;
+
+// OrgBook
+export const ORGBOOK_SEARCH = (search) => `/orgbook/search?${queryString.stringify({ search })}`;
+export const ORGBOOK_CREDENTIAL = (credentialId) => `/orgbook/credential/${credentialId}`;

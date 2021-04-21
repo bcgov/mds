@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -33,7 +33,9 @@ from app.api.search.search.resources.simple_search import SimpleSearchResource
 from app.api.mines.reports.resources.mine_reports import MineReportResource, MineReportListResource
 from app.api.now_submissions.resources.application_list_resource import ApplicationListResource
 from app.api.now_submissions.resources.application_nda_list_resource import ApplicationNDAListResource
-from app.api.securities.resources.bond import BondResource, BondListResource
+from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
+from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
@@ -45,7 +47,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
 
 @pytest.mark.parametrize("resource,method,expected_roles", [
     (ComplianceArticleResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-    (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
+    (DownloadTokenResource, "get", [VIEW_ALL, MINESPACE_PROPONENT, GIS]),
     (MineCommodityCodeResource, "get", [VIEW_ALL]),
     (MineComplianceSummaryResource, "get", [VIEW_ALL]),
     (MineDisturbanceCodeResource, "get", [VIEW_ALL]),
@@ -86,7 +88,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (PartyResource, "delete", [MINE_ADMIN]),
     (PermitResource, "get", [VIEW_ALL]),
     (PermitListResource, "post", [EDIT_PERMIT]),
-    (PermitResource, "put", [EDIT_PERMIT]),
+    (PermitResource, "put", [EDIT_SECURITIES]),
     (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
     (PermitAmendmentResource, "put", [EDIT_PERMIT]),
     (PermitAmendmentResource, "delete", [MINE_ADMIN]),
@@ -104,21 +106,30 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MinespaceUserMineResource, 'delete', [MINE_ADMIN]),
     (NOWActivityTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationImportResource, 'post', [EDIT_PERMIT]),
-    (NOWApplicationListResource, 'get', [VIEW_ALL]),
+    (NOWApplicationListResource, 'get', [VIEW_ALL, GIS]),
     (NOWApplicationListResource, 'post', [EDIT_PERMIT]),
-    (NOWApplicationResource, 'get', [VIEW_ALL]),
+    (NOWApplicationResource, 'get', [VIEW_ALL, GIS]),
     (NOWApplicationResource, 'put', [EDIT_PERMIT]),
     (NOWApplicationDocumentUploadResource, 'post', [EDIT_PERMIT]),
     (NOWApplicationDocumentResource, 'delete', [EDIT_PERMIT]),
     (NOWApplicationDocumentTypeResource, 'get', [VIEW_ALL]),
     (NOWApplicationDocumentTypeListResource, 'get', [VIEW_ALL]),
-    (NOWApplicationDocumentGenerateResource,'post',[EDIT_PERMIT]),
-    (ApplicationListResource,'post',[EDIT_SUBMISSIONS]),
-    (ApplicationNDAListResource,'post',[EDIT_SUBMISSIONS]),
-    (BondListResource,'post',[EDIT_SECURITIES]),
-    (BondListResource,'get',[VIEW_ALL]),
-    (BondResource,'get',[VIEW_ALL]),
-    (BondResource,'put',[EDIT_SECURITIES]),
+    (NOWApplicationDocumentGenerateResource, 'post', [EDIT_PERMIT]),
+    (ApplicationListResource, 'post', [EDIT_SUBMISSIONS]),
+    (ApplicationNDAListResource, 'post', [EDIT_SUBMISSIONS]),
+    (BondListResource, 'post', [EDIT_SECURITIES]),
+    (BondListResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+    (BondResource, 'get', [VIEW_ALL, MINESPACE_PROPONENT]),
+    (BondResource, 'put', [EDIT_SECURITIES]),
+    (BondTransferResource, 'put', [EDIT_SECURITIES]),
+    (MineCommentListResource, 'get', [VIEW_ALL]),
+    (MineCommentListResource, 'post', [MINE_EDIT]),
+    (MineCommentResource, 'delete', [MINE_ADMIN]),
+    (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
+    (PermitConditionsListResource, 'get', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'get', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'put', [EDIT_PERMIT]),
+    (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

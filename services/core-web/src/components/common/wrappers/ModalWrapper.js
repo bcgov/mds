@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import LoadingBar from "react-redux-loading-bar";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Modal, Icon, Button, Popconfirm } from "antd";
+import { Modal, Button, Popconfirm } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import { closeModal } from "@common/actions/modalActions";
 import {
   getIsModalOpen,
@@ -13,6 +13,7 @@ import {
   getWidth,
   getIsViewOnly,
 } from "@common/selectors/modalSelectors";
+import LoadingBar from "react-redux-loading-bar";
 import * as Styles from "@/constants/styles";
 import AddPartyComponentWrapper from "./AddPartyComponentWrapper";
 
@@ -63,7 +64,7 @@ export class ModalWrapper extends Component {
       >
         {this.props.isViewOnly ? (
           <Button ghost className="modal__close" onClick={(event) => this.closeModal(event)}>
-            <Icon type="close" />
+            <CloseOutlined className="icon-sm" />
           </Button>
         ) : (
           <Popconfirm
@@ -74,7 +75,7 @@ export class ModalWrapper extends Component {
             onConfirm={(event) => this.closeModal(event)}
           >
             <Button ghost className="modal__close">
-              <Icon type="close" />
+              <CloseOutlined className="icon-sm" />
             </Button>
           </Popconfirm>
         )}
@@ -82,11 +83,10 @@ export class ModalWrapper extends Component {
           scope="modal"
           style={{
             position: "absolute",
-            top: "50px",
+            top: "54px",
             left: 0,
             backgroundColor: Styles.COLOR.violet,
-            width: "100%",
-            height: "8px",
+            height: "3px",
             zIndex: 100,
           }}
         />

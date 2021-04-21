@@ -6,11 +6,12 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string,
   now_application_guid: PropTypes.string.isRequired,
-  mine_guid: PropTypes.string.isRequired,
+  categoriesToShow: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
   title: "",
+  categoriesToShow: [],
 };
 
 export const EditNoticeOfWorkDocumentModal = (props) => (
@@ -19,7 +20,6 @@ export const EditNoticeOfWorkDocumentModal = (props) => (
       {...props}
       initialValues={{
         now_application_guid: props.now_application_guid,
-        mine_guid: props.mine_guid,
       }}
     />
   </div>

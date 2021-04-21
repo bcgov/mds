@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Icon, Spin } from "antd";
+import { Spin, Icon } from "antd";
 
 const propTypes = {
   isLoaded: PropTypes.bool.isRequired,

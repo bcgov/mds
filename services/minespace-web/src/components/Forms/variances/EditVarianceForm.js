@@ -5,7 +5,7 @@ import { remove } from "lodash";
 import { Form, Button, Popconfirm, Typography } from "antd";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm } from "@/utils/helpers";
+import { resetForm } from "@common/utils/helpers";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 
@@ -88,7 +88,7 @@ export class EditVarianceForm extends Component {
           >
             <Button>Cancel</Button>
           </Popconfirm>
-          <Button type="primary" htmlType="submit" disabled={this.props.submitting}>
+          <Button type="primary" htmlType="submit" loading={this.props.submitting}>
             Submit
           </Button>
         </div>

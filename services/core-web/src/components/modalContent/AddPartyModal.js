@@ -11,8 +11,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as FORM from "@/constants/forms";
 import AddFullPartyForm from "@/components/Forms/parties/AddFullPartyForm";
 import AddRolesForm from "@/components/Forms/parties/AddRolesForm";
-
-const { Step } = Steps;
+import { getDropdownProvinceOptions } from "@common/selectors/staticContentSelectors";
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
@@ -59,7 +58,7 @@ const invalidRolePayload = (roleNumbers, addRolesFormValues) =>
   );
 
 export class AddPartyModal extends Component {
-  state = { isPerson: true, current: 0, roleNumbers: [] };
+  state = { isPerson: true, current: 0, roleNumbers: [], submitting: false };
 
   componentWillMount() {
     this.props.fetchMineNameList();
@@ -84,6 +83,7 @@ export class AddPartyModal extends Component {
 
   handlePartySubmit = async (event, addAnother) => {
     event.preventDefault();
+    this.setState({ submitting: true });
     const party_type_code = this.state.isPerson ? "PER" : "ORG";
     const payload = { party_type_code, ...this.props.addPartyFormValues };
     const party = await this.props
@@ -99,19 +99,23 @@ export class AddPartyModal extends Component {
         return data;
       })
       .catch(() => {
-        this.prev();
+        this.setState({ submitting: false });
+        return Promise.resolve();
       });
 
     if (!party) {
+      this.setState({ submitting: false });
       return Promise.resolve();
     }
 
     const rolePayloads = groupRolePayloads(this.props.addRolesFormValues, party.party_guid);
     const createdRoles = Object.values(rolePayloads).map(this.props.addPartyRelationship);
 
-    return Promise.all(createdRoles).then(() => {
-      this.props.reset(FORM.ADD_ROLES);
-    });
+    return Promise.all(createdRoles)
+      .then(() => {
+        this.props.reset(FORM.ADD_ROLES);
+      })
+      .finally(() => this.setState({ submitting: false }));
   };
 
   clearFieldValues = (roleNumber) => {
@@ -166,7 +170,6 @@ export class AddPartyModal extends Component {
     );
   }
 
-  // WIP
   renderStepTwo() {
     return (
       <div>
@@ -196,17 +199,16 @@ export class AddPartyModal extends Component {
           </Col>
 
           <Col md={12} sm={24} xs={24} style={{ marginTop: "16px" }}>
-            <p>
-              If you would like to add another contact, click on the button below. Your current
-              contact will be submitted once you opt to add a new contact.
-            </p>
+            <p>If you would like to create this contact and add another, click the button below.</p>
             <Button
               type="primary"
               className="full-mobile"
+              htmlType="submit"
               style={{ marginLeft: 0 }}
               onClick={(event) => this.handlePartySubmit(event, true)}
+              loading={this.state.submitting}
             >
-              Submit and Add another contact
+              Submit and Add Another Contact
             </Button>
           </Col>
         </Row>
@@ -231,7 +233,7 @@ export class AddPartyModal extends Component {
         <div>
           <Steps current={this.state.current}>
             {steps.map((step) => (
-              <Step key={step.title} title={step.title} />
+              <Steps.Step key={step.title} title={step.title} />
             ))}
           </Steps>
           <div>{steps[this.state.current].content}</div>
@@ -242,13 +244,19 @@ export class AddPartyModal extends Component {
               okText="Yes"
               cancelText="No"
               onConfirm={this.cancel}
+              disabled={this.state.submitting}
             >
-              <Button type="secondary" className="full-mobile">
+              <Button type="secondary" className="full-mobile" disabled={this.state.submitting}>
                 Cancel
               </Button>
             </Popconfirm>
             {this.state.current > 0 && (
-              <Button type="tertiary" className="full-mobile" onClick={() => this.prev()}>
+              <Button
+                type="tertiary"
+                className="full-mobile"
+                onClick={() => this.prev()}
+                disabled={this.state.submitting}
+              >
                 Previous
               </Button>
             )}
@@ -257,7 +265,10 @@ export class AddPartyModal extends Component {
                 type="primary"
                 className="full-mobile"
                 onClick={() => this.next()}
-                disabled={invalidPartyPayload(this.props.addPartyFormValues, this.state.isPerson)}
+                disabled={
+                  this.state.submitting ||
+                  invalidPartyPayload(this.props.addPartyFormValues, this.state.isPerson)
+                }
               >
                 Next
               </Button>
@@ -266,7 +277,9 @@ export class AddPartyModal extends Component {
               <Button
                 type="primary"
                 className="full-mobile"
+                htmlType="submit"
                 onClick={(event) => this.handlePartySubmit(event, false)}
+                loading={this.state.submitting}
                 disabled={invalidRolePayload(this.state.roleNumbers, this.props.addRolesFormValues)}
               >
                 Submit
@@ -284,6 +297,7 @@ const mapStateToProps = (state) => ({
   addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
   mineNameList: getMineNames(state),
   addPartyForm: state.form[FORM.ADD_FULL_PARTY],
+  provinceOptions: getDropdownProvinceOptions(state),
 });
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
@@ -301,7 +315,4 @@ const mapDispatchToProps = (dispatch) =>
 AddPartyModal.propTypes = propTypes;
 AddPartyModal.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPartyModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPartyModal);

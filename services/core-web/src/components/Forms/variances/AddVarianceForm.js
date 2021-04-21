@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { fromPairs } from "lodash";
-import { Form, Button, Popconfirm, Radio } from "antd";
-import { required, dateNotInFuture, maxLength } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, Radio } from "antd";
+import {
+  required,
+  dateNotInFuture,
+  maxLength,
+  validateSelectOptions,
+} from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
+import VarianceFileUpload from "./VarianceFileUpload";
 
 const propTypes = {
   change: PropTypes.func.isRequired,
@@ -72,14 +79,14 @@ export class AddVarianceForm extends Component {
             label="Part of Code*"
             placeholder="Select a part of the code"
             component={renderConfig.SELECT}
-            validate={[required]}
+            validate={[required, validateSelectOptions(this.props.complianceCodes)]}
             data={this.props.complianceCodes}
           />
         </Form.Item>
         <Form.Item label={this.state.isApplication ? "Received date" : "Received date*"}>
           {this.state.isApplication && (
             <p className="p-light">
-              If the received date is not specified it will be set to todays date
+              If the received date is not specified it will be set to today&apos;s date.
             </p>
           )}
           <Field
@@ -144,7 +151,11 @@ export class AddVarianceForm extends Component {
             label={filesUploaded ? "Document Category*" : "Document Category"}
             placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={filesUploaded ? [required] : []}
+            validate={
+              filesUploaded
+                ? [required, validateSelectOptions(this.props.documentCategoryOptions)]
+                : [validateSelectOptions(this.props.documentCategoryOptions)]
+            }
             data={this.props.documentCategoryOptions}
           />
         </Form.Item>
@@ -185,7 +196,7 @@ export class AddVarianceForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             Add Variance
           </Button>
@@ -202,4 +213,5 @@ export default reduxForm({
   form: FORM.ADD_VARIANCE,
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.ADD_VARIANCE),
+  enableReinitialize: true,
 })(AddVarianceForm);

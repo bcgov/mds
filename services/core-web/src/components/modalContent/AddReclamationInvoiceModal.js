@@ -31,8 +31,11 @@ export const AddReclamationInvoiceModal = (props) => {
     props.edit
       ? props.onSubmit(values, props.invoice.reclamation_invoice_guid)
       : props.onSubmit(values, props.permitGuid);
-  const newBalance = props.formValues.amount ? props.balance - props.formValues.amount : 0;
-  const isNewBalanceNegative = newBalance < 0;
+
+  const newBalance = props.formValues.amount
+    ? props.balance - props.formValues.amount
+    : props.balance;
+  const updatedBalance = props.balance - (props.formValues.amount - props.invoice.amount);
   const showErrors = props.balance < 0 || newBalance < 0;
   return (
     <div>
@@ -40,11 +43,13 @@ export const AddReclamationInvoiceModal = (props) => {
         <div className="error center">
           <Alert
             message={
-              isNewBalanceNegative
-                ? `Total Spent exceeds Total Confiscated. Balance including the current invoice amount: ${formatMoney(
-                    newBalance
-                  )}`
-                : `Total Spent exceeds Total Confiscated. Balance: ${formatMoney(props.balance)}`
+              props.edit
+                ? `Total Spent exceeds Total Confiscated. Current Balance: ${formatMoney(
+                    props.balance
+                  )}, Balance including the updated invoice amount: ${formatMoney(updatedBalance)}`
+                : `Total Spent exceeds Total Confiscated. Current Balance: ${formatMoney(
+                    props.balance
+                  )}, Balance including new Invoice Amount: ${formatMoney(newBalance)}`
             }
             type="warning"
             showIcon

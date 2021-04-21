@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row, Popconfirm } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row, Popconfirm } from "antd";
 import { resetForm } from "@common/utils/helpers";
 import { validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -22,6 +25,7 @@ const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   mine: CustomPropTypes.mine,
   submitting: PropTypes.bool.isRequired,
+  minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {
@@ -42,12 +46,16 @@ const checkDatesForOverlap = (values, props) => {
     }
   );
 
-  return validateDateRanges(
-    existingAppointments,
-    values,
-    props.partyRelationshipType.description,
-    false
-  );
+  if (values && ["MMG", "PMT"].includes(values.mine_party_appt_type_code)) {
+    return validateDateRanges(
+      existingAppointments,
+      values,
+      props.partyRelationshipType.description,
+      false
+    );
+  }
+
+  return {};
 };
 
 const validate = (values, props) => {
@@ -69,9 +77,21 @@ const validate = (values, props) => {
 
 export const EditPartyRelationshipForm = (props) => {
   let options;
+  const isRelatedGuidSet = !!props.partyRelationship.related_guid;
   switch (props.partyRelationship.mine_party_appt_type_code) {
     case "EOR":
       options = <EngineerOfRecordOptions mine={props.mine} />;
+      break;
+    case "THD":
+    case "LDO":
+    case "MOR":
+      options = (
+        <PermitteeOptions
+          minePermits={props.minePermits}
+          isPermitRequired={isRelatedGuidSet}
+          isPermitDropDownDisabled={isRelatedGuidSet}
+        />
+      );
       break;
     default:
       options = <div />;
@@ -112,17 +132,13 @@ export const EditPartyRelationshipForm = (props) => {
           onConfirm={props.closeModal}
           okText="Yes"
           cancelText="No"
+          disabled={props.submitting}
         >
-          <Button className="full-mobile" type="secondary">
+          <Button className="full-mobile" type="secondary" disabled={props.submitting}>
             Cancel
           </Button>
         </Popconfirm>
-        <Button
-          className="full-mobile"
-          type="primary"
-          htmlType="submit"
-          disabled={props.submitting}
-        >
+        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
           {props.title}
         </Button>
       </div>

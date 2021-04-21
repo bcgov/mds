@@ -65,7 +65,7 @@ describe("`createMinespaceUser` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createMinespaceUser({})(dispatch).then(() => {
+    return createMinespaceUser({})(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -88,7 +88,7 @@ describe("`deleteMinespaceUser` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onDelete(url).reply(418, MOCK.ERROR);
-    return deleteMinespaceUser("")(dispatch).then(() => {
+    return deleteMinespaceUser("")(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

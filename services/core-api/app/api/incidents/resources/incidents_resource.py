@@ -27,14 +27,12 @@ class IncidentsResource(Resource, UserMixin):
             'mine_guid': 'The ID of a mine',
             'search': 'A string to be search in the incident number, mine name, or mine number',
             'incident_status': 'List of the incident status codes',
-            'determination':
-            'List of the inspectors determination, a three character code',
+            'determination': 'List of the inspectors determination, a three character code',
             'codes':
             'List of code sub_paragraphs to include in results. Default: All status codes.',
             'incident_year': 'Return only incidents for this year',
             'major': 'boolean indicating if incident is from a major or regional mine',
-            'region':
-            'List of regions the mines associated with the incident are located in',
+            'region': 'List of regions the mines associated with the incident are located in',
             'sort_field': 'The field the returned results will be ordered by',
             'sort_dir': 'The direction by which the sort field is ordered',
         })
@@ -88,7 +86,7 @@ class IncidentsResource(Resource, UserMixin):
             "mine_name": 'mine_name',
         }
 
-        query = MineIncident.query.join(Mine)
+        query = MineIncident.query.filter_by(deleted_ind=False).join(Mine)
         conditions = []
         if args["mine_guid"] is not None:
             conditions.append(
@@ -101,7 +99,7 @@ class IncidentsResource(Resource, UserMixin):
                 self._build_filter('MineIncident', 'determination_type_code', 'in',
                                    args["determination"]))
         if args["codes"]:
-            query = MineIncident.query.join(Mine).outerjoin(MineIncidentDoSubparagraph)
+            query = query.outerjoin(MineIncidentDoSubparagraph)
             conditions.append(
                 self._build_filter('MineIncidentDoSubparagraph', 'compliance_article_id', 'in',
                                    args["codes"]))
@@ -124,7 +122,7 @@ class IncidentsResource(Resource, UserMixin):
             conditions.append({'or': search_conditions})
 
         if args["region"]:
-            conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))   
+            conditions.append(self._build_filter('Mine', 'mine_region', 'in', args["region"]))
 
         filtered_query = apply_filters(query, conditions)
 

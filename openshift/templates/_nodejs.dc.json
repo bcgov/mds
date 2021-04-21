@@ -69,7 +69,7 @@
       "name": "KEYCLOAK_URL",
       "displayName": "Keycloak URL",
       "description": "URL of the keycloak server",
-      "value": "https://sso-test.pathfinder.gov.bc.ca/auth"
+      "value": "https://test.oidc.gov.bc.ca/auth"
     },
     {
       "name": "SITEMINDER_URL",
@@ -86,6 +86,12 @@
       "value": "http://localhost:3000"
     },
     {
+      "name": "FILESYSTEM_PROVIDER_URL",
+      "displayName": "Filesystem Provider Url",
+      "description": "URL for the MMS archive filesystem, should generally be same as API",
+      "value": "http://host/file-api/AmazonS3Provider/"
+    },
+    {
       "name": "DOCUMENT_MANAGER_URL",
       "displayName": "Document Manager Url",
       "description": "URL for the document manager",
@@ -94,6 +100,12 @@
     {
       "name": "FN_LAYER_URL",
       "value": "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
+    },
+    {
+      "name": "MATOMO_URL",
+      "displayName": "Matomo Url",
+      "description": "URL for the tracking component",
+      "value": "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/"
     },
     {
       "name": "CPU_LIMIT",
@@ -217,6 +229,10 @@
                     "value": "${DOCUMENT_MANAGER_URL}"
                   },
                   {
+                    "name": "FILESYSTEM_PROVIDER_URL",
+                    "value": "${FILESYSTEM_PROVIDER_URL}"
+                  },
+                  {
                     "name": "FN_LAYER_URL",
                     "value": "${FN_LAYER_URL}"
                   },
@@ -251,6 +267,10 @@
                   {
                     "name": "SITEMINDER_URL",
                     "value": "${SITEMINDER_URL}"
+                  },
+                  {
+                    "name": "MATOMO_URL",
+                    "value": "${MATOMO_URL}"
                   }
                 ],
                 "resources": {

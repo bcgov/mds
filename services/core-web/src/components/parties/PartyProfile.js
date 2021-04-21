@@ -3,44 +3,47 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Icon, Table, Button, Popconfirm } from "antd";
-import { uniq } from "lodash";
+import { Tabs, Table, Button, Popconfirm } from "antd";
+import {
+  PhoneOutlined,
+  MinusCircleOutlined,
+  MailOutlined,
+  CheckCircleOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
+import { uniq, isEmpty } from "lodash";
 import {
   fetchPartyById,
-  fetchPartyRelationships,
   updateParty,
   deleteParty,
 } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineBasicInfoList } from "@common/actionCreators/mineActionCreator";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { getParties, getPartyRelationships } from "@common/selectors/partiesSelectors";
+import { getParties } from "@common/selectors/partiesSelectors";
 import { getMineBasicInfoListHash } from "@common/selectors/mineSelectors";
 import {
   getDropdownProvinceOptions,
   getPartyRelationshipTypeHash,
+  getPartyBusinessRoleOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { formatTitleString, formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT } from "@/constants/assets";
 import { modalConfig } from "@/components/modalContent/config";
 import Loading from "@/components/common/Loading";
-import * as router from "@/constants/routes";
+import * as routes from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
-import NullScreen from "@/components/common/NullScreen";
 import Address from "@/components/common/Address";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
  */
 
-const { TabPane } = Tabs;
-
 const propTypes = {
   fetchPartyById: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   fetchMineBasicInfoList: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   updateParty: PropTypes.func.isRequired,
@@ -48,27 +51,30 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   parties: PropTypes.arrayOf(CustomPropTypes.party).isRequired,
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
   partyRelationshipTypeHash: PropTypes.objectOf(PropTypes.strings),
+  partyBusinessRoleOptionsHash: PropTypes.objectOf(PropTypes.strings),
   mineBasicInfoListHash: PropTypes.objectOf(PropTypes.strings),
   match: CustomPropTypes.match.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
 const defaultProps = {
-  partyRelationships: [],
   partyRelationshipTypeHash: {},
   mineBasicInfoListHash: {},
+  partyBusinessRoleOptionsHash: {},
 };
 
 export class PartyProfile extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, deletingParty: false };
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.fetchPartyById(id);
-    this.props.fetchPartyRelationships({ party_guid: id, relationships: "party" }).then(() => {
-      const mine_guids = uniq(this.props.partyRelationships.map(({ mine_guid }) => mine_guid));
+    this.props.fetchPartyById(id).then(() => {
+      const mine_guids = uniq(
+        this.props.parties[id].mine_party_appt
+          .filter((x) => x.mine_guid !== "None")
+          .map(({ mine_guid }) => mine_guid)
+      );
       this.props.fetchMineBasicInfoList(mine_guids).then(() => {
         this.setState({ isLoaded: true });
       });
@@ -82,16 +88,10 @@ export class PartyProfile extends Component {
     }
   };
 
-  openEditPartyModal = (event, party, onSubmit, title, isPerson, provinceOptions) => {
-    const initialValues = {
-      ...party,
-      ...(party.address[0] ? party.address[0] : {}),
-      email: party.email && party.email !== "Unknown" ? party.email : null,
-    };
-
+  openEditPartyModal = (event, partyGuid, onSubmit, title, provinceOptions) => {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title, isPerson, initialValues, provinceOptions },
+      props: { partyGuid, onSubmit, title, provinceOptions },
       content: modalConfig.EDIT_PARTY,
       width: "75vw",
       clearOnSubmit: false,
@@ -100,7 +100,7 @@ export class PartyProfile extends Component {
 
   editParty = (values) => {
     const { id } = this.props.match.params;
-    this.props.updateParty(values, id).then(() => {
+    return this.props.updateParty(values, id).then(() => {
       this.props.fetchPartyById(id);
       this.props.closeModal();
     });
@@ -108,28 +108,54 @@ export class PartyProfile extends Component {
 
   deleteParty = () => {
     const { id } = this.props.match.params;
-    this.props.deleteParty(id).then(() => {
-      this.props.history.push(
-        router.CONTACT_HOME_PAGE.dynamicRoute({
-          page: String.DEFAULT_PAGE,
-          per_page: String.DEFAULT_PER_PAGE,
-        })
-      );
-    });
+    this.setState({ deletingParty: true });
+    this.props
+      .deleteParty(id)
+      .then(() => {
+        this.props.history.push(
+          routes.CONTACT_HOME_PAGE.dynamicRoute({
+            page: String.DEFAULT_PAGE,
+            per_page: String.DEFAULT_PER_PAGE,
+          })
+        );
+      })
+      .finally(() => this.setState({ deletingParty: false }));
   };
 
   render() {
     const { id } = this.props.match.params;
-    const parties = this.props.parties[id];
+    const party = this.props.parties[id];
     const columns = [
       {
-        title: "Mine Name",
+        title: "Name",
         dataIndex: "mineName",
-        render: (text, record) => (
-          <div title="Mine Name">
-            <Link to={router.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
-          </div>
-        ),
+        render: (text, record) => {
+          if (record.relationship.mine_party_appt_type_code === "PMT") {
+            return <div title="Permit No">{record.relationship.permit_no}</div>;
+          }
+          if (record.relationship.party_business_role_code === "INS") {
+            return "N/A";
+          }
+          if (record.relationship.mine_party_appt_type_code === "AGT") {
+            return (
+              <div title="NoW Number">
+                <Link
+                  to={routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+                    record.relationship.now_application.now_application_guid,
+                    "application"
+                  )}
+                >
+                  {record.relationship.now_application.now_number}
+                </Link>
+              </div>
+            );
+          }
+          return (
+            <div title="Mine Name">
+              <Link to={routes.MINE_CONTACTS.dynamicRoute(record.mineGuid)}>{text}</Link>
+            </div>
+          );
+        },
       },
       {
         title: "Role",
@@ -139,6 +165,8 @@ export class PartyProfile extends Component {
       {
         title: "Dates",
         dataIndex: "dates",
+        sorter: dateSorter("startDate"),
+        defaultSortOrder: "descend",
         render: (text, record) => (
           <div title="Dates">
             {record.startDate} - {record.endDate}
@@ -155,42 +183,58 @@ export class PartyProfile extends Component {
         role: this.props.partyRelationshipTypeHash[relationship.mine_party_appt_type_code],
         endDate: formatDate(relationship.end_date) || "Present",
         startDate: formatDate(relationship.start_date) || "Unknown",
+        relationship,
       }));
 
-    if (this.state.isLoaded && parties) {
-      const formattedName = formatTitleString(parties.name);
-      const isPerson = parties.party_type_code === ModalContent.PERSON;
+    const transformBusinessRoleRowData = (businessPartyRecord) =>
+      businessPartyRecord.map((record) => ({
+        key: record.party_business_role_appt_id,
+        role: this.props.partyBusinessRoleOptionsHash[record.party_business_role_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.start_date) || "Unknown",
+        relationship: { party_business_role_code: record.party_business_role_code },
+      }));
+
+    const transformNOWRoleRowData = (NOWPartyRecords) => {
+      return NOWPartyRecords.map((record) => ({
+        key: record.now_party_appointment_id,
+        role: this.props.partyRelationshipTypeHash[record.mine_party_appt_type_code],
+        endDate: formatDate(record.end_date) || "Present",
+        startDate: formatDate(record.now_application.submitted_date) || "Unknown",
+        relationship: record,
+      }));
+    };
+
+    if (this.state.isLoaded && party) {
+      const formattedName = formatTitleString(party.name);
       return (
         <div className="profile">
           <div className="profile__header">
             <div className="inline-flex between">
               <h1>{formattedName}</h1>
               <div>
-                <AuthorizationWrapper inTesting>
-                  <AuthorizationWrapper permission={Permission.ADMIN}>
-                    <Popconfirm
-                      className="delete_contact_warning"
-                      placement="bottom"
-                      title={
-                        <div>
-                          <p>
-                            Are you sure you want to delete the party &apos;{formattedName}&apos;?
-                          </p>
-                          <p>
-                            Doing so will permanently remove the party and all associated roles.
-                          </p>
-                        </div>
-                      }
-                      onConfirm={this.deleteParty}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="danger">
-                        <Icon className="btn-danger--icon" type="minus-circle" theme="outlined" />
-                        Delete Party
-                      </Button>
-                    </Popconfirm>
-                  </AuthorizationWrapper>
+                <AuthorizationWrapper permission={Permission.ADMIN} inTesting>
+                  <Popconfirm
+                    className="delete_contact_warning"
+                    placement="bottom"
+                    title={
+                      <div>
+                        <p>
+                          Are you sure you want to delete the party &apos;{formattedName}&apos;?
+                        </p>
+                        <p>Doing so will permanently remove the party and all associated roles.</p>
+                      </div>
+                    }
+                    onConfirm={this.deleteParty}
+                    okText="Yes"
+                    cancelText="No"
+                    disabled={this.state.deletingParty}
+                  >
+                    <Button type="danger" disabled={this.state.deletingParty}>
+                      <MinusCircleOutlined className="btn-danger--icon" />
+                      Delete Party
+                    </Button>
+                  </Popconfirm>
                 </AuthorizationWrapper>
                 <AuthorizationWrapper permission={Permission.EDIT_PARTIES}>
                   <Button
@@ -198,58 +242,97 @@ export class PartyProfile extends Component {
                     onClick={(event) =>
                       this.openEditPartyModal(
                         event,
-                        parties,
+                        party.party_guid,
                         this.editParty,
                         ModalContent.EDIT_PARTY(formattedName),
-                        isPerson,
                         this.props.provinceOptions
                       )
                     }
+                    disabled={this.state.deletingParty}
                   >
-                    <img alt="pencil" className="padding-small--right" src={EDIT} />
-                    Update Party
+                    <img alt="pencil" className="padding-sm--right" src={EDIT} />
+                    Update Contact
                   </Button>
                 </AuthorizationWrapper>
               </div>
             </div>
+            {!isEmpty(party.party_orgbook_entity) && (
+              <div className="inline-flex">
+                <div className="padding-right">
+                  <CheckCircleOutlined className="icon-sm" />
+                </div>
+                <p>
+                  <a
+                    href={routes.ORGBOOK_ENTITY_URL(party.party_orgbook_entity.registration_id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Verified OrgBook Entity
+                  </a>
+                </p>
+              </div>
+            )}
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="mail" className="icon-sm" />
+                <MailOutlined className="icon-sm" />
               </div>
-              {parties.email && parties.email !== "Unknown" ? (
-                <a href={`mailto:${parties.email}`}>{parties.email}</a>
+              {party.email && party.email !== "Unknown" ? (
+                <a href={`mailto:${party.email}`}>{party.email}</a>
               ) : (
                 <p>{Strings.EMPTY_FIELD}</p>
               )}
             </div>
             <div className="inline-flex">
               <div className="padding-right">
-                <Icon type="phone" className="icon-sm" />
+                <PhoneOutlined className="icon-sm" />
               </div>
               <p>
-                {parties.phone_no} {parties.phone_ext ? `x${parties.phone_ext}` : ""}
+                {party.phone_no} {party.phone_ext ? `x${party.phone_ext}` : ""}
               </p>
             </div>
-            <Address address={parties.address[0] || {}} />
+            <div className="inline-flex">
+              <div className="padding-right">
+                <Address address={party.address[0] || {}} />
+              </div>
+            </div>
+            <div className="inline-flex">
+              <div className="padding-right">
+                <EditOutlined className="icon-sm" />
+              </div>
+              {party.signature ? (
+                <img
+                  src={party.signature}
+                  alt="Signature"
+                  style={{ pointerEvents: "none", userSelect: "none" }}
+                  height={120}
+                />
+              ) : (
+                <p>No Signature Provided</p>
+              )}
+            </div>
           </div>
           <div className="profile__content">
             <Tabs
-              className="center-tabs"
               activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
+              centered
             >
-              <TabPane tab="History" key="history">
+              <Tabs.TabPane tab="History" key="history">
                 <div className="tab__content ">
                   <Table
                     align="left"
                     pagination={false}
                     columns={columns}
-                    dataSource={transformRowData(this.props.partyRelationships)}
-                    locale={{ emptyText: <NullScreen type="no-results" /> }}
+                    dataSource={transformRowData(this.props.parties[id].mine_party_appt).concat(
+                      transformBusinessRoleRowData(
+                        this.props.parties[id].business_role_appts
+                      ).concat(transformNOWRoleRowData(this.props.parties[id].now_party_appt))
+                    )}
+                    locale={{ emptyText: "No Data Yet" }}
                   />
                 </div>
-              </TabPane>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         </div>
@@ -262,7 +345,7 @@ export class PartyProfile extends Component {
 const mapStateToProps = (state) => ({
   parties: getParties(state),
   partyRelationshipTypeHash: getPartyRelationshipTypeHash(state),
-  partyRelationships: getPartyRelationships(state),
+  partyBusinessRoleOptionsHash: getPartyBusinessRoleOptionsHash(state),
   mineBasicInfoListHash: getMineBasicInfoListHash(state),
   provinceOptions: getDropdownProvinceOptions(state),
 });
@@ -271,7 +354,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchPartyById,
-      fetchPartyRelationships,
       fetchMineBasicInfoList,
       deleteParty,
       updateParty,

@@ -15,7 +15,8 @@ INSERT INTO permit_status_code
     )
 VALUES
     ('O', 'Open', 10, 'system-mds', 'system-mds'),
-    ('C', 'Closed', 20, 'system-mds', 'system-mds')
+    ('C', 'Closed', 20, 'system-mds', 'system-mds'),
+    ('D', 'Draft', 20, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -112,7 +113,8 @@ VALUES
     ('COL', 'Coal', TRUE, 'system-mds', 'system-mds'),
     ('MIN', 'Mineral', TRUE, 'system-mds', 'system-mds'),
     ('PLR', 'Placer', TRUE, 'system-mds', 'system-mds'),
-    ('BCL', 'BC Land', TRUE, 'system-mds', 'system-mds')
+    ('BCL', 'Public Land', TRUE, 'system-mds', 'system-mds'),
+    ('PRL', 'Private Land', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -128,7 +130,8 @@ INSERT INTO mine_party_appt_type_code (
     grouping_level
     )
 VALUES
-    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2)
+    ('HSM', 'Health and Safety Manager', 111, 'system-mds', 'system-mds', 'true', 'false', 2),
+    ('AGT', 'Agent', 14, 'system-mds', 'system-mds', 'true', 'true', 1)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO mine_disturbance_code
@@ -331,7 +334,9 @@ VALUES
     ('TO','COL'),
     ('MC','COL'),
     ('CG','BCL'),
-    ('SA','BCL')
+    ('SA','BCL'),
+    ('CG','PRL'),
+    ('SA','PRL')
 ON CONFLICT DO NOTHING;
 --Everything else gets Mineral tenure type
 INSERT INTO mine_commodity_tenure_type
@@ -360,6 +365,7 @@ VALUES
     ('SUR', 'MIN'),
     ('SUR', 'PLR'),
     ('SUR', 'BCL'),
+    ('SUR', 'PRL'),
     ('UND', 'COL'),
     ('UND', 'MIN'),
     ('UND', 'PLR'),
@@ -491,12 +497,15 @@ INSERT INTO unit_type
 (unit_type_code, short_description, description, active_ind, create_user, update_user)
 VALUES
 	('MTN', 't', 'Tonne (Metric Ton 1,000 kg)', true, 'system-mds', 'system-mds'),
-	('MEC', 'm3', 'Meters cubed', true, 'system-mds', 'system-mds'),
+	('MEC', 'm³', 'Meters cubed', true, 'system-mds', 'system-mds'),
 	('HA', 'ha', 'Hectares', true, 'system-mds', 'system-mds'),
 	('DEG',  'deg', 'Degrees', true, 'system-mds', 'system-mds'),
-    ('PER', '%', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
+  ('PER', '%', 'Grade (Percent)', true, 'system-mds', 'system-mds'),
 	('MTR', 'm', 'Meters', true, 'system-mds', 'system-mds'),
-    ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds')
+  ('KMT', 'km', 'Kilometer ', true, 'system-mds', 'system-mds'),
+  ('MES', 'm³/s', 'Meters cubed/s', true, 'system-mds', 'system-mds'),
+  ('MED', 'm³/day', 'Meters cubed/day', true, 'system-mds', 'system-mds'),
+  ('MEY', 'm³/year', 'Meters cubed/year', true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO notice_of_work_type
@@ -513,16 +522,19 @@ on conflict do nothing;
 INSERT INTO now_application_status
 (now_application_status_code, description, display_order, active_ind, create_user, update_user)
 VALUES
-  ('SUB', 'Submitted', 90, true, 'system-mds', 'system-mds'),
 	('REF', 'Referred', 70, true, 'system-mds', 'system-mds'),
-	('CDI', 'Client Delay Info', 30, true, 'system-mds', 'system-mds'),
-	('CDB', 'Client Delay Bond', 20, true, 'system-mds', 'system-mds'),
-  ('GVD', 'Govt Delay', 60, true, 'system-mds', 'system-mds'),
-  ('CON', 'Consultation', 50, true, 'system-mds', 'system-mds'),
-  ('AIA', 'Active/Issued/Approved', 10, true, 'system-mds', 'system-mds'),
-	('WDN', 'Withdrawn', 100, true, 'system-mds', 'system-mds'),
+	('CDI', 'Client Delayed', 30, true, 'system-mds', 'system-mds'),
+  ('GVD', 'Govt. Action Required', 60, true, 'system-mds', 'system-mds'),
+  ('AIA', 'Approved', 10, true, 'system-mds', 'system-mds'),
 	('REJ', 'Rejected', 80, true, 'system-mds', 'system-mds'),
-	('CLO', 'Closed', 40, true, 'system-mds', 'system-mds')
+  ('REC', 'Received', 90, true, 'system-mds', 'system-mds'),
+  ('PAP', 'Pending Approval', 50, false, 'system-mds', 'system-mds'),
+	('REI', 'Rejected-Initial', 100, false, 'system-mds', 'system-mds'),
+	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
+	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
+	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds'),
+  ('WDN', 'Withdrawn', 140, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -552,7 +564,7 @@ VALUES
     ('mechanical_trenching', 'Mechanical Trenching / Test Pits', 'system-mds', 'system-mds'),
     ('surface_bulk_sample', 'Surface Bulk Sample', 'system-mds', 'system-mds'),
     ('blasting_operation', 'Blasting Operations', 'system-mds', 'system-mds'),
-    ('placer_operation', 'Placer Opertations', 'system-mds', 'system-mds')
+    ('placer_operation', 'Placer Operations', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO underground_exploration_type (
@@ -570,15 +582,31 @@ ON CONFLICT DO NOTHING;
 INSERT INTO now_application_progress_status (
     application_progress_status_code,
     description,
+    display_order,
     create_user,
     update_user
     )
 VALUES 
-    ('VER', 'Verification', 'system-mds', 'system-mds'),
-    ('REV', 'Technical Review', 'system-mds', 'system-mds'),
-    ('REF', 'Referral / Consultation', 'system-mds', 'system-mds'),
-    ('DEC', 'Decision', 'system-mds', 'system-mds')
+    ('REV', 'Technical Review', 10, 'system-mds', 'system-mds'),
+    ('REF', 'Referral', 20, 'system-mds', 'system-mds'),
+    ('CON', 'Consultation', 30, 'system-mds', 'system-mds'),
+    ('PUB', 'Public Comment', 40, 'system-mds', 'system-mds'),
+    ('DFT', 'Draft Permit', 50, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+
+INSERT INTO now_application_delay_type (
+    delay_type_code,
+    description,
+    create_user,
+    update_user
+    )
+VALUES 
+    ('INF', 'Missing Information from Proponent', 'system-mds', 'system-mds'),
+    ('SEC', 'Waiting for Security', 'system-mds', 'system-mds'),
+    ('OAB', 'Other Authorization (Bundling)', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
 
 INSERT INTO now_application_permit_type(
     now_application_permit_type_code,
@@ -594,27 +622,79 @@ ON CONFLICT DO NOTHING;
 
 
 INSERT INTO now_application_document_type
-(now_application_document_type_code, description, active_ind, create_user, update_user)
+(now_application_document_type_code, description, active_ind, now_application_document_sub_type_code, create_user, update_user)
 VALUES
-	('ANS', 'Annual Summary', true, 'system-mds', 'system-mds'),
-	('ACP', 'Archaeological Chance Find Procedure', true, 'system-mds', 'system-mds'),
-	('BLP', 'Blasting Procedure', true, 'system-mds', 'system-mds'),
-	('EMS', 'Explosives Magazine Storage and Use Permit Application', true, 'system-mds', 'system-mds'),
-	('LAL', 'Landowner Authorization Letter', true, 'system-mds', 'system-mds'),
-	('MRP', 'Mine Emergency Response Plan', true, 'system-mds', 'system-mds'),
-	('OTH', 'Other', true, 'system-mds', 'system-mds'),
-	('RFE', 'Record of First Nations Engagement', true, 'system-mds', 'system-mds'),
-	('TAL', 'Tenure Authorization Letter', true, 'system-mds', 'system-mds'),
-	('TMP', 'Tenure Map / Property Map', true, 'system-mds', 'system-mds'),
-	('MPW', 'Map of Proposed Work', true, 'system-mds', 'system-mds'),
-    ('REV', 'Review',true,'system-mds','system-mds'),
-    ('PUB', 'Public Comment',true,'system-mds','system-mds'),
-    ('CAL', 'Acknowledgement Letter', true, 'system-mds', 'system-mds'),
-	('WDL', 'Withdrawl Letter', true, 'system-mds', 'system-mds'),
-	('RJL', 'Rejection Letter', true, 'system-mds', 'system-mds'),
-    ('SCD', 'Security Calculation Document', true, 'system-mds', 'system-mds'),
-    ('PMT','Working Permit', true, 'system-mds','system-mds'),
-    ('PMA','Working Permit for Amendment', true, 'system-mds','system-mds')
+    ('ANS', 'Annual Summary', true, 'AAF', 'system-mds', 'system-mds'),
+    ('ACP', 'Archaeological Chance Find Procedure', true, 'AAF', 'system-mds', 'system-mds'),
+    ('BLP', 'Blasting Procedure', true, 'AAF', 'system-mds', 'system-mds'),
+    ('EMS', 'Explosives Magazine Storage and Use Permit Application', true, 'AAF', 'system-mds', 'system-mds'),
+    ('LAL', 'Landowner Authorization Letter', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MRP', 'Mine Emergency Response Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('OTA', 'Other', true, 'AAF', 'system-mds', 'system-mds'),
+    ('OTH', 'Other', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RFE', 'Record of First Nations Engagement', true, 'AAF', 'system-mds', 'system-mds'),
+    ('TAL', 'Tenure Authorization Letter', true, 'AAF', 'system-mds', 'system-mds'),
+    ('REV', 'Review', true, 'GDO', 'system-mds','system-mds'),
+    ('CAL', 'Acknowledgement Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('WDL', 'Withdrawl Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RJL', 'Rejection Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('PMT','Working Permit', true, 'AEF', 'system-mds','system-mds'),
+    ('PMA','Working Permit for Amendment', true, 'AEF', 'system-mds','system-mds'),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'SDO', 'system-mds','system-mds'),
+    ('NIA', 'No Interest Acknowledgement Form', true, 'SDO', 'system-mds','system-mds'),
+    ('AKL', 'Acknowledgement of Security Letter', true, 'SDO', 'system-mds','system-mds'),
+    ('SCD', 'Bond Calculator', true, 'SDO', 'system-mds', 'system-mds'),
+    ('TMP', 'Title/Tenure Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('MPW', 'Proposed and/or Permitted Mine Area Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('MPG', 'Proposed and/or Permitted Mine Area Map', true, 'GDO', 'system-mds', 'system-mds'),
+    ('LMA', 'Location Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('LTM', 'Land Title/Licence of Occupation Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('OMA', 'Overview Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('SMA', 'Supplemental Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('SSF', 'Submitted Shape Files', true, 'MDO', 'system-mds', 'system-mds'),
+    ('CSL', 'Cross-sectional/Longitudinal', true, 'MDO', 'system-mds', 'system-mds'),
+    ('PFR', 'Preliminary Field Reconnaissance', true, 'AAF', 'system-mds', 'system-mds'),
+    ('AOA', 'Archaeological Overview Assessment', true, 'AAF', 'system-mds', 'system-mds'),
+    ('AIA', 'Archaeological Impact Assessment', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SOP', 'Standard/Safe Operating Procedures', true, 'AAF', 'system-mds', 'system-mds'),
+    ('RSP', 'Riparian Setbacks Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('WMP', 'Water Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('WPL', 'Wildlife Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('RPL', 'Reclamation Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('OMP', 'Other Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SEP', 'Sediment and Erosion Control Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('FDP', 'Fugitive Dust Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('VMP', 'Vegetation Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('TSS', 'Terrain Stability Study', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MAD', 'Metal Leaching/Acid Rock Drainage', true, 'AAF', 'system-mds', 'system-mds'),
+    ('LNO', 'Landowner Notification', true, 'AAF', 'system-mds', 'system-mds'),
+    ('DWP', 'Description of Work/Work Program', true, 'AAF', 'system-mds', 'system-mds'),
+    ('ARE', 'Agent Letter of Representation', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SRE', 'Status Report', true, 'GDO', 'system-mds', 'system-mds'),
+    ('SOM', 'Status Report - Overlapping Interests Maps', true, 'GDO', 'system-mds', 'system-mds'),
+    ('SRS', 'Status Report - Shape Files', true, 'GDO', 'system-mds', 'system-mds'),
+    ('ECC', 'Email Correspondence/Communications', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RMI', 'Request for More Information', true, 'GDO', 'system-mds', 'system-mds'),
+    ('WFI', '30 day Warning for Information', true, 'GDO', 'system-mds', 'system-mds'),
+    ('NPR', 'No Permit Required', true, 'GDO', 'system-mds', 'system-mds'),
+    ('NPI', 'No Permit Required IP', true, 'GDO', 'system-mds', 'system-mds'),
+    ('WFS', '30 day Warning for Security', true, 'SDO', 'system-mds', 'system-mds'),
+    ('NPE', 'Permit Enclosed Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RFD', 'Reasons for Decision', true, 'GDO', 'system-mds', 'system-mds'),
+    ('CRS', 'Consultation Report/Summary', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BCR', 'Begin Consultation Request', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CCC', 'Consultation Correspondence (not in CRTS)', true, 'CDO', 'system-mds', 'system-mds'),
+    ('CSD', 'Consultation Support for Decision', true, 'CDO', 'system-mds', 'system-mds'),
+    ('BRR', 'Begin Referral Request', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RSR', 'Referral Summary Roll Up', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RLE', 'Referral Letter (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('RRE', 'Referral Response (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
+    ('PCA', 'Advertisement', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCC', 'Public Comment', true, 'PDO', 'system-mds', 'system-mds'),
+    ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds'),
+    ('AMR', 'Amendment Request', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MYA', 'MYAB Update Form', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SUD', 'Supporting Documents', true, 'AAF', 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -626,7 +706,8 @@ INSERT INTO now_application_review_type(
 VALUES
     ('REF', 'Referral', 'system-mds', 'system-mds'),
     ('FNC', 'First Nations Consultation', 'system-mds', 'system-mds'),
-    ('PUB', 'Public Comment', 'system-mds', 'system-mds')
+    ('PUB', 'Public Comment', 'system-mds', 'system-mds'),
+    ('ADV', 'Advertisements', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -636,291 +717,76 @@ ON CONFLICT DO NOTHING;
 -- V2019.09.28.14.16
 
 INSERT INTO document_template
-(document_template_code,form_spec_json, template_file_path, active_ind, create_user, update_user)
+(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user)
 VALUES
-	('NRL', '' , 'templates/now/Rejection Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NWL', '' , 'templates/now/Withdrawal Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-	('NCL', '', 'templates/now/Acknowledgment Letter Template (NoW).docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/New_Permit_Template.docx', true, 'system-mds','system-mds'),
-  ('PMA', '', 'templates/permit/Permit_Amendment_Template.docx', true, 'system-mds','system-mds')
+  ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
+  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
+  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
-
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
       "label": "Letter Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
       "required": true
     },
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
-    },
-    {
-      "id": "proponent_address",
-      "label": "Proponent Address",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s address",
-      "required": true
     },
     {
       "id": "proponent_name",
       "label": "Proponent Name",
       "type": "FIELD",
       "placeholder": "Enter the proponent''s name",
-      "required": false
-    },
+      "relative-data-path": "now_application.permittee.name",
+      "required": true
+    },    
     {
-      "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
-      "relative-data-path": "now_application.property_name",
-      "read-only": true
-    },
-    {
-      "id": "application_dt",
-      "label": "Application Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true,
-      "relative-data-path": "now_application.submitted_date"
-    },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
-    },
-    { 
-      "id": "letter_body",
-      "label": "Letter Body",
+      "id": "proponent_address",
+      "label": "Proponent Address",
       "type": "AUTO_SIZE_FIELD",
-      "context-value": "Future proposals for mining activities on the above noted property will require the submission of a new Notice of Work application. Should you require further information or have questions please do not hesitate to contact me.",
-      "required": true
-    },
-    {
-      "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.email",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.phone_number",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.fax_number",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
-      "read-only": true
-    }
-  ]' 
-where document_template_code = 'NRL';
-
-UPDATE document_template SET form_spec_json = '[
-    {
-      "id": "letter_dt",
-      "label": "Letter Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
-      "relative-data-path": "mine.mine_no",
-      "read-only": true
-    },
-    {
-      "id": "proponent_address",
-      "label": "Proponent Address",
-      "type": "FIELD",
       "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
       "required": true
-    },
-    {
-      "id": "proponent_name",
-      "label": "Proponent Name",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s name",
-      "required": false
-    },
-    {
-      "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
-      "relative-data-path": "now_application.property_name",
-      "read-only": true
-    },
-    {
-      "id": "withdrawal_dt",
-      "label": "Withdrawal Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
-    },
-    { 
-      "id": "letter_body",
-      "label": "Letter Body",
-      "type": "AUTO_SIZE_FIELD",
-      "context-value": "You will have to reapply should you wish to carry out your intended work program. You are reminded that pursuant to Section 10 of the Mines Act no exploration activities can be carried out unless you have received the required permit.",
-      "required": true
-    },
-    {
-      "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.email",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.phone_number",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.fax_number",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
-      "read-only": true
-    },
-    {
-      "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
-      "required": true,
-      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
-      "read-only": true
-    }
-  ]'
-where document_template_code = 'NWL';
-
-UPDATE document_template SET form_spec_json = '[
-    {
-      "id": "letter_dt",
-      "label": "Letter Date",
-      "type": "DATE",
-      "placeholder": null,
-      "required": true
-    },
-    {
-      "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
-      "relative-data-path": "mine.mine_no",
-      "read-only": true
-    },
-    {
-      "id": "proponent_address",
-      "label": "Proponent Address",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s address",
-      "required": true
-    },
-    {
-      "id": "proponent_name",
-      "label": "Proponent Name",
-      "type": "FIELD",
-      "placeholder": "Enter the proponent''s name",
-      "required": false
     },
     {
       "id": "emailed_to",
       "label": "Emailed to",
       "type": "FIELD",
       "placeholder": "Enter the name of the email recipient",
-      "required": false
+      "relative-data-path": "now_application.permittee.email"
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
+	{ 
+      "id": "application_dt_label",
+      "type": "LABEL",
+	  "context-value": "This letter acknowledges receipt of your Notice of Work and Reclamation Program dated"
+	},
     {
       "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
-      "placeholder": null,
+      "placeholder": "YYYY-MM-DD",
       "required": true,
       "relative-data-path": "now_application.submitted_date"
     },
+	{
+      "id": "exploration_type_label",
+      "type": "LABEL",
+	  "context-value": "Your proposed program of"
+	},
     {
       "id": "exploration_type",
       "label": "Exploration Type",
@@ -928,191 +794,417 @@ UPDATE document_template SET form_spec_json = '[
       "placeholder": "Enter the exploration type",
       "required": true
     },
+	{ 
+      "id": "bond_inc_amt_label",
+      "type": "LABEL",
+	  "context-value": "has been referred to other resource agencies and has been sent to Indigenous Nations for consultation. Prior to the approval and issuance of your permit, you are required to post a security deposit of"
+	},
     {
       "id": "bond_inc_amt",
-      "label": "Bond Amount",
+      "label": "Bond Increase Amount",
       "type": "CURRENCY",
-      "placeholder": "Enter the bond amount",
-      "required": true
+      "placeholder": "Enter the bond increase amount",
+      "relative-data-path": "now_application.liability_adjustment"
     },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name"
-    },
+	{ 
+      "id": "letter_body_label",
+      "type": "LABEL",
+	  "context-value": "and you may wish to take the opportunity to post your security at this time to avoid any delays.  Safekeeping Agreements backed by GIC’s may be used for bonds under $25,000 with the enclosed template. Complete the form with your banker, using the ''Instructions on Completing a Safekeeping Agreement'' and return it to this office for our signature.  A copy of the completed form will be returned to you and your financial institution.  Irrevocable Letters of Credit, certified cheque, bank draft or money order made payable to the Minister of Finance, at the undernoted address, are also acceptable. Payments made by EFT can also be arranged. Please do not send cash. For reclamation surety bonds, the bond shall be with a surety licensed to transact the business of a surety in Canada. For the surety bond template and more please visit our Reclamation Security website. Personal information collected by the Ministry of Energy, Mines, and Low Carbon Innovation is under the authority of section 26(c) of the Freedom of Information and Protection of Privacy Act for the purpose of collecting Bond and Securities Data. If you have any questions about the collection, use and disclosure of your personal information, please contact: Mines Digital Services by email at mds@gov.bc.ca, by phone at: 778-698-7233, or by mail at: PO Box 9380, STN PROV GOVT, Victoria, BC, V8W 9M6."
+	},
     { 
       "id": "letter_body",
       "label": "Letter Body",
       "type": "AUTO_SIZE_FIELD",
-      "context-value": "You may wish to take the opportunity to post your security at this time to avoid delays in the permitting process.  The security deposit amount has been calculated based on the information provided in your application.  Details for the security deposit calculation are outlined in the attached spreadsheet.  Preferred forms of security are certified cheques, money orders or bank drafts made payable to the Minister of Finance.  Surety Bonds and Irrevocable Standby Letters of Credit (‘ILOC’) are also acceptable.  Please do not send cash.  Ensure you also include a completed and signed `No Interest Payable Form`, which is attached.  ILOCs will only be accepted from the following financial institutions: Bank of Montreal, Bank of Nova Scotia, Canadian Imperial Bank of Commerce, Royal Bank of Canada, Toronto-Dominion Bank.\n\nIn addition, within 30 calendar days of receipt of this letter and prior to issuance of a permit, you must provide to this office:  A Chance Find Procedure (‘CFP’) for archaeological sites, an invasive plant species management plan and an updated Mine Emergency Response Plan (‘MERP’).  Guidelines and best management practices have been attached to this letter to assist with the preparation of the aforementioned items.\n\nThe introduction and spread of invasive plants is a concern throughout the area.  The provincial Invasive Alien Plant Program (https://www2.gov.bc.ca/gov/content/environment/plants-animals-ecosystems/invasive-species/iapp) should be reviewed to determine what invasive species have been documented in and around the proposed work site(s).  Best management practices should be applied during operations and an invasive plant management strategy developed.  The attached best practices document has been developed by the Invasive Species Council of British Columbia for forestry operations, but the operational guidelines describe in it can be extended to mineral exploration operations.  For example, ensure incoming and outgoing vehicles are free of weed seeds and plant parts, report observations of infestation and re-vegetate disturbed areas as soon after disturbance.  For more information on individual species visit the Ministry of Agriculture site www.weedsbc.ca or the Invasive Species Council of BC website at www.bcinvasives.ca and go to `resources`.\n\nThe MERP shall include a section which outlines how engagement with affected communities and First Nations will occur in case of an emergency at your mine site.  The MERP is required to be posted at the work site at all times, which must include the name of the designated Mine Manager.  All employees must be advised and trained in the use of this plan.\n\nOther legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation.  It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
+      "context-value": "Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation. It is your responsibility to comply with the terms and conditions of all other permits and authorizations which you may have been issued and other applicable legislation including, but not limited to the: Wildlife Act, Wildfire Act, Wildfire Regulation and the Water Sustainability Act.",
       "required": true
+    },
+	{ 
+      "id": "issuing_inspector_name_label",
+      "type": "LABEL",
+	  "context-value": "You are reminded that no work may commence until you have received your permits. To clarify or discuss any of the above, please call or email me at the information below.\n\nSincerely,"
+	},
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
     },
     {
       "id": "rc_office_email",
-      "label": "Regional Office Contact''s Email",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s email",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.email",
       "read-only": true
     },
     {
       "id": "rc_office_phone_number",
-      "label": "Regional Office Contact''s Phone Number",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s phone number",
-      "required": true,
       "relative-data-path": "mine.region.regional_contact_office.phone_number",
       "read-only": true
     },
     {
       "id": "rc_office_fax_number",
-      "label": "Regional Office Contact''s Fax Number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    }
+  ]' WHERE document_template_code ='NCL';
+  
+  
+
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
+    {
+      "id": "mine_no",
+      "relative-data-path": "mine.mine_no",
+      "read-only": true
+    },
+    {
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s fax number",
+      "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
+      "required": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "AUTO_SIZE_FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
+      "required": true
+    },
+    {
+      "id": "property",
+      "relative-data-path": "now_application.property_name",
+      "read-only": true
+    },
+	{ 
+      "id": "application_dt_label",
+      "type": "LABEL",
+	  "context-value": "This letter serves as formal notice that the Notice of Work and Reclamation application dated "
+	},
+    {
+      "id": "application_dt",
+      "label": "Application Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "required": true,
+      "relative-data-path": "now_application.submitted_date"
+    },
+	{ 
+      "id": "letter_body_label",
+      "type": "LABEL",
+	  "context-value": "for the above noted property has been discontinued for the proposed project."
+	},
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Future proposals for mining activities on the above noted property will require the submission of a new Notice of Work application. Should you require further information or have questions please do not hesitate to contact me.",
+      "required": true
+    },
+	{ 
+      "id": "issuing_inspector_name_label",
+      "type": "LABEL",
+	  "context-value": "Sincerely,"
+	},
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.fax_number",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_1",
-      "label": "Regional Office Contact''s Mailing Address Line 1",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 1",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
       "read-only": true
     },
     {
       "id": "rc_office_mailing_address_line_2",
-      "label": "Regional Office Contact''s Mailing Address Line 2",
-      "type": "FIELD",
-      "placeholder": "Enter the regional office contact''s mailing address line 2",
       "required": true,
       "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
       "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
+      "read-only": true
     }
-  ]'
-where document_template_code = 'NCL';
-
---THE FRONTEND DOESN"T ACTUALLY USE THE SPEC TO MAKE THE FORM,
---but we need data enforcement still. 
-UPDATE document_template SET form_spec_json = '[
+  ]' WHERE document_template_code ='NRL';
+  
+  UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
     {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
-      "id": "permittee",
-      "label": "Permittee Name",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the permittee''s name",
-      "relative-data-path": "now_application.permittee_name",
-      "read-only": true
+      "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
+      "required": true
+    },    
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "AUTO_SIZE_FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
+      "required": true
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
+	{ 
+      "id": "application_dt_label",
+      "type": "LABEL",
+	  "context-value": "Please find enclosed your Mines Act permit, which authorizes exploration activities as detailed in the Notice of Work and Reclamation Program dated"
+	},
     {
-      "id": "lead_inspector",
-      "label": "Lead Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name",
-      "read-only": true
-    },
-    {
-      "id": "application_date",
+      "id": "application_dt",
       "label": "Application Date",
       "type": "DATE",
-      "placeholder": "Enter the inspector''s name",
+      "placeholder": "YYYY-MM-DD",
       "required": true,
-      "relative-data-path": "now_application.submitted_date",
+      "relative-data-path": "now_application.submitted_date"
+    },
+	{ 
+      "id": "letter_body_label",
+      "type": "LABEL",
+	  "context-value": "The Notice of Work and Reclamation Program form part of your permit, and you are reminded that you may not depart from the permitted program without written authorization."
+	},
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Please ensure that you and all persons who are carrying out activities in accordance with this permit comply with all terms and conditions of the permit and are familiar with the permitted work program.\n\nThis permit applies only to the requirements under the Mines Act and Health, Safety and Reclamation Code for Mines in British Columbia (Code).  Other legislation may be applicable to the operation and you (the Permittee) may be required to obtain approvals or permits under that legislation. Examples of other authorizations would be for timber removal, water use, works within the agricultural land reserve etc.\n\nThe amount of your security deposit may be adjusted on the basis of reclamation performance, field inspections by this ministry, and on reports which may be requested.",
+      "required": true
+    },
+	{ 
+      "id": "issuing_inspector_name_label",
+      "type": "LABEL",
+	  "context-value": "Sincerely,"
+	},
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
-      "id": "application_type",
-      "label": "Application Type",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.notice_of_work_type.description",
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
       "read-only": true
     }
-  ]'
-where document_template_code = 'PMT';
-
+  ]' WHERE document_template_code ='NPE';
+  
 UPDATE document_template SET form_spec_json = '[
     {
+      "id": "letter_dt",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
+    {
       "id": "mine_no",
-      "label": "Mine Number",
-      "type": "FIELD",
-      "placeholder": "Enter the mine number",
-      "required": true,
       "relative-data-path": "mine.mine_no",
       "read-only": true
     },
     {
-      "id": "permittee",
-      "label": "Permittee Name",
+      "id": "proponent_name",
+      "label": "Proponent Name",
       "type": "FIELD",
-      "placeholder": "Enter the permittee''s name",
-      "relative-data-path": "now_application.permittee_name",
-      "read-only": true
+      "placeholder": "Enter the proponent''s name",
+      "relative-data-path": "now_application.permittee.name",
+      "required": true
+    },
+    {
+      "id": "proponent_address",
+      "label": "Proponent Address",
+      "type": "AUTO_SIZE_FIELD",
+      "placeholder": "Enter the proponent''s address",
+      "relative-data-path": "now_application.permittee.first_address.full",
+      "required": true
     },
     {
       "id": "property",
-      "label": "Property",
-      "type": "FIELD",
-      "placeholder": "Enter the property",
-      "required": true,
       "relative-data-path": "now_application.property_name",
       "read-only": true
     },
+	{ 
+      "id": "withdrawal_dt_label",
+      "type": "LABEL",
+	  "context-value": "I refer to your decision of"
+	},
     {
-      "id": "lead_inspector",
-      "label": "Lead Inspector",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.lead_inspector.name",
-      "read-only": true
-    },
-    {
-      "id": "application_date",
-      "label": "Application Date",
+      "id": "withdrawal_dt",
+      "label": "Withdrawal Date",
       "type": "DATE",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.submitted_date",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
+	{ 
+      "id": "letter_body_label",
+      "type": "LABEL",
+	  "context-value": "to withdraw your Notice of Work application and confirm that all further processing of your application has now been terminated."
+	},
+    { 
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "You will have to reapply should you wish to carry out your intended work program. You are reminded that pursuant to Section 10 of the Mines Act no exploration activities can be carried out unless you have received the required permit.",
+      "required": true
+    },
+	{ 
+      "id": "issuing_inspector_name_label",
+      "type": "LABEL",
+	  "context-value": "Sincerely,"
+	},
+    {
+      "id": "issuing_inspector_name",
+      "relative-data-path": "now_application.issuing_inspector.name",
       "read-only": true
     },
     {
-      "id": "application_type",
-      "label": "Application Type",
-      "type": "FIELD",
-      "placeholder": "Enter the inspector''s name",
-      "required": true,
-      "relative-data-path": "now_application.notice_of_work_type.description",
+      "id": "issuing_inspector_email",
+      "relative-data-path": "now_application.issuing_inspector.email",
+      "read-only": true
+    },
+    {
+      "id": "issuing_inspector_phone",
+      "relative-data-path": "now_application.issuing_inspector.phone",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    },
+    {
+      "id": "application_type_code",
+      "relative-data-path": "now_application.application_type_code",
       "read-only": true
     }
-  ]'
-where document_template_code = 'PMA';
+  ]' WHERE document_template_code ='NWL';
 
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
@@ -1127,17 +1219,16 @@ SET document_template_code = 'NRL'
 where now_application_document_type_code = 'RJL';
 
 UPDATE now_application_document_type
+SET document_template_code = 'NPE'
+where now_application_document_type_code = 'NPE';
+
+UPDATE now_application_document_type
 SET document_template_code = 'PMT'
 where now_application_document_type_code = 'PMT';
 
 UPDATE now_application_document_type
 SET document_template_code = 'PMA'
 where now_application_document_type_code = 'PMA';
-
--- UPDATE now_application_document_type
--- SET document_template_code = 'PMA'
--- where now_application_document_type_code = 'PMA';
-
 
 INSERT INTO bond_status(
     bond_status_code,
@@ -1159,7 +1250,7 @@ INSERT INTO bond_type(
     )
 VALUES
     ('CAS', 'Cash', 'system-mds', 'system-mds'),
-    ('ILC', 'Irrevocable Line of Credit', 'system-mds', 'system-mds'),
+    ('ILC', 'Letter of Credit', 'system-mds', 'system-mds'),
     ('SBO', 'Surety Bond', 'system-mds', 'system-mds'),
     ('SAG', 'Safekeeping Agreement', 'system-mds', 'system-mds'),
     ('QET', 'Qualified Environmental Trust', 'system-mds', 'system-mds'),
@@ -1173,37 +1264,47 @@ INSERT INTO exemption_fee_status
     description,
     display_order,
     create_user,
-    update_user
+    update_user,
+    active_ind
     )
 VALUES
-    ('Y', 'Yes', 10, 'system-mds', 'system-mds'),
-    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds'),
-    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds'),
-    ('M', 'Municipality', 40, 'system-mds', 'system-mds'),
-    ('O', 'OGC', 50, 'system-mds', 'system-mds'),
-    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds'),
-    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds'),
-    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds'),
-    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds'),
-    ('B', 'Abandoned', 100, 'system-mds', 'system-mds'),
-    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
-    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
+    ('Y', 'Yes', 10, 'system-mds', 'system-mds', true),
+    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds', false),
+    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds', false),
+    ('M', 'Municipality', 40, 'system-mds', 'system-mds', false),
+    ('O', 'OGC', 50, 'system-mds', 'system-mds', false),
+    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds', false),
+    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds', false),
+    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds', false),
+    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds', false),
+    ('B', 'Abandoned', 100, 'system-mds', 'system-mds', false),
+    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds', false),
+    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds', false),
+    ('MIM', 'Mineral/Coal', 130, 'system-mds', 'system-mds', true),
+    ('MIP', 'Pits/Quarry', 140, 'system-mds', 'system-mds', true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO bond_document_type(
     bond_document_type_code,
     description,
+    active_ind,
     create_user,
-    update_user
+    update_user,
+    display_order
     )
 VALUES
-    ('SRB', 'Scan of Reclamation Security Bond', 'system-mds', 'system-mds'),
-    ('RSF', 'Release of Security Form', 'system-mds', 'system-mds'),
-    ('RSL', 'Release of Security Letter', 'system-mds', 'system-mds'),
-    ('CSF', 'Confiscation of Security Form', 'system-mds', 'system-mds'),
-    ('CSL', 'Confiscation of Security Letter', 'system-mds', 'system-mds'),
-    ('REL', 'Reminder Letter', 'system-mds', 'system-mds'),
-    ('AKL', 'Acknowledgement Letter', 'system-mds', 'system-mds')
+    ('AKL', 'Acknowledgement of Security Letter', true, 'system-mds', 'system-mds', 10),
+    ('BSR', 'Bond Status Request Letter', true, 'system-mds', 'system-mds', 20),
+    ('CNC', 'Change of Name Certificate', true, 'system-mds', 'system-mds', 30),
+    ('CSF', 'Confiscation of Security Form', true, 'system-mds', 'system-mds', 40),
+    ('CSL', 'Confiscation of Security Letter', true, 'system-mds', 'system-mds', 50),   
+    ('NIA', 'No Interest Payable Form', true, 'system-mds', 'system-mds', 60),
+    ('RSF', 'Release of Security Form', true, 'system-mds', 'system-mds', 70),
+    ('RSL', 'Release of Security Letter', true, 'system-mds', 'system-mds', 80),
+    ('REL', 'Reminder Letter', false, 'system-mds', 'system-mds', 90),
+    ('SRB', 'Scan of Reclamation Security Document', true, 'system-mds', 'system-mds', 100),
+    ('SIB', 'Security Instructions for Bank', true, 'system-mds', 'system-mds', 110),
+    ('PRL', 'Payment Reminder Letter', true, 'system-mds', 'system-mds', 120)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO regional_contact_type
@@ -1238,3 +1339,21 @@ VALUES
     ('ROE', 'SE', 'MMD-Cranbrook@gov.bc.ca', '250 417-6134', NULL, '202-100 Cranbrook Street North', 'Cranbrook, B.C. V1C 3P9'),
     ('ROE', 'SW', 'SouthwestMinesDivision@gov.bc.ca', '778 698-3649', '250 953-3878', 'PO Box 9395, Stn Prov Govt', 'Victoria, B.C. V8W 9M9')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO permit_condition_category
+(condition_category_code, step, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('GEC', 'A.', 'General Conditions', true, 10, 'system-mds', 'system-mds'),
+	('HSC', 'B.', 'Health and Safety Conditions', true, 20, 'system-mds', 'system-mds'),
+	('GOC', 'C.', 'Geotechnical Conditions', true, 30, 'system-mds', 'system-mds'),
+	('ELC', 'D.', 'Environmental Land and Watercourses Conditions', true, 40, 'system-mds', 'system-mds'),
+  ('RCC', 'E.', 'Reclamation and Closure Program Conditions', true, 50, 'system-mds', 'system-mds')
+on conflict do nothing;
+
+INSERT INTO permit_condition_type
+(condition_type_code, description, active_ind, display_order, create_user, update_user)
+VALUES
+	('SEC', 'Permit Section', true, 10, 'system-mds', 'system-mds'),
+	('CON', 'Condition', true, 20, 'system-mds', 'system-mds'),
+	('LIS', 'List Item', true, 30, 'system-mds', 'system-mds')
+on conflict do nothing;

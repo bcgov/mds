@@ -36,18 +36,20 @@ export const defaultActivity = shape({
   ...activitySummary,
 });
 
-export const camps = shape({
+export const camp = shape({
   camp_name: PropTypes.string,
   camp_number_people: PropTypes.number,
   camp_number_structures: PropTypes.number,
   has_fuel_stored: PropTypes.boolean,
   has_fuel_stored_in_bulk: PropTypes.boolean,
   has_fuel_stored_in_barrels: PropTypes.boolean,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
 const surfaceDrilling = shape({
   reclamation_core_storage: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -56,6 +58,7 @@ const placer = shape({
   is_hand_operation: PropTypes.boolean,
   reclamation_area: PropTypes.number,
   reclamation_unit_type_code: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -88,6 +91,7 @@ export const sandGravelQuarry = shape({
   dust_impact_plan: PropTypes.string,
   visual_impact_plan: PropTypes.string,
   reclamation_backfill_detail: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -96,6 +100,7 @@ export const settlingPond = shape({
   is_ponds_exfiltrated: PropTypes.boolean,
   is_ponds_recycled: PropTypes.boolean,
   is_ponds_discharged: PropTypes.boolean,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -103,6 +108,7 @@ export const surfaceBulkSamples = shape({
   processing_method_description: PropTypes.string,
   handling_instructions: PropTypes.string,
   drainage_mitigation_description: PropTypes.string,
+  calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
 });
 
@@ -113,7 +119,8 @@ export const waterSupply = shape({
   estimate_rate: PropTypes.number,
   pump_size: PropTypes.number,
   intake_location: PropTypes.string,
-  ...defaultActivity,
+  calculated_total_disturbance: PropTypes.number,
+  details: activityDetails,
 });
 
 export const statueOfLand = shape({
@@ -140,12 +147,13 @@ export const importedNOWApplication = shape({
   proposed_start_date: PropTypes.date,
   proposed_end_date: PropTypes.date,
   directions_to_site: PropTypes.string,
-
+  status_reason: PropTypes.string,
+  status_updated_date: PropTypes.date,
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  blasting_operation: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  blasting_operation: PropTypes.objectOf(PropTypes.any),
   state_of_land: statueOfLand,
-  camps,
+  camp,
   cut_lines_polarization_survey: defaultActivity,
   exploration_access: defaultActivity,
   exploration_surface_drilling: surfaceDrilling,

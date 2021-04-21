@@ -9,18 +9,15 @@ exports[`MineSecurityInfo renders properly 1`] = `
   </h2>
   <br />
   <Tabs
-    hideAdd={false}
     style={
       Object {
         "textAlign": "left !important",
       }
     }
-    tabPosition="top"
     type="card"
   >
     <TabPane
       key="1"
-      placeholder={null}
       tab="Bonds"
     >
       <div>
@@ -28,7 +25,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
           className="dashboard--cards"
         >
           <MineDashboardContentCard
-            content="$300.00"
+            content="$1,200.00"
             icon={null}
             title={
               <span>
@@ -40,13 +37,13 @@ exports[`MineSecurityInfo renders properly 1`] = `
             }
           />
           <MineDashboardContentCard
-            content={1}
+            content={2}
             icon={null}
             title={
               <span>
                 Total Active Bonds
                 <CoreTooltip
-                  title="Total Active Bonds: This is the number of active bonds held by EMPR for all the permits on this mine record. It does not include bonds that have been released or confiscated."
+                  title="Total Active Bonds: This is the number of active bonds held by the Ministry for all the permits on this mine record. It does not include bonds that have been released or confiscated."
                 />
               </span>
             }
@@ -63,6 +60,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
         </p>
         <br />
         <MineBondTable
+          activeBondCount={[Function]}
           bondStatusOptionsHash={
             Object {
               "ACT": "Active",
@@ -75,7 +73,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
               "BDA": "Bank Draft",
               "CAS": "Cash",
               "CEC": "Certified Cheque",
-              "ILC": "Irrevocable Line of Credit",
+              "ILC": "Irrevocable Letter of Credit",
               "MOR": "Money Order",
               "SAG": "Safekeeping Agreement",
               "SBO": "Surety Bond",
@@ -99,27 +97,121 @@ exports[`MineSecurityInfo renders properly 1`] = `
                 "note": null,
                 "payer": Object {},
                 "payer_party_guid": "sethwrt",
-                "permit_guid": "463236",
+                "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+                "reference_number": "",
+              },
+              Object {
+                "amount": 900,
+                "bond_guid": "erjvnaqekrj",
+                "bond_id": 1,
+                "bond_status_code": "ACT",
+                "bond_type_code": "CAS",
+                "documents": Array [],
+                "institution_city": null,
+                "institution_name": null,
+                "institution_postal_code": null,
+                "institution_province": null,
+                "institution_street": null,
+                "issue_date": "2018-10-16",
+                "note": null,
+                "payer": Object {},
+                "payer_party_guid": "sethwrt",
+                "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+                "reference_number": "",
+              },
+              Object {
+                "amount": 1000,
+                "bond_guid": "erjvnaqekrj",
+                "bond_id": 1,
+                "bond_status_code": "CON",
+                "bond_type_code": "CAS",
+                "documents": Array [],
+                "institution_city": null,
+                "institution_name": null,
+                "institution_postal_code": null,
+                "institution_province": null,
+                "institution_street": null,
+                "issue_date": "2018-10-16",
+                "note": null,
+                "payer": Object {},
+                "payer_party_guid": "sethwrt",
+                "permit_guid": "1628847c-060b-45f2-990f-815877174801",
                 "reference_number": "",
               },
             ]
           }
           expandedRowKeys={Array []}
+          getBalance={[Function]}
           isLoaded={false}
           onExpand={[Function]}
           openAddBondModal={[Function]}
+          openCloseBondModal={[Function]}
           openEditBondModal={[Function]}
+          openTransferBondModal={[Function]}
           openViewBondModal={[Function]}
-          permits={Array []}
-          releaseOrConfiscateBond={[Function]}
+          permits={
+            Array [
+              Object {
+                "active_bond_total": 700,
+                "assessed_liability_total": 8000000,
+                "confiscated_bond_total": 500,
+                "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                "permit_amendments": Array [
+                  Object {
+                    "authorization_end_date": null,
+                    "description": "Initial permit issued.",
+                    "issue_date": "2019-04-01",
+                    "liability_adjustment": "1000000",
+                    "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+                    "permit_amendment_status_code": "ACT",
+                    "permit_amendment_type_code": "OGP",
+                    "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                    "received_date": null,
+                    "related_documents": Array [
+                      Object {
+                        "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                        "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                        "document_name": "Adams_amendment_1.pdf",
+                        "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                      },
+                    ],
+                  },
+                  Object {
+                    "authorization_end_date": null,
+                    "description": "Amendment",
+                    "issue_date": "2020-04-01",
+                    "liability_adjustment": "7000000",
+                    "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+                    "permit_amendment_status_code": "ACT",
+                    "permit_amendment_type_code": "AMD",
+                    "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                    "received_date": null,
+                    "related_documents": Array [
+                      Object {
+                        "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                        "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                        "document_name": "Adams_amendment_1.pdf",
+                        "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                      },
+                    ],
+                  },
+                ],
+                "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+                "permit_id": "283",
+                "permit_no": "C-12345",
+                "permit_status_code": "O",
+              },
+            ]
+          }
+          recordsByPermit={[Function]}
         />
       </div>
     </TabPane>
     <TabPane
       key="2"
-      placeholder={null}
       tab="Reclamation Invoices"
     >
+      <br />
       <h4
         className="uppercase"
       >
@@ -148,18 +240,65 @@ exports[`MineSecurityInfo renders properly 1`] = `
               "note": null,
               "payer": Object {},
               "payer_party_guid": "sethwrt",
-              "permit_guid": "463236",
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+              "reference_number": "",
+            },
+            Object {
+              "amount": 900,
+              "bond_guid": "erjvnaqekrj",
+              "bond_id": 1,
+              "bond_status_code": "ACT",
+              "bond_type_code": "CAS",
+              "documents": Array [],
+              "institution_city": null,
+              "institution_name": null,
+              "institution_postal_code": null,
+              "institution_province": null,
+              "institution_street": null,
+              "issue_date": "2018-10-16",
+              "note": null,
+              "payer": Object {},
+              "payer_party_guid": "sethwrt",
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+              "reference_number": "",
+            },
+            Object {
+              "amount": 1000,
+              "bond_guid": "erjvnaqekrj",
+              "bond_id": 1,
+              "bond_status_code": "CON",
+              "bond_type_code": "CAS",
+              "documents": Array [],
+              "institution_city": null,
+              "institution_name": null,
+              "institution_postal_code": null,
+              "institution_province": null,
+              "institution_street": null,
+              "issue_date": "2018-10-16",
+              "note": null,
+              "payer": Object {},
+              "payer_party_guid": "sethwrt",
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
               "reference_number": "",
             },
           ]
         }
         expandedRowKeys={Array []}
+        getAmountSum={[Function]}
+        getBalance={[Function]}
         invoices={
           Array [
             Object {
-              "amount": "1251.46",
+              "amount": 1251,
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
               "project_id": "3523461",
               "vendor": "John Doe",
+            },
+            Object {
+              "amount": 200,
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+              "project_id": "35434461",
+              "vendor": "John Peterson",
             },
           ]
         }
@@ -168,7 +307,61 @@ exports[`MineSecurityInfo renders properly 1`] = `
         openAddBondModal={[Function]}
         openAddReclamationInvoiceModal={[Function]}
         openEditReclamationInvoiceModal={[Function]}
-        permits={Array []}
+        permits={
+          Array [
+            Object {
+              "active_bond_total": 700,
+              "assessed_liability_total": 8000000,
+              "confiscated_bond_total": 500,
+              "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+              "permit_amendments": Array [
+                Object {
+                  "authorization_end_date": null,
+                  "description": "Initial permit issued.",
+                  "issue_date": "2019-04-01",
+                  "liability_adjustment": "1000000",
+                  "permit_amendment_guid": "822310fd-3a2c-44a9-a9ce-dee81acc9585",
+                  "permit_amendment_status_code": "ACT",
+                  "permit_amendment_type_code": "OGP",
+                  "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                  "received_date": null,
+                  "related_documents": Array [
+                    Object {
+                      "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                      "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                      "document_name": "Adams_amendment_1.pdf",
+                      "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                    },
+                  ],
+                },
+                Object {
+                  "authorization_end_date": null,
+                  "description": "Amendment",
+                  "issue_date": "2020-04-01",
+                  "liability_adjustment": "7000000",
+                  "permit_amendment_guid": "8729830e-5e9a-4be8-9eef-dac4af775f1d",
+                  "permit_amendment_status_code": "ACT",
+                  "permit_amendment_type_code": "AMD",
+                  "permit_guid": "71d00d45-9fda-45d3-a4b0-59a7ceb6518e",
+                  "received_date": null,
+                  "related_documents": Array [
+                    Object {
+                      "document_guid": "31204ba5-5207-4fb5-b6c3-d47e55a0971c",
+                      "document_manager_guid": "64caef0e-060d-4875-a470-6c225b242723",
+                      "document_name": "Adams_amendment_1.pdf",
+                      "mine_guid": "8e9ca839-a28e-427e-997e-9ef23d9d97cd",
+                    },
+                  ],
+                },
+              ],
+              "permit_guid": "1628847c-060b-45f2-990f-815877174801",
+              "permit_id": "283",
+              "permit_no": "C-12345",
+              "permit_status_code": "O",
+            },
+          ]
+        }
+        recordsByPermit={[Function]}
       />
     </TabPane>
   </Tabs>

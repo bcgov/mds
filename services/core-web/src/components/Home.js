@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Layout, BackTop, Button, Icon } from "antd";
+import { Layout, BackTop, Button } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
-import LoadingBar, { showLoading, hideLoading } from "react-redux-loading-bar";
+import LoadingBar from "react-redux-loading-bar";
 import {
   detectIE,
   detectTestEnvironment,
@@ -16,9 +18,10 @@ import {
 } from "@common/actionCreators/staticContentActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
-import NavBar from "./navigation/NavBar";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
 import * as Styles from "@/constants/styles";
+import NavBar from "./navigation/NavBar";
+import Loading from "./common/Loading";
 
 /**
  * @class Home contains the navigation and wraps the Dashboard routes. Home should not contain any redux logic/state.
@@ -28,7 +31,8 @@ import * as Styles from "@/constants/styles";
 const propTypes = {
   staticContentLoadingIsComplete: PropTypes.bool.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
-  dispatch: PropTypes.func.isRequired,
+  loadBulkStaticContent: PropTypes.func.isRequired,
+  fetchInspectors: PropTypes.func.isRequired,
 };
 
 export class Home extends Component {
@@ -57,12 +61,6 @@ export class Home extends Component {
       // close Menu when link is clicked
       this.setState({ isMenuOpen: false });
     }
-    if (
-      this.props.staticContentLoadingIsComplete !== nextProps.staticContentLoadingIsComplete &&
-      nextProps.staticContentLoadingIsComplete
-    ) {
-      this.props.dispatch(hideLoading());
-    }
   }
 
   handleActiveButton = (path) => {
@@ -82,13 +80,14 @@ export class Home extends Component {
   };
 
   loadStaticContent = () => {
-    this.props.dispatch(showLoading());
-    this.props.dispatch(loadBulkStaticContent());
-    this.props.dispatch(fetchInspectors());
+    this.props.loadBulkStaticContent();
+    this.props.fetchInspectors();
   };
 
   render() {
-    const { Content } = Layout;
+    if (!this.props.staticContentLoadingIsComplete) {
+      return <Loading />;
+    }
     return (
       <Layout className="layout">
         <div className="header">
@@ -104,7 +103,6 @@ export class Home extends Component {
               position: "fixed",
               top: 53,
               zIndex: 999,
-              width: "100%",
               height: 8,
             }}
           />
@@ -116,14 +114,14 @@ export class Home extends Component {
             <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
           )}
         </MediaQuery>
-        <Content className="content">
+        <Layout.Content className="content">
           <DashboardRoutes />
           <BackTop>
             <Button type="primary">
-              <Icon type="arrow-up" theme="outlined" />
+              <ArrowUpOutlined />
             </Button>
           </BackTop>
-        </Content>
+        </Layout.Content>
         <div className="footer" />
       </Layout>
     );
@@ -136,4 +134,13 @@ const mapStateToProps = (state) => ({
   staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
 
-export default connect(mapStateToProps)(AuthenticationGuard(Home));
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      loadBulkStaticContent,
+      fetchInspectors,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthenticationGuard(Home));

@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineSearch renders properly 1`] = `
-<Row
-  gutter={0}
->
+<Row>
   <Col
     md={
       Object {

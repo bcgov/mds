@@ -19,10 +19,10 @@ class Tab_Permit extends Module {
         permitTitle (wait:true) {$("div", title: "Permit No.",text: PERMIT_NUMBER)}
         addEditButton (wait:true) {$("button").has("div", text: "Add/Edit")}
 
-        hoverDropdown (wait:true) {$("ul", role:"menu").has("button", text: "Edit permit status")}
-        editPermitStatusButton (wait:true) {$("button", text: "Edit permit status")}
-        addAmendmentButton (wait:true) {$("button", text: "Add permit amendment")}
-        amalgamatePermitButton (wait:true) {$("button", text: "Amalgamate permit")}
+        hoverDropdown (wait:true) {$("ul", role:"menu").has("button", text: "Edit Permit Status")}
+        editPermitStatusButton (wait:true) {$("button", text: "Edit Permit Status")}
+        addAmendmentButton (wait:true) {$("button", text: "Add Permit Amendment")}
+        amalgamatePermitButton (wait:true) {$("button", text: "Amalgamate Permit")}
 
         editPermitFormStatusDropdown (wait:true) {$("div", id: "permit_status_code")}
         closedDropdownOption (wait:true) {$("li", text: "Closed")}
@@ -32,12 +32,10 @@ class Tab_Permit extends Module {
         openFileModalButton (wait:true) {$("button").has("img", alt: "Edit")}
         uploadField (wait:true) {$("input.filepond--browser")}
         uploadCompleteMessage (wait:true) {$("span.filepond--file-status-main", text:"Upload complete")}
-        editPermitFileButton (wait:true) {$("button", text: "Edit initial permit for "+PERMIT_NUMBER)}
+        editPermitFileButton (wait:true) {$("button", text: "Edit Initial Permit for "+PERMIT_NUMBER)}
         downloadTestFileLink (wait:true) {$("a", text: Const.TEST_FILE_NAME)}
     }
 
 
 
 }
-
-

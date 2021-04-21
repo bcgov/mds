@@ -7,19 +7,13 @@ exports[`RenderDate renders properly 1`] = `
   label=""
   validateStatus=""
 >
-  <PickerWrapper
+  <Picker
     disabled={false}
     format={false}
     id={1}
-    locale={Object {}}
     onChange={[Function]}
-    onOk={[Function]}
-    onOpenChange={[Function]}
     placeholder="yyyy-mm-dd"
-    popupStyle={Object {}}
     showTime={false}
-    style={false}
-    transitionName="slide-up"
     value={null}
   />
 </FormItem>

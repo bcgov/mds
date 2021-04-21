@@ -1,19 +1,19 @@
 import requests
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
+from werkzeug.exceptions import BadRequest, NotFound, Conflict
 from flask import request, current_app
-from flask_restplus import Resource
+from flask_restplus import Resource, reqparse
 
 from app.extensions import api
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_any_of, VIEW_ALL
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-
 from app.api.services.document_manager_service import DocumentManagerService
 from app.api.mines.documents.models.mine_document import MineDocument
-
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
 
 
 class NOWApplicationDocumentUploadResource(Resource, UserMixin):
@@ -37,50 +37,67 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
                 mine_document.now_application_document_xref.now_application.now_application_guid):
             raise NotFound('No mine_document found for this application guid.')
 
+        if mine_document.now_application_document_xref.is_final_package:
+            raise BadRequest(
+                'You cannot remove a document that is a part of the Final Application Package.')
+        elif mine_document.now_application_document_xref.is_referral_package:
+            raise BadRequest('You cannot remove a document that is a part of the Referral Package.')
+        elif mine_document.now_application_document_xref.is_consultation_package:
+            raise BadRequest(
+                'You cannot remove a document that is a part of the Consultation Package.')
+
         mine_document.now_application_document_xref.delete()
         return None, 204
 
 
-"""
-    @api.doc(description='Associate an uploaded file with a variance.',
-             params={
-                 'application_guid': 'GUID for the notice of work to which the document should be associated'
-             })
-    @api.marshal_with(VARIANCE_MODEL, code=200)
-    @requires_any_of([EDIT_VARIANCE, MINESPACE_PROPONENT])
-    def put(self, mine_guid, variance_guid):
-        parser = CustomReqparser()
-        # Arguments required by MineDocument
-        parser.add_argument('document_name', type=str, required=True)
-        parser.add_argument('document_manager_guid', type=str, required=True)
-        parser.add_argument('variance_document_category_code', type=str, required=True)
+class NOWApplicationDocumentIdentityResource(Resource, UserMixin):
+    parser = reqparse.RequestParser(trim=True)
 
-        variance = Variance.find_by_variance_guid(variance_guid)
+    parser.add_argument('document_manager_document_guid', type=str, location='json')
+    parser.add_argument('messageid', type=int, location='json')
+    parser.add_argument('documenturl', type=str, location='json')
+    parser.add_argument('filename', type=str, location='json')
+    parser.add_argument('documenttype', type=str, location='json')
+    parser.add_argument('description', type=str, location='json')
 
-        if not variance:
-            raise NotFound('Unable to fetch variance.')
+    @api.response(201, 'Successfully linked document.')
+    def post(self, application_guid):
+        data = self.parser.parse_args()
+        document_manager_document_guid = data.get('document_manager_document_guid')
+        message_id = data.get('messageid')
+        document_url = data.get('documenturl')
+        file_name = data.get('filename')
+        document_type = data.get('documenttype')
+        description = data.get('description')
 
-        data = parser.parse_args()
-        document_name = data.get('document_name')
-        document_manager_guid = data.get('document_manager_guid')
+        document = NOWApplicationDocumentIdentityXref.query.filter_by(
+            messageid=message_id,
+            documenturl=document_url,
+            documenttype=document_type,
+            filename=file_name).one_or_none()
+        if document:
+            raise Conflict('Document already exists')
 
-        # Register new file upload
-        mine_doc = MineDocument(mine_guid=mine_guid,
-                                document_manager_guid=document_manager_guid,
-                                document_name=document_name)
+        now_application_identity = NOWApplicationIdentity.query.filter_by(
+            messageid=message_id).one_or_none()
+        if not now_application_identity:
+            current_app.logger.error('Notice of Work identity not found')
+            raise NotFound('Notice of Work identity not found')
 
-        if not mine_doc:
-            raise BadRequest('Unable to register uploaded file as document')
+        new_mine_doc = MineDocument(
+            mine_guid=now_application_identity.mine_guid,
+            document_manager_guid=document_manager_document_guid,
+            document_name=file_name)
 
-        # Associate Variance & MineDocument to create Variance Document
-        # Add fields specific to Variance Documents
-        mine_doc.save()
-        variance_doc = VarianceDocumentXref(
-            mine_document_guid=mine_doc.mine_document_guid,
-            variance_id=variance.variance_id,
-            variance_document_category_code=data.get('variance_document_category_code'))
+        new_document_identity_xref = NOWApplicationDocumentIdentityXref(
+            messageid=message_id,
+            documenturl=document_url,
+            documenttype=document_type,
+            description=description,
+            filename=file_name,
+            now_application_id=now_application_identity.now_application_id,
+            mine_document=new_mine_doc)
 
-        variance.documents.append(variance_doc)
-        variance.save()
-        return variance
-"""
+        new_document_identity_xref.save()
+
+        return requests.codes.created

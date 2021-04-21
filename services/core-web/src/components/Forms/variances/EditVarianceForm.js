@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, getFormValues } from "redux-form";
-import { fromPairs } from "lodash";
+import { fromPairs, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form, Button, Popconfirm, Row, Col } from "antd";
-import { required } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, Row, Col } from "antd";
+import { required, validateSelectOptions } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import * as String from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
-import VarianceFileUpload from "./VarianceFileUpload";
 import CustomPropTypes from "@/customPropTypes";
+import VarianceFileUpload from "./VarianceFileUpload";
 import { VarianceDetails } from "../../mine/Variances/VarianceDetails";
 
 const propTypes = {
@@ -68,7 +70,7 @@ export class EditVarianceForm extends Component {
   };
 
   render() {
-    const filesUploaded = this.state.uploadedFiles.length >= 1;
+    const filesUploaded = !isEmpty(this.state.uploadedFiles);
     return (
       <Form
         layout="vertical"
@@ -106,7 +108,7 @@ export class EditVarianceForm extends Component {
                 label="Application Status"
                 placeholder="Select a status"
                 component={renderConfig.SELECT}
-                validate={[required]}
+                validate={[required, validateSelectOptions(this.props.varianceStatusOptions)]}
                 data={this.props.varianceStatusOptions}
               />
             </Form.Item>
@@ -117,7 +119,7 @@ export class EditVarianceForm extends Component {
             <Form.Item label="Issue date">
               <p className="p-light">
                 If issue date is not specified it will default to the day the application was
-                approved
+                approved.
               </p>
               <Field id="issue_date" name="issue_date" component={renderConfig.DATE} />
             </Form.Item>
@@ -129,7 +131,7 @@ export class EditVarianceForm extends Component {
             </Form.Item>
           </div>
         )}
-        <h5>Application details</h5>
+        <h5>Application Details</h5>
         <VarianceDetails
           mineName={this.props.mineName}
           variance={this.props.variance}
@@ -138,7 +140,7 @@ export class EditVarianceForm extends Component {
           varianceDocumentCategoryOptionsHash={this.props.varianceDocumentCategoryOptionsHash}
         />
         <br />
-        <h5>upload files</h5>
+        <h5>Upload Files</h5>
         <p className="p-light">
           All documents uploaded will be associated with the category selected. If you would like to
           add a different category of document, please submit and re-open the form.
@@ -151,7 +153,11 @@ export class EditVarianceForm extends Component {
             label={filesUploaded ? "Document Category*" : "Document Category"}
             placeholder="Please select category"
             component={renderConfig.SELECT}
-            validate={filesUploaded ? [required] : []}
+            validate={
+              filesUploaded
+                ? [required, validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+                : [validateSelectOptions(this.props.varianceDocumentCategoryOptions)]
+            }
             data={this.props.varianceDocumentCategoryOptions}
           />
         </Form.Item>
@@ -169,7 +175,7 @@ export class EditVarianceForm extends Component {
           <Field
             id="parties_notified_ind"
             name="parties_notified_ind"
-            label="As per MA 13(2), affected parties have been notified about this variance application and decision"
+            label="As per MA 13(2), affected parties have been notified about this variance application and decision."
             type="checkbox"
             component={renderConfig.CHECKBOX}
           />
@@ -190,7 +196,7 @@ export class EditVarianceForm extends Component {
             className="full-mobile"
             type="primary"
             htmlType="submit"
-            disabled={this.props.submitting}
+            loading={this.props.submitting}
           >
             Update
           </Button>
@@ -210,5 +216,6 @@ export default compose(
     form: FORM.EDIT_VARIANCE,
     touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.EDIT_VARIANCE),
+    enableReinitialize: true,
   })
 )(EditVarianceForm);

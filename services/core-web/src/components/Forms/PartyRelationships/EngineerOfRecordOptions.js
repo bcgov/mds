@@ -1,6 +1,8 @@
 import React from "react";
 import { Field } from "redux-form";
-import { Form, Col, Row } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Col, Row } from "antd";
 import { required } from "@common/utils/Validate";
 import { createDropDownList } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";

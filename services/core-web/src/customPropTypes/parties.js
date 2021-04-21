@@ -4,13 +4,12 @@ export const party = shape({
   party_guid: PropTypes.string,
   party_type_code: PropTypes.string,
   phone_no: PropTypes.string,
-  phone_ext: PropTypes.any,
+  phone_ext: PropTypes.string,
   email: PropTypes.string,
-  effective_date: PropTypes.string,
-  expiry_date: PropTypes.string,
   party_name: PropTypes.string,
   name: PropTypes.string,
   first_name: PropTypes.string,
+  state_modified: PropTypes.string,
 });
 
 export const partyRelationship = shape({
@@ -19,6 +18,7 @@ export const partyRelationship = shape({
   party,
   mine_party_appt_type_code: PropTypes.string,
   related_guid: PropTypes.string,
+  permit_no: PropTypes.string,
   start_date: PropTypes.string,
   end_date: PropTypes.string,
 });

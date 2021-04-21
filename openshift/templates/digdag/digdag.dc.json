@@ -328,7 +328,7 @@
     },
     {
       "name": "KEYCLOAK_DISCOVERY_URL",
-      "value": "https://sso-test.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+      "value": "https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
     },
     {
       "name": "SCHEDULER_PVC_SIZE",

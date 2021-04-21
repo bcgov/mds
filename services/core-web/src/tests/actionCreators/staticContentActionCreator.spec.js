@@ -28,7 +28,7 @@ describe("`loadBulkStaticContent` action creator", () => {
     return loadBulkStaticContent()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
@@ -37,7 +37,7 @@ describe("`loadBulkStaticContent` action creator", () => {
     return loadBulkStaticContent()(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenCalledTimes(4);
     });
   });
 });

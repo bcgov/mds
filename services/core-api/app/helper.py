@@ -8,5 +8,6 @@ class Api(BaseApi):
     """
     @property
     def specs_url(self):
+
         scheme = 'http' if '5000' in self.base_url else 'https'
         return url_for(self.endpoint('specs'), _external=True, _scheme=scheme)

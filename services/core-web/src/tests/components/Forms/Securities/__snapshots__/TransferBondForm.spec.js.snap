@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransferBondForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row>
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "C-12345",
+                "value": "1628847c-060b-45f2-990f-815877174801",
+              },
+            ]
+          }
+          id="permit_guid"
+          label="Permit *"
+          name="permit_guid"
+          validate={
+            Array [
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row>
+    <Col
+      md={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="note"
+          label="Notes"
+          name="note"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Transfer Bond
+    </Button>
+  </div>
+</Form>
+`;

@@ -1,235 +1,22 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field, formValueSelector } from "redux-form";
-import { connect } from "react-redux";
-import { Row, Col, Table, Button } from "antd";
-import { requiredRadioButton, maxLength, number } from "@common/utils/Validate";
-import * as FORM from "@/constants/forms";
-import { TRASHCAN } from "@/constants/assets";
+import { Field } from "redux-form";
+import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
+import { requiredRadioButton, maxLength, number, required } from "@common/utils/Validate";
+import CoreEditableTable from "@/components/common/CoreEditableTable";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
-import CustomPropTypes from "@/customPropTypes";
-import { NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
-  details: CustomPropTypes.activityDetails.isRequired,
-  editRecord: PropTypes.func.isRequired,
-  addRecord: PropTypes.func.isRequired,
+  renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const SettlingPonds = (props) => {
-  const editActivity = (event, rowIndex, isDelete) => {
-    const activityToChange = props.details[rowIndex];
-    let removeOnly = false;
-    if (isDelete) {
-      if (!activityToChange.activity_detail_id) {
-        removeOnly = true;
-      }
-    } else {
-      activityToChange[event.target.name] = event.target.value;
-    }
-    props.editRecord(activityToChange, "settling_pond.details", rowIndex, isDelete, removeOnly);
-  };
-
-  const addActivity = () => {
-    const newActivity = {
-      activity_type_description: "",
-      width: "",
-      length: "",
-      depth: "",
-      disturbed_area: "",
-      timber_volume: "",
-      water_source_description: "",
-      construction_plan: "",
-    };
-    props.addRecord("settling_pond.details", newActivity);
-  };
-
-  const standardColumns = [
-    {
-      title: "Pond ID",
-      dataIndex: "activity_type_description",
-      key: "activity_type_description",
-      render: (text, record) => (
-        <div title="Pond ID">
-          <div className="inline-flex">
-            <input
-              name="activity_type_description"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Width(m)",
-      dataIndex: "width",
-      key: "width",
-      render: (text, record) => (
-        <div title="Width(m)">
-          <div className="inline-flex">
-            <input
-              name="width"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Length(km)",
-      dataIndex: "length",
-      key: "length",
-      render: (text, record) => (
-        <div title="Length(km)">
-          <div className="inline-flex">
-            <input
-              name="length"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Depth(m)",
-      dataIndex: "depth",
-      key: "depth",
-      render: (text, record) => (
-        <div title="Depth(m)">
-          <div className="inline-flex">
-            <input
-              name="depth"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Disturbed Area (ha)",
-      dataIndex: "disturbed_area",
-      key: "disturbed_area",
-      render: (text, record) => (
-        <div title="Disturbed Area (ha)">
-          <div className="inline-flex">
-            <input
-              name="disturbed_area"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Merchantable timber volume (m3)",
-      dataIndex: "timber_volume",
-      key: "timber_volume",
-      render: (text, record) => (
-        <div title="Merchantable timber volume (m3)">
-          <div className="inline-flex">
-            <input
-              name="timber_volume"
-              type="number"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Water Source",
-      dataIndex: "water_source_description",
-      key: "water_source_description",
-      render: (text, record) => (
-        <div title="Water Source">
-          <div className="inline-flex">
-            <input
-              name="water_source_description"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Construction Method",
-      dataIndex: "construction_plan",
-      key: "construction_plan",
-      render: (text, record) => (
-        <div title="Construction Method">
-          <div className="inline-flex">
-            <input
-              name="construction_plan"
-              type="text"
-              disabled={props.isViewMode}
-              value={text}
-              onChange={(e) => editActivity(e, record.index, false)}
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
-  const removeColumn = {
-    dataIndex: "remove",
-    key: "remove",
-    render: (text, record) => (
-      <div name="remove" title="remove">
-        <Button
-          type="primary"
-          size="small"
-          onClick={(event) => editActivity(event, record.index, true)}
-          ghost
-        >
-          <img name="remove" src={TRASHCAN} alt="Remove Activity" />
-        </Button>
-      </div>
-    ),
-  };
-
-  const columns = (isViewMode) =>
-    !isViewMode ? [...standardColumns, removeColumn] : standardColumns;
-
-  const transformData = (activities) =>
-    activities
-      .map((activity, index) => ({
-        activity_type_description: activity.activity_type_description || "",
-        width: activity.width || "",
-        depth: activity.depth || "",
-        length: activity.length || "",
-        disturbed_area: activity.disturbed_area || "",
-        timber_volume: activity.timber_volume || "",
-        water_source_description: activity.water_source_description || "",
-        construction_plan: activity.construction_plan || "",
-        state_modified: activity.state_modified || "",
-        index,
-      }))
-      .filter((activity) => !activity.state_modified);
-
   return (
     <div>
       <Row gutter={16}>
@@ -237,7 +24,15 @@ export const SettlingPonds = (props) => {
           <div className="field-title">
             Describe the waste water treatment facility (settling pond design, recycling, distance
             from creek, etc.)
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("settling_pond.wastewater_facility_description").edited
+              }
+            />
           </div>
           <Field
             id="wastewater_facility_description"
@@ -248,26 +43,72 @@ export const SettlingPonds = (props) => {
         </Col>
       </Row>
       <br />
-      <Table
-        align="left"
-        pagination={false}
-        columns={columns(props.isViewMode)}
-        dataSource={transformData(props.details || [])}
-        locale={{
-          emptyText: "No data",
-        }}
+      <CoreEditableTable
+        isViewMode={props.isViewMode}
+        fieldName="details"
+        fieldID="activity_detail_id"
+        tableContent={[
+          {
+            title: "Pond ID",
+            value: "activity_type_description",
+            component: RenderAutoSizeField,
+            minRows: 1,
+            validate: [required],
+          },
+          {
+            title: "Width (m)",
+            value: "width",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Length (m)",
+            value: "length",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Depth (m)",
+            value: "depth",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Disturbed Area (ha)",
+            value: "disturbed_area",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Merchantable timber volume (m³)",
+            value: "timber_volume",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Water Source",
+            value: "water_source_description",
+            component: RenderAutoSizeField,
+          },
+          {
+            title: "Construction Method",
+            value: "construction_plan",
+            component: RenderAutoSizeField,
+          },
+        ]}
       />
-      {!props.isViewMode && (
-        <Button type="primary" onClick={() => addActivity()}>
-          Add Activity
-        </Button>
-      )}
       <br />
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
             Disposal of fines from clean out (i.e. use as a subsoil material)
-            <NOWFieldOriginTooltip />
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.disposal_from_clean_out").value
+              }
+              isVisible={props.renderOriginalValues("settling_pond.disposal_from_clean_out").edited}
+            />
           </div>
           <Field
             id="disposal_from_clean_out"
@@ -277,11 +118,22 @@ export const SettlingPonds = (props) => {
           />
         </Col>
       </Row>
+      <div className="field-title">Water from Ponds will be:</div>
       <Row gutter={16}>
-        <div className="field-title">Water from Ponds will be</div>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
-            label="Recycled"
+            label={
+              <span>
+                Recycled
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_recycled").value
+                  }
+                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_recycled").edited}
+                />
+              </span>
+            }
             id="is_ponds_recycled"
             name="is_ponds_recycled"
             component={RenderRadioButtons}
@@ -289,9 +141,22 @@ export const SettlingPonds = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
-            label="Exfiltrated to Ground"
+            label={
+              <span>
+                Exfiltrated to Ground
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("settling_pond.is_ponds_exfiltrated").edited
+                  }
+                />
+              </span>
+            }
             id="is_ponds_exfiltrated"
             name="is_ponds_exfiltrated"
             component={RenderRadioButtons}
@@ -299,9 +164,20 @@ export const SettlingPonds = (props) => {
             validate={[requiredRadioButton]}
           />
         </Col>
-        <Col md={8} sm={24}>
+        <Col md={24} lg={8}>
           <Field
-            label="Discharged to Environment"
+            label={
+              <span>
+                Discharged to Environment
+                <NOWOriginalValueTooltip
+                  style={{ marginLeft: "20%" }}
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.is_ponds_discharged").value
+                  }
+                  isVisible={props.renderOriginalValues("settling_pond.is_ponds_discharged").edited}
+                />
+              </span>
+            }
             id="is_ponds_discharged"
             name="is_ponds_discharged"
             component={RenderRadioButtons}
@@ -316,6 +192,12 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Proposed reclamation and timing for this specific activity
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("settling_pond.reclamation_description").value
+              }
+              isVisible={props.renderOriginalValues("settling_pond.reclamation_description").edited}
+            />
           </div>
           <Field
             id="reclamation_description"
@@ -328,6 +210,10 @@ export const SettlingPonds = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Estimated Cost of reclamation activities described above
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("settling_pond.reclamation_cost").value}
+              isVisible={props.renderOriginalValues("settling_pond.reclamation_cost").edited}
+            />
           </div>
           <Field
             id="reclamation_cost"
@@ -335,6 +221,7 @@ export const SettlingPonds = (props) => {
             component={RenderField}
             disabled={props.isViewMode}
             validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>
@@ -342,13 +229,6 @@ export const SettlingPonds = (props) => {
   );
 };
 
-const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
-
 SettlingPonds.propTypes = propTypes;
 
-export default connect(
-  (state) => ({
-    details: selector(state, "settling_pond.details"),
-  }),
-  null
-)(SettlingPonds);
+export default SettlingPonds;

@@ -6,10 +6,10 @@ import * as route from "@/constants/routes";
  * all data associated with a users record is handled within this reducer.
  */
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: undefined,
   userInfo: {},
   redirect: false,
-  isProponent: false,
+  isProponent: undefined,
 };
 
 const authenticationReducer = (state = initialState, action) => {

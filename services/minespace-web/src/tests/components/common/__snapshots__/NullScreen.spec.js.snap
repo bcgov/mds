@@ -4,7 +4,9 @@ exports[`NullScreen renders properly 1`] = `
 <Row
   gutter={0}
 >
-  <Col>
+  <Col
+    span={24}
+  >
     <Result
       extra={
         <Paragraph>

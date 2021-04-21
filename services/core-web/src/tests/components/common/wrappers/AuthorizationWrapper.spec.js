@@ -15,7 +15,6 @@ const setupProps = () => {
   ];
   props.children = <div>hello</div>;
 };
-
 beforeEach(() => {
   props = {};
   setupProps();
@@ -24,7 +23,9 @@ beforeEach(() => {
 describe("AuthorizationWrapper", () => {
   it("empty params ", () => {
     const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(ReactDOMServer.renderToStaticMarkup(props.children));
+    expect(component.html()).toEqual(
+      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
+    );
   });
 });
 
@@ -32,7 +33,9 @@ describe("AuthorizationWrapper", () => {
   it("renders major mine properly", () => {
     props.isMajorMine = true;
     const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(ReactDOMServer.renderToStaticMarkup(props.children));
+    expect(component.html()).toEqual(
+      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
+    );
   });
 });
 
@@ -41,18 +44,22 @@ describe("AuthorizationWrapper", () => {
     props.userRoles.push(USER_ROLES[PERMISSIONS.ADMIN]);
     props.isMajorMine = false;
     const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(ReactDOMServer.renderToStaticMarkup(props.children));
+    expect(component.html()).toEqual(
+      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
+    );
   });
 });
 
 describe("AuthorizationWrapper", () => {
   it("renders properly edit and major mine require both success", () => {
-    props.isMajorMine = true;
     // set to value in userRoles
     props.permission = PERMISSIONS.EDIT_MINES;
+    props.isMajorMine = true;
 
     const component = shallow(<AuthorizationWrapper {...props} />);
-    expect(component.html()).toEqual(ReactDOMServer.renderToStaticMarkup(props.children));
+    expect(component.html()).toEqual(
+      ReactDOMServer.renderToStaticMarkup(React.createElement("span", null, props.children))
+    );
   });
 });
 

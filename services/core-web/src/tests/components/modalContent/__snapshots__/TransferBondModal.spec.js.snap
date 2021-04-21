@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransferBondModal renders properly 1`] = `
+<div>
+  <Alert
+    description="This action will release the current bond and create a new bond using the same information under the selected permit. Any note created will be added to the new bond and the transferred bond."
+    message="Transfer this bond to a different permit"
+    showIcon={true}
+    style={
+      Object {
+        "textAlign": "left",
+      }
+    }
+    type="info"
+  />
+  <br />
+  <ReduxForm
+    closeModal={[MockFunction]}
+    destroyOnUnmount={true}
+    enableReinitialize={true}
+    forceUnregisterOnUnmount={false}
+    form="TRANSFER_BOND"
+    getFormState={[Function]}
+    initialValues={
+      Object {
+        "note": null,
+      }
+    }
+    keepDirtyOnReinitialize={false}
+    onSubmit={[Function]}
+    onSubmitSuccess={[Function]}
+    permits={Array []}
+    persistentSubmitErrors={false}
+    pure={true}
+    shouldAsyncValidate={[Function]}
+    shouldError={[Function]}
+    shouldValidate={[Function]}
+    shouldWarn={[Function]}
+    submitAsSideEffect={false}
+    title="Transfer Bond"
+    touchOnBlur={false}
+    touchOnChange={false}
+    updateUnregisteredFields={false}
+  />
+</div>
+`;

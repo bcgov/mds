@@ -11,6 +11,7 @@ class SurfaceBulkSampleActivity(Base):
     type = db.Column(db.String)
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
+    quantity = db.Column(db.Integer)
 
     def __repr__(self):
         return '<SurfaceBulkSampleActivity %r>' % self.id

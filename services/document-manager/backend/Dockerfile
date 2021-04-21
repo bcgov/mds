@@ -12,7 +12,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
 # Run the server
 EXPOSE 5001
-CMD ["flask","run"]
+
+RUN mkdir -p /tmp/celery
+
+ENTRYPOINT [ "./init.sh" ]

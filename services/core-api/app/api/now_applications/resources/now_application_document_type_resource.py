@@ -4,6 +4,7 @@ from flask_restplus import Resource, fields
 from werkzeug.exceptions import NotFound, BadRequest
 
 from app.extensions import api, cache
+from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_document_type import NOWApplicationDocumentType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
@@ -22,7 +23,7 @@ class NOWApplicationDocumentTypeListResource(Resource, UserMixin):
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200, envelope='records')
     def get(self):
-        return NOWApplicationDocumentType.get_active()
+        return NOWApplicationDocumentType.get_all()
 
 
 class NOWApplicationDocumentTypeResource(Resource, UserMixin):
@@ -41,7 +42,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
 
     @api.doc(
         description=
-        'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to download the document.',
+        'Generates the specified document for the NoW using the provided template data and issues a one-time token that is used to generate the document.',
         params={'document_type_code': 'The code indicating the type of document to generate.'})
     @api.marshal_with(NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL, code=200)
     @requires_role_edit_permit
@@ -54,12 +55,19 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
             raise BadRequest(f'Cannot generate a {document_type.description}')
 
         data = self.parser.parse_args()
-        template_data = data['template_data']
 
-        ##ENFORCE READ-ONLY CONTEXT DATA
+        now_application_guid = data['now_application_guid']
+        now_application = NOWApplication.find_by_application_guid(now_application_guid)
+        if not now_application:
+            raise NotFound('Notice of Work not found')
+
+        template_data = data['template_data']
+        template_data = document_type.transform_template_data(template_data, now_application)
+
+        # Enforce that read-only fields do not change
         enforced_data = [
-            x for x in document_type.document_template._form_spec_with_context(
-                data['now_application_guid']) if x.get('read-only', False)
+            x for x in document_type.document_template._form_spec_with_context(now_application_guid)
+            if x.get('read-only', False)
         ]
         for enforced_item in enforced_data:
             if template_data.get(enforced_item['id']) != enforced_item['context-value']:
@@ -75,7 +83,7 @@ class NOWApplicationDocumentGenerateResource(Resource, UserMixin):
         cache.set(
             NOW_DOCUMENT_DOWNLOAD_TOKEN(token), {
                 'document_type_code': document_type_code,
-                'now_application_guid': data['now_application_guid'],
+                'now_application_guid': now_application_guid,
                 'template_data': template_data,
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
+import { PageTracker } from "@common/utils/trackers";
 
 export class ExecutiveReportingDashboard extends Component {
   state = {};
@@ -15,6 +16,7 @@ export class ExecutiveReportingDashboard extends Component {
     const iframeUrl = `${this.state.dashboard_url}#bordered=true&titled=false`;
     return this.state.dashboard_url ? (
       <div>
+        <PageTracker title="Executive Dashboard" />
         <h1>Executive Dashboard</h1>
         <iframe
           title="metabaseDashboard"

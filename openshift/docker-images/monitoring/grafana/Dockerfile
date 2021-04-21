@@ -1,0 +1,7 @@
+FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
+
+USER 104
+
+COPY settings /etc/grafana/provisioning
+
+EXPOSE 3000

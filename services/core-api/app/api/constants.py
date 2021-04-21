@@ -99,9 +99,15 @@ TIMEOUT_12_HOURS = 43140
 #Redis Map Cache
 MINE_MAP_CACHE = "mds:mines:map-json"
 MINE_DETAILS_CSV = "mds:mines:summary-csv"
+MINE_DETAILS_JSON = "mds:mines:summary-json"
+
+# NoW Application GIS Export Cache
+NOW_APPLICATION_GIS_EXPORT = "mds:now_application:gis-export"
+
 #Redis Cache Keys
 GET_ALL_INSPECTORS_KEY = "mds:parties:all_inspectors"
 STATIC_CONTENT_KEY = "mds:core:all_static_content"
+NROS_NOW_TOKEN = "mds:nros:token"
 
 NOW_APPLICATION_EDIT_GROUP = 'NOW_APPLICATION_EDIT_GROUP'
 PERMIT_EDIT_GROUP = 'PERMIT_EDIT_GROUP'
@@ -137,6 +143,15 @@ type_of_contact_map = {
 NOW_SUBMISSIONS_YES_NO = ['Yes', 'No']
 
 NOW_SUBMISSION_STATUS = ["Accepted", "Withdrawn", "Under Review"]
+
 # This constant is defined for use during the app setup and creation.
 # See static_data.py in utils for its use and the values it contains.
 STATIC_DATA = {}
+
+MINE_REPORT_TYPE = {
+    "CODE REQUIRED REPORTS": "CRR",
+    "PERMIT REQUIRED REPORTS": "PRR",
+    "TAILINGS REPORTS": "TAR"
+}
+
+PERMIT_LINKED_CONTACT_TYPES = ['PMT', 'THD', 'LDO', 'MOR']

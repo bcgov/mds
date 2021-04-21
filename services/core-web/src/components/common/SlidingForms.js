@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // and you need to use Refs to interact with it for a number of features. Brought in react-responsive-carousel instead.
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Icon } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
@@ -26,7 +26,7 @@ export class SlidingForms extends Component {
   renderWrappedForm = () => (
     <div>
       <LinkButton>
-        <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
+        <ArrowLeftOutlined className="padding-sm--right" />
         Back
       </LinkButton>
     </div>

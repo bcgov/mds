@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Col, Row, Popconfirm, Icon } from "antd";
+import { Col, Row, Popconfirm } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 
 const propTypes = {
   files: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -10,8 +11,8 @@ const propTypes = {
 export const ReportsUploadedFilesList = (props) => (
   <div>
     {props.files.map((file) => (
-      <div className="padding-small margin-small lightest-grey-bg" key={file.mine_document_guid}>
-        <Row className="padding-small">
+      <div className="padding-sm margin-small lightest-grey-bg" key={file.mine_document_guid}>
+        <Row className="padding-sm">
           <Col span={21}>
             <p className="uploaded-file left">{file.document_name}</p>
           </Col>
@@ -24,7 +25,7 @@ export const ReportsUploadedFilesList = (props) => (
               onConfirm={() => props.onRemoveFile(file)}
             >
               <button type="button">
-                <Icon type="close" />
+                <CloseOutlined />
               </button>
             </Popconfirm>
           </Col>

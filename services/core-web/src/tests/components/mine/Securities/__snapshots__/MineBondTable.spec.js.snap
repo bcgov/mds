@@ -11,16 +11,10 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Permit No.",
       },
       Object {
-        "dataIndex": "security_total",
-        "key": "security_total",
+        "dataIndex": "project_id",
+        "key": "project_id",
         "render": [Function],
-        "title": "Total Assessed",
-      },
-      Object {
-        "dataIndex": "amount_held",
-        "key": "amount_held",
-        "render": [Function],
-        "title": "Total Held",
+        "title": "Project ID",
       },
       Object {
         "dataIndex": "total_bonds",
@@ -29,22 +23,37 @@ exports[`MineBondTable renders properly 1`] = `
         "title": "Active Bonds",
       },
       Object {
-        "dataIndex": "amount_confiscated",
-        "key": "amount_confiscated",
+        "dataIndex": "total_assessed",
+        "key": "total_assessed",
+        "render": [Function],
+        "title": <span>
+          Assessed Liability
+          <CoreTooltip
+            title="Total Assessed Liability: This is the total value of all liability assessments for the permit, including amendments. Assessed values are set by permitting inspectors and come from the associated permit."
+          />
+        </span>,
+      },
+      Object {
+        "dataIndex": "amount_held",
+        "key": "amount_held",
+        "render": [Function],
+        "title": "Total Held",
+      },
+      Object {
+        "dataIndex": "balance",
+        "key": "balance",
         "render": [Function],
         "title": <div>
-          Total Confiscated
+          Confiscated Cash On Hand
           <CoreTooltip
-            title="Total Confiscated: This is the total value of bonds that have been confiscated for the permit. This amount is also shown below as Cash On Hand for the permit"
+            title="Confiscated Cash On Hand: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds."
           />
         </div>,
       },
       Object {
         "align": "right",
-        "dataIndex": "addEditButton",
         "key": "addEditButton",
         "render": [Function],
-        "title": "",
       },
     ]
   }
@@ -58,12 +67,6 @@ exports[`MineBondTable renders properly 1`] = `
       "expandRowByClick": true,
       "expandedRowKeys": Array [],
       "expandedRowRender": [Function],
-      "locale": Object {
-        "emptyText": <NullScreen
-          message=""
-          type="securities"
-        />,
-      },
       "onExpand": [MockFunction],
       "pagination": false,
       "rowClassName": "table-row-align-middle pointer fade-in",

@@ -80,5 +80,5 @@ def test_simple_search_parties_and_mines(test_client, db_session, auth_headers):
     get_resp = test_client.get(
         f'/search/simple?search_term={searchString}', headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
-    assert len(get_data['search_results']) == 6
+    assert len(get_data['search_results']) == 4
     assert get_resp.status_code == 200

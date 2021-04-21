@@ -15,6 +15,8 @@ EDIT_VARIANCE = "core_edit_variances"
 EDIT_SECURITIES = "core_edit_securities"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 EDIT_SUBMISSIONS = "core_edit_submissions"
+EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
+GIS = "core_gis"
 
 
 def requires_role_view_all(func):

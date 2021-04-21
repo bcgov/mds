@@ -1,16 +1,25 @@
 import React from "react";
-import { Icon, Tag } from "antd";
+import { Tag } from "antd";
+import {
+  ArrowLeftOutlined,
+  UserOutlined,
+  TagOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
+import { getInspectorsHash } from "@common/selectors/partiesSelectors";
+import { getNoticeOfWorkApplicationStatusOptionsHash } from "@common/selectors/staticContentSelectors";
+import { connect } from "react-redux";
 
 const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   inspectorsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   noticeOfWorkApplicationStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  noticeOfWorkPageFromRoute: CustomPropTypes.noticeOfWorkPageFromRoute.isRequired,
+  applicationPageFromRoute: CustomPropTypes.ApplicationPageFromRoute.isRequired,
   fixedTop: PropTypes.bool.isRequired,
 };
 
@@ -23,11 +32,15 @@ const NoticeOfWorkPageHeader = (props) => {
     props.noticeOfWorkApplicationStatusOptionsHash[
       props.noticeOfWork.now_application_status_code
     ] || Strings.UNASSIGNED;
+  const headerName =
+    props.noticeOfWork.application_type_code === "NOW"
+      ? "Notice of Work"
+      : "Administrative Amendment";
 
   return (
-    <div>
+    <div className="padding-lg">
       <h1>
-        NoW Number:&nbsp;{nowNumber}&nbsp;
+        {headerName}:&nbsp;{nowNumber}&nbsp;
         <span>
           <Tag title={`Mine: ${nowMineName}`}>
             <Link
@@ -35,7 +48,7 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.MINE_GENERAL.dynamicRoute(props.noticeOfWork.mine_guid)}
               disabled={!props.noticeOfWork.mine_guid}
             >
-              <Icon type="environment" className="padding-small--right" />
+              <EnvironmentOutlined className="padding-sm--right" />
               {nowMineName}
             </Link>
           </Tag>
@@ -45,20 +58,20 @@ const NoticeOfWorkPageHeader = (props) => {
               to={router.PARTY_PROFILE.dynamicRoute(props.noticeOfWork.lead_inspector_party_guid)}
               disabled={!props.noticeOfWork.lead_inspector_party_guid}
             >
-              <Icon type="user" className="padding-small--right" />
+              <UserOutlined className="padding-sm--right" />
               {nowLeadInspectorName}
             </Link>
           </Tag>
           <Tag title={`Status: ${nowStatus}`}>
-            <Icon type="tag" className="padding-small--right" />
+            <TagOutlined className="padding-sm--right" />
             {nowStatus}
           </Tag>
         </span>
       </h1>
-      {props.noticeOfWorkPageFromRoute && !props.fixedTop && (
-        <Link to={props.noticeOfWorkPageFromRoute.route}>
-          <Icon type="arrow-left" style={{ paddingRight: "5px" }} />
-          Back to: {props.noticeOfWorkPageFromRoute.title}
+      {props.applicationPageFromRoute && !props.fixedTop && (
+        <Link to={props.applicationPageFromRoute.route}>
+          <ArrowLeftOutlined className="padding-sm--right" />
+          Back to: {props.applicationPageFromRoute.title}
         </Link>
       )}
     </div>
@@ -67,4 +80,9 @@ const NoticeOfWorkPageHeader = (props) => {
 
 NoticeOfWorkPageHeader.propTypes = propTypes;
 
-export default NoticeOfWorkPageHeader;
+const mapStateToProps = (state) => ({
+  inspectorsHash: getInspectorsHash(state),
+  noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
+});
+
+export default connect(mapStateToProps)(NoticeOfWorkPageHeader);

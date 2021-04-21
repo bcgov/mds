@@ -15,10 +15,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_access"
     >
-      <Connect(AccessRoads)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <AccessRoads
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -33,6 +32,7 @@ exports[`ReviewActivities renders properly 1`] = `
     >
       <Blasting
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -42,17 +42,16 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
-    id="camps"
+    id="camp"
     isViewMode={true}
     title="Camps, Buildings, Staging Areas, Fuel/Lubricant Storage"
   >
     <FormSection
-      name="camps"
+      name="camp"
     >
       <Connect(Camps)
-        addRecord={[Function]}
-        editRecord={[Function]}
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -70,10 +69,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="cut_lines_polarization_survey"
     >
-      <Connect(CutLines)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <CutLines
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -90,10 +88,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="exploration_surface_drilling"
     >
-      <Connect(SurfaceDrilling)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <SurfaceDrilling
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -110,10 +107,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="mechanical_trenching"
     >
-      <Connect(MechanicalTrenching)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <MechanicalTrenching
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -130,10 +126,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="settling_pond"
     >
-      <Connect(SettlingPonds)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <SettlingPonds
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -151,10 +146,9 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="surface_bulk_sample"
     >
-      <Connect(SurfaceBulkSamples)
-        addRecord={[Function]}
-        editRecord={[Function]}
+      <SurfaceBulkSamples
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -173,9 +167,8 @@ exports[`ReviewActivities renders properly 1`] = `
       name="underground_exploration"
     >
       <Connect(UndergroundExploration)
-        addRecord={[Function]}
-        editRecord={[Function]}
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -194,9 +187,8 @@ exports[`ReviewActivities renders properly 1`] = `
       name="sand_and_gravel"
     >
       <Connect(SandGravelQuarry)
-        addRecord={[Function]}
-        editRecord={[Function]}
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -215,9 +207,8 @@ exports[`ReviewActivities renders properly 1`] = `
       name="placer_operation"
     >
       <Connect(Placer)
-        addRecord={[Function]}
-        editRecord={[Function]}
         isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
@@ -235,8 +226,6 @@ exports[`ReviewActivities renders properly 1`] = `
       name="water_supply"
     >
       <Connect(WaterSupply)
-        addRecord={[Function]}
-        editRecord={[Function]}
         isViewMode={true}
       />
     </FormSection>

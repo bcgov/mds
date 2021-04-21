@@ -9,6 +9,10 @@ const props = {};
 const setupDispatchProps = () => {
   dispatchProps.openEditReclamationInvoiceModal = jest.fn();
   dispatchProps.onExpand = jest.fn();
+  dispatchProps.recordsByPermit = jest.fn();
+  dispatchProps.getBalance = jest.fn();
+  dispatchProps.getSum = jest.fn();
+  dispatchProps.getAmountSum = jest.fn();
 };
 
 const setupProps = () => {

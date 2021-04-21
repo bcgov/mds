@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { Tooltip, Icon, Badge, Dropdown, Menu, Button, Row, Col } from "antd";
+import { DownOutlined, UserOutlined, MessageOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -66,8 +67,8 @@ export class NavBar extends Component {
     <div>
       <Dropdown overlay={this.reportingDropdown} placement="bottomLeft">
         <button id={this.ifActiveButton("reporting")} type="button" className="menu__btn">
-          <span className="padding-small--right">Provincial Reporting</span>
-          <Icon type="down" />
+          <span className="padding-sm--right">Browse...</span>
+          <DownOutlined />
         </button>
       </Dropdown>
       <Link
@@ -105,9 +106,9 @@ export class NavBar extends Component {
       </AuthorizationWrapper>
       <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
-          <Icon className="padding-small--right icon-sm" type="user" />
-          <span className="padding-small--right">{this.props.userInfo.preferred_username}</span>
-          <Icon type="down" />
+          <UserOutlined className="padding-sm--right icon-sm" />
+          <span className="padding-sm--right">{this.props.userInfo.preferred_username}</span>
+          <DownOutlined />
         </button>
       </Dropdown>
       <Dropdown
@@ -124,11 +125,11 @@ export class NavBar extends Component {
       <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
         <Tooltip title="Feedback" placement="bottom">
           <Button type="link" className="menu__btn--link">
-            <Icon type="message" className="icon-sm" />
+            <MessageOutlined className="icon-sm" />
           </Button>
         </Tooltip>
       </a>
-      <AuthorizationWrapper permission={Permission.ADMIN}>
+      <AuthorizationWrapper permission={Permission.ADMIN} showToolTip={false}>
         <Dropdown
           overlay={this.unverifiedMinesMenu()}
           placement="bottomLeft"
@@ -137,17 +138,15 @@ export class NavBar extends Component {
           <button type="button" className="menu__btn">
             <img
               alt="GoodMines"
-              className="padding-small--right icon-sm vertical-align-sm"
+              className="padding-sm--right icon-sm vertical-align-sm"
               src={SUCCESS_CHECKMARK}
               width="25"
             />
-            <span className="padding-small--right">
-              {this.props.currentUserVerifiedMines.length}
-            </span>
+            <span className="padding-sm--right">{this.props.currentUserVerifiedMines.length}</span>
             {this.props.currentUserUnverifiedMines.length > 0 && (
               <img
                 alt="BadMines"
-                className="padding-small--right icon-sm vertical-align-sm"
+                className="padding-sm--right icon-sm vertical-align-sm"
                 src={YELLOW_HAZARD}
                 width="25"
               />
@@ -243,7 +242,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.VARIANCE_DASHBOARD.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Variances
+                  Variances
                 </Button>
               </Link>
             </Col>
@@ -255,7 +254,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.INCIDENTS_DASHBOARD.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Incidents
+                  Incidents
                 </Button>
               </Link>
             </Col>
@@ -267,7 +266,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.REPORTS_DASHBOARD.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Reports
+                  Reports
                 </Button>
               </Link>
             </Col>
@@ -279,7 +278,7 @@ export class NavBar extends Component {
                   id={this.ifActiveButton(router.NOTICE_OF_WORK_APPLICATIONS.route)}
                   className="menu--hamburger__btn--link"
                 >
-                  Browse Notices of Work
+                  Notices of Work
                 </Button>
               </Link>
             </Col>
@@ -355,7 +354,7 @@ export class NavBar extends Component {
     <Menu id="menu__dropdown" className="navbar-dropdown-menu">
       <Menu.Item key="dashboard" className="navbar-dropdown-menu-item">
         <Link to={router.REPORTING_DASHBOARD.route}>
-          <button type="button">Dashboard</button>
+          <button type="button">Reporting Dashboard</button>
         </Link>
       </Menu.Item>
       <AuthorizationWrapper permission={Permission.EXECUTIVE}>
@@ -367,22 +366,22 @@ export class NavBar extends Component {
       </AuthorizationWrapper>
       <Menu.Item key="browse-variances" className="navbar-dropdown-menu-item">
         <Link to={router.VARIANCE_DASHBOARD.route}>
-          <button type="button">Browse Variances</button>
+          <button type="button">Variances</button>
         </Link>
       </Menu.Item>
       <Menu.Item key="browse-incidents" className="navbar-dropdown-menu-item">
         <Link to={router.INCIDENTS_DASHBOARD.route}>
-          <button type="button">Browse Incidents</button>
+          <button type="button">Incidents</button>
         </Link>
       </Menu.Item>
       <Menu.Item key="browse-reports" className="navbar-dropdown-menu-item">
         <Link to={router.REPORTS_DASHBOARD.route}>
-          <button type="button">Browse Reports</button>
+          <button type="button">Reports</button>
         </Link>
       </Menu.Item>
       <Menu.Item key="browse-notices-of-work" className="navbar-dropdown-menu-item">
         <Link to={router.NOTICE_OF_WORK_APPLICATIONS.route}>
-          <button type="button">Browse Notices of Work</button>
+          <button type="button">Notices of Work</button>
         </Link>
       </Menu.Item>
     </Menu>

@@ -14,7 +14,7 @@ const defaultProps = {
 
 const FormItemLabel = (props) => (
   <div className="padding-md--bottom">
-    <div className="ant-col ant-form-item-label padding-large--top ">
+    <div className="ant-col ant-form-item-label padding-lg--top ">
       <label htmlFor="label">{props.children}</label>
     </div>
     {props.underline && <Divider style={{ margin: "0" }} />}

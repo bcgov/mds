@@ -28,7 +28,7 @@ export const downloadNRISDocument = (externalId, inspectionId, fileName) => {
     throw new Error("Must provide fileName");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + NRIS_DOCUMENT_TOKEN_GET_URL(externalId, inspectionId, fileName)}`,
       createRequestHeader()
@@ -60,7 +60,7 @@ export const downloadNowDocument = (id, applicationGuid, fileName) => {
     throw new Error("Must provide fileName");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
       createRequestHeader()
@@ -85,7 +85,7 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
     throw new Error("Must provide document_manager_guid");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
@@ -105,7 +105,7 @@ export const getDocumentDownloadToken = (document_manager_guid, filename, URLArr
     throw new Error("Must provide document_manager_guid");
   }
 
-  CustomAxios()
+  return CustomAxios()
     .get(
       `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
       createRequestHeader()
@@ -114,28 +114,6 @@ export const getDocumentDownloadToken = (document_manager_guid, filename, URLArr
       const token = { token: response.data.token_guid };
       const URL = `${`${ENVIRONMENT.docManUrl +
         DOCUMENT_MANAGER_FILE_GET_URL(token)}&as_attachment=true`}`;
-      URLArray.push({ filename, url: URL });
-    });
-};
-
-export const getNowDocumentDownloadToken = (id, applicationGuid, filename, URLArray) => {
-  if (!id) {
-    throw new Error("Must provide id");
-  }
-
-  if (!applicationGuid) {
-    throw new Error("Must provide applicationGuid");
-  }
-
-  CustomAxios()
-    .get(
-      `${ENVIRONMENT.apiUrl + NOTICE_OF_WORK_DOCUMENT_TOKEN_GET_URL(id, applicationGuid)}`,
-      createRequestHeader()
-    )
-    .then((response) => {
-      const token = { token: response.data.token_guid };
-      const URL = `${ENVIRONMENT.apiUrl +
-        NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL(id, applicationGuid, token)}`;
       URLArray.push({ filename, url: URL });
     });
 };

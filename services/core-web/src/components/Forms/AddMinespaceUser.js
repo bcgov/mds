@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
-import { Form, Button, Col, Row } from "antd";
-import { required, email, requiredList } from "@common/utils/Validate";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Col, Row } from "antd";
+import { required, requiredList } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import * as FORM from "@/constants/forms";
@@ -25,26 +27,26 @@ const minespaceUserNotExists = (value, allValues, props) =>
 
 export const AddMinespaceUser = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
-    <Col>
+    <Col span={24}>
       <Row>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
-              id="user_bceid_email"
-              name="user_bceid_email"
-              label="Email*"
-              placeholder="Enter the user's BCeID email"
+              id="email_or_username"
+              name="email_or_username"
+              label="Email/BCeID username"
+              placeholder="Enter the users Email (BCeID username if email is not available)"
               component={RenderField}
-              validate={[required, email, minespaceUserNotExists]}
+              validate={[required, minespaceUserNotExists]}
               allowClear
             />
           </Form.Item>
         </Col>
-        <Col>
+        <Col span={24}>
           <Form.Item>
             <Field
-              id="proponent_mine_access"
-              name="proponent_mine_access"
+              id="mine_guids"
+              name="mine_guids"
               label="Mines*"
               placeholder="Select the mines this user can access"
               component={renderConfig.MULTI_SELECT}

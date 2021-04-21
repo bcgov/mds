@@ -20,6 +20,16 @@ CREATE OR REPLACE FUNCTION transfer_mine_status_information() RETURNS void AS $$
             RAISE NOTICE '.. Update existing records with latest MMS data';
             UPDATE ETL_STATUS
             SET status_code = CASE mms.mmsmin.sta_cd
+								  WHEN 'G' THEN 'OP'
+								  WHEN 'A' THEN 'OP'
+								  WHEN 'U' THEN 'NS'
+								  WHEN 'S' THEN 'NS'
+								  WHEN 'W' THEN 'NS'
+								  WHEN 'H' THEN 'NS'
+								  WHEN 'C' THEN 'CLD'
+								  WHEN 'R' THEN 'CLD'
+								  WHEN 'D' THEN 'CLD'
+								  WHEN 'O' THEN 'CLD'
                                   WHEN 'B' THEN 'ABN'
                                   ElSE NULL
                               END,

@@ -138,7 +138,9 @@ app {
                             'KEYCLOAK_URL': "${vars.keycloak.url}",
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_core}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'FILESYSTEM_PROVIDER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/file-api/AmazonS3Provider/",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -164,8 +166,8 @@ app {
                             'KEYCLOAK_IDP_HINT': "${vars.keycloak.idpHint_minespace}",
                             'SITEMINDER_URL': "${vars.keycloak.siteminder_url}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
-                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager"
-
+                            'DOCUMENT_MANAGER_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'MATOMO_URL': "${vars.deployment.matomo_url}"
                     ]
                 ],
                 [
@@ -187,9 +189,10 @@ app {
                             'PATH_PREFIX': "${vars.modules.'mds-nginx'.PATH}",
                             'CORE_SERVICE_URL': "${vars.modules.'mds-frontend'.HOST}",
                             'NRIS_API_SERVICE_URL': "${vars.modules.'mds-nris-backend'.HOST}",
+                            'FILE_API_SERVICE_URL': "${vars.modules.'filesystem-provider'.HOST}",
                             'DOCUMENT_MANAGER_SERVICE_URL': "${vars.modules.'mds-docman-backend'.HOST}",
                             'MINESPACE_SERVICE_URL': "${vars.modules.'mds-frontend-public'.HOST}",
-                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}",
+                            'API_SERVICE_URL': "${vars.modules.'mds-python-backend'.HOST}"
                     ]
                 ],
                 [
@@ -215,13 +218,13 @@ app {
                             'DB_NRIS_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}-nris",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
                             'NRIS_API_URL': "${vars.modules.'mds-nris-backend'.HOST}${vars.modules.'mds-nris-backend'.PATH}",
                             'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}",
                             'DOCUMENT_GENERATOR_URL': "${vars.modules.'mds-docgen-api'.HOST}",
+                            'VCR_ISSUER_URL':"${vars.modules.'mds-vc-issuer-api'.HOST}",
+
                     ]
                 ],
                 [
@@ -246,8 +249,6 @@ app {
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
                             'DB_HOST': "mds-postgresql${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_nris}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_nris}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/nris_api",
                     ]
@@ -293,12 +294,27 @@ app {
                             'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
                             'REDIS_CONFIG_NAME': "mds-redis${vars.deployment.suffix}",
                             'CACHE_REDIS_HOST': "mds-redis${vars.deployment.suffix}",
-                            'ELASTIC_ENABLED': "${vars.deployment.elastic_enabled_core}",
-                            'ELASTIC_SERVICE_NAME': "${vars.deployment.elastic_service_name_docman}",
                             'DOCUMENT_CAPACITY':"${vars.DOCUMENT_PVC_SIZE}",
                             'DOCUMENT_CAPACITY_LOWER':"${vars.DOCUMENT_PVC_SIZE.toString().toLowerCase()}",
                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
                             'API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/document-manager",
+                            'OBJECT_STORE_ENABLED': '1',
+                            'TUSD_URL': "http://tusd${vars.deployment.suffix}:1080/files/",
+                            'CORE_API_URL': "https://${vars.modules.'mds-nginx'.HOST_CORE}${vars.modules.'mds-nginx'.PATH}/api",
+                            'FLOWER_HOST':"${vars.modules.'flower'.HOST}"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/tusd.dc.json',
+                    'params':[
+                            'NAME':"tusd",
+                            'VERSION':"${app.deployment.version}",
+                            'SUFFIX': "${vars.deployment.suffix}",
+                            'CPU_REQUEST':"${vars.resources.tusd.cpu_request}",
+                            'CPU_LIMIT':"${vars.resources.tusd.cpu_limit}",
+                            'MEMORY_REQUEST':"${vars.resources.tusd.memory_request}",
+                            'MEMORY_LIMIT':"${vars.resources.tusd.memory_limit}",
+                            'DOCUMENT_MANAGER_URL': "${vars.modules.'mds-docman-backend'.HOST}${vars.modules.'mds-docman-backend'.PATH}"
                     ]
                 ],
                 [
@@ -333,20 +349,6 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tools/logstash.dc.json',
-                    'params':[
-                            'NAME':"mds-logstash",
-                            'VERSION':"${app.deployment.version}",
-                            'SUFFIX': "${vars.deployment.suffix}",
-                            'ENVIRONMENT_NAME':"${app.deployment.env.name}",
-                            'DB_CONFIG_NAME': "mds-postgresql${vars.deployment.suffix}",
-                            'CPU_REQUEST':"${vars.resources.logstash.cpu_request}",
-                            'CPU_LIMIT':"${vars.resources.logstash.cpu_limit}",
-                            'MEMORY_REQUEST':"${vars.resources.logstash.memory_request}",
-                            'MEMORY_LIMIT':"${vars.resources.logstash.memory_limit}"
-                    ]
-                ],
-                [
                     'file':'openshift/templates/digdag/digdag.dc.json',
                     'params':[
                             'NAME':"digdag",
@@ -362,6 +364,24 @@ app {
                             'MEMORY_REQUEST':"${vars.resources.digdag.memory_request}",
                             'MEMORY_LIMIT':"${vars.resources.digdag.memory_limit}"
                     ]
+                ],
+                [
+                     'file':'openshift/templates/filesystem-provider.dc.json',
+                     'params':[
+                             'NAME':"filesystem-provider",
+                             'VERSION':"${app.deployment.version}",
+                             'SUFFIX': "${vars.deployment.suffix}",
+                             'SCHEDULER_PVC_SIZE':"200Mi",
+                             'ENVIRONMENT_NAME':"${app.deployment.env.name}",
+                             'APPLICATION_DOMAIN': "${vars.modules.'filesystem-provider'.HOST}",
+                             'CPU_REQUEST':"${vars.resources.fsprovider.cpu_request}",
+                             'CPU_LIMIT':"${vars.resources.fsprovider.cpu_limit}",
+                             'MEMORY_REQUEST':"${vars.resources.fsprovider.memory_request}",
+                             'MEMORY_LIMIT':"${vars.resources.fsprovider.memory_limit}",
+                             'JWT_OIDC_AUDIENCE': "${vars.keycloak.clientId_core}",
+                             'JWT_OIDC_AUTHORITY': "${vars.keycloak.url}/realms/mds",
+                             'ASPNETCORE_ENVIRONMENT': "Development"
+                     ]
                 ]
         ]
     }
@@ -396,6 +416,14 @@ environments {
                     replica_min = 1
                     replica_max = 1
                 }
+                tusd {
+                    cpu_request = "50m"
+                    cpu_limit = "100m"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
+                    replica_min = 2
+                    replica_max = 3
+                }
                 nginx {
                     cpu_request = "10m"
                     cpu_limit = "50m"
@@ -406,7 +434,7 @@ environments {
                 }
                 python {
                     cpu_request = "100m"
-                    cpu_limit = "200m"
+                    cpu_limit = "400m"
                     memory_request = "512Mi"
                     memory_limit = "2Gi"
                     uwsgi_threads = 2
@@ -452,17 +480,17 @@ environments {
                     db_memory_request = "256Mi"
                     db_memory_limit = "1Gi"
                 }
-                logstash {
-                    cpu_request = "50m"
-                    cpu_limit = "400m"
-                    memory_request = "1Gi"
-                    memory_limit = "2Gi"
-                }
                 digdag {
                     cpu_request = "150m"
                     cpu_limit = "300m"
                     memory_request = "512Mi"
                     memory_limit = "1Gi"
+                }
+                fsprovider {
+                    cpu_request = "50m"
+                    cpu_limit = "150m"
+                    memory_request = "256Mi"
+                    memory_limit = "512Mi"
                 }
             }
             keycloak {
@@ -471,8 +499,8 @@ environments {
                 resource = "mines-application-prod"
                 idpHint_core = "idir"
                 idpHint_minespace = "bceid"
-                url = "https://sso.pathfinder.gov.bc.ca/auth"
-                known_config_url = "https://sso.pathfinder.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
+                url = "https://oidc.gov.bc.ca/auth"
+                known_config_url = "https://oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration"
                 siteminder_url = "https://logon.gov.bc.ca"
             }
             deployment {
@@ -485,11 +513,7 @@ environments {
                 namespace = 'empr-mds-prod'
                 node_env = "production"
                 fn_layer_url = "https://apps.gov.bc.ca/ext/sgw/geo.allgov"
-                elastic_enabled_core = 1
-                elastic_enabled_nris = 1
-                elastic_service_name = "MDS Prod"
-                elastic_service_name_nris = "NRIS API Prod"
-                elastic_service_name_docman = 'DocMan Prod'
+                matomo_url = "https://matomo-4c2ba9-prod.apps.silver.devops.gov.bc.ca/"
             }
             modules {
                 'mds-frontend' {
@@ -524,6 +548,9 @@ environments {
                 'mds-docgen-api' {
                     HOST = "http://docgen${vars.deployment.suffix}:3030"
                 }
+                'mds-vc-issuer-api'{
+                    HOST = "https://mines-permitting-issuer-a3e512-prod.apps.silver.devops.gov.bc.ca/"
+                }
                 'schemaspy' {
                     HOST = "mds-schemaspy-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
@@ -532,6 +559,13 @@ environments {
                 }
                 'digdag' {
                     HOST = "mds-digdag-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
+                }
+                'filesystem-provider' {
+                    HOST = "http://filesystem-provider${vars.deployment.suffix}:8080"
+                    PATH = "/file-api"
+                }
+                'flower'{
+                    HOST = "mds-flower-${vars.deployment.namespace}.pathfinder.gov.bc.ca"
                 }
             }
         }

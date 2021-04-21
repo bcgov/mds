@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
@@ -29,10 +30,10 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     community_plan = db.Column(db.String)
     land_use_zoning = db.Column(db.String)
     proposed_land_use = db.Column(db.String)
-    total_mineable_reserves = db.Column(db.Integer)
+    total_mineable_reserves = db.Column(db.Numeric(14, 2))
     total_mineable_reserves_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
-    total_annual_extraction = db.Column(db.Integer)
+    total_annual_extraction = db.Column(db.Numeric(14, 2))
     total_annual_extraction_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     average_groundwater_depth = db.Column(db.Numeric(14, 1))
@@ -41,10 +42,10 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     has_groundwater_from_test_wells = db.Column(db.Boolean)
     groundwater_from_other_description = db.Column(db.String)
     groundwater_protection_plan = db.Column(db.String)
-    nearest_residence_distance = db.Column(db.Integer)
+    nearest_residence_distance = db.Column(db.Numeric(14, 2))
     nearest_residence_distance_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
-    nearest_water_source_distance = db.Column(db.Integer)
+    nearest_water_source_distance = db.Column(db.Numeric(14, 2))
     nearest_water_source_distance_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     noise_impact_plan = db.Column(db.String)
@@ -59,6 +60,9 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
         secondary='activity_summary_detail_xref',
         load_on_pending=True)
 
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
 
 def __repr__(self):
     return '<SandGravelQuarryOperation %r>' % self.activity_id

@@ -81,6 +81,7 @@ def setup_info(test_client):
         },]
     }
 
+    # TODO: Change instances of EMPR to EMLI, if and when it is relevant for NRIS mock data.
     NRIS_Mock_data = {
     "records": [
         {

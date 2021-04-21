@@ -48,7 +48,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(ChangeNOWLocationModal);
+export default connect(null, mapDispatchToProps)(ChangeNOWLocationModal);

@@ -100,7 +100,4 @@ const mapDispatchToProps = (dispatch) =>
 MinespaceUserManagement.propTypes = propTypes;
 MinespaceUserManagement.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MinespaceUserManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(MinespaceUserManagement);

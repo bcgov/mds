@@ -2,17 +2,21 @@
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
+  matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   environment: "development",
   firstNationsLayerUrl: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov",
+  filesystemProviderUrl: "http://localhost:62870/file-api/AmazonS3Provider/",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "mines-application-local",
   keycloak_idpHint: "test",
-  keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
+  keycloak_url: "https://test.oidc.gov.bc.ca/auth",
 };
 
 export const ENVIRONMENT = {
   apiUrl: "<API_URL>",
   docManUrl: "<DOCUMENT_MANAGER_URL>",
+  matomoUrl: "<MATOMO_URL>",
+  filesystemProviderUrl: "<FILESYSTEM_PROVIDER_URL>",
   firstNationsLayerUrl: "<FN_LAYER_URL>",
   environment: "<ENV>",
 };
@@ -47,4 +51,5 @@ export const USER_ROLES = {
   role_executive_view: "core_executive_view",
   role_minespace_proponent: "minespace-proponent",
   role_edit_securities: "core_edit_securities",
+  role_edit_historical_amendments: "core_edit_historical_amendments",
 };

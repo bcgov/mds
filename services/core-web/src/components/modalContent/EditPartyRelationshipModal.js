@@ -12,21 +12,16 @@ const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
   partyRelationshipType: CustomPropTypes.partyRelationshipType.isRequired,
   mine: CustomPropTypes.mine.isRequired,
+  minePermits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
 };
 
 const defaultProps = {
   partyRelationships: [],
 };
 
-const EditPartyRelationshipModal = (props) => {
-  const initialValues = props.partyRelationship;
-
-  return (
-    <div>
-      <EditPartyRelationshipForm {...props} initialValues={initialValues} />
-    </div>
-  );
-};
+const EditPartyRelationshipModal = (props) => (
+  <EditPartyRelationshipForm {...props} initialValues={props.partyRelationship} />
+);
 
 EditPartyRelationshipModal.propTypes = propTypes;
 EditPartyRelationshipModal.defaultProps = defaultProps;

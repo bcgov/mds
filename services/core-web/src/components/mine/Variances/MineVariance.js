@@ -10,6 +10,7 @@ import {
   fetchVariancesByMine,
   addDocumentToVariance,
   updateVariance,
+  deleteVariance,
 } from "@common/actionCreators/varianceActionCreator";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import {
@@ -41,6 +42,7 @@ const propTypes = {
   fetchVariancesByMine: PropTypes.func.isRequired,
   createVariance: PropTypes.func.isRequired,
   updateVariance: PropTypes.func.isRequired,
+  deleteVariance: PropTypes.func.isRequired,
   addDocumentToVariance: PropTypes.func.isRequired,
   complianceCodes: CustomPropTypes.options.isRequired,
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -59,6 +61,12 @@ export class MineVariance extends Component {
       this.setState({ isLoaded: true });
     });
   }
+
+  handleDeleteVariance = (variance) => {
+    return this.props.deleteVariance(variance.mine_guid, variance.variance_guid).then(() => {
+      this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+    });
+  };
 
   handleAddVariances = (files, isApplication) => (values) => {
     const { variance_document_category_code } = values;
@@ -83,15 +91,18 @@ export class MineVariance extends Component {
               }
             )
           )
-        );
-        this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+        ).then(() => {
+          this.props.closeModal();
+          this.setState({ isLoaded: false });
+          this.props
+            .fetchVariancesByMine({ mineGuid: this.props.mineGuid })
+            .then(() => this.setState({ isLoaded: true }));
+        });
       });
   };
 
   handleUpdateVariance = (files, variance, isApproved) => (values) => {
-    // if the application isApproved, set issue_date to today and set expiry_date 5 years from today,
-    // unless the user sets dates
+    // If the application is approved, set the issue date to today and set the expiry date to 5 years from today if it is empty.
     const { variance_document_category_code } = values;
     let expiry_date;
     let issue_date;
@@ -103,7 +114,7 @@ export class MineVariance extends Component {
     }
     const varianceGuid = variance.variance_guid;
     const codeLabel = this.props.complianceCodesHash[variance.compliance_article_id];
-    this.props
+    return this.props
       .updateVariance(
         { mineGuid: this.props.mineGuid, varianceGuid, codeLabel },
         { ...values, issue_date, expiry_date }
@@ -121,8 +132,13 @@ export class MineVariance extends Component {
             )
           )
         );
+      })
+      .then(() => {
         this.props.closeModal();
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+        this.setState({ isLoaded: false });
+        this.props
+          .fetchVariancesByMine({ mineGuid: this.props.mineGuid })
+          .then(() => this.setState({ isLoaded: true }));
       });
   };
 
@@ -182,6 +198,7 @@ export class MineVariance extends Component {
         mine={mine}
         varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
         isApplication
+        handleDeleteVariance={this.handleDeleteVariance}
       />
       <br />
       <h4 className="uppercase">Approved Variances</h4>
@@ -194,6 +211,7 @@ export class MineVariance extends Component {
         complianceCodesHash={this.props.complianceCodesHash}
         varianceStatusOptionsHash={this.props.varianceStatusOptionsHash}
         mine={mine}
+        handleDeleteVariance={this.handleDeleteVariance}
       />
     </div>
   );
@@ -241,6 +259,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchVariancesByMine,
       addDocumentToVariance,
       updateVariance,
+      deleteVariance,
       openModal,
       closeModal,
     },

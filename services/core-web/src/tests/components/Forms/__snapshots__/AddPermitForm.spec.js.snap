@@ -67,6 +67,7 @@ exports[`AddPermitForm renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />
@@ -101,6 +102,7 @@ exports[`AddPermitForm renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />
@@ -126,6 +128,69 @@ exports[`AddPermitForm renders properly 1`] = `
       md={12}
       sm={24}
     >
+      <FormSection
+        name="site_properties"
+      >
+        <div
+          className="field-title"
+        >
+          Tenure*
+        </div>
+        <Field
+          component={[Function]}
+          data={Array []}
+          disabled={true}
+          id="mine_tenure_type_code"
+          name="mine_tenure_type_code"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+        <div
+          className="field-title"
+        >
+          Commodity
+        </div>
+        <Field
+          component={[Function]}
+          data={null}
+          id="mine_commodity_code"
+          name="mine_commodity_code"
+        />
+        <div
+          className="field-title"
+        >
+          Disturbance
+        </div>
+        <Field
+          component={[Function]}
+          data={null}
+          id="mine_disturbance_code"
+          name="mine_disturbance_code"
+          validate={Array []}
+        />
+      </FormSection>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="exemption_fee_status_code"
+        label="Inspection Fee Status"
+        name="exemption_fee_status_code"
+        placeholder="Inspection Fee Status will be automatically populated."
+      />
+      <Field
+        component={[Function]}
+        id="exemption_fee_status_note"
+        label="Fee Exemption Note"
+        name="exemption_fee_status_note"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
       <FormItem
         hasFeedback={false}
         label="Upload files"
@@ -144,15 +209,10 @@ exports[`AddPermitForm renders properly 1`] = `
   <div
     className="right center-mobile"
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -171,11 +231,10 @@ exports[`AddPermitForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

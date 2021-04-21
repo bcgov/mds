@@ -45,7 +45,7 @@ export class Logout extends Component {
       !this.loggedIn && (
         <div className="logout-screen">
           <img alt="mine_img" src={LOGO_PURPLE} />
-          <p>If you would like to return to CORE, please log in below</p>
+          <p>If you would like to return to Core, please log in below</p>
           <Link to={router.MINE_HOME_PAGE.route}>
             <Button className="full-mobile" type="primary">
               Log In
@@ -70,7 +70,4 @@ const mapDispatchToProps = (dispatch) =>
 
 Logout.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Logout);
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

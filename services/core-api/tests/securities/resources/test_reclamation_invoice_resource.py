@@ -1,11 +1,10 @@
 import json
 
-from tests.factories import ReclamationInvoiceFactory, MineFactory, PermitFactory
+from tests.factories import ReclamationInvoiceFactory, MineFactory, PermitFactory, create_mine_and_permit
 from app.api.now_applications.resources.now_application_list_resource import PAGE_DEFAULT, PER_PAGE_DEFAULT
 
 GOOD_RECLAMATION_INVOICE_POST_DATA = {
     "reclamation_invoice": {
-        "project_id": "1234567",
         "amount": 42,
         "vendor": "Joe The Tree Planter",
         "documents": []
@@ -14,7 +13,6 @@ GOOD_RECLAMATION_INVOICE_POST_DATA = {
 
 BAD_RECLAMATION_INVOICE_POST_DATA = {
     "reclamation_invoice": {
-        "project_id": "1234567",
         "vendor": "Joe The Tree Planter",
         "foo": "bar",
         "documents": []
@@ -30,8 +28,9 @@ class TestReclamationInvoiceResource:
         """Should return the correct records with a 200 response code"""
 
         batch_size = 5
-        mine = MineFactory(minimal=True)
-        permits = PermitFactory.create_batch(size=batch_size, mine=mine)
+        mine, permit = create_mine_and_permit(num_permits=batch_size)
+        permits = mine.mine_permit
+
         reclamation_invoices = [
             reclamation_invoice for permit in permits
             for reclamation_invoice in permit.reclamation_invoices
@@ -74,9 +73,7 @@ class TestReclamationInvoiceResource:
 
     def test_get_reclamation_invoice_by_id(self, test_client, db_session, auth_headers):
         """Should return a specific reclamation invoice"""
-
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
+        mine, permit = create_mine_and_permit()
         reclamation_invoice = permit.reclamation_invoices[0]
         get_resp = test_client.get(
             f'/securities/reclamation-invoices/{reclamation_invoice.reclamation_invoice_guid}',
@@ -97,12 +94,10 @@ class TestReclamationInvoiceResource:
         assert get_data['message'] is not None
 
     """POST Reclamation Invoice Tests"""
-
     def test_post_a_reclamation_invoice(self, test_client, db_session, auth_headers):
         """Should return the created reclamation invoice with a 201 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         GOOD_RECLAMATION_INVOICE_POST_DATA['permit_guid'] = permit.permit_guid
 
         post_resp = test_client.post(
@@ -129,9 +124,8 @@ class TestReclamationInvoiceResource:
 
     def test_post_a_reclamation_invoice_bad_data(self, test_client, db_session, auth_headers):
         """Should return an error and a 400 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         BAD_RECLAMATION_INVOICE_POST_DATA['permit_guid'] = permit.permit_guid
 
         post_resp = test_client.post(
@@ -143,22 +137,15 @@ class TestReclamationInvoiceResource:
         assert post_data['message'] is not None
 
     """PUT Reclamation Invoice Tests"""
-
     def test_put_a_reclamation_invoice(self, test_client, db_session, auth_headers):
         """Should return the edited reclamation invoice with a 200 response code"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         reclamation_invoice = permit.reclamation_invoices[0]
         old_amount = reclamation_invoice.amount
         old_vendor = reclamation_invoice.vendor
 
-        data = {
-            "project_id": "DUCK-467985",
-            "amount": 999999.99,
-            "vendor": "Rubber Ducky Restoration Services",
-            "documents": []
-        }
+        data = {"amount": 999999.99, "vendor": "Rubber Ducky Restoration Services", "documents": []}
 
         post_resp = test_client.put(
             f'/securities/reclamation-invoices/{reclamation_invoice.reclamation_invoice_guid}',
@@ -171,16 +158,11 @@ class TestReclamationInvoiceResource:
 
     def test_put_a_reclamation_invoice_missing_data(self, test_client, db_session, auth_headers):
         """Should return 400 response code with an error"""
+        mine, permit = create_mine_and_permit()
 
-        mine = MineFactory(minimal=True)
-        permit = PermitFactory(mine=mine)
         reclamation_invoice = permit.reclamation_invoices[0]
 
-        data = {
-            "project_id": "DUCK-467985",
-            "vendor": "Rubber Ducky Restoration Services",
-            "documents": []
-        }
+        data = {"vendor": "Rubber Ducky Restoration Services", "documents": []}
 
         post_resp = test_client.put(
             f'/securities/reclamation-invoices/{reclamation_invoice.reclamation_invoice_guid}',

@@ -8,6 +8,7 @@ import {
   updateParty,
   deleteParty,
   addDocumentToRelationship,
+  createPartyOrgBookEntity,
 } from "@common/actionCreators/partiesActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -40,7 +41,7 @@ describe("`createParty` action creator", () => {
     return createParty(mockPayload)(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(5);
+      expect(dispatch).toHaveBeenCalledTimes(6);
     });
   });
 
@@ -64,16 +65,22 @@ describe("`updateParty` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url, mockPayload).reply(200, mockResponse);
-    return updateParty(mockPayload, partyGuid)(dispatch).then(() => {
+    return updateParty(
+      mockPayload,
+      partyGuid
+    )(dispatch).then(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(successSpy).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(5);
     });
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateParty(mockPayload, partyGuid)(dispatch).catch(() => {
+    return updateParty(
+      mockPayload,
+      partyGuid
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -154,7 +161,7 @@ describe("`fetchPartyById` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onGet(url).reply(418, MOCK.ERROR);
-    return fetchPartyById(mockPayload)(dispatch).then(() => {
+    return fetchPartyById(mockPayload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -194,23 +201,57 @@ describe("`addDocumentToRelationship` action creator", () => {
   it("Request successful, dispatches `success` with correct response", () => {
     const mockResponse = { data: { success: true } };
     mockAxios.onPut(url).reply(200, mockResponse);
-    return addDocumentToRelationship({ mineGuid, minePartyApptGuid }, mockPayload)(dispatch).then(
-      () => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(successSpy).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      }
-    );
+    return addDocumentToRelationship(
+      { mineGuid, minePartyApptGuid },
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
   });
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return addDocumentToRelationship({ mineGuid, minePartyApptGuid }, mockPayload)(dispatch).then(
-      () => {
-        expect(requestSpy).toHaveBeenCalledTimes(1);
-        expect(errorSpy).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenCalledTimes(4);
-      }
-    );
+    return addDocumentToRelationship(
+      { mineGuid, minePartyApptGuid },
+      mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createPartyOrgBookEntity` action creator", () => {
+  const partyGuid = "475837594";
+  const mockPayload = {
+    credential_id: 777855,
+  };
+  const url = ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(201, mockResponse);
+    return createPartyOrgBookEntity(
+      partyGuid,
+      mockPayload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createPartyOrgBookEntity(
+      partyGuid,
+      mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
   });
 });

@@ -1,0 +1,410 @@
+---
+apiVersion: template.openshift.io/v1
+kind: Template
+labels:
+  template: grafana-template
+message: |-
+  The following service(s) have been created in your project: ${NAME}.
+  For more information about using this template, including OpenShift considerations, contact the rocketchat community.
+metadata:
+  annotations:
+    description: MDS Grafana Template
+    tags: monitoring,grafana
+  name: grafana-template
+parameters:
+  - name: NAME
+    displayName: Name
+    description: The name assigned to all of the OpenShift resources associated to the
+      server instance.
+    required: true
+    value: grafana
+  - name: APP_NAME
+    displayName: App Name
+    description: Used to group components together in the OpenShift console.
+    required: true
+    value: monitoring
+  - name: IMAGE_NAMESPACE
+    displayName: Image Namespace
+    required: true
+    description: The namespace of the OpenShift project containing the imagestream for
+      the application.
+    value: empr-mds-tools
+  - name: SOURCE_IMAGE_NAME
+    displayName: Source Image Name
+    description: The name of the image to use for this resource.
+    required: true
+    value: grafana
+  - name: TAG_NAME
+    displayName: Environment TAG name
+    description: The TAG name for this environment, e.g., dev, test, prod
+    required: true
+    value: prod
+  - description: The namespace this templated is deployed into.
+    displayName: Namespace
+    name: NAMESPACE
+    value: empr-mds-dev
+  - description: The name of the Loki service to connect to.
+    displayName: Loki Service Name
+    name: LOKI_SERVICE_NAME
+    required: true
+    value: loki
+  - description: The name of the Prometheus service to connect to.
+    displayName: Prometheus Service Name
+    name: PROMETHEUS_SERVICE_NAME
+    required: true
+    value: prometheus
+  - description: Default route subdomain
+    displayName: Route subdomain
+    name: ROUTE_SUBDOMAIN
+    required: true
+    value: pathfinder.gov.bc.ca
+  - name: CPU_REQUEST
+    displayName: Resources CPU Request
+    description: The resources CPU request (in cores) for this build.
+    required: true
+    value: 100m
+  - name: CPU_LIMIT
+    displayName: Resources CPU Limit
+    description: The resources CPU limit (in cores) for this build.
+    required: true
+    value: 250m
+  - name: MEMORY_REQUEST
+    displayName: Resources Memory Request
+    description: The resources Memory request (in Mi, Gi, etc) for this build.
+    required: true
+    value: 100Mi
+  - name: MEMORY_LIMIT
+    displayName: Resources Memory Limit
+    description: The resources Memory limit (in Mi, Gi, etc) for this build.
+    required: true
+    value: 512Mi
+objects:
+  - apiVersion: v1
+    kind: Service
+    spec:
+      ports:
+        - name: 3000-tcp
+          port: 3000
+          protocol: TCP
+          targetPort: 3000
+      selector:
+        app: "${APP_NAME}"
+        deploymentconfig: "${NAME}"
+      sessionAffinity: None
+      type: ClusterIP
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}"
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: "${NAME}-persistence"
+      labels:
+        app: "${APP_NAME}"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: "5Gi"
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        app: "${APP_NAME}"
+        deploymentconfig: "${NAME}"
+      strategy:
+        activeDeadlineSeconds: 21600
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          annotations:
+            openshift.io/generated-by: OpenShiftNewApp
+          creationTimestamp:
+          labels:
+            app: "${APP_NAME}"
+            deploymentconfig: "${NAME}"
+        spec:
+          containers:
+            - image: " "
+              imagePullPolicy: Always
+              name: "${NAME}"
+              ports:
+                - containerPort: 3000
+                  protocol: TCP
+              resources: {}
+              terminationMessagePath: "/dev/termination-log"
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: "/etc/grafana/provisioning/dashboards"
+                  name: providers
+                - mountPath: "/var/lib/grafana/dashboards/"
+                  name: dashboards
+                - mountPath: "/etc/grafana/provisioning/datasources/"
+                  name: datasources
+                - mountPath: "/var/lib/grafana"
+                  name: persistence
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: "${NAME}-dashboard-providers"
+              name: providers
+            - configMap:
+                defaultMode: 420
+                name: "${NAME}-dashboard"
+              name: dashboards
+            - configMap:
+                defaultMode: 420
+                name: "${NAME}-datasources"
+              name: datasources
+            - persistentVolumeClaim:
+                claimName: ${NAME}-persistence
+              name: persistence
+
+      test: false
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - "${NAME}"
+            from:
+              kind: ImageStreamTag
+              name: "${SOURCE_IMAGE_NAME}:${TAG_NAME}"
+              namespace: "${IMAGE_NAMESPACE}"
+          type: ImageChange
+    metadata:
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}"
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    spec:
+      host: "${NAME}-${NAMESPACE}.${ROUTE_SUBDOMAIN}"
+      port:
+        targetPort: 3000-tcp
+      to:
+        kind: Service
+        name: "${NAME}"
+        weight: 100
+      wildcardPolicy: None
+    metadata:
+      annotations:
+        openshift.io/host.generated: "true"
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}"
+  - apiVersion: v1
+    data:
+      simple_dashboard.json: |-
+        {
+            "annotations": {
+                "list": [
+                    {
+                        "builtIn": 1,
+                        "datasource": "-- Grafana --",
+                        "enable": true,
+                        "hide": true,
+                        "iconColor": "rgba(0, 211, 255, 1)",
+                        "name": "Annotations & Alerts",
+                        "type": "dashboard"
+                    }
+                ]
+            },
+            "editable": true,
+            "gnetId": null,
+            "graphTooltip": 0,
+            "id": 1,
+            "links": [],
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "fill": 1,
+                    "gridPos": {
+                        "h": 9,
+                        "w": 12,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "id": 2,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "nullPointMode": "null",
+                    "options": {},
+                    "percentage": false,
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(up)",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Panel Title",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
+            "schemaVersion": 18,
+            "style": "dark",
+            "tags": [],
+            "templating": {
+                "list": []
+            },
+            "time": {
+                "from": "now-6h",
+                "to": "now"
+            },
+            "timepicker": {
+                "refresh_intervals": [
+                    "5s",
+                    "10s",
+                    "30s",
+                    "1m",
+                    "5m",
+                    "15m",
+                    "30m",
+                    "1h",
+                    "2h",
+                    "1d"
+                ],
+                "time_options": [
+                    "5m",
+                    "15m",
+                    "1h",
+                    "6h",
+                    "12h",
+                    "24h",
+                    "2d",
+                    "7d",
+                    "30d"
+                ]
+            },
+            "timezone": "",
+            "title": "Sample",
+            "uid": "IwLgjtoWk",
+            "version": 1
+        }
+    kind: ConfigMap
+    metadata:
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}-dashboard"
+  - apiVersion: v1
+    data:
+      dashboards.yml: |-
+        apiVersion: 1
+        providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          folderUid: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          updateIntervalSeconds: 10  
+          options:
+            path: /var/lib/grafana/dashboards
+    kind: ConfigMap
+    metadata:
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}-dashboard-providers"
+  - apiVersion: v1
+    data:
+      datasources.yaml: |-
+        apiVersion: 1
+        datasources:
+        # - name: Prometheus
+        #   type: prometheus
+        #   access: proxy
+        #   orgId: 1
+        #   url: http://${PROMETHEUS_SERVICE_NAME}:80  
+        #   version: 1
+        #   editable: true
+        - name: Loki
+          type: loki
+          orgId: 1
+          access: proxy
+          url: http://${LOKI_SERVICE_NAME}:3100
+          isDefault: true
+          version: 1
+          editable: true
+    kind: ConfigMap
+    metadata:
+      labels:
+        app: "${APP_NAME}"
+      name: "${NAME}-datasources"

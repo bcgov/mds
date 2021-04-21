@@ -65,7 +65,7 @@ describe("`createBond` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createBond()(dispatch).then(() => {
+    return createBond()(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -92,7 +92,7 @@ describe("`updateBond` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateBond(bondGuid)(dispatch).then(() => {
+    return updateBond(bondGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -138,7 +138,7 @@ describe("`createReclamationInvoice` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
-    return createReclamationInvoice()(dispatch).then(() => {
+    return createReclamationInvoice()(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
@@ -165,7 +165,7 @@ describe("`updateReclamationInvoice` action creator", () => {
 
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPut(url).reply(418, MOCK.ERROR);
-    return updateReclamationInvoice(invoiceGuid)(dispatch).then(() => {
+    return updateReclamationInvoice(invoiceGuid)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

@@ -1,6 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
+import { formatMoney } from "@common/utils/helpers";
 import { Table } from "antd";
+import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   summary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
@@ -15,16 +17,25 @@ export const ReclamationSummary = (props) => {
       render: (text) => <div title="Activity">{text}</div>,
     },
     {
-      title: "Total Effected Area (ha)",
+      title: "Total Affected Area (ha)",
       dataIndex: "total",
       key: "total",
-      render: (text) => <div title="Total Effected Area (ha)">{text}</div>,
+      render: (text, record) => (
+        <div title="Total Affected Area (ha)">
+          {text}{" "}
+          <NOWOriginalValueTooltip
+            style={{ marginLeft: "5%" }}
+            originalValue={record.originalTotal}
+            isVisible={record.originalTotal !== text}
+          />
+        </div>
+      ),
     },
     {
       title: "Estimated Cost of Reclamation",
       dataIndex: "cost",
       key: "cost",
-      render: (text) => <div title="Estimated Cost of Reclamation">{text}</div>,
+      render: (text) => <div title="Estimated Cost of Reclamation">{formatMoney(text)}</div>,
     },
   ];
 
@@ -37,7 +48,7 @@ export const ReclamationSummary = (props) => {
         columns={columns}
         dataSource={props.summary}
         locale={{
-          emptyText: "No data",
+          emptyText: "No Data Yet",
         }}
       />
     </div>

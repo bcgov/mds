@@ -8,6 +8,7 @@ import * as DocumentTypes from "@/customPropTypes/documents";
 import * as ReportTypes from "@/customPropTypes/reports";
 import * as ComplianceTypes from "@/customPropTypes/compliance";
 import * as Incidents from "@/customPropTypes/incidents";
+import * as Securities from "@/customPropTypes/securities";
 
 export default {
   ...UserTypes,
@@ -20,4 +21,5 @@ export default {
   ...ReportTypes,
   ...ComplianceTypes,
   ...Incidents,
+  ...Securities,
 };

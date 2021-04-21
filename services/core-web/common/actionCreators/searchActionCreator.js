@@ -19,8 +19,12 @@ export const fetchSearchResults = (searchTerm, searchTypes) => (dispatch) => {
       dispatch(success(reducerTypes.GET_SEARCH_RESULTS));
       dispatch(searchActions.storeSearchResults(response.data));
       dispatch(hideLoading());
+      return response;
     })
-    .catch(() => dispatch(error(reducerTypes.GET_SEARCH_RESULTS)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_SEARCH_RESULTS));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -59,4 +63,10 @@ export const clearSearchBarResults = () => (dispatch) => {
   dispatch(clear(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
   dispatch(searchActions.clearSearchBarResults());
   dispatch(success(reducerTypes.CLEAR_SEARCH_BAR_RESULTS));
+};
+
+export const clearAllSearchResults = () => (dispatch) => {
+  dispatch(clear(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
+  dispatch(searchActions.clearAllSearchResults());
+  dispatch(success(reducerTypes.CLEAR_ALL_SEARCH_RESULTS));
 };

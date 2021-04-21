@@ -55,7 +55,7 @@ class ReportsResource(Resource, UserMixin):
             'due_date_before': request.args.get('due_date_before', type=str),
             'received_date_after': request.args.get('received_date_after', type=str),
             'received_date_before': request.args.get('received_date_before', type=str),
-            'received_only': request.args.get('received_only', type=str),
+            'received_only': request.args.get('received_only', type=str) == "true",
             'compliance_year': request.args.get('compliance_year', type=str),
             'requested_by': request.args.get('requested_by', type=str),
             'status': request.args.getlist('status', type=str),
@@ -163,7 +163,7 @@ class ReportsResource(Resource, UserMixin):
                 self._build_filter('MineReport', 'received_date', '>=',
                                    args["received_date_after"]))
 
-        if not args["received_only"]:
+        if args["received_only"]:
             query = query.filter(MineReport.received_date.isnot(None))
 
         if args["requested_by"]:

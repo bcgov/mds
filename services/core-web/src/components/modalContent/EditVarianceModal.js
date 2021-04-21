@@ -54,34 +54,35 @@ export class EditVarianceModal extends Component {
   // handling delete functionality inside the modal, so the data can be updated properly.
   handleRemoveDocument = (event, documentGuid) => {
     event.preventDefault();
-    this.props
+    return this.props
       .removeDocumentFromVariance(this.props.mineGuid, this.props.varianceGuid, documentGuid)
-      .then(() => {
-        this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid);
-        this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid });
+      .then(async () => {
+        this.setState({ isLoaded: false });
+        await Promise.all([
+          this.props.fetchVarianceById(this.props.mineGuid, this.props.varianceGuid),
+          this.props.fetchVariancesByMine({ mineGuid: this.props.mineGuid }),
+        ]).finally(() => this.setState({ isLoaded: true }));
       });
   };
 
   render() {
     return (
-      <div>
-        <LoadingWrapper condition={this.state.isLoaded}>
-          <EditVarianceForm
-            onSubmit={this.props.onSubmit}
-            closeModal={this.props.closeModal}
-            mineGuid={this.props.mineGuid}
-            mineName={this.props.mineName}
-            inspectors={this.props.inspectors}
-            varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
-            variance={this.props.variance}
-            varianceStatusOptions={this.props.varianceStatusOptions}
-            initialValues={this.props.variance}
-            removeDocument={this.handleRemoveDocument}
-            complianceCodesHash={this.props.complianceCodesHash}
-            varianceDocumentCategoryOptionsHash={this.props.varianceDocumentCategoryOptionsHash}
-          />
-        </LoadingWrapper>
-      </div>
+      <LoadingWrapper condition={this.state.isLoaded}>
+        <EditVarianceForm
+          onSubmit={this.props.onSubmit}
+          closeModal={this.props.closeModal}
+          mineGuid={this.props.mineGuid}
+          mineName={this.props.mineName}
+          inspectors={this.props.inspectors}
+          varianceDocumentCategoryOptions={this.props.varianceDocumentCategoryOptions}
+          variance={this.props.variance}
+          varianceStatusOptions={this.props.varianceStatusOptions}
+          initialValues={this.props.variance}
+          removeDocument={this.handleRemoveDocument}
+          complianceCodesHash={this.props.complianceCodesHash}
+          varianceDocumentCategoryOptionsHash={this.props.varianceDocumentCategoryOptionsHash}
+        />
+      </LoadingWrapper>
     );
   }
 }

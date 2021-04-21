@@ -66,6 +66,16 @@ app {
                 [
                     'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
                     'params':[
+                            'NAME':"mds-now-streamline-etl",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "tasks/now-streamline-etl",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/nris-api/_python36_oracle.bc.json',
+                    'params':[
                             'NAME':"mds-nris-backend",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
@@ -186,12 +196,22 @@ app {
                     ]
                 ],
                 [
-                    'file':'openshift/templates/tools/logstash.bc.json',
+                    'file':'openshift/templates/filesystem-provider.bc.json',
                     'params':[
-                            'NAME':"mds-logstash",
+                            'NAME':"filesystem-provider",
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
-                            'SOURCE_CONTEXT_DIR': "services/elastic/logstash",
+                            'SOURCE_CONTEXT_DIR': "services/filesystem-provider",
+                            'SOURCE_REPOSITORY_URL': "${app.git.uri}"
+                    ]
+                ],
+                [
+                    'file':'openshift/templates/tusd.bc.json',
+                    'params':[
+                            'NAME':"tusd",
+                            'SUFFIX': "${app.build.suffix}",
+                            'VERSION':"${app.build.version}",
+                            'SOURCE_CONTEXT_DIR': "openshift/docker-images/tusd",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ]

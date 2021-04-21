@@ -60,3 +60,10 @@ export const mineVerificationStatus = shape({
   verifying_user: PropTypes.string.isRequired,
   verifying_timestamp: PropTypes.string.isRequired,
 });
+
+export const mineComment = shape({
+  mine_comment_guid: PropTypes.string.isRequired,
+  comment_user: PropTypes.string.isRequired,
+  mine_comment: PropTypes.string.isRequired,
+  comment_datetime: PropTypes.string.isRequired,
+});

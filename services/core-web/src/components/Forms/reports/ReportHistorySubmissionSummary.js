@@ -30,7 +30,6 @@ const ReportHistorySubmissionSummary = (props) => (
         <React.Fragment>
           <FormItemLabel underline>Comments</FormItemLabel>
           <CommentPanel
-            renderAdd={false}
             comments={props.mineReportSubmission.comments.map((comment) => ({
               key: comment.mine_report_comment_guid,
               author: comment.comment_user,

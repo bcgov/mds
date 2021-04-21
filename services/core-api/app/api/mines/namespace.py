@@ -16,6 +16,7 @@ from app.api.mines.permits.permit.resources.permit import PermitResource, Permit
 from app.api.mines.permits.permit.resources.permit_status_code import PermitStatusCodeResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment import PermitAmendmentResource, PermitAmendmentListResource
 from app.api.mines.permits.permit_amendment.resources.permit_amendment_document import PermitAmendmentDocumentListResource, PermitAmendmentDocumentResource
+from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import PermitAmendmentVCResource
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
@@ -33,6 +34,10 @@ from app.api.mines.variances.resources.variance_list import MineVarianceListReso
 from app.api.mines.variances.resources.variance_document_upload import MineVarianceDocumentUploadResource
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
+from app.api.mines.comments.resources.mine_comment import MineCommentListResource, MineCommentResource
+from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import PermitConditionCategoryResource
+from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -98,12 +103,19 @@ api.add_resource(
 api.add_resource(PermitResource, '/<string:mine_guid>/permits/<string:permit_guid>')
 api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
+api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
+api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
 
 api.add_resource(PermitAmendmentListResource,
                  '/<string:mine_guid>/permits/<string:permit_guid>/amendments')
 api.add_resource(
     PermitAmendmentResource,
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>')
+
+api.add_resource(
+    PermitAmendmentVCResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/verifiable-credential'
+)
 
 api.add_resource(
     PermitAmendmentDocumentListResource,
@@ -119,5 +131,17 @@ api.add_resource(
     '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/documents/<string:permit_amendment_document_guid>',
 )
 
+api.add_resource(
+    PermitConditionsListResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions',
+)
+api.add_resource(
+    PermitConditionsResource,
+    '/<string:mine_guid>/permits/<string:permit_guid>/amendments/<string:permit_amendment_guid>/conditions/<string:permit_condition_guid>',
+)
+
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
+
+api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
+api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')

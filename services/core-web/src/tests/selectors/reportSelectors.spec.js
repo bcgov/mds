@@ -9,8 +9,6 @@ const mockState = {
   reportsPageData: Mock.REPORTS_PAGE_DATA,
   mineReports: [],
   reportComments: [],
-  commentsLoading: true,
-  commentSubmitting: false,
 };
 
 describe("reportSelectors", () => {

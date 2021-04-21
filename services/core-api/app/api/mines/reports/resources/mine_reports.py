@@ -19,6 +19,7 @@ from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.mines.reports.models.mine_report_category import MineReportCategory
 from app.api.mines.reports.models.mine_report_due_date_type import MineReportDueDateType
+from app.api.mines.permits.permit_conditions.models.permit_condition_category import PermitConditionCategory
 from app.api.mines.reports.models.mine_report_definition_compliance_article_xref import MineReportDefinitionComplianceArticleXref
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_REPORT_MODEL
@@ -31,7 +32,7 @@ class MineReportListResource(Resource, UserMixin):
 
     # required
     parser.add_argument('submission_year', type=str, location='json', required=True)
-    parser.add_argument('mine_report_definition_guid', type=str, location='json', required=True)
+    parser.add_argument('mine_report_definition_guid', type=str, location='json')
     parser.add_argument(
         'due_date', location='json', type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
 
@@ -42,6 +43,7 @@ class MineReportListResource(Resource, UserMixin):
         location='json',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None)
     parser.add_argument('mine_report_submissions', type=list, location='json')
+    parser.add_argument('permit_condition_category_code', type=str, location='json')
 
     @api.marshal_with(MINE_REPORT_MODEL, envelope='records', code=200)
     @api.doc(description='returns the reports for a given mine.')
@@ -49,11 +51,11 @@ class MineReportListResource(Resource, UserMixin):
     def get(self, mine_guid):
         mrd_category = request.args.get('mine_report_definition_category')
         if mrd_category:
-            mine_reports = MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
-        else:
-            mine_reports = MineReport.find_by_mine_guid(mine_guid)
+            return MineReport.find_by_mine_guid_and_category(mine_guid, mrd_category)
 
-        return mine_reports
+        reports_type = request.args.get('mine_reports_type', None)
+
+        return MineReport.find_by_mine_guid_and_report_type(mine_guid, reports_type)
 
     @api.doc(description='creates a new report for the mine')
     @api.marshal_with(MINE_REPORT_MODEL, code=201)
@@ -64,22 +66,46 @@ class MineReportListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+        permit_condition_type_code = data.get('permit_condition_category_code', None)
 
-        mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
-            data['mine_report_definition_guid'])
-        permit = Permit.find_by_permit_guid_or_no(data['permit_guid'])
-        if mine_report_definition is None:
-            raise BadRequest('A report must be selected from the list.')
+        is_code_required_report = permit_condition_type_code == None
+        current_app.logger.debug(is_code_required_report)
+        permit_condition_category_code = None
+        permit_guid = data['permit_guid']
 
-        if permit and permit.mine_guid != mine.mine_guid:
-            raise BadRequest('The permit must be associated with the selected mine.')
+        # Code Required Reports check
+        if is_code_required_report:
+            mine_report_definition = MineReportDefinition.find_by_mine_report_definition_guid(
+                data['mine_report_definition_guid'])
+            if mine_report_definition is None:
+                raise BadRequest('A code required report type must be selected from the list.')
+        else:
+            # Permit Required Reports check
+            permit_condition_category = PermitConditionCategory.find_by_permit_condition_category_code(
+                permit_condition_type_code)
+            if permit_condition_category:
+                permit_condition_category_code = permit_condition_category.condition_category_code
+            else:
+                raise BadRequest('A permit required report type must be selected from the list.')
+            if not permit_guid:
+                raise BadRequest('A permit must be selected for Permit Required Report')
+
+        permit = Permit.find_by_permit_guid_or_no(permit_guid)
+
+        if permit:
+            permit._context_mine = mine
+            if permit.mine.mine_guid != mine.mine_guid:
+                raise BadRequest('The permit must be associated with the selected mine.')
+
         mine_report = MineReport.create(
-            mine_report_definition_id=mine_report_definition.mine_report_definition_id,
+            mine_report_definition_id=mine_report_definition.mine_report_definition_id
+            if is_code_required_report else None,
             mine_guid=mine.mine_guid,
             due_date=data.get('due_date'),
             received_date=data['received_date'],
             submission_year=data['submission_year'],
-            permit_id=permit.permit_id if permit else None)
+            permit_id=permit.permit_id if permit else None,
+            permit_condition_category_code=permit_condition_category_code)
 
         submissions = data.get('mine_report_submissions')
         if submissions:

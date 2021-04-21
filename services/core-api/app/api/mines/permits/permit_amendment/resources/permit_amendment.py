@@ -1,17 +1,44 @@
+import json
+
 from datetime import datetime
 from flask_restplus import Resource, reqparse, inputs
 from flask import current_app
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.extensions import api
+from app.extensions import api, jwt, db
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit, requires_role_mine_admin
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_AMENDMENT_MODEL
+from app.api.utils.access_decorators import MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
+from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
+from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+
+ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS = [MINE_ADMIN, EDIT_HISTORICAL_PERMIT_AMENDMENTS]
+
+
+def validate_issue_date(issue_date, permit_amendment_type_code, permit_guid, mine_guid):
+    if permit_amendment_type_code == 'OGP':
+        return
+
+    original_permit_amendment = PermitAmendment.find_original_permit_amendment_by_permit_guid(
+        permit_guid, mine_guid)
+
+    if not jwt.validate_roles(
+            ROLES_ALLOWED_TO_CREATE_HISTORICAL_AMENDMENTS
+    ) and original_permit_amendment and original_permit_amendment.issue_date:
+        if issue_date and original_permit_amendment.issue_date > issue_date.date():
+            raise AssertionError(
+                'Permit amendment issue date cannot be before the permits First Issued date.')
 
 
 class PermitAmendmentListResource(Resource, UserMixin):
@@ -21,7 +48,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
-        location='json')
+        location='json',
+        store_missing=False)
     parser.add_argument(
         'received_date', location='json', type=inputs.datetime_from_iso8601, store_missing=False)
     parser.add_argument(
@@ -36,7 +64,22 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        location='json',
+        help='The now_application_guid this permit is related to.')
+    parser.add_argument(
+        'issuing_inspector_title',
+        type=str,
+        location='json',
+        help='Title of the Issuing Inspector for this permit.')
+    parser.add_argument(
+        'regional_office', type=str, location='json', help='The regional office for this permit.')
+    parser.add_argument(
+        'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -52,73 +95,130 @@ class PermitAmendmentListResource(Resource, UserMixin):
         if not permit:
             raise NotFound('Permit does not exist.')
 
-        if not str(permit.mine_guid) == mine_guid:
-            raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
+        mine = Mine.find_by_mine_guid(mine_guid)
+        if not mine:
+            raise NotFound("Mine does not exist")
+        # if str(pid) not in [m.mine_guid for m in permit.all_mines]:
+        #     raise BadRequest('Permits mine_guid and provided mine_guid mismatch.')
 
         data = self.parser.parse_args()
         current_app.logger.info(f'creating permit_amendment with >> {data}')
 
-        party = Party.find_by_party_guid(data.get('permittee_party_guid'))
-        if not party:
-            raise NotFound('Party not found')
+        validate_issue_date(
+            data.get('issue_date'), data.get('permit_amendment_type_code'), permit.permit_guid,
+            mine_guid)
 
-        permittees = MinePartyAppointment.find_by_permit_guid(permit_guid)
-        if not permittees:
-            raise NotFound('Party appointments not found')
+        permittee_party_guid = None
+        if not data.get('is_historical_amendment', False):
+            permittee_party_guid = data.get('permittee_party_guid', None)
 
-        permit_issue_datetime = data.get('issue_date')
-        # convert permit_issue_date to a date object to compare with permittee start_date,
-        #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
-        permit_issue_date = datetime.date(permit_issue_datetime)
-        is_historical_permit = False
+        permittee_end_date = None
+        if permittee_party_guid:
+            party = Party.find_by_party_guid(data.get('permittee_party_guid'))
+            if not party:
+                raise NotFound('Permittee party not found')
 
-        new_end_dates = MinePartyAppointment.find_appointment_end_dates(
-            permit_guid, permit_issue_date)
+            is_historical_permit = False
+            permit_issue_datetime = data.get('issue_date')
+            # convert permit_issue_date to a date object to compare with permittee start_date,
+            #Both dates are stored in the DB as Dates, and are being converted to SQLAlchemy dateTimes in the modals, but for some reason being returned as Python Dates.
+            if permit_issue_datetime:
+                permit_issue_date = datetime.date(permit_issue_datetime)
 
-        for permittee in permittees:
-            # check if the new appointment is older than the current appointment, if so create a new permittee appointment
-            if permittee.start_date > permit_issue_date:
-                is_historical_permit = True
-            else:
-                # if the amendment is the newest, change the end dates of the other appointments
-                position = new_end_dates.index(permittee.start_date)
-                if new_end_dates.index(permittee.start_date) == 0:
-                    permittee.save()
-                else:
-                    permittee.end_date = new_end_dates[position - 1]
-                    permittee.save()
+            permittees = permit.permittee_appointments
+            if permittees:
+                new_end_dates = MinePartyAppointment.find_appointment_end_dates(
+                    permit.permit_id, permit_issue_date)
 
-        permittee_start_date = permit_issue_date
-        position = new_end_dates.index(permit_issue_date)
-        permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
+                for permittee in permittees:
+                    # check if the new appointment is older than the current appointment, if so create a new permittee appointment
+                    if permittee.start_date > permit_issue_date:
+                        is_historical_permit = True
+                    else:
+                        # if the amendment is the newest, change the end dates of the other appointments
+                        position = new_end_dates.index(permittee.start_date)
+                        if new_end_dates.index(permittee.start_date) == 0:
+                            permittee.save()
+                        else:
+                            permittee.end_date = new_end_dates[position - 1]
+                            permittee.save()
+                position = new_end_dates.index(permit_issue_date)
+                permittee_end_date = new_end_dates[position - 1] if is_historical_permit else None
 
-        # create a new appointment, so every amendment is associated with a permittee
-        new_permittee = MinePartyAppointment.create(
-            permit.mine_guid,
-            data.get('permittee_party_guid'),
-            'PMT',
-            self.get_user_info(),
-            start_date=permittee_start_date,
-            end_date=permittee_end_date,
-            permit_guid=permit_guid)
+            # create a new appointment, so every amendment is associated with a permittee
+            new_permittee = MinePartyAppointment.create(
+                None,
+                data.get('permittee_party_guid'),
+                mine_party_appt_type_code='PMT',
+                processed_by=self.get_user_info(),
+                start_date=permit_issue_date,
+                end_date=permittee_end_date,
+                permit=permit)
 
-        new_permittee.save()
+            new_permittee.save()
+
+        permit_amendment_type_code = data.get('permit_amendment_type_code')
+        permit_amendment_status_code = data.get('permit_amendment_status_code')
+
+        now_application_guid = data.get('now_application_guid')
+
         new_pa = PermitAmendment.create(
             permit,
-            data.get('received_date'),
-            data.get('issue_date'),
-            data.get('authorization_end_date'),
-            data.get('permit_amendment_type_code', 'AMD'),
-            description=data.get('description'))
+            mine,
+            received_date=data.get('received_date'),
+            issue_date=data.get('issue_date'),
+            authorization_end_date=data.get('authorization_end_date'),
+            permit_amendment_type_code=permit_amendment_type_code
+            if permit_amendment_type_code else 'AMD',
+            description=data.get('description'),
+            liability_adjustment=data.get('liability_adjustment'),
+            permit_amendment_status_code=permit_amendment_status_code
+            if permit_amendment_status_code else 'ACT',
+            issuing_inspector_title=data.get('issuing_inspector_title'),
+            regional_office=data.get('regional_office'),
+            now_application_guid=data.get('now_application_guid'),
+        )
 
         uploadedFiles = data.get('uploadedFiles', [])
         for newFile in uploadedFiles:
             new_pa_doc = PermitAmendmentDocument(
                 document_name=newFile['fileName'],
                 document_manager_guid=newFile['document_manager_guid'],
-                mine_guid=permit.mine_guid,
+                mine_guid=mine.mine_guid,
             )
             new_pa.related_documents.append(new_pa_doc)
+
+        if now_application_guid is not None and permit_amendment_status_code == "DFT":
+            application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
+
+            def create_standard_conditions(application_identity):
+                now_type = application_identity.now_application.notice_of_work_type_code
+                standard_conditions = StandardPermitConditions.find_by_notice_of_work_type_code(
+                    now_type)
+                for condition in standard_conditions:
+                    PermitConditions.create(condition.condition_category_code,
+                                            condition.condition_type_code,
+                                            new_pa.permit_amendment_id, condition.condition,
+                                            condition.display_order, condition.sub_conditions)
+
+            if application_identity.now_application:
+                if application_identity.application_type_code == "ADA":
+
+                    conditions = PermitConditions.find_all_by_permit_amendment_id(
+                        application_identity.source_permit_amendment_id)
+                    if conditions:
+                        for condition in conditions:
+                            PermitConditions.create(condition.condition_category_code,
+                                                    condition.condition_type_code,
+                                                    new_pa.permit_amendment_id, condition.condition,
+                                                    condition.display_order,
+                                                    condition.sub_conditions)
+                    else:
+                        create_standard_conditions(application_identity)
+                else:
+                    create_standard_conditions(application_identity)
+
+                db.session.commit()
 
         new_pa.save()
         return new_pa
@@ -131,7 +231,8 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permittee_party_guid',
         type=str,
         help='GUID of the party that is the permittee for this permit.',
-        location='json')
+        location='json',
+        store_missing=False)
     parser.add_argument(
         'received_date',
         location='json',
@@ -152,8 +253,46 @@ class PermitAmendmentResource(Resource, UserMixin):
     parser.add_argument(
         'permit_amendment_status_code', type=str, location='json', store_missing=False)
     parser.add_argument('description', type=str, location='json', store_missing=False)
-    parser.add_argument('security_total', type=str, location='json', store_missing=False)
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'security_received_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument('security_not_required', location='json', type=bool, store_missing=False)
+    parser.add_argument(
+        'security_not_required_reason', location='json', type=str, store_missing=False)
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
+    parser.add_argument(
+        'issuing_inspector_title',
+        type=str,
+        location='json',
+        store_missing=False,
+        help='Title of the Issuing Inspector for this permit.')
+    parser.add_argument(
+        'regional_office',
+        type=str,
+        location='json',
+        store_missing=False,
+        help='The regional office for this permit.')
+    parser.add_argument(
+        'final_original_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each original file in the final application package.')
+    parser.add_argument(
+        'final_requested_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each requested file in the final application package.')
+    parser.add_argument(
+        'previous_amendment_documents_metadata',
+        type=json.loads,
+        location='json',
+        store_missing=False,
+        help='The file metadata for each file from the previous permit amendment.')
 
     @api.doc(params={'permit_amendment_guid': 'Permit amendment guid.'})
     @requires_role_view_all
@@ -182,6 +321,10 @@ class PermitAmendmentResource(Resource, UserMixin):
         data = self.parser.parse_args()
         current_app.logger.info(f'updating {permit_amendment} with >> {data}')
 
+        validate_issue_date(
+            data.get('issue_date'), data.get('permit_amendment_type_code'),
+            permit_amendment.permit_guid, mine_guid)
+
         for key, value in data.items():
             if key == 'uploadedFiles':
                 for newFile in value:
@@ -193,6 +336,48 @@ class PermitAmendmentResource(Resource, UserMixin):
                     permit_amendment.related_documents.append(new_pa_doc)
             else:
                 setattr(permit_amendment, key, value)
+
+        # Update file metadata for the original final application package files.
+        final_original_documents_metadata = data.get('final_original_documents_metadata', {})
+        if final_original_documents_metadata:
+            for now_application_document_xref_guid, values in final_original_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentIdentityXref.find_by_guid(
+                    now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
+
+        # Update file metadata for the requested final application package files.
+        final_requested_documents_metadata = data.get('final_requested_documents_metadata', {})
+        if final_requested_documents_metadata:
+            for now_application_document_xref_guid, values in final_requested_documents_metadata.items(
+            ):
+                doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
+
+        # Update file metadata for the previous amendment files.
+        previous_amendment_documents_metadata = data.get('previous_amendment_documents_metadata',
+                                                         {})
+        if previous_amendment_documents_metadata:
+            for permit_amendment_document_guid, values in previous_amendment_documents_metadata.items(
+            ):
+                doc = PermitAmendmentDocument.find_by_permit_amendment_document_guid(
+                    permit_amendment_document_guid)
+                if doc is None:
+                    continue
+                doc.preamble_title = values.get('preamble_title')
+                doc.preamble_author = values.get('preamble_author')
+                doc.preamble_date = values.get('preamble_date') or None
+                doc.save()
 
         permit_amendment.save()
 
@@ -211,7 +396,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         if not str(permit_amendment.mine_guid) == mine_guid:
             raise BadRequest('Permits mine_guid and supplied mine_guid mismatch.')
 
-        permit_amendment.deleted_ind = True
-
-        permit_amendment.save()
-        return
+        try:
+            permit_amendment.delete()
+        except Exception as e:
+            raise BadRequest(e)

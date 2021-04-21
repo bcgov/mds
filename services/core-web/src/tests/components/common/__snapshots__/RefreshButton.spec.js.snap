@@ -10,10 +10,8 @@ exports[`RefreshButton renders properly 1`] = `
   onClick={[Function]}
   type="primary"
 >
-  <Icon
+  <ForwardRef(SyncOutlined)
     className="icon-sm"
-    theme="outlined"
-    type="sync"
   />
 </Button>
 `;

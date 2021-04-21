@@ -1,16 +1,17 @@
 import React from "react";
-import { Button, Icon, Tooltip, Table } from "antd";
+import { Button, Tooltip, Table } from "antd";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import { formatMoney, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import NullScreen from "@/components/common/NullScreen";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
 import LinkButton from "@/components/common/LinkButton";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class  MineReclamationInvoiceTable - displays a table of permits with their related invoices
@@ -26,32 +27,27 @@ const propTypes = {
   openEditReclamationInvoiceModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   openAddReclamationInvoiceModal: PropTypes.func.isRequired,
-  bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onExpand: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  recordsByPermit: PropTypes.func.isRequired,
+  getBalance: PropTypes.func.isRequired,
+  getAmountSum: PropTypes.func.isRequired,
 };
 
 export const MineReclamationInvoiceTable = (props) => {
-  const invoicesByPermit = (permit) =>
-    props.invoices.filter(({ permit_guid }) => permit_guid === permit.permit_guid);
-  const getSum = (status, permitGuid) =>
-    props.bonds
-      .filter(
-        ({ bond_status_code, permit_guid }) =>
-          bond_status_code === status && permit_guid === permitGuid
-      )
-      .reduce((sum, bond) => +sum + +bond.amount, 0);
-  const getAmountSum = (permitGuid) =>
-    props.invoices
-      .filter(({ permit_guid }) => permit_guid === permitGuid)
-      .reduce((sum, invoice) => +sum + +invoice.amount, 0);
-  const getBalance = (permitGuid) => getSum("CON", permitGuid) - getAmountSum(permitGuid);
   const columns = [
     {
       title: "Permit No.",
       dataIndex: "permit_no",
       key: "permit_no",
       render: (text) => <div title="Permit No.">{text}</div>,
+    },
+    {
+      title: "Project ID",
+      dataIndex: "project_id",
+      key: "project_id",
+      render: (text) => <div title="Project ID">{text}</div>,
     },
     {
       title: "Total Confiscated",
@@ -68,14 +64,17 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Total Spent">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Balance",
+      title: (
+        <div>
+          Balance
+          <CoreTooltip title="Balance: This is the current amount of money available from the confiscated bonds. If this amount is negative, it means invoices have exceeded the confiscated bonds." />
+        </div>
+      ),
       dataIndex: "balance",
       key: "balance",
       render: (text) => <div title="Balance">{formatMoney(text) || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -85,15 +84,11 @@ export const MineReclamationInvoiceTable = (props) => {
               type="secondary"
               className="permit-table-button"
               onClick={(event) =>
-                props.openAddReclamationInvoiceModal(
-                  event,
-                  record.permit_guid,
-                  getBalance(record.permit_guid)
-                )
+                props.openAddReclamationInvoiceModal(event, record, props.getBalance(record))
               }
             >
-              <div className="padding-small">
-                <img className="padding-small--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
+              <div className="padding-sm">
+                <img className="padding-sm--right icon-svg-filter" src={EDIT} alt="Add/Edit" />
                 Add Reclamation Invoice
               </div>
             </Button>
@@ -117,10 +112,10 @@ export const MineReclamationInvoiceTable = (props) => {
       render: (text) => <div title="Vendor">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
-      title: "Project ID",
-      dataIndex: "project_id",
-      key: "project_id",
-      render: (text) => <div title="Project ID">{text || Strings.EMPTY_FIELD}</div>,
+      title: "Notes",
+      dataIndex: "note",
+      key: "note",
+      render: (text) => <div title="Notes">{text || Strings.EMPTY_FIELD}</div>,
     },
     {
       title: "Documents",
@@ -143,8 +138,6 @@ export const MineReclamationInvoiceTable = (props) => {
       ),
     },
     {
-      title: "",
-      dataIndex: "addEditButton",
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
@@ -155,11 +148,7 @@ export const MineReclamationInvoiceTable = (props) => {
                 type="secondary"
                 className="permit-table-button"
                 onClick={(event) =>
-                  props.openEditReclamationInvoiceModal(
-                    event,
-                    record,
-                    getBalance(record.permit_guid)
-                  )
+                  props.openEditReclamationInvoiceModal(event, record, props.getBalance(record))
                 }
               >
                 <img
@@ -182,7 +171,8 @@ export const MineReclamationInvoiceTable = (props) => {
         align="left"
         pagination={false}
         columns={invoiceColumns}
-        dataSource={invoicesByPermit(record)}
+        dataSource={props.recordsByPermit(record, props.invoices)}
+        locale={{ emptyText: "No Data Yet" }}
       />
     );
   };
@@ -198,11 +188,11 @@ export const MineReclamationInvoiceTable = (props) => {
     >
       {rowProps.expanded ? (
         <Tooltip title="Click to hide associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="minus-square" theme="filled" className="icon-lg--grey" />
+          <MinusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       ) : (
         <Tooltip title="Click to view associated bonds." placement="right" mouseEnterDelay={1}>
-          <Icon type="plus-square" theme="filled" className="icon-lg--grey" />
+          <PlusSquareFilled className="icon-lg--lightgrey" />
         </Tooltip>
       )}
     </a>
@@ -212,9 +202,9 @@ export const MineReclamationInvoiceTable = (props) => {
     permits.map((permit) => {
       return {
         key: permit.permit_guid,
-        amount_confiscated: getSum("CON", permit.permit_guid),
-        amount_spent: getAmountSum(permit.permit_guid),
-        balance: getBalance(permit.permit_guid),
+        amount_confiscated: permit.confiscated_bond_total,
+        amount_spent: props.getAmountSum(permit),
+        balance: props.getBalance(permit),
         ...permit,
       };
     });
@@ -229,7 +219,6 @@ export const MineReclamationInvoiceTable = (props) => {
         rowClassName: "table-row-align-middle pointer fade-in",
         align: "left",
         pagination: false,
-        locale: { emptyText: <NullScreen type="securities" /> },
         expandIcon: RenderTableExpandIcon,
         expandRowByClick: true,
         expandedRowRender: invoices,

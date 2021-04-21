@@ -6,7 +6,7 @@ from app import create_app
 from app.config import TestConfig
 from app.extensions import db, jwt as _jwt
 from app.api.utils.include.user_info import User
-from app.api.utils.setup_marshmallow import run_after_configure
+from app.api.utils.setup_marshmallow import setup_marshmallow
 
 from .constants import *
 from tests.factories import FACTORY_LIST
@@ -39,6 +39,8 @@ def auth_headers(app):
     admin_only_auth_token = _jwt.create_jwt(ADMIN_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     proponent_only_auth_token = _jwt.create_jwt(PROPONENT_ONLY_AUTH_CLAIMS, TOKEN_HEADER)
     nros_vfcbc_only_auth_token = _jwt.create_jwt(NROS_VFCBC_AUTH_CLAIMS, TOKEN_HEADER)
+    core_edit_parties_only_auth_token = _jwt.create_jwt(CORE_EDIT_PARTIES_AUTH_CLAIMS, TOKEN_HEADER)
+
     return {
         'base_auth_header': {
             'Authorization': 'Bearer ' + base_auth_token
@@ -60,6 +62,9 @@ def auth_headers(app):
         },
         'nros_vfcbc_auth_header': {
             'Authorization': 'Bearer ' + nros_vfcbc_only_auth_token
+        },
+        'core_edit_parties_only_auth_header': {
+            'Authorization': 'Bearer ' + core_edit_parties_only_auth_token
         }
     }
 
@@ -81,7 +86,7 @@ def test_client():
 
     # The event that this function runs off of is never fired
     # when the tests are run so it has to be called manually.
-    run_after_configure()
+    setup_marshmallow()
 
     yield client
 

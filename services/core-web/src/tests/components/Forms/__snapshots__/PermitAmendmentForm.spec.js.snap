@@ -36,31 +36,11 @@ exports[`PermitAmendmentForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="issue_date"
-          label="Issue date*"
+          label="Issue Date*"
           name="issue_date"
           validate={
             Array [
               [Function],
-              [Function],
-            ]
-          }
-        />
-      </FormItem>
-      <FormItem
-        hasFeedback={false}
-      >
-        <Field
-          autoComplete="off"
-          component={[Function]}
-          format={[Function]}
-          id="security_total"
-          label="Security Assessment"
-          name="security_total"
-          normalize={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          validate={
-            Array [
               [Function],
             ]
           }
@@ -79,6 +59,54 @@ exports[`PermitAmendmentForm renders properly 1`] = `
               [Function],
             ]
           }
+        />
+      </FormItem>
+      <Divider />
+      <FormItem
+        hasFeedback={false}
+        label="Securities"
+      >
+        <Field
+          component={[Function]}
+          id="security_not_required"
+          label="Security Not Required"
+          name="security_not_required"
+          onChange={[Function]}
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+        label="Assessed Liability Adjustment"
+      >
+        <p
+          className="p-light"
+        >
+          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
+        </p>
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="liability_adjustment"
+          name="liability_adjustment"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="security_received_date"
+          label="Security Received"
+          name="security_received_date"
         />
       </FormItem>
     </Col>
@@ -111,15 +139,10 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       }
     }
   >
-    <Popconfirm
+    <ForwardRef
       cancelText="No"
       disabled={false}
-      icon={
-        <Icon
-          theme="filled"
-          type="exclamation-circle"
-        />
-      }
+      icon={<ForwardRef(ExclamationCircleFilled) />}
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -138,11 +161,10 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </Popconfirm>
+    </ForwardRef>
     <Button
       block={false}
       className="full-mobile"
-      disabled={false}
       ghost={false}
       htmlType="submit"
       loading={false}

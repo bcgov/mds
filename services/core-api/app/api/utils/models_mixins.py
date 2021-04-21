@@ -7,7 +7,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.types import TypeEngine
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
-from marshmallow_sqlalchemy import ModelSchema
+from sqlalchemy.schema import FetchedValue
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from app.extensions import db
 from app.api.constants import STATE_MODIFIED_DELETE_ON_PUT
@@ -45,7 +46,9 @@ def ensure_constrained(query):
             cls = mzero.class_
 
             # if model includes mine_guid, apply filter on mine_guid.
-            if hasattr(cls, 'mine_guid') and query._user_bound:
+            mapper = inspect(cls)
+
+            if 'mine_guid' in [c.name for c in mapper.columns] and query._user_bound:
                 query = query.enable_assertions(False).filter(
                     cls.mine_guid.in_(user_security.mine_ids))
 
@@ -66,7 +69,7 @@ class Base(db.Model):
 
     # This allows all models access to the default Marshmallow model Schema
     # but also allows them to override it if need be.
-    _ModelSchema = ModelSchema
+    _ModelSchema = SQLAlchemyAutoSchema
 
     def save(self, commit=True):
         db.session.add(self)
@@ -80,8 +83,9 @@ class Base(db.Model):
     def delete(self, commit=True):
         if hasattr(self, 'deleted_ind'):
             raise Exception("Not implemented for soft deletion.")
+            ##SoftDeleteMixin.delete() should have overridden this.
         db.session.delete(self)
-        current_app.logger.debug(f'Deleting object: {self}')
+        current_app.logger.warn(f'Deleting object: {self}')
         if commit:
             try:
                 db.session.commit()
@@ -105,10 +109,11 @@ class Base(db.Model):
         Side-Effect: Self attributes have been overwritten by values in data_dict, matched on key, recursivly.
         """
         current_app.logger.debug(depth * '-' + f'updating{self}')
-        model = inspect(self.__class__)
+        mapper = inspect(self.__class__)
         editable_columns = [
-            c for c in model.columns if c.name not in [pk.name for pk in model.primary_key]
+            c for c in mapper.columns if c.name not in [pk.name for pk in mapper.primary_key]
         ]
+        class_relationships = mapper.relationships
 
         if not _edit_key:
             if not self._edit_key:
@@ -120,8 +125,10 @@ class Base(db.Model):
 
         for k, v in data_dict.items():
             current_app.logger.debug(depth * '>' + f'{type(v)}-{k}')
-
             if isinstance(v, dict):
+                if k not in [r for r, x in class_relationships.items()]:
+                    current_app.logger.debug(f'key <{k}> is not a relationship, skipping')
+                    continue
                 if len(v.keys()) < 1:
                     continue
                 rel = getattr(self.__class__, k)
@@ -131,7 +138,7 @@ class Base(db.Model):
                         f'COMBOBREAKER!!! {_edit_key} not in {rel_class} edit groups {rel_class._edit_groups}'
                     )
                     continue
-                current_app.logger.debug(depth * ' ' + f'recursivly updating {k}')
+                current_app.logger.debug(depth * ' ' + f'recursively updating {k}')
                 existing_obj = getattr(self, k)
                 if existing_obj is None:
                     setattr(self, k, rel_class())
@@ -212,7 +219,9 @@ class Base(db.Model):
 
                 if (type(col.type) == UUID):
                     #UUID does not implement python_type, manual check
-                    assert isinstance(v, (UUID, str))
+                    if v is not None:
+                        assert isinstance(v, (UUID, str))
+                    setattr(self, k, v)
                 else:
                     py_type = col.type.python_type
 
@@ -240,8 +249,8 @@ class Base(db.Model):
                             setattr(self, k, dec.quantize(decimal.Decimal('.0000001')))
                         continue
 
-                    #for string columns, consider empty strings as null
-                    if py_type == str and v is '':
+                    #for string or integer columns, consider empty strings as null
+                    if py_type in (str, int) and v is '':
                         setattr(self, k, None)
 
                     # elif (v is not None) and not isinstance(v, py_type):
@@ -278,3 +287,36 @@ class AuditMixin(object):
         onupdate=User().get_user_username)
     update_timestamp = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class SoftDeleteMixin(object):
+    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+
+    #TODO https://blog.miguelgrinberg.com/post/implementing-the-soft-delete-pattern-with-flask-and-sqlalchemy
+    #This model can choose it's query class (one that respects the deleted ind!!!)
+
+    def delete(self, commit=True):
+        if False:
+            #experimental code
+            #cascading smart delete (soft/hard, only on children, not parents)
+            mapper = inspect(self.__class__)
+            related_models = [rel.entity.class_ for rel in mapper.relationships]
+
+            for model in related_models:
+                related_mapper = inspect(model)
+                if mapper.primary_key.__name__ in [
+                        c.name for c in model.primary_key.columns if c.nullable == False
+                ]:
+                    #source object is non_nullable fk on related object
+                    #cascade deleted indicator
+                    related = getattr(self, model.relationship)
+                    if type(related) == list:
+                        [r.delete(commit=commit) for r in related]
+                    else:
+                        related.delete(commit=commit)
+
+        #TODO, handle children, or let model override this.
+        self.deleted_ind = True
+
+        if commit == True:
+            self.save()

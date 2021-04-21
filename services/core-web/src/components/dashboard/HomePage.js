@@ -5,7 +5,8 @@ import { fetchMetabaseDashboard } from "@common/actionCreators/reportingActionCr
 import ReactIframeResizer from "react-iframe-resizer-super";
 import SearchBar from "@/components/search/SearchBar";
 import CoreActivities from "@/components/activities/CoreActivities";
-import { BACKGROUND, HSRC_PDF } from "@/constants/assets";
+import { BACKGROUND, HSRC_PDF, MEMP_PDF } from "@/constants/assets";
+import { PageTracker } from "@common/utils/trackers";
 
 const iframeResizerOptions = { checkOrigin: false };
 
@@ -36,6 +37,7 @@ export class HomePage extends Component {
     const iframeUrlTwo = `${this.state.graph_urls[1]}#bordered=true&titled=false`;
     return (
       <div className="background" style={{ backgroundImage: `url(${BACKGROUND})` }}>
+        <PageTracker title="Home Page" />
         <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
           <Col xs={xs} sm={sm} md={md * 2} lg={lg * 2} xl={xl * 2}>
             <div className="search-container">
@@ -123,7 +125,7 @@ export class HomePage extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Inspector of Mines Training
+                    LAMP
                   </a>
                 </li>
                 <li>
@@ -133,30 +135,31 @@ export class HomePage extends Component {
                 </li>
                 <li>
                   <a
-                    href="https://gww.nrs.gov.bc.ca/empr/mines-and-mineral-resources-division/mds-employee-info-resource-hub"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Project Information & Resources
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="https://governmentofbc.maps.arcgis.com/apps/webappviewer/index.html?id=f024193c07a04a28b678170e1e2046f6"
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Not set up to use this? Contact the GIS team."
                   >
-                    EMPR Inspection Mapper
+                    EMLI Inspection Mapper
                   </a>
                 </li>
                 <li>
+                  {/* TODO: Change this to be the correct URL, if and when they change EMPR to EMLI */}
                   <a
                     href="https://nrm.sp.gov.bc.ca/sites/EMPR/mtb/_layouts/15/start.aspx#/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    EMPR Sharepoint Requests Portal
+                    EMLI Sharepoint Requests Portal
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://projects.eao.gov.bc.ca/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    EPIC (EAO)
                   </a>
                 </li>
               </ul>
@@ -187,6 +190,11 @@ export class HomePage extends Component {
                     rel="noopener noreferrer"
                   >
                     Chief Inspector&apos;s Directives
+                  </a>
+                </li>
+                <li>
+                  <a href={MEMP_PDF} target="_blank" rel="noopener noreferrer">
+                    Mine Emergency Management Plan (MEMP)
                   </a>
                 </li>
               </ul>

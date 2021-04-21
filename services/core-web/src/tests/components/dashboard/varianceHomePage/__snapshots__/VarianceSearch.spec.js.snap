@@ -2,9 +2,7 @@
 
 exports[`Variance Search Component renders properly 1`] = `
 <div>
-  <Row
-    gutter={0}
-  >
+  <Row>
     <Col
       md={
         Object {

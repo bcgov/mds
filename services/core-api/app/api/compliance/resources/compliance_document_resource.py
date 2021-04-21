@@ -45,6 +45,6 @@ class ComplianceDocumentResource(Resource, UserMixin):
         document_info = cache.get(DOWNLOAD_TOKEN(token_guid))
         cache.delete(DOWNLOAD_TOKEN(token_guid))
         if not document_info:
-            raise BadRequest('Valid token requred for download')
+            raise BadRequest('Valid token required for download')
 
         return NRISDownloadService.download(document_info["documenturl"], document_info["filename"])

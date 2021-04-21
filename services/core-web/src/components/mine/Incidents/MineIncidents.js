@@ -10,6 +10,7 @@ import {
   fetchMineIncidents,
   createMineIncident,
   updateMineIncident,
+  deleteMineIncident,
 } from "@common/actionCreators/incidentActionCreator";
 import { getMineIncidents } from "@common/selectors/incidentSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
@@ -53,6 +54,7 @@ const propTypes = {
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   updateMineIncident: PropTypes.func.isRequired,
+  deleteMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -70,12 +72,12 @@ export class MineIncidents extends Component {
   }
 
   handleAddMineIncident = (values) => {
-    const { number_of_fatalities = 0, number_of_injuries = 0, ...otherValues } = values;
-    this.props
+    const { number_of_fatalities = 0, number_of_injuries = 0, ...other } = values;
+    return this.props
       .createMineIncident(this.props.mineGuid, {
         number_of_fatalities,
         number_of_injuries,
-        ...otherValues,
+        ...other,
       })
       .then(() => {
         this.props.closeModal();
@@ -83,14 +85,18 @@ export class MineIncidents extends Component {
       });
   };
 
-  handleEditMineIncident = (values) => {
+  handleEditMineIncident = (values) =>
     this.props
       .updateMineIncident(this.props.mineGuid, values.mine_incident_guid, values)
       .then(() => {
         this.props.closeModal();
         this.props.fetchMineIncidents(this.props.mineGuid);
       });
-  };
+
+  handleDeleteMineIncident = (values) =>
+    this.props.deleteMineIncident(this.props.mineGuid, values.mine_incident_guid).then(() => {
+      this.props.fetchMineIncidents(this.props.mineGuid);
+    });
 
   parseIncidentIntoFormData = (existingIncident) => ({
     ...existingIncident,
@@ -186,6 +192,7 @@ export class MineIncidents extends Component {
           openMineIncidentModal={this.openMineIncidentModal}
           handleEditMineIncident={this.handleEditMineIncident}
           openViewMineIncidentModal={this.openViewMineIncidentModal}
+          handleDeleteMineIncident={this.handleDeleteMineIncident}
         />
       </div>
     );
@@ -197,7 +204,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
   inspectors: getDropdownInspectors(state),
-  followupActions: getIncidentFollowupActionOptions(state),
+  followupActions: getIncidentFollowupActionOptions(state, true),
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
   incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
@@ -211,6 +218,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineIncidents,
       createMineIncident,
       updateMineIncident,
+      deleteMineIncident,
       destroy,
       openModal,
       closeModal,
@@ -221,7 +229,4 @@ const mapDispatchToProps = (dispatch) =>
 MineIncidents.propTypes = propTypes;
 MineIncidents.defaultProps = defaultProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MineIncidents);
+export default connect(mapStateToProps, mapDispatchToProps)(MineIncidents);

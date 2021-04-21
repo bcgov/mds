@@ -14,5 +14,5 @@ class MineIncidentDocumentTypeCode(AuditMixin, Base):
         return '<MineIncidentDocumentTypeCode %r>' % self.mine_incident_document_type_code
 
     @classmethod
-    def get_active(cls):
-        return cls.query.filter_by(active_ind=True).all()
+    def get_all(cls):
+        return cls.query.all()

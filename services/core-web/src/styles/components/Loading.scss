@@ -18,6 +18,7 @@
 .loading-screen--small {
   min-height: 500px;
   width: 100%;
+  position: relative;
   #spinner {
     // offset size of spinner to center
     left: 45% !important;

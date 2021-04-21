@@ -2,6 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
+import { get, sortBy, isEmpty } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -37,8 +38,27 @@ export const createItemMap = (array, idField) => {
 // Function create id array for redux state. (used in src/reducers/<customReducer>)
 export const createItemIdsArray = (array, idField) => array.map((item) => item[idField]);
 
-export const createDropDownList = (array, labelField, valueField) =>
-  array.map((item) => ({ value: item[valueField], label: item[labelField] }));
+export const createDropDownList = (
+  array,
+  labelField,
+  valueField,
+  isActiveField = false,
+  subType = null,
+  labelFormatter = null
+) => {
+  const options = array.map((item) => ({
+    value: item[valueField],
+    label: labelFormatter ? labelFormatter(item[labelField]) : item[labelField],
+    isActive: isActiveField ? item[isActiveField] : true,
+    subType: subType ? item[subType] : null,
+  }));
+
+  return sortBy(options, [
+    (o) => {
+      return o.label;
+    },
+  ]);
+};
 
 // Function to create a hash given an array of values and labels
 export const createLabelHash = (arr) =>
@@ -64,7 +84,15 @@ export const currencyMask = createNumberMask({
   locale: "en-CA",
   allowEmpty: true,
   stringValue: false,
+  allowNegative: true,
 });
+
+export const isDateRangeValid = (start, end) => {
+  const duration = moment.duration(moment(end).diff(moment(start)));
+  // eslint-disable-next-line no-underscore-dangle
+  const isDateRangeValid = Math.sign(duration._milliseconds) !== -1;
+  return isDateRangeValid;
+};
 
 export const dateSorter = (key) => (a, b) => {
   if (a[key] === b[key]) {
@@ -79,18 +107,25 @@ export const dateSorter = (key) => (a, b) => {
   return moment(a[key]) - moment(b[key]);
 };
 
-export const nullableStringSorter = (key) => (a, b) => {
-  if (a[key] === b[key]) {
+export const nullableStringSorter = (path) => (a, b) => {
+  const aObj = get(a, path, null);
+  const bObj = get(b, path, null);
+  if (aObj === bObj) {
     return 0;
   }
-  if (!a[key]) {
+  if (!aObj) {
     return 1;
   }
-  if (!b[key]) {
+  if (!bObj) {
     return -1;
   }
-  return a[key].localeCompare(b[key]);
+  return aObj.localeCompare(bObj);
 };
+
+export const sortListObjectsByPropertyLocaleCompare = (list, property) =>
+  list.sort(nullableStringSorter(property));
+
+export const sortListObjectsByPropertyDate = (list, property) => list.sort(dateSorter(property));
 
 // Case insensitive filter for a SELECT field by label string
 export const caseInsensitiveLabelFilter = (input, option) =>
@@ -120,6 +155,8 @@ export const normalizePhone = (value, previousValue) => {
   }
   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
 };
+
+export const normalizeExt = (value) => (value ? value.slice(0, 6) : value);
 
 export const upperCase = (value) => value && value.toUpperCase();
 
@@ -241,17 +278,17 @@ export const formatComplianceCodeValueOrLabel = (code, showDescription) => {
 
 // function to flatten an object for nested items in redux form
 // eslint-disable-snippets
-export const flattenObject = (ob) => {
+const _flattenObject = (ob, isArrayItem = false) => {
   const toReturn = {};
   let flatObject;
   for (const i in ob) {
     if (typeof ob[i] === "object") {
-      flatObject = flattenObject(ob[i]);
+      flatObject = _flattenObject(ob[i], Array.isArray(ob[i]));
       for (const x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) {
           continue;
         }
-        toReturn[i + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
+        toReturn[(isArrayItem ? `[${i}]` : i) + (isNaN(x) ? `.${x}` : "")] = flatObject[x];
       }
     } else {
       toReturn[i] = ob[i];
@@ -260,9 +297,196 @@ export const flattenObject = (ob) => {
   return toReturn;
 };
 
+const clean = (obj) => {
+  for (var propName in obj) {
+    if (obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+};
+
+const normalizeFlattenedArrayProperties = (obj) => {
+  for (var propName in obj) {
+    if (propName.includes(".[")) {
+      const newKey = propName.replace(".[", "[");
+      Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, propName));
+      delete obj[propName];
+    }
+    if (propName) propName.replace(".[", "[");
+  }
+};
+
+export const flattenObject = (ob) => {
+  const obj = _flattenObject(ob);
+  if (!isEmpty(obj)) {
+    clean(obj);
+
+    // check if object is not an empty object after cleaning
+    if (!isEmpty(obj)) {
+      normalizeFlattenedArrayProperties(obj);
+    }
+  }
+
+  return obj;
+};
+
 export const formatMoney = (value) => {
   const number = Number(value);
-  return number === NaN
+  return isNaN(number)
     ? null
     : number.toLocaleString("en-US", { style: "currency", currency: "USD" });
+};
+
+export const renderLabel = (options, keyStr) =>
+  options && options.length > 0 && keyStr && keyStr.trim().length > 0
+    ? options.find((item) => item.value === keyStr).label
+    : "";
+
+export const getDurationText = (startDate, endDate) => {
+  const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+  if (Math.sign(duration._milliseconds) === -1) {
+    return "Invalid - End Date precedes Start Date";
+  }
+  const years = duration.years();
+  const months = duration.months();
+  const weeks = duration.weeks();
+  const days = duration.subtract(weeks, "w").days();
+  const hours = duration.hours();
+
+  const yearsText = getDurationTextOrDefault(years, "Year");
+  const monthsText = getDurationTextOrDefault(months, "Month");
+  const weeksText = getDurationTextOrDefault(weeks, "Week");
+  const daysText = getDurationTextOrDefault(days, "Day");
+
+  return `${yearsText} ${monthsText} ${weeksText} ${daysText}`;
+};
+
+export const getDurationTextInDays = (duration) => {
+  if (Math.sign(duration._milliseconds) === -1) {
+    return "N/A";
+  }
+  const days = duration.days();
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+  const seconds = duration.seconds();
+
+  const daysText = getDurationTextOrDefault(days, "Day");
+  const hourText = getDurationTextOrDefault(hours, "Hour");
+  const minuteText = getDurationTextOrDefault(minutes, "Minute");
+  const secondText = getDurationTextOrDefault(seconds, "Second");
+  const value = `${daysText} ${hourText} ${minuteText} ${secondText}`;
+  return value;
+};
+
+const getDurationTextOrDefault = (duration, unit) => {
+  if (duration <= 0) {
+    return "";
+  }
+  unit = duration === 1 ? unit : unit + "s";
+  return `${duration} ${unit}`;
+};
+
+// Application fees are valid if they remain in the same fee bracket || they fall into the lower bracket
+// Fees need to be readjusted if they move to a higher bracket only
+export const isPlacerAdjustmentFeeValid = (
+  proposed = 0,
+  adjusted = 0,
+  proposedStartDate,
+  proposedEndDate
+) => {
+  let isFeeValid = true;
+
+  const duration = moment.duration(moment(proposedStartDate).diff(moment(proposedEndDate)));
+  const isExactlyFiveOrUnder =
+    (duration.years() === 5 &&
+      duration.months() === 0 &&
+      duration.weeks() === 0 &&
+      duration.days() === 0) ||
+    duration.years() < 5;
+
+  if (isExactlyFiveOrUnder) {
+    if (proposed < 60000) {
+      isFeeValid = adjusted < 60000;
+    } else if (proposed >= 60000 && proposed < 125000) {
+      isFeeValid = adjusted < 125000;
+    } else if (proposed >= 125000 && proposed < 250000) {
+      isFeeValid = adjusted < 250000;
+    } else if (proposed >= 250000 && proposed < 500000) {
+      isFeeValid = adjusted < 500000;
+    } else {
+      // Anything above 500,000 is valid as the applicant already paid the max fee.
+      isFeeValid = true;
+    }
+  } else if (proposed < 10000) {
+    isFeeValid = adjusted < 10000;
+  } else if (proposed >= 10000 && proposed < 60000) {
+    isFeeValid = adjusted < 60000;
+  } else if (proposed >= 60000 && proposed < 125000) {
+    isFeeValid = adjusted < 125000;
+  } else if (proposed >= 125000 && proposed < 250000) {
+    isFeeValid = adjusted < 250000;
+  } else {
+    // Anything above 250,000 is valid as the applicant already paid the max fee.
+    isFeeValid = true;
+  }
+  return isFeeValid;
+};
+
+export const isPitsQuarriesAdjustmentFeeValid = (proposed = 0, adjusted = 0) => {
+  let isFeeValid = true;
+  if (proposed < 5000) {
+    isFeeValid = adjusted < 5000;
+  } else if (proposed >= 5000 && proposed < 10000) {
+    isFeeValid = adjusted < 10000;
+  } else if (proposed >= 10000 && proposed < 20000) {
+    isFeeValid = adjusted < 20000;
+  } else if (proposed >= 20000 && proposed < 30000) {
+    isFeeValid = adjusted < 30000;
+  } else if (proposed >= 30000 && proposed < 40000) {
+    isFeeValid = adjusted < 40000;
+  } else if (proposed >= 40000 && proposed < 50000) {
+    isFeeValid = adjusted < 50000;
+  } else if (proposed >= 50000 && proposed < 60000) {
+    isFeeValid = adjusted < 60000;
+  } else if (proposed >= 60000 && proposed < 70000) {
+    isFeeValid = adjusted < 70000;
+  } else if (proposed >= 70000 && proposed < 80000) {
+    isFeeValid = adjusted < 80000;
+  } else if (proposed >= 80000 && proposed < 90000) {
+    isFeeValid = adjusted < 90000;
+  } else if (proposed >= 90000 && proposed < 100000) {
+    isFeeValid = adjusted < 100000;
+  } else if (proposed >= 100000 && proposed < 130000) {
+    isFeeValid = adjusted < 130000;
+  } else if (proposed >= 130000 && proposed < 170000) {
+    isFeeValid = adjusted < 170000;
+  }
+  // Anything above 170,000 is valid as the applicant already paid the max fee.
+  return isFeeValid;
+};
+
+export const determineExemptionFeeStatus = (
+  permitStatus,
+  permitPrefix,
+  tenure,
+  isExploration = null,
+  disturbance = []
+) => {
+  let exemptionStatus;
+  if ((permitPrefix === "P" && tenure === "PLR") || permitStatus === "C") {
+    exemptionStatus = "Y";
+  } else if (isExploration && disturbance.length === 1 && disturbance.includes("SUR")) {
+    exemptionStatus = "Y";
+  } else if (
+    (permitPrefix === "M" || permitPrefix === "C") &&
+    (tenure === "MIN" || tenure === "COL")
+  ) {
+    exemptionStatus = "MIM";
+  } else if (
+    (permitPrefix === "Q" || permitPrefix === "G") &&
+    (tenure === "BCL" || tenure === "MIN" || tenure === "PRL")
+  ) {
+    exemptionStatus = "MIP";
+  }
+  return exemptionStatus;
 };

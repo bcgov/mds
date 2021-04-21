@@ -79,7 +79,7 @@ export const LeafletPopup = (props) => {
             {verifiedStatus && verifiedStatus.healthy_ind && (
               <img
                 alt="Verified"
-                className="padding-small"
+                className="padding-sm"
                 src={SUCCESS_CHECKMARK}
                 width="25"
                 title={`Mine data verified by ${verifiedStatus.verifying_user} on ${formatDate(

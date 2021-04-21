@@ -17,12 +17,15 @@ import {
   getDangerousOccurrenceSubparagraphOptions,
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
-  getIncidentFollowupActionOptions,
   getDropdownIncidentCategoryCodeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
-import { fetchIncidents, updateMineIncident } from "@common/actionCreators/incidentActionCreator";
+import {
+  fetchIncidents,
+  updateMineIncident,
+  deleteMineIncident,
+} from "@common/actionCreators/incidentActionCreator";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import { IncidentsTable } from "./IncidentsTable";
@@ -31,6 +34,7 @@ import IncidentsSearch from "./IncidentsSearch";
 import { modalConfig } from "@/components/modalContent/config";
 import * as ModalContent from "@/constants/modalContent";
 import * as FORM from "@/constants/forms";
+import { PageTracker } from "@common/utils/trackers";
 
 /**
  * @class Incidents page is a landing page for all incidents in the system
@@ -52,9 +56,12 @@ const propTypes = {
   followupActions: PropTypes.arrayOf(CustomPropTypes.incidentFollowupType),
   followupActionsOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  incidentDeterminationOptionsActiveOnly: CustomPropTypes.options.isRequired,
   incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
+  incidentStatusCodeOptionsActiveOnly: CustomPropTypes.options.isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   doSubparagraphOptions: CustomPropTypes.options.isRequired,
+  deleteMineIncident: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -161,6 +168,15 @@ export class IncidentsHomePage extends Component {
     });
   };
 
+  handleDeleteMineIncident = (values) => {
+    this.props.deleteMineIncident(values.mine_guid, values.mine_incident_guid).then(() => {
+      this.setState({ incidentsLoaded: false });
+      this.props.fetchIncidents(this.state.params).then(() => {
+        this.setState({ incidentsLoaded: true });
+      });
+    });
+  };
+
   handleCancelMineIncident = () => {
     this.props.destroy(FORM.MINE_INCIDENT);
   };
@@ -203,8 +219,8 @@ export class IncidentsHomePage extends Component {
         title,
         mineGuid: existingIncident.mine_guid,
         followupActionOptions: this.props.followupActionsOptions,
-        incidentDeterminationOptions: this.props.incidentDeterminationOptions,
-        incidentStatusCodeOptions: this.props.incidentStatusCodeOptions,
+        incidentDeterminationOptions: this.props.incidentDeterminationOptionsActiveOnly,
+        incidentStatusCodeOptions: this.props.incidentStatusCodeOptionsActiveOnly,
         incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
         doSubparagraphOptions: this.props.doSubparagraphOptions,
         inspectors: this.props.inspectors,
@@ -232,6 +248,7 @@ export class IncidentsHomePage extends Component {
   render() {
     return (
       <div className="landing-page">
+        <PageTracker title="Incidents Page" />
         <div className="landing-page__header">
           <div>
             <h1>Browse Incidents</h1>
@@ -265,6 +282,7 @@ export class IncidentsHomePage extends Component {
                 openMineIncidentModal={this.openMineIncidentModal}
                 handleEditMineIncident={this.handleEditMineIncident}
                 openViewMineIncidentModal={this.openViewMineIncidentModal}
+                handleDeleteMineIncident={this.handleDeleteMineIncident}
               />
             </div>
           </div>
@@ -286,10 +304,11 @@ const mapStateToProps = (state) => ({
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   getDropdownHSRCMComplianceCodes: getDropdownHSRCMComplianceCodes(state),
   mineRegionOptions: getMineRegionDropdownOptions(state),
-  followupActions: getIncidentFollowupActionOptions(state),
   followupActionsOptions: getDropdownIncidentFollowupActionOptions(state),
-  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
-  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
+  incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state, false),
+  incidentDeterminationOptionsActiveOnly: getDropdownIncidentDeterminationOptions(state),
+  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state, false),
+  incidentStatusCodeOptionsActiveOnly: getDropdownIncidentStatusCodeOptions(state),
   inspectors: getDropdownInspectors(state),
   doSubparagraphOptions: getDangerousOccurrenceSubparagraphOptions(state),
   incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
@@ -303,6 +322,7 @@ const mapDispatchToProps = (dispatch) =>
       destroy,
       openModal,
       closeModal,
+      deleteMineIncident,
     },
     dispatch
   );

@@ -9,6 +9,7 @@ export const getMineGuid = (state) => mineReducer.getMineGuid(state);
 export const getMineBasicInfoList = (state) => mineReducer.getMineBasicInfoList(state);
 export const getMineDocuments = (state) => mineReducer.getMineDocuments(state);
 export const getSubscribedMines = (state) => mineReducer.getSubscribedMines(state);
+export const getMineComments = (state) => mineReducer.getMineComments(state);
 
 export const getIsUserSubscribed = createSelector(
   [getSubscribedMines, getMineGuid],
@@ -16,11 +17,11 @@ export const getIsUserSubscribed = createSelector(
     mineGuid ? subscribedMines.map(({ mine_guid }) => mine_guid).includes(mineGuid) : false
 );
 
-export const getCurrentMineTypes = createSelector(
-  [getMines, getMineGuid],
-  (mines, mineGuid) => {
-    if (mineGuid) {
-      const mineTypesArr = mines[mineGuid].mine_type.map((type) => {
+export const getCurrentMineTypes = createSelector([getMines, getMineGuid], (mines, mineGuid) => {
+  if (mineGuid) {
+    const mineTypesArr = mines[mineGuid].mine_type
+      .filter(({ permit_guid }) => !permit_guid)
+      .map((type) => {
         const mine_types = {
           mine_tenure_type_code: "",
           mine_commodity_code: [],
@@ -36,11 +37,10 @@ export const getCurrentMineTypes = createSelector(
         });
         return mine_types;
       });
-      return mineTypesArr;
-    }
-    return undefined;
+    return mineTypesArr;
   }
-);
+  return undefined;
+});
 
 export const getTransformedMineTypes = createSelector(
   [getMines, getMineGuid],
@@ -67,14 +67,12 @@ export const getTransformedMineTypes = createSelector(
   }
 );
 
-export const getMineBasicInfoListHash = createSelector(
-  [getMineBasicInfoList],
-  (info) =>
-    info.reduce(
-      (map, { mine_guid, mine_name }) => ({
-        [mine_guid]: mine_name,
-        ...map,
-      }),
-      {}
-    )
+export const getMineBasicInfoListHash = createSelector([getMineBasicInfoList], (info) =>
+  info.reduce(
+    (map, { mine_guid, mine_name }) => ({
+      [mine_guid]: mine_name,
+      ...map,
+    }),
+    {}
+  )
 );

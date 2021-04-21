@@ -55,12 +55,15 @@ class MineHeaderMapLeaflet extends Component {
   componentDidMount() {
     // Create the base map with layers
     this.createMap();
+
     if (this.props.mine.mine_location.latitude && this.props.mine.mine_location.longitude) {
       this.createPin();
     }
+
     if (this.checkValidityOfCoordinateInput(this.props.additionalPin)) {
       this.createAdditionalPin(this.props.additionalPin);
     }
+
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
   }
@@ -72,7 +75,7 @@ class MineHeaderMapLeaflet extends Component {
     ) {
       if (this.state.containsAdditionalPin) {
         this.additionalPin.setLatLng(nextProps.additionalPin);
-        this.map.fitBounds(this.layerGroup.getBounds());
+        this.map.fitBounds(this.markerClusterGroup.getBounds());
       } else {
         this.setState({ containsAdditionalPin: false });
         this.createAdditionalPin(nextProps.additionalPin);
@@ -107,7 +110,8 @@ class MineHeaderMapLeaflet extends Component {
       iconUrl: SMALL_PIN,
       iconSize: [60, 60],
     });
-    L.marker(this.latLong, { icon: customIcon }).addTo(this.layerGroup);
+    const marker = L.marker(this.latLong, { icon: customIcon });
+    this.markerClusterGroup.addLayer(marker);
   };
 
   createAdditionalPin = (pin) => {
@@ -115,9 +119,10 @@ class MineHeaderMapLeaflet extends Component {
       iconUrl: SMALL_PIN_SELECTED,
       iconSize: [60, 60],
     });
-    this.additionalPin = L.marker(pin, { icon: customIcon }).addTo(this.layerGroup);
-    // re-size map to include all pins
-    this.map.fitBounds(this.layerGroup.getBounds());
+    this.additionalPin = L.marker(pin, { icon: customIcon });
+    this.markerClusterGroup.addLayer(this.additionalPin);
+    this.map.fitBounds(this.markerClusterGroup.getBounds());
+    this.markerClusterGroup.zoomToShowLayer(this.additionalPin);
     this.setState({ containsAdditionalPin: true });
   };
 
@@ -125,13 +130,19 @@ class MineHeaderMapLeaflet extends Component {
     this.map = L.map("leaflet-map", { attributionControl: false })
       .setView(this.latLong, Strings.DEFAULT_ZOOM)
       .setMaxZoom(12);
-    this.layerGroup = new L.FeatureGroup().addTo(this.map);
     const majorMinePermittedAreas = getMajorMinePermittedAreas();
     this.map.addLayer(majorMinePermittedAreas);
+
+    this.markerClusterGroup = L.markerClusterGroup({
+      animate: false,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+    });
+    this.map.addLayer(this.markerClusterGroup);
   }
 
   render() {
-    return <div style={{ height: "100%", width: "100%", zIndex: 0 }} id="leaflet-map" />;
+    return <div style={{ height: "100%", width: "100%", zIndex: 1 }} id="leaflet-map" />;
   }
 }
 

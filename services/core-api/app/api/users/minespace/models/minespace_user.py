@@ -6,17 +6,16 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from app.extensions import db
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, Base
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
 
 
-class MinespaceUser(Base):
+class MinespaceUser(SoftDeleteMixin, Base):
     __tablename__ = 'minespace_user'
 
     user_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     keycloak_guid = db.Column(UUID(as_uuid=True))
-    email = db.Column(db.String(100), nullable=False)
-    deleted_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    email_or_username = db.Column(db.String(100), nullable=False)
 
     minespace_user_mines = db.relationship('MinespaceUserMine', backref='user', lazy='joined')
 
@@ -37,20 +36,19 @@ class MinespaceUser(Base):
         return cls.query.filter_by(keycloak_guid=user_guid).filter_by(deleted_ind=False).first()
 
     @classmethod
-    def find_by_email(cls, email):
-        return cls.query.filter_by(email=email).filter_by(deleted_ind=False).first()
+    def find_by_email(cls, email_or_username):
+        return cls.query.filter_by(email_or_username=email_or_username).filter_by(
+            deleted_ind=False).first()
 
     @classmethod
-    def create_minespace_user(cls, email, add_to_session=True):
-        minespace_user = cls(email=email)
+    def create_minespace_user(cls, email_or_username, add_to_session=True):
+        minespace_user = cls(email_or_username=email_or_username)
         if add_to_session:
             minespace_user.save(commit=False)
         return minespace_user
 
-    @validates('email')
-    def validate_email(self, key, email):
-        if not email:
-            raise AssertionError('email is not provided.')
-        if not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            raise AssertionError('Invalid email format.')
-        return email
+    @validates('email_or_username')
+    def validate_email(self, key, email_or_username):
+        if not email_or_username:
+            raise AssertionError('Identifier is not provided.')
+        return email_or_username

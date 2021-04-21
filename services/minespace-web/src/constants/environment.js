@@ -3,10 +3,11 @@ import * as COMMON_ENV from "@common/constants/environment";
 export const DEFAULT_ENVIRONMENT = {
   apiUrl: "http://localhost:5000",
   docManUrl: "http://localhost:5001",
+  matomoUrl: "https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/",
   keycloak_resource: "mines-application-local",
   keycloak_clientId: "minespace-local",
   keycloak_idpHint: "local",
-  keycloak_url: "https://sso-test.pathfinder.gov.bc.ca/auth",
+  keycloak_url: "https://test.oidc.gov.bc.ca/auth",
   siteminder_url: "https://logontest.gov.bc.ca",
 };
 

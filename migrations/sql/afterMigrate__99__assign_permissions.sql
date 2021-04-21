@@ -45,3 +45,5 @@ GRANT USAGE ON SCHEMA now_submissions TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA now_submissions TO metabase;
 GRANT USAGE ON SCHEMA mms_now_submissions TO metabase;
 GRANT SELECT ON ALL TABLES IN SCHEMA mms_now_submissions TO metabase;
+GRANT USAGE ON SCHEMA docman TO metabase;
+GRANT SELECT ON ALL TABLES IN SCHEMA docman TO metabase;

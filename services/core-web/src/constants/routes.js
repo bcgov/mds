@@ -25,11 +25,13 @@ import MineComplianceInfo from "@/components/mine/Compliance/MineComplianceInfo"
 import MineIncidents from "@/components/mine/Incidents/MineIncidents";
 import MineTailingsInfo from "@/components/mine/Tailings/MineTailingsInfo";
 import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
-import MineNOWApplications from "@/components/mine/NoticeOfWork/MineNOWApplications";
+import MineDocuments from "@/components/mine/Documents/MineDocuments";
+import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
+import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
-import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
+import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -116,6 +118,12 @@ export const MINE_GENERAL = {
   component: MineSummary,
 };
 
+export const MINE_DOCUMENTS = {
+  route: "/mine-dashboard/:id/mine-information/mms-archive",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/mine-information/mms-archive`,
+  component: MineDocuments,
+};
+
 export const MINE_PERMITS = {
   route: "/mine-dashboard/:id/permits-and-approvals/permits",
   dynamicRoute: (id) => `/mine-dashboard/${id}/permits-and-approvals/permits`,
@@ -138,7 +146,7 @@ export const MINE_NOW_APPLICATIONS = {
   route: "/mine-dashboard/:id/permits-and-approvals/applications",
   dynamicRoute: (id, params) =>
     `/mine-dashboard/${id}/permits-and-approvals/applications?${queryString.stringify(params)}`,
-  component: MineNOWApplications,
+  component: MineApplications,
 };
 
 export const MINE_INCIDENTS = {
@@ -159,6 +167,13 @@ export const MINE_REPORTS = {
   dynamicRoute: (id, filterParams) =>
     `/mine-dashboard/${id}/reports/code-required-reports?${queryString.stringify(filterParams)}`,
   component: MineReportInfo,
+};
+
+export const MINE_PERMIT_REQUIRED_REPORTS = {
+  route: "/mine-dashboard/:id/reports/permit-required-reports",
+  dynamicRoute: (id, filterParams) =>
+    `/mine-dashboard/${id}/reports/permit-required-reports?${queryString.stringify(filterParams)}`,
+  component: PermitRequiredReports,
 };
 
 export const MINE_TAILINGS = {
@@ -232,33 +247,35 @@ export const SEARCH_RESULTS = {
 
 export const NOTICE_OF_WORK_APPLICATIONS = {
   route: "/dashboard/reporting/notice-of-work",
-  dynamicRoute: ({ page, per_page, ...params }) =>
-    `/dashboard/reporting/notice-of-work?${queryString.stringify(
-      { page, per_page, ...params },
-      { sort: false }
-    )}`,
+  dynamicRoute: (params) => `/dashboard/reporting/notice-of-work?${queryString.stringify(params)}`,
   component: NoticeOfWorkHomePage,
 };
 
-export const CREATE_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/",
-  component: NoticeOfWorkApplication,
-};
-
 export const NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/${link}`,
+  route: "/dashboard/notice-of-work/app/:id/:tab",
+  dynamicRoute: (guid, tab) =>
+    tab
+      ? `/dashboard/notice-of-work/app/${guid}/${tab}`
+      : `/dashboard/notice-of-work/app/${guid}/verification`,
+  hashRoute: (guid, tab, link) => `/dashboard/notice-of-work/app/${guid}/${tab}/${link}`,
   component: NoticeOfWorkApplication,
 };
 
-export const VIEW_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/notice-of-work/application/:id/view",
-  dynamicRoute: (guid) => `/dashboard/notice-of-work/application/${guid}/view`,
-  hashRoute: (guid, link) => `/dashboard/notice-of-work/application/${guid}/view${link}`,
-  component: ViewNoticeOfWorkApplication,
+export const ADMIN_AMENDMENT_APPLICATION = {
+  route: "/dashboard/administrative-amendment/app/:id/:tab",
+  dynamicRoute: (guid, tab) =>
+    tab
+      ? `/dashboard/administrative-amendment/app/${guid}/${tab}`
+      : `/dashboard/administrative-amendment/app/${guid}/application`,
+  hashRoute: (guid, tab, link) => `/dashboard/administrative-amendment/app/${guid}/${tab}/${link}`,
+  component: AdminAmendmentApplication,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";
 export const VIEW_MINESPACE = (mineGuid) =>
   `${MINESPACE_URL}/mines/${mineGuid}/overview?redirectingFromCore=true`;
+
+const ORGBOOK_URL = "https://orgbook.gov.bc.ca";
+export const ORGBOOK_ENTITY_URL = (sourceId) => `${ORGBOOK_URL}/en/organization/${sourceId}`;
+export const ORGBOOK_CREDENTIAL_URL = (sourceId, credentialId) =>
+  `${ORGBOOK_URL}/en/organization/${sourceId}/cred/${credentialId}`;

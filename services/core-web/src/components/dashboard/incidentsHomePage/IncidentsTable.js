@@ -14,6 +14,7 @@ const propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   openMineIncidentModal: PropTypes.func.isRequired,
   handleEditMineIncident: PropTypes.func.isRequired,
+  handleDeleteMineIncident: PropTypes.func.isRequired,
   openViewMineIncidentModal: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handleIncidentSearch: PropTypes.func.isRequired,
@@ -47,6 +48,7 @@ export const IncidentsTable = (props) => {
         followupActions={props.followupActions}
         openMineIncidentModal={props.openMineIncidentModal}
         handleEditMineIncident={props.handleEditMineIncident}
+        handleDeleteMineIncident={props.handleDeleteMineIncident}
         openViewMineIncidentModal={props.openViewMineIncidentModal}
         params={props.params}
         handleFilterChange={props.handleFilterChange}

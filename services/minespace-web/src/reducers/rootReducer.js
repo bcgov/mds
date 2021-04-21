@@ -11,6 +11,8 @@ import {
   reportReducer,
   modalReducer,
   varianceReducer,
+  securitiesReducer,
+  orgbookReducer,
 } from "@common/reducers";
 import networkReducer from "./networkReducer";
 import * as reducerTypes from "@/constants/reducerTypes";
@@ -37,6 +39,8 @@ export const reducerObject = {
   ...partiesReducer,
   ...incidentReducer,
   ...varianceReducer,
+  ...securitiesReducer,
+  ...orgbookReducer,
   [reducerTypes.AUTHENTICATION]: authenticationReducer,
   [reducerTypes.USER_MINE_INFO]: userMineReducer,
   [reducerTypes.GET_USER_MINE_INFO]: createReducer(networkReducer, reducerTypes.GET_USER_MINE_INFO),

@@ -27,9 +27,9 @@ export const createParty = (payload) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_PARTY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updateParty = (payload, partyGuid) => (dispatch) => {
@@ -51,9 +51,9 @@ export const updateParty = (payload, partyGuid) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(error(reducerTypes.UPDATE_PARTY));
-      dispatch(hideLoading("modal"));
       throw new Error(err);
-    });
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const fetchParties = (params = {}) => (dispatch) => {
@@ -78,13 +78,16 @@ export const fetchPartyById = (id) => (dispatch) => {
       dispatch(success(reducerTypes.GET_PARTY));
       dispatch(partyActions.storeParty(response.data, id));
     })
-    .catch(() => dispatch(error(reducerTypes.GET_PARTY)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.GET_PARTY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
 export const addPartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.ADD_PARTY_RELATIONSHIP));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .post(ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP, payload, createRequestHeader())
     .then((response) => {
@@ -95,13 +98,16 @@ export const addPartyRelationship = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.ADD_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.ADD_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
 export const updatePartyRelationship = (payload) => (dispatch) => {
   dispatch(request(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
-  dispatch(showLoading());
+  dispatch(showLoading("modal"));
   return CustomAxios()
     .put(
       `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}/${payload.mine_party_appt_guid}`,
@@ -116,16 +122,19 @@ export const updatePartyRelationship = (payload) => (dispatch) => {
       dispatch(success(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP)))
-    .finally(() => dispatch(hideLoading()));
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchPartyRelationships = (parms) => (dispatch) => {
+export const fetchPartyRelationships = (params) => (dispatch) => {
   dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
   dispatch(showLoading());
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(parms)}`,
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(params)}`,
       createRequestHeader()
     )
     .then((response) => {
@@ -152,7 +161,10 @@ export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
       dispatch(success(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -169,7 +181,10 @@ export const deleteParty = (party_guid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_PARTY));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_PARTY)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_PARTY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading()));
 };
 
@@ -193,6 +208,30 @@ export const addDocumentToRelationship = ({ mineGuid, minePartyApptGuid }, paylo
       dispatch(success(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP)))
+    .catch((err) => {
+      dispatch(error(reducerTypes.ADD_DOCUMENT_TO_RELATIONSHIP));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.PARTY_ORGBOOK_ENTITY));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.PARTY_ORGBOOK_ENTITY(partyGuid), payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading("modal"));
+      notification.success({
+        message: "Successfully associated party with OrgBook entity",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.PARTY_ORGBOOK_ENTITY));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.PARTY_ORGBOOK_ENTITY));
+      throw new Error(err);
+    })
     .finally(() => dispatch(hideLoading("modal")));
 };

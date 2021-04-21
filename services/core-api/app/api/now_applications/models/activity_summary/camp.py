@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
@@ -23,10 +24,14 @@ class Camp(ActivitySummaryBase):
     has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     has_fuel_stored_in_barrels = db.Column(
         db.Boolean, nullable=False, server_default=FetchedValue())
-    volume_fuel_stored = db.Column(db.Integer)
+    volume_fuel_stored = db.Column(db.Numeric(14, 2))
 
     details = db.relationship(
         'CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
 
     def __repr__(self):
         return '<Camp %r>' % self.activity_summary_id

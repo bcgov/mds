@@ -6,8 +6,6 @@ export const party = shape({
   phone_no: PropTypes.string,
   phone_ext: PropTypes.any,
   email: PropTypes.string,
-  effective_date: PropTypes.string,
-  expiry_date: PropTypes.string,
   party_name: PropTypes.string,
   name: PropTypes.string,
   first_name: PropTypes.string,

@@ -10,6 +10,7 @@ const setupReducerProps = () => {
   reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.blasting_operation;
   reducerProps.editRecord = jest.fn();
   reducerProps.addRecord = jest.fn();
+  reducerProps.renderOriginalValues = jest.fn().mockReturnValue({ value: "N/A", edited: true });
 };
 
 beforeEach(() => {

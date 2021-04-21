@@ -8,23 +8,22 @@ exports[`FilePicker renders properly 1`] = `
     <FormItem
       hasFeedback={false}
     >
-      <RadioGroup
-        buttonStyle="outline"
+      <Memo(RadioGroup)
         defaultValue={true}
         onChange={[Function]}
         size="large"
       >
-        <RadioButton
+        <ForwardRef(RadioButton)
           value={true}
         >
           Upload new file(s)
-        </RadioButton>
-        <RadioButton
+        </ForwardRef(RadioButton)>
+        <ForwardRef(RadioButton)
           value={false}
         >
           Attach existing file(s)
-        </RadioButton>
-      </RadioGroup>
+        </ForwardRef(RadioButton)>
+      </Memo(RadioGroup)>
     </FormItem>
   </div>
   <FormItem

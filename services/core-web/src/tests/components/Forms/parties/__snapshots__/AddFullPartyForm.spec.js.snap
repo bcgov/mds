@@ -19,23 +19,22 @@ exports[`AddFullPartyForm renders properly 1`] = `
         <div
           className="center margin-large"
         >
-          <RadioGroup
-            buttonStyle="outline"
+          <Memo(RadioGroup)
             defaultValue={true}
             onChange={[MockFunction]}
             size="large"
           >
-            <RadioButton
+            <ForwardRef(RadioButton)
               value={true}
             >
               Person
-            </RadioButton>
-            <RadioButton
+            </ForwardRef(RadioButton)>
+            <ForwardRef(RadioButton)
               value={false}
             >
               Company
-            </RadioButton>
-          </RadioGroup>
+            </ForwardRef(RadioButton)>
+          </Memo(RadioGroup)>
         </div>
         <Row
           gutter={16}
@@ -132,6 +131,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 id="phone_ext"
                 label="Ext"
                 name="phone_ext"
+                normalize={[Function]}
                 validate={
                   Array [
                     [Function],
@@ -229,11 +229,15 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 data={
                   Array [
                     Object {
+                      "isActive": true,
                       "label": "AB",
+                      "subType": null,
                       "value": "AB",
                     },
                     Object {
+                      "isActive": true,
                       "label": "BC",
+                      "subType": null,
                       "value": "BC",
                     },
                   ]
@@ -241,6 +245,11 @@ exports[`AddFullPartyForm renders properly 1`] = `
                 id="sub_division_code"
                 label="Province"
                 name="sub_division_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
               />
             </FormItem>
           </Col>

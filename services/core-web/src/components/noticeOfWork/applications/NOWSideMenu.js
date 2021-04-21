@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
 import { Anchor } from "antd";
-import { activitiesMenu, renderActivities } from "@/constants/NOWConditions";
-
-const { Link } = Anchor;
+import * as routes from "@/constants/routes";
+import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import CustomPropTypes from "@/customPropTypes";
+import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -23,11 +25,15 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
-  noticeOfWorkType: PropTypes.string.isRequired,
+  // route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
+  tabSection: PropTypes.string.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 export class NOWSideMenu extends Component {
+  state = { showNested: false };
+
+  // eslint-disable-next-line react/sort-comp
   static urlRoute = undefined;
 
   componentDidMount() {
@@ -49,20 +55,22 @@ export class NOWSideMenu extends Component {
 
     // Extracts "#blasting" from "#blasting&state=bd74ea1c-09e5-4d7e-810f-d...", for example.
     link = link.substr(0, link.indexOf("&"));
-
     this.updateUrlRoute(link);
     this.anchor.handleScrollTo(link);
   }
 
   handleAnchorOnClick = (e, link) => {
     e.preventDefault();
+    this.handleNested(link.href.substring(1));
     this.updateUrlRoute(link.href);
   };
 
   handleAnchorOnChange = (currentActiveLink) => {
+    this.handleNested(currentActiveLink.substring(1));
     if (
-      this.props.history.action === "POP" &&
-      currentActiveLink === this.props.history.location.hash
+      (this.props.history.action === "POP" &&
+        currentActiveLink === this.props.history.location.hash) ||
+      this.props.match.params.tab !== this.props.tabSection
     ) {
       return;
     }
@@ -72,7 +80,11 @@ export class NOWSideMenu extends Component {
 
   updateUrlRoute = (route) => {
     const nowGuid = this.props.match.params.id;
-    this.urlRoute = this.props.route.hashRoute(nowGuid, route);
+    const applicationRoute =
+      this.props.noticeOfWork.application_type_code === "NOW"
+        ? routes.NOTICE_OF_WORK_APPLICATION
+        : routes.ADMIN_AMENDMENT_APPLICATION;
+    this.urlRoute = applicationRoute.hashRoute(nowGuid, this.props.tabSection, route);
 
     if (route === this.props.history.location.hash) {
       return;
@@ -81,25 +93,52 @@ export class NOWSideMenu extends Component {
     this.props.history.push(this.urlRoute, { currentActiveLink: route });
   };
 
+  handleNested = (link) => {
+    // gets the children if they exist
+    const getChildren = sideMenuOptions[this.props.tabSection].filter(
+      ({ children }) => children?.length > 0
+    )[0]?.children;
+    // checks if child href matches what was clicked
+    const values = getChildren?.filter(({ href }) => link === href);
+    // checks if children exist
+    const obj = sideMenuOptions[this.props.tabSection].filter(({ href }) => link === href)[0];
+    const show = obj?.children?.length > 0 || values?.length > 0;
+    this.setState({ showNested: show });
+  };
+
   render() {
     return (
       <div>
         <Anchor
           affix={false}
-          offsetTop={195}
+          offsetTop={160}
           onChange={this.handleAnchorOnChange}
           onClick={this.handleAnchorOnClick}
           ref={(anchor) => {
             this.anchor = anchor;
           }}
         >
-          {activitiesMenu
+          {sideMenuOptions[this.props.tabSection]
             .filter(
-              ({ href, alwaysVisible }) =>
-                alwaysVisible || renderActivities(this.props.noticeOfWorkType, href)
+              ({ href, alwaysVisible, applicationType }) =>
+                (alwaysVisible ||
+                  renderActivities(this.props.noticeOfWork.notice_of_work_type_code, href)) &&
+                applicationType &&
+                applicationType.includes(this.props.noticeOfWork.application_type_code)
             )
-            .map(({ href, title }) => (
-              <Link href={`#${href}`} title={title} className="now-menu-link" />
+            .map(({ href, title, children }) => (
+              <Anchor.Link href={`#${href}`} title={title} className="now-menu-link">
+                {children &&
+                  children.length > 1 &&
+                  this.state.showNested &&
+                  children.map((child) => (
+                    <Anchor.Link
+                      href={`#${child.href}`}
+                      title={child.title}
+                      className="now-menu-link"
+                    />
+                  ))}
+              </Anchor.Link>
             ))}
         </Anchor>
       </div>
@@ -109,4 +148,8 @@ export class NOWSideMenu extends Component {
 
 NOWSideMenu.propTypes = propTypes;
 
-export default withRouter(NOWSideMenu);
+const mapStateToProps = (state) => ({
+  noticeOfWork: getNoticeOfWork(state),
+});
+
+export default withRouter(connect(mapStateToProps)(NOWSideMenu));

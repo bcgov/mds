@@ -1,6 +1,5 @@
 import * as actionTypes from "../constants/actionTypes";
 import { STATIC_CONTENT } from "../constants/reducerTypes";
-import { createDropDownList } from "../utils/helpers";
 
 /**
  * @file staticContentReducer.js
@@ -25,6 +24,8 @@ const initialState = {
   mineReportDefinitionOptions: [],
   mineReportStatusOptions: [],
   mineReportCategoryOptions: [],
+  partyRelationshipTypes: [],
+  partyBusinessRoleOptions: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],
@@ -38,13 +39,17 @@ const initialState = {
   bondTypeOptions: [],
   bondDocumentTypeOptions: [],
   exemptionFeeStatusOptions: [],
+  permitConditionTypeOptions: [],
+  permitConditionCategoryOptions: [],
+  noticeOfWorkApplicationDelayOptions: [],
+  applicationReasonCodeOptions: [],
+  applicationSourceTypeCodeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_BULK_STATIC_CONTENT:
       return { ...state, ...action.payload };
-
     default:
       return state;
   }
@@ -56,11 +61,15 @@ const staticContentReducerObject = {
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
+export const getGovernmentAgencyTypeOptions = (state) =>
+  state[STATIC_CONTENT].governmentAgencyTypeOptions;
 export const getMineTenureTypeOptions = (state) => state[STATIC_CONTENT].mineTenureTypes;
 export const getMineDisturbanceOptions = (state) => state[STATIC_CONTENT].mineDisturbanceOptions;
 export const getMineCommodityOptions = (state) => state[STATIC_CONTENT].mineCommodityOptions;
 export const getProvinceOptions = (state) => state[STATIC_CONTENT].provinceOptions;
 export const getPermitStatusOptions = (state) => state[STATIC_CONTENT].permitStatusCodes;
+export const getPermitAmendmentTypeOptions = (state) =>
+  state[STATIC_CONTENT].permitAmendmentTypeCodeOptions;
 export const getComplianceCodes = (state) => state[STATIC_CONTENT].complianceCodes;
 export const getIncidentDocumentTypeOptions = (state) =>
   state[STATIC_CONTENT].incidentDocumentTypeOptions;
@@ -103,6 +112,19 @@ export const getBondStatusOptions = (state) => state[STATIC_CONTENT].bondStatusO
 export const getBondDocumentTypeOptions = (state) => state[STATIC_CONTENT].bondDocumentTypeOptions;
 export const getExemptionFeeStatusOptions = (state) =>
   state[STATIC_CONTENT].exemptionFeeStatusOptions;
+export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
+export const getPermitConditionCategoryOptions = (state) =>
+  state[STATIC_CONTENT].permitConditionCategoryOptions;
+export const getPermitConditionTypeOptions = (state) =>
+  state[STATIC_CONTENT].permitConditionTypeOptions;
+export const getPartyBusinessRoleOptions = (state) =>
+  state[STATIC_CONTENT].partyBusinessRoleOptions;
+export const getDelayTypeOptions = (state) =>
+  state[STATIC_CONTENT].noticeOfWorkApplicationDelayOptions;
+export const getApplicationReasonCodeOptions = (state) =>
+  state[STATIC_CONTENT].applicationReasonCodeOptions;
+export const getApplicationSourceTypeCodeOptions = (state) =>
+  state[STATIC_CONTENT].applicationSourceTypeCodeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)
@@ -112,13 +134,5 @@ const isStaticContentLoaded = (state) =>
 
 export const getStaticContentLoadingIsComplete = (state) =>
   isStaticContentLoaded(state[STATIC_CONTENT]);
-
-export const getPartyRelationshipTypes = (state) => state[STATIC_CONTENT].partyRelationshipTypes;
-export const getPartyRelationshipTypesList = (state) =>
-  createDropDownList(
-    state[STATIC_CONTENT].partyRelationshipTypes,
-    "description",
-    "mine_party_appt_type_code"
-  );
 
 export default staticContentReducerObject;

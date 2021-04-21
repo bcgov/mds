@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import { Icon, Badge } from "antd";
+import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
-import NullScreen from "@/components/common/NullScreen";
 import CoreTable from "@/components/common/CoreTable";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
-import * as Permission from "@/constants/permissions";
-import { getNoticeOfWorkApplicationBadgeStatusType } from "@/constants/theme";
+import { getApplicationStatusType } from "@/constants/theme";
+import LinkButton from "@/components/common/LinkButton";
+import { isEmpty } from "lodash";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 
 /**
  * @class MineNoticeOfWorkTable - list of mine notice of work applications
@@ -26,7 +25,6 @@ const propTypes = {
     pathname: PropTypes.string,
     search: PropTypes.string,
   }).isRequired,
-  isMajorMine: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -61,21 +59,19 @@ const transformRowData = (applications) =>
       application.now_application_status_description || Strings.EMPTY_FIELD,
     received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
+    document:
+      application.application_documents.length >= 1 ? application.application_documents[0] : {},
+    is_historic: application.is_historic,
   }));
-
-const pageTitle = (mineName, isMajorMine) => {
-  const applicationType = isMajorMine ? "Permit Applications" : "Notice of Work Applications";
-  return `${mineName} ${applicationType}`;
-};
 
 export class MineNoticeOfWorkTable extends Component {
   createLinkTo = (route, record) => {
     return {
       pathname: route.dynamicRoute(record.key),
       state: {
-        noticeOfWorkPageFromRoute: {
+        applicationPageFromRoute: {
           route: this.props.location.pathname + this.props.location.search,
-          title: pageTitle(record.mine_name, this.props.isMajorMine),
+          title: `${record.mine_name} Notice of Work Applications`,
         },
       },
     };
@@ -86,9 +82,7 @@ export class MineNoticeOfWorkTable extends Component {
       title: "Number",
       dataIndex: "now_number",
       sortField: "now_number",
-      render: (text, record) => (
-        <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>{text}</Link>
-      ),
+      render: (text) => <div title="Number">{text}</div>,
       sorter: true,
     },
     {
@@ -104,7 +98,7 @@ export class MineNoticeOfWorkTable extends Component {
       sortField: "now_application_status_description",
       render: (text) => (
         <div title="Status">
-          <Badge status={getNoticeOfWorkApplicationBadgeStatusType(text)} text={text} />
+          <Badge status={getApplicationStatusType(text)} text={text} />
         </div>
       ),
       sorter: true,
@@ -124,19 +118,29 @@ export class MineNoticeOfWorkTable extends Component {
       sorter: true,
     },
     {
+      title: "Application",
+      dataIndex: "document",
+      kay: "document",
+      render: (text, record) =>
+        !isEmpty(text) ? (
+          <div title="Application" className="cap-col-height">
+            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
+              <span>{text.filename}</span>
+            </LinkButton>
+          </div>
+        ) : (
+          Strings.EMPTY_FIELD
+        ),
+    },
+    {
       dataIndex: "operations",
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <AuthorizationWrapper permission={Permission.ADMIN}>
-                <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit NoW" className="padding-large--right" />
-                </Link>
-              </AuthorizationWrapper>
-            </AuthorizationWrapper>
-            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
-              <Icon type="eye" className="icon-lg icon-svg-filter padding-large--left" />
+            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary" disabled={record.is_historic}>
+                Open
+              </Button>
             </Link>
           </div>
         ),
@@ -156,9 +160,6 @@ export class MineNoticeOfWorkTable extends Component {
         tableProps={{
           align: "left",
           pagination: false,
-          locale: {
-            emptyText: <NullScreen type="notice-of-work" />,
-          },
           onChange: handleTableChange(this.props.handleSearch),
         }}
       />

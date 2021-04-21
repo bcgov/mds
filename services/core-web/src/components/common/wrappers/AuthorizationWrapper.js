@@ -1,11 +1,16 @@
+/* eslint-disable */
+import React from "react";
+import ReactDOMServer from "react-dom/server";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
+import { startCase, camelCase } from "lodash";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
 import {
   detectDevelopmentEnvironment,
   detectProdEnvironment,
 } from "@common/utils/environmentUtils";
+import { Tooltip } from "antd";
 import * as Permission from "@/constants/permissions";
 
 /**
@@ -50,6 +55,7 @@ const propTypes = {
     PropTypes.element.isRequired,
   ]),
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showToolTip: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -57,6 +63,7 @@ const defaultProps = {
   inDevelopment: undefined,
   inTesting: undefined,
   permission: undefined,
+  showToolTip: true,
 };
 
 export const AuthorizationWrapper = (props) => {
@@ -69,8 +76,35 @@ export const AuthorizationWrapper = (props) => {
   const isMajorMine = props.isMajorMine === undefined || props.isMajorMine;
   const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
 
+  const title = () => {
+    const permission = props.permission ? `${USER_ROLES[props.permission]}` : "";
+    const inTest = props.inTesting ? "Not Visible in Production" : "";
+    const majorMine = props.isMajorMine !== undefined ? "Only Visible to Major Mines" : "";
+    return (
+      <ul style={{ listStyle: "none", marginBottom: "0" }}>
+        {permission && <li>{startCase(camelCase(permission))}</li>}
+        {inTest && <li>{inTest}</li>}
+        {majorMine && <li>{majorMine}</li>}
+      </ul>
+    );
+  };
+
   return (
-    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && props.children
+    (isAdmin || (inDevCheck && inTestCheck && permissionCheck && isMajorMine)) && (
+      <Tooltip
+        title={isAdmin && props.showToolTip ? title() : ""}
+        placement="left"
+        mouseEnterDelay={1.7}
+        mouseLeaveDelay={0}
+        arrowPointAtCenter
+        overlayClassName="tooltip__admin"
+        style={{ zIndex: 100000 }}
+        trigger={["hover"]}
+        destroyTooltipOnHide
+      >
+        {React.createElement("span", null, props.children)}
+      </Tooltip>
+    )
   );
 };
 AuthorizationWrapper.propTypes = propTypes;

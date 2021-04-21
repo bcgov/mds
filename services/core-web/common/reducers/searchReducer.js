@@ -11,6 +11,7 @@ const initialState = {
   searchResults: [],
   searchBarResults: [],
   searchTerms: [],
+  searchSubsetResults: [],
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -26,6 +27,11 @@ export const searchReducer = (state = initialState, action) => {
         searchResults: action.payload.search_results,
         searchTerms: action.payload.search_terms,
       };
+    case actionTypes.STORE_SUBSET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchSubsetResults: action.payload,
+      };
     case actionTypes.STORE_SEARCH_BAR_RESULTS:
       return {
         ...state,
@@ -36,6 +42,8 @@ export const searchReducer = (state = initialState, action) => {
         ...state,
         searchBarResults: [],
       };
+    case actionTypes.CLEAR_ALL_SEARCH_RESULTS:
+      return initialState;
     default:
       return state;
   }
@@ -49,5 +57,6 @@ export const getSearchOptions = (state) => state[SEARCH].searchOptions;
 export const getSearchResults = (state) => state[SEARCH].searchResults;
 export const getSearchBarResults = (state) => state[SEARCH].searchBarResults;
 export const getSearchTerms = (state) => state[SEARCH].searchTerms;
+export const getSearchSubsetResults = (state) => state[SEARCH].searchSubsetResults;
 
 export default searchReducerObject;

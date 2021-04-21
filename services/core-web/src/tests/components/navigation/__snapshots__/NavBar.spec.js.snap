@@ -72,13 +72,11 @@ exports[`NavBar renders properly 1`] = `
               type="button"
             >
               <span
-                className="padding-small--right"
+                className="padding-sm--right"
               >
-                Provincial Reporting
+                Browse...
               </span>
-              <Icon
-                type="down"
-              />
+              <ForwardRef(DownOutlined) />
             </button>
           </Dropdown>
           <Link
@@ -138,16 +136,13 @@ exports[`NavBar renders properly 1`] = `
               id=""
               type="button"
             >
-              <Icon
-                className="padding-small--right icon-sm"
-                type="user"
+              <ForwardRef(UserOutlined)
+                className="padding-sm--right icon-sm"
               />
               <span
-                className="padding-small--right"
+                className="padding-sm--right"
               />
-              <Icon
-                type="down"
-              />
+              <ForwardRef(DownOutlined) />
             </button>
           </Dropdown>
           <a
@@ -172,15 +167,15 @@ exports[`NavBar renders properly 1`] = `
                 loading={false}
                 type="link"
               >
-                <Icon
+                <ForwardRef(MessageOutlined)
                   className="icon-sm"
-                  type="message"
                 />
               </Button>
             </Tooltip>
           </a>
           <Connect(AuthorizationWrapper)
             permission="role_admin"
+            showToolTip={false}
           >
             <Dropdown
               disabled={true}
@@ -202,7 +197,7 @@ exports[`NavBar renders properly 1`] = `
               >
                 <img
                   alt="GoodMines"
-                  className="padding-small--right icon-sm vertical-align-sm"
+                  className="padding-sm--right icon-sm vertical-align-sm"
                   src={
                     Object {
                       "process": [Function],
@@ -211,7 +206,7 @@ exports[`NavBar renders properly 1`] = `
                   width="25"
                 />
                 <span
-                  className="padding-small--right"
+                  className="padding-sm--right"
                 >
                   0
                 </span>

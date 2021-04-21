@@ -88,9 +88,10 @@ make generate-rand100
 ### Seeding data with Test environment Database
 
 NOTE: You need access to the Test Openshift environment and oc cli tools.
+NOTE: You must have only your postgres container running with no external tools attached (eg: dbeaver), otherwise some commands will fail
 
 ```
-make database-seed
+make database-seed && make database-dump-clean
 ```
 
 ## Developing workflow tips for MDS

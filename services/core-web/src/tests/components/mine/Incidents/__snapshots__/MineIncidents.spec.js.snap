@@ -32,6 +32,7 @@ exports[`MineIncidents renders properly 1`] = `
         },
       ]
     }
+    handleDeleteMineIncident={[Function]}
     handleEditMineIncident={[Function]}
     incidents={
       Array [

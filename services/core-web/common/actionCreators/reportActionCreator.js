@@ -24,7 +24,10 @@ export const deleteMineReport = (mineGuid, mineReportGuid) => (dispatch) => {
       dispatch(success(reducerTypes.DELETE_MINE_REPORT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.DELETE_MINE_REPORT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.DELETE_MINE_REPORT));
+      throw new Error(err);
+    });
 };
 
 export const createMineReport = (mineGuid, payload) => (dispatch) => {
@@ -39,14 +42,20 @@ export const createMineReport = (mineGuid, payload) => (dispatch) => {
       dispatch(success(reducerTypes.CREATE_MINE_REPORT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.CREATE_MINE_REPORT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.CREATE_MINE_REPORT));
+      throw new Error(err);
+    });
 };
 
-export const fetchMineReports = (mineGuid) => (dispatch) => {
+export const fetchMineReports = (
+  mineGuid,
+  reportsType = Strings.MINE_REPORTS_TYPE.codeRequiredReports
+) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_REPORTS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_REPORTS(mineGuid, reportsType)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_REPORTS));
       dispatch(mineReportActions.storeMineReports(response.data));
@@ -85,5 +94,8 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
       dispatch(success(reducerTypes.UPDATE_MINE_REPORT));
       return response;
     })
-    .catch(() => dispatch(error(reducerTypes.UPDATE_MINE_REPORT)));
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_MINE_REPORT));
+      throw new Error(err);
+    });
 };

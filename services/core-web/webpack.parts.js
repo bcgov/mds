@@ -2,6 +2,7 @@
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
+const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -11,7 +12,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const ManifestPlugin = require("webpack-manifest-plugin");
-const AntdScssThemePlugin = require("antd-scss-theme-plugin");
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 
 const postCSSLoader = {
@@ -72,7 +72,14 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "style-loader",
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("sass-loader"),
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+              },
+            },
+          },
         ],
       },
       {
@@ -83,12 +90,37 @@ exports.loadCSS = ({ include, exclude, theme } = {}) => ({
           "style-loader",
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("less-loader"),
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+                modifyVars: {
+                  white: "#f1f1f2",
+                  blue: "#003366",
+                  "primary-color": "#5e46a1",
+                  "link-color": "#1DA57A",
+                  "success-color": "#45a766",
+                  "warning-color": "#f3cd65",
+                  "error-color": "#d40d0d",
+                  "item-hover-bg": "#ded9d9",
+                  "background-color-light": "#f4f0f0",
+                  "item-hover-bg": "#f4f0f0",
+                  "table-selected-row-bg": "#f4f0f0",
+                  "font-size-base": "1rem",
+                  "font-size-lg": "1.125rem",
+                  "font-size-sm": "0.875rem",
+                  "font-family": '"Open Sans", sans-serif',
+                  "border-radius-base": "5px",
+                },
+              },
+            },
+          },
         ],
       },
     ],
   },
-  plugins: [new AntdScssThemePlugin(theme)],
+  plugins: [],
 });
 
 exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
@@ -103,7 +135,14 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("sass-loader"),
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, "./node_modules/@syncfusion")],
+              },
+            },
+          },
         ],
       },
       {
@@ -115,13 +154,37 @@ exports.extractCSS = ({ include, exclude, filename, theme } = {}) => ({
           MiniCssExtractPlugin.loader,
           "css-loader",
           postCSSLoader,
-          AntdScssThemePlugin.themify("less-loader"),
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+                modifyVars: {
+                  white: "#f1f1f2",
+                  blue: "#003366",
+                  "primary-color": "#5e46a1",
+                  "link-color": "#1DA57A",
+                  "success-color": "#45a766",
+                  "warning-color": "#f3cd65",
+                  "error-color": "#d40d0d",
+                  "item-hover-bg": "#ded9d9",
+                  "background-color-light": "#f4f0f0",
+                  "item-hover-bg": "#f4f0f0",
+                  "table-selected-row-bg": "#f4f0f0",
+                  "font-size-base": "1rem",
+                  "font-size-lg": "1.125rem",
+                  "font-size-sm": "0.875rem",
+                  "font-family": '"Open Sans", sans-serif',
+                  "border-radius-base": "5px",
+                },
+              },
+            },
+          },
         ],
       },
     ],
   },
   plugins: [
-    new AntdScssThemePlugin(theme),
     new MiniCssExtractPlugin({
       filename,
     }),

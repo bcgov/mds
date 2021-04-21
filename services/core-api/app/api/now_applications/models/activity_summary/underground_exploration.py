@@ -1,6 +1,7 @@
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
@@ -16,9 +17,9 @@ class UndergroundExploration(ActivitySummaryBase):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
-    total_ore_amount = db.Column(db.Integer)
+    total_ore_amount = db.Column(db.Numeric(14, 2))
     total_ore_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
-    total_waste_amount = db.Column(db.Integer)
+    total_waste_amount = db.Column(db.Numeric(14, 2))
     total_waste_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     proposed_activity = db.Column(db.String)
 
@@ -26,6 +27,10 @@ class UndergroundExploration(ActivitySummaryBase):
         'UndergroundExplorationDetail',
         secondary='activity_summary_detail_xref',
         load_on_pending=True)
+    
+    @hybrid_property
+    def calculated_total_disturbance(self):
+        return self.calculate_total_disturbance_area(self.details)
 
     def __repr__(self):
         return '<UndergroundExploration %r>' % self.activity_summary_id

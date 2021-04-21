@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Field } from "redux-form";
-import { Form, Button } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button } from "antd";
 import { concat, reject } from "lodash";
 import { MINE_REPORT_DOCUMENT } from "@common/constants/API";
 import FileUpload from "@/components/common/FileUpload";
@@ -47,7 +49,7 @@ export const ReportSubmissions = (props) => {
       <FormItemLabel underline>Report Files</FormItemLabel>
       {hasSubmissions && (
         <React.Fragment>
-          <div className="padding-large--bottom">
+          <div className="padding-lg--bottom">
             <UploadedDocumentsTable
               files={props.mineReportSubmissions[props.mineReportSubmissions.length - 1].documents}
               showRemove={updateFilesClicked}

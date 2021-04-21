@@ -1,9 +1,10 @@
 import React from "react";
-import { Table, Row, Col, Divider } from "antd";
+import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
 import { Link } from "react-router-dom";
 import * as router from "@/constants/routes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @class  PermitResultsTable - displays a table of mine search results
@@ -24,27 +25,24 @@ export const PermitResultsTable = (props) => {
       dataIndex: "permit_guid",
       key: "permit_guid",
       render: (text, record) => [
-        <Row>
-          <Col span={24}>
-            <Link to={router.MINE_PERMITS.dynamicRoute(record.mine_guid)}>
-              <Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>
-            </Link>
-          </Col>
-          <Col xs={24} md={6}>
-            <p>Permittee</p>
-          </Col>
-          <Col xs={24} md={18}>
-            <p>
-              <Highlight search={props.highlightRegex}>{record.current_permittee}</Highlight>
-            </p>
-          </Col>
-          <Col xs={24} md={6}>
-            <p>Mine</p>
-          </Col>
-          <Col xs={24} md={18}>
-            <p>{record.mine_name}</p>
-          </Col>
-        </Row>,
+        <Descriptions
+          title={<Highlight search={props.highlightRegex}>{record.permit_no}</Highlight>}
+        >
+          <Descriptions.Item label="Permittee">
+            <Highlight search={props.highlightRegex}>
+              {record.current_permittee || Strings.NOT_APPLICABLE}
+            </Highlight>
+          </Descriptions.Item>
+          <Descriptions.Item label="Mine(s)">
+            {record.mine.map((mine) => (
+              <p>
+                <Link to={router.MINE_PERMITS.dynamicRoute(mine.mine_guid)}>
+                  <Highlight search={props.highlightRegex}>{mine.mine_name}</Highlight>
+                </Link>
+              </p>
+            ))}
+          </Descriptions.Item>
+        </Descriptions>,
       ],
     },
   ];
@@ -54,7 +52,7 @@ export const PermitResultsTable = (props) => {
       <h2>{props.header}</h2>
       <Divider />
       <Table
-        className="nested-table padding-large--bottom"
+        className="nested-table padding-lg--bottom"
         align="left"
         showHeader={false}
         pagination={false}
