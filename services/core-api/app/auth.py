@@ -3,13 +3,12 @@ from flask import g
 from uuid import UUID
 from sqlalchemy import or_
 from typing import Optional, Set
-#TODO: Revisit CoreUser, IdirUserDetail
-from app.api.utils.include.user_info import User
+from app.extensions import db
+from .api.utils.include.user_info import User
 from app.api.users.core.models.core_user import CoreUser
 from app.api.users.core.models.idir_user_detail import IdirUserDetail
-from app.api.users.minespace.models.minespace_user import MinespaceUser
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, MINE_ADMIN
-from app.extensions import db
+from .api.users.minespace.models.minespace_user import MinespaceUser
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, MINE_ADMIN, VIEW_ALL
 
 # This is for use when the database models are being used outside of the context of a flask application.
 # Eg. Unit tests, create data.
@@ -39,35 +38,43 @@ class UserSecurity(object):
 
 
 def get_mine_access():
-    user = get_current_minespace_user()
+    user = get_current_user()
     return list(x.mine_guid for x in user.minespace_user_mines)
 
 
 def get_core_user():
-    rv = getattr(g, 'current_core_user', None)
-    if rv == None:
-        email = get_user_email()
-        rv = CoreUser.query.unbound_unsafe().filter_by(email=email).filter_by(
-            active_ind=True).first()
-        if rv is None:
-            if is_core_user():
-                new_cu = CoreUser.create(
-                    email=User().get_user_email(), phone_no=None, add_to_session=False)
-                new_iud = IdirUserDetail.create(
-                    new_cu,
-                    bcgov_guid=None,
-                    username=User().get_user_username(),
-                    title=None,
-                    city=None,
-                    department=None,
-                    add_to_session=False)
-                new_cu.save()
-                rv = new_cu
-        g.current_core_user = rv
+    email = get_user_email()
+    rv = CoreUser.query.unbound_unsafe().filter_by(email=email).first()
+    if rv is None:
+        if is_core_user():
+            new_cu = CoreUser.create(
+                email=User().get_user_email(), phone_no=None, add_to_session=False)
+            new_iud = IdirUserDetail.create(
+                new_cu,
+                bcgov_guid=None,
+                username=User().get_user_username(),
+                title=None,
+                city=None,
+                department=None,
+                add_to_session=False)
+            new_cu.save()
+            rv = new_cu
+        else:
+            raise Exception("User is not a valid Core user.")
     return rv
 
 
-def get_current_minespace_user():
+def is_core_user():
+    # The flask-jwt-oidc library throws an exception if a token does not exist.
+    token_data = User().get_user_raw_info()
+    try:
+        is_core_user = VIEW_ALL in token_data["realm_access"]["roles"]
+    except:
+        return
+    return is_core_user
+
+
+def get_current_user():
     rv = getattr(g, 'current_user', None)
     if rv == None:
         email = get_user_email()
@@ -87,16 +94,6 @@ def get_user_is_proponent():
     except:
         raise Exception("A JWT token exists, but no roles are defined.")
     return is_proponent
-
-
-def is_core_user():
-    # The flask-jwt-oidc library throws an exception if a token does not exist.
-    token_data = User().get_user_raw_info()
-    try:
-        is_core_user = VIEW_ALL in token_data["realm_access"]["roles"]
-    except:
-        return
-    return is_core_user
 
 
 def get_user_is_admin():
@@ -119,7 +116,7 @@ def get_user_username():
 def get_current_user_security():
     rv = getattr(g, 'current_user_security', None)
     if rv is None:
-        user = get_current_minespace_user()
+        user = get_current_user()
         rv = UserSecurity(user_id=user.user_id if user else None)
         g.current_user_security = rv
     return rv

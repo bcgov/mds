@@ -66,6 +66,7 @@ INSERT INTO core_activity_object_type
     update_user
     )
 VALUES
+    ('PTY', 'party', 'system-mds', 'system-mds'),
     ('USR', 'user', 'system-mds', 'system-mds'),
     ('CRR', 'code-required report', 'system-mds', 'system-mds'),
     ('MIN', 'mine', 'system-mds', 'system-mds'),

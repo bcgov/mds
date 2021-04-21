@@ -75,6 +75,7 @@ class NOWApplicationResource(Resource, UserMixin):
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
 
             # Build event
+            # TODO: Handle Admin Amendment
             party = Party.find_by_party_guid(lead_inspector_party_guid)
             CoreActivityEngine.process(
                 Verbs.assigned,
