@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1
+FROM mcr.microsoft.com/dotnet/sdk:2.1
 
 COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
 
