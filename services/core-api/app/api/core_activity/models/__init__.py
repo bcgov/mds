@@ -1,3 +1,4 @@
 from .core_activity import CoreActivity
 from .core_activity_object_type import CoreActivityObjectType
 from .core_activity_verb import CoreActivityVerb
+from .core_activity_subscription import CoreActivitySubscription

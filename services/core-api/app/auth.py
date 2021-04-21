@@ -42,6 +42,8 @@ def get_mine_access():
     return list(x.mine_guid for x in user.minespace_user_mines)
 
 
+# TODO use guid from keycloak token as core user guid
+# and ensure that this method is called on login (get_core_static_content)
 def get_core_user():
     email = get_user_email()
     rv = CoreUser.query.unbound_unsafe().filter_by(email=email).first()
