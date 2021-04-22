@@ -44,6 +44,7 @@ const initialState = {
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
+  coreActivityObjectTypeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -125,6 +126,8 @@ export const getApplicationReasonCodeOptions = (state) =>
   state[STATIC_CONTENT].applicationReasonCodeOptions;
 export const getApplicationSourceTypeCodeOptions = (state) =>
   state[STATIC_CONTENT].applicationSourceTypeCodeOptions;
+export const getCoreActivityObjectTypeOptions = (state) =>
+  state[STATIC_CONTENT].coreActivityObjectTypeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

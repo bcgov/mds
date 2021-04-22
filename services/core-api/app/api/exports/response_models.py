@@ -8,6 +8,7 @@ from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVI
 from app.api.variances.response_models import VARIANCE_APPLICATION_STATUS_CODE, VARIANCE_DOCUMENT_CATEGORY_CODE
 from app.api.now_applications.response_models import NOW_APPLICATION_DOCUMENT_TYPE_MODEL, NOW_APPLICATION_REVIEW_TYPES, NOW_APPLICATION_TYPES, UNIT_TYPES, NOW_ACTIVITY_TYPES, NOW_APPLICATION_STATUS_CODES, UNDERGROUND_EXPLORATION_TYPES, NOW_APPLICATION_PERMIT_TYPES, NOW_APPLICATION_REVIEW_TYPES, APPLICATION_PROGRESS_STATUS_CODES, NOW_APPLICATION_DELAY_TYPE, APPLICATION_REASON_CODE, APPLICATION_SOURCE_TYPE_CODE, APPLICATION_TYPE_CODE
 from app.api.securities.response_models import BOND_STATUS, BOND_TYPE, BOND_DOCUMENT_TYPE
+from app.api.core_activity.response_models import CORE_ACTIVITY_OBJECT_TYPE
 
 MINE_SUMMARY_MODEL = api.model(
     'MineSummaryModel', {
@@ -158,5 +159,7 @@ STATIC_CONTENT_MODEL = api.model(
         'applicationTypeCodeOptions':
         fields.List(fields.Nested(APPLICATION_TYPE_CODE), attribute='ApplicationTypeCode'),
         'governmentAgencyTypeOptions':
-        fields.List(fields.Nested(GOVERNMENT_AGENCY_TYPE_MODEL), attribute='GovernmentAgencyType')
+        fields.List(fields.Nested(GOVERNMENT_AGENCY_TYPE_MODEL), attribute='GovernmentAgencyType'),
+        'coreActivityObjectTypeOptions':
+        fields.List(fields.Nested(CORE_ACTIVITY_OBJECT_TYPE), attribute='CoreActivityObjectType')
     })
