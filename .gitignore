@@ -18,6 +18,7 @@ microservices/document_manager/backend/document_uploads/
 *last-backup
 venv*
 [~][$]*
+*.sln
 
 *_DeploymentConfig.json
 *_BuildConfig.json
