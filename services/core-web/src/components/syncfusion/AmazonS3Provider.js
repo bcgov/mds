@@ -62,10 +62,19 @@ export class AmazonS3Provider extends SampleBase {
         data: files.length === 0 ? this.filemanager.getSelectedFiles() : files,
       };
 
-      this.setState({
-        pdfPath: data.path + this.filemanager.selectedItems[0],
-      });
-      // return;
+      // If the user has selected a PDF, display it in the PDF viewer instead of downloading.
+      if (
+        this.filemanager.selectedItems.length === 1 &&
+        this.filemanager.selectedItems[0].toLowerCase().includes(".pdf")
+      ) {
+        this.setState({
+          pdfPath: data.path + this.filemanager.selectedItems[0],
+        });
+        return;
+      } else {
+        console.log(this.pdfViewer?.pdfViewerComponent);
+        this.pdfViewer.pdfViewerComponent.unload();
+      }
 
       // Initiate an XHR request
       const xhr = new XMLHttpRequest();
@@ -177,8 +186,10 @@ export class AmazonS3Provider extends SampleBase {
           </FileManagerComponent>
         </div>
         <PdfViewer
-          serviceUrl="http://localhost:62870/file-api/PdfViewer"
           documentPath={this.state.pdfPath}
+          ref={(node) => {
+            this.pdfViewer = node;
+          }}
         />
       </div>
     );

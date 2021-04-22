@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { ENVIRONMENT } from "@common/constants/environment";
 import {
   PdfViewerComponent,
   Toolbar,
@@ -17,11 +18,12 @@ import {
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 
 const propTypes = {
+  serviceUrl: PropTypes.string,
   documentPath: PropTypes.string,
-  serviceUrl: PropTypes.string.isRequired,
 };
 
 const defaultProps = {
+  serviceUrl: null,
   documentPath: null,
 };
 
@@ -39,14 +41,25 @@ const ajaxRequestSettings = {
 };
 
 export class PdfViewer extends Component {
+  constructor() {
+    super(...arguments);
+    this.serviceUrl =
+      this.props.serviceUrl ??
+      ENVIRONMENT.filesystemProviderUrl.replace("AmazonS3Provider/", "PdfViewer");
+  }
+
   render() {
     return (
+      // NOTE: See here for documentation: https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/
       <PdfViewerComponent
+        ref={(node) => {
+          this.pdfViewerComponent = node;
+        }}
         id="pdfviewer-container"
+        serviceUrl={this.serviceUrl}
         documentPath={this.props.documentPath}
-        serviceUrl={this.props.serviceUrl}
         ajaxRequestSettings={ajaxRequestSettings}
-        style={{ height: 640 }}
+        style={{ display: "block", height: 640 }}
       >
         <Inject
           services={[
