@@ -16,4 +16,11 @@ CORE_ACTIVITY = api.model(
         'target_object_type_code': fields.String,
     })
 
-CORE_ACTIVITY_SUBSCRIPTION = api.model('CoreActivitySubscription', {'target_guid': fields.String})
+CORE_ACTIVITY_SUBSCRIPTION = api.model('CoreActivitySubscription', {
+    'target_guid': fields.String,
+    'core_activity_object_type_code': fields.String
+})
+
+CORE_ACTIVITY_SUBSCRIPTION_VIEW = api.inherit('CoreActivitySubscriptionView',
+                                              CORE_ACTIVITY_SUBSCRIPTION,
+                                              {'target_title': fields.String})
