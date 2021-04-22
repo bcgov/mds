@@ -17,3 +17,7 @@ class CoreActivityObjectType(Base, AuditMixin):
     @classmethod
     def get_active(cls):
         return cls.query.filter_by(active_ind=True).all()
+
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()

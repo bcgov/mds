@@ -44,6 +44,7 @@ export const {
   getApplicationReasonCodeOptions,
   getApplicationSourceTypeCodeOptions,
   getGovernmentAgencyTypeOptions,
+  getCoreActivityObjectTypeOptions,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -695,3 +696,14 @@ export const getApplicationSourceTypeCodeOptionsHash = createSelector(
 
 export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
   getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);
+
+export const getCoreActivityObjectTypeDropdownOptions = createSelectorWrapper(
+  getCoreActivityObjectTypeOptions,
+  createDropDownList,
+  ["description", "core_activity_object_type_code", "active_ind"]
+);
+
+export const getCoreActivityObjectTypeOptionsHash = createSelector(
+  getCoreActivityObjectTypeDropdownOptions,
+  createLabelHash
+);

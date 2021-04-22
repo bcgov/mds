@@ -40,10 +40,16 @@ export const fetchCoreActivityTargets = () => (dispatch) => {
     .catch(() => dispatch(error(reducerTypes.GET_USER_CORE_ACTIVITY_TARGETS)));
 };
 
-export const createCoreActivityTarget = (target_guid) => (dispatch) => {
+export const createCoreActivityTarget = (target_guid, core_activity_object_type_code) => (
+  dispatch
+) => {
   dispatch(request(reducerTypes.CREATE_CORE_ACTIVITY_TARGET));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.CORE_ACTIVITY_TARGET(), {target_guid: target_guid}, createRequestHeader())
+    .post(
+      ENVIRONMENT.apiUrl + API.CORE_ACTIVITY_TARGET(),
+      { target_guid: target_guid, core_activity_object_type_code: core_activity_object_type_code },
+      createRequestHeader()
+    )
     .then((response) => {
       notification.success({
         message: "Successfully subscribed.",

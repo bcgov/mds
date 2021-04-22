@@ -16,6 +16,13 @@ CORE_ACTIVITY = api.model(
         'target_object_type_code': fields.String,
     })
 
+CORE_ACTIVITY_OBJECT_TYPE = api.model(
+    'CoreActivityObjectType', {
+        'core_activity_object_type_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean,
+    })
+
 CORE_ACTIVITY_SUBSCRIPTION = api.model('CoreActivitySubscription', {
     'target_guid': fields.String,
     'core_activity_object_type_code': fields.String

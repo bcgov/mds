@@ -16,14 +16,15 @@ const propTypes = {
   coreActivityTargetsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   createCoreActivityTarget: PropTypes.func.isRequired,
   deleteCoreActivityTarget: PropTypes.func.isRequired,
+  coreActivityObjectTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export class SubscribedTargetsTable extends Component {
   transformRowData = (targets) =>
     targets.map((target) => ({
       key: target.target_guid,
-      type: target.target_object_type_code,
-      name: target.target_guid,
+      type: target.core_activity_object_type_code,
+      name: target.target_title,
     }));
 
   render() {
@@ -38,13 +39,17 @@ export class SubscribedTargetsTable extends Component {
         title: "Type",
         key: "type",
         dataIndex: "type",
-        render: (text) => <div title="Type">{text}</div>,
+        render: (text) => (
+          <div title="Type">{this.props.coreActivityObjectTypeOptionsHash[text]}</div>
+        ),
       },
       {
         title: "",
         key: "subscribe",
         dataIndex: "",
-        render: (text, record) => <SubscribeButton target_guid={record.key} />
+        render: (text, record) => (
+          <SubscribeButton target_guid={record.key} core_activity_object_type_code={record.type} />
+        ),
       },
     ];
 
@@ -52,9 +57,7 @@ export class SubscribedTargetsTable extends Component {
       <CoreTable
         condition={this.props.isLoaded}
         columns={columns}
-        dataSource={this.transformRowData(
-          this.props.coreActivityTargets
-        )}
+        dataSource={this.transformRowData(this.props.coreActivityTargets)}
         tableProps={{
           align: "left",
           pagination: false,

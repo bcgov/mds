@@ -8,6 +8,7 @@ import {
   getMineTenureTypesHash,
   getCommodityOptionHash,
   getHSRCMComplianceCodesHash,
+  getCoreActivityObjectTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { getSubscribedMines } from "@common/selectors/mineSelectors";
 import { fetchSubscribedMinesByUser, unSubscribe } from "@common/actionCreators/mineActionCreator";
@@ -29,6 +30,7 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   coreActivityTargets: PropTypes.objectOf(PropTypes.any).isRequired,
+  coreActivityObjectTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export class CustomHomePage extends Component {
   state = { isLoaded: false };
@@ -66,9 +68,10 @@ export class CustomHomePage extends Component {
           <br />
           <h4>Subscribed EVERYTHING!</h4>
           <br />
-          <SubscribedTargetsTable 
+          <SubscribedTargetsTable
             isLoaded={this.state.isLoaded}
             coreActivityTargets={this.props.coreActivityTargets}
+            coreActivityObjectTypeOptionsHash={this.props.coreActivityObjectTypeOptionsHash}
           />
         </div>
       </div>
@@ -85,6 +88,7 @@ const mapStateToProps = (state) => ({
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   complianceCodesHash: getHSRCMComplianceCodesHash(state),
   coreActivityTargets: getCoreActivityTargets(state),
+  coreActivityObjectTypeOptionsHash: getCoreActivityObjectTypeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

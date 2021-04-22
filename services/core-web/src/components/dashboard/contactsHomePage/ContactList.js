@@ -77,7 +77,9 @@ const columns = [
     title: "",
     key: "subscribe",
     dataIndex: "",
-    render: (text, record) => <SubscribeButton target_guid={record.key} />
+    render: (text, record) => (
+      <SubscribeButton target_guid={record.key} core_activity_object_type_code="PTY" />
+    ),
   },
 ];
 
