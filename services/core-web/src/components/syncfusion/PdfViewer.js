@@ -20,11 +20,13 @@ import { createRequestHeader } from "@common/utils/RequestHeaders";
 const propTypes = {
   serviceUrl: PropTypes.string,
   documentPath: PropTypes.string,
+  height: PropTypes.string,
 };
 
 const defaultProps = {
   serviceUrl: null,
   documentPath: null,
+  height: "640px",
 };
 
 const getAjaxRequestSettingsHeaders = (obj) => {
@@ -59,7 +61,7 @@ export class PdfViewer extends Component {
         serviceUrl={this.serviceUrl}
         documentPath={this.props.documentPath}
         ajaxRequestSettings={ajaxRequestSettings}
-        style={{ display: "block", height: 640 }}
+        style={{ display: "block", height: this.props.height }}
       >
         <Inject
           services={[

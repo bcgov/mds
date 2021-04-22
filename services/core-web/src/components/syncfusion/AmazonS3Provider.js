@@ -12,13 +12,16 @@ import {
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { PdfViewer } from "./PdfViewer";
+import { Modal } from "antd";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
 };
 
+const useModal = false;
+
 export class AmazonS3Provider extends SampleBase {
-  state = {};
+  state = { isModalVisible: false };
 
   constructor() {
     super(...arguments);
@@ -69,6 +72,7 @@ export class AmazonS3Provider extends SampleBase {
       ) {
         this.setState({
           pdfPath: data.path + this.filemanager.selectedItems[0],
+          isModalVisible: true,
         });
         return;
       } else {
@@ -118,6 +122,18 @@ export class AmazonS3Provider extends SampleBase {
       xhr.send(fdata);
     }
   }
+
+  showModal = () => {
+    this.setState({ isModalVisible: true });
+  };
+
+  handleOk = () => {
+    this.setState({ isModalVisible: false });
+  };
+
+  handleCancel = () => {
+    this.setState({ isModalVisible: false });
+  };
 
   render() {
     return (
@@ -185,12 +201,33 @@ export class AmazonS3Provider extends SampleBase {
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
         </div>
-        <PdfViewer
-          documentPath={this.state.pdfPath}
-          ref={(node) => {
-            this.pdfViewer = node;
-          }}
-        />
+        {(!useModal && (
+          <PdfViewer
+            documentPath={this.state.pdfPath}
+            ref={(node) => {
+              this.pdfViewer = node;
+            }}
+          />
+        )) || (
+          <>
+            <Modal
+              title="PDF Viewer"
+              visible={this.state.isModalVisible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+              footer={null}
+              width={"90%"}
+            >
+              <PdfViewer
+                documentPath={this.state.pdfPath}
+                ref={(node) => {
+                  this.pdfViewer = node;
+                }}
+                height={"1080px"}
+              />
+            </Modal>
+          </>
+        )}
       </div>
     );
   }
