@@ -8,6 +8,7 @@ import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import SubscribeButton from "@/components/common/SubscribeButton";
 
 /**
  * @class ContactList - paginated list of contacts
@@ -33,7 +34,6 @@ const columns = [
     key: "name",
     dataIndex: "name",
     sortField: "party_name",
-    width: 150,
     sorter: true,
     render: ([firstName = "", lastName = ""], record) => {
       const comma = firstName ? ", " : "";
@@ -59,22 +59,25 @@ const columns = [
     title: "Role",
     key: "role",
     dataIndex: "role",
-    width: 150,
     render: (text) => <div title="Role">{text}</div>,
   },
   {
     title: "Email",
     key: "email",
     dataIndex: "email",
-    width: 150,
     render: (text) => <div title="Email">{text}</div>,
   },
   {
     title: "Phone",
     key: "phone",
     dataIndex: "phone",
-    width: 150,
     render: (text) => <div title="Phone">{text}</div>,
+  },
+  {
+    title: "",
+    key: "subscribe",
+    dataIndex: "",
+    render: (text, record) => <SubscribeButton target_guid={record.key} />
   },
 ];
 

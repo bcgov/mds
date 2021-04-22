@@ -16,6 +16,9 @@ import {
   loadBulkStaticContent,
   fetchInspectors,
 } from "@common/actionCreators/staticContentActionCreator";
+import {
+  fetchCoreActivityTargets
+} from "@common/actionCreators/activityActionCreator";
 import DashboardRoutes from "@/routes/DashboardRoutes";
 import { AuthenticationGuard } from "@/HOC/AuthenticationGuard";
 import WarningBanner, { WARNING_TYPES } from "@/components/common/WarningBanner";
@@ -29,10 +32,11 @@ import Loading from "./common/Loading";
  */
 
 const propTypes = {
-  staticContentLoadingIsComplete: PropTypes.bool.isRequired,
+  initialContentLoadingIsComplete: PropTypes.bool.isRequired,
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   loadBulkStaticContent: PropTypes.func.isRequired,
   fetchInspectors: PropTypes.func.isRequired,
+  fetchCoreActivityTargets: PropTypes.func.isRequired,
 };
 
 export class Home extends Component {
@@ -52,7 +56,7 @@ export class Home extends Component {
       isDev: detectDevelopmentEnvironment(),
     });
     this.handleActiveButton(this.props.location.pathname);
-    this.loadStaticContent();
+    this.loadInitialContent();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,13 +83,14 @@ export class Home extends Component {
     this.setState((prevState) => ({ isMenuOpen: !prevState.isMenuOpen }));
   };
 
-  loadStaticContent = () => {
+  loadInitialContent = () => {
     this.props.loadBulkStaticContent();
     this.props.fetchInspectors();
+    this.props.fetchCoreActivityTargets();
   };
 
   render() {
-    if (!this.props.staticContentLoadingIsComplete) {
+    if (!this.props.initialContentLoadingIsComplete) {
       return <Loading />;
     }
     return (
@@ -131,7 +136,7 @@ export class Home extends Component {
 Home.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
-  staticContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
+  initialContentLoadingIsComplete: getStaticContentLoadingIsComplete(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -139,6 +144,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       loadBulkStaticContent,
       fetchInspectors,
+      fetchCoreActivityTargets,
     },
     dispatch
   );

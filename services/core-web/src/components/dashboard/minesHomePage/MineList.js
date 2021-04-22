@@ -8,6 +8,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import SubscribeButton from "@/components/common/SubscribeButton";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -124,6 +125,12 @@ const columns = [
     dataIndex: "tsf",
     width: 150,
     render: (text) => <div title="TSF">{text}</div>,
+  },
+  {
+    title: "",
+    key: "subscribe",
+    dataIndex: "",
+    render: (text, record) => <SubscribeButton target_guid={record.key} />
   },
 ];
 

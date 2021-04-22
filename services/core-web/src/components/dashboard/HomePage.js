@@ -62,6 +62,16 @@ export class HomePage extends Component {
             </div>
           </Col>
         </Row>
+        <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
+          <Col xs={xs * 2} sm={sm * 2} md={md * 3} lg={lg * 3} xl={xl * 3}>
+            <div className="center">
+              <h1 style={{ color: "white" }}>Subscribed Activities</h1>
+            </div>
+            <div className="activities-card">
+              <CoreActivities />
+            </div>
+          </Col>
+        </Row>
         {this.state.graph_urls.length === 2 && (
           <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
             <Col xs={xs} sm={sm} md={md} lg={lg} xl={xl}>

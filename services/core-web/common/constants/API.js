@@ -188,8 +188,11 @@ export const RECLAMATION_INVOICE_DOCUMENTS = (mineGuid) =>
   `/securities/${mineGuid}/reclamation-invoices/documents`;
 
 // Core Activities
-export const CORE_ACTIVITIES = (publishedSince) =>
-  `/core_activity?published_since=${publishedSince}`;
+export const CORE_ACTIVITIES = (params) =>
+  `/core_activity?${queryString.stringify(params)}`;
+  
+export const CORE_ACTIVITY_TARGET = (target_guid) =>
+  `/core_activity/subscription${target_guid ? `/${target_guid}` : '' }`
   
 export const MINE_COMMENTS = (mineGuid) => `/mines/${mineGuid}/comments`;
 export const MINE_COMMENT = (mineGuid, commentGuid) => `/mines/${mineGuid}/comments/${commentGuid}`;

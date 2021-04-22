@@ -3,6 +3,7 @@ import { CORE_ACTIVITIES } from "../constants/reducerTypes";
 
 const initialState = {
   coreActivities: [],
+  coreActivityTargets: [],
   userCoreActivities: [],
 };
 
@@ -12,6 +13,11 @@ export const activityReducer = (state = initialState, action) => {
       return {
         ...state,
         coreActivities: action.payload.records,
+      };
+    case actionTypes.STORE_CORE_ACTIVITY_TARGETS:
+      return {
+        ...state,
+        coreActivityTargets: action.payload.records,
       };
     case actionTypes.STORE_USER_CORE_ACTIVITIES:
       return {
@@ -28,6 +34,7 @@ const activityReducerObject = {
 };
 
 export const getCoreActivities = (state) => state[CORE_ACTIVITIES].coreActivities;
+export const getCoreActivityTargets = (state) => state[CORE_ACTIVITIES].coreActivityTargets;
 export const getUserCoreActivities = (state) => state[CORE_ACTIVITIES].userCoreActivities;
 
 export default activityReducerObject;

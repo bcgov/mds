@@ -16,6 +16,7 @@ import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
+import SubscribeButton from "@/components/common/SubscribeButton";
 
 /**
  * @class NoticeOfWorkTable - paginated list of notice of work applications
@@ -299,6 +300,12 @@ export class NoticeOfWorkTable extends Component {
             </Link>
           </div>
         ),
+    },
+    {
+      title: "",
+      key: "subscribe",
+      dataIndex: "",
+      render: (text, record) => <SubscribeButton target_guid={record.key} />
     },
   ];
 

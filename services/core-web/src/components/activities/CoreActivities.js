@@ -28,7 +28,7 @@ const getBadgeStatus = (verb) => verbStatuses[verb];
 
 export class CoreActivities extends Component {
   componentWillMount = () => {
-    this.props.fetchCoreActivities({ publishedSince: "2020-04-01" });
+    this.props.fetchCoreActivities({ published_since: "2020-04-01" });
   };
 
   render = () => {
