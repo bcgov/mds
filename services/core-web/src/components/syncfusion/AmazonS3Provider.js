@@ -46,8 +46,6 @@ export class AmazonS3Provider extends SampleBase {
   };
 
   fileOpen = (args) => {
-    console.log(this.props);
-
     if (args.fileDetails.isFile && args.fileDetails._fm_iconClass !== "e-fe-image") {
       this.customDownload([]);
     }
@@ -76,7 +74,6 @@ export class AmazonS3Provider extends SampleBase {
         });
         return;
       } else {
-        console.log(this.pdfViewer?.pdfViewerComponent);
         this.pdfViewer.pdfViewerComponent.unload();
       }
 
