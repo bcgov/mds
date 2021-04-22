@@ -85,7 +85,6 @@ namespace EJ2FileManagerService
             app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
             app.UseMvc();
-            app.UseStaticFiles();
             app.UseResponseCompression();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

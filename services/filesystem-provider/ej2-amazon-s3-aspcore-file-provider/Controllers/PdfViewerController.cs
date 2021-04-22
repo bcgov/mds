@@ -9,14 +9,13 @@ using Syncfusion.EJ2.PdfViewer;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 {
     [Route("file-api/[controller]")]
+    [EnableCors("AllowAllOrigins")]
     [ApiController]
-
     public class PdfViewerController : ControllerBase
     {
         public AmazonS3FileProvider operation;

@@ -1,5 +1,4 @@
-﻿using System;
-using Syncfusion.EJ2.FileManager.AmazonS3FileProvider;
+﻿using Syncfusion.EJ2.FileManager.AmazonS3FileProvider;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
@@ -7,14 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.FileManager.Base;
 using Amazon;
-// using Syncfusion.EJ2.DocumentEditor;
-// using Syncfusion.EJ2.FileManager.PhysicalFileProvider;
-// using Microsoft.AspNetCore.Http;
-// using Microsoft.AspNetCore.Http.Features;
-// using System.Collections.Generic;
-// using System.IO;
-// using Syncfusion.EJ2.Spreadsheet;
-// using Syncfusion.XlsIO;
 
 namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 {
@@ -26,7 +17,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         public AmazonS3FileProvider operation;
         public string basePath;
         protected RegionEndpoint bucketRegion;
-        public AmazonS3ProviderController(IHostingEnvironment hostingEnvironment)
+        public AmazonS3ProviderController(IWebHostEnvironment hostingEnvironment)
         {
             this.basePath = hostingEnvironment.ContentRootPath;
             this.operation = new AmazonS3FileProvider();
