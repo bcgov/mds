@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Syncfusion.EJ2.FileManager.AmazonS3FileProvider;
 using Newtonsoft.Json;
@@ -39,6 +39,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("Load")]
+        [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer;
@@ -71,6 +72,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("Bookmarks")]
+        [Authorize("View")]
         public IActionResult Bookmarks([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -81,6 +83,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("RenderPdfPages")]
+        [Authorize("View")]
         public IActionResult RenderPdfPages([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -92,6 +95,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [HttpPost]
 
         [Route("RenderAnnotationComments")]
+        [Authorize("View")]
         public IActionResult RenderAnnotationComments([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer;
@@ -103,6 +107,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("Unload")]
+        [Authorize("View")]
         public IActionResult Unload([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer;
@@ -114,6 +119,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("RenderThumbnailImages")]
+        [Authorize("View")]
         public IActionResult RenderThumbnailImages([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -123,6 +129,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         [HttpPost]
         [Route("Download")]
+        [Authorize("View")]
         public IActionResult Download([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -133,6 +140,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("PrintImages")]
+        [Authorize("View")]
         public IActionResult PrintImages([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -143,6 +151,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("ExportAnnotations")]
+        [Authorize("View")]
         public IActionResult ExportAnnotations([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -153,6 +162,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("ImportAnnotations")]
+        [Authorize("View")]
         // NOTE: This is not implemented properly as it will need to get the document from the S3 bucket.
         public IActionResult ImportAnnotations([FromBody] Dictionary<string, string> jsonObject)
         {
@@ -202,6 +212,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("ExportFormFields")]
+        [Authorize("View")]
         public IActionResult ExportFormFields(Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
@@ -211,6 +222,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [AcceptVerbs("Post")]
         [HttpPost]
         [Route("ImportFormFields")]
+        [Authorize("View")]
         public IActionResult ImportFormFields(Dictionary<string, string> jsonObject)
         {
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
