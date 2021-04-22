@@ -23,19 +23,11 @@ export class SubscribeButton extends Component {
           </button>
         </Tooltip>)
       : (
-      <Popconfirm
-        placement="left"
-        title={`Are you sure you want to unsubscribe from this item?`}
-        okText="Yes"
-        cancelText="No"
-        onConfirm={(event) => this.props.deleteCoreActivityTarget(this.props.target_guid)}
-      >
         <Tooltip title="Unsubscribe" placement="right">
-          <button type="button">
+        <button type="button" onClick={(event) => this.props.deleteCoreActivityTarget(this.props.target_guid)}>
             <img alt="document" src={SUBSCRIBE} />
           </button>
         </Tooltip>
-      </Popconfirm>
   )}
   </div>
   };

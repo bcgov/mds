@@ -55,10 +55,20 @@ export class HomePage extends Component {
         <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
           <Col xs={xs * 2} sm={sm * 2} md={md * 3} lg={lg * 3} xl={xl * 3}>
             <div className="center">
-              <h1 style={{ color: "white" }}>Recent Activities</h1>
+              <h1 style={{ color: "white" }}>Recent Activity</h1>
             </div>
             <div className="activities-card">
               <CoreActivities />
+            </div>
+          </Col>
+        </Row>
+        <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
+          <Col xs={xs * 2} sm={sm * 2} md={md * 3} lg={lg * 3} xl={xl * 3}>
+            <div className="center">
+              <h1 style={{ color: "white" }}>Subscribed Activity</h1>
+            </div>
+            <div className="activities-card">
+              <CoreActivities subscribed />
             </div>
           </Col>
         </Row>

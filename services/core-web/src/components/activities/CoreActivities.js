@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
   fetchCoreActivities,
-  fetchUserCoreActivities,
 } from "@common/actionCreators/activityActionCreator";
 import { getCoreActivities } from "@common/selectors/activitySelectors";
 import { Badge } from "antd";
@@ -12,10 +11,16 @@ import { Badge } from "antd";
 import { chain } from "lodash";
 
 const propTypes = {
-  fetchUserCoreActivities: PropTypes.func.isRequired,
   fetchCoreActivities: PropTypes.func.isRequired,
-  coreActivities: PropTypes.any,
+  coreActivities: PropTypes.any.isRequired,
+  target_guid: PropTypes.string,
+  subscribed: PropTypes.bool,
 };
+
+const defaultProps = {
+  target_guid: null,
+  subscribed: false,
+}
 
 const verbStatuses = {
   DEL: "error",
@@ -25,14 +30,15 @@ const verbStatuses = {
 };
 
 const getBadgeStatus = (verb) => verbStatuses[verb];
+const getTarget = (target_guid, subscribed) =>  subscribed ? "SUBSCRIBED" : target_guid || "ALL";
 
 export class CoreActivities extends Component {
   componentWillMount = () => {
-    this.props.fetchCoreActivities({ published_since: "2020-04-01" });
+    this.props.fetchCoreActivities({ published_since: "2020-04-01", subscribed: this.props.subscribed, target_guid: this.props.target_guid });
   };
 
   render = () => {
-    const groupedActivities = chain(this.props.coreActivities)
+    const groupedActivities = chain(this.props.coreActivities[getTarget(this.props.target_guid, this.props.subscribed)])
       .groupBy("published_date")
       .map((value, key) => ({ date: key, activities: value }))
       .value();
@@ -72,7 +78,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchCoreActivities,
-      fetchUserCoreActivities,
     },
     dispatch
   );

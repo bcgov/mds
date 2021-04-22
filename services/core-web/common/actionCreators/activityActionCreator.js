@@ -13,20 +13,10 @@ export const fetchCoreActivities = (payload) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.CORE_ACTIVITIES(payload), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_CORE_ACTIVITIES));
-      dispatch(activityActions.storeCoreActivities(response.data));
+      const target = payload.subscribed ? "SUBSCRIBED" : payload.target_guid || "ALL";
+      dispatch(activityActions.storeCoreActivities({ target: target, data: response.data }));
     })
     .catch(() => dispatch(error(reducerTypes.GET_CORE_ACTIVITIES)));
-};
-
-export const fetchUserCoreActivities = (payload) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_USER_CORE_ACTIVITIES));
-  return CustomAxios()
-    .get(ENVIRONMENT.apiUrl + API.CORE_ACTIVITIES(payload), createRequestHeader())
-    .then((response) => {
-      dispatch(success(reducerTypes.GET_USER_CORE_ACTIVITIES));
-      dispatch(activityActions.storeUserCoreActivities(response.data));
-    })
-    .catch(() => dispatch(error(reducerTypes.GET_USER_CORE_ACTIVITIES)));
 };
 
 export const fetchCoreActivityTargets = () => (dispatch) => {

@@ -2,7 +2,7 @@ import * as actionTypes from "../constants/actionTypes";
 import { CORE_ACTIVITIES } from "../constants/reducerTypes";
 
 const initialState = {
-  coreActivities: [],
+  coreActivities: {},
   coreActivityTargets: [],
   userCoreActivities: [],
 };
@@ -11,8 +11,10 @@ export const activityReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.STORE_CORE_ACTIVITIES:
       return {
-        ...state,
-        coreActivities: action.payload.records,
+        ...state,  
+        coreActivities: {
+          ...state.coreActivities, [action.payload.target]: action.payload.data.records
+        }
       };
     case actionTypes.STORE_CORE_ACTIVITY_TARGETS:
       return {

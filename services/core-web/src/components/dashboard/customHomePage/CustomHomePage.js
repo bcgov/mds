@@ -14,6 +14,7 @@ import { fetchSubscribedMinesByUser, unSubscribe } from "@common/actionCreators/
 import CustomPropTypes from "@/customPropTypes";
 import { SubscriptionTable } from "./SubscriptionTable";
 import { SubscribedTargetsTable } from "./SubscribedTargetsTable";
+import { fetchCoreActivityTargets } from "@common/actionCreators/activityActionCreator";
 import { getCoreActivityTargets } from "@common/selectors/activitySelectors";
 
 /**
@@ -29,11 +30,13 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   coreActivityTargets: PropTypes.objectOf(PropTypes.any).isRequired,
+  fetchCoreActivityTargets: PropTypes.func.isRequired,
 };
 export class CustomHomePage extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
+    this.props.fetchCoreActivityTargets();
     this.props.fetchSubscribedMinesByUser().then(() => {
       this.setState({ isLoaded: true });
     });
@@ -94,6 +97,7 @@ const mapDispatchToProps = (dispatch) =>
       unSubscribe,
       openModal,
       closeModal,
+      fetchCoreActivityTargets,
     },
     dispatch
   );

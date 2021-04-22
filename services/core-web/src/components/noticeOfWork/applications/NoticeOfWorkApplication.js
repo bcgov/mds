@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Tabs } from "antd";
+import { Tabs, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { kebabCase } from "lodash";
@@ -18,6 +18,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import AdministrativeTab from "@/components/noticeOfWork/applications/administrative/AdministrativeTab";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
+import CoreActivities from "@/components/activities/CoreActivities";
 
 /**
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
@@ -114,6 +115,23 @@ export class NoticeOfWorkApplication extends Component {
               />
             </Tabs.TabPane>
           )}
+
+          <Tabs.TabPane tab="Activity" key="activity" disabled={!verificationComplete}>
+            {verificationComplete && (
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <Row type="flex" justify="center" gutter={32}>
+                  <Col span={20}>
+                    <div className="center">
+                      <h1>Recent Activity</h1>
+                    </div>
+                    <div className="activities-card">
+                      <CoreActivities target_guid={this.props.noticeOfWork.now_application_guid}/>
+                    </div>
+                  </Col>
+                </Row>
+              </LoadingWrapper>
+            )}
+          </Tabs.TabPane>
 
           <Tabs.TabPane
             tab={this.props.renderTabTitle("Application", "REV")}
