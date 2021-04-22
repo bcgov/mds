@@ -135,10 +135,10 @@ class MineReportListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        CoreActivityEngine.process(Verbs.added, 
-        f'{CoreActivityEngine.get_username()} added a {mine_report.submission_year} {mine_report_definition.report_name} report to {mine.mine_name}', 
-        mine_report.mine_report_guid, Objects.report,
-        mine.mine_guid, Objects.mine)
+        CoreActivityEngine.process(
+            Verbs.added,
+            f'{CoreActivityEngine.get_username()} added a {mine_report.submission_year} {mine_report_definition.report_name} report to {mine.mine_name}',
+            mine_report.mine_report_guid, Objects.report, mine.mine_guid, Objects.mine)
 
         return mine_report, 201
 
@@ -246,10 +246,10 @@ class MineReportResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
-        CoreActivityEngine.process(Verbs.modified, 
-        f'{CoreActivityEngine.get_username()} updated a {mine_report.submission_year} {mine_report.mine_report_definition.report_name} report to {mine.mine_name}', 
-        mine_report.mine_report_guid, Objects.report,
-        mine.mine_guid, Objects.mine)
+        CoreActivityEngine.process(
+            Verbs.modified,
+            f'{CoreActivityEngine.get_username()} updated a {mine_report.submission_year} {mine_report.mine_report_definition.report_name} report on {mine.mine_name}',
+            mine_report.mine_report_guid, Objects.report, mine.mine_guid, Objects.mine)
 
         return mine_report
 

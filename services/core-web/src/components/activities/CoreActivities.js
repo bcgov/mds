@@ -48,7 +48,7 @@ export class CoreActivities extends Component {
           <React.Fragment>
             <h3>{group.date}</h3>
             <div>
-              {group.activities.map((activity) => (
+              {group.activities.map((activity) => <>
                 <Badge
                   status={getBadgeStatus(activity.core_activity_verb_code)}
                   text={
@@ -60,7 +60,9 @@ export class CoreActivities extends Component {
                     </a>
                   }
                 />
-              ))}
+                <br/>
+                </>
+              )}
             </div>
           </React.Fragment>
         ))}

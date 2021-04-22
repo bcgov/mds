@@ -72,6 +72,7 @@ export class HomePage extends Component {
             </div>
           </Col>
         </Row>
+        <br/><br/><br/>
         {this.state.graph_urls.length === 2 && (
           <Row type="flex" justify="center" gutter={[hGutter, vGutter]}>
             <Col xs={xs} sm={sm} md={md} lg={lg} xl={xl}>

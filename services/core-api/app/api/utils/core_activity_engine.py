@@ -23,6 +23,7 @@ class Objects(enum.Enum):
     mine = "MIN"
     now = "NOW"
     party = "PTY"
+    variance = "VAR"
 
 
 class CoreActivityEngine(object):

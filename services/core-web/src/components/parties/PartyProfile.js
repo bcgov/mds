@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Tabs, Table, Button, Popconfirm } from "antd";
+import { Tabs, Table, Button, Popconfirm, Row, Col } from "antd";
 import {
   PhoneOutlined,
   MinusCircleOutlined,
@@ -37,6 +37,7 @@ import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import CustomPropTypes from "@/customPropTypes";
 import Address from "@/components/common/Address";
+import CoreActivities from "@/components/activities/CoreActivities";
 
 /**
  * @class PartyProfile - profile view for personnel/companies
@@ -313,7 +314,6 @@ export class PartyProfile extends Component {
           </div>
           <div className="profile__content">
             <Tabs
-              activeKey="history"
               size="large"
               animated={{ inkBar: true, tabPane: false }}
               centered
@@ -331,6 +331,18 @@ export class PartyProfile extends Component {
                     )}
                     locale={{ emptyText: "No Data Yet" }}
                   />
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Activity" key="activity">
+                <div className="tab__content ">
+                  <Row type="flex" justify="center" gutter={32}>
+                    <Col span={20}>
+                      <div className="center">
+                        <h1>Recent Activity</h1>
+                      </div>
+                      <CoreActivities target_guid={id}/>
+                    </Col>
+                  </Row>
                 </div>
               </Tabs.TabPane>
             </Tabs>

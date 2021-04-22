@@ -124,9 +124,7 @@ export class NoticeOfWorkApplication extends Component {
                     <div className="center">
                       <h1>Recent Activity</h1>
                     </div>
-                    <div className="activities-card">
-                      <CoreActivities target_guid={this.props.noticeOfWork.now_application_guid}/>
-                    </div>
+                    <CoreActivities target_guid={this.props.noticeOfWork.now_application_guid}/>
                   </Col>
                 </Row>
               </LoadingWrapper>
