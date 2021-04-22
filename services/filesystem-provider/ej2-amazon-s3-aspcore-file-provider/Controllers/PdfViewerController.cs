@@ -235,6 +235,5 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
             return documentPath;
         }
     }
-}
 
 }
