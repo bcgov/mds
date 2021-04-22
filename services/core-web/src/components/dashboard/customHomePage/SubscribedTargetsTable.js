@@ -39,6 +39,7 @@ export class SubscribedTargetsTable extends Component {
         title: "Type",
         key: "type",
         dataIndex: "type",
+        sorter: (a, b) => a.type.localeCompare(b.type),
         render: (text) => (
           <div title="Type">{this.props.coreActivityObjectTypeOptionsHash[text]}</div>
         ),
