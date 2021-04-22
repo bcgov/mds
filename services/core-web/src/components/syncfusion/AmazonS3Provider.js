@@ -11,12 +11,15 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { PdfViewer } from "./PdfViewer";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
 };
 
 export class AmazonS3Provider extends SampleBase {
+  state = {};
+
   constructor() {
     super(...arguments);
     this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
@@ -40,6 +43,8 @@ export class AmazonS3Provider extends SampleBase {
   };
 
   fileOpen = (args) => {
+    console.log(this.props);
+
     if (args.fileDetails.isFile && args.fileDetails._fm_iconClass !== "e-fe-image") {
       this.customDownload([]);
     }
@@ -47,6 +52,7 @@ export class AmazonS3Provider extends SampleBase {
 
   // Workaround method for providing authorization headers in download request: https://www.syncfusion.com/forums/144270/how-to-implement-jwt-token-send-with-every-filemanager-request
   customDownload(files) {
+    console.log(this.props);
     const flag = this.filemanager.selectedItems.length !== 0;
     if (files.length !== 0 || flag) {
       // Create data for the controller
@@ -57,6 +63,11 @@ export class AmazonS3Provider extends SampleBase {
         data: files.length === 0 ? this.filemanager.getSelectedFiles() : files,
       };
 
+      console.log(data.path);
+      this.setState({
+        pdfPath: data.path + this.filemanager.selectedItems[0],
+      });
+      return;
       // Initiate an XHR request
       const xhr = new XMLHttpRequest();
       xhr.open("POST", this.filemanager.ajaxSettings.downloadUrl, true);
@@ -74,6 +85,8 @@ export class AmazonS3Provider extends SampleBase {
               name = matches[1].replace(/['"]/g, "");
             }
           }
+
+          console.log("NAME", name);
 
           // Save the file locally using anchor tag
           const blob = new Blob([this.response], { type: xhr.getResponseHeader("Content-Type") });
@@ -166,6 +179,12 @@ export class AmazonS3Provider extends SampleBase {
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
         </div>
+        <>
+          <PdfViewer
+            serviceUrl="http://localhost:62870/file-api/PdfViewer"
+            documentPath={this.state.pdfPath}
+          />
+        </>
       </div>
     );
   }
