@@ -153,7 +153,7 @@ export class MineHeader extends Component {
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
-        <Menu.Item onClick={this.handleMenuClick}>
+        {/* <Menu.Item onClick={this.handleMenuClick}>
           <button
             type="button"
             className="full"
@@ -164,7 +164,7 @@ export class MineHeader extends Component {
             <img alt="document" className="padding-sm" src={BRAND_DOCUMENT} />
             {ModalContent.ADD_TAILINGS}
           </button>
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
     );
 

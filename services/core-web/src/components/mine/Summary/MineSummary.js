@@ -94,6 +94,7 @@ export class MineSummary extends Component {
         <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
           <div>
+            <br />
             <Row>
               <Col span={24}>
                 <h4>Main Contacts</h4>

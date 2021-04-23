@@ -1,5 +1,6 @@
 import uuid, requests, json
 from datetime import datetime
+from decimal import Decimal
 from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
@@ -22,6 +23,34 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         type=str,
         trim=True,
         help='Name of the tailings storage facility.',
+        required=True)
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        location='json')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        location='json')
+    parser.add_argument(
+        'risk_classification',
+        type=str,
+        trim=True,
+        help='Risk Severity Classification',
+        required=True)
+    parser.add_argument(
+        'operating_status',
+        type=str,
+        trim=True,
+        help='Operating Status of the storage facility',
+        required=True)
+    parser.add_argument(
+        'has_itrb',
+        type=bool,
+        trim=True,
+        help='Risk Severity Classification',
         required=True)
 
     @api.doc(description='Gets the tailing storage facilites for the given mine')
@@ -48,7 +77,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         is_mine_first_tsf = len(mine_tsf_list) == 0
 
         mine_tsf = MineTailingsStorageFacility.create(
-            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
+            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'], latitude=data['latitude'], longitude=data['longitude'], risk_classification=data['risk_classification'], has_itrb=data['has_itrb'], operating_status=data['operating_status'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 
         if is_mine_first_tsf:

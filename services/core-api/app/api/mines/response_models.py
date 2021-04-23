@@ -272,6 +272,11 @@ MINE_TSF_MODEL = api.model(
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
+        'latitude': fields.String,
+        'longitude': fields.String,
+        'risk_classification': fields.String,
+        'has_itrb': fields.Boolean,
+        'operating_status': fields.String,
     })
 
 MINE_VERIFIED_MODEL = api.model(
