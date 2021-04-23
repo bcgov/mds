@@ -189,7 +189,6 @@ export class AddPartyRelationshipForm extends Component {
     let options;
     switch (this.props.partyRelationshipType.mine_party_appt_type_code) {
       case "EOR":
-      case "TQP":
         options = <EngineerOfRecordOptions mine={this.props.mine} />;
         break;
       case "PMT":
