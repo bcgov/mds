@@ -110,6 +110,23 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
+    id="generated-documents"
+    title="Application Export Files"
+  >
+    <Connect(NOWDocuments)
+      addDescriptionColumn={false}
+      categoriesToShow={
+        Array [
+          "AEF",
+        ]
+      }
+      disclaimerText="This table shows generated Draft Permit PDFs."
+      documents={Array []}
+      isAdminView={true}
+      isViewMode={false}
+    />
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
     id="inspectors"
     title="Inspectors"
   >
