@@ -391,19 +391,6 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/dashboard/notice-of-work/application/"
-  />
-  <Route
-    component={
-      Object {
-        "$$typeof": Symbol(react.memo),
-        "WrappedComponent": [Function],
-        "compare": null,
-        "displayName": "Connect(Connect(applicationGuard))",
-        "type": [Function],
-      }
-    }
-    exact={true}
     path="/dashboard/notice-of-work/app/:id/:tab"
   />
   <Route

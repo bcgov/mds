@@ -113,7 +113,8 @@ VALUES
     ('COL', 'Coal', TRUE, 'system-mds', 'system-mds'),
     ('MIN', 'Mineral', TRUE, 'system-mds', 'system-mds'),
     ('PLR', 'Placer', TRUE, 'system-mds', 'system-mds'),
-    ('BCL', 'BC Land', TRUE, 'system-mds', 'system-mds')
+    ('BCL', 'Public Land', TRUE, 'system-mds', 'system-mds'),
+    ('PRL', 'Private Land', TRUE, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 
@@ -333,7 +334,9 @@ VALUES
     ('TO','COL'),
     ('MC','COL'),
     ('CG','BCL'),
-    ('SA','BCL')
+    ('SA','BCL'),
+    ('CG','PRL'),
+    ('SA','PRL')
 ON CONFLICT DO NOTHING;
 --Everything else gets Mineral tenure type
 INSERT INTO mine_commodity_tenure_type
@@ -362,6 +365,7 @@ VALUES
     ('SUR', 'MIN'),
     ('SUR', 'PLR'),
     ('SUR', 'BCL'),
+    ('SUR', 'PRL'),
     ('UND', 'COL'),
     ('UND', 'MIN'),
     ('UND', 'PLR'),
@@ -529,7 +533,8 @@ VALUES
 	('PCO', 'Permit Closed', 40, false, 'system-mds', 'system-mds'),
 	('NPR', 'No Permit Required', 110, true, 'system-mds', 'system-mds'),
 	('RCO', 'Referral Complete', 120, true, 'system-mds', 'system-mds'),
-  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds')
+  ('PEV', 'Pending Verification', 130, true, 'system-mds', 'system-mds'),
+  ('WDN', 'Withdrawn', 140, true, 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO mine_incident_category
@@ -619,61 +624,63 @@ ON CONFLICT DO NOTHING;
 INSERT INTO now_application_document_type
 (now_application_document_type_code, description, active_ind, now_application_document_sub_type_code, create_user, update_user)
 VALUES
-    ('ANS', 'Annual Summary', true, null, 'system-mds', 'system-mds'),
-    ('ACP', 'Archaeological Chance Find Procedure', true, null, 'system-mds', 'system-mds'),
-    ('BLP', 'Blasting Procedure', true, null, 'system-mds', 'system-mds'),
-    ('EMS', 'Explosives Magazine Storage and Use Permit Application', true, null, 'system-mds', 'system-mds'),
-    ('LAL', 'Landowner Authorization Letter', true, null, 'system-mds', 'system-mds'),
-    ('MRP', 'Mine Emergency Response Plan', true, null, 'system-mds', 'system-mds'),
+    ('ANS', 'Annual Summary', true, 'AAF', 'system-mds', 'system-mds'),
+    ('ACP', 'Archaeological Chance Find Procedure', true, 'AAF', 'system-mds', 'system-mds'),
+    ('BLP', 'Blasting Procedure', true, 'AAF', 'system-mds', 'system-mds'),
+    ('EMS', 'Explosives Magazine Storage and Use Permit Application', true, 'AAF', 'system-mds', 'system-mds'),
+    ('LAL', 'Landowner Authorization Letter', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MRP', 'Mine Emergency Response Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('OTA', 'Other', true, 'AAF', 'system-mds', 'system-mds'),
     ('OTH', 'Other', true, 'GDO', 'system-mds', 'system-mds'),
-    ('RFE', 'Record of First Nations Engagement', true, null, 'system-mds', 'system-mds'),
-    ('TAL', 'Tenure Authorization Letter', true, null, 'system-mds', 'system-mds'),
-    ('REV', 'Review', true, null, 'system-mds','system-mds'),
+    ('RFE', 'Record of First Nations Engagement', true, 'AAF', 'system-mds', 'system-mds'),
+    ('TAL', 'Tenure Authorization Letter', true, 'AAF', 'system-mds', 'system-mds'),
+    ('REV', 'Review', true, 'GDO', 'system-mds','system-mds'),
     ('CAL', 'Acknowledgement Letter', true, 'GDO', 'system-mds', 'system-mds'),
     ('WDL', 'Withdrawl Letter', true, 'GDO', 'system-mds', 'system-mds'),
     ('RJL', 'Rejection Letter', true, 'GDO', 'system-mds', 'system-mds'),
-    ('PMT','Working Permit', true, null, 'system-mds','system-mds'),
-    ('PMA','Working Permit for Amendment', true, null, 'system-mds','system-mds'),
+    ('PMT','Working Permit', true, 'AEF', 'system-mds','system-mds'),
+    ('PMA','Working Permit for Amendment', true, 'AEF', 'system-mds','system-mds'),
     ('SRB', 'Scan of Reclamation Security Document', true, 'SDO', 'system-mds','system-mds'),
     ('NIA', 'No Interest Acknowledgement Form', true, 'SDO', 'system-mds','system-mds'),
     ('AKL', 'Acknowledgement of Security Letter', true, 'SDO', 'system-mds','system-mds'),
     ('SCD', 'Bond Calculator', true, 'SDO', 'system-mds', 'system-mds'),
-    ('TMP', 'Title/Tenure Map', true, null, 'system-mds', 'system-mds'),
-    ('MPW', 'Proposed and/or Permitted Mine Area Map', true, null, 'system-mds', 'system-mds'),
+    ('TMP', 'Title/Tenure Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('MPW', 'Proposed and/or Permitted Mine Area Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('MPG', 'Proposed and/or Permitted Mine Area Map', true, 'GDO', 'system-mds', 'system-mds'),
     ('LMA', 'Location Map', true, 'MDO', 'system-mds', 'system-mds'),
-    ('LTM', 'Land Title/Licence of Ocupation Map', true, 'MDO', 'system-mds', 'system-mds'),
+    ('LTM', 'Land Title/Licence of Occupation Map', true, 'MDO', 'system-mds', 'system-mds'),
     ('OMA', 'Overview Map', true, 'MDO', 'system-mds', 'system-mds'),
     ('SMA', 'Supplemental Map', true, 'MDO', 'system-mds', 'system-mds'),
-    ('SSF', 'Submitted Shape Files', true, NULL, 'system-mds', 'system-mds'),
-    ('CSL', 'Cross-sectional/Longitudinal', true, NULL, 'system-mds', 'system-mds'),
-    ('PFR', 'Preliminary Field Reconnaisance', true, NULL, 'system-mds', 'system-mds'),
-    ('AOA', 'Archaeological Overview Assessment', true, NULL, 'system-mds', 'system-mds'),
-    ('AIA', 'Archaeological Impact Assessment', true, NULL, 'system-mds', 'system-mds'),
-    ('SOP', 'Standard/Safe Operating Procedures', true, NULL, 'system-mds', 'system-mds'),
-    ('RSP', 'Riparian Setbacks Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('WMP', 'Water Management Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('WPL', 'Wildlife Management Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('RPL', 'Reclamation Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('OMP', 'Other Management Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('SEP', 'Sediment and Erosion Control Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('FDP', 'Fugitive Dust Management Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('VMP', 'Vegetation Management Plan', true, NULL, 'system-mds', 'system-mds'),
-    ('TSS', 'Terrain Stability Study', true, NULL, 'system-mds', 'system-mds'),
-    ('MAD', 'Metal Leaching/Acid Rock Drainage', true, NULL, 'system-mds', 'system-mds'),
-    ('LNO', 'Landowner Notification', true, NULL, 'system-mds', 'system-mds'),
-    ('DWP', 'Description of Work/Work Program', true, NULL, 'system-mds', 'system-mds'),
-    ('ARE', 'Agent Letter of Representation', true, NULL, 'system-mds', 'system-mds'),
+    ('SSF', 'Submitted Shape Files', true, 'MDO', 'system-mds', 'system-mds'),
+    ('CSL', 'Cross-sectional/Longitudinal', true, 'MDO', 'system-mds', 'system-mds'),
+    ('PFR', 'Preliminary Field Reconnaissance', true, 'AAF', 'system-mds', 'system-mds'),
+    ('AOA', 'Archaeological Overview Assessment', true, 'AAF', 'system-mds', 'system-mds'),
+    ('AIA', 'Archaeological Impact Assessment', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SOP', 'Standard/Safe Operating Procedures', true, 'AAF', 'system-mds', 'system-mds'),
+    ('RSP', 'Riparian Setbacks Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('WMP', 'Water Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('WPL', 'Wildlife Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('RPL', 'Reclamation Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('OMP', 'Other Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SEP', 'Sediment and Erosion Control Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('FDP', 'Fugitive Dust Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('VMP', 'Vegetation Management Plan', true, 'AAF', 'system-mds', 'system-mds'),
+    ('TSS', 'Terrain Stability Study', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MAD', 'Metal Leaching/Acid Rock Drainage', true, 'AAF', 'system-mds', 'system-mds'),
+    ('LNO', 'Landowner Notification', true, 'AAF', 'system-mds', 'system-mds'),
+    ('DWP', 'Description of Work/Work Program', true, 'AAF', 'system-mds', 'system-mds'),
+    ('ARE', 'Agent Letter of Representation', true, 'AAF', 'system-mds', 'system-mds'),
     ('SRE', 'Status Report', true, 'GDO', 'system-mds', 'system-mds'),
     ('SOM', 'Status Report - Overlapping Interests Maps', true, 'GDO', 'system-mds', 'system-mds'),
     ('SRS', 'Status Report - Shape Files', true, 'GDO', 'system-mds', 'system-mds'),
-    ('ECC', 'Email Correspondence/Communications', true, NULL, 'system-mds', 'system-mds'),
-    ('RMI', 'Requst for More Information', true, NULL, 'system-mds', 'system-mds'),
+    ('ECC', 'Email Correspondence/Communications', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RMI', 'Request for More Information', true, 'GDO', 'system-mds', 'system-mds'),
     ('WFI', '30 day Warning for Information', true, 'GDO', 'system-mds', 'system-mds'),
-    ('NPR', 'No Permit Required', true, NULL, 'system-mds', 'system-mds'),
-    ('NPI', 'No Permit Required IP', true, NULL, 'system-mds', 'system-mds'),
+    ('NPR', 'No Permit Required', true, 'GDO', 'system-mds', 'system-mds'),
+    ('NPI', 'No Permit Required IP', true, 'GDO', 'system-mds', 'system-mds'),
     ('WFS', '30 day Warning for Security', true, 'SDO', 'system-mds', 'system-mds'),
-    ('NPE', 'Permit Enclosed Letter', true, NULL, 'system-mds', 'system-mds'),
-    ('RFD', 'Reasons for Decision', true, NULL, 'system-mds', 'system-mds'),
+    ('NPE', 'Permit Enclosed Letter', true, 'GDO', 'system-mds', 'system-mds'),
+    ('RFD', 'Reasons for Decision', true, 'GDO', 'system-mds', 'system-mds'),
     ('CRS', 'Consultation Report/Summary', true, 'CDO', 'system-mds', 'system-mds'),
     ('BCR', 'Begin Consultation Request', true, 'CDO', 'system-mds', 'system-mds'),
     ('CCC', 'Consultation Correspondence (not in CRTS)', true, 'CDO', 'system-mds', 'system-mds'),
@@ -684,7 +691,10 @@ VALUES
     ('RRE', 'Referral Response (outside of E-Referral)', true, 'RDO', 'system-mds', 'system-mds'),
     ('PCA', 'Advertisement', true, 'PDO', 'system-mds', 'system-mds'),
     ('PCC', 'Public Comment', true, 'PDO', 'system-mds', 'system-mds'),
-    ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds')
+    ('PCM', 'Ministry Response', true, 'PDO', 'system-mds', 'system-mds'),
+    ('AMR', 'Amendment Request', true, 'AAF', 'system-mds', 'system-mds'),
+    ('MYA', 'MYAB Update Form', true, 'AAF', 'system-mds', 'system-mds'),
+    ('SUD', 'Supporting Documents', true, 'AAF', 'system-mds', 'system-mds')
 on conflict do nothing;
 
 INSERT INTO now_application_review_type(
@@ -714,8 +724,8 @@ VALUES
   ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
   ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
   ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('PMA', '', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
+  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 UPDATE document_template SET form_spec_json = '[
     {
@@ -1196,7 +1206,6 @@ UPDATE document_template SET form_spec_json = '[
     }
   ]' WHERE document_template_code ='NWL';
 
-
 UPDATE now_application_document_type
 SET document_template_code = 'NCL'
 where now_application_document_type_code = 'CAL';
@@ -1255,21 +1264,24 @@ INSERT INTO exemption_fee_status
     description,
     display_order,
     create_user,
-    update_user
+    update_user,
+    active_ind
     )
 VALUES
-    ('Y', 'Yes', 10, 'system-mds', 'system-mds'),
-    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds'),
-    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds'),
-    ('M', 'Municipality', 40, 'system-mds', 'system-mds'),
-    ('O', 'OGC', 50, 'system-mds', 'system-mds'),
-    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds'),
-    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds'),
-    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds'),
-    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds'),
-    ('B', 'Abandoned', 100, 'system-mds', 'system-mds'),
-    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds'),
-    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds')
+    ('Y', 'Yes', 10, 'system-mds', 'system-mds', true),
+    ('F', 'Ministry of Forests', 20, 'system-mds', 'system-mds', false),
+    ('H', 'Ministry of Highways', 30, 'system-mds', 'system-mds', false),
+    ('M', 'Municipality', 40, 'system-mds', 'system-mds', false),
+    ('O', 'OGC', 50, 'system-mds', 'system-mds', false),
+    ('P', 'Placer Surface', 60, 'system-mds', 'system-mds', false),
+    ('R', 'Reclaimed', 70, 'system-mds', 'system-mds', false),
+    ('X', 'Mineral Exploration Surface', 80, 'system-mds', 'system-mds', false),
+    ('A', 'Aboriginal', 90, 'system-mds', 'system-mds', false),
+    ('B', 'Abandoned', 100, 'system-mds', 'system-mds', false),
+    ('N', 'Not Permitted', 110, 'system-mds', 'system-mds', false),
+    ('I', 'Investigative Use S&G', 120, 'system-mds', 'system-mds', false),
+    ('MIM', 'Mineral/Coal', 130, 'system-mds', 'system-mds', true),
+    ('MIP', 'Pits/Quarry', 140, 'system-mds', 'system-mds', true)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO bond_document_type(

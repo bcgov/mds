@@ -27,10 +27,20 @@
             "memory": "1Gi"
           }
         },
-        "volumeMounts": [{ "mountPath": "/var/log", "name": "logs-volume" }]
+        "volumeMounts": [
+          { "mountPath": "/var/log", "name": "logs-volume" },
+          {
+            "mountPath": "/opt/app-root/src/wallet/cwallet.sso",
+            "name": "odb-credentials",
+            "subPath": "cwallet.sso"
+          }
+        ]
       }
     ],
-    "volumes": [{ "name": "logs-volume", "emptyDir": {} }],
+    "volumes": [
+      { "name": "logs-volume", "emptyDir": {} },
+      { "name": "odb-credentials", "configMap": { "defaultMode": 420, "name": "odb-wallet" } }
+    ],
     "dnsPolicy": "ClusterFirst",
     "restartPolicy": "Never"
   }

@@ -45,11 +45,11 @@ const propTypes = {
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   onExpand: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  handleAddPermitAmendmentApplication: PropTypes.func.isRequired,
   handleDeletePermit: PropTypes.func.isRequired,
   handleDeletePermitAmendment: PropTypes.func.isRequired,
   handlePermitAmendmentIssueVC: PropTypes.func.isRequired,
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  openEditSitePropertiesModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -228,23 +228,23 @@ const columns = [
               </button>
             </div>
           </AuthorizationWrapper>
-          <div className="custom-menu-item" key="3">
-            <button
-              type="button"
-              className="full"
-              onClick={() => {
-                record.handleAddPermitAmendmentApplication(record.key);
-              }}
-            >
-              <img
-                alt="document"
-                className="padding-sm"
-                src={EDIT_OUTLINE_VIOLET}
-                style={{ paddingRight: "15px" }}
-              />
-              Initiate Permit Amendment Application
-            </button>
-          </div>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full"
+                onClick={(event) => record.openEditSitePropertiesModal(event, record.permit)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Edit Site Properties
+              </button>
+            </div>
+          </AuthorizationWrapper>
         </Menu>
       );
 
@@ -459,11 +459,11 @@ const transformRowData = (
   openEditPermitModal,
   openAddPermitAmendmentModal,
   openAddAmalgamatedPermitModal,
-  handleAddPermitAmendmentApplication,
   permitStatusOptionsHash,
   handleDeletePermit,
   handleDeletePermitAmendment,
-  openAddPermitHistoricalAmendmentModal
+  openAddPermitHistoricalAmendmentModal,
+  openEditSitePropertiesModal
 ) => {
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
@@ -492,12 +492,12 @@ const transformRowData = (
     openEditPermitModal,
     openAddPermitAmendmentModal,
     openAddAmalgamatedPermitModal,
-    handleAddPermitAmendmentApplication,
     permitStatusOptionsHash,
     permit,
     handleDeletePermit,
     handleDeletePermitAmendment,
     openAddPermitHistoricalAmendmentModal,
+    openEditSitePropertiesModal,
   };
 };
 
@@ -583,11 +583,11 @@ export const MinePermitTable = (props) => {
       props.openEditPermitModal,
       props.openAddPermitAmendmentModal,
       props.openAddAmalgamatedPermitModal,
-      props.handleAddPermitAmendmentApplication,
       props.permitStatusOptionsHash,
       props.handleDeletePermit,
       props.handleDeletePermitAmendment,
-      props.openAddPermitHistoricalAmendmentModal
+      props.openAddPermitHistoricalAmendmentModal,
+      props.openEditSitePropertiesModal
     )
   );
 

@@ -121,10 +121,50 @@ class DocumentTemplate(Base, AuditMixin):
             if template_data.get('images'):
                 del template_data['images']
 
+        def conditionally_render_sections(doc, template_data):
+            def delete_paragraph(paragraph):
+                p = paragraph._element
+                p.getparent().remove(p)
+                p._p = p._element = None
+
+            render = template_data.get('render', {})
+            for key in render:
+                visible = render[key]
+                showBegin = f'{{d.render.{key}:ifEQ(true):showBegin}}'
+                showEnd = f'{{d.render.{key}:showEnd}}'
+
+                # If this section is visible, remove the render tags and continue.
+                if visible:
+                    for paragraph in doc.paragraphs:
+                        if paragraph.text in (showBegin, showEnd):
+                            delete_paragraph(paragraph)
+                    continue
+
+                # Else, remove the render tags and all tables and paragraphs between them.
+                for table in doc.tables:
+                    cell = table.cell(1, 0)
+                    match = f'{{d.{key}.'
+                    if match in cell.text:
+                        table._element.getparent().remove(table._element)
+                delete = False
+                done = False
+                for paragraph in doc.paragraphs:
+                    if paragraph.text == showBegin:
+                        delete = True
+                    if paragraph.text == showEnd:
+                        done = True
+                    if delete:
+                        delete_paragraph(paragraph)
+                    if done:
+                        break
+
         doc = None
         if self.document_template_code in ('PMT', 'PMA', 'NPE', 'NCL', 'NWL', 'NRL'):
             doc = docx.Document(self.os_template_file_path)
             insert_images(doc, template_data)
+        elif self.document_template_code == 'NTR':
+            doc = docx.Document(self.os_template_file_path)
+            conditionally_render_sections(doc, template_data)
 
         if doc:
             fileobj = io.BytesIO()

@@ -19,6 +19,7 @@ from app.auth import get_user_is_admin
 
 from app.api.now_submissions.models.document import Document
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
+from app.api.mines.mine.models.mine_type import MineType
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 
@@ -188,6 +189,53 @@ class NOWApplication(Base, AuditMixin):
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
 
+    # @hybrid_property
+    # def site_property(self):
+    #     site_property = None
+
+    # TODO uncomment this when the NOW and ADA flow is ready
+    # def get_mapped_tenure_type(notice_of_work_type_code):
+    #     tenure_type = None
+
+    #     if notice_of_work_type_code == 'PLA':
+    #         tenure_type = 'PLR'
+    #     if notice_of_work_type_code == 'COL':
+    #         tenure_type = 'COL'
+    #     if notice_of_work_type_code == 'MIN' or notice_of_work_type_code == 'QIM':
+    #         tenure_type = 'MIN'
+    #     if notice_of_work_type_code == 'SAG' or notice_of_work_type_code == 'QCA':
+    #         tenure_type = 'BCL'
+
+    #     return tenure_type
+
+    # def get_site_property_based_on_mine(mine_guid, tenure_type):
+    #     return MineType.query.filter_by(
+    #         mine_guid=self.mine_guid,
+    #         permit_guid=None,
+    #         mine_tenure_type_code=tenure_type,
+    #         active_ind=True).first()
+
+    # tenure_type = get_mapped_tenure_type(self.notice_of_work_type_code)
+
+    # if self.application_type_code == 'ADA':
+    #     site_property = MineType.query.filter_by(
+    #         mine_guid=self.mine_guid, permit_guid=self.source_permit_guid,
+    #         active_ind=True).one_or_none()
+    #     if not site_property:
+    #         site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
+    # else:
+    #     permit_amendment = PermitAmendment.query.filter_by(
+    #         now_application_guid=self.now_application_guid, deleted_ind=False).first()
+    #     if self.type_of_application in ['Amendment', 'New Permit'] and permit_amendment:
+    #         site_property = MineType.query.filter_by(
+    #             mine_guid=self.mine_guid,
+    #             permit_guid=permit_amendment.permit_guid,
+    #             active_ind=True).one_or_none()
+    #     else:
+    #         site_property = get_site_property_based_on_mine(self.mine_guid, tenure_type)
+
+    # return site_property
+
     @hybrid_property
     def active_permit(self):
         return PermitAmendment.query.filter_by(
@@ -205,6 +253,12 @@ class NOWApplication(Base, AuditMixin):
         return PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid,
             permit_amendment_status_code='RMT').one_or_none()
+
+    @hybrid_property
+    def related_permit_guid(self):
+        permit_amendment = PermitAmendment.query.filter_by(
+            now_application_guid=self.now_application_guid, deleted_ind=False).first()
+        return permit_amendment.permit_guid if permit_amendment else None
 
     @hybrid_property
     def is_new_permit(self):

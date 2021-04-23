@@ -47,8 +47,8 @@ const columns = (type) => {
     render: (text) => (
       <div title="Link to CRTS">
         {text ? (
-          <a href={text} alt="link to CRTS" target="_blank" rel="noopener noreferrer">
-            {text}
+          <a href={text} target="_blank" rel="noopener noreferrer" alt={text}>
+            {truncateFilename(text)}
           </a>
         ) : (
           Strings.EMPTY_FIELD

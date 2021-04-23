@@ -22,7 +22,7 @@ import {
 
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 import { USER_ROLES } from "@common/constants/environment";
-import { getPermits } from "@common/reducers/permitReducer";
+import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import { modalConfig } from "@/components/modalContent/config";

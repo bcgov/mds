@@ -30,6 +30,7 @@ class NOWApplicationListResource(Resource, UserMixin):
     parser.add_argument('received_date', type=str, required=True)
     parser.add_argument('import_timestamp_since', type=str)
     parser.add_argument('update_timestamp_since', type=str)
+    parser.add_argument('application_type', type=str)
 
     @api.doc(
         description='Get a list of Core Notice of Work applications. Order: received_date DESC',
@@ -45,7 +46,8 @@ class NOWApplicationListResource(Resource, UserMixin):
             'submissions_only': 'Boolean to filter based on NROS/VFCBC/Core submissions only',
             'mine_guid': 'filter by a given mine guid',
             'import_timestamp_since': 'Filter by applications created since this date.',
-            'update_timestamp_since': 'Filter by applications updated since this date.'
+            'update_timestamp_since': 'Filter by applications updated since this date.',
+            'application_type': 'Application type NOW or ADA.'
         })
     @requires_any_of([VIEW_ALL, GIS])
     @api.marshal_with(NOW_VIEW_LIST, code=200)
@@ -72,7 +74,8 @@ class NOWApplicationListResource(Resource, UserMixin):
                 type=lambda x: inputs.datetime_from_iso8601(x) if x else None),
             update_timestamp_since=request.args.get(
                 'update_timestamp_since',
-                type=lambda x: inputs.datetime_from_iso8601(x) if x else None))
+                type=lambda x: inputs.datetime_from_iso8601(x) if x else None),
+            application_type=request.args.get('application_type', type=str))
 
         data = records.all()
 
@@ -100,10 +103,13 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       originating_system=[],
                                       submissions_only=None,
                                       import_timestamp_since=None,
-                                      update_timestamp_since=None):
+                                      update_timestamp_since=None,
+                                      application_type=None):
 
         filters = []
         base_query = ApplicationsView.query
+        if application_type:
+            filters.append(ApplicationsView.application_type_code == application_type)
 
         if submissions_only:
             filters.append(

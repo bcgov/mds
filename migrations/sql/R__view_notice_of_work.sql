@@ -20,7 +20,7 @@ CASE WHEN nows.description is NULL
           WHEN 'No Permit Required' THEN 'Pending Verification'
           WHEN 'Govt. Action Required' THEN 'Pending Verification'
           WHEN 'Rejected-Initial' THEN 'Rejected'
-          WHEN 'Withdrawn' THEN 'Rejected'
+          WHEN 'Withdrawn' THEN 'Withdrawn'
           ElSE COALESCE(msub.status, sub.status)
         END
   ElSE COALESCE(nows.description, msub.status, sub.status)

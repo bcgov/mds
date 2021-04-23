@@ -33,6 +33,7 @@ class MineComment(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_guid(cls, _id):
         return cls.query.filter_by(mine_comment_guid=_id).filter_by(deleted_ind=False).first()
+    
 
     @classmethod
     def find_by_mine_guid(cls, _id):

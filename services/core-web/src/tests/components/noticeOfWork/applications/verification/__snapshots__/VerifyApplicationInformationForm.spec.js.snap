@@ -323,6 +323,11 @@ exports[`VerifyApplicationInformationForm renders properly 1`] = `
         "sandgrvqrytotalmineres": null,
         "sandgrvqrytotalmineresunits": null,
         "sandgrvqrywithinaglandres": null,
+        "site_property": Object {
+          "mine_commodity_code": Array [],
+          "mine_disturbance_code": Array [],
+          "mine_tenure_type_code": "",
+        },
         "sitedirections": null,
         "status": null,
         "stgedisturbedarea": null,

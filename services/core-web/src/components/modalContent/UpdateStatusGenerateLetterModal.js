@@ -86,7 +86,10 @@ export class UpdateStatusGenerateLetterModal extends Component {
     const alertMessage =
       this.props.type === "AIA"
         ? "No changes or additions can be made to this application after the permit has been issued."
-        : "No changes or additions can be made to this application after it has been rejected.";
+        : "No changes or additions can be made to this application after it has been " +
+          ` ${(this.props.type === "REJ" && "rejected") ||
+            (this.props.type === "WDN" && "withdrawn") ||
+            ""}.`;
     return (
       <div>
         <Alert
