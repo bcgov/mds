@@ -30,6 +30,159 @@ exports[`AddTailingsForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="latitude"
+          label="Latitude"
+          name="latitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="longitude"
+          label="Longitude"
+          name="longitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "Low",
+                "value": "LOW",
+              },
+              Object {
+                "label": "Significant",
+                "value": "SIG",
+              },
+              Object {
+                "label": "High",
+                "value": "HIG",
+              },
+              Object {
+                "label": "Extreme",
+                "value": "EXT",
+              },
+              Object {
+                "label": "N/A (No Dam)",
+                "value": "NOD",
+              },
+            ]
+          }
+          id="risk_classification"
+          label="Risk Classification"
+          name="risk_classification"
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "Care and Maintenance",
+                "value": "CAM",
+              },
+              Object {
+                "label": "Closed",
+                "value": "CLO",
+              },
+              Object {
+                "label": "Operating",
+                "value": "OPT",
+              },
+            ]
+          }
+          id="operating_status"
+          label="Operating Status"
+          name="operating_status"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "No",
+                "value": false,
+              },
+              Object {
+                "label": "Yes",
+                "value": true,
+              },
+            ]
+          }
+          id="has_itrb"
+          label="Independent Tailings Review Board"
+          name="has_itrb"
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <div
     className="right center-mobile"
   >

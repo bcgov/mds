@@ -41,24 +41,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                     Update Mine Record
                   </button>
                 </MenuItem>
-                <MenuItem>
-                  <button
-                    className="full"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <img
-                      alt="document"
-                      className="padding-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                    Add TSF
-                  </button>
-                </MenuItem>
               </Menu>
             }
             placement="bottomLeft"

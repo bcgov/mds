@@ -10,45 +10,156 @@ exports[`MineTailingsInfo renders properly 1`] = `
     </h2>
     <Divider />
   </div>
-  <Row
-    gutter={16}
-    key="e2629897-053e-4218-9299-479375e47f78"
+  <Tabs
     style={
       Object {
-        "marginBottom": "10px",
+        "textAlign": "left !important",
       }
     }
+    type="card"
   >
-    <Col
-      span={6}
-    >
-      <h3>
-        MockTSF
-      </h3>
-    </Col>
-  </Row>
-  <br />
-  <br />
-  <div>
-    <div
-      className="inline-flex between"
+    <TabPane
+      key="tsf"
+      tab="Tailing Storage Facilities"
     >
       <div>
-        <h3>
-          Reports
-        </h3>
+        <br />
+        <div
+          className="inline-flex between"
+        >
+          <h4
+            className="uppercase"
+          >
+            Tailing Storage Facilities
+          </h4>
+          <Connect(AuthorizationWrapper)
+            permission="role_edit_permits"
+          >
+            <AddButton
+              onClick={[Function]}
+            >
+              Add TSF
+            </AddButton>
+          </Connect(AuthorizationWrapper)>
+        </div>
+        <Connect(MineTailingsTable)
+          isLoaded={false}
+          tailings={
+            Array [
+              Object {
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                "mine_tailings_storage_facility_name": "MockTSF",
+              },
+            ]
+          }
+        />
       </div>
-    </div>
-    <Connect(MineReportTable)
-      handleEditReport={[Function]}
-      handleRemoveReport={[Function]}
-      handleTableChange={[Function]}
-      isLoaded={false}
-      mineReportType="CRR"
-      openEditReportModal={[Function]}
-      sortDir="desc"
-      sortField="received_date"
-    />
-  </div>
+    </TabPane>
+    <TabPane
+      key="map"
+      tab="Map"
+    >
+      <div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Map
+        </h4>
+        <br />
+        <LoadingWrapper
+          condition={false}
+        >
+          <MineTailingsMap
+            additionalPin={Array []}
+            mine={
+              Object {
+                "major_mine_ind": true,
+                "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                "mine_location": Object {
+                  "latitude": null,
+                  "longitude": null,
+                },
+                "mine_name": "mine3",
+                "mine_no": "BLAH9091",
+                "mine_permit_numbers": Array [],
+                "mine_region": "NE",
+                "mine_status": Object {
+                  "effective_date": "2018-10-16",
+                  "expiry_date": null,
+                  "status_labels": Array [
+                    "Closed",
+                    "Care & Maintenance",
+                  ],
+                  "statusvalue": Array [
+                    "CLD",
+                    "CM",
+                  ],
+                },
+                "mine_tailings_storage_facilities": Array [
+                  Object {
+                    "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                    "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                    "mine_tailings_storage_facility_name": "MockTSF",
+                  },
+                ],
+                "mine_type": Array [
+                  Object {
+                    "mine_tenure_type_code": "PLR",
+                    "mine_type_detail": Array [],
+                  },
+                  Object {
+                    "mine_tenure_type_code": "MIN",
+                    "mine_type_detail": Array [],
+                  },
+                ],
+                "verified_status": Object {
+                  "healthy_ind": null,
+                  "mine_guid": null,
+                  "mine_name": null,
+                  "verifying_timestamp": null,
+                  "verifying_user": null,
+                },
+              }
+            }
+            tailings={
+              Array [
+                Object {
+                  "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+                  "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+                  "mine_tailings_storage_facility_name": "MockTSF",
+                },
+              ]
+            }
+          />
+        </LoadingWrapper>
+      </div>
+    </TabPane>
+    <TabPane
+      key="reports"
+      tab="Tailings Reports"
+    >
+      <div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Reports
+        </h4>
+        <br />
+        <Connect(MineReportTable)
+          handleEditReport={[Function]}
+          handleRemoveReport={[Function]}
+          handleTableChange={[Function]}
+          isLoaded={false}
+          mineReportType="CRR"
+          openEditReportModal={[Function]}
+          sortDir="desc"
+          sortField="received_date"
+        />
+      </div>
+    </TabPane>
+  </Tabs>
 </div>
 `;
