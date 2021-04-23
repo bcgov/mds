@@ -61,27 +61,30 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      {props.noticeOfWork.application_type_code === "NOW" && (
-        <ScrollContentWrapper id="generated-documents" title="Application Export Files">
-          <NOWDocuments
-            documents={props.noticeOfWork.documents.filter(
-              ({
-                now_application_document_sub_type_code,
-                now_application_document_type_code,
-                mine_document,
-              }) =>
-                now_application_document_sub_type_code === "AEF" &&
-                (now_application_document_type_code !== "PMT" ||
-                  now_application_document_type_code !== "PMA" ||
-                  mine_document.document_name.includes("DRAFT"))
-            )}
-            isViewMode
-            disclaimerText="This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
-            categoriesToShow={["AEF"]}
-            addDescriptionColumn={false}
-          />
-        </ScrollContentWrapper>
-      )}
+      <ScrollContentWrapper id="generated-documents" title="Application Export Files">
+        <NOWDocuments
+          documents={props.noticeOfWork.documents.filter(
+            ({
+              now_application_document_sub_type_code,
+              now_application_document_type_code,
+              mine_document,
+            }) =>
+              now_application_document_sub_type_code === "AEF" &&
+              (now_application_document_type_code !== "PMT" ||
+                now_application_document_type_code !== "PMA" ||
+                mine_document.document_name.includes("DRAFT"))
+          )}
+          isViewMode={false}
+          isAdminView
+          disclaimerText={
+            props.noticeOfWork.application_type_code === "NOW"
+              ? "This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
+              : "This table shows generated Draft Permit PDFs."
+          }
+          categoriesToShow={["AEF"]}
+          addDescriptionColumn={false}
+        />
+      </ScrollContentWrapper>
       <ScrollContentWrapper id="inspectors" title="Inspectors">
         <AssignInspectors
           inspectors={props.inspectors}
