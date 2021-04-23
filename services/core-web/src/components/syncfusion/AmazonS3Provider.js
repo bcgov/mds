@@ -18,7 +18,7 @@ const propTypes = {
   path: PropTypes.string.isRequired,
 };
 
-const useModal = false;
+const useModal = true;
 
 export class AmazonS3Provider extends SampleBase {
   state = { isModalVisible: false };
