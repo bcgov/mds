@@ -76,7 +76,11 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
-          disclaimerText="This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
+          disclaimerText={
+            props.noticeOfWork.application_type_code === "NOW"
+              ? "This table shows PDFs generated from edited Notice of Work forms and Draft Permits."
+              : "This table shows generated Draft Permit PDFs."
+          }
           categoriesToShow={["AEF"]}
           addDescriptionColumn={false}
         />
