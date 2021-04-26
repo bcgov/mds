@@ -207,7 +207,7 @@ class PlacerOperationDetailFactory(ActivityDetailBaseFactory):
         model = app_models.PlacerOperationDetail
 
 
-class SandAndGravelFactory(ActivitySummaryBaseFactory):
+class SandGravelQuarryOperationFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.SandGravelQuarryOperation
 
@@ -219,10 +219,10 @@ class SandAndGravelFactory(ActivitySummaryBaseFactory):
         if not isinstance(extracted, int):
             extracted = 1
 
-        SandAndGravelDetailFactory.create_batch(size=extracted, **kwargs)
+        SandGravelQuarryOperationDetailFactory.create_batch(size=extracted, **kwargs)
 
 
-class SandAndGravelDetailFactory(ActivityDetailBaseFactory):
+class SandGravelQuarryOperationDetailFactory(ActivityDetailBaseFactory):
     class Meta:
         model = app_models.SandGravelQuarryOperationDetail
 
@@ -429,7 +429,8 @@ class NOWApplicationFactory(BaseFactory):
                                                           'now_application')
     mechanical_trenching = factory.RelatedFactory(MechanicalTrenchingFactory, 'now_application')
     placer_operation = factory.RelatedFactory(PlacerOperationFactory, 'now_application')
-    sand_and_gravel = factory.RelatedFactory(SandAndGravelFactory, 'now_application')
+    sand_gravel_quarry_operation = factory.RelatedFactory(SandGravelQuarryOperationFactory,
+                                                          'now_application')
     surface_bulk_sample = factory.RelatedFactory(SurfaceBulkFactory, 'now_application')
     water_supply = factory.RelatedFactory(WaterSupplyFactory, 'now_application')
     exploration_access = factory.RelatedFactory(ExplorationAccessFactory, 'now_application')
