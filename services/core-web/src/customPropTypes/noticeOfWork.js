@@ -158,7 +158,7 @@ export const importedNOWApplication = shape({
   exploration_access: defaultActivity,
   exploration_surface_drilling: surfaceDrilling,
   mechanical_trenching: defaultActivity,
-  sand_and_gravel: sandGravelQuarry,
+  sand_gravel_quarry_operation: sandGravelQuarry,
   settling_pond: settlingPond,
   surface_bulk_sample: surfaceBulkSamples,
   underground_exploration: defaultActivity,

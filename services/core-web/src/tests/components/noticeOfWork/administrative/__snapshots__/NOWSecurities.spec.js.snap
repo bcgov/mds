@@ -78,7 +78,7 @@ exports[`NOWSecurities renders properly 1`] = `
             "proposed_end_date": "2020-03-01",
             "proposed_start_date": "2016-03-01",
             "received_date": "",
-            "sand_and_gravel": Object {
+            "sand_gravel_quarry_operation": Object {
               "details": Array [],
             },
             "settling_pond": Object {

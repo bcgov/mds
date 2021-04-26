@@ -184,7 +184,7 @@ exports[`ReviewActivities renders properly 1`] = `
     title="Sand and Gravel / Quarry Operations"
   >
     <FormSection
-      name="sand_and_gravel"
+      name="sand_gravel_quarry_operation"
     >
       <Connect(SandGravelQuarry)
         isViewMode={true}
