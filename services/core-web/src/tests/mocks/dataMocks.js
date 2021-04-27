@@ -4925,6 +4925,50 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
+  consequenceClassificationStatusCodeOptions: [
+    {
+      consequence_classification_status_code: "LOW",
+      description: "Low",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "SIG",
+      description: "Significant",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "HIG",
+      description: "High",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "EXT",
+      description: "Extreme",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "NOD",
+      description: "N/A (No Dam)",
+      active_ind: true,
+    },
+  ],
+  TSFOperatingStatusCodeOptions: [
+    {
+      tsf_operating_status_code: "CLO",
+      description: "Closed",
+      active_ind: true,
+    },
+    {
+      tsf_operating_status_code: "OPT",
+      description: "Operating",
+      active_ind: true,
+    },
+    {
+      tsf_operating_status_code: "CAM",
+      description: "Inactive (C&M)",
+      active_ind: true,
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {

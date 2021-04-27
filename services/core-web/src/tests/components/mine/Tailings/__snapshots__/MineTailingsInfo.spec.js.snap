@@ -6,7 +6,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
 >
   <div>
     <h2>
-      Tailings
+      Tailing Storage Facilities
     </h2>
     <Divider />
   </div>
@@ -20,7 +20,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
   >
     <TabPane
       key="tsf"
-      tab="Tailing Storage Facilities"
+      tab="Tailing Storage Facilities (1)"
     >
       <div>
         <br />
@@ -57,6 +57,30 @@ exports[`MineTailingsInfo renders properly 1`] = `
       </div>
     </TabPane>
     <TabPane
+      key="reports"
+      tab="Tailings Reports"
+    >
+      <div>
+        <br />
+        <h4
+          className="uppercase"
+        >
+          Reports
+        </h4>
+        <br />
+        <Connect(MineReportTable)
+          handleEditReport={[Function]}
+          handleRemoveReport={[Function]}
+          handleTableChange={[Function]}
+          isLoaded={false}
+          mineReportType="CRR"
+          openEditReportModal={[Function]}
+          sortDir="desc"
+          sortField="received_date"
+        />
+      </div>
+    </TabPane>
+    <TabPane
       key="map"
       tab="Map"
     >
@@ -68,11 +92,38 @@ exports[`MineTailingsInfo renders properly 1`] = `
           Map
         </h4>
         <br />
+        <div
+          className="inline-flex"
+        >
+          <p>
+            <img
+              alt="Mine Pin"
+              className="icon-sm--img"
+              src={
+                Object {
+                  "process": [Function],
+                }
+              }
+            />
+            Location of Mine Site
+          </p>
+          <p>
+            <img
+              SRC={
+                Object {
+                  "process": [Function],
+                }
+              }
+              alt="TSF Pin"
+              className="icon-sm--img"
+            />
+            Location of TSF
+          </p>
+        </div>
         <LoadingWrapper
           condition={false}
         >
-          <MineTailingsMap
-            additionalPin={Array []}
+          <ScriptLoader
             mine={
               Object {
                 "major_mine_ind": true,
@@ -123,6 +174,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
                 },
               }
             }
+            onScriptLoaded={[Function]}
             tailings={
               Array [
                 Object {
@@ -134,30 +186,6 @@ exports[`MineTailingsInfo renders properly 1`] = `
             }
           />
         </LoadingWrapper>
-      </div>
-    </TabPane>
-    <TabPane
-      key="reports"
-      tab="Tailings Reports"
-    >
-      <div>
-        <br />
-        <h4
-          className="uppercase"
-        >
-          Reports
-        </h4>
-        <br />
-        <Connect(MineReportTable)
-          handleEditReport={[Function]}
-          handleRemoveReport={[Function]}
-          handleTableChange={[Function]}
-          isLoaded={false}
-          mineReportType="CRR"
-          openEditReportModal={[Function]}
-          sortDir="desc"
-          sortField="received_date"
-        />
       </div>
     </TabPane>
   </Tabs>
