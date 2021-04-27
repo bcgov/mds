@@ -12,6 +12,8 @@ class MineType(AuditMixin, Base):
     mine_type_guid = db.Column(UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'))
+    now_application_guid = db.Column(
+        UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     mine_tenure_type_code = db.Column(
         db.String, db.ForeignKey('mine_tenure_type_code.mine_tenure_type_code'), nullable=False)
     active_ind = db.Column(db.Boolean, nullable=False, default=True)
@@ -34,11 +36,17 @@ class MineType(AuditMixin, Base):
         return list(filter(lambda x: x.active_ind, records))
 
     @classmethod
-    def create(cls, mine_guid, mine_tenure_type_code, permit_guid, add_to_session=True):
+    def create(cls,
+               mine_guid,
+               mine_tenure_type_code,
+               permit_guid=None,
+               now_application_guid=None,
+               add_to_session=True):
         mine_type = cls(
             mine_guid=mine_guid,
             mine_tenure_type_code=mine_tenure_type_code,
-            permit_guid=permit_guid)
+            permit_guid=permit_guid,
+            now_application_guid=now_application_guid)
         if add_to_session:
             mine_type.save(commit=False)
         return mine_type
@@ -57,24 +65,26 @@ class MineType(AuditMixin, Base):
     @classmethod
     def update_mine_type_details(cls,
                                  mine_type_guid=None,
-                                 mine_guid=None,
                                  permit_guid=None,
+                                 now_application_guid=None,
                                  mine_tenure_type_code=None,
                                  mine_disturbance_codes=[],
                                  mine_commodity_codes=[]):
         mine_type = None
 
-        def find_mine_type(mine_type_guid, mine_guid, permit_guid):
+        def find_mine_type(mine_type_guid, permit_guid, now_application_guid):
             if mine_type_guid:
                 return cls.find_by_guid(mine_type_guid)
-            elif mine_guid:
-                return cls.query.filter_by(mine_guid=mine_guid).first()
             elif permit_guid:
-                return cls.query.filter_by(permit_guid=permit_guid).first()
+                return cls.query.filter_by(permit_guid=permit_guid, active_ind=True).first()
+            elif now_application_guid:
+                return cls.query.filter_by(
+                    now_application_guid=now_application_guid, active_ind=True).first()
             else:
-                raise Exception('mine_guid or mine_type_guid or permit_guid must be specified.')
+                raise Exception(
+                    'mine_type_guid or permit_guid or now_application_guid must be specified.')
 
-        mine_type = find_mine_type(mine_type_guid, mine_guid, permit_guid)
+        mine_type = find_mine_type(mine_type_guid, permit_guid, now_application_guid)
 
         if not mine_type:
             raise Exception('Site Property does not exist')
@@ -140,4 +150,4 @@ class MineType(AuditMixin, Base):
                             mine_type, mine_commodity_code=code, add_to_session=False))
 
         db.session.commit()
-        return find_mine_type(mine_type_guid, mine_guid, permit_guid)
+        return find_mine_type(mine_type_guid, permit_guid, now_application_guid)

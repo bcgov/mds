@@ -317,7 +317,7 @@ class PermitResource(Resource, UserMixin):
                 mine_type = MineType.create(
                     mine_guid,
                     data.get('site_properties', {}).get('mine_tenure_type_code'),
-                    permit.permit_guid)
+                    permit_guid=permit_guid)
 
                 for d_code in data.get('site_properties', {}).get('mine_disturbance_code', []):
                     MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)

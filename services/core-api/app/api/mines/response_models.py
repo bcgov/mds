@@ -143,6 +143,24 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'permit_conditions_last_updated_date': fields.DateTime,
     })
 
+MINE_TYPE_DETAIL_MODEL = api.model(
+    'MineTypeDetail', {
+        'mine_type_detail_xref_guid': fields.String,
+        'mine_type_guid': fields.String,
+        'mine_disturbance_code': fields.String,
+        'mine_commodity_code': fields.String,
+    })
+
+MINE_TYPE_MODEL = api.model(
+    'MineType', {
+        'mine_type_guid': fields.String,
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'now_application_guid': fields.String,
+        'mine_tenure_type_code': fields.String,
+        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
+    })
+
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
@@ -184,27 +202,10 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_conditions_last_updated_by':
         fields.String,
         'permit_conditions_last_updated_date':
-        fields.DateTime,
+        fields.DateTime
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
-
-MINE_TYPE_DETAIL_MODEL = api.model(
-    'MineTypeDetail', {
-        'mine_type_detail_xref_guid': fields.String,
-        'mine_type_guid': fields.String,
-        'mine_disturbance_code': fields.String,
-        'mine_commodity_code': fields.String,
-    })
-
-MINE_TYPE_MODEL = api.model(
-    'MineType', {
-        'mine_type_guid': fields.String,
-        'mine_guid': fields.String,
-        'permit_guid': fields.String,
-        'mine_tenure_type_code': fields.String,
-        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
-    })
 
 PERMIT_MODEL = api.model(
     'Permit', {
@@ -609,8 +610,9 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'display_order': fields.Integer
 })
 
-GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
-    'government_agency_type_code': fields.String,
-    'description': fields.String,
-    'is_active': fields.Integer
-})
+GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
+    'GovernmentAgencyType', {
+        'government_agency_type_code': fields.String,
+        'description': fields.String,
+        'is_active': fields.Integer
+    })

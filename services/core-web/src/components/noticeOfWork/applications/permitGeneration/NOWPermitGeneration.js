@@ -209,6 +209,13 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
 
+    permitGenObject.site_property = this.props.noticeOfWork.site_property
+      ? this.props.noticeOfWork.site_property
+      : {
+          mine_tenure_type_code: "",
+          mine_commodity_code: [],
+          mine_disturbance_code: [],
+        };
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
     if (amendment && !isEmpty(amendment)) {
@@ -352,6 +359,7 @@ export class NOWPermitGeneration extends Component {
       previous_amendment_documents_metadata: JSON.stringify(
         transformDocumentsMetadata(this.props.formValues.previous_amendment_documents_metadata)
       ),
+      site_properties: this.props.formValues.site_property,
     };
     return this.props
       .updatePermitAmendment(

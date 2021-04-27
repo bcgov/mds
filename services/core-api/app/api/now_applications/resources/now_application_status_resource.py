@@ -18,6 +18,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -141,10 +142,48 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.save()
 
             # transfer site_properties to permit
-            # enable this when the site_properties flow for NOW and ADA is ready
-            #     mine_type = now_application_identity.now_application.site_property
-            #     mine_type.permit_guid = permit.permit_guid
-            #     mine_type.save()
+            def create_site_property_for_permit(mine_guid, permit_guid, site_property):
+                permit_site_property = MineType.create(
+                    now_application_identity.mine_guid,
+                    site_property.mine_tenure_type_code,
+                    permit_guid=permit.permit_guid)
+
+                for detail in [
+                        detail for detail in site_property.mine_type_detail
+                        if detail.mine_disturbance_code
+                ]:
+                    MineTypeDetail.create(
+                        permit_site_property, mine_disturbance_code=detail.mine_disturbance_code)
+
+                for detail in [
+                        detail for detail in site_property.mine_type_detail
+                        if detail.mine_commodity_code
+                ]:
+                    MineTypeDetail.create(
+                        permit_site_property, mine_commodity_code=detail.mine_commodity_code)
+
+                return permit_site_property
+
+            now_site_property = now_application_identity.now_application.site_property
+            if now_site_property:
+                permit_site_property = MineType.query.filter_by(
+                    permit_guid=permit.permit_guid,
+                    mine_guid=now_application_identity.mine.mine_guid,
+                    active_ind=True).first()
+
+                if not permit_site_property:
+                    # create site property that is linked to a permit
+                    permit_site_property = create_site_property_for_permit(
+                        now_application_identity.mine_guid, permit.permit_guid, now_site_property)
+                    permit_site_property.save()
+                else:
+                    # TODO maybe compare if anything changed
+                    permit_site_property.active_ind = False
+                    db.session.add(permit_site_property)
+                    new_permit_site_property = create_site_property_for_permit(
+                        now_application_identity.mine_guid, permit.permit_guid, now_site_property)
+                    db.session.add(new_permit_site_property)
+                    db.session.commit()
 
             # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit
             only_one_contact_of_type_allowed = ['PMT', 'MMG']
