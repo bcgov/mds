@@ -29,8 +29,8 @@ const propTypes = {
 };
 
 const boolData = [
-  { value: false, label: "No" },
-  { value: true, label: "Yes" },
+  { value: "false", label: "No" },
+  { value: "true", label: "Yes" },
 ];
 
 export const AddTailingsForm = (props) => (

@@ -28,6 +28,7 @@ import MineTailingsMap from "@/components/maps/MineTailingsMap";
 import MineTailingsTable from "@/components/mine/Tailings/MineTailingsTable";
 import AddButton from "@/components/common/AddButton";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
+import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
 
 /**
  * @class  MineTailingsInfo - all tenure information related to the mine.
@@ -94,8 +95,12 @@ export class MineTailingsInfo extends Component {
   };
 
   handleAddTailings = (values) => {
+    const payload = {
+      has_irtb: values.has_irtb === "true",
+      ...values,
+    };
     return this.props
-      .createTailingsStorageFacility(this.props.mineGuid, values)
+      .createTailingsStorageFacility(this.props.mineGuid, payload)
       .then(() => {
         this.props.fetchMineRecordById(this.props.mineGuid);
         this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType);
@@ -192,6 +197,16 @@ export class MineTailingsInfo extends Component {
               <br />
               <h4 className="uppercase">Map</h4>
               <br />
+              <div className="inline-flex">
+                <p>
+                  <img src={SMALL_PIN} className="icon-sm--img" alt="Mine Pin" />
+                  Location of Mine Site
+                </p>
+                <p>
+                  <img SRC={SMALL_PIN_SELECTED} className="icon-sm--img" alt="TSF Pin" />
+                  Location of TSF
+                </p>
+              </div>
               <LoadingWrapper condition={this.state.isLoaded}>
                 <MineTailingsMap mine={mine} tailings={mine.mine_tailings_storage_facilities} />
               </LoadingWrapper>
