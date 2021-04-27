@@ -233,13 +233,19 @@ class PermitAmendmentListResource(Resource, UserMixin):
                             site_property.mine_tenure_type_code,
                             now_application_guid=now_application_guid)
 
-                        for detail in site_property.mine_type_detail:
+                        for detail in [
+                                detail for detail in site_property.mine_type_detail
+                                if detail.mine_disturbance_code and not detail.mine_commodity_code
+                        ]:
                             MineTypeDetail.create(
                                 mine_type,
                                 mine_disturbance_code=detail.mine_disturbance_code,
                             )
 
-                        for detail in site_property.mine_type_detail:
+                        for detail in [
+                                detail for detail in site_property.mine_type_detail
+                                if detail.mine_commodity_code and not detail.mine_disturbance_code
+                        ]:
                             MineTypeDetail.create(
                                 mine_type, mine_commodity_code=detail.mine_commodity_code)
 
