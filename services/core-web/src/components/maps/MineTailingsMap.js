@@ -31,6 +31,8 @@ import {
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
+  TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {};
@@ -119,8 +121,8 @@ class MineTailingsMap extends Component {
     // Create the basic leaflet map
     this.map = L.map("leaflet-map", {
       attributionControl: false,
-      center: [this.props.lat, this.props.long],
-      zoom: this.props.zoom,
+      center: this.latLong,
+      zoom: Strings.DEFAULT_ZOOM,
       worldCopyJump: true,
       zoomAnimationThreshold: 8,
       minZoom: 4,
@@ -274,6 +276,15 @@ class MineTailingsMap extends Component {
       <Descriptions column={1} style={{ width: "320px" }}>
         <Descriptions.Item label="TSF Name">
           {tailing.mine_tailings_storage_facility_name || Strings.EMPTY_FIELD}
+        </Descriptions.Item>
+        <Descriptions.Item label="Consequence Classification">
+          {this.props.consequenceClassificationStatusCodeHash[
+            tailing.consequence_classification_status_code
+          ] || Strings.EMPTY_FIELD}
+        </Descriptions.Item>
+        <Descriptions.Item label="Operating Status">
+          {this.props.TSFOperatingStatusCodeHash[tailing.tsf_operating_status_code] ||
+            Strings.EMPTY_FIELD}
         </Descriptions.Item>
         <Descriptions.Item label="Latitude">
           {tailing.latitude || Strings.EMPTY_FIELD}

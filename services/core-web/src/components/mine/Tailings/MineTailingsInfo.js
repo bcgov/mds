@@ -14,6 +14,10 @@ import {
   fetchMineRecordById,
   createTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
+import {
+  getTSFOperatingStatusCodeOptionsHash,
+  getConsequenceClassificationStatusCodeOptionsHash,
+} from "@common/selectors/staticContentSelectors";
 import { getMineReports } from "@common/selectors/reportSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -47,6 +51,8 @@ const propTypes = {
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
+  TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultParams = {
@@ -196,19 +202,35 @@ export class MineTailingsInfo extends Component {
             <div>
               <br />
               <h4 className="uppercase">Map</h4>
-              <br />
               <div className="inline-flex">
                 <p>
-                  <img src={SMALL_PIN} className="icon-sm--img" alt="Mine Pin" />
+                  <img
+                    src={SMALL_PIN}
+                    className="icon-sm--img"
+                    alt="Mine Pin"
+                    style={{ marginTop: "10px" }}
+                  />
                   Location of Mine Site
                 </p>
                 <p>
-                  <img SRC={SMALL_PIN_SELECTED} className="icon-sm--img" alt="TSF Pin" />
+                  <img
+                    SRC={SMALL_PIN_SELECTED}
+                    className="icon-sm--img"
+                    alt="TSF Pin"
+                    style={{ marginTop: "10px" }}
+                  />
                   Location of TSF
                 </p>
               </div>
               <LoadingWrapper condition={this.state.isLoaded}>
-                <MineTailingsMap mine={mine} tailings={mine.mine_tailings_storage_facilities} />
+                <MineTailingsMap
+                  mine={mine}
+                  tailings={mine.mine_tailings_storage_facilities}
+                  TSFOperatingStatusCodeHash={this.props.TSFOperatingStatusCodeHash}
+                  consequenceClassificationStatusCodeHash={
+                    this.props.consequenceClassificationStatusCodeHash
+                  }
+                />
               </LoadingWrapper>
             </div>
           </Tabs.TabPane>
@@ -223,6 +245,8 @@ const mapStateToProps = (state) => ({
   mineReportDefinitionOptions: getMineReportDefinitionOptions(state),
   mines: getMines(state),
   mineGuid: getMineGuid(state),
+  TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
+  consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
