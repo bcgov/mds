@@ -299,7 +299,7 @@ class MineTailingsMap extends Component {
   render() {
     return (
       <div
-        style={{ height: "80vh", width: "100vw", zIndex: 1, position: "inherit" }}
+        style={{ height: "80vh", width: "100%", zIndex: 1, position: "inherit" }}
         id="leaflet-map"
       />
     );

@@ -91,7 +91,6 @@ exports[`MineTailingsInfo renders properly 1`] = `
         >
           Map
         </h4>
-        <br />
         <div
           className="inline-flex"
         >
@@ -102,6 +101,11 @@ exports[`MineTailingsInfo renders properly 1`] = `
               src={
                 Object {
                   "process": [Function],
+                }
+              }
+              style={
+                Object {
+                  "marginTop": "10px",
                 }
               }
             />
@@ -116,6 +120,11 @@ exports[`MineTailingsInfo renders properly 1`] = `
               }
               alt="TSF Pin"
               className="icon-sm--img"
+              style={
+                Object {
+                  "marginTop": "10px",
+                }
+              }
             />
             Location of TSF
           </p>
