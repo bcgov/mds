@@ -24,7 +24,7 @@ class TestPostApplicationImportResource:
         assert na.exploration_access
         assert na.mechanical_trenching
         assert na.placer_operation
-        assert na.sand_and_gravel
+        assert na.sand_gravel_quarry_operation
         assert na.surface_bulk_sample
         assert na.water_supply
         assert na.settling_pond
@@ -42,7 +42,7 @@ class TestPostApplicationImportResource:
         assert not na.exploration_access
         assert not na.mechanical_trenching
         assert not na.placer_operation
-        assert not na.sand_and_gravel
+        assert not na.sand_gravel_quarry_operation
         assert not na.surface_bulk_sample
         assert na.water_supply
         assert not na.settling_pond

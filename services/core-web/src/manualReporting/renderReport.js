@@ -286,7 +286,7 @@ const simpleRender = () => {
         },
       ],
     },
-    sand_and_gravel: {
+    sand_gravel_quarry_operation: {
       average_overburden_depth: "334.00",
       average_top_soil_depth: "34234.00",
       stability_measures_description: "23423",

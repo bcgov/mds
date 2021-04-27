@@ -31,10 +31,12 @@ export const SandGravelQuarry = (props) => {
             Average Depth Overburden
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").value
+                props.renderOriginalValues("sand_gravel_quarry_operation.average_overburden_depth")
+                  .value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.average_overburden_depth").edited
+                props.renderOriginalValues("sand_gravel_quarry_operation.average_overburden_depth")
+                  .edited
               }
             />
           </div>
@@ -53,10 +55,12 @@ export const SandGravelQuarry = (props) => {
             Average Depth of topsoil
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").value
+                props.renderOriginalValues("sand_gravel_quarry_operation.average_top_soil_depth")
+                  .value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.average_top_soil_depth").edited
+                props.renderOriginalValues("sand_gravel_quarry_operation.average_top_soil_depth")
+                  .edited
               }
             />
           </div>
@@ -77,10 +81,14 @@ export const SandGravelQuarry = (props) => {
             Measures to stabilize soil overburden stockpiles and control noxious weeds
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.stability_measures_description").value
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.stability_measures_description"
+                ).value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.stability_measures_description").edited
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.stability_measures_description"
+                ).edited
               }
             />
           </div>
@@ -101,10 +109,14 @@ export const SandGravelQuarry = (props) => {
             Is this site within the Agricultural Land Reserve?
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").value
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.is_agricultural_land_reserve"
+                ).value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.is_agricultural_land_reserve").edited
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.is_agricultural_land_reserve"
+                ).edited
               }
             />
           </div>
@@ -119,8 +131,12 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             Current land use zoning for the site
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.land_use_zoning").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.land_use_zoning").edited}
+              originalValue={
+                props.renderOriginalValues("sand_gravel_quarry_operation.land_use_zoning").value
+              }
+              isVisible={
+                props.renderOriginalValues("sand_gravel_quarry_operation.land_use_zoning").edited
+              }
             />
           </div>
           <Field
@@ -138,12 +154,12 @@ export const SandGravelQuarry = (props) => {
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues(
-                  "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
+                  "sand_gravel_quarry_operation.agri_lnd_rsrv_permit_application_number"
                 ).value
               }
               isVisible={
                 props.renderOriginalValues(
-                  "sand_and_gravel.agri_lnd_rsrv_permit_application_number"
+                  "sand_gravel_quarry_operation.agri_lnd_rsrv_permit_application_number"
                 ).edited
               }
             />
@@ -159,8 +175,12 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             Proposed land use
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.proposed_land_use").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.proposed_land_use").edited}
+              originalValue={
+                props.renderOriginalValues("sand_gravel_quarry_operation.proposed_land_use").value
+              }
+              isVisible={
+                props.renderOriginalValues("sand_gravel_quarry_operation.proposed_land_use").edited
+              }
             />
           </div>
           <Field
@@ -176,8 +196,12 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             Official community plan for the site
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.community_plan").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.community_plan").edited}
+              originalValue={
+                props.renderOriginalValues("sand_gravel_quarry_operation.community_plan").value
+              }
+              isVisible={
+                props.renderOriginalValues("sand_gravel_quarry_operation.community_plan").edited
+              }
             />
           </div>
           <Field
@@ -192,10 +216,14 @@ export const SandGravelQuarry = (props) => {
             Does the local government have a soil removal bylaw?
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").value
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.has_local_soil_removal_bylaw"
+                ).value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.has_local_soil_removal_bylaw").edited
+                props.renderOriginalValues(
+                  "sand_gravel_quarry_operation.has_local_soil_removal_bylaw"
+                ).edited
               }
             />
           </div>
@@ -213,10 +241,12 @@ export const SandGravelQuarry = (props) => {
             Total mineable reserves over the life of the mine
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").value
+                props.renderOriginalValues("sand_gravel_quarry_operation.total_mineable_reserves")
+                  .value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.total_mineable_reserves").edited
+                props.renderOriginalValues("sand_gravel_quarry_operation.total_mineable_reserves")
+                  .edited
               }
             />
           </div>
@@ -235,10 +265,12 @@ export const SandGravelQuarry = (props) => {
             Annual extraction from site
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").value
+                props.renderOriginalValues("sand_gravel_quarry_operation.total_annual_extraction")
+                  .value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.total_annual_extraction").edited
+                props.renderOriginalValues("sand_gravel_quarry_operation.total_annual_extraction")
+                  .edited
               }
             />
           </div>
@@ -290,10 +322,12 @@ export const SandGravelQuarry = (props) => {
             Proposed reclamation and timing for this specific activity
             <NOWOriginalValueTooltip
               originalValue={
-                props.renderOriginalValues("sand_and_gravel.reclamation_description").value
+                props.renderOriginalValues("sand_gravel_quarry_operation.reclamation_description")
+                  .value
               }
               isVisible={
-                props.renderOriginalValues("sand_and_gravel.reclamation_description").edited
+                props.renderOriginalValues("sand_gravel_quarry_operation.reclamation_description")
+                  .edited
               }
             />
           </div>
@@ -309,8 +343,12 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             Estimated Cost of reclamation activities described above
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("sand_and_gravel.reclamation_cost").value}
-              isVisible={props.renderOriginalValues("sand_and_gravel.reclamation_cost").edited}
+              originalValue={
+                props.renderOriginalValues("sand_gravel_quarry_operation.reclamation_cost").value
+              }
+              isVisible={
+                props.renderOriginalValues("sand_gravel_quarry_operation.reclamation_cost").edited
+              }
             />
           </div>
           <Field

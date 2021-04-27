@@ -67,7 +67,7 @@ class NOWSubmissionFactory(BaseFactory):
             exploration_surface_drilling=True,
             mechanical_trenching=True,
             placer_operation=True,
-            sand_and_gravel=True,
+            sand_gravel_quarry_operation=True,
             surface_bulk_sample=True,
             settling_pond=True,
             underground_exploration=True)
@@ -117,7 +117,7 @@ class NOWSubmissionFactory(BaseFactory):
             placerreclamation=factory.Faker('sentence', nb_words=2),
             placerreclamationcost=factory.fuzzy.FuzzyDecimal(1000))
 
-        sand_and_gravel = factory.Trait(
+        sand_gravel_quarry_operation = factory.Trait(
             sandgrvqrydepthoverburden=factory.fuzzy.FuzzyDecimal(1000),
             sandgrvqrydepthtopsoil=factory.fuzzy.FuzzyDecimal(1000),
             sandgrvqrystabilizemeasures=factory.Faker('sentence', nb_words=2),
