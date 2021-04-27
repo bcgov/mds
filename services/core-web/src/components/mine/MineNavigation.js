@@ -120,7 +120,7 @@ export class MineNavigation extends Component {
             </Menu.Item>
             <Menu.Item key="tailings">
               <Link to={routes.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
-                Tailings
+                Tailing Storage Facilities
               </Link>
             </Menu.Item>
           </Menu>

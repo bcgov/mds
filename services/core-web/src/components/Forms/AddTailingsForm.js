@@ -1,36 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
+import {
+  getConsequenceClassificationStatusCodeDropdownOptions,
+  getTSFOperatingStatusCodeDropdownOptions,
+} from "@common/selectors/staticContentSelectors";
 import { resetForm } from "@common/utils/helpers";
 import RenderField from "@/components/common/RenderField";
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  consequenceClassificationStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
+    .isRequired,
+  TSFOperatingStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
-
-const statusData = [
-  { value: "CAM", label: "Care and Maintenance" },
-  { value: "CLO", label: "Closed" },
-  { value: "OPT", label: "Operating" },
-];
-
-const riskData = [
-  { value: "LOW", label: "Low" },
-  { value: "SIG", label: "Significant" },
-  { value: "HIG", label: "High" },
-  { value: "EXT", label: "Extreme" },
-  { value: "NOD", label: "N/A (No Dam)" },
-];
 
 const boolData = [
   { value: false, label: "No" },
@@ -58,9 +54,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="latitude"
             name="latitude"
-            label="Latitude"
+            label="Latitude*"
             component={RenderField}
-            validate={[number, maxLength(10), lat]}
+            validate={[number, maxLength(10), lat, required]}
           />
         </Form.Item>
       </Col>
@@ -69,9 +65,9 @@ export const AddTailingsForm = (props) => (
           <Field
             id="longitude"
             name="longitude"
-            label="Longitude"
+            label="Longitude*"
             component={RenderField}
-            validate={[number, maxLength(12), lon]}
+            validate={[number, maxLength(12), lon, required]}
           />
         </Form.Item>
       </Col>
@@ -80,61 +76,51 @@ export const AddTailingsForm = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="risk_classification"
-            name="risk_classification"
-            label="Risk Classification"
+            id="consequence_classification_status_code"
+            name="consequence_classification_status_code"
+            label="Consequence Classification*"
             component={RenderSelect}
-            data={riskData}
+            data={props.consequenceClassificationStatusCodeOptions}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="operating_status"
-            label="Operating Status"
-            name="operating_status"
+            id="tsf_operating_status_code"
+            label="Operating Status*"
+            name="tsf_operating_status_code"
             component={RenderSelect}
-            data={statusData}
+            data={props.TSFOperatingStatusCodeOptions}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
     </Row>
-    {/* <Row gutter={16}>
+    <Row gutter={16}>
       <Col md={12} xs={24}>
         <Form.Item>
           <PartySelectField
             id="eor_party_guid"
             name="eor_party_guid"
             label="Engineer of Record"
-            partyLabel="EOR"
+            partyLabel="EoR"
+            allowNull
             // validate={[required]}
             allowAddingParties
           />
         </Form.Item>
       </Col>
-      <Col md={12} xs={24}>
-        <Form.Item>
-          <PartySelectField
-            id="tsf_qualified_person_party_guid"
-            name="tsf_qualified_person_party_guid"
-            label="TSF Qualified Person"
-            partyLabel="TSF Qualified Person"
-            // validate={[required]}
-            allowAddingParties
-          />
-        </Form.Item>
-      </Col>
-    </Row> */}
-    <Row gutter={16}>
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
             id="has_itrb"
             name="has_itrb"
-            label="Independent Tailings Review Board"
+            label="Independent Tailings Review Board*"
             component={RenderSelect}
             data={boolData}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
@@ -161,8 +147,17 @@ export const AddTailingsForm = (props) => (
 
 AddTailingsForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.ADD_TAILINGS,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.ADD_TAILINGS),
-})(AddTailingsForm);
+export default compose(
+  connect((state) => ({
+    consequenceClassificationStatusCodeOptions: getConsequenceClassificationStatusCodeDropdownOptions(
+      state
+    ),
+    TSFOperatingStatusCodeOptions: getTSFOperatingStatusCodeDropdownOptions(state),
+  })),
+  reduxForm({
+    form: FORM.ADD_TAILINGS,
+    touchOnBlur: false,
+    enableReinitialize: true,
+    onSubmitSuccess: resetForm(FORM.ADD_TAILINGS),
+  })
+)(AddTailingsForm);

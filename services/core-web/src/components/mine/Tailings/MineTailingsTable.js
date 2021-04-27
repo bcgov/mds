@@ -1,44 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Badge, Popconfirm } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import {
-  getVarianceStatusOptionsHash,
-  getHSRCMComplianceCodesHash,
+  getTSFOperatingStatusCodeOptionsHash,
+  getConsequenceClassificationStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { getInspectorsHash , getPartyRelationships } from "@common/selectors/partiesSelectors";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
-import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
-  PartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship),
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
+  TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
-const riskHash = {
-  LOW: "Low",
-  SIG: "Significant",
-  HIG: "High",
-  EXT: "Extreme",
-  NOD: "N/A (No Dam)",
-};
-
-const statusHash = {
-  CAM: "Care and Maintenance",
-  CLO: "Closed",
-  OPT: "Operating",
-};
 
 const boolHash = {
   true: "Yes",
@@ -57,13 +37,6 @@ export class MineTailingsTable extends Component {
             pr.mine_party_appt_type_code === "EOR"
         )
         .sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0],
-      tqp_party: this.props.partyRelationships
-        .filter(
-          (pr) =>
-            pr.related_guid === tailing.mine_tailings_storage_facility_guid &&
-            pr.mine_party_appt_type_code === "TQP"
-        )
-        .sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0],
       ...tailing,
     }));
 
@@ -76,13 +49,21 @@ export class MineTailingsTable extends Component {
       },
       {
         title: "Operating Status",
-        dataIndex: "operating_status",
-        render: (text) => <div title="Operating Status">{statusHash[text] || "N/A"}</div>,
+        dataIndex: "tsf_operating_status_code",
+        render: (text) => (
+          <div title="Operating Status">
+            {this.props.TSFOperatingStatusCodeHash[text] || Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
       {
-        title: "Risk Classification",
-        dataIndex: "risk_classification",
-        render: (text) => <div title="Risk Classification">{riskHash[text] || "N/A"}</div>,
+        title: "Consequence Classification",
+        dataIndex: "consequence_classification_status_code",
+        render: (text) => (
+          <div title="Consequence Classification">
+            {this.props.consequenceClassificationStatusCodeHash[text] || Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
       {
         title: "Independent Tailings Review Board",
@@ -92,22 +73,19 @@ export class MineTailingsTable extends Component {
       {
         title: "Engineer of Record",
         dataIndex: "eor_party",
-        render: (text) => <div title="Engineer of Record">{text ? text.party.name : "N/A"}</div>,
-      },
-      {
-        title: "TSF Qualified Person",
-        dataIndex: "tqp_party",
-        render: (text) => <div title="Engineer of Record">{text ? text.party.name : "N/A"}</div>,
+        render: (text) => (
+          <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>
+        ),
       },
       {
         title: "Latitude",
         dataIndex: "latitude",
-        render: (text) => <div title="Latitude">{text}</div>,
+        render: (text) => <div title="Latitude">{text || Strings.EMPTY_FIELD}</div>,
       },
       {
         title: "Longitude",
         dataIndex: "longitude",
-        render: (text) => <div title="Longitude">{text}</div>,
+        render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
       },
     ];
 
@@ -130,6 +108,8 @@ MineTailingsTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
+  TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
+  consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(MineTailingsTable);

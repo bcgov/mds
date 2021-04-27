@@ -9,6 +9,7 @@ import {
   updateMineReport,
   deleteMineReport,
 } from "@common/actionCreators/reportActionCreator";
+import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import {
   fetchMineRecordById,
   createTailingsStorageFacility,
@@ -44,6 +45,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
+  fetchPartyRelationships: PropTypes.func.isRequired,
 };
 
 const defaultParams = {
@@ -96,8 +98,17 @@ export class MineTailingsInfo extends Component {
       .createTailingsStorageFacility(this.props.mineGuid, values)
       .then(() => {
         this.props.fetchMineRecordById(this.props.mineGuid);
+        this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType);
+        this.props.fetchPartyRelationships({
+          mine_guid: this.props.mineGuid,
+          relationships: "party",
+          include_permittees: "true",
+        });
       })
-      .finally(this.props.closeModal());
+      .finally(() => {
+        this.props.closeModal();
+        this.setState({ isLoaded: true });
+      });
   };
 
   openTailingsModal(event, onSubmit, title) {
@@ -130,11 +141,14 @@ export class MineTailingsInfo extends Component {
     return (
       <div className="tab__content">
         <div>
-          <h2>Tailings</h2>
+          <h2>Tailing Storage Facilities</h2>
           <Divider />
         </div>
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <Tabs.TabPane tab="Tailing Storage Facilities" key="tsf">
+          <Tabs.TabPane
+            tab={`Tailing Storage Facilities (${mine.mine_tailings_storage_facilities.length})`}
+            key="tsf"
+          >
             <div>
               <br />
               <div className="inline-flex between">
@@ -155,16 +169,6 @@ export class MineTailingsInfo extends Component {
               />
             </div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Map" key="map">
-            <div>
-              <br />
-              <h4 className="uppercase">Map</h4>
-              <br />
-              <LoadingWrapper condition={this.state.isLoaded}>
-                <MineTailingsMap mine={mine} tailings={mine.mine_tailings_storage_facilities} />
-              </LoadingWrapper>
-            </div>
-          </Tabs.TabPane>
           <Tabs.TabPane tab="Tailings Reports" key="reports">
             <div>
               <br />
@@ -181,6 +185,16 @@ export class MineTailingsInfo extends Component {
                 sortDir={this.state.params.sort_dir}
                 mineReportType={Strings.MINE_REPORTS_TYPE.codeRequiredReports}
               />
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="Map" key="map">
+            <div>
+              <br />
+              <h4 className="uppercase">Map</h4>
+              <br />
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <MineTailingsMap mine={mine} tailings={mine.mine_tailings_storage_facilities} />
+              </LoadingWrapper>
             </div>
           </Tabs.TabPane>
         </Tabs>
@@ -204,6 +218,7 @@ const mapDispatchToProps = (dispatch) =>
       deleteMineReport,
       createTailingsStorageFacility,
       fetchMineRecordById,
+      fetchPartyRelationships,
       openModal,
       closeModal,
     },

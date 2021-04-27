@@ -17,9 +17,9 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     mine_tailings_storage_facility_name = db.Column(db.String(60), nullable=False)
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
-    risk_classification = db.Column(db.String)
+    consequence_classification_status_code = db.Column(db.String)
     has_itrb = db.Column(db.Boolean)
-    operating_status = db.Column(db.String)
+    tsf_operating_status_code = db.Column(db.String)
 
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid
@@ -32,8 +32,8 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         }
 
     @classmethod
-    def create(cls, mine, mine_tailings_storage_facility_name, latitude, longitude, risk_classification, has_itrb, operating_status,  add_to_session=True):
-        new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name, latitude=latitude, longitude=longitude, risk_classification=risk_classification, has_itrb=has_itrb, operating_status=operating_status)
+    def create(cls, mine, mine_tailings_storage_facility_name, latitude, longitude, consequence_classification_status_code, has_itrb, tsf_operating_status_code,  add_to_session=True):
+        new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name, latitude=latitude, longitude=longitude, consequence_classification_status_code=consequence_classification_status_code, has_itrb=has_itrb, tsf_operating_status_code=tsf_operating_status_code)
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:
             new_tsf.save(commit=False)

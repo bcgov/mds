@@ -114,9 +114,9 @@ exports[`AddTailingsForm renders properly 1`] = `
               },
             ]
           }
-          id="risk_classification"
+          id="consequence_classification_status_code"
           label="Risk Classification"
-          name="risk_classification"
+          name="consequence_classification_status_code"
         />
       </FormItem>
     </Col>
