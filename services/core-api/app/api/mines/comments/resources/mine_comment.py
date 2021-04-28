@@ -41,7 +41,7 @@ class MineCommentListResource(Resource, UserMixin):
     @api.expect(MINE_COMMENT_MODEL)
     @api.doc(description='creates a new comment for the Mine')
     @api.marshal_with(MINE_COMMENT_MODEL, code=201)
-    @requires_role_mine_edit
+    @requires_role_view_all
     def post(self, mine_guid):
 
         mine = Mine.find_by_mine_guid(mine_guid)
