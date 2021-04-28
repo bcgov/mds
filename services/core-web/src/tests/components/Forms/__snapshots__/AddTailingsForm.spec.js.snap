@@ -92,6 +92,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          data={Array []}
           id="consequence_classification_status_code"
           label="Consequence Classification*"
           name="consequence_classification_status_code"
@@ -112,6 +113,7 @@ exports[`AddTailingsForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          data={Array []}
           id="tsf_operating_status_code"
           label="Operating Status*"
           name="tsf_operating_status_code"

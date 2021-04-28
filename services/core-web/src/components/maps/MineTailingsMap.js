@@ -106,7 +106,7 @@ const getMajorMinePermittedAreas = () => {
   return majorMinesSource.getLayer("pub:WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP");
 };
 
-class MineTailingsMap extends Component {
+export class MineTailingsMap extends Component {
   state = {
     currentMarker: null,
   };

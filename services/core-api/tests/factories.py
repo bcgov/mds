@@ -161,7 +161,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
-    latitude = factory.Faker('latitude')         # or factory.fuzzy.FuzzyFloat(49, 60) for ~ inside BC
+    latitude = factory.Faker('latitude')  
     longitude = factory.Faker('longitude')   
     consequence_classification_status_code = 'LOW'
     tsf_operating_status_code = 'OPT'

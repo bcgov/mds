@@ -255,9 +255,13 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-sm">
             <p className="field-title">TSF</p>
             <p>
-              {this.props.mine.mine_tailings_storage_facilities.length > 0
-                ? this.props.mine.mine_tailings_storage_facilities.length
-                : String.EMPTY_FIELD}
+              {this.props.mine.mine_tailings_storage_facilities.length > 0 ? (
+                <Link to={route.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                  {this.props.mine.mine_tailings_storage_facilities.length}
+                </Link>
+              ) : (
+                String.EMPTY_FIELD
+              )}
             </p>
           </div>
           <div className="inline-flex padding-sm wrap">
