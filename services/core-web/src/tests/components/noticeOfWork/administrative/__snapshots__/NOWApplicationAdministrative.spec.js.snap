@@ -51,7 +51,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "proposed_end_date": "2020-03-01",
           "proposed_start_date": "2016-03-01",
           "received_date": "",
-          "sand_and_gravel": Object {
+          "sand_gravel_quarry_operation": Object {
             "details": Array [],
           },
           "settling_pond": Object {
@@ -110,6 +110,23 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))
+    id="generated-documents"
+    title="Application Export Files"
+  >
+    <Connect(NOWDocuments)
+      addDescriptionColumn={false}
+      categoriesToShow={
+        Array [
+          "AEF",
+        ]
+      }
+      disclaimerText="This table shows generated Draft Permit PDFs."
+      documents={Array []}
+      isAdminView={true}
+      isViewMode={false}
+    />
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
     id="inspectors"
     title="Inspectors"
   >
@@ -157,7 +174,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           "proposed_end_date": "2020-03-01",
           "proposed_start_date": "2016-03-01",
           "received_date": "",
-          "sand_and_gravel": Object {
+          "sand_gravel_quarry_operation": Object {
             "details": Array [],
           },
           "settling_pond": Object {

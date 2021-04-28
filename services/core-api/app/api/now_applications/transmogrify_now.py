@@ -53,7 +53,7 @@ def transmogrify_now(now_application_identity, include_contacts=False):
     _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub)
     _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub)
     _transmogrify_placer_operations(now_app, now_sub, mms_now_sub)
-    _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub)
+    _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms_now_sub)
     _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub)
     _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub)
     _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub)
@@ -601,7 +601,7 @@ def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
     return
 
 
-def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
+def _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms_now_sub):
     sandgrvqrydepthoverburden = now_sub.sandgrvqrydepthoverburden
     sandgrvqrydepthtopsoil = now_sub.sandgrvqrydepthtopsoil
     sandgrvqrystabilizemeasures = now_sub.sandgrvqrystabilizemeasures
@@ -642,7 +642,7 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
             or sandgrvqryimpactdistres or sandgrvqryimpactdistwater or sandgrvqryimpactnoise
             or sandgrvqryimpactprvtaccess or sandgrvqryimpactprevtdust
             or sandgrvqryimpactminvisual):
-        now_app.sand_and_gravel = app_models.SandGravelQuarryOperation(
+        now_app.sand_gravel_quarry_operation = app_models.SandGravelQuarryOperation(
             average_overburden_depth=sandgrvqrydepthoverburden,
             average_overburden_depth_unit_type_code='MTR',
             average_top_soil_depth=sandgrvqrydepthtopsoil,
@@ -684,7 +684,7 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
             sand_grv_qry_activity = now_sub.sand_grv_qry_activity
 
         for detail in sand_grv_qry_activity:
-            now_app.sand_and_gravel.details.append(
+            now_app.sand_gravel_quarry_operation.details.append(
                 app_models.SandGravelQuarryOperationDetail(
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
@@ -692,7 +692,7 @@ def _transmogrify_sand_and_gravel_activities(now_app, now_sub, mms_now_sub):
 
         for e in now_sub.sand_grv_qry_equip:
             equipment = _transmogrify_equipment(e)
-            now_app.sand_and_gravel.equipment.append(equipment)
+            now_app.sand_gravel_quarry_operation.equipment.append(equipment)
 
     return
 

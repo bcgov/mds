@@ -132,7 +132,8 @@ class NOWApplication(Base, AuditMixin):
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
-    sand_and_gravel = db.relationship('SandGravelQuarryOperation', lazy='selectin', uselist=False)
+    sand_gravel_quarry_operation = db.relationship(
+        'SandGravelQuarryOperation', lazy='selectin', uselist=False)
     settling_pond = db.relationship('SettlingPond', lazy='selectin', uselist=False)
     surface_bulk_sample = db.relationship('SurfaceBulkSample', lazy='selectin', uselist=False)
     underground_exploration = db.relationship(
