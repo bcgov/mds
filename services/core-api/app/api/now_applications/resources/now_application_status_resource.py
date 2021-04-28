@@ -47,6 +47,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         type=str,
         location='json',
         help='The new status of the application.')
+    parser.add_argument('exemption_fee_status_code', type=str, location='json', help='')
+    parser.add_argument('exemption_fee_status_note', type=str, location='json', help='')
 
     # TODO: Improve this endpoint by making it a transaction.
     @api.doc(description='Update the status of an application.')
@@ -58,6 +60,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         status_reason = data.get('status_reason')
         description = data.get('description')
         now_application_status_code = data.get('now_application_status_code')
+        exemption_fee_status_code = data.get('exemption_fee_status_code')
+        exemption_fee_status_note = data.get('exemption_fee_status_note')
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
@@ -67,6 +71,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             raise NotImplemented('Notices of Work must be imported before changes can be made.')
 
         current_status = now_application_identity.now_application.now_application_status_code
+        current_app.logger.debug(current_status)
         if now_application_status_code is None or current_status == now_application_status_code:
             return 200
 
@@ -79,6 +84,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment = PermitAmendment.find_by_now_application_guid(application_guid)
             if not permit_amendment:
                 raise NotFound('No permit amendment found for this application.')
+
+            # set exemption fee status code
+            now_site_property = now_application_identity.now_application.site_property
+            is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
+            Permit.validate_exemption_fee_status(
+                is_exploration, permit.permit_status_code, permit.permit_prefix, [
+                    detail.mine_disturbance_code
+                    for detail in now_site_property.mine_type_detail if detail.mine_disturbance_code
+                ], now_site_property.mine_tenure_type_code, exemption_fee_status_code)
+            permit.exemption_fee_status_code = exemption_fee_status_code
+            permit.exemption_fee_status_note = exemption_fee_status_note
 
             # Validate the application contacts and the issue date
             for contact in now_application_identity.now_application.contacts:
@@ -164,7 +180,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 return permit_site_property
 
-            now_site_property = now_application_identity.now_application.site_property
             if now_site_property:
                 permit_site_property = MineType.query.filter_by(
                     permit_guid=permit.permit_guid,

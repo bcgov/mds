@@ -25,6 +25,7 @@ const propTypes = {
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -276,6 +277,7 @@ export const GeneratePermitForm = (props) => (
         noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
         isViewMode={props.isViewMode}
         initialValues={props.noticeOfWork.site_property}
+        draftPermit={props.draftPermit}
       />
     </ScrollContentWrapper>
     <ScrollContentWrapper id="conditions" title="Conditions">

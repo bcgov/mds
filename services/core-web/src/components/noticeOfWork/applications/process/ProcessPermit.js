@@ -28,6 +28,7 @@ import {
   formatDate,
   isPlacerAdjustmentFeeValid,
   isPitsQuarriesAdjustmentFeeValid,
+  determineExemptionFeeStatus,
 } from "@common/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
@@ -200,6 +201,16 @@ export class ProcessPermit extends Component {
       )
       .then(() => {
         const initialValues = {};
+        // TODO calculate exemption fee
+        const isExploration = this.props.draftPermit.permit_no.charAt(1) === "X";
+
+        const statusCode = determineExemptionFeeStatus(
+          this.props.draftPermit.permit_status_code,
+          this.props.draftPermit.permit_prefix,
+          this.props.noticeOfWork?.site_property?.mine_tenure_type_code,
+          isExploration,
+          this.props.noticeOfWork?.site_property?.mine_disturbance_code
+        );
         this.props.documentContextTemplate.document_template.form_spec.map(
           // eslint-disable-next-line
           (item) => (initialValues[item.id] = item["context-value"])
@@ -215,6 +226,7 @@ export class ProcessPermit extends Component {
             noticeOfWork: this.props.noticeOfWork,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
+            exemptionFeeStatusCode: statusCode,
           },
           width: "50vw",
           content: modalConfig.NOW_STATUS_LETTER_MODAL,

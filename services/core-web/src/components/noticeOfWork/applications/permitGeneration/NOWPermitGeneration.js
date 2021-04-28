@@ -501,6 +501,7 @@ export class NOWPermitGeneration extends Component {
                     isPermitAmendmentTypeDropDownDisabled={
                       this.state.isPermitAmendmentTypeDropDownDisabled
                     }
+                    draftPermit={this.props.draftPermit}
                   />
                 )}
               </>

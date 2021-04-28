@@ -366,7 +366,10 @@ class PermitAmendmentResource(Resource, UserMixin):
         if data.get(
                 'site_properties') != {} and permit_amendment.permit_amendment_status_code == 'DFT':
             site_property = MineType.query.filter_by(
-                now_application_guid=permit_amendment.now_application_guid, mine_guid=mine_guid)
+                now_application_guid=permit_amendment.now_application_guid,
+                mine_guid=mine_guid,
+                active_ind=True).one_or_none()
+
             if not site_property:
                 mine_type = MineType.create(
                     mine_guid,
