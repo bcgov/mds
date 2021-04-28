@@ -164,11 +164,11 @@ export const ReviewActivities = (props) => {
       <ScrollContentWrapper
         id="sand-and-gravel"
         title="Sand and Gravel / Quarry Operations"
-        data={props.noticeOfWork.sand_and_gravel}
+        data={props.noticeOfWork.sand_gravel_quarry_operation}
         showContent={renderActivities(props.noticeOfWorkType, "sand-and-gravel")}
         isViewMode={props.isViewMode}
       >
-        <FormSection name="sand_and_gravel">
+        <FormSection name="sand_gravel_quarry_operation">
           <SandGravelQuarry
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}

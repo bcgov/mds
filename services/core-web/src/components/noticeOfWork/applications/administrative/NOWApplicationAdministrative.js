@@ -74,7 +74,8 @@ export const NOWApplicationAdministrative = (props) => {
                 now_application_document_type_code !== "PMA" ||
                 mine_document.document_name.includes("DRAFT"))
           )}
-          isViewMode
+          isViewMode={false}
+          isAdminView
           disclaimerText={
             props.noticeOfWork.application_type_code === "NOW"
               ? "This table shows PDFs generated from edited Notice of Work forms and Draft Permits."

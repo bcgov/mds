@@ -450,7 +450,7 @@ export const IMPORTED_NOTICE_OF_WORK = {
   exploration_access: { details: [] },
   exploration_surface_drilling: { details: [] },
   mechanical_trenching: { details: [] },
-  sand_and_gravel: { details: [] },
+  sand_gravel_quarry_operation: { details: [] },
   settling_pond: { details: [] },
   surface_bulk_sample: { details: [] },
   underground_exploration: { details: [] },

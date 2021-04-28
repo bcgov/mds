@@ -89,19 +89,19 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'placer_operation.total_disturbed_area',
     'placer_operation.reclamation_description',
     'placer_operation.reclamation_cost',
-    'sand_and_gravel.average_overburden_depth',
-    'sand_and_gravel.average_top_soil_depth',
-    'sand_and_gravel.stability_measures_description',
-    'sand_and_gravel.is_agricultural_land_reserve',
-    'sand_and_gravel.land_use_zoning',
-    'sand_and_gravel.agri_lnd_rsrv_permit_application_number',
-    'sand_and_gravel.proposed_land_use',
-    'sand_and_gravel.community_plan',
-    'sand_and_gravel.has_local_soil_removal_bylaw',
-    'sand_and_gravel.total_mineable_reserves',
-    'sand_and_gravel.total_annual_extraction',
-    'sand_and_gravel.reclamation_description',
-    'sand_and_gravel.reclamation_cost',
+    'sand_gravel_quarry_operation.average_overburden_depth',
+    'sand_gravel_quarry_operation.average_top_soil_depth',
+    'sand_gravel_quarry_operation.stability_measures_description',
+    'sand_gravel_quarry_operation.is_agricultural_land_reserve',
+    'sand_gravel_quarry_operation.land_use_zoning',
+    'sand_gravel_quarry_operation.agri_lnd_rsrv_permit_application_number',
+    'sand_gravel_quarry_operation.proposed_land_use',
+    'sand_gravel_quarry_operation.community_plan',
+    'sand_gravel_quarry_operation.has_local_soil_removal_bylaw',
+    'sand_gravel_quarry_operation.total_mineable_reserves',
+    'sand_gravel_quarry_operation.total_annual_extraction',
+    'sand_gravel_quarry_operation.reclamation_description',
+    'sand_gravel_quarry_operation.reclamation_cost',
     'settling_pond.is_ponds_recycled',
     'settling_pond.is_ponds_exfiltrated',
     'settling_pond.is_ponds_discharged',
@@ -239,15 +239,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def get_renderable_now_sections(now_application):
             conditional_sections = [
-                'sand_and_gravel', 'surface_bulk_sample', 'cut_lines_polarization_survey',
-                'underground_exploration', 'placer_operation'
+                'sand_gravel_quarry_operation', 'surface_bulk_sample',
+                'cut_lines_polarization_survey', 'underground_exploration', 'placer_operation'
             ]
 
             def get_applicable_now_sections(now_application):
                 now_type_conditional_sections = {
-                    'QCA': ['sand_and_gravel'],
-                    'SAG': ['sand_and_gravel'],
-                    'QIM': ['sand_and_gravel'],
+                    'QCA': ['sand_gravel_quarry_operation'],
+                    'SAG': ['sand_gravel_quarry_operation'],
+                    'QIM': ['sand_gravel_quarry_operation'],
                     'COL': [
                         'surface_bulk_sample', 'cut_lines_polarization_survey',
                         'underground_exploration'
@@ -276,7 +276,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     'exploration_access', 'blasting_operation', 'camp',
                     'cut_lines_polarization_survey', 'exploration_surface_drilling',
                     'mechanical_trenching', 'settling_pond', 'surface_bulk_sample',
-                    'underground_exploration', 'sand_and_gravel', 'placer_operation', 'water_supply'
+                    'underground_exploration', 'sand_gravel_quarry_operation', 'placer_operation',
+                    'water_supply'
                 ]
                 populated = {}
                 for section in hideable_now_sections:
