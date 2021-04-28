@@ -522,6 +522,23 @@ export class ProcessPermit extends Component {
       });
     }
 
+    // Tenures, Disturbances, Commodities
+    if (
+      this.props.noticeOfWork &&
+      !(
+        this.props.noticeOfWork.site_property &&
+        this.props.noticeOfWork.site_property.mine_tenure_type_code
+      )
+    ) {
+      validationMessages.push({
+        message: "The Site Property fields must be specified.",
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit/#site-properties"
+        ),
+      });
+    }
+
     // Final Application Package document titles
     const requestedDocuments = this.props.noticeOfWork?.documents?.filter(
       ({ is_final_package }) => is_final_package

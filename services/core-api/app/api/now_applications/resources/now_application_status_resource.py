@@ -85,17 +85,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             if not permit_amendment:
                 raise NotFound('No permit amendment found for this application.')
 
-            # set exemption fee status code
-            now_site_property = now_application_identity.now_application.site_property
-            is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
-            Permit.validate_exemption_fee_status(
-                is_exploration, permit.permit_status_code, permit.permit_prefix, [
-                    detail.mine_disturbance_code
-                    for detail in now_site_property.mine_type_detail if detail.mine_disturbance_code
-                ], now_site_property.mine_tenure_type_code, exemption_fee_status_code)
-            permit.exemption_fee_status_code = exemption_fee_status_code
-            permit.exemption_fee_status_note = exemption_fee_status_note
-
             # Validate the application contacts and the issue date
             for contact in now_application_identity.now_application.contacts:
                 if contact.mine_party_appt_type_code != 'PMT' and contact.mine_party_appt_type_code != 'MMG':
@@ -143,6 +132,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
             if permit_amendment.permit_amendment_status_code != 'ACT':
                 raise AssertionError('The permit status was not set to Active.')
+
+            # set exemption fee status code
+            now_site_property = now_application_identity.now_application.site_property
+            is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
+            Permit.validate_exemption_fee_status(
+                is_exploration, permit.permit_status_code, permit.permit_prefix, [
+                    detail.mine_disturbance_code
+                    for detail in now_site_property.mine_type_detail if detail.mine_disturbance_code
+                ], now_site_property.mine_tenure_type_code, exemption_fee_status_code)
+            permit.exemption_fee_status_code = exemption_fee_status_code
+            permit.exemption_fee_status_note = exemption_fee_status_note
 
             permit.save()
 

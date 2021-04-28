@@ -198,6 +198,22 @@ export const GeneratePermitForm = (props) => (
         </Row>
       </>
     </ScrollContentWrapper>
+    <ScrollContentWrapper
+      id="site-properties"
+      title={
+        <>
+          Site Properties
+          <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
+        </>
+      }
+    >
+      <ReviewSiteProperties
+        noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
+        isViewMode={props.isViewMode}
+        initialValues={props.noticeOfWork.site_property}
+        draftPermit={props.draftPermit}
+      />
+    </ScrollContentWrapper>
     <ScrollContentWrapper id="preamble" title="Preamble">
       <>
         <Row gutter={32}>
@@ -264,22 +280,7 @@ export const GeneratePermitForm = (props) => (
         )}
       </>
     </ScrollContentWrapper>
-    <ScrollContentWrapper
-      id="site-properties"
-      title={
-        <>
-          Site Properties
-          <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
-        </>
-      }
-    >
-      <ReviewSiteProperties
-        noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
-        isViewMode={props.isViewMode}
-        initialValues={props.noticeOfWork.site_property}
-        draftPermit={props.draftPermit}
-      />
-    </ScrollContentWrapper>
+
     <ScrollContentWrapper id="conditions" title="Conditions">
       <Conditions
         isViewMode={props.isViewMode}

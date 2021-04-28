@@ -127,16 +127,16 @@ export const sideMenuOptions = {
       applicationType: ["NOW", "ADA"],
     },
     {
+      href: "site-properties",
+      title: "Site Properties",
+      alwaysVisible: true,
+      applicationType: ["NOW", "ADA"],
+    },
+    {
       href: "preamble",
       title: "Preamble",
       alwaysVisible: true,
       children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "site-properties",
-      title: "Site Properties",
-      alwaysVisible: true,
       applicationType: ["NOW", "ADA"],
     },
     {
