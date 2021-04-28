@@ -45,9 +45,9 @@ exports[`MineTailingsTable renders properly 1`] = `
   dataSource={
     Array [
       Object {
-        "consequence_classification_status_code": "SIG",
+        "consequence_classification_status_code": "LOW",
         "eor_party": undefined,
-        "has_itrb": false,
+        "has_itrb": true,
         "key": "e2629897-053e-4218-9299-479375e47f78",
         "latitude": null,
         "longitude": null,
