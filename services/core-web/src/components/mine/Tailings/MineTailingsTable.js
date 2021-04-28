@@ -9,6 +9,7 @@ import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
+import { BOOLEAN_OPTIONS_HASH } from "@common/constants/strings";
 
 const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -19,12 +20,6 @@ const propTypes = {
 };
 
 const defaultProps = {};
-
-const boolHash = {
-  true: "Yes",
-  false: "No",
-  null: "N/A",
-};
 
 export class MineTailingsTable extends Component {
   transformRowData = (tailings) =>
@@ -68,7 +63,9 @@ export class MineTailingsTable extends Component {
       {
         title: "Independent Tailings Review Board",
         dataIndex: "has_itrb",
-        render: (text) => <div title="Independent Tailings Review Board">{boolHash[text]}</div>,
+        render: (text) => (
+          <div title="Independent Tailings Review Board">{BOOLEAN_OPTIONS_HASH[text]}</div>
+        ),
       },
       {
         title: "Engineer of Record",

@@ -16,6 +16,7 @@ import RenderField from "@/components/common/RenderField";
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
+import { BOOLEAN_DROPDOWN_OPTIONS } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -27,11 +28,6 @@ const propTypes = {
     .isRequired,
   TSFOperatingStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
-
-const boolData = [
-  { value: "false", label: "No" },
-  { value: "true", label: "Yes" },
-];
 
 export const AddTailingsForm = (props) => (
   <Form layout="vertical" onSubmit={props.handleSubmit}>
@@ -107,7 +103,6 @@ export const AddTailingsForm = (props) => (
             label="Engineer of Record"
             partyLabel="EoR"
             allowNull
-            // validate={[required]}
             allowAddingParties
           />
         </Form.Item>
@@ -119,7 +114,7 @@ export const AddTailingsForm = (props) => (
             name="has_itrb"
             label="Independent Tailings Review Board*"
             component={RenderSelect}
-            data={boolData}
+            data={BOOLEAN_DROPDOWN_OPTIONS}
             validate={[required]}
           />
         </Form.Item>
