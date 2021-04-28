@@ -102,8 +102,8 @@ export class MineTailingsInfo extends Component {
 
   handleAddTailings = (values) => {
     const payload = {
-      has_irtb: values.has_irtb === "true",
       ...values,
+      has_itrb: values.has_itrb === "true",
     };
     return this.props
       .createTailingsStorageFacility(this.props.mineGuid, payload)
