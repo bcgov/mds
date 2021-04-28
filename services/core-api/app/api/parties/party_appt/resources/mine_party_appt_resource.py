@@ -74,7 +74,7 @@ class MinePartyApptResource(Resource, UserMixin):
         return result
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment serial id'})
-    @requires_role_mine_edit
+    @requires_role_edit_party
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             raise BadRequest('unexpected mine party appointment guid')
@@ -138,7 +138,7 @@ class MinePartyApptResource(Resource, UserMixin):
             'mine_party_appt_guid':
             'mine party appointment guid, this endpoint only respects form data keys: start_date and end_date, and related_guid'
         })
-    @requires_role_mine_edit
+    @requires_role_edit_party
     def put(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
             raise BadRequest('missing mine party appointment guid')
@@ -172,7 +172,7 @@ class MinePartyApptResource(Resource, UserMixin):
         return mpa.json()
 
     @api.doc(params={'mine_party_appt_guid': 'mine party appointment guid to be deleted'})
-    @requires_role_mine_edit
+    @requires_role_edit_party
     def delete(self, mine_party_appt_guid=None):
         if not mine_party_appt_guid:
             raise BadRequest('Expected mine party appointment guid.')
