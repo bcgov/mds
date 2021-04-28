@@ -201,7 +201,6 @@ export class ProcessPermit extends Component {
       )
       .then(() => {
         const initialValues = {};
-        // TODO calculate exemption fee
         const isExploration = this.props.draftPermit.permit_no.charAt(1) === "X";
 
         const statusCode = determineExemptionFeeStatus(

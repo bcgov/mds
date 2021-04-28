@@ -224,32 +224,23 @@ class PermitAmendmentListResource(Resource, UserMixin):
 
                 # create site properties if DFT permit_amendment
                 if not application_identity.now_application.site_property:
-                    site_property = MineType.query.filter_by(
-                        permit_guid=permit_guid, mine_guid=mine_guid, active_ind=True).first()
+                    site_property = MineType.find_by_permit_guid(permit_guid, mine_guid)
 
                     if site_property:
-                        mine_type = MineType.create(
-                            mine_guid,
-                            site_property.mine_tenure_type_code,
-                            now_application_guid=now_application_guid)
-
-                        for detail in [
-                                detail for detail in site_property.mine_type_detail
-                                if detail.mine_disturbance_code and not detail.mine_commodity_code
-                        ]:
-                            MineTypeDetail.create(
-                                mine_type,
-                                mine_disturbance_code=detail.mine_disturbance_code,
-                            )
-
-                        for detail in [
-                                detail for detail in site_property.mine_type_detail
-                                if detail.mine_commodity_code and not detail.mine_disturbance_code
-                        ]:
-                            MineTypeDetail.create(
-                                mine_type, mine_commodity_code=detail.mine_commodity_code)
-
-                        mine_type.save()
+                        MineType.crete_or_update_mine_type_with_details(
+                            mine_guid=mine_guid,
+                            now_application_guid=now_application_guid,
+                            mine_tenure_type_code=site_property.mine_tenure_type_code,
+                            mine_disturbance_codes=[
+                                detail.mine_disturbance_code
+                                for detail in site_property.mine_type_detail
+                                if detail.mine_disturbance_code
+                            ],
+                            mine_commodity_codes=[
+                                detail.mine_commodity_code
+                                for detail in site_property.mine_type_detail
+                                if detail.mine_commodity_code
+                            ])
 
         new_pa.save()
         return new_pa
@@ -365,31 +356,14 @@ class PermitAmendmentResource(Resource, UserMixin):
 
         if data.get(
                 'site_properties') != {} and permit_amendment.permit_amendment_status_code == 'DFT':
-            site_property = MineType.query.filter_by(
-                now_application_guid=permit_amendment.now_application_guid,
+
+            MineType.crete_or_update_mine_type_with_details(
                 mine_guid=mine_guid,
-                active_ind=True).one_or_none()
-
-            if not site_property:
-                mine_type = MineType.create(
-                    mine_guid,
-                    data.get('site_properties').get('mine_tenure_type_code'),
-                    now_application_guid=permit_amendment.now_application_guid)
-
-                for d_code in data.get('site_properties').get('mine_disturbance_code', []):
-                    MineTypeDetail.create(
-                        mine_type,
-                        mine_disturbance_code=d_code,
-                    )
-
-                for c_code in data.get('site_properties').get('mine_commodity_code', []):
-                    MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-            else:
-                MineType.update_mine_type_details(
-                    now_application_guid=permit_amendment.now_application_guid,
-                    mine_tenure_type_code=data.get('site_properties').get('mine_tenure_type_code'),
-                    mine_disturbance_codes=data.get('site_properties').get('mine_disturbance_code'),
-                    mine_commodity_codes=data.get('site_properties').get('mine_commodity_code'))
+                now_application_guid=permit_amendment.now_application_guid,
+                mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
+                mine_disturbance_codes=data.get('site_properties',
+                                                {}).get('mine_disturbance_code', []),
+                mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code', []))
 
         for key, value in data.items():
             if key == 'uploadedFiles':

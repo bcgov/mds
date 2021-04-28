@@ -149,10 +149,6 @@ class NOWApplicationResource(Resource, UserMixin):
         if now_application_identity.application_type_code == 'ADA' and 'application_reason_codes' in data:
             data['application_reason_codes'] = map_application_reason_codes(data)
 
-        # TODO check if required
-        if 'site_property' in data:
-            del data['site_property']
-
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,

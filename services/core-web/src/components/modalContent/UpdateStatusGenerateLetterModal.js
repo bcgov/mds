@@ -41,8 +41,8 @@ export class UpdateStatusGenerateLetterModal extends Component {
 
   prev = () => this.setState((prevState) => ({ step: prevState.step - 1 }));
 
-  renderCorrectFrom = () => {
-    return this.props.type === "AIA" ? (
+  renderCorrectFrom = () =>
+    this.props.type === "AIA" ? (
       <IssuePermitForm
         initialValues={{
           issue_date: this.props.noticeOfWork.proposed_start_date,
@@ -64,7 +64,6 @@ export class UpdateStatusGenerateLetterModal extends Component {
         noticeOfWork={this.props.noticeOfWork}
       />
     );
-  };
 
   render() {
     const steps = [
