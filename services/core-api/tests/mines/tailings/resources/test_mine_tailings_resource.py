@@ -25,7 +25,7 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
-        'has_itrb': true,
+        'has_itrb': True,
     }
 
     post_resp = test_client.post(
@@ -45,7 +45,7 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
-        'has_itrb': true,
+        'has_itrb': True,
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
@@ -66,7 +66,7 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_requ
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
-        'has_itrb': true,
+        'has_itrb': True,
     }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
