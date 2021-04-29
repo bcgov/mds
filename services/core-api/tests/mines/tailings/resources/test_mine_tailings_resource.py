@@ -21,7 +21,7 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
     org_mine_tsf_list_len = len(mine.mine_tailings_storage_facilities)
     data = {
         'mine_tailings_storage_facility_name':'a name',
-        'latitude'; '50.6598000',
+        'latitude': '50.6598000',
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
@@ -41,7 +41,7 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
     mine = MineFactory(minimal=True)
     data = {
         'mine_tailings_storage_facility_name':'a name',
-        'latitude'; '50.6598000',
+        'latitude': '50.6598000',
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
@@ -62,7 +62,7 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_requ
     mine = MineFactory(minimal=True)
     data = {
         'mine_tailings_storage_facility_name':'a name',
-        'latitude'; '50.6598000',
+        'latitude': '50.6598000',
         'longitude': '-120.5134000',  
         'consequence_classification_status_code': 'LOW',
         'tsf_operating_status_code': 'OPT',
