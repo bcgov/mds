@@ -52,6 +52,8 @@ from app.api.now_applications.models.administrative_amendments.application_reaso
 from app.api.now_applications.models.administrative_amendments.application_source_type_code import ApplicationSourceTypeCode
 from app.api.now_applications.models.application_type_code import ApplicationTypeCode
 from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
+from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
+from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
 
 from app.api.parties.party.models.party import Party
 
@@ -66,7 +68,8 @@ MODELS_GET_ACTIVE = [
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
-    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType
+    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType,
+    TSFOperatingStatusCode, ConsequenceClassificationStatusCode
 ]
 
 
