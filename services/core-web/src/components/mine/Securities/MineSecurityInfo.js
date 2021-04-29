@@ -321,7 +321,7 @@ export class MineSecurityInfo extends Component {
         <h2>Securities</h2>
         <br />
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <Tabs.TabPane tab="Bonds" key="1">
+          <Tabs.TabPane tab={`Bonds (${this.props.bonds.length})`} key="1">
             <div>
               <div className="dashboard--cards">
                 <MineDashboardContentCard
@@ -366,7 +366,7 @@ export class MineSecurityInfo extends Component {
               />
             </div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Reclamation Invoices" key="2">
+          <Tabs.TabPane tab={`Reclamation Invoices (${this.props.invoices.length})`} key="2">
             <br />
             <h4 className="uppercase">Reclamation Invoices</h4>
             <p>

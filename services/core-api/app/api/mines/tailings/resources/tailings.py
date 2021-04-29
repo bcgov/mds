@@ -1,5 +1,6 @@
 import uuid, requests, json
-from datetime import datetime
+from decimal import Decimal
+from datetime import datetime, timezone
 from flask import request, current_app, url_for
 from flask_restplus import Resource, reqparse
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
@@ -10,6 +11,7 @@ from app.api.utils.resources_mixins import UserMixin
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.reports.models.mine_report_definition import MineReportDefinition
 from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.response_models import MINE_TSF_MODEL
@@ -23,6 +25,40 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         trim=True,
         help='Name of the tailings storage facility.',
         required=True)
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Longitude point for the mine.',
+        location='json')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        help='Latitude point for the mine.',
+        location='json')
+    parser.add_argument(
+        'consequence_classification_status_code',
+        type=str,
+        trim=True,
+        help='Risk Severity Classification',
+        required=True)
+    parser.add_argument(
+        'tsf_operating_status_code',
+        type=str,
+        trim=True,
+        help='Operating Status of the storage facility',
+        required=True)
+    parser.add_argument(
+        'has_itrb',
+        type=bool,
+        trim=True,
+        help='Risk Severity Classification',
+        required=True)
+    parser.add_argument(
+        'eor_party_guid',
+        type=str,
+        help='GUID of the party that is the Engineer of Record for this TSF.',
+        location='json',
+        store_missing=False)
 
     @api.doc(description='Gets the tailing storage facilites for the given mine')
     @api.marshal_with(
@@ -48,8 +84,9 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         is_mine_first_tsf = len(mine_tsf_list) == 0
 
         mine_tsf = MineTailingsStorageFacility.create(
-            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'])
+            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'], latitude=data['latitude'], longitude=data['longitude'], consequence_classification_status_code=data['consequence_classification_status_code'], has_itrb=data['has_itrb'], tsf_operating_status_code=data['tsf_operating_status_code'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
+
 
         if is_mine_first_tsf:
             try:
@@ -70,4 +107,18 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                 raise InternalServerError(str(e) + ", tsf not created")
 
         mine.save()
+        eor_party_guid = data.get('eor_party_guid')
+        if eor_party_guid is not None:
+            new_eor = MinePartyAppointment.create(
+                    mine=mine,
+                    party_guid=eor_party_guid,
+                    mine_party_appt_type_code='EOR',
+                    processed_by=self.get_user_info(),
+                    start_date=datetime.now(tz=timezone.utc))
+
+            related_guid = mine_tsf.mine_tailings_storage_facility_guid
+            new_eor.assign_related_guid(related_guid)
+            new_eor.save()
+        mine.save()
+
         return mine_tsf, 201

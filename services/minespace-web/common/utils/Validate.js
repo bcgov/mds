@@ -205,3 +205,6 @@ export const validateDateRanges = (
 
   return errorMessages;
 };
+
+export const requiredBoolean = (value) =>
+  value || value === false ? undefined : "This is a required field";
