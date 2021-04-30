@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW public.mine_summary_view
 AS SELECT (
     m.mine_guid::text AS mine_guid,
     p.permit_guid::text AS permit_guid,
+    p.permit_id::text AS permit_id,
     m.mine_name AS mine_name,
     m.mine_no AS mine_number,
     m.latitude::text AS mine_latitude,
@@ -49,7 +50,7 @@ AS SELECT (
     
     p.permit_no AS permit_no,
     p.permit_status_code AS permit_status_code,
-    NULL AS permit_status_changed_timestamp,
+    p.status_changed_timestamp AS permit_status_changed_timestamp,
     min(pa.issue_date) AS issue_date,
     efs2.exemption_fee_status_code AS permit_exemption_fee_status_code,
     efs2.description AS permit_exemption_fee_status_d,
@@ -114,12 +115,13 @@ AS SELECT (
 
 	WHERE m.deleted_ind = false
 
- 	GROUP BY
+	GROUP BY
 		p.permit_no,
 		p.permit_guid,
-		pa.issue_date,
+		p.permit_id,
+		pa.permit_id,
 		p.permit_status_code,
-		--p.permit_status_changed_timestamp,
+		p.status_changed_timestamp,
 		efs2.exemption_fee_status_code,
 		efs2.description,		
 		m.mine_guid,
@@ -142,4 +144,6 @@ AS SELECT (
 		pt.first_name,
 		pt.party_name,
 		pt.party_guid
+	ORDER BY
+		p.permit_id
 );
