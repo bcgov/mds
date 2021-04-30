@@ -60,12 +60,12 @@ AS SELECT (
     pt.first_name AS permittee_first_name,
     pt.party_name AS permittee_name,
     
-    max(a.suite_no) AS permittee_address_suite,
-    max(a.address_line_1) AS permittee_address_line_1,
-    max(a.address_line_2) AS permittee_address_line_2,
-    max(a.city) AS permittee_address_city,
-    max(a.post_code) AS permittee_address_post_code,
-    max(a.sub_division_code) AS permittee_address_prov
+    a.suite_no AS permittee_address_suite,
+    a.address_line_1 AS permittee_address_line_1,
+    a.address_line_2 AS permittee_address_line_2,
+    a.city AS permittee_address_city,
+    a.post_code AS permittee_address_post_code,
+    a.sub_division_code AS permittee_address_prov
     
 	FROM mine m
 	LEFT JOIN mine_permit_xref mpx ON m.mine_guid = mpx.mine_guid 
@@ -106,13 +106,13 @@ AS SELECT (
 	LEFT JOIN mine_type_detail_xref mtdx2 ON mt2.mine_type_guid = mtdx2.mine_type_guid AND mtdx2.active_ind = true
 	LEFT JOIN mine_disturbance_code mdc2 ON mtdx2.mine_disturbance_code::text = mdc2.mine_disturbance_code::text
 	LEFT JOIN mine_commodity_code mcc2 ON mtdx2.mine_commodity_code::text = mcc2.mine_commodity_code::text
-	
+
 	-- Mine exemption fee status
 	LEFT JOIN exemption_fee_status efs ON m.exemption_fee_status_code = efs.exemption_fee_status_code
 	
 	-- Permit exemption fee status
 	LEFT JOIN exemption_fee_status efs2 ON p.exemption_fee_status_code = efs2.exemption_fee_status_code
-
+    
 	WHERE m.deleted_ind = false
 
 	GROUP BY
@@ -143,7 +143,13 @@ AS SELECT (
 		ms.effective_date,
 		pt.first_name,
 		pt.party_name,
-		pt.party_guid
+		pt.party_guid,
+		a.suite_no,
+		a.address_line_1,
+		a.address_line_2,
+		a.city,
+		a.post_code,
+		a.sub_division_code
 	ORDER BY
 		p.permit_id
 );
