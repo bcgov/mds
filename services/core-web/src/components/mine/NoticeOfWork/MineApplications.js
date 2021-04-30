@@ -145,7 +145,14 @@ export class MineApplications extends Component {
         <h2>Applications</h2>
         <Divider />
         <Tabs type="card" style={{ textAlign: "left !important" }}>
-          <Tabs.TabPane tab="Notice of Work" key="1">
+          <Tabs.TabPane
+            tab={`Notice of Work (${
+              this.props.noticeOfWorkApplications.filter(
+                (app) => app.application_type_code === "NOW"
+              ).length
+            })`}
+            key="1"
+          >
             <>
               <br />
               <div className="inline-flex between">
@@ -165,7 +172,14 @@ export class MineApplications extends Component {
             </>
           </Tabs.TabPane>
           {!isProd && (
-            <Tabs.TabPane tab="Administrative Amendments" key="2">
+            <Tabs.TabPane
+              tab={`Administrative Amendments (${
+                this.props.noticeOfWorkApplications.filter(
+                  (app) => app.application_type_code === "ADA"
+                ).length
+              })`}
+              key="2"
+            >
               <>
                 <br />
                 <div className="inline-flex between">

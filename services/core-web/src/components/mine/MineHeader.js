@@ -26,7 +26,7 @@ import { getCurrentMineTypes, getTransformedMineTypes } from "@common/selectors/
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
 import * as String from "@common/constants/strings";
 import MineHeaderMapLeaflet from "@/components/maps/MineHeaderMapLeaflet";
-import { EDIT_OUTLINE_VIOLET, BRAND_DOCUMENT, EDIT } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, EDIT } from "@/constants/assets";
 import * as route from "@/constants/routes";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
@@ -153,18 +153,6 @@ export class MineHeader extends Component {
             {ModalContent.UPDATE_MINE_RECORD}
           </button>
         </Menu.Item>
-        <Menu.Item onClick={this.handleMenuClick}>
-          <button
-            type="button"
-            className="full"
-            onClick={(event) =>
-              this.openTailingsModal(event, this.handleAddTailings, ModalContent.ADD_TAILINGS)
-            }
-          >
-            <img alt="document" className="padding-sm" src={BRAND_DOCUMENT} />
-            {ModalContent.ADD_TAILINGS}
-          </button>
-        </Menu.Item>
       </Menu>
     );
 
@@ -267,9 +255,13 @@ export class MineHeader extends Component {
           <div className="inline-flex padding-sm">
             <p className="field-title">TSF</p>
             <p>
-              {this.props.mine.mine_tailings_storage_facilities.length > 0
-                ? this.props.mine.mine_tailings_storage_facilities.length
-                : String.EMPTY_FIELD}
+              {this.props.mine.mine_tailings_storage_facilities.length > 0 ? (
+                <Link to={route.MINE_TAILINGS.dynamicRoute(this.props.mine.mine_guid)}>
+                  {this.props.mine.mine_tailings_storage_facilities.length}
+                </Link>
+              ) : (
+                String.EMPTY_FIELD
+              )}
             </p>
           </div>
           <div className="inline-flex padding-sm wrap">

@@ -44,6 +44,8 @@ const baseExpectedValue = {
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
+  consequenceClassificationStatusCodeOptions: [],
+  TSFOperatingStatusCodeOptions: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference

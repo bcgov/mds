@@ -13,6 +13,8 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.title = "mockTitle";
   props.submitting = false;
+  props.consequenceClassificationStatusCodeOptions = [];
+  props.TSFOperatingStatusCodeOptions = [];
 };
 
 beforeEach(() => {

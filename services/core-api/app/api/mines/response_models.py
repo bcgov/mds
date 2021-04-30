@@ -272,6 +272,11 @@ MINE_TSF_MODEL = api.model(
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
+        'latitude': fields.String,
+        'longitude': fields.String,
+        'consequence_classification_status_code': fields.String,
+        'has_itrb': fields.Boolean,
+        'tsf_operating_status_code': fields.String,
     })
 
 MINE_VERIFIED_MODEL = api.model(
@@ -614,3 +619,17 @@ GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
     'description': fields.String,
     'is_active': fields.Integer
 })
+
+CONSEQUENCE_CLASSIFICATION_STATUS_MODEL = api.model(
+    'ConsequenceClassificationStatusCode', {
+        'consequence_classification_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
+
+TSF_OPERATING_STATUS_MODEL = api.model(
+    'TSFOperatingStatusCode', {
+        'tsf_operating_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
