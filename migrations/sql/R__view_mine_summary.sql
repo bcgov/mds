@@ -23,7 +23,7 @@ AS SELECT (
     mos.description AS mine_operation_status_d,
     mosr.description AS mine_operation_status_reason_d,
     mossr.description AS mine_operation_status_sub_reason_d,
-    m.create_timestamp::text AS mine_date, -- TODO: Is there a better name for this column? E.g., 'mine_created_in_core'
+    m.create_timestamp::text AS mine_date,
     ms.effective_date::text AS status_date,
     
     array_to_string(array_agg(DISTINCT mttc.description), ','::text) AS mine_tenure,
@@ -71,7 +71,7 @@ AS SELECT (
 	LEFT JOIN mine_permit_xref mpx ON m.mine_guid = mpx.mine_guid 
 	LEFT JOIN permit p ON mpx.permit_id = p.permit_id
 	LEFT JOIN permit_amendment pa ON pa.permit_id = p.permit_id AND pa.mine_guid = m.mine_guid 
-	LEFT JOIN mine_party_appt mpa ON mpx.permit_id = mpa.permit_id AND mpa.mine_party_appt_type_code = 'PMT' -- TODO: Do we want mpa.end_date IS NULL? What about for Closed permits?
+	LEFT JOIN mine_party_appt mpa ON mpx.permit_id = mpa.permit_id AND mpa.mine_party_appt_type_code = 'PMT'
 	LEFT JOIN party pt ON mpa.party_guid = pt.party_guid
 	LEFT JOIN address a ON a.party_guid = pt.party_guid
 	LEFT JOIN government_agency_type gat ON gat.government_agency_type_code::text = m.government_agency_type_code::text
@@ -94,16 +94,16 @@ AS SELECT (
 	LEFT JOIN mine_operation_status_sub_reason_code mossr ON msx.mine_operation_status_sub_reason_code::text = mossr.mine_operation_status_sub_reason_code::text
 	
 	-- Mine site properties
-	LEFT JOIN mine_type mt ON mt.permit_guid IS NULL AND m.mine_guid = mt.mine_guid AND mt.active_ind = true -- TODO: Why no inactive mine types?
+	LEFT JOIN mine_type mt ON mt.permit_guid IS NULL AND m.mine_guid = mt.mine_guid AND mt.active_ind = true
 	LEFT JOIN mine_tenure_type_code mttc ON mt.mine_tenure_type_code::text = mttc.mine_tenure_type_code::text
-	LEFT JOIN mine_type_detail_xref mtdx ON mt.mine_type_guid = mtdx.mine_type_guid AND mtdx.active_ind = true -- TODO: Why no inactive mine types?
+	LEFT JOIN mine_type_detail_xref mtdx ON mt.mine_type_guid = mtdx.mine_type_guid AND mtdx.active_ind = true
 	LEFT JOIN mine_disturbance_code mdc ON mtdx.mine_disturbance_code::text = mdc.mine_disturbance_code::text
 	LEFT JOIN mine_commodity_code mcc ON mtdx.mine_commodity_code::text = mcc.mine_commodity_code::text
 	
 	-- Permit site properties
-	LEFT JOIN mine_type mt2 ON m.mine_guid = mt2.mine_guid AND mt2.permit_guid = p.permit_guid AND mt2.active_ind = true -- TODO: Why no inactive mine types?
+	LEFT JOIN mine_type mt2 ON m.mine_guid = mt2.mine_guid AND mt2.permit_guid = p.permit_guid AND mt2.active_ind = true
 	LEFT JOIN mine_tenure_type_code mttc2 ON mt2.mine_tenure_type_code::text = mttc2.mine_tenure_type_code::text
-	LEFT JOIN mine_type_detail_xref mtdx2 ON mt2.mine_type_guid = mtdx2.mine_type_guid AND mtdx2.active_ind = true -- TODO: Why no inactive mine types?
+	LEFT JOIN mine_type_detail_xref mtdx2 ON mt2.mine_type_guid = mtdx2.mine_type_guid AND mtdx2.active_ind = true
 	LEFT JOIN mine_disturbance_code mdc2 ON mtdx2.mine_disturbance_code::text = mdc2.mine_disturbance_code::text
 	LEFT JOIN mine_commodity_code mcc2 ON mtdx2.mine_commodity_code::text = mcc2.mine_commodity_code::text
 	
