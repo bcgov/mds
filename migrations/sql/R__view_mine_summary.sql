@@ -8,7 +8,8 @@ AS SELECT (
     m.mine_no AS mine_number,
     m.latitude::text AS mine_latitude,
     m.longitude::text AS mine_longitude,
-    
+    m.government_agency_type_code AS government_agency_type_code,
+    gat.description AS government_agency_type_d,
     m.exemption_fee_status_note AS mine_exemption_fee_status_note,
     efs.exemption_fee_status_code AS mine_exemption_fee_status_code,
     efs.description AS mine_exemption_fee_status_d,
@@ -72,6 +73,7 @@ AS SELECT (
 	LEFT JOIN mine_party_appt mpa ON mpx.permit_id = mpa.permit_id AND mpa.end_date IS NULL -- TODO: Do we want mpa.end_date IS NULL? What about for Closed permits?
 	LEFT JOIN party pt ON mpa.party_guid = pt.party_guid
 	LEFT JOIN address a ON a.party_guid = pt.party_guid
+	LEFT JOIN government_agency_type gat ON gat.government_agency_type_code::text = m.government_agency_type_code::text
 	
 	-- Mine operating status
 	LEFT JOIN (
@@ -125,6 +127,8 @@ AS SELECT (
 		m.mine_no,
 		m.deleted_ind,
 		m.exemption_fee_status_note,
+		m.government_agency_type_code,
+		gat.description,
 		efs.exemption_fee_status_code,
 		efs.description,
 		p.exemption_fee_status_note,
