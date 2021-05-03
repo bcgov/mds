@@ -6,8 +6,8 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { formatDate } from "@common/utils/helpers";
-import { getFormValues, reset, isSubmitting } from "redux-form";
+import { formatDate, flattenObject } from "@common/utils/helpers";
+import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
@@ -59,6 +59,10 @@ const propTypes = {
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   onPermitDraftSave: PropTypes.func,
+  formErrors: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
+  ).isRequired,
+  submit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -318,12 +322,27 @@ export class NOWPermitGeneration extends Component {
       .finally(() => this.setState({ downloadingDraft: false }));
   };
 
+  focusErrorInput = () => {
+    this.props.submit(FORM.GENERATE_PERMIT);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const errorElement = document.querySelector(`[name="${errors[0]}"]`);
+    if (errorElement && errorElement.focus) {
+      errorElement.focus();
+    }
+  };
+
   handleCancelDraftEdit = () => {
     this.props.reset(FORM.GENERATE_PERMIT);
     this.props.toggleEditMode();
   };
 
   handleSaveDraftEdit = () => {
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length > 0) {
+      this.focusErrorInput();
+      return;
+    }
+
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
       if (isEmpty(documentsMetadata)) {
@@ -361,6 +380,8 @@ export class NOWPermitGeneration extends Component {
       ),
       site_properties: this.props.formValues.site_property,
     };
+
+    // eslint-disable-next-line consistent-return
     return this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
@@ -521,6 +542,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   submitting: isSubmitting(FORM.GENERATE_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
+  formErrors: getFormSyncErrors(FORM.GENERATE_PERMIT)(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
   permits: getPermits(state),
@@ -530,6 +552,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       reset,
+      submit,
       fetchPermits,
       updatePermitAmendment,
       fetchDraftPermitByNOW,

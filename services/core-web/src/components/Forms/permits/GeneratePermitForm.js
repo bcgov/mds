@@ -310,4 +310,5 @@ export default reduxForm({
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
   enableReinitialize: true,
+  onSubmit: () => {},
 })(GeneratePermitForm);
