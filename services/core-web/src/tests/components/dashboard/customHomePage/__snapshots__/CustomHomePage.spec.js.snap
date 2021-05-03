@@ -70,9 +70,14 @@ exports[`CustomHomePage renders properly 1`] = `
             },
             "mine_tailings_storage_facility": Array [
               Object {
+                "consequence_classification_status_code": "LOW",
+                "has_itrb": true,
+                "latitude": null,
+                "longitude": null,
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
                 "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
                 "mine_tailings_storage_facility_name": "MockTSF",
+                "tsf_operating_status_code": "OPT",
               },
             ],
             "mine_type": Array [

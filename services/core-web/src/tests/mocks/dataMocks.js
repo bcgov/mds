@@ -29,6 +29,11 @@ export const MINE_RESPONSE = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          has_itrb: true,
         },
       ],
       mine_type: [
@@ -65,6 +70,11 @@ export const MINE_RESPONSE = {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
           mine_tailings_storage_facility_name: "MockTSF1",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          has_itrb: true,
         },
       ],
       mine_type: [
@@ -96,6 +106,11 @@ export const SUBSCRIBED_MINES = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          has_itrb: true,
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -124,6 +139,11 @@ export const MINES = {
           mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f78",
           mine_tailings_storage_facility_name: "MockTSF",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          has_itrb: true,
         },
       ],
       mine_type: [
@@ -166,6 +186,11 @@ export const MINES = {
           mine_guid: "18145c75-49ad-0101-85f3-a43e45ae989a",
           mine_tailings_storage_facility_guid: "e2629897-053e-4218-9299-479375e47f34",
           mine_tailings_storage_facility_name: "MockTSF1",
+          latitude: null,
+          longitude: null,
+          consequence_classification_status_code: "LOW",
+          tsf_operating_status_code: "OPT",
+          has_itrb: true,
         },
       ],
       mine_type: [
@@ -283,6 +308,11 @@ export const MINE_BASIC_INFO = [
         mine_tailings_storage_facility_guid: "7984deca-0f26-4a01-9cae-029af48e218b",
         mine_guid: "a2036de0-ce47-4f2c-a245-bbabb17cadc5",
         mine_tailings_storage_facility_name: "First TSF",
+        latitude: null,
+        longitude: null,
+        consequence_classification_status_code: "LOW",
+        tsf_operating_status_code: "OPT",
+        has_itrb: true,
       },
     ],
     mine_type: [
@@ -4925,6 +4955,50 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
+  consequenceClassificationStatusCodeOptions: [
+    {
+      consequence_classification_status_code: "LOW",
+      description: "Low",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "SIG",
+      description: "Significant",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "HIG",
+      description: "High",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "EXT",
+      description: "Extreme",
+      active_ind: true,
+    },
+    {
+      consequence_classification_status_code: "NOD",
+      description: "N/A (No Dam)",
+      active_ind: true,
+    },
+  ],
+  TSFOperatingStatusCodeOptions: [
+    {
+      tsf_operating_status_code: "CLO",
+      description: "Closed",
+      active_ind: true,
+    },
+    {
+      tsf_operating_status_code: "OPT",
+      description: "Operating",
+      active_ind: true,
+    },
+    {
+      tsf_operating_status_code: "CAM",
+      description: "Inactive (C&M)",
+      active_ind: true,
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
@@ -5801,4 +5875,32 @@ export const ORGBOOK_CREDENTIAL = {
       },
     ],
   },
+};
+
+export const CONSEQUENCE_CLASSIFICATION_STATUS_DROPDOWN_OPTIONS = [
+  { value: "EXT", label: "Extreme", subType: null, isActive: true },
+  { value: "HIG", label: "High", subType: null, isActive: true },
+  { value: "LOW", label: "Low", subType: null, isActive: true },
+  { value: "NOD", label: "N/A (No Dam)", subType: null, isActive: true },
+  { value: "SIG", label: "Significant", subType: null, isActive: true },
+];
+
+export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
+  LOW: "Low",
+  SIG: "Significant",
+  HIG: "High",
+  EXT: "Extreme",
+  NOD: "N/A (No Dam)",
+};
+
+export const TSF_OPERATING_STATUS_DROPDOWN_OPTIONS = [
+  { value: "CLO", label: "Closed", subType: null, isActive: true },
+  { value: "CAM", label: "Inactive (C&M)", subType: null, isActive: true },
+  { value: "OPT", label: "Operating", subType: null, isActive: true },
+];
+
+export const TSF_OPERATING_STATUS_HASH = {
+  OPT: "Operating",
+  CLO: "Closed",
+  CAM: "Inactive (C&M)",
 };
