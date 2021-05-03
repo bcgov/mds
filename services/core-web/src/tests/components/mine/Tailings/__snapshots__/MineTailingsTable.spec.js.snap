@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineTailingsTable renders properly 1`] = `
+<CoreTable
+  columns={
+    Array [
+      Object {
+        "dataIndex": "mine_tailings_storage_facility_name",
+        "render": [Function],
+        "title": "Name",
+      },
+      Object {
+        "dataIndex": "tsf_operating_status_code",
+        "render": [Function],
+        "title": "Operating Status",
+      },
+      Object {
+        "dataIndex": "consequence_classification_status_code",
+        "render": [Function],
+        "title": "Consequence Classification",
+      },
+      Object {
+        "dataIndex": "has_itrb",
+        "render": [Function],
+        "title": "Independent Tailings Review Board",
+      },
+      Object {
+        "dataIndex": "eor_party",
+        "render": [Function],
+        "title": "Engineer of Record",
+      },
+      Object {
+        "dataIndex": "latitude",
+        "render": [Function],
+        "title": "Latitude",
+      },
+      Object {
+        "dataIndex": "longitude",
+        "render": [Function],
+        "title": "Longitude",
+      },
+    ]
+  }
+  condition={true}
+  dataSource={
+    Array [
+      Object {
+        "consequence_classification_status_code": "LOW",
+        "eor_party": undefined,
+        "has_itrb": true,
+        "key": "e2629897-053e-4218-9299-479375e47f78",
+        "latitude": null,
+        "longitude": null,
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+        "mine_tailings_storage_facility_name": "MockTSF",
+        "tsf_operating_status_code": "OPT",
+      },
+    ]
+  }
+  tableProps={
+    Object {
+      "align": "center",
+      "pagination": false,
+    }
+  }
+/>
+`;

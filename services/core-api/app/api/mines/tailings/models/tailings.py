@@ -15,6 +15,11 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     mine_tailings_storage_facility_name = db.Column(db.String(60), nullable=False)
+    latitude = db.Column(db.Numeric(9, 7))
+    longitude = db.Column(db.Numeric(11, 7))
+    consequence_classification_status_code = db.Column(db.String)
+    has_itrb = db.Column(db.Boolean)
+    tsf_operating_status_code = db.Column(db.String)
 
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid
@@ -27,8 +32,8 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         }
 
     @classmethod
-    def create(cls, mine, mine_tailings_storage_facility_name, add_to_session=True):
-        new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name)
+    def create(cls, mine, mine_tailings_storage_facility_name, latitude, longitude, consequence_classification_status_code, has_itrb, tsf_operating_status_code,  add_to_session=True):
+        new_tsf = cls(mine_tailings_storage_facility_name=mine_tailings_storage_facility_name, latitude=latitude, longitude=longitude, consequence_classification_status_code=consequence_classification_status_code, has_itrb=has_itrb, tsf_operating_status_code=tsf_operating_status_code)
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:
             new_tsf.save(commit=False)

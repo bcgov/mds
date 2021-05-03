@@ -32,6 +32,7 @@ const propTypes = {
   setAddPartyFormState: PropTypes.func.isRequired,
   lastCreatedParty: CustomPropTypes.party.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string),
+  allowNull: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -45,6 +46,7 @@ const defaultProps = {
   validate: [],
   searchResults: [],
   initialValues: {},
+  allowNull: false,
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -182,7 +184,11 @@ export class PartySelectField extends Component {
   // eslint-disable-next-line consistent-return
   validOption = (value) => {
     // ignore this validation if an initialValue is passed in
-    if (this.props.initialValues && this.props.initialValues !== this.state.selectedOption) {
+    if (
+      this.props.initialValues &&
+      this.props.initialValues !== this.state.selectedOption &&
+      !this.props.allowNull
+    ) {
       return this.state.partyDataSource.find((opt) => opt.value === value)
         ? undefined
         : `Invalid ${this.props.partyLabel}`;

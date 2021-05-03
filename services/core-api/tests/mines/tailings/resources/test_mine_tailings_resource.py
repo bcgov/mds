@@ -19,10 +19,18 @@ def test_get_mine_tailings_storage_facility_by_mine_guid(test_client, db_session
 def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_session, auth_headers):
     mine = MineFactory()
     org_mine_tsf_list_len = len(mine.mine_tailings_storage_facilities)
+    data = {
+        'mine_tailings_storage_facility_name':'a name',
+        'latitude': '50.6598000',
+        'longitude': '-120.5134000',  
+        'consequence_classification_status_code': 'LOW',
+        'tsf_operating_status_code': 'OPT',
+        'has_itrb': True,
+    }
 
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/tailings',
-        data={'mine_tailings_storage_facility_name': 'a name'},
+        data=data,
         headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     assert len(mine.mine_tailings_storage_facilities) == org_mine_tsf_list_len + 1
@@ -31,11 +39,19 @@ def test_post_mine_tailings_storage_facility_by_mine_guid(test_client, db_sessio
 def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_session,
                                                                 auth_headers):
     mine = MineFactory(minimal=True)
+    data = {
+        'mine_tailings_storage_facility_name':'a name',
+        'latitude': '50.6598000',
+        'longitude': '-120.5134000',  
+        'consequence_classification_status_code': 'LOW',
+        'tsf_operating_status_code': 'OPT',
+        'has_itrb': True,
+    }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/tailings',
-        data={'mine_tailings_storage_facility_name': 'a name'},
+        data=data,
         headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     assert len(mine.mine_tailings_storage_facilities) == 1
@@ -44,11 +60,19 @@ def test_post_first_mine_tailings_storage_facility_by_mine_guid(test_client, db_
 def test_post_first_mine_tailings_storage_facility_by_mine_guid_creates_tsf_required_reports(
     test_client, db_session, auth_headers):
     mine = MineFactory(minimal=True)
+    data = {
+        'mine_tailings_storage_facility_name':'a name',
+        'latitude': '50.6598000',
+        'longitude': '-120.5134000',  
+        'consequence_classification_status_code': 'LOW',
+        'tsf_operating_status_code': 'OPT',
+        'has_itrb': True,
+    }
     assert len(mine.mine_tailings_storage_facilities) == 0
 
     post_resp = test_client.post(
         f'/mines/{mine.mine_guid}/tailings',
-        data={'mine_tailings_storage_facility_name': 'a name'},
+        data=data,
         headers=auth_headers['full_auth_header'])
     assert post_resp.status_code == 201
     tsf_required_reports = MineReportDefinition.find_required_reports_by_category('TSF')
