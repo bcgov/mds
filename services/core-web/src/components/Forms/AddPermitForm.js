@@ -285,8 +285,6 @@ export class AddPermitForm extends Component {
             </Form.Item>
           </Col>
 
-          {/* </Col> */}
-
           <Col md={12} sm={24}>
             <FormSection name="site_properties">
               <div className="field-title">Tenure*</div>
