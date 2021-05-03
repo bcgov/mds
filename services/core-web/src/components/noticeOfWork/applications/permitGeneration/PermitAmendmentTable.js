@@ -1,23 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Badge, Popconfirm } from "antd";
-import { EyeOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
-import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
-import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
-import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
 
-const propTypes = {};
+const propTypes = {
+  permit: CustomPropTypes.permit.isRequired,
+  permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 const defaultProps = {};
 
@@ -26,10 +21,6 @@ const renderDocumentLink = (file, text) => (
     {text}
   </LinkButton>
 );
-
-const amendmentStatusHash = {
-  ACT: "Active",
-};
 
 export class PermitAmendmentTable extends Component {
   transformRowData = (permitAmendments) =>
@@ -54,13 +45,15 @@ export class PermitAmendmentTable extends Component {
         title: "Issue Date",
         dataIndex: "issue_date",
         sortField: "issue_date",
-        render: (text) => <div title="Issue Date">{formatDate(text) || "N/A"}</div>,
+        render: (text) => <div title="Issue Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
       },
       {
         title: "Authorization End Date",
         dataIndex: "authorization_end_date",
         sortField: "authorization_end_date",
-        render: (text) => <div title="Authorization End Date">{formatDate(text) || "N/A"}</div>,
+        render: (text) => (
+          <div title="Authorization End Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>
+        ),
       },
       {
         title: "Documents",

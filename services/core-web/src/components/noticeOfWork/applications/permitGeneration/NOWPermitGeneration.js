@@ -6,7 +6,7 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, getDurationText } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
@@ -152,8 +152,6 @@ export class NOWPermitGeneration extends Component {
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
-    console.log("draftPermit", draftPermit);
-    console.log("amendment", amendment);
     const permitGenObject = {
       permit_number: "",
       issue_date: amendment.issue_date,
@@ -167,6 +165,12 @@ export class NOWPermitGeneration extends Component {
       application_last_updated_date: noticeOfWork.last_updated_date
         ? formatDate(noticeOfWork.last_updated_date)
         : formatDate(noticeOfWork.submitted_date),
+      proposed_start_date: noticeOfWork.proposed_start_date,
+      proposed_end_date: noticeOfWork.proposed_end_date,
+      proposed_term_of_authorization: getDurationText(
+        noticeOfWork.proposed_start_date,
+        noticeOfWork.proposed_end_date
+      ),
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -357,7 +361,6 @@ export class NOWPermitGeneration extends Component {
         transformDocumentsMetadata(this.props.formValues.previous_amendment_documents_metadata)
       ),
     };
-
 
     return this.props
       .updatePermitAmendment(

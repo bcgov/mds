@@ -1,5 +1,5 @@
 import json
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
 from flask import current_app, request
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
@@ -87,6 +87,15 @@ class PermitListResource(Resource, UserMixin):
         store_missing=False,
         help='It includes object of string codes for mine_commodity_code and mine_disturbance_code.',
         location='json')
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'security_received_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument('security_not_required', location='json', type=bool, store_missing=False)
+    parser.add_argument(
+        'security_not_required_reason', location='json', type=str, store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -167,7 +176,11 @@ class PermitListResource(Resource, UserMixin):
             description='Initial permit issued.',
             issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
-            now_application_guid=data.get('now_application_guid'))
+            now_application_guid=data.get('now_application_guid'),
+            liability_adjustment=data.get('liability_adjustment'),
+            security_received_date=data.get('security_received_date'),
+            security_not_required=data.get('security_not_required'),
+            security_not_required_reason=data.get('security_not_required_reason'))
 
         db.session.add(permit)
         db.session.add(amendment)
