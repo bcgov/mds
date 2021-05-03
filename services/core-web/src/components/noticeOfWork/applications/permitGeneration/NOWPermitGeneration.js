@@ -171,6 +171,10 @@ export class NOWPermitGeneration extends Component {
         noticeOfWork.proposed_start_date,
         noticeOfWork.proposed_end_date
       ),
+      term_of_authorization: getDurationText(
+        amendment.issue_date,
+        amendment.authorization_end_date
+      ),
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 

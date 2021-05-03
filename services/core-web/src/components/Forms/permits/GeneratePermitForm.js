@@ -12,7 +12,7 @@ import {
   dateNotInFuture,
   dateNotBeforeOther,
 } from "@common/utils/Validate";
-import { resetForm, formatDate, isPlacerAdjustmentFeeValid } from "@common/utils/helpers";
+import { resetForm, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
@@ -37,26 +37,6 @@ const propTypes = {
 };
 
 export const GeneratePermitForm = (props) => {
-  const dateRangeIsValid = (start, end, allProps) => {
-    const type = allProps.noticeOfWork.notice_of_work_type_code;
-    const proposedTonnage = allProps.noticeOfWork.proposed_annual_maximum_tonnage;
-    const adjustedTonnage = allProps.noticeOfWork.adjusted_annual_maximum_tonnage;
-
-    if (type === "PLA") {
-      return isPlacerAdjustmentFeeValid(proposedTonnage, adjustedTonnage, start, end)
-        ? undefined
-        : "This value would create an invalid date range for the paid permit fee.";
-    }
-
-    return undefined;
-  };
-
-  const dateRangeIsValidStart = (value, allValues, allProps) =>
-    dateRangeIsValid(value, allValues.auth_end_date, allProps);
-
-  const dateRangeIsValidEnd = (value, allValues, allProps) =>
-    dateRangeIsValid(allValues.issue_date, value, allProps);
-
   return (
     <Form layout="vertical">
       <ScrollContentWrapper id="general-info" title="General Information">
@@ -203,7 +183,7 @@ export const GeneratePermitForm = (props) => {
             <Descriptions.Item label="Proposed Authorization End Date">
               {formatDate(props.initialValues.proposed_end_date) || "N/A"}
             </Descriptions.Item>
-            <Descriptions.Item label="Term of Authorization">
+            <Descriptions.Item label="Proposed Term of Authorization">
               {props.initialValues.proposed_term_of_authorization || "N/A"}
             </Descriptions.Item>
           </Descriptions>
@@ -232,7 +212,6 @@ export const GeneratePermitForm = (props) => {
                   required,
                   dateNotInFuture,
                   dateNotAfterOther(props.formValues.auth_end_date),
-                  dateRangeIsValidStart,
                 ]}
                 disabled={props.isViewMode}
               />
@@ -243,15 +222,16 @@ export const GeneratePermitForm = (props) => {
                 name="auth_end_date"
                 label="Authorization End Date*"
                 component={renderConfig.DATE}
-                validate={[
-                  required,
-                  dateNotBeforeOther(props.formValues.issue_date),
-                  dateRangeIsValidEnd,
-                ]}
+                validate={[required, dateNotBeforeOther(props.formValues.issue_date)]}
                 disabled={props.isViewMode}
               />
             </Col>
           </Row>
+          <Descriptions column={1}>
+            <Descriptions.Item label="New Term of Authorization">
+              {props.initialValues.term_of_authorization || "N/A"}
+            </Descriptions.Item>
+          </Descriptions>
         </>
       </ScrollContentWrapper>
       <ScrollContentWrapper id="preamble" title="Preamble">

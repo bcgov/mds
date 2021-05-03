@@ -17,6 +17,7 @@ const propTypes = {
   signature: PropTypes.bool.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   issuingInspectorGuid: PropTypes.string,
+  draftAmendment: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -47,7 +48,6 @@ export class UpdateStatusGenerateLetterModal extends Component {
           issue_date: this.props.draftAmendment.issue_date,
           auth_end_date: this.props.draftAmendment.authorization_end_date,
         }}
-        noticeOfWork={this.props.noticeOfWork}
         onSubmit={this.props.onSubmit}
         closeModal={this.props.closeModal}
         title={this.props.title}
