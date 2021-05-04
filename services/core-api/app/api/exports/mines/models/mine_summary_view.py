@@ -8,8 +8,8 @@ from app.extensions import db
 class MineSummaryView(Base):
     __tablename__ = 'mine_summary_view'
 
-    mine_guid = db.Column(db.String)
-    permit_guid = db.Column(db.String)
+    mine_guid = db.Column(db.String, primary_key=True)
+    permit_guid = db.Column(db.String, primary_key=True)
     permit_id = db.Column(db.Integer)
     mine_name = db.Column(db.String)
     mine_number = db.Column(db.String)
