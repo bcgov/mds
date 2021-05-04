@@ -147,15 +147,17 @@ export class NOWPermitGeneration extends Component {
           );
           this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
         }
-        this.setState({ isLoaded: true });
-      });
+      })
+      .finally(this.setState({ isLoaded: true }));
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
+      formatted_issue_date: formatDate(amendment.issue_date),
       issue_date: amendment.issue_date,
-      auth_end_date: "",
+      formatted_auth_end_date: formatDate(amendment.authorization_end_date),
+      auth_end_date: amendment.authorization_end_date,
       regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
@@ -205,7 +207,6 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
     permitGenObject.permit_number = draftPermit.permit_no;
-    permitGenObject.auth_end_date = amendment.authorization_end_date;
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
@@ -475,15 +476,19 @@ export class NOWPermitGeneration extends Component {
             this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
           }
         >
-          <LoadingWrapper condition={this.state.isLoaded}>
+          <>
             {isProcessed ? (
-              <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                This application has been processed.
-              </h3>
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
+                  This application has been processed.
+                </h3>
+              </LoadingWrapper>
             ) : (
               <>
                 {!this.state.isDraft ? (
-                  <NullScreen type="draft-permit" />
+                  <LoadingWrapper condition={this.state.isLoaded}>
+                    <NullScreen type="draft-permit" />
+                  </LoadingWrapper>
                 ) : (
                   <GeneratePermitForm
                     permit={this.props.draftPermit}
@@ -503,6 +508,7 @@ export class NOWPermitGeneration extends Component {
                     previousAmendmentDocuments={previousAmendmentDocuments}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}
+                    isLoaded={this.state.isLoaded}
                     permitAmendmentDropdown={this.state.permitAmendmentDropdown}
                     isPermitAmendmentTypeDropDownDisabled={
                       this.state.isPermitAmendmentTypeDropDownDisabled
@@ -511,7 +517,7 @@ export class NOWPermitGeneration extends Component {
                 )}
               </>
             )}
-          </LoadingWrapper>
+          </>
         </div>
       </div>
     );

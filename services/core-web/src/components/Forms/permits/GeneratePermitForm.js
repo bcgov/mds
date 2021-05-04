@@ -34,12 +34,13 @@ const propTypes = {
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
   permit: CustomPropTypes.permit.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 export const GeneratePermitForm = (props) => {
   return (
     <Form layout="vertical">
-      <ScrollContentWrapper id="general-info" title="General Information">
+      <ScrollContentWrapper id="general-info" title="General Information" isLoaded={props.isLoaded}>
         <>
           <Row gutter={32}>
             <Col xs={24} md={12}>
@@ -174,7 +175,11 @@ export const GeneratePermitForm = (props) => {
         </>
       </ScrollContentWrapper>
 
-      <ScrollContentWrapper id="authorization" title="Permit Authorizations">
+      <ScrollContentWrapper
+        id="authorization"
+        title="Permit Authorizations"
+        isLoaded={props.isLoaded}
+      >
         <>
           <Descriptions column={1}>
             <Descriptions.Item label="Proposed Start Date">
@@ -192,9 +197,9 @@ export const GeneratePermitForm = (props) => {
             <>
               <h4>Amendment History</h4>
               <PermitAmendmentTable permit={props.permit} />
+              <br />
             </>
           )}
-          <br />
           <br />
           <h4>
             {props.isAmendment
@@ -234,7 +239,7 @@ export const GeneratePermitForm = (props) => {
           </Descriptions>
         </>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="preamble" title="Preamble">
+      <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
         <>
           <Row gutter={32}>
             <Col xs={24} md={12}>
@@ -300,7 +305,7 @@ export const GeneratePermitForm = (props) => {
           )}
         </>
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="conditions" title="Conditions">
+      <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
         <Conditions
           isViewMode={props.isViewMode}
           hasSourceConditions={props.noticeOfWork.has_source_conditions}

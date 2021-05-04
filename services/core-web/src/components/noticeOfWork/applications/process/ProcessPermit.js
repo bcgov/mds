@@ -213,7 +213,7 @@ export class ProcessPermit extends Component {
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
             noticeOfWork: this.props.noticeOfWork,
-            draftAmendment:  this.props.draftAmendment,
+            draftAmendment: this.props.draftAmendment,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
           },
@@ -248,7 +248,10 @@ export class ProcessPermit extends Component {
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
-      auth_end_date: "",
+      formatted_issue_date: formatDate(amendment.issue_date),
+      issue_date: amendment.issue_date,
+      formatted_auth_end_date: formatDate(amendment.authorization_end_date),
+      auth_end_date: amendment.authorization_end_date,
       regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
