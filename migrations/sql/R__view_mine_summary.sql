@@ -1,7 +1,7 @@
 DROP VIEW IF EXISTS public.mine_summary_view;
 
-CREATE OR REPLACE VIEW public.mine_summary_view
-AS SELECT (
+CREATE OR REPLACE VIEW public.mine_summary_view AS (
+SELECT
     m.mine_guid::text AS mine_guid,
     p.permit_guid::text AS permit_guid,
     p.permit_id::text AS permit_id,
