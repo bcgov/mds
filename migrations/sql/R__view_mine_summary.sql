@@ -4,7 +4,7 @@ CREATE OR REPLACE VIEW public.mine_summary_view AS (
 SELECT
     m.mine_guid::text AS mine_guid,
     p.permit_guid::text AS permit_guid,
-    p.permit_id::text AS permit_id,
+    p.permit_id AS permit_id,
     m.mine_name AS mine_name,
     m.mine_no AS mine_number,
     m.latitude::text AS mine_latitude,
@@ -17,9 +17,9 @@ SELECT
     
     concat(mos.description, ',', mosr.description, ',', mossr.description) AS operation_status,
     concat(mos.mine_operation_status_code, ',', mosr.mine_operation_status_reason_code, ',', mossr.mine_operation_status_sub_reason_code) AS operation_status_code,
-    mos.mine_operation_status_code,
-    mosr.mine_operation_status_reason_code,
-    mossr.mine_operation_status_sub_reason_code,
+    mos.mine_operation_status_code AS mine_operation_status_code,
+    mosr.mine_operation_status_reason_code AS mine_operation_status_reason_code,
+    mossr.mine_operation_status_sub_reason_code as mine_operation_status_sub_reason_code,
     mos.description AS mine_operation_status_d,
     mosr.description AS mine_operation_status_reason_d,
     mossr.description AS mine_operation_status_sub_reason_d,
