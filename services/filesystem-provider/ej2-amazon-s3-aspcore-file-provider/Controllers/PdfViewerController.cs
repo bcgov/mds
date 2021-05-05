@@ -42,26 +42,32 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("************************ IN LOAD");
+            Console.WriteLine("************************");
             try
             {
+                Console.WriteLine("Here 1");
+                PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
                 PdfRenderer pdfviewer;
                 pdfviewer = new PdfRenderer(_mCache);
-                PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
+                Console.WriteLine("Here 2");
                 MemoryStream stream = new MemoryStream();
                 object jsonResult = new object();
+                Console.WriteLine("Here 3");
                 if (jsonObject != null && jsonObject.ContainsKey("document"))
                 {
                     if (bool.Parse(jsonObject["isFileName"]))
                     {
+                        Console.WriteLine("Here 5");
                         string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
                         string filename = Path.GetFileName(jsonObject["document"]);
                         FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
                         if (fsr == null)
                         {
+                            Console.WriteLine("Here 6");
                             return this.Content(jsonObject["document"] + " is not found");
                         }
                         fsr.FileStream.CopyTo(stream);
+                        Console.WriteLine("Here 7");
                     }
                     else
                     {
@@ -69,7 +75,9 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                         stream = new MemoryStream(bytes);
                     }
                 }
+                Console.WriteLine("Here 8");
                 jsonResult = pdfviewer.Load(stream, jsonObject);
+                Console.WriteLine("Here 9");
                 return Content(JsonConvert.SerializeObject(jsonResult));
             }
             catch (Exception ex)
