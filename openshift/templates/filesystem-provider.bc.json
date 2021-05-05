@@ -24,13 +24,13 @@
       },
       "spec": {
         "triggers": [
-			{
-				"type": "ConfigChange"
-			},
-			{
-				"type": "ImageChange"
-			}
-		],
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange"
+          }
+        ],
         "runPolicy": "Serial",
         "source": {
           "type": "Git",
@@ -46,9 +46,9 @@
             "from": {
               "kind": "${SOURCE_IMAGE_KIND}",
               "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}",
-			  "namespace": "openshift"
+              "namespace": "openshift"
             },
-			"env": [
+            "env": [
               {
                 "name": "DOTNET_STARTUP_PROJECT",
                 "value": "${DOTNET_STARTUP_PROJECT}"
@@ -120,7 +120,7 @@
       "displayName": "Source Image Tag",
       "description": "The tag of the source image.",
       "required": true,
-      "value": "2.1"
+      "value": "3.1"
     },
     {
       "name": "DOTNET_STARTUP_PROJECT",
