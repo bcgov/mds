@@ -23,12 +23,6 @@ exports[`MinePermitTable renders properly 1`] = `
         "title": "Permittee",
       },
       Object {
-        "dataIndex": "authorizationEndDate",
-        "key": "authorizationEndDate",
-        "render": [Function],
-        "title": "Authorization End Date",
-      },
-      Object {
         "dataIndex": "firstIssued",
         "key": "firstIssued",
         "render": [Function],
