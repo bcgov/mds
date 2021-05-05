@@ -26,7 +26,11 @@ const defaultProps = { importNowSubmissionDocumentsJob: {} };
 export const NOWApplicationAdministrative = (props) => {
   return (
     <div>
-      <ScrollContentWrapper id="final-application-package" title="Final Application Package">
+      <ScrollContentWrapper
+        id="final-application-package"
+        title="Final Application Package"
+        isLoaded={props.isLoaded}
+      >
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
@@ -34,7 +38,11 @@ export const NOWApplicationAdministrative = (props) => {
           adminView
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="reclamation-securities" title="Reclamation Securities">
+      <ScrollContentWrapper
+        id="reclamation-securities"
+        title="Reclamation Securities"
+        isLoaded={props.isLoaded}
+      >
         <NOWSecurities />
         <br />
         <br />
@@ -49,7 +57,11 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["SDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="government-documents" title="Government Documents">
+      <ScrollContentWrapper
+        id="government-documents"
+        title="Government Documents"
+        isLoaded={props.isLoaded}
+      >
         <NOWDocuments
           documents={props.noticeOfWork.documents.filter(
             ({ now_application_document_sub_type_code }) =>
@@ -61,7 +73,11 @@ export const NOWApplicationAdministrative = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="generated-documents" title="Application Export Files">
+      <ScrollContentWrapper
+        id="generated-documents"
+        title="Application Export Files"
+        isLoaded={props.isLoaded}
+      >
         <NOWDocuments
           documents={props.noticeOfWork.documents.filter(
             ({
@@ -85,7 +101,7 @@ export const NOWApplicationAdministrative = (props) => {
           addDescriptionColumn={false}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="inspectors" title="Inspectors">
+      <ScrollContentWrapper id="inspectors" title="Inspectors" isLoaded={props.isLoaded}>
         <AssignInspectors
           inspectors={props.inspectors}
           noticeOfWork={props.noticeOfWork}
@@ -95,7 +111,11 @@ export const NOWApplicationAdministrative = (props) => {
           isLoaded={props.isLoaded}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="progress-tracking" title="Application Progress Tracking">
+      <ScrollContentWrapper
+        id="progress-tracking"
+        title="Application Progress Tracking"
+        isLoaded={props.isLoaded}
+      >
         <NOWProgressTable />
       </ScrollContentWrapper>
     </div>

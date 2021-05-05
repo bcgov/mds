@@ -49,7 +49,7 @@ export class MineComments extends Component {
     return (
       <div>
         <span className="ant-comment-content-author-time inline-flex flex-center">
-          Message history is only retained for one year
+          Message history is only shown for one year
         </span>
         <CommentPanel
           renderEditor

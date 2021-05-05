@@ -1,19 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row } from "antd";
-import { required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { Col, Row, Descriptions } from "antd";
+import {
+  required,
+  dateNotAfterOther,
+  dateNotInFuture,
+  dateNotBeforeOther,
+} from "@common/utils/Validate";
+import { resetForm, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPermitDocuments";
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitGeneration/PermitAmendmentTable";
 import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
@@ -24,6 +33,8 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
 };
@@ -31,7 +42,7 @@ const propTypes = {
 // TODO remove validation from disabled fields
 export const GeneratePermitForm = (props) => (
   <Form layout="vertical">
-    <ScrollContentWrapper id="general-info" title="General Information">
+    <ScrollContentWrapper id="general-info" title="General Information" isLoaded={props.isLoaded}>
       <>
         <Row gutter={32}>
           <Col xs={24} md={12}>
@@ -91,7 +102,7 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="permittee_mailing_address"
               name="permittee_mailing_address"
-              label="Permittee Mailing address"
+              label="Permittee Mailing Address"
               component={renderConfig.AUTO_SIZE_FIELD}
               disabled
             />
@@ -121,41 +132,6 @@ export const GeneratePermitForm = (props) => (
         <Row gutter={32}>
           <Col xs={24} md={12}>
             <Field
-              id="issue_date"
-              name="issue_date"
-              label={props.isAmendment ? "Amendment Issue Date" : "Issue Date"}
-              component={renderConfig.DATE}
-              validate={[required]}
-              disabled
-            />
-          </Col>
-          {props.isAmendment && (
-            <Col xs={24} md={12}>
-              <Field
-                id="original_permit_issue_date"
-                name="original_permit_issue_date"
-                label="Original Permit Issue Date"
-                required
-                component={renderConfig.DATE}
-                validate={[required]}
-                disabled
-              />
-            </Col>
-          )}
-        </Row>
-        <Row gutter={32}>
-          <Col xs={24} md={12}>
-            <Field
-              id="auth_end_date"
-              name="auth_end_date"
-              label="Authorization End Date"
-              component={renderConfig.DATE}
-              validate={[required]}
-              disabled
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <Field
               id="lead_inspector"
               name="lead_inspector"
               label="Lead Inspector Name"
@@ -164,10 +140,8 @@ export const GeneratePermitForm = (props) => (
               disabled
             />
           </Col>
-        </Row>
-        {/* this will be converted to a drop-down menu with pre-populated title options, currently defaulting to "Inspector of Mines" and disabled */}
-        <Row gutter={32}>
           <Col xs={24} md={12}>
+            {/* this will be converted to a drop-down menu with pre-populated title options, currently defaulting to "Inspector of Mines" and disabled */}
             <Field
               id="issuing_inspector_title"
               name="issuing_inspector_title"
@@ -177,6 +151,9 @@ export const GeneratePermitForm = (props) => (
               disabled
             />
           </Col>
+        </Row>
+        <Row gutter={32}>
+          <Col xs={24} md={12} />
           <Col xs={24} md={12}>
             <Field
               id="regional_office"
@@ -197,6 +174,71 @@ export const GeneratePermitForm = (props) => (
         </Row>
       </>
     </ScrollContentWrapper>
+
+    <ScrollContentWrapper
+      id="authorization"
+      title="Permit Authorizations"
+      isLoaded={props.isLoaded}
+    >
+      <>
+        <Descriptions column={1}>
+          <Descriptions.Item label="Proposed Start Date">
+            {formatDate(props.initialValues.proposed_start_date) || "N/A"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Proposed Authorization End Date">
+            {formatDate(props.initialValues.proposed_end_date) || "N/A"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Proposed Term of Authorization">
+            {props.initialValues.proposed_term_of_authorization || "N/A"}
+          </Descriptions.Item>
+        </Descriptions>
+
+        {props.isAmendment && (
+          <>
+            <h4>Amendment History</h4>
+            <PermitAmendmentTable permit={props.draftPermit} />
+            <br />
+          </>
+        )}
+        <br />
+        <h4>
+          {props.isAmendment
+            ? "Issue Date and Authorization End Date for the Permit Amendment in Process."
+            : "Issue Date and Authorization End Date for the Initial Permit in Process."}
+        </h4>
+        <Row gutter={32}>
+          <Col xs={24} md={12}>
+            <Field
+              id="issue_date"
+              name="issue_date"
+              label="Issue Date*"
+              component={renderConfig.DATE}
+              validate={[
+                required,
+                dateNotInFuture,
+                dateNotAfterOther(props.formValues.auth_end_date),
+              ]}
+              disabled={props.isViewMode}
+            />
+          </Col>
+          <Col xs={24} md={12}>
+            <Field
+              id="auth_end_date"
+              name="auth_end_date"
+              label="Authorization End Date*"
+              component={renderConfig.DATE}
+              validate={[required, dateNotBeforeOther(props.formValues.issue_date)]}
+              disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+        <Descriptions column={1}>
+          <Descriptions.Item label="New Term of Authorization">
+            {props.initialValues.term_of_authorization || "N/A"}
+          </Descriptions.Item>
+        </Descriptions>
+      </>
+    </ScrollContentWrapper>
     <ScrollContentWrapper
       id="site-properties"
       title={
@@ -213,7 +255,7 @@ export const GeneratePermitForm = (props) => (
         draftPermit={props.draftPermit}
       />
     </ScrollContentWrapper>
-    <ScrollContentWrapper id="preamble" title="Preamble">
+    <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
       <>
         <Row gutter={32}>
           <Col xs={24} md={12}>
@@ -252,8 +294,8 @@ export const GeneratePermitForm = (props) => (
             <Field
               id="permit_amendment_type_code"
               name="permit_amendment_type_code"
-              placeholder="Select a Permit amendment type"
-              label="Permit amendment type"
+              placeholder="Select a Permit Amendment Type"
+              label="Permit Amendment Type"
               doNotPinDropdown
               component={renderConfig.SELECT}
               data={props.permitAmendmentDropdown}
@@ -279,8 +321,7 @@ export const GeneratePermitForm = (props) => (
         )}
       </>
     </ScrollContentWrapper>
-
-    <ScrollContentWrapper id="conditions" title="Conditions">
+    <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
       <Conditions
         isViewMode={props.isViewMode}
         hasSourceConditions={props.noticeOfWork.has_source_conditions}
@@ -304,10 +345,17 @@ export const GeneratePermitForm = (props) => (
 
 GeneratePermitForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.GENERATE_PERMIT,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
-  enableReinitialize: true,
-  onSubmit: () => {},
-})(GeneratePermitForm);
+const mapStateToProps = (state) => ({
+  formValues: getFormValues(FORM.GENERATE_PERMIT)(state) || {},
+});
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.GENERATE_PERMIT,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
+    enableReinitialize: true,
+    onSubmit: () => {},
+  })
+)(GeneratePermitForm);

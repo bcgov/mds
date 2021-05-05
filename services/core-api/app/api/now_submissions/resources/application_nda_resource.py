@@ -14,4 +14,3 @@ class ApplicationNDAResource(Resource, UserMixin ):
     @api.marshal_with(APPLICATIONNDA, code=200)
     def get(self, application_nda_guid):
         raise NotImplemented('Not Implemented')
-        return 

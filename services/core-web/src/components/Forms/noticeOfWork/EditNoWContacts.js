@@ -24,7 +24,6 @@ import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CustomPropTypes from "@/customPropTypes";
 import { Link } from "react-router-dom";
-import { formatTitleString } from "@common/utils/helpers";
 import Address from "@/components/common/Address";
 
 import NOWPartySelectField from "@/components/common/NOWPartySelectField";
@@ -152,7 +151,7 @@ const NOWContact = ({
               style={{ fontSize: "1.5rem", fontWeight: "bold" }}
               to={router.PARTY_PROFILE.dynamicRoute(contact.party.party_guid)}
             >
-              {formatTitleString(contact.party.name)}
+              {contact.party.name}
             </Link>
           </h4>
           <br />

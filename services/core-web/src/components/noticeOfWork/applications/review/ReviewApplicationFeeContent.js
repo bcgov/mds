@@ -304,7 +304,7 @@ export class ReviewApplicationFeeContent extends Component {
             disabled={this.props.isViewMode || !this.props.isAdmin}
           />
           <div className="field-title">
-            Adjusted Annual Maximum Tonnage
+            Actual Annual Maximum Tonnage
             <CoreTooltip title="This is to be used if the Proposed Maximum Annual Tonnage Extracted amount changes during Technical Review. Please enter the new total for the Maximum Annual Tonnage Extracted that the proponent is proposing. Changing this amount may affect the amount of the Permit Fee assessed. If the amount is over the fee threshold of the next fee amount, the application will need to be rejected and the applicant will need to reapply." />
           </div>
           <Field
