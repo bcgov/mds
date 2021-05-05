@@ -176,7 +176,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_type"
                 name="permit_type"
-                label="Permit type*"
+                label="Permit Type*"
                 placeholder="Select a permit type"
                 component={renderConfig.SELECT}
                 validate={[required, validateSelectOptions(permitTypes)]}
@@ -190,7 +190,7 @@ export class AddPermitForm extends Component {
                 <Field
                   id="is_exploration"
                   name="is_exploration"
-                  label="Exploration permit"
+                  label="Exploration Permit"
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
                 />
@@ -200,7 +200,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_no"
                 name="permit_no"
-                label="Permit number*"
+                label="Permit Number*"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(9)]}
                 inlineLabel={
@@ -213,7 +213,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_status_code"
                 name="permit_status_code"
-                label="Permit status*"
+                label="Permit Status*"
                 placeholder="Select a permit status"
                 component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
@@ -224,7 +224,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue date*"
+                label="Issue Date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
               />
@@ -254,7 +254,7 @@ export class AddPermitForm extends Component {
                 label="Reason*"
                 name="security_not_required_reason"
                 component={renderConfig.SELECT}
-                placeholder="Please select a reason"
+                placeholder="Select a reason"
                 data={securityNotRequiredReasonOptions}
                 disabled={!this.props.securityNotRequired}
                 validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
