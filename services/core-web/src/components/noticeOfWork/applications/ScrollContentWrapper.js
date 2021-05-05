@@ -9,6 +9,7 @@ import { change, getFormValues } from "redux-form";
 import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
+import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 
 import NullScreen from "@/components/common/NullScreen";
 
@@ -29,6 +30,7 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   isActive: PropTypes.bool,
+  isLoaded: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -36,6 +38,7 @@ const defaultProps = {
   data: undefined,
   isViewMode: true,
   isActive: false,
+  isLoaded: true,
 };
 
 export class ScrollContentWrapper extends Component {
@@ -132,7 +135,9 @@ export class ScrollContentWrapper extends Component {
           )}
         </div>
         <div className="scroll-wrapper--border">
-          <div className="scroll-wrapper--body">{this.renderCorrectView()}</div>
+          <LoadingWrapper condition={this.props.isLoaded}>
+            <div className="scroll-wrapper--body">{this.renderCorrectView()}</div>
+          </LoadingWrapper>
         </div>
       </div>
     );

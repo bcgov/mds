@@ -141,13 +141,6 @@ const columns = [
     render: (text) => <div title="Permittee">{text}</div>,
   },
   {
-    title: "Authorization End Date",
-    dataIndex: "authorizationEndDate",
-    key: "authorizationEndDate",
-    render: (text) => <div title="Authorization End Date">{text}</div>,
-  },
-
-  {
     title: "First Issued",
     dataIndex: "firstIssued",
     key: "firstIssued",
@@ -332,7 +325,7 @@ const childColumns = [
     title: "#",
     dataIndex: "amendmentNumber",
     key: "amendmentNumber",
-    width: "130px",
+    width: "30px",
     render: (text) => <div title="Amendment">{text}</div>,
   },
   {
@@ -346,8 +339,15 @@ const childColumns = [
     title: "Date Issued",
     dataIndex: "issueDate",
     key: "issueDate",
-    width: "90px",
+    width: "130px",
     render: (text) => <div title="Issue Date">{text}</div>,
+  },
+  {
+    title: "Authorization End Date",
+    dataIndex: "authorizationEndDate",
+    key: "authorizationEndDate",
+    width: "250px",
+    render: (text) => <div title="Authorization End Date">{text}</div>,
   },
   {
     title: "Description",
@@ -478,9 +478,6 @@ const transformRowData = (
     permitNo: permit.permit_no || Strings.EMPTY_FIELD,
     firstIssued: (firstAmendment && formatDate(firstAmendment.issue_date)) || Strings.EMPTY_FIELD,
     permittee: permit.current_permittee,
-    authorizationEndDate:
-      (latestAmendment && formatDate(latestAmendment.authorization_end_date)) ||
-      Strings.EMPTY_FIELD,
     permit_amendments: permit.permit_amendments.filter(
       (a) => a.permit_amendment_status_code !== draftAmendment
     ),

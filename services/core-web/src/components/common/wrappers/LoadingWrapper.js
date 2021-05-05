@@ -18,13 +18,13 @@ export const LoadingWrapper = (props) => {
       {props.condition ? (
         <div className="fade-in">{props.children}</div>
       ) : (
-          <div className="loading-screen--small">
-            <Spin
-              id="spinner"
-              indicator={<LoadingOutlined style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} />}
-            />
-          </div>
-        )}
+        <div className="loading-screen--small">
+          <Spin
+            id="spinner"
+            indicator={<LoadingOutlined style={{ fontSize: 80, color: Style.COLOR.mediumGrey }} />}
+          />
+        </div>
+      )}
     </div>
   );
 };
