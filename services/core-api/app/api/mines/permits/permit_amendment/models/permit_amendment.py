@@ -85,7 +85,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def issuing_inspector_name(self):
         title = "Inspector of Mines"
 
-        #with i had null propogation
+        #with i had null propagation
         now_identity = self.now_identity
         if now_identity:
             now_application = now_identity.now_application

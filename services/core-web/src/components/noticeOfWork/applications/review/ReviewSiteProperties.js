@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import RenderMultiSelect from "@/components/common/RenderMultiSelect";
 import RenderSelect from "@/components/common/RenderSelect";
 import CustomPropTypes from "@/customPropTypes";
-import { requiredList } from "@common/utils/Validate";
+import { requiredList, required } from "@common/utils/Validate";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import {
   getConditionalDisturbanceOptionsHash,
@@ -27,7 +27,6 @@ import * as FORM from "@/constants/forms";
 const propTypes = {
   noticeOfWorkType: PropTypes.string.isRequired,
   isViewMode: PropTypes.bool.isRequired,
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
 const mapApplicationTypeToTenureType = (code) =>
@@ -41,6 +40,9 @@ const mapApplicationTypeToTenureType = (code) =>
   }[code]);
 export class ReviewSiteProperties extends Component {
   render() {
+    const isCoalOrMineral =
+      this.props.site_property?.mine_tenure_type_code === "COL" ||
+      this.props.site_property?.mine_tenure_type_code === "MIN";
     return (
       <FormSection name="site_property">
         <Row gutter={16}>
@@ -75,7 +77,7 @@ export class ReviewSiteProperties extends Component {
             />
           </Col>
           <Col md={12} sm={24}>
-            <div className="field-title">Disturbance</div>
+            <div className="field-title">{isCoalOrMineral ? "Disturbance*" : "Disturbance"}</div>
             <Field
               id="mine_disturbance_code"
               name="mine_disturbance_code"
@@ -88,6 +90,7 @@ export class ReviewSiteProperties extends Component {
                     ]
                   : null
               }
+              validate={isCoalOrMineral ? [requiredList] : []}
             />
           </Col>
         </Row>
@@ -97,7 +100,7 @@ export class ReviewSiteProperties extends Component {
 }
 
 ReviewSiteProperties.propTypes = propTypes;
-const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
+const selector = formValueSelector(FORM.GENERATE_PERMIT);
 
 const mapStateToProps = (state) => ({
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state),

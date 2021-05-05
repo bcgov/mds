@@ -28,7 +28,7 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getMineTenureTypesHash,
-  getExemptionFeeSatusDropDownOptions,
+  getExemptionFeeStatusDropDownOptions,
   getGovernmentAgencyDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
@@ -56,7 +56,7 @@ const propTypes = {
   currentMineTypes: PropTypes.arrayOf(CustomPropTypes.mineTypes),
   submitting: PropTypes.bool.isRequired,
   isNewRecord: PropTypes.bool,
-  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   governmentAgencyTypeOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
 };
@@ -466,8 +466,8 @@ export class MineRecordForm extends Component {
                   label="Inspection Fee Status"
                   disabled
                   component={renderConfig.SELECT}
-                  validate={[validateSelectOptions(this.props.exemptionFeeSatusDropDownOptions)]}
-                  data={this.props.exemptionFeeSatusDropDownOptions}
+                  validate={[validateSelectOptions(this.props.exemptionFeeStatusDropDownOptions)]}
+                  data={this.props.exemptionFeeStatusDropDownOptions}
                 />
               </Form.Item>
             </Col>
@@ -576,7 +576,7 @@ export default compose(
     mineStatus: selector(state, "mine_status"),
     mine_types: selector(state, "mine_types"),
     status_date: selector(state, "status_date"),
-    exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+    exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
   })),
   reduxForm({
     form: FORM.MINE_RECORD,
