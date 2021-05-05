@@ -55,6 +55,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                 Console.WriteLine("Here 3");
                 if (jsonObject != null && jsonObject.ContainsKey("document"))
                 {
+                    Console.WriteLine("Here 4");
                     if (bool.Parse(jsonObject["isFileName"]))
                     {
                         Console.WriteLine("Here 5");
@@ -78,11 +79,13 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                 Console.WriteLine("Here 8");
                 jsonResult = pdfviewer.Load(stream, jsonObject);
                 Console.WriteLine("Here 9");
-                return Content(JsonConvert.SerializeObject(jsonResult));
+                ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
+                Console.WriteLine("Here 10");
+                return result;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("************************");
+                Console.WriteLine("************************ EXCEPTION");
                 Console.WriteLine(ex.ToString());
             }
             return null;
