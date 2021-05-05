@@ -30,6 +30,155 @@ exports[`AddTailingsForm renders properly 1`] = `
       </FormItem>
     </Col>
   </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="latitude"
+          label="Latitude*"
+          name="latitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="longitude"
+          label="Longitude*"
+          name="longitude"
+          validate={
+            Array [
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          id="consequence_classification_status_code"
+          label="Consequence Classification*"
+          name="consequence_classification_status_code"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          id="tsf_operating_status_code"
+          label="Operating Status*"
+          name="tsf_operating_status_code"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Connect(PartySelectField)
+          allowAddingParties={true}
+          allowNull={true}
+          id="eor_party_guid"
+          label="Engineer of Record"
+          name="eor_party_guid"
+          partyLabel="EoR"
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={
+            Array [
+              Object {
+                "label": "No",
+                "value": "false",
+              },
+              Object {
+                "label": "Yes",
+                "value": "true",
+              },
+            ]
+          }
+          id="has_itrb"
+          label="Independent Tailings Review Board*"
+          name="has_itrb"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
   <div
     className="right center-mobile"
   >

@@ -44,6 +44,8 @@ const initialState = {
   noticeOfWorkApplicationDelayOptions: [],
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
+  consequenceClassificationStatusCodeOptions: [],
+  TSFOperatingStatusCodeOptions: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -125,6 +127,10 @@ export const getApplicationReasonCodeOptions = (state) =>
   state[STATIC_CONTENT].applicationReasonCodeOptions;
 export const getApplicationSourceTypeCodeOptions = (state) =>
   state[STATIC_CONTENT].applicationSourceTypeCodeOptions;
+export const getConsequenceClassificationStatusCodeOptions = (state) =>
+  state[STATIC_CONTENT].consequenceClassificationStatusCodeOptions;
+export const getTSFOperatingStatusCodeOptions = (state) =>
+  state[STATIC_CONTENT].TSFOperatingStatusCodeOptions;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

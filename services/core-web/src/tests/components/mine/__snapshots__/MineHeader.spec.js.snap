@@ -41,24 +41,6 @@ exports[`MineHeader renders dispatchProperly 1`] = `
                     Update Mine Record
                   </button>
                 </MenuItem>
-                <MenuItem>
-                  <button
-                    className="full"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    <img
-                      alt="document"
-                      className="padding-sm"
-                      src={
-                        Object {
-                          "process": [Function],
-                        }
-                      }
-                    />
-                    Add TSF
-                  </button>
-                </MenuItem>
               </Menu>
             }
             placement="bottomLeft"
@@ -167,7 +149,11 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         TSF
       </p>
       <p>
-        1
+        <Link
+          to="/mine-dashboard/18133c75-49ad-4101-85f3-a43e35ae989a/reports/tailings"
+        >
+          1
+        </Link>
       </p>
     </div>
     <div
@@ -228,9 +214,14 @@ exports[`MineHeader renders dispatchProperly 1`] = `
           },
           "mine_tailings_storage_facilities": Array [
             Object {
+              "consequence_classification_status_code": "LOW",
+              "has_itrb": true,
+              "latitude": null,
+              "longitude": null,
               "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
               "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
               "mine_tailings_storage_facility_name": "MockTSF",
+              "tsf_operating_status_code": "OPT",
             },
           ],
           "mine_type": Array [

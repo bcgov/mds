@@ -18,6 +18,7 @@ from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointme
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 from app.api.services.issue_to_orgbook_service import OrgBookIssuerService
 from app.api.mines.mine.models.mine_type import MineType
+from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
 
 
 class NOWApplicationStatusCodeResource(Resource, UserMixin):
@@ -46,6 +47,12 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         type=str,
         location='json',
         help='The new status of the application.')
+    parser.add_argument('exemption_fee_status_code', type=str, location='json')
+    parser.add_argument(
+        'exemption_fee_status_note',
+        type=str,
+        location='json',
+        help='An optional note for exemption fee status code')
 
     # TODO: Improve this endpoint by making it a transaction.
     @api.doc(description='Update the status of an application.')
@@ -57,6 +64,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
         status_reason = data.get('status_reason')
         description = data.get('description')
         now_application_status_code = data.get('now_application_status_code')
+        exemption_fee_status_code = data.get('exemption_fee_status_code')
+        exemption_fee_status_note = data.get('exemption_fee_status_note')
 
         now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
         if not now_application_identity:
@@ -100,7 +109,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 # Validate that the issue date is not before the most recent amendment's issue date
                 amendments = [
                     amendment for amendment in permit.permit_amendments
-                    if amendment and amendment.issue_date
+                    if amendment and amendment.issue_date and amendment.permit_amendment_status_code is not 'DFT'
                 ]
                 if amendments:
                     latest_amendment = max(amendments, key=attrgetter('issue_date'))
@@ -127,6 +136,17 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             if permit_amendment.permit_amendment_status_code != 'ACT':
                 raise AssertionError('The permit status was not set to Active.')
 
+            # set exemption fee status code
+            now_site_property = now_application_identity.now_application.site_property
+            is_exploration = permit.permit_no[1] == "X" or permit.is_exploration
+            Permit.validate_exemption_fee_status(
+                is_exploration, permit.permit_status_code, permit.permit_prefix, [
+                    detail.mine_disturbance_code
+                    for detail in now_site_property.mine_type_detail if detail.mine_disturbance_code
+                ], now_site_property.mine_tenure_type_code, exemption_fee_status_code)
+            permit.exemption_fee_status_code = exemption_fee_status_code
+            permit.exemption_fee_status_note = exemption_fee_status_note
+
             permit.save()
 
             permit_amendment.issue_date = issue_date
@@ -141,10 +161,74 @@ class NOWApplicationStatusResource(Resource, UserMixin):
             permit_amendment.save()
 
             # transfer site_properties to permit
-            # enable this when the site_properties flow for NOW and ADA is ready
-            #     mine_type = now_application_identity.now_application.site_property
-            #     mine_type.permit_guid = permit.permit_guid
-            #     mine_type.save()
+            def get_disturbance_codes(site_property):
+                return [
+                    detail.mine_disturbance_code for detail in site_property.mine_type_detail
+                    if detail.mine_disturbance_code
+                ]
+
+            def get_commodity_codes(site_property):
+                return [
+                    detail.mine_commodity_code for detail in site_property.mine_type_detail
+                    if detail.mine_commodity_code
+                ]
+
+            def create_site_property_for_permit(mine_guid, permit_guid, site_property):
+                permit_site_property = MineType.create(
+                    now_application_identity.mine_guid,
+                    site_property.mine_tenure_type_code,
+                    permit_guid=permit.permit_guid)
+
+                for detail in [
+                        detail for detail in site_property.mine_type_detail
+                        if detail.mine_disturbance_code
+                ]:
+                    MineTypeDetail.create(
+                        permit_site_property, mine_disturbance_code=detail.mine_disturbance_code)
+
+                for detail in [
+                        detail for detail in site_property.mine_type_detail
+                        if detail.mine_commodity_code
+                ]:
+                    MineTypeDetail.create(
+                        permit_site_property, mine_commodity_code=detail.mine_commodity_code)
+
+                return permit_site_property
+
+            if now_site_property:
+                permit_site_property = MineType.find_by_permit_guid(
+                    permit.permit_guid, now_application_identity.mine.mine_guid)
+
+                if not permit_site_property:
+                    # create site property that is linked to a permit
+                    permit_site_property = create_site_property_for_permit(
+                        now_application_identity.mine_guid, permit.permit_guid, now_site_property)
+                    permit_site_property.save()
+                else:
+                    is_site_property_updated = False
+                    now_disturbances = get_disturbance_codes(now_site_property)
+                    now_commodities = get_commodity_codes(now_site_property)
+                    permit_disturbances = get_disturbance_codes(permit_site_property)
+                    permit_commodities = get_commodity_codes(permit_site_property)
+
+                    def check_if_equal(list_1, list_2):
+                        if len(list_1) != len(list_2):
+                            return False
+                        return sorted(list_1) == sorted(list_2)
+
+                    if permit_site_property.mine_tenure_type_code != now_site_property.mine_tenure_type_code or not check_if_equal(
+                            now_disturbances, permit_disturbances) or not check_if_equal(
+                                now_commodities, permit_commodities):
+                        is_site_property_updated = True
+
+                    if is_site_property_updated:
+                        permit_site_property.expire_record(commit=False)
+                        db.session.add(permit_site_property)
+                        new_permit_site_property = create_site_property_for_permit(
+                            now_application_identity.mine_guid, permit.permit_guid,
+                            now_site_property)
+                        db.session.add(new_permit_site_property)
+                        db.session.commit()
 
             # End all Tenure Holder, Land Owner, and Mine Operator appointments that are not present on current assignments and are linked to this permit
             only_one_contact_of_type_allowed = ['PMT', 'MMG']

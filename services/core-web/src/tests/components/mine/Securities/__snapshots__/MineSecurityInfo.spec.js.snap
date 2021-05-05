@@ -18,7 +18,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
   >
     <TabPane
       key="1"
-      tab="Bonds"
+      tab="Bonds (3)"
     >
       <div>
         <div
@@ -209,7 +209,7 @@ exports[`MineSecurityInfo renders properly 1`] = `
     </TabPane>
     <TabPane
       key="2"
-      tab="Reclamation Invoices"
+      tab="Reclamation Invoices (2)"
     >
       <br />
       <h4

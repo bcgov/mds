@@ -3,6 +3,7 @@
 exports[`PartySelectField renders properly 1`] = `
 <Field
   allowAddingParties={false}
+  allowNull={false}
   component={[Function]}
   dataSource={Array []}
   fetchSearchResults={

@@ -98,7 +98,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
     .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully added the TSF.",
+        message: "Successfully added a new Tailings Storage Facility.",
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_TSF));

@@ -18,7 +18,7 @@ exports[`MineApplications renders properly 1`] = `
   >
     <TabPane
       key="1"
-      tab="Notice of Work"
+      tab="Notice of Work (0)"
     >
       <br />
       <div
@@ -48,7 +48,7 @@ exports[`MineApplications renders properly 1`] = `
     </TabPane>
     <TabPane
       key="2"
-      tab="Administrative Amendments"
+      tab="Administrative Amendments (0)"
     >
       <br />
       <div

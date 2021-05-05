@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
-import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
@@ -60,7 +60,7 @@ export const DefaultContact = (props) => (
           style={{ fontSize: "1.5rem", fontWeight: "bold" }}
           to={router.PARTY_PROFILE.dynamicRoute(props.partyRelationship.party.party_guid)}
         >
-          {formatTitleString(props.partyRelationship.party.name)}
+          {props.partyRelationship.party.name}
         </Link>
       </h4>
       <br />

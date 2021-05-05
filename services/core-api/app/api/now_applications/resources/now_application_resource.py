@@ -148,28 +148,6 @@ class NOWApplicationResource(Resource, UserMixin):
 
         if now_application_identity.application_type_code == 'ADA' and 'application_reason_codes' in data:
             data['application_reason_codes'] = map_application_reason_codes(data)
-        # enable this when the site_properties flow for NOW and ADA is ready
-        # if now_application_identity.application_type_code == 'ADA' and 'site_property' in data and data.get(
-        #         'site_property'):
-        #     if not now_application_identity.now_application.site_property:
-        #         mine_type = MineType.create(
-        #             now_application_identity.mine_guid,
-        #             data['site_property']['mine_tenure_type_code'],
-        #             now_application_identity.now_application.source_permit_guid
-        #             if now_application_identity.application_type_code == 'ADA' else
-        #             now_application_identity.now_application.related_permit_guid)
-
-        #         for d_code in data['site_property']['mine_disturbance_code']:
-        #             MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
-
-        #         for c_code in data['site_property']['mine_commodity_code']:
-        #             MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-
-        #     else:
-        #         MineType.update_mine_type_details(
-        #             mine_guid=data['mine_guid'],
-        #             mine_disturbance_codes=data['site_property']['mine_disturbance_code'],
-        #             mine_commodity_codes=data['site_property']['mine_commodity_code'])
 
         now_application_identity.now_application.deep_update_from_dict(data)
         NROSNOWStatusService.nros_now_status_update(

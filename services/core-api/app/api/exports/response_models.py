@@ -1,7 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 
-from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL, PERMIT_STATUS_CODE_MODEL, PERMIT_CONDITION_CATEGORY_MODEL, PERMIT_CONDITION_TYPE_MODEL, PERMIT_AMENDEMENT_TYPE_CODE_MODEL, GOVERNMENT_AGENCY_TYPE_MODEL
+from app.api.mines.response_models import MINE_TENURE_TYPE_CODE_MODEL, MINE_COMMODITY_CODE_MODEL, MINE_DISTURBANCE_CODE_MODEL, MINE_STATUS_CODE_MODEL, MINE_REGION_OPTION, MINE_REPORT_DEFINITION_CATEGORIES, MINE_REPORT_DEFINITION_MODEL, MINE_REPORT_SUBMISSION_STATUS, EXEMPTION_FEE_STATUS_CODE_MODEL, PERMIT_STATUS_CODE_MODEL, PERMIT_CONDITION_CATEGORY_MODEL, PERMIT_CONDITION_TYPE_MODEL, PERMIT_AMENDEMENT_TYPE_CODE_MODEL, GOVERNMENT_AGENCY_TYPE_MODEL, CONSEQUENCE_CLASSIFICATION_STATUS_MODEL, TSF_OPERATING_STATUS_MODEL
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
 from app.api.incidents.response_models import MINE_INCIDENT_CATEGORY_MODEL, MINE_INCIDENT_DETERMINATION_TYPE_MODEL, MINE_INCIDENT_STATUS_CODE_MODEL, MINE_INCIDENT_DOCUMENT_TYPE_CODE_MODEL, MINE_INCIDENT_FOLLOWUP_INVESTIGATION_TYPE_MODEL
 from app.api.parties.response_models import MINE_PARTY_APPT_TYPE_MODEL, SUB_DIVISION_CODE_MODEL, PARTY_BUSINESS_ROLE
@@ -13,11 +13,17 @@ MINE_SUMMARY_MODEL = api.model(
     'MineSummaryModel', {
         'mine_guid': fields.String,
         'permit_guid': fields.String,
+        'permit_id': fields.Integer,
         'mine_name': fields.String,
         'mine_number': fields.String,
         'mine_region': fields.String,
         'major_mine_ind': fields.String,
         'major_mine_d': fields.String,
+        'mine_latitude': fields.String,
+        'mine_longitude': fields.String,
+        'bcmi_url': fields.String,
+        'government_agency_type_code': fields.String,
+        'government_agency_type_d': fields.String,
         'operation_status_code': fields.String,
         'operation_status': fields.String,
         'mine_operation_status_code': fields.String,
@@ -26,28 +32,39 @@ MINE_SUMMARY_MODEL = api.model(
         'mine_operation_status_reason_d': fields.String,
         'mine_operation_status_sub_reason_code': fields.String,
         'mine_operation_status_sub_reason_d': fields.String,
-        'mine_date': fields.String,
         'status_date': fields.String,
-        'tenure_type_code': fields.String,
-        'tenure': fields.String,
-        'commodity_type_code': fields.String,
-        'commodity': fields.String,
-        'disturbance_type_code': fields.String,
-        'disturbance': fields.String,
-        'permit_no': fields.String,
-        'permittee_name': fields.String,
-        'permittee_party_guid': fields.String,
-        'mine_latitude': fields.String,
-        'mine_longitude': fields.String,
-        'bcmi_url': fields.String,
+        'mine_date': fields.String,
+        'mine_exemption_fee_status_note': fields.String,
         'mine_exemption_fee_status_code': fields.String,
         'mine_exemption_fee_status_d': fields.String,
+        'mine_tenure_type_code': fields.String,
+        'mine_tenure': fields.String,
+        'mine_commodity_type_code': fields.String,
+        'mine_commodity': fields.String,
+        'mine_disturbance_type_code': fields.String,
+        'mine_disturbance': fields.String,
+        'permit_tenure_type_code': fields.String,
+        'permit_tenure': fields.String,
+        'permit_commodity_type_code': fields.String,
+        'permit_commodity': fields.String,
+        'permit_disturbance_type_code': fields.String,
+        'permit_disturbance': fields.String,
+        'permit_no': fields.String,
+        'permit_status_code': fields.String,
+        'permit_status_changed_timestamp': fields.DateTime,
+        'issue_date': fields.DateTime,
+        'permittee_name': fields.String,
+        'permittee_first_name': fields.String,
+        'permittee_party_guid': fields.String,
+        'permit_exemption_fee_status_note': fields.String,
+        'permit_exemption_fee_status_code': fields.String,
+        'permit_exemption_fee_status_d': fields.String,
         'permittee_address_suite': fields.String,
         'permittee_address_line_1': fields.String,
         'permittee_address_line_2': fields.String,
         'permittee_address_city': fields.String,
         'permittee_address_post_code': fields.String,
-        'permittee_address_prov': fields.String,
+        'permittee_address_prov': fields.String
     })
 
 STATIC_CONTENT_MODEL = api.model(
@@ -158,5 +175,11 @@ STATIC_CONTENT_MODEL = api.model(
         'applicationTypeCodeOptions':
         fields.List(fields.Nested(APPLICATION_TYPE_CODE), attribute='ApplicationTypeCode'),
         'governmentAgencyTypeOptions':
-        fields.List(fields.Nested(GOVERNMENT_AGENCY_TYPE_MODEL), attribute='GovernmentAgencyType')
+        fields.List(fields.Nested(GOVERNMENT_AGENCY_TYPE_MODEL), attribute='GovernmentAgencyType'),
+        'consequenceClassificationStatusCodeOptions':
+        fields.List(
+            fields.Nested(CONSEQUENCE_CLASSIFICATION_STATUS_MODEL),
+            attribute='ConsequenceClassificationStatusCode'),
+        'TSFOperatingStatusCodeOptions':
+        fields.List(fields.Nested(TSF_OPERATING_STATUS_MODEL), attribute='TSFOperatingStatusCode')
     })

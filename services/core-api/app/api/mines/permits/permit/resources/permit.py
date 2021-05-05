@@ -1,8 +1,9 @@
 import json
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
+from datetime import datetime, timezone
 from flask import current_app, request
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -87,6 +88,15 @@ class PermitListResource(Resource, UserMixin):
         store_missing=False,
         help='It includes object of string codes for mine_commodity_code and mine_disturbance_code.',
         location='json')
+    parser.add_argument('liability_adjustment', type=str, location='json', store_missing=False)
+    parser.add_argument(
+        'security_received_date',
+        location='json',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False)
+    parser.add_argument('security_not_required', location='json', type=bool, store_missing=False)
+    parser.add_argument(
+        'security_not_required_reason', location='json', type=str, store_missing=False)
 
     @api.doc(params={'mine_guid': 'mine_guid to filter on'})
     @requires_role_view_all
@@ -167,7 +177,11 @@ class PermitListResource(Resource, UserMixin):
             description='Initial permit issued.',
             issuing_inspector_title=data.get('issuing_inspector_title'),
             regional_office=data.get('regional_office'),
-            now_application_guid=data.get('now_application_guid'))
+            now_application_guid=data.get('now_application_guid'),
+            liability_adjustment=data.get('liability_adjustment'),
+            security_received_date=data.get('security_received_date'),
+            security_not_required=data.get('security_not_required'),
+            security_not_required_reason=data.get('security_not_required_reason'))
 
         db.session.add(permit)
         db.session.add(amendment)
@@ -312,26 +326,18 @@ class PermitResource(Resource, UserMixin):
             data.get('exemption_fee_status_code'))
 
         if data.get('site_properties') != {}:
-            site_properties = permit.site_properties
-            if not site_properties:
-                mine_type = MineType.create(
-                    mine_guid,
-                    data.get('site_properties', {}).get('mine_tenure_type_code'),
-                    permit.permit_guid)
+            MineType.create_or_update_mine_type_with_details(
+                mine_guid=mine_guid,
+                permit_guid=permit_guid,
+                mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
+                mine_disturbance_codes=data.get('site_properties',
+                                                {}).get('mine_disturbance_code', []),
+                mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code', []))
 
-                for d_code in data.get('site_properties', {}).get('mine_disturbance_code', []):
-                    MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
-
-                for c_code in data.get('site_properties', {}).get('mine_commodity_code', []):
-                    MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-            else:
-                MineType.update_mine_type_details(
-                    permit_guid=permit_guid,
-                    mine_tenure_type_code=data.get('site_properties',
-                                                   {}).get('mine_tenure_type_code'),
-                    mine_disturbance_codes=data.get('site_properties',
-                                                    {}).get('mine_disturbance_code'),
-                    mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code'))
+        # If the permit status has changed, update the "status changed" timestamp.
+        permit_status_code = data.get('permit_status_code')
+        if permit_status_code and permit_status_code != permit.permit_status_code:
+            permit.status_changed_timestamp = datetime.now(timezone.utc)
 
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
