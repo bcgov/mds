@@ -1,8 +1,9 @@
 import json
 from flask_restplus import Resource, reqparse, inputs
 from datetime import datetime
+from datetime import datetime, timezone
 from flask import current_app, request
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -345,6 +346,11 @@ class PermitResource(Resource, UserMixin):
                     mine_disturbance_codes=data.get('site_properties',
                                                     {}).get('mine_disturbance_code'),
                     mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code'))
+
+        # If the permit status has changed, update the "status changed" timestamp.
+        permit_status_code = data.get('permit_status_code')
+        if permit_status_code and permit_status_code != permit.permit_status_code:
+            permit.status_changed_timestamp = datetime.now(timezone.utc)
 
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:
