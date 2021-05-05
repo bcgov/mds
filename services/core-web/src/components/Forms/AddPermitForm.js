@@ -22,7 +22,7 @@ import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
   getMineTenureTypeDropdownOptions,
-  getExemptionFeeSatusDropDownOptions,
+  getExemptionFeeStatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
@@ -43,7 +43,7 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   conditionalDisturbanceOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   conditionalCommodityOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
-  exemptionFeeSatusDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
+  exemptionFeeStatusDropDownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   mineTenureTypes: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   permitStatusCode: PropTypes.string,
   site_properties: PropTypes.objectOf(
@@ -333,7 +333,7 @@ export class AddPermitForm extends Component {
               placeholder="Inspection Fee Status will be automatically populated."
               component={renderConfig.SELECT}
               disabled
-              data={this.props.exemptionFeeSatusDropDownOptions}
+              data={this.props.exemptionFeeStatusDropDownOptions}
             />
             <Field
               id="exemption_fee_status_note"
@@ -394,7 +394,7 @@ const mapStateToProps = (state) => ({
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   site_properties: selector(state, "site_properties"),
   securityNotRequired: selector(state, "security_not_required"),
-  exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+  exemptionFeeSatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

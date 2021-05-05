@@ -8,6 +8,7 @@ import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import {
   required,
+  maxLength,
   dateNotInFuture,
   dateNotBeforeOther,
   dateNotAfterOther,
@@ -15,6 +16,8 @@ import {
 import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
+import { getExemptionFeeStatusDropDownOptions } from "@common/selectors/staticContentSelectors";
+import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -22,6 +25,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any),
+  exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
 };
 
 const defaultProps = {
@@ -54,14 +58,34 @@ export const IssuePermitForm = (props) => {
               component={renderConfig.DATE}
               validate={[required, dateNotBeforeOther(props.formValues.issue_date)]}
             />
-            <Form.Item>
-              <Field
-                id="description"
-                name="description"
-                label="Description"
-                component={renderConfig.FIELD}
-              />
-            </Form.Item>
+          </Form.Item>
+          <Form.Item>
+            <Field
+              id="description"
+              name="description"
+              label="Description"
+              component={renderConfig.FIELD}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Field
+              id="exemption_fee_status_code"
+              name="exemption_fee_status_code"
+              label="Inspection Fee Status"
+              placeholder="Inspection Fee Status will be automatically populated."
+              component={renderConfig.SELECT}
+              disabled
+              data={props.exemptionFeeStatusDropDownOptions}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Field
+              id="exemption_fee_status_note"
+              name="exemption_fee_status_note"
+              label="Fee Exemption Note"
+              component={renderConfig.AUTO_SIZE_FIELD}
+              validate={[maxLength(300)]}
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -92,6 +116,7 @@ IssuePermitForm.defaultProps = defaultProps;
 export default compose(
   connect((state) => ({
     formValues: getFormValues(FORM.ISSUE_PERMIT)(state),
+    exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
   })),
   reduxForm({
     form: FORM.ISSUE_PERMIT,

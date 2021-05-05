@@ -23,18 +23,20 @@ import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/P
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
 import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitGeneration/PermitAmendmentTable";
+import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
-  initialValues: PropTypes.any.isRequired,
   previousAmendmentDocuments: PropTypes.objectOf(PropTypes.any).isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isViewMode: PropTypes.bool.isRequired,
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
   formValues: PropTypes.objectOf(PropTypes.any).isRequired,
-  permit: CustomPropTypes.permit.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 
 export const GeneratePermitForm = (props) => {
@@ -196,7 +198,7 @@ export const GeneratePermitForm = (props) => {
           {props.isAmendment && (
             <>
               <h4>Amendment History</h4>
-              <PermitAmendmentTable permit={props.permit} />
+              <PermitAmendmentTable permit={props.draftPermit} />
               <br />
             </>
           )}
@@ -238,6 +240,22 @@ export const GeneratePermitForm = (props) => {
             </Descriptions.Item>
           </Descriptions>
         </>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="site-properties"
+        title={
+          <>
+            Site Properties
+            <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
+          </>
+        }
+      >
+        <ReviewSiteProperties
+          noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
+          isViewMode={props.isViewMode}
+          initialValues={props.noticeOfWork.site_property}
+          draftPermit={props.draftPermit}
+        />
       </ScrollContentWrapper>
       <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
         <>
@@ -341,5 +359,6 @@ export default compose(
     touchOnBlur: false,
     onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
     enableReinitialize: true,
+    onSubmit: () => {},
   })
 )(GeneratePermitForm);

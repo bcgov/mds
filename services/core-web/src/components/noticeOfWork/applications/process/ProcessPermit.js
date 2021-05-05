@@ -28,6 +28,7 @@ import {
   formatDate,
   isPlacerAdjustmentFeeValid,
   isPitsQuarriesAdjustmentFeeValid,
+  determineExemptionFeeStatus,
 } from "@common/utils/helpers";
 import { bindActionCreators } from "redux";
 import {
@@ -200,6 +201,15 @@ export class ProcessPermit extends Component {
       )
       .then(() => {
         const initialValues = {};
+        const isExploration = this.props.draftPermit.permit_no.charAt(1) === "X";
+
+        const statusCode = determineExemptionFeeStatus(
+          this.props.draftPermit.permit_status_code,
+          this.props.draftPermit.permit_prefix,
+          this.props.noticeOfWork?.site_property?.mine_tenure_type_code,
+          isExploration,
+          this.props.noticeOfWork?.site_property?.mine_disturbance_code
+        );
         this.props.documentContextTemplate.document_template.form_spec.map(
           // eslint-disable-next-line
           (item) => (initialValues[item.id] = item["context-value"])
@@ -216,6 +226,7 @@ export class ProcessPermit extends Component {
             draftAmendment: this.props.draftAmendment,
             signature,
             issuingInspectorGuid: this.props.noticeOfWork?.issuing_inspector?.party_guid,
+            exemptionFeeStatusCode: statusCode,
           },
           width: "50vw",
           content: modalConfig.NOW_STATUS_LETTER_MODAL,
@@ -510,6 +521,23 @@ export class ProcessPermit extends Component {
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
           this.props.noticeOfWork.now_application_guid,
           "application"
+        ),
+      });
+    }
+
+    // Tenures, Disturbances, Commodities
+    if (
+      this.props.noticeOfWork &&
+      !(
+        this.props.noticeOfWork.site_property &&
+        this.props.noticeOfWork.site_property.mine_tenure_type_code
+      )
+    ) {
+      validationMessages.push({
+        message: "The Site Property fields must be specified.",
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit/#site-properties"
         ),
       });
     }

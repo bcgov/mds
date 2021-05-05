@@ -70,7 +70,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineType',
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
-        primaryjoin="and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True)",
+        primaryjoin=
+        "and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)",
         lazy='selectin')
 
     mine_documents = db.relationship(

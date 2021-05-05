@@ -12,7 +12,7 @@ import {
   getConditionalDisturbanceOptionsHash,
   getConditionalCommodityOptions,
   getMineTenureTypeDropdownOptions,
-  getExemptionFeeSatusDropDownOptions,
+  getExemptionFeeStatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { determineExemptionFeeStatus } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
@@ -29,7 +29,7 @@ const propTypes = {
   site_properties: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   ).isRequired,
-  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
   submitting: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -134,7 +134,7 @@ export class SitePropertiesForm extends Component {
               placeholder="Inspection Fee Status will be automatically populated."
               component={RenderSelect}
               disabled
-              data={this.props.exemptionFeeSatusDropDownOptions}
+              data={this.props.exemptionFeeStatusDropDownOptions}
             />
           </Col>
         </Row>
@@ -185,7 +185,7 @@ export default compose(
     conditionalCommodityOptions: getConditionalCommodityOptions(state),
     conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
     site_properties: selector(state, "site_properties"),
-    exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+    exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
   })),
   reduxForm({
     form: FORM.EDIT_SITE_PROPERTIES,

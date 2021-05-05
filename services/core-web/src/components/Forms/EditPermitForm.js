@@ -10,7 +10,7 @@ import { currency, required, validateSelectOptions, maxLength } from "@common/ut
 import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
-  getExemptionFeeSatusDropDownOptions,
+  getExemptionFeeStatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderSelect from "@/components/common/RenderSelect";
@@ -28,7 +28,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.permit.isRequired,
   change: PropTypes.func.isRequired,
-  exemptionFeeSatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
+  exemptionFeeStatusDropDownOptions: PropTypes.objectOf(CustomPropTypes.options).isRequired,
 };
 
 export const EditPermitForm = (props) => {
@@ -84,7 +84,7 @@ export const EditPermitForm = (props) => {
             placeholder="Inspection Fee Status will be automatically populated."
             component={RenderSelect}
             disabled
-            data={props.exemptionFeeSatusDropDownOptions}
+            data={props.exemptionFeeStatusDropDownOptions}
           />
         </Col>
       </Row>
@@ -125,7 +125,7 @@ EditPermitForm.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   permitStatusOptions: getDropdownPermitStatusOptions(state),
   formValues: getFormValues(FORM.EDIT_PERMIT)(state) || {},
-  exemptionFeeSatusDropDownOptions: getExemptionFeeSatusDropDownOptions(state),
+  exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
