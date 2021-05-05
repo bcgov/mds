@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, validateSelectOptions } from "@common/utils/Validate";
+import { required } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import * as FORM from "@/constants/forms";
@@ -32,14 +32,7 @@ export const TransferBondForm = (props) => (
             data={props.permits.map((p) => {
               return { value: p.permit_guid, label: p.permit_no };
             })}
-            validate={[
-              required,
-              validateSelectOptions(
-                props.permits.map((p) => {
-                  return { value: p.permit_guid, label: p.permit_no };
-                })
-              ),
-            ]}
+            validate={[required]}
           />
         </Form.Item>
       </Col>
