@@ -394,7 +394,7 @@ const mapStateToProps = (state) => ({
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   site_properties: selector(state, "site_properties"),
   securityNotRequired: selector(state, "security_not_required"),
-  exemptionFeeSatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
+  exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
