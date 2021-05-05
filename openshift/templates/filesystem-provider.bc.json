@@ -113,7 +113,7 @@
       "displayName": "Source Image Name",
       "description": "The name of the source image.",
       "required": true,
-      "value": "dotnet-runtime"
+      "value": "dotnet"
     },
     {
       "name": "SOURCE_IMAGE_TAG",
