@@ -160,13 +160,13 @@ class MineType(AuditMixin, Base):
         return find_mine_type(mine_type_guid, permit_guid, now_application_guid)
 
     @classmethod
-    def crete_or_update_mine_type_with_details(cls,
-                                               mine_guid,
-                                               permit_guid=None,
-                                               now_application_guid=None,
-                                               mine_tenure_type_code=None,
-                                               mine_disturbance_codes=[],
-                                               mine_commodity_codes=[]):
+    def create_or_update_mine_type_with_details(cls,
+                                                mine_guid,
+                                                permit_guid=None,
+                                                now_application_guid=None,
+                                                mine_tenure_type_code=None,
+                                                mine_disturbance_codes=[],
+                                                mine_commodity_codes=[]):
 
         if (not permit_guid and not now_application_guid) or (permit_guid and now_application_guid):
             raise Exception(

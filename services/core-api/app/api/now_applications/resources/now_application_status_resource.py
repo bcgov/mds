@@ -205,7 +205,6 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                         now_application_identity.mine_guid, permit.permit_guid, now_site_property)
                     permit_site_property.save()
                 else:
-                    # TODO maybe compare if anything changed
                     is_site_property_updated = False
                     now_disturbances = get_disturbance_codes(now_site_property)
                     now_commodities = get_commodity_codes(now_site_property)

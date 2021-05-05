@@ -227,7 +227,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                     site_property = MineType.find_by_permit_guid(permit_guid, mine_guid)
 
                     if site_property:
-                        MineType.crete_or_update_mine_type_with_details(
+                        MineType.create_or_update_mine_type_with_details(
                             mine_guid=mine_guid,
                             now_application_guid=now_application_guid,
                             mine_tenure_type_code=site_property.mine_tenure_type_code,
@@ -357,7 +357,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         if data.get(
                 'site_properties') != {} and permit_amendment.permit_amendment_status_code == 'DFT':
 
-            MineType.crete_or_update_mine_type_with_details(
+            MineType.create_or_update_mine_type_with_details(
                 mine_guid=mine_guid,
                 now_application_guid=permit_amendment.now_application_guid,
                 mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
