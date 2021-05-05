@@ -6,8 +6,8 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { formatDate } from "@common/utils/helpers";
-import { getFormValues, reset, isSubmitting } from "redux-form";
+import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
+import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
@@ -59,6 +59,10 @@ const propTypes = {
   permitAmendmentTypeDropDownOptions: CustomPropTypes.options.isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   onPermitDraftSave: PropTypes.func,
+  formErrors: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
+  ).isRequired,
+  submit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -147,15 +151,17 @@ export class NOWPermitGeneration extends Component {
           );
           this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
         }
-        this.setState({ isLoaded: true });
-      });
+      })
+      .finally(this.setState({ isLoaded: true }));
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
-      issue_date: moment().format("MMM DD YYYY"),
-      auth_end_date: "",
+      formatted_issue_date: formatDate(amendment.issue_date),
+      issue_date: amendment.issue_date,
+      formatted_auth_end_date: formatDate(amendment.authorization_end_date),
+      auth_end_date: amendment.authorization_end_date,
       regional_office: regionHash[noticeOfWork.mine_region],
       current_date: moment().format("Do"),
       current_month: moment().format("MMMM"),
@@ -165,6 +171,16 @@ export class NOWPermitGeneration extends Component {
       application_last_updated_date: noticeOfWork.last_updated_date
         ? formatDate(noticeOfWork.last_updated_date)
         : formatDate(noticeOfWork.submitted_date),
+      proposed_start_date: noticeOfWork.proposed_start_date,
+      proposed_end_date: noticeOfWork.proposed_end_date,
+      proposed_term_of_authorization: getDurationText(
+        noticeOfWork.proposed_start_date,
+        noticeOfWork.proposed_end_date
+      ),
+      term_of_authorization:
+        amendment.issue_date && amendment.authorization_end_date
+          ? getDurationText(amendment.issue_date, amendment.authorization_end_date)
+          : "N/A",
     };
     permitGenObject.mine_no = noticeOfWork.mine_no;
 
@@ -195,7 +211,6 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.mine_location = `Latitude: ${noticeOfWork.latitude}, Longitude: ${noticeOfWork.longitude}`;
     permitGenObject.application_date = noticeOfWork.submitted_date;
     permitGenObject.permit_number = draftPermit.permit_no;
-    permitGenObject.auth_end_date = noticeOfWork.proposed_end_date;
     permitGenObject.original_permit_issue_date = isEmpty(originalAmendment)
       ? ""
       : originalAmendment.issue_date;
@@ -209,6 +224,13 @@ export class NOWPermitGeneration extends Component {
     permitGenObject.now_tracking_number = noticeOfWork.now_tracking_number;
     permitGenObject.now_number = noticeOfWork.now_number;
 
+    permitGenObject.site_property = this.props.noticeOfWork.site_property
+      ? this.props.noticeOfWork.site_property
+      : {
+          mine_tenure_type_code: "",
+          mine_commodity_code: [],
+          mine_disturbance_code: [],
+        };
     let isPermitAmendmentTypeDropDownDisabled = true;
     let permitAmendmentDropdown = this.props.permitAmendmentTypeDropDownOptions;
     if (amendment && !isEmpty(amendment)) {
@@ -311,12 +333,27 @@ export class NOWPermitGeneration extends Component {
       .finally(() => this.setState({ downloadingDraft: false }));
   };
 
+  focusErrorInput = () => {
+    this.props.submit(FORM.GENERATE_PERMIT);
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    const errorElement = document.querySelector(`[name="${errors[0]}"]`);
+    if (errorElement && errorElement.focus) {
+      errorElement.focus();
+    }
+  };
+
   handleCancelDraftEdit = () => {
     this.props.reset(FORM.GENERATE_PERMIT);
     this.props.toggleEditMode();
   };
 
   handleSaveDraftEdit = () => {
+    const errors = Object.keys(flattenObject(this.props.formErrors));
+    if (errors.length > 0) {
+      this.focusErrorInput();
+      return;
+    }
+
     const transformDocumentsMetadata = (documentsMetadata) => {
       const allFileMetadata = {};
       if (isEmpty(documentsMetadata)) {
@@ -342,6 +379,8 @@ export class NOWPermitGeneration extends Component {
     const payload = {
       issuing_inspector_title: this.props.formValues.issuing_inspector_title,
       regional_office: this.props.formValues.regional_office,
+      issue_date: this.props.formValues.issue_date,
+      authorization_end_date: this.props.formValues.auth_end_date,
       permit_amendment_type_code: this.props.formValues.permit_amendment_type_code,
       final_original_documents_metadata: JSON.stringify(
         transformDocumentsMetadata(this.props.formValues.final_original_documents_metadata)
@@ -352,7 +391,10 @@ export class NOWPermitGeneration extends Component {
       previous_amendment_documents_metadata: JSON.stringify(
         transformDocumentsMetadata(this.props.formValues.previous_amendment_documents_metadata)
       ),
+      site_properties: this.props.formValues.site_property,
     };
+
+    // eslint-disable-next-line consistent-return
     return this.props
       .updatePermitAmendment(
         this.props.noticeOfWork.mine_guid,
@@ -462,15 +504,19 @@ export class NOWPermitGeneration extends Component {
             this.props.fixedTop ? "side-menu--content with-fixed-top" : "side-menu--content"
           }
         >
-          <LoadingWrapper condition={this.state.isLoaded}>
+          <>
             {isProcessed ? (
-              <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
-                This application has been processed.
-              </h3>
+              <LoadingWrapper condition={this.state.isLoaded}>
+                <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
+                  This application has been processed.
+                </h3>
+              </LoadingWrapper>
             ) : (
               <>
                 {!this.state.isDraft ? (
-                  <NullScreen type="draft-permit" />
+                  <LoadingWrapper condition={this.state.isLoaded}>
+                    <NullScreen type="draft-permit" />
+                  </LoadingWrapper>
                 ) : (
                   <GeneratePermitForm
                     initialValues={{
@@ -489,15 +535,17 @@ export class NOWPermitGeneration extends Component {
                     previousAmendmentDocuments={previousAmendmentDocuments}
                     noticeOfWork={this.props.noticeOfWork}
                     isViewMode={this.props.isViewMode}
+                    isLoaded={this.state.isLoaded}
                     permitAmendmentDropdown={this.state.permitAmendmentDropdown}
                     isPermitAmendmentTypeDropDownDisabled={
                       this.state.isPermitAmendmentTypeDropDownDisabled
                     }
+                    draftPermit={this.props.draftPermit}
                   />
                 )}
               </>
             )}
-          </LoadingWrapper>
+          </>
         </div>
       </div>
     );
@@ -512,6 +560,7 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.GENERATE_PERMIT)(state),
   submitting: isSubmitting(FORM.GENERATE_PERMIT)(state),
   draftPermit: getDraftPermitForNOW(state),
+  formErrors: getFormSyncErrors(FORM.GENERATE_PERMIT)(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
   permits: getPermits(state),
@@ -521,6 +570,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       reset,
+      submit,
       fetchPermits,
       updatePermitAmendment,
       fetchDraftPermitByNOW,

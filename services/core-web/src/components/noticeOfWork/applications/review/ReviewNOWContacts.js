@@ -2,7 +2,6 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Row, Col, Card } from "antd";
 import { Link } from "react-router-dom";
-import { formatTitleString } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import NullScreen from "@/components/common/NullScreen";
@@ -38,7 +37,7 @@ const NOWContact = (contact) => (
             style={{ fontSize: "1.5rem", fontWeight: "bold" }}
             to={router.PARTY_PROFILE.dynamicRoute(contact.party.party_guid)}
           >
-            {formatTitleString(contact.party.name)}
+            {contact.party.name}
           </Link>
         </h4>
         <br />
