@@ -7,15 +7,16 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Row, Popconfirm, Divider } from "antd";
 import {
   required,
   dateNotInFuture,
   maxLength,
   validateSelectOptions,
   requiredList,
+  number,
 } from "@common/utils/Validate";
-import { resetForm, determineExemptionFeeStatus } from "@common/utils/helpers";
+import { resetForm, determineExemptionFeeStatus, currencyMask } from "@common/utils/helpers";
 import {
   getDropdownPermitStatusOptions,
   getConditionalDisturbanceOptionsHash,
@@ -28,6 +29,7 @@ import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -47,6 +49,7 @@ const propTypes = {
   site_properties: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   ),
+  securityNotRequired: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -115,6 +118,15 @@ export class AddPermitForm extends Component {
     this.props.change("uploadedFiles", this.state.uploadedFiles);
   };
 
+  handleChange = (e) => {
+    if (e.target.value) {
+      this.props.change("security_not_required_reason", null);
+    } else {
+      this.props.change("liability_adjustment", null);
+      this.props.change("security_received_date", null);
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
     const permitTypeChanged =
       this.props.permitPrefix && this.props.permitPrefix !== nextProps.permitPrefix;
@@ -164,7 +176,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_type"
                 name="permit_type"
-                label="Permit type*"
+                label="Permit Type*"
                 placeholder="Select a permit type"
                 component={renderConfig.SELECT}
                 validate={[required, validateSelectOptions(permitTypes)]}
@@ -178,7 +190,7 @@ export class AddPermitForm extends Component {
                 <Field
                   id="is_exploration"
                   name="is_exploration"
-                  label="Exploration permit"
+                  label="Exploration Permit"
                   type="checkbox"
                   component={renderConfig.CHECKBOX}
                 />
@@ -188,7 +200,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_no"
                 name="permit_no"
-                label="Permit number*"
+                label="Permit Number*"
                 component={renderConfig.FIELD}
                 validate={[required, maxLength(9)]}
                 inlineLabel={
@@ -201,7 +213,7 @@ export class AddPermitForm extends Component {
               <Field
                 id="permit_status_code"
                 name="permit_status_code"
-                label="Permit status*"
+                label="Permit Status*"
                 placeholder="Select a permit status"
                 component={renderConfig.SELECT}
                 data={this.props.permitStatusOptions}
@@ -212,9 +224,63 @@ export class AddPermitForm extends Component {
               <Field
                 id="issue_date"
                 name="issue_date"
-                label="Issue date*"
+                label="Issue Date*"
                 component={renderConfig.DATE}
                 validate={[required, dateNotInFuture]}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                id="authorization_end_date"
+                name="authorization_end_date"
+                label="Authorization End Date*"
+                component={renderConfig.DATE}
+                validate={[required]}
+              />
+            </Form.Item>
+            <Divider />
+            <Form.Item label="Securities">
+              <Field
+                label="Security Not Required"
+                id="security_not_required"
+                name="security_not_required"
+                component={renderConfig.CHECKBOX}
+                onChange={(e) => this.handleChange(e)}
+              />
+            </Form.Item>
+            {this.props.securityNotRequired && (
+              <Field
+                id="security_not_required_reason"
+                label="Reason*"
+                name="security_not_required_reason"
+                component={renderConfig.SELECT}
+                placeholder="Select a reason"
+                data={securityNotRequiredReasonOptions}
+                disabled={!this.props.securityNotRequired}
+                validate={[required, validateSelectOptions(securityNotRequiredReasonOptions)]}
+              />
+            )}
+            <Form.Item label="Assessed Liability Adjustment">
+              <p className="p-light">
+                This amount will be added to the Total Assessed Liability amount for this permit.
+                Changes to this value in Core will not be updated in MMS.
+              </p>
+              <Field
+                id="liability_adjustment"
+                name="liability_adjustment"
+                component={renderConfig.FIELD}
+                {...currencyMask}
+                validate={[number]}
+                disabled={this.props.securityNotRequired}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Field
+                label="Security Received"
+                id="security_received_date"
+                name="security_received_date"
+                component={renderConfig.DATE}
+                disabled={this.props.securityNotRequired}
               />
             </Form.Item>
           </Col>
@@ -276,7 +342,8 @@ export class AddPermitForm extends Component {
               component={renderConfig.AUTO_SIZE_FIELD}
               validate={[maxLength(300)]}
             />
-            <Form.Item label="Upload files">
+            <Divider />
+            <Form.Item label="Upload Files">
               <Field
                 id="PermitDocumentFileUpload"
                 name="PermitDocumentFileUpload"
@@ -326,6 +393,7 @@ const mapStateToProps = (state) => ({
   conditionalCommodityOptions: getConditionalCommodityOptions(state),
   conditionalDisturbanceOptions: getConditionalDisturbanceOptionsHash(state),
   site_properties: selector(state, "site_properties"),
+  securityNotRequired: selector(state, "security_not_required"),
   exemptionFeeStatusDropDownOptions: getExemptionFeeStatusDropDownOptions(state),
 });
 

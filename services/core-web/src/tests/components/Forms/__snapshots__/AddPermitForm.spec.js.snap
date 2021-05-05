@@ -61,7 +61,7 @@ exports[`AddPermitForm renders properly 1`] = `
             ]
           }
           id="permit_type"
-          label="Permit type*"
+          label="Permit Type*"
           name="permit_type"
           placeholder="Select a permit type"
           validate={
@@ -79,7 +79,7 @@ exports[`AddPermitForm renders properly 1`] = `
           component={[Function]}
           id="permit_no"
           inlineLabel=""
-          label="Permit number*"
+          label="Permit Number*"
           name="permit_no"
           validate={
             Array [
@@ -96,7 +96,7 @@ exports[`AddPermitForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           id="permit_status_code"
-          label="Permit status*"
+          label="Permit Status*"
           name="permit_status_code"
           placeholder="Select a permit status"
           validate={
@@ -113,7 +113,7 @@ exports[`AddPermitForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="issue_date"
-          label="Issue date*"
+          label="Issue Date*"
           name="issue_date"
           validate={
             Array [
@@ -121,6 +121,69 @@ exports[`AddPermitForm renders properly 1`] = `
               [Function],
             ]
           }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="authorization_end_date"
+          label="Authorization End Date*"
+          name="authorization_end_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <Divider />
+      <FormItem
+        hasFeedback={false}
+        label="Securities"
+      >
+        <Field
+          component={[Function]}
+          id="security_not_required"
+          label="Security Not Required"
+          name="security_not_required"
+          onChange={[Function]}
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+        label="Assessed Liability Adjustment"
+      >
+        <p
+          className="p-light"
+        >
+          This amount will be added to the Total Assessed Liability amount for this permit. Changes to this value in Core will not be updated in MMS.
+        </p>
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="liability_adjustment"
+          name="liability_adjustment"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="security_received_date"
+          label="Security Received"
+          name="security_received_date"
         />
       </FormItem>
     </Col>
@@ -191,9 +254,10 @@ exports[`AddPermitForm renders properly 1`] = `
           ]
         }
       />
+      <Divider />
       <FormItem
         hasFeedback={false}
-        label="Upload files"
+        label="Upload Files"
       >
         <Field
           component={[Function]}

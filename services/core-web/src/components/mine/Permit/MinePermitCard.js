@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatTitleString, formatDate } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { getMineTenureTypesHash } from "@common/selectors/staticContentSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
@@ -23,7 +23,7 @@ export const PermitCard = (props) => {
     .sort((a, b) => new Date(b.start_date) - new Date(a.start_date))[0];
   return (
     <div>
-      <h4>{formatTitleString(props.permit.permit_no)}</h4>
+      <h4>{props.permit.permit_no}</h4>
       <br />
       <h6>Last Amended</h6>
       <span>

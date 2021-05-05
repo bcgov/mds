@@ -51,6 +51,21 @@ exports[`PermitAmendmentForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
+          id="authorization_end_date"
+          label="Authorization End Date*"
+          name="authorization_end_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
           id="description"
           label="Description"
           name="description"

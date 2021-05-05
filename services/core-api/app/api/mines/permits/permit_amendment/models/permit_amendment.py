@@ -151,6 +151,9 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                issuing_inspector_title=None,
                regional_office=None,
                now_application_guid=None,
+               security_received_date=None,
+               security_not_required =None,
+               security_not_required_reason=None,
                add_to_session=True):
         new_pa = cls(
             permit_id=permit.permit_id,
@@ -165,7 +168,10 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             liability_adjustment=liability_adjustment,
             issuing_inspector_title=issuing_inspector_title,
             regional_office=regional_office,
-            now_application_guid=now_application_guid)
+            now_application_guid=now_application_guid,
+            security_received_date=security_received_date,
+            security_not_required=security_not_required,
+            security_not_required_reason=security_not_required_reason)
         permit._all_permit_amendments.append(new_pa)
         if add_to_session:
             new_pa.save(commit=False)
