@@ -61,7 +61,7 @@ exports[`AddPermitForm renders properly 1`] = `
             ]
           }
           id="permit_type"
-          label="Permit type*"
+          label="Permit Type*"
           name="permit_type"
           placeholder="Select a permit type"
           validate={
@@ -79,7 +79,7 @@ exports[`AddPermitForm renders properly 1`] = `
           component={[Function]}
           id="permit_no"
           inlineLabel=""
-          label="Permit number*"
+          label="Permit Number*"
           name="permit_no"
           validate={
             Array [
@@ -96,7 +96,7 @@ exports[`AddPermitForm renders properly 1`] = `
           component={[Function]}
           data={Array []}
           id="permit_status_code"
-          label="Permit status*"
+          label="Permit Status*"
           name="permit_status_code"
           placeholder="Select a permit status"
           validate={
@@ -113,7 +113,7 @@ exports[`AddPermitForm renders properly 1`] = `
         <Field
           component={[Function]}
           id="issue_date"
-          label="Issue date*"
+          label="Issue Date*"
           name="issue_date"
           validate={
             Array [
