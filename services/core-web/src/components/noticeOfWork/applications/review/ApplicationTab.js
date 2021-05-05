@@ -37,6 +37,7 @@ import AssignInspectors from "@/components/noticeOfWork/applications/verificatio
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewAdminAmendmentApplication from "@/components/noticeOfWork/applications/review/ReviewAdminAmendmentApplication";
 import { EDIT_OUTLINE } from "@/constants/assets";
+import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @constant ApplicationTab renders All content under the Application Tab
@@ -66,6 +67,7 @@ const propTypes = {
       applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
     }),
   }).isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 const defaultProps = {};
 
@@ -435,6 +437,7 @@ export class ApplicationTab extends Component {
               importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+              draftPermit={this.props.draftPermit}
             />
           ) : (
             <ReviewAdminAmendmentApplication
@@ -466,6 +469,7 @@ const mapStateToProps = (state) => ({
   reclamationSummary: getNOWReclamationSummary(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
+  draftPermit: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
