@@ -42,32 +42,42 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
-            PdfRenderer pdfviewer;
-            pdfviewer = new PdfRenderer(_mCache);
-            PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
-            MemoryStream stream = new MemoryStream();
-            object jsonResult = new object();
-            if (jsonObject != null && jsonObject.ContainsKey("document"))
+            Console.WriteLine("************************ IN LOAD");
+            try
             {
-                if (bool.Parse(jsonObject["isFileName"]))
+                PdfRenderer pdfviewer;
+                pdfviewer = new PdfRenderer(_mCache);
+                PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
+                MemoryStream stream = new MemoryStream();
+                object jsonResult = new object();
+                if (jsonObject != null && jsonObject.ContainsKey("document"))
                 {
-                    string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
-                    string filename = Path.GetFileName(jsonObject["document"]);
-                    FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
-                    if (fsr == null)
+                    if (bool.Parse(jsonObject["isFileName"]))
                     {
-                        return this.Content(jsonObject["document"] + " is not found");
+                        string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
+                        string filename = Path.GetFileName(jsonObject["document"]);
+                        FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+                        if (fsr == null)
+                        {
+                            return this.Content(jsonObject["document"] + " is not found");
+                        }
+                        fsr.FileStream.CopyTo(stream);
                     }
-                    fsr.FileStream.CopyTo(stream);
+                    else
+                    {
+                        byte[] bytes = Convert.FromBase64String(jsonObject["document"]);
+                        stream = new MemoryStream(bytes);
+                    }
                 }
-                else
-                {
-                    byte[] bytes = Convert.FromBase64String(jsonObject["document"]);
-                    stream = new MemoryStream(bytes);
-                }
+                jsonResult = pdfviewer.Load(stream, jsonObject);
+                return Content(JsonConvert.SerializeObject(jsonResult));
             }
-            jsonResult = pdfviewer.Load(stream, jsonObject);
-            return Content(JsonConvert.SerializeObject(jsonResult));
+            catch (Exception ex)
+            {
+                Console.WriteLine("************************");
+                Console.WriteLine(ex.ToString());
+            }
+            return null;
         }
 
         [AcceptVerbs("Post")]
