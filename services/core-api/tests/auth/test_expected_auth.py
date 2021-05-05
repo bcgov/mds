@@ -123,7 +123,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (BondResource, 'put', [EDIT_SECURITIES]),
     (BondTransferResource, 'put', [EDIT_SECURITIES]),
     (MineCommentListResource, 'get', [VIEW_ALL]),
-    (MineCommentListResource, 'post', [MINE_EDIT]),
+    (MineCommentListResource, 'post', [VIEW_ALL]),
     (MineCommentResource, 'delete', [MINE_ADMIN]),
     (PermitConditionsListResource, 'post', [EDIT_PERMIT]),
     (PermitConditionsListResource, 'get', [EDIT_PERMIT]),

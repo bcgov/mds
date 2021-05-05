@@ -7,6 +7,7 @@ const propTypes = {
   initialValues: CustomPropTypes.permit.isRequired,
   permit: CustomPropTypes.permit.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export const EditSitePropertiesModal = (props) => {
@@ -15,6 +16,7 @@ export const EditSitePropertiesModal = (props) => {
       initialValues={props.initialValues}
       permit={props.permit}
       onSubmit={props.onSubmit}
+      closeModal={props.closeModal}
     />
   );
 };

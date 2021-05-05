@@ -23,12 +23,6 @@ export const sideMenuOptions = {
       alwaysVisible: true,
       applicationType: ["NOW", "ADA"],
     },
-    // {
-    //   href: "site-properties",
-    //   title: "Site Properties",
-    //   alwaysVisible: true,
-    //   applicationType: ["ADA"],
-    // },
     { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
     { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
     {
@@ -133,6 +127,12 @@ export const sideMenuOptions = {
       applicationType: ["NOW", "ADA"],
     },
     {
+      href: "site-properties",
+      title: "Site Properties",
+      alwaysVisible: true,
+      applicationType: ["NOW", "ADA"],
+    },
+    {
       href: "preamble",
       title: "Preamble",
       alwaysVisible: true,
@@ -221,7 +221,7 @@ export const sideMenuOptions = {
       title: "Application Export Files",
       alwaysVisible: true,
       children: [],
-      applicationType: ["NOW"],
+      applicationType: ["NOW", "ADA"],
     },
     {
       href: "inspectors",

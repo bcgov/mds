@@ -41,7 +41,7 @@ class MineTypeListResource(Resource, UserMixin):
         mine_commodity_code = data.get('mine_commodity_code') or []
         permit_guid = data.get('permit_guid')
 
-        mine_type = MineType.create(mine_guid, mine_tenure_type_code, permit_guid)
+        mine_type = MineType.create(mine_guid, mine_tenure_type_code, permit_guid=permit_guid)
 
         for d_code in mine_disturbance_code:
             MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)

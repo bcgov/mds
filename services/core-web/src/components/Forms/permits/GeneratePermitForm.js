@@ -14,6 +14,8 @@ import FinalPermitDocuments from "@/components/noticeOfWork/applications/FinalPe
 import PreviousAmendmentDocuments from "@/components/noticeOfWork/applications/PreviousAmendmentDocuments";
 import Conditions from "@/components/Forms/permits/conditions/Conditions";
 import NOWDocuments from "@/components/noticeOfWork/applications//NOWDocuments";
+import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -22,6 +24,8 @@ const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   permitAmendmentDropdown: CustomPropTypes.options.isRequired,
   isPermitAmendmentTypeDropDownDisabled: PropTypes.bool.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 
 export const GeneratePermitForm = (props) => (
@@ -194,6 +198,22 @@ export const GeneratePermitForm = (props) => (
         </Row>
       </>
     </ScrollContentWrapper>
+    <ScrollContentWrapper
+      id="site-properties"
+      title={
+        <>
+          Site Properties
+          <CoreTooltip title="This information will be included on the permit when it is issued and will determine whether the permittee needs to file inspection fee returns." />
+        </>
+      }
+    >
+      <ReviewSiteProperties
+        noticeOfWorkType={props.noticeOfWork.notice_of_work_type_code}
+        isViewMode={props.isViewMode}
+        initialValues={props.noticeOfWork.site_property}
+        draftPermit={props.draftPermit}
+      />
+    </ScrollContentWrapper>
     <ScrollContentWrapper id="preamble" title="Preamble">
       <>
         <Row gutter={32}>
@@ -260,6 +280,7 @@ export const GeneratePermitForm = (props) => (
         )}
       </>
     </ScrollContentWrapper>
+
     <ScrollContentWrapper id="conditions" title="Conditions">
       <Conditions
         isViewMode={props.isViewMode}
@@ -289,4 +310,5 @@ export default reduxForm({
   touchOnBlur: false,
   onSubmitSuccess: resetForm(FORM.GENERATE_PERMIT),
   enableReinitialize: true,
+  onSubmit: () => {},
 })(GeneratePermitForm);

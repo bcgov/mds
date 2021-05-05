@@ -51,6 +51,12 @@ import {
   getPermitConditionCategoryOptions,
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
+  getConsequenceClassificationStatusCodeOptions,
+  getTSFOperatingStatusCodeOptions,
+  getTSFOperatingStatusCodeOptionsHash,
+  getTSFOperatingStatusCodeDropdownOptions,
+  getConsequenceClassificationStatusCodeOptionsHash,
+  getConsequenceClassificationStatusCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -327,5 +333,39 @@ describe("staticContentSelectors", () => {
     expect(getApplicationReasonCodeDropdownOptions(mockState)).toEqual(
       mockState[STATIC_CONTENT].applicationReasonCodeOptions
     );
+  });
+
+  it("`getConsequenceClassificationStatusCodeOptions` calls `staticContentReducer.getConsequenceClassificationStatusCodeOptions`", () => {
+    expect(getConsequenceClassificationStatusCodeOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].consequenceClassificationStatusCodeOptions
+    );
+  });
+
+  it("`getTSFOperatingStatusCodeOptions` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
+    expect(getTSFOperatingStatusCodeOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].TSFOperatingStatusCodeOptions
+    );
+  });
+
+  it("`getConsequenceClassificationStatusCodeDropdownOptions` calls `staticContentReducer.getConsequenceClassificationStatusCodeOptions`", () => {
+    expect(getConsequenceClassificationStatusCodeDropdownOptions(mockState)).toEqual(
+      Mock.CONSEQUENCE_CLASSIFICATION_STATUS_DROPDOWN_OPTIONS
+    );
+  });
+
+  it("`getTSFOperatingStatusCodeDropdownOptions` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
+    expect(getTSFOperatingStatusCodeDropdownOptions(mockState)).toEqual(
+      Mock.TSF_OPERATING_STATUS_DROPDOWN_OPTIONS
+    );
+  });
+
+  it("`getConsequenceClassificationStatusCodeOptionsHash` calls `staticContentReducer.getConsequenceClassificationStatusCodeOptions`", () => {
+    expect(getConsequenceClassificationStatusCodeOptionsHash(mockState)).toEqual(
+      Mock.CONSEQUENCE_CLASSIFICATION_STATUS_HASH
+    );
+  });
+
+  it("`getTSFOperatingStatusCodeOptionsHash` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
+    expect(getTSFOperatingStatusCodeOptionsHash(mockState)).toEqual(Mock.TSF_OPERATING_STATUS_HASH);
   });
 });

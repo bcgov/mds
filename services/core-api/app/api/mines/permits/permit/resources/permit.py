@@ -1,8 +1,8 @@
 import json
 from flask_restplus import Resource, reqparse
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import current_app, request
-from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
+from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
@@ -312,26 +312,18 @@ class PermitResource(Resource, UserMixin):
             data.get('exemption_fee_status_code'))
 
         if data.get('site_properties') != {}:
-            site_properties = permit.site_properties
-            if not site_properties:
-                mine_type = MineType.create(
-                    mine_guid,
-                    data.get('site_properties', {}).get('mine_tenure_type_code'),
-                    permit.permit_guid)
+            MineType.create_or_update_mine_type_with_details(
+                mine_guid=mine_guid,
+                permit_guid=permit_guid,
+                mine_tenure_type_code=data.get('site_properties', {}).get('mine_tenure_type_code'),
+                mine_disturbance_codes=data.get('site_properties',
+                                                {}).get('mine_disturbance_code', []),
+                mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code', []))
 
-                for d_code in data.get('site_properties', {}).get('mine_disturbance_code', []):
-                    MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
-
-                for c_code in data.get('site_properties', {}).get('mine_commodity_code', []):
-                    MineTypeDetail.create(mine_type, mine_commodity_code=c_code)
-            else:
-                MineType.update_mine_type_details(
-                    permit_guid=permit_guid,
-                    mine_tenure_type_code=data.get('site_properties',
-                                                   {}).get('mine_tenure_type_code'),
-                    mine_disturbance_codes=data.get('site_properties',
-                                                    {}).get('mine_disturbance_code'),
-                    mine_commodity_codes=data.get('site_properties', {}).get('mine_commodity_code'))
+        # If the permit status has changed, update the "status changed" timestamp.
+        permit_status_code = data.get('permit_status_code')
+        if permit_status_code and permit_status_code != permit.permit_status_code:
+            permit.status_changed_timestamp = datetime.now(timezone.utc)
 
         for key, value in data.items():
             if key in ['permit_no', 'mine_guid', 'uploadedFiles', 'site_properties']:

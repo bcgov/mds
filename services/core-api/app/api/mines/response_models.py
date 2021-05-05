@@ -143,6 +143,24 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'permit_conditions_last_updated_date': fields.DateTime,
     })
 
+MINE_TYPE_DETAIL_MODEL = api.model(
+    'MineTypeDetail', {
+        'mine_type_detail_xref_guid': fields.String,
+        'mine_type_guid': fields.String,
+        'mine_disturbance_code': fields.String,
+        'mine_commodity_code': fields.String,
+    })
+
+MINE_TYPE_MODEL = api.model(
+    'MineType', {
+        'mine_type_guid': fields.String,
+        'mine_guid': fields.String,
+        'permit_guid': fields.String,
+        'now_application_guid': fields.String,
+        'mine_tenure_type_code': fields.String,
+        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
+    })
+
 PERMIT_AMENDMENT_MODEL = api.model(
     'PermitAmendment', {
         'permit_amendment_id':
@@ -184,27 +202,10 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_conditions_last_updated_by':
         fields.String,
         'permit_conditions_last_updated_date':
-        fields.DateTime,
+        fields.DateTime
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
-
-MINE_TYPE_DETAIL_MODEL = api.model(
-    'MineTypeDetail', {
-        'mine_type_detail_xref_guid': fields.String,
-        'mine_type_guid': fields.String,
-        'mine_disturbance_code': fields.String,
-        'mine_commodity_code': fields.String,
-    })
-
-MINE_TYPE_MODEL = api.model(
-    'MineType', {
-        'mine_type_guid': fields.String,
-        'mine_guid': fields.String,
-        'permit_guid': fields.String,
-        'mine_tenure_type_code': fields.String,
-        'mine_type_detail': fields.List(fields.Nested(MINE_TYPE_DETAIL_MODEL)),
-    })
 
 PERMIT_MODEL = api.model(
     'Permit', {
@@ -272,6 +273,11 @@ MINE_TSF_MODEL = api.model(
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
+        'latitude': fields.String,
+        'longitude': fields.String,
+        'consequence_classification_status_code': fields.String,
+        'has_itrb': fields.Boolean,
+        'tsf_operating_status_code': fields.String,
     })
 
 MINE_VERIFIED_MODEL = api.model(
@@ -614,3 +620,17 @@ GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
     'description': fields.String,
     'is_active': fields.Integer
 })
+
+CONSEQUENCE_CLASSIFICATION_STATUS_MODEL = api.model(
+    'ConsequenceClassificationStatusCode', {
+        'consequence_classification_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
+
+TSF_OPERATING_STATUS_MODEL = api.model(
+    'TSFOperatingStatusCode', {
+        'tsf_operating_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
