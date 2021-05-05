@@ -157,7 +157,7 @@ export class MinePermitInfo extends Component {
       props: {
         initialValues: permit,
         permit,
-        onSubmit: this.handleEditPermit,
+        onSubmit: this.handleEditSiteProperties,
         title: `Edit Site Properties for ${permit.permit_no}`,
       },
       content: modalConfig.EDIT_SITE_PROPERTIES_MODAL,
@@ -179,10 +179,19 @@ export class MinePermitInfo extends Component {
     });
   };
 
-  handleEditPermit = (values) =>
-    this.props
+  handleEditPermit = (values) => {
+    // we do not need to provide site_properties on status update as it will fail if the site_properties are empty
+    delete values.site_properties;
+    return this.props
       .updatePermit(this.props.mineGuid, values.permit_guid, values)
       .then(this.closePermitModal);
+  };
+
+  handleEditSiteProperties = (values) => {
+    return this.props
+      .updatePermit(this.props.mineGuid, values.permit_guid, values)
+      .then(this.closePermitModal);
+  };
 
   handleDeletePermit = (permitGuid) =>
     this.props.deletePermit(this.props.mineGuid, permitGuid).then(() => this.closePermitModal());

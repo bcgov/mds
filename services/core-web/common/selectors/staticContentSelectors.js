@@ -651,14 +651,14 @@ export const getBondDocumentTypeOptionsHash = createSelector(
   createLabelHash
 );
 
-export const getExemptionFeeSatusDropDownOptions = createSelectorWrapper(
+export const getExemptionFeeStatusDropDownOptions = createSelectorWrapper(
   getExemptionFeeStatusOptions,
   createDropDownList,
   ["description", "exemption_fee_status_code", "active_ind"]
 );
 
 export const getExemptionFeeStatusOptionsHash = createSelector(
-  [getExemptionFeeSatusDropDownOptions],
+  [getExemptionFeeStatusDropDownOptions],
   createLabelHash
 );
 

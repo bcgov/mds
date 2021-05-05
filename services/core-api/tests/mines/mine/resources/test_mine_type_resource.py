@@ -130,10 +130,8 @@ def test_post_mine_type_invalid_mine_tenure_type_code(test_client, db_session, a
 
 
 def test_post_mine_type_duplicate(test_client, db_session, auth_headers):
-    # mine_guid = MineFactory(mine_type=None).mine_guid
     mine, permit = create_mine_and_permit(mine_kwargs={'mine_type': None})
     mine_guid = mine.mine_guid
-    print(mine.__dict__)
 
     test_data = {
         'mine_tenure_type_code': 'MIN',
