@@ -414,8 +414,8 @@ export class ProcessPermit extends Component {
           this.props.documentContextTemplate,
           {
             ...permitObj,
-            auth_end_date: formatDate(values.auth_end_date),
-            issue_date: formatDate(values.issue_date),
+            formatted_auth_end_date: formatDate(values.auth_end_date),
+            formatted_issue_date: formatDate(values.issue_date),
             application_dated: formatDate(permitObj.application_date),
             final_application_package: this.getFinalApplicationPackage(this.props.noticeOfWork),
           },
