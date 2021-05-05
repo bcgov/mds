@@ -44,6 +44,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         {
             PdfRenderer pdfviewer;
             pdfviewer = new PdfRenderer(_mCache);
+            PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
             MemoryStream stream = new MemoryStream();
             object jsonResult = new object();
             if (jsonObject != null && jsonObject.ContainsKey("document"))
