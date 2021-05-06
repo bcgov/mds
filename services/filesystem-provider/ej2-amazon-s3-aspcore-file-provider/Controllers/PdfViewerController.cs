@@ -82,6 +82,9 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                 }
                 Console.WriteLine("Here 8");
                 jsonResult = pdfviewer.Load(stream, jsonObject);
+                Console.WriteLine("stream " + stream.Length);
+                Console.WriteLine("stream " + stream.ToString());
+                Console.WriteLine("jsonObject " + jsonObject.ToString());
                 Console.WriteLine("jsonResult " + jsonResult.ToString());
                 Console.WriteLine("Here 9");
                 ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
