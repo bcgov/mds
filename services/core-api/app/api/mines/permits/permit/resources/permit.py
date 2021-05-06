@@ -67,11 +67,6 @@ class PermitListResource(Resource, UserMixin):
         type=bool,
         location='json',
         help='Whether the permit is an exploration permit or not.')
-    parser.add_argument(
-        'populate_with_conditions',
-        type=bool,
-        location='json',
-        help='Whether the permit is an admin amendment or not needing the standard conditions.')
     parser.add_argument('description', type=str, location='json', help='Permit description')
     parser.add_argument('uploadedFiles', type=list, location='json', store_missing=False)
     parser.add_argument(
@@ -193,7 +188,7 @@ class PermitListResource(Resource, UserMixin):
 
         now_application_guid = data.get('now_application_guid')
         needs_standard_conditions = data.get('needs_standard_conditions', True)
-        if now_application_guid is not None and permit.permit_status_code == 'D' and populate_with_conditions:
+        if now_application_guid is not None and permit.permit_status_code == 'D':
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             if application_identity.now_application:
                 now_type = application_identity.now_application.notice_of_work_type_code

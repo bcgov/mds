@@ -203,24 +203,27 @@ class PermitAmendmentListResource(Resource, UserMixin):
                                             new_pa.permit_amendment_id, condition.condition,
                                             condition.display_order, condition.sub_conditions)
 
+            populate_with_conditions = data.get('populate_with_conditions', True)
             if application_identity.now_application:
-                if application_identity.application_type_code == "ADA":
+                if populate_with_conditions:
+                    if application_identity.application_type_code == "ADA":
 
-                    conditions = PermitConditions.find_all_by_permit_amendment_id(
-                        application_identity.source_permit_amendment_id)
-                    if conditions:
-                        for condition in conditions:
-                            PermitConditions.create(condition.condition_category_code,
-                                                    condition.condition_type_code,
-                                                    new_pa.permit_amendment_id, condition.condition,
-                                                    condition.display_order,
-                                                    condition.sub_conditions)
+                        conditions = PermitConditions.find_all_by_permit_amendment_id(
+                            application_identity.source_permit_amendment_id)
+                        if conditions:
+                            for condition in conditions:
+                                PermitConditions.create(condition.condition_category_code,
+                                                        condition.condition_type_code,
+                                                        new_pa.permit_amendment_id,
+                                                        condition.condition,
+                                                        condition.display_order,
+                                                        condition.sub_conditions)
+                        else:
+                            create_standard_conditions(application_identity)
                     else:
                         create_standard_conditions(application_identity)
-                else:
-                    create_standard_conditions(application_identity)
 
-                db.session.commit()
+                    db.session.commit()
 
                 # create site properties if DFT permit_amendment
                 if not application_identity.now_application.site_property:
