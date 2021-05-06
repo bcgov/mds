@@ -61,6 +61,8 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                         Console.WriteLine("Here 5");
                         string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
                         string filename = Path.GetFileName(jsonObject["document"]);
+                        Console.WriteLine("path " + path);
+                        Console.WriteLine("filename " + filename);
                         FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
                         if (fsr == null)
                         {
@@ -68,6 +70,8 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                             return this.Content(jsonObject["document"] + " is not found");
                         }
                         fsr.FileStream.CopyTo(stream);
+                        Console.WriteLine("fsr.EntityTag " + fsr.EntityTag);
+                        Console.WriteLine("fsr.ToString() " + fsr.ToString());
                         Console.WriteLine("Here 7");
                     }
                     else
@@ -78,8 +82,10 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
                 }
                 Console.WriteLine("Here 8");
                 jsonResult = pdfviewer.Load(stream, jsonObject);
+                Console.WriteLine("jsonResult " + jsonResult.ToString());
                 Console.WriteLine("Here 9");
                 ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
+                Console.WriteLine("result.Content " + result.Content);
                 Console.WriteLine("Here 10");
                 return result;
             }
