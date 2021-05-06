@@ -42,7 +42,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("************************");
+            Console.WriteLine("Load ************************");
             try
             {
                 Console.WriteLine("Here 1");
@@ -97,6 +97,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Bookmarks([FromBody] Dictionary<string, string> jsonObject)
         {
+            Console.WriteLine("Bookmarks ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetBookmarks(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
@@ -108,6 +109,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult RenderPdfPages([FromBody] Dictionary<string, string> jsonObject)
         {
+            Console.WriteLine("RenderPdfPages ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetPage(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
@@ -132,6 +134,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Unload([FromBody] Dictionary<string, string> jsonObject)
         {
+            Console.WriteLine("Unload ************************");
             PdfRenderer pdfviewer;
             pdfviewer = new PdfRenderer(_mCache);
             pdfviewer.ClearCache(jsonObject);
@@ -154,6 +157,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Download([FromBody] Dictionary<string, string> jsonObject)
         {
+            Console.WriteLine("Download ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             string documentBase = pdfviewer.GetDocumentAsBase64(jsonObject);
             return Content(documentBase);
