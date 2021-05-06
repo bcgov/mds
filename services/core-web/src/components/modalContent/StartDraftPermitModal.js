@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Alert, Popconfirm, Button, Steps } from "antd";
+import { Alert, Popconfirm, Button, Steps, Radio, Row, Col } from "antd";
+import { SafetyCertificateOutlined, RocketOutlined } from "@ant-design/icons";
 import { getFormValues, submit } from "redux-form";
 import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
@@ -44,13 +45,18 @@ const defaultProps = {
 export const StartDraftPermitModal = (props) => {
   const [currentStep, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerateThroughCore, setGenerateThroughCore] = useState(true);
+
+  const onChange = (e) => setGenerateThroughCore(e.target.value);
 
   const handleCreatePermit = (isExploration) => {
     const payload = {
       permit_status_code: "D",
       is_exploration: isExploration,
       now_application_guid: props.noticeOfWork.now_application_guid,
+      populate_with_conditions: isGenerateThroughCore,
     };
+    console.log(payload);
     return props
       .createPermit(props.noticeOfWork.mine_guid, payload)
       .then(() => {
@@ -68,7 +74,9 @@ export const StartDraftPermitModal = (props) => {
         permit_amendment_status_code: "DFT",
         now_application_guid: props.noticeOfWork.now_application_guid,
         permit_amendment_type_code: permitPayload.permit_amendment_type_code,
+        populate_with_conditions: isGenerateThroughCore,
       };
+      console.log(payload);
       return props
         .createPermitAmendment(props.noticeOfWork.mine_guid, permitPayload.permit_guid, payload)
         .then(() => {
@@ -142,6 +150,21 @@ export const StartDraftPermitModal = (props) => {
         Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
       </p>
       <br />
+      {!props.noticeOfWork.has_source_conditions &&
+        props.noticeOfWork.application_type_code === "ADA" && (
+          <Radio.Group value={true} onChange={onChange} value={isGenerateThroughCore}>
+            <Row gutter={16}>
+              <Col span={12} style={{ height: "400px" }} className="border--right--layout">
+                <Radio value={true}> Generate PDF </Radio>
+                <SafetyCertificateOutlined className="icon-xxl--lightgrey" />
+              </Col>
+              <Col span={12}>
+                <Radio value={false}> Upload Document </Radio>
+                <RocketOutlined className="icon-xxl--lightgrey" />
+              </Col>
+            </Row>
+          </Radio.Group>
+        )}
     </>
   );
 

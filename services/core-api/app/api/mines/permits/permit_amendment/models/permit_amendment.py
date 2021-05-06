@@ -11,6 +11,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -115,6 +116,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if self.now_application_identity:
             _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
+    
+    @hybrid_property
+    def has_permit_conditions(self):
+        permit_conditions = PermitConditions.query.filter_by(
+            permit_amendment_id=self.permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).count()
+        return permit_conditions > 0
 
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
