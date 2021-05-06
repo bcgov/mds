@@ -82,6 +82,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
         'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
+    parser.add_argument(
+        'populate_with_conditions', type=bool, location='json', help='Determines if the Permit should be generated through Core with conditions.')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',

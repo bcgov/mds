@@ -152,10 +152,10 @@ export const StartDraftPermitModal = (props) => {
       <br />
       {!props.noticeOfWork.has_source_conditions &&
         props.noticeOfWork.application_type_code === "ADA" && (
-          <Radio.Group value={true} onChange={onChange} value={isGenerateThroughCore}>
+          <Radio.Group value onChange={onChange} value={isGenerateThroughCore}>
             <Row gutter={16}>
               <Col span={12} style={{ height: "400px" }} className="border--right--layout">
-                <Radio value={true}> Generate PDF </Radio>
+                <Radio value> Generate PDF </Radio>
                 <SafetyCertificateOutlined className="icon-xxl--lightgrey" />
               </Col>
               <Col span={12}>
