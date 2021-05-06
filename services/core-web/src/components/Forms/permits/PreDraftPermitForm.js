@@ -7,12 +7,17 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Tooltip } from "antd";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
-import { required, requiredRadioButton } from "@common/utils/Validate";
+import { required, requiredRadioButton, validateSelectOptions } from "@common/utils/Validate";
+import RenderSelect from "@/components/common/RenderSelect";
+import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
-import { getDropdownPermitAmendmentTypeOptions } from "@common/selectors/staticContentSelectors";
+import {
+  getDropdownPermitAmendmentTypeOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+} from "@common/selectors/staticContentSelectors";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 
 const propTypes = {
@@ -22,6 +27,9 @@ const propTypes = {
   change: PropTypes.func.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   formValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
+  applicationTypeOptions: CustomPropTypes.options.isRequired,
+  editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const PreDraftPermitForm = (props) => {
@@ -82,9 +90,28 @@ export const PreDraftPermitForm = (props) => {
     isPermitAmendmentTypeDropDownDisabled = false;
   }
 
+  const filteredApplicationTypeOptions = props.isNoticeOfWorkTypeDisabled
+    ? props.applicationTypeOptions
+    : props.editableApplicationTypeOptions;
+
   return (
     <Form layout="vertical">
       <Row gutter={16}>
+        {!props.isNoticeOfWorkTypeDisabled && (
+          <Col span={24}>
+            <Form.Item>
+              <Field
+                id="notice_of_work_type_code"
+                name="notice_of_work_type_code"
+                label="Type of Notice of Work*"
+                component={RenderSelect}
+                data={filteredApplicationTypeOptions}
+                validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
+                disabled={props.initialValues.disabled || props.isNoticeOfWorkTypeDisabled}
+              />
+            </Form.Item>
+          </Col>
+        )}
         <Col span={24}>
           <Form.Item>
             <Field
@@ -160,6 +187,8 @@ PreDraftPermitForm.propTypes = propTypes;
 const mapStateToProps = (state) => ({
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
   formValues: getFormValues(FORM.PRE_DRAFT_PERMIT)(state),
+  applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
+  editableApplicationTypeOptions: getNoticeOfWorkEditableTypes(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

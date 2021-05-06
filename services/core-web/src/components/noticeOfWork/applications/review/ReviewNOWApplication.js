@@ -39,7 +39,7 @@ import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
-import { isEmpty } from "lodash";
+import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
@@ -71,7 +71,8 @@ const propTypes = {
   proposedAuthorizationEndDate: PropTypes.string.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
-  draftPermit: CustomPropTypes.permit.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
+  editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -84,15 +85,12 @@ export const ReviewNOWApplication = (props) => {
     return codeHash[value];
   };
 
-  // TODO make an arrow function
   const renderApplicationInfo = () => {
-    console.log("draft permit");
-    console.log(props.draftPermit);
-    console.log(
-      `check ${props.isViewMode ||
-        (props.draftPermit && !isEmpty(props.draftPermit.permit_guid)) ||
-        !["SAG", "QIM"].includes(props.noticeOfWorkType)}`
-    );
+    const noticeOfWorkTypeDropDownDisabled = props.isViewMode || props.isNoticeOfWorkTypeDisabled;
+
+    const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
+      ? props.applicationTypeOptions
+      : props.editableApplicationTypeOptions;
     return (
       <div>
         <Row gutter={16}>
@@ -179,12 +177,8 @@ export const ReviewNOWApplication = (props) => {
               id="notice_of_work_type_code"
               name="notice_of_work_type_code"
               component={RenderSelect}
-              data={props.applicationTypeOptions}
-              disabled={
-                props.isViewMode ||
-                (props.draftPermit && !isEmpty(props.draftPermit.permit_guid)) ||
-                !["SAG", "QIM"].includes(props.noticeOfWorkType)
-              }
+              data={filteredApplicationTypeOptions}
+              disabled={noticeOfWorkTypeDropDownDisabled}
               validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
             />
             <div className="field-title">
@@ -949,6 +943,7 @@ export default compose(
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
+    editableApplicationTypeOptions: getNoticeOfWorkEditableTypes(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,

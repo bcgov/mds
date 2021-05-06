@@ -37,7 +37,6 @@ import AssignInspectors from "@/components/noticeOfWork/applications/verificatio
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewAdminAmendmentApplication from "@/components/noticeOfWork/applications/review/ReviewAdminAmendmentApplication";
 import { EDIT_OUTLINE } from "@/constants/assets";
-import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @constant ApplicationTab renders All content under the Application Tab
@@ -67,9 +66,11 @@ const propTypes = {
       applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
     }),
   }).isRequired,
-  draftPermit: CustomPropTypes.permit.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
-const defaultProps = {};
+const defaultProps = {
+  isNoticeOfWorkTypeDisabled: true,
+};
 
 export class ApplicationTab extends Component {
   state = {
@@ -383,6 +384,11 @@ export class ApplicationTab extends Component {
   render() {
     const isImported = this.props.noticeOfWork.imported_to_core;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+
+    // console.log(
+    //   `Application tab isNoticeOfWorkTypeDisabled ${this.props.isNoticeOfWorkTypeDisabled}`
+    // );
+
     return (
       <React.Fragment>
         <Prompt
@@ -403,7 +409,7 @@ export class ApplicationTab extends Component {
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
-        {this.renderEditModeNav(this.props.fixedTop)}
+        {this.renderEditModeNav()}
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu tabSection="application" />
         </div>
@@ -437,7 +443,7 @@ export class ApplicationTab extends Component {
               importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
-              draftPermit={this.props.draftPermit}
+              isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
             />
           ) : (
             <ReviewAdminAmendmentApplication
@@ -448,6 +454,7 @@ export class ApplicationTab extends Component {
               noticeOfWork={this.props.noticeOfWork}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+              isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
             />
           )}
         </div>
@@ -469,7 +476,6 @@ const mapStateToProps = (state) => ({
   reclamationSummary: getNOWReclamationSummary(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   noticeOfWorkApplicationStatusOptionsHash: getNoticeOfWorkApplicationStatusOptionsHash(state),
-  draftPermit: getDraftPermitForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -48,9 +48,13 @@ const propTypes = {
   createApplicationDelay: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
-const defaultProps = { handleDraftPermit: () => {} };
+const defaultProps = {
+  handleDraftPermit: () => {},
+  isNoticeOfWorkTypeDisabled: true,
+};
 
 export class NOWProgressActions extends Component {
   componentDidMount() {
@@ -136,8 +140,8 @@ export class NOWProgressActions extends Component {
       content: modalConfig.NOW_PROGRESS_MODAL,
     });
 
-  openDraftPermitProgressModal = () =>
-    this.props.openModal({
+  openDraftPermitProgressModal = () => {
+    return this.props.openModal({
       props: {
         title: `Start ${this.props.progressStatusHash[this.props.tab]}`,
         tab: this.props.progressStatusHash[this.props.tab],
@@ -149,9 +153,11 @@ export class NOWProgressActions extends Component {
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
         noticeOfWork: this.props.noticeOfWork,
         startOrResumeProgress: this.startOrResumeProgress,
+        isNoticeOfWorkTypeDisabled: this.props.isNoticeOfWorkTypeDisabled,
       },
       content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });
+  };
 
   openStatusReasonModal = (title) =>
     this.props.openModal({
