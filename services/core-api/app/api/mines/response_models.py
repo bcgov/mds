@@ -141,6 +141,7 @@ PERMIT_AMENDMENT_SHORT_MODEL = api.model(
         'now_application_guid': fields.String,
         'permit_conditions_last_updated_by': fields.String,
         'permit_conditions_last_updated_date': fields.DateTime,
+        'has_permit_conditions': fields.Boolean,
     })
 
 MINE_TYPE_DETAIL_MODEL = api.model(
@@ -202,7 +203,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         'permit_conditions_last_updated_by':
         fields.String,
         'permit_conditions_last_updated_date':
-        fields.DateTime
+        fields.DateTime,
+        'has_permit_conditions': fields.Boolean,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
