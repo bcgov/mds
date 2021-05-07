@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { SampleBase } from "@/components/syncfusion/SampleBase";
 import { ENVIRONMENT } from "@common/constants/environment";
 import {
@@ -11,18 +13,13 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
-import { PdfViewer } from "./PdfViewer";
-import { Modal } from "antd";
+import { openDocumentViewer } from "@common/actions/documentViewerActions";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
 };
 
-const useModal = true;
-
 export class AmazonS3Provider extends SampleBase {
-  state = { isModalVisible: false };
-
   constructor() {
     super(...arguments);
     this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
@@ -68,13 +65,13 @@ export class AmazonS3Provider extends SampleBase {
         this.filemanager.selectedItems.length === 1 &&
         this.filemanager.selectedItems[0].toLowerCase().includes(".pdf")
       ) {
-        this.setState({
-          pdfPath: data.path + this.filemanager.selectedItems[0],
-          isModalVisible: true,
+        const documentName = this.filemanager.selectedItems[0];
+        const documentPath = data.path + documentName;
+        this.props.openDocumentViewer({
+          documentPath,
+          props: { title: documentName },
         });
         return;
-      } else {
-        this.pdfViewer.pdfViewerComponent.unload();
       }
 
       // Initiate an XHR request
@@ -119,18 +116,6 @@ export class AmazonS3Provider extends SampleBase {
       xhr.send(fdata);
     }
   }
-
-  showModal = () => {
-    this.setState({ isModalVisible: true });
-  };
-
-  handleOk = () => {
-    this.setState({ isModalVisible: false });
-  };
-
-  handleCancel = () => {
-    this.setState({ isModalVisible: false });
-  };
 
   render() {
     return (
@@ -198,33 +183,6 @@ export class AmazonS3Provider extends SampleBase {
             <Inject services={[NavigationPane, DetailsView, Toolbar, ContextMenu]} />
           </FileManagerComponent>
         </div>
-        {(!useModal && (
-          <PdfViewer
-            documentPath={this.state.pdfPath}
-            ref={(node) => {
-              this.pdfViewer = node;
-            }}
-          />
-        )) || (
-          <>
-            <Modal
-              title="PDF Viewer"
-              visible={this.state.isModalVisible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-              footer={null}
-              width={"90%"}
-            >
-              <PdfViewer
-                documentPath={this.state.pdfPath}
-                ref={(node) => {
-                  this.pdfViewer = node;
-                }}
-                height={"1080px"}
-              />
-            </Modal>
-          </>
-        )}
       </div>
     );
   }
@@ -232,4 +190,12 @@ export class AmazonS3Provider extends SampleBase {
 
 AmazonS3Provider.propTypes = propTypes;
 
-export default AmazonS3Provider;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openDocumentViewer,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(AmazonS3Provider);
