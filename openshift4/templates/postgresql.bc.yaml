@@ -1,0 +1,33 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: postgresql
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: postgresql
+  - name: TAG
+    value: dev
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        shared: "true"
+      annotations: {}
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - name: ${TAG}
+          annotations: null
+          from:
+            kind: ImageStreamTag
+            name: rhscl-postgres-10-rhel7:latest
+            namespace: 269007-tools
+          importPolicy: {}
+          referencePolicy:
+            type: Local

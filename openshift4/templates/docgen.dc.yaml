@@ -1,0 +1,143 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: dsrp-docgen-dc
+  annotations:
+    template.openshift.io/bindable: "false"
+parameters:
+  - name: NAME
+    displayName: Name
+    description: The name assigned to all of the docgen objects defined in this template.
+    value: docgen
+  - name: TAG
+    required: true
+  - name: BASE_PATH
+    required: false
+    value: /
+  - name: PORT
+    value: "3030"
+  - name: FILE_DIR
+    value: /tmp/tmp-reports
+  - name: NODE_ENV
+    displayName: Node Environment
+    description: Environment for running node
+    value: production
+  - name: CPU_LIMIT
+    value: 250m
+  - name: MEMORY_LIMIT
+    value: 750Mi
+  - name: CPU_REQUEST
+    value: 100m
+  - name: MEMORY_REQUEST
+    value: 512Mi
+  - name: REPLICA_MIN
+    value: "1"
+  - name: REPLICA_MAX
+    value: "1"
+  - name: IMAGE_NAMESPACE
+    value: 269007-tools
+objects:
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        description: Exposes and load balances the application pods
+    spec:
+      ports:
+        - name: web
+          port: ${{PORT}}
+          targetPort: ${{PORT}}
+      selector:
+        name: ${NAME}
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        description: Defines how to deploy the application server
+        template.alpha.openshift.io/wait-for-ready: "true"
+      labels:
+        component: ${NAME}
+    spec:
+      strategy:
+        type: Rolling
+        maxSurge: 50%
+        maxUnavailable: 0
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+      replicas: ${{REPLICA_MIN}}
+      selector:
+        name: ${NAME}
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            name: ${NAME}
+        spec:
+          containers:
+            - name: ${NAME}
+              image: " "
+              env:
+                - name: APP_PORT
+                  value: ${PORT}
+                - name: CACHE_DIR
+                  value: ${FILE_DIR}
+                - name: NODE_ENV
+                  value: ${NODE_ENV}
+                - name: BASE_PATH
+                  value: ${BASE_PATH}
+                - name: ASSET_PATH
+                  value: ${BASE_PATH}/
+              resources:
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+              ports:
+                - containerPort: ${{PORT}}
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /health
+                  port: ${{PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 25
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /health
+                  port: ${{PORT}}
+                  scheme: HTTP
+                initialDelaySeconds: 25
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+  - apiVersion: autoscaling/v1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+    spec:
+      maxReplicas: ${{REPLICA_MAX}}
+      minReplicas: ${{REPLICA_MIN}}
+      scaleTargetRef:
+        apiVersion: v1
+        kind: DeploymentConfig
+        name: ${NAME}
+      targetCPUUtilizationPercentage: 95

@@ -1,0 +1,183 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: postgresql-persistent-template
+metadata:
+  creationTimestamp: null
+  name: postgresql-dc
+parameters:
+  - description: The name of the OpenShift Service exposed for the database.
+    displayName: Database Service Name
+    name: NAME
+    value: postgresql
+  - name: TAG
+    required: true
+  - description: Postgres secret name
+    name: POSTGRES_SECRET_NAME
+    value: postgresql
+  - description: Name of the PostgreSQL database accessed.
+    displayName: PostgreSQL Database Name
+    name: POSTGRESQL_DATABASE
+    value: dsrp
+  - description: Volume space available for data, e.g. 512Mi, 2Gi.
+    displayName: Volume Capacity
+    name: VOLUME_CAPACITY
+    value: 1Gi
+  - name: CPU_LIMIT
+    value: 500m
+  - name: MEMORY_LIMIT
+    value: 2Gi
+  - name: CPU_REQUEST
+    value: 200m
+  - name: MEMORY_REQUEST
+    value: 1.5Gi
+  - name: IMAGE_NAMESPACE
+    value: 269007-tools
+objects:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      annotations:
+        as-copy-of: ${POSTGRES_SECRET_NAME}
+      name: ${NAME}
+    stringData: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+      name: ${NAME}
+    spec:
+      ports:
+        - name: postgresql
+          nodePort: 0
+          port: 5432
+          protocol: TCP
+          targetPort: 5432
+      selector:
+        name: ${NAME}
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${NAME}
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: ${VOLUME_CAPACITY}
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      annotations:
+        template.alpha.openshift.io/wait-for-ready: "true"
+      name: ${NAME}
+    spec:
+      replicas: 1
+      selector:
+        name: ${NAME}
+      strategy:
+        type: Recreate
+        maxSurge: 50%
+        maxUnavailable: 0
+      template:
+        metadata:
+          labels:
+            name: ${NAME}
+        spec:
+          containers:
+            - capabilities: {}
+              env:
+                - name: POSTGRESQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-password
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-admin-password
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: PGCRYPTO_EXTENSION
+                  value: "Y"
+                - name: POSTGIS_EXTENSION
+                  value: "Y"
+                - name: PGOPTIONS
+                  value: -c maintenance_work_mem=128MB
+              image: " "
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                initialDelaySeconds: 30
+                tcpSocket:
+                  port: 5432
+                timeoutSeconds: 1
+              name: postgresql
+              ports:
+                - containerPort: 5432
+                  protocol: TCP
+              readinessProbe:
+                exec:
+                  command:
+                    - /bin/bash
+                    - -c
+                    - pg_isready -h localhost -p 5432
+                initialDelaySeconds: 20
+                timeoutSeconds: 15
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - /bin/bash
+                      - -c
+                      - pg_ctl stop -D /var/lib/pgsql/data/userdata
+              resources:
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+              securityContext:
+                capabilities: {}
+                privileged: false
+              terminationMessagePath: /dev/termination-log
+              volumeMounts:
+                - mountPath: /var/lib/pgsql/data
+                  name: ${NAME}-data
+                - mountPath: /var/run/postgresql
+                  name: ${NAME}-run
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          volumes:
+            - name: ${NAME}-data
+              persistentVolumeClaim:
+                claimName: ${NAME}
+            - name: ${NAME}-run
+              emptyDir: {}
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - postgresql
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+            lastTriggeredImage: ""
+          type: ImageChange
+        - type: ConfigChange
+    status: {}

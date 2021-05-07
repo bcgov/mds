@@ -1,0 +1,357 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: dsrp-backend-dc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name for all objects
+    value: backend
+  - name: FLYWAY_NAME
+    displayName: Name
+    description: A name for flyway objects
+    value: flyway
+  - name: DB_CONFIG_NAME
+    displayName: Database Config Name
+    description: Configuration name for the database
+    value: postgresql
+  - name: TAG
+    required: true
+  - name: JWT_OIDC_WELL_KNOWN_CONFIG
+    displayName: Keycloak config URL
+    required: true
+  - name: JWT_OIDC_AUDIENCE
+    displayName: Keycloak clientId
+    required: true
+  - description: This is a host url for DSRP, used in generating emails etc.
+    name: URL
+    required: true
+  - name: BASE_PATH
+    required: false
+    value: /api
+  - name: DSRP_METABASE_SECRET
+    required: false
+    value: template.metabase-key
+  - name: ONE_TIME_PASSWORD_TIMEOUT_SECONDS
+    required: false
+    value: "14400"
+  - name: REDIS_CONFIG_NAME
+    required: false
+    value: redis
+  - name: CACHE_REDIS_HOST
+    value: redis
+  - name: CPU_LIMIT
+    value: 200m
+  - name: MEMORY_LIMIT
+    value: 1Gi
+  - name: CPU_REQUEST
+    value: 150m
+  - name: MEMORY_REQUEST
+    value: 768Mi
+  - name: UWSGI_PROCESSES
+    value: "2"
+  - name: UWSGI_THREADS
+    value: "4"
+  - name: REPLICA_MIN
+    value: "1"
+  - name: REPLICA_MAX
+    value: "1"
+  - name: ENVIRONMENT_NAME
+    displayName: Environment Name (Environment Id)
+    description: The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.
+    required: false
+    value: dev
+  - name: DOCUMENT_GENERATOR_URL
+    value: http://docgen:3030
+  - name: SMTP_CREDENTIALS
+    value: smtp-credentials
+  - name: EMAIL_ADDRESSES
+    value: email-addresses
+  - name: OBJECT_STORE_SECRET_NAME
+    value: object-store-credentials
+  - name: IMAGE_NAMESPACE
+    value: 269007-tools
+objects:
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels: null
+      annotations:
+        description: Defines how to deploy the application server
+    spec:
+      strategy:
+        type: Rolling
+        rollingParams:
+          pre:
+            failurePolicy: Retry
+            execNewPod:
+              containerName: flyway-migration
+              command:
+                - bash
+                - -c
+                - $FLYWAY_HOME/scripts/run_migrations.sh
+          maxSurge: 50%
+          maxUnavailable: 0
+          timeoutSeconds: 1200
+        activeDeadlineSeconds: 21600
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - app
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - flyway-migration
+            from:
+              kind: ImageStreamTag
+              name: ${FLYWAY_NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+        - type: ConfigChange
+      replicas: ${{REPLICA_MIN}}
+      test: false
+      selector:
+        name: ${NAME}
+      template:
+        metadata:
+          name: ${NAME}
+          creationTimestamp: null
+          labels:
+            name: ${NAME}
+        spec:
+          containers:
+            - name: app
+              image: " "
+              ports:
+                - containerPort: 5000
+                  protocol: TCP
+              env:
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-user
+                - name: DB_HOST
+                  value: ${DB_CONFIG_NAME}
+                - name: DB_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-password
+                - name: DB_PORT
+                  value: "5432"
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-name
+                - name: FLASK_RUN_PORT
+                  value: "5000"
+                - name: FLASK_LOGGING_LEVEL
+                  value: INFO
+                - name: FLASK_RUN_HOST
+                  value: 0.0.0.0
+                - name: UWSGI_PROCESSES
+                  value: ${UWSGI_PROCESSES}
+                - name: UWSGI_THREADS
+                  value: ${UWSGI_THREADS}
+                - name: CACHE_REDIS_HOST
+                  value: ${CACHE_REDIS_HOST}
+                - name: CACHE_REDIS_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${REDIS_CONFIG_NAME}
+                      key: database-password
+                - name: JWT_OIDC_WELL_KNOWN_CONFIG
+                  value: ${JWT_OIDC_WELL_KNOWN_CONFIG}
+                - name: JWT_OIDC_AUDIENCE
+                  value: ${JWT_OIDC_AUDIENCE}
+                - name: JWT_OIDC_ALGORITHMS
+                  value: RS256
+                - name: ONE_TIME_PASSWORD_TIMEOUT_SECONDS
+                  value: ${ONE_TIME_PASSWORD_TIMEOUT_SECONDS}
+                - name: BASE_PATH
+                  value: ${BASE_PATH}
+                - name: URL
+                  value: ${URL}
+                - name: ENVIRONMENT_NAME
+                  value: ${ENVIRONMENT_NAME}
+                - name: SMTP_CRED_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${SMTP_CREDENTIALS}
+                      key: smtp-host
+                - name: PRF_FROM_EMAIL
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${EMAIL_ADDRESSES}
+                      key: prf-from-email
+                - name: PRF_TO_EMAIL
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${EMAIL_ADDRESSES}
+                      key: prf-to-email
+                - name: METABASE_EMBEDDING_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DSRP_METABASE_SECRET}
+                      key: embedding-secret-key
+                - name: METABASE_SITE_URL
+                  value: ${METABASE_SITE_URL}
+                - name: DOCUMENT_GENERATOR_URL
+                  value: ${DOCUMENT_GENERATOR_URL}
+                - name: OBJECT_STORE_ENABLED
+                  value: "1"
+                - name: OBJECT_STORE_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: key-id
+                - name: OBJECT_STORE_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: secret-access-key
+                - name: OBJECT_STORE_BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: bucket-id
+                - name: OBJECT_STORE_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: endpoint
+              resources:
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+              livenessProbe:
+                httpGet:
+                  path: ${BASE_PATH}/health
+                  port: 5000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                timeoutSeconds: 3
+                periodSeconds: 20
+              readinessProbe:
+                httpGet:
+                  path: ${BASE_PATH}/health
+                  port: 5000
+                  scheme: HTTP
+                initialDelaySeconds: 15
+                timeoutSeconds: 3
+                periodSeconds: 15
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: IfNotPresent
+            - name: flyway-migration
+              command:
+                - cat
+              stdin: true
+              image: " "
+              env:
+                - name: FLYWAY_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-admin-user
+                - name: FLYWAY_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-admin-password
+                - name: FLYWAY_DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-name
+                - name: FLYWAY_DB_HOST
+                  value: ${DB_CONFIG_NAME}
+                - name: FLYWAY_URL
+                  value: jdbc:postgresql://${DB_CONFIG_NAME}/dsrp
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-user
+                - name: PGHOST
+                  value: ${DB_CONFIG_NAME}
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-password
+                - name: PGDATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: database-name
+                - name: LOGSTASH_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: logstash-user-password
+                - name: METABASE_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${DB_CONFIG_NAME}
+                      key: metabase-user-password
+                - name: FLYWAY_OUT_OF_ORDER
+                  value: "true"
+                - name: FLYWAY_CONNECT_RETRIES
+                  value: "300"
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 384Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+          restartPolicy: Always
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+  - apiVersion: autoscaling/v1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+    spec:
+      maxReplicas: ${{REPLICA_MAX}}
+      minReplicas: ${{REPLICA_MIN}}
+      scaleTargetRef:
+        apiVersion: v1
+        kind: DeploymentConfig
+        name: ${NAME}
+      targetCPUUtilizationPercentage: 95
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels: null
+      annotations:
+        description: Exposes and load balances the application pods
+    spec:
+      ports:
+        - name: web
+          protocol: TCP
+          port: 5000
+          targetPort: 5000
+      selector:
+        name: ${NAME}
+      type: ClusterIP
+      sessionAffinity: None

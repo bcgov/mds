@@ -1,0 +1,87 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: sonar
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    required: true
+    value: sonar-runner
+  - name: IMAGE
+    displayName: Image Namespace
+    description: Docker registry reference image
+    required: true
+  - name: SONAR_HOST_URL
+    displayName: SonarQube host
+    description: SonarQube server
+    required: true
+    value: https://sonarqube-269007-tools.pathfinder.gov.bc.ca
+  - name: DB_CONFIG_NAME
+    displayName: Database Config Name
+    description: Configuration name for the database
+    required: true
+  - name: GIT_BRANCH
+    description: Current git branch name
+    required: true
+  - name: UPLOADED_DOCUMENT_DEST
+    required: false
+    value: /opt/app-root/src/document_uploads
+  - name: CPU_LIMIT
+    value: 500m
+  - name: MEMORY_LIMIT
+    value: 1.5Gi
+  - name: CPU_REQUEST
+    value: 200m
+  - name: MEMORY_REQUEST
+    value: 1Gi
+objects:
+  - kind: Pod
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels: {}
+    spec:
+      containers:
+        - name: test
+          image: ${IMAGE}
+          command:
+            - container-entrypoint
+            - bash
+            - -c
+            - ./run_tests.sh
+          resources:
+            limits:
+              cpu: ${CPU_LIMIT}
+              memory: ${MEMORY_LIMIT}
+            requests:
+              cpu: ${CPU_REQUEST}
+              memory: ${MEMORY_REQUEST}
+          env:
+            - name: SONAR_HOST_URL
+              value: ${SONAR_HOST_URL}
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ${DB_CONFIG_NAME}
+                  key: database-user
+            - name: DB_HOST
+              value: ${DB_CONFIG_NAME}
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: ${DB_CONFIG_NAME}
+                  key: database-password
+            - name: DB_PORT
+              value: "5432"
+            - name: UPLOADED_DOCUMENT_DEST
+              value: ${UPLOADED_DOCUMENT_DEST}
+            - name: GIT_BRANCH
+              value: ${GIT_BRANCH}
+          imagePullPolicy: Always
+      restartPolicy: Never
+      activeDeadlineSeconds: 900
+      dnsPolicy: ClusterFirst
+    status: {}

@@ -1,0 +1,138 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: dsrp-tusd-dc
+parameters:
+  - description: The name of the tusd deployment.
+    displayName: Deployment Name
+    name: NAME
+    value: tusd
+  - name: TAG
+    required: true
+  - name: OBJECT_STORE_SECRET_NAME
+    value: object-store-credentials
+  - name: CPU_LIMIT
+    value: 500m
+  - name: MEMORY_LIMIT
+    value: 1Gi
+  - name: CPU_REQUEST
+    value: 200m
+  - name: MEMORY_REQUEST
+    value: 512Mi
+  - name: IMAGE_NAMESPACE
+    value: 269007-tools
+objects:
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        description: Exposes and load balances the application pods
+    spec:
+      ports:
+        - name: 1080-tcp
+          protocol: TCP
+          port: 1080
+          targetPort: 1080
+      selector:
+        name: ${NAME}
+      type: ClusterIP
+      sessionAffinity: None
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+    spec:
+      strategy:
+        type: Recreate
+        maxSurge: 50%
+        maxUnavailable: 0
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+      replicas: 1
+      selector:
+        name: ${NAME}
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            name: ${NAME}
+            service: tusd
+        spec:
+          containers:
+            - name: ${NAME}
+              image: " "
+              ports:
+                - containerPort: 1080
+                  protocol: TCP
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /metrics
+                  port: 1080
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /metrics
+                  port: 1080
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: key-id
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: secret-access-key
+                - name: AWS_BUCKET_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: bucket-id
+                - name: AWS_REGION
+                  value: eu-west-1
+                - name: S3_BUCKET_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: bucket-id
+                - name: S3_ENDPOINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${OBJECT_STORE_SECRET_NAME}
+                      key: endpoint
+                - name: S3_PREFIX
+                  value: dsrp-applications/
+              resources:
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+              terminationMessagePath: /dev/termination-log
+              imagePullPolicy: IfNotPresent
+              capabilities: {}
+          restartPolicy: Always
+          dnsPolicy: ClusterFirst

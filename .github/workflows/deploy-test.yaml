@@ -1,0 +1,56 @@
+name: Deploy to test
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy to dev
+    types:
+      - completed
+
+env:
+  TAG: test
+  APP_DOMAIN: dsrp-test.apps.silver.devops.gov.bc.ca
+
+jobs:
+  update-test-deployments:
+    name: update-test-deployments
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - config: frontend
+          - config: backend
+          - config: dbbackup
+          - config: docgen
+          - config: postgresql
+          - config: nginx
+          - config: redis
+          - config: tusd
+          - config: metabase
+          - config: metabase-postgres
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Update infrastructure in test
+        run: |
+          oc -n ${{secrets.NS_TEST}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
+          -p TAG=${{env.TAG}} \
+          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/hud2v882/.well-known/openid-configuration \
+          -p JWT_OIDC_AUDIENCE=dormant-application-test \
+          -p API_URL=https://dsrp-test.apps.silver.devops.gov.bc.ca/api \
+          -p TUSD_URL=https://dsrp-test.apps.silver.devops.gov.bc.ca/files/ \
+          -p URL=https://dsrp-test.apps.silver.devops.gov.bc.ca \
+          -p ENVIRONMENT_NAME=test \
+          -p DSRP_DOMAIN=${{env.APP_DOMAIN}} \
+          -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \
+          -p KEYCLOAK_CLIENT_ID=dormant-application-test \
+          -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
+          -p MATOMO_URL=https://matomo-269007-test.pathfinder.gov.bc.ca/ \
+          | oc -n ${{secrets.NS_TEST}} apply -f -

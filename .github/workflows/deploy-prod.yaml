@@ -1,0 +1,63 @@
+name: Deploy to prod
+
+on:
+  workflow_dispatch:
+
+env:
+  TAG: prod
+  APP_DOMAIN: dormant-site-reclamation.gov.bc.ca
+
+jobs:
+  initiate:
+    name: initiate
+    runs-on: ubuntu-20.04
+    environment:
+      name: production
+    steps:
+      - name: Waiting for approval
+        run: |
+          echo "Starting prod deploy..."
+
+  update-prod-deployments:
+    needs: initiate
+    name: update-prod-deployments
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - config: frontend
+          - config: backend
+          - config: dbbackup
+          - config: docgen
+          - config: postgresql
+          - config: nginx
+          - config: redis
+          - config: tusd
+          - config: metabase
+          - config: metabase-postgres
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Update infrastructure in prod
+        run: |
+          oc -n ${{secrets.NS_PROD}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
+          -p TAG=${{env.TAG}} \
+          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://oidc.gov.bc.ca/auth/realms/hud2v882/.well-known/openid-configuration \
+          -p JWT_OIDC_AUDIENCE=dormant-application-prod \
+          -p API_URL=https://dormant-site-reclamation.gov.bc.ca/api \
+          -p TUSD_URL=https://dormant-site-reclamation.gov.bc.ca/files/ \
+          -p URL=https://dormant-site-reclamation.gov.bc.ca \
+          -p ENVIRONMENT_NAME=prod \
+          -p DSRP_DOMAIN=${{env.APP_DOMAIN}} \
+          -p KEYCLOAK_URL=https://oidc.gov.bc.ca/auth \
+          -p KEYCLOAK_CLIENT_ID=dormant-application-prod \
+          -p SITEMINDER_URL=https://logon.gov.bc.ca \
+          -p MATOMO_URL=https://matomo-269007-prod.pathfinder.gov.bc.ca/ \
+          | oc -n ${{secrets.NS_PROD}} apply -f -
