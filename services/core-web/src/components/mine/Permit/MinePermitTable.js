@@ -14,13 +14,11 @@ import {
   getDropdownPermitStatusOptionsHash,
   getPermitAmendmentTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
@@ -57,9 +55,11 @@ const defaultProps = {
 };
 
 const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
+  <DocumentLink
+    documentManagerGuid={file.document_manager_guid}
+    documentName={file.document_name}
+    linkTitleOverride={text}
+  />
 );
 
 const finalApplicationPackage = (amendment) => {

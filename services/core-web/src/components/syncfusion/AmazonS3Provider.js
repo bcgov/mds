@@ -14,6 +14,7 @@ import {
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { openDocumentViewer } from "@common/actions/documentViewerActions";
+import { isOpenable } from "@/components/syncfusion/DocumentViewer";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
@@ -23,7 +24,7 @@ export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
     this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
-    this.pathPrefix = `/${this.props.mineNumber}`;
+    this.pathPrefix = `mms-archive/${this.props.mineNumber}`;
   }
 
   toolbarClick = (args) => {
@@ -55,15 +56,15 @@ export class AmazonS3Provider extends SampleBase {
       // Create data for the controller
       const data = {
         action: "download",
-        path: `/${this.props.mineNumber}${this.filemanager.path}`,
+        path: `${this.pathPrefix}${this.filemanager.path}`,
         names: flag ? this.filemanager.selectedItems : [""],
         data: files.length === 0 ? this.filemanager.getSelectedFiles() : files,
       };
 
-      // If the user has selected a PDF, display it in the PDF viewer instead of downloading.
+      // If the user has selected a PDF, display it in the Document Viewer instead of downloading.
       if (
         this.filemanager.selectedItems.length === 1 &&
-        this.filemanager.selectedItems[0].toLowerCase().includes(".pdf")
+        isOpenable(this.filemanager.selectedItems[0])
       ) {
         const documentName = this.filemanager.selectedItems[0];
         const documentPath = data.path + documentName;

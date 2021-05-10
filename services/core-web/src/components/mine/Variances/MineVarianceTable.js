@@ -9,14 +9,13 @@ import {
   getHSRCMComplianceCodesHash,
 } from "@common/selectors/staticContentSelectors";
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { RED_CLOCK, EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getVarianceApplicationBadgeStatusType } from "@/constants/theme";
@@ -218,12 +217,10 @@ export class MineVarianceTable extends Component {
             {record.documents.length > 0
               ? record.documents.map((file) => (
                   <div key={file.mine_document_guid} title={file.document_name}>
-                    <LinkButton
-                      key={file.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(file)}
-                    >
-                      {truncateFilename(file.document_name)}
-                    </LinkButton>
+                    <DocumentLink
+                      documentManagerGuid={file.document_manager_guid}
+                      documentName={file.document_name}
+                    />
                   </div>
                 ))
               : Strings.EMPTY_FIELD}

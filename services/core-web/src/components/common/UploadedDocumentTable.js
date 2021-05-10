@@ -3,10 +3,9 @@ import React from "react";
 import { Table } from "antd";
 import PropTypes from "prop-types";
 import moment from "moment";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import { formatDateTime, truncateFilename } from "@common/utils/helpers";
+import { formatDateTime } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import * as Strings from "@common/constants/strings";
 
 const propTypes = {
@@ -32,12 +31,10 @@ const fileColumn = {
   render: (text, record) => (
     <div title="File Name">
       <div key={record.file.mine_document_guid}>
-        <LinkButton
-          onClick={() => downloadFileFromDocumentManager(record.file)}
-          title={record.file_name}
-        >
-          {truncateFilename(record.file_name)}
-        </LinkButton>
+        <DocumentLink
+          documentManagerGuid={record.file.document_manager_guid}
+          documentName={record.file_name}
+        />
       </div>
     </div>
   ),

@@ -28,6 +28,8 @@ import {
   getIsDocumentViewerOpen,
   getProps,
 } from "@common/selectors/documentViewerSelectors";
+import { openDocumentViewer } from "@common/actions/documentViewerActions";
+import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
   closeDocumentViewer: PropTypes.func.isRequired,
@@ -49,6 +51,37 @@ const ajaxRequestSettings = {
   withCredentials: false,
 };
 
+export const openDocument = (documentManagerGuid, documentName) => async (dispatch) => {
+  // If possible, open the document using the Document Viewer.
+  if (!isOpenable(documentName)) {
+    return downloadFileFromDocumentManager({
+      document_manager_guid: documentManagerGuid,
+      document_name: documentName,
+    });
+  }
+
+  // Get the document record so we can get the object store path.
+  const documentRecord = await getDocument(documentManagerGuid);
+  const documentPath = documentRecord.object_store_path;
+
+  // If the document does not have an object store path, download the document.
+  if (!documentPath) {
+    return downloadFileFromDocumentManager();
+  }
+
+  return dispatch(
+    openDocumentViewer({
+      documentPath,
+      props: { title: documentName },
+    })
+  );
+};
+
+export const openableTypes = ["PDF"];
+
+export const isOpenable = (documentName) =>
+  openableTypes.some((type) => documentName.toUpperCase().includes(`.${type}`));
+
 export class DocumentViewer extends Component {
   constructor() {
     super(...arguments);
@@ -57,13 +90,9 @@ export class DocumentViewer extends Component {
       ENVIRONMENT.filesystemProviderUrl.replace("AmazonS3Provider/", "PdfViewer");
   }
 
-  unloadDocument = () => this.pdfViewerComponent.unload();
-
   handleOk = () => this.props.closeDocumentViewer();
 
   handleCancel = () => this.props.closeDocumentViewer();
-
-  documentLoad = (args) => this.props.changeDocumentViewerTitle(args.documentName);
 
   render() {
     return (
@@ -87,7 +116,6 @@ export class DocumentViewer extends Component {
           ajaxRequestSettings={ajaxRequestSettings}
           style={{ display: "block", height: "80vh" }}
           enableAnnotation={false}
-          documentLoad={(args) => this.documentLoad(args)}
         >
           <Inject
             services={[

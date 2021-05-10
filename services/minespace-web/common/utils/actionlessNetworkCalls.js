@@ -2,6 +2,7 @@ import CustomAxios from "../customAxios";
 import { createRequestHeader } from "./RequestHeaders";
 import { ENVIRONMENT } from "../constants/environment";
 import {
+  DOCUMENT_MANAGER_DOCUMENT,
   DOCUMENT_MANAGER_FILE_GET_URL,
   DOCUMENT_MANAGER_TOKEN_GET_URL,
   NOTICE_OF_WORK_DOCUMENT_FILE_GET_URL,
@@ -100,20 +101,29 @@ export const downloadFileFromDocumentManager = ({ document_manager_guid, documen
     });
 };
 
-export const getDocumentDownloadToken = (document_manager_guid, filename, URLArray) => {
-  if (!document_manager_guid) {
-    throw new Error("Must provide document_manager_guid");
+export const getDocumentDownloadToken = (documentManagerGuid, filename, UrlArray) => {
+  if (!documentManagerGuid) {
+    throw new Error("Must provide documentManagerGuid");
   }
 
   return CustomAxios()
     .get(
-      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(document_manager_guid)}`,
+      `${ENVIRONMENT.apiUrl + DOCUMENT_MANAGER_TOKEN_GET_URL(documentManagerGuid)}`,
       createRequestHeader()
     )
     .then((response) => {
       const token = { token: response.data.token_guid };
-      const URL = `${`${ENVIRONMENT.docManUrl +
+      const url = `${`${ENVIRONMENT.docManUrl +
         DOCUMENT_MANAGER_FILE_GET_URL(token)}&as_attachment=true`}`;
-      URLArray.push({ filename, url: URL });
+      UrlArray.push({ filename, url });
     });
+};
+
+export const getDocument = (documentManagerGuid) => {
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.docManUrl + DOCUMENT_MANAGER_DOCUMENT(documentManagerGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => response.data);
 };

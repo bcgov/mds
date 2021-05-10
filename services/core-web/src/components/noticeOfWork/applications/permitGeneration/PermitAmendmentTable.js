@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 
@@ -17,9 +16,11 @@ const propTypes = {
 const defaultProps = {};
 
 const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
+  <DocumentLink
+    key={file.mine_document_guid}
+    documentManagerGuid={file.document_manager_guid}
+    documentName={file.document_name}
+  />
 );
 
 export class PermitAmendmentTable extends Component {

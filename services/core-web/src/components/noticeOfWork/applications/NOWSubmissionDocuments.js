@@ -89,6 +89,7 @@ export const NOWSubmissionDocuments = (props) => {
         key: "filename",
         render: (text, record) => (
           <div title="File Name">
+            // TODO: Use DocumentLink
             <LinkButton
               onClick={() =>
                 record.document_manager_guid

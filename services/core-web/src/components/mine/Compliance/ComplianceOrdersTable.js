@@ -34,6 +34,7 @@ const fileColumns = [
     sorter: (a, b) => a.fileName.localeCompare(b.fileName),
     render: (text, record) => (
       <div title="File Name" key={record.externalId}>
+        // TODO: Use DocumentLink
         <LinkButton
           onClick={() =>
             downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
