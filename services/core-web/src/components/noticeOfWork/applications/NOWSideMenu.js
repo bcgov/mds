@@ -6,7 +6,7 @@ import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
-import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
+import { renderActivities, sideMenuOptions, renderNavOptions } from "@/constants/NOWConditions";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -25,9 +25,13 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  // route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
   tabSection: PropTypes.string.isRequired,
+  hasPermitConditions: PropTypes.bool,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+};
+
+const defaultProps = {
+  hasPermitConditions: true,
 };
 
 export class NOWSideMenu extends Component {
@@ -123,6 +127,7 @@ export class NOWSideMenu extends Component {
               ({ href, alwaysVisible, applicationType }) =>
                 (alwaysVisible ||
                   renderActivities(this.props.noticeOfWork.notice_of_work_type_code, href)) &&
+                renderNavOptions(this.props.hasPermitConditions, this.props.tabSection, href) &&
                 applicationType &&
                 applicationType.includes(this.props.noticeOfWork.application_type_code)
             )
@@ -147,6 +152,7 @@ export class NOWSideMenu extends Component {
 }
 
 NOWSideMenu.propTypes = propTypes;
+NOWSideMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),

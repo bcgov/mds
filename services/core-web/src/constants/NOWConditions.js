@@ -11,8 +11,24 @@ export const activityConditions = {
   PLA: ["placer-operation", "cut-lines-polarization-survey", "underground-exploration"],
 };
 
+export const permitWithoutConditions = {
+  "draft-permit": ["permit-document"],
+  administrative: [""],
+};
+
+export const permitWithConditions = {
+  "draft-permit": ["conditions"],
+  administrative: ["generated-documents"],
+};
+
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
+};
+
+// TODO
+export const renderNavOptions = (hasConditions, tabSection, href) => {
+  return true;
+  // return hasConditions ? permitWithConditions[tabSection].includes(href) : permitWithoutConditions[tabSection].includes(href);
 };
 
 export const sideMenuOptions = {
@@ -150,7 +166,7 @@ export const sideMenuOptions = {
     {
       href: "conditions",
       title: "Conditions",
-      alwaysVisible: true,
+      alwaysVisible: false,
       children: [
         { href: "GEC", title: "General" },
         { href: "HSC", title: "Health and Safety" },
@@ -159,6 +175,13 @@ export const sideMenuOptions = {
         { href: "RCC", title: "Reclamation and Closure" },
       ],
       applicationType: ["NOW", "ADA"],
+    },
+    {
+      href: "permit-document",
+      title: "Permit Document Upload",
+      alwaysVisible: false,
+      children: [],
+      applicationType: ["ADA"],
     },
     {
       href: "maps",
@@ -227,7 +250,7 @@ export const sideMenuOptions = {
     {
       href: "generated-documents",
       title: "Application Export Files",
-      alwaysVisible: true,
+      alwaysVisible: false,
       children: [],
       applicationType: ["NOW", "ADA"],
     },

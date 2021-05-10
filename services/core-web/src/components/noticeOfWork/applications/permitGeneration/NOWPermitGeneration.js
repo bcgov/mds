@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Button, Popconfirm } from "antd";
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
@@ -435,7 +435,7 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-
+    console.log(this.props.draftPermitAmendment);
     return (
       <div>
         <NOWTabHeader
@@ -444,26 +444,33 @@ export class NOWPermitGeneration extends Component {
             this.state.isDraft && (
               <>
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                  <Button type="danger" onClick={this.props.toggleEditMode}>
+                    Delete & Restart Draft
+                  </Button>
+                </NOWActionWrapper>
+                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                   <Button type="secondary" onClick={this.props.toggleEditMode}>
                     <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                     Edit
                   </Button>
                 </NOWActionWrapper>
-                <Button
-                  className="full-mobile"
-                  type="secondary"
-                  onClick={this.handlePermitGenSubmit}
-                  loading={this.state.downloadingDraft}
-                  disabled={isEmpty(this.state.permittee)}
-                  title={
-                    isEmpty(this.state.permittee)
-                      ? "The application must have a permittee assigned before viewing the draft."
-                      : ""
-                  }
-                >
-                  <DownloadOutlined className="padding-small--right icon-sm" />
-                  Download Draft
-                </Button>
+                {this.props.draftPermitAmendment.has_permit_conditions && (
+                  <Button
+                    className="full-mobile"
+                    type="secondary"
+                    onClick={this.handlePermitGenSubmit}
+                    loading={this.state.downloadingDraft}
+                    disabled={isEmpty(this.state.permittee)}
+                    title={
+                      isEmpty(this.state.permittee)
+                        ? "The application must have a permittee assigned before viewing the draft."
+                        : ""
+                    }
+                  >
+                    <DownloadOutlined className="padding-small--right icon-sm" />
+                    Download Draft
+                  </Button>
+                )}
               </>
             )
           }
@@ -497,7 +504,7 @@ export class NOWPermitGeneration extends Component {
           isEditMode={!this.props.isViewMode}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu tabSection="draft-permit" />
+          {this.state.isDraft && <NOWSideMenu tabSection="draft-permit" />}
         </div>
         <div
           className={
@@ -541,6 +548,7 @@ export class NOWPermitGeneration extends Component {
                       this.state.isPermitAmendmentTypeDropDownDisabled
                     }
                     draftPermit={this.props.draftPermit}
+                    draftPermitAmendment={this.props.draftPermitAmendment}
                   />
                 )}
               </>

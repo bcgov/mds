@@ -37,6 +37,7 @@ import GeneratePermitNumberModal from "./GeneratePermitNumberModal";
 import StartDraftPermitModal from "./StartDraftPermitModal";
 import AddAdministrativeAmendmentModal from "./AddAdministrativeAmendmentModal";
 import EditSitePropertiesModal from "./EditSitePropertiesModal";
+import UploadPermitDocumentModal from "./UploadPermitDocumentModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -78,6 +79,7 @@ export const modalConfig = {
   START_DRAFT_PERMIT_MODAL: StartDraftPermitModal,
   ADD_ADMIN_AMENDMENT_MODAL: AddAdministrativeAmendmentModal,
   EDIT_SITE_PROPERTIES_MODAL: EditSitePropertiesModal,
+  UPLOAD_PERMIT_DOCUMENT_MODAL: UploadPermitDocumentModal,
 };
 
 export default modalConfig;
