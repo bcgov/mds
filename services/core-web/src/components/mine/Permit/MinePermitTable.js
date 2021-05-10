@@ -22,6 +22,7 @@ import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/cons
 import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import DocumentLink from "@/components/common/DocumentLink";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
