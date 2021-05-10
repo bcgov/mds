@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-dbbackup-dc
+  name: mds-dbbackup-dc
 parameters:
   - name: NAME
     displayName: Name
@@ -20,7 +20,7 @@ parameters:
     description: The name or Id of the environment.  This variable is used by the webhook integration to identify the environment in which the backup notifications originate.
     required: false
   - name: ENVIRONMENT_FRIENDLY_NAME
-    value: Dormant Site Reclamation Program
+    value: Mines Digital Services
   - name: VERIFICATION_VOLUME_SIZE
     displayName: Verification Volume Size
     description: The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.
@@ -38,12 +38,12 @@ parameters:
   - name: MEMORY_LIMIT
     value: "0"
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
-      name: dsrp-db-backup-verification
+      name: mds-db-backup-verification
     spec:
       accessModes:
         - ReadWriteOnce
@@ -53,7 +53,7 @@ objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
-      name: dsrp-db-backup-data
+      name: mds-db-backup-data
     spec:
       accessModes:
         - ReadWriteMany
@@ -65,10 +65,10 @@ objects:
   - kind: ConfigMap
     apiVersion: v1
     metadata:
-      name: dsrp-db-backup-config
+      name: mds-db-backup-config
     data:
       backup.conf: |
-        ${DATABASE_SERVICE_NAME}/dsrp
+        ${DATABASE_SERVICE_NAME}/mds
         0 2 * * * default ./backup.sh -s
   - kind: DeploymentConfig
     apiVersion: v1
@@ -104,15 +104,15 @@ objects:
             name: ${NAME}
         spec:
           volumes:
-            - name: dsrp-db-backup-data
+            - name: mds-db-backup-data
               persistentVolumeClaim:
-                claimName: dsrp-db-backup-data
-            - name: dsrp-db-backup-verification
+                claimName: mds-db-backup-data
+            - name: mds-db-backup-verification
               persistentVolumeClaim:
-                claimName: dsrp-db-backup-verification
-            - name: dsrp-db-backup-config-volume
+                claimName: mds-db-backup-verification
+            - name: mds-db-backup-config-volume
               configMap:
-                name: dsrp-db-backup-config
+                name: mds-db-backup-config
                 items:
                   - key: backup.conf
                     path: backup.conf
@@ -159,10 +159,10 @@ objects:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
               volumeMounts:
-                - name: dsrp-db-backup-data
+                - name: mds-db-backup-data
                   mountPath: /backups/
-                - name: dsrp-db-backup-verification
+                - name: mds-db-backup-verification
                   mountPath: /var/lib/pgsql/data
-                - name: dsrp-db-backup-config-volume
+                - name: mds-db-backup-config-volume
                   mountPath: /backup.conf
                   subPath: backup.conf

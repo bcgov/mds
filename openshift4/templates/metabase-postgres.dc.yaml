@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-metabase-postgres-dc
+  name: mds-metabase-postgres-dc
 parameters:
   - name: CPU_LIMIT
     value: 100m
@@ -23,7 +23,7 @@ parameters:
   - name: METABASE_SECRET_NAME
     value: template.metabase-key
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - apiVersion: v1
     kind: Service

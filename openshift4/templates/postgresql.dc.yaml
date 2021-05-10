@@ -18,7 +18,7 @@ parameters:
   - description: Name of the PostgreSQL database accessed.
     displayName: PostgreSQL Database Name
     name: POSTGRESQL_DATABASE
-    value: dsrp
+    value: mds
   - description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Volume Capacity
     name: VOLUME_CAPACITY
@@ -32,7 +32,7 @@ parameters:
   - name: MEMORY_REQUEST
     value: 1.5Gi
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - apiVersion: v1
     kind: Secret

@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-frontend-dc
+  name: mds-frontend-dc
   annotations:
     template.openshift.io/bindable: "false"
 parameters:
@@ -45,11 +45,11 @@ parameters:
   - name: API_URL
     displayName: API Url
     description: URL for the backend API
-    value: https://nginx-269007-dev.apps.silver.devops.gov.bc.ca/
+    value: https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/
   - name: MATOMO_URL
     displayName: Matomo Url
     description: URL for the tracking component
-    value: https://matomo-269007-test.pathfinder.gov.bc.ca/
+    value: https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/
   - name: TUSD_URL
     displayName: TUSD Url
     description: URL for TUSD service
@@ -69,7 +69,7 @@ parameters:
   - name: REPLICA_MAX
     value: "1"
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: Service
     apiVersion: v1

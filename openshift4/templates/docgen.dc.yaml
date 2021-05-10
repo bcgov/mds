@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-docgen-dc
+  name: mds-docgen-dc
   annotations:
     template.openshift.io/bindable: "false"
 parameters:
@@ -35,7 +35,7 @@ parameters:
   - name: REPLICA_MAX
     value: "1"
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: Service
     apiVersion: v1

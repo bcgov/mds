@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-metabase-dc
+  name: mds-metabase-dc
 parameters:
   - name: CPU_LIMIT
     value: 500m
@@ -26,7 +26,7 @@ parameters:
   - name: METABASE_SECRET_NAME
     value: template.metabase-key
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: Service
     apiVersion: v1

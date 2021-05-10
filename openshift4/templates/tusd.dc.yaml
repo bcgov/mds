@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-tusd-dc
+  name: mds-tusd-dc
 parameters:
   - description: The name of the tusd deployment.
     displayName: Deployment Name
@@ -20,7 +20,7 @@ parameters:
   - name: MEMORY_REQUEST
     value: 512Mi
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: Service
     apiVersion: v1
@@ -123,7 +123,7 @@ objects:
                       name: ${OBJECT_STORE_SECRET_NAME}
                       key: endpoint
                 - name: S3_PREFIX
-                  value: dsrp-applications/
+                  value: mds-applications/
               resources:
                 requests:
                   cpu: ${CPU_REQUEST}

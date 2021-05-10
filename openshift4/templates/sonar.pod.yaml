@@ -17,7 +17,7 @@ parameters:
     displayName: SonarQube host
     description: SonarQube server
     required: true
-    value: https://sonarqube-269007-tools.pathfinder.gov.bc.ca
+    value: https://sonarqube-4c2ba9-tools.pathfinder.gov.bc.ca
   - name: DB_CONFIG_NAME
     displayName: Database Config Name
     description: Configuration name for the database

@@ -18,7 +18,7 @@ parameters:
     displayName: The URL
     description: A suffix appended to all objects
     required: true
-    value: https://frontend-269007-prod.pathfinder.gov.bc.ca/
+    value: https://frontend-4c2ba9-prod.pathfinder.gov.bc.ca/
 objects:
   - kind: Pod
     apiVersion: v1

@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-backend-dc
+  name: mds-backend-dc
   creationTimestamp: null
 parameters:
   - name: NAME
@@ -24,13 +24,13 @@ parameters:
   - name: JWT_OIDC_AUDIENCE
     displayName: Keycloak clientId
     required: true
-  - description: This is a host url for DSRP, used in generating emails etc.
+  - description: This is a host url for MDS, used in generating emails etc.
     name: URL
     required: true
   - name: BASE_PATH
     required: false
     value: /api
-  - name: DSRP_METABASE_SECRET
+  - name: MDS_METABASE_SECRET
     required: false
     value: template.metabase-key
   - name: ONE_TIME_PASSWORD_TIMEOUT_SECONDS
@@ -71,7 +71,7 @@ parameters:
   - name: OBJECT_STORE_SECRET_NAME
     value: object-store-credentials
   - name: IMAGE_NAMESPACE
-    value: 269007-tools
+    value: 4c2ba9-tools
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
@@ -203,7 +203,7 @@ objects:
                 - name: METABASE_EMBEDDING_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: ${DSRP_METABASE_SECRET}
+                      name: ${MDS_METABASE_SECRET}
                       key: embedding-secret-key
                 - name: METABASE_SITE_URL
                   value: ${METABASE_SITE_URL}
@@ -281,7 +281,7 @@ objects:
                 - name: FLYWAY_DB_HOST
                   value: ${DB_CONFIG_NAME}
                 - name: FLYWAY_URL
-                  value: jdbc:postgresql://${DB_CONFIG_NAME}/dsrp
+                  value: jdbc:postgresql://${DB_CONFIG_NAME}/mds
                 - name: PGUSER
                   valueFrom:
                     secretKeyRef:
