@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-metabase-postgres-bc
+  name: mds-metabase-postgres-bc
   creationTimestamp: null
 parameters:
   - name: NAME
@@ -29,7 +29,7 @@ objects:
           annotations: null
           from:
             kind: DockerImage
-            name: registry.access.redhat.com/rhscl/postgresql-96-rhel7:1-53
+            name: registry.access.redhat.com/rhscl/postgresql-10-rhel7:1-53
           generation: 1
           importPolicy: {}
           referencePolicy:

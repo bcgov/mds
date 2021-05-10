@@ -21,13 +21,3 @@ objects:
     spec:
       lookupPolicy:
         local: false
-      tags:
-        - name: ${TAG}
-          annotations: null
-          from:
-            kind: ImageStreamTag
-            name: rhscl-postgres-10-rhel7:latest
-            namespace: 269007-tools
-          importPolicy: {}
-          referencePolicy:
-            type: Local

@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-metabase-bc
+  name: mds-metabase-bc
   creationTimestamp: null
 parameters:
   - name: NAME

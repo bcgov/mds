@@ -1,7 +1,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: dsrp-backend-bc
+  name: mds-backend-bc
   creationTimestamp: null
 parameters:
   - name: NAME
@@ -11,7 +11,7 @@ parameters:
   - name: TAG
     value: dev
   - name: SOURCE_CONTEXT_DIR
-    value: services/dsrp-api
+    value: services/core-api
   - name: SOURCE_REPOSITORY_URL
     required: true
   - name: SOURCE_REPOSITORY_REF
