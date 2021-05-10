@@ -478,6 +478,7 @@ exports[`ApplicationTab renders properly 1`] = `
           "yearroundseasonal": null,
         }
       }
+      isNoticeOfWorkTypeDisabled={true}
       isViewMode={true}
       noticeOfWork={
         Object {

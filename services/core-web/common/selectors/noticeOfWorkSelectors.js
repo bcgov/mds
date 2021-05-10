@@ -140,7 +140,12 @@ export const getNoticeOfWork = createSelector([getNoticeOfWorkUnformatted], (not
 });
 
 export const getNoticeOfWorkEditableTypes = createSelector(
-  [getDropdownNoticeOfWorkApplicationTypeOptions],
-  (applicationTypeOptions) =>
-    applicationTypeOptions.filter((o) => ["QIM", "SAG", "QCA"].includes(o.value))
+  [getNoticeOfWorkUnformatted, getDropdownNoticeOfWorkApplicationTypeOptions],
+  (application, applicationTypeOptions) => {
+    const editableOptions = ["QIM", "QCA"];
+    if (application.application_type_code === "NOW") {
+      editableOptions.push("SAG");
+    }
+    return applicationTypeOptions.filter((o) => editableOptions.includes(o.value));
+  }
 );

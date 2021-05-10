@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { kebabCase } from "lodash";
+import { kebabCase, isEmpty } from "lodash";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import { getMines } from "@common/selectors/mineSelectors";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
@@ -36,6 +36,7 @@ const propTypes = {
   fixedTop: PropTypes.bool.isRequired,
   renderTabTitle: PropTypes.func.isRequired,
   applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
+  draftPermit: CustomPropTypes.permit.isRequired,
 };
 
 const defaultProps = { applicationPageFromRoute: "" };
@@ -73,6 +74,9 @@ export class AdminAmendmentApplication extends Component {
   };
 
   render() {
+    const isNoticeOfWorkTypeDisabled =
+      (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
+      !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code);
     return (
       <div className="page">
         <NoticeOfWorkPageHeader
@@ -91,7 +95,10 @@ export class AdminAmendmentApplication extends Component {
         >
           <Tabs.TabPane tab="Application" key="application">
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <ApplicationTab fixedTop={this.props.fixedTop} />
+              <ApplicationTab
+                fixedTop={this.props.fixedTop}
+                isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
+              />
             </LoadingWrapper>
           </Tabs.TabPane>
 
@@ -118,7 +125,10 @@ export class AdminAmendmentApplication extends Component {
           </Tabs.TabPane>
           <Tabs.TabPane tab={this.props.renderTabTitle("Draft", "DFT")} key="draft-permit">
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <DraftPermitTab fixedTop={this.props.fixedTop} />
+              <DraftPermitTab
+                fixedTop={this.props.fixedTop}
+                isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
+              />
             </LoadingWrapper>
           </Tabs.TabPane>
 

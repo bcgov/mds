@@ -7,7 +7,12 @@ import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Tooltip } from "antd";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
-import { required, requiredRadioButton, validateSelectOptions } from "@common/utils/Validate";
+import {
+  required,
+  requiredRadioButton,
+  validateSelectOptions,
+  validateIfApplicationTypeCorrespondsToPermitNumber,
+} from "@common/utils/Validate";
 import RenderSelect from "@/components/common/RenderSelect";
 import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 
@@ -32,6 +37,9 @@ const propTypes = {
   editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
+// TODO the validate option on form fields are not working on this form, they are being called but they are not showing the validation errors and not blocking the submit,
+// the reason is in not linked submit function and the structure of draft permit modal in general
+
 export const PreDraftPermitForm = (props) => {
   const [permitType, setPermitType] = useState(
     props.initialValues.disabled
@@ -41,6 +49,22 @@ export const PreDraftPermitForm = (props) => {
   const [isAmendment, setIsAmendment] = useState(
     props.initialValues?.type_of_application !== "New Permit"
   );
+
+  const [applicationTypeToPermitMismatch, setApplicationTypeToPermitMismatch] = useState(
+    validateIfApplicationTypeCorrespondsToPermitNumber(
+      props.initialValues?.notice_of_work_type_code,
+      props.permits.find((p) => p.permit_guid === props.formValues?.permit_guid)
+    )
+  );
+
+  useEffect(() => {
+    setApplicationTypeToPermitMismatch(
+      validateIfApplicationTypeCorrespondsToPermitNumber(
+        props.formValues?.notice_of_work_type_code,
+        props.permits.find((p) => p.permit_guid === props.formValues?.permit_guid)
+      )
+    );
+  }, [props.formValues?.permit_guid, props.formValues?.notice_of_work_type_code]);
 
   useEffect(() => {
     if (isAmendment) {
@@ -107,7 +131,7 @@ export const PreDraftPermitForm = (props) => {
                 component={RenderSelect}
                 data={filteredApplicationTypeOptions}
                 validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
-                disabled={props.initialValues.disabled || props.isNoticeOfWorkTypeDisabled}
+                disabled={props.isNoticeOfWorkTypeDisabled}
               />
             </Form.Item>
           </Col>
@@ -144,6 +168,11 @@ export const PreDraftPermitForm = (props) => {
                   onChange={(permitGuid) => getPermitType(permitGuid)}
                 />
               </Form.Item>
+              {applicationTypeToPermitMismatch && (
+                <span style={{ position: "relative", top: "-15px" }} className="has-error">
+                  <span className="ant-legacy-form-explain">{applicationTypeToPermitMismatch}</span>
+                </span>
+              )}
             </div>
           )}
           {!isAmendment && props.isCoalOrMineral && (

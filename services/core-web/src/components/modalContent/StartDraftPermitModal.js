@@ -17,6 +17,7 @@ import * as FORM from "@/constants/forms";
 import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
+import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@common/utils/Validate";
 
 const propTypes = {
   title: PropTypes.string,
@@ -119,8 +120,16 @@ export const StartDraftPermitModal = (props) => {
           values.is_exploration === null
         );
       }
+
+      const isApplicationTypeMatchPermitNumber = validateIfApplicationTypeCorrespondsToPermitNumber(
+        values.notice_of_work_type_code,
+        props.permits.find((p) => p.permit_guid === values.permit_guid)
+      );
       return (
-        !values.type_of_application || !values.permit_guid || !values.permit_amendment_type_code
+        !values.type_of_application ||
+        !values.permit_guid ||
+        !values.permit_amendment_type_code ||
+        isApplicationTypeMatchPermitNumber
       );
     }
     return true;
