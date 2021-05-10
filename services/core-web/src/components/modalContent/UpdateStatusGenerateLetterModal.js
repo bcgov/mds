@@ -18,11 +18,12 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   issuingInspectorGuid: PropTypes.string,
   draftAmendment: PropTypes.objectOf(PropTypes.any).isRequired,
-  exemptionFeeStatusCode: PropTypes.string.isRequired,
+  exemptionFeeStatusCode: PropTypes.string,
 };
 
 const defaultProps = {
   issuingInspectorGuid: "",
+  exemptionFeeStatusCode: "",
 };
 
 export class UpdateStatusGenerateLetterModal extends Component {
