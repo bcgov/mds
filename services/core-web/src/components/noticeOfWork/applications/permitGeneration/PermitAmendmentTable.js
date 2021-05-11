@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -15,9 +15,8 @@ const propTypes = {
 
 const defaultProps = {};
 
-const renderDocumentLink = (file, text) => (
+const renderDocumentLink = (file) => (
   <DocumentLink
-    key={file.mine_document_guid}
     documentManagerGuid={file.document_manager_guid}
     documentName={file.document_name}
   />
@@ -64,9 +63,7 @@ export class PermitAmendmentTable extends Component {
           <div title="Documents">
             <ul>
               {text?.map((file) => (
-                <li className="wrapped-text">
-                  {renderDocumentLink(file, truncateFilename(file.document_name))}
-                </li>
+                <li className="wrapped-text">{renderDocumentLink(file)}</li>
               ))}
             </ul>
           </div>
