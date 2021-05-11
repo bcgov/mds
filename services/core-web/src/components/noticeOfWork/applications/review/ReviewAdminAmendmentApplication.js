@@ -67,10 +67,11 @@ export const ReviewAdminAmendmentApplication = (props) => {
     const permit = props.permits.find(
       (p) => p.permit_guid === props.noticeOfWork.source_permit_guid
     );
+
     const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
       ? props.applicationTypeOptions
       : props.applicationTypeOptions.filter((o) =>
-          mapNoticeOfWorkTypeBasedOnPermitNumber(permit.prefix)?.includes(o.value)
+          mapNoticeOfWorkTypeBasedOnPermitNumber(permit.permit_prefix)?.includes(o.value)
         );
 
     return (
