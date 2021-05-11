@@ -112,9 +112,6 @@ export class DocumentViewer extends Component {
         {/* // NOTE: See here for documentation:
         https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
         <PdfViewerComponent
-          ref={(node) => {
-            this.pdfViewerComponent = node;
-          }}
           id="pdfviewer-container"
           serviceUrl={this.serviceUrl}
           documentPath={this.props.documentPath}
@@ -122,6 +119,7 @@ export class DocumentViewer extends Component {
           style={{ display: "block", height: "80vh" }}
           enableAnnotation={false}
         >
+          {/* NOTE: Some toolbar items are hidden using CSS. */}
           <Inject
             services={[
               Toolbar,

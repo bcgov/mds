@@ -50,10 +50,27 @@ $error-font: $error-color; //#f44336;
   display: none;
 }
 
-#pdfviewer-container_fileUploadElement {
+#pdfviewer-container_fileUploadElement,
+#pdfviewer-container_annotationContainer {
   display: none;
 }
 
 #pdfviewer-container_zoomDropDownContainer {
   width: 108px;
+}
+
+#pdfviewer-container_openContainer,
+#pdfviewer-container_undoContainer,
+#pdfviewer-container_redoContainer,
+#pdfviewer-container_commentContainer,
+#pdfviewer-container_submitForm {
+  visibility: hidden;
+
+  & + .e-toolbar-item.e-separator {
+    visibility: hidden;
+  }
+}
+
+#pdfviewer-container_handToolContainer + .e-toolbar-item.e-separator {
+  visibility: hidden;
 }
