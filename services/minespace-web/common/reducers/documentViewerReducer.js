@@ -9,10 +9,11 @@ const initialState = {
 export const documentViewerReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.OPEN_DOCUMENT_VIEWER:
-      const { props, documentPath } = action.payload;
+      const { props, documentPath, documentName } = action.payload;
       return {
         ...state,
         documentPath,
+        documentName,
         isDocumentViewerOpen: true,
         props,
       };
@@ -39,6 +40,7 @@ const documentViewerReducerObject = {
 };
 
 export const getDocumentPath = (state) => state[DOCUMENT_VIEWER].documentPath;
+export const getDocumentName = (state) => state[DOCUMENT_VIEWER].documentName;
 export const getIsDocumentViewerOpen = (state) => state[DOCUMENT_VIEWER].isDocumentViewerOpen;
 export const getProps = (state) => state[DOCUMENT_VIEWER].props;
 

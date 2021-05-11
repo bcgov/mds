@@ -22,6 +22,7 @@ import { Modal } from "antd";
 import { closeDocumentViewer, openDocumentViewer } from "@common/actions/documentViewerActions";
 import {
   getDocumentPath,
+  getDocumentName,
   getIsDocumentViewerOpen,
   getProps,
 } from "@common/selectors/documentViewerSelectors";
@@ -81,6 +82,7 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
   return dispatch(
     openDocumentViewer({
       documentPath,
+      documentName,
       props: { title: documentName },
     })
   );
@@ -92,7 +94,10 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
 export class DocumentViewer extends Component {
   constructor() {
     super(...arguments);
-    this.serviceUrl = ENVIRONMENT.filesystemProviderUrl.replace("AmazonS3Provider/", "PdfViewer");
+    this.pdfViewerServiceUrl = ENVIRONMENT.filesystemProviderUrl.replace(
+      "AmazonS3Provider/",
+      "PdfViewer"
+    );
   }
 
   handleOk = () => this.props.closeDocumentViewer();
@@ -113,7 +118,7 @@ export class DocumentViewer extends Component {
         https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
         <PdfViewerComponent
           id="pdfviewer-container"
-          serviceUrl={this.serviceUrl}
+          serviceUrl={this.pdfViewerServiceUrl}
           documentPath={this.props.documentPath}
           ajaxRequestSettings={ajaxRequestSettings}
           style={{ display: "block", height: "80vh" }}
@@ -144,6 +149,7 @@ DocumentViewer.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   documentPath: getDocumentPath(state),
+  documentName: getDocumentName(state),
   isDocumentViewerOpen: getIsDocumentViewerOpen(state),
   props: getProps(state),
 });
