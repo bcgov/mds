@@ -14,7 +14,7 @@ import {
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { openDocumentViewer } from "@common/actions/documentViewerActions";
-import { isOpenable } from "@/components/syncfusion/DocumentViewer";
+import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
@@ -64,7 +64,7 @@ export class AmazonS3Provider extends SampleBase {
       // If the user has selected a PDF, display it in the Document Viewer instead of downloading.
       if (
         this.filemanager.selectedItems.length === 1 &&
-        isOpenable(this.filemanager.selectedItems[0])
+        isDocumentOpenable(this.filemanager.selectedItems[0])
       ) {
         const documentName = this.filemanager.selectedItems[0];
         const documentPath = data.path + documentName;

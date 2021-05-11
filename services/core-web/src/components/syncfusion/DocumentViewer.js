@@ -48,22 +48,23 @@ const ajaxRequestSettings = {
   withCredentials: false,
 };
 
+/**
+ * If possible, open the document in the Document Viewer, otherwise, download the document.
+ */
 export const openDocument = (documentManagerGuid, documentName) => async (dispatch) => {
-  // If possible, open the document using the Document Viewer.
-  if (!isOpenable(documentName)) {
-    return downloadFileFromDocumentManager({
-      document_manager_guid: documentManagerGuid,
-      document_name: documentName,
-    });
+  const document = {
+    document_manager_guid: documentManagerGuid,
+    document_name: documentName,
+  };
+
+  if (!isDocumentOpenable(documentName)) {
+    return downloadFileFromDocumentManager(document);
   }
 
-  // Get the document record so we can get the object store path.
   const documentRecord = await getDocument(documentManagerGuid);
   const documentPath = documentRecord.object_store_path;
-
-  // If the document does not have an object store path, download the document.
   if (!documentPath) {
-    return downloadFileFromDocumentManager();
+    return downloadFileFromDocumentManager(document);
   }
 
   return dispatch(
@@ -74,10 +75,20 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
   );
 };
 
-export const openableTypes = ["PDF"];
+/**
+ * All file types that can currently be opened by the Document Viewer.
+ */
+export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
 
-export const isOpenable = (documentName) =>
-  openableTypes.some((type) => documentName.toUpperCase().includes(`.${type}`));
+/**
+ * Whether or not the document can be opened by the Document Viewer (determined by the file extension in the document name).
+ */
+export const isDocumentOpenable = (documentName) =>
+  OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
+
+/**
+ * The Document Viewer allows documents to be opened and viewed within the application.
+ */
 
 export class DocumentViewer extends Component {
   constructor() {
