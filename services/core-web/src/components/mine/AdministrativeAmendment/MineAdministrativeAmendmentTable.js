@@ -3,7 +3,7 @@ import { Badge, Tooltip, Table, Button } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CoreTable from "@/components/common/CoreTable";
