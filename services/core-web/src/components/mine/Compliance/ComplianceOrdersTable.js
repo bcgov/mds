@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/utils/helpers";
-import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNrisDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
@@ -37,7 +37,7 @@ const fileColumns = [
         {/* // TODO: Use DocumentLink */}
         <LinkButton
           onClick={() =>
-            downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
+            downloadNrisDocument(record.externalId, record.inspectionId, record.fileName)
           }
         >
           {record.fileName}
