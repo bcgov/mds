@@ -39,7 +39,6 @@ const propTypes = {
   draftPermit: CustomPropTypes.permit.isRequired,
 };
 
-// TODO remove validation from disabled fields
 export const GeneratePermitForm = (props) => (
   <Form layout="vertical">
     <ScrollContentWrapper id="general-info" title="General Information" isLoaded={props.isLoaded}>

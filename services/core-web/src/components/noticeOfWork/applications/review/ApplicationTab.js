@@ -385,10 +385,6 @@ export class ApplicationTab extends Component {
     const isImported = this.props.noticeOfWork.imported_to_core;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
 
-    // console.log(
-    //   `Application tab isNoticeOfWorkTypeDisabled ${this.props.isNoticeOfWorkTypeDisabled}`
-    // );
-
     return (
       <React.Fragment>
         <Prompt
