@@ -215,15 +215,19 @@ export class ProcessPermit extends Component {
       )
       .then(() => {
         const initialValues = {};
-        const isExploration = this.props.draftPermit.permit_no.charAt(1) === "X";
+        let statusCode = "";
 
-        const statusCode = determineExemptionFeeStatus(
-          this.props.draftPermit.permit_status_code,
-          this.props.draftPermit.permit_prefix,
-          this.props.noticeOfWork?.site_property?.mine_tenure_type_code,
-          isExploration,
-          this.props.noticeOfWork?.site_property?.mine_disturbance_code
-        );
+        if (type === "AIA") {
+          const isExploration = this.props.draftPermit.permit_no.charAt(1) === "X";
+          statusCode = determineExemptionFeeStatus(
+            this.props.draftPermit.permit_status_code,
+            this.props.draftPermit.permit_prefix,
+            this.props.noticeOfWork?.site_property?.mine_tenure_type_code,
+            isExploration,
+            this.props.noticeOfWork?.site_property?.mine_disturbance_code
+          );
+        }
+
         this.props.documentContextTemplate.document_template.form_spec.map(
           // eslint-disable-next-line
           (item) => (initialValues[item.id] = item["context-value"])
