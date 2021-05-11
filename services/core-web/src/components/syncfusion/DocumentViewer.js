@@ -19,13 +19,13 @@ import {
 } from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { Modal } from "antd";
-import { closeDocumentViewer } from "@common/actions/documentViewerActions";
+import { closeDocumentViewer, openDocumentViewer } from "@common/actions/documentViewerActions";
 import {
   getDocumentPath,
   getIsDocumentViewerOpen,
   getProps,
 } from "@common/selectors/documentViewerSelectors";
-import { openDocumentViewer } from "@common/actions/documentViewerActions";
+
 import { getDocument, downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
@@ -47,6 +47,17 @@ const ajaxRequestSettings = {
   ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
   withCredentials: false,
 };
+
+/**
+ * All file types that can currently be opened by the Document Viewer.
+ */
+export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
+
+/**
+ * Whether or not the document can be opened by the Document Viewer (determined by the file extension in the document name).
+ */
+export const isDocumentOpenable = (documentName) =>
+  OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
 
 /**
  * If possible, open the document in the Document Viewer, otherwise, download the document.
@@ -76,26 +87,12 @@ export const openDocument = (documentManagerGuid, documentName) => async (dispat
 };
 
 /**
- * All file types that can currently be opened by the Document Viewer.
- */
-export const OPENABLE_DOCUMENT_TYPES = ["PDF"];
-
-/**
- * Whether or not the document can be opened by the Document Viewer (determined by the file extension in the document name).
- */
-export const isDocumentOpenable = (documentName) =>
-  OPENABLE_DOCUMENT_TYPES.some((type) => documentName.toUpperCase().includes(`.${type}`));
-
-/**
  * The Document Viewer allows documents to be opened and viewed within the application.
  */
-
 export class DocumentViewer extends Component {
   constructor() {
     super(...arguments);
-    this.serviceUrl =
-      this.props.serviceUrl ??
-      ENVIRONMENT.filesystemProviderUrl.replace("AmazonS3Provider/", "PdfViewer");
+    this.serviceUrl = ENVIRONMENT.filesystemProviderUrl.replace("AmazonS3Provider/", "PdfViewer");
   }
 
   handleOk = () => this.props.closeDocumentViewer();
@@ -110,7 +107,7 @@ export class DocumentViewer extends Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         footer={null}
-        width={"98%"}
+        width="98%"
       >
         {/* // NOTE: See here for documentation:
         https://ej2.syncfusion.com/react/documentation/pdfviewer/getting-started/ */}
