@@ -64,6 +64,10 @@ const rejectedCode = "REJ";
 const rejectedLetterCode = "RJL";
 const withdrawnCode = "WDN";
 const withdrawnLetterCode = "WDL";
+const noPermitRequiredCode = "NPR";
+const noPermitRequiredLetterCode = "NPR";
+const noPermitRequiredIPCode = "NPR";
+const noPermitRequiredIPLetterCode = "NPI";
 const originalPermit = "OGP";
 const regionHash = {
   SE: "Cranbrook",
@@ -184,6 +188,16 @@ export class ProcessPermit extends Component {
         title: "Withdraw Application",
         statusCode: withdrawnCode,
         letterCode: withdrawnLetterCode,
+      },
+      NPR: {
+        title: "No Permit Required",
+        statusCode: noPermitRequiredCode,
+        letterCode: noPermitRequiredLetterCode,
+      },
+      NPI: {
+        title: "No Permit Required IP",
+        statusCode: noPermitRequiredIPCode,
+        letterCode: noPermitRequiredIPLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;
@@ -804,6 +818,18 @@ export class ProcessPermit extends Component {
         onClick={() => this.openUpdateStatusGenerateLetterModal(withdrawnCode)}
       >
         Withdraw application
+      </Menu.Item>
+      <Menu.Item
+        key="no-permit-required"
+        onClick={() => this.openUpdateStatusGenerateLetterModal(noPermitRequiredCode)}
+      >
+        No Permit Required
+      </Menu.Item>
+      <Menu.Item
+        key="no-permit-required-IP"
+        onClick={() => this.openUpdateStatusGenerateLetterModal(noPermitRequiredIPCode)}
+      >
+        No Permit Required IP
       </Menu.Item>
     </Menu>
   );
