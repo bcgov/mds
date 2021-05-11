@@ -59,18 +59,25 @@ $error-font: $error-color; //#f44336;
   width: 108px;
 }
 
-#pdfviewer-container_openContainer,
+#pdfviewer-container_openContainer {
+  visibility: hidden;
+
+  & + .e-toolbar-item.e-separator {
+    display: none;
+  }
+}
+
 #pdfviewer-container_undoContainer,
 #pdfviewer-container_redoContainer,
 #pdfviewer-container_commentContainer,
 #pdfviewer-container_submitForm {
-  visibility: hidden;
+  display: none;
 
   & + .e-toolbar-item.e-separator {
-    visibility: hidden;
+    display: none;
   }
 }
 
 #pdfviewer-container_handToolContainer + .e-toolbar-item.e-separator {
-  visibility: hidden;
+  display: none;
 }
