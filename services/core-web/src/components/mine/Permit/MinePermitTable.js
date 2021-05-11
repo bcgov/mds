@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
   getDropdownPermitStatusOptionsHash,
@@ -55,11 +55,11 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-const renderDocumentLink = (file, text) => (
+const renderDocumentLink = (document, linkTitleOverride = null) => (
   <DocumentLink
-    documentManagerGuid={file.document_manager_guid}
-    documentName={file.document_name}
-    linkTitleOverride={text}
+    documentManagerGuid={document.document_manager_guid}
+    documentName={document.document_name}
+    linkTitleOverride={linkTitleOverride}
   />
 );
 
@@ -370,12 +370,7 @@ const childColumns = [
       <div title="Maps">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(
-                file.mine_document,
-                truncateFilename(file.mine_document.document_name)
-              )}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
           ))}
         </ul>
       </div>
@@ -389,12 +384,7 @@ const childColumns = [
       <div title="Final Application Package">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(
-                file.mine_document,
-                truncateFilename(file.mine_document.document_name)
-              )}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
           ))}
         </ul>
       </div>
@@ -408,9 +398,7 @@ const childColumns = [
       <div title="Permit Files">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(file, truncateFilename(file.document_name))}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file)}</li>
           ))}
         </ul>
       </div>
