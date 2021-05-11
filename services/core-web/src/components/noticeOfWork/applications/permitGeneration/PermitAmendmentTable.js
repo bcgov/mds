@@ -13,12 +13,10 @@ const propTypes = {
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const defaultProps = {};
-
-const renderDocumentLink = (file) => (
+const renderDocumentLink = (document) => (
   <DocumentLink
-    documentManagerGuid={file.document_manager_guid}
-    documentName={file.document_name}
+    documentManagerGuid={document.document_manager_guid}
+    documentName={document.document_name}
   />
 );
 
@@ -86,7 +84,6 @@ export class PermitAmendmentTable extends Component {
 }
 
 PermitAmendmentTable.propTypes = propTypes;
-PermitAmendmentTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),
