@@ -19,10 +19,7 @@ import {
 } from "@syncfusion/ej2-react-pdfviewer";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
 import { Modal } from "antd";
-import {
-  closeDocumentViewer,
-  changeDocumentViewerTitle,
-} from "@common/actions/documentViewerActions";
+import { closeDocumentViewer } from "@common/actions/documentViewerActions";
 import {
   getDocumentPath,
   getIsDocumentViewerOpen,
@@ -149,7 +146,6 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       closeDocumentViewer,
-      changeDocumentViewerTitle,
     },
     dispatch
   );

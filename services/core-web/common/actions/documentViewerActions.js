@@ -9,7 +9,7 @@ export const closeDocumentViewer = () => ({
   type: actionTypes.CLOSE_DOCUMENT_VIEWER,
 });
 
-export const changeDocumentViewerTitle = (payload) => ({
+export const updateDocumentViewerTitle = (payload) => ({
   type: actionTypes.UPDATE_DOCUMENT_VIEWER_TITLE,
   payload,
 });
