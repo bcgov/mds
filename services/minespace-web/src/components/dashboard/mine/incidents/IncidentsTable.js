@@ -36,7 +36,7 @@ const IncidentDocuments = (props) =>
       <br />
       {props.documents.map((file) => (
         <LinkButton
-          doc={file.mine_document_guid}
+          key={file.mine_document_guid}
           onClick={() => downloadFileFromDocumentManager(file)}
           title={file.document_name}
         >
