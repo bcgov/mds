@@ -10,11 +10,13 @@ const propTypes = {
   documentManagerGuid: PropTypes.string.isRequired,
   documentName: PropTypes.string.isRequired,
   openDocument: PropTypes.func.isRequired,
+  onClickOverride: PropTypes.func,
   linkTitleOverride: PropTypes.string,
   truncateDocumentName: PropTypes.bool,
 };
 
 const defaultProps = {
+  onClickOverride: null,
   linkTitleOverride: null,
   truncateDocumentName: true,
 };
@@ -22,7 +24,11 @@ const defaultProps = {
 const DocumentLink = (props) => (
   <LinkButton
     title={props.documentName}
-    onClick={() => props.openDocument(props.documentManagerGuid, props.documentName)}
+    onClick={
+      props.onClickOverride
+        ? props.onClickOverride
+        : () => props.openDocument(props.documentManagerGuid, props.documentName)
+    }
   >
     {props.linkTitleOverride
       ? props.linkTitleOverride
