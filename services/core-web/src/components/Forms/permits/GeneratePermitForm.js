@@ -50,7 +50,6 @@ export const GeneratePermitForm = (props) => (
               name="mine_no"
               label="Mine Number"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -60,7 +59,6 @@ export const GeneratePermitForm = (props) => (
               name="permit_number"
               label="Permit Number"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -72,7 +70,6 @@ export const GeneratePermitForm = (props) => (
               name="now_number"
               label="Application Number"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -82,7 +79,6 @@ export const GeneratePermitForm = (props) => (
               name="now_tracking_number"
               label="Application Tracking Number"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -94,7 +90,6 @@ export const GeneratePermitForm = (props) => (
               name="permittee"
               label="Permittee"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -104,7 +99,6 @@ export const GeneratePermitForm = (props) => (
               name="permittee_mailing_address"
               label="Permittee Mailing Address"
               component={renderConfig.AUTO_SIZE_FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -125,7 +119,6 @@ export const GeneratePermitForm = (props) => (
               name="mine_location"
               label="Mine Location"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -137,7 +130,6 @@ export const GeneratePermitForm = (props) => (
               name="lead_inspector"
               label="Lead Inspector Name"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -148,7 +140,6 @@ export const GeneratePermitForm = (props) => (
               name="issuing_inspector_title"
               label="Issuing Inspector Title"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -265,7 +256,6 @@ export const GeneratePermitForm = (props) => (
               name="application_date"
               label="Application Date"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -275,7 +265,6 @@ export const GeneratePermitForm = (props) => (
               name="property"
               label="Property Name"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -287,7 +276,6 @@ export const GeneratePermitForm = (props) => (
               name="application_type"
               label="Notice of Work Permit Type"
               component={renderConfig.FIELD}
-              validate={[required]}
               disabled
             />
           </Col>
@@ -300,7 +288,6 @@ export const GeneratePermitForm = (props) => (
               doNotPinDropdown
               component={renderConfig.SELECT}
               data={props.permitAmendmentDropdown}
-              validate={[required]}
               disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
             />
           </Col>
