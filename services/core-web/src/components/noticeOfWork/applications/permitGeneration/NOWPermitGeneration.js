@@ -3,26 +3,29 @@ import PropTypes from "prop-types";
 import moment from "moment";
 import { isEmpty } from "lodash";
 import { Button, Popconfirm } from "antd";
-import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
+import { modalConfig } from "@/components/modalContent/config";
 import {
   fetchPermits,
   updatePermitAmendment,
   fetchDraftPermitByNOW,
+  deletePermit,
+  deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
   getPermits,
 } from "@common/selectors/permitSelectors";
-
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,6 +37,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -63,6 +67,11 @@ const propTypes = {
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
   ).isRequired,
   submit: PropTypes.func.isRequired,
+  deletePermit: PropTypes.func.isRequired,
+  deletePermitAmendment: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -136,6 +145,20 @@ export class NOWPermitGeneration extends Component {
     this.handleDraftPermit();
   };
 
+  openDeleteDraftPermitModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Delete Draft Permit",
+        handleDelete: this.props.isAmendment
+          ? this.handleDeleteDraftPermitAmendment
+          : this.handleDeleteDraftPermit,
+      },
+      width: "75vw",
+      content: modalConfig.DELETE_DRAFT_PERMIT_MODAL,
+    });
+  };
+
   handleDraftPermit = () => {
     this.props
       .fetchDraftPermitByNOW(
@@ -153,6 +176,23 @@ export class NOWPermitGeneration extends Component {
         }
       })
       .finally(this.setState({ isLoaded: true }));
+  };
+
+  handleDeleteDraftPermit = () => {
+    console.log("deleting permit");
+  };
+
+  handleDeleteDraftPermitAmendment = () => {
+    this.props
+      .deletePermitAmendment(
+        this.props.noticeOfWork.mine_guid,
+        this.props.draftPermit.permit_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid
+      )
+      .then(() => {
+        this.props.closeModal();
+        this.handleDraftPermit();
+      });
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
@@ -435,7 +475,11 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
-    console.log(this.props.draftPermitAmendment);
+    const draftInProgress =
+      this.props.progress["DFT"] &&
+      this.props.progress["DFT"].start_date &&
+      !this.props.progress["DFT"].end_date;
+    const hasDraftBeenDeleted = isEmpty(this.props.draftPermitAmendment) && draftInProgress;
     return (
       <div>
         <NOWTabHeader
@@ -444,8 +488,8 @@ export class NOWPermitGeneration extends Component {
             this.state.isDraft && (
               <>
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                  <Button type="danger" onClick={this.props.toggleEditMode}>
-                    Delete & Restart Draft
+                  <Button type="danger" onClick={(event) => this.openDeleteDraftPermitModal(event)}>
+                    Delete Draft
                   </Button>
                 </NOWActionWrapper>
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
@@ -522,7 +566,18 @@ export class NOWPermitGeneration extends Component {
               <>
                 {!this.state.isDraft ? (
                   <LoadingWrapper condition={this.state.isLoaded}>
-                    <NullScreen type="draft-permit" />
+                    <NullScreen
+                      type="draft-permit"
+                      message={
+                        !hasDraftBeenDeleted ? (
+                          <>Click &quot;Start Draft Permit&quot; to start the drafting process.</>
+                        ) : (
+                          <>
+                            Click &quot;Create Draft Permit&quot; to continue the drafting process.
+                          </>
+                        )
+                      }
+                    />
                   </LoadingWrapper>
                 ) : (
                   <GeneratePermitForm
@@ -572,6 +627,7 @@ const mapStateToProps = (state) => ({
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
   permits: getPermits(state),
+  progress: getNOWProgress(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -582,6 +638,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermits,
       updatePermitAmendment,
       fetchDraftPermitByNOW,
+      deletePermit,
+      deletePermitAmendment,
+      openModal,
+      closeModal,
     },
     dispatch
   );

@@ -64,12 +64,13 @@ export class UploadPermitDocumentFrom extends Component {
           <Col span={24}>
             <Form.Item label="Upload Files">
               <Field
-                id="PermitDocumentFileUpload"
-                name="PermitDocumentFileUpload"
+                id="uploadedFiles"
+                name="uploadedFiles"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mine_guid}
+                mineGuid={this.props.mineGuid}
                 component={PermitAmendmentFileUpload}
+                allowMultiple={false}
               />
             </Form.Item>
           </Col>

@@ -43,12 +43,17 @@ const propTypes = {
 };
 
 export const GeneratePermitForm = (props) => {
-  console.log(props.draftPermitAmendment);
   return (
     <Form layout="vertical">
       {!props.draftPermitAmendment.has_permit_conditions && (
-        <ScrollContentWrapper id="permit-upload" title="Permit Upload" isLoaded={props.isLoaded}>
-          <UploadPermitDocument draftPermitAmendment={props.draftPermitAmendment} />
+        <ScrollContentWrapper id="permit-upload" title="Permit" isLoaded={props.isLoaded}>
+          <UploadPermitDocument
+            draftPermitAmendment={props.draftPermitAmendment}
+            mineGuid={props.noticeOfWork.mine_guid}
+            draftPermit={props.draftPermit}
+            NoWGuid={props.noticeOfWork.now_application_guid}
+            isViewMode={props.isViewMode}
+          />
         </ScrollContentWrapper>
       )}
       <ScrollContentWrapper id="general-info" title="General Information" isLoaded={props.isLoaded}>
@@ -308,7 +313,7 @@ export const GeneratePermitForm = (props) => {
           <FinalPermitDocuments
             mineGuid={props.noticeOfWork.mine_guid}
             noticeOfWork={props.noticeOfWork}
-            showPreambleFileMetadata
+            showPreambleFileMetadata={props.draftPermitAmendment.has_permit_conditions}
             editPreambleFileMetadata={!props.isViewMode}
             initialValues={props.initialValues}
           />

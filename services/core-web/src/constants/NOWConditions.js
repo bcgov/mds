@@ -20,15 +20,17 @@ export const permitWithConditions = {
   "draft-permit": ["conditions"],
   administrative: ["generated-documents"],
 };
-
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
 
 // TODO
 export const renderNavOptions = (hasConditions, tabSection, href) => {
+  console.log(hasConditions, tabSection, href);
+  const tab = tabSection === "draft-permit" || tabSection === "administrative";
   return true;
-  // return hasConditions ? permitWithConditions[tabSection].includes(href) : permitWithoutConditions[tabSection].includes(href);
+  // only run this logic for the draft and administrative tab
+  // return hasConditions && tab ? permitWithConditions[tabSection].includes(href) : permitWithoutConditions[tabSection].includes(href);
 };
 
 export const sideMenuOptions = {

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { renderActivities, sideMenuOptions, renderNavOptions } from "@/constants/NOWConditions";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -26,13 +28,10 @@ const propTypes = {
     },
   }).isRequired,
   tabSection: PropTypes.string.isRequired,
-  hasPermitConditions: PropTypes.bool,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
 };
 
-const defaultProps = {
-  hasPermitConditions: true,
-};
+const defaultProps = {};
 
 export class NOWSideMenu extends Component {
   state = { showNested: false };
@@ -111,6 +110,12 @@ export class NOWSideMenu extends Component {
   };
 
   render() {
+    // default to true, as the preferred flow has permit conditions.
+    const hasPermitConditionsFlow = !isEmpty(this.props.draftPermitAmendment)
+      ? this.props.draftPermitAmendment.has_permit_conditions
+      : true;
+    console.log(hasPermitConditionsFlow);
+    console.log(isEmpty(this.props.draftPermitAmendment));
     return (
       <div>
         <Anchor
@@ -127,7 +132,7 @@ export class NOWSideMenu extends Component {
               ({ href, alwaysVisible, applicationType }) =>
                 (alwaysVisible ||
                   renderActivities(this.props.noticeOfWork.notice_of_work_type_code, href)) &&
-                renderNavOptions(this.props.hasPermitConditions, this.props.tabSection, href) &&
+                renderNavOptions(hasPermitConditionsFlow, this.props.tabSection, href) &&
                 applicationType &&
                 applicationType.includes(this.props.noticeOfWork.application_type_code)
             )
@@ -156,6 +161,7 @@ NOWSideMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWSideMenu));

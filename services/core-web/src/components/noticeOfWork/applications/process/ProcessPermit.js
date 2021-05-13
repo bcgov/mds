@@ -393,12 +393,21 @@ export class ProcessPermit extends Component {
   };
 
   handleApplication = (values, code) => {
-    if (code === approvedCode) {
+    if (
+      code === approvedCode &&
+      this.props.draftAmendment &&
+      this.props.draftAmendment.has_permit_conditions
+    ) {
       return this.handleApprovedApplication(values);
     }
+    const codeMap = {
+      WDN: "withdrawn",
+      REJ: "rejected",
+      AIA: "approved",
+    };
     return this.afterSuccess(
       values,
-      `This application has been successfully ${code === "WDN" ? "withdrawn" : "rejected"}.`,
+      `This application has been successfully ${codeMap[code]}.`,
       code
     );
   };
@@ -556,7 +565,7 @@ export class ProcessPermit extends Component {
     const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
     let titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
       .length;
-    if (titlesMissing !== 0) {
+    if (titlesMissing !== 0 && this.props.draftAmendment?.has_permit_conditions) {
       validationMessages.push({
         message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
@@ -649,6 +658,21 @@ export class ProcessPermit extends Component {
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
           this.props.noticeOfWork.now_application_guid,
           "administrative"
+        ),
+      });
+    }
+
+    // no permit document uploaded
+    if (
+      this.props.draftAmendment &&
+      this.props.draftAmendment?.related_documents?.length === 0 &&
+      !this.props.draftAmendment?.has_permit_conditions
+    ) {
+      validationMessages.push({
+        message: `The Draft Permit must have a Permit PDF uploaded.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft"
         ),
       });
     }

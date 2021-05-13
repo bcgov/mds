@@ -27,6 +27,7 @@ import AddReclamationInvoiceModal from "./AddReclamationInvoiceModal";
 import TransferBondModal from "./TransferBondModal";
 import CloseBondModal from "./CloseBondModal";
 import DeleteConditionModal from "./DeleteConditionModal";
+import DeleteDraftPermitModal from "./DeleteDraftPermitModal";
 import ViewConditionModal from "./ViewConditionModal";
 import AddQuickPartyModal from "./AddQuickPartyModal";
 import UpdateStatusGenerateLetterModal from "./UpdateStatusGenerateLetterModal";
@@ -80,6 +81,7 @@ export const modalConfig = {
   ADD_ADMIN_AMENDMENT_MODAL: AddAdministrativeAmendmentModal,
   EDIT_SITE_PROPERTIES_MODAL: EditSitePropertiesModal,
   UPLOAD_PERMIT_DOCUMENT_MODAL: UploadPermitDocumentModal,
+  DELETE_DRAFT_PERMIT_MODAL: DeleteDraftPermitModal,
 };
 
 export default modalConfig;

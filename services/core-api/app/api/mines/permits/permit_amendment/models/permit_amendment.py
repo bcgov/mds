@@ -134,9 +134,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                 "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
             )
 
-        if self.now_application_guid:
+        if self.now_application_guid and self.permit_amendment_status_code != "DFT":
             raise Exception(
                 'The permit amendment with linked NOW application in Core cannot be deleted.')
+        # If deleting a draft permit, remove the now_guid so a new permit can be created and associated with that now
+        if self.now_application_guid and self.permit_amendment_status_code == "DFT":
+            self.now_application_guid = None
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()

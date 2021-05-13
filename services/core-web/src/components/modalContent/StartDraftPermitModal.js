@@ -56,7 +56,6 @@ export const StartDraftPermitModal = (props) => {
       now_application_guid: props.noticeOfWork.now_application_guid,
       populate_with_conditions: isGenerateThroughCore,
     };
-    console.log(payload);
     return props
       .createPermit(props.noticeOfWork.mine_guid, payload)
       .then(() => {
@@ -76,7 +75,6 @@ export const StartDraftPermitModal = (props) => {
         permit_amendment_type_code: permitPayload.permit_amendment_type_code,
         populate_with_conditions: isGenerateThroughCore,
       };
-      console.log(payload);
       return props
         .createPermitAmendment(props.noticeOfWork.mine_guid, permitPayload.permit_guid, payload)
         .then(() => {
@@ -146,23 +144,69 @@ export const StartDraftPermitModal = (props) => {
         changes later, click &quot;Resume {props.tab}&quot;.
       </p>
       <br />
-      <p>
-        Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
-      </p>
+      {!props.noticeOfWork.has_source_conditions &&
+      props.noticeOfWork.application_type_code === "ADA" ? (
+        <p className="center"></p>
+      ) : (
+        <p>
+          Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
+        </p>
+      )}
       <br />
       {!props.noticeOfWork.has_source_conditions &&
         props.noticeOfWork.application_type_code === "ADA" && (
           <Radio.Group value onChange={onChange} value={isGenerateThroughCore}>
             <Row gutter={16}>
-              <Col span={12} style={{ height: "400px" }} className="border--right--layout">
-                <Radio value> Generate PDF </Radio>
-                <SafetyCertificateOutlined className="icon-xxl--lightgrey" />
+              <Col span={12} className="border--right--layout">
+                <Radio value> Write Permit in Core </Radio>
+                <p className="p-light">
+                  <br />
+                  This will include the default conditions for the type of permit you are amending.
+                  The Preamble will not include the files from the original authorization.
+                  <br />
+                  <br />
+                  You need to:
+                  <br />
+                  1. Attach the files that made up the original approved work for the authorization.
+                  <br />
+                  2. Update the conditions to match what was authorized in the original, and update
+                  them if required.
+                  <br />
+                  <br />
+                  This is a longer process, however, the information will be saved as data and will
+                  be used to populate future amendments.
+                  <br />
+                  <br />
+                </p>
+                <div className="center">
+                  <SafetyCertificateOutlined
+                    className={
+                      !isGenerateThroughCore ? "icon-xxxl--lightgrey" : "icon-xxxl--violet"
+                    }
+                  />
+                </div>
               </Col>
               <Col span={12}>
-                <Radio value={false}> Upload Document </Radio>
-                <RocketOutlined className="icon-xxl--lightgrey" />
+                <Radio value={false}> Upload Permit </Radio>
+                <p className="p-light">
+                  <br />
+                  Upload a Permit Document that was generated outside of Core.
+                  <br />
+                  <br />
+                  This is a quicker process, however, the conditions in the permit will not be saved
+                  as data and cannot be used for reporting.
+                  <br />
+                  <br />
+                </p>
+                <div className="center">
+                  <RocketOutlined
+                    className={isGenerateThroughCore ? "icon-xxxl--lightgrey" : "icon-xxxl--violet"}
+                  />
+                </div>
               </Col>
             </Row>
+            <br />
+            <br />
           </Radio.Group>
         )}
     </>
@@ -177,19 +221,9 @@ export const StartDraftPermitModal = (props) => {
     disabled: props.noticeOfWork.source_permit_guid,
   };
 
-  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions ? (
-    `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
-  ) : (
-    <>
-      When you start the Draft Permit, it will include the default conditions for the type of permit
-      you are amending. The Preamble will not include the files from the original authorization. You
-      need to:
-      <br />
-      1. Attach the files that made up the original approved work for the authorization.
-      <br />
-      2. Update the conditions to match what was authorized in the original.
-    </>
-  );
+  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions
+    ? `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
+    : `This is an amendment to an authorization that was not written in Core.`;
   const amendmentMessage = props.noticeOfWork.source_permit_guid
     ? sourceAmendmentMessage
     : `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`;

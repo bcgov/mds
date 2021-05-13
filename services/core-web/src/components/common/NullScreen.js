@@ -87,7 +87,7 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={PERMIT} />
         <h3>A draft permit has not been created.</h3>
-        <p>Click &quot;Start Draft Permit&quot; to start the drafting process.</p>
+        <p>{props.message}</p>
       </div>
     )}
   </div>
