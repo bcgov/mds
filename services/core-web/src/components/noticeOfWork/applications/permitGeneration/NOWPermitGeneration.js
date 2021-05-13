@@ -476,9 +476,9 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ";
     const draftInProgress =
-      this.props.progress["DFT"] &&
-      this.props.progress["DFT"].start_date &&
-      !this.props.progress["DFT"].end_date;
+      this.props.progress.DFT &&
+      this.props.progress.DFT.start_date &&
+      !this.props.progress.DFT.end_date;
     const hasDraftBeenDeleted = isEmpty(this.props.draftPermitAmendment) && draftInProgress;
     return (
       <div>

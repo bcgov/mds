@@ -9,10 +9,10 @@ import * as Strings from "@common/constants/strings";
 import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
-import { TRASHCAN } from "@/constants/assets";
+import { TRASHCAN , CLOUD_CHECK_MARK } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import { CLOUD_CHECK_MARK } from "@/constants/assets";
+
 
 const propTypes = {
   permit: CustomPropTypes.permit.isRequired,

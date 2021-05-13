@@ -146,7 +146,7 @@ export const StartDraftPermitModal = (props) => {
       <br />
       {!props.noticeOfWork.has_source_conditions &&
       props.noticeOfWork.application_type_code === "ADA" ? (
-        <p className="center"></p>
+        <p className="center" />
       ) : (
         <p>
           Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
