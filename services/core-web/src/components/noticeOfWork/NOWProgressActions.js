@@ -140,8 +140,8 @@ export class NOWProgressActions extends Component {
       content: modalConfig.NOW_PROGRESS_MODAL,
     });
 
-  openDraftPermitProgressModal = () => {
-    return this.props.openModal({
+  openDraftPermitProgressModal = () =>
+    this.props.openModal({
       props: {
         title: `Start ${this.props.progressStatusHash[this.props.tab]}`,
         tab: this.props.progressStatusHash[this.props.tab],
@@ -157,7 +157,6 @@ export class NOWProgressActions extends Component {
       },
       content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });
-  };
 
   openStatusReasonModal = (title) =>
     this.props.openModal({
