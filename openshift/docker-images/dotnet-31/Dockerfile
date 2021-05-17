@@ -1,4 +1,5 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
+# This is the Dockerfile ^ : https://catalog.redhat.com/software/containers/ubi8/dotnet-31/5de595fa5a13461646f8bbb0?tag=3.1-26.20210331134246&gti-tabs=unauthenticated&container-tabs=dockerfile
 
 USER 0
 
@@ -32,7 +33,7 @@ USER 0
 # Can't access this: https://access.redhat.com/solutions/4582971
 # Install Mono
 RUN yum install -y curl
-RUN rpmkeys --import "http://pool.sks-keyservers.net/pks/lookup?op=get&search=0x3fa7e0328081bff6a14da29aa6a19b38d3d831ef"
+RUN rpmkeys --import "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"
 RUN su -c 'curl https://download.mono-project.com/repo/centos7-stable.repo | tee /etc/yum.repos.d/mono-centos7-stable.repo'
 RUN yum install mono-devel
 
