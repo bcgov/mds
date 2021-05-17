@@ -11,7 +11,7 @@
     "@babel/runtime-corejs3": "^7.5.5",
     "@datapunt/matomo-tracker-react": "^0.1.5",
     "@hot-loader/react-dom": "^16.13.0",
-    "antd": "^4.15.5",
+    "antd": "^4.6.2",
     "axios": "^0.21.1",
     "axios-mock-adapter": "^1.17.0",
     "core-js": "^3.1.4",
