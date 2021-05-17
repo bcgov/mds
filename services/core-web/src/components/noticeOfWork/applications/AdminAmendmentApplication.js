@@ -76,7 +76,7 @@ export class AdminAmendmentApplication extends Component {
   render() {
     const isNoticeOfWorkTypeDisabled =
       (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
-      !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code);
+      !["QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code);
     return (
       <div className="page">
         <NoticeOfWorkPageHeader
