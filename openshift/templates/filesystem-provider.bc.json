@@ -31,14 +31,10 @@
             "type": "ImageChange"
           }
         ],
-        "runPolicy": "Serial",
+        "runPolicy": "SerialLatestOnly",
         "source": {
-          "type": "Git",
-          "git": {
-            "uri": "${SOURCE_REPOSITORY_URL}",
-            "ref": "${SOURCE_REPOSITORY_REF}"
-          },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
+          "contextDir": "openshift/docker-images/python-36",
+          "type": "Binary"
         },
         "strategy": {
           "type": "Source",
