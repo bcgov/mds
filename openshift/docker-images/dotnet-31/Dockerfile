@@ -28,6 +28,8 @@ USER 0
 
 # https://www.mono-project.com/download/stable/#download-lin-centos
 # https://docs.microsoft.com/en-us/dotnet/core/install/linux-rhel#rhel-7--net-core-31
+# https://docs.microsoft.com/en-us/dotnet/core/install/linux-rhel#dependencies
+# Can't access this: https://access.redhat.com/solutions/4582971
 # Install Mono
 RUN yum install -y curl
 RUN rpmkeys --import "http://pool.sks-keyservers.net/pks/lookup?op=get&search=0x3fa7e0328081bff6a14da29aa6a19b38d3d831ef"
