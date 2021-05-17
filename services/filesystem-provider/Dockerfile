@@ -4,6 +4,8 @@ COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
 
 COPY init.sh .
 
+RUN echo "********** LOCAL DOCKERFILE"
+
 RUN apt-get update \     
     && apt-get install -y --allow-unauthenticated \     
     libc6-dev \     
