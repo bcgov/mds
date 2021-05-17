@@ -38,7 +38,7 @@
             "uri": "${SOURCE_REPOSITORY_URL}",
             "ref": "${SOURCE_REPOSITORY_REF}"
           },
-          "contextDir": "${SOURCE_CONTEXT_DIR}"
+          "contextDir": "${DOCKER_IMAGE_DIRECTORY}"
         },
         "strategy": {
           "type": "Source",
@@ -132,6 +132,10 @@
     {
       "name": "VERSION",
       "required": true
+    },
+    {
+      "name": "DOCKER_IMAGE_DIRECTORY",
+      "value": "openshift/docker-images/dotnet-31"
     }
   ]
 }
