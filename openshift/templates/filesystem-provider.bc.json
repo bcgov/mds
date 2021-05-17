@@ -31,10 +31,14 @@
             "type": "ImageChange"
           }
         ],
-        "runPolicy": "SerialLatestOnly",
+        "runPolicy": "Serial",
         "source": {
-          "contextDir": "openshift/docker-images/dotnet-31",
-          "type": "Binary"
+          "type": "Git",
+          "git": {
+            "uri": "${SOURCE_REPOSITORY_URL}",
+            "ref": "${SOURCE_REPOSITORY_REF}"
+          },
+          "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
           "type": "Source",
