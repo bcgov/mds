@@ -39,6 +39,10 @@ RUN su -c 'curl https://download.mono-project.com/repo/centos7-stable.repo | tee
 
 # Trying to convert METHOD 2 to RHEL syntax/packages:
 RUN yum install -y \
+    krb5-libs \
+    libicu \
+    openssl-libs \
+    zlib \
     glibc-devel \
     # libgdiplus \
     libX11-devel.x86_64 \
