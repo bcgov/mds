@@ -64,6 +64,63 @@
         },
         "completionDeadlineSeconds": 600
       }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}-base${SUFFIX}",
+        "creationTimestamp": null,
+        "labels": {},
+        "annotations": {}
+      },
+      "spec": {
+        "completionDeadlineSeconds": 1440,
+        "successfulBuildsHistoryLimit": 3,
+        "failedBuildsHistoryLimit": 3,
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "runPolicy": "SerialLatestOnly",
+        "source": {
+          "contextDir": "${DOCKER_IMAGE_DIRECTORY}",
+          "type": "Binary"
+        },
+        "strategy": {
+          "type": "Docker",
+          "dockerStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "dotnet:3.1"
+            },
+            "env": []
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}-base:${VERSION}"
+          }
+        },
+        "resources": {
+          "limits": {
+            "cpu": "500m",
+            "memory": "2Gi"
+          },
+          "requests": {
+            "cpu": "250m",
+            "memory": "1Gi"
+          }
+        },
+        "postCommit": {},
+        "nodeSelector": null
+      }
     }
   ],
   "parameters": [
