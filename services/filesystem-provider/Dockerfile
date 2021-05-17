@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:3.1
 
-RUN echo "********** LOCAL DOCKERFILE"
-
 COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
 
 COPY init.sh .
