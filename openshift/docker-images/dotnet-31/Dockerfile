@@ -29,7 +29,7 @@ USER 0
 # Trying to convert METHOD 2 to RHEL syntax/packages:
 RUN yum install -y \
     glibc-devel \
-    # libgdiplus \
+    libgdiplus \
     libX11-devel.x86_64
 # curl \
 # vim \
