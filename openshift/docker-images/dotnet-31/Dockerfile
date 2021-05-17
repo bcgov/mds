@@ -5,7 +5,7 @@ USER 0
 RUN yum install -y \     
     glibc-devel \     
     libgdiplus \     
-    libx11-dev \     
+    libXll-devel \     
     curl \     
     vim \     
     supervisor \     
