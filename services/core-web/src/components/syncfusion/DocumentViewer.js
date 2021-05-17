@@ -44,11 +44,6 @@ const getAjaxRequestSettingsHeaders = (obj) => {
   return ajaxRequestSettingsHeaders;
 };
 
-const ajaxRequestSettings = {
-  ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
-  withCredentials: false,
-};
-
 /**
  * All file types that can currently be opened by the Document Viewer.
  */
@@ -105,6 +100,11 @@ export class DocumentViewer extends Component {
   handleCancel = () => this.props.closeDocumentViewer();
 
   render() {
+    const ajaxRequestSettings = {
+      ajaxHeaders: getAjaxRequestSettingsHeaders(createRequestHeader().headers),
+      withCredentials: false,
+    };
+
     return (
       <Modal
         title={this.props.props.title}
