@@ -92,9 +92,9 @@ export class NOWStatusIndicator extends Component {
         });
       } else if (statusCode === "NPR") {
         this.setState({
-          bannerColor: COLOR.darkLightGrey,
+          bannerColor: COLOR.darkGrey,
           showBanner: true,
-          badgeColor: COLOR.darkLightGrey,
+          badgeColor: COLOR.darkGrey,
           message: "No Permit Required",
           color: COLOR.backgroundBlack,
         });

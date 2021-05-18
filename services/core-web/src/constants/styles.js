@@ -10,6 +10,7 @@ export const COLOR = {
   layoutGrey: "#e8e8e8",
   darkLightGrey: "#DED9D9",
   lightGrey: "#F4F0F0",
+  darkGrey: "#6B6363",
   antIconGrey: "#00000040",
   dangerButtonRed: "#BC2929",
   backgroundWhite: "#ffffff",

@@ -848,7 +848,8 @@ export class ProcessPermit extends Component {
     const isAmendment = this.props.noticeOfWork.type_of_application !== "New Permit";
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
-      this.props.noticeOfWork.now_application_status_code === rejectedCode;
+      this.props.noticeOfWork.now_application_status_code === rejectedCode ||
+      this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     return (
       <>
