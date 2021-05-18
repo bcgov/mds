@@ -3,7 +3,10 @@ import { createSelector } from "reselect";
 import moment from "moment";
 import { getDurationTextInDays } from "@common/utils/helpers";
 import * as noticeOfWorkReducer from "../reducers/noticeOfWorkReducer";
-import { getDropdownNoticeOfWorkActivityTypeOptions } from "./staticContentSelectors";
+import {
+  getDropdownNoticeOfWorkActivityTypeOptions,
+  getDropdownNoticeOfWorkApplicationTypeOptions,
+} from "./staticContentSelectors";
 
 export const {
   getNoticeOfWorkList,
@@ -135,3 +138,14 @@ export const getNoticeOfWork = createSelector([getNoticeOfWorkUnformatted], (not
     site_property: siteProperties,
   };
 });
+
+export const getNoticeOfWorkEditableTypes = createSelector(
+  [getNoticeOfWorkUnformatted, getDropdownNoticeOfWorkApplicationTypeOptions],
+  (application, applicationTypeOptions) => {
+    const editableOptions = ["QIM", "QCA"];
+    if (application.application_type_code === "NOW") {
+      editableOptions.push("SAG");
+    }
+    return applicationTypeOptions.filter((o) => editableOptions.includes(o.value));
+  }
+);
