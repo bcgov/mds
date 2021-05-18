@@ -14,7 +14,7 @@ import * as routes from "@/constants/routes";
 import { clearNoticeOfWorkApplication } from "@common/actions/noticeOfWorkActions";
 import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NullScreen from "@/components/common/NullScreen";
-
+import { fetchDraftPermitByNOW, fetchPermits } from "@common/actionCreators/permitActionCreator";
 /**
  * @constant ApplicationGuard - Higher Order Component that fetches applications, and handles all common logic between the application routes.
  * If users try to access an "Administrative Amendment" via the Notice of work Flow, they will be redirected.
@@ -48,6 +48,8 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchOriginalNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
+  fetchPermits: PropTypes.func.isRequired,
 };
 const defaultProps = {};
 
@@ -101,9 +103,13 @@ export const ApplicationGuard = (WrappedComponent) => {
       await Promise.all([
         this.props.fetchImportedNoticeOfWorkApplication(id).then(({ data }) => {
           this.setState({ mineGuid: data.mine_guid });
+          this.props.fetchDraftPermitByNOW(data.mine_guid, id);
           if (data.application_type_code === "NOW") {
             this.props.fetchOriginalNoticeOfWorkApplication(id);
             this.props.fetchImportNoticeOfWorkSubmissionDocumentsJob(id);
+          }
+          if (data.application_type_code === "ADA") {
+            this.props.fetchPermits(data.mine_guid);
           }
           this.handleCorrectRouteByApplicationType(data);
         }),
@@ -172,6 +178,8 @@ export const ApplicationGuard = (WrappedComponent) => {
         fetchOriginalNoticeOfWorkApplication,
         fetchImportNoticeOfWorkSubmissionDocumentsJob,
         clearNoticeOfWorkApplication,
+        fetchDraftPermitByNOW,
+        fetchPermits,
       },
       dispatch
     );
