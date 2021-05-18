@@ -109,3 +109,11 @@ export const BOOLEAN_OPTIONS_HASH = {
   true: "Yes",
   null: EMPTY_FIELD,
 };
+
+export const APPLICATION_TYPES_BY_PERMIT_PREFIX = {
+  P: ["PLA"],
+  G: ["SAG"],
+  M: ["MIN"],
+  C: ["COL"],
+  Q: ["QCA", "QIM"],
+};

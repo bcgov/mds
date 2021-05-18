@@ -66,8 +66,11 @@ const propTypes = {
       applicationPageFromRoute: CustomPropTypes.applicationPageFromRoute,
     }),
   }).isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
-const defaultProps = {};
+const defaultProps = {
+  isNoticeOfWorkTypeDisabled: true,
+};
 
 export class ApplicationTab extends Component {
   state = {
@@ -381,6 +384,7 @@ export class ApplicationTab extends Component {
   render() {
     const isImported = this.props.noticeOfWork.imported_to_core;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+
     return (
       <React.Fragment>
         <Prompt
@@ -401,7 +405,7 @@ export class ApplicationTab extends Component {
               : "You have unsaved changes. Are you sure you want to leave without saving?";
           }}
         />
-        {this.renderEditModeNav(this.props.fixedTop)}
+        {this.renderEditModeNav()}
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu tabSection="application" />
         </div>
@@ -435,6 +439,7 @@ export class ApplicationTab extends Component {
               importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+              isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
             />
           ) : (
             <ReviewAdminAmendmentApplication
@@ -445,6 +450,7 @@ export class ApplicationTab extends Component {
               noticeOfWork={this.props.noticeOfWork}
               renderOriginalValues={this.renderOriginalValues}
               isPreLaunch={this.props.originalNoticeOfWork.is_pre_launch}
+              isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
             />
           )}
         </div>

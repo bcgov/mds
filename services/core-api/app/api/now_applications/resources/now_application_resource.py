@@ -149,7 +149,18 @@ class NOWApplicationResource(Resource, UserMixin):
         if now_application_identity.application_type_code == 'ADA' and 'application_reason_codes' in data:
             data['application_reason_codes'] = map_application_reason_codes(data)
 
+        update_fap_document = 'notice_of_work_type_code' in data and data.get(
+            'notice_of_work_type_code'
+        ) != now_application_identity.now_application.notice_of_work_type_code and now_application_identity.application_type_code == 'NOW' and any(
+            doc.now_application_document_type_code == "NTR"
+            for doc in now_application_identity.now_application.documents)
+
         now_application_identity.now_application.deep_update_from_dict(data)
+
+        if update_fap_document and now_application_identity.application_type_code == 'NOW':
+            now_application_identity.now_application.add_now_form_to_fap(
+                'This document was automatically created due to changes in Type of Notice of Work.')
+
         NROSNOWStatusService.nros_now_status_update(
             now_application_identity.now_number,
             now_application_identity.now_application.status.description,
