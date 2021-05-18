@@ -16,8 +16,8 @@ const App = () => (
       <MatomoLinkTracing />
       <Fragment>
         <Routes />
-        <DocumentViewer />
         <ModalWrapper />
+        <DocumentViewer />
       </Fragment>
     </ScrollToTopWrapper>
   </BrowserRouter>
