@@ -65,6 +65,8 @@ const rejectedLetterCode = "RJL";
 const withdrawnCode = "WDN";
 const withdrawnLetterCode = "WDL";
 const noPermitRequiredCode = "NPR";
+const noPermitRequiredLetterCode = "NPR";
+const noPermitRequiredIPLetterCode = "NPI";
 const originalPermit = "OGP";
 const regionHash = {
   SE: "Cranbrook",
@@ -189,6 +191,12 @@ export class ProcessPermit extends Component {
       NPR: {
         title: "No Permit Required",
         statusCode: noPermitRequiredCode,
+        letterCode: noPermitRequiredLetterCode,
+      },
+      NPI: {
+        title: "No Permit Required IP",
+        statusCode: noPermitRequiredCode,
+        letterCode: noPermitRequiredIPLetterCode,
       },
     };
     const signature = this.props.noticeOfWork?.issuing_inspector?.signature;

@@ -25,9 +25,7 @@ export const NoPermitRequiredSelectionModal = (props) => {
     }
   }, [letterCode]);
 
-  const handleNextStep = () => {
-    props.nextStep(letterCode);
-  };
+  const handleNextStep = () => props.nextStep(letterCode);
 
   return (
     <div>
