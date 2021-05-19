@@ -3,10 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Button } from "antd";
+import { isEmpty } from "lodash";
 import LinkButton from "@/components/common/LinkButton";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { truncateFilename } from "@common/utils/helpers";
 import {
   updatePermitAmendment,
   removePermitAmendmentDocument,
@@ -16,16 +17,19 @@ import { PERMIT, CLOUD_CHECK_MARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import PermitDocumentTable from "@/components/noticeOfWork/applications/permitGeneration/PermitDocumentTable";
+import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   mineGuid: PropTypes.string.isRequired,
   NoWGuid: PropTypes.string.isRequired,
   draftPermit: CustomPropTypes.permit.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isViewMode: PropTypes.bool.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  updatePermitAmendment: PropTypes.func.isRequired,
+  removePermitAmendmentDocument: PropTypes.func.isRequired,
+  fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
 const renderDocumentLink = (file, text) => (
   <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
@@ -75,15 +79,12 @@ export class UploadPermitDocument extends Component {
   };
 
   render() {
-    const hasDocuments = this.props.draftPermitAmendment?.related_documents.length > 0;
+    const hasDocuments =
+      !isEmpty(this.props.draftPermitAmendment) &&
+      this.props.draftPermitAmendment.related_documents.length > 0;
     return (
       <div>
         {hasDocuments ? (
-          // <PermitDocumentTable
-          //   draftPermitAmendment={this.props.draftPermitAmendment}
-          //   handleRemovePermitAmendmentDocument={this.handleRemovePermitAmendmentDocument}
-          //   isViewMode={this.props.isViewMode}
-          // />
           <div className="null-screen">
             <img alt="document_img" src={CLOUD_CHECK_MARK} />
             <h3> Permit Uploaded</h3>
@@ -97,7 +98,6 @@ export class UploadPermitDocument extends Component {
                   )
                 )}
               </p>
-              <p>Date Uploaded:</p>
               {!this.props.isViewMode && (
                 <>
                   <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
@@ -114,20 +114,6 @@ export class UploadPermitDocument extends Component {
                       Delete Document
                     </Button>
                   </NOWActionWrapper>
-                  {/* <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                    <Button
-                      type="primary"
-                      onClick={(event) =>
-                        this.handleRemovePermitAmendmentDocument(
-                          event,
-                          this.props.draftPermitAmendment.related_documents[0]
-                            .permit_amendment_document_guid
-                        )
-                      }
-                    >
-                      Delete & Upload New
-                    </Button>
-                  </NOWActionWrapper> */}
                 </>
               )}
             </div>
@@ -150,8 +136,6 @@ export class UploadPermitDocument extends Component {
 }
 
 UploadPermitDocument.propTypes = propTypes;
-
-const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(

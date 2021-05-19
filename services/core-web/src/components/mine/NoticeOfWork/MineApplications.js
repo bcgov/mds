@@ -21,7 +21,6 @@ import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
 import { modalConfig } from "@/components/modalContent/config";
-import { detectProdEnvironment } from "@common/utils/environmentUtils";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -139,7 +138,6 @@ export class MineApplications extends Component {
   };
 
   render() {
-    const isProd = detectProdEnvironment();
     return (
       <div className="tab__content">
         <h2>Applications</h2>
@@ -171,40 +169,38 @@ export class MineApplications extends Component {
               />
             </>
           </Tabs.TabPane>
-          {!isProd && (
-            <Tabs.TabPane
-              tab={`Administrative Amendments (${
-                this.props.noticeOfWorkApplications.filter(
+          <Tabs.TabPane
+            tab={`Administrative Amendments (${
+              this.props.noticeOfWorkApplications.filter(
+                (app) => app.application_type_code === "ADA"
+              ).length
+            })`}
+            key="2"
+          >
+            <>
+              <br />
+              <div className="inline-flex between">
+                <h4 className="uppercase">Administrative Amendments</h4>
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
+                    Add Administrative Amendment
+                  </AddButton>
+                </AuthorizationWrapper>
+              </div>
+              <MineAdministrativeAmendmentTable
+                isLoaded={this.state.isLoaded}
+                handleSearch={this.handleSearch}
+                administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
                   (app) => app.application_type_code === "ADA"
-                ).length
-              })`}
-              key="2"
-            >
-              <>
-                <br />
-                <div className="inline-flex between">
-                  <h4 className="uppercase">Administrative Amendments</h4>
-                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS} inTesting>
-                    <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
-                      Add Administrative Amendment
-                    </AddButton>
-                  </AuthorizationWrapper>
-                </div>
-                <MineAdministrativeAmendmentTable
-                  isLoaded={this.state.isLoaded}
-                  handleSearch={this.handleSearch}
-                  administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
-                    (app) => app.application_type_code === "ADA"
-                  )}
-                  sortField={this.state.params.sort_field}
-                  sortDir={this.state.params.sort_dir}
-                  searchParams={this.state.params}
-                  onExpand={this.onExpand}
-                  mineRegionHash={this.props.mineRegionHash}
-                />
-              </>
-            </Tabs.TabPane>
-          )}
+                )}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                searchParams={this.state.params}
+                onExpand={this.onExpand}
+                mineRegionHash={this.props.mineRegionHash}
+              />
+            </>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );

@@ -110,7 +110,7 @@ const getDocumentInfo = (doc) => {
 
 export class NOWPermitGeneration extends Component {
   state = {
-    isDraft: false,
+    // isDraft: false,
     permitGenObj: {},
     isLoaded: false,
     permittee: {},
@@ -160,7 +160,8 @@ export class NOWPermitGeneration extends Component {
   };
 
   handleDraftPermit = () => {
-    this.props
+    this.setState({ permitGenObj: {} });
+    return this.props
       .fetchDraftPermitByNOW(
         this.props.noticeOfWork.mine_guid,
         this.props.noticeOfWork.now_application_guid
@@ -172,14 +173,24 @@ export class NOWPermitGeneration extends Component {
             this.props.draftPermit,
             this.props.draftPermitAmendment
           );
-          this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
+          this.setState({ permitGenObj });
         }
-      })
-      .finally(this.setState({ isLoaded: true }));
+        this.setState({
+          isLoaded: true,
+        });
+      });
   };
 
   handleDeleteDraftPermit = () => {
-    console.log("deleting permit");
+    this.props
+      .deletePermit(this.props.noticeOfWork.mine_guid, this.props.draftPermit.permit_guid)
+      .then(() => {
+        this.props.closeModal();
+        this.setState({
+          isLoaded: false,
+        });
+        this.handleDraftPermit();
+      });
   };
 
   handleDeleteDraftPermitAmendment = () => {
@@ -191,6 +202,9 @@ export class NOWPermitGeneration extends Component {
       )
       .then(() => {
         this.props.closeModal();
+        this.setState({
+          isLoaded: false,
+        });
         this.handleDraftPermit();
       });
   };
@@ -480,12 +494,13 @@ export class NOWPermitGeneration extends Component {
       this.props.progress.DFT.start_date &&
       !this.props.progress.DFT.end_date;
     const hasDraftBeenDeleted = isEmpty(this.props.draftPermitAmendment) && draftInProgress;
+    const isDraft = !isEmpty(this.props.draftPermitAmendment);
     return (
       <div>
         <NOWTabHeader
           tab="DFT"
           tabActions={
-            this.state.isDraft && (
+            isDraft && (
               <>
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                   <Button type="danger" onClick={(event) => this.openDeleteDraftPermitModal(event)}>
@@ -548,7 +563,7 @@ export class NOWPermitGeneration extends Component {
           isEditMode={!this.props.isViewMode}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          {this.state.isDraft && <NOWSideMenu tabSection="draft-permit" />}
+          {isDraft && <NOWSideMenu tabSection="draft-permit" />}
         </div>
         <div
           className={
@@ -564,7 +579,7 @@ export class NOWPermitGeneration extends Component {
               </LoadingWrapper>
             ) : (
               <>
-                {!this.state.isDraft ? (
+                {!isDraft ? (
                   <LoadingWrapper condition={this.state.isLoaded}>
                     <NullScreen
                       type="draft-permit"

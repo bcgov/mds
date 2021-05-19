@@ -26,7 +26,7 @@ export const renderActivities = (type, activity) => {
 
 // TODO
 export const renderNavOptions = (hasConditions, tabSection, href) => {
-  console.log(hasConditions, tabSection, href);
+  // console.log(hasConditions, tabSection, href);
   const tab = tabSection === "draft-permit" || tabSection === "administrative";
   return true;
   // only run this logic for the draft and administrative tab

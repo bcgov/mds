@@ -1,6 +1,7 @@
 from datetime import datetime, date
 
 import uuid
+from flask import current_app
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
@@ -131,15 +132,22 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
             raise Exception(
-                "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
+                "Deletion of permit amendment of type 'Original Permit' is not allowed. Consider deleting the permit itself."
             )
 
         if self.now_application_guid and self.permit_amendment_status_code != "DFT":
             raise Exception(
                 'The permit amendment with linked NOW application in Core cannot be deleted.')
         # If deleting a draft permit, remove the now_guid so a new permit can be created and associated with that now
-        if self.now_application_guid and self.permit_amendment_status_code == "DFT":
+        elif self.now_application_guid and self.permit_amendment_status_code == "DFT":
             self.now_application_guid = None
+
+        if self.conditions and self.permit_amendment_status_code != "DFT":
+            raise Exception(
+                'The permit amendment has permit conditions and cannot be deleted.')
+        elif self.conditions and self.permit_amendment_status_code == "DFT":
+            PermitConditions.delete_all_by_permit_amendment_id(self.permit_amendment_id)
+            self.save();
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()

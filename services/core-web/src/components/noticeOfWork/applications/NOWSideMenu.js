@@ -29,6 +29,7 @@ const propTypes = {
   }).isRequired,
   tabSection: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
 };
 
 const defaultProps = {};
@@ -114,8 +115,8 @@ export class NOWSideMenu extends Component {
     const hasPermitConditionsFlow = !isEmpty(this.props.draftPermitAmendment)
       ? this.props.draftPermitAmendment.has_permit_conditions
       : true;
-    console.log(hasPermitConditionsFlow);
-    console.log(isEmpty(this.props.draftPermitAmendment));
+    // console.log(hasPermitConditionsFlow);
+    // console.log(isEmpty(this.props.draftPermitAmendment));
     return (
       <div>
         <Anchor

@@ -672,7 +672,7 @@ export class ProcessPermit extends Component {
         message: `The Draft Permit must have a Permit PDF uploaded.`,
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
           this.props.noticeOfWork.now_application_guid,
-          "draft"
+          "draft-permit"
         ),
       });
     }

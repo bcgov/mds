@@ -138,7 +138,7 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
             raise Exception(
                 'Unable to delete permit with linked NOW application in Core to one of its permit amendments.'
             )
-
+        
         if self.permit_amendments:
             for amendment in self.permit_amendments:
                 amendment.delete(is_force_delete=True)

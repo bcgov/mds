@@ -119,7 +119,7 @@ PERMIT_AMENDMENT_DOCUMENT_MODEL = api.model(
         'active_ind': fields.Boolean,
         'preamble_title': fields.String,
         'preamble_author': fields.String,
-        'preamble_date': fields.DateTime
+        'preamble_date': fields.DateTime,
     })
 
 PERMIT_AMENDMENT_SHORT_MODEL = api.model(
