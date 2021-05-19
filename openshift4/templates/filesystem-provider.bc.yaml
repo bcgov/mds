@@ -1,0 +1,63 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: filesystem-provider-bc
+  creationTimestamp: null
+parameters:
+ - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: filesystem-provider
+  - name: TAG
+    displayName: Name
+    description: The output/built ImageStream tag names
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: services/filesystem-provider
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
+  - name: DOTNET_STARTUP_PROJECT
+    displayName: DotNet Startup Project
+    description: The path to the startup project for the .Net application.
+    required: true
+    value: ej2-amazon-s3-aspcore-file-provider
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    spec:
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+      runPolicy: Serial
+      source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        contextDir: ${SOURCE_CONTEXT_DIR}
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: "dotnet:2.1"
+            namespace: openshift
+          env:
+            - name: DOTNET_STARTUP_PROJECT
+              value: ${DOTNET_STARTUP_PROJECT}
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:${VERSION}
+      completionDeadlineSeconds: 600
