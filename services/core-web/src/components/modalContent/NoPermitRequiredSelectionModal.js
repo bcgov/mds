@@ -43,7 +43,7 @@ export const NoPermitRequiredSelectionModal = (props) => {
       <Select
         virtual={false}
         labelInValue
-        placeholder="Select a No Permit Required Letter..."
+        placeholder="Select a No Permit Required Letter"
         onChange={(value, option) => {
           setLetterCode(option.value);
         }}

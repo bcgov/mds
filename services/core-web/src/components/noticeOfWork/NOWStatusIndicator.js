@@ -45,7 +45,6 @@ export class NOWStatusIndicator extends Component {
     badgeColor: "",
     message: "",
     showBanner: true,
-    color: COLOR.backgroundWhite,
   };
 
   componentDidMount() {
@@ -92,11 +91,10 @@ export class NOWStatusIndicator extends Component {
         });
       } else if (statusCode === "NPR") {
         this.setState({
-          bannerColor: COLOR.darkGrey,
+          bannerColor: COLOR.greyGradient,
           showBanner: true,
           badgeColor: COLOR.darkGrey,
           message: "No Permit Required",
-          color: COLOR.backgroundBlack,
         });
       } else {
         const message =
@@ -157,7 +155,7 @@ export class NOWStatusIndicator extends Component {
             banner
             style={{
               background: this.state.bannerColor,
-              color: this.state.color,
+              color: COLOR.backgroundWhite,
               display: this.state.showBanner ? "" : "none",
             }}
             className="status-banner"
