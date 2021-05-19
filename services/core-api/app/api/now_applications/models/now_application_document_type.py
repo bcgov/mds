@@ -120,7 +120,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         # Transform the template data according to the document type
         if self.now_application_document_type_code in ('PMT', 'PMA'):
             return transform_permit(template_data, now_application)
-        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE'):
+        elif self.now_application_document_type_code in ('CAL', 'WDL', 'RJL', 'NPE', 'NPI', 'NPR'):
             return transform_letter(template_data, now_application)
 
         return template_data
