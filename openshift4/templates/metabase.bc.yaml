@@ -32,15 +32,15 @@ objects:
     spec:
       lookupPolicy:
         local: false
-      # tags:
-      #   - name: 8-jdk-alpine
-      #     annotations: null
-      #     from:
-      #       kind: DockerImage
-      #       name: openjdk:8-jdk-alpine
-      #     importPolicy: {}
-      #     referencePolicy:
-      #       type: Local
+      tags:
+        - name: 8-jdk-alpine
+          annotations: null
+          from:
+            kind: DockerImage
+            name: openjdk:8-jdk-alpine
+          importPolicy: {}
+          referencePolicy:
+            type: Local
   - kind: ImageStream
     apiVersion: v1
     metadata:

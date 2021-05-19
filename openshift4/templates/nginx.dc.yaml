@@ -16,13 +16,23 @@ parameters:
     value: /
   - name: PATH_PREFIX
     value: ""
-  - name: MDS_SERVICE_URL
+  - name: CORE_SERVICE_URL
     value: http://frontend:3000
   - name: TUSD_SERVICE_URL
     value: http://tusd:1080/files/
   - name: API_SERVICE_URL
     value: http://backend:5000
-  - name: MDS_DOMAIN
+  - name: NRIS_API_SERVICE_URL
+    value: "http://nris-backend:5500"
+  - name: FILE_API_SERVICE_URL
+    value: "http://filesystem-provider:8080"
+  - name: DOCUMENT_MANAGER_SERVICE_URL
+    value: "http://docman-backend:5001"
+  - name: MINESPACE_SERVICE_URL
+    value: "http://frontend-public:3020"
+  - name: MINESPACE_DOMAIN
+    value: minespace-dev.apps.silver.devops.gov.bc.ca
+  - name: CORE_DOMAIN
     required: true
   - name: CPU_LIMIT
     value: 200m
@@ -94,8 +104,8 @@ objects:
                   value: ${TUSD_SERVICE_URL}
                 - name: API_SERVICE_URL
                   value: ${API_SERVICE_URL}
-                - name: MDS_DOMAIN
-                  value: ${MDS_DOMAIN}
+                - name: CORE_DOMAIN
+                  value: ${CORE_DOMAIN}
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}

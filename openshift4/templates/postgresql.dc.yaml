@@ -112,6 +112,36 @@ objects:
                     secretKeyRef:
                       key: database-name
                       name: ${POSTGRES_SECRET_NAME}
+                - name: FDW_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-name
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_FOREIGN_SCHEMA
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-foreign-schema
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_FOREIGN_SERVER
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-foreign-server
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-user
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-password
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_SCHEMA
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-schema
+                      name: template.postgresql-mms-fdw-secret
                 - name: PGCRYPTO_EXTENSION
                   value: "Y"
                 - name: POSTGIS_EXTENSION

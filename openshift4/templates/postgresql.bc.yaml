@@ -22,13 +22,13 @@ objects:
       lookupPolicy:
         local: false
       tags:
-        - name: ${TAG}
-          annotations: null
-          from:
-            kind: ImageStreamTag
-            name: mds-postgresql:latest
-            namespace: 4c2ba9-tools
-          generation: 1
-          importPolicy: {}
-          referencePolicy:
-            type: Source
+        # - name: ${TAG}
+        #   annotations: null
+        #   from:
+        #     kind: ImageStreamImage
+        #     name: mds-postgresql:latest
+        #     namespace: 4c2ba9-tools
+        #   generation: 1
+        #   importPolicy: {}
+        #   referencePolicy:
+        #     type: Source
