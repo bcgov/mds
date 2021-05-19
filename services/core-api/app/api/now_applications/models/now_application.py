@@ -109,6 +109,7 @@ class NOWApplication(Base, AuditMixin):
     term_of_application = db.Column(db.Numeric(14, 0))
     is_applicant_individual_or_company = db.Column(db.String)
     relationship_to_applicant = db.Column(db.String)
+    merchantable_timber_volume = db.Column(db.Numeric(14, 2))
 
     reviews = db.relationship('NOWApplicationReview', lazy='select', backref='now_application')
 
