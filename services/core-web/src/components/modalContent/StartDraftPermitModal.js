@@ -18,6 +18,7 @@ import * as FORM from "@/constants/forms";
 import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
+import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@common/utils/Validate";
 
 const propTypes = {
   title: PropTypes.string,
@@ -36,10 +37,12 @@ const propTypes = {
   createPermit: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
   startOrResumeProgress: PropTypes.func.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "",
+  isNoticeOfWorkTypeDisabled: true,
 };
 
 export const StartDraftPermitModal = (props) => {
@@ -91,10 +94,15 @@ export const StartDraftPermitModal = (props) => {
 
   const handleSubmit = (isAmendment) => {
     setIsSubmitting(true);
-    if (props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application) {
+    if (
+      props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application ||
+      props.preDraftFormValues.notice_of_work_type_code !==
+        props.noticeOfWork.notice_of_work_type_code
+    ) {
       const payload = {
         ...props.noticeOfWork,
         type_of_application: props.preDraftFormValues.type_of_application,
+        notice_of_work_type_code: props.preDraftFormValues.notice_of_work_type_code,
       };
       return props
         .updateNoticeOfWorkApplication(
@@ -118,8 +126,16 @@ export const StartDraftPermitModal = (props) => {
           values.is_exploration === null
         );
       }
+
+      const isApplicationTypeMatchPermitNumber = validateIfApplicationTypeCorrespondsToPermitNumber(
+        values.notice_of_work_type_code,
+        props.permits.find((p) => p.permit_guid === values.permit_guid)
+      );
       return (
-        !values.type_of_application || !values.permit_guid || !values.permit_amendment_type_code
+        !values.type_of_application ||
+        !values.permit_guid ||
+        !values.permit_amendment_type_code ||
+        isApplicationTypeMatchPermitNumber
       );
     }
     return true;
@@ -219,6 +235,7 @@ export const StartDraftPermitModal = (props) => {
     type_of_application: props.noticeOfWork?.type_of_application,
     permit_guid: props.noticeOfWork.source_permit_guid || null,
     disabled: props.noticeOfWork.source_permit_guid,
+    notice_of_work_type_code: props.noticeOfWork.notice_of_work_type_code,
   };
 
   const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions
@@ -248,6 +265,7 @@ export const StartDraftPermitModal = (props) => {
             initialValues={initialValues}
             permits={props.permits}
             isCoalOrMineral={props.isCoalOrMineral}
+            isNoticeOfWorkTypeDisabled={props.isNoticeOfWorkTypeDisabled}
           />
         </>
       ),

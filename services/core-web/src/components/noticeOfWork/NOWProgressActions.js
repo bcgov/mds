@@ -50,9 +50,13 @@ const propTypes = {
   fetchApplicationDelay: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
-const defaultProps = { handleDraftPermit: () => {} };
+const defaultProps = {
+  handleDraftPermit: () => {},
+  isNoticeOfWorkTypeDisabled: true,
+};
 
 export class NOWProgressActions extends Component {
   componentDidMount() {
@@ -151,6 +155,7 @@ export class NOWProgressActions extends Component {
           this.props.noticeOfWork.notice_of_work_type_code === "COL",
         noticeOfWork: this.props.noticeOfWork,
         startOrResumeProgress: this.startOrResumeProgress,
+        isNoticeOfWorkTypeDisabled: this.props.isNoticeOfWorkTypeDisabled,
       },
       content: modalConfig.START_DRAFT_PERMIT_MODAL,
     });

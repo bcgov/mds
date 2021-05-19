@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Col, Row, Descriptions, Button } from "antd";
+import { Col, Row, Descriptions } from "antd";
 import {
   required,
   dateNotAfterOther,
@@ -26,7 +26,6 @@ import PermitAmendmentTable from "@/components/noticeOfWork/applications/permitG
 import UploadPermitDocument from "@/components/noticeOfWork/applications/permitGeneration/UploadPermitDocument";
 import ReviewSiteProperties from "@/components/noticeOfWork/applications/review/ReviewSiteProperties";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
-import { PERMIT } from "@/constants/assets";
 
 const propTypes = {
   isAmendment: PropTypes.bool.isRequired,
@@ -46,7 +45,7 @@ export const GeneratePermitForm = (props) => {
   return (
     <Form layout="vertical">
       {!props.draftPermitAmendment.has_permit_conditions && (
-        <ScrollContentWrapper id="permit-upload" title="Permit" isLoaded={props.isLoaded}>
+        <ScrollContentWrapper id="permit" title="Permit" isLoaded={props.isLoaded}>
           <UploadPermitDocument
             draftPermitAmendment={props.draftPermitAmendment}
             mineGuid={props.noticeOfWork.mine_guid}
@@ -263,69 +262,71 @@ export const GeneratePermitForm = (props) => {
           draftPermit={props.draftPermit}
         />
       </ScrollContentWrapper>
-      <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
-        <>
-          <Row gutter={32}>
-            <Col xs={24} md={12}>
-              <Field
-                id="application_date"
-                name="application_date"
-                label="Application Date"
-                component={renderConfig.FIELD}
-                disabled
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <Field
-                id="property"
-                name="property"
-                label="Property Name"
-                component={renderConfig.FIELD}
-                disabled
-              />
-            </Col>
-          </Row>
-          <Row gutter={32}>
-            <Col xs={24} md={12}>
-              <Field
-                id="application_type"
-                name="application_type"
-                label="Notice of Work Permit Type"
-                component={renderConfig.FIELD}
-                disabled
-              />
-            </Col>
-            <Col xs={24} md={12}>
-              <Field
-                id="permit_amendment_type_code"
-                name="permit_amendment_type_code"
-                placeholder="Select a Permit Amendment Type"
-                label="Permit Amendment Type"
-                doNotPinDropdown
-                component={renderConfig.SELECT}
-                data={props.permitAmendmentDropdown}
-                validate={[required]}
-                disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
-              />
-            </Col>
-          </Row>
-          <br />
-          <FinalPermitDocuments
-            mineGuid={props.noticeOfWork.mine_guid}
-            noticeOfWork={props.noticeOfWork}
-            showPreambleFileMetadata={props.draftPermitAmendment.has_permit_conditions}
-            editPreambleFileMetadata={!props.isViewMode}
-            initialValues={props.initialValues}
-          />
-          {props.previousAmendmentDocuments && (
-            <PreviousAmendmentDocuments
-              previousAmendmentDocuments={props.previousAmendmentDocuments}
+      {props.draftPermitAmendment.has_permit_conditions && (
+        <ScrollContentWrapper id="preamble" title="Preamble" isLoaded={props.isLoaded}>
+          <>
+            <Row gutter={32}>
+              <Col xs={24} md={12}>
+                <Field
+                  id="application_date"
+                  name="application_date"
+                  label="Application Date"
+                  component={renderConfig.FIELD}
+                  disabled
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <Field
+                  id="property"
+                  name="property"
+                  label="Property Name"
+                  component={renderConfig.FIELD}
+                  disabled
+                />
+              </Col>
+            </Row>
+            <Row gutter={32}>
+              <Col xs={24} md={12}>
+                <Field
+                  id="application_type"
+                  name="application_type"
+                  label="Notice of Work Permit Type"
+                  component={renderConfig.FIELD}
+                  disabled
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <Field
+                  id="permit_amendment_type_code"
+                  name="permit_amendment_type_code"
+                  placeholder="Select a Permit Amendment Type"
+                  label="Permit Amendment Type"
+                  doNotPinDropdown
+                  component={renderConfig.SELECT}
+                  data={props.permitAmendmentDropdown}
+                  validate={[required]}
+                  disabled={props.isViewMode ? true : props.isPermitAmendmentTypeDropDownDisabled}
+                />
+              </Col>
+            </Row>
+            <br />
+            <FinalPermitDocuments
+              mineGuid={props.noticeOfWork.mine_guid}
+              noticeOfWork={props.noticeOfWork}
+              showPreambleFileMetadata={props.draftPermitAmendment.has_permit_conditions}
               editPreambleFileMetadata={!props.isViewMode}
               initialValues={props.initialValues}
             />
-          )}
-        </>
-      </ScrollContentWrapper>
+            {props.previousAmendmentDocuments && (
+              <PreviousAmendmentDocuments
+                previousAmendmentDocuments={props.previousAmendmentDocuments}
+                editPreambleFileMetadata={!props.isViewMode}
+                initialValues={props.initialValues}
+              />
+            )}
+          </>
+        </ScrollContentWrapper>
+      )}
       {props.draftPermitAmendment.has_permit_conditions && (
         <ScrollContentWrapper id="conditions" title="Conditions" isLoaded={props.isLoaded}>
           <Conditions

@@ -72,10 +72,12 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
   onPermitDraftSave: () => {},
+  isNoticeOfWorkTypeDisabled: true,
 };
 
 const regionHash = {
@@ -154,7 +156,6 @@ export class NOWPermitGeneration extends Component {
           ? this.handleDeleteDraftPermitAmendment
           : this.handleDeleteDraftPermit,
       },
-      width: "75vw",
       content: modalConfig.DELETE_DRAFT_PERMIT_MODAL,
     });
   };
@@ -502,11 +503,17 @@ export class NOWPermitGeneration extends Component {
           tabActions={
             isDraft && (
               <>
-                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                  <Button type="danger" onClick={(event) => this.openDeleteDraftPermitModal(event)}>
-                    Delete Draft
-                  </Button>
-                </NOWActionWrapper>
+                {" "}
+                {this.props.isAmendment && (
+                  <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                    <Button
+                      type="danger"
+                      onClick={(event) => this.openDeleteDraftPermitModal(event)}
+                    >
+                      Delete Draft
+                    </Button>
+                  </NOWActionWrapper>
+                )}
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                   <Button type="secondary" onClick={this.props.toggleEditMode}>
                     <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
@@ -561,6 +568,7 @@ export class NOWPermitGeneration extends Component {
             </>
           }
           isEditMode={!this.props.isViewMode}
+          isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           {isDraft && <NOWSideMenu tabSection="draft-permit" />}

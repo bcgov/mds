@@ -46,6 +46,7 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  allowAfterProcess: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -56,6 +57,7 @@ const defaultProps = {
   addDescriptionColumn: true,
   showPreambleFileMetadata: false,
   editPreambleFileMetadata: false,
+  allowAfterProcess: false,
 };
 
 export const NOWDocuments = (props) => {
@@ -359,7 +361,11 @@ export const NOWDocuments = (props) => {
       <br />
 
       {!props.selectedRows && !props.isViewMode && (
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={props.isAdminView ? "" : "REV"}>
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={props.isAdminView ? "" : "REV"}
+          allowAfterProcess={props.allowAfterProcess}
+        >
           <AddButton
             className={props.isAdminView ? "position-right" : ""}
             disabled={props.isViewMode}

@@ -25,6 +25,7 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {} };
 
 export const NOWApplicationAdministrative = (props) => {
+  const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   return (
     <div>
       <ScrollContentWrapper
@@ -54,6 +55,7 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
+          allowAfterProcess
           disclaimerText="Upload securities-related files here."
           categoriesToShow={["SDO"]}
         />
@@ -70,11 +72,12 @@ export const NOWApplicationAdministrative = (props) => {
           )}
           isViewMode={false}
           isAdminView
+          allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      {props.draftPermitAmendment?.has_permit_conditions && (
+      {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (
         <ScrollContentWrapper
           id="generated-documents"
           title="Application Export Files"
@@ -94,6 +97,7 @@ export const NOWApplicationAdministrative = (props) => {
             )}
             isViewMode={false}
             isAdminView
+            allowAfterProcess
             disclaimerText={
               props.noticeOfWork.application_type_code === "NOW"
                 ? "This table shows PDFs generated from edited Notice of Work forms and Draft Permits."

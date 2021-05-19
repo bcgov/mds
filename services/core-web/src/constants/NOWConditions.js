@@ -11,266 +11,256 @@ export const activityConditions = {
   PLA: ["placer-operation", "cut-lines-polarization-survey", "underground-exploration"],
 };
 
-export const permitWithoutConditions = {
-  "draft-permit": ["permit-document"],
-  administrative: [""],
-};
-
-export const permitWithConditions = {
-  "draft-permit": ["conditions"],
-  administrative: ["generated-documents"],
-};
 export const renderActivities = (type, activity) => {
   return activityConditions[type].includes(activity);
 };
 
-// TODO
-export const renderNavOptions = (hasConditions, tabSection, href) => {
-  // console.log(hasConditions, tabSection, href);
-  const tab = tabSection === "draft-permit" || tabSection === "administrative";
-  return true;
-  // only run this logic for the draft and administrative tab
-  // return hasConditions && tab ? permitWithConditions[tabSection].includes(href) : permitWithoutConditions[tabSection].includes(href);
-};
-
-export const sideMenuOptions = {
-  application: [
-    {
-      href: "application-info",
-      title: "Application Info",
-      alwaysVisible: true,
-      applicationType: ["NOW", "ADA"],
-    },
-    { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
-    { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
-    {
-      href: "state-of-land",
-      title: "State of Land",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
-    {
-      href: "reclamation",
-      title: "Summary of Reclamation",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "exploration-access",
-      title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "blasting-operation",
-      title: "Blasting",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "camp",
-      title: "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "cut-lines-polarization-survey",
-      title: "Cut Lines and Induced Polarization Survey",
-      alwaysVisible: false,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "exploration-surface-drilling",
-      title: "Exploration Surface Drilling",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "mechanical-trenching",
-      title: "Mechanical Trenching / Test Pits",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "settling-pond",
-      title: "Settling Ponds",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "surface-bulk-sample",
-      title: "Surface Bulk Sample",
-      alwaysVisible: false,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "underground-exploration",
-      title: "Underground Exploration",
-      alwaysVisible: false,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "sand-and-gravel",
-      title: "Sand and Gravel / Quarry Operations",
-      alwaysVisible: false,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "placer-operation",
-      title: "Placer Operations",
-      alwaysVisible: false,
-      applicationType: ["NOW"],
-    },
-    { href: "water-supply", title: "Water Supply", alwaysVisible: true, applicationType: ["NOW"] },
-    {
-      href: "application-files",
-      title: "Application Files",
-      alwaysVisible: true,
-      applicationType: ["NOW"],
-    },
-    {
-      href: "additional-application-files",
-      title: "Additional Application Files",
-      alwaysVisible: true,
-      applicationType: ["NOW", "ADA"],
-    },
-  ],
-  "draft-permit": [
-    {
-      href: "general-info",
-      title: "General Information",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "authorization",
-      title: "Permit Authorizations",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "site-properties",
-      title: "Site Properties",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "preamble",
-      title: "Preamble",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "conditions",
-      title: "Conditions",
-      alwaysVisible: false,
-      children: [
-        { href: "GEC", title: "General" },
-        { href: "HSC", title: "Health and Safety" },
-        { href: "GOC", title: "Geotechnical" },
-        { href: "ELC", title: "Environmental Land" },
-        { href: "RCC", title: "Reclamation and Closure" },
-      ],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "permit-document",
-      title: "Permit Document Upload",
-      alwaysVisible: false,
-      children: [],
-      applicationType: ["ADA"],
-    },
-    {
-      href: "maps",
-      title: "Maps",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-  ],
-  referral: [
-    {
-      href: "referral",
-      title: "Referral",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-  ],
-  consultation: [
-    {
-      href: "consultation",
-      title: "Consultation",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-  ],
-  "public-comment": [
-    {
-      href: "advertisements",
-      title: "Advertisements",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW"],
-    },
-    {
-      href: "public-comment",
-      title: "Public Comment",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW"],
-    },
-  ],
-  administrative: [
-    {
-      href: "final-application-package",
-      title: "Final Application Package",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "reclamation-securities",
-      title: "Reclamation Securities",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "government-documents",
-      title: "Government Documents",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "generated-documents",
-      title: "Application Export Files",
-      alwaysVisible: false,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "inspectors",
-      title: "Inspectors",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-    {
-      href: "progress-tracking",
-      title: "Application Progress Tracking",
-      alwaysVisible: true,
-      children: [],
-      applicationType: ["NOW", "ADA"],
-    },
-  ],
+export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
+  const options = {
+    application: [
+      {
+        href: "application-info",
+        title: "Application Info",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
+      { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
+      { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
+      {
+        href: "state-of-land",
+        title: "State of Land",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
+      {
+        href: "reclamation",
+        title: "Summary of Reclamation",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "exploration-access",
+        title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "blasting-operation",
+        title: "Blasting",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "camp",
+        title: "Camps, Buildings, Staging Areas, Fuel/Lubricant Storage",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "cut-lines-polarization-survey",
+        title: "Cut Lines and Induced Polarization Survey",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "exploration-surface-drilling",
+        title: "Exploration Surface Drilling",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "mechanical-trenching",
+        title: "Mechanical Trenching / Test Pits",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "settling-pond",
+        title: "Settling Ponds",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "surface-bulk-sample",
+        title: "Surface Bulk Sample",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "underground-exploration",
+        title: "Underground Exploration",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "sand-and-gravel",
+        title: "Sand and Gravel / Quarry Operations",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "placer-operation",
+        title: "Placer Operations",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "water-supply",
+        title: "Water Supply",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "application-files",
+        title: "Application Files",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "additional-application-files",
+        title: "Additional Application Files",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+    "draft-permit": [
+      {
+        href: "permit",
+        title: "Permit",
+        alwaysVisible: !hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["ADA"],
+      },
+      {
+        href: "general-info",
+        title: "General Information",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "authorization",
+        title: "Permit Authorizations",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "site-properties",
+        title: "Site Properties",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "preamble",
+        title: "Preamble",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "conditions",
+        title: "Conditions",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [
+          { href: "GEC", title: "General" },
+          { href: "HSC", title: "Health and Safety" },
+          { href: "GOC", title: "Geotechnical" },
+          { href: "ELC", title: "Environmental Land" },
+          { href: "RCC", title: "Reclamation and Closure" },
+        ],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "maps",
+        title: "Maps",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+    referral: [
+      {
+        href: "referral",
+        title: "Referral",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+    consultation: [
+      {
+        href: "consultation",
+        title: "Consultation",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+    "public-comment": [
+      {
+        href: "advertisements",
+        title: "Advertisements",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW"],
+      },
+      {
+        href: "public-comment",
+        title: "Public Comment",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW"],
+      },
+    ],
+    administrative: [
+      {
+        href: "final-application-package",
+        title: "Final Application Package",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "reclamation-securities",
+        title: "Reclamation Securities",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "government-documents",
+        title: "Government Documents",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "generated-documents",
+        title: "Application Export Files",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "inspectors",
+        title: "Inspectors",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "progress-tracking",
+        title: "Application Progress Tracking",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+  };
+  return options[tab];
 };
 
 export const securityNotRequiredReasonOptions = [

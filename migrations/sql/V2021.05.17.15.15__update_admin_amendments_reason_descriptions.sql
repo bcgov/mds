@@ -1,6 +1,6 @@
-UPDATE application_reason_code SET description ='Update Permittee / Corporate Name Change' WHERE application_reason_code = 'CHP';
+UPDATE application_reason_code SET description = 'Update Permittee \ Corporate Name Change' WHERE application_reason_code = 'CHP';
 UPDATE application_reason_code SET description = 'Extension to Term' WHERE application_reason_code = 'EXT';
-UPDATE application_reason_code SET description = 'MYAB Update / Change to Bond' WHERE application_reason_code = 'MYA';
+UPDATE application_reason_code SET description = 'MYAB Update \ Change to Bond' WHERE application_reason_code = 'MYA';
 
 INSERT INTO application_reason_code
 (
