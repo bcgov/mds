@@ -842,8 +842,8 @@ export const ReviewNOWApplication = (props) => {
             />
           </div>
           <Field
-            id="merchantable_timber_volume"
-            name="merchantable_timber_volume"
+            id="total_merchantable_timber_volume"
+            name="total_merchantable_timber_volume"
             component={RenderField}
             disabled
           />

@@ -138,6 +138,8 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+
+    # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
     # Documents that are not associated with a review
@@ -189,10 +191,23 @@ class NOWApplication(Base, AuditMixin):
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
 
+    def get_activities(self):
+        activities = [
+            self.camp, self.cut_lines_polarization_survey, self.exploration_access,
+            self.exploration_surface_drilling, self.mechanical_trenching, self.placer_operation,
+            self.sand_gravel_quarry_operation, self.settling_pond, self.surface_bulk_sample,
+            self.underground_exploration, self.water_supply
+        ]
+        return activities
+
     @hybrid_property
-    def merchantable_timber_volume(self):
-        pass
-        return merchantable_timber_volume
+    def total_merchantable_timber_volume(self):
+        total = 0
+        for activity in self.get_activities():
+            if activity and activity.details:
+                for detail in activity.details:
+                    total += detail.timber_volume if detail.timber_volume else 0
+        return total
 
     @hybrid_property
     def site_property(self):
