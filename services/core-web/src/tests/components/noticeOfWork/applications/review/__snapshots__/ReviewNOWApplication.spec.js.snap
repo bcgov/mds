@@ -1073,8 +1073,8 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <Field
               component={[Function]}
               disabled={true}
-              id="merchantable_timber_volume"
-              name="merchantable_timber_volume"
+              id="total_merchantable_timber_volume"
+              name="total_merchantable_timber_volume"
             />
           </Col>
         </Row>
@@ -1332,9 +1332,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
             Array [
               "merchantable_timber_volume",
+              "total_merchantable_timber_volume",
             ],
             Array [
               "merchantable_timber_volume",
+              "total_merchantable_timber_volume",
             ],
           ],
           "results": Array [
