@@ -3,8 +3,7 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 USER 0
 
-# METHOD 1
-# I got this working locally.
+# METHOD 1 FROM:
 # https://www.syncfusion.com/forums/162040/the-type-initializer-for-syncfusion-ej2-pdfviewer-pdfiumnative-threw-an-exception
 # NOTE: It looks like they referenced here: https://github.com/dotnet/dotnet-docker/issues/618
 #
@@ -13,8 +12,7 @@ USER 0
 # RUN apt-get update && apt-get install -y --allow-unauthenticated libgdiplus libc6-dev libx11-dev
 # RUN ln -s libgdiplus.so gdiplus.dll
 
-# METHOD 2
-# I got this working locally.
+# METHOD 2 FROM:
 # https://www.syncfusion.com/forums/150491/typeerror-cannot-read-property-ej2-instances-of-null-when-navigating-away-from
 #
 # RUN apt-get update \
