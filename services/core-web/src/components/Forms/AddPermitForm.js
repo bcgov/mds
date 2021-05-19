@@ -135,6 +135,7 @@ export class AddPermitForm extends Component {
       this.props.change("site_properties.mine_disturbance_code", []);
       this.props.change("site_properties.mine_commodity_code", []);
       this.props.change("exemption_fee_status_code", null);
+      this.props.change("is_exploration", null);
     }
     const statusSelected = this.props.permitStatusCode || nextProps.permitStatusCode;
     const permitTypeSelected = this.props.permitPrefix || nextProps.permitPrefix;
@@ -157,6 +158,8 @@ export class AddPermitForm extends Component {
     const isCoalOrMineral =
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
+    const permitPrefixCoalOrMineral =
+      this.props.permitPrefix === "C" || this.props.permitPrefix === "M";
     const permitPrefix = this.props.permitPrefix ? this.props.permitPrefix : null;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -183,9 +186,7 @@ export class AddPermitForm extends Component {
                 data={permitTypes}
               />
             </Form.Item>
-            {(this.props.permitPrefix === "C" ||
-              this.props.permitPrefix === "M" ||
-              this.props.permitIsExploration) && (
+            {(permitPrefixCoalOrMineral || this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
                   id="is_exploration"
@@ -233,9 +234,11 @@ export class AddPermitForm extends Component {
               <Field
                 id="authorization_end_date"
                 name="authorization_end_date"
-                label="Authorization End Date*"
+                label={
+                  permitPrefixCoalOrMineral ? "Authorization End Date" : "Authorization End Date*"
+                }
                 component={renderConfig.DATE}
-                validate={[required]}
+                validate={permitPrefixCoalOrMineral ? [] : [required]}
               />
             </Form.Item>
             <Divider />
