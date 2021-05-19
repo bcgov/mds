@@ -128,7 +128,6 @@ class NOWApplication(Base, AuditMixin):
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     exploration_surface_drilling = db.relationship(
         'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
-    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
     sand_gravel_quarry_operation = db.relationship(
@@ -192,6 +191,7 @@ class NOWApplication(Base, AuditMixin):
     @hybrid_property
     def merchantable_timber_volume(self):
         pass
+        return merchantable_timber_volume
 
     @hybrid_property
     def site_property(self):
