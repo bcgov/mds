@@ -187,7 +187,6 @@ class PermitListResource(Resource, UserMixin):
         db.session.add(amendment)
 
         now_application_guid = data.get('now_application_guid')
-        needs_standard_conditions = data.get('needs_standard_conditions', True)
         if now_application_guid is not None and permit.permit_status_code == 'D':
             application_identity = NOWApplicationIdentity.find_by_guid(now_application_guid)
             if application_identity.now_application:

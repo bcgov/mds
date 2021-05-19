@@ -1,7 +1,6 @@
 from datetime import datetime, date
 
 import uuid
-from flask import current_app
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates
