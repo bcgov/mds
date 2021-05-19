@@ -845,7 +845,7 @@ export const ReviewNOWApplication = (props) => {
             id="merchantable_timber_volume"
             name="merchantable_timber_volume"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
       </Row>
