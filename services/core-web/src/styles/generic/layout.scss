@@ -403,6 +403,22 @@ html {
     @extend .icon-xxl;
     color: $light-grey;
   }
+  &--violet {
+    @extend .icon-xxl;
+    color: $violet;
+  }
+}
+
+.icon-xxxl {
+  font-size: 80px !important;
+  &--lightgrey {
+    @extend .icon-xxxl;
+    color: $light-grey;
+  }
+  &--violet {
+    @extend .icon-xxxl;
+    color: $violet;
+  }
 }
 
 .img-lg {

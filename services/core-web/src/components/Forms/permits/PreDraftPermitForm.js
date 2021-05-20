@@ -70,6 +70,9 @@ export const PreDraftPermitForm = (props) => {
     if (isAmendment) {
       props.change("permit_amendment_type_code", permitType);
     }
+    if (props.isCoalOrMineral && !isAmendment) {
+      props.change("is_exploration", true);
+    }
     setIsAmendment(props.formValues?.type_of_application !== "New Permit");
   }, [props.formValues?.type_of_application]);
 

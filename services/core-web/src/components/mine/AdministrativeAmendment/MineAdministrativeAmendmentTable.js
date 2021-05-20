@@ -8,7 +8,6 @@ import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import DocumentLink from "@/components/common/DocumentLink";
 
 /**
@@ -212,11 +211,9 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
-              </Link>
-            </AuthorizationWrapper>
+            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
+              <Button type="primary">Open</Button>
+            </Link>
           </div>
         ),
     },
