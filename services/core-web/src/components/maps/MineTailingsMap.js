@@ -271,7 +271,6 @@ export class MineTailingsMap extends Component {
   }
 
   renderPopup = (tailing) => {
-    console.log("I was clicked?S?S?S");
     return ReactDOMServer.renderToStaticMarkup(
       <Descriptions column={1} style={{ width: "320px" }}>
         <Descriptions.Item label="TSF Name">

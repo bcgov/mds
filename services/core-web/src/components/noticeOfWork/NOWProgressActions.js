@@ -184,10 +184,10 @@ export class NOWProgressActions extends Component {
 
   render() {
     const isApplicationDelayed = !isEmpty(this.props.applicationDelay);
-    const isProcessed = ["AIA", "REJ", "WDN"].includes(
+    const isProcessed = ["AIA", "REJ", "WDN", "NPR"].includes(
       this.props.noticeOfWork.now_application_status_code
     );
-    const rejectedWithdrawn = ["REJ", "WDN"].includes(
+    const processedWithReason = ["REJ", "WDN", "NPR"].includes(
       this.props.noticeOfWork.now_application_status_code
     );
     const reasonButtonTitle = isApplicationDelayed ? "Reason for Delay" : "Status Reason";
@@ -209,7 +209,7 @@ export class NOWProgressActions extends Component {
     );
 
     const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
-    const showReasonModal = rejectedWithdrawn || isApplicationDelayed;
+    const showReasonModal = processedWithReason || isApplicationDelayed;
     return (
       <div className="inline-flex progress-actions">
         <>

@@ -17,6 +17,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import AdministrativeTab from "@/components/noticeOfWork/applications/administrative/AdministrativeTab";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
+import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @class NoticeOfWorkApplication- contains all information regarding a CORE notice of work application
@@ -157,6 +158,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   documentContextTemplate: getDocumentContextTemplate(state),
+  draftPermit: getDraftPermitForNOW(state),
 });
 
 AdminAmendmentApplication.propTypes = propTypes;
