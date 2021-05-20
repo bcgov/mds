@@ -39,6 +39,7 @@ import StartDraftPermitModal from "./StartDraftPermitModal";
 import AddAdministrativeAmendmentModal from "./AddAdministrativeAmendmentModal";
 import EditSitePropertiesModal from "./EditSitePropertiesModal";
 import UploadPermitDocumentModal from "./UploadPermitDocumentModal";
+import NoPermitRequiredSelectionModal from "./NoPermitRequiredSelectionModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -82,6 +83,7 @@ export const modalConfig = {
   EDIT_SITE_PROPERTIES_MODAL: EditSitePropertiesModal,
   UPLOAD_PERMIT_DOCUMENT_MODAL: UploadPermitDocumentModal,
   DELETE_DRAFT_PERMIT_MODAL: DeleteDraftPermitModal,
+  NO_PERMIT_REQUIRED_SELECTION_MODAL: NoPermitRequiredSelectionModal,
 };
 
 export default modalConfig;

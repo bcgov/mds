@@ -487,7 +487,8 @@ export class NOWPermitGeneration extends Component {
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
+      this.props.noticeOfWork.now_application_status_code === "REJ" ||
+      this.props.noticeOfWork.now_application_status_code === "NPR";
     const draftInProgress =
       this.props.progress.DFT &&
       this.props.progress.DFT.start_date &&
