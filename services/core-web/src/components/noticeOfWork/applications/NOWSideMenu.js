@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { Anchor } from "antd";
 import * as routes from "@/constants/routes";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import { renderActivities, sideMenuOptions } from "@/constants/NOWConditions";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 
 /**
  * @constant NOWSideMenu renders react children with an active indicator if the id is in the url.
@@ -25,10 +27,12 @@ const propTypes = {
       id: PropTypes.string,
     },
   }).isRequired,
-  // route: PropTypes.shape({ hashRoute: PropTypes.func }).isRequired,
   tabSection: PropTypes.string.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
 };
+
+const defaultProps = {};
 
 export class NOWSideMenu extends Component {
   state = { showNested: false };
@@ -95,18 +99,22 @@ export class NOWSideMenu extends Component {
 
   handleNested = (link) => {
     // gets the children if they exist
-    const getChildren = sideMenuOptions[this.props.tabSection].filter(
+    const getChildren = sideMenuOptions(this.props.tabSection).filter(
       ({ children }) => children?.length > 0
     )[0]?.children;
     // checks if child href matches what was clicked
     const values = getChildren?.filter(({ href }) => link === href);
     // checks if children exist
-    const obj = sideMenuOptions[this.props.tabSection].filter(({ href }) => link === href)[0];
+    const obj = sideMenuOptions(this.props.tabSection).filter(({ href }) => link === href)[0];
     const show = obj?.children?.length > 0 || values?.length > 0;
     this.setState({ showNested: show });
   };
 
   render() {
+    // default to true, as the preferred flow has permit conditions.
+    const hasPermitConditionsFlow = !isEmpty(this.props.draftPermitAmendment)
+      ? this.props.draftPermitAmendment.has_permit_conditions
+      : true;
     return (
       <div>
         <Anchor
@@ -118,7 +126,7 @@ export class NOWSideMenu extends Component {
             this.anchor = anchor;
           }}
         >
-          {sideMenuOptions[this.props.tabSection]
+          {sideMenuOptions(this.props.tabSection, hasPermitConditionsFlow)
             .filter(
               ({ href, alwaysVisible, applicationType }) =>
                 (alwaysVisible ||
@@ -147,9 +155,11 @@ export class NOWSideMenu extends Component {
 }
 
 NOWSideMenu.propTypes = propTypes;
+NOWSideMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   noticeOfWork: getNoticeOfWork(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 export default withRouter(connect(mapStateToProps)(NOWSideMenu));

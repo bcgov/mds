@@ -6,23 +6,26 @@ import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { openModal, closeModal } from "@common/actions/modalActions";
 import { formatDate, getDurationText, flattenObject } from "@common/utils/helpers";
 import { getFormValues, reset, isSubmitting, getFormSyncErrors, submit } from "redux-form";
 import {
   getNoticeOfWorkApplicationTypeOptions,
   getDropdownPermitAmendmentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
+import { modalConfig } from "@/components/modalContent/config";
 import {
   fetchPermits,
   updatePermitAmendment,
   fetchDraftPermitByNOW,
+  deletePermit,
+  deletePermitAmendment,
 } from "@common/actionCreators/permitActionCreator";
 import {
   getDraftPermitForNOW,
   getDraftPermitAmendmentForNOW,
   getPermits,
 } from "@common/selectors/permitSelectors";
-
 import * as FORM from "@/constants/forms";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
@@ -34,6 +37,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import { getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 
 /**
  * @class NOWPermitGeneration - contains the form and information to generate a permit document form a Notice of Work
@@ -63,6 +67,11 @@ const propTypes = {
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
   ).isRequired,
   submit: PropTypes.func.isRequired,
+  deletePermit: PropTypes.func.isRequired,
+  deletePermitAmendment: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
@@ -103,7 +112,6 @@ const getDocumentInfo = (doc) => {
 
 export class NOWPermitGeneration extends Component {
   state = {
-    isDraft: false,
     permitGenObj: {},
     isLoaded: false,
     permittee: {},
@@ -138,8 +146,22 @@ export class NOWPermitGeneration extends Component {
     this.handleDraftPermit();
   };
 
+  openDeleteDraftPermitModal = (event) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "Delete Draft Permit",
+        handleDelete: this.props.isAmendment
+          ? this.handleDeleteDraftPermitAmendment
+          : this.handleDeleteDraftPermit,
+      },
+      content: modalConfig.DELETE_DRAFT_PERMIT_MODAL,
+    });
+  };
+
   handleDraftPermit = () => {
-    this.props
+    this.setState({ permitGenObj: {} });
+    return this.props
       .fetchDraftPermitByNOW(
         this.props.noticeOfWork.mine_guid,
         this.props.noticeOfWork.now_application_guid
@@ -151,11 +173,39 @@ export class NOWPermitGeneration extends Component {
             this.props.draftPermit,
             this.props.draftPermitAmendment
           );
-          this.setState({ isDraft: !isEmpty(this.props.draftPermitAmendment), permitGenObj });
+          this.setState({ permitGenObj });
         }
-      })
-      .finally(this.setState({ isLoaded: true }));
+        this.setState({
+          isLoaded: true,
+        });
+      });
   };
+
+  handleDeleteDraftPermit = () =>
+    this.props
+      .deletePermit(this.props.noticeOfWork.mine_guid, this.props.draftPermit.permit_guid)
+      .then(() => {
+        this.props.closeModal();
+        this.setState({
+          isLoaded: false,
+        });
+        this.handleDraftPermit();
+      });
+
+  handleDeleteDraftPermitAmendment = () =>
+    this.props
+      .deletePermitAmendment(
+        this.props.noticeOfWork.mine_guid,
+        this.props.draftPermit.permit_guid,
+        this.props.draftPermitAmendment.permit_amendment_guid
+      )
+      .then(() => {
+        this.props.closeModal();
+        this.setState({
+          isLoaded: false,
+        });
+        this.handleDraftPermit();
+      });
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
@@ -438,35 +488,53 @@ export class NOWPermitGeneration extends Component {
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
       this.props.noticeOfWork.now_application_status_code === "REJ" ||
       this.props.noticeOfWork.now_application_status_code === "NPR";
-
+    const draftInProgress =
+      this.props.progress.DFT &&
+      this.props.progress.DFT.start_date &&
+      !this.props.progress.DFT.end_date;
+    const hasDraftBeenDeleted = isEmpty(this.props.draftPermitAmendment) && draftInProgress;
+    const isDraft = !isEmpty(this.props.draftPermitAmendment);
     return (
       <div>
         <NOWTabHeader
           tab="DFT"
           tabActions={
-            this.state.isDraft && (
+            isDraft && (
               <>
+                {" "}
+                {this.props.isAmendment && (
+                  <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                    <Button
+                      type="danger"
+                      onClick={(event) => this.openDeleteDraftPermitModal(event)}
+                    >
+                      Delete Draft
+                    </Button>
+                  </NOWActionWrapper>
+                )}
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                   <Button type="secondary" onClick={this.props.toggleEditMode}>
                     <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
                     Edit
                   </Button>
                 </NOWActionWrapper>
-                <Button
-                  className="full-mobile"
-                  type="secondary"
-                  onClick={this.handlePermitGenSubmit}
-                  loading={this.state.downloadingDraft}
-                  disabled={isEmpty(this.state.permittee)}
-                  title={
-                    isEmpty(this.state.permittee)
-                      ? "The application must have a permittee assigned before viewing the draft."
-                      : ""
-                  }
-                >
-                  <DownloadOutlined className="padding-small--right icon-sm" />
-                  Download Draft
-                </Button>
+                {this.props.draftPermitAmendment.has_permit_conditions && (
+                  <Button
+                    className="full-mobile"
+                    type="secondary"
+                    onClick={this.handlePermitGenSubmit}
+                    loading={this.state.downloadingDraft}
+                    disabled={isEmpty(this.state.permittee)}
+                    title={
+                      isEmpty(this.state.permittee)
+                        ? "The application must have a permittee assigned before viewing the draft."
+                        : ""
+                    }
+                  >
+                    <DownloadOutlined className="padding-small--right icon-sm" />
+                    Download Draft
+                  </Button>
+                )}
               </>
             )
           }
@@ -501,7 +569,7 @@ export class NOWPermitGeneration extends Component {
           isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
-          <NOWSideMenu tabSection="draft-permit" />
+          {isDraft && <NOWSideMenu tabSection="draft-permit" />}
         </div>
         <div
           className={
@@ -517,9 +585,20 @@ export class NOWPermitGeneration extends Component {
               </LoadingWrapper>
             ) : (
               <>
-                {!this.state.isDraft ? (
+                {!isDraft ? (
                   <LoadingWrapper condition={this.state.isLoaded}>
-                    <NullScreen type="draft-permit" />
+                    <NullScreen
+                      type="draft-permit"
+                      message={
+                        !hasDraftBeenDeleted ? (
+                          <>Click &quot;Start Draft Permit&quot; to start the drafting process.</>
+                        ) : (
+                          <>
+                            Click &quot;Create Draft Permit&quot; to continue the drafting process.
+                          </>
+                        )
+                      }
+                    />
                   </LoadingWrapper>
                 ) : (
                   <GeneratePermitForm
@@ -545,6 +624,7 @@ export class NOWPermitGeneration extends Component {
                       this.state.isPermitAmendmentTypeDropDownDisabled
                     }
                     draftPermit={this.props.draftPermit}
+                    draftPermitAmendment={this.props.draftPermitAmendment}
                   />
                 )}
               </>
@@ -568,6 +648,7 @@ const mapStateToProps = (state) => ({
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   permitAmendmentTypeDropDownOptions: getDropdownPermitAmendmentTypeOptions(state),
   permits: getPermits(state),
+  progress: getNOWProgress(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -578,6 +659,10 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermits,
       updatePermitAmendment,
       fetchDraftPermitByNOW,
+      deletePermit,
+      deletePermitAmendment,
+      openModal,
+      closeModal,
     },
     dispatch
   );

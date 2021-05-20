@@ -44,6 +44,7 @@ export const fetchPermits = (mineGuid) => (dispatch) => {
 
 export const fetchDraftPermitByNOW = (mineGuid, nowApplicationGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_PERMITS));
+  dispatch(showLoading());
   return CustomAxios({ errorToastMessage: String.ERROR })
     .get(
       ENVIRONMENT.apiUrl + API.DRAFT_PERMITS(mineGuid, nowApplicationGuid),
@@ -52,10 +53,13 @@ export const fetchDraftPermitByNOW = (mineGuid, nowApplicationGuid) => (dispatch
     .then((response) => {
       dispatch(success(reducerTypes.GET_PERMITS));
       dispatch(permitActions.storeDraftPermits(response.data));
+      return response;
     })
-    .catch(() => {
+    .catch((err) => {
       dispatch(error(reducerTypes.GET_PERMITS));
-    });
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const updatePermit = (mineGuid, permitGuid, payload) => (dispatch) => {

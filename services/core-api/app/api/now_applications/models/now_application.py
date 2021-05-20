@@ -264,7 +264,7 @@ class NOWApplication(Base, AuditMixin):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return source_conditions > 0
-
+    
     @classmethod
     def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
