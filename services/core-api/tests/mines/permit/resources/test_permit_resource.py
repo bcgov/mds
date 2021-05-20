@@ -139,7 +139,8 @@ def test_put_permit_bad_permit_guid(test_client, db_session, auth_headers):
 def test_delete_permit(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit(permit_kwargs={"permit_status_code": 'O', "bonds": 0})
     permit_guid = permit.permit_guid
-
+    permit_amendment = permit.permit_amendments[0]
+    permit_amendment.permit_amendment_status_code = "DFT"
     delete_resp = test_client.delete(
         f'/mines/{mine.mine_guid}/permits/{permit_guid}', headers=auth_headers['full_auth_header'])
     assert delete_resp.status_code == 204
