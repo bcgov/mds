@@ -60,7 +60,6 @@ exports[`MineApplications renders properly 1`] = `
           Administrative Amendments
         </h4>
         <Connect(AuthorizationWrapper)
-          inTesting={true}
           permission="role_edit_permits"
         >
           <AddButton

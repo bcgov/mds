@@ -418,12 +418,21 @@ export class ProcessPermit extends Component {
   };
 
   handleApplication = (values, code) => {
-    if (code === approvedCode) {
+    if (
+      code === approvedCode &&
+      this.props.draftAmendment &&
+      this.props.draftAmendment.has_permit_conditions
+    ) {
       return this.handleApprovedApplication(values);
     }
+    const codeMap = {
+      WDN: "withdrawn",
+      REJ: "rejected",
+      AIA: "approved",
+    };
     return this.afterSuccess(
       values,
-      `This application has been successfully ${code === "WDN" ? "withdrawn" : "rejected"}.`,
+      `This application has been successfully ${codeMap[code]}.`,
       code
     );
   };
@@ -581,7 +590,7 @@ export class ProcessPermit extends Component {
     const finalApplicationDocuments = [...requestedDocuments, ...originalDocuments];
     let titlesMissing = finalApplicationDocuments?.filter(({ preamble_title }) => !preamble_title)
       .length;
-    if (titlesMissing !== 0) {
+    if (titlesMissing !== 0 && this.props.draftAmendment?.has_permit_conditions) {
       validationMessages.push({
         message: `The Final Application Package has ${titlesMissing} documents that require a title.`,
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
@@ -674,6 +683,21 @@ export class ProcessPermit extends Component {
         route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
           this.props.noticeOfWork.now_application_guid,
           "administrative"
+        ),
+      });
+    }
+
+    // no permit document uploaded
+    if (
+      this.props.draftAmendment &&
+      this.props.draftAmendment?.related_documents?.length === 0 &&
+      !this.props.draftAmendment?.has_permit_conditions
+    ) {
+      validationMessages.push({
+        message: `The Draft Permit must have a Permit PDF uploaded.`,
+        route: route.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+          this.props.noticeOfWork.now_application_guid,
+          "draft-permit"
         ),
       });
     }
@@ -813,7 +837,7 @@ export class ProcessPermit extends Component {
     return validationMessages;
   };
 
-  menu = (validationErrors) => (
+  menu = (validationErrors, isNoWApplication) => (
     <Menu>
       <Menu.Item
         key="issue-permit"
@@ -834,9 +858,14 @@ export class ProcessPermit extends Component {
       >
         Withdraw application
       </Menu.Item>
-      <Menu.Item key="no-permit-required" onClick={this.openNoPermitRequiredSelectionModal}>
-        No Permit Required
-      </Menu.Item>
+      {isNoWApplication && (
+        <Menu.Item
+          key="no-permit-required custom-menu-item"
+          onClick={this.openNoPermitRequiredSelectionModal}
+        >
+          No Permit Required
+        </Menu.Item>
+      )}
     </Menu>
   );
 
@@ -851,6 +880,7 @@ export class ProcessPermit extends Component {
       this.props.noticeOfWork.now_application_status_code === rejectedCode ||
       this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
+    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (
       <>
         <NOWTabHeader
@@ -861,7 +891,10 @@ export class ProcessPermit extends Component {
             <>
               {!isProcessed && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                  <Dropdown overlay={this.menu(hasValidationErrors)} placement="bottomLeft">
+                  <Dropdown
+                    overlay={this.menu(hasValidationErrors, isNoWApplication)}
+                    placement="bottomLeft"
+                  >
                     <Button type="primary" className="full-mobile">
                       Process <DownOutlined />
                     </Button>

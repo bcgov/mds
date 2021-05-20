@@ -110,6 +110,7 @@ export class DraftPermitTab extends Component {
           }
           importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
           isAmendment={isAmendment}
+          isLoaded={this.state.isLoaded}
           documentType={
             isAmendment
               ? this.props.generatableApplicationDocuments.PMA

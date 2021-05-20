@@ -12,6 +12,7 @@ import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
@@ -49,6 +50,7 @@ const propTypes = {
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
 };
 
 export class AdministrativeTab extends Component {
@@ -285,6 +287,7 @@ export class AdministrativeTab extends Component {
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
+            draftPermitAmendment={this.props.draftPermitAmendment}
           />
         </div>
       </div>
@@ -299,6 +302,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   documentContextTemplate: getDocumentContextTemplate(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
