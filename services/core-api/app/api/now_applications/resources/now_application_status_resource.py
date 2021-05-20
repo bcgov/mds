@@ -108,8 +108,8 @@ class NOWApplicationStatusResource(Resource, UserMixin):
 
                 # Validate that the issue date is not before the most recent amendment's issue date
                 amendments = [
-                    amendment for amendment in permit.permit_amendments
-                    if amendment and amendment.issue_date and amendment.permit_amendment_status_code is not 'DFT'
+                    amendment for amendment in permit.permit_amendments if amendment
+                    and amendment.issue_date and amendment.permit_amendment_status_code is not 'DFT'
                 ]
                 if amendments:
                     latest_amendment = max(amendments, key=attrgetter('issue_date'))
@@ -312,7 +312,7 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                 current_app.logger.info(str(ex))
 
         # Handle rejected and withdrawn statuses
-        elif now_application_status_code in ['REJ', 'WDN']:
+        elif now_application_status_code in ['REJ', 'WDN', 'NPR']:
             for progress in now_application_identity.now_application.application_progress:
                 progress.end_date = datetime.now(tz=timezone.utc)
             for delay in now_application_identity.application_delays:

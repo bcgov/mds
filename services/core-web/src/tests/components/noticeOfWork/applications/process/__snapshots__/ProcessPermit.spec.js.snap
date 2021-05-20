@@ -5,6 +5,7 @@ exports[`ProcessPermit renders properly 1`] = `
   <NOWTabHeader
     handleDraftPermit={null}
     isEditMode={false}
+    isNoticeOfWorkTypeDisabled={true}
     showProgressButton={true}
     tab="PRO"
     tabActions={
@@ -32,6 +33,11 @@ exports[`ProcessPermit renders properly 1`] = `
                   onClick={[Function]}
                 >
                   Withdraw application
+                </MenuItem>
+                <MenuItem
+                  onClick={[Function]}
+                >
+                  No Permit Required
                 </MenuItem>
               </Menu>
             }

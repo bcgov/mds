@@ -63,10 +63,12 @@ const propTypes = {
     PropTypes.oneOfType([PropTypes.objectOf(PropTypes.string), PropTypes.string])
   ).isRequired,
   submit: PropTypes.func.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
   onPermitDraftSave: () => {},
+  isNoticeOfWorkTypeDisabled: true,
 };
 
 const regionHash = {
@@ -434,7 +436,8 @@ export class NOWPermitGeneration extends Component {
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
+      this.props.noticeOfWork.now_application_status_code === "REJ" ||
+      this.props.noticeOfWork.now_application_status_code === "NPR";
 
     return (
       <div>
@@ -495,6 +498,7 @@ export class NOWPermitGeneration extends Component {
             </>
           }
           isEditMode={!this.props.isViewMode}
+          isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
           <NOWSideMenu tabSection="draft-permit" />
