@@ -29,8 +29,8 @@ export const getNOWReclamationSummary = createSelector(
         // if the object does not contain total_disturbed_area || reclamation_cost - it means the activity doesn't have any reclamation data
         if (
           !isEmpty(noticeOfWork[value]) &&
-          ((!isNil(noticeOfWork[value].calculated_total_disturbance) &&
-            !isNil(noticeOfWork[value].total_disturbed_area)) ||
+          (!isNil(noticeOfWork[value].calculated_total_disturbance) ||
+            !isNil(noticeOfWork[value].total_disturbed_area) ||
             !isNil(noticeOfWork[value].reclamation_cost))
         ) {
           reclamationList.push({

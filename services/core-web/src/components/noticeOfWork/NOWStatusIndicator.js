@@ -40,7 +40,12 @@ const propTypes = {
 const defaultProps = { isEditMode: false, tabSection: "" };
 
 export class NOWStatusIndicator extends Component {
-  state = { bannerColor: "", badgeColor: "", message: "", showBanner: true };
+  state = {
+    bannerColor: "",
+    badgeColor: "",
+    message: "",
+    showBanner: true,
+  };
 
   componentDidMount() {
     this.handleIndicatorColor(
@@ -74,7 +79,7 @@ export class NOWStatusIndicator extends Component {
   handleIndicatorColor = (applicationDelay, statusCode, isEditMode, progress, tabSection) => {
     const isApplicationDelayed = !isEmpty(applicationDelay);
     const isApplicationComplete =
-      statusCode === "AIA" || statusCode === "WDN" || statusCode === "REJ";
+      statusCode === "AIA" || statusCode === "WDN" || statusCode === "REJ" || statusCode === "NPR";
 
     if (isApplicationComplete) {
       if (statusCode === "AIA") {
@@ -83,6 +88,13 @@ export class NOWStatusIndicator extends Component {
           showBanner: true,
           badgeColor: COLOR.successGreen,
           message: "Application is Approved",
+        });
+      } else if (statusCode === "NPR") {
+        this.setState({
+          bannerColor: COLOR.greyGradient,
+          showBanner: true,
+          badgeColor: COLOR.darkGrey,
+          message: "No Permit Required",
         });
       } else {
         const message =

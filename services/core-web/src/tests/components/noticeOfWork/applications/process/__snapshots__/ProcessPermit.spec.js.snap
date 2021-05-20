@@ -34,6 +34,11 @@ exports[`ProcessPermit renders properly 1`] = `
                 >
                   Withdraw application
                 </MenuItem>
+                <MenuItem
+                  onClick={[Function]}
+                >
+                  No Permit Required
+                </MenuItem>
               </Menu>
             }
             placement="bottomLeft"
