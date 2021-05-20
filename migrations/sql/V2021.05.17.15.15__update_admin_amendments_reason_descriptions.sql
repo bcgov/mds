@@ -11,5 +11,5 @@ INSERT INTO application_reason_code
     active_ind
 )
 VALUES 
-    ('CPP', 'Correction to Previous Permit','system-mds', 'system-mds', 'true'),
+    ('CPP', 'Correction to Previous Permit','system-mds', 'system-mds', 'true')
 ON CONFLICT DO NOTHING;
