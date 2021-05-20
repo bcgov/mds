@@ -334,9 +334,9 @@ export class ApplicationTab extends Component {
     );
   };
 
-  renderOriginalValues = (path) => {
+  renderOriginalValues = (path, currentPath = null) => {
     const prevValue = get(this.props.originalNoticeOfWork, path);
-    const currentValue = get(this.props.noticeOfWork, path);
+    const currentValue = get(this.props.noticeOfWork, currentPath || path);
     // cases for isEdited:
     // activities can be added, prevValue === undefined, currentValue === null, thus prevValue !== currentValue - but field has not been edited.
     // prevValue !== undefined || prevValue !==  null, but currentValue has been changed to null, thus is has been edited

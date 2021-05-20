@@ -837,15 +837,25 @@ export const ReviewNOWApplication = (props) => {
             Total merchantable timber volume
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("merchantable_timber_volume").value}
-              isVisible={props.renderOriginalValues("merchantable_timber_volume").edited}
+              originalValue={
+                props.renderOriginalValues(
+                  "merchantable_timber_volume",
+                  "total_merchantable_timber_volume"
+                ).value
+              }
+              isVisible={
+                props.renderOriginalValues(
+                  "merchantable_timber_volume",
+                  "total_merchantable_timber_volume"
+                ).edited
+              }
             />
           </div>
           <Field
-            id="merchantable_timber_volume"
-            name="merchantable_timber_volume"
+            id="total_merchantable_timber_volume"
+            name="total_merchantable_timber_volume"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
       </Row>
