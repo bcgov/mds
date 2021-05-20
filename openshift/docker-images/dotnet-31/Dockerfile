@@ -9,3 +9,5 @@ RUN yum install -y libX11-devel
 RUN export LD_LIBRARY_PATH=/lib64/ 
 
 USER 1001
+
+# RUN dotnet run
