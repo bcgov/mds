@@ -73,7 +73,6 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
-  isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -579,7 +578,7 @@ export class NOWPermitGeneration extends Component {
         >
           <>
             {isProcessed ? (
-              <LoadingWrapper condition={this.state.isLoaded && this.props.isLoaded}>
+              <LoadingWrapper condition={this.state.isLoaded}>
                 <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
                   This application has been processed.
                 </h3>
@@ -587,7 +586,7 @@ export class NOWPermitGeneration extends Component {
             ) : (
               <>
                 {!isDraft ? (
-                  <LoadingWrapper condition={this.state.isLoaded && this.props.isLoaded}>
+                  <LoadingWrapper condition={this.state.isLoaded}>
                     <NullScreen
                       type="draft-permit"
                       message={
