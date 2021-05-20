@@ -113,7 +113,6 @@ const getDocumentInfo = (doc) => {
 
 export class NOWPermitGeneration extends Component {
   state = {
-    // isDraft: false,
     permitGenObj: {},
     isLoaded: false,
     permittee: {},
@@ -183,7 +182,7 @@ export class NOWPermitGeneration extends Component {
       });
   };
 
-  handleDeleteDraftPermit = () => {
+  handleDeleteDraftPermit = () =>
     this.props
       .deletePermit(this.props.noticeOfWork.mine_guid, this.props.draftPermit.permit_guid)
       .then(() => {
@@ -193,9 +192,8 @@ export class NOWPermitGeneration extends Component {
         });
         this.handleDraftPermit();
       });
-  };
 
-  handleDeleteDraftPermitAmendment = () => {
+  handleDeleteDraftPermitAmendment = () =>
     this.props
       .deletePermitAmendment(
         this.props.noticeOfWork.mine_guid,
@@ -209,7 +207,6 @@ export class NOWPermitGeneration extends Component {
         });
         this.handleDraftPermit();
       });
-  };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
@@ -581,7 +578,7 @@ export class NOWPermitGeneration extends Component {
         >
           <>
             {isProcessed ? (
-              <LoadingWrapper condition={this.state.isLoaded || this.props.isLoaded}>
+              <LoadingWrapper condition={this.state.isLoaded && this.props.isLoaded}>
                 <h3 style={{ textAlign: "center", paddingTop: "20px" }}>
                   This application has been processed.
                 </h3>
@@ -589,7 +586,7 @@ export class NOWPermitGeneration extends Component {
             ) : (
               <>
                 {!isDraft ? (
-                  <LoadingWrapper condition={this.state.isLoaded || this.props.isLoaded}>
+                  <LoadingWrapper condition={this.state.isLoaded && this.props.isLoaded}>
                     <NullScreen
                       type="draft-permit"
                       message={

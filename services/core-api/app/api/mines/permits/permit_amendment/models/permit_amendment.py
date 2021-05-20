@@ -140,6 +140,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         # If deleting a draft permit, remove the now_guid so a new permit can be created and associated with that now
         elif self.now_application_guid and self.permit_amendment_status_code == "DFT":
             self.now_application_guid = None
+            self.save();
 
         if self.conditions and self.permit_amendment_status_code != "DFT":
             raise Exception(
