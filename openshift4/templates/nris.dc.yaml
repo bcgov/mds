@@ -7,7 +7,7 @@ parameters:
   - name: NAME
     displayName: Name
     description: A name for all objects
-    required: true
+    value: nris
   - name: DB_CONFIG_NAME
     displayName: Database Config Name
     description: Configuration name for the database
@@ -49,7 +49,7 @@ parameters:
     required: false
     value: template.redis-secret
   - name: CACHE_REDIS_HOST
-    required: true
+    value: redis
   - name: ENVIRONMENT_NAME
     required: true
 objects:
@@ -86,6 +86,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
+              namespace: 4c2ba9-tools
         - type: ConfigChange
       replicas: ${{REPLICA_MIN}}
       test: false

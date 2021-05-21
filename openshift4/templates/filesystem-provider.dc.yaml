@@ -38,6 +38,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
+              namespace: 4c2ba9-tools
       replicas: 1
       selector:
         name: ${NAME}

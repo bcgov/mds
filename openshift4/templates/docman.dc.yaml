@@ -7,16 +7,16 @@ parameters:
   - name: NAME
     displayName: Name
     description: A name for all objects
-    required: true
+    value: docman
   - name: CORE_DOMAIN
     required: true
   - name: DB_CONFIG_NAME
     displayName: Database Config Name
     description: Configuration name for the database
-    value: postgres
+    value: postgresql
   - name: DB_HOST
     displayName: Database Host Name
-    value: postgres
+    value: postgresql
   - name: TAG
     value: dev
   - name: JWT_OIDC_WELL_KNOWN_CONFIG
@@ -31,7 +31,7 @@ parameters:
   - name: UPLOADED_DOCUMENT_DEST
     required: false
     value: /opt/app-root/src/document_uploads
-  - name: API_URL
+  - name: DOCMAN_API_URL
     required: true
   - name: OBJECT_STORE_ENABLED
     required: false
@@ -42,12 +42,10 @@ parameters:
     value: core-api-authorization
   - name: CELERY_AUTHENTICATION
     value: celery-flower-authentication
-  - name: FLOWER_HOST
-    required: true
   - name: CORE_API_URL
     required: true
   - name: CPU_LIMIT
-    value: 200m
+    value: 225m
   - name: MEMORY_LIMIT
     value: 1.5Gi
   - name: CPU_REQUEST
@@ -76,30 +74,14 @@ parameters:
     value: "1"
   - name: REDIS_CONFIG_NAME
     required: false
-    value: template.mds-redis-secret
+    value: template.redis-secret
   - name: CACHE_REDIS_HOST
-    required: true
+    value: redis
   - name: DOCUMENT_CAPACITY
-    required: true
-  - name: DOCUMENT_CAPACITY_LOWER
-    required: true
-    description: Same as DOCUMENT_CAPACITY, but lowercase (e.g. 5gi vs 5Gi).
+    value: 1Gi
   - name: TUSD_URL
     required: true
 objects:
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: ${NAME}
-      creationTimestamp: null
-      labels:
-        shared: "true"
-      annotations:
-        description: Keeps track of changes in the application image
-    spec:
-      lookupPolicy:
-        local: false
-      tags: []
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -143,6 +125,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
+              namespace: 4c2ba9-tools
         - type: ConfigChange
       replicas: ${{REPLICA_MIN}}
       test: false
@@ -454,27 +437,27 @@ objects:
                 - name: NROS_TOKEN_URL
                   valueFrom:
                     secretKeyRef:
-                      name: template.mds-nros-client-service
+                      name: template.nros-client-service
                       key: token-url
                 - name: NROS_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
-                      name: template.mds-nros-client-service
+                      name: template.nros-client-service
                       key: service-client
                 - name: NROS_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: template.mds-nros-client-service
+                      name: template.nros-client-service
                       key: password
                 - name: VFCBC_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
-                      name: template.mds-vfcbc-client-service
+                      name: template.vfcbc-client-service
                       key: service-client
                 - name: VFCBC_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: template.mds-vfcbc-client-service
+                      name: template.vfcbc-client-service
                       key: password
                 - name: S3_PREFIX
                   value: mds-files-${TAG}/
@@ -567,7 +550,6 @@ objects:
     metadata:
       name: ${NAME}-worker
     spec:
-      host: ${FLOWER_HOST}
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge

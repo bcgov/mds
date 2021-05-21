@@ -7,7 +7,7 @@ parameters:
   - name: NAME
     displayName: Name
     description: A name used for all objects
-    value: nris-api
+    value: nris
   - name: TAG
     displayName: Name
     description: The output/built ImageStream tag names
@@ -84,7 +84,10 @@ objects:
       runPolicy: SerialLatestOnly
       source:
         contextDir: openshift/docker-images/python-36-oracle
-        type: Binary
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
       strategy:
         type: Docker
         dockerStrategy:

@@ -81,8 +81,11 @@ objects:
         - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
         contextDir: openshift/docker-images/python-36-docman
-        type: Binary
       strategy:
         type: Docker
         dockerStrategy:

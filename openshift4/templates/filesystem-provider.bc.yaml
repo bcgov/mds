@@ -4,7 +4,7 @@ metadata:
   name: filesystem-provider-bc
   creationTimestamp: null
 parameters:
- - name: NAME
+  - name: NAME
     displayName: Name
     description: A name used for all objects
     value: filesystem-provider
@@ -22,7 +22,6 @@ parameters:
   - name: DOTNET_STARTUP_PROJECT
     displayName: DotNet Startup Project
     description: The path to the startup project for the .Net application.
-    required: true
     value: ej2-amazon-s3-aspcore-file-provider
 objects:
   - kind: ImageStream
@@ -51,7 +50,7 @@ objects:
         sourceStrategy:
           from:
             kind: ImageStreamTag
-            name: "dotnet:2.1"
+            name: dotnet:2.1
             namespace: openshift
           env:
             - name: DOTNET_STARTUP_PROJECT
@@ -59,5 +58,5 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: ${NAME}:${VERSION}
+          name: ${NAME}:${TAG}
       completionDeadlineSeconds: 600

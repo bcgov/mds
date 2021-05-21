@@ -44,19 +44,6 @@ objects:
       resources:
         requests:
           storage: ${SCHEDULER_PVC_SIZE}
-  - kind: ImageStream
-    apiVersion: v1
-    metadata:
-      name: ${NAME}
-      creationTimestamp: null
-      labels:
-        shared: "true"
-      annotations:
-        description: Keeps track of changes in the application image
-    spec:
-      lookupPolicy:
-        local: false
-      tags: []
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -76,6 +63,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
+              namespace: 4c2ba9-tools
       replicas: 1
       selector:
         name: ${NAME}
@@ -178,7 +166,6 @@ parameters:
     displayName: Object names
     description: The name of the OpenShift objects.
     value: digdag
-    required: true
   - name: DIGDAG_SECRET_NAME
     value: template.mds-digdag-secret
   - name: WEBHOOK_SECRET_NAME
@@ -188,8 +175,8 @@ parameters:
   - name: TAG
     required: true
   - name: NAMESPACE
-    value: 4c2ba9-dev
+    value: 4c2ba9-prod
   - name: KEYCLOAK_DISCOVERY_URL
     value: https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration
   - name: SCHEDULER_PVC_SIZE
-    required: true
+    value: 20Gi
