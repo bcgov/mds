@@ -23,15 +23,19 @@ jobs:
       matrix:
         include:
           - name: nginx
-          # - name: postgresql
-          # - name: frontend
-          # - name: backend
+          - name: postgresql
+          - name: frontend
+          - name: backend
           - name: flyway
-          # - name: tusd
-          # - name: docgen
-          # - name: dbbackup
-          # - name: metabase
-          # - name: metabase-postgres
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: digdag
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -59,6 +63,8 @@ jobs:
         include:
           - name: frontend
           - name: backend
+          - name: docman
+          - name: nris
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
@@ -73,18 +79,22 @@ jobs:
 
   build:
     name: build
-    needs: template
+    needs: build-bases
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         include:
           - name: nginx
-          # - name: frontend
-          # - name: backend
+          - name: frontend
+          - name: backend
           - name: flyway
-          # - name: tusd
-          # - name: dbbackup
-          # - name: metabase
+          - name: tusd
+          - name: dbbackup
+          - name: metabase
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: digdag
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
@@ -105,15 +115,19 @@ jobs:
       matrix:
         include:
           - name: nginx
-          # - name: postgresql
-          # - name: frontend
-          # - name: backend
+          - name: postgresql
+          - name: frontend
+          - name: backend
           - name: flyway
-          # - name: tusd
-          # - name: docgen
-          # - name: dbbackup
-          # - name: metabase
-          # - name: metabase-postgres
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          # - name: nris
+          - name: digdag
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
@@ -136,16 +150,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - name: nginx
-          # - name: postgresql
-          # - name: frontend
-          # - name: backend
-          # - name: tusd
-          # - name: docgen
-          # - name: dbbackup
-          # - name: redis
-          # - name: metabase
-          # - name: metabase-postgres
+          - name: nginx
+          - name: postgresql
+          - name: frontend
+          - name: backend
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: redis
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          # - name: nris
+          - name: digdag
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1

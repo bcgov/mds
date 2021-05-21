@@ -9,7 +9,8 @@ on:
 
 env:
   TAG: dev
-  APP_DOMAIN: dsrp-dev.apps.silver.devops.gov.bc.ca
+  APP_DOMAIN: minesdigitalservices-dev.apps.silver.devops.gov.bc.ca
+  MINESPACE_DOMAIN: minespace-dev.apps.silver.devops.gov.bc.ca
 
 jobs:
   update-dev-deployments:
@@ -28,6 +29,10 @@ jobs:
           - config: tusd
           - config: metabase
           - config: metabase-postgres
+          - config: docman
+          - config: filesystem-provider
+          - config: nris
+          - config: digdag
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -43,14 +48,16 @@ jobs:
           oc -n ${{secrets.NS_DEV}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
           -p TAG=${{env.TAG}} \
           -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/hud2v882/.well-known/openid-configuration \
-          -p JWT_OIDC_AUDIENCE=dormant-application-dev \
-          -p API_URL=https://nginx-269007-dev.apps.silver.devops.gov.bc.ca/api \
-          -p TUSD_URL=https://nginx-269007-dev.apps.silver.devops.gov.bc.ca/files/ \
-          -p URL=https://nginx-269007-dev.apps.silver.devops.gov.bc.ca \
+          -p JWT_OIDC_AUDIENCE=mines-application-dev \
+          -p JWT_OIDC_AUTHORITY=https://test.oidc.gov.bc.ca/auth/realms/mds \
+          -p DOCMAN_API_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/document-manager \
+          -p CORE_API_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/api \
+          -p TUSD_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/files/ \
+          -p URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca \
           -p ENVIRONMENT_NAME=dev \
-          -p DSRP_DOMAIN=${{env.APP_DOMAIN}} \
+          -p CORE_DOMAIN=${{env.APP_DOMAIN}} \
           -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \
-          -p KEYCLOAK_CLIENT_ID=dormant-application-dev \
+          -p KEYCLOAK_CLIENT_ID=mines-application-dev \
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
-          -p MATOMO_URL=https://matomo-269007-test.pathfinder.gov.bc.ca/ \
+          -p MATOMO_URL=https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/ \
           | oc -n ${{secrets.NS_DEV}} apply -f -
