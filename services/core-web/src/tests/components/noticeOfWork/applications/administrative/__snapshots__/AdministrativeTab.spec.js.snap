@@ -6,6 +6,7 @@ exports[`AdministrativeTab renders properly 1`] = `
     fixedTop={false}
     handleDraftPermit={null}
     isEditMode={false}
+    isNoticeOfWorkTypeDisabled={true}
     showProgressButton={true}
     tab="ADMIN"
     tabActions={

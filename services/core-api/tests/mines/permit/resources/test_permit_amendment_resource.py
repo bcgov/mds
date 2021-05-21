@@ -4,6 +4,7 @@ from dateutil import parser
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 from tests.factories import PermitFactory, PermitAmendmentFactory, PartyFactory, MinePartyAppointmentFactory, create_mine_and_permit
 
@@ -132,9 +133,22 @@ def test_put_permit_amendment(test_client, db_session, auth_headers):
 
 
 #DELETE
-def test_delete_permit_amendment(test_client, db_session, auth_headers):
+def test_delete_draft_permit_amendment(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
+    permit_amendment.permit_amendment_status_code = "DFT"
+    del_resp = test_client.delete(
+        f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert del_resp.status_code == 200, del_resp
+    assert PermitAmendment.find_by_permit_amendment_guid(
+        str(permit_amendment.permit_amendment_guid)) is None
+
+def test_delete_permit_amendment_without_conditions(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
+    permit_amendment = permit.permit_amendments[0]
+    permit_amendment.permit_amendment_status_code = "ACT"
+    PermitConditions.delete_all_by_permit_amendment_id(permit_amendment.permit_amendment_id)
     del_resp = test_client.delete(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])
@@ -146,6 +160,7 @@ def test_delete_permit_amendment(test_client, db_session, auth_headers):
 def test_delete_twice_permit_amendment(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
     permit_amendment = permit.permit_amendments[0]
+    permit_amendment.permit_amendment_status_code = "DFT"
     del_resp = test_client.delete(
         f'/mines/{permit_amendment.mine_guid}/permits/{permit_amendment.permit_guid}/amendments/{permit_amendment.permit_amendment_guid}',
         headers=auth_headers['full_auth_header'])

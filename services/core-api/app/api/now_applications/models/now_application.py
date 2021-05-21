@@ -129,7 +129,6 @@ class NOWApplication(Base, AuditMixin):
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     exploration_surface_drilling = db.relationship(
         'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
-    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
     sand_gravel_quarry_operation = db.relationship(
@@ -139,6 +138,8 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+
+    # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
     # Documents that are not associated with a review
@@ -189,6 +190,24 @@ class NOWApplication(Base, AuditMixin):
 
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
+
+    def get_activities(self):
+        activities = [
+            self.camp, self.cut_lines_polarization_survey, self.exploration_access,
+            self.exploration_surface_drilling, self.mechanical_trenching, self.placer_operation,
+            self.sand_gravel_quarry_operation, self.settling_pond, self.surface_bulk_sample,
+            self.underground_exploration, self.water_supply
+        ]
+        return activities
+
+    @hybrid_property
+    def total_merchantable_timber_volume(self):
+        total = 0
+        for activity in self.get_activities():
+            if activity and activity.details:
+                for detail in activity.details:
+                    total += detail.timber_volume if detail.timber_volume else 0
+        return total
 
     @hybrid_property
     def site_property(self):
@@ -245,7 +264,7 @@ class NOWApplication(Base, AuditMixin):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return source_conditions > 0
-
+    
     @classmethod
     def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).one_or_none()

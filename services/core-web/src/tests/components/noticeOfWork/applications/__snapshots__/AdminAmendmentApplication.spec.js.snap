@@ -429,6 +429,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       >
         <withRouter(Connect(ApplicationTab))
           fixedTop={false}
+          isNoticeOfWorkTypeDisabled={true}
         />
       </LoadingWrapper>
     </TabPane>
@@ -1254,6 +1255,7 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
       >
         <withRouter(Connect(DraftPermitTab))
           fixedTop={false}
+          isNoticeOfWorkTypeDisabled={true}
         />
       </LoadingWrapper>
     </TabPane>

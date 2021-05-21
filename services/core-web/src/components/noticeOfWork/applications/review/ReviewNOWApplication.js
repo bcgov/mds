@@ -39,6 +39,7 @@ import * as Strings from "@common/constants/strings";
 import ReviewApplicationFeeContent from "@/components/noticeOfWork/applications/review/ReviewApplicationFeeContent";
 import { USER_ROLES } from "@common/constants/environment";
 import * as Permission from "@/constants/permissions";
+import { getNoticeOfWorkEditableTypes } from "@common/selectors/noticeOfWorkSelectors";
 import ReviewNOWContacts from "./ReviewNOWContacts";
 import ReclamationSummary from "./activities/ReclamationSummary";
 
@@ -70,6 +71,8 @@ const propTypes = {
   proposedAuthorizationEndDate: PropTypes.string.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
+  editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -82,208 +85,223 @@ export const ReviewNOWApplication = (props) => {
     return codeHash[value];
   };
 
-  const renderApplicationInfo = () => (
-    <div>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Name of Property
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("property_name").value}
-              isVisible={props.renderOriginalValues("property_name").edited}
+  const renderApplicationInfo = () => {
+    const noticeOfWorkTypeDropDownDisabled = props.isViewMode || props.isNoticeOfWorkTypeDisabled;
+
+    const filteredApplicationTypeOptions = noticeOfWorkTypeDropDownDisabled
+      ? props.applicationTypeOptions
+      : props.editableApplicationTypeOptions;
+    return (
+      <div>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Name of Property
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("property_name").value}
+                isVisible={props.renderOriginalValues("property_name").edited}
+              />
+            </div>
+            <Field
+              id="property_name"
+              name="property_name"
+              component={RenderField}
+              disabled={props.isViewMode}
+              validate={[required, maxLength(4000)]}
             />
-          </div>
-          <Field
-            id="property_name"
-            name="property_name"
-            component={RenderField}
-            disabled={props.isViewMode}
-            validate={[required, maxLength(4000)]}
-          />
-          <div className="field-title">
-            Mine Number
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("mine_no").value}
-              isVisible={props.renderOriginalValues("mine_no").edited}
+            <div className="field-title">
+              Mine Number
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("mine_no").value}
+                isVisible={props.renderOriginalValues("mine_no").edited}
+              />
+            </div>
+            <Field id="mine_no" name="mine_no" component={RenderField} disabled />
+            <div className="field-title">
+              Region
+              <NOWOriginalValueTooltip
+                originalValue={renderCodeValues(
+                  props.regionHash,
+                  props.renderOriginalValues("mine_region").value
+                )}
+                isVisible={props.renderOriginalValues("mine_region").edited}
+              />
+            </div>
+            <Field
+              id="mine_region"
+              name="mine_region"
+              component={RenderSelect}
+              data={props.regionDropdownOptions}
+              validate={[validateSelectOptions(props.regionDropdownOptions)]}
+              disabled
             />
-          </div>
-          <Field id="mine_no" name="mine_no" component={RenderField} disabled />
-          <div className="field-title">
-            Region
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.regionHash,
-                props.renderOriginalValues("mine_region").value
-              )}
-              isVisible={props.renderOriginalValues("mine_region").edited}
+            <div className="field-title">
+              Lat
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("latitude").value}
+                isVisible={props.renderOriginalValues("latitude").edited}
+              />
+            </div>
+            <Field
+              id="latitude"
+              name="latitude"
+              component={RenderField}
+              disabled
+              validate={[lat]}
             />
-          </div>
-          <Field
-            id="mine_region"
-            name="mine_region"
-            component={RenderSelect}
-            data={props.regionDropdownOptions}
-            validate={[validateSelectOptions(props.regionDropdownOptions)]}
-            disabled
-          />
-          <div className="field-title">
-            Lat
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("latitude").value}
-              isVisible={props.renderOriginalValues("latitude").edited}
+            <div className="field-title">
+              Long
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("longitude").value}
+                isVisible={props.renderOriginalValues("longitude").edited}
+              />
+            </div>
+            <Field
+              id="longitude"
+              name="longitude"
+              component={RenderField}
+              disabled
+              validate={[lon]}
             />
-          </div>
-          <Field id="latitude" name="latitude" component={RenderField} disabled validate={[lat]} />
-          <div className="field-title">
-            Long
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("longitude").value}
-              isVisible={props.renderOriginalValues("longitude").edited}
+            <div className="field-title">
+              Type of Notice of Work
+              <NOWOriginalValueTooltip
+                originalValue={renderCodeValues(
+                  props.applicationTypeOptionsHash,
+                  props.renderOriginalValues("notice_of_work_type_code").value
+                )}
+                isVisible={props.renderOriginalValues("notice_of_work_type_code").edited}
+              />
+            </div>
+            <Field
+              id="notice_of_work_type_code"
+              name="notice_of_work_type_code"
+              component={RenderSelect}
+              data={filteredApplicationTypeOptions}
+              disabled={noticeOfWorkTypeDropDownDisabled}
+              validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
             />
-          </div>
-          <Field
-            id="longitude"
-            name="longitude"
-            component={RenderField}
-            disabled
-            validate={[lon]}
-          />
-          <div className="field-title">
-            Type of Notice of Work
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.applicationTypeOptionsHash,
-                props.renderOriginalValues("notice_of_work_type_code").value
-              )}
-              isVisible={props.renderOriginalValues("notice_of_work_type_code").edited}
+            <div className="field-title">
+              Permit Type
+              <NOWOriginalValueTooltip
+                originalValue={renderCodeValues(
+                  props.permitTypeHash,
+                  props.renderOriginalValues("application_permit_type_code").value
+                )}
+                isVisible={props.renderOriginalValues("application_permit_type_code").edited}
+              />
+            </div>
+            <Field
+              id="application_permit_type_code"
+              name="application_permit_type_code"
+              component={RenderSelect}
+              data={props.permitTypeOptions}
+              disabled={props.isViewMode}
+              validate={[validateSelectOptions(props.permitTypeOptions)]}
             />
-          </div>
-          <Field
-            id="notice_of_work_type_code"
-            name="notice_of_work_type_code"
-            component={RenderSelect}
-            data={props.applicationTypeOptions}
-            disabled
-            validate={[required, validateSelectOptions(props.applicationTypeOptions)]}
-          />
-          <div className="field-title">
-            Permit Type
-            <NOWOriginalValueTooltip
-              originalValue={renderCodeValues(
-                props.permitTypeHash,
-                props.renderOriginalValues("application_permit_type_code").value
-              )}
-              isVisible={props.renderOriginalValues("application_permit_type_code").edited}
+            <div className="field-title">
+              Type of Application
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("type_of_application").value}
+                isVisible={props.renderOriginalValues("type_of_application").edited}
+              />
+            </div>
+            <Field
+              id="type_of_application"
+              name="type_of_application"
+              component={RenderField}
+              disabled
             />
-          </div>
-          <Field
-            id="application_permit_type_code"
-            name="application_permit_type_code"
-            component={RenderSelect}
-            data={props.permitTypeOptions}
-            disabled={props.isViewMode}
-            validate={[validateSelectOptions(props.permitTypeOptions)]}
-          />
-          <div className="field-title">
-            Type of Application
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("type_of_application").value}
-              isVisible={props.renderOriginalValues("type_of_application").edited}
+            <div className="field-title">
+              Crown Grant / District Lot Number
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("crown_grant_or_district_lot_numbers").value
+                }
+                isVisible={props.renderOriginalValues("crown_grant_or_district_lot_numbers").edited}
+              />
+            </div>
+            <Field
+              id="crown_grant_or_district_lot_numbers"
+              name="crown_grant_or_district_lot_numbers"
+              component={RenderAutoSizeField}
+              disabled={props.isViewMode}
             />
-          </div>
-          <Field
-            id="type_of_application"
-            name="type_of_application"
-            component={RenderField}
-            disabled
-          />
-          <div className="field-title">
-            Crown Grant / District Lot Number
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("crown_grant_or_district_lot_numbers").value
-              }
-              isVisible={props.renderOriginalValues("crown_grant_or_district_lot_numbers").edited}
+            <div className="field-title">
+              Tenure Number(s)
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("tenure_number").value}
+                isVisible={props.renderOriginalValues("tenure_number").edited}
+              />
+            </div>
+            <Field
+              id="tenure_number"
+              name="tenure_number"
+              component={RenderAutoSizeField}
+              disabled={props.isViewMode}
+              validate={[maxLength(4000)]}
             />
-          </div>
-          <Field
-            id="crown_grant_or_district_lot_numbers"
-            name="crown_grant_or_district_lot_numbers"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-          />
-          <div className="field-title">
-            Tenure Number(s)
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("tenure_number").value}
-              isVisible={props.renderOriginalValues("tenure_number").edited}
+          </Col>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Individual or Company/Organization?
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("is_applicant_individual_or_company").value
+                }
+                isVisible={props.renderOriginalValues("is_applicant_individual_or_company").edited}
+              />
+            </div>
+            <Field
+              id="is_applicant_individual_or_company"
+              name="is_applicant_individual_or_company"
+              component={RenderField}
+              disabled={props.isViewMode}
             />
-          </div>
-          <Field
-            id="tenure_number"
-            name="tenure_number"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Individual or Company/Organization?
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("is_applicant_individual_or_company").value}
-              isVisible={props.renderOriginalValues("is_applicant_individual_or_company").edited}
+            <div className="field-title">
+              Relationship to Individual or Company/Organization?
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("relationship_to_applicant").value}
+                isVisible={props.renderOriginalValues("relationship_to_applicant").edited}
+              />
+            </div>
+            <Field
+              id="relationship_to_applicant"
+              name="relationship_to_applicant"
+              component={RenderField}
+              disabled={props.isViewMode}
             />
-          </div>
-          <Field
-            id="is_applicant_individual_or_company"
-            name="is_applicant_individual_or_company"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-          <div className="field-title">
-            Relationship to Individual or Company/Organization?
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("relationship_to_applicant").value}
-              isVisible={props.renderOriginalValues("relationship_to_applicant").edited}
+            <div className="field-title">
+              Description of Land
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("description_of_land").value}
+                isVisible={props.renderOriginalValues("description_of_land").edited}
+              />
+            </div>
+            <Field
+              id="description_of_land"
+              name="description_of_land"
+              component={RenderAutoSizeField}
+              disabled={props.isViewMode}
+              validate={[maxLength(4000)]}
             />
-          </div>
-          <Field
-            id="relationship_to_applicant"
-            name="relationship_to_applicant"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-          <div className="field-title">
-            Description of Land
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("description_of_land").value}
-              isVisible={props.renderOriginalValues("description_of_land").edited}
+            <ReviewApplicationFeeContent
+              initialValues={props.noticeOfWork}
+              isViewMode={props.isViewMode}
+              isAdmin={isAdmin}
+              proposedTonnage={props.proposedTonnage}
+              adjustedTonnage={props.adjustedTonnage}
+              proposedStartDate={props.proposedStartDate}
+              proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
+              isPreLaunch={props.isPreLaunch}
             />
-          </div>
-          <Field
-            id="description_of_land"
-            name="description_of_land"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-          <ReviewApplicationFeeContent
-            initialValues={props.noticeOfWork}
-            isViewMode={props.isViewMode}
-            isAdmin={isAdmin}
-            proposedTonnage={props.proposedTonnage}
-            adjustedTonnage={props.adjustedTonnage}
-            proposedStartDate={props.proposedStartDate}
-            proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </Col>
-      </Row>
-    </div>
-  );
+          </Col>
+        </Row>
+      </div>
+    );
+  };
 
   const renderAccess = () => (
     <div>
@@ -819,15 +837,25 @@ export const ReviewNOWApplication = (props) => {
             Total merchantable timber volume
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("merchantable_timber_volume").value}
-              isVisible={props.renderOriginalValues("merchantable_timber_volume").edited}
+              originalValue={
+                props.renderOriginalValues(
+                  "merchantable_timber_volume",
+                  "total_merchantable_timber_volume"
+                ).value
+              }
+              isVisible={
+                props.renderOriginalValues(
+                  "merchantable_timber_volume",
+                  "total_merchantable_timber_volume"
+                ).edited
+              }
             />
           </div>
           <Field
-            id="merchantable_timber_volume"
-            name="merchantable_timber_volume"
+            id="total_merchantable_timber_volume"
+            name="total_merchantable_timber_volume"
             component={RenderField}
-            disabled={props.isViewMode}
+            disabled
           />
         </Col>
       </Row>
@@ -925,6 +953,7 @@ export default compose(
     permitTypeHash: getNoticeOfWorkApplicationPermitTypeOptionsHash(state),
     applicationTypeOptionsHash: getNoticeOfWorkApplicationTypeOptionsHash(state),
     userRoles: getUserAccessData(state),
+    editableApplicationTypeOptions: getNoticeOfWorkEditableTypes(state),
   })),
   reduxForm({
     form: FORM.EDIT_NOTICE_OF_WORK,
