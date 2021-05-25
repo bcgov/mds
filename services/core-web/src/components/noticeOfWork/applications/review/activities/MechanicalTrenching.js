@@ -37,6 +37,24 @@ export const MechanicalTrenching = (props) => {
             validate: [number],
           },
           {
+            title: "Length (m)",
+            value: "length",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Width (m)",
+            value: "width",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Depth (m)",
+            value: "depth",
+            component: RenderField,
+            validate: [number],
+          },
+          {
             title: "Disturbed Area (ha)",
             value: "disturbed_area",
             component: RenderField,
