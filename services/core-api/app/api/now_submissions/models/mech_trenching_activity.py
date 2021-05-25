@@ -12,6 +12,9 @@ class MechTrenchingActivity(Base):
     numberofsites = db.Column(db.Integer)
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
+    length = db.Column(db.Numeric)
+    width = db.Column(db.Numeric)
+    depth = db.Column(db.Numeric)
 
     def __repr__(self):
         return '<MechTrenchingActivity %r>' % self.id
