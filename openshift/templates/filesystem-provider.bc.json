@@ -99,9 +99,8 @@
           "type": "Source",
           "sourceStrategy": {
             "from": {
-              "kind": "${SOURCE_IMAGE_KIND}",
-              "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}",
-              "namespace": ""
+              "kind": "ImageStreamTag",
+              "name": "${NAME}-base:${VERSION}"
             },
             "env": [
               {
