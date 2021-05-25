@@ -15,7 +15,7 @@ RUN yum install -y libX11-devel
 # RUN rpm -Uvh epel-release*rpm
 # RUN yum install -y libgdiplus
 
-RUN export LD_LIBRARY_PATH=/usr/lib64/ 
+RUN export LD_LIBRARY_PATH=/lib64/ 
 
 USER 1001
 
