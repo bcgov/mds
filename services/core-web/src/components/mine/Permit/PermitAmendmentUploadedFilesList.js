@@ -25,7 +25,7 @@ export const PermitAmendmentUploadedFilesList = (props) => (
             <Popconfirm
               placement="top"
               title={[
-                <h3>Are you sure you want to remove this file?</h3>,
+                <p>Are you sure you want to remove this file?</p>,
                 <p>This cannot be undone.</p>,
               ]}
               okText="Yes"

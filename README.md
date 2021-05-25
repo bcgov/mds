@@ -4,6 +4,8 @@ The technologies that support mine oversight for British Columbians need to be r
 
 The Mines Digital Services (MDS) will have a number of interconnections and relationships to systems across the Natural Resource Ministries and will be important not only to the Ministry of Energy, Mines and Low Carbon Innovation but also to inter-agency collaborations across ministries. The future state must be intuitive, and capable of providing meaningful data to relevant stakeholders.
 
+[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](<Redirect-URL>)
+
 ## Features
 
 The product is anticipated to include:

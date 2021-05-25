@@ -10,7 +10,6 @@ import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetwork
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
 import LinkButton from "@/components/common/LinkButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications
@@ -213,11 +212,9 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
-              </Link>
-            </AuthorizationWrapper>
+            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
+              <Button type="primary">Open</Button>
+            </Link>
           </div>
         ),
     },
