@@ -8,14 +8,14 @@ RUN yum install -y wget
 RUN wget http://mirror.centos.org/centos/7/os/x86_64/Packages/libX11-devel-1.6.7-2.el7.x86_64.rpm
 RUN yum install -y libX11-devel
 
-RUN ln -s /usr/lib64/libdl.so.2 /usr/lib64/libdl.so
-RUN ln -s /usr/lib64/libgdiplus.so.0.0.0 /usr/lib64/libgdiplus.so
+# RUN ln -s /usr/lib64/libdl.so.2 /usr/lib64/libdl.so
+# RUN ln -s /usr/lib64/libgdiplus.so.0.0.0 /usr/lib64/libgdiplus.so
 
 # RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/
 # RUN rpm -Uvh epel-release*rpm
 # RUN yum install -y libgdiplus
 
-RUN export LD_LIBRARY_PATH=/lib64/ 
+RUN export LD_LIBRARY_PATH=/usr/lib64/ 
 
 USER 1001
 
