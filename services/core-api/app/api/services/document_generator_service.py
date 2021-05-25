@@ -19,6 +19,9 @@ class DocumentGeneratorService():
     @classmethod
     def generate_document(cls, document_template, template_data):
 
+        file_type = template_data.get('file_type')
+        file_type = file_type.lower() if file_type else 'pdf'
+
         # Get the template file
         fileobj = None
         dynamic_template = document_template.get_dynamic_template(template_data)
@@ -38,8 +41,8 @@ class DocumentGeneratorService():
         document_name_start_extra = f'{document_name_start_extra} ' if document_name_start_extra else ''
         date_string = datetime.date.today().strftime("%Y-%m-%d")
         draft_string = ' DRAFT' if template_data.get('is_draft') == True else ''
-        document_name = f'{document_name_start_extra}{document_template.template_name_no_extension}{draft_string} {date_string}.pdf'
-        data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': 'pdf'}}
+        document_name = f'{document_name_start_extra}{document_template.template_name_no_extension}{draft_string} {date_string}.{file_type}'
+        data = {'data': template_data, 'options': {'reportName': document_name, 'convertTo': file_type}}
 
         # Send the document generation request and return the response
         resp = requests.post(
