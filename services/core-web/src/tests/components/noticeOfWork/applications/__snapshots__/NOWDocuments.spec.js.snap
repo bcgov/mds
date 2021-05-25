@@ -67,6 +67,7 @@ exports[`NOWDocuments renders properly 1`] = `
   />
   <br />
   <Connect(NOWActionWrapper)
+    allowAfterProcess={false}
     permission="role_edit_permits"
     tab="REV"
   >

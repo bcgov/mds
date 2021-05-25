@@ -11,6 +11,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
 
 from . import permit_amendment_status_code, permit_amendment_type_code
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -115,6 +116,14 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if self.now_application_identity:
             _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
+    
+    @hybrid_property
+    def has_permit_conditions(self):
+        permit_conditions = PermitConditions.query.filter_by(
+            permit_amendment_id=self.permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).count()
+        return permit_conditions > 0
 
     def __repr__(self):
         return '<PermitAmendment %r, %r>' % (self.mine_guid, self.permit_id)
@@ -122,12 +131,23 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     def delete(self, is_force_delete=False):
         if not is_force_delete and self.permit_amendment_type_code == 'OGP':
             raise Exception(
-                "Deletion of permit amendment of type 'Original Permit' is not allowed, please, consider deleting the permit itself."
+                "Deletion of permit amendment of type 'Original Permit' is not allowed. Consider deleting the permit itself."
             )
 
-        if self.now_application_guid:
+        if self.now_application_guid and self.permit_amendment_status_code != "DFT":
             raise Exception(
                 'The permit amendment with linked NOW application in Core cannot be deleted.')
+        # If deleting a draft permit, remove the now_guid so a new permit can be created and associated with that now
+        elif self.now_application_guid and self.permit_amendment_status_code == "DFT":
+            self.now_application_guid = None
+            self.save();
+
+        if self.conditions and self.permit_amendment_status_code != "DFT":
+            raise Exception(
+                'The permit amendment has permit conditions and cannot be deleted.')
+        elif self.conditions and self.permit_amendment_status_code == "DFT":
+            PermitConditions.delete_all_by_permit_amendment_id(self.permit_amendment_id)
+            self.save();
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()

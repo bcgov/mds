@@ -23,6 +23,7 @@ import {
   getDelayTypeDropDownOptions,
   getNoticeOfWorkApplicationProgressStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import { ClockCircleOutlined, EyeOutlined, DownOutlined } from "@ant-design/icons";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -48,6 +49,7 @@ const propTypes = {
   createApplicationDelay: PropTypes.func.isRequired,
   fetchApplicationDelay: PropTypes.func.isRequired,
   handleDraftPermit: PropTypes.func,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
@@ -209,6 +211,12 @@ export class NOWProgressActions extends Component {
     );
 
     const showActions = this.props.tab !== "ADMIN" && this.props.tab !== "PRO";
+    const isDeletedDraftPermitInProgress =
+      this.props.progress[this.props.tab] &&
+      this.props.progress[this.props.tab].start_date &&
+      !this.props.progress[this.props.tab].end_date &&
+      this.props.tab === "DFT" &&
+      isEmpty(this.props.draftPermitAmendment);
     const showReasonModal = processedWithReason || isApplicationDelayed;
     return (
       <div className="inline-flex progress-actions">
@@ -234,12 +242,29 @@ export class NOWProgressActions extends Component {
                 this.props.progress[this.props.tab].start_date &&
                 !this.props.progress[this.props.tab].end_date && (
                   <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                    <Button type="primary" onClick={() => this.openProgressModal("Complete")}>
+                    <Button
+                      type="primary"
+                      onClick={() => this.openProgressModal("Complete")}
+                      disabled={isDeletedDraftPermitInProgress}
+                      title={
+                        isDeletedDraftPermitInProgress
+                          ? "The Draft process cannot be completed without a creating a Draft Permit"
+                          : ""
+                      }
+                    >
                       <ClockCircleOutlined />
                       Complete {this.props.progressStatusHash[this.props.tab]}
                     </Button>
                   </AuthorizationWrapper>
                 )}
+              {/* allow users to recreate the draft permit if deleted */}
+              {isDeletedDraftPermitInProgress && (
+                <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                  <Button type="primary" onClick={() => this.openDraftPermitProgressModal()}>
+                    Create {this.props.progressStatusHash[this.props.tab]}
+                  </Button>
+                </AuthorizationWrapper>
+              )}
               {this.props.progress[this.props.tab] && this.props.progress[this.props.tab].end_date && (
                 <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
                   <Button type="primary" onClick={() => this.openProgressModal("Resume")}>
@@ -281,6 +306,7 @@ const mapStateToProps = (state) => ({
   progress: getNOWProgress(state),
   applicationDelay: getApplicationDelay(state),
   delayTypeOptions: getDelayTypeDropDownOptions(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

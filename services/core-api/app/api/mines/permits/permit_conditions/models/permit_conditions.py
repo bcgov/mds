@@ -94,6 +94,29 @@ class PermitConditions(SoftDeleteMixin, AuditMixin, Base):
                                     condition.sub_conditions, permit_condition)
         return permit_condition
 
+    
+    @classmethod
+    def delete_all_by_permit_amendment_id(cls, permit_amendment_id, commit=False):
+        parent_conditions = cls.query.filter_by(
+            permit_amendment_id=permit_amendment_id,
+            parent_permit_condition_id=None,
+            deleted_ind=False).order_by(cls.display_order).all()
+        for condition in parent_conditions:
+            condition.delete_condition()
+            if commit:
+                condition.save()
+
+
+    def delete_condition(self):
+        if self.all_sub_conditions is not None:
+            subconditions = [c for c in self.all_sub_conditions if c.deleted_ind == False]
+            if len(subconditions) > 0:
+                for item in subconditions:
+                    item.deleted_ind = True
+                    item.delete_condition()
+        self.deleted_ind = True
+
+
     @classmethod
     def find_all_by_permit_amendment_id(cls, permit_amendment_id):
         return cls.query.filter_by(
