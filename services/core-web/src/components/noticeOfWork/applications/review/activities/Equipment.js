@@ -12,6 +12,7 @@ const propTypes = {
 export const Equipment = (props) => {
   return (
     <div>
+      <h4>Equipment</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="equipment"
