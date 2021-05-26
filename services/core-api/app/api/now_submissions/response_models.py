@@ -164,6 +164,9 @@ MECH_TRENCHING_ACTIVITY = api.model(
         'numberofsites': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'depth': fields.Arbitrary,
     })
 
 WATER_SOURCE_ACTIVITY = api.model(

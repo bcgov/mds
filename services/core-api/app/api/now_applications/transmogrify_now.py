@@ -383,7 +383,10 @@ def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
                 activity_type_description=sd.type,
                 number_of_sites=sd.numberofsites,
                 disturbed_area=sd.disturbedarea,
-                timber_volume=sd.timbervolume)
+                timber_volume=sd.timbervolume,
+                length=sd.length,
+                width=sd.width,
+                depth=sd.depth)
             mech.details.append(mech_detail)
 
         for e in now_sub.mech_trenching_equip:

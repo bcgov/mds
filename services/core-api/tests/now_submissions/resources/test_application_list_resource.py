@@ -486,7 +486,10 @@ NOW_APPLICATION_DATA = {
         "type": "str",
         "numberofsites": 0,
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "length": 0,
+        "width": 0,
+        "depth": 0,
     }]
 }
 
