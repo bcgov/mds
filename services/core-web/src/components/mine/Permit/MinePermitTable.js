@@ -454,7 +454,9 @@ const transformRowData = (
   openAddPermitHistoricalAmendmentModal,
   openEditSitePropertiesModal
 ) => {
-  const latestAmendment = permit.permit_amendments[0];
+  const latestAmendment = permit.permit_amendments.filter(
+    (a) => a.permit_amendment_status_code !== draftAmendment
+  )[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
   const hasAmalgamated = permit.permit_amendments.find(
