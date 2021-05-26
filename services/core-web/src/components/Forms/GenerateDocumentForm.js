@@ -76,7 +76,7 @@ export const GenerateDocumentForm = (props) => {
                 {fileType === "DOCX" && (
                   <>
                     <Alert
-                      description="If you plan to edit this document, please ensure that you do not change any vital information that would contradict BC government legislation pertaining to privacy, or financial information."
+                      description="If you plan to edit this document, please ensure that you do not change any vital information that would contradict BC government legislation pertaining to privacy or financial information."
                       type="warning"
                       showIcon
                     />
