@@ -2,6 +2,8 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
 USER 0
 
+RUN export LD_LIBRARY_PATH=/lib64/ 
+
 RUN yum install -y glibc-devel
 
 RUN yum install -y wget
@@ -15,8 +17,6 @@ RUN wget http://archive.fedoraproject.org/pub/archive/fedora/linux/releases/9/Fe
 # RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/
 # RUN rpm -Uvh epel-release*rpm
 # RUN yum install -y libgdiplus
-
-RUN export LD_LIBRARY_PATH=/lib64/ 
 
 USER 1001
 
