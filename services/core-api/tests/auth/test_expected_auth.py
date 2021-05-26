@@ -91,7 +91,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (PermitResource, "put", [EDIT_SECURITIES]),
     (PermitAmendmentListResource, "post", [EDIT_PERMIT]),
     (PermitAmendmentResource, "put", [EDIT_PERMIT]),
-    (PermitAmendmentResource, "delete", [MINE_ADMIN]),
+    (PermitAmendmentResource, "delete", [EDIT_PERMIT]),
     (PermitDocumentUploadInitializationResource, "post", [EDIT_PERMIT]),
     (PermitAmendmentDocumentListResource, "put", [EDIT_PERMIT]),
     (PermitAmendmentDocumentResource, "delete", [EDIT_PERMIT]),
