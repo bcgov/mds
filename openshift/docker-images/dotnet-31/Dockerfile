@@ -4,7 +4,7 @@ USER 0
 
 # RUN export LD_LIBRARY_PATH=/lib64/ 
 
-# RUN yum install -y glibc-devel
+RUN yum install -y glibc-devel
 
 RUN yum install -y wget
 # RUN wget http://mirror.centos.org/centos/7/os/x86_64/Packages/libX11-devel-1.6.7-2.el7.x86_64.rpm
