@@ -73,11 +73,13 @@ export class UpdateStatusGenerateLetterModal extends Component {
         content: (
           <GenerateDocumentForm
             {...this.props}
+            initialValues={{ ...this.props.initialValues, file_type: "PDF" }}
             showActions={false}
             additionalTitle="and Process"
             onSubmit={this.handleGenerate}
             submitting={this.state.submitting}
             disabled={!this.props.signature}
+            allowDocx
           />
         ),
       },

@@ -7,16 +7,19 @@ import GenerateDocumentForm from "@/components/Forms/GenerateDocumentForm";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   formSyncErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   signature: PropTypes.string.isRequired,
   submitFailed: PropTypes.bool.isRequired,
   title: PropTypes.string,
+  allowDocx: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "Generate Document",
+  allowDocx: false,
 };
 
 export const GenerateDocumentModal = (props) => {
@@ -35,7 +38,11 @@ export const GenerateDocumentModal = (props) => {
           <br />
         </>
       )}
-      <GenerateDocumentForm {...props} disabled={!props.signature} />
+      <GenerateDocumentForm
+        {...props}
+        initialValues={{ ...props.initialValues, file_type: "PDF" }}
+        disabled={!props.signature}
+      />
       {showErrors && (
         <div className="error center">
           <Alert
