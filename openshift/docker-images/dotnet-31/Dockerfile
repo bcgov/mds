@@ -10,7 +10,7 @@ RUN yum install -y libX11-devel
 # RUN yum install libgdiplus
 
 RUN wget http://archive.fedoraproject.org/pub/archive/fedora/linux/releases/23/Everything/source/SRPMS/l/libgdiplus-3.12-3.fc23.src.rpm
-RUN rpm -Uvh libgdiplus-3.12-3.fc23.src.rpm
+
 
 # RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/
 # RUN rpm -Uvh epel-release*rpm
@@ -19,5 +19,7 @@ RUN rpm -Uvh libgdiplus-3.12-3.fc23.src.rpm
 RUN export LD_LIBRARY_PATH=/lib64/ 
 
 USER 1001
+
+RUN rpm -Uvh libgdiplus-3.12-3.fc23.src.rpm
 
 # RUN dotnet run
