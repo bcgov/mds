@@ -19,7 +19,7 @@ RUN yum install -y libX11-devel
 
 
 RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum install epel-release-latest-7.noarch.rpm
+RUN yum install -y epel-release-latest-7.noarch.rpm
 RUN yum install -y libgdiplus
 
 USER 1001
