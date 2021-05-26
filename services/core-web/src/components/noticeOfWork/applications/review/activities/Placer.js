@@ -127,7 +127,7 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
-      {/* <Equipment isViewMode={props.isViewMode} /> */}
+      <Equipment isViewMode={props.isViewMode} />
 
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

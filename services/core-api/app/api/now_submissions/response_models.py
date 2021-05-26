@@ -148,6 +148,7 @@ EXP_ACCESS_ACTIVITY = api.model(
         'length': fields.Arbitrary,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'numberofsites': fields.Arbitrary,
     })
 
 EXP_SURFACE_DRILL_ACTIVITY = api.model(

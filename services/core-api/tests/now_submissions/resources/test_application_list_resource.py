@@ -388,7 +388,8 @@ NOW_APPLICATION_DATA = {
     "exp_access_activity": [{
         "type": "testing",
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "numberofsites": 0,
     }],
     "exp_surface_drill_activity": [{
         "type": "str",

@@ -15,7 +15,6 @@ import SurfaceBulkSamples from "@/components/noticeOfWork/applications/review/ac
 import WaterSupply from "@/components/noticeOfWork/applications/review/activities/WaterSupply";
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
 import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import { renderActivities } from "@/constants/NOWConditions";
 
 /**
@@ -200,16 +199,6 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="water_supply">
           <WaterSupply isViewMode={props.isViewMode} />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
-        id="equipment"
-        title="Equipment"
-        data={props.noticeOfWork.equipment}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="equipment">
-          <Equipment isViewMode={props.isViewMode} />
         </FormSection>
       </ScrollContentWrapper>
     </div>

@@ -440,6 +440,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
                     length=detail.length,
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
+                    number_of_sites=getattr(detail, 'numberofsites', None)
                 ))
 
 
