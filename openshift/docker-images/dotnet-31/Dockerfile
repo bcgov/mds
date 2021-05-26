@@ -18,8 +18,8 @@ RUN yum install -y libX11-devel
 # RUN rpm -Uvh libgdiplus-1.9-4.fc9.src.rpm
 
 
-RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum install -y epel-release-latest-7.noarch.rpm
-RUN yum install -y libgdiplus
+RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+RUN yum install -y epel-release-latest-8.noarch.rpm
+RUN yum install -y mono-complete
 
 USER 1001
