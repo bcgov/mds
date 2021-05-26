@@ -69,7 +69,7 @@ export const MechanicalTrenching = (props) => {
         ]}
       />
       <br />
-      <Equipment isViewMode={props.isViewMode} />
+      {/* <Equipment isViewMode={props.isViewMode} /> */}
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>

@@ -99,7 +99,7 @@ export const AccessRoads = (props) => {
         </Col>
       </Row>
       <br />
-      <Equipment isViewMode={props.isViewMode} />
+      {/* <Equipment isViewMode={props.isViewMode} /> */}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
