@@ -89,6 +89,7 @@ export class AdministrativeTab extends Component {
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
             signature,
+            allowDocx: true,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
