@@ -93,7 +93,8 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
         'has_storage_explosive_on_site': fields.Boolean,
         'explosive_permit_issued': fields.Boolean,
         'explosive_permit_number': fields.String,
-        'explosive_permit_expiry_date': Date
+        'explosive_permit_expiry_date': Date,
+        'describe_explosives_to_site': fields.String,
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(

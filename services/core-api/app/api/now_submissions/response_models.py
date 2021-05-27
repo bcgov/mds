@@ -211,6 +211,7 @@ APPLICATION = api.model(
         'firstaidequipmentonsite': fields.String,
         'firstaidcertlevel': fields.String,
         'descexplorationprogram': fields.String,
+        'describeexplosivetosite': fields.String,
         'proposedstartdate': fields.DateTime,
         'proposedenddate': fields.DateTime,
         'yearroundseasonal': fields.String,

@@ -128,6 +128,7 @@ class Application(Base):
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
+    describeexplosivetosite = db.Column(db.String)
     proposedstartdate = db.Column(db.DateTime)
     proposedenddate = db.Column(db.DateTime)
     yearroundseasonal = db.Column(db.String)

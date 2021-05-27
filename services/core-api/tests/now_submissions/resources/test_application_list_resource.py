@@ -46,6 +46,7 @@ NOW_APPLICATION_DATA = {
     "str",
     "descexplorationprogram":
     "str",
+    "describeexplosivetosite": "str",
     "proposedstartdate":
     "2020-02-27T19:14:23.368Z",
     "proposedenddate":
