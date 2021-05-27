@@ -42,62 +42,33 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("Load ************************");
-            try
+            PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
+            PdfRenderer pdfviewer;
+            pdfviewer = new PdfRenderer(_mCache);
+            MemoryStream stream = new MemoryStream();
+            object jsonResult = new object();
+            if (jsonObject != null && jsonObject.ContainsKey("document"))
             {
-                Console.WriteLine("Here 1");
-                PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
-                PdfRenderer pdfviewer;
-                pdfviewer = new PdfRenderer(_mCache);
-                Console.WriteLine("Here 2");
-                MemoryStream stream = new MemoryStream();
-                object jsonResult = new object();
-                Console.WriteLine("Here 3");
-                if (jsonObject != null && jsonObject.ContainsKey("document"))
+                if (bool.Parse(jsonObject["isFileName"]))
                 {
-                    Console.WriteLine("Here 4");
-                    if (bool.Parse(jsonObject["isFileName"]))
+                    string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
+                    string filename = Path.GetFileName(jsonObject["document"]);
+                    FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
+                    if (fsr == null)
                     {
-                        Console.WriteLine("Here 5");
-                        string path = Path.GetDirectoryName(jsonObject["document"]) + "/";
-                        string filename = Path.GetFileName(jsonObject["document"]);
-                        Console.WriteLine("path " + path);
-                        Console.WriteLine("filename " + filename);
-                        FileStreamResult fsr = this.operation.Download(path, new string[] { filename });
-                        if (fsr == null)
-                        {
-                            Console.WriteLine("Here 6");
-                            return this.Content(jsonObject["document"] + " is not found");
-                        }
-                        fsr.FileStream.CopyTo(stream);
-                        Console.WriteLine("fsr.EntityTag " + fsr.EntityTag);
-                        Console.WriteLine("fsr.ToString() " + fsr.ToString());
-                        Console.WriteLine("Here 7");
+                        return this.Content(jsonObject["document"] + " is not found");
                     }
-                    else
-                    {
-                        byte[] bytes = Convert.FromBase64String(jsonObject["document"]);
-                        stream = new MemoryStream(bytes);
-                    }
+                    fsr.FileStream.CopyTo(stream);
                 }
-                Console.WriteLine("Here 8");
-                jsonResult = pdfviewer.Load(stream, jsonObject);
-                Console.WriteLine("stream " + stream.Length);
-                Console.WriteLine("stream " + stream.ToString());
-                Console.WriteLine("jsonObject " + jsonObject.ToString());
-                Console.WriteLine("jsonResult " + jsonResult.ToString());
-                Console.WriteLine("Here 9");
-                ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
-                Console.WriteLine("result.Content " + result.Content);
-                Console.WriteLine("Here 10");
-                return result;
+                else
+                {
+                    byte[] bytes = Convert.FromBase64String(jsonObject["document"]);
+                    stream = new MemoryStream(bytes);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("************************ EXCEPTION");
-                Console.WriteLine(ex.ToString());
-            }
-            return null;
+            jsonResult = pdfviewer.Load(stream, jsonObject);
+            ContentResult result = Content(JsonConvert.SerializeObject(jsonResult));
+            return result;
         }
 
         [AcceptVerbs("Post")]
@@ -106,7 +77,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Bookmarks([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("Bookmarks ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetBookmarks(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
@@ -118,7 +88,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult RenderPdfPages([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("RenderPdfPages ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetPage(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
@@ -143,7 +112,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Unload([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("Unload ************************");
             PdfRenderer pdfviewer;
             pdfviewer = new PdfRenderer(_mCache);
             pdfviewer.ClearCache(jsonObject);
@@ -166,7 +134,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Download([FromBody] Dictionary<string, string> jsonObject)
         {
-            Console.WriteLine("Download ************************");
             PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             string documentBase = pdfviewer.GetDocumentAsBase64(jsonObject);
             return Content(documentBase);
