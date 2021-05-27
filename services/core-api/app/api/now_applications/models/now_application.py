@@ -264,7 +264,7 @@ class NOWApplication(Base, AuditMixin):
             parent_permit_condition_id=None,
             deleted_ind=False).count()
         return source_conditions > 0
-    
+
     @classmethod
     def find_by_application_id(cls, now_application_id):
         return cls.query.filter_by(now_application_id=now_application_id).one_or_none()
@@ -324,7 +324,7 @@ class NOWApplication(Base, AuditMixin):
         now_doc.save()
 
     @classmethod
-    def get_filtered_submissions_document(cls, now_application):
+    def get_filtered_submissions_documents(cls, now_application):
         docs = []
 
         for doc in now_application.imported_submission_documents:
