@@ -529,7 +529,6 @@ NOW_APPLICATION_MODEL = api.model(
         'has_source_conditions':
         fields.Boolean,
         'site_property': fields.Nested(MINE_TYPE_MODEL),
-        # 'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT), skip_none=True)
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -598,7 +597,6 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
         'last_updated_date': Date,
-        # 'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_VIEW_MODEL = api.model(

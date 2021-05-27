@@ -139,9 +139,6 @@ class NOWApplication(Base, AuditMixin):
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
 
-    # equipment = db.relationship(
-    #     'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
-
     # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
