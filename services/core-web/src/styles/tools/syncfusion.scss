@@ -42,6 +42,7 @@ $error-font: $error-color; //#f44336;
 @import "../../../node_modules/@syncfusion/ej2-grids/styles/material.scss";
 @import "../../../node_modules/@syncfusion/ej2-react-pdfviewer/styles/material.scss";
 @import "../../../node_modules/@syncfusion/ej2-react-filemanager/styles/material.scss";
+// NOTE: We may need these dependencies in the future if we implement the document/spreadsheet viewer
 // @import "../../../node_modules/@syncfusion/ej2-react-documenteditor/styles/material.scss";
 // @import "../../../node_modules/@syncfusion/ej2-react-spreadsheet/styles/material.scss";
 @import "../../../node_modules/@syncfusion/ej2-notifications/styles/material.scss";
