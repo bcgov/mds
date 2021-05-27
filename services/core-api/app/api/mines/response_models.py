@@ -282,6 +282,20 @@ MINE_TSF_MODEL = api.model(
         'tsf_operating_status_code': fields.String,
     })
 
+MINE_WORK_INFORMATION_MODEL = api.model(
+    'MineWorkInformation', {
+        'mine_work_information_id': fields.Integer,
+        'mine_guid': fields.String,
+        'work_start_date': fields.Date,
+        'work_stop_date': fields.Date,
+        'work_comments': fields.String,
+        'work_status': fields.String,
+        'created_by': fields.String,
+        'created_timestamp': fields.DateTime,
+        'updated_by': fields.String,
+        'updated_timestamp': fields.DateTime,
+    })
+
 MINE_VERIFIED_MODEL = api.model(
     'MineVerifiedStatus', {
         'mine_guid': fields.String,
@@ -314,6 +328,7 @@ MINES_MODEL = api.model(
         'verified_status': fields.Nested(MINE_VERIFIED_MODEL, skip_none=True),
         'has_minespace_users': fields.Boolean,
         'mms_alias': fields.String,
+        'mine_work_information': fields.List(fields.Nested(MINE_WORK_INFORMATION_MODEL))
     })
 
 MINE_MODEL = api.inherit(

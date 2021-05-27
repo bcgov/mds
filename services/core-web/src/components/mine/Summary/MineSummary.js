@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Row, Col, Divider, Card } from "antd";
+import { Row, Col, Divider, Card, Descriptions } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { isEmpty } from "lodash";
 import { Link } from "react-router-dom";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import { getPartyRelationshipTypes } from "@common/selectors/staticContentSelectors";
 import { getMineComplianceInfo } from "@common/selectors/complianceSelectors";
@@ -80,6 +81,47 @@ const isActive = (pr) =>
 const activePermitteesByPermit = (pr, permit) =>
   isActive(pr) && pr.mine_party_appt_type_code === "PMT" && pr.related_guid === permit.permit_guid;
 
+const renderMineWorkInformation = (mineWorkInformation) => {
+  const renderWorkInfo = (info) => (
+    <Col lg={12} md={24}>
+      <Descriptions column={3} colon={false}>
+        <Descriptions.Item label="Work Status">...</Descriptions.Item>
+        <Descriptions.Item label="Work Start Date">
+          {formatDate(info.work_start_date)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Work Stop Date">
+          {formatDate(info.work_stop_date)}
+        </Descriptions.Item>
+        <Descriptions.Item label="Comments" span={3}>
+          {info.work_comments}
+        </Descriptions.Item>
+      </Descriptions>
+      <Descriptions column={2} colon={false} style={{ float: "right" }}>
+        <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
+        <Descriptions.Item label="Last Updated">
+          {formatDateTime(info.updated_timestamp)}
+        </Descriptions.Item>
+      </Descriptions>
+    </Col>
+  );
+
+  return (
+    <>
+      <Row>
+        <Col span={24}>
+          <h4>Work Information</h4>
+          <Divider />
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        {(!isEmpty(mineWorkInformation) &&
+          mineWorkInformation.map((info) => renderWorkInfo(info))) ||
+          "This mine has no recorded work information."}
+      </Row>
+    </>
+  );
+};
+
 export class MineSummary extends Component {
   render() {
     const { id } = this.props.match.params;
@@ -91,6 +133,8 @@ export class MineSummary extends Component {
           <Divider />
         </div>
         <MineHeader mine={mine} {...this.props} />
+        <br />
+        {renderMineWorkInformation(mine.mine_work_information)}
         <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
           <div>
