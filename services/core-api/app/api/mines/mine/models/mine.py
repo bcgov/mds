@@ -71,29 +71,29 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
         primaryjoin=
-        "and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)",
+        'and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
         lazy='selectin')
 
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
         primaryjoin=
-        "and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)",
+        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)',
         lazy='select')
 
-    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment', backref='mine', lazy='select')
     mine_incidents = db.relationship(
         'MineIncident',
-        backref="mine",
+        backref='mine',
         lazy='select',
-        primaryjoin="and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)"
+        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)'
     )
     mine_reports = db.relationship('MineReport', lazy='select')
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin="and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
+        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)',
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
