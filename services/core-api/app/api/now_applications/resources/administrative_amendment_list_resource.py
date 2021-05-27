@@ -32,8 +32,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('mine_guid', type=str, required=True)
     parser.add_argument('received_date', type=str, required=True)
-    #TODO: rename to previous_permit_amendment_guid?
-    parser.add_argument('permit_amendment_guid', type=str, required=True) 
+    parser.add_argument('permit_amendment_guid', type=str, required=True)
     parser.add_argument('permit_id', type=int, required=True)
     parser.add_argument('application_source_type_code', type=str, required=True)
     parser.add_argument('application_reason_codes', type=list, location='json', required=True)
@@ -108,32 +107,21 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
 
             db.session.add(new_app)
 
-            # contacts
-            application_appt = []
-            # if there is a prior imported NoW, copy contacts from it.
-            if application and application.contacts:
-                now_appts = [
-                        party for party in application.contacts
-                        if not party.end_date or party.end_date > datetime.now(timezone.utc).date() # valid?
-                ]
-            # if there is no prior imported NoW, copy active permittee(s) from the permit.
-            else:
-                if permit.permittee_appointments:
-                    now_appts= [
-                            party for party in permit.permittee_appointments
-                            if not party.end_date or party.end_date > datetime.now(timezone.utc).date() #still active 
-                    ]
+            # copy contacts
+            if permit.permittee_appointments:
+                application_appt = []
+                for mine_appt in [
+                        party for party in permit.permittee_appointments
+                        if not party.end_date or party.end_date > datetime.now(timezone.utc).date()
+                ]:
+                    new_app_appt = NOWPartyAppointment(
+                        mine_party_appt_type_code=mine_appt.mine_party_appt_type_code,
+                        now_application_id=new_app.now_application_id,
+                        party_guid=mine_appt.party_guid)
 
-            for now_appt in now_appts:
-                new_app_appt = NOWPartyAppointment(
-                    mine_party_appt_type_code=now_appt.mine_party_appt_type_code,
-                    now_application_id=new_app.now_application_id,
-                    party_guid=now_appt.party_guid)
-
-                db.session.add(new_app_appt)
-                application_appt.append(new_app_appt)
-
-            new_app.contacts = application_appt
+                    db.session.add(new_app_appt)
+                    application_appt.append(new_app_appt)
+                new_app.contacts = application_appt
 
             def get_documents_to_attach(db, documents):
                 res_documents = []
@@ -180,6 +168,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                     now_application_id=new_app.now_application_id, application_reason_code=reason)
                 db.session.add(app_reason)
 
+            db.session.add(new_app)
             db.session.commit()
         except:
             db.session.rollback()
