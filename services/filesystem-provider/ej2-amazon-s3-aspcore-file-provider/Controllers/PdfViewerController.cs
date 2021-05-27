@@ -43,8 +43,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         public IActionResult Load([FromBody] Dictionary<string, string> jsonObject)
         {
             PdfRenderer.ReferencePath = _hostingEnvironment.WebRootPath + "\\";
-            PdfRenderer pdfviewer;
-            pdfviewer = new PdfRenderer(_mCache);
+            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             MemoryStream stream = new MemoryStream();
             object jsonResult = new object();
             if (jsonObject != null && jsonObject.ContainsKey("document"))
@@ -100,8 +99,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult RenderAnnotationComments([FromBody] Dictionary<string, string> jsonObject)
         {
-            PdfRenderer pdfviewer;
-            pdfviewer = new PdfRenderer(_mCache);
+            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             object jsonResult = pdfviewer.GetAnnotationComments(jsonObject);
             return Content(JsonConvert.SerializeObject(jsonResult));
         }
@@ -112,8 +110,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         [Authorize("View")]
         public IActionResult Unload([FromBody] Dictionary<string, string> jsonObject)
         {
-            PdfRenderer pdfviewer;
-            pdfviewer = new PdfRenderer(_mCache);
+            PdfRenderer pdfviewer = new PdfRenderer(_mCache);
             pdfviewer.ClearCache(jsonObject);
             return this.Content("Document cache is cleared");
         }
