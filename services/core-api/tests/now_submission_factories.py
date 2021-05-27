@@ -48,6 +48,9 @@ def randomNOWOriginatingSystem():
 def randomNOWApplicationType():
     return random.choice(['New Permit', 'Amendment'])
 
+def randomDrillProgramOptions():
+    return random.choice(['Ground supported', 'Helicopter supported', 'Water supported', 'Combination of above'])
+
 
 class NOWSubmissionFactory(BaseFactory):
     class Meta:
@@ -103,7 +106,8 @@ class NOWSubmissionFactory(BaseFactory):
         exploration_surface_drilling = factory.Trait(
             expsurfacedrillreclcorestorage=factory.Faker('sentence', nb_words=1),
             expsurfacedrillreclamationcost=factory.fuzzy.FuzzyDecimal(100),
-            expsurfacedrilltotaldistarea=factory.fuzzy.FuzzyDecimal(100))
+            expsurfacedrilltotaldistarea=factory.fuzzy.FuzzyDecimal(100),
+            expsurfacedrillprogam=factory.LazyFunction(randomDrillProgramOptions))
 
         mechanical_trenching = factory.Trait(
             mechtrenchingreclamation=factory.Faker('sentence', nb_words=3),

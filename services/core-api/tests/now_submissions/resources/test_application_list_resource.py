@@ -106,6 +106,7 @@ NOW_APPLICATION_DATA = {
     "str",
     "expsurfacedrillreclcorestorage":
     "str",
+    'expsurfacedrillprogam': "str",
     "expsurfacedrillreclamationcost":
     0,
     "expaccessreclamation":

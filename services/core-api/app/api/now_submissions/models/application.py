@@ -156,6 +156,7 @@ class Application(Base):
     mechtrenchingreclamationcost = db.Column(db.Numeric(14, 2))
     expsurfacedrillreclamation = db.Column(db.String)
     expsurfacedrillreclcorestorage = db.Column(db.String)
+    expsurfacedrillprogam = db.Column(db.String)
     expsurfacedrillreclamationcost = db.Column(db.Numeric(14, 2))
     expaccessreclamation = db.Column(db.String)
     expaccessreclamationcost = db.Column(db.Numeric(14, 2))

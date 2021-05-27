@@ -239,6 +239,7 @@ APPLICATION = api.model(
         'mechtrenchingreclamationcost': fields.Arbitrary,
         'expsurfacedrillreclamation': fields.String,
         'expsurfacedrillreclcorestorage': fields.String,
+        'expsurfacedrillprogam': fields.String,
         'expsurfacedrillreclamationcost': fields.Arbitrary,
         'expaccessreclamation': fields.String,
         'expaccessreclamationcost': fields.Arbitrary,
