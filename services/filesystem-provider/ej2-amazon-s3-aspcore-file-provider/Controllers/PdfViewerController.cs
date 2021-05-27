@@ -94,7 +94,6 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
 
         [AcceptVerbs("Post")]
         [HttpPost]
-
         [Route("RenderAnnotationComments")]
         [Authorize("View")]
         public IActionResult RenderAnnotationComments([FromBody] Dictionary<string, string> jsonObject)
