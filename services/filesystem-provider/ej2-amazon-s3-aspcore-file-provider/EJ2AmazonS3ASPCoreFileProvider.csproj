@@ -18,6 +18,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.3" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="19.1.0.57" />
     <PackageReference Include="Syncfusion.EJ2.PdfViewer.AspNet.Core.Linux" Version="19.1.0.57" />
+    <!-- NOTE: We may need these dependencies in the future if we implement the document/spreadsheet viewer -->
     <!-- <PackageReference Include="Syncfusion.EJ2.Spreadsheet.AspNet.Core" Version="19.1.0.57" /> -->
     <!-- <PackageReference Include="Syncfusion.EJ2.WordEditor.AspNet.Core" Version="19.1.0.57" /> -->
     <!-- <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="19.1.0.57" /> -->
