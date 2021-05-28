@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { Button } from "antd";
 import { isEmpty } from "lodash";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import { modalConfig } from "@/components/modalContent/config";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { truncateFilename } from "@common/utils/helpers";
@@ -17,7 +17,6 @@ import { PERMIT, CLOUD_CHECK_MARK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -31,10 +30,12 @@ const propTypes = {
   removePermitAmendmentDocument: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
 };
-const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
+
+const renderDocumentLink = (document) => (
+  <DocumentLink
+    documentManagerGuid={document.document_manager_guid}
+    documentName={document.document_name}
+  />
 );
 
 export class UploadPermitDocument extends Component {
@@ -91,12 +92,7 @@ export class UploadPermitDocument extends Component {
             <div>
               <p>
                 Document Name:{" "}
-                {renderDocumentLink(
-                  this.props.draftPermitAmendment.related_documents[0],
-                  truncateFilename(
-                    this.props.draftPermitAmendment.related_documents[0].document_name
-                  )
-                )}
+                {renderDocumentLink(this.props.draftPermitAmendment.related_documents[0])}
               </p>
               {!this.props.isViewMode && (
                 <>

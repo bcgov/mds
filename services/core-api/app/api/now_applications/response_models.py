@@ -617,7 +617,7 @@ NOW_VIEW_MODEL = api.model(
         'is_historic': fields.Boolean,
         'originating_system': fields.String,
         'application_documents': fields.List(
-            fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
+            fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
         'import_timestamp': DateTime,
         'update_timestamp': DateTime,
         'application_type_code': fields.String,
