@@ -85,6 +85,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'mechanical_trenching.reclamation_description',
     'mechanical_trenching.reclamation_cost',
     'placer_operation.is_underground',
+    'placer_operation.has_stream_diversion',
     'placer_operation.is_hand_operation',
     'placer_operation.total_disturbed_area',
     'placer_operation.reclamation_description',

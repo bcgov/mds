@@ -809,24 +809,28 @@ export const ReviewNOWApplication = (props) => {
   );
 
   const renderWorkPlan = () => (
-    <Row gutter={16}>
-      <Col md={12} sm={24}>
-        <div className="field-title">
-          Description of Work
-          {props.isPreLaunch && <NOWFieldOriginTooltip />}
-          <NOWOriginalValueTooltip
-            originalValue={props.renderOriginalValues("work_plan").value}
-            isVisible={props.renderOriginalValues("work_plan").edited}
+    <>
+      <h4>Description of Work</h4>
+      <Row gutter={16}>
+        <Col md={24} sm={24}>
+          <div className="field-title">
+            Sufficient details of your work program to enable a good understanding of the types and
+            scope of the activities that will be conducted:
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("work_plan").value}
+              isVisible={props.renderOriginalValues("work_plan").edited}
+            />
+          </div>
+          <Field
+            id="work_plan"
+            name="work_plan"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
           />
-        </div>
-        <Field
-          id="work_plan"
-          name="work_plan"
-          component={RenderAutoSizeField}
-          disabled={props.isViewMode}
-        />
-      </Col>
-    </Row>
+        </Col>
+      </Row>
+    </>
   );
 
   const renderReclamation = () => (

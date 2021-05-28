@@ -1,0 +1,1 @@
+ALTER TABLE placer_operation ADD COLUMN has_stream_diversion boolean NOT NULL DEFAULT FALSE;

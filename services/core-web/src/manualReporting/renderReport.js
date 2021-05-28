@@ -260,6 +260,7 @@ const simpleRender = () => {
       is_hand_operation: false,
       reclamation_area: "495491.50",
       reclamation_unit_type_code: "HA",
+      has_stream_diversion: false,
       proposed_production: "12312",
       details: [
         {

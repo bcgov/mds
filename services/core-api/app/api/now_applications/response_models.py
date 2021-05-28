@@ -127,6 +127,7 @@ NOW_APPLICATION_PLACER_OPS = api.inherit(
     'NOWApplicationPlacerOperations', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'is_underground': fields.Boolean,
         'is_hand_operation': fields.Boolean,
+        'has_stream_diversion': fields.Boolean,
         'reclamation_area': fields.Fixed(decimals=2),
         'reclamation_unit_type_code': fields.String,
         'proposed_production': fields.String,

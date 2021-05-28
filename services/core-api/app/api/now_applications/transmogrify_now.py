@@ -457,6 +457,8 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
             total_disturbed_area_unit_type_code='HA',
             is_underground=placerundergroundoperations == 'Yes',
             is_hand_operation=placerhandoperations == 'Yes',
+            # TODO defaulting to False as vFCBC defaults to false and we are not getting this value yet (only Visible in TEST)
+            has_stream_diversion=False,
             proposed_production=proposedproduction,
             reclamation_unit_type_code='HA',
             reclamation_area=placerreclamationarea)

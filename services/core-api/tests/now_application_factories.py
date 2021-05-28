@@ -188,6 +188,7 @@ class PlacerOperationFactory(ActivitySummaryBaseFactory):
 
     is_underground = factory.Faker('boolean', chance_of_getting_true=50)
     is_hand_operation = factory.Faker('boolean', chance_of_getting_true=50)
+    has_stream_diversion = factory.Faker('boolean', chance_of_getting_true=50)
     reclamation_area = factory.Faker('pydecimal', right_digits=2, positive=True, max_value=500000)
     reclamation_unit_type_code = factory.LazyFunction(RandomUnitTypeCode)
 
