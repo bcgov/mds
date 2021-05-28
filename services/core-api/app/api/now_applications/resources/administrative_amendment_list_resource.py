@@ -108,10 +108,10 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
             db.session.add(new_app)
 
             # copy contacts
-            if permit.permittee_appointments:
+            if permit.permit_appointments:
                 application_appt = []
                 for mine_appt in [
-                        party for party in permit.permittee_appointments
+                        party for party in permit.permit_appointments
                         if not party.end_date or party.end_date > datetime.now(timezone.utc).date()
                 ]:
                     new_app_appt = NOWPartyAppointment(

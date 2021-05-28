@@ -434,7 +434,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_admin
+    @requires_role_edit_permit
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)
