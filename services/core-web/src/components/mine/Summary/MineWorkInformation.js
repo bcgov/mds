@@ -13,7 +13,7 @@ import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 
 const propTypes = {
-  mineWorkInformation: PropTypes.objectOf(PropTypes.any).isRequired,
+  mineGuid: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -22,7 +22,6 @@ const defaultProps = {};
 
 export class MineWorkInformation extends Component {
   render() {
-    const maxShow = 3;
     const renderWorkInfo = (info) => (
       <List.Item>
         <Descriptions column={3} colon={false}>

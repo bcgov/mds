@@ -5,6 +5,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.include.user_info import User
 from app.extensions import db
 
 
@@ -23,13 +24,18 @@ class MineWorkInformation(AuditMixin, Base):
 
     deleted_ind = db.Column(db.Boolean)
 
-    created_by = db.Column(db.String, nullable=False)
-    created_timestamp = db.Column(db.DateTime, nullable=False)
-    updated_by = db.Column(db.String, nullable=False)
-    updated_timestamp = db.Column(db.DateTime, nullable=False)
+    created_by = db.Column(db.String, default=User().get_user_username, nullable=False)
+    created_timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_by = db.Column(db.String, default=User().get_user_username, nullable=False)
+    updated_timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.mine_work_information_id}>'
+
+    def save(self):
+        self.updated_by = User().get_user_username()
+        self.updated_timestamp = datetime.utcnow()
+        super(MineWorkInformation, self).save()
 
     # TODO: Implement
     @hybrid_property
@@ -37,3 +43,12 @@ class MineWorkInformation(AuditMixin, Base):
         work_status = "Unknown"
         today = datetime.utcnow().date
         return work_status
+
+    @classmethod
+    def find_by_mine_guid(cls, mine_guid):
+        return cls.query.filter_by(mine_guid=mine_guid).filter_by(deleted_ind=False).all()
+
+    @classmethod
+    def find_by_mine_work_information_guid(cls, mine_work_information_guid):
+        return cls.query.filter_by(mine_work_information_guid=mine_work_information_guid).filter_by(
+            deleted_ind=False).one_or_none()
