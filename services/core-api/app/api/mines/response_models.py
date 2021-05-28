@@ -285,6 +285,7 @@ MINE_TSF_MODEL = api.model(
 MINE_WORK_INFORMATION_MODEL = api.model(
     'MineWorkInformation', {
         'mine_work_information_id': fields.Integer,
+        'mine_work_information_guid': fields.String,
         'mine_guid': fields.String,
         'work_start_date': fields.Date,
         'work_stop_date': fields.Date,

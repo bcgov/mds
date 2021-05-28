@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS mine_work_information (
   mine_work_information_id integer PRIMARY KEY,
+  mine_work_information_guid uuid DEFAULT gen_random_uuid() NOT NULL,
   mine_guid uuid NOT NULL,
   work_start_date date,
   work_stop_date date,

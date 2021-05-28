@@ -13,6 +13,8 @@ class MineWorkInformation(AuditMixin, Base):
 
     mine_work_information_id = db.Column(
         db.Integer, primary_key=True, server_default=FetchedValue())
+    mine_work_information_guid = db.Column(
+        UUID(as_uuid=True), server_default=FetchedValue(), nullable=False)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
 
     work_start_date = db.Column(db.Date)
