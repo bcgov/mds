@@ -101,6 +101,11 @@ export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
 
+// Work Information
+export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;
+export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>
+  `/mines/${mineGuid}/work-information/${mineWorkInformationGuid}`;
+
 // Reports
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;
 export const MINE_REPORT_DEFINITIONS = () => `/mines/reports/definitions`;
