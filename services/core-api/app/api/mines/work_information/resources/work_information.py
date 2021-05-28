@@ -7,7 +7,7 @@ from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINE_EDI
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.mines.response_models import MINE_WORK_INFORMATION_MODEL
-from app.api.mines.models.mine_work_information import MineWorkInformation
+from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
 from app.api.utils.access_decorators import requires_role_mine_admin
 
 
