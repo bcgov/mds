@@ -230,5 +230,14 @@ exports[`ReviewActivities renders properly 1`] = `
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    id="equipment"
+    isViewMode={true}
+    title="Equipment"
+  >
+    <Equipment
+      isViewMode={true}
+    />
+  </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;

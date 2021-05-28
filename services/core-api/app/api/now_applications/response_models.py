@@ -364,8 +364,7 @@ APPLICATION_REASON_CODE_XREF = api.model(
     })
 
 NOW_APPLICATION_MODEL = api.model(
-    'NOW_APPLICATION_MODEL',
-    {
+    'NOW_APPLICATION_MODEL', {
         'now_application_guid':
         fields.String,
         'now_number':
@@ -526,7 +525,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'has_source_conditions':
         fields.Boolean,
-        'site_property': fields.Nested(MINE_TYPE_MODEL),
+        'site_property':
+        fields.Nested(MINE_TYPE_MODEL),
+        'equipment':
+        fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(

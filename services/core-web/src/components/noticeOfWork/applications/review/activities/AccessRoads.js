@@ -4,7 +4,6 @@ import { Field } from "redux-form";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required } from "@common/utils/Validate";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
@@ -98,8 +97,6 @@ export const AccessRoads = (props) => {
           />
         </Col>
       </Row>
-      <br />
-      <Equipment isViewMode={props.isViewMode} />
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
