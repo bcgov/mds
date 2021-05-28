@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 import { formatDate } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -88,14 +87,11 @@ export const DefaultContact = (props) => (
               <span>
                 {" "}
                 -{" "}
-                <LinkButton
-                  key={props.partyRelationship.documents[0].mine_document_guid}
-                  onClick={() =>
-                    downloadFileFromDocumentManager(props.partyRelationship.documents[0])
-                  }
-                >
-                  Appointment Letter
-                </LinkButton>
+                <DocumentLink
+                  documentManagerGuid={props.partyRelationship.documents[0].document_manager_guid}
+                  documentName={props.partyRelationship.documents[0].document_name}
+                  linkTitleOverride="Appointment Letter"
+                />
               </span>
             )}
         </span>,

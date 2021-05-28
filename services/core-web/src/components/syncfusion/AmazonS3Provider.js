@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { SampleBase } from "@/components/syncfusion/SampleBase";
 import { ENVIRONMENT } from "@common/constants/environment";
 import {
@@ -11,6 +13,8 @@ import {
   ContextMenu,
 } from "@syncfusion/ej2-react-filemanager";
 import { createRequestHeader } from "@common/utils/RequestHeaders";
+import { openDocumentViewer } from "@common/actions/documentViewerActions";
+import { isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 
 const propTypes = {
   path: PropTypes.string.isRequired,
@@ -20,7 +24,7 @@ export class AmazonS3Provider extends SampleBase {
   constructor() {
     super(...arguments);
     this.hostUrl = ENVIRONMENT.filesystemProviderUrl;
-    this.pathPrefix = `/${this.props.mineNumber}`;
+    this.pathPrefix = `mms-archive/${this.props.mineNumber}`;
   }
 
   toolbarClick = (args) => {
@@ -52,10 +56,24 @@ export class AmazonS3Provider extends SampleBase {
       // Create data for the controller
       const data = {
         action: "download",
-        path: `/${this.props.mineNumber}${this.filemanager.path}`,
+        path: `${this.pathPrefix}${this.filemanager.path}`,
         names: flag ? this.filemanager.selectedItems : [""],
         data: files.length === 0 ? this.filemanager.getSelectedFiles() : files,
       };
+
+      // If the user has selected a PDF, display it in the Document Viewer instead of downloading.
+      if (
+        this.filemanager.selectedItems.length === 1 &&
+        isDocumentOpenable(this.filemanager.selectedItems[0])
+      ) {
+        const documentName = this.filemanager.selectedItems[0];
+        const documentPath = data.path + documentName;
+        this.props.openDocumentViewer({
+          documentPath,
+          props: { title: documentName },
+        });
+        return;
+      }
 
       // Initiate an XHR request
       const xhr = new XMLHttpRequest();
@@ -173,4 +191,12 @@ export class AmazonS3Provider extends SampleBase {
 
 AmazonS3Provider.propTypes = propTypes;
 
-export default AmazonS3Provider;
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openDocumentViewer,
+    },
+    dispatch
+  );
+
+export default connect(null, mapDispatchToProps)(AmazonS3Provider);

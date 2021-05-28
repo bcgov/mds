@@ -32,6 +32,8 @@ export const DOCUMENT_MANAGER_FILE_GET_URL = (token = {}) =>
   `/documents?${queryString.stringify(token)}`;
 export const DOCUMENT_MANAGER_TOKEN_GET_URL = (documentManagerGuid) =>
   `/download-token/${documentManagerGuid}`;
+export const DOCUMENT_MANAGER_DOCUMENT = (documentManagerGuid) =>
+  `/documents/${documentManagerGuid}`;
 export const MINESPACE_USER = "/users/minespace";
 export const PROVINCE_CODES = "/parties/sub-division-codes";
 
