@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button, Tag, Table } from "antd";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import {
   getHSRCMComplianceCodesHash,
@@ -12,7 +11,7 @@ import {
 } from "@common/selectors/staticContentSelectors";
 import { formatTime, formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -274,13 +273,15 @@ export class ViewIncidentModal extends Component {
 
   columns = () => [
     {
-      title: "File name",
+      title: "File Name",
       dataIndex: "name",
       render: (text, record) => (
-        <div title="File name">
-          <LinkButton key={record.key} onClick={() => downloadFileFromDocumentManager(record)}>
-            {text}
-          </LinkButton>
+        <div title="File Name">
+          <DocumentLink
+            documentManagerGuid={record.document_manager_guid}
+            documentName={record.name}
+            truncateDocumentName={false}
+          />
         </div>
       ),
     },

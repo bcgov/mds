@@ -51,7 +51,7 @@ exports[`NoticeOfWorkHomePage renders properly 1`] = `
         <div
           className="tab__content"
         >
-          <withRouter(NoticeOfWorkTable)
+          <withRouter(Connect(NoticeOfWorkTable))
             defaultParams={
               Object {
                 "application_type": "NOW",
