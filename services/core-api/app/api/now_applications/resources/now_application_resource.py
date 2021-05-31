@@ -46,7 +46,7 @@ class NOWApplicationResource(Resource, UserMixin):
             application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
 
-        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_document(
+        application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
 
         return application

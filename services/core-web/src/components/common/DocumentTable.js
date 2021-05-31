@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table, Popconfirm, Button } from "antd";
 import { formatDate, dateSorter, nullableStringSorter } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import DocumentLink from "@/components/common/DocumentLink";
 import { some } from "lodash";
 import { TRASHCAN } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
 
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.documentRecord),
@@ -30,7 +29,11 @@ export const DocumentTable = (props) => {
       sorter: nullableStringSorter("name"),
       render: (text, record) => (
         <div key={record.key} title="Name">
-          <LinkButton onClick={() => downloadFileFromDocumentManager(record)}>{text}</LinkButton>
+          <DocumentLink
+            documentManagerGuid={record.document_manager_guid}
+            documentName={record.name}
+            truncateDocumentName={false}
+          />
         </div>
       ),
     },

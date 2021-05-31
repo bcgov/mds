@@ -8,6 +8,7 @@ EDIT_PARTY = "core_edit_parties"
 EDIT_PERMIT = "core_edit_permits"
 CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
+GIS = "core_gis"
 EDIT_VARIANCE = "core_edit_variances"
 MINESPACE_PROPONENT = "mds_minespace_proponents"
 
