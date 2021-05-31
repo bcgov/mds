@@ -80,7 +80,7 @@ export const deleteMineWorkInformation = (mineGuid, mineWorkInformationGuid) => 
   dispatch(showLoading());
   return CustomAxios()
     .delete(
-      `${ENVIRONMENT.apiUrl}${API.WORK_INFORMATION_DELETE(mineGuid, mineWorkInformationGuid)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATION(mineGuid, mineWorkInformationGuid)}`,
       createRequestHeader()
     )
     .then((response) => {

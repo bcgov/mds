@@ -90,13 +90,13 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     )
     mine_reports = db.relationship('MineReport', lazy='select')
 
-    mine_work_information = db.relationship(
-        'MineWorkInformation',
-        lazy='selectin',
-        order_by='MineWorkInformation.created_timestamp',
-        primaryjoin=
-        'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind==False)'
-    )
+    # mine_work_information = db.relationship(
+    #     'MineWorkInformation',
+    #     lazy='selectin',
+    #     order_by='MineWorkInformation.created_timestamp',
+    #     primaryjoin=
+    #     'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind==False)'
+    # )
 
     comments = db.relationship(
         'MineComment',

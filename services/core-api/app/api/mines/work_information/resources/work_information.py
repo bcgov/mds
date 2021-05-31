@@ -1,5 +1,5 @@
 from werkzeug.exceptions import NotFound
-from flask_restplus import Resource
+from flask_restplus import Resource, inputs
 
 from app.extensions import api
 from app.api.utils.access_decorators import (requires_any_of, VIEW_ALL, MINE_EDIT,
@@ -13,9 +13,20 @@ from app.api.utils.access_decorators import requires_role_mine_admin
 
 class MineWorkInformationResource(Resource, UserMixin):
     parser = CustomReqparser()
-    parser.add_argument('work_start_date', store_missing=False, help='The work start date.')
-    parser.add_argument('work_stop_date', store_missing=False, help='The work stop date.')
-    parser.add_argument('work_comments', type=str, store_missing=False, help='The work comments.')
+    parser.add_argument(
+        'work_start_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='The work start date.')
+    parser.add_argument(
+        'work_stop_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='The work stop date.')
+    parser.add_argument(
+        'work_comments', type=str, store_missing=False, required=False, help='The work comments.')
 
     @api.doc(
         description='Get a mine work information.',

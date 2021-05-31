@@ -96,6 +96,7 @@ export class MineSummary extends Component {
         <br />
         <br />
         <br />
+        <br />
         <MineWorkInformation mineGuid={id} />
         <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (

@@ -1,5 +1,6 @@
-from flask_restplus import Resource
+from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound
+from flask import current_app
 
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
@@ -12,9 +13,20 @@ from app.api.mines.work_information.models.mine_work_information import MineWork
 
 class MineWorkInformationListResource(Resource, UserMixin):
     parser = CustomReqparser()
-    parser.add_argument('work_start_date', store_missing=False, help='The work start date.')
-    parser.add_argument('work_stop_date', store_missing=False, help='The work stop date.')
-    parser.add_argument('work_comments', type=str, store_missing=False, help='The work comments.')
+    parser.add_argument(
+        'work_start_date',
+        type=inputs.datetime_from_iso8601,
+        store_missing=False,
+        required=False,
+        help='The work start date.')
+    parser.add_argument(
+        'work_stop_date',
+        type=inputs.datetime_from_iso8601,
+        store_missing=False,
+        required=False,
+        help='The work stop date.')
+    parser.add_argument(
+        'work_comments', type=str, store_missing=False, required=False, help='The work comments.')
 
     @api.doc(
         description='Get a list of all work information for a given mine.',
@@ -41,11 +53,14 @@ class MineWorkInformationListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
+        current_app.logger.info(f'******************')
+        current_app.logger.info(f'{data}')
         work_start_date = data.get('work_start_date')
         work_stop_date = data.get('work_stop_date')
         work_comments = data.get('work_comments')
 
         mine_work_information = MineWorkInformation(
+            mine_guid=mine_guid,
             work_start_date=work_start_date,
             work_stop_date=work_stop_date,
             work_comments=work_comments)
