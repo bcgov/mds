@@ -4,6 +4,8 @@ ALTER TABLE public.activity_equipment_xref ADD CONSTRAINT equipment_now_applicat
 
 ALTER TABLE public.activity_equipment_xref DROP CONSTRAINT IF EXISTS equipment_assignment_pkey;
 
+ALTER TABLE public.activity_equipment_xref ALTER COLUMN activity_summary_id DROP NOT NULL;
+
 -- populate now_application_id based on summary id
 WITH query AS (
 	SELECT e.equipment_id, na.now_application_id FROM equipment e 
