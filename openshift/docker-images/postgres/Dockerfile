@@ -17,7 +17,7 @@ RUN INSTALL_PKGS="https://yum.postgresql.org/10/redhat/rhel-7-x86_64/postgis30_1
     yum install -y yum-utils gettext && \
     yum-config-manager --disable \* &> /dev/null && \
     yum-config-manager --enable rhel-server-rhscl-7-rpms && \
-    # yum-config-manager --enable rhel-7-server-rpms && \
+    yum-config-manager --enable rhel-7-server-rpms && \
     yum-config-manager --enable rhel-7-server-optional-rpms && \
     #yum repolist --disablerepo=* && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
