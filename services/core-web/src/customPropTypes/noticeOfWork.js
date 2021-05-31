@@ -128,6 +128,14 @@ export const statueOfLand = shape({
   has_archaeology_sites_affected: PropTypes.boolean,
 });
 
+export const blasting = shape({
+  has_storage_explosive_on_site: PropTypes.boolean,
+  explosive_permit_issued: PropTypes.boolean,
+  explosive_permit_number: PropTypes.string,
+  explosive_permit_expiry_date: PropTypes.string,
+  describe_explosives_to_site: PropTypes.string,
+});
+
 export const importedNOWApplication = shape({
   now_application_guid: PropTypes.string,
   mine_guid: PropTypes.string,
@@ -151,7 +159,7 @@ export const importedNOWApplication = shape({
   status_updated_date: PropTypes.date,
   contacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   submission_documents: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  blasting_operation: PropTypes.objectOf(PropTypes.any),
+  blasting_operation: blasting,
   state_of_land: statueOfLand,
   camp,
   cut_lines_polarization_survey: defaultActivity,

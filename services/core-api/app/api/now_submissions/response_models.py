@@ -148,6 +148,7 @@ EXP_ACCESS_ACTIVITY = api.model(
         'length': fields.Arbitrary,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'numberofsites': fields.Arbitrary,
     })
 
 EXP_SURFACE_DRILL_ACTIVITY = api.model(
@@ -164,6 +165,9 @@ MECH_TRENCHING_ACTIVITY = api.model(
         'numberofsites': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'depth': fields.Arbitrary,
     })
 
 WATER_SOURCE_ACTIVITY = api.model(
@@ -207,6 +211,7 @@ APPLICATION = api.model(
         'firstaidequipmentonsite': fields.String,
         'firstaidcertlevel': fields.String,
         'descexplorationprogram': fields.String,
+        'describeexplosivetosite': fields.String,
         'proposedstartdate': fields.DateTime,
         'proposedenddate': fields.DateTime,
         'yearroundseasonal': fields.String,
@@ -235,6 +240,7 @@ APPLICATION = api.model(
         'mechtrenchingreclamationcost': fields.Arbitrary,
         'expsurfacedrillreclamation': fields.String,
         'expsurfacedrillreclcorestorage': fields.String,
+        'expsurfacedrillprogam': fields.String,
         'expsurfacedrillreclamationcost': fields.Arbitrary,
         'expaccessreclamation': fields.String,
         'expaccessreclamationcost': fields.Arbitrary,

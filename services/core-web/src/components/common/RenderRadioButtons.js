@@ -14,10 +14,12 @@ const propTypes = {
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   disabled: PropTypes.bool,
   input: PropTypes.objectOf(PropTypes.any).isRequired,
+  customOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
 };
 
 const defaultProps = {
   disabled: false,
+  customOptions: null,
 };
 
 class RenderRadioButtons extends Component {
@@ -50,7 +52,7 @@ class RenderRadioButtons extends Component {
           defaultValue={this.state.value}
           {...this.props.input}
           id={this.props.id}
-          options={options}
+          options={this.props.customOptions ? this.props.customOptions : options}
         />
       </Form.Item>
     );

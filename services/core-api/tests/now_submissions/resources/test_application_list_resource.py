@@ -46,6 +46,7 @@ NOW_APPLICATION_DATA = {
     "str",
     "descexplorationprogram":
     "str",
+    "describeexplosivetosite": "str",
     "proposedstartdate":
     "2020-02-27T19:14:23.368Z",
     "proposedenddate":
@@ -106,6 +107,7 @@ NOW_APPLICATION_DATA = {
     "str",
     "expsurfacedrillreclcorestorage":
     "str",
+    'expsurfacedrillprogam': "str",
     "expsurfacedrillreclamationcost":
     0,
     "expaccessreclamation":
@@ -388,7 +390,8 @@ NOW_APPLICATION_DATA = {
     "exp_access_activity": [{
         "type": "testing",
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "numberofsites": 0,
     }],
     "exp_surface_drill_activity": [{
         "type": "str",
@@ -486,7 +489,10 @@ NOW_APPLICATION_DATA = {
         "type": "str",
         "numberofsites": 0,
         "disturbedarea": 0,
-        "timbervolume": 0
+        "timbervolume": 0,
+        "length": 0,
+        "width": 0,
+        "depth": 0,
     }]
 }
 
