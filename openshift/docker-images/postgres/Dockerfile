@@ -14,7 +14,8 @@ RUN INSTALL_PKGS="https://yum.postgresql.org/10/redhat/rhel-7-x86_64/postgis30_1
     # Initialize /etc/yum.repos.d/redhat.repo
     # See https://access.redhat.com/solutions/1443553
     rm /etc/rhsm-host && \
-    # yum install -y yum-utils gettext && \
+    yum repolist > /dev/null && \
+    yum install -y yum-utils gettext && \
     yum-config-manager --disable \* &> /dev/null && \
     yum-config-manager --enable rhel-server-rhscl-7-rpms && \
     yum-config-manager --enable rhel-7-server-rpms && \
