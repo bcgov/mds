@@ -3,7 +3,7 @@ FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 USER root
 
 RUN cd /tmp \
-    && yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
     && yum -y install postgis30_10
 
 # RUN cd /tmp \
