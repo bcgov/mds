@@ -596,7 +596,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
-        'last_updated_date': Date
+        'last_updated_date': Date,
+        'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_VIEW_MODEL = api.model(

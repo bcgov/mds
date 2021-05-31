@@ -18,3 +18,13 @@ update activity_equipment_xref
 set now_application_id=query.now_application_id
 from query
 WHERE activity_equipment_xref.equipment_id = query.equipment_id;
+
+CREATE TABLE NOW_Submissions.application_equipment_xref (
+	MESSAGEID integer,
+	EQUIPMENTID integer,
+
+    FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (EQUIPMENTID) REFERENCES NOW_Submissions.equipment(EQUIPMENTID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE now_submissions.equipment RENAME COLUMN sizecapacity TO "size";
