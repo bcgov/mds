@@ -14,8 +14,8 @@ This file describes how to run the project and develop against it.
 
 - Install Requirements listed above
 - On Windows, note the following:
-    - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
-    - Drive sharing is disabled by default, make sure to share your local drive in docker settings
+  - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
+  - Drive sharing is disabled by default, make sure to share your local drive in docker settings
 
 ### Setting up local development
 
@@ -55,15 +55,15 @@ $ make generate-rand100
 
 The backend is now running and seeded with random data. Run the following
 commands from within the `/frontend` directory to initialize the frontend:
+
 ```
 $ npm ci
 $ npm run serve
 ```
 
-
 ## Generating Test Data
 
-There are two approaches to having test data in your system.  If you are a
+There are two approaches to having test data in your system. If you are a
 public contributor, choose "Using Flask". View the Makefile for more
 information on what these commands are doing. This is useful for
 troubleshooting if anything fails to work as expected.
@@ -110,7 +110,6 @@ To address this, you may:
 - Disable cache (available in Chrome/Chromium)
 - Open an Incognito window (Chrome/Chromium)
 
-
 ### Container Information
 
 - The mds_backend container exposes port 5000 and can be viewed by visiting http://localhost:5000
@@ -121,6 +120,26 @@ To address this, you may:
 ```
 psql --dbname=mds --username=mds --host=localhost --password --port=5432
 ```
+
+### Using the Document Manager and Document Generator locally
+
+If you are running the frontend using npm run serve then you will not be able to use the document manager at the same time as the document generator. If you wish to do this then you need to make an addition to your hosts file so the browser can resolve the document_manager_backend to localhost.
+
+If you are on a windows machine or using power shell run the folowing command at the root of this project:
+
+```
+.\AddHosts.ps1 -Hostname document_manager_backend -DesiredIP 127.0.0.1 -CheckHostnameOnly $true
+```
+
+This will add an entry for the document manager backend if it does not currently exist.
+
+On a mac or linux run the following:
+
+```
+./AddHosts.sh add 127.0.0.1 document_manager_backend
+```
+
+you will be prompted for your sudo password if the entry does not already exist.
 
 ## Architecture Diagrams
 
