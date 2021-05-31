@@ -4,6 +4,7 @@ USER root
 
 RUN cd /tmp \
     && yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && subscription-manager repos --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"  --enable "rhel-ha-for-rhel-*-server-rpms" \
     && yum -y install https://yum.postgresql.org/10/redhat/rhel-7-x86_64/postgis30_10-3.0.3-7.rhel7.x86_64.rpm
 
 # RUN cd /tmp \
