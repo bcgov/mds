@@ -337,12 +337,14 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
     expsurfacedrillreclamation = mms_now_sub.expsurfacedrillreclamation or now_sub.expsurfacedrillreclamation
     expsurfacedrillreclamationcost = mms_now_sub.expsurfacedrillreclamationcost or now_sub.expsurfacedrillreclamationcost
     expsurfacedrilltotaldistarea = now_sub.expsurfacedrilltotaldistarea
+    expsurfacedrillprogam = now_sub.expsurfacedrillprogam
     if expsurfacedrillreclcorestorage or expsurfacedrillreclamation or expsurfacedrillreclamationcost or expsurfacedrilltotaldistarea:
         esd = app_models.ExplorationSurfaceDrilling(
             reclamation_description=expsurfacedrillreclamation,
             reclamation_cost=expsurfacedrillreclamationcost,
             total_disturbed_area=expsurfacedrilltotaldistarea,
             reclamation_core_storage=expsurfacedrillreclcorestorage,
+            drill_program=expsurfacedrillprogam,
             total_disturbed_area_unit_type_code='HA')
 
         if (len(mms_now_sub.exp_surface_drill_activity) > 0):
@@ -383,7 +385,10 @@ def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
                 activity_type_description=sd.type,
                 number_of_sites=sd.numberofsites,
                 disturbed_area=sd.disturbedarea,
-                timber_volume=sd.timbervolume)
+                timber_volume=sd.timbervolume,
+                width=getattr(sd, 'width', None),
+                length=getattr(sd, 'length', None),
+                depth=getattr(sd, 'depth', None))
             mech.details.append(mech_detail)
 
         for e in now_sub.mech_trenching_equip:
@@ -437,6 +442,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
                     length=detail.length,
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
+                    number_of_sites=getattr(detail, 'numberofsites', None)
                 ))
 
 
@@ -595,11 +601,13 @@ def _transmogrify_blasting_activities(now_app, now_sub, mms_now_sub):
     bcexplosivespermitnumber = mms_now_sub.bcexplosivespermitnumber or now_sub.bcexplosivespermitnumber
     bcexplosivespermitexpiry = mms_now_sub.bcexplosivespermitexpiry or now_sub.bcexplosivespermitexpiry
     storeexplosivesonsite = now_sub.storeexplosivesonsite
+    describeexplosivetosite = now_sub.describeexplosivetosite
     if bcexplosivespermitissued or bcexplosivespermitnumber or bcexplosivespermitexpiry or storeexplosivesonsite:
         now_app.blasting_operation = app_models.BlastingOperation(
             explosive_permit_issued=bcexplosivespermitissued == 'Yes',
             explosive_permit_number=bcexplosivespermitnumber,
             explosive_permit_expiry_date=bcexplosivespermitexpiry,
+            describe_explosives_to_site=describeexplosivetosite,
             has_storage_explosive_on_site=storeexplosivesonsite == 'Yes')
     return
 

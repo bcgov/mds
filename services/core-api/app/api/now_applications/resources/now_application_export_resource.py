@@ -74,6 +74,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'blasting_operation.explosive_permit_issued',
     'blasting_operation.explosive_permit_expiry_date',
     'blasting_operation.explosive_permit_number',
+    'blasting_operation.describe_explosives_to_site',
     'camp.has_fuel_stored',
     'camp.volume_fuel_stored',
     'camp.has_fuel_stored_in_bulk',

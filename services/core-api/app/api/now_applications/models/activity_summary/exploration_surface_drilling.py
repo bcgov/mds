@@ -17,6 +17,7 @@ class ExplorationSurfaceDrilling(ActivitySummaryBase):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
     reclamation_core_storage = db.Column(db.String)
+    drill_program = db.Column(db.String)
 
     details = db.relationship(
         'ExplorationSurfaceDrillingDetail',
