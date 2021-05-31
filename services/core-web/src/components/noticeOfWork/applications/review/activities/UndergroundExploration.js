@@ -110,7 +110,20 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_bulk_sample"
             name="proposed_bulk_sample"
-            label="Bulk Sample"
+            label={
+              <>
+                Bulk Sample
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("underground_exploration.total_waste_amount").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("underground_exploration.total_waste_amount").edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -120,7 +133,21 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_de_watering"
             name="proposed_de_watering"
-            label="DE-watering"
+            label={
+              <>
+                De-watering
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("underground_exploration.proposed_de_watering").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("underground_exploration.proposed_de_watering")
+                      .edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}

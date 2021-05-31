@@ -46,6 +46,10 @@ class Application(Base):
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotaloreunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        underexpsurftotalwasteunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        underexpsurftotalwasteunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotalwasteunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         sandgrvqryannualextrestunits = fields.String(
@@ -275,6 +279,18 @@ class Application(Base):
     archaeologicalprotectionplan = db.Column(db.String)
     hasarchaeologicalprotectionplan = db.Column(db.String)
     isonprivateland = db.Column(db.String)
+
+    underexpbulksample = db.Column(db.Boolean)
+    underexpdewatering = db.Column(db.Boolean)
+    underexpdimonddrill = db.Column(db.Boolean)
+    underexpmappingchip = db.Column(db.Boolean)
+    underexpnewdev = db.Column(db.Boolean)
+    underexprehab = db.Column(db.Boolean)
+    underexpfuelstorage = db.Column(db.Boolean)
+    underexpsurftotalwasteunits = db.Column(db.String)
+    underexpsurftotaloreunits = db.Column(db.String)
+    underexpsurftotalwaste = db.Column(db.String)
+    underexpsurftotalore = db.Column(db.String)
 
     mine = db.relationship(
         'Mine',
