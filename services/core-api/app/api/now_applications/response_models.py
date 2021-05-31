@@ -214,6 +214,21 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         fields.Fixed(decimals=2),
         'total_waste_unit_type_code':
         fields.String,
+        'proposed_bulk_sample': fields.Boolean,
+        'proposed_de_watering': fields.Boolean,
+        'proposed_diamond_drilling': fields.Boolean,
+        'proposed_mapping_chip_sampling':fields.Boolean,
+        'proposed_new_development':fields.Boolean,
+        'proposed_rehab':fields.Boolean,
+        'proposed_underground_fuel_storage': fields.Boolean,
+        'surface_total_ore_amount':
+        fields.Fixed(decimals=2),
+        'surface_total_ore_unit_type_code':
+        fields.String,
+        'surface_total_waste_amount':
+        fields.Fixed(decimals=2),
+        'surface_total_waste_unit_type_code':
+        fields.String,
         'proposed_activity':
         fields.String,
         'calculated_total_disturbance':

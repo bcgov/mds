@@ -123,7 +123,7 @@ UNIT_TYPE_CODE_FIELDS = [
     'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code',
     'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
     'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
-    'total_waste_unit_type_code'
+    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code', 'surface_total_waste_unit_type_code'
 ]
 
 

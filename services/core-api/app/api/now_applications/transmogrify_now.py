@@ -749,15 +749,26 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     underexptotalwaste = now_sub.underexptotalwaste
     underexptotalwasteunits = now_sub.underexptotalwasteunits
     underexptotaldistarea = now_sub.underexptotaldistarea
-    proposedactivites = now_sub.proposedactivites
 
+    underexpbulksample = now_sub.underexpbulksample
+    underexpdewatering = now_sub.underexpdewatering
+    underexpdimonddrill = now_sub.underexpdimonddrill
+    underexpmappingchip = now_sub.underexpmappingchip
+    underexpnewdev = now_sub.underexpnewdev
+    underexprehab = now_sub.underexprehab
+    underexpfuelstorage = now_sub.underexpfuelstorage
+    underexpsurftotalore = now_sub.underexpsurftotalore
+    underexpsurftotalwaste = now_sub.underexpsurftotalwaste
+    underexpsurftotaloreunits = now_sub.underexpsurftotaloreunits
+    underexpsurftotalwasteunits = now_sub.underexpsurftotalwasteunits
     if (underexptotalore or underexptotaloreunits or underexpreclamation or underexpreclamationcost
             or underexptotalwaste or underexptotalwasteunits or underexptotaldistarea
-            or proposedactivites):
+            or underexpbulksample or underexpdewatering or underexpdimonddrill 
+            or underexpmappingchip or underexpnewdev or underexprehab or underexpfuelstorage or underexpsurftotalore or underexpsurftotalwaste 
+            or underexpsurftotaloreunits or underexpsurftotalwasteunits):
         now_app.underground_exploration = app_models.UndergroundExploration(
             reclamation_description=underexpreclamation,
             reclamation_cost=underexpreclamationcost,
-            proposed_activity=proposedactivites,
             total_disturbed_area=underexptotaldistarea,
             total_disturbed_area_unit_type_code='HA',
             total_ore_amount=underexptotalore,
@@ -767,6 +778,21 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             total_waste_amount=underexptotalwaste,
             total_waste_unit_type_code=code_lookup(app_models.UnitType,
                                                    unit_type_map[underexptotalwasteunits],
+                                                   'unit_type_code'),
+            proposed_bulk_sample=underexpbulksample,
+            proposed_de_watering=underexpdewatering,
+            proposed_diamond_drilling=underexpdimonddrill,
+            proposed_mapping_chip_sampling=underexpmappingchip,
+            proposed_new_development=underexpnewdev,
+            proposed_rehab=underexprehab,
+            proposed_underground_fuel_storage=underexpfuelstorage,
+            surface_total_ore_amount=underexpsurftotalore,
+            surface_total_waste_amount=underexpsurftotalwaste,
+            surface_total_ore_unit_type_code=code_lookup(app_models.UnitType,
+                                                   unit_type_map[underexpsurftotaloreunits],
+                                                   'unit_type_code'),
+            surface_total_waste_unit_type_code=code_lookup(app_models.UnitType,
+                                                   unit_type_map[underexpsurftotalwasteunits],
                                                    'unit_type_code'))
 
         if (len(mms_now_sub.under_exp_new_activity) > 0):
