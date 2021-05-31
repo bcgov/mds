@@ -93,7 +93,8 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
         'has_storage_explosive_on_site': fields.Boolean,
         'explosive_permit_issued': fields.Boolean,
         'explosive_permit_number': fields.String,
-        'explosive_permit_expiry_date': Date
+        'explosive_permit_expiry_date': Date,
+        'describe_explosives_to_site': fields.String,
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
@@ -114,6 +115,7 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
     'NOWApplicationExpSurfaceDrill', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'reclamation_core_storage': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'drill_program': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -594,7 +596,7 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
-        'last_updated_date': Date
+        'last_updated_date': Date,
     })
 
 NOW_VIEW_MODEL = api.model(

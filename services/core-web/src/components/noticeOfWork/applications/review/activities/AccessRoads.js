@@ -33,6 +33,12 @@ export const AccessRoads = (props) => {
             validate: [required],
           },
           {
+            title: "Number of Sites",
+            value: "number_of_sites",
+            component: RenderField,
+            validate: [number],
+          },
+          {
             title: "Length (km)",
             value: "length",
             component: RenderField,
