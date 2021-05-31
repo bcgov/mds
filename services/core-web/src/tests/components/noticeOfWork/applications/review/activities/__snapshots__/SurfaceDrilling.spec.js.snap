@@ -49,8 +49,61 @@ exports[`SurfaceDrilling renders properly 1`] = `
     }
   />
   <br />
+  <Connect(AuthorizationWrapper)
+    inTesting={true}
+  >
+    <h4>
+      Support of Drill Program
+    </h4>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={18}
+        sm={24}
+      >
+        <div
+          className="field-title"
+        >
+          The Drilling program will be
+          <NOWOriginalValueTooltip
+            isVisible={true}
+            originalValue="N/A"
+            style={Object {}}
+          />
+        </div>
+        <Field
+          component={[Function]}
+          customOptions={
+            Array [
+              Object {
+                "label": "Ground supported",
+                "value": "Ground supported",
+              },
+              Object {
+                "label": "Helicopter supported",
+                "value": "Helicopter supported",
+              },
+              Object {
+                "label": "Water supported",
+                "value": "Water supported",
+              },
+              Object {
+                "label": "Combination of above",
+                "value": "Combination of above",
+              },
+            ]
+          }
+          disabled={true}
+          id="drill_program"
+          name="drill_program"
+        />
+      </Col>
+    </Row>
+  </Connect(AuthorizationWrapper)>
+  <br />
   <h4>
-    Support of the Drilling Program
+    Reclamation Program
   </h4>
   <Row
     gutter={16}
@@ -62,7 +115,7 @@ exports[`SurfaceDrilling renders properly 1`] = `
       <div
         className="field-title"
       >
-        The Drilling program will be
+        Describe the location of the Core Storage
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
@@ -82,10 +135,6 @@ exports[`SurfaceDrilling renders properly 1`] = `
       />
     </Col>
   </Row>
-  <br />
-  <h4>
-    Reclamation Program
-  </h4>
   <Row
     gutter={16}
   >

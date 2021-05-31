@@ -1,0 +1,1 @@
+ALTER TABLE now_submissions.exp_access_activity ADD COLUMN IF NOT EXISTS numberofsites numeric;

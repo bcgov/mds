@@ -22,6 +22,7 @@ class BlastingOperation(Base):
     explosive_permit_issued = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     explosive_permit_number = db.Column(db.String)
     explosive_permit_expiry_date = db.Column(db.DateTime)
+    describe_explosives_to_site = db.Column(db.String)
 
     def __repr__(self):
         return '<BlastingOperation %r>' % self.now_application_id

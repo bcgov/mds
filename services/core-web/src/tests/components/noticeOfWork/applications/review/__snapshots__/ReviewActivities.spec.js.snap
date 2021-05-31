@@ -30,7 +30,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="blasting_operation"
     >
-      <Blasting
+      <Connect(Blasting)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />

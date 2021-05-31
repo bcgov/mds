@@ -327,7 +327,7 @@ class NOWApplication(Base, AuditMixin):
         now_doc.save()
 
     @classmethod
-    def get_filtered_submissions_document(cls, now_application):
+    def get_filtered_submissions_documents(cls, now_application):
         docs = []
 
         for doc in now_application.imported_submission_documents:

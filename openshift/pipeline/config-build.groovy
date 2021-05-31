@@ -202,6 +202,7 @@ app {
                             'SUFFIX': "${app.build.suffix}",
                             'VERSION':"${app.build.version}",
                             'SOURCE_CONTEXT_DIR': "services/filesystem-provider",
+                            'DOCKER_IMAGE_DIRECTORY': "openshift/docker-images/dotnet-31",
                             'SOURCE_REPOSITORY_URL': "${app.git.uri}"
                     ]
                 ],

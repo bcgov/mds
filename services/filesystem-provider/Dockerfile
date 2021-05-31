@@ -1,7 +1,17 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1
+FROM mcr.microsoft.com/dotnet/sdk:3.1
 
 COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
 
 COPY init.sh .
+
+RUN apt-get update \     
+    && apt-get install -y --allow-unauthenticated \     
+    libc6-dev \     
+    libgdiplus \     
+    libx11-dev \     
+    curl \     
+    vim \     
+    supervisor \     
+    procps     
 
 ENTRYPOINT [ "./init.sh" ]
