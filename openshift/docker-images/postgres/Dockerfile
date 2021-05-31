@@ -10,7 +10,7 @@ COPY ./rhsm-conf /etc/rhsm
 COPY ./rhsm-ca /etc/rhsm/ca
 
 # Install some packages and clean up
-RUN INSTALL_PKGS="https://yum.postgresql.org/10/redhat/rhel-7-x86_64/postgis30_10-3.0.3-7.rhel7.x86_64.rpm" && \
+RUN INSTALL_PKGS="postgis30_10" && \
     # Initialize /etc/yum.repos.d/redhat.repo
     # See https://access.redhat.com/solutions/1443553
     rm /etc/rhsm-host && \
