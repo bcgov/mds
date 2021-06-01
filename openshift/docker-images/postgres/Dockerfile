@@ -15,11 +15,14 @@ RUN INSTALL_PKGS="postgis30_10" && \
     # See https://access.redhat.com/solutions/1443553
     rm /etc/rhsm-host && \
     yum repolist > /dev/null && \
-    yum install -y yum-utils gettext && \
+    yum reinstall -y yum-utils gettext && \
     yum-config-manager --disable \* &> /dev/null && \
     yum-config-manager --enable rhel-server-rhscl-7-rpms && \
     yum-config-manager --enable rhel-7-server-rpms && \
     yum-config-manager --enable rhel-7-server-optional-rpms && \
+    yum -y install https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm && \
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
+    rpm -ivh https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm && \
     #yum repolist --disablerepo=* && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
