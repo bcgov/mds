@@ -35,7 +35,7 @@ LABEL summary=$SUMMARY \
 
 EXPOSE 5432
 
-COPY root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
+COPY fix-permissions /usr/libexec/fix-permissions
 
 # Copy entitlements and subscription manager configurations
 # https://github.com/BCDevOps/OpenShift4-Migration/issues/15
