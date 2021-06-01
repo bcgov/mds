@@ -208,7 +208,6 @@ export const ReviewActivities = (props) => {
         data={props.noticeOfWork.equipment}
         isViewMode={props.isViewMode}
       >
-        {/* <Equipment initialValues={props.noticeOfWork.equipment} isViewMode={props.isViewMode} /> */}
         <Equipment isViewMode={props.isViewMode} />
       </ScrollContentWrapper>
     </div>
