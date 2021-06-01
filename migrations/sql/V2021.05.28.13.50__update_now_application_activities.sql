@@ -11,6 +11,16 @@ ADD COLUMN IF NOT EXISTS surface_total_waste_amount numeric,
 ADD COLUMN IF NOT EXISTS surface_total_ore_unit_type_code varchar,
 ADD COLUMN IF NOT EXISTS surface_total_waste_unit_type_code varchar;
 
+ALTER TABLE blasting_operation 
+ADD COLUMN IF NOT EXISTS show_access_roads boolean,
+ADD COLUMN IF NOT EXISTS show_camps boolean,
+ADD COLUMN IF NOT EXISTS show_surface_drilling boolean,
+ADD COLUMN IF NOT EXISTS show_mech_trench boolean,
+ADD COLUMN IF NOT EXISTS show_seismic boolean,
+ADD COLUMN IF NOT EXISTS show_bulk boolean,
+ADD COLUMN IF NOT EXISTS show_sand_gravel_quarry boolean,
+ADD COLUMN IF NOT EXISTS show_underground_exploration boolean;
+
 ALTER TABLE underground_exploration
 ADD CONSTRAINT surface_total_ore_unit_type_code_fkey
     FOREIGN KEY (surface_total_ore_unit_type_code)

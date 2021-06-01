@@ -3,6 +3,7 @@ import { PropTypes } from "prop-types";
 import { Field, Fields } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
+import { currencyMask } from "@common/utils/helpers";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
@@ -12,6 +13,7 @@ import {
   required,
   number,
   validateSelectOptions,
+  maxLength,
 } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -157,7 +159,22 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_diamond_drilling"
             name="proposed_diamond_drilling"
-            label="Diamond Drilling"
+            label={
+              <>
+                Diamond Drilling
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("underground_exploration.proposed_diamond_drilling")
+                      .value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("underground_exploration.proposed_diamond_drilling")
+                      .edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -167,7 +184,24 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_mapping_chip_sampling"
             name="proposed_mapping_chip_sampling"
-            label="Mapping / Chip Sampling"
+            label={
+              <>
+                Mapping / Chip Sampling
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues(
+                      "underground_exploration.proposed_mapping_chip_sampling"
+                    ).value
+                  }
+                  isVisible={
+                    props.renderOriginalValues(
+                      "underground_exploration.proposed_mapping_chip_sampling"
+                    ).edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -177,7 +211,22 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_new_development"
             name="proposed_new_development"
-            label="New Development"
+            label={
+              <>
+                New Development
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("underground_exploration.proposed_new_development")
+                      .value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("underground_exploration.proposed_new_development")
+                      .edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -187,7 +236,20 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_rehab"
             name="proposed_rehab"
-            label="Rehab"
+            label={
+              <>
+                Rehab
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("underground_exploration.proposed_rehab").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("underground_exploration.proposed_rehab").edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -197,7 +259,24 @@ export const UndergroundExploration = (props) => {
           <Field
             id="proposed_underground_fuel_storage"
             name="proposed_underground_fuel_storage"
-            label="Underground Fuel Storage"
+            label={
+              <>
+                Underground Fuel Storage
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues(
+                      "underground_exploration.proposed_underground_fuel_storage"
+                    ).value
+                  }
+                  isVisible={
+                    props.renderOriginalValues(
+                      "underground_exploration.proposed_underground_fuel_storage"
+                    ).edited
+                  }
+                  style={{ marginLeft: "5px" }}
+                />
+              </>
+            }
             type="checkbox"
             disabled={props.isViewMode}
             component={RenderCheckbox}
@@ -301,6 +380,50 @@ export const UndergroundExploration = (props) => {
             disabled={props.isViewMode}
             validate={[numberWithUnitCode]}
             data={acceptableUnits}
+          />
+        </Col>
+      </Row>
+      <h4>Reclamation Program</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Proposed reclamation and timing for this specific activity
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("underground_exploration.reclamation_description").value
+              }
+              isVisible={
+                props.renderOriginalValues("underground_exploration.reclamation_description").edited
+              }
+            />
+          </div>
+          <Field
+            id="reclamation_description"
+            name="reclamation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Estimated Cost of reclamation activities described above
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("underground_exploration.reclamation_cost").value
+              }
+              isVisible={
+                props.renderOriginalValues("underground_exploration.reclamation_cost").edited
+              }
+            />
+          </div>
+          <Field
+            id="reclamation_cost"
+            name="reclamation_cost"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+            {...currencyMask}
           />
         </Col>
       </Row>

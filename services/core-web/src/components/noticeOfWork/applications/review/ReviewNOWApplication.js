@@ -73,6 +73,7 @@ const propTypes = {
   isPreLaunch: PropTypes.bool.isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
   editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
+  typeOfApplication: PropTypes.string.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -212,6 +213,28 @@ export const ReviewNOWApplication = (props) => {
               component={RenderField}
               disabled
             />
+            {props.typeOfApplication !== "New Permit" && (
+              <>
+                <div className="field-title">
+                  Permit Number
+                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                  <NOWOriginalValueTooltip
+                    originalValue={
+                      props.renderOriginalValues("proponent_submitted_permit_number").value
+                    }
+                    isVisible={
+                      props.renderOriginalValues("proponent_submitted_permit_number").edited
+                    }
+                  />
+                </div>
+                <Field
+                  id="proponent_submitted_permit_number"
+                  name="proponent_submitted_permit_number"
+                  component={RenderField}
+                  disabled
+                />
+              </>
+            )}
             <div className="field-title">
               Crown Grant / District Lot Number
               <NOWOriginalValueTooltip
@@ -296,6 +319,53 @@ export const ReviewNOWApplication = (props) => {
               proposedStartDate={props.proposedStartDate}
               proposedAuthorizationEndDate={props.proposedAuthorizationEndDate}
               isPreLaunch={props.isPreLaunch}
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Tracking Number
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("now_tracking_number").value}
+                isVisible={props.renderOriginalValues("now_tracking_number").edited}
+              />
+            </div>
+            <Field
+              id="now_tracking_number"
+              name="now_tracking_number"
+              component={RenderField}
+              disabled
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              ATS Authorization Number
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("ats_authorization_number").value}
+                isVisible={props.renderOriginalValues("ats_authorization_number").edited}
+              />
+            </div>
+            <Field
+              id="ats_authorization_number"
+              name="ats_authorization_number"
+              component={RenderField}
+              disabled={props.isViewMode || !isAdmin}
+            />
+          </Col>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              ATS Project Number
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("ats_project_number").value}
+                isVisible={props.renderOriginalValues("ats_project_number").edited}
+              />
+            </div>
+            <Field
+              id="ats_project_number"
+              name="ats_project_number"
+              component={RenderField}
+              disabled={props.isViewMode || !isAdmin}
             />
           </Col>
         </Row>
@@ -949,6 +1019,7 @@ export default compose(
     adjustedTonnage: selector(state, "adjusted_annual_maximum_tonnage"),
     proposedStartDate: selector(state, "proposed_start_date"),
     proposedAuthorizationEndDate: selector(state, "proposed_end_date"),
+    typeOfApplication: selector(state, "type_of_application"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),

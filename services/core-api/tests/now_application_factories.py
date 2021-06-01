@@ -404,6 +404,11 @@ class NOWApplicationFactory(BaseFactory):
     lead_inspector_party_guid = factory.SelfAttribute('lead_inspector.party.party_guid')
     issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party.party_guid')
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
+    proponent_submitted_permit_number = factory.Sequence(lambda n: str(n))
+    ats_authorization_number = factory.fuzzy.FuzzyInteger(1, 10000)
+    ats_project_number = factory.fuzzy.FuzzyInteger(1, 10000)
+    file_number_of_app = factory.Sequence(lambda n: str(n))
+    original_start_date = factory.Faker('past_datetime')
     type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)
     now_application_status_code = "REC"

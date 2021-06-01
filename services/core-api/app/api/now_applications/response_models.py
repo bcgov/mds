@@ -95,6 +95,14 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
         'explosive_permit_number': fields.String,
         'explosive_permit_expiry_date': Date,
         'describe_explosives_to_site': fields.String,
+        'show_access_roads': fields.Boolean,
+        'show_camps': fields.Boolean,
+        'show_surface_drilling': fields.Boolean,
+        'show_mech_trench': fields.Boolean,
+        'show_seismic': fields.Boolean,
+        'show_bulk': fields.Boolean,
+        'show_underground_exploration': fields.Boolean,
+        'show_sand_gravel_quarry': fields.Boolean,
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
@@ -545,6 +553,11 @@ NOW_APPLICATION_MODEL = api.model(
         'has_source_conditions':
         fields.Boolean,
         'site_property': fields.Nested(MINE_TYPE_MODEL),
+        'proponent_submitted_permit_number': fields.String,
+        'ats_authorization_number': fields.Integer,
+        'ats_project_number': fields.Integer,
+        'file_number_of_app': fields.String,
+        'original_start_date': Date,
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
