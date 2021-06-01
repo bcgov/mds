@@ -35,7 +35,7 @@ LABEL summary=$SUMMARY \
 
 EXPOSE 5432
 
-COPY fix-permissions /usr/libexec/fix-permissions
+COPY openshift/docker-images/postgres96/fix-permissions /usr/libexec/fix-permissions
 
 # Copy entitlements and subscription manager configurations
 # https://github.com/BCDevOps/OpenShift4-Migration/issues/15

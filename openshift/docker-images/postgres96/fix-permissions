@@ -1,5 +1,5 @@
 #!/bin/sh
-# Fix permissions on the given directory to allow group read/write of 
+# Fix permissions on the given directory to allow group read/write of
 # regular files and execute of directories.
 find "$1" -exec chown postgres {} \;
 find "$1" -exec chgrp 0 {} \;
