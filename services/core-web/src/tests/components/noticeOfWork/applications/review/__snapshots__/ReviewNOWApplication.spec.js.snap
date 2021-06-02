@@ -183,6 +183,22 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <div
               className="field-title"
             >
+              Permit Number
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={Object {}}
+              />
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="proponent_submitted_permit_number"
+              name="proponent_submitted_permit_number"
+            />
+            <div
+              className="field-title"
+            >
               Crown Grant / District Lot Number
               <NOWOriginalValueTooltip
                 isVisible={true}
@@ -339,6 +355,69 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               }
               isViewMode={true}
+            />
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+          >
+            <div
+              className="field-title"
+            >
+              Tracking Number
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={Object {}}
+              />
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="now_tracking_number"
+              name="now_tracking_number"
+            />
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+          >
+            <div
+              className="field-title"
+            >
+              ATS Authorization Number
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={Object {}}
+              />
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="ats_authorization_number"
+              name="ats_authorization_number"
+            />
+          </Col>
+          <Col
+            md={12}
+            sm={24}
+          >
+            <div
+              className="field-title"
+            >
+              ATS Project Number
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={Object {}}
+              />
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="ats_project_number"
+              name="ats_project_number"
             />
           </Col>
         </Row>
@@ -1022,17 +1101,20 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       Work Plan
     </h2>
     <Divider />
+    <h4>
+      Description of Work
+    </h4>
     <Row
       gutter={16}
     >
       <Col
-        md={12}
+        md={24}
         sm={24}
       >
         <div
           className="field-title"
         >
-          Description of Work
+          Sufficient details of your work program to enable a good understanding of the types and scope of the activities that will be conducted:
           <NOWOriginalValueTooltip
             isVisible={true}
             originalValue="N/A"
@@ -1151,6 +1233,12 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "type_of_application",
             ],
             Array [
+              "proponent_submitted_permit_number",
+            ],
+            Array [
+              "proponent_submitted_permit_number",
+            ],
+            Array [
               "crown_grant_or_district_lot_numbers",
             ],
             Array [
@@ -1179,6 +1267,24 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
             Array [
               "description_of_land",
+            ],
+            Array [
+              "now_tracking_number",
+            ],
+            Array [
+              "now_tracking_number",
+            ],
+            Array [
+              "ats_authorization_number",
+            ],
+            Array [
+              "ats_authorization_number",
+            ],
+            Array [
+              "ats_project_number",
+            ],
+            Array [
+              "ats_project_number",
             ],
             Array [
               "directions_to_site",
@@ -1340,6 +1446,62 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
             Object {
               "type": "return",
               "value": Object {

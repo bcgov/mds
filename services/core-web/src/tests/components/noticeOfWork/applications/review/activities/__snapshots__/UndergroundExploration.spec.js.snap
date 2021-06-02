@@ -90,28 +90,191 @@ exports[`UndergroundExploration renders properly 1`] = `
   <Row
     gutter={16}
   >
+    <div
+      className="field-title"
+    >
+      Proposed Activities
+    </div>
     <Col
-      md={12}
       sm={24}
     >
-      <div
-        className="field-title"
-      >
-        Proposed Activities
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
-      </div>
       <Field
         component={[Function]}
         disabled={true}
-        id="proposed_activity"
-        name="proposed_activity"
+        id="proposed_bulk_sample"
+        label={
+          <React.Fragment>
+            Bulk Sample
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_bulk_sample"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_de_watering"
+        label={
+          <React.Fragment>
+            De-watering
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_de_watering"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_diamond_drilling"
+        label={
+          <React.Fragment>
+            Diamond Drilling
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_diamond_drilling"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_mapping_chip_sampling"
+        label={
+          <React.Fragment>
+            Mapping / Chip Sampling
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_mapping_chip_sampling"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_new_development"
+        label={
+          <React.Fragment>
+            New Development
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_new_development"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_rehab"
+        label={
+          <React.Fragment>
+            Rehab
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_rehab"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_underground_fuel_storage"
+        label={
+          <React.Fragment>
+            Underground Fuel Storage
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="proposed_underground_fuel_storage"
+        type="checkbox"
       />
     </Col>
   </Row>
+  <br />
+  <h4>
+    New Underground Exploration Development
+  </h4>
   <Row
     gutter={16}
   >
@@ -131,6 +294,7 @@ exports[`UndergroundExploration renders properly 1`] = `
       </div>
       <Fields
         component={[Function]}
+        data={Array []}
         disabled={true}
         dropdownID="total_ore_unit_type_code"
         id="total_ore_amount"
@@ -163,6 +327,7 @@ exports[`UndergroundExploration renders properly 1`] = `
       </div>
       <Fields
         component={[Function]}
+        data={Array []}
         disabled={true}
         dropdownID="total_waste_unit_type_code"
         id="total_waste_amount"
@@ -172,6 +337,143 @@ exports[`UndergroundExploration renders properly 1`] = `
             "total_waste_unit_type_code",
           ]
         }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <h4>
+    Surface Disturbance
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Ore
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        data={Array []}
+        disabled={true}
+        dropdownID="surface_total_ore_unit_type_code"
+        id="surface_total_ore_amount"
+        names={
+          Array [
+            "surface_total_ore_amount",
+            "surface_total_ore_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Total Waste
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        data={Array []}
+        disabled={true}
+        dropdownID="surface_total_waste_unit_type_code"
+        id="surface_total_waste_amount"
+        names={
+          Array [
+            "surface_total_waste_amount",
+            "surface_total_waste_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <h4>
+    Reclamation Program
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Proposed reclamation and timing for this specific activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_description"
+        name="reclamation_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Estimated Cost of reclamation activities described above
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        autoComplete="off"
+        component={[Function]}
+        disabled={true}
+        format={[Function]}
+        id="reclamation_cost"
+        name="reclamation_cost"
+        normalize={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
         validate={
           Array [
             [Function],

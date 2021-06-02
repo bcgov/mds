@@ -153,6 +153,39 @@ exports[`Placer renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <Connect(AuthorizationWrapper)
+    inTesting={true}
+  >
+    <h4>
+      Changes in and about a Stream
+    </h4>
+    <Row
+      gutter={16}
+    >
+      <Col
+        md={12}
+        sm={24}
+      >
+        <div
+          className="field-title"
+        >
+          Are you proposing a stream diversion into a different channel?
+          <NOWOriginalValueTooltip
+            isVisible={true}
+            originalValue="N/A"
+            style={Object {}}
+          />
+        </div>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_stream_diversion"
+          name="has_stream_diversion"
+        />
+      </Col>
+    </Row>
+  </Connect(AuthorizationWrapper)>
+  <br />
   <Equipment
     isViewMode={true}
   />
