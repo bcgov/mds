@@ -84,8 +84,7 @@ RUN cd /tmp && \
     /usr/libexec/fix-permissions /var/lib/pgsql
 
 # set the oracle library path
-ENV LD_LIBRARY_PATH /usr/lib/oracle/12.2/client64/lib:${LD_LIBRARY_PATH}
 USER 26
 
-ENTRYPOINT ["container-entrypoint"]
+#ENTRYPOINT ["container-entrypoint"]
 CMD ["run-postgresql"]
