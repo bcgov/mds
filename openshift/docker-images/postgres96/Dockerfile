@@ -68,6 +68,23 @@ RUN rm /etc/rhsm-host && \
     mkdir -p /var/lib/pgsql/data && \
     /usr/libexec/fix-permissions /var/run/postgresql
 
+# Get prefix path and path to scripts rather than hard-code them in scripts
+ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
+    ENABLED_COLLECTIONS=rh-postgresql96
+
+# When bash is started non-interactively, to run a shell script, for example it
+# looks for this variable and source the content of this file. This will enable
+# the SCL for all scripts without need to do 'scl enable'.
+ENV BASH_ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
+    ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
+    PROMPT_COMMAND=". ${CONTAINER_SCRIPTS_PATH}/scl_enable"
+
+VOLUME ["/var/lib/pgsql/data", "/var/run/postgresql"]
+
+
+ENV PGCONFIG /opt/rh/rh-postgresql96/root/usr/bin
+ENV PATH /opt/rh/rh-postgresql96/root/usr/bin/:${PATH}
+
 # Aquire and build PostGIS 2.4, for PostgreSQL 9.6
 RUN cd /tmp && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
@@ -86,5 +103,5 @@ RUN cd /tmp && \
 # set the oracle library path
 USER 26
 
-#ENTRYPOINT ["container-entrypoint"]
+ENTRYPOINT ["container-entrypoint"]
 CMD ["run-postgresql"]
