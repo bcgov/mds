@@ -35,7 +35,7 @@ LABEL summary=$SUMMARY \
 
 EXPOSE 5432
 
-COPY openshift/docker-images/postgres96/fix-permissions /usr/libexec/fix-permissions
+COPY openshift/docker-images/postgres96/root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 
 # Copy entitlements and subscription manager configurations
 # https://github.com/BCDevOps/OpenShift4-Migration/issues/15
@@ -81,6 +81,7 @@ ENV BASH_ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
 
 VOLUME ["/var/lib/pgsql/data", "/var/run/postgresql"]
 
+COPY openshift/docker-images/postgres96/root /
 
 ENV PGCONFIG /opt/rh/rh-postgresql96/root/usr/bin
 ENV PATH /opt/rh/rh-postgresql96/root/usr/bin/:${PATH}
@@ -100,7 +101,6 @@ RUN cd /tmp && \
     rm -rf /etc/rhsm && \
     /usr/libexec/fix-permissions /var/lib/pgsql
 
-# set the oracle library path
 USER 26
 
 ENTRYPOINT ["container-entrypoint"]
