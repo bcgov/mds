@@ -10,10 +10,8 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import CustomPropTypes from "@/customPropTypes";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
@@ -128,35 +126,28 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
-      <AuthorizationWrapper inTesting>
-        <>
-          <h4>Changes in and about a Stream</h4>
-          <Row gutter={16}>
-            <Col md={12} sm={24}>
-              <div className="field-title">
-                Are you proposing a stream diversion into a different channel?
-                {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                <NOWOriginalValueTooltip
-                  originalValue={
-                    props.renderOriginalValues("placer_operation.has_stream_diversion").value
-                  }
-                  isVisible={
-                    props.renderOriginalValues("placer_operation.has_stream_diversion").edited
-                  }
-                />
-              </div>
-              <Field
-                id="has_stream_diversion"
-                name="has_stream_diversion"
-                component={RenderRadioButtons}
-                disabled={props.isViewMode}
-              />
-            </Col>
-          </Row>
-        </>
-      </AuthorizationWrapper>
+      <h4>Changes in and about a Stream</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Are you proposing a stream diversion into a different channel?
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("placer_operation.has_stream_diversion").value
+              }
+              isVisible={props.renderOriginalValues("placer_operation.has_stream_diversion").edited}
+            />
+          </div>
+          <Field
+            id="has_stream_diversion"
+            name="has_stream_diversion"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
       <br />
-      <Equipment isViewMode={props.isViewMode} />
 
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

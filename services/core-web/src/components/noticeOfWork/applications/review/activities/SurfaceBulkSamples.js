@@ -8,8 +8,6 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
-
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
@@ -121,8 +119,6 @@ export const SurfaceBulkSamples = (props) => {
           />
         </Col>
       </Row>
-      <br />
-      <Equipment isViewMode={props.isViewMode} />
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

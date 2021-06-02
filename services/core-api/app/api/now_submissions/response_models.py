@@ -97,12 +97,13 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
-SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
-    'type': fields.String,
-    'quantity': fields.Integer,
-    'disturbedarea': fields.Arbitrary,
-    'timbervolume': fields.Arbitrary,
-})
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
+    'SURFACE_BULK_SAMPLE_ACTIVITY', {
+        'type': fields.String,
+        'quantity': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
 
 SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
     'type': fields.String,
@@ -179,6 +180,14 @@ WATER_SOURCE_ACTIVITY = api.model(
         'pumpsizeinwater': fields.Arbitrary,
         'locationwaterintake': fields.String,
         'seq_no': fields.Integer,
+    })
+
+EQUIPMENT = api.model(
+    'EQUIPMENT', {
+        "equipmentid": fields.Integer,
+        "type": fields.String,
+        "size": fields.String,
+        "quantity": fields.Integer
     })
 
 APPLICATION = api.model(
@@ -342,8 +351,8 @@ APPLICATION = api.model(
         'recreationuse': fields.String,
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
-        'hasarchaeologicalprotectionplan':fields.String,
-        'isonprivateland':fields.String,
+        'hasarchaeologicalprotectionplan': fields.String,
+        'isonprivateland': fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
@@ -400,6 +409,7 @@ APPLICATION = api.model(
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
         'mech_trenching_activity': fields.List(fields.Nested(MECH_TRENCHING_ACTIVITY)),
+        'equipment': fields.List(fields.Nested(EQUIPMENT))
     })
 
 APPLICATION_LIST = api.model(

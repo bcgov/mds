@@ -69,9 +69,6 @@ exports[`MechanicalTrenching renders properly 1`] = `
     }
   />
   <br />
-  <Equipment
-    isViewMode={true}
-  />
   <h4>
     Reclamation Program
   </h4>
