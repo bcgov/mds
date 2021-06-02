@@ -90,7 +90,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     )
     mine_reports = db.relationship('MineReport', lazy='select')
 
-    mine_work_information = db.relationship(
+    mine_work_informations = db.relationship(
         'MineWorkInformation',
         lazy='selectin',
         order_by='desc(MineWorkInformation.created_timestamp)',
@@ -169,6 +169,12 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         count = db.session.query(MinespaceUserMine).filter(
             MinespaceUserMine.mine_guid == self.mine_guid).count()
         return count > 0
+
+    @hybrid_property
+    def mine_work_information(self):
+        if self.mine_work_informations:
+            return self.mine_work_informations[0]
+        return None
 
     @classmethod
     def find_by_mine_guid(cls, _id):
