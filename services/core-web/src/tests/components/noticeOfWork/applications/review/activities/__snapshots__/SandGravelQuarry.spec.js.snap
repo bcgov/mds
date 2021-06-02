@@ -344,10 +344,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
     }
   />
   <br />
-  <Equipment
-    isViewMode={true}
-  />
-  <br />
   <h4>
     Reclamation Program
   </h4>

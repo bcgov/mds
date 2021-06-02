@@ -188,6 +188,9 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
     )
 
+    equipment = db.relationship(
+        'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
+
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
 

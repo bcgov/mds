@@ -153,9 +153,6 @@ exports[`Placer renders properly 1`] = `
     </Col>
   </Row>
   <br />
-  <Equipment
-    isViewMode={true}
-  />
   <h4>
     Reclamation Program
   </h4>

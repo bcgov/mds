@@ -10,7 +10,6 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import CustomPropTypes from "@/customPropTypes";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
@@ -127,8 +126,6 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
-      <Equipment isViewMode={props.isViewMode} />
-
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>

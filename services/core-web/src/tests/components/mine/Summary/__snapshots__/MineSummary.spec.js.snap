@@ -369,7 +369,7 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <ForwardRef
+            <Row
               align="middle"
               justify="center"
               type="flex"
@@ -383,7 +383,7 @@ exports[`MineSummary renders properly 1`] = `
                   No inspections in NRIS
                 </span>
               </div>
-            </ForwardRef>
+            </Row>
           }
         >
           <div
@@ -403,7 +403,7 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <ForwardRef
+            <Row
               align="middle"
               justify="center"
               type="flex"
@@ -425,7 +425,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </ForwardRef>
+            </Row>
           }
         >
           <div
@@ -445,7 +445,7 @@ exports[`MineSummary renders properly 1`] = `
           bordered={false}
           className="compliance-card"
           title={
-            <ForwardRef
+            <Row
               align="middle"
               justify="center"
               type="flex"
@@ -467,7 +467,7 @@ exports[`MineSummary renders properly 1`] = `
               <span
                 className="info-display"
               />
-            </ForwardRef>
+            </Row>
           }
         >
           <div
