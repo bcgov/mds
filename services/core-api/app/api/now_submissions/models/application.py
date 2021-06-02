@@ -44,6 +44,8 @@ class Application(Base):
         mine_guid = fields.String(dump_only=True)
         sandgrvqrytotalmineresunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        proposedproductionunit = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotaloreunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexpsurftotalwasteunits = fields.String(

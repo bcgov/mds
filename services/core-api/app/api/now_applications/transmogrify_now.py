@@ -559,7 +559,7 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
             total_disturbed_area_unit_type_code='HA',
             is_ponds_exfiltrated=get_boolean_value(pondsexfiltratedtoground),
             is_ponds_recycled=get_boolean_value(pondsrecycled),
-            is_ponds_discharged=get_boolean_value(ondsdischargedtoenv),
+            is_ponds_discharged=get_boolean_value(pondsdischargedtoenv),
             wastewater_facility_description=pondswastewatertreatfacility,
             disposal_from_clean_out=cleanoutdisposalplan)
 
