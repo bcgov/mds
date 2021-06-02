@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Divider, Button, Descriptions, List } from "antd";
+import { Row, Col, Divider, Button, Descriptions, List, Popconfirm } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineWorkInformations,
   createMineWorkInformation,
   updateMineWorkInformation,
+  deleteMineWorkInformation,
 } from "@common/actionCreators/workInformationActionCreator";
 import * as Strings from "@common/constants/strings";
 import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
@@ -24,6 +25,7 @@ const propTypes = {
   fetchMineWorkInformations: PropTypes.func.isRequired,
   createMineWorkInformation: PropTypes.func.isRequired,
   updateMineWorkInformation: PropTypes.func.isRequired,
+  deleteMineWorkInformation: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -46,8 +48,7 @@ export class MineWorkInformation extends Component {
     });
   };
 
-  openAddEditMineWorkInformationModal = (event, mineWorkInformation = null) => {
-    event.preventDefault();
+  openAddEditMineWorkInformationModal = (mineWorkInformation = null) => {
     const title = mineWorkInformation ? "Edit Mine Work Information" : "Add Mine Work Information";
     return this.props.openModal({
       props: {
@@ -63,6 +64,14 @@ export class MineWorkInformation extends Component {
     });
   };
 
+  deleteMineWorkInformation = (mineWorkInformationGuid) => {
+    this.setState({ isLoaded: false });
+    return this.props
+      .deleteMineWorkInformation(this.props.mineGuid, mineWorkInformationGuid)
+      .then(() => this.props.fetchMineWorkInformations(this.props.mineGuid))
+      .finally(() => this.setState({ isLoaded: true }));
+  };
+
   componentDidMount = () =>
     this.props
       .fetchMineWorkInformations(this.props.mineGuid)
@@ -70,32 +79,44 @@ export class MineWorkInformation extends Component {
 
   render() {
     const renderWorkInfo = (info) => (
-      <List.Item
-        actions={[
-          <Button onClick={(event) => this.openAddEditMineWorkInformationModal(event, info)}>
-            Edit
-          </Button>,
-        ]}
-      >
-        <List.Item.Meta></List.Item.Meta>
-        <Descriptions column={3} colon={false}>
-          <Descriptions.Item label="Work Status">...</Descriptions.Item>
-          <Descriptions.Item label="Work Start Date">
-            {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
-          </Descriptions.Item>
-          <Descriptions.Item label="Work Stop Date">
-            {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
-          </Descriptions.Item>
-          <Descriptions.Item label="Comments" span={3}>
-            {info.work_comments || Strings.NOT_APPLICABLE}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions column={2} colon={false}>
-          <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
-          <Descriptions.Item label="Last Updated">
-            {formatDateTime(info.updated_timestamp)}
-          </Descriptions.Item>
-        </Descriptions>
+      <List.Item>
+        {/* <List.Item.Meta></List.Item.Meta> */}
+        <Row>
+          <Col span={20}>
+            <Descriptions column={3} colon={false}>
+              <Descriptions.Item label="Work Status">...</Descriptions.Item>
+              <Descriptions.Item label="Work Start Date">
+                {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+              <Descriptions.Item label="Work Stop Date">
+                {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+              <Descriptions.Item label="Comments" span={3}>
+                {info.work_comments || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions column={2} colon={false}>
+              <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
+              <Descriptions.Item label="Last Updated">
+                {formatDateTime(info.updated_timestamp)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Col>
+          <Col span={4}>
+            <Button type="primary" onClick={() => this.openAddEditMineWorkInformationModal(info)}>
+              Update
+            </Button>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure you want to delete this record?"
+              onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
+              <Button type="primary">Delete</Button>
+            </Popconfirm>
+          </Col>
+        </Row>
       </List.Item>
     );
 
@@ -106,18 +127,17 @@ export class MineWorkInformation extends Component {
       : [];
 
     const showAll = this.state.isLoaded &&
-      !this.state.showAll &&
       !isEmpty(this.props.mineWorkInformations) &&
       this.props.mineWorkInformations.length > 1 && (
         <div
           style={{
             textAlign: "center",
             marginTop: 12,
-            height: 32,
-            lineHeight: "32px",
           }}
         >
-          <Button onClick={() => this.setState({ showAll: true })}>Show All</Button>
+          <Button onClick={() => this.setState((prevState) => ({ showAll: !prevState.showAll }))}>
+            Show {this.state.showAll ? "Less" : "All"}
+          </Button>
         </div>
       );
 
@@ -128,7 +148,7 @@ export class MineWorkInformation extends Component {
             <h4>Work Information</h4>
             <AuthorizationWrapper permission={Permission.EDIT_MINES}>
               <AddButton
-                onClick={(event) => this.openAddEditMineWorkInformationModal(event)}
+                onClick={() => this.openAddEditMineWorkInformationModal()}
                 style={{ float: "right" }}
               >
                 Add Work Information
@@ -166,6 +186,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchMineWorkInformations,
       createMineWorkInformation,
       updateMineWorkInformation,
+      deleteMineWorkInformation,
       openModal,
       closeModal,
     },

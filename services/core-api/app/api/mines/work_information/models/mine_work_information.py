@@ -3,14 +3,13 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import nullsfirst, nullslast
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
 from app.extensions import db
 
 
-class MineWorkInformation(AuditMixin, Base):
+class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'mine_work_information'
 
     mine_work_information_id = db.Column(
@@ -48,12 +47,10 @@ class MineWorkInformation(AuditMixin, Base):
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         return cls.query.filter_by(
-            mine_guid=mine_guid, deleted_ind=False).order_by(
-                nullsfirst(cls.work_stop_date.desc()), nullslast(cls.work_start_date.desc())).all()
+            mine_guid=mine_guid, deleted_ind=False).order_by(cls.created_timestamp.desc()).all()
 
     @classmethod
     def find_by_mine_work_information_guid(cls, mine_work_information_guid):
         return cls.query.filter_by(
-            mine_work_information_guid=mine_work_information_guid, deleted_ind=False).order_by(
-                nullsfirst(cls.work_stop_date.desc()),
-                nullslast(cls.work_start_date.desc())).one_or_none()
+            mine_work_information_guid=mine_work_information_guid,
+            deleted_ind=False).order_by(cls.created_timestamp.desc()).one_or_none()
