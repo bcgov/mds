@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Divider, Button, Descriptions, List, Popconfirm } from "antd";
+import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineWorkInformations,
@@ -18,6 +18,7 @@ import * as Permission from "@/constants/permissions";
 import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -31,6 +32,8 @@ const propTypes = {
 };
 
 const defaultProps = {};
+
+const { Text } = Typography;
 
 export class MineWorkInformation extends Component {
   state = { isLoaded: false, showAll: false };
@@ -85,10 +88,61 @@ export class MineWorkInformation extends Component {
           <Col span={20}>
             <Descriptions column={3} colon={false}>
               <Descriptions.Item label="Work Status">...</Descriptions.Item>
-              <Descriptions.Item label="Work Start Date">
+              <Descriptions.Item
+                label={
+                  <>
+                    Work Start Date
+                    <CoreTooltip
+                      title={
+                        <>
+                          <Text strong>
+                            Health, Safety and Reclamation Code for Mines in British Columbia
+                          </Text>
+                          <br />
+                          <Text underline>Notice To Start Work</Text>
+                          <br />
+                          <Text>
+                            6.2.1 The manager shall give 10 days’ notice to an inspector of
+                            intention to start work in, at, or about a mine, including seasonal
+                            reactivation.
+                          </Text>
+                          <br />
+                          <Text>Work refers to any mining activity.</Text>
+                        </>
+                      }
+                    />
+                  </>
+                }
+              >
                 {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
               </Descriptions.Item>
-              <Descriptions.Item label="Work Stop Date">
+              <Descriptions.Item
+                label={
+                  <>
+                    Work Stop Date
+                    <CoreTooltip
+                      title={
+                        <>
+                          <Text strong>
+                            Health, Safety and Reclamation Code for Mines in British Columbia
+                          </Text>
+                          <br />
+                          <Text underline>Notice to Stop Work</Text>
+                          <br />
+                          <Text>
+                            6.2.2 The manager shall give notice to an inspector of intention to stop
+                            work in, at, or about a mine, permanently, indefinitely, or for a
+                            definite period exceeding 30 days, and except in an emergency, the
+                            notice shall be not less than seven days.
+                          </Text>
+                          <br />
+                          <Text>Work refers to any mining activity.</Text>
+                        </>
+                      }
+                    />
+                  </>
+                }
+              >
                 {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
               </Descriptions.Item>
               <Descriptions.Item label="Comments" span={3}>
