@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography } from "antd";
+import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography, Badge } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineWorkInformations,
@@ -19,6 +19,7 @@ import { formatDate, formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { modalConfig } from "@/components/modalContent/config";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
+import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -83,11 +84,15 @@ export class MineWorkInformation extends Component {
   render() {
     const renderWorkInfo = (info) => (
       <List.Item>
-        {/* <List.Item.Meta></List.Item.Meta> */}
         <Row>
           <Col span={20}>
             <Descriptions column={3} colon={false}>
-              <Descriptions.Item label="Work Status">...</Descriptions.Item>
+              <Descriptions.Item label="Work Status">
+                <Badge
+                  status={getWorkInformationBadgeStatusType(info.work_status)}
+                  text={info.work_status}
+                />
+              </Descriptions.Item>
               <Descriptions.Item
                 label={
                   <>

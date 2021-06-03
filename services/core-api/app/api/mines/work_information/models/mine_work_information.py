@@ -1,4 +1,5 @@
 from datetime import datetime
+from pytz import timezone
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
@@ -38,12 +39,32 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         self.updated_timestamp = datetime.utcnow()
         super(MineWorkInformation, self).save()
 
-    # TODO: Implement
     @hybrid_property
     def work_status(self):
-        work_status = "Unknown"
-        today = datetime.utcnow().date
-        return work_status
+        today = datetime.now(timezone('US/Pacific')).date()
+        start = self.work_start_date
+        stop = self.work_stop_date
+
+        if start is None and stop is None:
+            return "Unknown"
+
+        if start and stop is None:
+            if today < start:
+                return "Unknown"
+            return "Working"
+
+        if start is None and stop:
+            if today < stop:
+                return "Unknown"
+            return "Not Working"
+
+        if today < start:
+            return "Not Working"
+
+        if today > stop:
+            return "Not Working"
+
+        return "Working"
 
     @validates('work_start_date')
     def validate_work_start_date(self, key, work_start_date):

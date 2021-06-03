@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, flattenDeep } from "lodash";
+import { Badge, Tooltip } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -62,32 +64,6 @@ const columns = [
     render: (text) => <div title="Number">{text}</div>,
   },
   {
-    title: "Operational Status",
-    key: "mine_operation_status_code",
-    dataIndex: "mine_operation_status_code",
-    sortField: "mine_operation_status_code",
-    width: 150,
-    render: (text) => <div title="Operational Status">{text}</div>,
-  },
-  {
-    title: "Permits",
-    key: "permit_numbers",
-    dataIndex: "permit_numbers",
-    width: 150,
-    render: (text) => (
-      <div title="Permits">
-        {(text && text.length > 0 && (
-          <ul className="mine-list__permits">
-            {text.map((permitNo) => (
-              <li key={permitNo}>{permitNo}</li>
-            ))}
-          </ul>
-        )) ||
-          Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
-  {
     title: "Region",
     key: "mine_region",
     dataIndex: "mine_region",
@@ -108,6 +84,24 @@ const columns = [
     ),
   },
   {
+    title: "Permits",
+    key: "permit_numbers",
+    dataIndex: "permit_numbers",
+    width: 150,
+    render: (text) => (
+      <div title="Permits">
+        {(text && text.length > 0 && (
+          <ul className="mine-list__permits">
+            {text.map((permitNo) => (
+              <li key={permitNo}>{permitNo}</li>
+            ))}
+          </ul>
+        )) ||
+          Strings.EMPTY_FIELD}
+      </div>
+    ),
+  },
+  {
     title: "Commodity",
     key: "commodity",
     dataIndex: "commodity",
@@ -124,6 +118,30 @@ const columns = [
     dataIndex: "tsf",
     width: 150,
     render: (text) => <div title="TSF">{text}</div>,
+  },
+  {
+    title: "Mine Status",
+    key: "mine_operation_status_code",
+    dataIndex: "mine_operation_status_code",
+    sortField: "mine_operation_status_code",
+    width: 150,
+    render: (text) => <div title="Mine Status">{text}</div>,
+  },
+  {
+    title: "Work Status",
+    key: "mine_work_information",
+    dataIndex: "mine_work_information",
+    width: 150,
+    render: (text) => (
+      <Tooltip title={text?.work_status || "Unknown"}>
+        <Badge
+          status={getWorkInformationBadgeStatusType(text?.work_status)}
+          style={{ marginRight: 5 }}
+        />
+        {formatDate(text?.work_start_date) || Strings.EMPTY_FIELD} -{" "}
+        {formatDate(text?.work_stop_date) || Strings.EMPTY_FIELD}
+      </Tooltip>
+    ),
   },
 ];
 
@@ -167,6 +185,7 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
         : [],
     tsf: mine.mine_tailings_storage_facilities ? mine.mine_tailings_storage_facilities.length : 0,
     verified_status: mine.verified_status,
+    mine_work_information: mine.mine_work_information,
   }));
 
 const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, sorter) => {
