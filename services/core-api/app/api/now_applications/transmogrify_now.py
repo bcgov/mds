@@ -59,6 +59,11 @@ def transmogrify_now(now_application_identity, include_contacts=False):
     _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub)
     _transmogrify_water_supply(now_app, now_sub, mms_now_sub)
 
+    #Equipment
+    for e in now_sub.equipment:
+        equipment = _transmogrify_equipment(e)
+        now_app.equipment.append(equipment)
+
     return now_app
 
 
@@ -393,7 +398,7 @@ def _transmogrify_mechanical_trenching(now_app, now_sub, mms_now_sub):
 
         for e in now_sub.mech_trenching_equip:
             equipment = _transmogrify_equipment(e)
-            mech.equipment.append(equipment)
+            now_app.equipment.append(equipment)
 
         now_app.mechanical_trenching = mech
     return
@@ -404,8 +409,7 @@ def _transmogrify_equipment(e):
     if existing_etl:
         return existing_etl.equipment
 
-    equipment = app_models.Equipment(
-        description=e.type, quantity=e.quantity, capacity=e.sizecapacity)
+    equipment = app_models.Equipment(description=e.type, quantity=e.quantity, capacity=e.size)
     etl_equipment = app_models.ETLEquipment(equipmentid=e.equipmentid)
     equipment._etl_equipment.append(etl_equipment)
 
@@ -518,7 +522,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
 
         for e in now_sub.placer_equip:
             equipment = _transmogrify_equipment(e)
-            placer.equipment.append(equipment)
+            now_app.equipment.append(equipment)
 
         now_app.placer_operation = placer
     return
@@ -701,7 +705,7 @@ def _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms
 
         for e in now_sub.sand_grv_qry_equip:
             equipment = _transmogrify_equipment(e)
-            now_app.sand_gravel_quarry_operation.equipment.append(equipment)
+            now_app.equipment.append(equipment)
 
     return
 
@@ -743,7 +747,7 @@ def _transmogrify_surface_bulk_sample(now_app, now_sub, mms_now_sub):
 
         for e in now_sub.surface_bulk_sample_equip:
             equipment = _transmogrify_equipment(e)
-            now_app.surface_bulk_sample.equipment.append(equipment)
+            now_app.equipment.append(equipment)
     return
 
 

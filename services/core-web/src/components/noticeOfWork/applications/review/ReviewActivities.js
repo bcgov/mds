@@ -16,6 +16,7 @@ import WaterSupply from "@/components/noticeOfWork/applications/review/activitie
 import UndergroundExploration from "@/components/noticeOfWork/applications/review/activities/UndergroundExploration";
 import Placer from "@/components/noticeOfWork/applications/review/activities/Placer";
 import { renderActivities } from "@/constants/NOWConditions";
+import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 
 /**
  * @constant ReviewActivities renders edit/view for the NoW Application review step
@@ -200,6 +201,14 @@ export const ReviewActivities = (props) => {
         <FormSection name="water_supply">
           <WaterSupply isViewMode={props.isViewMode} />
         </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="equipment"
+        title="Equipment"
+        data={props.noticeOfWork.equipment}
+        isViewMode={props.isViewMode}
+      >
+        <Equipment isViewMode={props.isViewMode} />
       </ScrollContentWrapper>
     </div>
   );
