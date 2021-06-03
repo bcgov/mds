@@ -149,18 +149,22 @@ export class MineWorkInformation extends Component {
             </Descriptions>
           </Col>
           <Col span={4}>
-            <Button type="primary" onClick={() => this.openAddEditMineWorkInformationModal(info)}>
-              Update
-            </Button>
-            <Popconfirm
-              placement="topLeft"
-              title="Are you sure you want to delete this record?"
-              onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
-              okText="Delete"
-              cancelText="Cancel"
-            >
-              <Button type="primary">Delete</Button>
-            </Popconfirm>
+            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+              <Button type="primary" onClick={() => this.openAddEditMineWorkInformationModal(info)}>
+                Update
+              </Button>
+            </AuthorizationWrapper>
+            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+              <Popconfirm
+                placement="topLeft"
+                title="Are you sure you want to delete this record?"
+                onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button type="primary">Delete</Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
           </Col>
         </Row>
       </List.Item>
