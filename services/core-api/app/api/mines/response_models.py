@@ -204,7 +204,8 @@ PERMIT_AMENDMENT_MODEL = api.model(
         fields.String,
         'permit_conditions_last_updated_date':
         fields.DateTime,
-        'has_permit_conditions': fields.Boolean,
+        'has_permit_conditions':
+        fields.Boolean,
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
@@ -633,11 +634,12 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'display_order': fields.Integer
 })
 
-GOVERNMENT_AGENCY_TYPE_MODEL = api.model('GovernmentAgencyType', {
-    'government_agency_type_code': fields.String,
-    'description': fields.String,
-    'is_active': fields.Integer
-})
+GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
+    'GovernmentAgencyType', {
+        'government_agency_type_code': fields.String,
+        'description': fields.String,
+        'is_active': fields.Integer
+    })
 
 CONSEQUENCE_CLASSIFICATION_STATUS_MODEL = api.model(
     'ConsequenceClassificationStatusCode', {
