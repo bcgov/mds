@@ -472,7 +472,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
     proposedproduction = now_sub.proposedproduction
     placerstreamdiversion = now_sub.placerstreamdiversion
     proposedproductionunit = now_sub.proposedproductionunit
-    if placerundergroundoperations or placerhandoperations or placertotaldistarea or placerreclamation or placerreclamationcost or proposedproduction or placerreclamationarea:
+    if placerundergroundoperations or placerhandoperations or placertotaldistarea or placerreclamation or placerreclamationcost or proposedproduction or placerreclamationarea or placerstreamdiversion:
         placer = app_models.PlacerOperation(
             reclamation_description=placerreclamation,
             reclamation_cost=placerreclamationcost,
@@ -480,7 +480,7 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
             total_disturbed_area_unit_type_code='HA',
             is_underground=get_boolean_value(placerundergroundoperations),
             is_hand_operation=get_boolean_value(placerhandoperations),
-            has_stream_diversion=get_boolean_value(placerstreamdiversion),
+            has_stream_diversion=get_boolean_value(placerstreamdiversion) or False,
             proposed_production=proposedproduction,
             proposed_production_unit_type_code=code_lookup(
                 app_models.UnitType, unit_type_map[proposedproductionunit],
