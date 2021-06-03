@@ -115,10 +115,9 @@ export class AdministrativeTab extends Component {
         payload,
         "Successfully created document and attached it to Notice of Work",
         () => {
-          this.setState({ isLoaded: false });
-          this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(() => this.setState({ isLoaded: true }));
+          this.props.fetchImportedNoticeOfWorkApplication(
+            this.props.noticeOfWork.now_application_guid
+          );
         }
       )
       .then(() => {
@@ -175,6 +174,7 @@ export class AdministrativeTab extends Component {
 
   menu = () => {
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+    const generateLettersList = isNoWApplication ? ["CAL", "NPE"] : ["NPE"];
     return (
       <Menu>
         {isNoWApplication && (
@@ -197,23 +197,24 @@ export class AdministrativeTab extends Component {
             Edit Application Lat/Long
           </Menu.Item>
         </NOWActionWrapper>
-        {isNoWApplication && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
-          <Menu.SubMenu key="generate-documents" title="Generate Documents">
-            {Object.values(this.props.generatableApplicationDocuments)
-              .filter(
-                ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "CAL"
-              )
-              .map((document) => (
-                <Menu.Item
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleGenerateDocument}
-                >
-                  {document.description}
-                </Menu.Item>
-              ))}
-          </Menu.SubMenu>
-        )}
+        {this.props.generatableApplicationDocuments &&
+          Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+            <Menu.SubMenu key="generate-documents" title="Generate Documents">
+              {Object.values(this.props.generatableApplicationDocuments)
+                .filter(({ now_application_document_type_code }) =>
+                  generateLettersList.includes(now_application_document_type_code)
+                )
+                .sort((docA, docB) => docA.description.localeCompare(docB.description))
+                .map((document) => (
+                  <Menu.Item
+                    key={document.now_application_document_type_code}
+                    onClick={this.handleGenerateDocument}
+                  >
+                    {document.description}
+                  </Menu.Item>
+                ))}
+            </Menu.SubMenu>
+          )}
       </Menu>
     );
   };
