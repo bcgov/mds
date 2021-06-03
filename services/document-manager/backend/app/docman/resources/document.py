@@ -11,11 +11,12 @@ from app.services.object_store_storage_service import ObjectStoreStorageService
 
 from werkzeug.exceptions import BadRequest, NotFound, Conflict, RequestEntityTooLarge, InternalServerError, BadGateway
 from flask import request, current_app, send_file, make_response, jsonify
-from flask_restplus import Resource, reqparse
+from flask_restplus import Resource, reqparse, marshal_with
 
 from app.docman.models.document import Document
 from app.extensions import api, cache
-from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES
+from app.docman.response_models import DOCUMENT_MODEL
+from app.utils.access_decorators import requires_any_of, DOCUMENT_UPLOAD_ROLES, VIEW_ALL, MINESPACE_PROPONENT, GIS
 from app.constants import OBJECT_STORE_PATH, OBJECT_STORE_UPLOAD_RESOURCE, FILE_UPLOAD_SIZE, FILE_UPLOAD_OFFSET, FILE_UPLOAD_PATH, FILE_UPLOAD_EXPIRY, DOWNLOAD_TOKEN, TIMEOUT_24_HOURS, TUS_API_VERSION, TUS_API_SUPPORTED_VERSIONS, FORBIDDEN_FILETYPES
 from app.config import Config
 
@@ -157,7 +158,7 @@ class DocumentListResource(Resource):
         if not document_guid:
             raise BadRequest('Valid token required for download')
 
-        document = Document.query.filter_by(document_guid=document_guid).first()
+        document = Document.query.filter_by(document_guid=document_guid).one_or_none()
         if not document:
             raise NotFound('Could not find the document corresponding to the token')
         if as_attachment is not None:
@@ -334,3 +335,11 @@ class DocumentResource(Resource):
             'Access-Control-Expose-Headers'] = 'Tus-Resumable,Tus-Version,Tus-Extension,Tus-Max-Size'
         response.status_code = 204
         return response
+
+    @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT, GIS])
+    @api.marshal_with(DOCUMENT_MODEL, code=200)
+    def get(self, document_guid):
+        document = Document.query.filter_by(document_guid=document_guid).one_or_none()
+        if not document:
+            raise NotFound('Document not found')
+        return document

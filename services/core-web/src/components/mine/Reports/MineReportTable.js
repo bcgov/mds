@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import * as Strings from "@common/constants/strings";
 import {
   formatDate,
-  truncateFilename,
   dateSorter,
   nullableStringSorter,
   formatComplianceCodeValueOrLabel,
 } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import {
   getMineReportCategoryOptionsHash,
   getMineReportStatusOptionsHash,
@@ -21,7 +19,7 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { MineReportActions } from "@/components/mine/Reports/MineReportActions";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
 import { getReportSubmissionBadgeStatusType } from "@/constants/theme";
@@ -154,9 +152,10 @@ export const MineReportTable = (props) => {
             text.length > 0 &&
             text.map((file) => (
               <div key={file.mine_document_guid} title={file.document_name}>
-                <LinkButton onClick={() => downloadFileFromDocumentManager(file)}>
-                  {truncateFilename(file.document_name)}
-                </LinkButton>
+                <DocumentLink
+                  documentManagerGuid={file.document_manager_guid}
+                  documentName={file.document_name}
+                />
               </div>
             ))) ||
             Strings.EMPTY_FIELD}

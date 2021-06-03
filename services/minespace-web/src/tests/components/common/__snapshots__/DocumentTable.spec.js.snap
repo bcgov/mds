@@ -9,7 +9,7 @@ exports[`DocumentTable renders properly 1`] = `
         Object {
           "dataIndex": "document_name",
           "render": [Function],
-          "title": "File name",
+          "title": "File Name",
         },
         Object {
           "dataIndex": "variance_document_category_code",
@@ -19,7 +19,7 @@ exports[`DocumentTable renders properly 1`] = `
         Object {
           "dataIndex": "created_at",
           "render": [Function],
-          "title": "Upload date",
+          "title": "Upload Date",
         },
       ]
     }

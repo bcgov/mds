@@ -20,6 +20,7 @@ SHARED_TABLES = {
     'mech_trenching_equip_xref': 'mechtrenchingequipxref',
     'placer_activity': 'placeractivity',
     'placer_equip_xref': 'placerequipxref',
+    'application_equipment_xref': 'equipmentxref',
     'proposed_placer_activity_xref': 'proposedplaceractivityxref',
     'proposed_settling_pond_xref': 'proposedsettlingpondxref',
     'sand_grv_qry_activity': 'sandgrvqryactivity',

@@ -3,14 +3,13 @@ import { Button, Tooltip, Table } from "antd";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
-import { formatMoney, truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { formatMoney } from "@common/utils/helpers";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
@@ -125,12 +124,10 @@ export const MineReclamationInvoiceTable = (props) => {
           {record.documents.length > 0
             ? record.documents.map((file) => (
                 <div key={file.mine_document_guid} title={file.document_name}>
-                  <LinkButton
-                    key={file.mine_document_guid}
-                    onClick={() => downloadFileFromDocumentManager(file)}
-                  >
-                    {truncateFilename(file.document_name)}
-                  </LinkButton>
+                  <DocumentLink
+                    documentManagerGuid={file.document_manager_guid}
+                    documentName={file.document_name}
+                  />
                 </div>
               ))
             : Strings.EMPTY_FIELD}

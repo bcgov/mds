@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@common/constants/strings";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 import { getPermitAmendmentTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 
@@ -14,12 +13,11 @@ const propTypes = {
   permitAmendmentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const defaultProps = {};
-
-const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
+const renderDocumentLink = (document) => (
+  <DocumentLink
+    documentManagerGuid={document.document_manager_guid}
+    documentName={document.document_name}
+  />
 );
 
 export class PermitAmendmentTable extends Component {
@@ -63,9 +61,7 @@ export class PermitAmendmentTable extends Component {
           <div title="Documents">
             <ul>
               {text?.map((file) => (
-                <li className="wrapped-text">
-                  {renderDocumentLink(file, truncateFilename(file.document_name))}
-                </li>
+                <li className="wrapped-text">{renderDocumentLink(file)}</li>
               ))}
             </ul>
           </div>
@@ -88,7 +84,6 @@ export class PermitAmendmentTable extends Component {
 }
 
 PermitAmendmentTable.propTypes = propTypes;
-PermitAmendmentTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   permitAmendmentTypeOptionsHash: getPermitAmendmentTypeOptionsHash(state),

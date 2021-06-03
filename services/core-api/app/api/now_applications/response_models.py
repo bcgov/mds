@@ -93,7 +93,8 @@ NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
         'has_storage_explosive_on_site': fields.Boolean,
         'explosive_permit_issued': fields.Boolean,
         'explosive_permit_number': fields.String,
-        'explosive_permit_expiry_date': Date
+        'explosive_permit_expiry_date': Date,
+        'describe_explosives_to_site': fields.String,
     })
 
 NOW_APPLICATION_CUT_LINES = api.inherit(
@@ -114,6 +115,7 @@ NOW_APPLICATION_EXP_SURFACE_DRILL = api.inherit(
     'NOWApplicationExpSurfaceDrill', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
         'reclamation_core_storage': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'drill_program': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 
@@ -364,8 +366,7 @@ APPLICATION_REASON_CODE_XREF = api.model(
     })
 
 NOW_APPLICATION_MODEL = api.model(
-    'NOW_APPLICATION_MODEL',
-    {
+    'NOW_APPLICATION_MODEL', {
         'now_application_guid':
         fields.String,
         'now_number':
@@ -526,7 +527,10 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'has_source_conditions':
         fields.Boolean,
-        'site_property': fields.Nested(MINE_TYPE_MODEL),
+        'site_property':
+        fields.Nested(MINE_TYPE_MODEL),
+        'equipment':
+        fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
 NOW_APPLICATION_MODEL_EXPORT = api.model(
@@ -594,43 +598,74 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'security_received_date': Date,
         'security_not_required': fields.Boolean,
         'security_not_required_reason': fields.String,
-        'last_updated_date': Date
+        'last_updated_date': Date,
+        'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT)),
     })
 
 NOW_VIEW_MODEL = api.model(
     'NOW_VIEW_MODEL', {
-        'now_application_guid': fields.String,
-        'mine_guid': fields.String,
-        'mine_no': fields.String,
-        'mine_name': fields.String,
-        'mine_region': fields.String,
-        'now_number': fields.String,
-        'permit_guid': fields.String(attribute='permit.permit_guid'),
-        'permit_no': fields.String(attribute='permit.permit_no'),
-        'lead_inspector_party_guid': fields.String,
-        'lead_inspector_name': fields.String,
-        'notice_of_work_type_description': fields.String,
-        'now_application_status_description': fields.String,
-        'received_date': Date,
-        'is_historic': fields.Boolean,
-        'originating_system': fields.String,
-        'application_documents': fields.List(
-            fields.Nested(NOW_SUBMISSION_DOCUMENT), skip_none=True),
-        'import_timestamp': DateTime,
-        'update_timestamp': DateTime,
-        'application_type_code': fields.String,
-        'application_type_description': fields.String,
-        'permit_amendment': fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
-        'application_reason_codes': fields.List(fields.Nested(APPLICATION_REASON_CODE)),
-        'permittee': fields.Nested(PARTY, skip_none=True),
-        'status_reason': fields.String,
-        'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
-        'issuing_inspector_party_guid': fields.String,
-        'issuing_inspector_name': fields.String,
-        'now_application_status_code': fields.String,
-        'decision_date': Date,
-        'source_permit_no': fields.String,
-        'source_permit_amendment_issue_date': fields.Date,
+        'now_application_guid':
+        fields.String,
+        'mine_guid':
+        fields.String,
+        'mine_no':
+        fields.String,
+        'mine_name':
+        fields.String,
+        'mine_region':
+        fields.String,
+        'now_number':
+        fields.String,
+        'permit_guid':
+        fields.String(attribute='permit.permit_guid'),
+        'permit_no':
+        fields.String(attribute='permit.permit_no'),
+        'lead_inspector_party_guid':
+        fields.String,
+        'lead_inspector_name':
+        fields.String,
+        'notice_of_work_type_description':
+        fields.String,
+        'now_application_status_description':
+        fields.String,
+        'received_date':
+        Date,
+        'is_historic':
+        fields.Boolean,
+        'originating_system':
+        fields.String,
+        'application_documents':
+        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT), skip_none=True),
+        'import_timestamp':
+        DateTime,
+        'update_timestamp':
+        DateTime,
+        'application_type_code':
+        fields.String,
+        'application_type_description':
+        fields.String,
+        'permit_amendment':
+        fields.Nested(PERMIT_AMENDMENT_SHORT_MODEL),
+        'application_reason_codes':
+        fields.List(fields.Nested(APPLICATION_REASON_CODE)),
+        'permittee':
+        fields.Nested(PARTY, skip_none=True),
+        'status_reason':
+        fields.String,
+        'documents':
+        fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
+        'issuing_inspector_party_guid':
+        fields.String,
+        'issuing_inspector_name':
+        fields.String,
+        'now_application_status_code':
+        fields.String,
+        'decision_date':
+        Date,
+        'source_permit_no':
+        fields.String,
+        'source_permit_amendment_issue_date':
+        fields.Date,
     })
 
 PAGINATED_LIST = api.model(

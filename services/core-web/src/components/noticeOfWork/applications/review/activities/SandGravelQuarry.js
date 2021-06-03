@@ -10,7 +10,6 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CustomPropTypes from "@/customPropTypes";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
@@ -312,8 +311,6 @@ export const SandGravelQuarry = (props) => {
           },
         ]}
       />
-      <br />
-      <Equipment isViewMode={props.isViewMode} />
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>

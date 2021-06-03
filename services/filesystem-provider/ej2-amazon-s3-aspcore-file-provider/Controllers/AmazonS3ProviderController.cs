@@ -17,7 +17,7 @@ namespace EJ2AmazonS3ASPCoreFileProvider.Controllers
         public AmazonS3FileProvider operation;
         public string basePath;
         protected RegionEndpoint bucketRegion;
-        public AmazonS3ProviderController(IHostingEnvironment hostingEnvironment)
+        public AmazonS3ProviderController(IWebHostEnvironment hostingEnvironment)
         {
             this.basePath = hostingEnvironment.ContentRootPath;
             this.operation = new AmazonS3FileProvider();

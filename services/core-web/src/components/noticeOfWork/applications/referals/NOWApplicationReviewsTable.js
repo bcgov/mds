@@ -4,13 +4,12 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { formatDate, truncateFilename } from "@common/utils/helpers";
 import { getNoticeOfWorkApplicationApplicationReviewTypeHash } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 
 const propTypes = {
@@ -82,12 +81,10 @@ const columns = (type) => {
             ? text.map((doc) => (
                 <li key={doc.mine_document.mine_document_guid}>
                   <div key={doc.mine_document.mine_document_guid}>
-                    <LinkButton
-                      key={doc.mine_document.mine_document_guid}
-                      onClick={() => downloadFileFromDocumentManager(doc.mine_document)}
-                    >
-                      {truncateFilename(doc.mine_document.document_name)}
-                    </LinkButton>
+                    <DocumentLink
+                      documentManagerGuid={doc.mine_document.document_manager_guid}
+                      documentName={doc.mine_document.document_name}
+                    />
                   </div>
                 </li>
               ))
