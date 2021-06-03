@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
@@ -43,6 +44,18 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         work_status = "Unknown"
         today = datetime.utcnow().date
         return work_status
+
+    @validates('work_start_date')
+    def validate_work_start_date(self, key, work_start_date):
+        if work_start_date and self.work_stop_date and work_start_date > self.work_stop_date:
+            raise AssertionError('Work start date cannot be after the work stop date.')
+        return work_start_date
+
+    @validates('work_stop_date')
+    def validate_work_start_date(self, key, work_stop_date):
+        if work_stop_date and self.work_start_date and work_stop_date < self.work_start_date:
+            raise AssertionError('Work stop date cannot be before the work start date.')
+        return work_stop_date
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
