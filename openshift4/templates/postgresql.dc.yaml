@@ -205,7 +205,7 @@ objects:
               - postgresql
             from:
               kind: ImageStreamTag
-              name: ${NAME}:${TAG}
+              name: ${NAME}96:${TAG}
               namespace: ${IMAGE_NAMESPACE}
             lastTriggeredImage: ""
           type: ImageChange

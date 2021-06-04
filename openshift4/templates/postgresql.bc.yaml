@@ -10,6 +10,13 @@ parameters:
     value: postgresql
   - name: TAG
     value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: openshift/docker-images/postgres
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
 objects:
   - kind: ImageStream
     apiVersion: v1
@@ -31,10 +38,11 @@ objects:
           importPolicy: {}
           referencePolicy:
             type: Local
+
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: ${NAME}-base
+      name: ${NAME}96
       labels:
         shared: "true"
       annotations: {}
@@ -45,21 +53,31 @@ objects:
   - kind: BuildConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}-base
+      name: ${NAME}96
       creationTimestamp: null
       labels: {}
       annotations: {}
     spec:
       successfulBuildsHistoryLimit: 5
       failedBuildsHistoryLimit: 5
-      completionDeadlineSeconds: 1440
+      completionDeadlineSeconds: 3600
       triggers:
         - type: ImageChange
           imageChange: {}
         - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
-        contextDir: openshift/docker-images/postgres
+        secrets:
+          - secret:
+              name: platform-services-controlled-etc-pki-entitlement
+            destinationDir: etc-pki-entitlement
+        configMaps:
+          - configMap:
+              name: platform-services-controlled-rhsm-conf
+            destinationDir: rhsm-conf
+          - configMap:
+              name: platform-services-controlled-rhsm-ca
+            destinationDir: rhsm-ca
         type: Git
         git:
           uri: ${SOURCE_REPOSITORY_URL}
@@ -67,20 +85,23 @@ objects:
       strategy:
         type: Docker
         dockerStrategy:
+          noCache: true
+          imageOptimizationPolicy: SkipLayers
+          dockerfilePath: openshift/docker-images/postgres96/Dockerfile
           from:
-            kind: ImageStreamTag
-            name: rhscl-postgres-10-rhel7:latest
+            kind: DockerImage
+            name: registry.access.redhat.com/rhel7:latest
           env: []
       output:
         to:
           kind: ImageStreamTag
-          name: ${NAME}-base:${TAG}
+          name: ${NAME}96:${TAG}
       resources:
         limits:
-          cpu: 250m
-          memory: 1Gi
+          cpu: 2000m
+          memory: 4Gi
         requests:
-          cpu: 250m
-          memory: 1Gi
+          cpu: 1000m
+          memory: 2Gi
       postCommit: {}
       nodeSelector: null

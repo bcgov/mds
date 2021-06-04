@@ -64,10 +64,6 @@ parameters:
     value: dev
   - name: DOCUMENT_GENERATOR_URL
     value: http://docgen:3030
-  - name: SMTP_CREDENTIALS
-    value: smtp-credentials
-  - name: EMAIL_ADDRESSES
-    value: email-addresses
   - name: OBJECT_STORE_SECRET_NAME
     value: object-store-credentials
   - name: IMAGE_NAMESPACE
@@ -185,21 +181,6 @@ objects:
                   value: ${URL}
                 - name: ENVIRONMENT_NAME
                   value: ${ENVIRONMENT_NAME}
-                - name: SMTP_CRED_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${SMTP_CREDENTIALS}
-                      key: smtp-host
-                - name: PRF_FROM_EMAIL
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${EMAIL_ADDRESSES}
-                      key: prf-from-email
-                - name: PRF_TO_EMAIL
-                  valueFrom:
-                    secretKeyRef:
-                      name: ${EMAIL_ADDRESSES}
-                      key: prf-to-email
                 - name: METABASE_EMBEDDING_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
