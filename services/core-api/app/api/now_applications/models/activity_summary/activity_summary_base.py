@@ -18,7 +18,7 @@ class ActivitySummaryBase(AuditMixin, Base):
     activity_type_code = db.Column(db.String, db.ForeignKey('activity_type.activity_type_code'))
 
     reclamation_description = db.Column(db.String)
-    reclamation_cost = db.Column(db.Numeric(10, 2))
+    reclamation_cost = db.Column(db.Numeric)
     total_disturbed_area = db.Column(db.Numeric)
     total_disturbed_area_unit_type_code = db.Column(db.String,
                                                     db.ForeignKey('unit_type.unit_type_code'))
