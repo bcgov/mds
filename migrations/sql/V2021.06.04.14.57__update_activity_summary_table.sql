@@ -1,0 +1,1 @@
+ALTER TABLE activity_summary ALTER COLUMN reclamation_cost TYPE numeric;
