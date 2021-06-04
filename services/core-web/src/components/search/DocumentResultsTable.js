@@ -2,8 +2,7 @@ import React from "react";
 import { Table, Divider, Descriptions } from "antd";
 import PropTypes from "prop-types";
 import Highlight from "react-highlighter";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 
 /**
  * @class  DocumentResultsTable - displays a table of mine search results
@@ -26,12 +25,13 @@ export const DocumentResultsTable = (props) => {
       render: (text, record) => [
         <Descriptions
           title={
-            <LinkButton
-              key={record.mine_document_guid || record.permit_amendment_document_guid}
-              onClick={() => downloadFileFromDocumentManager(record)}
-            >
-              <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
-            </LinkButton>
+            <DocumentLink
+              documentManagerGuid={record.document_manager_guid}
+              documentName={record.document_name}
+              linkTitleOverride={
+                <Highlight search={props.highlightRegex}>{record.document_name}</Highlight>
+              }
+            />
           }
         >
           <Descriptions.Item label="Mine">{record.mine_name}</Descriptions.Item>

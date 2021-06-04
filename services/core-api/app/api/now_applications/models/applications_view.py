@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -5,9 +6,7 @@ from flask import current_app
 
 from app.api.utils.models_mixins import Base
 from app.extensions import db
-from .now_application_identity import NOWApplicationIdentity
-from app.api.now_submissions.models.document import Document
-from datetime import datetime
+from .now_application import NOWApplication
 
 
 class ApplicationsView(Base):
@@ -98,6 +97,9 @@ class ApplicationsView(Base):
         secondaryjoin='foreign(NOWPartyAppointment.party_guid)==remote(Party.party_guid)',
     )
 
+    def __repr__(self):
+        return '<ApplicationsView %r>' % self.now_application_guid
+
     @hybrid_property
     def permittee(self):
         # this check is for performance reason, NOWs do not display permittees
@@ -114,9 +116,13 @@ class ApplicationsView(Base):
     def permit_amendment(self):
         return self.permit_amendments[0] if self.permit_amendments else None
 
-    def __repr__(self):
-        return '<ApplicationsView %r>' % self.now_application_guid
-
     @hybrid_property
     def application_documents(self):
-        return [doc for doc in self.submission_documents if doc.filename == 'ApplicationForm.pdf']
+        now_application = NOWApplication.find_by_application_guid(self.now_application_guid)
+        filtered_submissions_documents = NOWApplication.get_filtered_submissions_documents(
+            now_application)
+        application_documents = [
+            doc for doc in filtered_submissions_documents
+            if doc['filename'] == 'ApplicationForm.pdf'
+        ]
+        return application_documents

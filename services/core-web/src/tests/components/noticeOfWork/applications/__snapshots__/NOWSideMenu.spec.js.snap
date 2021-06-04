@@ -91,6 +91,11 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
+      href="#equipment"
+      title="Equipment"
+    />
+    <AnchorLink
+      className="now-menu-link"
       href="#application-files"
       title="Application Files"
     />

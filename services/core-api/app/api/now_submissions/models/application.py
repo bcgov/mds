@@ -128,6 +128,7 @@ class Application(Base):
     firstaidequipmentonsite = db.Column(db.String)
     firstaidcertlevel = db.Column(db.String)
     descexplorationprogram = db.Column(db.String)
+    describeexplosivetosite = db.Column(db.String)
     proposedstartdate = db.Column(db.DateTime)
     proposedenddate = db.Column(db.DateTime)
     yearroundseasonal = db.Column(db.String)
@@ -156,6 +157,7 @@ class Application(Base):
     mechtrenchingreclamationcost = db.Column(db.Numeric(14, 2))
     expsurfacedrillreclamation = db.Column(db.String)
     expsurfacedrillreclcorestorage = db.Column(db.String)
+    expsurfacedrillprogam = db.Column(db.String)
     expsurfacedrillreclamationcost = db.Column(db.Numeric(14, 2))
     expaccessreclamation = db.Column(db.String)
     expaccessreclamationcost = db.Column(db.Numeric(14, 2))
@@ -323,6 +325,10 @@ class Application(Base):
         secondary='now_submissions.surface_bulk_sample_equip_xref')
     placer_equip = db.relationship(
         'EquipmentSubmission', lazy='select', secondary='now_submissions.placer_equip_xref')
+    equipment = db.relationship(
+        'EquipmentSubmission',
+        lazy='select',
+        secondary='now_submissions.application_equipment_xref')
 
     mine_name = association_proxy('mine', 'mine_name')
     mine_region = association_proxy('mine', 'mine_region')

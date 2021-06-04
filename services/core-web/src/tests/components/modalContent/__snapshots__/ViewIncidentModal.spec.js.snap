@@ -263,7 +263,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
           Object {
             "dataIndex": "name",
             "render": [Function],
-            "title": "File name",
+            "title": "File Name",
           },
         ]
       }
@@ -370,7 +370,7 @@ exports[`ViewIncidentModal renders properly 1`] = `
           Object {
             "dataIndex": "name",
             "render": [Function],
-            "title": "File name",
+            "title": "File Name",
           },
         ]
       }

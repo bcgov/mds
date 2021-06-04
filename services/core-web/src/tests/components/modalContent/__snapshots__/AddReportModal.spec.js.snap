@@ -5,7 +5,7 @@ exports[`AddReportModal renders properly 1`] = `
   <SlidingForms
     formContent={
       Array [
-        <UNDEFINED
+        <Memo(Connect(ReduxForm))
           initialValues={Object {}}
           onSubmit={[MockFunction]}
           showReportHistory={[Function]}

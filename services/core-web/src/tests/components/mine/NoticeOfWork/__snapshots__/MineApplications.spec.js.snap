@@ -30,7 +30,7 @@ exports[`MineApplications renders properly 1`] = `
           Notice of Work Applications
         </h4>
       </div>
-      <withRouter(MineNoticeOfWorkTable)
+      <withRouter(Connect(MineNoticeOfWorkTable))
         handleSearch={[Function]}
         isLoaded={false}
         mineRegionHash={
