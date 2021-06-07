@@ -291,7 +291,7 @@ MINE_WORK_INFORMATION_MODEL = api.model(
         'work_start_date': fields.Date,
         'work_stop_date': fields.Date,
         'work_comments': fields.String,
-        'work_status': fields.String,
+        'mine_work_status_code': fields.String,
         'created_by': fields.String,
         'created_timestamp': fields.DateTime,
         'updated_by': fields.String,
@@ -459,6 +459,13 @@ MINE_STATUS_CODE_MODEL = api.model(
         'mine_operation_status_sub_reason':
         fields.Nested(MINE_OPERATION_STATUS_SUB_REASON_CODE_MODEL),
         'description': fields.String,
+    })
+
+MINE_WORK_STATUS_MODEL = api.model(
+    'MineWorkStatus', {
+        'mine_work_status_code': fields.String,
+        'active_ind': fields.Boolean,
+        'description': fields.String
     })
 
 MINE_COMMENT_MODEL = api.model(

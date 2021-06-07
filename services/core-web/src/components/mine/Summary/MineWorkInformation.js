@@ -12,6 +12,7 @@ import {
 } from "@common/actionCreators/workInformationActionCreator";
 import * as Strings from "@common/constants/strings";
 import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
+import { getMineWorkStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -28,6 +29,7 @@ const propTypes = {
   createMineWorkInformation: PropTypes.func.isRequired,
   updateMineWorkInformation: PropTypes.func.isRequired,
   deleteMineWorkInformation: PropTypes.func.isRequired,
+  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -53,7 +55,9 @@ export class MineWorkInformation extends Component {
   };
 
   openAddEditMineWorkInformationModal = (mineWorkInformation = null) => {
-    const title = mineWorkInformation ? "Edit Mine Work Information" : "Add Mine Work Information";
+    const title = mineWorkInformation
+      ? "Update Mine Work Information"
+      : "Add Mine Work Information";
     return this.props.openModal({
       props: {
         title,
@@ -82,98 +86,101 @@ export class MineWorkInformation extends Component {
       .then(() => this.setState({ isLoaded: true }));
 
   render() {
-    const renderWorkInfo = (info) => (
-      <List.Item>
-        <Row>
-          <Col span={20}>
-            <Descriptions column={3} colon={false}>
-              <Descriptions.Item label="Work Status">
-                <Badge
-                  status={getWorkInformationBadgeStatusType(info.work_status)}
-                  text={info.work_status}
-                />
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <>
-                    Work Start Date
-                    <CoreTooltip
-                      title={
-                        <>
-                          <Text strong underline>
-                            Notice To Start Work
-                          </Text>
-                          <br />
-                          <Text>
-                            6.2.1 The manager shall give 10 days’ notice to an inspector of
-                            intention to start [any mining activity] in, at, or about a mine,
-                            including seasonal reactivation.
-                          </Text>
-                        </>
-                      }
-                    />
-                  </>
-                }
-              >
-                {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <>
-                    Work Stop Date
-                    <CoreTooltip
-                      title={
-                        <>
-                          <Text strong underline>
-                            Notice to Stop Work
-                          </Text>
-                          <br />
-                          <Text>
-                            6.2.2 The manager shall give notice to an inspector of intention to stop
-                            [any mining activity] in, at, or about a mine, permanently,
-                            indefinitely, or for a definite period exceeding 30 days, and except in
-                            an emergency, the notice shall be not less than seven days.
-                          </Text>
-                        </>
-                      }
-                    />
-                  </>
-                }
-              >
-                {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
-              </Descriptions.Item>
-              <Descriptions.Item label="Comments" span={3}>
-                {info.work_comments || Strings.NOT_APPLICABLE}
-              </Descriptions.Item>
-            </Descriptions>
-            <Descriptions column={2} colon={false}>
-              <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
-              <Descriptions.Item label="Last Updated">
-                {formatDateTime(info.updated_timestamp)}
-              </Descriptions.Item>
-            </Descriptions>
-          </Col>
-          <Col span={4}>
-            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-              <Button type="primary" onClick={() => this.openAddEditMineWorkInformationModal(info)}>
-                Update
-              </Button>
-            </AuthorizationWrapper>
-            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-              <Popconfirm
-                placement="topLeft"
-                title="Are you sure you want to delete this record?"
-                onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
-                okText="Delete"
-                cancelText="Cancel"
-              >
-                <Button type="primary">Delete</Button>
-              </Popconfirm>
-            </AuthorizationWrapper>
-          </Col>
-        </Row>
-      </List.Item>
-    );
+    const renderWorkInfo = (info) => {
+      const status = this.props.mineWorkStatusOptionsHash[info.mine_work_status_code || "UNKNOWN"];
+      return (
+        <List.Item>
+          <Row>
+            <Col span={20}>
+              <Descriptions column={3} colon={false}>
+                <Descriptions.Item label="Work Status">
+                  <Badge status={getWorkInformationBadgeStatusType(status)} text={status} />
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <>
+                      Work Start Date
+                      <CoreTooltip
+                        title={
+                          <>
+                            <Text strong underline>
+                              Notice To Start Work
+                            </Text>
+                            <br />
+                            <Text>
+                              6.2.1 The manager shall give 10 days’ notice to an inspector of
+                              intention to start [any mining activity] in, at, or about a mine,
+                              including seasonal reactivation.
+                            </Text>
+                          </>
+                        }
+                      />
+                    </>
+                  }
+                >
+                  {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <>
+                      Work Stop Date
+                      <CoreTooltip
+                        title={
+                          <>
+                            <Text strong underline>
+                              Notice to Stop Work
+                            </Text>
+                            <br />
+                            <Text>
+                              6.2.2 The manager shall give notice to an inspector of intention to
+                              stop [any mining activity] in, at, or about a mine, permanently,
+                              indefinitely, or for a definite period exceeding 30 days, and except
+                              in an emergency, the notice shall be not less than seven days.
+                            </Text>
+                          </>
+                        }
+                      />
+                    </>
+                  }
+                >
+                  {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
+                </Descriptions.Item>
+                <Descriptions.Item label="Comments" span={3}>
+                  {info.work_comments || Strings.NOT_APPLICABLE}
+                </Descriptions.Item>
+              </Descriptions>
+              <Descriptions column={2} colon={false}>
+                <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
+                <Descriptions.Item label="Last Updated">
+                  {formatDateTime(info.updated_timestamp)}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={4}>
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                <Button
+                  type="primary"
+                  onClick={() => this.openAddEditMineWorkInformationModal(info)}
+                >
+                  Update
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                <Popconfirm
+                  placement="topLeft"
+                  title="Are you sure you want to delete this record?"
+                  onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
+                  okText="Delete"
+                  cancelText="Cancel"
+                >
+                  <Button type="primary">Delete</Button>
+                </Popconfirm>
+              </AuthorizationWrapper>
+            </Col>
+          </Row>
+        </List.Item>
+      );
+    };
 
     const dataSource = this.state.showAll
       ? this.props.mineWorkInformations
@@ -233,6 +240,7 @@ export class MineWorkInformation extends Component {
 
 const mapStateToProps = (state) => ({
   mineWorkInformations: getMineWorkInformations(state),
+  mineWorkStatusOptionsHash: getMineWorkStatusOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

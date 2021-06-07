@@ -6,6 +6,7 @@ import { createLabelHash, createDropDownList, compareCodes } from "../utils/help
 export const {
   getStaticContentLoadingIsComplete,
   getMineStatusOptions,
+  getMineWorkStatusOptions,
   getMineRegionOptions,
   getMineTenureTypeOptions,
   getMineCommodityOptions,
@@ -405,6 +406,17 @@ const transformMineStatus = (data) =>
 export const getMineStatusDropDownOptions = createSelectorWrapper(
   getMineStatusOptions,
   transformMineStatus
+);
+
+export const getMineWorkStatusDropDownOptions = createSelectorWrapper(
+  getMineWorkStatusOptions,
+  createDropDownList,
+  ["description", "mine_work_status_code", "active_ind"]
+);
+
+export const getMineWorkStatusOptionsHash = createSelector(
+  [getMineWorkStatusDropDownOptions],
+  createLabelHash
 );
 
 export const getDropdownVarianceDocumentCategoryOptions = createSelectorWrapper(

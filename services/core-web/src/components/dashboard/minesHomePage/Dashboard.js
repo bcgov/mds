@@ -27,6 +27,8 @@ import {
   getMineRegionDropdownOptions,
   getMineTenureTypeDropdownOptions,
   getDropdownCommodityOptions,
+  getMineWorkStatusOptionsHash,
+  getMineWorkStatusDropDownOptions,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import { PageTracker } from "@common/utils/trackers";
@@ -58,6 +60,8 @@ const propTypes = {
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineDisturbanceOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineWorkStatusDropDownOptions: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   location: PropTypes.shape({ search: PropTypes.string }).isRequired,
@@ -81,6 +85,7 @@ const defaultListParams = {
   region: [],
   tenure: [],
   commodity: [],
+  work_status: [],
   major: undefined,
   tsf: undefined,
   verified: undefined,
@@ -302,6 +307,7 @@ export class Dashboard extends Component {
                   mineRegionHash={this.props.mineRegionHash}
                   mineTenureHash={this.props.mineTenureHash}
                   mineCommodityOptionsHash={this.props.mineCommodityOptionsHash}
+                  mineWorkStatusOptionsHash={this.props.mineWorkStatusOptionsHash}
                   handleSearch={this.handleListViewSearch}
                   filters={this.state.listParams}
                   sortField={this.state.listParams.sort_field}
@@ -459,6 +465,8 @@ const mapStateToProps = (state) => ({
   mineTenureHash: getMineTenureTypesHash(state),
   mineCommodityOptionsHash: getCommodityOptionHash(state),
   mineDisturbanceOptionsHash: getDisturbanceOptionHash(state),
+  mineWorkStatusOptionsHash: getMineWorkStatusOptionsHash(state),
+  mineWorkStatusDropDownOptions: getMineWorkStatusDropDownOptions(state),
   mineStatusDropDownOptions: getMineStatusDropDownOptions(state, false),
   mineRegionOptions: getMineRegionDropdownOptions(state),
   mineTenureTypes: getMineTenureTypeDropdownOptions(state, false),

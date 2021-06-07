@@ -17,6 +17,7 @@ const propTypes = {
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
   mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
+  mineWorkStatusDropDownOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   reset: PropTypes.func.isRequired,
 };
@@ -143,11 +144,7 @@ export class AdvancedMineSearchForm extends Component {
                   name="work_status"
                   placeholder="Select Work Status"
                   component={renderConfig.MULTI_SELECT}
-                  data={[
-                    { value: "Unknown", label: "Unknown" },
-                    { value: "Working", label: "Working" },
-                    { value: "Not Working", label: "Not Working" },
-                  ]}
+                  data={this.props.mineWorkStatusDropDownOptions}
                 />
               </Col>
               <Col md={12} xs={24}>
