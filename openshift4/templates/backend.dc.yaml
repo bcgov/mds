@@ -238,6 +238,9 @@ objects:
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /var/log
+                  name: logs
             - name: flyway-migration
               command:
                 - cat
@@ -302,8 +305,21 @@ objects:
                   cpu: 50m
                   memory: 128Mi
           restartPolicy: Always
+          volumeMounts:
+            - mountPath: /logs/
+              name: logs
+              readOnly: true
+            - mountPath: /etc/promtail
+              name: promtail-config
           dnsPolicy: ClusterFirst
           securityContext: {}
+          volumes:
+            - emptyDir: {}
+              name: logs
+            - configMap:
+                defaultMode: 420
+                name: promtail-config
+              name: promtail-config
   - apiVersion: autoscaling/v1
     kind: HorizontalPodAutoscaler
     metadata:
