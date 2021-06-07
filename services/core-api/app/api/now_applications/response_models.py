@@ -164,9 +164,11 @@ NOW_APPLICATION_SAND_GRAVEL_QUARRY_OPERATION = api.inherit(
         'total_annual_extraction': fields.Fixed(decimals=2),
         'total_annual_extraction_unit_type_code': fields.String,
         'average_groundwater_depth': fields.Fixed(decimals=2),
+        'average_groundwater_depth_unit_type_code': fields.String,
         'has_groundwater_from_existing_area': fields.Boolean,
         'has_groundwater_from_test_pits': fields.Boolean,
         'has_groundwater_from_test_wells': fields.Boolean,
+        'has_ground_water_from_other': fields.Boolean,
         'groundwater_from_other_description': fields.String,
         'groundwater_protection_plan': fields.String,
         'nearest_residence_distance': fields.Fixed(decimals=2),
@@ -179,6 +181,11 @@ NOW_APPLICATION_SAND_GRAVEL_QUARRY_OPERATION = api.inherit(
         'visual_impact_plan': fields.String,
         'reclamation_backfill_detail': fields.String,
         'calculated_total_disturbance': fields.Fixed(decimals=5),
+        'progressive_reclamation': fields.Boolean,
+        'max_unreclaimed': fields.Fixed(decimals=2),
+        'max_unreclaimed_unit_type_code': fields.String,
+        'proposed_activity_description': fields.String,
+        'work_year_info': fields.String,
         'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
     })
 NOW_APPLICATION_SETTLING_POND_DETAIL = api.inherit('NOWApplicationCampDetail',

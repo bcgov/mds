@@ -660,6 +660,10 @@ def _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms
     sandgrvqryimpactprvtaccess = now_sub.sandgrvqryimpactprvtaccess
     sandgrvqryimpactprevtdust = now_sub.sandgrvqryimpactprevtdust
     sandgrvqryimpactminvisual = now_sub.sandgrvqryimpactminvisual
+    sandgrvqryprogressivereclam = now_sub.sandgrvqryprogressivereclam
+    sandgrvqrymaxunreclaimed = now_sub.sandgrvqrymaxunreclaimed
+    yearroundseasonal = now_sub.yearroundseasonal
+    sandgrvqrydescription = now_sub.sandgrvqrydescription
     if (sandgrvqrydepthoverburden or sandgrvqrydepthtopsoil or sandgrvqrystabilizemeasures
             or sandgrvqrywithinaglandres or sandgrvqryalrpermitnumber
             or sandgrvqrylocalgovsoilrembylaw or sandgrvqryofficialcommplan
@@ -702,11 +706,18 @@ def _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms
             groundwater_from_other_description=sandgrvqrygrdwtrother,
             groundwater_protection_plan=sandgrvqrygrdwtrmeasprotect,
             nearest_residence_distance=sandgrvqryimpactdistres,
+            nearest_residence_distance_unit_type_code="MTR",
             nearest_water_source_distance=sandgrvqryimpactdistwater,
+            nearest_water_source_distance_unit_type_code="MTR",
             noise_impact_plan=sandgrvqryimpactnoise,
             secure_access_plan=sandgrvqryimpactprvtaccess,
             dust_impact_plan=sandgrvqryimpactprevtdust,
-            visual_impact_plan=sandgrvqryimpactminvisual)
+            visual_impact_plan=sandgrvqryimpactminvisual,
+            progressive_reclamation=get_boolean_value(sandgrvqryprogressivereclam),
+            max_unreclaimed=sandgrvqrymaxunreclaimed,
+            max_unreclaimed_unit_type_code="HA",
+            work_year_info=yearroundseasonal,
+            proposed_activity_description=sandgrvqrydescription)
 
         if (len(mms_now_sub.sand_grv_qry_activity) > 0):
             sand_grv_qry_activity = mms_now_sub.sand_grv_qry_activity
