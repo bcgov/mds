@@ -851,6 +851,10 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
       key="administrative"
       tab="Administrative"
     />
+    <TabPane
+      disabled={true}
+      key="manage-documents"
+    />
   </Tabs>
 </div>
 `;
