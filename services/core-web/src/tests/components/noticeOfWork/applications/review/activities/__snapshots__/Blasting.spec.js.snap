@@ -35,6 +35,35 @@ exports[`Blasting renders properly 1`] = `
       md={12}
       sm={24}
     >
+      <Connect(AuthorizationWrapper)
+        inTesting={true}
+      >
+        <div
+          className="field-title"
+        >
+          Describe how the explosives will get to the site
+          <NOWOriginalValueTooltip
+            isVisible={true}
+            originalValue="N/A"
+            style={Object {}}
+          />
+        </div>
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="describe_explosives_to_site"
+          name="describe_explosives_to_site"
+        />
+      </Connect(AuthorizationWrapper)>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
       <div
         className="field-title"
       >

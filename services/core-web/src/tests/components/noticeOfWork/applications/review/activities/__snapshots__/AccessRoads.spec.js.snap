@@ -19,6 +19,14 @@ exports[`AccessRoads renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "title": "Number of Sites",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "number_of_sites",
+        },
+        Object {
+          "component": [Function],
           "title": "Length (km)",
           "validate": Array [
             [Function],
@@ -89,10 +97,6 @@ exports[`AccessRoads renders properly 1`] = `
       />
     </Col>
   </Row>
-  <br />
-  <Equipment
-    isViewMode={true}
-  />
   <br />
   <h4>
     Reclamation Program

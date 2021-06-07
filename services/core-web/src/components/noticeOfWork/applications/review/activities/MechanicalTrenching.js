@@ -6,7 +6,6 @@ import { maxLength, number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import { currencyMask } from "@common/utils/helpers";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
 
@@ -37,6 +36,24 @@ export const MechanicalTrenching = (props) => {
             validate: [number],
           },
           {
+            title: "Length (m)",
+            value: "length",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Width (m)",
+            value: "width",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Depth (m)",
+            value: "depth",
+            component: RenderField,
+            validate: [number],
+          },
+          {
             title: "Disturbed Area (ha)",
             value: "disturbed_area",
             component: RenderField,
@@ -51,7 +68,6 @@ export const MechanicalTrenching = (props) => {
         ]}
       />
       <br />
-      <Equipment isViewMode={props.isViewMode} />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>

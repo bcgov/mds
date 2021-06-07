@@ -10,7 +10,7 @@ exports[`ProcessPermit renders properly 1`] = `
     tab="PRO"
     tabActions={
       <React.Fragment>
-        <UNDEFINED
+        <Memo(Connect(AuthorizationWrapper))
           permission="role_edit_permits"
         >
           <Dropdown
@@ -38,7 +38,7 @@ exports[`ProcessPermit renders properly 1`] = `
             }
             placement="bottomLeft"
           >
-            <ForwardRef(InternalButton)
+            <Button
               block={false}
               className="full-mobile"
               ghost={false}
@@ -48,9 +48,9 @@ exports[`ProcessPermit renders properly 1`] = `
             >
               Process 
               <ForwardRef(DownOutlined) />
-            </ForwardRef(InternalButton)>
+            </Button>
           </Dropdown>
-        </UNDEFINED>
+        </Memo(Connect(AuthorizationWrapper))>
       </React.Fragment>
     }
     tabEditActions=""
@@ -78,28 +78,28 @@ exports[`ProcessPermit renders properly 1`] = `
           }
         >
           <React.Fragment>
-            <ForwardRef
+            <Row
               className="padding-md--bottom"
               justify="center"
             >
-              <ForwardRef>
+              <Col>
                 <h3>
                   The following issues shall be resolved before you can issue this amendment.
                 </h3>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(StopOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The Site Property fields must be specified.  
@@ -111,37 +111,37 @@ exports[`ProcessPermit renders properly 1`] = `
                   <ForwardRef(LinkOutlined) />
                    Resolve
                 </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(StopOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The issuing inspector must have a signature on file before the permit can be issued. Contact an administrator to update the inspector with a signature.  
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(StopOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The application must have a permittee. Add a permittee in Contacts under Application.  
@@ -153,20 +153,20 @@ exports[`ProcessPermit renders properly 1`] = `
                   <ForwardRef(LinkOutlined) />
                    Resolve
                 </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(StopOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The reclamation securities must be recorded. Edit the Reclamation Securities under Administrative.  
@@ -178,35 +178,35 @@ exports[`ProcessPermit renders properly 1`] = `
                   <ForwardRef(LinkOutlined) />
                    Resolve
                 </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
+              </Col>
+            </Row>
             <div
               className="padding-lg--bottom"
             />
           </React.Fragment>
           <React.Fragment>
-            <ForwardRef
+            <Row
               className="padding-md--bottom"
               justify="center"
             >
-              <ForwardRef>
+              <Col>
                 <h3>
                   Review the following warnings before issuing the  amendment.
                 </h3>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(WarningOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The final application package is missing a Mine Emergency Response Plan. You can Edit the Final Application Package under Administrative.  
@@ -218,20 +218,20 @@ exports[`ProcessPermit renders properly 1`] = `
                   <ForwardRef(LinkOutlined) />
                    Resolve
                 </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
-            <ForwardRef
+              </Col>
+            </Row>
+            <Row
               className="padding-md--bottom"
             >
-              <ForwardRef
+              <Col
                 offset={2}
                 span={2}
               >
                 <ForwardRef(WarningOutlined)
                   className="icon-sm padding-sm--top"
                 />
-              </ForwardRef>
-              <ForwardRef
+              </Col>
+              <Col
                 span={16}
               >
                 The final application package is missing an Archaeological Chance Find Procedure. You can Edit the Final Application Package under Administrative.  
@@ -243,8 +243,8 @@ exports[`ProcessPermit renders properly 1`] = `
                   <ForwardRef(LinkOutlined) />
                    Resolve
                 </LinkButton>
-              </ForwardRef>
-            </ForwardRef>
+              </Col>
+            </Row>
           </React.Fragment>
         </div>
       }

@@ -97,12 +97,13 @@ SETTLING_POND = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
-SURFACE_BULK_SAMPLE_ACTIVITY = api.model('SURFACE_BULK_SAMPLE_ACTIVITY', {
-    'type': fields.String,
-    'quantity': fields.Integer,
-    'disturbedarea': fields.Arbitrary,
-    'timbervolume': fields.Arbitrary,
-})
+SURFACE_BULK_SAMPLE_ACTIVITY = api.model(
+    'SURFACE_BULK_SAMPLE_ACTIVITY', {
+        'type': fields.String,
+        'quantity': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
 
 SAND_GRAVEL_QUARRY_ACTIVITY = api.model('SAND_GRAVEL_QUARRY_ACTIVITY', {
     'type': fields.String,
@@ -148,6 +149,7 @@ EXP_ACCESS_ACTIVITY = api.model(
         'length': fields.Arbitrary,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'numberofsites': fields.Arbitrary,
     })
 
 EXP_SURFACE_DRILL_ACTIVITY = api.model(
@@ -164,6 +166,9 @@ MECH_TRENCHING_ACTIVITY = api.model(
         'numberofsites': fields.Integer,
         'disturbedarea': fields.Arbitrary,
         'timbervolume': fields.Arbitrary,
+        'length': fields.Arbitrary,
+        'width': fields.Arbitrary,
+        'depth': fields.Arbitrary,
     })
 
 WATER_SOURCE_ACTIVITY = api.model(
@@ -176,6 +181,12 @@ WATER_SOURCE_ACTIVITY = api.model(
         'locationwaterintake': fields.String,
         'seq_no': fields.Integer,
     })
+
+EQUIPMENT = api.model('EQUIPMENT', {
+    "type": fields.String,
+    "size": fields.String,
+    "quantity": fields.Integer
+})
 
 APPLICATION = api.model(
     'Application', {
@@ -207,6 +218,7 @@ APPLICATION = api.model(
         'firstaidequipmentonsite': fields.String,
         'firstaidcertlevel': fields.String,
         'descexplorationprogram': fields.String,
+        'describeexplosivetosite': fields.String,
         'proposedstartdate': fields.DateTime,
         'proposedenddate': fields.DateTime,
         'yearroundseasonal': fields.String,
@@ -235,6 +247,7 @@ APPLICATION = api.model(
         'mechtrenchingreclamationcost': fields.Arbitrary,
         'expsurfacedrillreclamation': fields.String,
         'expsurfacedrillreclcorestorage': fields.String,
+        'expsurfacedrillprogam': fields.String,
         'expsurfacedrillreclamationcost': fields.Arbitrary,
         'expaccessreclamation': fields.String,
         'expaccessreclamationcost': fields.Arbitrary,
@@ -336,8 +349,8 @@ APPLICATION = api.model(
         'recreationuse': fields.String,
         'isparkactivities': fields.String,
         'hasltgovauthorization': fields.String,
-        'hasarchaeologicalprotectionplan':fields.String,
-        'isonprivateland':fields.String,
+        'hasarchaeologicalprotectionplan': fields.String,
+        'isonprivateland': fields.String,
         'hasengagedfirstnations': fields.String,
         'hasculturalheritageresources': fields.String,
         'archaeologicalprotectionplan': fields.String,
@@ -370,6 +383,7 @@ APPLICATION = api.model(
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
         'mech_trenching_activity': fields.List(fields.Nested(MECH_TRENCHING_ACTIVITY)),
+        'equipment': fields.List(fields.Nested(EQUIPMENT))
     })
 
 APPLICATION_LIST = api.model(

@@ -12,6 +12,7 @@ class ExpAccessActivity(Base):
     length = db.Column(db.Numeric(14, 2))
     disturbedarea = db.Column(db.Numeric(14, 2))
     timbervolume = db.Column(db.Numeric(14, 2))
+    numberofsites = db.Column(db.Numeric)
 
     def __repr__(self):
         return '<ExpAccessActivity %r>' % self.id

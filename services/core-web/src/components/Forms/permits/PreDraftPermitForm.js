@@ -24,6 +24,7 @@ import {
   getDropdownNoticeOfWorkApplicationTypeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
@@ -67,13 +68,14 @@ export const PreDraftPermitForm = (props) => {
   }, [props.formValues?.permit_guid, props.formValues?.notice_of_work_type_code]);
 
   useEffect(() => {
-    if (isAmendment) {
+    const isNewPermit = props.formValues?.type_of_application === "New Permit";
+    setIsAmendment(!isNewPermit);
+    if (!isNewPermit) {
       props.change("permit_amendment_type_code", permitType);
     }
-    if (props.isCoalOrMineral && !isAmendment) {
-      props.change("is_exploration", true);
+    if (props.isCoalOrMineral && isNewPermit) {
+      props.change("is_exploration", null);
     }
-    setIsAmendment(props.formValues?.type_of_application !== "New Permit");
   }, [props.formValues?.type_of_application]);
 
   const getPermitType = (selectedPermitGuid) => {
@@ -126,6 +128,13 @@ export const PreDraftPermitForm = (props) => {
       {!props.isNoticeOfWorkTypeDisabled && (
         <Alert
           description="Ensure that you have selected the correct Type of Notice of Work before proceeding. This cannot be changed once drafting has started."
+          type="info"
+          showIcon
+        />
+      )}
+      {props.isCoalOrMineral && !isAmendment && (
+        <Alert
+          description="Ensure that you have correctly specified if it is an exploration permit or not. This cannot be changed once drafting has started."
           type="info"
           showIcon
         />
@@ -196,7 +205,7 @@ export const PreDraftPermitForm = (props) => {
                     id="is_exploration"
                     name="is_exploration"
                     label="Exploration Permit*"
-                    component={renderConfig.CHECKBOX}
+                    component={RenderRadioButtons}
                     validate={[requiredRadioButton]}
                   />
                 </Form.Item>
