@@ -265,6 +265,41 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW", "ADA"],
       },
     ],
+    "manage-documents": [
+      {
+        href: "final-application-package",
+        title: "Final Application Package",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW"],
+      },
+      {
+        href: "additional-application-files",
+        title: "Additional Application Files",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "government-documents",
+        title: "Government Documents",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW"],
+      },
+      {
+        href: "generated-documents",
+        title: "Application Export Files",
+        alwaysVisible: hasPermitConditionsFlow,
+        children: [],
+        applicationType: ["NOW"],
+      },
+      {
+        href: "referral-consultation-public-comment-documents",
+        title: "Referral, Consultation and Public Comment Documents",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+    ],
   };
   return options[tab];
 };
@@ -303,6 +338,7 @@ export const TAB_DISCLAIMERS = {
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
+  MND: "Some description for Manage Documents tab.",
 };
 
 export const APPLICATION_PROGRESS_TRACKING = {
