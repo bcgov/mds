@@ -324,8 +324,8 @@ class Application(Base):
     underexpfuelstorage = db.Column(db.Boolean)
     underexpsurftotalwasteunits = db.Column(db.String)
     underexpsurftotaloreunits = db.Column(db.String)
-    underexpsurftotalwaste = db.Column(db.String)
-    underexpsurftotalore = db.Column(db.String)
+    underexpsurftotalwaste = db.Column(db.Numeric)
+    underexpsurftotalore = db.Column(db.Numeric)
 
     mine = db.relationship(
         'Mine',

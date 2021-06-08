@@ -7,6 +7,7 @@ import { currencyMask } from "@common/utils/helpers";
 import {
   getDropdownNoticeOfWorkUndergroundExplorationTypeOptions,
   getDropdownNoticeOfWorkUnitTypeOptions,
+  getNoticeOfWorkUndergroundExplorationTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import {
   numberWithUnitCode,
@@ -31,6 +32,7 @@ const propTypes = {
   undergroundExplorationTypeOptions: CustomPropTypes.options.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
+  undergroundExplorationTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const UndergroundExploration = (props) => {
@@ -39,70 +41,6 @@ export const UndergroundExploration = (props) => {
   );
   return (
     <div>
-      <CoreEditableTable
-        isViewMode={props.isViewMode}
-        fieldName="details"
-        fieldID="activity_detail_id"
-        tableContent={[
-          {
-            title: "Exploration Type",
-            value: "underground_exploration_type_code",
-            component: RenderSelect,
-            validate: [required, validateSelectOptions(props.undergroundExplorationTypeOptions)],
-            data: props.undergroundExplorationTypeOptions,
-          },
-          {
-            title: "Activity",
-            value: "activity_type_description",
-            component: RenderAutoSizeField,
-            minRows: 1,
-            validate: [required],
-          },
-          {
-            title: "Quantity",
-            value: "quantity",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Incline",
-            value: "incline",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Width (m)",
-            value: "width",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Length (m)",
-            value: "length",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Height (m)",
-            value: "height",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Disturbed Area (ha)",
-            value: "disturbed_area",
-            component: RenderField,
-            validate: [number],
-          },
-          {
-            title: "Merchantable timber volume (m³)",
-            value: "timber_volume",
-            component: RenderField,
-            validate: [number],
-          },
-        ]}
-      />
-      <br />
       <Row gutter={16}>
         <div className="field-title">
           Proposed Activities
@@ -117,10 +55,11 @@ export const UndergroundExploration = (props) => {
                 Bulk Sample
                 <NOWOriginalValueTooltip
                   originalValue={
-                    props.renderOriginalValues("underground_exploration.total_waste_amount").value
+                    props.renderOriginalValues("underground_exploration.proposed_bulk_sample").value
                   }
                   isVisible={
-                    props.renderOriginalValues("underground_exploration.total_waste_amount").edited
+                    props.renderOriginalValues("underground_exploration.proposed_bulk_sample")
+                      .edited
                   }
                   style={{ marginLeft: "5px" }}
                 />
@@ -284,6 +223,81 @@ export const UndergroundExploration = (props) => {
         </Col>
       </Row>
       <br />
+      <h4>Activities </h4>
+      <CoreEditableTable
+        isViewMode={props.isViewMode}
+        fieldName="details"
+        fieldID="activity_detail_id"
+        tableContent={[
+          {
+            title: "Exploration Type",
+            value: "underground_exploration_type_code",
+            component: RenderSelect,
+            validate: [required, validateSelectOptions(props.undergroundExplorationTypeOptions)],
+            data: props.undergroundExplorationTypeOptions,
+            dataHash: props.undergroundExplorationTypeOptionsHash,
+          },
+          {
+            title: "Activity",
+            value: "activity_type_description",
+            component: RenderAutoSizeField,
+            minRows: 1,
+            validate: [required],
+          },
+          {
+            title: "Quantity",
+            value: "quantity",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Incline",
+            value: "incline",
+            component: RenderField,
+            validate: [number],
+            hasUnit: true,
+          },
+          {
+            title: "Incline Unit",
+            value: "incline_unit_type_code",
+            component: RenderSelect,
+            data: props.unitTypeOptions.filter(({ value }) => value === "PER" || value === "DEG"),
+            validate: [required],
+            isUnit: true,
+          },
+          {
+            title: "Width (m)",
+            value: "width",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Length (m)",
+            value: "length",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Height (m)",
+            value: "height",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Disturbed Area (ha)",
+            value: "disturbed_area",
+            component: RenderField,
+            validate: [number],
+          },
+          {
+            title: "Merchantable timber volume (m³)",
+            value: "timber_volume",
+            component: RenderField,
+            validate: [number],
+          },
+        ]}
+      />
+      <br />
       <h4>New Underground Exploration Development</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -436,6 +450,9 @@ UndergroundExploration.propTypes = propTypes;
 export default connect(
   (state) => ({
     undergroundExplorationTypeOptions: getDropdownNoticeOfWorkUndergroundExplorationTypeOptions(
+      state
+    ),
+    undergroundExplorationTypeOptionsHash: getNoticeOfWorkUndergroundExplorationTypeOptionsHash(
       state
     ),
     unitTypeOptions: getDropdownNoticeOfWorkUnitTypeOptions(state),
