@@ -2,91 +2,6 @@
 
 exports[`UndergroundExploration renders properly 1`] = `
 <div>
-  <Connect(CoreEditableTable)
-    fieldID="activity_detail_id"
-    fieldName="details"
-    isViewMode={true}
-    tableContent={
-      Array [
-        Object {
-          "component": [Function],
-          "data": undefined,
-          "title": "Exploration Type",
-          "validate": Array [
-            [Function],
-            [Function],
-          ],
-          "value": "underground_exploration_type_code",
-        },
-        Object {
-          "component": [Function],
-          "minRows": 1,
-          "title": "Activity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "activity_type_description",
-        },
-        Object {
-          "component": [Function],
-          "title": "Quantity",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "quantity",
-        },
-        Object {
-          "component": [Function],
-          "title": "Incline",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "incline",
-        },
-        Object {
-          "component": [Function],
-          "title": "Width (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "width",
-        },
-        Object {
-          "component": [Function],
-          "title": "Length (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "length",
-        },
-        Object {
-          "component": [Function],
-          "title": "Height (m)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "height",
-        },
-        Object {
-          "component": [Function],
-          "title": "Disturbed Area (ha)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "disturbed_area",
-        },
-        Object {
-          "component": [Function],
-          "title": "Merchantable timber volume (m³)",
-          "validate": Array [
-            [Function],
-          ],
-          "value": "timber_volume",
-        },
-      ]
-    }
-  />
-  <br />
   <Row
     gutter={16}
   >
@@ -271,6 +186,106 @@ exports[`UndergroundExploration renders properly 1`] = `
       />
     </Col>
   </Row>
+  <br />
+  <h4>
+    Activities 
+  </h4>
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="details"
+    isViewMode={true}
+    tableContent={
+      Array [
+        Object {
+          "component": [Function],
+          "data": undefined,
+          "dataHash": undefined,
+          "title": "Exploration Type",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "underground_exploration_type_code",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Activity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "title": "Quantity",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "quantity",
+        },
+        Object {
+          "component": [Function],
+          "hasUnit": true,
+          "title": "Incline",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "incline",
+        },
+        Object {
+          "component": [Function],
+          "data": Array [],
+          "isUnit": true,
+          "title": "Incline Unit",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "incline_unit_type_code",
+        },
+        Object {
+          "component": [Function],
+          "title": "Width (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "width",
+        },
+        Object {
+          "component": [Function],
+          "title": "Length (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "length",
+        },
+        Object {
+          "component": [Function],
+          "title": "Height (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "height",
+        },
+        Object {
+          "component": [Function],
+          "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "disturbed_area",
+        },
+        Object {
+          "component": [Function],
+          "title": "Merchantable timber volume (m³)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "timber_volume",
+        },
+      ]
+    }
+  />
   <br />
   <h4>
     New Underground Exploration Development
