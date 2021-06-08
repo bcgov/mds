@@ -23,6 +23,7 @@ export const Camps = (props) => {
   const hasFuel = props.campFormValues.has_fuel_stored;
   return (
     <div>
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"

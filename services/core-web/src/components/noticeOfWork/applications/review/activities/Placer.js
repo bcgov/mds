@@ -57,6 +57,7 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"
@@ -126,6 +127,29 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
+      <br />
+      <h4>Total Planned Reclamation Area</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Total area of planned reclamation this year
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("placer_operation.reclamation_area").value}
+              isVisible={props.renderOriginalValues("placer_operation.reclamation_area").edited}
+            />
+          </div>
+          <Fields
+            names={["reclamation_area", "reclamation_unit_type_code"]}
+            id="reclamation_area"
+            dropdownID="reclamation_unit_type_code"
+            component={RenderFieldWithDropdown}
+            disabled={props.isViewMode}
+            validate={[numberWithUnitCode]}
+            data={props.unitTypeOptions.filter(({ value }) => value === "HA")}
+          />
+        </Col>
+      </Row>
+      <br />
       <h4>Changes in and about a Stream</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
@@ -148,28 +172,7 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
-
       <h4>Reclamation Program</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Total area of planned reclamation this year
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("placer_operation.reclamation_area").value}
-              isVisible={props.renderOriginalValues("placer_operation.reclamation_area").edited}
-            />
-          </div>
-          <Fields
-            names={["reclamation_area", "reclamation_unit_type_code"]}
-            id="reclamation_area"
-            dropdownID="reclamation_unit_type_code"
-            component={RenderFieldWithDropdown}
-            disabled={props.isViewMode}
-            validate={[numberWithUnitCode]}
-            data={props.unitTypeOptions.filter(({ value }) => value === "HA")}
-          />
-        </Col>
-      </Row>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
