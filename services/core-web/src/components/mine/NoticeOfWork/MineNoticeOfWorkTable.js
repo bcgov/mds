@@ -131,10 +131,8 @@ export class MineNoticeOfWorkTable extends Component {
             <DocumentLink
               documentManagerGuid={text.document_manager_guid}
               documentName={text.filename}
-              onClickOverride={() =>
-                text.document_manager_guid
-                  ? this.props.openDocument(text.document_manager_guid, text.filename)
-                  : downloadNowDocument(text.id, record.now_application_guid, text.filename)
+              onClickAlternative={() =>
+                downloadNowDocument(text.id, record.now_application_guid, text.filename)
               }
               truncateDocumentName={false}
             />

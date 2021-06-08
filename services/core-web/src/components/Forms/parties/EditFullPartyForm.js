@@ -318,13 +318,13 @@ export class EditFullPartyForm extends Component {
           {isPerson && (
             <>
               <br />
-              <Divider />
-              <Row gutter={16}>
-                <Col span={24}>
-                  <h5>Assign Inspector Role</h5>
-                </Col>
-              </Row>
               <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Divider />
+                <Row gutter={16}>
+                  <Col span={24}>
+                    <h5>Assign Inspector Role</h5>
+                  </Col>
+                </Row>
                 <Row>
                   <p>
                     By setting this checkbox you grant inspector role to this party. Please note

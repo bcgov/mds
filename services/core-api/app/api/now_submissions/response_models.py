@@ -182,13 +182,11 @@ WATER_SOURCE_ACTIVITY = api.model(
         'seq_no': fields.Integer,
     })
 
-EQUIPMENT = api.model(
-    'EQUIPMENT', {
-        "equipmentid": fields.Integer,
-        "type": fields.String,
-        "size": fields.String,
-        "quantity": fields.Integer
-    })
+EQUIPMENT = api.model('EQUIPMENT', {
+    "type": fields.String,
+    "size": fields.String,
+    "quantity": fields.Integer
+})
 
 APPLICATION = api.model(
     'Application', {
