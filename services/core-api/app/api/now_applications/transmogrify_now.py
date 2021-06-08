@@ -280,6 +280,10 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     cbsfreclamation = mms_now_sub.cbsfreclamation or now_sub.cbsfreclamation
     cbsfreclamationcost = mms_now_sub.cbsfreclamationcost or now_sub.cbsfreclamationcost
     campbuildstgetotaldistarea = now_sub.campbuildstgetotaldistarea
+    fuellubstoremethodbulk = now_sub.fuellubstoremethodbulk
+    fuellubstoremethodbarrel = now_sub.fuellubstoremethodbarrel
+    fuellubstored = now_sub.fuellubstored
+
     fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
     if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
 
@@ -289,6 +293,9 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             total_disturbed_area=campbuildstgetotaldistarea,
             total_disturbed_area_unit_type_code='HA',
             has_fuel_stored=get_boolean_value(fuellubstoreonsite),
+            has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
+            volume_fuel_stored=fuellubstored,
+            has_fuel_stored_in_barrels=get_boolean_value(fuellubstoremethodbarrel)
         )
 
         campdisturbedarea = mms_now_sub.campdisturbedarea or now_sub.campdisturbedarea
@@ -329,6 +336,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
     cutlinesexplgriddisturbedarea = mms_now_sub.cutlinesexplgriddisturbedarea or now_sub.cutlinesexplgriddisturbedarea
     cutlinesexplgridtotallinekms = mms_now_sub.cutlinesexplgridtotallinekms or now_sub.cutlinesexplgridtotallinekms
     cutlinesexplgridtimbervolume = mms_now_sub.cutlinesexplgridtimbervolume or now_sub.cutlinesexplgridtimbervolume
+    cutlinesexplgriddisturbedarea = now_sub.cutlinesexplgriddisturbedarea
     if cutlinesreclamation or cutlinesreclamationcost or cutlinesexplgriddisturbedarea:
 
         clps = app_models.CutLinesPolarizationSurvey(
@@ -340,6 +348,7 @@ def _transmogrify_cut_lines_polarization_survey(now_app, now_sub, mms_now_sub):
         if cutlinesexplgridtotallinekms or cutlinesexplgridtimbervolume:
             clps_detial = app_models.CutLinesPolarizationSurveyDetail(
                 cut_line_length=cutlinesexplgridtotallinekms,
+                disturbed_area=cutlinesexplgriddisturbedarea,
                 timber_volume=cutlinesexplgridtimbervolume)
             clps.details.append(clps_detial)
 
@@ -700,6 +709,7 @@ def _transmogrify_sand_gravel_quarry_operations_activities(now_app, now_sub, mms
             reclamation_backfill_detail=sandgrvqryreclamationbackfill,
             reclamation_cost=sandgrvqryreclamationcost,
             average_groundwater_depth=sandgrvqrygrdwtravgdepth,
+            average_groundwater_depth_unit_type_code="MTR",
             has_groundwater_from_existing_area=get_boolean_value(sandgrvqrygrdwtrexistingareas),
             has_groundwater_from_test_pits=get_boolean_value(sandgrvqrygrdwtrtestpits),
             has_groundwater_from_test_wells=get_boolean_value(sandgrvqrygrdwtrtestwells),

@@ -45,8 +45,6 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'crown_grant_or_district_lot_numbers',
     'proposed_end_date',
     'tenure_number',
-    'ats_authorization_number',
-    'ats_project_number',
     'file_number_of_app',
     'original_start_date',
     'directions_to_site',

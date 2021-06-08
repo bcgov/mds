@@ -219,10 +219,13 @@ class Application(Base):
     sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))
     sandgrvqrydescription = db.Column(db.String)
 
+    # CUT LINES AND INDUCED POLARIZATION SURVEY 
     cutlinesexplgridtotallinekms = db.Column(db.Integer)
     cutlinesexplgridtimbervolume = db.Column(db.Numeric(14, 2))
     cutlinesreclamation = db.Column(db.String)
     cutlinesreclamationcost = db.Column(db.Numeric(14, 2))
+    cutlinesexplgriddisturbedarea = db.Column(db.Numeric(14, 2))
+
     pondswastewatertreatfacility = db.Column(db.String)
     freeusepermit = db.Column(db.String)
     licencetocut = db.Column(db.String)
@@ -248,7 +251,6 @@ class Application(Base):
     messagecreateddate = db.Column(db.DateTime)
     processed = db.Column(db.String)
     processeddate = db.Column(db.DateTime)
-    cutlinesexplgriddisturbedarea = db.Column(db.Numeric(14, 2))
     pondsrecycled = db.Column(db.String)
     pondsexfiltratedtoground = db.Column(db.String)
     pondsdischargedtoenv = db.Column(db.String)
