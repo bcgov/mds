@@ -53,8 +53,6 @@ class MineWorkInformationListResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-        current_app.logger.info(f'******************')
-        current_app.logger.info(f'{data}')
         work_start_date = data.get('work_start_date')
         work_stop_date = data.get('work_stop_date')
         work_comments = data.get('work_comments')
