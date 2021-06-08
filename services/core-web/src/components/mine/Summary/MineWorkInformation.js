@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Divider, Button, Descriptions, List, Popconfirm, Typography, Badge } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   fetchMineWorkInformations,
@@ -160,9 +161,12 @@ export class MineWorkInformation extends Component {
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
                 <Button
                   type="primary"
+                  size="small"
+                  ghost
                   onClick={() => this.openAddEditMineWorkInformationModal(info)}
+                  style={{ float: "right" }}
                 >
-                  Update
+                  <EditOutlined className="icon-lg icon-svg-filter" />
                 </Button>
               </AuthorizationWrapper>
               <AuthorizationWrapper permission={Permission.EDIT_MINES}>
@@ -173,7 +177,9 @@ export class MineWorkInformation extends Component {
                   okText="Delete"
                   cancelText="Cancel"
                 >
-                  <Button type="primary">Delete</Button>
+                  <Button type="primary" size="small" ghost style={{ float: "right" }}>
+                    <DeleteOutlined className="icon-lg icon-svg-filter" />
+                  </Button>
                 </Popconfirm>
               </AuthorizationWrapper>
             </Col>
@@ -220,7 +226,7 @@ export class MineWorkInformation extends Component {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col lg={12} md={24}>
+          <Col span={24}>
             {(!isEmpty(this.props.mineWorkInformations) && (
               <List
                 itemLayout="vertical"
