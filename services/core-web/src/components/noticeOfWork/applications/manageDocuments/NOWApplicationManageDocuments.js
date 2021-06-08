@@ -16,6 +16,7 @@ const propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isViewMode: PropTypes.bool,
+  noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
 };
 
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: true };
@@ -108,10 +109,7 @@ export const NOWApplicationManageDocuments = (props) => {
         isLoaded={props.isLoaded}
       >
         <NOWDocuments
-          documents={props.noticeOfWork.documents.filter(
-            ({ now_application_document_sub_type_code }) =>
-              now_application_document_sub_type_code === "GDO"
-          )}
+          documents={props.noticeOfWorkReviews.map((r) => r.documents).flat()}
           isViewMode={false}
           isAdminView
           allowAfterProcess

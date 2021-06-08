@@ -6,11 +6,13 @@ import { getFormValues } from "redux-form";
 import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
+  fetchNoticeOfWorkApplicationReviews,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
+  getNoticeOfWorkReviews,
 } from "@common/selectors/noticeOfWorkSelectors";
 import { getGeneratableNoticeOfWorkApplicationDocumentTypeOptions } from "@common/selectors/staticContentSelectors";
 import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
@@ -28,17 +30,22 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
+  fetchNoticeOfWorkApplicationReviews: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
   draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
+  noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
 };
 
 export class ManageDocumentsTab extends Component {
   state = {
     isInspectorsLoaded: true,
   };
+
+  componentDidMount = () =>
+    this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid);
 
   handleUpdateInspectors = (values, finalAction) => {
     this.setState({ isInspectorsLoaded: false });
@@ -97,6 +104,7 @@ export class ManageDocumentsTab extends Component {
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
             draftPermitAmendment={this.props.draftPermitAmendment}
+            noticeOfWorkReviews={this.props.noticeOfWorkReviews}
           />
         </div>
       </div>
@@ -111,6 +119,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
+  noticeOfWorkReviews: getNoticeOfWorkReviews(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -118,6 +127,7 @@ const mapDispatchToProps = (dispatch) =>
     {
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
+      fetchNoticeOfWorkApplicationReviews,
     },
     dispatch
   );
