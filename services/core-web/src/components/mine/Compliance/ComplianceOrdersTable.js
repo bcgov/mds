@@ -37,7 +37,7 @@ const fileColumns = [
         <DocumentLink
           documentManagerGuid={null}
           documentName={record.fileName}
-          onClickOverride={() =>
+          onClickAlternative={() =>
             downloadNrisDocument(record.externalId, record.inspectionId, record.fileName)
           }
         />
