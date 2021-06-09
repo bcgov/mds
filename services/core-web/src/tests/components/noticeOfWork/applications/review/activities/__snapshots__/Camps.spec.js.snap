@@ -2,6 +2,9 @@
 
 exports[`Camps renders properly 1`] = `
 <div>
+  <h4>
+    Activities
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
@@ -76,7 +79,7 @@ exports[`Camps renders properly 1`] = `
       <div
         className="field-title"
       >
-        Volume of fuel stored
+        Volume of fuel stored (litres)
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"

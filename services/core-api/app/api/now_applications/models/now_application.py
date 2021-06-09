@@ -55,6 +55,15 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
 
     now_tracking_number = db.Column(db.Integer)
+    proponent_submitted_permit_number = db.Column(db.String)
+    annual_summary_submitted = db.Column(db.Boolean)
+    is_first_year_of_multi = db.Column(db.Boolean)
+    ats_authorization_number = db.Column(db.Numeric)
+    ats_project_number = db.Column(db.Numeric)
+    unreclaimed_disturbance_previous_year = db.Column(db.Numeric)
+    disturbance_planned_reclamation = db.Column(db.Numeric)
+    file_number_of_app = db.Column(db.String)
+    original_start_date = db.Column(db.DateTime)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
     notice_of_work_type = db.relationship('NOWApplicationType', lazy='joined')

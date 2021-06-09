@@ -5,6 +5,219 @@ exports[`Blasting renders properly 1`] = `
   <Row
     gutter={16}
   >
+    <div
+      className="field-title"
+    >
+      Activities where blasting will occur
+    </div>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_access_roads"
+        label={
+          <React.Fragment>
+            Access roads, trails, heli pads, air strips and boat ramps
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_access_roads"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_camps"
+        label={
+          <React.Fragment>
+            Camps, Bldgs, Staging Areas and/or Fuel / Lubricants Storage
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_camps"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_surface_drilling"
+        label={
+          <React.Fragment>
+            Exploration Surface Drilling
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_surface_drilling"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_mech_trench"
+        label={
+          <React.Fragment>
+            Mechanical Trenching / Test Pits
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_mech_trench"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_seismic"
+        label={
+          <React.Fragment>
+            Seismic
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_seismic"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_bulk"
+        label={
+          <React.Fragment>
+            Surface Bulk Sample
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_bulk"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_underground_exploration"
+        label={
+          <React.Fragment>
+            Underground Exploration including Underground Bulk Sampling
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_underground_exploration"
+        type="checkbox"
+      />
+    </Col>
+    <Col
+      sm={24}
+    >
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="show_sand_gravel_quarry"
+        label={
+          <React.Fragment>
+            Sand & Gravel / Quarry Operations
+            <NOWOriginalValueTooltip
+              isVisible={true}
+              originalValue="N/A"
+              style={
+                Object {
+                  "marginLeft": "5px",
+                }
+              }
+            />
+          </React.Fragment>
+        }
+        name="show_sand_gravel_quarry"
+        type="checkbox"
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    On Site Storage of Explosives
+  </h4>
+  <Row
+    gutter={16}
+  >
     <Col
       md={12}
       sm={24}
@@ -12,7 +225,7 @@ exports[`Blasting renders properly 1`] = `
       <div
         className="field-title"
       >
-        On-site storage explosives
+        Proposing to store explosives on site?
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
@@ -29,107 +242,6 @@ exports[`Blasting renders properly 1`] = `
             [Function],
           ]
         }
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <Connect(AuthorizationWrapper)
-        inTesting={true}
-      >
-        <div
-          className="field-title"
-        >
-          Describe how the explosives will get to the site
-          <NOWOriginalValueTooltip
-            isVisible={true}
-            originalValue="N/A"
-            style={Object {}}
-          />
-        </div>
-        <Field
-          component={[Function]}
-          disabled={true}
-          id="describe_explosives_to_site"
-          name="describe_explosives_to_site"
-        />
-      </Connect(AuthorizationWrapper)>
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Explosive Magazine Storage and Use Permit
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="explosive_permit_issued"
-        name="explosive_permit_issued"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
-      />
-    </Col>
-  </Row>
-  <Row
-    gutter={16}
-  >
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Expiry Date
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="explosive_permit_expiry_date"
-        name="explosive_permit_expiry_date"
-      />
-    </Col>
-    <Col
-      md={12}
-      sm={24}
-    >
-      <div
-        className="field-title"
-      >
-        Permit Number
-        <NOWOriginalValueTooltip
-          isVisible={true}
-          originalValue="N/A"
-          style={Object {}}
-        />
-      </div>
-      <Field
-        component={[Function]}
-        disabled={true}
-        id="explosive_permit_number"
-        name="explosive_permit_number"
       />
     </Col>
   </Row>
