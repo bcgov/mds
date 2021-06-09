@@ -2,6 +2,7 @@
 import complianceReducerObject from "./reducers/complianceReducer";
 import authenticationReducerObject from "./reducers/authenticationReducer";
 import incidentReducerObject from "./reducers/incidentReducer";
+import workInformationReducerObject from "./reducers/workInformationReducer";
 import mineReducerObject from "./reducers/mineReducer";
 import minespaceReducerObject from "./reducers/minespaceReducer";
 import modalReducerObject from "./reducers/modalReducer";
@@ -20,6 +21,7 @@ import orgbookReducerObject from "./reducers/orgbookReducer";
 export const complianceReducer = complianceReducerObject;
 export const authenticationReducer = authenticationReducerObject;
 export const incidentReducer = incidentReducerObject;
+export const workInformationReducer = workInformationReducerObject;
 export const mineReducer = mineReducerObject;
 export const minespaceReducer = minespaceReducerObject;
 export const modalReducer = modalReducerObject;

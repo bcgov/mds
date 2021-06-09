@@ -8,12 +8,12 @@ import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
 import CustomAxios from "../customAxios";
 
-export const createMineWorkInformation = (mine_guid, payload) => (dispatch) => {
+export const createMineWorkInformation = (mineGuid, payload) => (dispatch) => {
   dispatch(request(reducerTypes.CREATE_MINE_WORK_INFORMATION));
   dispatch(showLoading("modal"));
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATIONS(mine_guid)}`,
+      `${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATIONS(mineGuid)}`,
       payload,
       createRequestHeader()
     )
@@ -32,11 +32,11 @@ export const createMineWorkInformation = (mine_guid, payload) => (dispatch) => {
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchMineWorkInformations = (mine_guid) => (dispatch) => {
+export const fetchMineWorkInformations = (mineGuid) => (dispatch) => {
   dispatch(request(reducerTypes.GET_MINE_WORK_INFORMATIONS));
   dispatch(showLoading());
   return CustomAxios()
-    .get(`${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATIONS(mine_guid)}`, createRequestHeader())
+    .get(`${ENVIRONMENT.apiUrl}${API.MINE_WORK_INFORMATIONS(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_WORK_INFORMATIONS));
       dispatch(workInformationActions.storeMineWorkInformations(response.data));
