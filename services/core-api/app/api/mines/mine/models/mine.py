@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import func, literal, select, desc
+from sqlalchemy import func, literal, select, desc, and_
 
 from geoalchemy2 import Geometry
 from app.extensions import db
@@ -186,9 +186,10 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @work_status.expression
     def work_status(cls):
         return func.coalesce(
-            select([MineWorkInformation.mine_work_status_code
-                    ]).where(MineWorkInformation.mine_guid == cls.mine_guid).order_by(
-                        desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
+            select([MineWorkInformation.mine_work_status_code]).where(
+                and_(MineWorkInformation.mine_guid == cls.mine_guid,
+                     MineWorkInformation.deleted_ind == False)).order_by(
+                         desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
             literal("UNKNOWN"))
 
     @classmethod
