@@ -303,7 +303,7 @@ NOW_APPLICATION_DATA = {
     "pondspillwaydesign": "str",
     "camphealthauthority": "str",
     "camphealthconsent": "str",
-    "proposedproductionunit": "str",
+    "proposedproductionunit": "tonnes",
     "placerstreamdiversion": "str",
     "sandgrvqrydescription": "str",
     "applicant": {
