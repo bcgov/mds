@@ -238,9 +238,6 @@ exports[`UndergroundExploration renders properly 1`] = `
           "data": Array [],
           "isUnit": true,
           "title": "Incline Unit",
-          "validate": Array [
-            [Function],
-          ],
           "value": "incline_unit_type_code",
         },
         Object {

@@ -212,6 +212,9 @@ exports[`Blasting renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <h4>
+    On Site Storage of Explosives
+  </h4>
   <Row
     gutter={16}
   >
@@ -222,7 +225,7 @@ exports[`Blasting renders properly 1`] = `
       <div
         className="field-title"
       >
-        On-site storage explosives
+        Proposing to store explosives on site?
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
