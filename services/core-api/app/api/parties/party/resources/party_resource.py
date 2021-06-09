@@ -137,7 +137,7 @@ class PartyResource(Resource, UserMixin):
 
         current_app.logger.info(f'Updating {existing_party} with {data}')
         for key, value in data.items():
-            if key in ['party_type_code']:
+            if key in ['party_type_code', 'signature']:
                 continue     # non-editable fields from put
             setattr(existing_party, key, value)
 
@@ -162,7 +162,7 @@ class PartyResource(Resource, UserMixin):
                 existing_party.party_guid, "INS")
 
             if existing_party.signature != signature:
-                existing_party = signature
+                existing_party.signature = signature
 
             if data.get("set_to_inspector"):
                 start_date = data.inspector_start_date if data.get(

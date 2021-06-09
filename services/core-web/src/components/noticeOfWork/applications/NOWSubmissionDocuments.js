@@ -93,10 +93,8 @@ export const NOWSubmissionDocuments = (props) => {
             <DocumentLink
               documentManagerGuid={record.document_manager_guid}
               documentName={record.filename}
-              onClickOverride={() =>
-                record.document_manager_guid
-                  ? props.openDocument(record.document_manager_guid, record.filename)
-                  : downloadNowDocument(record.key, record.now_application_guid, record.filename)
+              onClickAlternative={() =>
+                downloadNowDocument(record.key, record.now_application_guid, record.filename)
               }
             />
           </div>
