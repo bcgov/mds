@@ -275,7 +275,7 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       },
       {
         href: "additional-application-files",
-        title: "Additional Application Files",
+        title: "Application Documents",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
@@ -283,13 +283,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "government-documents",
         title: "Government Documents",
         alwaysVisible: true,
-        children: [],
-        applicationType: ["NOW"],
-      },
-      {
-        href: "generated-documents",
-        title: "Application Export Files",
-        alwaysVisible: hasPermitConditionsFlow,
         children: [],
         applicationType: ["NOW"],
       },

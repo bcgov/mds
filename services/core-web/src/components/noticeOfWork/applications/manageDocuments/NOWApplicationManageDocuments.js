@@ -44,13 +44,37 @@ export const NOWApplicationManageDocuments = (props) => {
         title="Application Documents"
         isLoaded={props.isLoaded}
       >
-        {/*  TODO should add map here from documents to submission_documents */}
         <NOWSubmissionDocuments
           now_application_guid={props.now_application_guid}
           documents={props.noticeOfWork.filtered_submission_documents.concat(
-            props.noticeOfWork.documents?.filter(({ now_application_document_sub_type_code }) =>
-              applicationFilesTypes.includes(now_application_document_sub_type_code)
-            )
+            props.noticeOfWork.documents
+              ?.filter(
+                ({
+                  now_application_document_sub_type_code,
+                  now_application_document_type_code,
+                  mine_document,
+                }) =>
+                  applicationFilesTypes.includes(now_application_document_sub_type_code) &&
+                  (now_application_document_type_code !== "PMT" ||
+                    now_application_document_type_code !== "PMA" ||
+                    mine_document.document_name.includes("DRAFT"))
+              )
+              .map((doc) => {
+                return {
+                  preamble_author: doc.preamble_author,
+                  preamble_date: doc.preamble_date,
+                  preamble_title: doc.preamble_title,
+                  now_application_document_xref_guid: doc.now_application_document_xref_guid,
+                  is_referral_package: doc.is_referral_package,
+                  is_final_package: doc.is_final_package,
+                  is_consultation_package: doc.is_consultation_package,
+                  description: doc.description,
+                  mine_document_guid: doc.mine_document.mine_document_guid,
+                  filename: doc.mine_document.document_name,
+                  document_manager_guid: doc.mine_document.document_manager_guid,
+                  notForImport: true,
+                };
+              })
           )}
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           displayTableDescription
@@ -82,7 +106,7 @@ export const NOWApplicationManageDocuments = (props) => {
           categoriesToShow={["GDO"]}
         />
       </ScrollContentWrapper>
-      {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (
+      {/* {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (
         <ScrollContentWrapper
           id="generated-documents"
           title="Application Export Files"
@@ -113,7 +137,7 @@ export const NOWApplicationManageDocuments = (props) => {
             addDescriptionColumn={false}
           />
         </ScrollContentWrapper>
-      )}
+      )} */}
       <ScrollContentWrapper
         id="referral-consultation-public-comment-documents"
         title="Referral, Consultation and Public Comment Documents"

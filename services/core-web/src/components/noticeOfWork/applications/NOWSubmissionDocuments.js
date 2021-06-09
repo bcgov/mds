@@ -71,6 +71,7 @@ const transformDocuments = (documents, importNowSubmissionDocumentsJob, now_appl
       document_manager_guid: document.document_manager_guid,
       mine_document_guid: document.mine_document_guid,
       importNowSubmissionDocument,
+      notForImport: document.notForImport,
     };
   });
 
@@ -179,7 +180,11 @@ export const NOWSubmissionDocuments = (props) => {
           let statusBadgeType = "warning";
           let statusText = "Not Started";
           let error = null;
-          if (record.mine_document_guid) {
+          console.log("record not for import" + record.notForImport);
+          if (record.notForImport) {
+            statusText = "N/A";
+            statusBadgeType = "success";
+          } else if (record.mine_document_guid) {
             statusBadgeType = "success";
             statusText = "Success";
           } else if (record.importNowSubmissionDocument) {
