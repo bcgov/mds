@@ -93,7 +93,7 @@ export class MineWorkInformation extends Component {
         <List.Item>
           <Row>
             <Col span={22}>
-              <Descriptions column={3} colon={false}>
+              <Descriptions column={5} colon={false}>
                 <Descriptions.Item label="Work Status">
                   <Badge status={getWorkInformationBadgeStatusType(status)} text={status} />
                 </Descriptions.Item>
@@ -146,16 +146,23 @@ export class MineWorkInformation extends Component {
                 >
                   {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
                 </Descriptions.Item>
-                <Descriptions.Item label="Comments" span={3}>
+              </Descriptions>
+              <Descriptions column={1} colon={false}>
+                <Descriptions.Item label="Comments" span={1}>
                   {info.work_comments || Strings.NOT_APPLICABLE}
                 </Descriptions.Item>
               </Descriptions>
-              <Descriptions style={{ float: "right" }} column={2} colon={false}>
-                <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
-                <Descriptions.Item label="Last Updated">
-                  {formatDateTime(info.updated_timestamp)}
-                </Descriptions.Item>
-              </Descriptions>
+              {/* NOTE: Ant Design has no easy way to right-align "Descriptions" so plain HTML tags are used here. */}
+              <span style={{ float: "right", display: "inline-flex" }}>
+                <div className="inline-flex padding-sm" style={{ marginRight: 10 }}>
+                  <p className="field-title">Updated By</p>
+                  <p>{info.updated_by}</p>
+                </div>
+                <div className="inline-flex padding-sm">
+                  <p className="field-title">Last Updated</p>
+                  <p>{formatDateTime(info.updated_timestamp)}</p>
+                </div>
+              </span>
             </Col>
             <Col span={2}>
               <span style={{ float: "right" }}>
