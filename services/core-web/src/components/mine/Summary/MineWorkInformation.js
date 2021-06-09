@@ -207,7 +207,7 @@ export class MineWorkInformation extends Component {
           }}
         >
           <Button onClick={() => this.setState((prevState) => ({ showAll: !prevState.showAll }))}>
-            Show {this.state.showAll ? "Less" : "All"}
+            {this.state.showAll ? "Hide" : "Show"} Work History
           </Button>
         </div>
       );
@@ -216,16 +216,18 @@ export class MineWorkInformation extends Component {
       <>
         <Row>
           <Col span={24}>
-            <h4>Work Information</h4>
-            <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-              <AddButton
-                onClick={() => this.openAddEditMineWorkInformationModal()}
-                style={{ float: "right" }}
-              >
-                Add Work Information
-              </AddButton>
-            </AuthorizationWrapper>
-            <Divider />
+            <h4>
+              Work Information
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                <AddButton
+                  onClick={() => this.openAddEditMineWorkInformationModal()}
+                  style={{ float: "right" }}
+                >
+                  Add Work Information
+                </AddButton>
+              </AuthorizationWrapper>
+            </h4>
+            <Divider style={{ margin: "0" }} />
           </Col>
         </Row>
         <Row gutter={16}>
