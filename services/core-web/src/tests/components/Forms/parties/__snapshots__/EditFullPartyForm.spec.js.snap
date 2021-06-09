@@ -311,21 +311,21 @@ exports[`EditFullPartyForm renders properly 1`] = `
       />
     </Row>
     <br />
-    <Divider />
-    <Row
-      gutter={16}
-    >
-      <Col
-        span={24}
-      >
-        <h5>
-          Assign Inspector Role
-        </h5>
-      </Col>
-    </Row>
     <Connect(AuthorizationWrapper)
       permission="role_admin"
     >
+      <Divider />
+      <Row
+        gutter={16}
+      >
+        <Col
+          span={24}
+        >
+          <h5>
+            Assign Inspector Role
+          </h5>
+        </Col>
+      </Row>
       <Row>
         <p>
           By setting this checkbox you grant inspector role to this party. Please note that removing this checkbox will not delete party from associated entities.
