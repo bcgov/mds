@@ -406,6 +406,8 @@ class NOWApplicationFactory(BaseFactory):
     now_tracking_number = factory.fuzzy.FuzzyInteger(1, 100)
     proponent_submitted_permit_number = factory.Sequence(lambda n: str(n))
     ats_authorization_number = factory.fuzzy.FuzzyInteger(1, 10000)
+    unreclaimed_disturbance_previous_year = factory.fuzzy.FuzzyInteger(1, 10000)
+    disturbance_planned_reclamation = factory.fuzzy.FuzzyInteger(1, 10000)
     ats_project_number = factory.fuzzy.FuzzyInteger(1, 10000)
     file_number_of_app = factory.Sequence(lambda n: str(n))
     original_start_date = factory.Faker('past_datetime')

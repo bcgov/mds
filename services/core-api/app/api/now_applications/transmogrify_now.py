@@ -112,6 +112,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
 
     now_app.is_pre_launch = now_sub.is_pre_launch
     now_app.proponent_submitted_permit_number = now_sub.permitnumber
+    now_app.annual_summary_submitted = get_boolean_value(now_sub.annualsummarysubmitted)
+    now_app.is_first_year_of_multi = get_boolean_value(now_sub.firstyearofmulti)
     now_app.ats_authorization_number = now_sub.atsauthorizationnumber
     now_app.ats_project_number = now_sub.atsprojectnumber
     now_app.file_number_of_app = now_sub.filenumberofappl
@@ -563,6 +565,10 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
     pondsdischargedtoenv = mms_now_sub.pondsdischargedtoenv or now_sub.pondsdischargedtoenv
     pondswastewatertreatfacility = now_sub.pondswastewatertreatfacility
     cleanoutdisposalplan = now_sub.cleanoutdisposalplan
+    pondtypeofsediment = now_sub.pondtypeofsediment
+    pondtypeconstruction = now_sub.pondtypeconstruction
+    pondarea = now_sub.pondarea
+    pondspillwaydesign = now_sub.pondspillwaydesign
 
     if pondsreclamation or pondsreclamationcost or pondstotaldistarea or pondsexfiltratedtoground or pondsrecycled or pondsdischargedtoenv or pondswastewatertreatfacility or cleanoutdisposalplan:
         settling_pond = app_models.SettlingPond(
@@ -574,7 +580,12 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
             is_ponds_recycled=get_boolean_value(pondsrecycled),
             is_ponds_discharged=get_boolean_value(pondsdischargedtoenv),
             wastewater_facility_description=pondswastewatertreatfacility,
-            disposal_from_clean_out=cleanoutdisposalplan)
+            disposal_from_clean_out=cleanoutdisposalplan,
+            sediment_control_structure_description=pondtypeofsediment,
+            decant_structure_description=pondtypeconstruction,
+            water_discharged_description=pondarea,
+            spillway_design_description=pondspillwaydesign
+)
 
         proposed_settling_pond = now_sub.proposed_settling_pond
 

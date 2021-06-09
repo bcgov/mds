@@ -262,7 +262,6 @@ export const UndergroundExploration = (props) => {
             value: "incline_unit_type_code",
             component: RenderSelect,
             data: props.unitTypeOptions.filter(({ value }) => value === "PER" || value === "DEG"),
-            validate: [required],
             isUnit: true,
           },
           {

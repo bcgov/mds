@@ -23,6 +23,7 @@ import {
   maxLength,
   requiredRadioButton,
   validateSelectOptions,
+  number,
 } from "@common/utils/Validate";
 import CustomPropTypes from "@/customPropTypes";
 import RenderField from "@/components/common/RenderField";
@@ -74,6 +75,7 @@ const propTypes = {
   isNoticeOfWorkTypeDisabled: PropTypes.bool.isRequired,
   editableApplicationTypeOptions: CustomPropTypes.options.isRequired,
   typeOfApplication: PropTypes.string.isRequired,
+  applicationPermitType: PropTypes.string.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -200,6 +202,26 @@ export const ReviewNOWApplication = (props) => {
               disabled={props.isViewMode}
               validate={[validateSelectOptions(props.permitTypeOptions)]}
             />
+            {props.applicationPermitType === "MY-ABP" && (
+              <>
+                <div className="field-title">
+                  Is this the first year of multi-year, area based application?
+                  <NOWOriginalValueTooltip
+                    originalValue={renderCodeValues(
+                      props.permitTypeHash,
+                      props.renderOriginalValues("is_first_year_of_multi").value
+                    )}
+                    isVisible={props.renderOriginalValues("is_first_year_of_multi").edited}
+                  />
+                </div>
+                <Field
+                  id="is_first_year_of_multi"
+                  name="is_first_year_of_multi"
+                  component={RenderRadioButtons}
+                  disabled={props.isViewMode}
+                />
+              </>
+            )}
             <div className="field-title">
               Type of Application
               <NOWOriginalValueTooltip
@@ -232,6 +254,20 @@ export const ReviewNOWApplication = (props) => {
                   name="proponent_submitted_permit_number"
                   component={RenderField}
                   disabled
+                />
+                <div className="field-title">
+                  Annual Summary submitted for this site?
+                  {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                  <NOWOriginalValueTooltip
+                    originalValue={props.renderOriginalValues("annual_summary_submitted").value}
+                    isVisible={props.renderOriginalValues("annual_summary_submitted").edited}
+                  />
+                </div>
+                <Field
+                  id="annual_summary_submitted"
+                  name="annual_summary_submitted"
+                  component={RenderRadioButtons}
+                  disabled={props.isViewMode}
                 />
               </>
             )}
@@ -378,80 +414,6 @@ export const ReviewNOWApplication = (props) => {
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Directions to Site
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("directions_to_site").value}
-              isVisible={props.renderOriginalValues("directions_to_site").edited}
-            />
-          </div>
-          <Field
-            id="directions_to_site"
-            name="directions_to_site"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Do you have the required access authorizations in place?
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
-              isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
-            />
-          </div>
-          <Field
-            id="has_req_access_authorizations"
-            name="has_req_access_authorizations"
-            component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Do you need to build a road, create stream crossings or other surface disturbance that
-            will not be on your tenure?
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("has_surface_disturbance_outside_tenure").value
-              }
-              isVisible={
-                props.renderOriginalValues("has_surface_disturbance_outside_tenure").edited
-              }
-            />
-          </div>
-          <Field
-            id="has_surface_disturbance_outside_tenure"
-            name="has_surface_disturbance_outside_tenure"
-            component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title--light">
-            Provide the type and authorization numbers for each access authorization application or
-            exemption to use the road(s).
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={props.renderOriginalValues("req_access_authorization_numbers").value}
-              isVisible={props.renderOriginalValues("req_access_authorization_numbers").edited}
-            />
-          </div>
-          <Field
-            id="req_access_authorization_numbers"
-            name="req_access_authorization_numbers"
-            component={RenderField}
-            disabled={props.isViewMode}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
             Access presently gated
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
@@ -479,6 +441,82 @@ export const ReviewNOWApplication = (props) => {
             id="has_key_for_inspector"
             name="has_key_for_inspector"
             component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Directions to the site from the nearest municipality
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("directions_to_site").value}
+              isVisible={props.renderOriginalValues("directions_to_site").edited}
+            />
+          </div>
+          <Field
+            id="directions_to_site"
+            name="directions_to_site"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+            validate={[maxLength(4000)]}
+          />
+        </Col>
+      </Row>
+      <br />
+      <h4>Access to Tenure</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Do you need to build a road, create stream crossings or other surface disturbance that
+            will not be on your tenure?
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("has_surface_disturbance_outside_tenure").value
+              }
+              isVisible={
+                props.renderOriginalValues("has_surface_disturbance_outside_tenure").edited
+              }
+            />
+          </div>
+          <Field
+            id="has_surface_disturbance_outside_tenure"
+            name="has_surface_disturbance_outside_tenure"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Do you have the required access authorizations in place?
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
+              isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
+            />
+          </div>
+          <Field
+            id="has_req_access_authorizations"
+            name="has_req_access_authorizations"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Provide the type and authorization numbers for each access authorization application or
+            exemption to use the road(s).
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("req_access_authorization_numbers").value}
+              isVisible={props.renderOriginalValues("req_access_authorization_numbers").edited}
+            />
+          </div>
+          <Field
+            id="req_access_authorization_numbers"
+            name="req_access_authorization_numbers"
+            component={RenderField}
             disabled={props.isViewMode}
           />
         </Col>
@@ -646,6 +684,47 @@ export const ReviewNOWApplication = (props) => {
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
+              Proposed activities on private land
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("state_of_land.is_on_private_land").value}
+                isVisible={props.renderOriginalValues("state_of_land.is_on_private_land").edited}
+              />
+            </div>
+            <Field
+              id="is_on_private_land"
+              name="is_on_private_land"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Legal Description of the land
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").edited
+                }
+              />
+            </div>
+            <Field
+              id="arch_site_protection_plan"
+              name="arch_site_protection_plan"
+              component={RenderField}
+              disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
               Activities in park
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
@@ -658,24 +737,6 @@ export const ReviewNOWApplication = (props) => {
             <Field
               id="has_activity_in_park"
               name="has_activity_in_park"
-              component={RenderRadioButtons}
-              disabled={props.isViewMode}
-            />
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <div className="field-title">
-              Proposed activities on private land
-              {props.isPreLaunch && <NOWFieldOriginTooltip />}
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("state_of_land.is_on_private_land").value}
-                isVisible={props.renderOriginalValues("state_of_land.is_on_private_land").edited}
-              />
-            </div>
-            <Field
-              id="is_on_private_land"
-              name="is_on_private_land"
               component={RenderRadioButtons}
               disabled={props.isViewMode}
             />
@@ -773,6 +834,28 @@ export const ReviewNOWApplication = (props) => {
           </Col>
           <Col md={12} sm={24}>
             <div className="field-title">
+              Describe your First Nations engagement activities
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.fn_engagement_activities").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.fn_engagement_activities").edited
+                }
+              />
+            </div>
+            <Field
+              id="fn_engagement_activities"
+              name="fn_engagement_activities"
+              component={RenderAutoSizeField}
+              disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
               As a result of the engagement, are you aware of any cultural heritage resources in the
               area where the work is proposed?
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
@@ -791,28 +874,6 @@ export const ReviewNOWApplication = (props) => {
               id="has_fn_cultural_heritage_sites_in_area"
               name="has_fn_cultural_heritage_sites_in_area"
               component={RenderRadioButtons}
-              disabled={props.isViewMode}
-            />
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <div className="field-title">
-              Describe your First Nations engagement activities
-              {props.isPreLaunch && <NOWFieldOriginTooltip />}
-              <NOWOriginalValueTooltip
-                originalValue={
-                  props.renderOriginalValues("state_of_land.fn_engagement_activities").value
-                }
-                isVisible={
-                  props.renderOriginalValues("state_of_land.fn_engagement_activities").edited
-                }
-              />
-            </div>
-            <Field
-              id="fn_engagement_activities"
-              name="fn_engagement_activities"
-              component={RenderAutoSizeField}
               disabled={props.isViewMode}
             />
           </Col>
@@ -935,6 +996,45 @@ export const ReviewNOWApplication = (props) => {
       </Row>
       <br />
       <ReclamationSummary summary={props.reclamationSummary} />
+      <br />
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Unreclaimed disturbance from previous year (ha)
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("unreclaimed_disturbance_previous_year").value
+              }
+              isVisible={props.renderOriginalValues("unreclaimed_disturbance_previous_year").edited}
+            />
+          </div>
+          <Field
+            id="unreclaimed_disturbance_previous_year"
+            name="unreclaimed_disturbance_previous_year"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Disturbance planned for reclamation this year (ha)
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("disturbance_planned_reclamation").value}
+              isVisible={props.renderOriginalValues("disturbance_planned_reclamation").edited}
+            />
+          </div>
+          <Field
+            id="disturbance_planned_reclamation"
+            name="disturbance_planned_reclamation"
+            component={RenderField}
+            disabled={props.isViewMode}
+            validate={[number]}
+          />
+        </Col>
+      </Row>
     </div>
   );
 
@@ -1020,6 +1120,7 @@ export default compose(
     proposedStartDate: selector(state, "proposed_start_date"),
     proposedAuthorizationEndDate: selector(state, "proposed_end_date"),
     typeOfApplication: selector(state, "type_of_application"),
+    applicationPermitType: selector(state, "application_permit_type_code"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),

@@ -208,10 +208,11 @@ export const Blasting = (props) => {
         </Col>
       </Row>
       <br />
+      <h4>On Site Storage of Explosives</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            On-site storage explosives
+            Proposing to store explosives on site?
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("blasting_operation.has_storage_explosive_on_site").value
@@ -265,10 +266,11 @@ export const Blasting = (props) => {
       </Row>
       {props.blastingFormValues.has_storage_explosive_on_site && (
         <>
+          <h4>Explosives Magazine Storage and Use Permit</h4>
           <Row gutter={16}>
             <Col md={12} sm={24}>
               <div className="field-title">
-                Explosive Magazine Storage and Use Permit
+                Has BC Explosive Magazine Storage and Use Permit been issued?
                 <NOWOriginalValueTooltip
                   originalValue={
                     props.renderOriginalValues("blasting_operation.explosive_permit_issued").value
