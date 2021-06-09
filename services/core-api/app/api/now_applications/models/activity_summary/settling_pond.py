@@ -20,6 +20,10 @@ class SettlingPond(ActivitySummaryBase):
     proponent_pond_name = db.Column(db.String)
     wastewater_facility_description = db.Column(db.String)
     disposal_from_clean_out = db.Column(db.String)
+    sediment_control_structure_description = db.Column(db.String)
+    decant_structure_description = db.Column(db.String)
+    water_discharged_description = db.Column(db.String)
+    spillway_design_description = db.Column(db.String)
 
     is_ponds_exfiltrated = db.Column(db.Boolean, nullable=False, default=False)
     is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)

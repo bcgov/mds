@@ -878,7 +878,8 @@ export class ProcessPermit extends Component {
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
       this.props.noticeOfWork.now_application_status_code === rejectedCode ||
-      this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode;
+      this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode ||
+      this.props.noticeOfWork.now_application_status_code === withdrawnCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (
