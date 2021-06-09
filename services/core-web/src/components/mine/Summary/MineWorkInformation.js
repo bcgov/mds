@@ -92,7 +92,7 @@ export class MineWorkInformation extends Component {
       return (
         <List.Item>
           <Row>
-            <Col span={20}>
+            <Col span={22}>
               <Descriptions column={3} colon={false}>
                 <Descriptions.Item label="Work Status">
                   <Badge status={getWorkInformationBadgeStatusType(status)} text={status} />
@@ -150,38 +150,41 @@ export class MineWorkInformation extends Component {
                   {info.work_comments || Strings.NOT_APPLICABLE}
                 </Descriptions.Item>
               </Descriptions>
-              <Descriptions column={2} colon={false}>
+              <Descriptions style={{ float: "right" }} column={2} colon={false}>
                 <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
                 <Descriptions.Item label="Last Updated">
                   {formatDateTime(info.updated_timestamp)}
                 </Descriptions.Item>
               </Descriptions>
             </Col>
-            <Col span={4}>
-              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-                <Button
-                  type="primary"
-                  size="small"
-                  ghost
-                  onClick={() => this.openAddEditMineWorkInformationModal(info)}
-                  style={{ float: "right" }}
-                >
-                  <EditOutlined className="icon-lg icon-svg-filter" />
-                </Button>
-              </AuthorizationWrapper>
-              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-                <Popconfirm
-                  placement="topLeft"
-                  title="Are you sure you want to delete this record?"
-                  onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
-                  okText="Delete"
-                  cancelText="Cancel"
-                >
-                  <Button type="primary" size="small" ghost style={{ float: "right" }}>
-                    <DeleteOutlined className="icon-lg icon-svg-filter" />
+            <Col span={2}>
+              <span style={{ float: "right" }}>
+                <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                  <Button
+                    type="primary"
+                    size="small"
+                    ghost
+                    onClick={() => this.openAddEditMineWorkInformationModal(info)}
+                  >
+                    <EditOutlined className="icon-lg icon-svg-filter" />
                   </Button>
-                </Popconfirm>
-              </AuthorizationWrapper>
+                </AuthorizationWrapper>
+                <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                  <Popconfirm
+                    placement="topLeft"
+                    title="Are you sure you want to delete this record?"
+                    onConfirm={() =>
+                      this.deleteMineWorkInformation(info.mine_work_information_guid)
+                    }
+                    okText="Delete"
+                    cancelText="Cancel"
+                  >
+                    <Button type="primary" size="small" ghost>
+                      <DeleteOutlined className="icon-lg icon-svg-filter" />
+                    </Button>
+                  </Popconfirm>
+                </AuthorizationWrapper>
+              </span>
             </Col>
           </Row>
         </List.Item>
