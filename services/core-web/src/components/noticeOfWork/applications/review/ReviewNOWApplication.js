@@ -332,7 +332,7 @@ export const ReviewNOWApplication = (props) => {
               component={RenderField}
               disabled={props.isViewMode}
             />
-            <div className="field-title">
+            {/* <div className="field-title">
               Description of Land
               <NOWOriginalValueTooltip
                 originalValue={props.renderOriginalValues("description_of_land").value}
@@ -345,7 +345,7 @@ export const ReviewNOWApplication = (props) => {
               component={RenderAutoSizeField}
               disabled={props.isViewMode}
               validate={[maxLength(4000)]}
-            />
+            /> */}
             <ReviewApplicationFeeContent
               initialValues={props.noticeOfWork}
               isViewMode={props.isViewMode}
@@ -705,18 +705,33 @@ export const ReviewNOWApplication = (props) => {
               Legal Description of the land
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
-                originalValue={
-                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").value
-                }
-                isVisible={
-                  props.renderOriginalValues("state_of_land.arch_site_protection_plan").edited
-                }
+                originalValue={props.renderOriginalValues("description_of_land").value}
+                isVisible={props.renderOriginalValues("description_of_land").edited}
               />
             </div>
             <Field
-              id="arch_site_protection_plan"
-              name="arch_site_protection_plan"
-              component={RenderField}
+              id="description_of_land"
+              name="description_of_land"
+              component={RenderAutoSizeField}
+              disabled={props.isViewMode}
+              validate={[maxLength(4000)]}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Proposed activities on crown land
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={props.renderOriginalValues("state_of_land.is_on_crown_land").value}
+                isVisible={props.renderOriginalValues("state_of_land.is_on_crown_land").edited}
+              />
+            </div>
+            <Field
+              id="is_on_crown_land"
+              name="is_on_crown_land"
+              component={RenderRadioButtons}
               disabled={props.isViewMode}
             />
           </Col>

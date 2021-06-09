@@ -133,6 +133,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     recreational_trail_use_description = now_sub.recreationuse
     has_activity_in_park = get_boolean_value(now_sub.isparkactivities)
     is_on_private_land = get_boolean_value(now_sub.isonprivateland)
+    is_on_crown_land = get_boolean_value(now_sub.oncrownland)
     has_auth_lieutenant_gov_council = get_boolean_value(now_sub.hasltgovauthorization)
     arch_site_protection_plan = now_sub.archaeologicalprotectionplan
     has_shared_info_with_fn = get_boolean_value(now_sub.hasengagedfirstnations)
@@ -152,6 +153,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             recreational_trail_use_description=recreational_trail_use_description,
             has_activity_in_park=has_activity_in_park,
             is_on_private_land=is_on_private_land,
+            is_on_crown_land=is_on_crown_land,
             has_auth_lieutenant_gov_council=has_auth_lieutenant_gov_council,
             arch_site_protection_plan=arch_site_protection_plan,
             has_shared_info_with_fn=has_shared_info_with_fn,

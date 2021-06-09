@@ -59,6 +59,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.type_of_vegetation_description',
     'state_of_land.has_activity_in_park',
     'state_of_land.is_on_private_land',
+    'state_of_land.is_on_crown_land',
     'state_of_land.has_auth_lieutenant_gov_council',
     'state_of_land.has_fn_cultural_heritage_sites_in_area',
     'state_of_land.fn_engagement_activities',

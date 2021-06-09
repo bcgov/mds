@@ -290,6 +290,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'has_fn_cultural_heritage_sites_in_area': fields.Boolean,
         'has_activity_in_park': fields.Boolean,
         'is_on_private_land': fields.Boolean,
+        'is_on_crown_land': fields.Boolean,
         'has_auth_lieutenant_gov_council': fields.Boolean,
     })
 

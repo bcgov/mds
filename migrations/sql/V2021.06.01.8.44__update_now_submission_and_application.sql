@@ -36,3 +36,6 @@ ADD COLUMN IF NOT EXISTS is_first_year_of_multi boolean,
 ADD COLUMN IF NOT EXISTS unreclaimed_disturbance_previous_year numeric,
 ADD COLUMN IF NOT EXISTS disturbance_planned_reclamation numeric,
 ADD COLUMN IF NOT EXISTS original_start_date varchar;
+
+
+ALTER TABLE state_of_land ADD COLUMN is_on_crown_land boolean;
