@@ -72,7 +72,7 @@ class MineWorkInformationResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the work information belongs to.',
             'mine_work_information_guid': 'The GUID of the work information to delete.'
         })
-    @requires_role_mine_admin
+    @requires_any_of([MINE_EDIT])
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, mine_work_information_guid):
         mine_work_information = MineWorkInformation.find_by_mine_work_information_guid(
