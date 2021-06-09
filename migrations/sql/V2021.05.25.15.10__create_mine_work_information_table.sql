@@ -48,5 +48,3 @@ CREATE TABLE IF NOT EXISTS mine_work_information (
 );
 
 ALTER TABLE mine_work_information OWNER TO mds;
-
--- Create indexes
