@@ -366,7 +366,7 @@ APPLICATION = api.model(
         'atsauthorizationnumber': fields.Arbitrary,
         'atsprojectnumber': fields.Arbitrary,
         'filenumberofappl': fields.String,
-        'originalstartdate': fields.String,
+        'originalstartdate': fields.DateTime,
         'annualsummarysubmitted': fields.String,
         'firstyearofmulti': fields.String,
         'authorizationdetail': fields.String,

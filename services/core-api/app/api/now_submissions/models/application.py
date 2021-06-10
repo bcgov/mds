@@ -266,7 +266,7 @@ class Application(Base):
     atsauthorizationnumber = db.Column(db.Numeric)
     atsprojectnumber = db.Column(db.Numeric)
     filenumberofappl = db.Column(db.String)
-    originalstartdate = db.Column(db.String)
+    originalstartdate = db.Column(db.DateTime)
     annualsummarysubmitted = db.Column(db.String)
     firstyearofmulti = db.Column(db.String)
     authorizationdetail = db.Column(db.String)
