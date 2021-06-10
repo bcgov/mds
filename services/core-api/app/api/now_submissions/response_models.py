@@ -376,7 +376,7 @@ APPLICATION = api.model(
         'licenceofoccupation': fields.String,
         'noticeservedtoprivate': fields.String,
         'sandgrvqryprogressivereclam': fields.String,
-        'sandgrvqrymaxunreclaimed': fields.String,
+        'sandgrvqrymaxunreclaimed': fields.Arbitrary,
         'pondtypeofsediment': fields.String,
         'pondtypeconstruction': fields.String,
         'pondarea': fields.String,

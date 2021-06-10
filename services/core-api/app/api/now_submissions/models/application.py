@@ -213,7 +213,7 @@ class Application(Base):
     sandgrvqryimpactprevtdust = db.Column(db.String)
     sandgrvqryimpactminvisual = db.Column(db.String)
     sandgrvqryprogressivereclam = db.Column(db.String)
-    sandgrvqrymaxunreclaimed = db.Column(db.String)
+    sandgrvqrymaxunreclaimed = db.Column(db.Numeric)
     yearroundseasonal = db.Column(db.String)
     sandgrvqrytotaldistarea = db.Column(db.Numeric(14, 2))
     sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))

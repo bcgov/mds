@@ -35,7 +35,6 @@ def get_boolean_value(field):
         result = field == 'Yes'
     return result
 
-
 def transmogrify_now(now_application_identity, include_contacts=False):
     now_sub = sub_models.Application.find_by_messageid(
         now_application_identity.messageid) or sub_models.Application()
@@ -470,7 +469,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
                     length=detail.length,
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
-                    number_of_sites=getattr(detail, 'numberofsites', None)
+                    number_of_sites=detail.numberofsites
                 ))
 
 

@@ -296,7 +296,7 @@ NOW_APPLICATION_DATA = {
     "licenceofoccupation": "str",
     "noticeservedtoprivate": "str",
     "sandgrvqryprogressivereclam": "str",
-    "sandgrvqrymaxunreclaimed": "str",
+    "sandgrvqrymaxunreclaimed": 0,
     "pondtypeofsediment": "str",
     "pondtypeconstruction": "str",
     "pondarea": "str",

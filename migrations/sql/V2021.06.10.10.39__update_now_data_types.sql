@@ -1,0 +1,1 @@
+ALTER TABLE now_submissions.application ALTER COLUMN sandgrvqrymaxunreclaimed numeric;
