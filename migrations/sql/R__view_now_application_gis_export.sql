@@ -40,6 +40,9 @@ AS SELECT
     nap_ref.start_date AS now_progress_referral_start_date,
     nap_ref.end_date AS now_progress_referral_end_date,
 
+    -- Notice of Work Client Delay
+    nad.now_application_client_delay_days AS now_application_client_delay_days,
+
     -- Permit
     -- TODO: Do we need to determine and provide "permit approved date" and "permit expiry date"?
     p.permit_guid::varchar AS permit_guid,
@@ -165,6 +168,12 @@ AS SELECT
         FROM now_application_progress
         WHERE application_progress_status_code = 'REF'
     ) nap_ref ON nap_ref.now_application_id = nai.now_application_id
+    LEFT JOIN LATERAL (
+        SELECT
+            SUM(DATE_PART('day', COALESCE(end_date, NOW()) - start_date) + 1) AS now_application_client_delay_days
+        FROM now_application_delay
+        WHERE now_application_delay.now_application_guid = nai.now_application_guid
+    ) nad ON true
     LEFT JOIN mine_operation_status_code mos ON msx.mine_operation_status_code::text = mos.mine_operation_status_code::text
     LEFT JOIN mine_operation_status_reason_code mosr ON msx.mine_operation_status_reason_code::text = mosr.mine_operation_status_reason_code::text
     LEFT JOIN mine_operation_status_sub_reason_code mossr ON msx.mine_operation_status_sub_reason_code::text = mossr.mine_operation_status_sub_reason_code::text
@@ -226,6 +235,9 @@ AS SELECT
     now_progress_review_end_date,
     now_progress_referral_start_date,
     now_progress_referral_end_date,
+
+    -- Notice of Work Client Delay
+    now_application_client_delay_days,
 
     -- Permit
     p.permit_guid,

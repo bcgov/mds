@@ -46,6 +46,9 @@ class NowApplicationGisExport(Base):
     now_progress_referral_start_date = db.Column(db.String)
     now_progress_referral_end_date = db.Column(db.String)
 
+    # Notice of Work Application Delay
+    now_application_client_delay_days = db.Column(db.String)
+
     # Permit
     permit_guid = db.Column(db.String)
     permit_no = db.Column(db.String)
