@@ -97,6 +97,10 @@ class NowApplicationGisExport(Base):
     mine_work_stop_date = db.Column(db.String)
     mine_work_comments = db.Column(db.String)
 
+    # Mine Inspection Data
+    last_inspection_date = db.Column(db.String)
+    last_inspection_type = db.Column(db.String)
+
     # Bonds
     bond_guids = db.Column(db.String)
     bond_amounts = db.Column(db.String)

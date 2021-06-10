@@ -95,6 +95,10 @@ AS SELECT
     mwi.mine_work_status_code AS mine_work_status_code,
     mws.description AS mine_work_status_description,
     
+    -- Mine Inspection Data
+    nris_i.inspection_date AS last_inspection_date,
+    nris_it.inspection_type_code AS last_inspection_type,
+    
     -- Bonds
     array_to_string(array_agg(DISTINCT b.bond_guid), ','::text) AS bond_guids,
     array_to_string(array_agg(DISTINCT b.amount), ','::text) AS bond_amounts,
@@ -169,7 +173,17 @@ AS SELECT
     LEFT JOIN mine_type_detail_xref mtdx ON mt.mine_type_guid = mtdx.mine_type_guid AND mtdx.active_ind = true
     LEFT JOIN mine_disturbance_code mdc ON mtdx.mine_disturbance_code::text = mdc.mine_disturbance_code::text
     LEFT JOIN mine_commodity_code mcc ON mtdx.mine_commodity_code::text = mcc.mine_commodity_code::TEXT
-    
+    LEFT JOIN LATERAL (
+        SELECT
+            mine_no,
+            inspection_date,
+            inspection_type_id
+        FROM nris.inspection
+        WHERE mine_no = m.mine_no
+        ORDER BY inspection_date DESC LIMIT 1
+    ) nris_i ON true
+    LEFT JOIN nris.inspection_type nris_it ON nris_i.inspection_type_id = nris_it.inspection_type_id
+
     WHERE m.deleted_ind = false
     AND now_number IS NOT NULL
     AND nai.now_application_id IS NOT NULL
@@ -252,4 +266,8 @@ AS SELECT
     mine_work_stop_date,
     mine_work_comments,
     mwi.mine_work_status_code,
-    mine_work_status_description;
+    mine_work_status_description,
+
+    -- Mine Inspection Data
+    last_inspection_date,
+    last_inspection_type;
