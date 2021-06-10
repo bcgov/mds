@@ -30,8 +30,6 @@ parameters:
     value: "http://docman:5001"
   - name: MINESPACE_SERVICE_URL
     value: "http://frontend:3020"
-  - name: MINESPACE_DOMAIN
-    value: minespace-dev.apps.silver.devops.gov.bc.ca
   - name: CORE_DOMAIN
     required: true
   - name: CPU_LIMIT
@@ -48,6 +46,8 @@ parameters:
     value: "1"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: ENVIRONMENT
+    value: dev
 objects:
   - apiVersion: v1
     kind: PersistentVolumeClaim
@@ -177,12 +177,33 @@ objects:
   - kind: Route
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: minespace
       creationTimestamp: null
       labels:
         service: ${NAME}
     spec:
       path: ${ROUTE}
+      host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+      to:
+        kind: Service
+        name: ${NAME}
+        weight: 100
+      port:
+        targetPort: web
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+      wildcardPolicy: None
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: mds
+      creationTimestamp: null
+      labels:
+        service: ${NAME}
+    spec:
+      path: ${ROUTE}
+      host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
       to:
         kind: Service
         name: ${NAME}
