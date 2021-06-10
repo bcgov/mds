@@ -180,7 +180,7 @@ export const NOWSubmissionDocuments = (props) => {
           let statusBadgeType = "warning";
           let statusText = "Not Started";
           let error = null;
-          console.log("record not for import" + record.notForImport);
+
           if (record.notForImport) {
             statusText = "N/A";
             statusBadgeType = "success";

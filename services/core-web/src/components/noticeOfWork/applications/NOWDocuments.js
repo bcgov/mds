@@ -46,6 +46,7 @@ const propTypes = {
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   allowAfterProcess: PropTypes.bool,
+  disableCategoryFilter: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -57,6 +58,7 @@ const defaultProps = {
   showPreambleFileMetadata: false,
   editPreambleFileMetadata: false,
   allowAfterProcess: false,
+  disableCategoryFilter: false,
 };
 
 export const NOWDocuments = (props) => {
@@ -201,15 +203,16 @@ export const NOWDocuments = (props) => {
         ),
       },
     ];
-
     let tableColumns = [
       fileNameColumn,
       {
         title: "Category",
         dataIndex: "category",
         key: "category",
-        filters: categoryFilters,
-        onFilter: (value, record) => record.category.includes(value),
+        filters: props.disableCategoryFilter ? null : categoryFilters,
+        onFilter: props.disableCategoryFilter
+          ? () => {}
+          : (value, record) => record.category.includes(value),
         sorter: (a, b) => (a.category > b.category ? -1 : 1),
         render: (text) => <div title="Category">{text}</div>,
       },
@@ -312,6 +315,7 @@ export const NOWDocuments = (props) => {
           noticeOfWorkApplicationDocumentTypeOptionsHash[
             document.now_application_document_type_code
           ]) ||
+        document.documenttype ||
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,

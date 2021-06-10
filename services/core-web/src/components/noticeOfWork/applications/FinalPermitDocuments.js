@@ -39,6 +39,8 @@ const propTypes = {
   adminView: PropTypes.bool,
   showPreambleFileMetadata: PropTypes.bool,
   editPreambleFileMetadata: PropTypes.bool,
+  disableCategoryFilter: PropTypes.bool,
+  showInUnifiedView: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -46,6 +48,8 @@ const defaultProps = {
   importNowSubmissionDocumentsJob: {},
   showPreambleFileMetadata: false,
   editPreambleFileMetadata: false,
+  disableCategoryFilter: false,
+  showInUnifiedView: false,
 };
 
 export class FinalPermitDocuments extends Component {
@@ -250,6 +254,35 @@ export class FinalPermitDocuments extends Component {
       />
     );
 
+    let unifiedDocumentsView = [];
+    if (this.props.showInUnifiedView) {
+      unifiedDocumentsView = (
+        <NOWDocuments
+          now_application_guid={this.props.noticeOfWork.now_application_guid}
+          mine_guid={this.props.mineGuid}
+          documents={permitDocuments.concat(
+            permitSubmissionDocuments.map((doc) => {
+              return {
+                ...doc,
+                now_application_document_type_code: doc.documenttype,
+                now_application_document_sub_type_code: doc.documenttype,
+                mine_document: {
+                  document_manager_guid: doc.document_manager_guid,
+                  document_name: doc.filename,
+                  mine_document_guid: doc.mine_document_guid,
+                  mine_guid: this.props.noticeOfWork.mine_guid,
+                },
+              };
+            })
+          )}
+          isViewMode
+          disableCategoryFilter={this.props.disableCategoryFilter}
+          showPreambleFileMetadata={this.props.showPreambleFileMetadata}
+          editPreambleFileMetadata={this.props.editPreambleFileMetadata}
+        />
+      );
+    }
+
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
 
     return this.props.documentDownloadState.downloading ? (
@@ -302,26 +335,39 @@ export class FinalPermitDocuments extends Component {
         </div>
         {isNoWApplication && (
           <>
-            <h4>Original Documents</h4>
-            <p>These documents came in with the original application.</p>
-            {(this.props.showPreambleFileMetadata && (
-              <FormSection name="final_original_documents_metadata">
-                {nowSubmissionDocuments}
+            {(this.props.showPreambleFileMetadata && this.props.showInUnifiedView && (
+              <FormSection name="final_requested_documents_metadata">
+                {unifiedDocumentsView}
               </FormSection>
             )) ||
-              nowSubmissionDocuments}
-            <br />
+              unifiedDocumentsView}
+            {!this.props.showInUnifiedView && (
+              <>
+                <h4>Original Documents</h4>
+                <p>These documents came in with the original application.</p>
+                {(this.props.showPreambleFileMetadata && (
+                  <FormSection name="final_original_documents_metadata">
+                    {nowSubmissionDocuments}
+                  </FormSection>
+                )) ||
+                  nowSubmissionDocuments}
+                <br />
+
+                <h4>Requested Documents</h4>
+                <p>
+                  These documents were added after the original application but were provided by the
+                  proponent.
+                </p>
+                {(this.props.showPreambleFileMetadata && (
+                  <FormSection name="final_requested_documents_metadata">
+                    {nowDocuments}
+                  </FormSection>
+                )) ||
+                  nowDocuments}
+              </>
+            )}
           </>
         )}
-        <h4>Requested Documents</h4>
-        <p>
-          These documents were added after the original application but were provided by the
-          proponent.
-        </p>
-        {(this.props.showPreambleFileMetadata && (
-          <FormSection name="final_requested_documents_metadata">{nowDocuments}</FormSection>
-        )) ||
-          nowDocuments}
       </div>
     );
   }
