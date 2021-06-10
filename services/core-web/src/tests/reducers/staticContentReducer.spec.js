@@ -8,7 +8,6 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 
 const baseExpectedValue = {
   mineStatusOptions: [],
-  mineWorkStatusOptions: [],
   mineRegionOptions: [],
   mineDisturbanceOptions: [],
   mineTenureTypes: [],
@@ -27,6 +26,7 @@ const baseExpectedValue = {
   mineReportStatusOptions: [],
   partyRelationshipTypes: [],
   partyBusinessRoleOptions: [],
+  mineWorkStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],

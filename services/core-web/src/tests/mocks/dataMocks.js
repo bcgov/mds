@@ -3676,6 +3676,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   partyRelationshipTypes: [],
   partyBusinessRoleOptions: [],
+  mineWorkStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [
     {
       activity_type_code: "cut_lines_polarization_survey",
