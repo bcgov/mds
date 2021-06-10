@@ -25,23 +25,6 @@ exports[`MineList renders properly 1`] = `
         "width": 150,
       },
       Object {
-        "dataIndex": "mine_operation_status_code",
-        "key": "mine_operation_status_code",
-        "render": [Function],
-        "sortField": "mine_operation_status_code",
-        "sortOrder": false,
-        "title": "Operational Status",
-        "width": 150,
-      },
-      Object {
-        "dataIndex": "permit_numbers",
-        "key": "permit_numbers",
-        "render": [Function],
-        "sortOrder": false,
-        "title": "Permits",
-        "width": 150,
-      },
-      Object {
         "dataIndex": "mine_region",
         "key": "mine_region",
         "render": [Function],
@@ -60,6 +43,14 @@ exports[`MineList renders properly 1`] = `
         "width": 150,
       },
       Object {
+        "dataIndex": "permit_numbers",
+        "key": "permit_numbers",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Permits",
+        "width": 150,
+      },
+      Object {
         "dataIndex": "commodity",
         "key": "commodity",
         "render": [Function],
@@ -75,6 +66,23 @@ exports[`MineList renders properly 1`] = `
         "title": "TSF",
         "width": 150,
       },
+      Object {
+        "dataIndex": "mine_operation_status_code",
+        "key": "mine_operation_status_code",
+        "render": [Function],
+        "sortField": "mine_operation_status_code",
+        "sortOrder": false,
+        "title": "Mine Status",
+        "width": 150,
+      },
+      Object {
+        "dataIndex": "mine_work_information",
+        "key": "mine_work_information",
+        "render": [Function],
+        "sortOrder": false,
+        "title": "Work Status",
+        "width": 150,
+      },
     ]
   }
   dataSource={
@@ -86,6 +94,8 @@ exports[`MineList renders properly 1`] = `
         "mine_no": "BLAH9091",
         "mine_operation_status_code": "N/A",
         "mine_region": "North East",
+        "mine_work_information": undefined,
+        "mine_work_status_description": "Unknown",
         "permit_numbers": Array [],
         "tenure": Array [
           "Placer",
@@ -107,6 +117,8 @@ exports[`MineList renders properly 1`] = `
         "mine_no": "BLAH9091",
         "mine_operation_status_code": "N/A",
         "mine_region": "North East",
+        "mine_work_information": undefined,
+        "mine_work_status_description": "Unknown",
         "permit_numbers": Array [
           "KNaaWwVdiJ40",
           "xfM0c0ZKEw7B",
