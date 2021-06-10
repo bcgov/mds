@@ -286,7 +286,6 @@ NOW_APPLICATION_DATA = {
     "atsauthorizationnumber": 1,
     "atsprojectnumber": 1,
     "filenumberofappl": "str",
-    "originalstartdate": "str",
     "annualsummarysubmitted": "str",
     "firstyearofmulti": "str",
     "authorizationdetail": "str",
