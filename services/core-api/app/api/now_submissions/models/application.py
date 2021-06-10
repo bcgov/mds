@@ -44,7 +44,13 @@ class Application(Base):
         mine_guid = fields.String(dump_only=True)
         sandgrvqrytotalmineresunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        proposedproductionunit = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotaloreunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        underexpsurftotalwasteunits = fields.String(
+            validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
+        underexpsurftotalwasteunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
         underexptotalwasteunits = fields.String(
             validate=validate.OneOf(choices=unit_type_map.keys()), allow_none=True)
@@ -131,7 +137,6 @@ class Application(Base):
     describeexplosivetosite = db.Column(db.String)
     proposedstartdate = db.Column(db.DateTime)
     proposedenddate = db.Column(db.DateTime)
-    yearroundseasonal = db.Column(db.String)
     landcommunitywatershed = db.Column(db.String)
     landprivate = db.Column(db.String)
     landlegaldesc = db.Column(db.String)
@@ -177,6 +182,8 @@ class Application(Base):
     placerreclamationarea = db.Column(db.Numeric(14, 2))
     placerreclamation = db.Column(db.String)
     placerreclamationcost = db.Column(db.Numeric(14, 2))
+
+    # SAND AND GRAVEL QUARRY ACTIVITY
     sandgrvqrydepthoverburden = db.Column(db.Numeric(14, 2))
     sandgrvqrydepthtopsoil = db.Column(db.Numeric(14, 2))
     sandgrvqrystabilizemeasures = db.Column(db.String)
@@ -205,11 +212,29 @@ class Application(Base):
     sandgrvqryimpactprvtaccess = db.Column(db.String)
     sandgrvqryimpactprevtdust = db.Column(db.String)
     sandgrvqryimpactminvisual = db.Column(db.String)
+    sandgrvqryprogressivereclam = db.Column(db.String)
+    sandgrvqrymaxunreclaimed = db.Column(db.String)
+    yearroundseasonal = db.Column(db.String)
+    sandgrvqrytotaldistarea = db.Column(db.Numeric(14, 2))
+    sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))
+    sandgrvqrydescription = db.Column(db.String)
+
+    # CUT LINES AND INDUCED POLARIZATION SURVEY 
     cutlinesexplgridtotallinekms = db.Column(db.Integer)
     cutlinesexplgridtimbervolume = db.Column(db.Numeric(14, 2))
     cutlinesreclamation = db.Column(db.String)
     cutlinesreclamationcost = db.Column(db.Numeric(14, 2))
+    cutlinesexplgriddisturbedarea = db.Column(db.Numeric(14, 2))
+
+    # SETTLING PONDS
     pondswastewatertreatfacility = db.Column(db.String)
+    pondstotaldistarea = db.Column(db.Numeric(14, 2))
+    pondsrecycled = db.Column(db.String)
+    pondsexfiltratedtoground = db.Column(db.String)
+    pondsdischargedtoenv = db.Column(db.String)
+    pondsreclamation = db.Column(db.String)
+    pondsreclamationcost = db.Column(db.Numeric(14, 2))
+
     freeusepermit = db.Column(db.String)
     licencetocut = db.Column(db.String)
     timbertotalvolume = db.Column(db.Numeric(14, 2))
@@ -220,8 +245,6 @@ class Application(Base):
     surfacebulksampletotaldistarea = db.Column(db.Numeric(14, 2))
     placertotaldistarea = db.Column(db.Numeric(14, 2))
     underexptotaldistarea = db.Column(db.Numeric(14, 2))
-    sandgrvqrytotaldistarea = db.Column(db.Numeric(14, 2))
-    pondstotaldistarea = db.Column(db.Numeric(14, 2))
     reclcostsubtotal = db.Column(db.Numeric(14, 2))
     reclcostexist = db.Column(db.Numeric(14, 2))
     reclcostrecl = db.Column(db.Numeric(14, 2))
@@ -235,17 +258,31 @@ class Application(Base):
     messagecreateddate = db.Column(db.DateTime)
     processed = db.Column(db.String)
     processeddate = db.Column(db.DateTime)
-    cutlinesexplgriddisturbedarea = db.Column(db.Numeric(14, 2))
-    pondsrecycled = db.Column(db.String)
-    pondsexfiltratedtoground = db.Column(db.String)
-    pondsdischargedtoenv = db.Column(db.String)
-    pondsreclamation = db.Column(db.String)
-    pondsreclamationcost = db.Column(db.Numeric(14, 2))
-    sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))
     nrsosapplicationid = db.Column(db.String)
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
+    permitnumber =db.Column(db.String)
+    atsauthorizationnumber = db.Column(db.Numeric)
+    atsprojectnumber = db.Column(db.Numeric)
+    filenumberofappl = db.Column(db.String)
+    originalstartdate = db.Column(db.String)
+    annualsummarysubmitted = db.Column(db.String)
+    firstyearofmulti = db.Column(db.String)
+    authorizationdetail = db.Column(db.String)
+    oncrownland = db.Column(db.String)
+    havelicenceofoccupation = db.Column(db.String)
+    appliedforlicenceofoccupation = db.Column(db.String)
+    licenceofoccupation = db.Column(db.String)
+    noticeservedtoprivate = db.Column(db.String)
+    pondtypeofsediment = db.Column(db.String)
+    pondtypeconstruction = db.Column(db.String)
+    pondarea = db.Column(db.String)
+    pondspillwaydesign = db.Column(db.String)
+    camphealthauthority = db.Column(db.String)
+    camphealthconsent = db.Column(db.String)
+    proposedproductionunit = db.Column(db.String)
+    placerstreamdiversion = db.Column(db.String)
 
     applicantindividualorcompany = db.Column(db.String)
     applicantrelationship = db.Column(db.String)
@@ -277,6 +314,18 @@ class Application(Base):
     archaeologicalprotectionplan = db.Column(db.String)
     hasarchaeologicalprotectionplan = db.Column(db.String)
     isonprivateland = db.Column(db.String)
+
+    underexpbulksample = db.Column(db.Boolean)
+    underexpdewatering = db.Column(db.Boolean)
+    underexpdimonddrill = db.Column(db.Boolean)
+    underexpmappingchip = db.Column(db.Boolean)
+    underexpnewdev = db.Column(db.Boolean)
+    underexprehab = db.Column(db.Boolean)
+    underexpfuelstorage = db.Column(db.Boolean)
+    underexpsurftotalwasteunits = db.Column(db.String)
+    underexpsurftotaloreunits = db.Column(db.String)
+    underexpsurftotalwaste = db.Column(db.Numeric)
+    underexpsurftotalore = db.Column(db.Numeric)
 
     mine = db.relationship(
         'Mine',

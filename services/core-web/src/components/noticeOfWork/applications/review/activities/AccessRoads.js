@@ -19,6 +19,7 @@ const propTypes = {
 export const AccessRoads = (props) => {
   return (
     <div>
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"

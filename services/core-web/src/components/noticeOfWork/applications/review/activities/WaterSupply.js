@@ -17,6 +17,7 @@ const propTypes = {
 export const WaterSupply = (props) => {
   return (
     <div>
+      <h4>Source of Water</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"
