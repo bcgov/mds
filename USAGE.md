@@ -125,7 +125,7 @@ psql --dbname=mds --username=mds --host=localhost --password --port=5432
 
 If you are running the frontend using npm run serve then you will not be able to use the document manager at the same time as the document generator. If you wish to do this then you need to make an addition to your hosts file so the browser can resolve the document_manager_backend to localhost.
 
-If you are on a windows machine or using power shell run the folowing command at the root of this project:
+If you are on a windows machine ensure that you open powershell in administrator mode as that is required to modify the hosts file and run the following command at the root of this project:
 
 ```
 .\AddHosts.ps1 -Hostname document_manager_backend -DesiredIP 127.0.0.1 -CheckHostnameOnly $true

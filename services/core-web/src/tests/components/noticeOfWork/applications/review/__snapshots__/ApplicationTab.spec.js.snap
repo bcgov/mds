@@ -35,7 +35,7 @@ exports[`ApplicationTab renders properly 1`] = `
           transitionName="zoom-big"
           trigger="click"
         >
-          <Button
+          <ForwardRef(InternalButton)
             block={false}
             className="full-mobile"
             disabled={false}
@@ -45,9 +45,9 @@ exports[`ApplicationTab renders properly 1`] = `
             type="secondary"
           >
             Cancel
-          </Button>
+          </ForwardRef(InternalButton)>
         </ForwardRef>
-        <Button
+        <ForwardRef(InternalButton)
           block={false}
           className="full-mobile"
           ghost={false}
@@ -57,8 +57,8 @@ exports[`ApplicationTab renders properly 1`] = `
           type="tertiary"
         >
           Save & Continue
-        </Button>
-        <Button
+        </ForwardRef(InternalButton)>
+        <ForwardRef(InternalButton)
           block={false}
           className="full-mobile"
           ghost={false}
@@ -68,7 +68,7 @@ exports[`ApplicationTab renders properly 1`] = `
           type="primary"
         >
           Save
-        </Button>
+        </ForwardRef(InternalButton)>
       </div>
     }
     tabName="Application"
