@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS mine_work_status (
-  mine_work_status_code varchar PRIMARY KEY,
+  mine_work_status_code varchar(3) PRIMARY KEY,
   description varchar NOT NULL,
   display_order smallint,
   active_ind boolean DEFAULT true NOT NULL,
@@ -19,9 +19,9 @@ INSERT INTO mine_work_status (
   update_user
 )
 VALUES
-  ('WORKING', 'Working', 10, 'system-mds', 'system-mds'),
-  ('NOT_WORKING', 'Not Working', 20, 'system-mds', 'system-mds'),
-  ('UNKNOWN', 'Unknown', 30, 'system-mds', 'system-mds')
+  ('WOR', 'Working', 10, 'system-mds', 'system-mds'),
+  ('NOT', 'Not Working', 20, 'system-mds', 'system-mds'),
+  ('UNK', 'Unknown', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS mine_work_information (

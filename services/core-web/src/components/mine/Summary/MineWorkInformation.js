@@ -88,7 +88,7 @@ export class MineWorkInformation extends Component {
 
   render() {
     const renderWorkInfo = (info) => {
-      const status = this.props.mineWorkStatusOptionsHash[info.mine_work_status_code || "UNKNOWN"];
+      const status = this.props.mineWorkStatusOptionsHash[info.mine_work_status_code || "UNK"];
       return (
         <List.Item>
           <Row>

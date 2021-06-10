@@ -48,25 +48,25 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         stop = self.work_stop_date.date() if self.work_stop_date else None
 
         if start is None and stop is None:
-            return "UNKNOWN"
+            return "UNK"
 
         if start and stop is None:
             if today < start:
-                return "UNKNOWN"
-            return "WORKING"
+                return "UNK"
+            return "WOR"
 
         if start is None and stop:
             if today < stop:
-                return "UNKNOWN"
-            return "NOT_WORKING"
+                return "UNK"
+            return "NOT"
 
         if today < start:
-            return "NOT_WORKING"
+            return "NOT"
 
         if today > stop:
-            return "NOT_WORKING"
+            return "NOT"
 
-        return "WORKING"
+        return "WOR"
 
     @validates('work_start_date')
     def validate_work_start_date(self, key, work_start_date):
