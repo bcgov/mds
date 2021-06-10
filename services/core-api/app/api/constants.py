@@ -122,6 +122,7 @@ unit_type_map = {
     'tonnes/year': 'Tonne (Metric Ton 1,000 kg)',
     'Degrees': 'Degrees',
     'Percent': 'Grade (Percent)',
+    'm3/day': 'Meters cubed/day',
     None: None
 }
 
