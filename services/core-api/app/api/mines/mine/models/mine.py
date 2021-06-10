@@ -1,18 +1,19 @@
 import uuid
 import utm
-from flask import current_app
 
-from sqlalchemy.orm import validates, reconstructor, load_only
+from sqlalchemy.orm import validates, reconstructor
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import func, literal, select, desc, and_
+
 from geoalchemy2 import Geometry
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.users.minespace.models.minespace_user_mine import MinespaceUserMine
-from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
+from app.api.mines.work_information.models.mine_work_information import MineWorkInformation
 from app.api.constants import *
 
 # NOTE: Be careful about relationships defined in the mine model. lazy='joined' will cause the relationship
@@ -71,29 +72,37 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         backref='mine',
         order_by='desc(MineType.update_timestamp)',
         primaryjoin=
-        "and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)",
+        'and_(MineType.mine_guid == Mine.mine_guid, MineType.active_ind==True, MineType.now_application_guid==None)',
         lazy='selectin')
 
     mine_documents = db.relationship(
         'MineDocument',
         backref='mine',
         primaryjoin=
-        "and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)",
+        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)',
         lazy='select')
 
-    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
+    mine_party_appt = db.relationship('MinePartyAppointment', backref='mine', lazy='select')
     mine_incidents = db.relationship(
         'MineIncident',
-        backref="mine",
+        backref='mine',
         lazy='select',
-        primaryjoin="and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)"
+        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)'
     )
     mine_reports = db.relationship('MineReport', lazy='select')
+
+    mine_work_informations = db.relationship(
+        'MineWorkInformation',
+        lazy='selectin',
+        order_by='desc(MineWorkInformation.created_timestamp)',
+        primaryjoin=
+        'and_(MineWorkInformation.mine_guid == Mine.mine_guid, MineWorkInformation.deleted_ind == False)'
+    )
 
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin="and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)",
+        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)',
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
@@ -161,6 +170,27 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         count = db.session.query(MinespaceUserMine).filter(
             MinespaceUserMine.mine_guid == self.mine_guid).count()
         return count > 0
+
+    @hybrid_property
+    def mine_work_information(self):
+        if self.mine_work_informations:
+            return self.mine_work_informations[0]
+        return None
+
+    @hybrid_property
+    def work_status(self):
+        if self.mine_work_informations:
+            return self.mine_work_informations[0].mine_work_status_code
+        return "UNKNOWN"
+
+    @work_status.expression
+    def work_status(cls):
+        return func.coalesce(
+            select([MineWorkInformation.mine_work_status_code]).where(
+                and_(MineWorkInformation.mine_guid == cls.mine_guid,
+                     MineWorkInformation.deleted_ind == False)).order_by(
+                         desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
+            literal("UNKNOWN"))
 
     @classmethod
     def find_by_mine_guid(cls, _id):

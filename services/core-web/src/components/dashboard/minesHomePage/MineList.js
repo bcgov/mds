@@ -2,18 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { uniqBy, flattenDeep } from "lodash";
+import { Badge, Tooltip } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import CustomPropTypes from "@/customPropTypes";
 import { SUCCESS_CHECKMARK } from "@/constants/assets";
+import { getWorkInformationBadgeStatusType } from "@/constants/theme";
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   filters: PropTypes.objectOf(PropTypes.any),
@@ -62,32 +65,6 @@ const columns = [
     render: (text) => <div title="Number">{text}</div>,
   },
   {
-    title: "Operational Status",
-    key: "mine_operation_status_code",
-    dataIndex: "mine_operation_status_code",
-    sortField: "mine_operation_status_code",
-    width: 150,
-    render: (text) => <div title="Operational Status">{text}</div>,
-  },
-  {
-    title: "Permits",
-    key: "permit_numbers",
-    dataIndex: "permit_numbers",
-    width: 150,
-    render: (text) => (
-      <div title="Permits">
-        {(text && text.length > 0 && (
-          <ul className="mine-list__permits">
-            {text.map((permitNo) => (
-              <li key={permitNo}>{permitNo}</li>
-            ))}
-          </ul>
-        )) ||
-          Strings.EMPTY_FIELD}
-      </div>
-    ),
-  },
-  {
     title: "Region",
     key: "mine_region",
     dataIndex: "mine_region",
@@ -104,6 +81,24 @@ const columns = [
     render: (text) => (
       <div title="Tenure">
         {(text && text.length > 0 && text.join(", ")) || Strings.EMPTY_FIELD}
+      </div>
+    ),
+  },
+  {
+    title: "Permits",
+    key: "permit_numbers",
+    dataIndex: "permit_numbers",
+    width: 150,
+    render: (text) => (
+      <div title="Permits">
+        {(text && text.length > 0 && (
+          <ul className="mine-list__permits">
+            {text.map((permitNo) => (
+              <li key={permitNo}>{permitNo}</li>
+            ))}
+          </ul>
+        )) ||
+          Strings.EMPTY_FIELD}
       </div>
     ),
   },
@@ -125,9 +120,39 @@ const columns = [
     width: 150,
     render: (text) => <div title="TSF">{text}</div>,
   },
+  {
+    title: "Mine Status",
+    key: "mine_operation_status_code",
+    dataIndex: "mine_operation_status_code",
+    sortField: "mine_operation_status_code",
+    width: 150,
+    render: (text) => <div title="Mine Status">{text}</div>,
+  },
+  {
+    title: "Work Status",
+    key: "mine_work_information",
+    dataIndex: "mine_work_information",
+    width: 150,
+    render: (text, record) => (
+      <Tooltip title={record.mine_work_status_description}>
+        <Badge
+          status={getWorkInformationBadgeStatusType(record.mine_work_status_description)}
+          style={{ marginRight: 5 }}
+        />
+        {formatDate(text?.work_start_date) || Strings.EMPTY_FIELD} -{" "}
+        {formatDate(text?.work_stop_date) || Strings.EMPTY_FIELD}
+      </Tooltip>
+    ),
+  },
 ];
 
-const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
+const transformRowData = (
+  mines,
+  mineRegionHash,
+  mineTenureHash,
+  mineCommodityHash,
+  mineWorkStatusHash
+) =>
   Object.values(mines).map((mine) => ({
     key: mine.mine_guid,
     mine_name: mine.mine_name || Strings.EMPTY_FIELD,
@@ -167,6 +192,9 @@ const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHa
         : [],
     tsf: mine.mine_tailings_storage_facilities ? mine.mine_tailings_storage_facilities.length : 0,
     verified_status: mine.verified_status,
+    mine_work_information: mine.mine_work_information,
+    mine_work_status_description:
+      mineWorkStatusHash[mine.mine_work_information?.mine_work_status_code || "UNKNOWN"],
   }));
 
 const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, sorter) => {
@@ -192,7 +220,8 @@ export const MineList = (props) => (
       props.mines,
       props.mineRegionHash,
       props.mineTenureHash,
-      props.mineCommodityOptionsHash
+      props.mineCommodityOptionsHash,
+      props.mineWorkStatusOptionsHash
     )}
     tableProps={{
       align: "left",

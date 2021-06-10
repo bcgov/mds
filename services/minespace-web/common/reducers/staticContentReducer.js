@@ -8,6 +8,7 @@ import { STATIC_CONTENT } from "../constants/reducerTypes";
 
 const initialState = {
   mineStatusOptions: [],
+  mineWorkStatusOptions: [],
   mineRegionOptions: [],
   mineTenureTypes: [],
   mineDisturbanceOptions: [],
@@ -62,6 +63,7 @@ const staticContentReducerObject = {
 };
 
 export const getMineStatusOptions = (state) => state[STATIC_CONTENT].mineStatusOptions;
+export const getMineWorkStatusOptions = (state) => state[STATIC_CONTENT].mineWorkStatusOptions;
 export const getMineRegionOptions = (state) => state[STATIC_CONTENT].mineRegionOptions;
 export const getGovernmentAgencyTypeOptions = (state) =>
   state[STATIC_CONTENT].governmentAgencyTypeOptions;
