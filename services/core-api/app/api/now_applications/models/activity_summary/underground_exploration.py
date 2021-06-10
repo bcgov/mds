@@ -22,6 +22,17 @@ class UndergroundExploration(ActivitySummaryBase):
     total_waste_amount = db.Column(db.Numeric(14, 2))
     total_waste_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
     proposed_activity = db.Column(db.String)
+    proposed_bulk_sample= db.Column(db.Boolean)
+    proposed_de_watering= db.Column(db.Boolean)
+    proposed_diamond_drilling= db.Column(db.Boolean)
+    proposed_mapping_chip_sampling= db.Column(db.Boolean)
+    proposed_new_development= db.Column(db.Boolean)
+    proposed_rehab= db.Column(db.Boolean)
+    proposed_underground_fuel_storage= db.Column(db.Boolean)
+    surface_total_ore_amount=db.Column(db.Numeric)
+    surface_total_waste_amount=db.Column(db.Numeric)
+    surface_total_ore_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
+    surface_total_waste_unit_type_code = db.Column(db.String, db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship(
         'UndergroundExplorationDetail',

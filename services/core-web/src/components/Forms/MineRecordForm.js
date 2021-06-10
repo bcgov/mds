@@ -528,7 +528,6 @@ export class MineRecordForm extends Component {
                 label="Major Mine"
                 type="checkbox"
                 component={renderConfig.CHECKBOX}
-                validate={[maxLength(300)]}
               />
             </Form.Item>
           </Col>
