@@ -1,4 +1,3 @@
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.inspection import inspect
 
 from app.api.utils.models_mixins import Base
@@ -90,6 +89,13 @@ class NowApplicationGisExport(Base):
     mine_operation_status_sub_reason_description = db.Column(db.String)
     operation_status_code = db.Column(db.String)
     operation_status_description = db.Column(db.String)
+
+    # Mine Work Status
+    mine_work_status_code = db.Column(db.String)
+    mine_work_status_description = db.Column(db.String)
+    mine_work_start_date = db.Column(db.String)
+    mine_work_stop_date = db.Column(db.String)
+    mine_work_comments = db.Column(db.String)
 
     # Bonds
     bond_guids = db.Column(db.String)

@@ -87,6 +87,13 @@ AS SELECT
     mossr.description AS mine_operation_status_sub_reason_description,
     concat(mos.mine_operation_status_code, ',', mosr.mine_operation_status_reason_code, ',', mossr.mine_operation_status_sub_reason_code) AS operation_status_code,
     concat(mos.description, ',', mosr.description, ',', mossr.description) AS operation_status_description,
+
+    -- Mine Work Information
+    mwi.work_start_date AS mine_work_start_date,
+    mwi.work_stop_date  AS mine_work_stop_date,
+    mwi.work_comments AS mine_work_comments,
+    mwi.mine_work_status_code AS mine_work_status_code,
+    mws.description AS mine_work_status_description,
     
     -- Bonds
     array_to_string(array_agg(DISTINCT b.bond_guid), ','::text) AS bond_guids,
@@ -117,7 +124,17 @@ AS SELECT
         FROM mine_status
         ORDER BY mine_status.mine_guid, mine_status.effective_date DESC
     ) ms ON m.mine_guid = ms.mine_guid
-    LEFT JOIN mine_status_xref msx ON ms.mine_status_xref_guid = msx.mine_status_xref_guid    
+    LEFT JOIN mine_status_xref msx ON ms.mine_status_xref_guid = msx.mine_status_xref_guid
+    LEFT JOIN (
+        SELECT
+            mine_work_information.mine_guid,
+            mine_work_information.work_start_date,
+            mine_work_information.work_stop_date,
+            mine_work_information.work_comments,
+            mine_work_information.mine_work_status_code
+        FROM mine_work_information
+        ORDER BY mine_work_information.created_timestamp DESC LIMIT 1
+    ) mwi ON m.mine_guid = mwi.mine_guid
     LEFT JOIN (
         SELECT now_application_id, start_date, end_date
         FROM now_application_progress
@@ -146,6 +163,7 @@ AS SELECT
     LEFT JOIN mine_operation_status_code mos ON msx.mine_operation_status_code::text = mos.mine_operation_status_code::text
     LEFT JOIN mine_operation_status_reason_code mosr ON msx.mine_operation_status_reason_code::text = mosr.mine_operation_status_reason_code::text
     LEFT JOIN mine_operation_status_sub_reason_code mossr ON msx.mine_operation_status_sub_reason_code::text = mossr.mine_operation_status_sub_reason_code::text
+    LEFT JOIN mine_work_status mws ON mwi.mine_work_status_code::text = mws.mine_work_status_code::text
     LEFT JOIN mine_tenure_type_code mttc ON mt.mine_tenure_type_code::text = mttc.mine_tenure_type_code::text
     LEFT JOIN mine_type_detail_xref mtdx ON mt.mine_type_guid = mtdx.mine_type_guid AND mtdx.active_ind = true
     LEFT JOIN mine_disturbance_code mdc ON mtdx.mine_disturbance_code::text = mdc.mine_disturbance_code::text
@@ -226,4 +244,11 @@ AS SELECT
     mossr.mine_operation_status_sub_reason_code,
     mine_operation_status_description,
     mine_operation_status_reason_description,
-    mine_operation_status_sub_reason_description;
+    mine_operation_status_sub_reason_description,
+    
+    -- Mine Work Information
+    mine_work_start_date,
+    mine_work_stop_date,
+    mine_work_comments,
+    mwi.mine_work_status_code,
+    mine_work_status_description;
