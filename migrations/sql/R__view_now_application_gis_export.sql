@@ -125,7 +125,7 @@ AS SELECT
         ORDER BY mine_status.mine_guid, mine_status.effective_date DESC
     ) ms ON m.mine_guid = ms.mine_guid
     LEFT JOIN mine_status_xref msx ON ms.mine_status_xref_guid = msx.mine_status_xref_guid
-    LEFT JOIN (
+    LEFT JOIN LATERAL (
         SELECT
             mine_work_information.mine_guid,
             mine_work_information.work_start_date,
@@ -133,8 +133,9 @@ AS SELECT
             mine_work_information.work_comments,
             mine_work_information.mine_work_status_code
         FROM mine_work_information
+        WHERE m.mine_guid = mine_work_information.mine_guid
         ORDER BY mine_work_information.created_timestamp DESC LIMIT 1
-    ) mwi ON m.mine_guid = mwi.mine_guid
+    ) mwi ON true
     LEFT JOIN (
         SELECT now_application_id, start_date, end_date
         FROM now_application_progress
