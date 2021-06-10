@@ -309,6 +309,7 @@ objects:
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
+              namespace: 4c2ba9-tools
         - type: ConfigChange
       replicas: ${{WORKER_REPLICA_MIN}}
       test: false

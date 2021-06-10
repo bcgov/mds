@@ -23,13 +23,13 @@ parameters:
   - name: API_SERVICE_URL
     value: http://backend:5000
   - name: NRIS_API_SERVICE_URL
-    value: "http://nris-backend:5500"
+    value: "http://nris:5500"
   - name: FILE_API_SERVICE_URL
     value: "http://filesystem-provider:8080"
   - name: DOCUMENT_MANAGER_SERVICE_URL
-    value: "http://docman-backend:5001"
+    value: "http://docman:5001"
   - name: MINESPACE_SERVICE_URL
-    value: "http://frontend-public:3020"
+    value: "http://frontend:3020"
   - name: MINESPACE_DOMAIN
     value: minespace-dev.apps.silver.devops.gov.bc.ca
   - name: CORE_DOMAIN

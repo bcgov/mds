@@ -14,7 +14,7 @@ parameters:
     value: postgresql-nris
   - name: DB_HOST
     displayName: Database Host Name
-    value: postgres
+    value: postgresql
   - name: TAG
     required: true
   - name: JWT_OIDC_WELL_KNOWN_CONFIG

@@ -13,7 +13,7 @@ parameters:
     description: The output/built ImageStream tag names
     value: dev
   - name: SOURCE_CONTEXT_DIR
-    value: services/nris-api
+    value: services/nris-api/backend
   - name: SOURCE_REPOSITORY_URL
     required: true
   - name: SOURCE_REPOSITORY_REF
@@ -142,9 +142,9 @@ objects:
           name: ${NAME}:${TAG}
       resources:
         limits:
-          cpu: 200m
+          cpu: 1024m
           memory: 3Gi
         requests:
-          cpu: 100m
+          cpu: 512m
           memory: 2Gi
       nodeSelector: null

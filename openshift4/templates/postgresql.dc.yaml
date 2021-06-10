@@ -211,3 +211,154 @@ objects:
           type: ImageChange
         - type: ConfigChange
     status: {}
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      annotations:
+        template.alpha.openshift.io/wait-for-ready: "true"
+      name: ${NAME}-reporting
+    spec:
+      replicas: 1
+      selector:
+        name: ${NAME}-reporting
+      strategy:
+        type: Recreate
+        maxSurge: 50%
+        maxUnavailable: 0
+      template:
+        metadata:
+          labels:
+            name: ${NAME}-reporting
+        spec:
+          containers:
+            - capabilities: {}
+              env:
+                - name: POSTGRESQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-password
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-admin-password
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: ${POSTGRES_SECRET_NAME}
+                - name: FDW_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-name
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_FOREIGN_SCHEMA
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-foreign-schema
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_FOREIGN_SERVER
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-foreign-server
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-user
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-password
+                      name: template.postgresql-mms-fdw-secret
+                - name: FDW_SCHEMA
+                  valueFrom:
+                    secretKeyRef:
+                      key: oracle-fdw-schema
+                      name: template.postgresql-mms-fdw-secret
+                - name: PGCRYPTO_EXTENSION
+                  value: "Y"
+                - name: POSTGIS_EXTENSION
+                  value: "Y"
+                - name: PGOPTIONS
+                  value: -c maintenance_work_mem=128MB
+              image: " "
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                initialDelaySeconds: 30
+                tcpSocket:
+                  port: 5432
+                timeoutSeconds: 1
+              name: postgresql-reporting
+              ports:
+                - containerPort: 5432
+                  protocol: TCP
+              readinessProbe:
+                exec:
+                  command:
+                    - /bin/bash
+                    - -c
+                    - pg_isready -h localhost -p 5432
+                initialDelaySeconds: 20
+                timeoutSeconds: 15
+              lifecycle:
+                preStop:
+                  exec:
+                    command:
+                      - /bin/bash
+                      - -c
+                      - pg_ctl stop -D /var/lib/pgsql/data/userdata
+              resources:
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+              securityContext:
+                capabilities: {}
+                privileged: false
+              terminationMessagePath: /dev/termination-log
+              volumeMounts:
+                - mountPath: /var/lib/pgsql/data
+                  name: ${NAME}-reporting-data
+                - mountPath: /var/run/postgresql
+                  name: ${NAME}-reporting-run
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          volumes:
+            - name: ${NAME}-reporting-data
+              persistentVolumeClaim:
+                claimName: ${NAME}-reporting
+            - name: ${NAME}-reporting-run
+              emptyDir: {}
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - postgresql-reporting
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}96:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+            lastTriggeredImage: ""
+          type: ImageChange
+        - type: ConfigChange
+    status: {}
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: ${NAME}-reporting
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: ${VOLUME_CAPACITY}

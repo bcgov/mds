@@ -13,7 +13,7 @@ parameters:
     description: The output/built ImageStream tag names
     value: dev
   - name: SOURCE_CONTEXT_DIR
-    value: services/document-manager
+    value: services/document-manager/backend
   - name: SOURCE_REPOSITORY_URL
     required: true
   - name: SOURCE_REPOSITORY_REF
@@ -140,9 +140,9 @@ objects:
           name: ${NAME}:${TAG}
       resources:
         limits:
-          cpu: 200m
+          cpu: 1000m
           memory: 2Gi
         requests:
-          cpu: 100m
+          cpu: 512m
           memory: 1Gi
       nodeSelector: null

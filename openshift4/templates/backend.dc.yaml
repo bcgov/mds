@@ -134,22 +134,84 @@ objects:
                 - name: DB_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
                       key: database-user
+                      name: postgresql
                 - name: DB_HOST
-                  value: ${DB_CONFIG_NAME}
+                  value: postgresql
                 - name: DB_PASS
                   valueFrom:
                     secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
                       key: database-password
+                      name: postgresql
                 - name: DB_PORT
                   value: "5432"
                 - name: DB_NAME
                   valueFrom:
                     secretKeyRef:
-                      name: ${DB_CONFIG_NAME}
                       key: database-name
+                      name: postgresql
+                - name: NRIS_USER_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: user-name
+                      name: template.nris-secret
+                - name: NRIS_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: template.nris-secret
+                - name: NRIS_TOKEN_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: token-url
+                      name: template.nris-secret
+                - name: NRIS_REMOTE_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: user-name
+                      name: template.nris-secret
+                - name: NRIS_REMOTE_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: template.nris-secret
+                - name: NRIS_REMOTE_TOKEN_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: token-url
+                      name: template.nris-secret
+                - name: LDAP_IDIR_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      key: username
+                      name: template.idir-secret
+                - name: LDAP_IDIR_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: template.idir-secret
+                - name: NROS_NOW_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      key: secret
+                      name: template.nros-now-secret
+                - name: NROS_NOW_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: client-id
+                      name: template.nros-now-secret
+                - name: NROS_NOW_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: url
+                      name: template.nros-now-secret
+                - name: NROS_NOW_TOKEN_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: token-url
+                      name: template.nros-now-secret
+                - name: NRIS_API_URL
+                  value: "http://nris:5500/nris-api"
                 - name: FLASK_RUN_PORT
                   value: "5000"
                 - name: FLASK_LOGGING_LEVEL
@@ -157,61 +219,76 @@ objects:
                 - name: FLASK_RUN_HOST
                   value: 0.0.0.0
                 - name: UWSGI_PROCESSES
-                  value: ${UWSGI_PROCESSES}
+                  value: "4"
                 - name: UWSGI_THREADS
-                  value: ${UWSGI_THREADS}
+                  value: "2"
                 - name: CACHE_REDIS_HOST
-                  value: ${CACHE_REDIS_HOST}
+                  value: redis
                 - name: CACHE_REDIS_PASS
                   valueFrom:
                     secretKeyRef:
-                      name: ${REDIS_CONFIG_NAME}
                       key: database-password
+                      name: redis
                 - name: JWT_OIDC_WELL_KNOWN_CONFIG
-                  value: ${JWT_OIDC_WELL_KNOWN_CONFIG}
+                  value: >-
+                    https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration
                 - name: JWT_OIDC_AUDIENCE
-                  value: ${JWT_OIDC_AUDIENCE}
+                  value: mines-application-test
                 - name: JWT_OIDC_ALGORITHMS
                   value: RS256
-                - name: ONE_TIME_PASSWORD_TIMEOUT_SECONDS
-                  value: ${ONE_TIME_PASSWORD_TIMEOUT_SECONDS}
                 - name: BASE_PATH
-                  value: ${BASE_PATH}
-                - name: URL
-                  value: ${URL}
+                  value: /api
+                - name: DOCUMENT_MANAGER_URL
+                  value: "http://docman:5001/document-manager"
+                - name: DOCUMENT_GENERATOR_URL
+                  value: "http://docgen:3030"
                 - name: ENVIRONMENT_NAME
-                  value: ${ENVIRONMENT_NAME}
+                  value: test
                 - name: METABASE_EMBEDDING_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: ${MDS_METABASE_SECRET}
                       key: embedding-secret-key
+                      name: template.metabase-key
                 - name: METABASE_SITE_URL
-                  value: ${METABASE_SITE_URL}
-                - name: DOCUMENT_GENERATOR_URL
-                  value: ${DOCUMENT_GENERATOR_URL}
-                - name: OBJECT_STORE_ENABLED
-                  value: "1"
-                - name: OBJECT_STORE_ACCESS_KEY_ID
+                  value: "https://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
+                - name: NROS_TOKEN_URL
                   valueFrom:
                     secretKeyRef:
-                      name: ${OBJECT_STORE_SECRET_NAME}
-                      key: key-id
-                - name: OBJECT_STORE_ACCESS_KEY
+                      key: token-url
+                      name: template.nros-client-service
+                - name: NROS_CLIENT_ID
                   valueFrom:
                     secretKeyRef:
-                      name: ${OBJECT_STORE_SECRET_NAME}
-                      key: secret-access-key
-                - name: OBJECT_STORE_BUCKET
+                      key: service-client
+                      name: template.nros-client-service
+                - name: NROS_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: ${OBJECT_STORE_SECRET_NAME}
-                      key: bucket-id
-                - name: OBJECT_STORE_HOST
+                      key: password
+                      name: template.nros-client-service
+                - name: VFCBC_TOKEN_URL
                   valueFrom:
                     secretKeyRef:
-                      name: ${OBJECT_STORE_SECRET_NAME}
-                      key: endpoint
+                      key: token-url
+                      name: template.vfcbc-client-service
+                - name: VFCBC_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: service-client
+                      name: template.vfcbc-client-service
+                - name: VFCBC_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      key: password
+                      name: template.vfcbc-client-service
+                - name: VCR_ISSUER_URL
+                  value: >-
+                    https://mines-permitting-issuer-a3e512-test.apps.silver.devops.gov.bc.ca/
+                - name: VCR_ISSUER_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: vcr-issuer-secret-key
+                      name: template.issuer-api-secret
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}
@@ -293,6 +370,16 @@ objects:
                     secretKeyRef:
                       name: ${DB_CONFIG_NAME}
                       key: metabase-user-password
+                - name: DOCMAN_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: docman-user-password
+                      name: postgresql
+                - name: NRIS_USER_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-nris-password
+                      name: postgresql-nris
                 - name: FLYWAY_OUT_OF_ORDER
                   value: "true"
                 - name: FLYWAY_CONNECT_RETRIES
