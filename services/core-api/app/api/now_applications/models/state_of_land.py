@@ -33,6 +33,7 @@ class StateOfLand(Base):
     has_fn_cultural_heritage_sites_in_area = db.Column(db.Boolean, nullable=True)
     has_activity_in_park = db.Column(db.Boolean, nullable=True)
     is_on_private_land = db.Column(db.Boolean, nullable=True)
+    is_on_crown_land = db.Column(db.Boolean, nullable=True)
     has_auth_lieutenant_gov_council = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):

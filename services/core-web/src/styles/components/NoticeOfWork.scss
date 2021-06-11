@@ -218,7 +218,8 @@
   color: rgba(0, 0, 0, 0.65);
 }
 
-.ant-radio-disabled + span {
+.ant-radio-disabled + span,
+.ant-checkbox-disabled + span {
   color: rgba(0, 0, 0, 0.65);
 }
 
@@ -345,7 +346,6 @@
   padding-top: 15px;
 }
 
-.template-letter-content 
-.ant-typography {
+.template-letter-content .ant-typography {
   padding-top: 10px;
 }
