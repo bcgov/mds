@@ -21,7 +21,7 @@ parameters:
     required: false
     value: ""
   - name: PORT
-    value: "3000"
+    value: "3020"
   - name: NODE_ENV
     displayName: Node Environment
     description: Environment for running node
