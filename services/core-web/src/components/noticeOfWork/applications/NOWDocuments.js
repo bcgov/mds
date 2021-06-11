@@ -47,6 +47,7 @@ const propTypes = {
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   allowAfterProcess: PropTypes.bool,
   disableCategoryFilter: PropTypes.bool,
+  showPartOfPermitColumn: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -59,6 +60,7 @@ const defaultProps = {
   editPreambleFileMetadata: false,
   allowAfterProcess: false,
   disableCategoryFilter: false,
+  showPartOfPermitColumn: true,
 };
 
 export const NOWDocuments = (props) => {
@@ -223,17 +225,20 @@ export const NOWDocuments = (props) => {
         sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
         render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
       },
-      {
+    ];
+
+    if (props.addDescriptionColumn) {
+      tableColumns.splice(2, 0, descriptionColumn);
+    }
+
+    if (props.showPartOfPermitColumn) {
+      tableColumns.push({
         title: "Part of Permit",
         dataIndex: "is_final_package",
         key: "is_final_package",
         sorter: (a, b) => (a.is_final_package > b.is_final_package ? -1 : 1),
         render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
-      },
-    ];
-
-    if (props.addDescriptionColumn) {
-      tableColumns.splice(2, 0, descriptionColumn);
+      });
     }
 
     if (props.showPreambleFileMetadata) {

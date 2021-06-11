@@ -42,7 +42,7 @@ export const NOWApplicationManageDocuments = (props) => {
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
-        id="additional-application-files"
+        id="application-documents"
         title="Application Documents"
         isLoaded={props.isLoaded}
       >
@@ -80,6 +80,7 @@ export const NOWApplicationManageDocuments = (props) => {
           )}
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           displayTableDescription
+          disableCategoryFilter
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -97,6 +98,7 @@ export const NOWApplicationManageDocuments = (props) => {
           allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
+          disableCategoryFilter
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -109,6 +111,7 @@ export const NOWApplicationManageDocuments = (props) => {
           isViewMode={false}
           isAdminView
           allowAfterProcess
+          disableCategoryFilter
           disclaimerText="In this table, you can see all Referral, Consultation and Public Comment related documents. Documents added to this section will not show up unless otherwise specified."
         />
       </ScrollContentWrapper>

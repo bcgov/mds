@@ -274,7 +274,7 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "additional-application-files",
+        href: "application-documents",
         title: "Application Documents",
         alwaysVisible: true,
         applicationType: ["NOW"],

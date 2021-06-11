@@ -279,6 +279,7 @@ export class FinalPermitDocuments extends Component {
           disableCategoryFilter={this.props.disableCategoryFilter}
           showPreambleFileMetadata={this.props.showPreambleFileMetadata}
           editPreambleFileMetadata={this.props.editPreambleFileMetadata}
+          showPartOfPermitColumn={false}
         />
       );
     }
