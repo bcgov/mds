@@ -30,20 +30,20 @@ parameters:
     displayName: Resource ID
     description: Resource ID for keycloak
     value: mines-application-dev
-  - name: KEYCLOAK_CLIENT_ID
+  - name: MS_KEYCLOAK_CLIENT_ID
     displayName: Client ID
     description: Client ID for keycloak
-    value: mines-application-dev
+    value: minespace-dev
   - name: KEYCLOAK_URL
     displayName: Keycloak URL
     description: URL of the keycloak server
     value: https://test.oidc.gov.bc.ca/auth
   - name: SITEMINDER_URL
     value: https://logontest7.gov.bc.ca
-  - name: API_URL
+  - name: CORE_API_URL
     displayName: API Url
     description: URL for the backend API
-    value: https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/
+    required: true
   - name: MATOMO_URL
     displayName: Matomo Url
     description: URL for the tracking component
