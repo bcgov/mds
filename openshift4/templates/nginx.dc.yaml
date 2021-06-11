@@ -184,43 +184,43 @@ objects:
         name: ${NAME}
       type: ClusterIP
       sessionAffinity: None
-  - kind: Route
-    apiVersion: v1
-    metadata:
-      name: minespace-${ENVIRONMENT}
-      creationTimestamp: null
-      labels:
-        service: ${NAME}
-    spec:
-      path: ${ROUTE}
-      # host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-      to:
-        kind: Service
-        name: ${NAME}
-        weight: 100
-      port:
-        targetPort: web
-      tls:
-        termination: edge
-        insecureEdgeTerminationPolicy: Redirect
-      wildcardPolicy: None
-  - kind: Route
-    apiVersion: v1
-    metadata:
-      name: mds-${ENVIRONMENT}
-      creationTimestamp: null
-      labels:
-        service: ${NAME}
-    spec:
-      path: ${ROUTE}
-      # host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
-      to:
-        kind: Service
-        name: ${NAME}
-        weight: 100
-      port:
-        targetPort: web
-      tls:
-        termination: edge
-        insecureEdgeTerminationPolicy: Redirect
-      wildcardPolicy: None
+  # - kind: Route
+  #   apiVersion: v1
+  #   metadata:
+  #     name: minespace-${ENVIRONMENT}
+  #     creationTimestamp: null
+  #     labels:
+  #       service: ${NAME}
+  #   spec:
+  #     path: ${ROUTE}
+  #     # host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+  #     to:
+  #       kind: Service
+  #       name: ${NAME}
+  #       weight: 100
+  #     port:
+  #       targetPort: web
+  #     tls:
+  #       termination: edge
+  #       insecureEdgeTerminationPolicy: Redirect
+  #     wildcardPolicy: None
+  # - kind: Route
+  #   apiVersion: v1
+  #   metadata:
+  #     name: mds-${ENVIRONMENT}
+  #     creationTimestamp: null
+  #     labels:
+  #       service: ${NAME}
+  #   spec:
+  #     path: ${ROUTE}
+  #     # host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+  #     to:
+  #       kind: Service
+  #       name: ${NAME}
+  #       weight: 100
+  #     port:
+  #       targetPort: web
+  #     tls:
+  #       termination: edge
+  #       insecureEdgeTerminationPolicy: Redirect
+  #     wildcardPolicy: None
