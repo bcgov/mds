@@ -28,6 +28,8 @@ parameters:
     displayName: Node Environment
     description: Environment for running node
     value: production
+  - name: DOCMAN_API_URL
+    required: true
   - name: KEYCLOAK_RESOURCE
     displayName: Resource ID
     description: Resource ID for keycloak
@@ -128,6 +130,8 @@ objects:
               env:
                 - name: API_URL
                   value: ${CORE_API_URL}
+                - name: DOCUMENT_MANAGER_URL
+                  value: ${DOCMAN_API_URL}
                 - name: MATOMO_URL
                   value: ${MATOMO_URL}
                 - name: TUSD_URL
