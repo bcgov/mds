@@ -17,6 +17,8 @@ parameters:
     displayName: Application Hostname
     description: The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.
     value: ""
+  - name: FILESYSTEM_PROVIDER_URL_BASE
+    value: /file-api/AmazonS3Provider/
   - name: BASE_PATH
     required: false
     value: ""
@@ -42,10 +44,10 @@ parameters:
     value: https://logontest7.gov.bc.ca
   - name: KEYCLOAK_IDP_HINT
     value: idir
-  - name: API_URL
+  - name: CORE_API_URL
     displayName: API Url
     description: URL for the backend API
-    value: https://mds-dev-4c2ba9-dev.apps.silver.devops.gov.bc.ca/
+    value: https://mds-dev.apps.silver.devops.gov.bc.ca/api
   - name: MATOMO_URL
     displayName: Matomo Url
     description: URL for the tracking component
@@ -56,6 +58,8 @@ parameters:
     value: http://tusd:5001
   - name: FN_LAYER_URL
     value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
+  - name: CORE_DOMAIN
+    required: true
   - name: CPU_LIMIT
     value: 250m
   - name: MEMORY_LIMIT
@@ -123,7 +127,7 @@ objects:
               image: " "
               env:
                 - name: API_URL
-                  value: ${API_URL}
+                  value: ${CORE_API_URL}
                 - name: MATOMO_URL
                   value: ${MATOMO_URL}
                 - name: TUSD_URL
@@ -146,6 +150,8 @@ objects:
                   value: ${KEYCLOAK_IDP_HINT}
                 - name: SITEMINDER_URL
                   value: ${SITEMINDER_URL}
+                - name: FILESYSTEM_PROVIDER_URL
+                  value: ${CORE_DOMAIN}${FILESYSTEM_PROVIDER_URL}
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}
