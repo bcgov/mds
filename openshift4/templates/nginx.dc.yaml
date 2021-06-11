@@ -98,12 +98,22 @@ objects:
               env:
                 - name: PATH_PREFIX
                   value: ${PATH_PREFIX}
-                - name: MDS_SERVICE_URL
-                  value: ${MDS_SERVICE_URL}
+                - name: CORE_SERVICE_URL
+                  value: ${CORE_SERVICE_URL}
                 - name: TUSD_SERVICE_URL
                   value: ${TUSD_SERVICE_URL}
                 - name: API_SERVICE_URL
                   value: ${API_SERVICE_URL}
+                - name: NRIS_API_SERVICE_URL
+                  value: ${NRIS_API_SERVICE_URL}
+                - name: FILE_API_SERVICE_URL
+                  value: ${FILE_API_SERVICE_URL}
+                - name: DOCUMENT_MANAGER_SERVICE_URL
+                  value: ${DOCUMENT_MANAGER_SERVICE_URL}
+                - name: MINESPACE_SERVICE_URL
+                  value: ${MINESPACE_SERVICE_URL}
+                - name: MINESPACE_DOMAIN
+                  value: ${MINESPACE_DOMAIN}
                 - name: CORE_DOMAIN
                   value: ${CORE_DOMAIN}
               resources:
