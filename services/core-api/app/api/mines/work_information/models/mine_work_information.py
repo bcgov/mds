@@ -23,8 +23,8 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
     work_start_date = db.Column(db.Date)
     work_stop_date = db.Column(db.Date)
     work_comments = db.Column(db.String)
-    mine_work_status_code = db.Column(db.String,
-                                      db.ForeignKey('mine_work_status.mine_work_status_code'))
+    # mine_work_status_code = db.Column(db.String,
+    #                                   db.ForeignKey('mine_work_status.mine_work_status_code'))
 
     deleted_ind = db.Column(db.Boolean, server_default=FetchedValue(), nullable=False)
 
@@ -39,34 +39,61 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
     def save(self):
         self.updated_by = User().get_user_username()
         self.updated_timestamp = datetime.utcnow()
-        self.mine_work_status_code = self.determine_mine_work_status()
+        # self.mine_work_status_code = self.determine_mine_work_status()
         super(MineWorkInformation, self).save()
 
-    def determine_mine_work_status(self):
+    @hybrid_property
+    def mine_work_status_code(self):
         today = datetime.now(tz=timezone('US/Pacific')).date()
         start = self.work_start_date.date() if self.work_start_date else None
         stop = self.work_stop_date.date() if self.work_stop_date else None
 
         if start is None and stop is None:
-            return "UNK"
+            return "Unknown"
 
         if start and stop is None:
             if today < start:
-                return "UNK"
-            return "WOR"
+                return "Unknown"
+            return "Working"
 
         if start is None and stop:
             if today < stop:
-                return "UNK"
-            return "NOT"
+                return "Unknown"
+            return "Not Working"
 
         if today < start:
-            return "NOT"
+            return "Not Working"
 
         if today > stop:
-            return "NOT"
+            return "Not Working"
 
-        return "WOR"
+        return "Working"
+
+    # def determine_mine_work_status(self):
+    #     today = datetime.now(tz=timezone('US/Pacific')).date()
+    #     start = self.work_start_date.date() if self.work_start_date else None
+    #     stop = self.work_stop_date.date() if self.work_stop_date else None
+
+    #     if start is None and stop is None:
+    #         return "UNK"
+
+    #     if start and stop is None:
+    #         if today < start:
+    #             return "UNK"
+    #         return "WOR"
+
+    #     if start is None and stop:
+    #         if today < stop:
+    #             return "UNK"
+    #         return "NOT"
+
+    #     if today < start:
+    #         return "NOT"
+
+    #     if today > stop:
+    #         return "NOT"
+
+    #     return "WOR"
 
     @validates('work_start_date')
     def validate_work_start_date(self, key, work_start_date):
@@ -81,11 +108,11 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
         return work_stop_date
 
     # NOTE: This value should only ever be set by the system, but perform the validation anyway.
-    @validates('mine_work_status_code')
-    def validate_mine_work_status_code(self, key, mine_work_status_code):
-        if (mine_work_status_code != self.determine_mine_work_status()):
-            raise AssertionError('Work status is invalid.')
-        return mine_work_status_code
+    # @validates('mine_work_status_code')
+    # def validate_mine_work_status_code(self, key, mine_work_status_code):
+    #     if (mine_work_status_code != self.determine_mine_work_status()):
+    #         raise AssertionError('Work status is invalid.')
+    #     return mine_work_status_code
 
     @classmethod
     def find_by_mine_guid(cls, mine_guid):

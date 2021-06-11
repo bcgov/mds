@@ -194,7 +194,7 @@ const transformRowData = (
     verified_status: mine.verified_status,
     mine_work_information: mine.mine_work_information,
     mine_work_status_description:
-      mineWorkStatusHash[mine.mine_work_information?.mine_work_status_code || "UNK"],
+      mineWorkStatusHash[mine.mine_work_information?.mine_work_status_code || "Unknown"],
   }));
 
 const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, sorter) => {

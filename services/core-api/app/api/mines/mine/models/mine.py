@@ -181,7 +181,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     def work_status(self):
         if self.mine_work_informations:
             return self.mine_work_informations[0].mine_work_status_code
-        return "UNK"
+        return "Unknown"
 
     @work_status.expression
     def work_status(cls):
@@ -190,7 +190,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
                 and_(MineWorkInformation.mine_guid == cls.mine_guid,
                      MineWorkInformation.deleted_ind == False)).order_by(
                          desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
-            literal("UNK"))
+            literal("Unknown"))
 
     @classmethod
     def find_by_mine_guid(cls, _id):

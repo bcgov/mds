@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS mine_work_information (
   work_start_date date,
   work_stop_date date,
   work_comments varchar,
-  mine_work_status_code varchar,
+  -- mine_work_status_code varchar,
   created_by varchar NOT NULL,
   created_timestamp timestamptz NOT NULL,
   updated_by varchar NOT NULL,
@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS mine_work_information (
   update_user varchar(60) NOT NULL,
   update_timestamp timestamptz DEFAULT now() NOT NULL,
 
-  FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
-  FOREIGN KEY (mine_work_status_code) REFERENCES mine_work_status(mine_work_status_code) DEFERRABLE INITIALLY DEFERRED
+  FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED-- ,
+  -- FOREIGN KEY (mine_work_status_code) REFERENCES mine_work_status(mine_work_status_code) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE mine_work_information OWNER TO mds;
