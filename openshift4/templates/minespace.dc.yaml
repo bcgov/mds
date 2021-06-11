@@ -149,7 +149,7 @@ objects:
                 - name: KEYCLOAK_RESOURCE
                   value: ${KEYCLOAK_RESOURCE}
                 - name: KEYCLOAK_CLIENT_ID
-                  value: ${KEYCLOAK_CLIENT_ID}
+                  value: ${MS_KEYCLOAK_CLIENT_ID}
                 - name: KEYCLOAK_URL
                   value: ${KEYCLOAK_URL}
                 - name: KEYCLOAK_IDP_HINT
