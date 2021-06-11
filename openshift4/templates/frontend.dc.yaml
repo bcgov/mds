@@ -45,7 +45,7 @@ parameters:
   - name: API_URL
     displayName: API Url
     description: URL for the backend API
-    value: https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/
+    value: https://mds-dev-4c2ba9-dev.apps.silver.devops.gov.bc.ca/
   - name: MATOMO_URL
     displayName: Matomo Url
     description: URL for the tracking component
