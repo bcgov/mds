@@ -177,13 +177,13 @@ objects:
   - kind: Route
     apiVersion: v1
     metadata:
-      name: minespace
+      name: minespace-${ENVIRONMENT}
       creationTimestamp: null
       labels:
         service: ${NAME}
     spec:
       path: ${ROUTE}
-      host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+      # host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
       to:
         kind: Service
         name: ${NAME}
@@ -197,13 +197,13 @@ objects:
   - kind: Route
     apiVersion: v1
     metadata:
-      name: mds
+      name: mds-${ENVIRONMENT}
       creationTimestamp: null
       labels:
         service: ${NAME}
     spec:
       path: ${ROUTE}
-      host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+      # host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
       to:
         kind: Service
         name: ${NAME}
