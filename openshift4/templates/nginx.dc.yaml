@@ -29,7 +29,7 @@ parameters:
   - name: DOCUMENT_MANAGER_SERVICE_URL
     value: "http://docman:5001"
   - name: MINESPACE_SERVICE_URL
-    value: "http://frontend:3020"
+    value: "http://minespace:3020"
   - name: MINESPACE_DOMAIN
     required: true
   - name: CORE_DOMAIN
