@@ -9,7 +9,6 @@ const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   props.mineRegionHash = MOCK.REGION_HASH;
   props.mineTenureHash = MOCK.TENURE_HASH;
-  props.mineWorkStatusOptionsHash = MOCK.MINE_WORK_STATUS_HASH;
 };
 
 beforeEach(() => {

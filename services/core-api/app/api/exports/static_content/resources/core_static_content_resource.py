@@ -14,7 +14,6 @@ from ...response_models import STATIC_CONTENT_MODEL
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
-from app.api.mines.work_information.models.mine_work_status import MineWorkStatus
 from app.api.mines.region.models.region import MineRegionCode
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.excemption_fee_status import ExemptionFeeStatus
@@ -57,18 +56,18 @@ from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperating
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
 
 MODELS_GET_ACTIVE = [
-    MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineWorkStatus, MineRegionCode,
-    MineTenureTypeCode, PermitStatusCode, MineIncidentDocumentTypeCode,
-    MineIncidentFollowupInvestigationType, MineIncidentDeterminationType, MineIncidentStatusCode,
-    MineIncidentCategory, SubDivisionCode, ComplianceArticle, VarianceApplicationStatusCode,
-    VarianceDocumentCategoryCode, MineReportDefinition, MineReportCategory,
-    MineReportSubmissionStatusCode, ActivityType, UnitType, NOWApplicationType,
-    NOWApplicationStatus, NOWApplicationDocumentType, UndergroundExplorationType,
-    NOWApplicationProgressStatus, NOWApplicationPermitType, MinePartyAppointmentType,
-    NOWApplicationReviewType, BondType, BondStatus, BondDocumentType, ExemptionFeeStatus,
-    PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode, NOWApplicationDelayType,
-    PermitAmendmentTypeCode, ApplicationReasonCode, ApplicationSourceTypeCode, ApplicationTypeCode,
-    GovernmentAgencyType, TSFOperatingStatusCode, ConsequenceClassificationStatusCode
+    MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
+    PermitStatusCode, MineIncidentDocumentTypeCode, MineIncidentFollowupInvestigationType,
+    MineIncidentDeterminationType, MineIncidentStatusCode, MineIncidentCategory, SubDivisionCode,
+    ComplianceArticle, VarianceApplicationStatusCode, VarianceDocumentCategoryCode,
+    MineReportDefinition, MineReportCategory, MineReportSubmissionStatusCode, ActivityType,
+    UnitType, NOWApplicationType, NOWApplicationStatus, NOWApplicationDocumentType,
+    UndergroundExplorationType, NOWApplicationProgressStatus, NOWApplicationPermitType,
+    MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
+    ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
+    NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
+    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
+    ConsequenceClassificationStatusCode
 ]
 
 

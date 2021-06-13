@@ -15,8 +15,6 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   filters: PropTypes.objectOf(PropTypes.any),
@@ -146,13 +144,7 @@ const columns = [
   },
 ];
 
-const transformRowData = (
-  mines,
-  mineRegionHash,
-  mineTenureHash,
-  mineCommodityHash,
-  mineWorkStatusHash
-) =>
+const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
   Object.values(mines).map((mine) => ({
     key: mine.mine_guid,
     mine_name: mine.mine_name || Strings.EMPTY_FIELD,
@@ -219,8 +211,7 @@ export const MineList = (props) => (
       props.mines,
       props.mineRegionHash,
       props.mineTenureHash,
-      props.mineCommodityOptionsHash,
-      props.mineWorkStatusOptionsHash
+      props.mineCommodityOptionsHash
     )}
     tableProps={{
       align: "left",

@@ -26,7 +26,6 @@ const baseExpectedValue = {
   mineReportStatusOptions: [],
   partyRelationshipTypes: [],
   partyBusinessRoleOptions: [],
-  mineWorkStatusOptions: [],
   noticeOfWorkActivityTypeOptions: [],
   noticeOfWorkUnitTypeOptions: [],
   noticeOfWorkApplicationTypeOptions: [],

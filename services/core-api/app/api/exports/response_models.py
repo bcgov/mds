@@ -75,8 +75,6 @@ STATIC_CONTENT_MODEL = api.model(
         fields.List(fields.Nested(MINE_COMMODITY_CODE_MODEL), attribute='MineCommodityCode'),
         'mineStatusOptions':
         fields.List(fields.Nested(MINE_STATUS_CODE_MODEL), attribute='MineStatusXref'),
-        'mineWorkStatusOptions':
-        fields.List(fields.Nested(MINE_WORK_STATUS_MODEL), attribute='MineWorkStatus'),
         'mineRegionOptions':
         fields.List(fields.Nested(MINE_REGION_OPTION), attribute='MineRegionCode'),
         'mineTenureTypes':

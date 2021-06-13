@@ -461,13 +461,6 @@ MINE_STATUS_CODE_MODEL = api.model(
         'description': fields.String,
     })
 
-MINE_WORK_STATUS_MODEL = api.model(
-    'MineWorkStatus', {
-        'mine_work_status_code': fields.String,
-        'active_ind': fields.Boolean,
-        'description': fields.String
-    })
-
 MINE_COMMENT_MODEL = api.model(
     'MineCommentModel', {
         'mine_comment_guid': fields.String,

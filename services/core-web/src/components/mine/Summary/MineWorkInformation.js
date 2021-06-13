@@ -13,7 +13,6 @@ import {
 } from "@common/actionCreators/workInformationActionCreator";
 import * as Strings from "@common/constants/strings";
 import { getMineWorkInformations } from "@common/selectors/workInformationSelectors";
-import { getMineWorkStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import AddButton from "@/components/common/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
@@ -30,7 +29,6 @@ const propTypes = {
   createMineWorkInformation: PropTypes.func.isRequired,
   updateMineWorkInformation: PropTypes.func.isRequired,
   deleteMineWorkInformation: PropTypes.func.isRequired,
-  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -256,7 +254,6 @@ export class MineWorkInformation extends Component {
 
 const mapStateToProps = (state) => ({
   mineWorkInformations: getMineWorkInformations(state),
-  mineWorkStatusOptionsHash: getMineWorkStatusOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

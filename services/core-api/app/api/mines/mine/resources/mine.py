@@ -26,8 +26,6 @@ from app.api.mines.mine.models.mine_verified_status import MineVerifiedStatus
 from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 
-from app.api.mines.work_information.models.mine_work_status import MineWorkStatus
-
 from .mine_map import MineMapResource
 
 
@@ -268,12 +266,6 @@ class MineListResource(Resource, UserMixin):
                 .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
 
-        # if work_status_filter_term:
-        #     work_status_filter = MineWorkStatus.mine_work_status_code.in_(work_status_filter_term)
-        #     work_status_query = Mine.query \
-        #         .join(MineWorkStatus, Mine.work_status == MineWorkStatus.mine_work_status_code) \
-        #         .filter(work_status_filter)
-        #     mines_query = mines_query.intersect(work_status_query)
         if work_status_filter_term:
             work_status_query = Mine.query \
                 .filter(Mine.work_status.in_(work_status_filter_term))

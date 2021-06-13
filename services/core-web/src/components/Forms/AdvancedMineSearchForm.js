@@ -16,8 +16,6 @@ const propTypes = {
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
-  mineWorkStatusDropDownOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   reset: PropTypes.func.isRequired,
 };
