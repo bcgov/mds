@@ -291,7 +291,7 @@ MINE_WORK_INFORMATION_MODEL = api.model(
         'work_start_date': fields.Date,
         'work_stop_date': fields.Date,
         'work_comments': fields.String,
-        'mine_work_status_code': fields.String,
+        'work_status': fields.String,
         'created_by': fields.String,
         'created_timestamp': fields.DateTime,
         'updated_by': fields.String,

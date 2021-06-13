@@ -87,116 +87,114 @@ export class MineWorkInformation extends Component {
       .then(() => this.setState({ isLoaded: true }));
 
   render() {
-    const renderWorkInfo = (info) => {
-      const status = this.props.mineWorkStatusOptionsHash[info.mine_work_status_code || "Unknown"];
-      return (
-        <List.Item>
-          <Row>
-            <Col span={22}>
-              <Descriptions column={5} colon={false}>
-                <Descriptions.Item label="Work Status">
-                  <Badge status={getWorkInformationBadgeStatusType(status)} text={status} />
-                </Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <>
-                      Work Start Date
-                      <CoreTooltip
-                        title={
-                          <>
-                            <Text strong underline>
-                              Notice To Start Work
-                            </Text>
-                            <br />
-                            <Text>
-                              6.2.1 The manager shall give 10 days’ notice to an inspector of
-                              intention to start [any mining activity] in, at, or about a mine,
-                              including seasonal reactivation.
-                            </Text>
-                          </>
-                        }
-                      />
-                    </>
-                  }
+    const renderWorkInfo = (info) => (
+      <List.Item>
+        <Row>
+          <Col span={22}>
+            <Descriptions column={5} colon={false}>
+              <Descriptions.Item label="Work Status">
+                <Badge
+                  status={getWorkInformationBadgeStatusType(info.work_status)}
+                  text={info.work_status}
+                />
+              </Descriptions.Item>
+              <Descriptions.Item
+                label={
+                  <>
+                    Work Start Date
+                    <CoreTooltip
+                      title={
+                        <>
+                          <Text strong underline>
+                            Notice To Start Work
+                          </Text>
+                          <br />
+                          <Text>
+                            6.2.1 The manager shall give 10 days’ notice to an inspector of
+                            intention to start [any mining activity] in, at, or about a mine,
+                            including seasonal reactivation.
+                          </Text>
+                        </>
+                      }
+                    />
+                  </>
+                }
+              >
+                {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+              <Descriptions.Item
+                label={
+                  <>
+                    Work Stop Date
+                    <CoreTooltip
+                      title={
+                        <>
+                          <Text strong underline>
+                            Notice to Stop Work
+                          </Text>
+                          <br />
+                          <Text>
+                            6.2.2 The manager shall give notice to an inspector of intention to stop
+                            [any mining activity] in, at, or about a mine, permanently,
+                            indefinitely, or for a definite period exceeding 30 days, and except in
+                            an emergency, the notice shall be not less than seven days.
+                          </Text>
+                        </>
+                      }
+                    />
+                  </>
+                }
+              >
+                {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions column={1} colon={false}>
+              <Descriptions.Item label="Comments" span={1}>
+                {info.work_comments || Strings.NOT_APPLICABLE}
+              </Descriptions.Item>
+            </Descriptions>
+            {/* NOTE: Ant Design has no easy way to right-align "Descriptions" so plain HTML tags are used here. */}
+            <span style={{ float: "right", display: "inline-flex" }}>
+              <div className="inline-flex padding-sm" style={{ marginRight: 10 }}>
+                <p className="field-title">Updated By</p>
+                <p>{info.updated_by}</p>
+              </div>
+              <div className="inline-flex padding-sm">
+                <p className="field-title">Last Updated</p>
+                <p>{formatDateTime(info.updated_timestamp)}</p>
+              </div>
+            </span>
+          </Col>
+          <Col span={2}>
+            <span style={{ float: "right" }}>
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                <Button
+                  type="primary"
+                  size="small"
+                  ghost
+                  onClick={() => this.openAddEditMineWorkInformationModal(info)}
                 >
-                  {formatDate(info.work_start_date) || Strings.NOT_APPLICABLE}
-                </Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <>
-                      Work Stop Date
-                      <CoreTooltip
-                        title={
-                          <>
-                            <Text strong underline>
-                              Notice to Stop Work
-                            </Text>
-                            <br />
-                            <Text>
-                              6.2.2 The manager shall give notice to an inspector of intention to
-                              stop [any mining activity] in, at, or about a mine, permanently,
-                              indefinitely, or for a definite period exceeding 30 days, and except
-                              in an emergency, the notice shall be not less than seven days.
-                            </Text>
-                          </>
-                        }
-                      />
-                    </>
-                  }
+                  <EditOutlined className="icon-lg icon-svg-filter" />
+                </Button>
+              </AuthorizationWrapper>
+              <AuthorizationWrapper permission={Permission.EDIT_MINES}>
+                <Popconfirm
+                  placement="topLeft"
+                  title="Are you sure you want to delete this record?"
+                  onConfirm={() => this.deleteMineWorkInformation(info.mine_work_information_guid)}
+                  okText="Delete"
+                  cancelText="Cancel"
                 >
-                  {formatDate(info.work_stop_date) || Strings.NOT_APPLICABLE}
-                </Descriptions.Item>
-              </Descriptions>
-              <Descriptions column={1} colon={false}>
-                <Descriptions.Item label="Comments" span={1}>
-                  {info.work_comments || Strings.NOT_APPLICABLE}
-                </Descriptions.Item>
-              </Descriptions>
-              {/* NOTE: Ant Design has no easy way to right-align "Descriptions" so plain HTML tags are used here. */}
-              <span style={{ float: "right", display: "inline-flex" }}>
-                <div className="inline-flex padding-sm" style={{ marginRight: 10 }}>
-                  <p className="field-title">Updated By</p>
-                  <p>{info.updated_by}</p>
-                </div>
-                <div className="inline-flex padding-sm">
-                  <p className="field-title">Last Updated</p>
-                  <p>{formatDateTime(info.updated_timestamp)}</p>
-                </div>
-              </span>
-            </Col>
-            <Col span={2}>
-              <span style={{ float: "right" }}>
-                <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-                  <Button
-                    type="primary"
-                    size="small"
-                    ghost
-                    onClick={() => this.openAddEditMineWorkInformationModal(info)}
-                  >
-                    <EditOutlined className="icon-lg icon-svg-filter" />
+                  <Button type="primary" size="small" ghost>
+                    <DeleteOutlined className="icon-lg icon-svg-filter" />
                   </Button>
-                </AuthorizationWrapper>
-                <AuthorizationWrapper permission={Permission.EDIT_MINES}>
-                  <Popconfirm
-                    placement="topLeft"
-                    title="Are you sure you want to delete this record?"
-                    onConfirm={() =>
-                      this.deleteMineWorkInformation(info.mine_work_information_guid)
-                    }
-                    okText="Delete"
-                    cancelText="Cancel"
-                  >
-                    <Button type="primary" size="small" ghost>
-                      <DeleteOutlined className="icon-lg icon-svg-filter" />
-                    </Button>
-                  </Popconfirm>
-                </AuthorizationWrapper>
-              </span>
-            </Col>
-          </Row>
-        </List.Item>
-      );
-    };
+                </Popconfirm>
+              </AuthorizationWrapper>
+            </span>
+          </Col>
+        </Row>
+      </List.Item>
+    );
 
     const dataSource = this.state.showAll
       ? this.props.mineWorkInformations

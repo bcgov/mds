@@ -144,7 +144,11 @@ export class AdvancedMineSearchForm extends Component {
                   name="work_status"
                   placeholder="Select Work Status"
                   component={renderConfig.MULTI_SELECT}
-                  data={this.props.mineWorkStatusDropDownOptions}
+                  data={[
+                    { value: "Unknown", label: "Unknown" },
+                    { value: "Working", label: "Working" },
+                    { value: "Not Working", label: "Not Working" },
+                  ]}
                 />
               </Col>
               <Col md={12} xs={24}>

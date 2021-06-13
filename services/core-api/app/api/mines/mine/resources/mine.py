@@ -268,11 +268,15 @@ class MineListResource(Resource, UserMixin):
                 .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
 
+        # if work_status_filter_term:
+        #     work_status_filter = MineWorkStatus.mine_work_status_code.in_(work_status_filter_term)
+        #     work_status_query = Mine.query \
+        #         .join(MineWorkStatus, Mine.work_status == MineWorkStatus.mine_work_status_code) \
+        #         .filter(work_status_filter)
+        #     mines_query = mines_query.intersect(work_status_query)
         if work_status_filter_term:
-            work_status_filter = MineWorkStatus.mine_work_status_code.in_(work_status_filter_term)
             work_status_query = Mine.query \
-                .join(MineWorkStatus, Mine.work_status == MineWorkStatus.mine_work_status_code) \
-                .filter(work_status_filter)
+                .filter(Mine.work_status.in_(work_status_filter_term))
             mines_query = mines_query.intersect(work_status_query)
 
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
