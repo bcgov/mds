@@ -95,7 +95,6 @@ exports[`MineList renders properly 1`] = `
         "mine_operation_status_code": "N/A",
         "mine_region": "North East",
         "mine_work_information": undefined,
-        "mine_work_status_description": "Unknown",
         "permit_numbers": Array [],
         "tenure": Array [
           "Placer",
@@ -109,6 +108,7 @@ exports[`MineList renders properly 1`] = `
           "verifying_timestamp": null,
           "verifying_user": null,
         },
+        "work_status": "Unknown",
       },
       Object {
         "commodity": Array [],
@@ -118,7 +118,6 @@ exports[`MineList renders properly 1`] = `
         "mine_operation_status_code": "N/A",
         "mine_region": "North East",
         "mine_work_information": undefined,
-        "mine_work_status_description": "Unknown",
         "permit_numbers": Array [
           "KNaaWwVdiJ40",
           "xfM0c0ZKEw7B",
@@ -135,6 +134,7 @@ exports[`MineList renders properly 1`] = `
           "verifying_timestamp": null,
           "verifying_user": null,
         },
+        "work_status": "Unknown",
       },
     ]
   }
