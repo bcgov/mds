@@ -243,8 +243,12 @@ export class MineWorkInformation extends Component {
                 renderItem={(info) => renderWorkInfo(info)}
                 loading={!this.state.isLoaded}
               />
-            )) ||
-              "This mine has no recorded work information."}
+            )) || (
+              <>
+                <br />
+                This mine has no recorded work information.
+              </>
+            )}
           </Col>
         </Row>
       </>
