@@ -28,6 +28,19 @@ AS SELECT
     na.is_access_gated::varchar AS is_access_gated,
     na.has_key_for_inspector::varchar AS has_key_for_inspector,
 
+    -- Notice of Work Activity Disturbance Data
+    activity_disturbed_areas.now_total_disturbed_area AS now_total_disturbed_area,
+    activity_disturbed_areas.now_activity_cut_lines_polarization_survey_total_disturbed_area AS now_activity_cut_lines_polarization_survey_total_disturbed_area,
+    activity_disturbed_areas.now_activity_settling_pond_total_disturbed_area AS now_activity_settling_pond_total_disturbed_area,
+    activity_disturbed_areas.now_activity_exploration_surface_drilling_total_disturbed_area AS now_activity_exploration_surface_drilling_total_disturbed_area,
+    activity_disturbed_areas.now_activity_sand_gravel_quarry_operation_total_disturbed_area AS now_activity_sand_gravel_quarry_operation_total_disturbed_area,
+    activity_disturbed_areas.now_activity_exploration_access_total_disturbed_area AS now_activity_exploration_access_total_disturbed_area,
+    activity_disturbed_areas.now_activity_underground_exploration_total_disturbed_area AS now_activity_underground_exploration_total_disturbed_area,
+    activity_disturbed_areas.now_activity_camp_total_disturbed_area AS now_activity_camp_total_disturbed_area,
+    activity_disturbed_areas.now_activity_mechanical_trenching_total_disturbed_area AS now_activity_mechanical_trenching_total_disturbed_area,
+    activity_disturbed_areas.now_activity_surface_bulk_sample_total_disturbed_area AS now_activity_surface_bulk_sample_total_disturbed_area,
+    activity_disturbed_areas.now_activity_placer_operation_total_disturbed_area AS now_activity_placer_operation_total_disturbed_area,
+
     -- Notice of Work Progress
     nap_con.start_date AS now_progress_consultation_start_date,
     nap_con.end_date AS now_progress_consultation_end_date,
@@ -44,7 +57,6 @@ AS SELECT
     nad.now_application_client_delay_days AS now_application_client_delay_days,
 
     -- Permit
-    -- TODO: Do we need to determine and provide "permit approved date" and "permit expiry date"?
     p.permit_guid::varchar AS permit_guid,
     p.permit_no AS permit_no,
     p.permit_status_code AS permit_status_code,
@@ -95,8 +107,6 @@ AS SELECT
     mwi.work_start_date AS mine_work_start_date,
     mwi.work_stop_date  AS mine_work_stop_date,
     mwi.work_comments AS mine_work_comments,
-    mwi.mine_work_status_code AS mine_work_status_code,
-    mws.description AS mine_work_status_description,
     
     -- Mine Inspection Data
     nris_i.inspection_date AS last_inspection_date,
@@ -137,12 +147,37 @@ AS SELECT
             mine_work_information.mine_guid,
             mine_work_information.work_start_date,
             mine_work_information.work_stop_date,
-            mine_work_information.work_comments,
-            mine_work_information.mine_work_status_code
+            mine_work_information.work_comments
         FROM mine_work_information
         WHERE m.mine_guid = mine_work_information.mine_guid
         ORDER BY mine_work_information.created_timestamp DESC LIMIT 1
     ) mwi ON true
+    LEFT JOIN LATERAL (
+        WITH disturbed_areas AS (
+            SELECT
+                a.activity_type_code AS activity_type_code,
+                ad.disturbed_area AS disturbed_area
+            FROM
+                activity_summary a
+                LEFT JOIN activity_summary_detail_xref ax ON a.activity_summary_id = ax.activity_summary_id
+                LEFT JOIN activity_detail ad ON ax.activity_detail_id = ad.activity_detail_id
+            WHERE a.now_application_id = nai.now_application_id
+        )
+        SELECT
+            SUM(disturbed_area) AS now_total_disturbed_area,
+            -- NOTE: water_supply and blasted_operation are excluded because they do not have disturbed area
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'cut_lines_polarization_survey') AS now_activity_cut_lines_polarization_survey_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'settling_pond') AS now_activity_settling_pond_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'exploration_surface_drilling') AS now_activity_exploration_surface_drilling_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'sand_gravel_quarry_operation') AS now_activity_sand_gravel_quarry_operation_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'exploration_access') AS now_activity_exploration_access_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'underground_exploration') AS now_activity_underground_exploration_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'camp') AS now_activity_camp_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'mechanical_trenching') AS now_activity_mechanical_trenching_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'surface_bulk_sample') AS now_activity_surface_bulk_sample_total_disturbed_area,
+            (SELECT SUM(disturbed_area) FROM disturbed_areas WHERE activity_type_code = 'settling_pond') AS now_activity_placer_operation_total_disturbed_area
+        FROM disturbed_areas
+    ) activity_disturbed_areas ON true
     LEFT JOIN (
         SELECT now_application_id, start_date, end_date
         FROM now_application_progress
@@ -177,7 +212,6 @@ AS SELECT
     LEFT JOIN mine_operation_status_code mos ON msx.mine_operation_status_code::text = mos.mine_operation_status_code::text
     LEFT JOIN mine_operation_status_reason_code mosr ON msx.mine_operation_status_reason_code::text = mosr.mine_operation_status_reason_code::text
     LEFT JOIN mine_operation_status_sub_reason_code mossr ON msx.mine_operation_status_sub_reason_code::text = mossr.mine_operation_status_sub_reason_code::text
-    LEFT JOIN mine_work_status mws ON mwi.mine_work_status_code::text = mws.mine_work_status_code::text
     LEFT JOIN mine_tenure_type_code mttc ON mt.mine_tenure_type_code::text = mttc.mine_tenure_type_code::text
     LEFT JOIN mine_type_detail_xref mtdx ON mt.mine_type_guid = mtdx.mine_type_guid AND mtdx.active_ind = true
     LEFT JOIN mine_disturbance_code mdc ON mtdx.mine_disturbance_code::text = mdc.mine_disturbance_code::text
@@ -223,6 +257,19 @@ AS SELECT
     directions_to_site,
     is_access_gated,
     has_key_for_inspector,
+
+    -- Notice of Work Activity Disturbance Data
+    now_total_disturbed_area,
+    now_activity_cut_lines_polarization_survey_total_disturbed_area,
+    now_activity_settling_pond_total_disturbed_area,
+    now_activity_exploration_surface_drilling_total_disturbed_area,
+    now_activity_sand_gravel_quarry_operation_total_disturbed_area,
+    now_activity_exploration_access_total_disturbed_area,
+    now_activity_underground_exploration_total_disturbed_area,
+    now_activity_camp_total_disturbed_area,
+    now_activity_mechanical_trenching_total_disturbed_area,
+    now_activity_surface_bulk_sample_total_disturbed_area,
+    now_activity_placer_operation_total_disturbed_area,
 
     -- Notice of Work Progress
     now_progress_consultation_start_date,
@@ -277,8 +324,6 @@ AS SELECT
     mine_work_start_date,
     mine_work_stop_date,
     mine_work_comments,
-    mwi.mine_work_status_code,
-    mine_work_status_description,
 
     -- Mine Inspection Data
     last_inspection_date,
