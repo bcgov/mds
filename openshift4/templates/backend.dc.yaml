@@ -230,10 +230,9 @@ objects:
                       key: database-password
                       name: redis
                 - name: JWT_OIDC_WELL_KNOWN_CONFIG
-                  value: >-
-                    https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration
+                  value: ${JWT_OIDC_WELL_KNOWN_CONFIG}
                 - name: JWT_OIDC_AUDIENCE
-                  value: mines-application-test
+                  value: ${JWT_OIDC_AUDIENCE}
                 - name: JWT_OIDC_ALGORITHMS
                   value: RS256
                 - name: BASE_PATH
@@ -250,7 +249,7 @@ objects:
                       key: embedding-secret-key
                       name: template.metabase-key
                 - name: METABASE_SITE_URL
-                  value: "https://mds-metabase-empr-mds-prod.pathfinder.gov.bc.ca"
+                  value: "https://metabase-4c2ba9-prod.apps.silver.devops.gov.bc.ca"
                 - name: NROS_TOKEN_URL
                   valueFrom:
                     secretKeyRef:
