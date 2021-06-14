@@ -8,6 +8,7 @@ import RejectApplicationForm from "@/components/Forms/noticeOfWork/RejectApplica
 import IssuePermitForm from "@/components/Forms/noticeOfWork/IssuePermitForm";
 
 const propTypes = {
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
@@ -61,6 +62,7 @@ export class UpdateStatusGenerateLetterModal extends Component {
         closeModal={this.props.closeModal}
         title={this.props.title}
         type={this.props.type}
+        documentType={this.props.documentType}
         prev={this.prev}
         noticeOfWork={this.props.noticeOfWork}
       />

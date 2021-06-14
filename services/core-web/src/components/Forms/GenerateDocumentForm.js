@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, getFormValues } from "redux-form";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
@@ -10,14 +12,15 @@ import { getGenerateDocumentFormField } from "@/components/common/GenerateDocume
 import RenderSelect from "@/components/common/RenderSelect";
 
 const propTypes = {
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  preview: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   additionalTitle: PropTypes.string,
   disabled: PropTypes.bool,
   allowDocx: PropTypes.bool,
+  allCurrentValues: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const defaultProps = {
@@ -106,6 +109,16 @@ export const GenerateDocumentForm = (props) => {
         </Popconfirm>
         <Button
           className="full-mobile"
+          type="secondary"
+          disabled={props.disabled}
+          onClick={() => {
+            props.preview(props.documentType, Object.assign({}, props.allCurrentValues));
+          }}
+        >
+          Preview Document
+        </Button>
+        <Button
+          className="full-mobile"
           type="primary"
           htmlType="submit"
           loading={props.submitting}
@@ -121,8 +134,15 @@ export const GenerateDocumentForm = (props) => {
 GenerateDocumentForm.propTypes = propTypes;
 GenerateDocumentForm.defaultProps = defaultProps;
 
-export default reduxForm({
-  form: FORM.GENERATE_DOCUMENT,
-  touchOnBlur: true,
-  onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
-})(GenerateDocumentForm);
+const mapStateToProps = (state) => ({
+  allCurrentValues: getFormValues(FORM.GENERATE_DOCUMENT)(state),
+});
+
+export default compose(
+  connect(mapStateToProps, null),
+  reduxForm({
+    form: FORM.GENERATE_DOCUMENT,
+    touchOnBlur: true,
+    onSubmitSuccess: resetForm(FORM.GENERATE_DOCUMENT),
+  })
+)(GenerateDocumentForm);
