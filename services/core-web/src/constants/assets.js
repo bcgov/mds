@@ -45,3 +45,4 @@ export { default as MEMP_PDF } from "../assets/downloads/DRAFT_MEMP_V1_20200622.
 export { default as FLUSH_SOUND } from "../assets/downloads/flush.mp3";
 export { default as WATER_SOUND } from "../assets/downloads/water.mp3";
 export { default as MINESPACE_ICON } from "../assets/images/minespaceIcon.svg";
+export { default as CLOUD_CHECK_MARK } from "../assets/images/CloudCheck.png";

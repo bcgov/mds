@@ -8,22 +8,21 @@ import {
 } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import {
   getDropdownPermitStatusOptionsHash,
   getPermitAmendmentTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import * as Strings from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
-import LinkButton from "@/components/common/LinkButton";
 import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
+import DocumentLink from "@/components/common/DocumentLink";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -56,10 +55,12 @@ const defaultProps = {
   partyRelationships: [],
 };
 
-const renderDocumentLink = (file, text) => (
-  <LinkButton key={file.mine_document_guid} onClick={() => downloadFileFromDocumentManager(file)}>
-    {text}
-  </LinkButton>
+const renderDocumentLink = (document, linkTitleOverride = null) => (
+  <DocumentLink
+    documentManagerGuid={document.document_manager_guid}
+    documentName={document.document_name}
+    linkTitleOverride={linkTitleOverride}
+  />
 );
 
 const finalApplicationPackage = (amendment) => {
@@ -369,12 +370,7 @@ const childColumns = [
       <div title="Maps">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(
-                file.mine_document,
-                truncateFilename(file.mine_document.document_name)
-              )}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
           ))}
         </ul>
       </div>
@@ -388,12 +384,7 @@ const childColumns = [
       <div title="Final Application Package">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(
-                file.mine_document,
-                truncateFilename(file.mine_document.document_name)
-              )}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
           ))}
         </ul>
       </div>
@@ -407,9 +398,7 @@ const childColumns = [
       <div title="Permit Files">
         <ul>
           {text?.map((file) => (
-            <li className="wrapped-text">
-              {renderDocumentLink(file, truncateFilename(file.document_name))}
-            </li>
+            <li className="wrapped-text">{renderDocumentLink(file)}</li>
           ))}
         </ul>
       </div>
@@ -465,7 +454,9 @@ const transformRowData = (
   openAddPermitHistoricalAmendmentModal,
   openEditSitePropertiesModal
 ) => {
-  const latestAmendment = permit.permit_amendments[0];
+  const latestAmendment = permit.permit_amendments.filter(
+    (a) => a.permit_amendment_status_code !== draftAmendment
+  )[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
 
   const hasAmalgamated = permit.permit_amendments.find(

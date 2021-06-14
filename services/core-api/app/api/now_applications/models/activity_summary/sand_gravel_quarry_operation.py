@@ -37,6 +37,8 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     total_annual_extraction_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     average_groundwater_depth = db.Column(db.Numeric(14, 1))
+    average_groundwater_depth_unit_type_code = db.Column(
+        db.String, db.ForeignKey('unit_type.unit_type_code'))
     has_groundwater_from_existing_area = db.Column(db.Boolean)
     has_groundwater_from_test_pits = db.Column(db.Boolean)
     has_groundwater_from_test_wells = db.Column(db.Boolean)
@@ -52,13 +54,26 @@ class SandGravelQuarryOperation(ActivitySummaryBase):
     secure_access_plan = db.Column(db.String)
     dust_impact_plan = db.Column(db.String)
     visual_impact_plan = db.Column(db.String)
-
+    progressive_reclamation = db.Column(db.Boolean)
+    max_unreclaimed = db.Column(db.Numeric)
+    max_unreclaimed_unit_type_code = db.Column(
+        db.String, db.ForeignKey('unit_type.unit_type_code'))
     reclamation_backfill_detail = db.Column(db.String)
+    proposed_activity_description = db.Column(db.String)
+    work_year_info = db.Column(db.String)
 
     details = db.relationship(
         'SandGravelQuarryOperationDetail',
         secondary='activity_summary_detail_xref',
         load_on_pending=True)
+
+    # TODO replace with value from vFCBC
+    # If the other description is provided, the other option has been selected.
+    @hybrid_property
+    def has_ground_water_from_other(self):
+        if self.groundwater_from_other_description == None: 
+            return False
+        return True
 
     @hybrid_property
     def calculated_total_disturbance(self):

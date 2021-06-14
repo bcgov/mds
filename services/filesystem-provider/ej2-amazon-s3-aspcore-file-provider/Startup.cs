@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace EJ2FileManagerService
 {
@@ -24,8 +26,8 @@ namespace EJ2FileManagerService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddMemoryCache();
+            services.AddMvc(options => options.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins", builder =>
@@ -35,6 +37,8 @@ namespace EJ2FileManagerService
                     .AllowAnyHeader();
                 });
             });
+
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddTransient<IClaimsTransformation, ClaimsTransformer>();
 
@@ -54,6 +58,9 @@ namespace EJ2FileManagerService
             });
 
             services.AddSwaggerGen();
+
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +85,7 @@ namespace EJ2FileManagerService
             app.UseAuthentication();
             app.UseCors("AllowAllOrigins");
             app.UseMvc();
+            app.UseResponseCompression();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

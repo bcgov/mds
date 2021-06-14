@@ -309,6 +309,9 @@ exports[`SandGravelQuarry renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <h4>
+    Activities
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
@@ -344,9 +347,77 @@ exports[`SandGravelQuarry renders properly 1`] = `
     }
   />
   <br />
-  <Equipment
-    isViewMode={true}
-  />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={18}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Is the work year round or only seasonal?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={
+            Object {
+              "marginLeft": "5px",
+            }
+          }
+        />
+      </div>
+      <Field
+        component={[Function]}
+        customOptions={
+          Array [
+            Object {
+              "label": "Year round",
+              "value": "Year round",
+            },
+            Object {
+              "label": "Seasonal",
+              "value": "Seasonal",
+            },
+            Object {
+              "label": "Intermittent",
+              "value": "Intermittent",
+            },
+          ]
+        }
+        disabled={true}
+        id="work_year_info"
+        name="work_year_info"
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Brief description of operation, including proposed work schedule
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="proposed_activity_description"
+        name="proposed_activity_description"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
   <br />
   <h4>
     Reclamation Program
@@ -404,6 +475,446 @@ exports[`SandGravelQuarry renders properly 1`] = `
         normalize={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        If backfilling of pits or pit slopes is proposed in the final configuration for reclamation, details of materials to be used and placement procedures
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="reclamation_backfill_detail"
+        name="reclamation_backfill_detail"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Will progressive reclamation be carried out?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="progressive_reclamation"
+        name="progressive_reclamation"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Maximum unreclaimed disturbance at any given time
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="max_unreclaimed_unit_type_code"
+        id="max_unreclaimed"
+        names={
+          Array [
+            "max_unreclaimed",
+            "max_unreclaimed_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <br />
+  <br />
+  <h4>
+    Groundwater Protection
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Average depth to the high groundwater table at the proposed excavation
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="average_groundwater_depth_unit_type_code"
+        id="average_groundwater_depth"
+        names={
+          Array [
+            "average_groundwater_depth",
+            "average_groundwater_depth_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Elevation of the groundwater table was determined from
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_groundwater_from_existing_area"
+          label={
+            <React.Fragment>
+              Existing area wells
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "5px",
+                  }
+                }
+              />
+            </React.Fragment>
+          }
+          name="has_groundwater_from_existing_area"
+          type="checkbox"
+        />
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_groundwater_from_test_pits"
+          label={
+            <React.Fragment>
+              Test pits
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "5px",
+                  }
+                }
+              />
+            </React.Fragment>
+          }
+          name="has_groundwater_from_test_pits"
+          type="checkbox"
+        />
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_groundwater_from_test_wells"
+          label={
+            <React.Fragment>
+              Test wells drilled for this purpose
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "5px",
+                  }
+                }
+              />
+            </React.Fragment>
+          }
+          name="has_groundwater_from_test_wells"
+          type="checkbox"
+        />
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="has_ground_water_from_other"
+          label={
+            <React.Fragment>
+              Other
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={
+                  Object {
+                    "marginLeft": "5px",
+                  }
+                }
+              />
+            </React.Fragment>
+          }
+          name="has_ground_water_from_other"
+          type="checkbox"
+        />
+        <Field
+          component={[Function]}
+          disabled={true}
+          id="groundwater_from_other_description"
+          name="groundwater_from_other_description"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </div>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures proposed to protect groundwater from potential impacts of the proposed mining activity
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="groundwater_protection_plan"
+        name="groundwater_protection_plan"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Impact Minimization
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Shortest Distance between proposed excavation to nearest residence
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="nearest_water_source_distance_unit_type_code"
+        id="nearest_residence_distance"
+        names={
+          Array [
+            "nearest_residence_distance",
+            "nearest_water_source_distance_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Shortest distance between proposed excavation to nearest residential water source
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Fields
+        component={[Function]}
+        disabled={true}
+        dropdownID="nearest_water_source_distance_unit_type_code"
+        id="nearest_water_source_distance"
+        names={
+          Array [
+            "nearest_water_source_distance",
+            "nearest_water_source_distance_unit_type_code",
+          ]
+        }
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures proposed to prevent inadvertent access of unauthorized persons to the mine site
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="secure_access_plan"
+        name="secure_access_plan"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures proposed to minimize noise impacts of the operation
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="noise_impact_plan"
+        name="noise_impact_plan"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures proposed to minimize the dust impacts of the operation
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="dust_impact_plan"
+        name="dust_impact_plan"
+        validate={
+          Array [
+            [Function],
+          ]
+        }
+      />
+    </Col>
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Measures proposed to minimize visual impacts of the operation
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="visual_impact_plan"
+        name="visual_impact_plan"
         validate={
           Array [
             [Function],

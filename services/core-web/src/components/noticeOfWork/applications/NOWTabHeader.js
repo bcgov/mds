@@ -21,6 +21,7 @@ const propTypes = {
   tab: PropTypes.string.isRequired,
   tabName: PropTypes.string.isRequired,
   showProgressButton: PropTypes.bool,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -29,6 +30,7 @@ const defaultProps = {
   tabActions: "",
   tabEditActions: "",
   showProgressButton: true,
+  isNoticeOfWorkTypeDisabled: true,
 };
 
 export const NOWTabHeader = (props) => (
@@ -43,7 +45,11 @@ export const NOWTabHeader = (props) => (
           </h2>
           <div className="view--header--content--actions">
             {props.showProgressButton && (
-              <NOWProgressActions tab={props.tab} handleDraftPermit={props.handleDraftPermit} />
+              <NOWProgressActions
+                tab={props.tab}
+                handleDraftPermit={props.handleDraftPermit}
+                isNoticeOfWorkTypeDisabled={props.isNoticeOfWorkTypeDisabled}
+              />
             )}
             <>{props.tabActions}</>
           </div>
@@ -58,6 +64,7 @@ export const NOWTabHeader = (props) => (
     <NOWStatusIndicator type="banner" tabSection={props.tab} isEditMode={props.isEditMode} />
   </div>
 );
+
 NOWTabHeader.propTypes = propTypes;
 NOWTabHeader.defaultProps = defaultProps;
 

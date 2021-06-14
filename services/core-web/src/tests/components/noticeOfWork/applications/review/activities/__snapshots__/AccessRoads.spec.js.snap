@@ -2,6 +2,9 @@
 
 exports[`AccessRoads renders properly 1`] = `
 <div>
+  <h4>
+    Activities
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
@@ -16,6 +19,14 @@ exports[`AccessRoads renders properly 1`] = `
             [Function],
           ],
           "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "title": "Number of Sites",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "number_of_sites",
         },
         Object {
           "component": [Function],
@@ -89,10 +100,6 @@ exports[`AccessRoads renders properly 1`] = `
       />
     </Col>
   </Row>
-  <br />
-  <Equipment
-    isViewMode={true}
-  />
   <br />
   <h4>
     Reclamation Program

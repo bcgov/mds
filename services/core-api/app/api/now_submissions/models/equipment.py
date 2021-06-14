@@ -8,8 +8,8 @@ class EquipmentSubmission(Base):
     __table_args__ = {"schema": "now_submissions"}
     equipmentid = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     type = db.Column(db.String)
-    sizecapacity = db.Column(db.String)
+    size = db.Column(db.String)
     quantity = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<EquipmentSubmission %r>' % self.equipmentid
+        return f'<{self.__class__.__name__} {self.equipmentid}>'

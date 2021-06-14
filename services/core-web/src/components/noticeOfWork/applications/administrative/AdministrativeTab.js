@@ -12,6 +12,7 @@ import {
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
@@ -49,6 +50,7 @@ const propTypes = {
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
+  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
 };
 
 export class AdministrativeTab extends Component {
@@ -87,6 +89,7 @@ export class AdministrativeTab extends Component {
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
             title: `Generate ${documentType.description}`,
             signature,
+            allowDocx: true,
           },
           width: "75vw",
           content: modalConfig.GENERATE_DOCUMENT,
@@ -112,10 +115,9 @@ export class AdministrativeTab extends Component {
         payload,
         "Successfully created document and attached it to Notice of Work",
         () => {
-          this.setState({ isLoaded: false });
-          this.props
-            .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-            .then(() => this.setState({ isLoaded: true }));
+          this.props.fetchImportedNoticeOfWorkApplication(
+            this.props.noticeOfWork.now_application_guid
+          );
         }
       )
       .then(() => {
@@ -172,6 +174,7 @@ export class AdministrativeTab extends Component {
 
   menu = () => {
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
+    const generateLettersList = isNoWApplication ? ["CAL", "NPE"] : ["NPE"];
     return (
       <Menu>
         {isNoWApplication && (
@@ -194,23 +197,24 @@ export class AdministrativeTab extends Component {
             Edit Application Lat/Long
           </Menu.Item>
         </NOWActionWrapper>
-        {isNoWApplication && Object.values(this.props.generatableApplicationDocuments).length > 0 && (
-          <Menu.SubMenu key="generate-documents" title="Generate Documents">
-            {Object.values(this.props.generatableApplicationDocuments)
-              .filter(
-                ({ now_application_document_type_code }) =>
-                  now_application_document_type_code === "CAL"
-              )
-              .map((document) => (
-                <Menu.Item
-                  key={document.now_application_document_type_code}
-                  onClick={this.handleGenerateDocument}
-                >
-                  {document.description}
-                </Menu.Item>
-              ))}
-          </Menu.SubMenu>
-        )}
+        {this.props.generatableApplicationDocuments &&
+          Object.values(this.props.generatableApplicationDocuments).length > 0 && (
+            <Menu.SubMenu key="generate-documents" title="Generate Documents">
+              {Object.values(this.props.generatableApplicationDocuments)
+                .filter(({ now_application_document_type_code }) =>
+                  generateLettersList.includes(now_application_document_type_code)
+                )
+                .sort((docA, docB) => docA.description.localeCompare(docB.description))
+                .map((document) => (
+                  <Menu.Item
+                    key={document.now_application_document_type_code}
+                    onClick={this.handleGenerateDocument}
+                  >
+                    {document.description}
+                  </Menu.Item>
+                ))}
+            </Menu.SubMenu>
+          )}
       </Menu>
     );
   };
@@ -285,6 +289,7 @@ export class AdministrativeTab extends Component {
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
+            draftPermitAmendment={this.props.draftPermitAmendment}
           />
         </div>
       </div>
@@ -299,6 +304,7 @@ const mapStateToProps = (state) => ({
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
   documentContextTemplate: getDocumentContextTemplate(state),
+  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

@@ -7,12 +7,13 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, change, formValueSelector, FormSection } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm, Divider } from "antd";
+import { Button, Col, Row, Popconfirm, Divider, Alert } from "antd";
 import {
   required,
   dateNotInFuture,
   maxLength,
   validateSelectOptions,
+  requiredRadioButton,
   requiredList,
   number,
 } from "@common/utils/Validate";
@@ -30,6 +31,7 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
 import { securityNotRequiredReasonOptions } from "@/constants/NOWConditions";
+import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -135,6 +137,7 @@ export class AddPermitForm extends Component {
       this.props.change("site_properties.mine_disturbance_code", []);
       this.props.change("site_properties.mine_commodity_code", []);
       this.props.change("exemption_fee_status_code", null);
+      this.props.change("is_exploration", null);
     }
     const statusSelected = this.props.permitStatusCode || nextProps.permitStatusCode;
     const permitTypeSelected = this.props.permitPrefix || nextProps.permitPrefix;
@@ -157,9 +160,22 @@ export class AddPermitForm extends Component {
     const isCoalOrMineral =
       this.props.site_properties?.mine_tenure_type_code === "COL" ||
       this.props.site_properties?.mine_tenure_type_code === "MIN";
+    const permitPrefixCoalOrMineral =
+      this.props.permitPrefix === "C" || this.props.permitPrefix === "M";
     const permitPrefix = this.props.permitPrefix ? this.props.permitPrefix : null;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
+        {(permitPrefixCoalOrMineral || this.props.permitIsExploration) && (
+          <>
+            <Alert
+              className="quadrat"
+              description="Ensure that you have correctly specified if it is an exploration permit or not. This cannot be changed once the permit has been issued."
+              type="info"
+              showIcon
+            />
+            <br />
+          </>
+        )}
         <Row gutter={48}>
           <Col md={12} sm={24} className="border--right--layout">
             <Form.Item>
@@ -183,16 +199,14 @@ export class AddPermitForm extends Component {
                 data={permitTypes}
               />
             </Form.Item>
-            {(this.props.permitPrefix === "C" ||
-              this.props.permitPrefix === "M" ||
-              this.props.permitIsExploration) && (
+            {(permitPrefixCoalOrMineral || this.props.permitIsExploration) && (
               <Form.Item>
                 <Field
                   id="is_exploration"
                   name="is_exploration"
-                  label="Exploration Permit"
-                  type="checkbox"
-                  component={renderConfig.CHECKBOX}
+                  label="Exploration Permit*"
+                  component={RenderRadioButtons}
+                  validate={[requiredRadioButton]}
                 />
               </Form.Item>
             )}
@@ -233,9 +247,11 @@ export class AddPermitForm extends Component {
               <Field
                 id="authorization_end_date"
                 name="authorization_end_date"
-                label="Authorization End Date*"
+                label={
+                  permitPrefixCoalOrMineral ? "Authorization End Date" : "Authorization End Date*"
+                }
                 component={renderConfig.DATE}
-                validate={[required]}
+                validate={permitPrefixCoalOrMineral ? [] : [required]}
               />
             </Form.Item>
             <Divider />

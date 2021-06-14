@@ -3,12 +3,15 @@ import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import { isEmpty } from "lodash";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 
@@ -21,6 +24,7 @@ const propTypes = {
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
+  openDocument: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
     search: PropTypes.string,
@@ -50,6 +54,7 @@ const applySortIndicator = (_columns, field, dir) =>
 const transformRowData = (applications) =>
   applications.map((application) => ({
     key: application.now_application_guid,
+    now_application_guid: application.now_application_guid,
     now_number: application.now_number || Strings.EMPTY_FIELD,
     mine_guid: application.mine_guid || Strings.EMPTY_FIELD,
     mine_name: application.mine_name || Strings.EMPTY_FIELD,
@@ -59,8 +64,7 @@ const transformRowData = (applications) =>
       application.now_application_status_description || Strings.EMPTY_FIELD,
     received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
     originating_system: application.originating_system || Strings.EMPTY_FIELD,
-    document:
-      application.application_documents.length >= 1 ? application.application_documents[0] : {},
+    document: application.application_documents?.[0] || {},
     is_historic: application.is_historic,
   }));
 
@@ -124,9 +128,14 @@ export class MineNoticeOfWorkTable extends Component {
       render: (text, record) =>
         !isEmpty(text) ? (
           <div title="Application" className="cap-col-height">
-            <LinkButton onClick={() => downloadNowDocument(text.id, record.key, text.filename)}>
-              <span>{text.filename}</span>
-            </LinkButton>
+            <DocumentLink
+              documentManagerGuid={text.document_manager_guid}
+              documentName={text.filename}
+              onClickAlternative={() =>
+                downloadNowDocument(text.id, record.now_application_guid, text.filename)
+              }
+              truncateDocumentName={false}
+            />
           </div>
         ) : (
           Strings.EMPTY_FIELD
@@ -170,4 +179,12 @@ export class MineNoticeOfWorkTable extends Component {
 MineNoticeOfWorkTable.propTypes = propTypes;
 MineNoticeOfWorkTable.defaultProps = defaultProps;
 
-export default withRouter(MineNoticeOfWorkTable);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      openDocument,
+    },
+    dispatch
+  );
+
+export default withRouter(connect(null, mapDispatchToProps)(MineNoticeOfWorkTable));

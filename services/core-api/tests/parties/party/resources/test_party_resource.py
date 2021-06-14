@@ -257,5 +257,5 @@ def test_set_party_to_inspector_not_by_admin_fail(test_client, db_session, auth_
         headers=auth_headers['core_edit_parties_only_auth_header'])
     put_data = json.loads(put_resp.data.decode())
     assert put_resp.status_code == 200
-    assert put_data['signature'] == test_person_data['signature']
+    assert not put_data['signature']
     assert not put_data['business_role_appts']

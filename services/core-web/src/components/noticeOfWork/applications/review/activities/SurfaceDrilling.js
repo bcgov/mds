@@ -6,12 +6,15 @@ import { currencyMask } from "@common/utils/helpers";
 import { maxLength, number, required } from "@common/utils/Validate";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
-import { NOWOriginalValueTooltip } from "@/components/common/CoreTooltip";
+import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
+import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
+  isPreLaunch: PropTypes.bool.isRequired,
 };
 
 export const SurfaceDrilling = (props) => {
@@ -52,11 +55,45 @@ export const SurfaceDrilling = (props) => {
         ]}
       />
       <br />
-      <h4>Support of the Drilling Program</h4>
+      <AuthorizationWrapper inTesting>
+        <>
+          <h4>Support of Drill Program</h4>
+          <Row gutter={16}>
+            <Col md={18} sm={24}>
+              <div className="field-title">
+                The Drilling program will be
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("exploration_surface_drilling.drill_program").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("exploration_surface_drilling.drill_program").edited
+                  }
+                />
+              </div>
+              <Field
+                id="drill_program"
+                name="drill_program"
+                component={RenderRadioButtons}
+                disabled={props.isViewMode}
+                customOptions={[
+                  { label: "Ground supported", value: "Ground supported" },
+                  { label: "Helicopter supported", value: "Helicopter supported" },
+                  { label: "Water supported", value: "Water supported" },
+                  { label: "Combination of above", value: "Combination of above" },
+                ]}
+              />
+            </Col>
+          </Row>
+        </>
+      </AuthorizationWrapper>
+      <br />
+      <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            The Drilling program will be
+            Describe the location of the Core Storage
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("exploration_surface_drilling.reclamation_core_storage")
@@ -77,8 +114,6 @@ export const SurfaceDrilling = (props) => {
           />
         </Col>
       </Row>
-      <br />
-      <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">

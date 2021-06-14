@@ -12,7 +12,6 @@ import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -20,7 +19,7 @@ import {
   deleteNoticeOfWorkApplicationDocument,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
@@ -46,6 +45,7 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  allowAfterProcess: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -56,6 +56,7 @@ const defaultProps = {
   addDescriptionColumn: true,
   showPreambleFileMetadata: false,
   editPreambleFileMetadata: false,
+  allowAfterProcess: false,
 };
 
 export const NOWDocuments = (props) => {
@@ -133,16 +134,11 @@ export const NOWDocuments = (props) => {
           sorter: (a, b) => (a.filename > b.filename ? -1 : 1),
           render: (text, record) => (
             <div title="File Name">
-              <LinkButton
-                onClick={() =>
-                  downloadFileFromDocumentManager({
-                    document_manager_guid: record.document_manager_guid,
-                    document_name: record.filename,
-                  })
-                }
-              >
-                <span>{text}</span>
-              </LinkButton>
+              <DocumentLink
+                documentManagerGuid={record.document_manager_guid}
+                documentName={record.filename}
+                truncateDocumentName={false}
+              />
             </div>
           ),
         };
@@ -359,7 +355,11 @@ export const NOWDocuments = (props) => {
       <br />
 
       {!props.selectedRows && !props.isViewMode && (
-        <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={props.isAdminView ? "" : "REV"}>
+        <NOWActionWrapper
+          permission={Permission.EDIT_PERMITS}
+          tab={props.isAdminView ? "" : "REV"}
+          allowAfterProcess={props.allowAfterProcess}
+        >
           <AddButton
             className={props.isAdminView ? "position-right" : ""}
             disabled={props.isViewMode}

@@ -2,6 +2,9 @@
 
 exports[`MechanicalTrenching renders properly 1`] = `
 <div>
+  <h4>
+    Activities
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
@@ -27,6 +30,30 @@ exports[`MechanicalTrenching renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "title": "Length (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "length",
+        },
+        Object {
+          "component": [Function],
+          "title": "Width (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "width",
+        },
+        Object {
+          "component": [Function],
+          "title": "Depth (m)",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "depth",
+        },
+        Object {
+          "component": [Function],
           "title": "Disturbed Area (ha)",
           "validate": Array [
             [Function],
@@ -45,9 +72,6 @@ exports[`MechanicalTrenching renders properly 1`] = `
     }
   />
   <br />
-  <Equipment
-    isViewMode={true}
-  />
   <h4>
     Reclamation Program
   </h4>

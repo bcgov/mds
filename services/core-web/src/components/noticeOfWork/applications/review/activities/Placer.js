@@ -10,7 +10,6 @@ import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderFieldWithDropdown from "@/components/common/RenderFieldWithDropdown";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderField from "@/components/common/RenderField";
-import Equipment from "@/components/noticeOfWork/applications/review/activities/Equipment";
 import CoreEditableTable from "@/components/common/CoreEditableTable";
 import CustomPropTypes from "@/customPropTypes";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
@@ -58,6 +57,7 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"
@@ -127,9 +127,8 @@ export const Placer = (props) => {
         </Col>
       </Row>
       <br />
-      <Equipment isViewMode={props.isViewMode} />
-
-      <h4>Reclamation Program</h4>
+      <br />
+      <h4>Total Planned Reclamation Area</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
@@ -150,6 +149,30 @@ export const Placer = (props) => {
           />
         </Col>
       </Row>
+      <br />
+      <h4>Changes in and about a Stream</h4>
+      <Row gutter={16}>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Are you proposing a stream diversion into a different channel?
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("placer_operation.has_stream_diversion").value
+              }
+              isVisible={props.renderOriginalValues("placer_operation.has_stream_diversion").edited}
+            />
+          </div>
+          <Field
+            id="has_stream_diversion"
+            name="has_stream_diversion"
+            component={RenderRadioButtons}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+      <br />
+      <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
