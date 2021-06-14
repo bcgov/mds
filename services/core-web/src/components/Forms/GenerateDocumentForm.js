@@ -111,7 +111,7 @@ export const GenerateDocumentForm = (props) => {
         <Button
           className="full-mobile"
           type="secondary"
-          disabled={props.previewGenerating}
+          loading={props.previewGenerating}
           onClick={() => {
             props.preview(props.documentType, Object.assign({}, props.allCurrentValues));
           }}
