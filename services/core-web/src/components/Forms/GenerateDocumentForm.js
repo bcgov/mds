@@ -17,6 +17,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   preview: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  previewGenerating: PropTypes.bool.isRequired,
   additionalTitle: PropTypes.string,
   disabled: PropTypes.bool,
   allowDocx: PropTypes.bool,
@@ -110,7 +111,7 @@ export const GenerateDocumentForm = (props) => {
         <Button
           className="full-mobile"
           type="secondary"
-          disabled={props.disabled}
+          disabled={props.previewGenerating}
           onClick={() => {
             props.preview(props.documentType, Object.assign({}, props.allCurrentValues));
           }}

@@ -13,6 +13,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   generateDocument: PropTypes.func.isRequired,
+  preview: PropTypes.func.isRequired,
   documentType: PropTypes.objectOf(PropTypes.any).isRequired,
   type: PropTypes.string.isRequired,
   signature: PropTypes.bool.isRequired,
@@ -28,7 +29,7 @@ const defaultProps = {
 };
 
 export class UpdateStatusGenerateLetterModal extends Component {
-  state = { step: 0, submitting: false };
+  state = { step: 0, submitting: false, previewGenerating: false };
 
   handleGenerate = (values) => {
     this.setState({ submitting: true });
@@ -36,6 +37,13 @@ export class UpdateStatusGenerateLetterModal extends Component {
       .generateDocument(this.props.documentType, values)
       .then(() => this.next())
       .finally(() => this.setState({ submitting: false }));
+  };
+
+  handlePreview = (type, values) => {
+    this.setState({ previewGenerating: true });
+    return this.props
+      .preview(type, values)
+      .finally(() => this.setState({ previewGenerating: false }));
   };
 
   close = () => this.props.closeModal();
@@ -80,6 +88,8 @@ export class UpdateStatusGenerateLetterModal extends Component {
             additionalTitle="and Process"
             onSubmit={this.handleGenerate}
             submitting={this.state.submitting}
+            previewGenerating={this.state.previewGenerating}
+            preview={this.handlePreview}
             disabled={!this.props.signature}
             allowDocx
           />

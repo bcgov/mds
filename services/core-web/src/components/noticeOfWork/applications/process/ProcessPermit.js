@@ -545,7 +545,7 @@ export class ProcessPermit extends Component {
       now_application_guid: this.props.noticeOfWork.now_application_guid,
       template_data: newValues,
     };
-    this.props.generateNoticeOfWorkApplicationDocument(
+    return this.props.generateNoticeOfWorkApplicationDocument(
       documentTypeCode,
       payload,
       "Successfully created the preview document",
