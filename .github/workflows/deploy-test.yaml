@@ -9,7 +9,8 @@ on:
 
 env:
   TAG: test
-  APP_DOMAIN: dsrp-test.apps.silver.devops.gov.bc.ca
+  CORE_DOMAIN: mds-test.apps.silver.devops.gov.bc.ca
+  MINESPACE_DOMAIN: minespace-test.apps.silver.devops.gov.bc.ca
 
 jobs:
   update-test-deployments:
@@ -28,6 +29,11 @@ jobs:
           - config: tusd
           - config: metabase
           - config: metabase-postgres
+          - config: docman
+          - config: filesystem-provider
+          - config: nris
+          - config: nris-etl
+          - config: minespace
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -42,15 +48,18 @@ jobs:
         run: |
           oc -n ${{secrets.NS_TEST}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
           -p TAG=${{env.TAG}} \
-          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/hud2v882/.well-known/openid-configuration \
-          -p JWT_OIDC_AUDIENCE=dormant-application-test \
-          -p API_URL=https://dsrp-test.apps.silver.devops.gov.bc.ca/api \
-          -p TUSD_URL=https://dsrp-test.apps.silver.devops.gov.bc.ca/files/ \
-          -p URL=https://dsrp-test.apps.silver.devops.gov.bc.ca \
+          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration \
+          -p JWT_OIDC_AUDIENCE=mines-application-test \
+          -p JWT_OIDC_AUTHORITY=https://test.oidc.gov.bc.ca/auth/realms/mds \
+          -p DOCMAN_API_URL=https://mds-test.apps.silver.devops.gov.bc.ca/document-manager \
+          -p CORE_API_URL=https://mds-test.apps.silver.devops.gov.bc.ca/api \
+          -p TUSD_URL=https://mds-test.apps.silver.devops.gov.bc.ca/files/ \
+          -p URL=https://mds-test.apps.silver.devops.gov.bc.ca/ \
           -p ENVIRONMENT_NAME=test \
-          -p DSRP_DOMAIN=${{env.APP_DOMAIN}} \
+          -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
+          -p MINESPACE_DOMAIN=${{env.MINESPACE_DOMAIN}} \
           -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \
-          -p KEYCLOAK_CLIENT_ID=dormant-application-test \
+          -p KEYCLOAK_CLIENT_ID=mines-application-test \
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
-          -p MATOMO_URL=https://matomo-269007-test.pathfinder.gov.bc.ca/ \
+          -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
           | oc -n ${{secrets.NS_TEST}} apply -f -
