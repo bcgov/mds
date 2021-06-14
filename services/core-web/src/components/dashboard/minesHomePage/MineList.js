@@ -15,8 +15,6 @@ const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   mineRegionHash: PropTypes.objectOf(PropTypes.string).isRequired,
   mineTenureHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineCommodityOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  mineWorkStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
   handleSearch: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   filters: PropTypes.objectOf(PropTypes.any),
@@ -134,9 +132,9 @@ const columns = [
     dataIndex: "mine_work_information",
     width: 150,
     render: (text, record) => (
-      <Tooltip title={record.mine_work_status_description}>
+      <Tooltip title={record.work_status}>
         <Badge
-          status={getWorkInformationBadgeStatusType(record.mine_work_status_description)}
+          status={getWorkInformationBadgeStatusType(record.work_status)}
           style={{ marginRight: 5 }}
         />
         {formatDate(text?.work_start_date) || Strings.EMPTY_FIELD} -{" "}
@@ -146,13 +144,7 @@ const columns = [
   },
 ];
 
-const transformRowData = (
-  mines,
-  mineRegionHash,
-  mineTenureHash,
-  mineCommodityHash,
-  mineWorkStatusHash
-) =>
+const transformRowData = (mines, mineRegionHash, mineTenureHash, mineCommodityHash) =>
   Object.values(mines).map((mine) => ({
     key: mine.mine_guid,
     mine_name: mine.mine_name || Strings.EMPTY_FIELD,
@@ -193,8 +185,7 @@ const transformRowData = (
     tsf: mine.mine_tailings_storage_facilities ? mine.mine_tailings_storage_facilities.length : 0,
     verified_status: mine.verified_status,
     mine_work_information: mine.mine_work_information,
-    mine_work_status_description:
-      mineWorkStatusHash[mine.mine_work_information?.mine_work_status_code || "UNKNOWN"],
+    work_status: mine.mine_work_information?.work_status || "Unknown",
   }));
 
 const handleTableChange = (handleSearch, tableFilters) => (pagination, filters, sorter) => {
@@ -220,8 +211,7 @@ export const MineList = (props) => (
       props.mines,
       props.mineRegionHash,
       props.mineTenureHash,
-      props.mineCommodityOptionsHash,
-      props.mineWorkStatusOptionsHash
+      props.mineCommodityOptionsHash
     )}
     tableProps={{
       align: "left",

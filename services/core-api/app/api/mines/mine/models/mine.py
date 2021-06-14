@@ -180,17 +180,17 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     @hybrid_property
     def work_status(self):
         if self.mine_work_informations:
-            return self.mine_work_informations[0].mine_work_status_code
-        return "UNKNOWN"
+            return self.mine_work_informations[0].work_status
+        return "Unknown"
 
     @work_status.expression
     def work_status(cls):
         return func.coalesce(
-            select([MineWorkInformation.mine_work_status_code]).where(
+            select([MineWorkInformation.work_status]).where(
                 and_(MineWorkInformation.mine_guid == cls.mine_guid,
                      MineWorkInformation.deleted_ind == False)).order_by(
                          desc(MineWorkInformation.created_timestamp)).limit(1).as_scalar(),
-            literal("UNKNOWN"))
+            literal("Unknown"))
 
     @classmethod
     def find_by_mine_guid(cls, _id):
