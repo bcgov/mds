@@ -55,6 +55,15 @@ class NOWApplication(Base, AuditMixin):
         primaryjoin='Party.party_guid == NOWApplication.issuing_inspector_party_guid')
 
     now_tracking_number = db.Column(db.Integer)
+    proponent_submitted_permit_number = db.Column(db.String)
+    annual_summary_submitted = db.Column(db.Boolean)
+    is_first_year_of_multi = db.Column(db.Boolean)
+    ats_authorization_number = db.Column(db.Numeric)
+    ats_project_number = db.Column(db.Numeric)
+    unreclaimed_disturbance_previous_year = db.Column(db.Numeric)
+    disturbance_planned_reclamation = db.Column(db.Numeric)
+    file_number_of_app = db.Column(db.String)
+    original_start_date = db.Column(db.DateTime)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
     notice_of_work_type = db.relationship('NOWApplicationType', lazy='joined')
@@ -129,7 +138,6 @@ class NOWApplication(Base, AuditMixin):
     exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     exploration_surface_drilling = db.relationship(
         'ExplorationSurfaceDrilling', lazy='selectin', uselist=False)
-    exploration_access = db.relationship('ExplorationAccess', lazy='selectin', uselist=False)
     mechanical_trenching = db.relationship('MechanicalTrenching', lazy='selectin', uselist=False)
     placer_operation = db.relationship('PlacerOperation', lazy='selectin', uselist=False)
     sand_gravel_quarry_operation = db.relationship(
@@ -139,6 +147,8 @@ class NOWApplication(Base, AuditMixin):
     underground_exploration = db.relationship(
         'UndergroundExploration', lazy='selectin', uselist=False)
     water_supply = db.relationship('WaterSupply', lazy='selectin', uselist=False)
+
+    # Progress
     application_progress = db.relationship('NOWApplicationProgress', lazy='selectin', uselist=True)
 
     # Documents that are not associated with a review
@@ -187,8 +197,29 @@ class NOWApplication(Base, AuditMixin):
         'NOWApplication.now_application_status_code == NOWApplicationStatus.now_application_status_code'
     )
 
+    equipment = db.relationship(
+        'Equipment', secondary='activity_equipment_xref', load_on_pending=True)
+
     def __repr__(self):
         return '<NOWApplication %r>' % self.now_application_guid
+
+    def get_activities(self):
+        activities = [
+            self.camp, self.cut_lines_polarization_survey, self.exploration_access,
+            self.exploration_surface_drilling, self.mechanical_trenching, self.placer_operation,
+            self.sand_gravel_quarry_operation, self.settling_pond, self.surface_bulk_sample,
+            self.underground_exploration, self.water_supply
+        ]
+        return activities
+
+    @hybrid_property
+    def total_merchantable_timber_volume(self):
+        total = 0
+        for activity in self.get_activities():
+            if activity and activity.details:
+                for detail in activity.details:
+                    total += detail.timber_volume if detail.timber_volume else 0
+        return total
 
     @hybrid_property
     def site_property(self):
@@ -305,7 +336,7 @@ class NOWApplication(Base, AuditMixin):
         now_doc.save()
 
     @classmethod
-    def get_filtered_submissions_document(cls, now_application):
+    def get_filtered_submissions_documents(cls, now_application):
         docs = []
 
         for doc in now_application.imported_submission_documents:

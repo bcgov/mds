@@ -23,6 +23,7 @@ export const Camps = (props) => {
   const hasFuel = props.campFormValues.has_fuel_stored;
   return (
     <div>
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"
@@ -70,7 +71,7 @@ export const Camps = (props) => {
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Volume of fuel stored
+            Volume of fuel stored (litres)
             <NOWOriginalValueTooltip
               originalValue={props.renderOriginalValues("camp.volume_fuel_stored").value}
               isVisible={props.renderOriginalValues("camp.volume_fuel_stored").edited}

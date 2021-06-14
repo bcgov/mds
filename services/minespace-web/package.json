@@ -10,7 +10,7 @@
     "@datapunt/matomo-tracker-react": "^0.1.5",
     "@hot-loader/react-dom": "^16.11.0",
     "antd": "^3.26.8",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "axios-mock-adapter": "^1.17.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",

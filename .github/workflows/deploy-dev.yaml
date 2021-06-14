@@ -3,13 +3,13 @@ name: Deploy to dev
 on:
   push:
     branches:
-      - main
+      - develop
     paths:
       - openshift4/templates/**.dc.yaml
 
 env:
   TAG: dev
-  APP_DOMAIN: minesdigitalservices-dev.apps.silver.devops.gov.bc.ca
+  CORE_DOMAIN: mds-dev.apps.silver.devops.gov.bc.ca
   MINESPACE_DOMAIN: minespace-dev.apps.silver.devops.gov.bc.ca
 
 jobs:
@@ -32,7 +32,8 @@ jobs:
           - config: docman
           - config: filesystem-provider
           - config: nris
-          - config: digdag
+          - config: nris-etl
+          - config: minespace
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -47,17 +48,19 @@ jobs:
         run: |
           oc -n ${{secrets.NS_DEV}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
           -p TAG=${{env.TAG}} \
-          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/hud2v882/.well-known/openid-configuration \
+          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration \
           -p JWT_OIDC_AUDIENCE=mines-application-dev \
           -p JWT_OIDC_AUTHORITY=https://test.oidc.gov.bc.ca/auth/realms/mds \
-          -p DOCMAN_API_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/document-manager \
-          -p CORE_API_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/api \
-          -p TUSD_URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca/files/ \
-          -p URL=https://nginx-4c2ba9-dev.apps.silver.devops.gov.bc.ca \
+          -p DOCMAN_API_URL=https://mds-dev.apps.silver.devops.gov.bc.ca/document-manager \
+          -p CORE_API_URL=https://mds-dev.apps.silver.devops.gov.bc.ca/api \
+          -p TUSD_URL=https://mds-dev.apps.silver.devops.gov.bc.ca/files/ \
+          -p URL=https://mds-dev.apps.silver.devops.gov.bc.ca/ \
           -p ENVIRONMENT_NAME=dev \
-          -p CORE_DOMAIN=${{env.APP_DOMAIN}} \
+          -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
+          -p MINESPACE_DOMAIN=${{env.MINESPACE_DOMAIN}} \
           -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \
           -p KEYCLOAK_CLIENT_ID=mines-application-dev \
+          -p MS_KEYCLOAK_CLIENT_ID=minespace-dev \
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
-          -p MATOMO_URL=https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/ \
+          -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
           | oc -n ${{secrets.NS_DEV}} apply -f -

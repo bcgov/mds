@@ -20,11 +20,11 @@ const defaultProps = {
 export const DocumentTable = (props) => {
   const columns = [
     {
-      title: "File name",
+      title: "File Name",
       dataIndex: "document_name",
       render: (text, record) => {
         return (
-          <div title="File name">
+          <div title="File Name">
             <LinkButton title={text} onClick={() => downloadFileFromDocumentManager(record)}>
               {truncateFilename(text)}
             </LinkButton>
@@ -35,12 +35,12 @@ export const DocumentTable = (props) => {
     {
       title: "Category",
       dataIndex: "variance_document_category_code",
-      render: (text) => <div title="Upload date">{props.documentCategoryOptionsHash[text]}</div>,
+      render: (text) => <div title="Category">{props.documentCategoryOptionsHash[text]}</div>,
     },
     {
-      title: "Upload date",
+      title: "Upload Date",
       dataIndex: "created_at",
-      render: (text) => <div title="Upload date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
     },
   ];
 

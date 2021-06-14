@@ -29,7 +29,7 @@ export const DeleteConditionModal = (props) => {
       <br />
       <ConditionLayerOne condition={props.condition} isViewOnly />
       <div className="right center-mobile">
-        <Button className="full-mobile" type="secondary">
+        <Button className="full-mobile" type="secondary" onClick={props.closeModal}>
           Cancel
         </Button>
         <Button

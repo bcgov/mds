@@ -3,14 +3,12 @@ import { Badge, Tooltip, Table, Button } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
-import { formatDate, truncateFilename } from "@common/utils/helpers";
+import { formatDate } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
-import LinkButton from "@/components/common/LinkButton";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import DocumentLink from "@/components/common/DocumentLink";
 
 /**
  * @class MineAdministrativeAmendmentTable - list of mine administrative applications
@@ -213,11 +211,9 @@ export class MineAdministrativeAmendmentTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <AuthorizationWrapper inTesting>
-              <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
-                <Button type="primary">Open</Button>
-              </Link>
-            </AuthorizationWrapper>
+            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
+              <Button type="primary">Open</Button>
+            </Link>
           </div>
         ),
     },
@@ -239,14 +235,13 @@ export class MineAdministrativeAmendmentTable extends Component {
             {(text &&
               text.length > 0 &&
               text.map((file) => (
-                <LinkButton
-                  key={file.document_manager_guid}
-                  onClick={() => downloadFileFromDocumentManager(file)}
-                  title={file.document_name}
-                >
-                  {truncateFilename(file.document_name)}
+                <>
+                  <DocumentLink
+                    documentManagerGuid={file.document_manager_guid}
+                    documentName={file.document_name}
+                  />
                   <br />
-                </LinkButton>
+                </>
               ))) ||
               Strings.EMPTY_FIELD}
           </div>

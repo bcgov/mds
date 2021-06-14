@@ -15,6 +15,7 @@ exports[`ApplicationTab renders properly 1`] = `
     fixedTop={false}
     handleDraftPermit={null}
     isEditMode={false}
+    isNoticeOfWorkTypeDisabled={true}
     showProgressButton={true}
     tab="REV"
     tabActions=""
@@ -477,6 +478,7 @@ exports[`ApplicationTab renders properly 1`] = `
           "yearroundseasonal": null,
         }
       }
+      isNoticeOfWorkTypeDisabled={true}
       isViewMode={true}
       noticeOfWork={
         Object {

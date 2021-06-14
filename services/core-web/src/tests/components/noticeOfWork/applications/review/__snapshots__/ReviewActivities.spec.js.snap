@@ -30,7 +30,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="blasting_operation"
     >
-      <Blasting
+      <Connect(Blasting)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -229,6 +229,15 @@ exports[`ReviewActivities renders properly 1`] = `
         isViewMode={true}
       />
     </FormSection>
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    id="equipment"
+    isViewMode={true}
+    title="Equipment"
+  >
+    <Equipment
+      isViewMode={true}
+    />
   </withRouter(Connect(ScrollContentWrapper))>
 </div>
 `;

@@ -2,9 +2,6 @@
 
 exports[`Equipment renders edit properly 1`] = `
 <div>
-  <h4>
-    Equipment
-  </h4>
   <Connect(CoreEditableTable)
     fieldID="equipment_id"
     fieldName="equipment"
@@ -40,9 +37,6 @@ exports[`Equipment renders edit properly 1`] = `
 
 exports[`Equipment renders view properly 1`] = `
 <div>
-  <h4>
-    Equipment
-  </h4>
   <Connect(CoreEditableTable)
     fieldID="equipment_id"
     fieldName="equipment"

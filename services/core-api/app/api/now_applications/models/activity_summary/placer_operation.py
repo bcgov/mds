@@ -21,6 +21,7 @@ class PlacerOperation(ActivitySummaryBase):
 
     is_underground = db.Column(db.Boolean, nullable=False)
     is_hand_operation = db.Column(db.Boolean, nullable=False)
+    has_stream_diversion = db.Column(db.Boolean, nullable=False)
     reclamation_area = db.Column((db.Numeric(14, 2)))
     reclamation_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)

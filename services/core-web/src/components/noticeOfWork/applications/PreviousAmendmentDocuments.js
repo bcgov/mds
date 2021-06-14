@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormSection, Field } from "redux-form";
 import { Table } from "antd";
-import LinkButton from "@/components/common/LinkButton";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import DocumentLink from "@/components/common/DocumentLink";
 import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
@@ -75,16 +74,10 @@ export const PreviousAmendmentDocuments = (props) => {
       sorter: (a, b) => (a.document_name > b.document_name ? -1 : 1),
       render: (text, record) => (
         <div title="File Name">
-          <LinkButton
-            onClick={() =>
-              downloadFileFromDocumentManager({
-                document_manager_guid: record.document_manager_guid,
-                document_name: record.document_name,
-              })
-            }
-          >
-            <span>{text}</span>
-          </LinkButton>
+          <DocumentLink
+            documentManagerGuid={record.document_manager_guid}
+            documentName={record.document_name}
+          />
         </div>
       ),
     },

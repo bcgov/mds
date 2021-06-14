@@ -31,9 +31,10 @@ const propTypes = {
   reset: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = { isNoticeOfWorkTypeDisabled: true };
 export class DraftPermitTab extends Component {
   state = { isViewMode: true, isLoaded: false };
 
@@ -109,12 +110,14 @@ export class DraftPermitTab extends Component {
           }
           importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
           isAmendment={isAmendment}
+          isLoaded={this.state.isLoaded}
           documentType={
             isAmendment
               ? this.props.generatableApplicationDocuments.PMA
               : this.props.generatableApplicationDocuments.PMT
           }
           handleGenerateDocumentFormSubmit={this.handleGenerateDocumentFormSubmit}
+          isNoticeOfWorkTypeDisabled={this.props.isNoticeOfWorkTypeDisabled}
         />
       </React.Fragment>
     );

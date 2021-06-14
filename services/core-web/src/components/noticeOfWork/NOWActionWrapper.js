@@ -25,11 +25,13 @@ const propTypes = {
   progress: PropTypes.objectOf(PropTypes.string).isRequired,
   applicationDelay: PropTypes.objectOf(PropTypes.string),
   tab: PropTypes.string,
+  allowAfterProcess: PropTypes.bool,
 };
 
 const defaultProps = {
   tab: null,
   applicationDelay: {},
+  allowAfterProcess: false,
 };
 
 export class NOWActionWrapper extends Component {
@@ -83,9 +85,10 @@ export class NOWActionWrapper extends Component {
     const isApplicationComplete =
       this.props.noticeOfWork.now_application_status_code === "AIA" ||
       this.props.noticeOfWork.now_application_status_code === "WDN" ||
-      this.props.noticeOfWork.now_application_status_code === "REJ";
+      this.props.noticeOfWork.now_application_status_code === "REJ" ||
+      this.props.noticeOfWork.now_application_status_code === "NPR";
     const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
-    return !disabled ? (
+    return !disabled || this.props.allowAfterProcess ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
       </AuthorizationWrapper>

@@ -7,13 +7,11 @@ import { ImportOutlined, ReloadOutlined } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import { Field } from "redux-form";
-import {
-  downloadNowDocument,
-  downloadFileFromDocumentManager,
-} from "@common/utils/actionlessNetworkCalls";
+import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
+import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@common/constants/strings";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import { renderConfig } from "@/components/common/config";
 import * as Permission from "@/constants/permissions";
 import {
@@ -23,6 +21,9 @@ import {
 
 const propTypes = {
   now_application_guid: PropTypes.string.isRequired,
+  openDocument: PropTypes.func.isRequired,
+  createNoticeOfWorkApplicationImportSubmissionDocumentsJob: PropTypes.func.isRequired,
+  fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any),
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   selectedRows: PropTypes.objectOf(PropTypes.any),
@@ -89,18 +90,13 @@ export const NOWSubmissionDocuments = (props) => {
         key: "filename",
         render: (text, record) => (
           <div title="File Name">
-            <LinkButton
-              onClick={() =>
-                record.document_manager_guid
-                  ? downloadFileFromDocumentManager({
-                      document_manager_guid: record.document_manager_guid,
-                      document_name: record.filename,
-                    })
-                  : downloadNowDocument(record.key, record.now_application_guid, record.filename)
+            <DocumentLink
+              documentManagerGuid={record.document_manager_guid}
+              documentName={record.filename}
+              onClickAlternative={() =>
+                downloadNowDocument(record.key, record.now_application_guid, record.filename)
               }
-            >
-              <span>{text}</span>
-            </LinkButton>
+            />
           </div>
         ),
       };
@@ -368,13 +364,12 @@ export const NOWSubmissionDocuments = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
       fetchImportNoticeOfWorkSubmissionDocumentsJob,
+      openDocument,
     },
     dispatch
   );
@@ -382,4 +377,4 @@ const mapDispatchToProps = (dispatch) =>
 NOWSubmissionDocuments.propTypes = propTypes;
 NOWSubmissionDocuments.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(NOWSubmissionDocuments);
+export default connect(null, mapDispatchToProps)(NOWSubmissionDocuments);

@@ -59,6 +59,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.type_of_vegetation_description',
     'state_of_land.has_activity_in_park',
     'state_of_land.is_on_private_land',
+    'state_of_land.is_on_crown_land',
     'state_of_land.has_auth_lieutenant_gov_council',
     'state_of_land.has_fn_cultural_heritage_sites_in_area',
     'state_of_land.fn_engagement_activities',
@@ -74,6 +75,15 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'blasting_operation.explosive_permit_issued',
     'blasting_operation.explosive_permit_expiry_date',
     'blasting_operation.explosive_permit_number',
+    'blasting_operation.describe_explosives_to_site',
+    'blasting_operation.show_access_roads',
+    'blasting_operation.show_camps',
+    'blasting_operation.show_surface_drilling',
+    'blasting_operation.show_mech_trench',
+    'blasting_operation.show_seismic',
+    'blasting_operation.show_bulk',
+    'blasting_operation.show_underground_exploration',
+    'blasting_operation.show_sand_gravel_quarry',
     'camp.has_fuel_stored',
     'camp.volume_fuel_stored',
     'camp.has_fuel_stored_in_bulk',
@@ -85,6 +95,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'mechanical_trenching.reclamation_description',
     'mechanical_trenching.reclamation_cost',
     'placer_operation.is_underground',
+    'placer_operation.has_stream_diversion',
     'placer_operation.is_hand_operation',
     'placer_operation.total_disturbed_area',
     'placer_operation.reclamation_description',
@@ -122,7 +133,7 @@ UNIT_TYPE_CODE_FIELDS = [
     'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code',
     'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
     'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
-    'total_waste_unit_type_code'
+    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code', 'surface_total_waste_unit_type_code'
 ]
 
 

@@ -82,6 +82,8 @@ class PermitAmendmentListResource(Resource, UserMixin):
         'regional_office', type=str, location='json', help='The regional office for this permit.')
     parser.add_argument(
         'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
+    parser.add_argument(
+        'populate_with_conditions', type=bool, location='json', help='Determines if the Permit should be generated through Core with conditions.')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -203,24 +205,27 @@ class PermitAmendmentListResource(Resource, UserMixin):
                                             new_pa.permit_amendment_id, condition.condition,
                                             condition.display_order, condition.sub_conditions)
 
+            populate_with_conditions = data.get('populate_with_conditions', True)
             if application_identity.now_application:
-                if application_identity.application_type_code == "ADA":
+                if populate_with_conditions:
+                    if application_identity.application_type_code == "ADA":
 
-                    conditions = PermitConditions.find_all_by_permit_amendment_id(
-                        application_identity.source_permit_amendment_id)
-                    if conditions:
-                        for condition in conditions:
-                            PermitConditions.create(condition.condition_category_code,
-                                                    condition.condition_type_code,
-                                                    new_pa.permit_amendment_id, condition.condition,
-                                                    condition.display_order,
-                                                    condition.sub_conditions)
+                        conditions = PermitConditions.find_all_by_permit_amendment_id(
+                            application_identity.source_permit_amendment_id)
+                        if conditions:
+                            for condition in conditions:
+                                PermitConditions.create(condition.condition_category_code,
+                                                        condition.condition_type_code,
+                                                        new_pa.permit_amendment_id,
+                                                        condition.condition,
+                                                        condition.display_order,
+                                                        condition.sub_conditions)
+                        else:
+                            create_standard_conditions(application_identity)
                     else:
                         create_standard_conditions(application_identity)
-                else:
-                    create_standard_conditions(application_identity)
 
-                db.session.commit()
+                    db.session.commit()
 
                 # create site properties if DFT permit_amendment
                 if not application_identity.now_application.site_property:
@@ -429,7 +434,7 @@ class PermitAmendmentResource(Resource, UserMixin):
         'permit_amendment_guid': 'Permit amendment guid.',
         'permit_guid': 'Permit GUID'
     })
-    @requires_role_mine_admin
+    @requires_role_edit_permit
     @api.response(204, 'Successfully deleted.')
     def delete(self, mine_guid, permit_guid, permit_amendment_guid):
         permit_amendment = PermitAmendment.find_by_permit_amendment_guid(permit_amendment_guid)

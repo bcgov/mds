@@ -12,19 +12,13 @@ import {
   getHSRCMComplianceCodesHash,
   getDropdownIncidentStatusCodeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
-import {
-  formatDate,
-  dateSorter,
-  optionsFilterLabelAndValue,
-  truncateFilename,
-} from "@common/utils/helpers";
+import { formatDate, dateSorter, optionsFilterLabelAndValue } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 import CoreTable from "@/components/common/CoreTable";
 import * as router from "@/constants/routes";
 
@@ -88,12 +82,10 @@ const renderDownloadLinks = (files, mine_incident_document_type_code) => {
     .filter((file) => file.mine_incident_document_type_code === mine_incident_document_type_code)
     .map((file) => (
       <div key={file.mine_document_guid}>
-        <LinkButton
-          onClick={() => downloadFileFromDocumentManager(file)}
-          title={file.document_name}
-        >
-          {truncateFilename(file.document_name)}
-        </LinkButton>
+        <DocumentLink
+          documentManagerGuid={file.document_manager_guid}
+          documentName={file.document_name}
+        />
       </div>
     ));
   return links && links.length > 0 ? links : false;

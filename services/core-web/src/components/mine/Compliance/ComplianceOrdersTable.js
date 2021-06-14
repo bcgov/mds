@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Table } from "antd";
 import { formatDate, compareCodes, formatDateTime, dateSorter } from "@common/utils/helpers";
-import { downloadNRISDocument } from "@common/utils/actionlessNetworkCalls";
+import { downloadNrisDocument } from "@common/utils/actionlessNetworkCalls";
 import { RED_CLOCK } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
-import LinkButton from "@/components/common/LinkButton";
+import DocumentLink from "@/components/common/DocumentLink";
 
 const propTypes = {
   filteredOrders: CustomPropTypes.complianceOrders,
@@ -34,13 +34,13 @@ const fileColumns = [
     sorter: (a, b) => a.fileName.localeCompare(b.fileName),
     render: (text, record) => (
       <div title="File Name" key={record.externalId}>
-        <LinkButton
-          onClick={() =>
-            downloadNRISDocument(record.externalId, record.inspectionId, record.fileName)
+        <DocumentLink
+          documentManagerGuid={null}
+          documentName={record.fileName}
+          onClickAlternative={() =>
+            downloadNrisDocument(record.externalId, record.inspectionId, record.fileName)
           }
-        >
-          {record.fileName}
-        </LinkButton>
+        />
       </div>
     ),
   },

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Alert, Popconfirm, Button, Steps } from "antd";
+import { Alert, Popconfirm, Button, Steps, Radio, Row, Col } from "antd";
+import { SafetyCertificateOutlined, RocketOutlined } from "@ant-design/icons";
 import { getFormValues, submit } from "redux-form";
 import { isEmpty } from "lodash";
 import { bindActionCreators } from "redux";
@@ -17,6 +18,7 @@ import * as FORM from "@/constants/forms";
 import { getPermits } from "@common/selectors/permitSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import PreDraftPermitForm from "@/components/Forms/permits/PreDraftPermitForm";
+import { validateIfApplicationTypeCorrespondsToPermitNumber } from "@common/utils/Validate";
 
 const propTypes = {
   title: PropTypes.string,
@@ -35,21 +37,27 @@ const propTypes = {
   createPermit: PropTypes.func.isRequired,
   createPermitAmendment: PropTypes.func.isRequired,
   startOrResumeProgress: PropTypes.func.isRequired,
+  isNoticeOfWorkTypeDisabled: PropTypes.bool,
 };
 
 const defaultProps = {
   title: "",
+  isNoticeOfWorkTypeDisabled: true,
 };
 
 export const StartDraftPermitModal = (props) => {
   const [currentStep, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerateThroughCore, setGenerateThroughCore] = useState(true);
+
+  const onChange = (e) => setGenerateThroughCore(e.target.value);
 
   const handleCreatePermit = (isExploration) => {
     const payload = {
       permit_status_code: "D",
       is_exploration: isExploration,
       now_application_guid: props.noticeOfWork.now_application_guid,
+      populate_with_conditions: isGenerateThroughCore,
     };
     return props
       .createPermit(props.noticeOfWork.mine_guid, payload)
@@ -68,6 +76,7 @@ export const StartDraftPermitModal = (props) => {
         permit_amendment_status_code: "DFT",
         now_application_guid: props.noticeOfWork.now_application_guid,
         permit_amendment_type_code: permitPayload.permit_amendment_type_code,
+        populate_with_conditions: isGenerateThroughCore,
       };
       return props
         .createPermitAmendment(props.noticeOfWork.mine_guid, permitPayload.permit_guid, payload)
@@ -85,10 +94,15 @@ export const StartDraftPermitModal = (props) => {
 
   const handleSubmit = (isAmendment) => {
     setIsSubmitting(true);
-    if (props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application) {
+    if (
+      props.preDraftFormValues.type_of_application !== props.noticeOfWork.type_of_application ||
+      props.preDraftFormValues.notice_of_work_type_code !==
+        props.noticeOfWork.notice_of_work_type_code
+    ) {
       const payload = {
         ...props.noticeOfWork,
         type_of_application: props.preDraftFormValues.type_of_application,
+        notice_of_work_type_code: props.preDraftFormValues.notice_of_work_type_code,
       };
       return props
         .updateNoticeOfWorkApplication(
@@ -112,8 +126,16 @@ export const StartDraftPermitModal = (props) => {
           values.is_exploration === null
         );
       }
+
+      const isApplicationTypeMatchPermitNumber = validateIfApplicationTypeCorrespondsToPermitNumber(
+        values.notice_of_work_type_code,
+        props.permits.find((p) => p.permit_guid === values.permit_guid)
+      );
       return (
-        !values.type_of_application || !values.permit_guid || !values.permit_amendment_type_code
+        !values.type_of_application ||
+        !values.permit_guid ||
+        !values.permit_amendment_type_code ||
+        isApplicationTypeMatchPermitNumber
       );
     }
     return true;
@@ -138,10 +160,71 @@ export const StartDraftPermitModal = (props) => {
         changes later, click &quot;Resume {props.tab}&quot;.
       </p>
       <br />
-      <p>
-        Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
-      </p>
+      {!props.noticeOfWork.has_source_conditions &&
+      props.noticeOfWork.application_type_code === "ADA" ? (
+        <p className="center" />
+      ) : (
+        <p>
+          Are you ready to begin <Highlight search={props.tab}>{props.tab}</Highlight>?
+        </p>
+      )}
       <br />
+      {!props.noticeOfWork.has_source_conditions &&
+        props.noticeOfWork.application_type_code === "ADA" && (
+          <Radio.Group value onChange={onChange} value={isGenerateThroughCore}>
+            <Row gutter={16}>
+              <Col span={12} className="border--right--layout">
+                <Radio value> Write Permit in Core </Radio>
+                <p className="p-light">
+                  <br />
+                  This will include the default conditions for the type of permit you are amending.
+                  The Preamble will not include the files from the original authorization.
+                  <br />
+                  <br />
+                  You need to:
+                  <br />
+                  1. Attach the files that made up the original approved work for the authorization.
+                  <br />
+                  2. Update the conditions to match what was authorized in the original, and update
+                  them if required.
+                  <br />
+                  <br />
+                  This is a longer process, however, the information will be saved as data and will
+                  be used to populate future amendments.
+                  <br />
+                  <br />
+                </p>
+                <div className="center">
+                  <SafetyCertificateOutlined
+                    className={
+                      !isGenerateThroughCore ? "icon-xxxl--lightgrey" : "icon-xxxl--violet"
+                    }
+                  />
+                </div>
+              </Col>
+              <Col span={12}>
+                <Radio value={false}> Upload Permit </Radio>
+                <p className="p-light">
+                  <br />
+                  Upload a Permit Document that was generated outside of Core.
+                  <br />
+                  <br />
+                  This is a quicker process, however, the conditions in the permit will not be saved
+                  as data and cannot be used for reporting.
+                  <br />
+                  <br />
+                </p>
+                <div className="center">
+                  <RocketOutlined
+                    className={isGenerateThroughCore ? "icon-xxxl--lightgrey" : "icon-xxxl--violet"}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <br />
+            <br />
+          </Radio.Group>
+        )}
     </>
   );
 
@@ -152,21 +235,12 @@ export const StartDraftPermitModal = (props) => {
     type_of_application: props.noticeOfWork?.type_of_application,
     permit_guid: props.noticeOfWork.source_permit_guid || null,
     disabled: props.noticeOfWork.source_permit_guid,
+    notice_of_work_type_code: props.noticeOfWork.notice_of_work_type_code,
   };
 
-  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions ? (
-    `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
-  ) : (
-    <>
-      When you start the Draft Permit, it will include the default conditions for the type of permit
-      you are amending. The Preamble will not include the files from the original authorization. You
-      need to:
-      <br />
-      1. Attach the files that made up the original approved work for the authorization.
-      <br />
-      2. Update the conditions to match what was authorized in the original.
-    </>
-  );
+  const sourceAmendmentMessage = props.noticeOfWork.has_source_conditions
+    ? `This is an amendment to an authorization that was written in Core. All available information, files and conditions have been carried forward from the authorization you are amending.`
+    : `This is an amendment to an authorization that was not written in Core.`;
   const amendmentMessage = props.noticeOfWork.source_permit_guid
     ? sourceAmendmentMessage
     : `This is an Amendment to an existing permit, which must be selected before drafting its conditions. This cannot be changed once drafting has started.`;
@@ -191,6 +265,7 @@ export const StartDraftPermitModal = (props) => {
             initialValues={initialValues}
             permits={props.permits}
             isCoalOrMineral={props.isCoalOrMineral}
+            isNoticeOfWorkTypeDisabled={props.isNoticeOfWorkTypeDisabled}
           />
         </>
       ),

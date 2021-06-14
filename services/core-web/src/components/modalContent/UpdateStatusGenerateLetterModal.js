@@ -18,11 +18,12 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   issuingInspectorGuid: PropTypes.string,
   draftAmendment: PropTypes.objectOf(PropTypes.any).isRequired,
-  exemptionFeeStatusCode: PropTypes.string.isRequired,
+  exemptionFeeStatusCode: PropTypes.string,
 };
 
 const defaultProps = {
   issuingInspectorGuid: "",
+  exemptionFeeStatusCode: "",
 };
 
 export class UpdateStatusGenerateLetterModal extends Component {
@@ -72,11 +73,13 @@ export class UpdateStatusGenerateLetterModal extends Component {
         content: (
           <GenerateDocumentForm
             {...this.props}
+            initialValues={{ ...this.props.initialValues, file_type: "PDF" }}
             showActions={false}
             additionalTitle="and Process"
             onSubmit={this.handleGenerate}
             submitting={this.state.submitting}
             disabled={!this.props.signature}
+            allowDocx
           />
         ),
       },
