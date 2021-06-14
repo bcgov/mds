@@ -31,6 +31,11 @@ const badgeStatusTypes = {
     "Changes Requested": "processing",
     "Not Requested": "default",
   },
+  workInformation: {
+    Unknown: "default",
+    Working: "success",
+    "Not Working": "warning",
+  },
 };
 
 export const getApplicationStatusType = (status) =>
@@ -41,3 +46,6 @@ export const getVarianceApplicationBadgeStatusType = (status) =>
 
 export const getReportSubmissionBadgeStatusType = (status) =>
   badgeStatusTypes.report[status] || undefinedStatusStyleType;
+
+export const getWorkInformationBadgeStatusType = (status) =>
+  badgeStatusTypes.workInformation[status] || undefinedStatusStyleType;
