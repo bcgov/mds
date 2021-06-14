@@ -2,7 +2,8 @@ name: Deploy to prod
 
 on:
   push:
-    - master
+    branch:
+      - master
   workflow_dispatch:
 
 env:
