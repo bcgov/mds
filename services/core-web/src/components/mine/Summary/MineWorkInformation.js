@@ -35,8 +35,6 @@ const propTypes = {
 
 const defaultProps = {};
 
-const { Text } = Typography;
-
 export class MineWorkInformation extends Component {
   state = { isLoaded: false, showAll: false };
 
@@ -103,15 +101,15 @@ export class MineWorkInformation extends Component {
                     <CoreTooltip
                       title={
                         <>
-                          <Text strong underline>
+                          <Typography.Text strong underline>
                             Notice To Start Work
-                          </Text>
+                          </Typography.Text>
                           <br />
-                          <Text>
+                          <Typography.Text>
                             6.2.1 The manager shall give 10 days’ notice to an inspector of
                             intention to start [any mining activity] in, at, or about a mine,
                             including seasonal reactivation.
-                          </Text>
+                          </Typography.Text>
                         </>
                       }
                     />
@@ -127,16 +125,16 @@ export class MineWorkInformation extends Component {
                     <CoreTooltip
                       title={
                         <>
-                          <Text strong underline>
+                          <Typography.Text strong underline>
                             Notice to Stop Work
-                          </Text>
+                          </Typography.Text>
                           <br />
-                          <Text>
+                          <Typography.Text>
                             6.2.2 The manager shall give notice to an inspector of intention to stop
                             [any mining activity] in, at, or about a mine, permanently,
                             indefinitely, or for a definite period exceeding 30 days, and except in
                             an emergency, the notice shall be not less than seven days.
-                          </Text>
+                          </Typography.Text>
                         </>
                       }
                     />
