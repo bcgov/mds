@@ -10,6 +10,12 @@ FROM registry.access.redhat.com/rhel7
 #  * $POSTGRESQL_ADMIN_PASSWORD (Optional) - Password for the 'postgres'
 #                           PostgreSQL administrative account
 
+# The Git ref (branch/tag) specifying the version of oracle-fdw to use
+# This is referencing a specific revision (master as of 2021.06.01)
+# because there is not a tagged version that works with the 
+# Oracle 21.x client libraries yet
+ARG ORACLE_FDW_VERSION=3035e4453404a143b8154d7b77c6db793fad0e06
+
 ENV POSTGIS_EXTENSION=Y \
     PGCRYPTO_EXTENSION=Y \
     POSTGRESQL_VERSION=9.6 \
@@ -68,6 +74,24 @@ RUN rm /etc/rhsm-host && \
     mkdir -p /var/lib/pgsql/data && \
     /usr/libexec/fix-permissions /var/run/postgresql
 
+# Install dev tools used to compile oracle_fdw
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    yum-config-manager --enable rhel-7-server-rpms && \
+    yum-config-manager --enable rhel-7-server-eus-rpms && \
+    yum-config-manager --enable rhel-7-server-optional-rpms && \
+    yum -y groupinstall 'Development Tools' && \
+    yum clean all
+
+# Install dev tools used to compile oracle_fdw
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    yum-config-manager --enable rhel-7-server-rpms && \
+    yum-config-manager --enable rhel-7-server-eus-rpms && \
+    yum-config-manager --enable rhel-7-server-optional-rpms && \
+    INSTALL_PKGS="wget libaio-devel" && \
+    yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum clean all
+
 # Get prefix path and path to scripts rather than hard-code them in scripts
 ENV CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/postgresql \
     ENABLED_COLLECTIONS=rh-postgresql96
@@ -81,10 +105,30 @@ ENV BASH_ENV=${CONTAINER_SCRIPTS_PATH}/scl_enable \
 
 VOLUME ["/var/lib/pgsql/data", "/var/run/postgresql"]
 
+# Install the Oracle dependencies for oracle_fdw
+RUN mkdir -p /tmp/oraclelibs && cd /tmp/oraclelibs && \
+    wget -nv https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm && \
+    wget -nv https://download.oracle.com/otn_software/linux/instantclient/211000/oracle-instantclient-devel-21.1.0.0.0-1.x86_64.rpm && \
+    rpm -Uvh oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm && \
+    rpm -Uvh oracle-instantclient-devel-21.1.0.0.0-1.x86_64.rpm
+
 COPY openshift/docker-images/postgres96/root /
 
 ENV PGCONFIG /opt/rh/rh-postgresql96/root/usr/bin
+ENV ORACLE_HOME /usr/lib/oracle/21/client64/lib
 ENV PATH /opt/rh/rh-postgresql96/root/usr/bin/:${PATH}
+
+# ====================================================================================
+# Aquire and build the desired version of oracle_fdw
+# ------------------------------------------------------------------------------------
+RUN cd /tmp && \
+    wget -nv https://github.com/laurenz/oracle_fdw/archive/${ORACLE_FDW_VERSION}.tar.gz && \
+    tar -xzf ${ORACLE_FDW_VERSION}.tar.gz && \
+    cd oracle_fdw-${ORACLE_FDW_VERSION} && \
+    make && \
+    make install && \
+    rm -rf /tmp/oraclelibs /tmp/${ORACLE_FDW_VERSION}.tar.gz /tmp/oracle_fdw-${ORACLE_FDW_VERSION} /var/cache/yum
+# ====================================================================================
 
 # Aquire and build PostGIS 2.4, for PostgreSQL 9.6
 RUN cd /tmp && \
@@ -101,6 +145,8 @@ RUN cd /tmp && \
     rm -rf /etc/rhsm && \
     /usr/libexec/fix-permissions /var/lib/pgsql
 
+# Set the oracle library path
+ENV LD_LIBRARY_PATH /usr/lib/oracle/21/client64/lib:${LD_LIBRARY_PATH}
 USER 26
 
 ENTRYPOINT ["container-entrypoint"]
