@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS nris.inspection_type (
    inspection_type_id varchar,
    inspection_type_code varchar
 );
--- ALTER SCHEMA nris OWNER TO nris;
-ALTER TABLE nris.inspection OWNER TO postgres;
-ALTER TABLE nris.inspection_type OWNER TO postgres;
+ALTER SCHEMA nris OWNER TO 'nris';
+ALTER TABLE nris.inspection OWNER TO 'nris';
+ALTER TABLE nris.inspection_type OWNER TO 'nris';
 
 DROP VIEW IF EXISTS public.now_application_gis_export_view;
 
