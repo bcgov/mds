@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS nris.inspection_type (
    inspection_type_id varchar,
    inspection_type_code varchar
 );
+ALTER TABLE nris.inspection_type OWNER TO mds;
+ALTER TABLE nris.inspection_type OWNER TO mds;
 
 DROP VIEW IF EXISTS public.now_application_gis_export_view;
 
