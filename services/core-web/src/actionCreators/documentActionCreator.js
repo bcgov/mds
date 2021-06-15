@@ -41,6 +41,7 @@ export const generateNoticeOfWorkApplicationDocument = (
   documentTypeCode,
   payload,
   message = "Successfully generated Notice of Work document",
+  isPreview = false,
   onDocumentGenerated = () => {}
 ) => (dispatch) => {
   dispatch(request(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
@@ -52,23 +53,27 @@ export const generateNoticeOfWorkApplicationDocument = (
       createRequestHeader()
     )
     .then((response) => {
-      const params = { token: response.data.token, return_record: "true" };
-      return CustomAxios()
-        .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
-        .then((response) => {
-          const mineDocument = response.data.mine_document;
-          notification.success({
-            message,
-            duration: 10,
+      const params = { token: response.data.token, return_record: "true", is_preview: isPreview };
+      if (isPreview) {
+        window.open(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, "_blank");
+      } else {
+        return CustomAxios()
+          .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+          .then((response) => {
+            notification.success({
+              message,
+              duration: 10,
+            });
+            const mineDocument = response.data.mine_document;
+            dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+            downloadFileFromDocumentManager(mineDocument);
+            onDocumentGenerated();
+          })
+          .catch((err) => {
+            dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
+            throw new Error(err);
           });
-          dispatch(success(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-          downloadFileFromDocumentManager(mineDocument);
-          onDocumentGenerated();
-        })
-        .catch((err) => {
-          dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
-          throw new Error(err);
-        });
+      }
     })
     .catch((err) => {
       dispatch(error(reducerTypes.GENERATE_NOTICE_OF_WORK_APPLICATION_DOCUMENT));
