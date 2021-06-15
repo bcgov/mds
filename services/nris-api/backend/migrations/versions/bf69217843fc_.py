@@ -74,6 +74,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['document_type_id'], ['document_type.document_type_id'], ),
     sa.PrimaryKeyConstraint('document_id')
     )
+    op.drop_table('inspection')
     op.create_table('inspection',
     sa.Column('inspection_id', sa.Integer(), nullable=False),
     sa.Column('external_id', sa.Integer(), nullable=True),
