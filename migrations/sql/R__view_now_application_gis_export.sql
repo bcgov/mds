@@ -1,4 +1,5 @@
 -- Creation of these two NRIS schema tables allows this migration to succeed locally.
+CREATE SCHEMA IF NOT EXISTS nris;
 CREATE TABLE IF NOT EXISTS nris.inspection (
    mine_no varchar,
    inspection_date date,
