@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS nris.inspection_type (
    inspection_type_id varchar,
    inspection_type_code varchar
 );
+ALTER SCHEMA nris OWNER TO mds;
 ALTER TABLE nris.inspection OWNER TO mds;
 ALTER TABLE nris.inspection_type OWNER TO mds;
 
