@@ -8,6 +8,7 @@ on:
       - services/**
       - migrations/**
       - openshift4/templates/**.bc.yaml
+      - .github/workflows/build.yaml
 
 env:
   INITIAL_TAG: latest
