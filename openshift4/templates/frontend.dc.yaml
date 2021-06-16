@@ -155,7 +155,7 @@ objects:
                 - name: SITEMINDER_URL
                   value: ${SITEMINDER_URL}
                 - name: FILESYSTEM_PROVIDER_URL
-                  value: ${CORE_DOMAIN}${FILESYSTEM_PROVIDER_URL}
+                  value: https://${CORE_DOMAIN}${FILESYSTEM_PROVIDER_URL_BASE}
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}
