@@ -49,6 +49,9 @@ exports[`Placer renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <h4>
+    Activities
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"
@@ -153,8 +156,9 @@ exports[`Placer renders properly 1`] = `
     </Col>
   </Row>
   <br />
+  <br />
   <h4>
-    Reclamation Program
+    Total Planned Reclamation Area
   </h4>
   <Row
     gutter={16}
@@ -193,6 +197,39 @@ exports[`Placer renders properly 1`] = `
       />
     </Col>
   </Row>
+  <br />
+  <h4>
+    Changes in and about a Stream
+  </h4>
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={12}
+      sm={24}
+    >
+      <div
+        className="field-title"
+      >
+        Are you proposing a stream diversion into a different channel?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={Object {}}
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="has_stream_diversion"
+        name="has_stream_diversion"
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Reclamation Program
+  </h4>
   <Row
     gutter={16}
   >

@@ -19,6 +19,7 @@ const propTypes = {
 export const SurfaceBulkSamples = (props) => {
   return (
     <div>
+      <h4>Activities</h4>
       <CoreEditableTable
         isViewMode={props.isViewMode}
         fieldName="details"
@@ -52,10 +53,11 @@ export const SurfaceBulkSamples = (props) => {
       />
       <br />
       <br />
+      <h4>Processing Methods</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Processing Methods*
+            Describe handling and on-site processing methods
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.processing_method_description")
@@ -72,12 +74,14 @@ export const SurfaceBulkSamples = (props) => {
             name="processing_method_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
-            validate={[required]}
           />
         </Col>
+      </Row>
+      <h4>Bedrock Excavation</h4>
+      <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Bedrock excavation
+            Proposing bedrock excavation that will be 1,000 tonnes or more?
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
@@ -96,6 +100,8 @@ export const SurfaceBulkSamples = (props) => {
           />
         </Col>
       </Row>
+      <br />
+      <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
@@ -118,13 +124,33 @@ export const SurfaceBulkSamples = (props) => {
             disabled={props.isViewMode}
           />
         </Col>
+        <Col md={12} sm={24}>
+          <div className="field-title">
+            Surface water drainage and mitigation strategies
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={
+                props.renderOriginalValues("surface_bulk_sample.drainage_mitigation_description")
+                  .value
+              }
+              isVisible={
+                props.renderOriginalValues("surface_bulk_sample.drainage_mitigation_description")
+                  .edited
+              }
+            />
+          </div>
+          <Field
+            id="drainage_mitigation_description"
+            name="drainage_mitigation_description"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
       </Row>
-      <br />
-      <h4>Reclamation Program</h4>
       <Row gutter={16}>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Proposed reclamation and timing for this specific activity
+            Proposed reclamation and timing for this specific activity*
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.reclamation_description").value
@@ -139,12 +165,12 @@ export const SurfaceBulkSamples = (props) => {
             name="reclamation_description"
             component={RenderAutoSizeField}
             disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
+            validate={[maxLength(4000), required]}
           />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
-            Estimated Cost of reclamation activities described above
+            Estimated Cost of reclamation activities described above*
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.reclamation_cost").value
@@ -157,7 +183,7 @@ export const SurfaceBulkSamples = (props) => {
             name="reclamation_cost"
             component={RenderField}
             disabled={props.isViewMode}
-            validate={[number]}
+            validate={[number, required]}
             {...currencyMask}
           />
         </Col>

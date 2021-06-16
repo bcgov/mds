@@ -1,4 +1,4 @@
-import os, requests
+import requests
 from flask import request, Response, stream_with_context
 from flask_restplus import Resource, marshal
 from werkzeug.exceptions import BadRequest, InternalServerError, BadGateway
@@ -31,10 +31,11 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
     def get(self):
         token = request.args.get('token', '')
         return_record = request.args.get('return_record') == 'true'
-        return NoticeOfWorkDocumentResource.generate_now_document(token, return_record)
+        is_preview = request.args.get('is_preview') == 'true'
+        return NoticeOfWorkDocumentResource.generate_now_document(token, return_record, is_preview)
 
     @classmethod
-    def generate_now_document(cls, token, return_record):
+    def generate_now_document(cls, token, return_record, is_preview=False):
         # Ensure that the token is valid
         token_data = cache.get(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
         cache.delete(NOW_DOCUMENT_DOWNLOAD_TOKEN(token))
@@ -57,44 +58,47 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
         if docgen_resp.status_code != requests.codes.ok:
             raise BadGateway(f'Failed to generate document: {str(docgen_resp.content)}')
 
-        # Push the document to the Document Manager
-        filename = docgen_resp.headers['X-Report-Name']
-        document_manager_guid = DocumentManagerService.pushFileToDocumentManager(
-            file_content=docgen_resp.content,
-            filename=filename,
-            mine=now_application_identity.mine,
-            document_category='noticeofwork',
-            authorization_header=token_data['authorization_header'])
+        if not is_preview:
+            # Push the document to the Document Manager
+            filename = docgen_resp.headers['X-Report-Name']
+            document_manager_guid = DocumentManagerService.pushFileToDocumentManager(
+                file_content=docgen_resp.content,
+                filename=filename,
+                mine=now_application_identity.mine,
+                document_category='noticeofwork',
+                authorization_header=token_data['authorization_header'])
 
-        if not document_manager_guid:
-            raise InternalServerError('Error uploading document')
+            if not document_manager_guid:
+                raise InternalServerError('Error uploading document')
 
-        # Add the document to the Notice of Work's documents
-        username = token_data['username']
-        new_mine_doc = MineDocument(
-            mine_guid=now_application_identity.now_application.mine_guid,
-            document_manager_guid=document_manager_guid,
-            document_name=filename,
-            create_user=username,
-            update_user=username)
-        now_doc = NOWApplicationDocumentXref(
-            mine_document=new_mine_doc,
-            now_application_document_type=now_application_document_type,
-            now_application_id=now_application_identity.now_application_id,
-            create_user=username,
-            update_user=username)
-        now_application_identity.now_application.documents.append(now_doc)
-        now_application_identity.save()
+            # Add the document to the Notice of Work's documents
+            username = token_data['username']
+            new_mine_doc = MineDocument(
+                mine_guid=now_application_identity.now_application.mine_guid,
+                document_manager_guid=document_manager_guid,
+                document_name=filename,
+                create_user=username,
+                update_user=username)
+            now_doc = NOWApplicationDocumentXref(
+                mine_document=new_mine_doc,
+                now_application_document_type=now_application_document_type,
+                now_application_id=now_application_identity.now_application_id,
+                create_user=username,
+                update_user=username)
+            now_application_identity.now_application.documents.append(now_doc)
+            now_application_identity.save()
 
-        now_application = NOWApplication.find_by_application_guid(now_application_guid)
-        now_application_document_type.after_template_generated(template_data, now_doc,
-                                                               now_application)
+            now_application = NOWApplication.find_by_application_guid(now_application_guid)
+            now_application_document_type.after_template_generated(template_data, now_doc,
+                                                                   now_application)
 
         # Depending on the return_record param, return the document record or file content
-        if return_record:
+        if return_record and not is_preview:
             return marshal(now_doc, NOW_APPLICATION_DOCUMENT)
+
         file_gen_resp = Response(
             stream_with_context(
                 docgen_resp.iter_content(chunk_size=Config.DOCUMENT_UPLOAD_CHUNK_SIZE_BYTES)),
             headers=dict(docgen_resp.headers))
+
         return file_gen_resp

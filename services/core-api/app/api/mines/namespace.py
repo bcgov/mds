@@ -38,6 +38,8 @@ from app.api.mines.comments.resources.mine_comment import MineCommentListResourc
 from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import PermitConditionCategoryResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
+from app.api.mines.work_information.resources.work_information_list import MineWorkInformationListResource
+from app.api.mines.work_information.resources.work_information import MineWorkInformationResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -76,6 +78,10 @@ api.add_resource(
 
 api.add_resource(MineIncidentListResource, '/<string:mine_guid>/incidents')
 api.add_resource(MineIncidentResource, '/<string:mine_guid>/incidents/<string:mine_incident_guid>')
+
+api.add_resource(MineWorkInformationListResource, '/<string:mine_guid>/work-information')
+api.add_resource(MineWorkInformationResource,
+                 '/<string:mine_guid>/work-information/<string:mine_work_information_guid>')
 
 api.add_resource(
     MineIncidentDocumentResource,

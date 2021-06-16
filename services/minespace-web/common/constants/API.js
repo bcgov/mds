@@ -1,6 +1,7 @@
 import queryString from "query-string";
 
 export const CORE_STATIC_CONTENT = "/exports/core-static-content";
+
 // Network URL's
 export const MINE = "/mines";
 export const MINE_LIST = "/mines";
@@ -94,7 +95,6 @@ export const MINE_INCIDENTS = (mine_guid) => `/mines/${mine_guid}/incidents`;
 export const MINE_INCIDENT = (mineGuid, mine_incident_guid) =>
   `/mines/${mineGuid}/incidents/${mine_incident_guid}`;
 export const MINE_INCIDENT_DOCUMENT = (mineGuid) => `/mines/${mineGuid}/incidents/documents`;
-
 export const INCIDENTS = (params = {}) => `/incidents?${queryString.stringify(params)}`;
 
 export const INCIDENT_FOLLOWUP_ACTIONS = `/incidents/followup-types`;
@@ -102,8 +102,11 @@ export const INCIDENT_DETERMINATION_TYPES = `/incidents/determination-types`;
 export const INCIDENT_STATUS_CODES = `/incidents/status-codes`;
 export const INCIDENT_DOCUMENT_TYPE = `/incidents/document-types`;
 export const INCIDENT_CATEGORY_CODES = `/incidents/category-codes`;
-export const INCIDENT_DELETE = (mineGuid, incidentGuid) =>
-  `/mines/${mineGuid}/incidents/${incidentGuid}`;
+
+// Work Information
+export const MINE_WORK_INFORMATIONS = (mineGuid) => `/mines/${mineGuid}/work-information`;
+export const MINE_WORK_INFORMATION = (mineGuid, mineWorkInformationGuid) =>
+  `/mines/${mineGuid}/work-information/${mineWorkInformationGuid}`;
 
 // Reports
 export const REPORTS = (params = {}) => `/mines/reports?${queryString.stringify(params)}`;

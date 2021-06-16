@@ -57,6 +57,7 @@ const placer = shape({
   is_underground: PropTypes.boolean,
   is_hand_operation: PropTypes.boolean,
   reclamation_area: PropTypes.number,
+  has_stream_diversion: PropTypes.boolean,
   reclamation_unit_type_code: PropTypes.string,
   calculated_total_disturbance: PropTypes.number,
   ...defaultActivity,
