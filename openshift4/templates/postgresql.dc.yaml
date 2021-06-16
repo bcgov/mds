@@ -292,7 +292,7 @@ objects:
               image: " "
               imagePullPolicy: IfNotPresent
               livenessProbe:
-                initialDelaySeconds: 30
+                initialDelaySeconds: 60
                 tcpSocket:
                   port: 5432
                 timeoutSeconds: 1
@@ -306,8 +306,8 @@ objects:
                     - /bin/bash
                     - -c
                     - pg_isready -h localhost -p 5432
-                initialDelaySeconds: 20
-                timeoutSeconds: 15
+                initialDelaySeconds: 60
+                timeoutSeconds: 30
               lifecycle:
                 preStop:
                   exec:
