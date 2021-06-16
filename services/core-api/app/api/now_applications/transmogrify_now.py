@@ -286,6 +286,8 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     fuellubstoremethodbulk = now_sub.fuellubstoremethodbulk
     fuellubstoremethodbarrel = now_sub.fuellubstoremethodbarrel
     fuellubstored = now_sub.fuellubstored
+    camphealthauthority = now_sub.camphealthauthority
+    camphealthconsent = now_sub.camphealthconsent
 
     fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
     if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
@@ -295,6 +297,8 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             reclamation_cost=cbsfreclamationcost,
             total_disturbed_area=campbuildstgetotaldistarea,
             total_disturbed_area_unit_type_code='HA',
+            health_authority_consent=camphealthconsent,
+            health_authority_notified=camphealthauthority,
             has_fuel_stored=get_boolean_value(fuellubstoreonsite),
             has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
             volume_fuel_stored=fuellubstored,
@@ -303,30 +307,39 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
 
         campdisturbedarea = mms_now_sub.campdisturbedarea or now_sub.campdisturbedarea
         camptimbervolume = mms_now_sub.camptimbervolume or now_sub.camptimbervolume
-        if campdisturbedarea or camptimbervolume:
+        for detail in now_sub.camps:
             camp_detail = app_models.CampDetail(
-                activity_type_description='Camps',
-                disturbed_area=campdisturbedarea,
-                timber_volume=camptimbervolume)
+                activity_type_description=detail.name,
+                number_people=detail.peopleincamp,
+                number_structures=detail.numberofstructures,
+                description_of_structures=detail.descriptionofstructures,
+                waste_disposal=detail.wastedisposal,
+                sanitary_facilities=detail.sanitaryfacilities,
+                water_supply=detail.watersupply,
+                quantity=detail.quantityofwater,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
             camp.details.append(camp_detail)
 
         bldgdisturbedarea = mms_now_sub.bldgdisturbedarea or now_sub.bldgdisturbedarea
         bldgtimbervolume = mms_now_sub.bldgtimbervolume or now_sub.bldgtimbervolume
-        if bldgdisturbedarea or bldgtimbervolume:
-            camp_detail = app_models.CampDetail(
-                activity_type_description='Buildings',
-                disturbed_area=bldgdisturbedarea,
-                timber_volume=bldgtimbervolume)
-            camp.details.append(camp_detail)
+        for detail in now_sub.buildings:
+            building_detail = app_models.BuildingDetail(
+                activity_type_description=detail.name,
+                purpose=detail.purpose,
+                structure=detail.structure,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
+            camp.building_details.append(building_detail)
 
         stgedisturbedarea = mms_now_sub.stgedisturbedarea or now_sub.stgedisturbedarea
         stgetimbervolume = mms_now_sub.stgetimbervolume or now_sub.stgetimbervolume
-        if stgedisturbedarea or stgetimbervolume:
-            camp_detail = app_models.CampDetail(
-                activity_type_description='Staging Area',
-                disturbed_area=stgedisturbedarea,
-                timber_volume=stgetimbervolume)
-            camp.details.append(camp_detail)
+        for detail in now_sub.stagingareas:
+            staging_area_detail = app_models.StagingAreaDetail(
+                activity_type_description=detail.name,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
+            camp.staging_area_details.append(staging_area_detail)
 
         now_app.camp = camp
 

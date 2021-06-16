@@ -75,17 +75,38 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
         'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
+NOW_APPLICATION_CAMP_DETAIL = api.inherit('NOWApplicationCampDetail',
+        NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+            'number_people': fields.Fixed,
+            'number_structures': fields.Fixed,
+            'description_of_structures': fields.String,
+            'waste_disposal': fields.String,
+            'sanitary_facilities': fields.String,
+            'water_supply': fields.String,
+        })
+
+NOW_APPLICATION_STAGING_AREA_DETAIL = api.inherit('NOWApplicationBuildingDetail',
+        NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+            'name': fields.String,
+        })
+
+NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
+        NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+            'purpose': fields.String,
+            'structure': fields.String,
+        })
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
-        'camp_name': fields.String,
-        'camp_number_people': fields.String,
-        'camp_number_structures': fields.String,
+        'health_authority_consent': fields.Boolean,
+        'health_authority_notified': fields.Boolean,
         'has_fuel_stored': fields.Boolean,
         'has_fuel_stored_in_bulk': fields.Boolean,
         'has_fuel_stored_in_barrels': fields.Boolean,
         'volume_fuel_stored': fields.Fixed(decimals=2),
         'calculated_total_disturbance': fields.Fixed(decimals=5),
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
+        'details': fields.List(fields.Nested(NOW_APPLICATION_CAMP_DETAIL, skip_none=True)),
+        'building_details': fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL)),
+        'staging_area_details': fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(

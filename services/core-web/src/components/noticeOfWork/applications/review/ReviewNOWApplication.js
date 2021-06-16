@@ -740,7 +740,9 @@ export const ReviewNOWApplication = (props) => {
         <Row gutter={16}>
           <Col md={12} sm={24}>
             <div className="field-title">
-              Activities in park
+              Are any of the proposed activities in a park under an Act of British Columbia or of
+              Canada or in an area of land established as a Provincial Heritage property under
+              Section 23 of the <i>Heritage Conservation Act</i>?
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
                 originalValue={
@@ -773,6 +775,28 @@ export const ReviewNOWApplication = (props) => {
               id="has_auth_lieutenant_gov_council"
               name="has_auth_lieutenant_gov_council"
               component={RenderRadioButtons}
+              disabled={props.isViewMode}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Details of the Authorization
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                originalValue={
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").value
+                }
+                isVisible={
+                  props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council").edited
+                }
+              />
+            </div>
+            <Field
+              id="arch_site_protection_plan"
+              name="arch_site_protection_plan"
+              component={RenderField}
               disabled={props.isViewMode}
             />
           </Col>

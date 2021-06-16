@@ -48,7 +48,8 @@ class NOWApplicationResource(Resource, UserMixin):
 
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
-
+        current_app.logger.debug(application.camp.staging_area_details)
+        current_app.logger.debug(application.camp.building_details)
         return application
 
     @api.doc(
