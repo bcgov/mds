@@ -81,6 +81,7 @@ const defaultListParams = {
   region: [],
   tenure: [],
   commodity: [],
+  work_status: [],
   major: undefined,
   tsf: undefined,
   verified: undefined,

@@ -101,6 +101,7 @@ exports[`Dashboard renders properly 1`] = `
                 "tenure": Array [],
                 "tsf": undefined,
                 "verified": undefined,
+                "work_status": Array [],
               }
             }
             location={
@@ -640,6 +641,7 @@ exports[`Dashboard renders properly 1`] = `
                     "tenure": Array [],
                     "tsf": undefined,
                     "verified": undefined,
+                    "work_status": Array [],
                   }
                 }
                 handleSearch={[Function]}

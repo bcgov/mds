@@ -16,7 +16,6 @@ const propTypes = {
   mineTenureTypes: CustomPropTypes.options.isRequired,
   mineCommodityOptions: CustomPropTypes.options.isRequired,
   mineRegionOptions: CustomPropTypes.options.isRequired,
-  mineStatusDropDownOptions: CustomPropTypes.options.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   reset: PropTypes.func.isRequired,
 };
@@ -113,6 +112,7 @@ export class AdvancedMineSearchForm extends Component {
                 <Field
                   id="major"
                   name="major"
+                  placeholder="Select Mine Classification"
                   component={renderConfig.SELECT}
                   data={[
                     { value: "", label: "Major and Regional Mines" },
@@ -125,6 +125,7 @@ export class AdvancedMineSearchForm extends Component {
                 <Field
                   id="tsf"
                   name="tsf"
+                  placeholder="Select TSF Criteria"
                   component={renderConfig.SELECT}
                   data={[
                     { value: "", label: "Mines With and Without TSFs" },
@@ -137,8 +138,22 @@ export class AdvancedMineSearchForm extends Component {
             <Row gutter={6}>
               <Col md={12} xs={24}>
                 <Field
+                  id="work_status"
+                  name="work_status"
+                  placeholder="Select Work Status"
+                  component={renderConfig.MULTI_SELECT}
+                  data={[
+                    { value: "Unknown", label: "Unknown" },
+                    { value: "Working", label: "Working" },
+                    { value: "Not Working", label: "Not Working" },
+                  ]}
+                />
+              </Col>
+              <Col md={12} xs={24}>
+                <Field
                   id="verified"
                   name="verified"
+                  placeholder="Select Verified Status"
                   component={renderConfig.SELECT}
                   data={[
                     { value: "", label: "Verified and Un-verified Mines" },
@@ -147,7 +162,6 @@ export class AdvancedMineSearchForm extends Component {
                   ]}
                 />
               </Col>
-              <Col md={12} xs={24} />
             </Row>
           </div>
         )}
