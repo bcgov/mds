@@ -74,23 +74,24 @@ def upgrade():
     sa.ForeignKeyConstraint(['document_type_id'], ['document_type.document_type_id'], ),
     sa.PrimaryKeyConstraint('document_id')
     )
-    op.drop_table('inspection')
-    op.create_table('inspection',
-    sa.Column('inspection_id', sa.Integer(), nullable=False),
-    sa.Column('external_id', sa.Integer(), nullable=True),
-    sa.Column('inspection_date', sa.DateTime(), nullable=True),
-    sa.Column('completed_date', sa.DateTime(), nullable=True),
-    sa.Column('inspection_status_id', sa.Integer(), nullable=True),
-    sa.Column('business_area', sa.String(length=256), nullable=True),
-    sa.Column('mine_no', sa.String(length=64), nullable=True),
-    sa.Column('inspector_idir', sa.String(length=256), nullable=True),
-    sa.Column('inspection_introduction', sa.String(), nullable=True),
-    sa.Column('inspection_preamble', sa.String(), nullable=True),
-    sa.Column('inspection_closing', sa.String(), nullable=True),
-    sa.Column('officer_notes', sa.String(), nullable=True),
-    sa.ForeignKeyConstraint(['inspection_status_id'], ['inspection_status.inspection_status_id'], ),
-    sa.PrimaryKeyConstraint('inspection_id')
-    )
+    with op.get_context().autocommit_block():
+        op.drop_table('inspection')
+        op.create_table('inspection',
+        sa.Column('inspection_id', sa.Integer(), nullable=False),
+        sa.Column('external_id', sa.Integer(), nullable=True),
+        sa.Column('inspection_date', sa.DateTime(), nullable=True),
+        sa.Column('completed_date', sa.DateTime(), nullable=True),
+        sa.Column('inspection_status_id', sa.Integer(), nullable=True),
+        sa.Column('business_area', sa.String(length=256), nullable=True),
+        sa.Column('mine_no', sa.String(length=64), nullable=True),
+        sa.Column('inspector_idir', sa.String(length=256), nullable=True),
+        sa.Column('inspection_introduction', sa.String(), nullable=True),
+        sa.Column('inspection_preamble', sa.String(), nullable=True),
+        sa.Column('inspection_closing', sa.String(), nullable=True),
+        sa.Column('officer_notes', sa.String(), nullable=True),
+        sa.ForeignKeyConstraint(['inspection_status_id'], ['inspection_status.inspection_status_id'], ),
+        sa.PrimaryKeyConstraint('inspection_id')
+        )
     op.create_table('legislation_act_section',
     sa.Column('legislation_act_section_id', sa.Integer(), nullable=False),
     sa.Column('legislation_act_id', sa.Integer(), nullable=True),
