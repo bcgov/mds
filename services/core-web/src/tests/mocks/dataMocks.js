@@ -979,6 +979,12 @@ export const TENURE_HASH = {
   BCL: "BC Land",
 };
 
+export const MINE_WORK_STATUS_HASH = {
+  UNK: "Unknown",
+  NOT: "Not Working",
+  WOR: "Working",
+};
+
 export const PERMITTEE = {
   permitteeIds: ["1c7da2c4-10d5-4c9f-994a-96427aa0c69b"],
   permittees: {
