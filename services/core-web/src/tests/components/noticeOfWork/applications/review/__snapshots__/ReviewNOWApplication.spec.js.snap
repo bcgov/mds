@@ -877,7 +877,29 @@ exports[`ReviewNOWApplication renders properly 1`] = `
           </Row>
           <Row
             gutter={16}
-          />
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Proposed activities on crown land
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="is_on_crown_land"
+                name="is_on_crown_land"
+              />
+            </Col>
+          </Row>
           <br />
           <Row
             gutter={16}
@@ -909,61 +931,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             </Col>
           </Row>
           <br />
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Legal Description of the land
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="description_of_land"
-                name="description_of_land"
-                validate={
-                  Array [
-                    [Function],
-                  ]
-                }
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Proposed activities on crown land
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="is_on_crown_land"
-                name="is_on_crown_land"
-              />
-            </Col>
-          </Row>
           <br />
           <h4>
             Cultural Heritage Resources
@@ -1407,22 +1374,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.is_on_private_land",
             ],
             Array [
-              "state_of_land.has_activity_in_park",
-            ],
-            Array [
-              "state_of_land.has_activity_in_park",
-            ],
-            Array [
-              "description_of_land",
-            ],
-            Array [
-              "description_of_land",
-            ],
-            Array [
               "state_of_land.is_on_crown_land",
             ],
             Array [
               "state_of_land.is_on_crown_land",
+            ],
+            Array [
+              "state_of_land.has_activity_in_park",
+            ],
+            Array [
+              "state_of_land.has_activity_in_park",
             ],
             Array [
               "state_of_land.has_archaeology_sites_affected",
@@ -1476,20 +1437,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
             Object {
               "type": "return",
               "value": Object {

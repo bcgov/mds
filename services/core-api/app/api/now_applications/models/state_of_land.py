@@ -21,6 +21,7 @@ class StateOfLand(Base):
     authorization_details = db.Column(db.String)
     has_licence_of_occupation = db.Column(db.Boolean, nullable=True)
     licence_of_occupation = db.Column(db.String)
+    file_number_of_app = db.Column(db.String)
     applied_for_license_of_occupation = db.Column(db.Boolean, nullable=True)
     notice_served_to_private = db.Column(db.Boolean, nullable=True)
     present_land_condition_description = db.Column(db.String)

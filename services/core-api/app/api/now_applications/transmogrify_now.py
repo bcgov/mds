@@ -115,7 +115,6 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_first_year_of_multi = get_boolean_value(now_sub.firstyearofmulti)
     now_app.ats_authorization_number = now_sub.atsauthorizationnumber
     now_app.ats_project_number = now_sub.atsprojectnumber
-    now_app.file_number_of_app = now_sub.filenumberofappl
     now_app.original_start_date = now_sub.originalstartdate
 
     return
@@ -144,6 +143,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     authorizationdetail = now_sub.authorizationdetail
     licenceofoccupation = now_sub.licenceofoccupation
     noticeservedtoprivate = now_sub.noticeservedtoprivate
+    file_number_of_app = now_sub.filenumberofappl
 
     if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
@@ -167,6 +167,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             authorization_details=authorizationdetail,
             has_licence_of_occupation=get_boolean_value(havelicenceofoccupation),
             licence_of_occupation=licenceofoccupation,
+            file_number_of_app=file_number_of_app,
             applied_for_license_of_occupation=get_boolean_value(appliedforlicenceofoccupation),
             notice_served_to_private=noticeservedtoprivate)
 

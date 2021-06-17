@@ -316,6 +316,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'authorization_details': fields.String,
         'has_licence_of_occupation': fields.Boolean,
         'licence_of_occupation': fields.String,
+        'file_number_of_app': fields.String,
         'applied_for_license_of_occupation': fields.Boolean,
         'notice_served_to_private': fields.Boolean,
     })
@@ -594,7 +595,6 @@ NOW_APPLICATION_MODEL = api.model(
         'is_first_year_of_multi': fields.Boolean,
         'ats_authorization_number': fields.Integer,
         'ats_project_number': fields.Integer,
-        'file_number_of_app': fields.String,
         'unreclaimed_disturbance_previous_year': fields.Integer,
         'disturbance_planned_reclamation': fields.Integer,
         'original_start_date': Date,
