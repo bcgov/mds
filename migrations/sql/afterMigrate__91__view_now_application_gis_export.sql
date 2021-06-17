@@ -1,16 +1,3 @@
--- Creation of these two NRIS schema tables allows this migration to succeed locally.
-CREATE TABLE IF NOT EXISTS nris.inspection (
-   mine_no varchar,
-   inspection_date date,
-   inspection_type_id varchar
-);
-CREATE TABLE IF NOT EXISTS nris.inspection_type (
-   inspection_type_id varchar,
-   inspection_type_code varchar
-);
-ALTER TABLE nris.inspection OWNER TO nris;
-ALTER TABLE nris.inspection_type OWNER TO nris;
-
 DROP VIEW IF EXISTS public.now_application_gis_export_view;
 
 CREATE OR REPLACE VIEW public.now_application_gis_export_view
