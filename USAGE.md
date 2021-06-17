@@ -55,7 +55,7 @@ $ make generate-rand100
 ```
 
 The backend is now running and seeded with random data. Run the following
-commands from within the `/frontend` directory to initialize the frontend:
+commands from within the `/services/core-web` directory to initialize the frontend:
 
 ```
 $ npm ci
