@@ -18,6 +18,8 @@ AS SELECT
     -- Notice of Work General
     nai.now_application_guid::varchar AS now_application_guid, 
     nai.now_number AS now_number,
+    nai.messageid AS messageid,
+    nai.mms_cid AS mms_cid,
     na.now_application_status_code AS now_application_status_code,
     nas.description AS now_application_status_description,
     na.type_of_application AS type_of_application,
