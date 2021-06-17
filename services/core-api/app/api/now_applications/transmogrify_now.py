@@ -407,7 +407,7 @@ def _transmogrify_exploration_surface_drilling(now_app, now_sub, mms_now_sub):
         for sd in exp_surface_drill_activity:
             esd_detail = app_models.ExplorationSurfaceDrillingDetail(
                 activity_type_description=sd.type,
-                number_of_sites=sd.numberofsites,
+                number_of_sites=getattr(sd, 'numberofsites', None),
                 disturbed_area=sd.disturbedarea,
                 timber_volume=sd.timbervolume)
             esd.details.append(esd_detail)
@@ -493,7 +493,7 @@ def _transmogrify_exploration_access(now_app, now_sub, mms_now_sub):
                     length=detail.length,
                     disturbed_area=detail.disturbedarea,
                     timber_volume=detail.timbervolume,
-                    number_of_sites=detail.numberofsites
+                    number_of_sites=getattr(detail, 'numberofsites', None),
                 ))
 
 
