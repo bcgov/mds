@@ -2,6 +2,9 @@
 
 exports[`WaterSupply renders properly 1`] = `
 <div>
+  <h4>
+    Source of Water
+  </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
     fieldName="details"

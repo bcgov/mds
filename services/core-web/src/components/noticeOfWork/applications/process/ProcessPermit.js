@@ -239,6 +239,7 @@ export class ProcessPermit extends Component {
             onSubmit: (values) => this.handleApplication(values, content[type].statusCode),
             type,
             generateDocument: this.handleGenerateDocumentFormSubmit,
+            preview: this.handleDocumentPreview,
             noticeOfWork: this.props.noticeOfWork,
             draftAmendment: this.props.draftAmendment,
             signature,
@@ -516,6 +517,7 @@ export class ProcessPermit extends Component {
       documentTypeCode,
       payload,
       "Successfully created document and attached it to Notice of Work",
+      false,
       () => {
         if (
           documentType.now_application_document_type_code === "PMA" ||
@@ -528,6 +530,27 @@ export class ProcessPermit extends Component {
           );
         }
       }
+    );
+  };
+
+  handleDocumentPreview = (documentType, permitGenObj) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = permitGenObj;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: newValues,
+    };
+    return this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully created the preview document",
+      true,
+      () => {}
     );
   };
 
@@ -878,7 +901,8 @@ export class ProcessPermit extends Component {
     const isProcessed =
       this.props.noticeOfWork.now_application_status_code === approvedCode ||
       this.props.noticeOfWork.now_application_status_code === rejectedCode ||
-      this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode;
+      this.props.noticeOfWork.now_application_status_code === noPermitRequiredCode ||
+      this.props.noticeOfWork.now_application_status_code === withdrawnCode;
     const isApproved = this.props.noticeOfWork.now_application_status_code === approvedCode;
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
     return (

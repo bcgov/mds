@@ -23,6 +23,15 @@ class BlastingOperation(Base):
     explosive_permit_number = db.Column(db.String)
     explosive_permit_expiry_date = db.Column(db.DateTime)
     describe_explosives_to_site = db.Column(db.String)
+    show_access_roads = db.Column(db.Boolean)
+    show_camps = db.Column(db.Boolean)
+    show_surface_drilling = db.Column(db.Boolean)
+    show_mech_trench = db.Column(db.Boolean)
+    show_seismic = db.Column(db.Boolean)
+    show_bulk = db.Column(db.Boolean)
+    show_underground_exploration = db.Column(db.Boolean)
+    show_sand_gravel_quarry = db.Column(db.Boolean)
+
 
     def __repr__(self):
         return '<BlastingOperation %r>' % self.now_application_id

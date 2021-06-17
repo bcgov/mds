@@ -256,11 +256,6 @@ exports[`MineRecordForm renders properly 1`] = `
           label="Major Mine"
           name="major_mine_ind"
           type="checkbox"
-          validate={
-            Array [
-              [Function],
-            ]
-          }
         />
       </FormItem>
     </Col>

@@ -2,13 +2,13 @@
 import uuid
 from decimal import Decimal
 from datetime import datetime
-from flask import request, current_app
+from flask import request
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
 
 #app imports
-from app.extensions import api, cache, db
+from app.extensions import api, cache
 from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
@@ -95,6 +95,12 @@ class MineListResource(Resource, UserMixin):
         trim=True,
         store_missing=True,
         location='json')
+    parser.add_argument(
+        'work_status',
+        action='split',
+        help='Work status for the mine.',
+        store_missing=False,
+        location='json')
 
     @api.doc(
         params={
@@ -103,6 +109,7 @@ class MineListResource(Resource, UserMixin):
             'search': 'The search term.',
             'commodity': 'A specific commodity to filter the mine list on.',
             'status': 'A specific mine status to filter the mine list on.',
+            'work_status': 'A specific mine work status to filter the mine list on.',
             'tenure': 'A specific mine tenure type to filter the mine list on.',
             'region': 'A specific mine region to filter the mine list on.',
             'major': 'Filters the mine list by major mines or regional mines.',
@@ -167,6 +174,7 @@ class MineListResource(Resource, UserMixin):
 
     def apply_filter_and_search(self, args):
         sort_models = {'mine_name': 'Mine', 'mine_no': 'Mine', 'mine_region': 'Mine'}
+
         # Handle ListView request
         items_per_page = args.get('per_page', 25, type=int)
         page = args.get('page', 1, type=int)
@@ -174,16 +182,20 @@ class MineListResource(Resource, UserMixin):
         sort_dir = args.get('sort_dir', 'asc', type=str)
         sort_model = sort_models.get(sort_field)
         search_term = args.get('search', None, type=str)
+
         # Filters to be applied
         commodity_filter_terms = args.getlist('commodity', type=str)
         status_filter_term = args.getlist('status', type=str)
+        work_status_filter_term = args.getlist('work_status', type=str)
         tenure_filter_term = args.getlist('tenure', type=str)
         region_code_filter_term = args.getlist('region', type=str)
         major_mine_filter_term = args.get('major', None, type=str)
         tsf_filter_term = args.get('tsf', None, type=str)
         verified_only_term = args.get('verified', None, type=str)
+
         # Base query:
         mines_query = Mine.query
+
         # Filter by search_term if provided
         if search_term:
             search_term = search_term.strip()
@@ -195,22 +207,26 @@ class MineListResource(Resource, UserMixin):
             permit_query = Mine.query.join(MinePermitXref).join(Permit).filter(
                 permit_filter, Permit.deleted_ind == False)
             mines_query = mines_name_query.union(permit_query)
+
         # Filter by Major Mine, if provided
         if major_mine_filter_term == "true" or major_mine_filter_term == "false":
             major_mine_filter = Mine.major_mine_ind.is_(major_mine_filter_term == "true")
             major_mine_query = Mine.query.filter(major_mine_filter)
             mines_query = mines_query.intersect(major_mine_query)
+
         # Filter by TSF, if provided
         if tsf_filter_term == "true" or tsf_filter_term == "false":
             tsf_filter = Mine.mine_tailings_storage_facilities != None if tsf_filter_term == "true" else \
                 Mine.mine_tailings_storage_facilities == None
             tsf_query = Mine.query.filter(tsf_filter)
             mines_query = mines_query.intersect(tsf_query)
+
         # Filter by region, if provided
         if region_code_filter_term:
             region_filter = Mine.mine_region.in_(region_code_filter_term)
             region_query = Mine.query.filter(region_filter)
             mines_query = mines_query.intersect(region_query)
+
         # Filter by commodity if provided
         if commodity_filter_terms:
             commodity_filter = MineTypeDetail.mine_commodity_code.in_(commodity_filter_terms)
@@ -220,6 +236,7 @@ class MineListResource(Resource, UserMixin):
                 .join(MineTypeDetail) \
                 .filter(commodity_filter, mine_type_active_filter)
             mines_query = mines_query.intersect(commodity_query)
+
         # Create a filter on tenure if one is provided
         if tenure_filter_term:
             tenure_filter = MineType.mine_tenure_type_code.in_(tenure_filter_term)
@@ -229,7 +246,7 @@ class MineListResource(Resource, UserMixin):
                 .filter(tenure_filter, mine_type_active_filter)
             mines_query = mines_query.intersect(tenure_query)
 
-        #Create a filter on verified mine status
+        # Create a filter on verified mine status
         if verified_only_term == "true" or verified_only_term == "false":
             verified_only_filter = MineVerifiedStatus.healthy_ind.is_(verified_only_term == "true")
             verified_only_query = Mine.query.join(MineVerifiedStatus).filter(verified_only_filter)
@@ -248,6 +265,12 @@ class MineListResource(Resource, UserMixin):
                 .join(MineStatusXref) \
                 .filter(all_status_filter, MineStatus.active_ind == True)
             mines_query = mines_query.intersect(status_query)
+
+        if work_status_filter_term:
+            work_status_query = Mine.query \
+                .filter(Mine.work_status.in_(work_status_filter_term))
+            mines_query = mines_query.intersect(work_status_query)
+
         deleted_filter = [{'field': 'deleted_ind', 'op': '==', 'value': 'False'}]
         mines_query = apply_filters(mines_query, deleted_filter)
 
