@@ -15,9 +15,8 @@ class StateOfLand(Base):
         db.Integer, db.ForeignKey('now_application.now_application_id'), primary_key=True)
     now_application = db.relationship('NOWApplication')
 
-    has_community_water_shed = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_archaeology_sites_affected = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+    has_community_water_shed = db.Column(db.Boolean, nullable=True)
+    has_archaeology_sites_affected = db.Column(db.Boolean, nullable=True)
 
     present_land_condition_description = db.Column(db.String)
     means_of_access_description = db.Column(db.String)

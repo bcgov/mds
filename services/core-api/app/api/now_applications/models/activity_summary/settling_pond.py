@@ -25,9 +25,9 @@ class SettlingPond(ActivitySummaryBase):
     water_discharged_description = db.Column(db.String)
     spillway_design_description = db.Column(db.String)
 
-    is_ponds_exfiltrated = db.Column(db.Boolean, nullable=False, default=False)
-    is_ponds_recycled = db.Column(db.Boolean, nullable=False, default=False)
-    is_ponds_discharged = db.Column(db.Boolean, nullable=False, default=False)
+    is_ponds_exfiltrated = db.Column(db.Boolean, nullable=True)
+    is_ponds_recycled = db.Column(db.Boolean, nullable=True)
+    is_ponds_discharged = db.Column(db.Boolean, nullable=True)
 
     details = db.relationship(
         'SettlingPondDetail', secondary='activity_summary_detail_xref', load_on_pending=True)

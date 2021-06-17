@@ -105,8 +105,8 @@ NOW_APPLICATION_CAMP = api.inherit(
         'volume_fuel_stored': fields.Fixed(decimals=2),
         'calculated_total_disturbance': fields.Fixed(decimals=5),
         'details': fields.List(fields.Nested(NOW_APPLICATION_CAMP_DETAIL, skip_none=True)),
-        'building_details': fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL)),
-        'staging_area_details': fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL)),
+        'building_details': fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
+        'staging_area_details': fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(

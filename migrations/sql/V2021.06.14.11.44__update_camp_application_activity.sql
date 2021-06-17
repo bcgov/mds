@@ -37,7 +37,7 @@ ALTER TABLE camp_detail OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS building_detail  (
   activity_detail_id   INTEGER PRIMARY KEY REFERENCES activity_detail(activity_detail_id), 
-  water_source_description      varchar(4000),
-  construction_plan		varchar(4000)
+  purpose      varchar,
+  structure		varchar
 );
 ALTER TABLE building_detail OWNER TO mds;

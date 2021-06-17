@@ -332,20 +332,6 @@ export const ReviewNOWApplication = (props) => {
               component={RenderField}
               disabled={props.isViewMode}
             />
-            {/* <div className="field-title">
-              Description of Land
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("description_of_land").value}
-                isVisible={props.renderOriginalValues("description_of_land").edited}
-              />
-            </div>
-            <Field
-              id="description_of_land"
-              name="description_of_land"
-              component={RenderAutoSizeField}
-              disabled={props.isViewMode}
-              validate={[maxLength(4000)]}
-            /> */}
             <ReviewApplicationFeeContent
               initialValues={props.noticeOfWork}
               isViewMode={props.isViewMode}

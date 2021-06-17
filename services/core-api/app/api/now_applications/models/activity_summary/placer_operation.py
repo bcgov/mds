@@ -19,15 +19,15 @@ class PlacerOperation(ActivitySummaryBase):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
-    is_underground = db.Column(db.Boolean, nullable=False)
-    is_hand_operation = db.Column(db.Boolean, nullable=False)
-    has_stream_diversion = db.Column(db.Boolean, nullable=False)
+    is_underground = db.Column(db.Boolean, nullable=True)
+    is_hand_operation = db.Column(db.Boolean, nullable=True)
+    has_stream_diversion = db.Column(db.Boolean, nullable=True)
     reclamation_area = db.Column((db.Numeric(14, 2)))
     reclamation_unit_type_code = db.Column(
         db.String, db.ForeignKey('unit_type.unit_type_code'), nullable=False)
     proposed_production = db.Column(db.String)
-    proposed_production_unit_type_code = db.Column(
-        db.String, db.ForeignKey('unit_type.unit_type_code'))
+    proposed_production_unit_type_code = db.Column(db.String,
+                                                   db.ForeignKey('unit_type.unit_type_code'))
 
     details = db.relationship(
         'PlacerOperationDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
