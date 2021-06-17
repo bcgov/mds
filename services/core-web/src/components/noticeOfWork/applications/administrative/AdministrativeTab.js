@@ -87,6 +87,7 @@ export class AdministrativeTab extends Component {
             initialValues,
             documentType: this.props.documentContextTemplate,
             onSubmit: (values) => this.handleGenerateDocumentFormSubmit(documentType, values),
+            preview: this.handleDocumentPreview,
             title: `Generate ${documentType.description}`,
             signature,
             allowDocx: true,
@@ -114,6 +115,7 @@ export class AdministrativeTab extends Component {
         documentTypeCode,
         payload,
         "Successfully created document and attached it to Notice of Work",
+        false,
         () => {
           this.props.fetchImportedNoticeOfWorkApplication(
             this.props.noticeOfWork.now_application_guid
@@ -123,6 +125,27 @@ export class AdministrativeTab extends Component {
       .then(() => {
         this.props.closeModal();
       });
+  };
+
+  handleDocumentPreview = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: newValues,
+    };
+    return this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully created the preview document",
+      true,
+      () => {}
+    );
   };
 
   handleChangeNOWMineAndLocation = (values) => {

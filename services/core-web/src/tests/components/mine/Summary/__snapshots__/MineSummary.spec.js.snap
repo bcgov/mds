@@ -249,6 +249,13 @@ exports[`MineSummary renders properly 1`] = `
     partyRelationships={Array []}
   />
   <br />
+  <br />
+  <br />
+  <br />
+  <Connect(MineWorkInformation)
+    mineGuid="18145c75-49ad-0101-85f3-a43e45ae989a"
+  />
+  <br />
   <div>
     <Row>
       <Col

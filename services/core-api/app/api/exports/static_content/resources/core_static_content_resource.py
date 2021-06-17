@@ -55,8 +55,6 @@ from app.api.mines.government_agencies.models.government_agency_type import Gove
 from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
 
-from app.api.parties.party.models.party import Party
-
 MODELS_GET_ACTIVE = [
     MineDisturbanceCode, MineCommodityCode, MineStatusXref, MineRegionCode, MineTenureTypeCode,
     PermitStatusCode, MineIncidentDocumentTypeCode, MineIncidentFollowupInvestigationType,
@@ -68,8 +66,8 @@ MODELS_GET_ACTIVE = [
     MinePartyAppointmentType, NOWApplicationReviewType, BondType, BondStatus, BondDocumentType,
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
-    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType,
-    TSFOperatingStatusCode, ConsequenceClassificationStatusCode
+    ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
+    ConsequenceClassificationStatusCode
 ]
 
 

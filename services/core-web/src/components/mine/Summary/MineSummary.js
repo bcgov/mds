@@ -18,6 +18,7 @@ import PermitCard from "@/components/mine/Permit/MinePermitCard";
 import { TSFCard } from "@/components/mine/Tailings/MineTSFCard";
 import { DOC, OVERDUEDOC } from "@/constants/assets";
 import MineHeader from "@/components/mine/MineHeader";
+import MineWorkInformation from "@/components/mine/Summary/MineWorkInformation";
 
 /**
  * @class MineSummary.js contains all content located under the 'Summary' tab on the MineDashboard.
@@ -84,6 +85,7 @@ export class MineSummary extends Component {
   render() {
     const { id } = this.props.match.params;
     const mine = this.props.mines[id];
+
     return (
       <div className="tab__content">
         <div>
@@ -91,6 +93,11 @@ export class MineSummary extends Component {
           <Divider />
         </div>
         <MineHeader mine={mine} {...this.props} />
+        <br />
+        <br />
+        <br />
+        <br />
+        <MineWorkInformation mineGuid={id} />
         <br />
         {this.props.partyRelationships && this.props.partyRelationships.length > 0 && (
           <div>
