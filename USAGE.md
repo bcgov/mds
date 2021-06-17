@@ -47,6 +47,7 @@ execute the following commands:
 
 ```
 $ make clean
+$ chmod +x settings/keycloak/keycloak-local-user.sh
 $ make keycloak
 $ make backend
 $ make keycloak-user
