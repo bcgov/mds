@@ -18,6 +18,11 @@ class StateOfLand(Base):
     has_community_water_shed = db.Column(db.Boolean, nullable=True)
     has_archaeology_sites_affected = db.Column(db.Boolean, nullable=True)
 
+    authorization_details = db.Column(db.String)
+    has_licence_of_occupation = db.Column(db.Boolean, nullable=True)
+    licence_of_occupation = db.Column(db.String)
+    applied_for_license_of_occupation = db.Column(db.Boolean, nullable=True)
+    notice_served_to_private = db.Column(db.Boolean, nullable=True)
     present_land_condition_description = db.Column(db.String)
     means_of_access_description = db.Column(db.String)
     physiography_description = db.Column(db.String)

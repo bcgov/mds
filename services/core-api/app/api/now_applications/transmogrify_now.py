@@ -139,6 +139,11 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     has_fn_cultural_heritage_sites_in_area = get_boolean_value(now_sub.hasculturalheritageresources)
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
+    havelicenceofoccupation = now_sub.havelicenceofoccupation
+    appliedforlicenceofoccupation = now_sub.appliedforlicenceofoccupation
+    authorizationdetail = now_sub.authorizationdetail
+    licenceofoccupation = now_sub.licenceofoccupation
+    noticeservedtoprivate = now_sub.noticeservedtoprivate
 
     if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
@@ -158,7 +163,12 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_shared_info_with_fn=has_shared_info_with_fn,
             has_fn_cultural_heritage_sites_in_area=has_fn_cultural_heritage_sites_in_area,
             fn_engagement_activities=fn_engagement_activities,
-            cultural_heritage_description=cultural_heritage_description)
+            cultural_heritage_description=cultural_heritage_description,
+            authorization_details=authorizationdetail,
+            has_licence_of_occupation=get_boolean_value(havelicenceofoccupation),
+            licence_of_occupation=licenceofoccupation,
+            applied_for_license_of_occupation=get_boolean_value(appliedforlicenceofoccupation),
+            notice_served_to_private=noticeservedtoprivate)
 
     return
 

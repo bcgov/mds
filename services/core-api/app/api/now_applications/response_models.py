@@ -313,6 +313,11 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'is_on_private_land': fields.Boolean,
         'is_on_crown_land': fields.Boolean,
         'has_auth_lieutenant_gov_council': fields.Boolean,
+        'authorization_details': fields.String,
+        'has_licence_of_occupation': fields.Boolean,
+        'licence_of_occupation': fields.String,
+        'applied_for_license_of_occupation': fields.Boolean,
+        'notice_served_to_private': fields.Boolean,
     })
 
 NOW_APPLICATION_DOCUMENT = api.model(
