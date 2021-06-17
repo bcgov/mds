@@ -395,6 +395,12 @@ export const ReviewNOWApplication = (props) => {
     );
   };
 
+  // const renderMineInfo = () => {
+  //   <div>
+  //     <h4>Mine Information</h4>
+  //   </div>
+  // }
+
   const renderAccess = () => (
     <div>
       <Row gutter={16}>

@@ -912,7 +912,11 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               <div
                 className="field-title"
               >
-                Activities in park
+                Are any of the proposed activities in a park under an Act of British Columbia or of Canada or in an area of land established as a Provincial Heritage property under Section 23 of the 
+                <i>
+                  Heritage Conservation Act
+                </i>
+                ?
                 <NOWOriginalValueTooltip
                   isVisible={true}
                   originalValue="N/A"
@@ -945,6 +949,31 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 disabled={true}
                 id="has_auth_lieutenant_gov_council"
                 name="has_auth_lieutenant_gov_council"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Details of the Authorization
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="arch_site_protection_plan"
+                name="arch_site_protection_plan"
               />
             </Col>
           </Row>
@@ -1506,6 +1535,12 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.has_auth_lieutenant_gov_council",
             ],
             Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
+              "state_of_land.has_auth_lieutenant_gov_council",
+            ],
+            Array [
               "state_of_land.has_archaeology_sites_affected",
             ],
             Array [
@@ -1581,6 +1616,20 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
             Object {
               "type": "return",
               "value": Object {
