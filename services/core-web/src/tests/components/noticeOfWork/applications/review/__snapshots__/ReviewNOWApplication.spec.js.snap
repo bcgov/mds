@@ -13,243 +13,467 @@ exports[`ReviewNOWApplication renders properly 1`] = `
       title="Application Info"
     >
       <div>
+        <div>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Type of Notice of Work
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="notice_of_work_type_code"
+                name="notice_of_work_type_code"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Mine Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="mine_no"
+                name="mine_no"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Type of Application
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="type_of_application"
+                name="type_of_application"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Permit Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="proponent_submitted_permit_number"
+                name="proponent_submitted_permit_number"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Annual Summary submitted for this site?
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="annual_summary_submitted"
+                name="annual_summary_submitted"
+              />
+            </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Permit Type
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="application_permit_type_code"
+                name="application_permit_type_code"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            />
+          </Row>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                ATS Authorization Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="ats_authorization_number"
+                name="ats_authorization_number"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Tracking Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="now_tracking_number"
+                name="now_tracking_number"
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                ATS Project Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="ats_project_number"
+                name="ats_project_number"
+              />
+            </Col>
+          </Row>
+        </div>
+        <br />
+        <div>
+          <h4>
+            Mine Information
+          </h4>
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Name of Property
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="property_name"
+                name="property_name"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+              <div
+                className="field-title"
+              >
+                Lat
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="latitude"
+                name="latitude"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+              <div
+                className="field-title"
+              >
+                Long
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="longitude"
+                name="longitude"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+              <div
+                className="field-title"
+              >
+                Region
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="mine_region"
+                name="mine_region"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+              <div
+                className="field-title"
+              >
+                Tenure Number(s)
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="tenure_number"
+                name="tenure_number"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+              <div
+                className="field-title"
+              >
+                Crown Grant / District Lot Number
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="crown_grant_or_district_lot_numbers"
+                name="crown_grant_or_district_lot_numbers"
+              />
+              <div
+                className="field-title"
+              >
+                Directions to the site from the nearest municipality
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="directions_to_site"
+                name="directions_to_site"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </Col>
+            <Col
+              md={12}
+              sm={24}
+            >
+              <Connect(ReviewApplicationFeeContent)
+                initialValues={
+                  Object {
+                    "adjusted_annual_maximum_tonnage": "",
+                    "application_documents": Array [],
+                    "blasting_operation": Object {},
+                    "camp": Object {
+                      "details": Array [],
+                    },
+                    "contacts": Array [],
+                    "cut_lines_polarization_survey": Object {
+                      "details": Array [],
+                    },
+                    "description_of_land": "",
+                    "documents": Array [],
+                    "exploration_access": Object {
+                      "details": Array [],
+                    },
+                    "exploration_surface_drilling": Object {
+                      "details": Array [],
+                    },
+                    "filtered_submission_documents": Array [],
+                    "latitude": "",
+                    "lead_inspector": Object {},
+                    "longitude": "",
+                    "mechanical_trenching": Object {
+                      "details": Array [],
+                    },
+                    "mine_guid": "",
+                    "notice_of_work_type_code": "MIN",
+                    "now_application_guid": "1346wesrt22",
+                    "now_application_id": "",
+                    "now_message_id": 47284,
+                    "now_tracking_number": 47284,
+                    "placer_operation": Object {
+                      "details": Array [],
+                    },
+                    "property_name": "",
+                    "proposed_annual_maximum_tonnage": 10000,
+                    "proposed_end_date": "2020-03-01",
+                    "proposed_start_date": "2016-03-01",
+                    "received_date": "",
+                    "sand_gravel_quarry_operation": Object {
+                      "details": Array [],
+                    },
+                    "settling_pond": Object {
+                      "details": Array [],
+                    },
+                    "state_of_land": Object {},
+                    "submission_documents": Array [],
+                    "submitted_date": "",
+                    "surface_bulk_sample": Object {
+                      "details": Array [],
+                    },
+                    "tenure_number": "",
+                    "underground_exploration": Object {
+                      "details": Array [],
+                    },
+                    "water_supply": Object {
+                      "details": Array [],
+                    },
+                  }
+                }
+                isViewMode={true}
+              />
+            </Col>
+          </Row>
+        </div>
+        <br />
+        <h4>
+          Applicant Information
+        </h4>
         <Row
           gutter={16}
         >
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Name of Property
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="property_name"
-              name="property_name"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Mine Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="mine_no"
-              name="mine_no"
-            />
-            <div
-              className="field-title"
-            >
-              Region
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="mine_region"
-              name="mine_region"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Lat
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="latitude"
-              name="latitude"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Long
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="longitude"
-              name="longitude"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Type of Notice of Work
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="notice_of_work_type_code"
-              name="notice_of_work_type_code"
-              validate={
-                Array [
-                  [Function],
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Permit Type
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="application_permit_type_code"
-              name="application_permit_type_code"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-            <div
-              className="field-title"
-            >
-              Type of Application
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="type_of_application"
-              name="type_of_application"
-            />
-            <div
-              className="field-title"
-            >
-              Permit Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="proponent_submitted_permit_number"
-              name="proponent_submitted_permit_number"
-            />
-            <div
-              className="field-title"
-            >
-              Annual Summary submitted for this site?
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="annual_summary_submitted"
-              name="annual_summary_submitted"
-            />
-            <div
-              className="field-title"
-            >
-              Crown Grant / District Lot Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="crown_grant_or_district_lot_numbers"
-              name="crown_grant_or_district_lot_numbers"
-            />
-            <div
-              className="field-title"
-            >
-              Tenure Number(s)
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="tenure_number"
-              name="tenure_number"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </Col>
           <Col
             md={12}
             sm={24}
@@ -285,134 +509,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               disabled={true}
               id="relationship_to_applicant"
               name="relationship_to_applicant"
-            />
-            <Connect(ReviewApplicationFeeContent)
-              initialValues={
-                Object {
-                  "adjusted_annual_maximum_tonnage": "",
-                  "application_documents": Array [],
-                  "blasting_operation": Object {},
-                  "camp": Object {
-                    "details": Array [],
-                  },
-                  "contacts": Array [],
-                  "cut_lines_polarization_survey": Object {
-                    "details": Array [],
-                  },
-                  "description_of_land": "",
-                  "documents": Array [],
-                  "exploration_access": Object {
-                    "details": Array [],
-                  },
-                  "exploration_surface_drilling": Object {
-                    "details": Array [],
-                  },
-                  "filtered_submission_documents": Array [],
-                  "latitude": "",
-                  "lead_inspector": Object {},
-                  "longitude": "",
-                  "mechanical_trenching": Object {
-                    "details": Array [],
-                  },
-                  "mine_guid": "",
-                  "notice_of_work_type_code": "MIN",
-                  "now_application_guid": "1346wesrt22",
-                  "now_application_id": "",
-                  "now_message_id": 47284,
-                  "now_tracking_number": 47284,
-                  "placer_operation": Object {
-                    "details": Array [],
-                  },
-                  "property_name": "",
-                  "proposed_annual_maximum_tonnage": 10000,
-                  "proposed_end_date": "2020-03-01",
-                  "proposed_start_date": "2016-03-01",
-                  "received_date": "",
-                  "sand_gravel_quarry_operation": Object {
-                    "details": Array [],
-                  },
-                  "settling_pond": Object {
-                    "details": Array [],
-                  },
-                  "state_of_land": Object {},
-                  "submission_documents": Array [],
-                  "submitted_date": "",
-                  "surface_bulk_sample": Object {
-                    "details": Array [],
-                  },
-                  "tenure_number": "",
-                  "underground_exploration": Object {
-                    "details": Array [],
-                  },
-                  "water_supply": Object {
-                    "details": Array [],
-                  },
-                }
-              }
-              isViewMode={true}
-            />
-          </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Tracking Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="now_tracking_number"
-              name="now_tracking_number"
-            />
-          </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              ATS Authorization Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="ats_authorization_number"
-              name="ats_authorization_number"
-            />
-          </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              ATS Project Number
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="ats_project_number"
-              name="ats_project_number"
             />
           </Col>
         </Row>
@@ -540,36 +636,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             />
           </Col>
         </Row>
-        <Row
-          gutter={16}
-        >
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Directions to the site from the nearest municipality
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="directions_to_site"
-              name="directions_to_site"
-              validate={
-                Array [
-                  [Function],
-                ]
-              }
-            />
-          </Col>
-        </Row>
         <br />
         <h4>
           Access to Tenure
@@ -596,48 +662,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               disabled={true}
               id="has_surface_disturbance_outside_tenure"
               name="has_surface_disturbance_outside_tenure"
-            />
-          </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Do you have the required access authorizations in place?
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="has_req_access_authorizations"
-              name="has_req_access_authorizations"
-            />
-          </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Provide the type and authorization numbers for each access authorization application or exemption to use the road(s).
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={Object {}}
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="req_access_authorization_numbers"
-              name="req_access_authorization_numbers"
             />
           </Col>
         </Row>
@@ -825,6 +849,10 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                 }
               />
             </Col>
+          </Row>
+          <Row
+            gutter={16}
+          >
             <Col
               md={12}
               sm={24}
@@ -847,6 +875,40 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               />
             </Col>
           </Row>
+          <Row
+            gutter={16}
+          />
+          <br />
+          <Row
+            gutter={16}
+          >
+            <Col
+              md={12}
+              sm={24}
+            >
+              <div
+                className="field-title"
+              >
+                Are any of the proposed activities in a park under an Act of British Columbia or of Canada or in an area of land established as a Provincial Heritage property under Section 23 of the 
+                <i>
+                  Heritage Conservation Act
+                </i>
+                ?
+                <NOWOriginalValueTooltip
+                  isVisible={true}
+                  originalValue="N/A"
+                  style={Object {}}
+                />
+              </div>
+              <Field
+                component={[Function]}
+                disabled={true}
+                id="has_activity_in_park"
+                name="has_activity_in_park"
+              />
+            </Col>
+          </Row>
+          <br />
           <Row
             gutter={16}
           >
@@ -902,81 +964,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               />
             </Col>
           </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Are any of the proposed activities in a park under an Act of British Columbia or of Canada or in an area of land established as a Provincial Heritage property under Section 23 of the 
-                <i>
-                  Heritage Conservation Act
-                </i>
-                ?
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="has_activity_in_park"
-                name="has_activity_in_park"
-              />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Do you have authorization by the Lieutenant Governor in Council?
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="has_auth_lieutenant_gov_council"
-                name="has_auth_lieutenant_gov_council"
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Details of the Authorization
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="arch_site_protection_plan"
-                name="arch_site_protection_plan"
-              />
-            </Col>
-          </Row>
           <br />
           <h4>
             Cultural Heritage Resources
@@ -1008,22 +995,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
                     [Function],
                   ]
                 }
-              />
-              <div
-                className="field-title"
-              >
-                Plan to protect the archaeological site
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="arch_site_protection_plan"
-                name="arch_site_protection_plan"
               />
             </Col>
           </Row>
@@ -1058,70 +1029,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             <Col
               md={12}
               sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Describe your First Nations engagement activities
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="fn_engagement_activities"
-                name="fn_engagement_activities"
-              />
-            </Col>
-          </Row>
-          <Row
-            gutter={16}
-          >
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                As a result of the engagement, are you aware of any cultural heritage resources in the area where the work is proposed?
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="has_fn_cultural_heritage_sites_in_area"
-                name="has_fn_cultural_heritage_sites_in_area"
-              />
-            </Col>
-            <Col
-              md={12}
-              sm={24}
-            >
-              <div
-                className="field-title"
-              >
-                Describe any cultural heritage resources in the area
-                <NOWOriginalValueTooltip
-                  isVisible={true}
-                  originalValue="N/A"
-                  style={Object {}}
-                />
-              </div>
-              <Field
-                component={[Function]}
-                disabled={true}
-                id="cultural_heritage_description"
-                name="cultural_heritage_description"
-              />
-            </Col>
+            />
           </Row>
         </FormSection>
       </div>
@@ -1325,46 +1233,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         [MockFunction] {
           "calls": Array [
             Array [
-              "property_name",
-            ],
-            Array [
-              "property_name",
-            ],
-            Array [
-              "mine_no",
-            ],
-            Array [
-              "mine_no",
-            ],
-            Array [
-              "mine_region",
-            ],
-            Array [
-              "mine_region",
-            ],
-            Array [
-              "latitude",
-            ],
-            Array [
-              "latitude",
-            ],
-            Array [
-              "longitude",
-            ],
-            Array [
-              "longitude",
-            ],
-            Array [
               "notice_of_work_type_code",
             ],
             Array [
               "notice_of_work_type_code",
             ],
             Array [
-              "application_permit_type_code",
+              "mine_no",
             ],
             Array [
-              "application_permit_type_code",
+              "mine_no",
             ],
             Array [
               "type_of_application",
@@ -1385,16 +1263,70 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "annual_summary_submitted",
             ],
             Array [
-              "crown_grant_or_district_lot_numbers",
+              "application_permit_type_code",
             ],
             Array [
-              "crown_grant_or_district_lot_numbers",
+              "application_permit_type_code",
+            ],
+            Array [
+              "ats_authorization_number",
+            ],
+            Array [
+              "ats_authorization_number",
+            ],
+            Array [
+              "now_tracking_number",
+            ],
+            Array [
+              "now_tracking_number",
+            ],
+            Array [
+              "ats_project_number",
+            ],
+            Array [
+              "ats_project_number",
+            ],
+            Array [
+              "property_name",
+            ],
+            Array [
+              "property_name",
+            ],
+            Array [
+              "latitude",
+            ],
+            Array [
+              "latitude",
+            ],
+            Array [
+              "longitude",
+            ],
+            Array [
+              "longitude",
+            ],
+            Array [
+              "mine_region",
+            ],
+            Array [
+              "mine_region",
             ],
             Array [
               "tenure_number",
             ],
             Array [
               "tenure_number",
+            ],
+            Array [
+              "crown_grant_or_district_lot_numbers",
+            ],
+            Array [
+              "crown_grant_or_district_lot_numbers",
+            ],
+            Array [
+              "directions_to_site",
+            ],
+            Array [
+              "directions_to_site",
             ],
             Array [
               "is_applicant_individual_or_company",
@@ -1409,24 +1341,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "relationship_to_applicant",
             ],
             Array [
-              "now_tracking_number",
-            ],
-            Array [
-              "now_tracking_number",
-            ],
-            Array [
-              "ats_authorization_number",
-            ],
-            Array [
-              "ats_authorization_number",
-            ],
-            Array [
-              "ats_project_number",
-            ],
-            Array [
-              "ats_project_number",
-            ],
-            Array [
               "is_access_gated",
             ],
             Array [
@@ -1439,28 +1353,10 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "has_key_for_inspector",
             ],
             Array [
-              "directions_to_site",
-            ],
-            Array [
-              "directions_to_site",
-            ],
-            Array [
               "has_surface_disturbance_outside_tenure",
             ],
             Array [
               "has_surface_disturbance_outside_tenure",
-            ],
-            Array [
-              "has_req_access_authorizations",
-            ],
-            Array [
-              "has_req_access_authorizations",
-            ],
-            Array [
-              "req_access_authorization_numbers",
-            ],
-            Array [
-              "req_access_authorization_numbers",
             ],
             Array [
               "state_of_land.present_land_condition_description",
@@ -1511,6 +1407,12 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.is_on_private_land",
             ],
             Array [
+              "state_of_land.has_activity_in_park",
+            ],
+            Array [
+              "state_of_land.has_activity_in_park",
+            ],
+            Array [
               "description_of_land",
             ],
             Array [
@@ -1523,58 +1425,16 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "state_of_land.is_on_crown_land",
             ],
             Array [
-              "state_of_land.has_activity_in_park",
-            ],
-            Array [
-              "state_of_land.has_activity_in_park",
-            ],
-            Array [
-              "state_of_land.has_auth_lieutenant_gov_council",
-            ],
-            Array [
-              "state_of_land.has_auth_lieutenant_gov_council",
-            ],
-            Array [
-              "state_of_land.has_auth_lieutenant_gov_council",
-            ],
-            Array [
-              "state_of_land.has_auth_lieutenant_gov_council",
-            ],
-            Array [
               "state_of_land.has_archaeology_sites_affected",
             ],
             Array [
               "state_of_land.has_archaeology_sites_affected",
             ],
             Array [
-              "state_of_land.arch_site_protection_plan",
-            ],
-            Array [
-              "state_of_land.arch_site_protection_plan",
-            ],
-            Array [
               "state_of_land.has_shared_info_with_fn",
             ],
             Array [
               "state_of_land.has_shared_info_with_fn",
-            ],
-            Array [
-              "state_of_land.fn_engagement_activities",
-            ],
-            Array [
-              "state_of_land.fn_engagement_activities",
-            ],
-            Array [
-              "state_of_land.has_fn_cultural_heritage_sites_in_area",
-            ],
-            Array [
-              "state_of_land.has_fn_cultural_heritage_sites_in_area",
-            ],
-            Array [
-              "state_of_land.cultural_heritage_description",
-            ],
-            Array [
-              "state_of_land.cultural_heritage_description",
             ],
             Array [
               "first_aid_equipment_on_site",
@@ -1616,118 +1476,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
             Object {
               "type": "return",
               "value": Object {
