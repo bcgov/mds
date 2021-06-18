@@ -152,8 +152,6 @@ class MinePartyApptResource(Resource, UserMixin):
         if not mpa:
             raise NotFound('mine party appointment not found')
 
-        current_app.logger.info('data/********************************************')
-        current_app.logger.info(data)
         for key, value in data.items():
             if key in ['party_guid', 'mine_guid']:
                 continue
