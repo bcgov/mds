@@ -14,11 +14,11 @@ RUN INSTALL_PKGS="glibc-devel mono-complete" && \
     yum install -y yum-utils gettext && \
     # curl https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --output epel-release.rpm && \
     # yum install -y --setopt=tsflags=nodocs epel-release.rpm && \
-    yum-config-manager --enable rhel-server-rhscl-8-rpms && \
-    yum-config-manager --enable rhel-8-server-rpms && \
-    yum-config-manager --enable rhel-8-server-eus-rpms && \
-    yum-config-manager --enable rhel-8-server-optional-rpms && \
-    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
+    yum-config-manager --enable rhel-server-rhscl-7-rpms && \
+    yum-config-manager --enable rhel-7-server-rpms && \
+    yum-config-manager --enable rhel-7-server-eus-rpms && \
+    yum-config-manager --enable rhel-7-server-optional-rpms && \
+    yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*' && \
