@@ -19,6 +19,7 @@ const propTypes = {};
 
 export class ExplosiveStorageUsePermit extends Component {
   state = { isLoaded: false };
+
   handleAddAdminAmendment = (values) => {
     const payload = {
       mine_guid: this.props.mineGuid,
@@ -57,7 +58,7 @@ export class ExplosiveStorageUsePermit extends Component {
           </AuthorizationWrapper>
         </div>
         <MineExplosiveStorageUsePermitTable
-          isLoaded={true}
+          isLoaded
           handleSearch={this.handleSearch}
           administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
             (app) => app.application_type_code === "ADA"
