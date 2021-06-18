@@ -18,7 +18,7 @@ from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 
 class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = "mine_party_appt"
-    # Columns
+
     mine_party_appt_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     mine_party_appt_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
@@ -30,54 +30,38 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     processed_by = db.Column(db.String(60), server_default=FetchedValue())
     processed_on = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
-    #type specific foreign keys
+    # Type-specific properties
     mine_tailings_storage_facility_guid = db.Column(
         UUID(as_uuid=True),
         db.ForeignKey('mine_tailings_storage_facility.mine_tailings_storage_facility_guid'))
     permit_id = db.Column(db.Integer, db.ForeignKey('permit.permit_id'))
     permit = db.relationship('Permit', lazy='select')
+    union_rep_company = db.Column(db.String)
 
     # Relationships
     party = db.relationship('Party', lazy='joined')
-
     mine_party_appt_type = db.relationship(
         'MinePartyAppointmentType',
         backref='mine_party_appt',
         order_by='desc(MinePartyAppointmentType.display_order)',
         lazy='joined')
-
     documents = db.relationship(
         'MineDocument', lazy='joined', secondary='mine_party_appt_document_xref')
 
     def assign_related_guid(self, related_guid):
         from app.api.mines.permits.permit.models.permit import Permit
 
-        if self.mine_party_appt_type_code == "EOR":
+        if not related_guid:
+            return
+
+        if self.mine_party_appt_type_code == 'EOR':
             self.mine_tailings_storage_facility_guid = related_guid
+            self.permit = None
 
         if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             permit = Permit.find_by_permit_guid(related_guid)
-            if not permit:
-                raise AssertionError(f'Permit with guid {related_guid} not found')
-            self.permit_id = permit.permit_id
-        return
-
-    def save(self, commit=True):
-        if commit:
-            if not (self.permit or self.permit_id or self.mine_guid or self.mine):
-                raise AssertionError("Must have a related permit or mine")
-
-            if self.mine_party_appt_type_code == 'PMT' and (self.mine_guid
-                                                            or self.mine) is not None:
-                raise AssertionError("Contacts linked to a permit are not related to mines")
-
-            if self.mine_party_appt_type_code in [
-                    'THD', 'LDO', 'MOR'
-            ] and (self.mine_guid or self.mine) is not None and (self.permit_id
-                                                                 or self.permit) is not None:
-                raise AssertionError("Contacts linked to a permit are not related to mines")
-
-        super(MinePartyAppointment, self).save(commit)
+            self.permit = permit
+            self.mine = None
 
     def json(self, relationships=[]):
         result = {
@@ -87,19 +71,21 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
             'start_date': str(self.start_date) if self.start_date else None,
             'end_date': str(self.end_date) if self.end_date else None,
+            'union_rep_company': self.union_rep_company,
             'documents': [doc.json() for doc in self.documents]
         }
         if 'party' in relationships:
             result.update({'party': self.party.json(show_mgr=False) if self.party else str({})})
-        related_guid = ""
-        if self.mine_party_appt_type_code == "EOR":
+
+        related_guid = None
+        if self.mine_party_appt_type_code == 'EOR':
             related_guid = str(self.mine_tailings_storage_facility_guid)
         elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES and self.permit:
             related_guid = str(self.permit.permit_guid)
-        result["related_guid"] = related_guid
+        result['related_guid'] = related_guid
+
         return result
 
-    # search methods
     @classmethod
     def find_by_mine_party_appt_guid(cls, _id):
         try:
@@ -218,40 +204,61 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                mine_party_appt_type_code,
                start_date=None,
                end_date=None,
+               union_rep_company=None,
                permit=None,
                add_to_session=True):
+
+        if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+            mine = None
+        else:
+            permit = None
+
         mpa = cls(
             mine=mine,
+            permit=permit,
             party_guid=party_guid,
             mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,
             end_date=end_date,
+            union_rep_company=union_rep_company,
             processed_by=processed_by)
-        if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES or permit:
-            mpa.permit = permit
+
         if add_to_session:
             mpa.save(commit=False)
         return mpa
 
-    # validators
-    @validates('party_guid')
-    def validate_party_guid(self, key, val):
-        if not val:
-            raise AssertionError('No party guid provided.')
+    @validates('mine_guid')
+    def validate_mine_guid(self, key, val):
+        if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+            if val:
+                raise AssertionError('Mines cannot be associated with permit-linked contact types.')
+        elif not val:
+            raise AssertionError(
+                'The associated mine is required for non permit-linked contact types.')
         return val
 
-    @validates('mine_party_appt_type_code')
-    def validate_mine_party_appt_type_code(self, key, val):
-        if not val:
-            raise AssertionError('No mine party appointment type code')
-        if len(val) is not 3:
-            raise AssertionError('invalid mine party appointment type code')
+    @validates('permit')
+    def validate_permit(self, key, val):
+        if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+            if not val:
+                raise AssertionError(
+                    'The associated permit is required for permit-linked contact types.')
+        elif val:
+            raise AssertionError(
+                'Permits cannot be associated with non permit-linked contact types.')
         return val
 
     @validates('mine_tailings_storage_facility_guid')
     def validate_mine_tailings_storage_facility_guid(self, key, val):
         if self.mine_party_appt_type_code == 'EOR':
             if not val:
+                raise AssertionError('The associated TSF is required for Engineer of Records.')
+        return val
+
+    @validates('union_rep_company')
+    def validate_union_rep_company(self, key, val):
+        if self.mine_party_appt_type_code == 'URP':
+            if not val:
                 raise AssertionError(
-                    'No mine_tailings_storage_facility_guid, but mine_party_appt_type_code is EOR.')
+                    'The associated company/organization name is required for Union Reps.')
         return val

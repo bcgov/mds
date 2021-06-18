@@ -37,6 +37,11 @@ class MinePartyApptResource(Resource, UserMixin):
         'end_date',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d') if x else None,
         store_missing=False)
+    parser.add_argument(
+        'union_rep_company',
+        type=str,
+        help='The company/organization of the Union Rep (applicable to this type only).',
+        store_missing=False)
 
     @api.doc(
         description='Returns a list of party appointments',
@@ -81,11 +86,16 @@ class MinePartyApptResource(Resource, UserMixin):
         data = self.parser.parse_args()
 
         end_current = data.get('end_current')
+        party_guid = data.get('party_guid')
         mine_party_appt_type_code = data.get('mine_party_appt_type_code')
         related_guid = data.get('related_guid')
         mine_guid = data.get('mine_guid')
         start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        union_rep_company = data.get('union_rep_company')
         mine = Mine.find_by_mine_guid(mine_guid)
+        permit = None
+
         if end_current:
             if mine_party_appt_type_code == "EOR":
                 current_mpa = MinePartyAppointment.find_current_appointments(
@@ -104,26 +114,16 @@ class MinePartyApptResource(Resource, UserMixin):
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
         new_mpa = MinePartyAppointment.create(
-            mine=mine if mine_party_appt_type_code not in PERMIT_LINKED_CONTACT_TYPES else None,
-            party_guid=data.get('party_guid'),
+            mine=mine,
+            permit=permit,
+            party_guid=party_guid,
             mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,
-            end_date=data.get('end_date'),
+            end_date=end_date,
+            union_rep_company=union_rep_company,
             processed_by=self.get_user_info())
+        new_mpa.assign_related_guid(related_guid)
 
-        if new_mpa.mine_party_appt_type_code == "EOR":
-            new_mpa.assign_related_guid(related_guid)
-            if not new_mpa.mine_tailings_storage_facility_guid:
-                raise AssertionError(
-                    'mine_tailings_storage_facility_guid must be provided for Engineer of Record')
-            #TODO move db foreign key constraint when services get separated
-            pass
-        if new_mpa.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
-            new_mpa.assign_related_guid(related_guid)
-            if not new_mpa.permit_id:
-                raise AssertionError('permit_guid must be provided for Permittee')
-            #TODO move db foreign key constraint when services get separated
-            pass
         try:
             new_mpa.save()
         except alch_exceptions.IntegrityError as e:
@@ -131,6 +131,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 mpa_type_name = MinePartyAppointmentType.find_by_mine_party_appt_type_code(
                     data.get('mine_party_appt_type_code')).description
                 raise BadRequest(f'Date ranges for {mpa_type_name} must not overlap')
+
         return new_mpa.json()
 
     @api.doc(
@@ -148,20 +149,17 @@ class MinePartyApptResource(Resource, UserMixin):
         if not mpa:
             raise NotFound('mine party appointment not found')
 
+        current_app.logger.info('data/********************************************')
+        current_app.logger.info(data)
         for key, value in data.items():
             if key in ['party_guid', 'mine_guid']:
                 continue
-            elif key == "related_guid":
+            elif key == 'related_guid':
                 related_guid = data.get('related_guid', None)
-                if mpa.mine_party_appt_type_code in ['THD', 'LDO', 'MOR'
-                                                     ] and mpa.mine_guid and not related_guid:
-                    continue
-                else:
-                    mpa.assign_related_guid(data.get('related_guid'))
-                    mpa.mine_guid = None
-                    mpa.mine = None
+                mpa.assign_related_guid(related_guid)
             else:
                 setattr(mpa, key, value)
+
         try:
             mpa.save()
         except alch_exceptions.IntegrityError as e:

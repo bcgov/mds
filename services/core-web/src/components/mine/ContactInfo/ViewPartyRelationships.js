@@ -95,6 +95,7 @@ export class ViewPartyRelationships extends Component {
       start_date: values.start_date,
       end_date: values.end_date,
       end_current: values.end_current,
+      union_rep_company: values.union_rep_company,
     };
 
     return this.props
@@ -202,6 +203,7 @@ export class ViewPartyRelationships extends Component {
 
     payload.start_date = values.start_date;
     payload.end_date = values.end_date;
+    payload.union_rep_company = values.union_rep_company;
     payload.related_guid = values.related_guid || payload.related_guid;
 
     return this.props.updatePartyRelationship(payload).then(() => {
