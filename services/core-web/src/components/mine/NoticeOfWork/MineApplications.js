@@ -20,6 +20,7 @@ import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
+import ExplosiveStorageUsePermit from "@/components/mine/ExplosiveStorageUsePermit/ExplosiveStorageUsePermit";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
@@ -188,6 +189,29 @@ export class MineApplications extends Component {
                 </AuthorizationWrapper>
               </div>
               <MineAdministrativeAmendmentTable
+                isLoaded={this.state.isLoaded}
+                handleSearch={this.handleSearch}
+                administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
+                  (app) => app.application_type_code === "ADA"
+                )}
+                sortField={this.state.params.sort_field}
+                sortDir={this.state.params.sort_dir}
+                searchParams={this.state.params}
+                onExpand={this.onExpand}
+                mineRegionHash={this.props.mineRegionHash}
+              />
+            </>
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={`Explosive Storage & Use Permit Applications (${
+              this.props.noticeOfWorkApplications.filter(
+                (app) => app.application_type_code === "NOW"
+              ).length
+            })`}
+            key="3"
+          >
+            <>
+              <ExplosiveStorageUsePermit
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
