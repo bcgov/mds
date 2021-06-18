@@ -80,7 +80,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         related_guid = None
         if self.mine_party_appt_type_code == 'EOR':
             related_guid = str(self.mine_tailings_storage_facility_guid)
-        elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES and self.permit:
+        elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             related_guid = str(self.permit.permit_guid)
         result['related_guid'] = related_guid
 
@@ -113,10 +113,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     def find_by_permit_id(cls, _id):
         return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).all()
 
-
-# given a permmit, and an issue date of a new amendment, order appointment start_dates
-# return the all appointment start_dates in order
-
+    # Given a permit and an issue date of a new amendment, return the appointment start dates in descending order.
     @classmethod
     def find_appointment_end_dates(cls, _id, issue_datetime):
         start_dates = [issue_datetime]
