@@ -388,7 +388,7 @@ class Application(Base):
     @hybrid_property
     def is_pre_launch(self):
         # Selecting an arbitrary date based off when vFCBC sent all data to Core
-        if self.receiveddate is not None and self.receiveddate >= date(2021, 7, 0):
+        if self.receiveddate is not None and self.receiveddate >= date(2021, 6, 18):
 
             return False
         return True
