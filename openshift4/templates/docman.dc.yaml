@@ -27,7 +27,7 @@ parameters:
     required: true
   - name: BASE_PATH
     required: false
-    value: /
+    value: /document-manager
   - name: UPLOADED_DOCUMENT_DEST
     required: false
     value: /opt/app-root/src/document_uploads
