@@ -11,7 +11,8 @@ COPY ./rhsm-ca /etc/rhsm/ca
 RUN INSTALL_PKGS="glibc-devel mono-complete" && \
     rm /etc/rhsm-host && \
     yum repolist --disablerepo=* && \
-    yum install -y --setopt=tsflags=nodocs https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
+    curl https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm --output epel-release.rpm && \
+    yum install -y --setopt=tsflags=nodocs epel-release.rpm && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*' && \
