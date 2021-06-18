@@ -317,7 +317,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'has_licence_of_occupation': fields.Boolean,
         'licence_of_occupation': fields.String,
         'file_number_of_app': fields.String,
-        'applied_for_license_of_occupation': fields.Boolean,
+        'applied_for_licence_of_occupation': fields.Boolean,
         'notice_served_to_private': fields.Boolean,
     })
 

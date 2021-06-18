@@ -13,4 +13,4 @@ class StagingAreaDetail(ActivityDetailBase):
 
     ## NO TABLE FOR THIS TYPE
     def __repr__(self):
-        return '<StagingArea %r>' % self.activity_detail_id
+        return f'<{self.__class__.__name__} {self.activity_detail_id}>'

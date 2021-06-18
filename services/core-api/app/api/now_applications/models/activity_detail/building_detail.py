@@ -9,16 +9,16 @@ from app.api.now_applications.models.activity_detail.activity_detail_base import
 
 
 class BuildingDetail(ActivityDetailBase):
-  __tablename__ = 'building_detail'
-  __mapper_args__ = {
-      'polymorphic_identity': 'camp',          ## type code
-  }
-  
-  activity_detail_id = db.Column(
-    db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
+    __tablename__ = 'building_detail'
+    __mapper_args__ = {
+        'polymorphic_identity': 'camp',          ## type code
+    }
 
-  purpose = db.Column(db.String)
-  structure = db.Column(db.String)
+    activity_detail_id = db.Column(
+        db.Integer, db.ForeignKey('activity_detail.activity_detail_id'), primary_key=True)
 
-  def __repr__(self):
-      return '<BuildingDetail %r>' % self.activity_detail_id
+    purpose = db.Column(db.String)
+    structure = db.Column(db.String)
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} {self.activity_detail_id}>'

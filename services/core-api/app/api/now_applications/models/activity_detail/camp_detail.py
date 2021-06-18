@@ -25,4 +25,4 @@ class CampDetail(ActivityDetailBase):
     water_supply = db.Column(db.String)
 
     def __repr__(self):
-        return '<CampDetail %r>' % self.activity_detail_id
+        return f'<{self.__class__.__name__} {self.activity_detail_id}>'

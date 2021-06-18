@@ -83,7 +83,7 @@ const propTypes = {
   archaeologySitesAffected: PropTypes.bool.isRequired,
   sharedInfoWithFn: PropTypes.bool.isRequired,
   culturalHeritageSites: PropTypes.bool.isRequired,
-  appliedLicenseOccupation: PropTypes.bool.isRequired,
+  appliedLicenceOccupation: PropTypes.bool.isRequired,
   isOnCrownLand: PropTypes.bool.isRequired,
   hasLicenceOfOccupation: PropTypes.bool.isRequired,
 };
@@ -338,7 +338,7 @@ export const ReviewNOWApplication = (props) => {
           {props.applicationPermitType === "MY-ABP" && (
             <>
               <div className="field-title">
-                Is this the first year of multi-year, area based application?
+                Is this the first year of a multi-year, area based application?
                 <NOWOriginalValueTooltip
                   originalValue={renderCodeValues(
                     props.permitTypeHash,
@@ -805,7 +805,7 @@ export const ReviewNOWApplication = (props) => {
             <Row gutter={16}>
               <Col md={12} sm={24}>
                 <div className="field-title">
-                  Do you have license of Occupation?
+                  Do you have licence of Occupation?
                   {props.isPreLaunch && <NOWFieldOriginTooltip />}
                   <NOWOriginalValueTooltip
                     originalValue={
@@ -858,25 +858,25 @@ export const ReviewNOWApplication = (props) => {
                       <NOWOriginalValueTooltip
                         originalValue={
                           props.renderOriginalValues(
-                            "state_of_land.applied_for_license_of_occupation"
+                            "state_of_land.applied_for_licence_of_occupation"
                           ).value
                         }
                         isVisible={
                           props.renderOriginalValues(
-                            "state_of_land.applied_for_license_of_occupation"
+                            "state_of_land.applied_for_licence_of_occupation"
                           ).edited
                         }
                       />
                     </div>
                     <Field
-                      id="applied_for_license_of_occupation"
-                      name="applied_for_license_of_occupation"
+                      id="applied_for_licence_of_occupation"
+                      name="applied_for_licence_of_occupation"
                       component={RenderRadioButtons}
                       disabled={props.isViewMode}
                     />
                   </Col>
                 </Row>
-                {props.appliedLicenseOccupation && (
+                {props.appliedLicenceOccupation && (
                   <Row gutter={16}>
                     <Col md={12} sm={24}>
                       <div className="field-title">
@@ -977,44 +977,6 @@ export const ReviewNOWApplication = (props) => {
         )}
 
         <br />
-        {/* <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <div className="field-title">
-              Legal Description of the land
-              {props.isPreLaunch && <NOWFieldOriginTooltip />}
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("description_of_land").value}
-                isVisible={props.renderOriginalValues("description_of_land").edited}
-              />
-            </div>
-            <Field
-              id="description_of_land"
-              name="description_of_land"
-              component={RenderAutoSizeField}
-              disabled={props.isViewMode}
-              validate={[maxLength(4000)]}
-            />
-          </Col>
-        </Row> */}
-        {/* <Row gutter={16}>
-          <Col md={12} sm={24}>
-            <div className="field-title">
-              Proposed activities on crown land
-              {props.isPreLaunch && <NOWFieldOriginTooltip />}
-              <NOWOriginalValueTooltip
-                originalValue={props.renderOriginalValues("state_of_land.is_on_crown_land").value}
-                isVisible={props.renderOriginalValues("state_of_land.is_on_crown_land").edited}
-              />
-            </div>
-            <Field
-              id="is_on_crown_land"
-              name="is_on_crown_land"
-              component={RenderRadioButtons}
-              disabled={props.isViewMode}
-            />
-          </Col>
-        </Row> */}
-
         <br />
         <h4>Cultural Heritage Resources</h4>
         <Row gutter={16}>
@@ -1401,7 +1363,7 @@ export default compose(
     culturalHeritageSites: selector(state, "state_of_land.has_fn_cultural_heritage_sites_in_area"),
     isOnCrownLand: selector(state, "state_of_land.is_on_crown_land"),
     hasLicenceOfOccupation: selector(state, "state_of_land.has_licence_of_occupation"),
-    appliedLicenseOccupation: selector(state, "state_of_land.applied_for_license_of_occupation"),
+    appliedLicenceOccupation: selector(state, "state_of_land.applied_for_licence_of_occupation"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),

@@ -17,11 +17,11 @@ class Camp(ActivitySummaryBase):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
-    health_authority_notified = db.Column(db.Boolean, nullable=True)
-    health_authority_consent = db.Column(db.Boolean, nullable=True)
-    has_fuel_stored = db.Column(db.Boolean, nullable=True)
-    has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=True)
-    has_fuel_stored_in_barrels = db.Column(db.Boolean, nullable=True)
+    health_authority_notified = db.Column(db.Boolean)
+    health_authority_consent = db.Column(db.Boolean)
+    has_fuel_stored = db.Column(db.Boolean)
+    has_fuel_stored_in_bulk = db.Column(db.Boolean)
+    has_fuel_stored_in_barrels = db.Column(db.Boolean)
     volume_fuel_stored = db.Column(db.Numeric(14, 2))
 
     details = db.relationship(
@@ -46,7 +46,7 @@ class Camp(ActivitySummaryBase):
         return self.calculate_total_disturbance_area(self.building_details)
 
 
-# THe UI displays the disturbance for Camps/Building?staging Areas as one value. The data is stored in different details tables.
+# The UI displays the disturbance for Camps/Building/stagingAreas as one value. The data is stored in different details tables.
 
     @hybrid_property
     def calculated_total_disturbance(self):

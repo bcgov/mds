@@ -39,7 +39,7 @@ class StateOfLandFactory(BaseFactory):
     authorization_details = factory.Faker('sentence', nb_words=100)
     has_licence_of_occupation = factory.Faker('boolean', chance_of_getting_true=50)
     licence_of_occupation = factory.Faker('sentence', nb_words=100)
-    applied_for_license_of_occupation = factory.Faker('boolean', chance_of_getting_true=50)
+    applied_for_licence_of_occupation = factory.Faker('boolean', chance_of_getting_true=50)
     notice_served_to_private = factory.Faker('boolean', chance_of_getting_true=50)
 
 
