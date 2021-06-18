@@ -65,6 +65,7 @@ export class DraftPermitTab extends Component {
         documentTypeCode,
         payload,
         "Successfully created document and attached it to Notice of Work",
+        false,
         () => {
           this.setState({ isLoaded: false });
           this.props
