@@ -37,9 +37,6 @@ export const defaultActivity = shape({
 });
 
 export const camp = shape({
-  camp_name: PropTypes.string,
-  camp_number_people: PropTypes.number,
-  camp_number_structures: PropTypes.number,
   has_fuel_stored: PropTypes.boolean,
   has_fuel_stored_in_bulk: PropTypes.boolean,
   has_fuel_stored_in_barrels: PropTypes.boolean,
