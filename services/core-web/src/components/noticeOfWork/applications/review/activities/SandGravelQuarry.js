@@ -4,13 +4,7 @@ import { Field, Fields, getFormValues } from "redux-form";
 import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
-import {
-  maxLength,
-  number,
-  numberWithUnitCode,
-  required,
-  requiredRadioButton,
-} from "@common/utils/Validate";
+import { maxLength, number, numberWithUnitCode, required } from "@common/utils/Validate";
 import { getDropdownNoticeOfWorkUnitTypeOptions } from "@common/selectors/staticContentSelectors";
 import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
@@ -428,6 +422,7 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             If backfilling of pits or pit slopes is proposed in the final configuration for
             reclamation, details of materials to be used and placement procedures
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues(
@@ -452,6 +447,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Will progressive reclamation be carried out?
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.progressive_reclamation")
@@ -468,12 +464,12 @@ export const SandGravelQuarry = (props) => {
             name="progressive_reclamation"
             component={RenderRadioButtons}
             disabled={props.isViewMode}
-            validate={[requiredRadioButton]}
           />
         </Col>
         <Col md={12} sm={24}>
           <div className="field-title">
             Maximum unreclaimed disturbance at any given time
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.max_unreclaimed").value
@@ -502,6 +498,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Average depth to the high groundwater table at the proposed excavation
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.average_groundwater_depth")
@@ -526,6 +523,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Elevation of the groundwater table was determined from
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <Field
               id="has_groundwater_from_existing_area"
               name="has_groundwater_from_existing_area"
@@ -641,6 +639,7 @@ export const SandGravelQuarry = (props) => {
           <div className="field-title">
             Measures proposed to protect groundwater from potential impacts of the proposed mining
             activity
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues(
@@ -670,6 +669,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Shortest Distance between proposed excavation to nearest residence
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues(
@@ -696,6 +696,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Shortest distance between proposed excavation to nearest residential water source
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues(
@@ -725,6 +726,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures proposed to prevent inadvertent access of unauthorized persons to the mine site
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.secure_access_plan").value
@@ -745,6 +747,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures proposed to minimize noise impacts of the operation
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.noise_impact_plan").value
@@ -765,6 +768,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures proposed to minimize the dust impacts of the operation
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.dust_impact_plan").value
@@ -785,6 +789,7 @@ export const SandGravelQuarry = (props) => {
         <Col md={12} sm={24}>
           <div className="field-title">
             Measures proposed to minimize visual impacts of the operation
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
               originalValue={
                 props.renderOriginalValues("sand_gravel_quarry_operation.visual_impact_plan").value
