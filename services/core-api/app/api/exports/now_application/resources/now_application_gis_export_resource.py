@@ -1,6 +1,6 @@
 import csv
 from io import StringIO
-from flask import Response, current_app
+from flask import Response
 from flask_restplus import Resource
 from sqlalchemy.inspection import inspect
 
