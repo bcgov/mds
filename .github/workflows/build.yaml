@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - devops-migration
+      - devops-migration-disable
     paths:
       - services/**
       - migrations/**
