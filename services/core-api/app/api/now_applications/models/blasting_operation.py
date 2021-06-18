@@ -17,9 +17,8 @@ class BlastingOperation(Base):
         db.Integer, db.ForeignKey('now_application.now_application_id'), primary_key=True)
     now_application = db.relationship('NOWApplication')
 
-    has_storage_explosive_on_site = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
-    explosive_permit_issued = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
+    has_storage_explosive_on_site = db.Column(db.Boolean)
+    explosive_permit_issued = db.Column(db.Boolean)
     explosive_permit_number = db.Column(db.String)
     explosive_permit_expiry_date = db.Column(db.DateTime)
     describe_explosives_to_site = db.Column(db.String)
@@ -31,7 +30,6 @@ class BlastingOperation(Base):
     show_bulk = db.Column(db.Boolean)
     show_underground_exploration = db.Column(db.Boolean)
     show_sand_gravel_quarry = db.Column(db.Boolean)
-
 
     def __repr__(self):
         return '<BlastingOperation %r>' % self.now_application_id

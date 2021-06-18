@@ -136,9 +136,6 @@ const simpleRender = () => {
       explosive_permit_expiry_date: "2020-09-29",
     },
     camp: {
-      camp_name: "Reflect practice nation.",
-      camp_number_people: "268",
-      camp_number_structures: "8",
       has_fuel_stored: false,
       has_fuel_stored_in_bulk: false,
       has_fuel_stored_in_barrels: true,
