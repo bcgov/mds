@@ -48,7 +48,6 @@ class NOWApplicationResource(Resource, UserMixin):
 
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
-
         return application
 
     @api.doc(

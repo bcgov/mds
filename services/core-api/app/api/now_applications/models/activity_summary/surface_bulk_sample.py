@@ -21,7 +21,7 @@ class SurfaceBulkSample(ActivitySummaryBase):
     handling_instructions = db.Column(db.String)
     drainage_mitigation_description = db.Column(db.String)
 
-    has_bedrock_excavation = db.Column(db.Boolean, nullable=True)
+    has_bedrock_excavation = db.Column(db.Boolean)
 
     details = db.relationship(
         'SurfaceBulkSampleDetail', secondary='activity_summary_detail_xref', load_on_pending=True)

@@ -219,7 +219,7 @@ class Application(Base):
     sandgrvqrytotalexistdistarea = db.Column(db.Numeric(14, 2))
     sandgrvqrydescription = db.Column(db.String)
 
-    # CUT LINES AND INDUCED POLARIZATION SURVEY 
+    # CUT LINES AND INDUCED POLARIZATION SURVEY
     cutlinesexplgridtotallinekms = db.Column(db.Integer)
     cutlinesexplgridtimbervolume = db.Column(db.Numeric(14, 2))
     cutlinesreclamation = db.Column(db.String)
@@ -262,7 +262,7 @@ class Application(Base):
     isblastselect = db.Column(db.String)
     istimberselect = db.Column(db.String)
     originating_system = db.Column(db.String)
-    permitnumber =db.Column(db.String)
+    permitnumber = db.Column(db.String)
     atsauthorizationnumber = db.Column(db.Numeric)
     atsprojectnumber = db.Column(db.Numeric)
     filenumberofappl = db.Column(db.String)
@@ -350,6 +350,9 @@ class Application(Base):
     exp_access_activity = db.relationship('ExpAccessActivity', lazy='select')
     exp_surface_drill_activity = db.relationship('ExpSurfaceDrillActivity', lazy='select')
     mech_trenching_activity = db.relationship('MechTrenchingActivity', lazy='select')
+    camps = db.relationship('Camps', lazy='select')
+    stagingareas = db.relationship('StagingAreas', lazy='select')
+    buildings = db.relationship('Buildings', lazy='select')
 
     existing_placer_activity = db.relationship(
         'PlacerActivity', lazy='select', secondary='now_submissions.existing_placer_activity_xref')
@@ -384,8 +387,8 @@ class Application(Base):
 
     @hybrid_property
     def is_pre_launch(self):
-        # Selecting an arbitrary date based off when Regional permitting was launched in CORE
-        if self.receiveddate is not None and self.receiveddate >= date(2021, 2, 1):
+        # Selecting an arbitrary date based off when vFCBC sent all data to Core
+        if self.receiveddate is not None and self.receiveddate >= date(2021, 6, 18):
 
             return False
         return True
