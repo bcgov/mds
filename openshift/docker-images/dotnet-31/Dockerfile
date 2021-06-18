@@ -1,5 +1,7 @@
 FROM "__FROM_IMAGE_STREAM_DEFINED_IN_TEMPLATE__"
 
+USER 0
+
 # Copy entitlements and subscription manager configurations
 # https://github.com/BCDevOps/OpenShift4-Migration/issues/15
 COPY ./etc-pki-entitlement /etc/pki/entitlement
@@ -21,3 +23,5 @@ RUN INSTALL_PKGS="glibc-devel mono-complete" && \
     # Remove entitlements and Subscription Manager configs
     rm -rf /etc/pki/entitlement && \
     rm -rf /etc/rhsm
+
+USER 1001
