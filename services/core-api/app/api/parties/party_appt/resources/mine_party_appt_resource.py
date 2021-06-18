@@ -65,15 +65,15 @@ class MinePartyApptResource(Resource, UserMixin):
         else:
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
-            permit_guid = request.args.get('permit_guid')
-            incl_pmt = request.args.get('include_permittees', 'false').lower() == 'true'
+            include_permit_contacts = request.args.get('include_permit_contacts',
+                                                       'false').lower() == 'true'
             act_only = request.args.get('active_only', 'true').lower() == 'true'
-            types = request.args.getlist('types') #list
+            types = request.args.getlist('types')
             mpas = MinePartyAppointment.find_by(
                 mine_guid=mine_guid,
                 party_guid=party_guid,
                 mine_party_appt_type_codes=types,
-                include_permittees=incl_pmt,
+                include_permit_contacts=include_permit_contacts,
                 active_only=act_only)
             result = [x.json(relationships=relationships) for x in mpas]
         return result
@@ -83,6 +83,7 @@ class MinePartyApptResource(Resource, UserMixin):
     def post(self, mine_party_appt_guid=None):
         if mine_party_appt_guid:
             raise BadRequest('unexpected mine party appointment guid')
+
         data = self.parser.parse_args()
 
         end_current = data.get('end_current')
@@ -93,11 +94,12 @@ class MinePartyApptResource(Resource, UserMixin):
         start_date = data.get('start_date')
         end_date = data.get('end_date')
         union_rep_company = data.get('union_rep_company')
+
         mine = Mine.find_by_mine_guid(mine_guid)
         permit = None
 
         if end_current:
-            if mine_party_appt_type_code == "EOR":
+            if mine_party_appt_type_code == 'EOR':
                 current_mpa = MinePartyAppointment.find_current_appointments(
                     mine_guid=mine_guid,
                     mine_party_appt_type_code=mine_party_appt_type_code,
@@ -113,6 +115,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 raise BadRequest('There is currently not exactly one active appointment.')
             current_mpa[0].end_date = start_date - timedelta(days=1)
             current_mpa[0].save()
+
         new_mpa = MinePartyAppointment.create(
             mine=mine,
             permit=permit,

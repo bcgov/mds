@@ -157,7 +157,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 mine_guid=None,
                 party_guid=None,
                 mine_party_appt_type_codes=None,
-                include_permittees=False,
+                include_permit_contacts=False,
                 active_only=True):
         built_query = cls.query.filter_by(deleted_ind=False)
         if mine_guid:
@@ -169,16 +169,16 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 cls.mine_party_appt_type_code.in_(mine_party_appt_type_codes))
         results = built_query.all()
 
-        if include_permittees and mine_guid:
+        if include_permit_contacts and mine_guid:
             #avoid circular imports.
             from app.api.mines.mine.models.mine import Mine
             mine = Mine.find_by_mine_guid(mine_guid)
             permit_permittees = []
             for mp in mine.mine_permit:
                 if not active_only:
-                    permit_permittees = permit_permittees + mp.permittee_appointments
+                    permit_permittees = permit_permittees + mp.permit_appointments
                 else:
-                    for pa in mp.permittee_appointments:
+                    for pa in mp.permit_appointments:
                         if pa.end_date is None or (
                             (pa.start_date is None or pa.start_date <= datetime.utcnow().date())
                                 and pa.end_date >= datetime.utcnow().date()):

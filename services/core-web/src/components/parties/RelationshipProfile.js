@@ -78,7 +78,7 @@ export class RelationshipProfile extends Component {
       mine_guid: id,
       types: typeCode,
       relationships: "party",
-      include_permittees: "true",
+      include_permit_contacts: "true",
       active_only: "false",
     });
 
