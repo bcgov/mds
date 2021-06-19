@@ -84,8 +84,6 @@ objects:
       failedBuildsHistoryLimit: 5
       completionDeadlineSeconds: 1440
       triggers:
-        - type: ImageChange
-          imageChange: {}
         - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
