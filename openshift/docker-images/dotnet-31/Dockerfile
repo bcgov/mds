@@ -19,9 +19,16 @@ RUN INSTALL_PKGS="glibc-devel mono-complete" && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
-    yum -y clean all --enablerepo='*' && \
-    # Remove entitlements and Subscription Manager configs
-    rm -rf /etc/pki/entitlement && \
+    yum -y clean all --enablerepo='*'
+
+# Remove entitlements and Subscription Manager configs
+RUN rm -rf /etc/pki/entitlement && \
     rm -rf /etc/rhsm
 
+# Fix file permissions in app-root for openshift compatibility (requires usergroup to be root)
+RUN chgrp -R 0 /opt/app-root && \
+    chmod -R g=u /opt/app-root
+
+# arbitrary user for kubernetes runtime compatibility
 USER 1001
+RUN chown -R 1001:0 /opt/app-root
