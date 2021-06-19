@@ -60,7 +60,7 @@ objects:
                 - name: IMAGE_TAG
                   value: ${TAG}
                 - name: S3_PREFIX
-                  value: mms-archive/
+                  value: /
                 - name: OBJECT_STORE_HOST
                   valueFrom:
                     secretKeyRef:
