@@ -45,7 +45,7 @@ jobs:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
         with:
-          version: "4.6"
+          oc_version: "4.6"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
@@ -54,34 +54,3 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.ORIG_TAG }} \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.PROMOTE_TAG }}
-
-  # rollout-prod:
-  #   name: rollout-prod
-  #   needs: promote-to-prod
-  #   runs-on: ubuntu-20.04
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - name: nginx
-  #         - name: postgresql
-  #         - name: frontend
-  #         - name: backend
-  #         - name: tusd
-  #         - name: docgen
-  #         - name: dbbackup
-  #         - name: redis
-  #         - name: metabase
-  #         - name: metabase-postgres
-  #   steps:
-  #     - name: Install oc
-  #       uses: redhat-actions/oc-installer@v1
-  #       with:
-  #         version: "4.6"
-  #     - name: oc login
-  #       run: |
-  #         oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-  #     - name: rollout to prod
-  #       run: |
-  #         oc -n ${{ secrets.NS_PROD }} rollout latest ${{ matrix.name }} || true
-  #       continue-on-error: true
