@@ -30,5 +30,5 @@ RUN chgrp -R 0 /opt/app-root && \
     chmod -R g=u /opt/app-root
 
 # arbitrary user for kubernetes runtime compatibility
-USER 1001
 RUN chown -R 1001:0 /opt/app-root
+USER 1001
