@@ -35,7 +35,7 @@ parameters:
     required: true
   - name: OBJECT_STORE_ENABLED
     required: false
-    value: "0"
+    value: "1"
   - name: OBJECT_STORE_SECRET_NAME
     value: object-store-credentials
   - name: CORE_API_AUTHORIZATION
