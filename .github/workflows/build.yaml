@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - devops-migration-disable
+      - devops-migration
     paths:
       - services/**
       - migrations/**
@@ -143,37 +143,3 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.INITIAL_TAG }} \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.TAG }}
-
-  # rollout:
-  #   name: rollout
-  #   needs: tag
-  #   runs-on: ubuntu-20.04
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #         - name: nginx
-  #         - name: postgresql
-  #         - name: frontend
-  #         - name: backend
-  #         - name: tusd
-  #         - name: docgen
-  #         - name: dbbackup
-  #         - name: redis
-  #         - name: metabase
-  #         - name: metabase-postgres
-  #         - name: docman
-  #         - name: filesystem-provider
-  #         - name: nris
-  #   steps:
-  #     - name: Install oc
-  #       uses: redhat-actions/oc-installer@v1
-  #       with:
-  #         version: "4.6"
-  #     - name: oc login
-  #       run: |
-  #         oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-  #     - name: rollout to dev
-  #       run: |
-  #         oc -n ${{ secrets.NS_DEV }} rollout latest ${{ matrix.name }} || true
-  #       continue-on-error: true
