@@ -117,7 +117,6 @@ jobs:
       matrix:
         include:
           - name: nginx
-          - name: postgresql
           - name: frontend
           - name: backend
           - name: flyway

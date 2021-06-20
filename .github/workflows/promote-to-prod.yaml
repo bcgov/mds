@@ -28,19 +28,19 @@ jobs:
     strategy:
       matrix:
         include:
+          - name: nginx
           - name: frontend
           - name: backend
           - name: flyway
-          - name: dbbackup
-          - name: docgen
-          - name: postgresql96
-          - name: nginx
           - name: tusd
+          - name: docgen
+          - name: dbbackup
           - name: metabase
           - name: metabase-postgres
           - name: docman
           - name: filesystem-provider
           - name: nris
+          - name: minespace
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
