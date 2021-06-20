@@ -1,6 +1,10 @@
 name: Deploy to test
 
 on:
+  # REMOVE PUSH BEFORE MERGE
+  push:
+    branch:
+      - devops-migration
   workflow_run:
     workflows:
       - Deploy to dev
@@ -63,4 +67,5 @@ jobs:
           -p KEYCLOAK_RESOURCE=mines-application-test \
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
           -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
+          -p OBJECT_STORE_ENABLED=1 \
           | oc -n ${{secrets.NS_TEST}} apply -f -

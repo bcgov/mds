@@ -64,4 +64,5 @@ jobs:
           -p MS_KEYCLOAK_CLIENT_ID=minespace-dev \
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
           -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
+          -p OBJECT_STORE_ENABLED=1 \
           | oc -n ${{secrets.NS_DEV}} apply -f -
