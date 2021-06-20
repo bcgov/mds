@@ -42,9 +42,9 @@ parameters:
   - name: UWSGI_THREADS
     value: "4"
   - name: REPLICA_MIN
-    value: "1"
+    value: "3"
   - name: REPLICA_MAX
-    value: "1"
+    value: "4"
   - name: REDIS_CONFIG_NAME
     required: false
     value: template.redis-secret

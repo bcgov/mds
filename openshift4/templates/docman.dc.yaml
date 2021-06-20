@@ -57,9 +57,9 @@ parameters:
   - name: UWSGI_THREADS
     value: "6"
   - name: REPLICA_MIN
-    value: "1"
-  - name: REPLICA_MAX
     value: "3"
+  - name: REPLICA_MAX
+    value: "4"
   - name: WORKER_CPU_REQUEST
     value: 200m
   - name: WORKER_MEMORY_LIMIT

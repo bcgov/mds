@@ -43,9 +43,9 @@ parameters:
   - name: MEMORY_REQUEST
     value: 256Mi
   - name: REPLICA_MIN
-    value: "1"
+    value: "3"
   - name: REPLICA_MAX
-    value: "1"
+    value: "4"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: ENVIRONMENT
