@@ -96,6 +96,8 @@ class MinePartyApptResource(Resource, UserMixin):
         union_rep_company = data.get('union_rep_company')
 
         mine = Mine.find_by_mine_guid(mine_guid)
+        if mine is None:
+            raise NotFound('Mine not found')
         permit = None
 
         if end_current:
@@ -106,6 +108,8 @@ class MinePartyApptResource(Resource, UserMixin):
                     mine_tailings_storage_facility_guid=related_guid)
             elif mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
                 permit = Permit.find_by_permit_guid(related_guid)
+                if permit is None:
+                    raise NotFound('Permit not found')
                 current_mpa = MinePartyAppointment.find_current_appointments(
                     mine_party_appt_type_code=mine_party_appt_type_code, permit_id=permit.permit_id)
             else:
