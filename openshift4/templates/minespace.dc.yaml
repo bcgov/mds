@@ -55,13 +55,13 @@ parameters:
   - name: FN_LAYER_URL
     value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
   - name: CPU_LIMIT
-    value: 250m
-  - name: MEMORY_LIMIT
-    value: 512Mi
-  - name: CPU_REQUEST
     value: 100m
-  - name: MEMORY_REQUEST
+  - name: MEMORY_LIMIT
     value: 128Mi
+  - name: CPU_REQUEST
+    value: 20m
+  - name: MEMORY_REQUEST
+    value: 80Mi
   - name: REPLICA_MIN
     value: "3"
   - name: REPLICA_MAX

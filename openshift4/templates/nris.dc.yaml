@@ -34,9 +34,9 @@ parameters:
   - name: MEMORY_LIMIT
     value: 1Gi
   - name: CPU_REQUEST
-    value: 150m
+    value: 100m
   - name: MEMORY_REQUEST
-    value: 768Mi
+    value: 400Mi
   - name: UWSGI_PROCESSES
     value: "2"
   - name: UWSGI_THREADS
