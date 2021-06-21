@@ -111,7 +111,7 @@ def test_post_mine_party_appt_missing_mine_guid_and_permit_guid(test_client, db_
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 404
 
 
 def test_post_mine_party_appt_missing_party_guid(test_client, db_session, auth_headers, setup_info):

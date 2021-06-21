@@ -51,9 +51,6 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     def assign_related_guid(self, related_guid):
         from app.api.mines.permits.permit.models.permit import Permit
 
-        if not related_guid:
-            return
-
         if self.mine_party_appt_type_code == 'EOR':
             self.mine_tailings_storage_facility_guid = related_guid
             self.permit = None
