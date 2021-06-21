@@ -123,7 +123,7 @@ objects:
                       name: ${OBJECT_STORE_SECRET_NAME}
                       key: endpoint
                 - name: S3_PREFIX
-                  value: mds-files-${TAG}
+                  value: mds-files-${TAG}/
               resources:
                 requests:
                   cpu: ${CPU_REQUEST}
