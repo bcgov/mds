@@ -1285,7 +1285,7 @@ export const ReviewNOWApplication = (props) => {
             id="other_information"
             name="other_information"
             component={RenderAutoSizeField}
-            disabled
+            disabled={props.isViewMode}
           />
         </Col>
       </Row>
