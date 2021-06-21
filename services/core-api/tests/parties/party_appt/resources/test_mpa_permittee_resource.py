@@ -39,7 +39,7 @@ def test_post_permittee_no_party(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
 
-    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_resp.status_code == 404, str(post_resp.response)
     post_data = json.loads(post_resp.data.decode())
     assert post_data['message']
 
@@ -57,7 +57,7 @@ def test_post_permittee_no_permit(test_client, db_session, auth_headers):
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_resp.status_code == 404, str(post_resp.response)
     assert post_data['message']
 
 
@@ -93,7 +93,7 @@ def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_head
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_resp.status_code == 404, str(post_resp.response)
     assert post_data['message']
 
 
