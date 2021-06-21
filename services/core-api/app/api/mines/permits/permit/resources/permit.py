@@ -219,6 +219,7 @@ class PermitListResource(Resource, UserMixin):
                 start_date=permittee_start_date,
                 processed_by=self.get_user_info(),
                 permit=permit)
+            permittee.assign_related_guid(permit.permit_guid)
             db.session.add(permittee)
             db.session.commit()
 

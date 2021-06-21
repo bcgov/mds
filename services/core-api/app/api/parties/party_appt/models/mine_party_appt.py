@@ -55,7 +55,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
             self.mine_tailings_storage_facility_guid = related_guid
             self.permit = None
 
-        if self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+        elif self.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             permit = Permit.find_by_permit_guid(related_guid)
             self.permit = permit
             self.mine = None
