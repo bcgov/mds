@@ -8,7 +8,7 @@ def setup_info(db_session):
     mine = MineFactory()
     eor = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='EOR')
     mine_manager = MinePartyAppointmentFactory(mine=mine, mine_party_appt_type_code='MMG')
-    permitee = MinePartyAppointmentFactory(permittee=True, party__company=True)
+    permittee = MinePartyAppointmentFactory(permittee=True, party__company=True)
 
     yield dict(
         mine_guid=str(mine.mine_guid),

@@ -15,7 +15,7 @@ def test_party_appt_model_find_by_party_guid(db_session):
 
 
 def test_party_appt_model_find_by_mine_guid(db_session):
-    mine_guid = MinePartyAppointmentFactory().mine.mine_guid
+    mine_guid = MinePartyAppointmentFactory(mine_party_appt_type_code='MMG').mine.mine_guid
 
     mpas = MinePartyAppointment.find_by_mine_guid(str(mine_guid))
     assert len(mpas) == 1
@@ -24,7 +24,7 @@ def test_party_appt_model_find_by_mine_guid(db_session):
 
 def test_party_appt_model_find_by(db_session):
     batch_size = 3
-    MinePartyAppointmentFactory.create_batch(size=batch_size)
+    MinePartyAppointmentFactory.create_batch(size=batch_size, mine_party_appt_type_code='MMG')
 
     mine_party_appts = MinePartyAppointment.find_by()
     assert len(mine_party_appts) == batch_size

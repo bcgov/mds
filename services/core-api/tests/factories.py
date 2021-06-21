@@ -476,12 +476,15 @@ class MinePartyAppointmentFactory(BaseFactory):
         model = MinePartyAppointment
 
     class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
         permittee = factory.Trait(mine_guid=None, mine_party_appt_type_code='PMT')
 
     mine_party_appt_guid = GUID
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
-    mine = factory.SubFactory('tests.factories.MineFactory')
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
+
+    mine_guid = factory.LazyAttribute(lambda o: o.mine.mine_guid if o.mine_party_appt_type_code
+                                      not in PERMIT_LINKED_CONTACT_TYPES else None)
+
     party = factory.SubFactory(PartyFactory, person=True)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
