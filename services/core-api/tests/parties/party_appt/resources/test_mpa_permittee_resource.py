@@ -32,7 +32,7 @@ def test_post_permittee_no_party(test_client, db_session, auth_headers):
 
     data = {
         'mine_guid': str(mine.mine_guid),
-        'permit_guid': str(permit.permit_guid),
+        'related_guid': str(permit.permit_guid),
         'mine_party_appt_type_code': 'PMT',
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
@@ -86,7 +86,8 @@ def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_head
     data = {
         'mine_guid': str(mine.mine_guid),
         'party_guid': str(party_guid),
-        'permit_guid': str(uuid.uuid4()),
+        'mine_party_appt_type_code': 'PMT',
+        'related_guid': str(uuid.uuid4()),
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     post_resp = test_client.post(
@@ -98,16 +99,16 @@ def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_head
 
 def test_post_permittee_party_guid_not_found(test_client, db_session, auth_headers):
     mine, permit = create_mine_and_permit()
-    permit_guid = PermitFactory().permit_guid
 
     data = {
         'mine_guid': str(mine.mine_guid),
         'party_guid': str(uuid.uuid4()),
-        'related_guid': str(permit_guid),
+        'mine_party_appt_type_code': 'PMT',
+        'related_guid': str(permit.permit_guid),
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
     post_resp = test_client.post(
         '/parties/mines', data=data, headers=auth_headers['full_auth_header'])
-    assert post_resp.status_code == 400, str(post_resp.response)
+    assert post_resp.status_code == 404, str(post_resp.response)
     post_data = json.loads(post_resp.data.decode())
     assert post_data['message']

@@ -13,6 +13,7 @@ from app.api.utils.custom_reqparser import CustomReqparser
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
@@ -94,6 +95,10 @@ class MinePartyApptResource(Resource, UserMixin):
         start_date = data.get('start_date')
         end_date = data.get('end_date')
         union_rep_company = data.get('union_rep_company')
+
+        party = Party.find_by_party_guid(party_guid)
+        if party is None:
+            raise NotFound('Party not found')
 
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:

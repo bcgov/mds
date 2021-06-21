@@ -239,7 +239,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                     'The associated permit is required for permit-linked contact types.')
         elif val:
             raise AssertionError(
-                'Permits cannot be associated with non permit-linked contact types.')
+                f'Permits cannot be associated with non permit-linked contact types. Permit ID: {val.permit_id} Appt: {self.mine_party_appt_type_code}'
+            )
         return val
 
     @validates('mine_tailings_storage_facility_guid')
