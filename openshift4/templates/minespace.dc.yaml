@@ -57,11 +57,11 @@ parameters:
   - name: CPU_LIMIT
     value: 250m
   - name: MEMORY_LIMIT
-    value: 750Mi
+    value: 512Mi
   - name: CPU_REQUEST
     value: 100m
   - name: MEMORY_REQUEST
-    value: 512Mi
+    value: 128Mi
   - name: REPLICA_MIN
     value: "3"
   - name: REPLICA_MAX

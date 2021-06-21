@@ -104,13 +104,13 @@ objects:
           dnsPolicy: ClusterFirst
 parameters:
   - name: CPU_LIMIT
-    value: 500m
+    value: 128m
   - name: MEMORY_LIMIT
-    value: 2Gi
+    value: 512Mi
   - name: CPU_REQUEST
-    value: 200m
+    value: 64m
   - name: MEMORY_REQUEST
-    value: 1.5Gi
+    value: 256Mi
   - name: NAME
     displayName: Object names
     description: The name of the OpenShift objects.
