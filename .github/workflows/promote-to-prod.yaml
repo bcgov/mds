@@ -1,9 +1,6 @@
 name: Promote to prod
 
 on:
-  push:
-    branch:
-      - devops-migration
   workflow_dispatch:
 
 env:

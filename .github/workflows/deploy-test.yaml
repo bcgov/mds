@@ -1,10 +1,6 @@
 name: Deploy to test
 
 on:
-  # REMOVE PUSH BEFORE MERGE
-  push:
-    branch:
-      - devops-migration
   workflow_run:
     workflows:
       - Deploy to dev

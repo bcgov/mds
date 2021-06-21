@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-      - devops-migration
+      - develop
     paths:
       - services/**
       - migrations/**
@@ -14,7 +14,7 @@ env:
   INITIAL_TAG: latest
   TAG: dev
   SOURCE_REPOSITORY_URL: https://github.com/bcgov/mds.git
-  SOURCE_REPOSITORY_REF: devops-migration
+  SOURCE_REPOSITORY_REF: develop
 
 jobs:
   template:

@@ -1,10 +1,6 @@
 name: Deploy to prod
 
 on:
-  # REMOVE PUSH BEFORE MERGE
-  push:
-    branch:
-      - devops-migration
   workflow_dispatch:
 
 env:

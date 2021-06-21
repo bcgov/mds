@@ -1,9 +1,6 @@
 name: Promote to test
 
 on:
-  push:
-    branch:
-      - devops-migration
   workflow_run:
     workflows:
       - Build

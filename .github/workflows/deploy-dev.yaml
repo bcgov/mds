@@ -3,7 +3,7 @@ name: Deploy to dev
 on:
   push:
     branches:
-      - devops-migration
+      - develop
     paths:
       - openshift4/templates/**.dc.yaml
 
