@@ -62,7 +62,6 @@ class NOWApplication(Base, AuditMixin):
     ats_project_number = db.Column(db.Numeric)
     unreclaimed_disturbance_previous_year = db.Column(db.Numeric)
     disturbance_planned_reclamation = db.Column(db.Numeric)
-    file_number_of_app = db.Column(db.String)
     original_start_date = db.Column(db.DateTime)
     notice_of_work_type_code = db.Column(
         db.String, db.ForeignKey('notice_of_work_type.notice_of_work_type_code'), nullable=False)
@@ -88,6 +87,7 @@ class NOWApplication(Base, AuditMixin):
     longitude = db.Column(db.Numeric(11, 7))
     property_name = db.Column(db.String)
     tenure_number = db.Column(db.String)
+    other_information = db.Column(db.String)
     description_of_land = db.Column(db.String)
     application_permit_type_code = db.Column(
         db.String, db.ForeignKey('now_application_permit_type.now_application_permit_type_code'))

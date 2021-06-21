@@ -21,7 +21,12 @@ const OriginalValuePropTypes = {
 const OriginalValueDefaultProps = { style: {} };
 
 export const CoreTooltip = (props) => (
-  <Tooltip title={props.title} placement="right" mouseEnterDelay={0.3}>
+  <Tooltip
+    title={props.title}
+    placement="right"
+    mouseEnterDelay={0.3}
+    overlayClassName="core-tooltip"
+  >
     <img src={INFO_CIRCLE} alt="Info" className="info-tooltip" />
   </Tooltip>
 );

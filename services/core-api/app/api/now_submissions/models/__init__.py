@@ -28,6 +28,9 @@ from .under_exp_rehab_activity import UnderExpRehabActivity
 from .under_exp_surface_activity import UnderExpSurfaceActivity
 from .water_source_activity import WaterSourceActivity
 from .application_equipment_xref import ApplicationEquipmentXref
+from .camps import Camps
+from .staging_areas import StagingAreas
+from .buildings import Buildings
 
 model_list = [
     ApplicationNDA, ApplicationStartStop, Application, Client, Contact, DocumentNDA,
@@ -36,5 +39,5 @@ model_list = [
     MechTrenchingEquipXref, PlacerActivity, PlacerEquipXref, ProposedPlacerActivityXref,
     ProposedSettlingPondXref, SandGrvQryActivity, SandGrvQryEquipXref, SettlingPondSubmission,
     StatusUpdate, SurfaceBulkSampleActivity, SurfaceBulkSampleEquipXref, UnderExpNewActivity,
-    UnderExpRehabActivity, UnderExpSurfaceActivity, WaterSourceActivity, ApplicationEquipmentXref
+    UnderExpRehabActivity, UnderExpSurfaceActivity, WaterSourceActivity, ApplicationEquipmentXref, Camps, StagingAreas, Buildings
 ]
