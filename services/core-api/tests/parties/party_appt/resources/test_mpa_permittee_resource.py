@@ -28,11 +28,11 @@ def test_get_permittee(test_client, db_session, auth_headers):
 
 #POST
 def test_post_permittee_no_party(test_client, db_session, auth_headers):
-    permit_guid = PermitFactory().permit_guid
+    mine, permit = create_mine_and_permit()
 
     data = {
-        'mine_guid': str(uuid.uuid4()),
-        'permit_guid': str(permit_guid),
+        'mine_guid': str(mine.mine_guid),
+        'permit_guid': str(permit.permit_guid),
         'mine_party_appt_type_code': 'PMT',
         'effective_date': datetime.today().strftime("%Y-%m-%d")
     }
@@ -45,10 +45,11 @@ def test_post_permittee_no_party(test_client, db_session, auth_headers):
 
 
 def test_post_permittee_no_permit(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
     party_guid = PartyFactory(company=True).party_guid
 
     data = {
-        'mine_guid': str(uuid.uuid4()),
+        'mine_guid': str(mine.mine_guid),
         'party_guid': str(party_guid),
         'mine_party_appt_type_code': 'PMT',
         'effective_date': datetime.today().strftime("%Y-%m-%d")
@@ -79,10 +80,11 @@ def test_post_permittee(test_client, db_session, auth_headers):
 
 
 def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
     party_guid = PartyFactory(person=True).party_guid
 
     data = {
-        'mine_guid': str(uuid.uuid4()),
+        'mine_guid': str(mine.mine_guid),
         'party_guid': str(party_guid),
         'permit_guid': str(uuid.uuid4()),
         'effective_date': datetime.today().strftime("%Y-%m-%d")
@@ -95,10 +97,11 @@ def test_post_permittee_permit_guid_not_found(test_client, db_session, auth_head
 
 
 def test_post_permittee_party_guid_not_found(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit()
     permit_guid = PermitFactory().permit_guid
 
     data = {
-        'mine_guid': str(uuid.uuid4()),
+        'mine_guid': str(mine.mine_guid),
         'party_guid': str(uuid.uuid4()),
         'related_guid': str(permit_guid),
         'effective_date': datetime.today().strftime("%Y-%m-%d")
