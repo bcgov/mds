@@ -413,6 +413,7 @@ class NOWApplicationFactory(BaseFactory):
     unreclaimed_disturbance_previous_year = factory.fuzzy.FuzzyInteger(1, 10000)
     disturbance_planned_reclamation = factory.fuzzy.FuzzyInteger(1, 10000)
     ats_project_number = factory.fuzzy.FuzzyInteger(1, 10000)
+    other_information = factory.Faker('sentence', nb_words=250, variable_nb_words=True)
     original_start_date = factory.Faker('past_datetime')
     type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)

@@ -1435,8 +1435,28 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             Array [
               "disturbance_planned_reclamation",
             ],
+            Array [
+              "other_information",
+            ],
+            Array [
+              "other_information",
+            ],
           ],
           "results": Array [
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
+            Object {
+              "type": "return",
+              "value": Object {
+                "edited": true,
+                "value": "N/A",
+              },
+            },
             Object {
               "type": "return",
               "value": Object {
@@ -1987,6 +2007,37 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         }
       }
     />
+    <withRouter(Connect(ScrollContentWrapper))
+      id="other-information"
+      title="Other Information"
+    >
+      <div>
+        <Row
+          gutter={16}
+        >
+          <Col
+            md={24}
+          >
+            <div
+              className="field-title"
+            >
+              Is there any other information you would like us to know (where possible, do not include personal information)
+              <NOWOriginalValueTooltip
+                isVisible={true}
+                originalValue="N/A"
+                style={Object {}}
+              />
+            </div>
+            <Field
+              component={[Function]}
+              disabled={true}
+              id="other_information"
+              name="other_information"
+            />
+          </Col>
+        </Row>
+      </div>
+    </withRouter(Connect(ScrollContentWrapper))>
     <withRouter(Connect(ScrollContentWrapper))
       id="application-files"
       title="vFCBC/NROS Application Files"
