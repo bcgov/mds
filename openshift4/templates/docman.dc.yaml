@@ -49,9 +49,9 @@ parameters:
   - name: MEMORY_LIMIT
     value: 1.5Gi
   - name: CPU_REQUEST
-    value: 225m
+    value: 128m
   - name: MEMORY_REQUEST
-    value: 1152Mi
+    value: 512Mi
   - name: UWSGI_PROCESSES
     value: "4"
   - name: UWSGI_THREADS
@@ -67,7 +67,7 @@ parameters:
   - name: WORKER_CPU_LIMIT
     value: 225m
   - name: WORKER_MEMORY_REQUEST
-    value: 1152Mi
+    value: 900Mi
   - name: WORKER_REPLICA_MIN
     value: "1"
   - name: WORKER_REPLICA_MAX
