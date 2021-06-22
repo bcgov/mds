@@ -10,7 +10,7 @@ import {
   createAdminAmendmentApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
-import { getExplosivePermits } from "@common/selectors/explosivesPermitSelectors";
+import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
@@ -36,7 +36,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   createAdminAmendmentApplication: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
-  explosivePermits: PropTypes.arrayOf(PropTypes.any).isRequired,
+  explosivesPermits: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export class MineApplications extends Component {
@@ -208,21 +208,17 @@ export class MineApplications extends Component {
             </>
           </Tabs.TabPane>
           <Tabs.TabPane
-            tab={`Explosive Storage & Use Permit Applications (${this.props.explosivePermits.length})`}
+            tab={`Explosives Storage & Use Permit Applications (${this.props.explosivesPermits.length})`}
             key="3"
           >
             <>
               <ExplosivesPermit
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
-                administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
-                  (app) => app.application_type_code === "ADA"
-                )}
                 sortField={this.state.params.sort_field}
                 sortDir={this.state.params.sort_dir}
                 searchParams={this.state.params}
                 onExpand={this.onExpand}
-                mineRegionHash={this.props.mineRegionHash}
               />
             </>
           </Tabs.TabPane>
@@ -236,7 +232,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
-  explosivePermits: getExplosivePermits(state),
+  explosivesPermits: getExplosivesPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

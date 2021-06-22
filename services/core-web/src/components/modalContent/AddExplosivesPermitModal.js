@@ -1,0 +1,15 @@
+/* eslint-disable */
+import React from "react";
+import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
+
+const propTypes = {};
+
+const defaultProps = {};
+
+export const AddExplosivesPermitModal = (props) => <div />;
+
+AddExplosivesPermitModal.propTypes = propTypes;
+AddExplosivesPermitModal.defaultProps = defaultProps;
+
+export default AddExplosivesPermitModal;

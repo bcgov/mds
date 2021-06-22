@@ -12,7 +12,7 @@ import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 
 /**
- * @class MineExplosivesPermitTable - list of mine administrative applications
+ * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,

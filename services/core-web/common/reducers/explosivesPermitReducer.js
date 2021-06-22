@@ -2,7 +2,7 @@ import * as actionTypes from "../constants/actionTypes";
 import { EXPLOSIVES_PERMITS } from "../constants/reducerTypes";
 
 const initialState = {
-  explosivePermits: [],
+  explosivesPermits: [],
 };
 
 export const explosivesPermitReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ export const explosivesPermitReducer = (state = initialState, action) => {
     case actionTypes.STORE_EXPLOSIVES_PERMITS:
       return {
         ...state,
-        explosivePermits: action.payload.records,
+        explosivesPermits: action.payload.records,
       };
     default:
       return state;
@@ -21,5 +21,5 @@ const explosivesPermitReducerObject = {
   [EXPLOSIVES_PERMITS]: explosivesPermitReducer,
 };
 
-export const getExplosivePermits = (state) => state[EXPLOSIVES_PERMITS].explosivePermits;
+export const getExplosivesPermits = (state) => state[EXPLOSIVES_PERMITS].explosivesPermits;
 export default explosivesPermitReducerObject;

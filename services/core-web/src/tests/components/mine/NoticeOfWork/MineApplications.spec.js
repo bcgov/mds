@@ -13,7 +13,7 @@ const setupProps = () => {
   props.location = { search: "" };
   props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.mineRegionHash = MOCK.REGION_HASH;
-  props.explosivePermits = [];
+  props.explosivesPermits = [];
 };
 
 const setupDispatchProps = () => {
