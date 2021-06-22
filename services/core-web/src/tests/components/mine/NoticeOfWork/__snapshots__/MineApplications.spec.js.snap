@@ -86,6 +86,27 @@ exports[`MineApplications renders properly 1`] = `
         searchParams={Object {}}
       />
     </TabPane>
+    <TabPane
+      key="3"
+      tab="Explosive Storage & Use Permit Applications (0)"
+    >
+      <Connect(ExplosiveStorageUsePermit)
+        administrativeAmendmentApplications={Array []}
+        handleSearch={[Function]}
+        isLoaded={false}
+        mineRegionHash={
+          Object {
+            "NE": "North East",
+            "NW": "North West",
+            "SC": "South Central",
+            "SE": "South East",
+            "SW": "South West",
+          }
+        }
+        onExpand={[Function]}
+        searchParams={Object {}}
+      />
+    </TabPane>
   </Tabs>
 </div>
 `;
