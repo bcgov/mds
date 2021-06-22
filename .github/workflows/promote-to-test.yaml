@@ -1,0 +1,46 @@
+name: Promote to test
+
+on:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
+
+env:
+  ORIG_TAG: dev
+  PROMOTE_TAG: test
+
+jobs:
+  promote-to-test:
+    name: promote-to-test
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - name: nginx
+          - name: frontend
+          - name: backend
+          - name: flyway
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: minespace
+    steps:
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Promote dev to test
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} tag \
+          ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.ORIG_TAG }} \
+          ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.PROMOTE_TAG }}
