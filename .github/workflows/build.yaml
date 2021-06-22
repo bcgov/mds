@@ -55,33 +55,33 @@ jobs:
           -p TAG=${{env.INITIAL_TAG}} \
           | oc -n ${{secrets.NS_TOOLS}} apply -f -
 
-  # build-bases:
-  #   name: build-bases
-  #   needs: template
-  #   runs-on: ubuntu-20.04
-  #   strategy:
-  #     matrix:
-  #       include:
-  #         - name: frontend
-  #         - name: backend
-  #         - name: docman
-  #         - name: nris
-  #         - name: minespace
-  #   steps:
-  #     - name: Install oc
-  #       uses: redhat-actions/oc-installer@v1
-  #       with:
-  #         oc_version: "4.6"
-  #     - name: oc login
-  #       run: |
-  #         oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-  #     - name: build
-  #       run: |
-  #         oc start-build ${{ matrix.name }}-base -n ${{secrets.NS_TOOLS}} --wait
+  build-bases:
+    name: build-bases
+    needs: template
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - name: frontend
+          - name: backend
+          - name: docman
+          - name: nris
+          - name: minespace
+    steps:
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: build
+        run: |
+          oc start-build ${{ matrix.name }}-base -n ${{secrets.NS_TOOLS}} --wait
 
   build:
     name: build
-    needs: template
+    needs: build-bases
     runs-on: ubuntu-20.04
     strategy:
       matrix:
