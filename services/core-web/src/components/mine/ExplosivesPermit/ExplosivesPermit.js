@@ -20,7 +20,8 @@ const propTypes = {};
 export class ExplosivesPermit extends Component {
   state = { isLoaded: false, params: {} };
 
-  handleAddESUP = (values) => {
+  handleAddExplosivesPermit = (values) => {
+    console.log(values);
     const payload = {
       mine_guid: this.props.mineGuid,
       ...values,
@@ -32,14 +33,15 @@ export class ExplosivesPermit extends Component {
     //   });
   };
 
-  handleOpenAddESUPModal = (event) => {
+  handleOpenAddExplosivesPermitModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddESUP,
+        onSubmit: this.handleAddExplosivesPermit,
         title: "Add Explosives Storage & Use Permit",
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
+      width: "75vw",
     });
   };
 
@@ -50,7 +52,7 @@ export class ExplosivesPermit extends Component {
         <div className="inline-flex between">
           <h4 className="uppercase">Explosive Storages & Use Permit Applications</h4>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <AddButton onClick={(e) => this.handleOpenAddESUPModal(e)}>
+            <AddButton onClick={(e) => this.handleOpenAddExplosivesPermitModal(e)}>
               Add Explosives Storage & Use Permit
             </AddButton>
           </AuthorizationWrapper>
