@@ -77,8 +77,6 @@ objects:
       completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange
-          imageChange: {}
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         type: Git
@@ -117,7 +115,6 @@ objects:
       completionDeadlineSeconds: 600
       triggers:
         - type: ImageChange
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         type: Git
