@@ -9,6 +9,8 @@ import {
   fetchMineNoticeOfWorkApplications,
   createAdminAmendmentApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { fetchExplosivePermits } from "@common/actionCreators/explosivePermitActionCreator";
+import { getExplosivePermits } from "@common/selectors/explosivePermitSelectors";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
@@ -33,6 +35,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createAdminAmendmentApplication: PropTypes.func.isRequired,
+  fetchExplosivePermits: PropTypes.func.isRequired,
+  explosivePermits: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export class MineApplications extends Component {
@@ -64,6 +68,7 @@ export class MineApplications extends Component {
         })
       );
     }
+    this.props.fetchExplosivePermits(this.props.mineGuid);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -203,11 +208,7 @@ export class MineApplications extends Component {
             </>
           </Tabs.TabPane>
           <Tabs.TabPane
-            tab={`Explosive Storage & Use Permit Applications (${
-              this.props.noticeOfWorkApplications.filter(
-                (app) => app.application_type_code === "NOW"
-              ).length
-            })`}
+            tab={`Explosive Storage & Use Permit Applications (${this.props.explosivePermits.length})`}
             key="3"
           >
             <>
@@ -235,6 +236,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
+  explosivePermits: getExplosivePermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -244,6 +246,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       createAdminAmendmentApplication,
+      fetchExplosivePermits,
     },
     dispatch
   );

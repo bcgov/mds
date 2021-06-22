@@ -1,12 +1,12 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { getMineRegionHash } from "@common/selectors/staticContentSelectors";
 import {
-  fetchMineNoticeOfWorkApplications,
-  createAdminAmendmentApplication,
-} from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
+  fetchExplosivePermits,
+  createExplosivePermit,
+} from "@common/actionCreators/explosivePermitActionCreator";
+import { getExplosivePermits } from "@common/selectors/explosivePermitSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -18,41 +18,39 @@ import { modalConfig } from "@/components/modalContent/config";
 const propTypes = {};
 
 export class ExplosiveStorageUsePermit extends Component {
-  state = { isLoaded: false };
+  state = { isLoaded: false, params: {} };
 
-  handleAddAdminAmendment = (values) => {
+  handleAddESUP = (values) => {
     const payload = {
       mine_guid: this.props.mineGuid,
       ...values,
     };
-    return this.props
-      .createAdminAmendmentApplication(payload)
-      .then(() => {
-        this.renderDataFromURL(this.props.location.search);
-      })
-      .finally(() => {
-        this.props.closeModal();
-      });
+    // return this.props
+    //   .createExplosivePermit(payload)
+    //   .then(() => {
+    //     this.props.closeModal();
+    //   });
   };
 
-  handleOpenAddAdminAmendmentModal = (event) => {
+  handleOpenAddESUPModal = (event) => {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleAddAdminAmendment,
-        title: "Add Administrative Amendment ",
+        onSubmit: this.handleAddESUP,
+        title: "Add Explosive Storage & Use Permit",
       },
-      content: modalConfig.ADD_ADMIN_AMENDMENT_MODAL,
+      content: modalConfig.EXPLOSIVE_STORAGE_USE_PERMIT_MODAL,
     });
   };
 
   render() {
     return (
       <div>
+        <br />
         <div className="inline-flex between">
           <h4 className="uppercase">Explosive Storage & Use Permit Applications</h4>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <AddButton onClick={(e) => this.handleOpenAddAdminAmendmentModal(e)}>
+            <AddButton onClick={(e) => this.handleOpenAddESUPModal(e)}>
               Add Explosive Storage & Use Permit
             </AddButton>
           </AuthorizationWrapper>
@@ -60,14 +58,8 @@ export class ExplosiveStorageUsePermit extends Component {
         <MineExplosiveStorageUsePermitTable
           isLoaded
           handleSearch={this.handleSearch}
-          administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
-            (app) => app.application_type_code === "ADA"
-          )}
-          sortField={this.state.params.sort_field}
-          sortDir={this.state.params.sort_dir}
-          searchParams={this.state.params}
+          data={this.props.explosivePermits}
           onExpand={this.onExpand}
-          mineRegionHash={this.props.mineRegionHash}
         />
       </div>
     );
@@ -76,17 +68,16 @@ export class ExplosiveStorageUsePermit extends Component {
 
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
-  noticeOfWorkApplications: getNoticeOfWorkList(state),
-  mineRegionHash: getMineRegionHash(state),
+  explosivePermits: getExplosivePermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineNoticeOfWorkApplications,
+      createExplosivePermit,
       openModal,
       closeModal,
-      createAdminAmendmentApplication,
+      fetchExplosivePermits,
     },
     dispatch
   );

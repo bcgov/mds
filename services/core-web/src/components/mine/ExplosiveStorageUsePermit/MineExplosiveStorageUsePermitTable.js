@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Badge, Tooltip, Table, Button } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
-import { formatDate } from "@common/utils/helpers";
+import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CoreTable from "@/components/common/CoreTable";
@@ -15,7 +16,7 @@ import DocumentLink from "@/components/common/DocumentLink";
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
-  administrativeAmendmentApplications: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
+  data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
@@ -28,53 +29,17 @@ const propTypes = {
 };
 
 const defaultProps = {
-  sortField: undefined,
-  sortDir: undefined,
-  administrativeAmendmentApplications: [],
+  data: [],
 };
 
-const handleTableChange = (handleSearch) => (pagination, filters, sorter) => {
-  const params = {
-    sort_field: sorter.order ? sorter.field : undefined,
-    sort_dir: sorter.order ? sorter.order.replace("end", "") : undefined,
-  };
-  handleSearch(params);
-};
-
-const applySortIndicator = (_columns, field, dir) =>
-  _columns.map((column) => ({
-    ...column,
-    sortOrder: dir && column.sortField === field ? dir.concat("end") : false,
-  }));
-
-const transformRowData = (applications) => {
-  return applications.map((application) => {
-    const { permittee } = application;
-    const permittee_name = application.permittee
-      ? [permittee.first_name, permittee.party_name].filter(Boolean).join(" ")
-      : null;
+const transformRowData = (permits) => {
+  return permits.map((permit) => {
     return {
-      ...application,
-      key: application.now_application_guid,
-      now_number: application.now_number || Strings.EMPTY_FIELD,
-      mine_guid: application.mine_guid || Strings.EMPTY_FIELD,
-      mine_name: application.mine_name || Strings.EMPTY_FIELD,
-      notice_of_work_type_description:
-        application.notice_of_work_type_description || Strings.EMPTY_FIELD,
-      status_reason: application.status_reason || Strings.EMPTY_FIELD,
-      now_application_status_description:
-        application.now_application_status_description || Strings.EMPTY_FIELD,
-      received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
-      documents: application.documents,
-      source_permit_amendment_issue_date:
-        (application.source_permit_amendment_issue_date &&
-          formatDate(application.source_permit_amendment_issue_date)) ||
-        Strings.EMPTY_FIELD,
-      application_reason_codes: application.application_reason_codes,
-      issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
-      permittee_name: permittee_name || Strings.EMPTY_FIELD,
-      decision_date:
-        (application.decision_date && formatDate(application.decision_date)) || Strings.EMPTY_FIELD,
+      ...permit,
+      key: permit.esup_guid,
+      documents: permit.documents,
+      det_quantity: permit.magazines.filter(({ type }) => type === "DET").length,
+      exp_quantity: permit.magazines.filter(({ type }) => type === "EXP").length,
     };
   });
 };
@@ -112,122 +77,95 @@ const RenderTableExpandIcon = (rowProps) => (
 );
 
 export class MineExplosiveStorageUsePermitTable extends Component {
-  createLinkTo = (route, record) => {
-    return {
-      pathname: route.dynamicRoute(record.key),
-      state: {
-        applicationPageFromRoute: {
-          route: this.props.location.pathname + this.props.location.search,
-          title: `${record.mine_name} Administrative Amendments`,
-        },
-      },
-    };
-  };
-
   columns = () => [
     {
-      title: "Application",
-      dataIndex: "now_number",
-      sortField: "now_number",
-      render: (text) => <div title="Application">{text}</div>,
-      sorter: true,
-    },
-    {
-      title: "Source Amendment Issue Date",
-      dataIndex: "source_permit_amendment_issue_date",
-      sortField: "source_permit_amendment_issue_date",
-      width: 200,
-      render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
-      sorter: true,
-    },
-    {
-      title: "Permit Number",
-      dataIndex: "source_permit_no",
-      sortField: "source_permit_no",
-      width: 200,
-      render: (text) => <div title="Source Amendment Issue Date">{text}</div>,
-      sorter: true,
-    },
-    {
-      title: "Amendment Reason",
-      dataIndex: "application_reason_codes",
+      title: "Permit #",
+      dataIndex: "esup_permit_no",
+      sortField: "esup_permit_no",
+      render: (text) => <div title="Permit #">{text}</div>,
       sorter: false,
-      render: (trigger) => (
-        <div className="cap-col-height">
-          {(trigger &&
-            trigger.length > 0 &&
-            trigger.map((item) => <div>{item.description}</div>)) ||
-            Strings.EMPTY_FIELD}
-        </div>
-      ),
     },
     {
-      title: "Type",
-      dataIndex: "notice_of_work_type_description",
-      sortField: "notice_of_work_type_description",
-      render: (text) => <div title="Type">{text}</div>,
-      sorter: true,
+      title: "Mines Act Permit #",
+      dataIndex: "permit_no",
+      sortField: "permit_no",
+      render: (text) => <div title="Mines Act Permit #">{text}</div>,
+      sorter: false,
+    },
+    {
+      title: "Notice of Work #",
+      dataIndex: "now_no",
+      sortField: "now_no",
+      render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: false,
     },
     {
       title: "Issuing Inspector",
       dataIndex: "issuing_inspector_name",
-      sortField: "issuing_inspector_name",
-      render: (text) => <div title="Issuing Inspector">{text}</div>,
-      sorter: true,
+      render: (text) => <div title="Issuing Inspector">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: false,
     },
     {
-      title: "Status",
-      dataIndex: "now_application_status_description",
-      sortField: "now_application_status_description",
-      render: (text) => (
-        <div title="Status">
-          <Badge status={getApplicationStatusType(text)} text={text} />
-        </div>
-      ),
-      sorter: true,
+      title: "Source",
+      dataIndex: "source",
+      sortField: "source",
+      render: (text) => <div title="Source">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: false,
     },
     {
-      title: "Permittee",
-      dataIndex: "permittee_name",
-      sortField: "permittee_name",
-      render: (text) => <div title="Permittee">{text}</div>,
+      title: "Mine Operator",
+      dataIndex: "mine_operator_name",
+      render: (text) => <div title="Mine Operator">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: false,
     },
     {
       title: "Application Date",
       dataIndex: "received_date",
       sortField: "received_date",
-      render: (text) => <div title="Application Date">{text}</div>,
-      sorter: true,
+      render: (text) => (
+        <div title="Application Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>
+      ),
+      sorter: dateSorter("received_date"),
     },
     {
-      title: "Decision Date",
-      dataIndex: "decision_date",
-      sortField: "decision_date",
-      render: (text) => <div title="Decision Date">{text}</div>,
-      sorter: true,
+      title: "Issue Date",
+      dataIndex: "issue_date",
+      sortField: "issue_date",
+      render: (text) => <div title="Issue Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      sorter: dateSorter("issue_date"),
     },
     {
-      dataIndex: "operations",
-      render: (text, record) =>
-        record.key && (
-          <div className="btn--middle flex">
-            <Link to={this.createLinkTo(router.ADMIN_AMENDMENT_APPLICATION, record)}>
-              <Button type="primary">Open</Button>
-            </Link>
-          </div>
-        ),
+      title: "Expiry Date",
+      dataIndex: "expiry_date",
+      sortField: "expiry_date",
+      render: (text) => <div title="Expiry Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      sorter: dateSorter("expiry_date"),
+    },
+    {
+      title: "Explosive Quantity",
+      dataIndex: "exp_quantity",
+      sortField: "exp_quantity",
+      render: (text) => <div title="Explosive Quantity">{text}</div>,
+      sorter: false,
+    },
+    {
+      title: "Detonator Quantity",
+      dataIndex: "det_quantity",
+      sortField: "det_quantity",
+      render: (text) => <div title="Detonator Quantity">{text}</div>,
+      sorter: false,
     },
   ];
 
   administrativeAmendmentDetail = (record) => {
     const expandedColumns = [
       {
-        title: "Reason For Status",
-        dataIndex: "status_reason",
-        key: "status_reason",
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
       },
       {
-        title: "Application Request Document",
+        title: "Final Application File Name",
         dataIndex: "documents",
         key: "documents",
         render: (text) => (
@@ -247,6 +185,11 @@ export class MineExplosiveStorageUsePermitTable extends Component {
           </div>
         ),
       },
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+      },
     ];
 
     return (
@@ -264,16 +207,11 @@ export class MineExplosiveStorageUsePermitTable extends Component {
     return (
       <CoreTable
         condition={this.props.isLoaded}
-        dataSource={transformRowData(this.props.administrativeAmendmentApplications)}
-        columns={applySortIndicator(
-          this.columns(this.props),
-          this.props.sortField,
-          this.props.sortDir
-        )}
+        dataSource={transformRowData(this.props.data)}
+        columns={this.columns(this.props)}
         tableProps={{
           align: "left",
           pagination: false,
-          onChange: handleTableChange(this.props.handleSearch),
           expandIcon: RenderTableExpandIcon,
           expandRowByClick: true,
           expandedRowRender: this.administrativeAmendmentDetail,
