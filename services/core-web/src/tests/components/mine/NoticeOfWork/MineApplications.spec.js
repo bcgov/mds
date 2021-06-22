@@ -18,7 +18,7 @@ const setupProps = () => {
 
 const setupDispatchProps = () => {
   dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchExplosivePermits = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchExplosivesPermits = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
 };
 

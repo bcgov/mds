@@ -2,7 +2,7 @@ import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
-import * as explosivePermitActions from "../actions/explosivePermitActions";
+import * as explosivesPermitActions from "../actions/explosivesPermitActions";
 import * as String from "../constants/strings";
 import * as API from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
@@ -100,38 +100,38 @@ const esup = {
   },
 };
 
-export const createExplosivePermit = (mineGuid, payload) => (dispatch) => {
-  dispatch(request(reducerTypes.CREATE_EXPLOSIVE_PERMIT));
+export const createExplosivesPermit = (mineGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.EXPLOSIVE_PERMITS(mineGuid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMITS(mineGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully created a new permit",
         duration: 10,
       });
-      dispatch(success(reducerTypes.CREATE_EXPLOSIVE_PERMIT));
+      dispatch(success(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.CREATE_EXPLOSIVE_PERMIT));
+      dispatch(error(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
 
-export const fetchExplosivePermits = (mineGuid) => (dispatch) => {
-  dispatch(request(reducerTypes.GET_EXPLOSIVE_PERMITS));
+export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_EXPLOSIVES_PERMITS));
   dispatch(showLoading());
   return CustomAxios({ errorToastMessage: String.ERROR })
-    .get(ENVIRONMENT.apiUrl + API.EXPLOSIVE_PERMITS(mineGuid), createRequestHeader())
+    .get(ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMITS(mineGuid), createRequestHeader())
     .then((response) => {
-      dispatch(success(reducerTypes.GET_EXPLOSIVE_PERMITS));
-      dispatch(explosivePermitActions.storeExplosivePermits(esup.data));
+      dispatch(success(reducerTypes.GET_EXPLOSIVES_PERMITS));
+      dispatch(explosivesPermitActions.storeExplosivesPermits(esup.data));
       return response;
     })
     .catch((err) => {
-      dispatch(error(reducerTypes.GET_EXPLOSIVE_PERMITS));
+      dispatch(error(reducerTypes.GET_EXPLOSIVES_PERMITS));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading()));

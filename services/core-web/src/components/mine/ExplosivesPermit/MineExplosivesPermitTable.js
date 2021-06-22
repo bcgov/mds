@@ -12,7 +12,7 @@ import { getApplicationStatusType } from "@/constants/theme";
 import DocumentLink from "@/components/common/DocumentLink";
 
 /**
- * @class MineExplosiveStorageUsePermitTable - list of mine administrative applications
+ * @class MineExplosivesPermitTable - list of mine administrative applications
  */
 const propTypes = {
   handleSearch: PropTypes.func.isRequired,
@@ -76,7 +76,7 @@ const RenderTableExpandIcon = (rowProps) => (
   </a>
 );
 
-export class MineExplosiveStorageUsePermitTable extends Component {
+export class MineExplosivesPermitTable extends Component {
   columns = () => [
     {
       title: "Permit #",
@@ -223,7 +223,7 @@ export class MineExplosiveStorageUsePermitTable extends Component {
   }
 }
 
-MineExplosiveStorageUsePermitTable.propTypes = propTypes;
-MineExplosiveStorageUsePermitTable.defaultProps = defaultProps;
+MineExplosivesPermitTable.propTypes = propTypes;
+MineExplosivesPermitTable.defaultProps = defaultProps;
 
-export default withRouter(MineExplosiveStorageUsePermitTable);
+export default withRouter(MineExplosivesPermitTable);

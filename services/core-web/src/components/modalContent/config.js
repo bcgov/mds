@@ -87,7 +87,7 @@ export const modalConfig = {
   UPLOAD_PERMIT_DOCUMENT_MODAL: UploadPermitDocumentModal,
   DELETE_DRAFT_PERMIT_MODAL: DeleteDraftPermitModal,
   NO_PERMIT_REQUIRED_SELECTION_MODAL: NoPermitRequiredSelectionModal,
-  EXPLOSIVE_STORAGE_USE_PERMIT_MODAL: AddExplosiveStorageUsePermitModal,
+  EXPLOSIVES_PERMIT_MODAL: AddExplosiveStorageUsePermitModal,
 };
 
 export default modalConfig;

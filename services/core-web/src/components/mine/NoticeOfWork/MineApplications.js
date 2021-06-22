@@ -9,8 +9,8 @@ import {
   fetchMineNoticeOfWorkApplications,
   createAdminAmendmentApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { fetchExplosivePermits } from "@common/actionCreators/explosivePermitActionCreator";
-import { getExplosivePermits } from "@common/selectors/explosivePermitSelectors";
+import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
+import { getExplosivePermits } from "@common/selectors/explosivesPermitSelectors";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
@@ -22,7 +22,7 @@ import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
-import ExplosiveStorageUsePermit from "@/components/mine/ExplosiveStorageUsePermit/ExplosiveStorageUsePermit";
+import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
@@ -35,7 +35,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createAdminAmendmentApplication: PropTypes.func.isRequired,
-  fetchExplosivePermits: PropTypes.func.isRequired,
+  fetchExplosivesPermits: PropTypes.func.isRequired,
   explosivePermits: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
@@ -68,7 +68,7 @@ export class MineApplications extends Component {
         })
       );
     }
-    this.props.fetchExplosivePermits(this.props.mineGuid);
+    this.props.fetchExplosivesPermits(this.props.mineGuid);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -212,7 +212,7 @@ export class MineApplications extends Component {
             key="3"
           >
             <>
-              <ExplosiveStorageUsePermit
+              <ExplosivesPermit
                 isLoaded={this.state.isLoaded}
                 handleSearch={this.handleSearch}
                 administrativeAmendmentApplications={this.props.noticeOfWorkApplications.filter(
@@ -246,7 +246,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       createAdminAmendmentApplication,
-      fetchExplosivePermits,
+      fetchExplosivesPermits,
     },
     dispatch
   );

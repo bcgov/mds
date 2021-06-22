@@ -3,21 +3,21 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {
-  fetchExplosivePermits,
-  createExplosivePermit,
-} from "@common/actionCreators/explosivePermitActionCreator";
-import { getExplosivePermits } from "@common/selectors/explosivePermitSelectors";
+  fetchExplosivesPermits,
+  createExplosivesPermit,
+} from "@common/actionCreators/explosivesPermitActionCreator";
+import { getExplosivePermits } from "@common/selectors/explosivesPermitSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import AddButton from "@/components/common/AddButton";
-import MineExplosiveStorageUsePermitTable from "@/components/mine/ExplosiveStorageUsePermit/MineExplosiveStorageUsePermitTable";
+import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {};
 
-export class ExplosiveStorageUsePermit extends Component {
+export class ExplosivesPermit extends Component {
   state = { isLoaded: false, params: {} };
 
   handleAddESUP = (values) => {
@@ -26,7 +26,7 @@ export class ExplosiveStorageUsePermit extends Component {
       ...values,
     };
     // return this.props
-    //   .createExplosivePermit(payload)
+    //   .createExplosivesPermit(payload)
     //   .then(() => {
     //     this.props.closeModal();
     //   });
@@ -39,7 +39,7 @@ export class ExplosiveStorageUsePermit extends Component {
         onSubmit: this.handleAddESUP,
         title: "Add Explosive Storage & Use Permit",
       },
-      content: modalConfig.EXPLOSIVE_STORAGE_USE_PERMIT_MODAL,
+      content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
     });
   };
 
@@ -55,7 +55,7 @@ export class ExplosiveStorageUsePermit extends Component {
             </AddButton>
           </AuthorizationWrapper>
         </div>
-        <MineExplosiveStorageUsePermitTable
+        <MineExplosivesPermitTable
           isLoaded
           handleSearch={this.handleSearch}
           data={this.props.explosivePermits}
@@ -74,14 +74,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      createExplosivePermit,
+      createExplosivesPermit,
       openModal,
       closeModal,
-      fetchExplosivePermits,
+      fetchExplosivesPermits,
     },
     dispatch
   );
 
-ExplosiveStorageUsePermit.propTypes = propTypes;
+ExplosivesPermit.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExplosiveStorageUsePermit);
+export default connect(mapStateToProps, mapDispatchToProps)(ExplosivesPermit);
