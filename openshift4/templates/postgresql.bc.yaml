@@ -63,8 +63,6 @@ objects:
       completionDeadlineSeconds: 3600
       triggers:
         - type: ImageChange
-          imageChange: {}
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         secrets:

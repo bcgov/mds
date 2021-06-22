@@ -40,7 +40,6 @@ objects:
         app: ${NAME}
     spec:
       triggers:
-        - type: ConfigChange
         - type: ImageChange
       runPolicy: Serial
       source:
@@ -78,7 +77,6 @@ objects:
         app: ${NAME}-base
     spec:
       triggers:
-        - type: ConfigChange
         - type: ImageChange
       runPolicy: Serial
       source:
