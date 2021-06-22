@@ -85,8 +85,6 @@ objects:
       completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange
-          imageChange: {}
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         contextDir: ${DOCKER_IMAGE_DIRECTORY}
@@ -127,7 +125,6 @@ objects:
       completionDeadlineSeconds: 900
       triggers:
         - type: ImageChange
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         type: Git
