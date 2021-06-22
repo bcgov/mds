@@ -113,7 +113,7 @@ ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS explosives_permit_document_xref (
     explosives_permit_document_xref_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    mine_document_guid uuid NOT NULL,
+    mine_document_guid uuid UNIQUE NOT NULL,
     explosives_permit_id integer NOT NULL,
     explosives_permit_document_type_code varchar(3) NOT NULL,
 
