@@ -79,8 +79,6 @@ objects:
       failedBuildsHistoryLimit: 3
       triggers:
         - type: ImageChange
-          imageChange: {}
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         contextDir: openshift/docker-images/python-36-oracle
@@ -119,7 +117,6 @@ objects:
       completionDeadlineSeconds: 600
       triggers:
         - type: ImageChange
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         type: Git

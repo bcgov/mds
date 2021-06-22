@@ -85,5 +85,4 @@ objects:
           name: ${NAME}:${TAG}
       completionDeadlineSeconds: 600
       triggers:
-        - type: ConfigChange
         - type: ImageChange

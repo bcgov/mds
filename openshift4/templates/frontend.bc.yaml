@@ -83,8 +83,6 @@ objects:
       successfulBuildsHistoryLimit: 5
       failedBuildsHistoryLimit: 5
       completionDeadlineSeconds: 1440
-      triggers:
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         contextDir: ${DOCKER_IMAGE_DIRECTORY}
@@ -125,7 +123,6 @@ objects:
       completionDeadlineSeconds: 900
       triggers:
         - type: ImageChange
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         type: Git

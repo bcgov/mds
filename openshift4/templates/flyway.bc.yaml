@@ -61,8 +61,6 @@ objects:
       completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange
-          imageChange: {}
-        - type: ConfigChange
       runPolicy: SerialLatestOnly
       source:
         contextDir: ${SOURCE_CONTEXT_DIR}
