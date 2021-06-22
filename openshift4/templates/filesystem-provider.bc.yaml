@@ -1,0 +1,121 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: filesystem-provider-bc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: filesystem-provider
+  - name: TAG
+    displayName: Name
+    description: The output/built ImageStream tag names
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: services/filesystem-provider
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
+  - name: DOTNET_STARTUP_PROJECT
+    displayName: DotNet Startup Project
+    description: The path to the startup project for the .Net application.
+    value: ej2-amazon-s3-aspcore-file-provider
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}-base
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+    spec:
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+      runPolicy: Serial
+      source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        contextDir: ${SOURCE_CONTEXT_DIR}
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: ${NAME}-base:${TAG}
+          env:
+            - name: DOTNET_STARTUP_PROJECT
+              value: ${DOTNET_STARTUP_PROJECT}
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:${TAG}
+      completionDeadlineSeconds: 1200
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+        requests:
+          cpu: 1000m
+          memory: 1Gi
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}-base
+      labels:
+        app: ${NAME}-base
+    spec:
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+      runPolicy: Serial
+      source:
+        secrets:
+          - secret:
+              name: platform-services-controlled-etc-pki-entitlement
+            destinationDir: etc-pki-entitlement
+        configMaps:
+          - configMap:
+              name: platform-services-controlled-rhsm-conf
+            destinationDir: rhsm-conf
+          - configMap:
+              name: platform-services-controlled-rhsm-ca
+            destinationDir: rhsm-ca
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+      strategy:
+        type: Docker
+        dockerStrategy:
+          noCache: true
+          imageOptimizationPolicy: SkipLayers
+          dockerfilePath: openshift/docker-images/dotnet-31/Dockerfile
+          from:
+            kind: ImageStreamTag
+            name: dotnet:3.1
+            namespace: openshift
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}-base:${TAG}
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+        requests:
+          cpu: 1000m
+          memory: 1Gi
+      completionDeadlineSeconds: 1800
