@@ -1,10 +1,10 @@
 from sqlalchemy.schema import FetchedValue
 
-from app.api.utils.models_mixins import AuditMixin, Base
+from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
 
 
-class ExplosivesPermitMagazine(AuditMixin, Base):
+class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'explosives_permit_magazine'
 
     explosives_permit_magazine_id = db.Column(

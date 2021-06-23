@@ -54,6 +54,7 @@ from app.api.now_applications.models.application_type_code import ApplicationTyp
 from app.api.mines.government_agencies.models.government_agency_type import GovernmentAgencyType
 from app.api.mines.tailings.models.tsf_operating_status_code import TSFOperatingStatusCode
 from app.api.mines.tailings.models.consequence_classification_status_code import ConsequenceClassificationStatusCode
+from app.api.mines.explosives_permit.models.explosives_permit_status import ExplosivesPermitStatus
 from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
 from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 
@@ -69,7 +70,8 @@ MODELS_GET_ACTIVE = [
     ExemptionFeeStatus, PermitConditionType, PermitConditionCategory, PartyBusinessRoleCode,
     NOWApplicationDelayType, PermitAmendmentTypeCode, ApplicationReasonCode,
     ApplicationSourceTypeCode, ApplicationTypeCode, GovernmentAgencyType, TSFOperatingStatusCode,
-    ConsequenceClassificationStatusCode, ExplosivesPermitMagazineType, ExplosivesPermitDocumentType
+    ConsequenceClassificationStatusCode, ExplosivesPermitStatus, ExplosivesPermitMagazineType,
+    ExplosivesPermitDocumentType
 ]
 
 
