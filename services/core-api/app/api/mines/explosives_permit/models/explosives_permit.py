@@ -72,6 +72,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
         return val
 
+    def update(self, add_to_session=True):
+        if add_to_session:
+            self.save(commit=False)
+        return self
+
     @classmethod
     def get_next_application_number(cls):
         now = datetime.now(timezone('US/Pacific'))
@@ -90,6 +95,14 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             cls.application_status == 'APP').count()
         return f'{prefix}{base + total}'
 
+    @classmethod
+    def create(cls, add_to_session=True):
+        explosives_permit = cls()
+        if add_to_session:
+            explosives_permit.save(commit=False)
+        return explosives_permit
+
+    @classmethod
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
