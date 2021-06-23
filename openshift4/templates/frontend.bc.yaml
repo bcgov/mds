@@ -102,11 +102,11 @@ objects:
           name: ${NAME}-base:${TAG}
       resources:
         limits:
-          cpu: "3"
-          memory: 6Gi
-        requests:
-          cpu: "2"
+          cpu: "1"
           memory: 4Gi
+        requests:
+          cpu: "1"
+          memory: 1Gi
       postCommit: {}
       nodeSelector: null
   - kind: BuildConfig

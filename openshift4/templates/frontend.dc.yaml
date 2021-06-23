@@ -55,9 +55,7 @@ parameters:
     description: URL for the tracking component
     value: https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/
   - name: TUSD_URL
-    displayName: TUSD Url
-    description: URL for TUSD service
-    value: http://tusd:5001
+    value: http://tusd:1080/files/
   - name: FN_LAYER_URL
     value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
   - name: CORE_DOMAIN
