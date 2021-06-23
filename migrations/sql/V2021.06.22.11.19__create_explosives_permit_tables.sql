@@ -36,6 +36,10 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     latitude numeric(9, 7) NOT NULL,
     longitude numeric(11, 7) NOT NULL,
 
+    is_closed boolean,
+    closed_timestamp timestamptz,
+    closed_reason varchar,
+
     deleted_ind boolean DEFAULT false NOT NULL,
 
     create_user varchar(60) NOT NULL,
