@@ -31,6 +31,7 @@ import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
 import {
@@ -65,6 +66,7 @@ const propTypes = {
   fetchVariancesByMine: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
+  fetchExplosivesPermits: PropTypes.func.isRequired,
 };
 
 export class MineDashboard extends Component {
@@ -157,6 +159,7 @@ export class MineDashboard extends Component {
     this.props.fetchMineRecordById(id).then(() => {
       const mine = this.props.mines[id];
       this.props.fetchPermits(mine.mine_guid);
+      this.props.fetchExplosivesPermits(mine.mine_guid);
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
       this.props
         .fetchPartyRelationships({
@@ -386,6 +389,7 @@ const mapDispatchToProps = (dispatch) =>
       setMineVerifiedStatus,
       fetchMineVerifiedStatuses,
       fetchVariancesByMine,
+      fetchExplosivesPermits,
     },
     dispatch
   );

@@ -9,7 +9,6 @@ import {
   fetchMineNoticeOfWorkApplications,
   createAdminAmendmentApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -35,7 +34,6 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createAdminAmendmentApplication: PropTypes.func.isRequired,
-  fetchExplosivesPermits: PropTypes.func.isRequired,
   explosivesPermits: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
@@ -68,7 +66,6 @@ export class MineApplications extends Component {
         })
       );
     }
-    this.props.fetchExplosivesPermits(this.props.mineGuid);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -212,14 +209,7 @@ export class MineApplications extends Component {
             key="3"
           >
             <>
-              <ExplosivesPermit
-                isLoaded={this.state.isLoaded}
-                handleSearch={this.handleSearch}
-                sortField={this.state.params.sort_field}
-                sortDir={this.state.params.sort_dir}
-                searchParams={this.state.params}
-                onExpand={this.onExpand}
-              />
+              <ExplosivesPermit />
             </>
           </Tabs.TabPane>
         </Tabs>
@@ -242,7 +232,6 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       createAdminAmendmentApplication,
-      fetchExplosivesPermits,
     },
     dispatch
   );

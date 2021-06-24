@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { Component } from "react";
-import { Badge, Tooltip, Table, Button } from "antd";
+import { Badge, Tooltip, Table, Button, Menu, Popconfirm, Dropdown } from "antd";
 import { withRouter, Link } from "react-router-dom";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
@@ -9,7 +9,10 @@ import * as Strings from "@common/constants/strings";
 import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CoreTable from "@/components/common/CoreTable";
 import { getApplicationStatusType } from "@/constants/theme";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
+import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 
 /**
  * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
@@ -26,6 +29,7 @@ const propTypes = {
   }).isRequired,
   onExpand: PropTypes.func.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -38,8 +42,8 @@ const transformRowData = (permits) => {
       ...permit,
       key: permit.esup_guid,
       documents: permit.documents,
-      det_quantity: permit.magazines.filter(({ type }) => type === "DET").length,
-      exp_quantity: permit.magazines.filter(({ type }) => type === "EXP").length,
+      det_quantity: permit.detonator_magazines.length,
+      exp_quantity: permit.explosive_magazines.length,
     };
   });
 };
@@ -54,6 +58,8 @@ const transformExpandedRowData = (record) => ({
       document_name: doc.mine_document.document_name,
     })),
 });
+
+const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 const RenderTableExpandIcon = (rowProps) => (
   <a
@@ -82,8 +88,25 @@ export class MineExplosivesPermitTable extends Component {
       title: "Permit #",
       dataIndex: "esup_permit_no",
       sortField: "esup_permit_no",
-      render: (text) => <div title="Permit #">{text}</div>,
+      render: (text) => (
+        <div title="Permit #" className={hideColumn(!this.props.isPermit)}>
+          {text}
+        </div>
+      ),
       sorter: false,
+      className: hideColumn(!this.props.isPermit),
+    },
+    {
+      title: "Application #",
+      dataIndex: "application_no",
+      sortField: "application_no",
+      render: (text) => (
+        <div title="Application #" className={hideColumn(this.props.isPermit)}>
+          {text}
+        </div>
+      ),
+      sorter: false,
+      className: hideColumn(this.props.isPermit),
     },
     {
       title: "Mines Act Permit #",
@@ -96,6 +119,13 @@ export class MineExplosivesPermitTable extends Component {
       title: "Notice of Work #",
       dataIndex: "now_no",
       sortField: "now_no",
+      render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
+      sorter: false,
+    },
+    {
+      title: "Status",
+      dataIndex: "application_status",
+      sortField: "application_status",
       render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
@@ -155,9 +185,92 @@ export class MineExplosivesPermitTable extends Component {
       render: (text) => <div title="Detonator Quantity">{text}</div>,
       sorter: false,
     },
+    {
+      title: "",
+      dataIndex: "addEditButton",
+      key: "addEditButton",
+      align: "right",
+      render: (text, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={this.props.handleOpenExplosivesPermitDecisionModal}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Process
+              </button>
+            </Menu.Item>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) => this.props.handleOpenAddExplosivesPermitModal(event, record)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Edit
+              </button>
+            </Menu.Item>
+          </Menu>
+        );
+        return (
+          <div className="btn--middle flex">
+            {!this.props.isPermit && (
+              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                  <Button type="secondary" className="permit-table-button">
+                    <div className="padding-sm">
+                      <img
+                        className="padding-sm--right icon-svg-filter"
+                        src={EDIT}
+                        alt="Add/Edit"
+                      />
+                      Process/Edit
+                      <img
+                        className="padding-sm--right icon-svg-filter"
+                        src={CARAT}
+                        alt="Menu"
+                        style={{ paddingLeft: "5px" }}
+                      />
+                    </div>
+                  </Button>
+                </Dropdown>
+              </AuthorizationWrapper>
+            )}
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Popconfirm
+                placement="topLeft"
+                title={`Are you sure you want to delete the Explosives Storage & Use ${
+                  this.props.isPermit ? "Permit" : "Permit Application"
+                }?`}
+                onConfirm={console.log("yes delete")}
+                okText="Delete"
+                cancelText="Cancel"
+              >
+                <Button ghost type="primary" size="small">
+                  <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+                </Button>
+              </Popconfirm>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
+    },
   ];
 
-  administrativeAmendmentDetail = (record) => {
+  documentDetail = (record) => {
     const expandedColumns = [
       {
         title: "Category",
@@ -165,7 +278,7 @@ export class MineExplosivesPermitTable extends Component {
         key: "category",
       },
       {
-        title: "Final Application File Name",
+        title: "Document Name",
         dataIndex: "documents",
         key: "documents",
         render: (text) => (
@@ -214,9 +327,8 @@ export class MineExplosivesPermitTable extends Component {
           pagination: false,
           expandIcon: RenderTableExpandIcon,
           expandRowByClick: true,
-          expandedRowRender: this.administrativeAmendmentDetail,
+          expandedRowRender: this.documentDetail,
           expandedRowKeys: this.props.expandedRowKeys,
-          onExpand: this.props.onExpand,
         }}
       />
     );
