@@ -103,10 +103,23 @@ class ExplosivesPermitResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
         explosives_permit.update(
-            data.get('permit_guid'), data.get('application_date'), data.get('latitude'),
-            data.get('longitude'), data.get('explosive_magazines', []),
-            data.get('detonator_magazines', []), data.get('documents', []),
-            data.get('now_application_guid'))
+            data.get('permit_guid'),
+            data.get('now_application_guid'),
+            data.get('issuing_inspector_party_guid'),
+            data.get('mine_operator_party_guid'),
+            data.get('application_status'),
+            data.get('issue_date'),
+            data.get('expiry_date'),
+            data.get('decision_reason'),
+            data.get('is_closed'),
+            data.get('closed_reason'),
+            data.get('latitude'),
+            data.get('longitude'),
+            data.get('application_date'),
+            data.get('explosive_magazines', []),
+            data.get('detonator_magazines', []),
+            data.get('documents', []),
+        )
 
         explosives_permit.save()
         return explosives_permit
