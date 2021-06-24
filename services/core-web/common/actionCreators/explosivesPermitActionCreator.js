@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
@@ -191,7 +192,7 @@ export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMITS(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_EXPLOSIVES_PERMITS));
-      dispatch(explosivesPermitActions.storeExplosivesPermits(esup.data));
+      dispatch(explosivesPermitActions.storeExplosivesPermits(response.data));
       return response;
     })
     .catch((err) => {

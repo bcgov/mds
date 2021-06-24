@@ -30,12 +30,12 @@ export class ExplosivesPermit extends Component {
   handleAddExplosivesPermit = (values) => {
     console.log(values);
     const payload = {
-      mine_guid: this.props.mineGuid,
+      originating_system: "Core",
       ...values,
     };
-    // return this.props.createExplosivesPermit(payload).then(() => {
-    //   this.props.closeModal();
-    // });
+    return this.props.createExplosivesPermit(this.props.mineGuid, payload).then(() => {
+      this.props.closeModal();
+    });
   };
 
   handleOpenAddExplosivesPermitModal = (event, record = null) => {

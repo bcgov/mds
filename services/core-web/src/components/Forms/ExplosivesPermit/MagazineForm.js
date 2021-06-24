@@ -84,6 +84,7 @@ export class AddPartyModal extends Component {
   };
 
   addField = (event, fields, type) => {
+    event.preventDefault();
     // this.setState(({ detonatorNumbers: prevNumbers }) => {
     //   const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
     //   const newRoleNumber = String(highestRoleNumber + 1);
@@ -151,7 +152,7 @@ export class AddPartyModal extends Component {
     </div>
   );
 
-  renderInputs = (number) => {
+  renderInputs = (field) => {
     return (
       <>
         <Row gutter={16}>
@@ -159,8 +160,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Type No. *"
-                id={`${number}type_no`}
-                name={`${number}type_no`}
+                id={`${field}type_no`}
+                name={`${field}type_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -170,8 +171,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Tag No. *"
-                id={`${number}tag_no`}
-                name={`${number}tag_no`}
+                id={`${field}tag_no`}
+                name={`${field}tag_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -183,8 +184,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Construction *"
-                id={`${number}construction`}
-                name={`${number}construction`}
+                id={`${field}construction`}
+                name={`${field}construction`}
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -194,8 +195,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Quantity *"
-                id={`${number}quantity`}
-                name={`${number}quantity`}
+                id={`${field}quantity`}
+                name={`${field}quantity`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
               />
@@ -208,8 +209,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Latitude *"
-                id={`${number}latitude`}
-                name={`${number}latitude`}
+                id={`${field}latitude`}
+                name={`${field}latitude`}
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10), lat, required]}
               />
@@ -219,8 +220,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Longitude *"
-                id={`${number}longitude`}
-                name={`${number}longitude`}
+                id={`${field}longitude`}
+                name={`${field}longitude`}
                 validate={[number, maxLength(12), lon, required]}
                 component={renderConfig.FIELD}
               />
@@ -232,8 +233,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Distance from Road or Work Area *"
-                id={`${number}distance_road`}
-                name={`${number}distance_road`}
+                id={`${field}distance_road`}
+                name={`${field}distance_road`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
               />
@@ -243,8 +244,8 @@ export class AddPartyModal extends Component {
             <Form.Item>
               <Field
                 label="Distance from Dwelling or Flammable Material Storage Area *"
-                id={`${number}distance_dwelling`}
-                name={`${number}distance_dwelling`}
+                id={`${field}distance_dwelling`}
+                name={`${field}distance_dwelling`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
               />
@@ -255,8 +256,8 @@ export class AddPartyModal extends Component {
           <Col span={8}>
             <Field
               label="Length*"
-              id={`${number}length`}
-              name={`${number}length`}
+              id={`${field}length`}
+              name={`${field}length`}
               component={renderConfig.FIELD}
               validate={[number, required]}
             />
@@ -264,8 +265,8 @@ export class AddPartyModal extends Component {
           <Col span={8}>
             <Field
               label="Width*"
-              id={`${number}width`}
-              name={`${number}width`}
+              id={`${field}width`}
+              name={`${field}width`}
               component={renderConfig.FIELD}
               validate={[number, required]}
             />
@@ -273,8 +274,8 @@ export class AddPartyModal extends Component {
           <Col span={8}>
             <Field
               label="Height*"
-              id={`${number}height`}
-              name={`${number}height`}
+              id={`${field}height`}
+              name={`${field}height`}
               component={renderConfig.FIELD}
               validate={[number, required]}
             />
