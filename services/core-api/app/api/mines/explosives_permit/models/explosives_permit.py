@@ -27,6 +27,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    mine_operator_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     application_status = db.Column(
         db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
