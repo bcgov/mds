@@ -90,12 +90,7 @@ exports[`MineApplications renders properly 1`] = `
       key="3"
       tab="Explosives Storage & Use Permit Applications (0)"
     >
-      <Connect(ExplosivesPermit)
-        handleSearch={[Function]}
-        isLoaded={false}
-        onExpand={[Function]}
-        searchParams={Object {}}
-      />
+      <Connect(ExplosivesPermit) />
     </TabPane>
   </Tabs>
 </div>

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change, FormSection, FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
-
+import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
 // import { Rimport { Field, reduxForm } from "redux-form";ow, Col, Steps, Button, Popconfirm } from "antd";
 import { createParty, addPartyRelationship } from "@common/actionCreators/partiesActionCreator";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
@@ -162,6 +162,7 @@ export class AddPartyModal extends Component {
                 id={`${number}type_no`}
                 name={`${number}type_no`}
                 component={renderConfig.FIELD}
+                validate={[required]}
               />
             </Form.Item>
           </Col>
@@ -172,6 +173,7 @@ export class AddPartyModal extends Component {
                 id={`${number}tag_no`}
                 name={`${number}tag_no`}
                 component={renderConfig.FIELD}
+                validate={[required]}
               />
             </Form.Item>
           </Col>
@@ -184,6 +186,7 @@ export class AddPartyModal extends Component {
                 id={`${number}construction`}
                 name={`${number}construction`}
                 component={renderConfig.FIELD}
+                validate={[required]}
               />
             </Form.Item>
           </Col>
@@ -194,6 +197,7 @@ export class AddPartyModal extends Component {
                 id={`${number}quantity`}
                 name={`${number}quantity`}
                 component={renderConfig.FIELD}
+                validate={[number, required]}
               />
             </Form.Item>
           </Col>
@@ -207,6 +211,7 @@ export class AddPartyModal extends Component {
                 id={`${number}latitude`}
                 name={`${number}latitude`}
                 component={renderConfig.FIELD}
+                validate={[number, maxLength(10), lat, required]}
               />
             </Form.Item>
           </Col>
@@ -216,6 +221,7 @@ export class AddPartyModal extends Component {
                 label="Longitude *"
                 id={`${number}longitude`}
                 name={`${number}longitude`}
+                validate={[number, maxLength(12), lon, required]}
                 component={renderConfig.FIELD}
               />
             </Form.Item>
@@ -229,6 +235,7 @@ export class AddPartyModal extends Component {
                 id={`${number}distance_road`}
                 name={`${number}distance_road`}
                 component={renderConfig.FIELD}
+                validate={[number, required]}
               />
             </Form.Item>
           </Col>
@@ -239,6 +246,7 @@ export class AddPartyModal extends Component {
                 id={`${number}distance_dwelling`}
                 name={`${number}distance_dwelling`}
                 component={renderConfig.FIELD}
+                validate={[number, required]}
               />
             </Form.Item>
           </Col>
@@ -250,6 +258,7 @@ export class AddPartyModal extends Component {
               id={`${number}length`}
               name={`${number}length`}
               component={renderConfig.FIELD}
+              validate={[number, required]}
             />
           </Col>
           <Col span={8}>
@@ -258,6 +267,7 @@ export class AddPartyModal extends Component {
               id={`${number}width`}
               name={`${number}width`}
               component={renderConfig.FIELD}
+              validate={[number, required]}
             />
           </Col>
           <Col span={8}>
@@ -266,6 +276,7 @@ export class AddPartyModal extends Component {
               id={`${number}height`}
               name={`${number}height`}
               component={renderConfig.FIELD}
+              validate={[number, required]}
             />
           </Col>
         </Row>

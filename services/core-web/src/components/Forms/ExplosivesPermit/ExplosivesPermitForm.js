@@ -59,7 +59,7 @@ export class ExplosivesPermitForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
-            <Form.Item>
+            {/* <Form.Item>
               <PartySelectField
                 id="mine_operator_party_guid"
                 name="mine_operator_party_guid"
@@ -68,7 +68,7 @@ export class ExplosivesPermitForm extends Component {
                 validate={[required]}
                 allowAddingParties
               />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
               <Field
                 id="permit_guid"
@@ -90,7 +90,7 @@ export class ExplosivesPermitForm extends Component {
                 data={permitDropdown}
               />
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
               <PartySelectField
                 id="issuing_inspector_party_guid"
                 name="issuing_inspector_party_guid"
@@ -99,7 +99,7 @@ export class ExplosivesPermitForm extends Component {
                 validate={[required]}
                 allowAddingParties
               />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item>
               <Field
                 id="application_date"
