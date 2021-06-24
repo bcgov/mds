@@ -1,6 +1,7 @@
 from datetime import datetime
 from pytz import timezone
 
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
@@ -51,17 +52,18 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
     explosive_magazines = db.relationship(
         'ExplosivesPermitMagazine',
-        lazy='joined',
+        lazy='select',
         primaryjoin=
         "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'EXP', ExplosivesPermitMagazine.deleted_ind == False)"
     )
     detonator_magazines = db.relationship(
         'ExplosivesPermitMagazine',
-        lazy='joined',
+        lazy='select',
         primaryjoin=
         "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'DET', ExplosivesPermitMagazine.deleted_ind == False)"
     )
-    documents = db.relationship('ExplosivesPermitDocumentXref', lazy='joined')
+
+    documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
     mine_documents = db.relationship(
         'MineDocument',
         lazy='joined',
@@ -69,6 +71,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         secondaryjoin=
         'and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
+
+    mines_act_permit = db.relationship('Permit', lazy='select')
+    now_application_identity = db.relationship('NOWApplicationIdentity', lazy='select')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'

@@ -51,7 +51,9 @@ EXPLOSIVES_PERMIT_MODEL = api.model(
         'closed_reason': fields.String,
         'explosive_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
         'detonator_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
-        'documents': fields.List(fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_MODEL))
+        'documents': fields.List(fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_MODEL)),
+        'mines_permit_number': fields.String(attribute='mines_act_permit.permit_no'),
+        'now_number': fields.String(attribute='now_application_identity.now_number')
     })
 
 EXPLOSIVES_PERMIT_STATUS_MODEL = api.model(
