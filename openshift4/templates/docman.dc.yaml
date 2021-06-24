@@ -80,7 +80,7 @@ parameters:
   - name: DOCUMENT_CAPACITY
     value: 1Gi
   - name: TUSD_URL
-    required: true
+    value: http://tusd:1080/files/
 objects:
   - apiVersion: v1
     kind: PersistentVolumeClaim

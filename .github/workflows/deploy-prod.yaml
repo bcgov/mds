@@ -60,7 +60,6 @@ jobs:
           -p JWT_OIDC_AUTHORITY=https://oidc.gov.bc.ca/auth/realms/mds \
           -p DOCMAN_API_URL=https://mds-prod.apps.silver.devops.gov.bc.ca/document-manager \
           -p CORE_API_URL=https://mds-prod.apps.silver.devops.gov.bc.ca/api \
-          -p TUSD_URL=https://mds-prod.apps.silver.devops.gov.bc.ca/files/ \
           -p URL=https://mds-prod.apps.silver.devops.gov.bc.ca/ \
           -p ENVIRONMENT_NAME=prod \
           -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
