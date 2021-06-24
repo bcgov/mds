@@ -46,7 +46,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     longitude = db.Column(db.Numeric(11, 7), nullable=False)
 
     is_closed = db.Column(db.Boolean)
-    closed_timestamp = db.Column(db.DateTime),
+    closed_timestamp = db.Column(db.DateTime)
     closed_reason = db.Column(db.String)
 
     explosive_magazines = db.relationship(
