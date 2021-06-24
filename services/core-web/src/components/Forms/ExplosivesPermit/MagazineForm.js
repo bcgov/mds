@@ -95,19 +95,24 @@ export class AddPartyModal extends Component {
     // });
     fields.push({});
     if (type === "EXP") {
-      this.setState({ activeExplosiveKey: fields.length.toString() });
+      this.handleActiveExplosivePanelChange([fields.length]);
     } else {
-      this.setState({ activeDetonatorKey: fields.length.toString() });
+      this.handleActiveDetonatorPanelChange([fields.length]);
     }
   };
 
-  removeExplosiveField = (number) => () => {
+  removeField = (event, index, fields) => () => {
+    console.log("GETTING CALLED");
+    console.log(index);
+    console.log(fields);
+    event.preventDefault();
+    fields.remove(index);
     // Clear field values from Redux store
-    this.clearFieldValues(number);
-    // Remove role number from state
-    this.setState(({ explosiveNumbers: prevNumbers }) => ({
-      explosiveNumbers: prevNumbers.filter((x) => x !== number),
-    }));
+    // this.clearFieldValues(index);
+    // // Remove role number from state
+    // this.setState(({ explosiveNumbers: prevNumbers }) => ({
+    //   explosiveNumbers: prevNumbers.filter((x) => x !== number),
+    // }));
   };
 
   removeDetonatorField = (number) => () => {
@@ -121,26 +126,29 @@ export class AddPartyModal extends Component {
 
   handleActiveDetonatorPanelChange = (key) => {
     console.log(key);
-    return this.setState({ activeDetonatorKey: key });
+
+    this.setState({ activeDetonatorKey: key });
   };
 
-  handleActiveExplosivePanelChange = (number) => {
-    this.setState({ activeExplosiveKey: number });
+  handleActiveExplosivePanelChange = (key) => {
+    console.log(key);
+    this.setState({ activeExplosiveKey: key });
   };
 
-  panelHeader = (removeField, number, type) => (
+  panelHeader = (removeField, index, fields, type) => (
     <div className="inline-flex between">
       <Form.Item
         style={{ marginTop: "15px" }}
         label={
-          type === "EXP" ? `Explosive Magazine ${number + 1}` : `Detonator Magazine ${number + 1}`
+          type === "EXP" ? `Explosive Magazine ${index + 1}` : `Detonator Magazine ${index + 1}`
         }
       />
-      <div>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div onClick={(event) => event.stopPropagation()}>
         <Popconfirm
           placement="topRight"
-          title={`Are you sure you want to remove Role ${number + 1}?`}
-          onConfirm={removeField(number)}
+          title={`Are you sure you want to remove Role ${index + 1}?`}
+          onConfirm={(event) => this.removeField(event, index, fields)}
           okText="Yes"
           cancelText="No"
         >
@@ -299,7 +307,7 @@ export class AddPartyModal extends Component {
               {fields.map((field, index) => (
                 // {this.state.explosiveNumbers.map((number) => (
                 <Collapse.Panel
-                  header={this.panelHeader(this.removeExplosiveField, index, "EXP")}
+                  header={this.panelHeader(this.removeExplosiveField, index, fields, "EXP")}
                   key={index}
                 >
                   {this.renderInputs(field)}
@@ -333,8 +341,8 @@ export class AddPartyModal extends Component {
               {fields.map((field, index) => (
                 // {this.state.detonatorNumbers.map((number) => (
                 <Collapse.Panel
-                  header={this.panelHeader(this.removeDetonatorField, index, "DET")}
-                  key={index}
+                  header={this.panelHeader(this.removeDetonatorField, index, fields, "DET")}
+                  key={field}
                 >
                   {this.renderInputs(field)}
                 </Collapse.Panel>
@@ -354,6 +362,8 @@ export class AddPartyModal extends Component {
   };
 
   render() {
+    console.log("this.state.activeExplosiveKey", this.state.activeExplosiveKey);
+    console.log("this.state.activeDetonatorKey", this.state.activeDetonatorKey);
     return (
       <div>
         <Form.Item label="Explosive Magazines" />
