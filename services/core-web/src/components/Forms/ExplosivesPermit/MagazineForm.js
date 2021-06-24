@@ -101,11 +101,10 @@ export class AddPartyModal extends Component {
     }
   };
 
-  removeField = (event, index, fields) => () => {
+  removeField = (index, fields) => () => {
     console.log("GETTING CALLED");
     console.log(index);
     console.log(fields);
-    event.preventDefault();
     fields.remove(index);
     // Clear field values from Redux store
     // this.clearFieldValues(index);
@@ -148,7 +147,7 @@ export class AddPartyModal extends Component {
         <Popconfirm
           placement="topRight"
           title={`Are you sure you want to remove Role ${index + 1}?`}
-          onConfirm={(event) => this.removeField(event, index, fields)}
+          onConfirm={this.removeField(index, fields)}
           okText="Yes"
           cancelText="No"
         >
