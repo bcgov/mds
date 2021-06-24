@@ -1,8 +1,5 @@
-import json
-
 from flask_restplus import Resource, inputs
 from werkzeug.exceptions import NotFound
-from flask import current_app
 from decimal import Decimal
 
 from app.extensions import api
@@ -18,6 +15,8 @@ class ExplosivesPermitListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
     parser.add_argument('permit_guid', type=str, store_missing=False, required=True, help='')
+    parser.add_argument(
+        'now_application_guid', type=str, store_missing=False, required=False, help='')
     parser.add_argument('originating_system', type=str, store_missing=False, required=True, help='')
     parser.add_argument(
         'latitude',
@@ -37,9 +36,6 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         store_missing=False,
         required=True,
         help='')
-    parser.add_argument(
-        'now_application_guid', type=str, store_missing=False, required=False, help='')
-    # TODO: Can we document/parse these relationship types better?
     parser.add_argument(
         'explosive_magazines',
         type=list,

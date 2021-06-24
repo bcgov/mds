@@ -88,7 +88,80 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         return val
 
     # TODO: Implement & ensure that this method is transactional with its created/updated/deleted relationships.
-    def update(self, documents=[], add_to_session=True):
+    def update(self,
+               permit_guid,
+               now_application_guid,
+               issuing_inspector_party_guid,
+               mine_operator_party_guid,
+               application_status,
+               issue_date,
+               expiry_date,
+               decision_reason,
+               is_closed,
+               closed_reason,
+               latitude,
+               longitude,
+               application_date,
+               explosive_magazines=[],
+               detonator_magazines=[],
+               documents=[],
+               add_to_session=True):
+
+        # Update simple properties.
+        self.permit_guid = permit_guid
+        self.now_application_guid = now_application_guid
+        self.issuing_inspector_party_guid = issuing_inspector_party_guid
+        self.mine_operator_party_guid = mine_operator_party_guid
+        self.application_date = application_date
+        self.issue_date = issue_date
+        self.expiry_date = expiry_date
+        self.latitude = latitude
+        self.longitude = longitude
+
+        # Check for application status changes.
+        if application_status and application_status != 'REC':
+            if application_status == 'APP':
+                self.permit_number = ExplosivesPermit.get_next_permit_number()
+            self.application_status = application_status
+            self.decision_timestamp = datetime.utcnow()
+            self.decision_reason = decision_reason
+
+        # Check for permit closed changes.
+        self.is_closed = is_closed
+        if is_closed:
+            self.closed_reason = closed_reason
+            self.closed_timestamp = datetime.utcnow()
+        else:
+            self.closed_reason = None
+            self.closed_timestamp = None
+
+        def process_magazines(magazines, updated_magazines, type):
+            # Get the IDs of the updated magazines.
+            updated_magazines_ids = [
+                magazine.get('explosives_permit_magazine_id') for magazine in updated_magazines
+            ]
+
+            # Delete deleted magazines.
+            for magazine in magazines:
+                if magazine.explosives_permit_magazine_id not in updated_magazines_ids:
+                    magazine.delete(commit=False)
+
+            # Create or update existing explosive magazines.
+            for magazine_data in updated_magazines:
+                explosives_permit_magazine_id = magazine_data.get('explosives_permit_magazine_id')
+                if explosives_permit_magazine_id:
+                    magazine = ExplosivesPermitMagazine.find_by_explosives_permit_magazine_id(
+                        explosives_permit_magazine_id)
+                    magazine.update_from_data(magazine_data)
+                else:
+                    magazine = ExplosivesPermitMagazine.create_from_data(type, magazine_data)
+                    magazines.append(magazine)
+
+        process_magazines(self.explosive_magazines, explosive_magazines, 'EXP')
+        process_magazines(self.detonator_magazines, detonator_magazines, 'DET')
+
+        # TODO: Implement creating/updating documents.
+
         if add_to_session:
             self.save(commit=False)
         return self
@@ -139,27 +212,12 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             longitude=longitude,
             now_application_guid=now_application_guid)
 
-        def create_explosives_permit_magazine(type, data):
-            return ExplosivesPermitMagazine(
-                explosives_permit_magazine_type_code=type,
-                type_no=data.get('type_no'),
-                tag_no=data.get('tag_no'),
-                construction=data.get('construction'),
-                latitude=data.get('latitude'),
-                longitude=data.get('longitude'),
-                length=data.get('length'),
-                width=data.get('width'),
-                height=data.get('height'),
-                quantity=data.get('quantity'),
-                distance_road=data.get('distance_road'),
-                distance_dwelling=data.get('distance_dwelling'))
-
         for magazine_data in explosive_magazines:
-            magazine = create_explosives_permit_magazine('EXP', magazine_data)
+            magazine = ExplosivesPermitMagazine.create_from_data('EXP', magazine_data)
             explosives_permit.explosive_magazines.append(magazine)
 
         for magazine_data in detonator_magazines:
-            magazine = create_explosives_permit_magazine('DET', magazine_data)
+            magazine = ExplosivesPermitMagazine.create_from_data('DET', magazine_data)
             explosives_permit.detonator_magazines.append(magazine)
 
         for doc in documents:
