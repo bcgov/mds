@@ -73,9 +73,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
 
-    def save(self):
-        super(ExplosivesPermit, self).save()
-
     # Add validation on application date for not being in the future.
 
     @validates('originating_system')
