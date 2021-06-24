@@ -14,7 +14,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
     document_template_code = db.Column(db.String,
                                        db.ForeignKey('document_template.document_template_code'))
 
-    document_template = db.relationship('DocumentTemplate', backref='now_application_document_type')
+    document_template = db.relationship(
+        'DocumentTemplate', backref='explosives_permit_document_type')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.explosives_permit_document_type_code}'
