@@ -8,6 +8,9 @@ from sqlalchemy import and_
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
+from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
+from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
+from app.api.mines.documents.models.mine_document import MineDocument
 
 # NOTE: MMS is also a valid originating system, but not via our API.
 ORIGINATING_SYSTEMS = ['Core', 'MineSpace']
@@ -55,15 +58,13 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         'and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
     )
 
-    def __init__(self, **kwargs):
-        self.application_number = ExplosivesPermit.get_next_application_number()
-        super(ExplosivesPermit, self).__init__(**kwargs)
-
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
 
     def save(self):
         super(ExplosivesPermit, self).save()
+
+    # Add validation on application date for not being in the future.
 
     @validates('originating_system')
     def validate_originating_system(self, key, val):
@@ -72,7 +73,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
         return val
 
-    def update(self, add_to_session=True):
+    # TODO: Implement & ensure that this method is transactional with its created/updated/deleted relationships.
+    def update(self, documents=[], add_to_session=True):
         if add_to_session:
             self.save(commit=False)
         return self
@@ -95,14 +97,76 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             cls.application_status == 'APP').count()
         return f'{prefix}{base + total}'
 
+    # TODO: Ensure that this method is transactional with its created relationships.
     @classmethod
-    def create(cls, add_to_session=True):
-        explosives_permit = cls()
+    def create(cls,
+               mine,
+               permit_guid,
+               application_date,
+               originating_system,
+               latitude,
+               longitude,
+               explosive_magazines=[],
+               detonator_magazines=[],
+               documents=[],
+               now_application_guid=None,
+               add_to_session=True):
+
+        application_status = 'REC'
+        application_number = ExplosivesPermit.get_next_application_number()
+
+        explosives_permit = cls(
+            permit_guid=permit_guid,
+            application_status=application_status,
+            application_number=application_number,
+            application_date=application_date,
+            originating_system=originating_system,
+            latitude=latitude,
+            longitude=longitude,
+            now_application_guid=now_application_guid)
+
+        def create_explosives_permit_magazine(type, data):
+            return ExplosivesPermitMagazine(
+                explosives_permit_magazine_type_code=type,
+                type_no=data.get('type_no'),
+                tag_no=data.get('tag_no'),
+                construction=data.get('construction'),
+                latitude=data.get('latitude'),
+                longitude=data.get('longitude'),
+                length=data.get('length'),
+                width=data.get('width'),
+                height=data.get('height'),
+                quantity=data.get('quantity'),
+                distance_road=data.get('distance_road'),
+                distance_dwelling=data.get('distance_dwelling'))
+
+        for magazine_data in explosive_magazines:
+            magazine = create_explosives_permit_magazine('EXP', magazine_data)
+            explosives_permit.magazines.append(magazine)
+
+        for magazine_data in detonator_magazines:
+            magazine = create_explosives_permit_magazine('DET', magazine_data)
+            explosives_permit.magazines.append(magazine)
+
+        for doc in documents:
+            mine_doc = MineDocument(
+                mine_guid=mine.mine_guid,
+                document_name=doc['document_name'],
+                document_manager_guid=doc['document_manager_guid'])
+            # mine_doc.save(commit=False)
+            explosives_permit_doc = ExplosivesPermitDocumentXref(
+                mine_document_guid=mine_doc.mine_document_guid,
+                mine_incident_id=explosives_permit.explosives_permit_id,
+                explosives_permit_document_type_code=doc['code'])
+            explosives_permit_doc.mine_document = mine_doc
+            explosives_permit.documents.append(explosives_permit_doc)
+
+        mine.explosives_permits.append(explosives_permit)
+
         if add_to_session:
             explosives_permit.save(commit=False)
         return explosives_permit
 
-    @classmethod
     @classmethod
     def find_by_mine_guid(cls, mine_guid):
         return cls.query.filter_by(mine_guid=mine_guid, deleted_ind=False).all()
