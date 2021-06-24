@@ -86,9 +86,9 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('application_date'),
                                                     data.get('originating_system'),
                                                     data.get('latitude'), data.get('longitude'),
-                                                    data.get('explosive_magazines'),
-                                                    data.get('detonator_magazines'),
-                                                    data.get('documents'),
+                                                    data.get('explosive_magazines', []),
+                                                    data.get('detonator_magazines', []),
+                                                    data.get('documents', []),
                                                     data.get('now_application_guid'))
         explosives_permit.save()
 
