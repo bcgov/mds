@@ -725,8 +725,11 @@ VALUES
   ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
   ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
   ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
+  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Letter.docx', true, 'system-mds', 'system-mds'),
+  ('ESP', '', 'templates/explosives_permit/Explosives Storage and Use Permit.docx', true, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
@@ -1643,3 +1646,48 @@ VALUES
     ('CLO', 'Closed', 10, 'system-mds', 'system-mds'),
     ('CAM', 'Inactive (C&M)', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_status (
+    explosives_permit_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+)
+VALUES
+    ('APP', 'Approved', 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected', 'system-mds', 'system-mds'),
+    ('WIT', 'Withdrawn', 'system-mds', 'system-mds'),
+    ('REC', 'Received', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_magazine_type (
+    explosives_permit_magazine_type_code,
+    description,
+    create_user,
+    update_user
+)
+VALUES
+    ('EXP', 'Explosives Magazine', 'system-mds', 'system-mds'),
+    ('DET', 'Detonator Magazine', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_document_type (
+    explosives_permit_document_type_code,
+    description,
+    active_ind,
+    display_order,
+    document_template_code,
+    create_user,
+    update_user
+)
+VALUES
+    ('PER', 'Explosives Storage and Use Permit', false, 0, 'ESP', 'system-mds', 'system-mds'),
+    ('LET', 'Explosives Storage and Use Permit Letter', false, 0, 'ESL', 'system-mds', 'system-mds'),
+    -- TODO: What document types do we need?
+    ('BLA', 'Blasting Plan', true, 10, NULL, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+-- TODO: Create template JSON for these two documents.
+UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESL';
+UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESP';

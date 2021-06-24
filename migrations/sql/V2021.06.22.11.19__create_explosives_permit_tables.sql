@@ -1,17 +1,38 @@
+CREATE TABLE IF NOT EXISTS explosives_permit_status (
+    explosives_permit_status_code varchar(3) PRIMARY KEY,
+    description varchar NOT NULL,
+
+    active_ind boolean DEFAULT true NOT NULL,
+    display_order integer NOT NULL,
+
+    create_user varchar(60) NOT NULL,
+    create_timestamp timestamptz DEFAULT now() NOT NULL,
+    update_user varchar(60) NOT NULL,
+    update_timestamp timestamptz DEFAULT now() NOT NULL
+);
+
+ALTER TABLE explosives_permit_status OWNER TO mds;
+
 CREATE TABLE IF NOT EXISTS explosives_permit (
     explosives_permit_id serial PRIMARY KEY,
     explosives_permit_guid uuid UNIQUE DEFAULT gen_random_uuid() NOT NULL,
     mine_guid uuid NOT NULL,
     permit_guid uuid NOT NULL,
     now_application_guid uuid,
-    issuing_inspector_party_guid uuid NOT NULL,
+    issuing_inspector_party_guid uuid,
+    application_status varchar NOT NULL,
 
-    explosives_permit_number varchar UNIQUE NOT NULL,
-    originating_system varchar NOT NULL,
+    permit_number varchar UNIQUE,
+    issue_date date,
+    expiry_date date,
 
+    application_number varchar UNIQUE NOT NULL,
     application_date date NOT NULL,
-    issue_date date NOT NULL,
-    expiry_date date NOT NULL,
+    originating_system varchar NOT NULL,
+    received_timestamp timestamptz DEFAULT now() NOT NULL,
+    decision_timestamp timestamptz,
+    decision_reason varchar,
+
     latitude numeric(9, 7) NOT NULL,
     longitude numeric(11, 7) NOT NULL,
 
@@ -25,7 +46,8 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permit_guid) REFERENCES permit(permit_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (now_application_guid) REFERENCES now_application_identity(now_application_guid) DEFERRABLE INITIALLY DEFERRED,
-    FOREIGN KEY (issuing_inspector_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED
+    FOREIGN KEY (issuing_inspector_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (application_status) REFERENCES explosives_permit_status(explosives_permit_status_code) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE explosives_permit OWNER TO mds;
@@ -41,17 +63,6 @@ CREATE TABLE IF NOT EXISTS explosives_permit_magazine_type (
 );
 
 ALTER TABLE explosives_permit_magazine_type OWNER TO mds;
-
-INSERT INTO explosives_permit_magazine_type (
-    explosives_permit_magazine_type_code,
-    description,
-    create_user,
-    update_user
-)
-VALUES
-    ('EXP', 'Explosives Magazine', 'system-mds', 'system-mds'),
-    ('DET', 'Detonator Magazine', 'system-mds', 'system-mds')
-ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS explosives_permit_magazine (
     explosives_permit_magazine_id serial PRIMARY KEY,
@@ -70,6 +81,8 @@ CREATE TABLE IF NOT EXISTS explosives_permit_magazine (
     distance_road numeric,
     distance_dwelling numeric,
 
+    deleted_ind boolean DEFAULT false NOT NULL,
+
     create_user varchar(60) NOT NULL,
     create_timestamp timestamptz DEFAULT now() NOT NULL,
     update_user varchar(60) NOT NULL,
@@ -85,31 +98,20 @@ CREATE TABLE IF NOT EXISTS explosives_permit_document_type (
     explosives_permit_document_type_code varchar(3) PRIMARY KEY,
     description varchar NOT NULL,
 
+    document_template_code varchar,
+
     active_ind boolean DEFAULT true NOT NULL,
     display_order integer NOT NULL,
 
     create_user varchar(60) NOT NULL,
     create_timestamp timestamptz DEFAULT now() NOT NULL,
     update_user varchar(60) NOT NULL,
-    update_timestamp timestamptz DEFAULT now() NOT NULL
+    update_timestamp timestamptz DEFAULT now() NOT NULL,
+    
+    FOREIGN KEY (document_template_code) REFERENCES document_template(document_template_code) DEFERRABLE INITIALLY DEFERRED
 );
 
 ALTER TABLE explosives_permit_document_type OWNER TO mds;
-
-INSERT INTO explosives_permit_document_type (
-    explosives_permit_document_type_code,
-    description,
-    active_ind,
-    display_order,
-    create_user,
-    update_user
-)
-VALUES
-    ('PER', 'Explosives Storage and Use Permit', false, 0, 'system-mds', 'system-mds'),
-    ('LET', 'Explosives Storage and Use Permit Letter', false, 0, 'system-mds', 'system-mds'),
-    -- TODO: What document types do we need?
-    ('BLA', 'Blasting Plan', true, 10, 'system-mds', 'system-mds')
-ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS explosives_permit_document_xref (
     explosives_permit_document_xref_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
