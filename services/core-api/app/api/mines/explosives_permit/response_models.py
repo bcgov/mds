@@ -1,6 +1,12 @@
 from app.extensions import api
 from flask_restplus import fields
 
+EXPLOSIVES_PERMIT = api.model('ExplosivesPermit', {})
+
+EXPLOSIVES_PERMIT_MAGAZINE = api.model('ExplosivesPermitMagazine', {})
+
+EXPLOSIVES_PERMIT_DOCUMENT = api.model('ExplosivesPermitDocument', {})
+
 EXPLOSIVES_PERMIT_STATUS_MODEL = api.model(
     'ExplosivesPermitStatus', {
         'explosives_permit_status_code': fields.String,

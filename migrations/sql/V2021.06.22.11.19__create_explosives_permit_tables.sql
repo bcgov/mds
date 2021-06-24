@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     mine_guid uuid NOT NULL,
     permit_guid uuid NOT NULL,
     now_application_guid uuid,
+    mine_operator_party_guid uuid,
     issuing_inspector_party_guid uuid,
     application_status varchar NOT NULL,
 
@@ -36,6 +37,10 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     latitude numeric(9, 7) NOT NULL,
     longitude numeric(11, 7) NOT NULL,
 
+    is_closed boolean,
+    closed_timestamp timestamptz,
+    closed_reason varchar,
+
     deleted_ind boolean DEFAULT false NOT NULL,
 
     create_user varchar(60) NOT NULL,
@@ -46,6 +51,7 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     FOREIGN KEY (mine_guid) REFERENCES mine(mine_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (permit_guid) REFERENCES permit(permit_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (now_application_guid) REFERENCES now_application_identity(now_application_guid) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (mine_operator_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (issuing_inspector_party_guid) REFERENCES party(party_guid) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (application_status) REFERENCES explosives_permit_status(explosives_permit_status_code) DEFERRABLE INITIALLY DEFERRED
 );
