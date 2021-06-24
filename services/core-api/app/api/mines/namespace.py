@@ -20,6 +20,7 @@ from app.api.mines.permits.permit_amendment.resources.permit_amendment_vc import
 from app.api.mines.permits.permit.resources.permit_document_upload import PermitDocumentUploadInitializationResource
 from app.api.mines.explosives_permit.resources.explosives_permit import ExplosivesPermitResource
 from app.api.mines.explosives_permit.resources.explosives_permit_list import ExplosivesPermitListResource
+from app.api.mines.explosives_permit.resources.explosives_permit_document_upload import ExplosivesPermitDocumentUploadResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.reports.resources.mine_report_document import MineReportDocumentListResource
 from app.api.mines.reports.resources.reports_resource import ReportsResource
@@ -151,6 +152,9 @@ api.add_resource(
 api.add_resource(ExplosivesPermitResource,
                  '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>')
 api.add_resource(ExplosivesPermitListResource, '/<string:mine_guid>/explosives-permits')
+api.add_resource(
+    ExplosivesPermitDocumentUploadResource,
+    '/<string:mine_guid>/explosives-permits/<string:explosives_permit_guid>/documents')
 
 api.add_resource(MinePartyApptDocumentUploadResource,
                  '/<string:mine_guid>/party-appts/<string:mine_party_appt_guid>/documents')
