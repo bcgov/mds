@@ -49,7 +49,18 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     closed_timestamp = db.Column(db.DateTime),
     closed_reason = db.Column(db.String)
 
-    magazines = db.relationship('ExplosivesPermitMagazine', lazy='joined')
+    explosive_magazines = db.relationship(
+        'ExplosivesPermitMagazine',
+        lazy='joined',
+        primaryjoin=
+        "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'EXP', ExplosivesPermitMagazine.deleted_ind == False)"
+    )
+    detonator_magazines = db.relationship(
+        'ExplosivesPermitMagazine',
+        lazy='joined',
+        primaryjoin=
+        "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'DET', ExplosivesPermitMagazine.deleted_ind == False)"
+    )
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='joined')
     mine_documents = db.relationship(
         'MineDocument',
@@ -143,11 +154,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         for magazine_data in explosive_magazines:
             magazine = create_explosives_permit_magazine('EXP', magazine_data)
-            explosives_permit.magazines.append(magazine)
+            explosives_permit.explosive_magazines.append(magazine)
 
         for magazine_data in detonator_magazines:
             magazine = create_explosives_permit_magazine('DET', magazine_data)
-            explosives_permit.magazines.append(magazine)
+            explosives_permit.detonator_magazines.append(magazine)
 
         for doc in documents:
             mine_doc = MineDocument(
