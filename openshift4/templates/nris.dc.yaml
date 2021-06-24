@@ -25,7 +25,7 @@ parameters:
     required: true
   - name: BASE_PATH
     required: false
-    value: /
+    value: /nris-api
   - name: NRIS_ODB_CREDENTIALS
     required: false
     value: template.nris-odb-credentials
