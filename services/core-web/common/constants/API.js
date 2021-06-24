@@ -68,7 +68,7 @@ export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, perm
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
 // Explosive Storage & Use Permits
-export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/permits`;
+export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/explosives-permit`;
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
@@ -23,14 +24,46 @@ const esup = {
         issuing_inspector_party_guid: null,
         source: "Core",
         mine_operator_name: "Mike",
+        application_no: 52135425,
         mine_operator_guid: null,
         application_date: "2007-12-04",
         issue_date: "2007-12-04",
         expiry_date: "2007-12-04",
         latitude: null,
         longitude: null,
+        application_status: "APP",
         documents: [],
-        magazines: [
+        detonator_magazines: [
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+        explosive_magazines: [
           {
             type: "EXP",
             type_no: "1",
@@ -54,6 +87,7 @@ const esup = {
         esup_permit_no: "BC-145411",
         permit_no: "P-39039404",
         now_no: "1500615-2021-12",
+        application_no: 12351235,
         issuing_inspector_name: "John",
         issuing_inspector_party_guid: null,
         source: "Core",
@@ -64,8 +98,39 @@ const esup = {
         expiry_date: "2007-12-04",
         latitude: null,
         longitude: null,
+        application_status: "REC",
         documents: [],
-        magazines: [
+        detonator_magazines: [
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+        explosive_magazines: [
           {
             type: "EXP",
             type_no: "1",
@@ -81,7 +146,7 @@ const esup = {
             distance_dwelling: 60,
           },
           {
-            type: "DET",
+            type: "EXP",
             type_no: "1",
             tag_no: "1",
             construction: "string",
@@ -127,7 +192,7 @@ export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
     .get(ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMITS(mineGuid), createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_EXPLOSIVES_PERMITS));
-      dispatch(explosivesPermitActions.storeExplosivesPermits(esup.data));
+      dispatch(explosivesPermitActions.storeExplosivesPermits(response.data));
       return response;
     })
     .catch((err) => {

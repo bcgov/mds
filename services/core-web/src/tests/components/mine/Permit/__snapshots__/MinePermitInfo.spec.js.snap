@@ -10,43 +10,65 @@ exports[`MinePermitInfo renders properly 1`] = `
     </h2>
     <Divider />
   </div>
-  <div>
-    <div
-      className="inline-flex between"
+  <Tabs
+    style={
+      Object {
+        "textAlign": "left !important",
+      }
+    }
+    type="card"
+  >
+    <TabPane
+      key="1"
+      tab="Mines Act Permits (0)"
     >
-      <div />
-      <div
-        className="inline-flex between"
-      >
-        <Connect(AuthorizationWrapper)
-          permission="role_edit_permits"
+      <br />
+      <div>
+        <div
+          className="inline-flex between"
         >
-          <AddButton
-            onClick={[Function]}
+          <h4
+            className="uppercase"
           >
-            Add a New Permit
-          </AddButton>
-        </Connect(AuthorizationWrapper)>
+            Mines Act Permits
+          </h4>
+          <Connect(AuthorizationWrapper)
+            permission="role_edit_permits"
+          >
+            <AddButton
+              onClick={[Function]}
+            >
+              Add a New Permit
+            </AddButton>
+          </Connect(AuthorizationWrapper)>
+        </div>
       </div>
-    </div>
-  </div>
-  <br />
-  <Connect(MinePermitTable)
-    expandedRowKeys={Array []}
-    handleDeletePermit={[Function]}
-    handleDeletePermitAmendment={[Function]}
-    handlePermitAmendmentIssueVC={[Function]}
-    isLoaded={false}
-    major_mine_ind={true}
-    onExpand={[Function]}
-    openAddAmalgamatedPermitModal={[Function]}
-    openAddPermitAmendmentModal={[Function]}
-    openAddPermitHistoricalAmendmentModal={[Function]}
-    openEditAmendmentModal={[Function]}
-    openEditPermitModal={[Function]}
-    openEditSitePropertiesModal={[Function]}
-    partyRelationships={Array []}
-    permits={Array []}
-  />
+      <Connect(MinePermitTable)
+        expandedRowKeys={Array []}
+        handleDeletePermit={[Function]}
+        handleDeletePermitAmendment={[Function]}
+        handlePermitAmendmentIssueVC={[Function]}
+        isLoaded={false}
+        major_mine_ind={true}
+        onExpand={[Function]}
+        openAddAmalgamatedPermitModal={[Function]}
+        openAddPermitAmendmentModal={[Function]}
+        openAddPermitHistoricalAmendmentModal={[Function]}
+        openEditAmendmentModal={[Function]}
+        openEditPermitModal={[Function]}
+        openEditSitePropertiesModal={[Function]}
+        partyRelationships={Array []}
+        permits={Array []}
+      />
+    </TabPane>
+    <TabPane
+      key="2"
+      tab="Explosives Storage & Use Permits (0)"
+    >
+      <Connect(ExplosivesPermit)
+        isPermit={true}
+      />
+    </TabPane>
+  </Tabs>
 </div>
 `;
