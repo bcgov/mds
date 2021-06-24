@@ -1655,10 +1655,10 @@ INSERT INTO explosives_permit_status (
     update_user
 )
 VALUES
-    ('APP', 'Approved', 'system-mds', 'system-mds'),
-    ('REJ', 'Rejected', 'system-mds', 'system-mds'),
-    ('WIT', 'Withdrawn', 'system-mds', 'system-mds'),
-    ('REC', 'Received', 'system-mds', 'system-mds')
+    ('APP', 'Approved', 10, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected', 20, 'system-mds', 'system-mds'),
+    ('WIT', 'Withdrawn', 30, 'system-mds', 'system-mds'),
+    ('REC', 'Received', 40, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO explosives_permit_magazine_type (
