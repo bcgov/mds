@@ -86,8 +86,8 @@ export class MineExplosivesPermitTable extends Component {
   columns = () => [
     {
       title: "Permit #",
-      dataIndex: "esup_permit_no",
-      sortField: "esup_permit_no",
+      dataIndex: "permit_no",
+      sortField: "permit_no",
       render: (text) => (
         <div title="Permit #" className={hideColumn(!this.props.isPermit)}>
           {text}
@@ -98,8 +98,8 @@ export class MineExplosivesPermitTable extends Component {
     },
     {
       title: "Application #",
-      dataIndex: "application_no",
-      sortField: "application_no",
+      dataIndex: "application_number",
+      sortField: "application_number",
       render: (text) => (
         <div title="Application #" className={hideColumn(this.props.isPermit)}>
           {text}
@@ -110,15 +110,15 @@ export class MineExplosivesPermitTable extends Component {
     },
     {
       title: "Mines Act Permit #",
-      dataIndex: "permit_no",
-      sortField: "permit_no",
+      dataIndex: "mines_permit_number",
+      sortField: "mines_permit_number",
       render: (text) => <div title="Mines Act Permit #">{text}</div>,
       sorter: false,
     },
     {
       title: "Notice of Work #",
-      dataIndex: "now_no",
-      sortField: "now_no",
+      dataIndex: "now_number",
+      sortField: "now_number",
       render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
@@ -137,8 +137,8 @@ export class MineExplosivesPermitTable extends Component {
     },
     {
       title: "Source",
-      dataIndex: "source",
-      sortField: "source",
+      dataIndex: "originating_system",
+      sortField: "originating_system",
       render: (text) => <div title="Source">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
@@ -150,12 +150,12 @@ export class MineExplosivesPermitTable extends Component {
     },
     {
       title: "Application Date",
-      dataIndex: "received_date",
-      sortField: "received_date",
+      dataIndex: "application_date",
+      sortField: "application_date",
       render: (text) => (
         <div title="Application Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>
       ),
-      sorter: dateSorter("received_date"),
+      sorter: dateSorter("application_date"),
     },
     {
       title: "Issue Date",
