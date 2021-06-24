@@ -10,7 +10,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT
 from app.api.mines.mine.models.mine import Mine
-from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT
+from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
 
 
@@ -61,7 +61,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         description='Get a list of all Explosives Permits for a given mine.',
         params={'mine_guid': 'The GUID of the mine to get Explosives Permits for.'})
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
-    @api.marshal_with(EXPLOSIVES_PERMIT, code=200, envelope='records')
+    @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200, envelope='records')
     def get(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
@@ -75,7 +75,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         params={'mine_guid': 'The GUID of the mine to create the Explosives Permit for.'})
     @api.expect(parser)
     @requires_any_of([MINE_EDIT])
-    @api.marshal_with(EXPLOSIVES_PERMIT, code=200)
+    @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200)
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:

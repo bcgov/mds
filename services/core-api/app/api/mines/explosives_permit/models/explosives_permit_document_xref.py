@@ -23,7 +23,12 @@ class ExplosivesPermitDocumentXref(Base):
         db.ForeignKey('explosives_permit_document_type.explosives_permit_document_type_code'),
         nullable=False)
 
+    # TODO: Are these needed?
     mine_document = db.relationship('MineDocument', lazy='joined')
+    mine_guid = association_proxy('mine_document', 'mine_guid')
+    document_manager_guid = association_proxy('mine_document', 'document_manager_guid')
+    document_name = association_proxy('mine_document', 'document_name')
+    upload_date = association_proxy('mine_document', 'upload_date')
 
     def __repr__(self):
         return f'{self.__class__.__name__} {self.explosives_permit_document_xref_guid}'
