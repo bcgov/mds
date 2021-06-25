@@ -188,7 +188,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 # mine_doc.save(commit=False)
                 explosives_permit_doc = ExplosivesPermitDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
-                    mine_incident_id=self.explosives_permit_id,
+                    explosives_permit_id=self.explosives_permit_id,
                     explosives_permit_document_type_code=doc.get('code'))
                 explosives_permit_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_doc)
@@ -261,7 +261,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             # mine_doc.save(commit=False)
             explosives_permit_doc = ExplosivesPermitDocumentXref(
                 mine_document_guid=mine_doc.mine_document_guid,
-                mine_incident_id=explosives_permit.explosives_permit_id,
+                explosives_permit_id=explosives_permit.explosives_permit_id,
                 explosives_permit_document_type_code=doc.get('code'))
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
