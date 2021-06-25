@@ -46,6 +46,8 @@ export const {
   getGovernmentAgencyTypeOptions,
   getConsequenceClassificationStatusCodeOptions,
   getTSFOperatingStatusCodeOptions,
+  getExplosivesPermitDocumentType,
+  getExplosivesPermitStatus,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -714,6 +716,28 @@ export const getTSFOperatingStatusCodeDropdownOptions = createSelectorWrapper(
 
 export const getTSFOperatingStatusCodeOptionsHash = createSelector(
   [getTSFOperatingStatusCodeDropdownOptions],
+  createLabelHash
+);
+
+export const getExplosivesPermitDocumentTypeDropdownOptions = createSelectorWrapper(
+  getTSFOperatingStatusCodeOptions,
+  createDropDownList,
+  ["description", "explosives_permit_ducument_type_code", "active_ind"]
+);
+
+export const getExplosivesPermitDocumentTypeOptionsHash = createSelector(
+  [getExplosivesPermitDocumentTypeDropdownOptions],
+  createLabelHash
+);
+
+export const getExplosivesPermitStatusDropdownOptions = createSelectorWrapper(
+  getTSFOperatingStatusCodeOptions,
+  createDropDownList,
+  ["description", "explosives_permit_status_code", "active_ind"]
+);
+
+export const getExplosivesPermitStatusOptionsHash = createSelector(
+  [getExplosivesPermitStatusDropdownOptions],
   createLabelHash
 );
 

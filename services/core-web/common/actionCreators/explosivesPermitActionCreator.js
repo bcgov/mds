@@ -201,3 +201,27 @@ export const fetchExplosivesPermits = (mineGuid) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading()));
 };
+
+export const updateExplosivesPermit = (mineGuid, explosivesPermitGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .put(
+      ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMIT(mineGuid, explosivesPermitGuid),
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};

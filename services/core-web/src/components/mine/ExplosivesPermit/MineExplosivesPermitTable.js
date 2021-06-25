@@ -126,7 +126,11 @@ export class MineExplosivesPermitTable extends Component {
       title: "Status",
       dataIndex: "application_status",
       sortField: "application_status",
-      render: (text) => <div title="Notice of Work #">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Status">
+          {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
+        </div>
+      ),
       sorter: false,
     },
     {
@@ -193,7 +197,8 @@ export class MineExplosivesPermitTable extends Component {
       render: (text, record) => (
         <div
           title="Explosive Quantity"
-          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record)}
+          className="underline"
+          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "EXP")}
         >
           {text}
         </div>
@@ -204,7 +209,15 @@ export class MineExplosivesPermitTable extends Component {
       title: "Detonator Quantity",
       dataIndex: "det_quantity",
       sortField: "det_quantity",
-      render: (text) => <div title="Detonator Quantity">{text}</div>,
+      render: (text, record) => (
+        <div
+          title="Detonator Quantity"
+          className="underline"
+          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "DET")}
+        >
+          {text}
+        </div>
+      ),
       sorter: false,
     },
     {

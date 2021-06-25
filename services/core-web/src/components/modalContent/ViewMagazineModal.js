@@ -10,12 +10,18 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
+const explosiveCode = "EXP";
 export const ViewMagazineModal = (props) => {
+  const title = props.type === explosiveCode ? "Explosive" : "Detonator";
+  const magazines =
+    props.type === explosiveCode
+      ? props.explosivesPermit?.explosive_magazines
+      : props.explosivesPermit?.detonator_magazines;
   return (
     <div>
-      <h4>Magazine Detail</h4>
+      <h4>{`${title} Magazine Detail`}</h4>
       <br />
-      {props.explosivesPermit?.explosive_magazines?.map((magazine, i) => (
+      {magazines.map((magazine, i) => (
         <>
           <Row gutter={16}>
             <Col span={2}>

@@ -467,6 +467,12 @@ html {
   margin: 0;
 }
 
+.underline  {
+  text-decoration: underline;
+  color: $hover-blue;
+  cursor: pointer;
+}
+
 .add-content-block {
   background-color: white;
   border-radius: 5px;
