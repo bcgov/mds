@@ -717,17 +717,17 @@ ON CONFLICT DO NOTHING;
 -- V2019.09.28.14.16
 
 INSERT INTO document_template
-(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user)
+(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user, source_model_name)
 VALUES
-  ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Letter.docx', true, 'system-mds', 'system-mds'),
-  ('ESP', '', 'templates/explosives_permit/Explosives Storage and Use Permit.docx', true, 'system-mds', 'system-mds')
+  ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Letter.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit'),
+  ('ESP', '', 'templates/explosives_permit/Explosives Storage and Use Permit.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit')
 ON CONFLICT DO NOTHING;
 
 UPDATE document_template SET form_spec_json = '[
