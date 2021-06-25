@@ -130,7 +130,7 @@ export const fetchExplosivesPermitDocumentContextTemplate = (
   documentTypeCode,
   explosives_permit_guid
 ) => (dispatch) => {
-  dispatch(request(reducerTypes.GE));
+  dispatch(request(reducerTypes.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE));
   dispatch(showLoading());
   return CustomAxios()
     .get(
