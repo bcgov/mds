@@ -5044,6 +5044,16 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
+  explosivesPermitMagazineType: [
+    {
+      explosives_permit_magazine_type_code: "EXP",
+      description: "Explosives Magazine",
+    },
+    {
+      explosives_permit_magazine_type_code: "DET",
+      description: "Detonator Magazine",
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {

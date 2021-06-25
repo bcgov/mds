@@ -8,8 +8,10 @@ import { Field, reduxForm, change, formValueSelector } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
+import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
 import { resetForm, createDropDownList } from "@common/utils/helpers";
+import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
@@ -20,16 +22,13 @@ import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  handleRemovePermitAmendmentDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   mine_guid: PropTypes.string.isRequired,
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
-  is_historical_amendment: PropTypes.bool.isRequired,
-  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  securityNotRequired: PropTypes.bool.isRequired,
+  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
 };
 
 const defaultProps = {
@@ -55,6 +54,11 @@ export class ExplosivesPermitForm extends Component {
 
   render() {
     const permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
+    const nowDropdown = createDropDownList(
+      this.props.noticeOfWorkApplications,
+      "now_number",
+      "now_application_guid"
+    );
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
@@ -87,7 +91,7 @@ export class ExplosivesPermitForm extends Component {
                 placeholder="Select a NoW"
                 label="Notice of Work number"
                 component={renderConfig.SELECT}
-                data={permitDropdown}
+                data={nowDropdown}
               />
             </Form.Item>
             {/* <Form.Item>
@@ -181,6 +185,7 @@ ExplosivesPermitForm.defaultProps = defaultProps;
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
+  noticeOfWorkApplications: getNoticeOfWorkList(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

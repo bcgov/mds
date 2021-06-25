@@ -6,9 +6,6 @@ import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change, FormSection, FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
-// import { Rimport { Field, reduxForm } from "redux-form";ow, Col, Steps, Button, Popconfirm } from "antd";
-import { createParty, addPartyRelationship } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import * as FORM from "@/constants/forms";
 
 import "@ant-design/compatible/assets/index.css";
@@ -22,77 +19,21 @@ import { COLOR } from "@/constants/styles";
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
-  fetchMineNameList: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  addPartyFormValues: PropTypes.objectOf(PropTypes.strings),
-  addRolesFormValues: PropTypes.objectOf(PropTypes.strings),
-  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  addPartyRelationship: PropTypes.func.isRequired,
-  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
 
-const defaultProps = {
-  addPartyFormValues: {},
-  addRolesFormValues: {},
-};
+const defaultProps = {};
 
-const groupRolePayloads = (formValues, party_guid) => {
-  const rolePayloads = {};
-  Object.entries(formValues).forEach(([key, value]) => {
-    const [field, number] = key.split("-");
-    rolePayloads[number] = rolePayloads[number] || {};
-    rolePayloads[number][field] = value;
-    rolePayloads[number].party_guid = party_guid;
-  });
-  return rolePayloads;
-};
-
-export class AddPartyModal extends Component {
+export class MagazineForm extends Component {
   state = {
-    explosiveNumbers: [],
-    submitting: false,
     activeExplosiveKey: null,
-    detonatorNumbers: [],
     activeDetonatorKey: null,
-  };
-
-  componentWillMount() {
-    // this.addExplosiveField();
-    // this.addDetonatorField();
-  }
-
-  clearFieldValues = (number) => {
-    this.props.change(FORM.ADD_ROLES, `mine_guid-${number}`, "");
-    this.props.change(FORM.ADD_ROLES, `mine_party_appt_type_code-${number}`, "");
-    this.props.change(FORM.ADD_ROLES, `start_date-${number}`, "");
-    this.props.change(FORM.ADD_ROLES, `end_date-${number}`, "");
-  };
-
-  addExplosiveField = () => {
-    this.setState(({ explosiveNumbers: prevNumbers }) => {
-      const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
-      const newRoleNumber = String(highestRoleNumber + 1);
-      return {
-        explosiveNumbers: [...prevNumbers, newRoleNumber],
-        activeExplosiveKey: newRoleNumber,
-      };
-    });
   };
 
   addField = (event, fields, type) => {
     event.preventDefault();
-    // this.setState(({ detonatorNumbers: prevNumbers }) => {
-    //   const highestRoleNumber = Number(prevNumbers[prevNumbers.length - 1] || 0);
-    //   const newRoleNumber = String(highestRoleNumber + 1);
-    //   return {
-    //     detonatorNumbers: [...prevNumbers, newRoleNumber],
-    //     activeDetonatorKey: newRoleNumber,
-    //   };
-    // });
     fields.push({});
     if (type === "EXP") {
       this.handleActiveExplosivePanelChange([fields.length]);
@@ -105,27 +46,15 @@ export class AddPartyModal extends Component {
     fields.remove(index);
   };
 
-  removeDetonatorField = (number) => () => {
-    // Clear field values from Redux store
-    this.clearFieldValues(number);
-    // Remove role number from state
-    this.setState(({ detonatorNumbers: prevNumbers }) => ({
-      detonatorNumbers: prevNumbers.filter((x) => x !== number),
-    }));
-  };
-
   handleActiveDetonatorPanelChange = (key) => {
-    console.log(key);
-
     this.setState({ activeDetonatorKey: key });
   };
 
   handleActiveExplosivePanelChange = (key) => {
-    console.log(key);
     this.setState({ activeExplosiveKey: key });
   };
 
-  panelHeader = (removeField, index, fields, type) => (
+  panelHeader = (index, fields, type) => (
     <div className="inline-flex between">
       <Form.Item
         style={{ marginTop: "15px" }}
@@ -295,11 +224,7 @@ export class AddPartyModal extends Component {
               className="light-background"
             >
               {fields.map((field, index) => (
-                // {this.state.explosiveNumbers.map((number) => (
-                <Collapse.Panel
-                  header={this.panelHeader(this.removeExplosiveField, index, fields, "EXP")}
-                  key={index}
-                >
+                <Collapse.Panel header={this.panelHeader(index, fields, "EXP")} key={index}>
                   {this.renderInputs(field)}
                 </Collapse.Panel>
               ))}
@@ -329,11 +254,7 @@ export class AddPartyModal extends Component {
               className="light-background"
             >
               {fields.map((field, index) => (
-                // {this.state.detonatorNumbers.map((number) => (
-                <Collapse.Panel
-                  header={this.panelHeader(this.removeDetonatorField, index, fields, "DET")}
-                  key={field}
-                >
+                <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={field}>
                   {this.renderInputs(field)}
                 </Collapse.Panel>
               ))}
@@ -357,7 +278,6 @@ export class AddPartyModal extends Component {
     return (
       <div>
         <Form.Item label="Explosive Magazines" />
-        {/* <FormSection name="explosive_magazines">{this.renderExplosive()}</FormSection> */}
         <FieldArray name="explosive_magazines" component={this.renderExplosive} />
         <Row gutter={16}>
           <Col span={12}>
@@ -374,7 +294,6 @@ export class AddPartyModal extends Component {
         <Divider style={{ backgroundColor: COLOR.violet }} />
         <Form.Item label="Detonator Magazines" />
         <FieldArray name="detonator_magazines" component={this.renderDetonator} />
-        {/* <FormSection name="detonator_magazines">{this.renderDetonator()}</FormSection> */}
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item>
@@ -392,25 +311,19 @@ export class AddPartyModal extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
-  addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
-  addPartyForm: state.form[FORM.ADD_FULL_PARTY],
-});
+const mapStateToProps = (state) => ({});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      addPartyRelationship,
-      fetchMineNameList,
       submit,
       reset,
-      createParty,
       change,
     },
     dispatch
   );
 
-AddPartyModal.propTypes = propTypes;
-AddPartyModal.defaultProps = defaultProps;
+MagazineForm.propTypes = propTypes;
+MagazineForm.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPartyModal);
+export default connect(mapStateToProps, mapDispatchToProps)(MagazineForm);
