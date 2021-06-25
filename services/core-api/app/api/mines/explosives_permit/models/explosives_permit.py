@@ -166,7 +166,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         # Delete deleted documents.
         for doc in self.documents:
             if doc.mine_document_guid not in updated_document_guids:
-                doc.delete(commit=False)
+                doc.mine_document.delete(commit=False)
 
         # Create or update existing documents.
         for doc in documents:
