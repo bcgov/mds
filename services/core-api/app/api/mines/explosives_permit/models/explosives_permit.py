@@ -161,6 +161,33 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         process_magazines(self.detonator_magazines, detonator_magazines, 'DET')
 
         # TODO: Implement creating/updating documents.
+        # Get the GUIDs of the updated documents.
+        updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
+
+        # Delete deleted documents.
+        for doc in self.documents:
+            if doc.mine_document_guid not in updated_document_guids:
+                doc.delete(commit=False)
+
+        # Create or update existing documents.
+        for doc in documents:
+            mine_document_guid = doc.get('mine_document_guid')
+            if mine_document_guid:
+                explosives_permit_doc = ExplosivesPermitDocumentXref.find_by_mine_document_guid(
+                    mine_document_guid)
+                explosives_permit_doc.explosives_permit_document_type_code = doc.get('code')
+            else:
+                mine_doc = MineDocument(
+                    mine_guid=self.mine_guid,
+                    document_name=doc.get('document_name'),
+                    document_manager_guid=doc.get('document_manager_guid'))
+                # mine_doc.save(commit=False)
+                explosives_permit_doc = ExplosivesPermitDocumentXref(
+                    mine_document_guid=mine_doc.mine_document_guid,
+                    mine_incident_id=self.explosives_permit_id,
+                    explosives_permit_document_type_code=doc.get('code'))
+                explosives_permit_doc.mine_document = mine_doc
+                self.documents.append(explosives_permit_doc)
 
         if add_to_session:
             self.save(commit=False)
@@ -201,11 +228,13 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         application_status = 'REC'
         application_number = ExplosivesPermit.get_next_application_number()
+        received_timestamp = datetime.utcnow()
 
         explosives_permit = cls(
             permit_guid=permit_guid,
             application_status=application_status,
             application_number=application_number,
+            received_timestamp=received_timestamp,
             application_date=application_date,
             originating_system=originating_system,
             latitude=latitude,
@@ -223,13 +252,13 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         for doc in documents:
             mine_doc = MineDocument(
                 mine_guid=mine.mine_guid,
-                document_name=doc['document_name'],
-                document_manager_guid=doc['document_manager_guid'])
+                document_name=doc.get('document_name'),
+                document_manager_guid=doc.get('document_manager_guid'))
             # mine_doc.save(commit=False)
             explosives_permit_doc = ExplosivesPermitDocumentXref(
                 mine_document_guid=mine_doc.mine_document_guid,
                 mine_incident_id=explosives_permit.explosives_permit_id,
-                explosives_permit_document_type_code=doc['code'])
+                explosives_permit_document_type_code=doc.get('code'))
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
 
