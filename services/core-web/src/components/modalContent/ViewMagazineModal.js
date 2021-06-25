@@ -59,8 +59,9 @@ export const ViewMagazineModal = (props) => {
       <h4>Storage Detail</h4>
       <br />
       <Descriptions column={1}>
-        <Descriptions.Item label="Total Maximum Quantity" />
-        {props.explosivesPermit.total_explosives_quantity}
+        <Descriptions.Item label="Total Maximum Quantity">
+          {props.explosivesPermit.total_explosives_quantity}
+        </Descriptions.Item>
       </Descriptions>
       <Descriptions column={2}>
         <Descriptions.Item label="Latitude">{props.explosivesPermit.latitude}</Descriptions.Item>
@@ -68,8 +69,8 @@ export const ViewMagazineModal = (props) => {
       </Descriptions>
 
       <Descriptions column={3}>
-        <Descriptions.Item label="Mine No." />
-        <Descriptions.Item label="Mine Name" />
+        <Descriptions.Item label="Mine No.">{props.mine.mine_no} </Descriptions.Item>
+        <Descriptions.Item label="Mine Name"> {props.mine.mine_name}</Descriptions.Item>
         <Descriptions.Item label="Mine Operator" />
       </Descriptions>
       <div className="right center-mobile">

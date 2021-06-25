@@ -75,6 +75,7 @@ export class ExplosivesPermit extends Component {
   };
 
   handleOpenViewMagazineModal = (event, record, type) => {
+    const mine = this.props.mines[this.props.mineGuid];
     const title = type === "EXP" ? "Explosive Magazine" : "Detonator Magazine";
     event.preventDefault();
     this.props.openModal({
@@ -82,6 +83,7 @@ export class ExplosivesPermit extends Component {
         title,
         explosivesPermit: record,
         type,
+        mine,
       },
       content: modalConfig.VIEW_MAGAZINE_MODAL,
       isViewOnly: true,
