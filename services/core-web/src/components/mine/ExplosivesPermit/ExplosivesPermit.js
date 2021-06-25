@@ -114,8 +114,8 @@ export class ExplosivesPermit extends Component {
 
   render() {
     const title = this.props.isPermit
-      ? "Explosive Storages & Use Permits"
-      : "Explosive Storages & Use Permit Applications";
+      ? "Explosives Storage & Use Permits"
+      : "Explosives Storage & Use Permit Applications";
     const data = this.props.isPermit
       ? this.props.explosivesPermits.filter(
           ({ application_status }) => application_status === "APP"
