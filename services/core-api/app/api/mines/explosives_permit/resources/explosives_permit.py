@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from werkzeug.exceptions import NotFound
 from flask_restplus import Resource, inputs
 
@@ -11,6 +13,65 @@ from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesP
 
 class ExplosivesPermitResource(Resource, UserMixin):
     parser = CustomReqparser()
+    parser.add_argument('permit_guid', type=str, store_missing=False, required=True, help='')
+    parser.add_argument(
+        'now_application_guid', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'mine_operator_party_guid', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'application_status', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'issue_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument(
+        'expiry_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument('decision_reason', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
+    parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'latitude',
+        type=lambda x: Decimal(x) if x else None,
+        store_missing=False,
+        required=True,
+        help='')
+    parser.add_argument(
+        'longitude',
+        type=lambda x: Decimal(x) if x else None,
+        store_missing=False,
+        required=True,
+        help='')
+    parser.add_argument(
+        'application_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=True,
+        help='')
+    parser.add_argument(
+        'explosive_magazines',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument(
+        'detonator_magazines',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument(
+        'documents', type=list, location='json', store_missing=False, required=False, help='')
 
     @api.doc(
         description='Get an Explosives Permit.',
@@ -41,7 +102,24 @@ class ExplosivesPermitResource(Resource, UserMixin):
             raise NotFound('Explosives Permit not found')
 
         data = self.parser.parse_args()
-        explosives_permit.update()
+        explosives_permit.update(
+            data.get('permit_guid'),
+            data.get('now_application_guid'),
+            data.get('issuing_inspector_party_guid'),
+            data.get('mine_operator_party_guid'),
+            data.get('application_status'),
+            data.get('issue_date'),
+            data.get('expiry_date'),
+            data.get('decision_reason'),
+            data.get('is_closed'),
+            data.get('closed_reason'),
+            data.get('latitude'),
+            data.get('longitude'),
+            data.get('application_date'),
+            data.get('explosive_magazines', []),
+            data.get('detonator_magazines', []),
+            data.get('documents', []),
+        )
 
         explosives_permit.save()
         return explosives_permit
