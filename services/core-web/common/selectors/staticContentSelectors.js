@@ -48,6 +48,7 @@ export const {
   getTSFOperatingStatusCodeOptions,
   getExplosivesPermitDocumentType,
   getExplosivesPermitStatus,
+  getExplosivesPermitMagazineType,
 } = staticContentReducer;
 
 const getVisibilityFilterOption = (_state, showActiveOnly = true) => showActiveOnly;
@@ -738,6 +739,17 @@ export const getExplosivesPermitStatusDropdownOptions = createSelectorWrapper(
 
 export const getExplosivesPermitStatusOptionsHash = createSelector(
   [getExplosivesPermitStatusDropdownOptions],
+  createLabelHash
+);
+
+export const getExplosivesPermitMagazineTypeDropdownOptions = createSelectorWrapper(
+  getExplosivesPermitMagazineType,
+  createDropDownList,
+  ["description", "explosives_permit_magazine_type_code"]
+);
+
+export const getExplosivesPermitMagazineTypeOptionsHash = createSelector(
+  [getExplosivesPermitMagazineTypeDropdownOptions],
   createLabelHash
 );
 
