@@ -5005,7 +5005,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
-  ExplosivesPermitStatus: [
+  explosivesPermitStatus: [
     {
       explosives_permit_status_code: "APP",
       description: "Approved",
@@ -5027,7 +5027,7 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
-  ExplosivesPermitDocumentType: [
+  explosivesPermitDocumentType: [
     {
       explosives_permit_ducument_type_code: "PER",
       description: "Explosives Storage and Use Permit",

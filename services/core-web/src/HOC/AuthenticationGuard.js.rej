@@ -1,0 +1,3 @@
+diff a/services/core-web/src/HOC/AuthenticationGuard.js b/services/core-web/src/HOC/AuthenticationGuard.js	(rejected hunks)
+@@ -67 +66,0 @@ export const AuthenticationGuard = (WrappedComponent) => {
+-      // debugger;

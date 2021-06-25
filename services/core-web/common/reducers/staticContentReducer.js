@@ -48,7 +48,6 @@ const initialState = {
   TSFOperatingStatusCodeOptions: [],
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
-  explosivesPermitMagazineType: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
