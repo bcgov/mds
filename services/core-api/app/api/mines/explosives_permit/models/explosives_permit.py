@@ -87,7 +87,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
         return val
 
-    # TODO: Implement & ensure that this method is transactional with its created/updated/deleted relationships.
+    # TODO: Ensure that this method is transactional with its created/updated/deleted relationships.
     def update(self,
                permit_guid,
                now_application_guid,
