@@ -2,7 +2,6 @@ import json, os, docx, io, base64
 
 from flask import current_app
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
 from datetime import datetime
@@ -29,7 +28,7 @@ class DocumentTemplate(Base, AuditMixin):
     context_primary_key = None
 
     def __repr__(self):
-        return '<DocumentTemplate %r>' % self.document_template_code
+        return f'{self.__class__.__name__} {self.document_template_code}'
 
     @hybrid_property
     def form_spec(self):
