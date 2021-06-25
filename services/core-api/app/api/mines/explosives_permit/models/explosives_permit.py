@@ -160,7 +160,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         process_magazines(self.explosive_magazines, explosive_magazines, 'EXP')
         process_magazines(self.detonator_magazines, detonator_magazines, 'DET')
 
-        # TODO: Implement creating/updating documents.
         # Get the GUIDs of the updated documents.
         updated_document_guids = [doc.get('mine_document_guid') for doc in documents]
 
