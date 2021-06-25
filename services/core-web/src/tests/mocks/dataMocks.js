@@ -5005,6 +5005,45 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
+  ExplosivesPermitStatus: [
+    {
+      explosives_permit_status_code: "APP",
+      description: "Approved",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "REJ",
+      description: "Rejected",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "WIT",
+      description: "Withdrawn",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "REC",
+      description: "Received",
+      active_ind: true,
+    },
+  ],
+  ExplosivesPermitDocumentType: [
+    {
+      explosives_permit_ducument_type_code: "PER",
+      description: "Explosives Storage and Use Permit",
+      active_ind: true,
+    },
+    {
+      explosives_permit_ducument_type_code: "LET",
+      description: "Explosives Storage and Use Permit Letter",
+      active_ind: true,
+    },
+    {
+      explosives_permit_ducument_type_code: "BLA",
+      description: "Blasting Plan",
+      active_ind: true,
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
