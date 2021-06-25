@@ -71,6 +71,7 @@ export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, perm
 export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/explosives-permits`;
 export const EXPLOSIVES_PERMIT = (mineGuid, explosivesPermitGuid) =>
   `/mines/${mineGuid}/explosives-permits/${explosivesPermitGuid}`;
+export const EXPLOSIVES_PERMIT_DOCUMENT_TYPE_OPTIONS = "/mines/explosives-permit-document-types";
 
 // Search
 export const SEARCH = (params) => (params ? `/search?${queryString.stringify(params)}` : "/search");
