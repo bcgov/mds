@@ -720,9 +720,9 @@ export const getTSFOperatingStatusCodeOptionsHash = createSelector(
 );
 
 export const getExplosivesPermitDocumentTypeDropdownOptions = createSelectorWrapper(
-  getTSFOperatingStatusCodeOptions,
+  getExplosivesPermitDocumentType,
   createDropDownList,
-  ["description", "explosives_permit_ducument_type_code", "active_ind"]
+  ["description", "explosives_permit_document_type_code", "active_ind"]
 );
 
 export const getExplosivesPermitDocumentTypeOptionsHash = createSelector(
@@ -731,7 +731,7 @@ export const getExplosivesPermitDocumentTypeOptionsHash = createSelector(
 );
 
 export const getExplosivesPermitStatusDropdownOptions = createSelectorWrapper(
-  getTSFOperatingStatusCodeOptions,
+  getExplosivesPermitStatus,
   createDropDownList,
   ["description", "explosives_permit_status_code", "active_ind"]
 );
