@@ -39,18 +39,18 @@ const defaultProps = {
 
 export class ExplosivesPermitForm extends Component {
   state = {
-    uploadedFiles: [],
+    documents: [],
   };
 
   // File upload handlers
   onFileLoad = (fileName, document_manager_guid) => {
-    this.state.uploadedFiles.push({ fileName, document_manager_guid });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    this.state.documents.push({ fileName, document_manager_guid });
+    this.props.change("documents", this.state.documents);
   };
 
   onRemoveFile = (err, fileItem) => {
-    remove(this.state.uploadedFiles, { document_manager_guid: fileItem.serverId });
-    this.props.change("uploadedFiles", this.state.uploadedFiles);
+    remove(this.state.documents, { document_manager_guid: fileItem.serverId });
+    this.props.change("documents", this.state.documents);
   };
 
   render() {

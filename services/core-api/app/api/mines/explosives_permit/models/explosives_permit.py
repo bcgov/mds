@@ -63,7 +63,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'DET', ExplosivesPermitMagazine.deleted_ind == False)"
     )
 
-    mine = db.relationship('Mine', lazy='select')
+    # mine = db.relationship('Mine', lazy='select')
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
     mine_documents = db.relationship(
         'MineDocument',
