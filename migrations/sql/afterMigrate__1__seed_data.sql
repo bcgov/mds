@@ -1668,7 +1668,7 @@ INSERT INTO explosives_permit_magazine_type (
     update_user
 )
 VALUES
-    ('EXP', 'Explosives Magazine', 'system-mds', 'system-mds'),
+    ('EXP', 'Explosive Magazine', 'system-mds', 'system-mds'),
     ('DET', 'Detonator Magazine', 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
