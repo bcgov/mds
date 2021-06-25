@@ -6,9 +6,6 @@ import { bindActionCreators } from "redux";
 import { getFormValues, submit, reset, change, FormSection, FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
-// import { Rimport { Field, reduxForm } from "redux-form";ow, Col, Steps, Button, Popconfirm } from "antd";
-import { createParty, addPartyRelationship } from "@common/actionCreators/partiesActionCreator";
-import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
 import * as FORM from "@/constants/forms";
 
 import "@ant-design/compatible/assets/index.css";
@@ -22,15 +19,9 @@ import { COLOR } from "@/constants/styles";
 
 const propTypes = {
   fetchData: PropTypes.func.isRequired,
-  fetchMineNameList: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  createParty: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  addPartyRelationship: PropTypes.func.isRequired,
-  partyRelationshipTypesList: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
-  mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
 
 const defaultProps = {};
@@ -320,18 +311,13 @@ export class MagazineForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  addPartyFormValues: getFormValues(FORM.ADD_FULL_PARTY)(state) || {},
-  addRolesFormValues: getFormValues(FORM.ADD_ROLES)(state) || {},
-});
+const mapStateToProps = (state) => ({});
+
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      addPartyRelationship,
-      fetchMineNameList,
       submit,
       reset,
-      createParty,
       change,
     },
     dispatch
