@@ -55,10 +55,10 @@ export const generateNoticeOfWorkApplicationDocument = (
     .then((response) => {
       const params = { token: response.data.token, return_record: "true", is_preview: isPreview };
       if (isPreview) {
-        window.open(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, "_blank");
+        window.open(`${ENVIRONMENT.apiUrl + API.NOW_DOCUMENT_GENERATION(params)}`, "_blank");
       } else {
         return CustomAxios()
-          .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+          .get(`${ENVIRONMENT.apiUrl + API.NOW_DOCUMENT_GENERATION(params)}`, createRequestHeader())
           .then((response) => {
             notification.success({
               message,
@@ -99,7 +99,7 @@ export const exportNoticeOfWorkApplicationDocument = (
     .then((response) => {
       const params = { token: response.data.token, return_record: "true" };
       return CustomAxios()
-        .get(`${ENVIRONMENT.apiUrl + API.DOCUMENT_GENERATION(params)}`, createRequestHeader())
+        .get(`${ENVIRONMENT.apiUrl + API.NOW_DOCUMENT_GENERATION(params)}`, createRequestHeader())
         .then((response) => {
           const mineDocument = response.data.mine_document;
           notification.success({

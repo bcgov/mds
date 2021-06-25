@@ -1,6 +1,7 @@
 from app.extensions import api
 from flask_restplus import fields
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL
+from app.api.document_generation.response_models import DOCUMENT_TEMPLATE_MODEL
 
 EXPLOSIVES_PERMIT_MAGAZINE_MODEL = api.model(
     'ExplosivesPermitMagazine', {
@@ -69,7 +70,8 @@ EXPLOSIVES_PERMIT_DOCUMENT_TYPE_MODEL = api.model(
         'explosives_permit_document_type_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean,
-        'display_order': fields.Integer
+        'display_order': fields.Integer,
+        'document_template': fields.Nested(DOCUMENT_TEMPLATE_MODEL, skip_none=True)
     })
 
 EXPLOSIVES_PERMIT_MAGAZINE_TYPE_MODEL = api.model('ExplosivesPermitMagazineType', {
