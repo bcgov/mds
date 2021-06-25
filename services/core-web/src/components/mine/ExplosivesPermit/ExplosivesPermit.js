@@ -52,6 +52,18 @@ export class ExplosivesPermit extends Component {
     });
   };
 
+  handleOpenViewMagazineModal = (event, record) => {
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        title: "View",
+        explosivesPermit: record,
+      },
+      content: modalConfig.VIEW_MAGAZINE_MODAL,
+      isViewOnly: true,
+    });
+  };
+
   handleIssueExplosivesPermit = (values) => {
     const payload = {
       originating_system: "Core",
@@ -103,6 +115,7 @@ export class ExplosivesPermit extends Component {
           isPermit={this.props.isPermit}
           handleOpenExplosivesPermitDecisionModal={this.handleOpenExplosivesPermitDecisionModal}
           handleOpenAddExplosivesPermitModal={this.handleOpenAddExplosivesPermitModal}
+          handleOpenViewMagazineModal={this.handleOpenViewMagazineModal}
         />
       </div>
     );

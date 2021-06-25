@@ -102,16 +102,7 @@ export class AddPartyModal extends Component {
   };
 
   removeField = (index, fields) => () => {
-    console.log("GETTING CALLED");
-    console.log(index);
-    console.log(fields);
     fields.remove(index);
-    // Clear field values from Redux store
-    // this.clearFieldValues(index);
-    // // Remove role number from state
-    // this.setState(({ explosiveNumbers: prevNumbers }) => ({
-    //   explosiveNumbers: prevNumbers.filter((x) => x !== number),
-    // }));
   };
 
   removeDetonatorField = (number) => () => {
@@ -143,7 +134,7 @@ export class AddPartyModal extends Component {
         }
       />
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
-      <div onClick={(event) => event.stopPropagation()}>
+      <div onClick={(event) => event.preventDefault()}>
         <Popconfirm
           placement="topRight"
           title={`Are you sure you want to remove Role ${index + 1}?`}
@@ -372,8 +363,8 @@ export class AddPartyModal extends Component {
           <Col span={12}>
             <Form.Item>
               <Field
-                id="total_exp_quantity"
-                name="total_exp_quantity"
+                id="total_explosive_quantity"
+                name="total_explosive_quantity"
                 label="Total Maximum Quantity*"
                 component={renderConfig.FIELD}
               />
@@ -388,8 +379,8 @@ export class AddPartyModal extends Component {
           <Col span={12}>
             <Form.Item>
               <Field
-                id="total_det_quantity"
-                name="total_det_quantity"
+                id="total_detonator_quantity"
+                name="total_detonator_quantity"
                 label="Total Maximum Quantity*"
                 component={renderConfig.FIELD}
               />

@@ -132,8 +132,13 @@ export class MineExplosivesPermitTable extends Component {
     {
       title: "Issuing Inspector",
       dataIndex: "issuing_inspector_name",
-      render: (text) => <div title="Issuing Inspector">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Issuing Inspector" className={hideColumn(!this.props.isPermit)}>
+          {text || Strings.EMPTY_FIELD}
+        </div>
+      ),
       sorter: false,
+      className: hideColumn(!this.props.isPermit),
     },
     {
       title: "Source",
@@ -161,21 +166,38 @@ export class MineExplosivesPermitTable extends Component {
       title: "Issue Date",
       dataIndex: "issue_date",
       sortField: "issue_date",
-      render: (text) => <div title="Issue Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Issue Date" className={hideColumn(!this.props.isPermit)}>
+          {formatDate(text) || Strings.EMPTY_FIELD}
+        </div>
+      ),
       sorter: dateSorter("issue_date"),
+      className: hideColumn(!this.props.isPermit),
     },
     {
       title: "Expiry Date",
       dataIndex: "expiry_date",
       sortField: "expiry_date",
-      render: (text) => <div title="Expiry Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Expiry Date" className={hideColumn(!this.props.isPermit)}>
+          {formatDate(text) || Strings.EMPTY_FIELD}
+        </div>
+      ),
       sorter: dateSorter("expiry_date"),
+      className: hideColumn(!this.props.isPermit),
     },
     {
       title: "Explosive Quantity",
       dataIndex: "exp_quantity",
       sortField: "exp_quantity",
-      render: (text) => <div title="Explosive Quantity">{text}</div>,
+      render: (text, record) => (
+        <div
+          title="Explosive Quantity"
+          onClick={(event) => this.props.handleOpenViewMagazineModal(event, record)}
+        >
+          {text}
+        </div>
+      ),
       sorter: false,
     },
     {
@@ -255,7 +277,7 @@ export class MineExplosivesPermitTable extends Component {
                 title={`Are you sure you want to delete the Explosives Storage & Use ${
                   this.props.isPermit ? "Permit" : "Permit Application"
                 }?`}
-                onConfirm={console.log("yes delete")}
+                onConfirm={() => console.log("yes delete")}
                 okText="Delete"
                 cancelText="Cancel"
               >
