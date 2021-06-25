@@ -56,6 +56,7 @@ export class ExplosivesPermit extends Component {
         onSubmit: record ? this.handleUpdatePermit : this.handleAddExplosivesPermit,
         title: "Add Explosives Storage & Use Permit",
         initialValues,
+        mineGuid: this.props.mineGuid,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",

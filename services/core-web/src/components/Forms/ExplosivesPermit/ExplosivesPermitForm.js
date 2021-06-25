@@ -16,7 +16,8 @@ import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import { getPermits } from "@common/selectors/permitSelectors";
-import PermitAmendmentFileUpload from "@/components/mine/Permit/PermitAmendmentFileUpload";
+import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
+import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
 
 const propTypes = {
@@ -24,7 +25,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  mine_guid: PropTypes.string.isRequired,
+  mineGuid: PropTypes.string.isRequired,
   permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
@@ -137,14 +138,15 @@ export class ExplosivesPermitForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
+            {/* <DocumentCategoryForm /> */}
             <Form.Item label="Select Files/Upload files*">
               <Field
-                id="PermitDocumentFileUpload"
-                name="PermitDocumentFileUpload"
+                id="DocumentFileUpload"
+                name="DocumentFileUpload"
                 onFileLoad={this.onFileLoad}
                 onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mine_guid}
-                component={PermitAmendmentFileUpload}
+                mineGuid={this.props.mineGuid}
+                component={ExplosivesPermitFileUpload}
                 allowMultiple
               />
             </Form.Item>
