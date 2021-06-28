@@ -83,7 +83,7 @@ def test_post_mine_party_appt_EOR_without_TSF(test_client, db_session, auth_head
     post_resp = test_client.post(
         '/parties/mines', data=test_data, headers=auth_headers['full_auth_header'])
     post_data = json.loads(post_resp.data.decode())
-    assert post_resp.status_code == 400
+    assert post_resp.status_code == 404
 
 
 def test_post_mine_party_appt_success(test_client, db_session, auth_headers, setup_info):
