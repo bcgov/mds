@@ -98,6 +98,11 @@ export const ReviewNOWApplication = (props) => {
     return codeHash[value];
   };
 
+  const applicationFileTableDescription =
+    "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
+
+  const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+
   const renderMineInfo = () => (
     <div>
       <h4>Mine Information</h4>
@@ -1306,27 +1311,45 @@ export const ReviewNOWApplication = (props) => {
           renderOriginalValues={props.renderOriginalValues}
           isPreLaunch={props.isPreLaunch}
         />
-        <ScrollContentWrapper id="application-files" title="vFCBC/NROS Application Files">
+        <ScrollContentWrapper id="application-files" title="Application Files">
           <NOWSubmissionDocuments
             now_application_guid={props.now_application_guid}
-            documents={props.filtered_submission_documents}
-            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-            displayTableDescription
-          />
-        </ScrollContentWrapper>
-        <ScrollContentWrapper
-          id="additional-application-files"
-          title="Additional Application Files"
-        >
-          <NOWDocuments
-            documents={props.documents?.filter(
-              ({ now_application_document_sub_type_code }) =>
-                now_application_document_sub_type_code === "AAF" ||
-                now_application_document_sub_type_code === "MDO"
+            documents={props.noticeOfWork.filtered_submission_documents.concat(
+              props.noticeOfWork.documents
+                ?.filter(
+                  ({
+                    now_application_document_sub_type_code,
+                    now_application_document_type_code,
+                    mine_document,
+                  }) =>
+                    applicationFilesTypes.includes(now_application_document_sub_type_code) &&
+                    (now_application_document_type_code !== "PMT" ||
+                      now_application_document_type_code !== "PMA" ||
+                      mine_document.document_name.includes("DRAFT"))
+                )
+                .map((doc) => {
+                  return {
+                    preamble_author: doc.preamble_author,
+                    preamble_date: doc.preamble_date,
+                    preamble_title: doc.preamble_title,
+                    now_application_document_xref_guid: doc.now_application_document_xref_guid,
+                    is_referral_package: doc.is_referral_package,
+                    is_final_package: doc.is_final_package,
+                    is_consultation_package: doc.is_consultation_package,
+                    description: doc.description,
+                    mine_document_guid: doc.mine_document.mine_document_guid,
+                    filename: doc.mine_document.document_name,
+                    document_manager_guid: doc.mine_document.document_manager_guid,
+                    notForImport: true,
+                    ...doc,
+                  };
+                })
             )}
-            isViewMode={!props.isViewMode}
-            disclaimerText="Attach any file revisions or new files requested from the proponent here."
-            categoriesToShow={["AAF", "MDO"]}
+            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+            disableCategoryFilter
+            displayTableDescription
+            tableDescription={applicationFileTableDescription}
+            showDescription
           />
         </ScrollContentWrapper>
       </Form>

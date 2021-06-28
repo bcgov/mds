@@ -32,9 +32,10 @@ class NOWApplicationDocumentUploadResource(Resource, UserMixin):
 
 class NOWApplicationDocumentResource(Resource, UserMixin):
     parser = CustomReqparser()
-    parser.add_argument('preamble_title', type=str, required=True)
-    parser.add_argument('preamble_author', type=str, required=True)
-    parser.add_argument('preamble_date', type=str, required=True)
+    parser.add_argument('preamble_title', type=str, required=False)
+    parser.add_argument('preamble_author', type=str, required=False)
+    parser.add_argument('preamble_date', type=str, required=False)
+    parser.add_argument('description', type=str, required=False)
 
     @api.response(204, 'Successfully deleted.')
     @requires_role_edit_permit
@@ -61,6 +62,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     @api.marshal_with(MINE_DOCUMENT_MODEL, code=requests.codes.ok)
     def put(self, application_guid, mine_document_guid):
         data = self.parser.parse_args()
+        current_app.logger.debug(data)
 
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
@@ -68,14 +70,16 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
                 mine_document.now_application_document_xref.now_application.now_application_guid):
             raise NotFound('No mine_document found for this application guid.')
 
-        if not mine_document.now_application_document_xref.is_final_package:
-            raise BadRequest(
-                'You cannot update Title/Author/Date of a document that is not a part of the Final Application Package.'
-            )
+        new_description = data.get('description', None)
+        if new_description:
+            mine_document.now_application_document_xref.description = new_description
 
-        mine_document.now_application_document_xref.preamble_title = data.get('preamble_title')
-        mine_document.now_application_document_xref.preamble_author = data.get('preamble_author')
-        mine_document.now_application_document_xref.preamble_date = data.get('preamble_date')
+        if mine_document.now_application_document_xref.is_final_package:
+
+            mine_document.now_application_document_xref.preamble_title = data.get('preamble_title')
+            mine_document.now_application_document_xref.preamble_author = data.get(
+                'preamble_author')
+            mine_document.now_application_document_xref.preamble_date = data.get('preamble_date')
 
         mine_document.save()
 

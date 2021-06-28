@@ -23,6 +23,7 @@ import {
   getNoticeOfWork,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 
 /**
@@ -39,10 +40,12 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+  isTableHeaderView: PropTypes.bool,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
+  isTableHeaderView: false,
 };
 
 export class ReferralConsultationPackage extends Component {
@@ -221,7 +224,11 @@ export class ReferralConsultationPackage extends Component {
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
     const disabled = !this.props.progress[this.props.type];
-    return (
+    return this.props.isTableHeaderView ? (
+      <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
+        <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
+      </Button>
+    ) : (
       <Button
         type="secondary"
         className="full-mobile"

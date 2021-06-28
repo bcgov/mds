@@ -2,12 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
-import { Table, Button, Popconfirm, Tooltip } from "antd";
+import { Table, Button, Popconfirm, Tooltip, Row, Col } from "antd";
 import moment from "moment";
+import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { Field } from "redux-form";
 import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
@@ -17,6 +17,7 @@ import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
   deleteNoticeOfWorkApplicationDocument,
+  editNoticeOfWorkDocument,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as Strings from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -24,8 +25,9 @@ import AddButton from "@/components/common/AddButton";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import { TRASHCAN } from "@/constants/assets";
-import { renderConfig } from "@/components/common/config";
+import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
+import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
+import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -43,11 +45,18 @@ const propTypes = {
   showPreambleFileMetadata: PropTypes.bool,
   editPreambleFileMetadata: PropTypes.bool,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
+  editNoticeOfWorkDocument: PropTypes.func.isRequired,
+  openFinalDocumentPackageModal: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   allowAfterProcess: PropTypes.bool,
   disableCategoryFilter: PropTypes.bool,
   showPartOfPermitColumn: PropTypes.bool,
+  isGovernmentDocuments: PropTypes.bool,
+  isFinalPackageTable: PropTypes.bool,
+  isRefConDocuments: PropTypes.bool,
+  isPackageModal: PropTypes.bool,
+  showDescription: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -61,7 +70,26 @@ const defaultProps = {
   allowAfterProcess: false,
   disableCategoryFilter: false,
   showPartOfPermitColumn: true,
+  isFinalPackageTable: false,
+  isGovernmentDocuments: false,
+  isRefConDocuments: false,
+  isPackageModal: false,
+  showDescription: false,
 };
+
+export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
+  <div>
+    {rowProps.expanded ? (
+      <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
+        <MinusSquareFilled className="icon-lg--lightgrey" />
+      </Tooltip>
+    ) : (
+      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+        <PlusSquareFilled className="icon-lg--lightgrey" />
+      </Tooltip>
+    )}
+  </div>
+);
 
 export const NOWDocuments = (props) => {
   const handleAddDocument = (values) => {
@@ -70,6 +98,8 @@ export const NOWDocuments = (props) => {
         now_application_document_type_code: values.now_application_document_type_code,
         description: values.description,
         is_final_package: values.is_final_package,
+        preamble_title: values?.preamble_title,
+        preamble_author: values?.preamble_author,
         mine_document: {
           document_manager_guid: file[0],
           document_name: file[1],
@@ -82,6 +112,20 @@ export const NOWDocuments = (props) => {
         { documents },
         props.noticeOfWork.now_application_guid,
         "Successfully added documents to this application."
+      )
+      .then(() => {
+        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+        props.closeModal();
+      });
+  };
+
+  const handleEditDocument = (values) => {
+    console.log(values);
+    return props
+      .editNoticeOfWorkDocument(
+        props.noticeOfWork.now_application_guid,
+        values.mine_document_guid,
+        values
       )
       .then(() => {
         props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
@@ -102,12 +146,28 @@ export const NOWDocuments = (props) => {
         now_application_guid: props.noticeOfWork.now_application_guid,
         title: "Add Notice of Work document",
         categoriesToShow: props.categoriesToShow,
+        isEditMode: false,
+      },
+      content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
+    });
+  };
+
+  const openEditDocumentModal = (record) => {
+    props.openModal({
+      props: {
+        initialValues: record,
+        onSubmit: handleEditDocument,
+        now_application_guid: props.noticeOfWork.now_application_guid,
+        title: "Edit Notice of Work document",
+        categoriesToShow: props.categoriesToShow,
+        isEditMode: true,
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
     });
   };
 
   const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow, isViewMode) => {
+    let tableColumns = [];
     const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
       if (subType && categoriesToShow.length > 0) {
         return categoriesToShow.includes(subType);
@@ -160,145 +220,202 @@ export const NOWDocuments = (props) => {
         title: "Title",
         dataIndex: "preamble_title",
         key: "preamble_title",
-        render: (text, record) => (
-          <div title="Title">
-            <Field
-              id={`${record.now_application_document_xref_guid}_preamble_title`}
-              name={`${record.now_application_document_xref_guid}_preamble_title`}
-              placeholder={(props.editPreambleFileMetadata && "Enter Title") || null}
-              component={renderConfig.FIELD}
-              disabled={!props.editPreambleFileMetadata}
-            />
-          </div>
-        ),
+        render: (text, record) => <div title="Title">{record.preamble_title}</div>,
       },
       {
         title: "Author",
         dataIndex: "preamble_author",
         key: "preamble_author",
-        render: (text, record) => (
-          <div title="Author">
-            <Field
-              id={`${record.now_application_document_xref_guid}_preamble_author`}
-              name={`${record.now_application_document_xref_guid}_preamble_author`}
-              placeholder={(props.editPreambleFileMetadata && "Enter Author") || null}
-              component={renderConfig.FIELD}
-              disabled={!props.editPreambleFileMetadata}
-            />
-          </div>
-        ),
+        render: (text, record) => <div title="Author">{record.preamble_author}</div>,
       },
       {
         title: "Date",
         dataIndex: "preamble_date",
         key: "preamble_date",
-        render: (text, record) => (
-          <div title="Date">
-            <Field
-              id={`${record.now_application_document_xref_guid}_preamble_date`}
-              name={`${record.now_application_document_xref_guid}_preamble_date`}
-              component={renderConfig.DATE}
-              placeholder={(props.editPreambleFileMetadata && "YYYY-MM-DD") || null}
-              disabled={!props.editPreambleFileMetadata}
-            />
-          </div>
-        ),
-      },
-    ];
-    let tableColumns = [
-      fileNameColumn,
-      {
-        title: "Category",
-        dataIndex: "category",
-        key: "category",
-        filters: props.disableCategoryFilter ? null : categoryFilters,
-        onFilter: props.disableCategoryFilter
-          ? () => {}
-          : (value, record) => record.category.includes(value),
-        sorter: (a, b) => (a.category > b.category ? -1 : 1),
-        render: (text) => <div title="Category">{text}</div>,
-      },
-      {
-        title: "Upload Date/Time",
-        dataIndex: "upload_date",
-        key: "upload_date",
-        sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
-        render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
+        render: (text, record) => <div title="Date">{record.preamble_date || "N/A"}</div>,
       },
     ];
 
-    if (props.addDescriptionColumn) {
-      tableColumns.splice(2, 0, descriptionColumn);
-    }
+    const categoryColumn = {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      filters: props.disableCategoryFilter ? null : categoryFilters,
+      onFilter: props.disableCategoryFilter
+        ? () => {}
+        : (value, record) => record.category.includes(value),
+      sorter: (a, b) => (a.category > b.category ? -1 : 1),
+      render: (text) => <div title="Category">{text}</div>,
+    };
 
-    if (props.showPartOfPermitColumn) {
-      tableColumns.push({
-        title: "Part of Permit",
-        dataIndex: "is_final_package",
-        key: "is_final_package",
-        sorter: (a, b) => (a.is_final_package > b.is_final_package ? -1 : 1),
-        render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
-      });
-    }
+    const uploadDateColumn = {
+      title: "Date/Time",
+      dataIndex: "upload_date",
+      key: "upload_date",
+      sorter: (a, b) => (moment(a.upload_date) > moment(b.upload_date) ? -1 : 1),
+      render: (text, record) => <div title="Due">{formatDateTime(record.upload_date)}</div>,
+    };
 
-    if (props.showPreambleFileMetadata) {
-      tableColumns = [...fileMetadataColumns, ...tableColumns];
-    }
-
-    const deleteButtonColumn = {
+    const deleteAndEditButtonColumn = {
       title: "",
-      dataIndex: "isDeletionAllowed",
-      key: "isDeletionAllowed",
-      render: (isDeletionAllowed, record) => {
-        if (isDeletionAllowed) {
-          return (
-            <NOWActionWrapper
-              permission={Permission.EDIT_PERMITS}
-              tab={props.isAdminView ? "" : "REV"}
-            >
-              <Popconfirm
-                placement="topLeft"
-                title="Are you sure you want to remove this document?"
-                okText="Delete"
-                cancelText="Cancel"
-                onConfirm={() => {
-                  handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
-                }}
+      dataIndex: "isModificationAllowed",
+      key: "isModificationAllowed",
+      render: (isModificationAllowed, record) => {
+        if (!(props.noticeOfWork.now_application_status_code === "AIA")) {
+          if (isModificationAllowed) {
+            return (
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={props.isAdminView ? "" : "REV"}
               >
-                <Button ghost type="primary" size="small">
-                  <img name="remove" src={TRASHCAN} alt="Remove document" />
+                {!props.isFinalPackageTable && (
+                  <Popconfirm
+                    placement="topLeft"
+                    title="Are you sure you want to remove this document?"
+                    okText="Delete"
+                    cancelText="Cancel"
+                    onConfirm={() => {
+                      handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
+                    }}
+                  >
+                    <Button ghost type="primary" size="small">
+                      <img name="remove" src={TRASHCAN} alt="Remove document" />
+                    </Button>
+                  </Popconfirm>
+                )}
+                <Button
+                  ghost
+                  type="primary"
+                  size="small"
+                  onClick={() => openEditDocumentModal(record)}
+                >
+                  <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
                 </Button>
-              </Popconfirm>
-            </NOWActionWrapper>
+              </NOWActionWrapper>
+            );
+          }
+          return (
+            /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
+            <div disabled onClick={(event) => event.stopPropagation()}>
+              <NOWActionWrapper
+                permission={Permission.EDIT_PERMITS}
+                tab={props.isAdminView ? "" : "REV"}
+              >
+                <Tooltip
+                  title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
+                  placement="right"
+                  mouseEnterDelay={0.3}
+                >
+                  <Button ghost type="primary" disabled size="small">
+                    <img
+                      className="lessOpacity"
+                      name="remove"
+                      src={TRASHCAN}
+                      alt="Remove document"
+                    />
+                  </Button>
+                </Tooltip>
+                <Tooltip
+                  title="You cannot edit a document that is a part of the Final Application, Referral, or Consultation Package."
+                  placement="right"
+                  mouseEnterDelay={0.3}
+                >
+                  <Button ghost type="primary" disabled size="small">
+                    <img
+                      className="lessOpacity"
+                      name="remove"
+                      src={EDIT_OUTLINE_VIOLET}
+                      alt="Edit document"
+                    />
+                  </Button>
+                </Tooltip>
+              </NOWActionWrapper>
+            </div>
           );
         }
-        return (
-          /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-          <div disabled onClick={(event) => event.stopPropagation()}>
-            <NOWActionWrapper
-              permission={Permission.EDIT_PERMITS}
-              tab={props.isAdminView ? "" : "REV"}
-            >
-              <Tooltip
-                title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
-                placement="right"
-                mouseEnterDelay={0.3}
-              >
-                <Button ghost type="primary" disabled size="small">
-                  <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
-                </Button>
-              </Tooltip>
-            </NOWActionWrapper>
-          </div>
-        );
       },
     };
 
-    if (!isViewMode) {
-      tableColumns.push(deleteButtonColumn);
+    const permitPackageColumn = {
+      title: () => {
+        return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+          <div>
+            Permit Package
+            <PermitPackage isAdminView={props.isAdminView} isTableHeaderView />
+          </div>
+        ) : (
+          <div>Permit Package</div>
+        );
+      },
+      dataIndex: "is_final_package",
+      key: "is_final_package",
+      render: (text) => <div title="Part of Permit">{text ? "Yes" : "No"}</div>,
+    };
+
+    const consultationPackageColumn = {
+      title: () => {
+        return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+          <div>
+            Consultation Package
+            <ReferralConsultationPackage type="CON" isTableHeaderView />
+          </div>
+        ) : (
+          <div>Consultation Package</div>
+        );
+      },
+      dataIndex: "is_consultation_package",
+      key: "is_consultation_package",
+      render: (text) => <div title="Consultation Package">{text ? "Yes" : "No"}</div>,
+    };
+
+    const referralPackageColumn = {
+      title: () => {
+        return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+          <div>
+            Referral Package
+            <ReferralConsultationPackage type="REF" isTableHeaderView />
+          </div>
+        ) : (
+          <div>Referral Package</div>
+        );
+      },
+      dataIndex: "is_referral_package",
+      key: "is_referral_package",
+      render: (text) => <div title="Referral Package">{text ? "Yes" : "No"}</div>,
+    };
+
+    if (props.isFinalPackageTable) {
+      tableColumns = [
+        ...fileMetadataColumns,
+        categoryColumn,
+        fileNameColumn,
+        descriptionColumn,
+        deleteAndEditButtonColumn,
+      ];
+    } else if (props.isGovernmentDocuments) {
+      tableColumns = [
+        categoryColumn,
+        fileNameColumn,
+        uploadDateColumn,
+        deleteAndEditButtonColumn,
+        referralPackageColumn,
+        consultationPackageColumn,
+        permitPackageColumn,
+      ];
+    } else if (props.isRefConDocuments) {
+      // TODO:need to add the permit package back to the column list after this table is managed better.
+      tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
+    } else if (props.isPackageModal) {
+      tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
+    } else {
+      tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
     }
 
     return tableColumns;
+  };
+
+  const docDescription = (record) => {
+    return <p>{record.description}</p>;
   };
 
   const transformDocuments = (
@@ -324,15 +441,41 @@ export const NOWDocuments = (props) => {
         Strings.EMPTY_FIELD,
       description: document.description || Strings.EMPTY_FIELD,
       is_final_package: document.is_final_package || false,
-      isDeletionAllowed:
-        !document.is_final_package &&
-        !document.is_referral_package &&
-        !document.is_consultation_package,
+      is_referral_package: document.is_referral_package || false,
+      is_consultation_package: document.is_consultation_package || false,
+      isModificationAllowed:
+        (!document.is_final_package &&
+          !document.is_referral_package &&
+          !document.is_consultation_package) ||
+        props.isFinalPackageTable,
+      ...document,
     }));
 
   return (
     <div>
-      <p>{props.disclaimerText}</p>
+      <Row className="inline-flex between">
+        <Col span={16}>
+          <p>{props.disclaimerText}</p>
+        </Col>
+        <Col span={6}>
+          {!props.selectedRows && !props.isViewMode && (
+            <NOWActionWrapper
+              permission={Permission.EDIT_PERMITS}
+              tab={props.isAdminView ? "" : "REV"}
+              allowAfterProcess={props.allowAfterProcess}
+            >
+              <AddButton
+                className="position-right"
+                disabled={props.isViewMode}
+                style={props.isAdminView ? { marginRight: "100px" } : {}}
+                onClick={openAddDocumentModal}
+              >
+                Add Document
+              </AddButton>
+            </NOWActionWrapper>
+          )}
+        </Col>
+      </Row>
       <br />
       <Table
         align="left"
@@ -360,25 +503,10 @@ export const NOWDocuments = (props) => {
               }
             : null
         }
+        expandIcon={props.showDescription ? RenderNowDocumentsTableExpandIcon : undefined}
+        expandRowByClick={props.showDescription}
+        expandedRowRender={props.showDescription ? docDescription : undefined}
       />
-      <br />
-
-      {!props.selectedRows && !props.isViewMode && (
-        <NOWActionWrapper
-          permission={Permission.EDIT_PERMITS}
-          tab={props.isAdminView ? "" : "REV"}
-          allowAfterProcess={props.allowAfterProcess}
-        >
-          <AddButton
-            className={props.isAdminView ? "position-right" : ""}
-            disabled={props.isViewMode}
-            style={props.isAdminView ? { marginRight: "100px" } : {}}
-            onClick={openAddDocumentModal}
-          >
-            Add Document
-          </AddButton>
-        </NOWActionWrapper>
-      )}
     </div>
   );
 };
@@ -401,6 +529,7 @@ const mapDispatchToProps = (dispatch) =>
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,
       deleteNoticeOfWorkApplicationDocument,
+      editNoticeOfWorkDocument,
     },
     dispatch
   );

@@ -223,8 +223,8 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
     ],
     administrative: [
       {
-        href: "final-application-package",
-        title: "Final Application Package",
+        href: "permit-package",
+        title: "Permit Package",
         alwaysVisible: true,
         children: [],
         applicationType: ["NOW", "ADA"],
@@ -267,30 +267,30 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
     ],
     "manage-documents": [
       {
-        href: "final-application-package",
-        title: "Final Application Package",
+        href: "permit-package",
+        title: "Permit Package",
         alwaysVisible: true,
         children: [],
-        applicationType: ["NOW"],
+        applicationType: ["NOW", "ADA"],
       },
       {
         href: "application-documents",
         title: "Application Documents",
         alwaysVisible: true,
-        applicationType: ["NOW"],
+        applicationType: ["NOW", "ADA"],
       },
       {
         href: "government-documents",
         title: "Government Documents",
         alwaysVisible: true,
         children: [],
-        applicationType: ["NOW"],
+        applicationType: ["NOW", , "ADA"],
       },
       {
         href: "referral-consultation-public-comment-documents",
         title: "Referral, Consultation and Public Comment Documents",
         alwaysVisible: true,
-        applicationType: ["NOW"],
+        applicationType: ["NOW", "ADA"],
       },
     ],
   };

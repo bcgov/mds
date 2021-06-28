@@ -15,6 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
 import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import AdministrativeTab from "@/components/noticeOfWork/applications/administrative/AdministrativeTab";
+import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
@@ -146,6 +147,17 @@ export class AdminAmendmentApplication extends Component {
             <LoadingWrapper condition={this.state.isTabLoaded}>
               <AdministrativeTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={this.props.renderTabTitle("Manage Documents", "MND")}
+            key="manage-documents"
+            disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
+          >
+            {this.props.noticeOfWork.lead_inspector_party_guid && (
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <ManageDocumentsTab fixedTop={this.props.fixedTop} />
+              </LoadingWrapper>
+            )}
           </Tabs.TabPane>
         </Tabs>
       </div>

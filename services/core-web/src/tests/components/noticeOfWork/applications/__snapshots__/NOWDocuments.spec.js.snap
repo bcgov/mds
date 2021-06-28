@@ -2,21 +2,40 @@
 
 exports[`NOWDocuments renders properly 1`] = `
 <div>
-  <p>
-    This test is explaining the purpose of this section
-  </p>
+  <Row
+    className="inline-flex between"
+  >
+    <Col
+      span={16}
+    >
+      <p>
+        This test is explaining the purpose of this section
+      </p>
+    </Col>
+    <Col
+      span={6}
+    >
+      <Connect(NOWActionWrapper)
+        allowAfterProcess={false}
+        permission="role_edit_permits"
+        tab="REV"
+      >
+        <AddButton
+          className="position-right"
+          disabled={false}
+          onClick={[Function]}
+          style={Object {}}
+        >
+          Add Document
+        </AddButton>
+      </Connect(NOWActionWrapper)>
+    </Col>
+  </Row>
   <br />
   <Table
     align="left"
     columns={
       Array [
-        Object {
-          "dataIndex": "filename",
-          "key": "filename",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "File Name",
-        },
         Object {
           "dataIndex": "category",
           "filters": Array [],
@@ -27,35 +46,23 @@ exports[`NOWDocuments renders properly 1`] = `
           "title": "Category",
         },
         Object {
-          "dataIndex": "description",
-          "key": "description",
+          "dataIndex": "filename",
+          "key": "filename",
           "render": [Function],
           "sorter": [Function],
-          "title": "Description",
+          "title": "File Name",
         },
         Object {
           "dataIndex": "upload_date",
           "key": "upload_date",
           "render": [Function],
           "sorter": [Function],
-          "title": "Upload Date/Time",
-        },
-        Object {
-          "dataIndex": "is_final_package",
-          "key": "is_final_package",
-          "render": [Function],
-          "sorter": [Function],
-          "title": "Part of Permit",
-        },
-        Object {
-          "dataIndex": "isDeletionAllowed",
-          "key": "isDeletionAllowed",
-          "render": [Function],
-          "title": "",
+          "title": "Date/Time",
         },
       ]
     }
     dataSource={Array []}
+    expandRowByClick={false}
     locale={
       Object {
         "emptyText": "No Data Yet",
@@ -65,20 +72,5 @@ exports[`NOWDocuments renders properly 1`] = `
     rowKey="key"
     rowSelection={null}
   />
-  <br />
-  <Connect(NOWActionWrapper)
-    allowAfterProcess={false}
-    permission="role_edit_permits"
-    tab="REV"
-  >
-    <AddButton
-      className=""
-      disabled={false}
-      onClick={[Function]}
-      style={Object {}}
-    >
-      Add Document
-    </AddButton>
-  </Connect(NOWActionWrapper)>
 </div>
 `;

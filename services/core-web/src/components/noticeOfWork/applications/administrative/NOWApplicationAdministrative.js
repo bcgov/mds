@@ -28,16 +28,13 @@ export const NOWApplicationAdministrative = (props) => {
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   return (
     <div>
-      <ScrollContentWrapper
-        id="final-application-package"
-        title="Final Application Package"
-        isLoaded={props.isLoaded}
-      >
+      <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           adminView
+          showInUnifiedView
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper

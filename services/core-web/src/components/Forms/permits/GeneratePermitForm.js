@@ -316,6 +316,7 @@ export const GeneratePermitForm = (props) => {
               showPreambleFileMetadata={props.draftPermitAmendment.has_permit_conditions}
               editPreambleFileMetadata={!props.isViewMode}
               initialValues={props.initialValues}
+              showInUnifiedView
             />
             {props.previousAmendmentDocuments && (
               <PreviousAmendmentDocuments

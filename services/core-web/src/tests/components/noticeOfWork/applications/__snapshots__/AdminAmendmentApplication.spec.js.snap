@@ -1678,6 +1678,10 @@ exports[`AdminAmendmentApplication renders properly 1`] = `
         />
       </LoadingWrapper>
     </TabPane>
+    <TabPane
+      disabled={true}
+      key="manage-documents"
+    />
   </Tabs>
 </div>
 `;

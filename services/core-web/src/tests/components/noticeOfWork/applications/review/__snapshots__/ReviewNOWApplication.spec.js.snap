@@ -1989,25 +1989,14 @@ exports[`ReviewNOWApplication renders properly 1`] = `
     />
     <withRouter(Connect(ScrollContentWrapper))
       id="application-files"
-      title="vFCBC/NROS Application Files"
+      title="Application Files"
     >
       <Connect(NOWSubmissionDocuments)
+        disableCategoryFilter={true}
         displayTableDescription={true}
-      />
-    </withRouter(Connect(ScrollContentWrapper))>
-    <withRouter(Connect(ScrollContentWrapper))
-      id="additional-application-files"
-      title="Additional Application Files"
-    >
-      <Connect(NOWDocuments)
-        categoriesToShow={
-          Array [
-            "AAF",
-            "MDO",
-          ]
-        }
-        disclaimerText="Attach any file revisions or new files requested from the proponent here."
-        isViewMode={false}
+        documents={Array []}
+        showDescription={true}
+        tableDescription="In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
       />
     </withRouter(Connect(ScrollContentWrapper))>
   </Form>

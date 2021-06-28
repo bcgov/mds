@@ -47,6 +47,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
         documents={props.documents}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
+        isPackageModal
       />
       <br />
       <div className="right center-mobile padding-md--top">

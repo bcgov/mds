@@ -3,8 +3,8 @@
 exports[`NOWApplicationAdministrative renders properly 1`] = `
 <div>
   <withRouter(Connect(ScrollContentWrapper))
-    id="final-application-package"
-    title="Final Application Package"
+    id="permit-package"
+    title="Permit Package"
   >
     <Connect(FinalPermitDocuments)
       adminView={true}
@@ -72,6 +72,7 @@ exports[`NOWApplicationAdministrative renders properly 1`] = `
           },
         }
       }
+      showInUnifiedView={true}
     />
   </withRouter(Connect(ScrollContentWrapper))>
   <withRouter(Connect(ScrollContentWrapper))

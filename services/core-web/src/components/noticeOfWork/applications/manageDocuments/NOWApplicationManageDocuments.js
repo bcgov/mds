@@ -23,15 +23,12 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: true };
 
 export const NOWApplicationManageDocuments = (props) => {
-  const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+  const tableDescription =
+    "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
   return (
     <div>
-      <ScrollContentWrapper
-        id="final-application-package"
-        title="Final Application Package"
-        isLoaded={props.isLoaded}
-      >
+      <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
@@ -75,12 +72,16 @@ export const NOWApplicationManageDocuments = (props) => {
                   filename: doc.mine_document.document_name,
                   document_manager_guid: doc.mine_document.document_manager_guid,
                   notForImport: true,
+                  ...doc,
                 };
               })
           )}
+          allowAfterProcess
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-          displayTableDescription
           disableCategoryFilter
+          displayTableDescription
+          tableDescription={tableDescription}
+          showDescription
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -98,7 +99,9 @@ export const NOWApplicationManageDocuments = (props) => {
           allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
+          isGovernmentDocuments
           disableCategoryFilter
+          showDescription
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -113,6 +116,7 @@ export const NOWApplicationManageDocuments = (props) => {
           allowAfterProcess
           disableCategoryFilter
           disclaimerText="In this table, you can see all Referral, Consultation and Public Comment related documents. Documents added to this section will not show up unless otherwise specified."
+          isRefConDocuments
         />
       </ScrollContentWrapper>
     </div>
