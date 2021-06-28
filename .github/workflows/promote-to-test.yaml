@@ -13,6 +13,7 @@ env:
 
 jobs:
   promote-to-test:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: promote-to-test
     runs-on: ubuntu-20.04
     strategy:
