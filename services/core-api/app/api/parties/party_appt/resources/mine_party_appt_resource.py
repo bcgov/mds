@@ -106,6 +106,7 @@ class MinePartyApptResource(Resource, UserMixin):
             raise NotFound('Mine not found')
 
         permit = None
+        tsf = None
         if mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
             permit = Permit.find_by_permit_guid(related_guid)
             if permit is None:
