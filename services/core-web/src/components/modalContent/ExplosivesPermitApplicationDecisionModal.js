@@ -1,20 +1,23 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import ExplosivesPermitForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitForm";
+import ExplosivesPermitDecisionForm from "@/components/Forms/ExplosivesPermit/ExplosivesPermitDecisionForm";
 
-const propTypes = {};
-
-const defaultProps = {};
+const propTypes = {
+  initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
+  documentType: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  preview: PropTypes.func.isRequired,
+};
 
 export const ExplosivesPermitApplicationDecisionModal = (props) => (
-  <div>
-    <p>Decision form will go here</p>
-  </div>
+  <ExplosivesPermitDecisionForm
+    initialValues={props.initialValues}
+    documentType={props.documentType}
+    onSubmit={props.onSubmit}
+    preview={props.preview}
+  />
 );
 
 ExplosivesPermitApplicationDecisionModal.propTypes = propTypes;
-ExplosivesPermitApplicationDecisionModal.defaultProps = defaultProps;
 
 export default ExplosivesPermitApplicationDecisionModal;

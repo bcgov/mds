@@ -228,11 +228,13 @@ export class MineExplosivesPermitTable extends Component {
       render: (text, record) => {
         const menu = (
           <Menu>
-            <Menu.Item key="0">
+            <Menu.Item key="process">
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={this.props.handleOpenExplosivesPermitDecisionModal}
+                onClick={(event) =>
+                  this.props.handleOpenExplosivesPermitDecisionModal(event, record)
+                }
               >
                 <img
                   alt="document"
@@ -243,7 +245,7 @@ export class MineExplosivesPermitTable extends Component {
                 Process
               </button>
             </Menu.Item>
-            <Menu.Item key="0">
+            <Menu.Item key="edit">
               <button
                 type="button"
                 className="full add-permit-dropdown-button"

@@ -8,6 +8,11 @@ import {
   createExplosivesPermit,
   updateExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
+import {
+  fetchExplosivesPermitDocumentContextTemplate,
+  generateExplosivesPermitDocument,
+} from "@/actionCreators/documentActionCreator";
+import { getDocumentContextTemplate } from "@/reducers/documentReducer";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getExplosivesPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -27,7 +32,10 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
   updateExplosivesPermit: PropTypes.func.isRequired,
+  fetchExplosivesPermitDocumentContextTemplate: PropTypes.func.isRequired,
+  generateExplosivesPermitDocument: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
+  documentContextTemplate: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -53,7 +61,7 @@ export class ExplosivesPermit extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: record ? this.handleUpdatePermit : this.handleAddExplosivesPermit,
+        onSubmit: record ? this.handleUpdateExplosivesPermit : this.handleAddExplosivesPermit,
         title: "Add Explosives Storage & Use Permit",
         initialValues,
       },
@@ -62,7 +70,7 @@ export class ExplosivesPermit extends Component {
     });
   };
 
-  handleUpdatePermit = (values) => {
+  handleUpdateExplosivesPermit = (values) => {
     const payload = {
       ...values,
     };
@@ -90,26 +98,62 @@ export class ExplosivesPermit extends Component {
     });
   };
 
-  handleIssueExplosivesPermit = (values) => {
+  handleIssueExplosivesPermit = (explosivesPermitGuid, values) => {
     const payload = {
-      originating_system: "Core",
+      application_status: "APP",
       ...values,
     };
-    return this.props.createExplosivesPermit(this.props.mineGuid, payload).then(() => {
-      this.props.closeModal();
-    });
+    return this.props
+      .updateExplosivesPermit(this.props.mineGuid, explosivesPermitGuid, payload)
+      .then(() => {
+        this.props.closeModal();
+      });
   };
 
-  handleOpenExplosivesPermitDecisionModal = (event) => {
+  handleDocumentPreview = (documentType, values) => {
+    const documentTypeCode = documentType.now_application_document_type_code;
+    const newValues = values;
+    documentType.document_template.form_spec
+      .filter((field) => field.type === "DATE")
+      .forEach((field) => {
+        newValues[field.id] = formatDate(newValues[field.id]);
+      });
+    const payload = {
+      now_application_guid: this.props.noticeOfWork.now_application_guid,
+      template_data: newValues,
+    };
+    return this.props.generateNoticeOfWorkApplicationDocument(
+      documentTypeCode,
+      payload,
+      "Successfully created the preview document",
+      true,
+      () => {}
+    );
+  };
+
+  handleOpenExplosivesPermitDecisionModal = (event, record) => {
     event.preventDefault();
-    this.props.openModal({
-      props: {
-        onSubmit: this.handleIssueExplosivesPermit,
-        title: "Issue Explosives Storage & Use Permit",
-      },
-      content: modalConfig.EXPLOSIVES_PERMIT_DECISION_MODAL,
-      width: "75vw",
-    });
+    return this.props
+      .fetchExplosivesPermitDocumentContextTemplate("LET", record.explosives_permit_guid)
+      .then(() => {
+        const initialValues = {};
+        this.props.documentContextTemplate.document_template.form_spec.map(
+          // eslint-disable-next-line
+          (item) => (initialValues[item.id] = item["context-value"])
+        );
+        return this.props.openModal({
+          props: {
+            initialValues,
+            documentType: this.props.documentContextTemplate,
+            onSubmit: (values) =>
+              this.handleIssueExplosivesPermit(record.explosives_permit_guid, values),
+            preview: this.handleDocumentPreview,
+            title: "Issue Explosives Storage & Use Permit",
+          },
+          width: "75vw",
+          content: modalConfig.EXPLOSIVES_PERMIT_DECISION_MODAL,
+        });
+      });
   };
 
   render() {
@@ -154,6 +198,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
+  documentContextTemplate: getDocumentContextTemplate(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
@@ -164,6 +209,8 @@ const mapDispatchToProps = (dispatch) =>
       closeModal,
       fetchExplosivesPermits,
       updateExplosivesPermit,
+      fetchExplosivesPermitDocumentContextTemplate,
+      generateExplosivesPermitDocument,
     },
     dispatch
   );
