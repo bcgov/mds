@@ -1682,10 +1682,22 @@ INSERT INTO explosives_permit_document_type (
     update_user
 )
 VALUES
-    ('PER', 'Explosives Storage and Use Permit', false, 0, 'ESP', 'system-mds', 'system-mds'),
-    ('LET', 'Explosives Storage and Use Permit Letter', false, 0, 'ESL', 'system-mds', 'system-mds'),
-    -- TODO: What document types do we need?
-    ('BLA', 'Blasting Plan', true, 10, NULL, 'system-mds', 'system-mds')
+    ('PER', 'Explosives Storage and Use Permit', true, 0, 'ESP', 'system-mds', 'system-mds'),
+    ('LET', 'Permit Enclosed Letter', true, 10, 'ESL', 'system-mds', 'system-mds'),
+    ('APP', 'Approval Letter', true, 20, NULL, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejection Letter', true, 30, NULL, 'system-mds', 'system-mds'),
+    ('WIT', 'Withdrawal Confirmation', true, 40, NULL, 'system-mds', 'system-mds'),
+    ('COR', 'Correspondence', true, 50, NULL, 'system-mds', 'system-mds'),
+    ('FOR', 'Application Form', true, 60, NULL, 'system-mds', 'system-mds'),
+    ('BLA', 'Blasting Plan', true, 70, NULL, 'system-mds', 'system-mds'),
+    ('MAP', 'Maps (Site Plan)', true, 80, NULL, 'system-mds', 'system-mds'),
+    ('SIT', 'Site Security Plan', true, 90, NULL, 'system-mds', 'system-mds'),
+    ('FIR', 'Fire Safety Plan', true, 100, NULL, 'system-mds', 'system-mds'),
+    ('OPE', 'Operational Notification', true, 110, NULL, 'system-mds', 'system-mds'),
+    ('RIS', 'Risk Analysis', true, 110, NULL, 'system-mds', 'system-mds'),
+    ('RIS', 'Risk Analysis', true, 120, NULL, 'system-mds', 'system-mds'),
+    ('WIR', 'Withdrawal Request', true, 130, NULL, 'system-mds', 'system-mds'),
+    ('CAN', 'Cancellation/Closure Request', true, 140, NULL, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 -- TODO: Create template JSON for these two documents.
