@@ -1273,6 +1273,30 @@ export const ReviewNOWApplication = (props) => {
     </div>
   );
 
+  const renderOtherInformation = () => (
+    <div>
+      <Row gutter={16}>
+        <Col md={24}>
+          <div className="field-title">
+            Is there any other information you would like us to know (where possible, do not include
+            personal information)
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+            <NOWOriginalValueTooltip
+              originalValue={props.renderOriginalValues("other_information").value}
+              isVisible={props.renderOriginalValues("other_information").edited}
+            />
+          </div>
+          <Field
+            id="other_information"
+            name="other_information"
+            component={RenderAutoSizeField}
+            disabled={props.isViewMode}
+          />
+        </Col>
+      </Row>
+    </div>
+  );
+
   return (
     <div>
       <Form layout="vertical">
@@ -1311,6 +1335,10 @@ export const ReviewNOWApplication = (props) => {
           renderOriginalValues={props.renderOriginalValues}
           isPreLaunch={props.isPreLaunch}
         />
+
+        <ScrollContentWrapper id="other-information" title="Other Information">
+          {renderOtherInformation()}
+        </ScrollContentWrapper>
         <ScrollContentWrapper id="application-files" title="Application Files">
           <NOWSubmissionDocuments
             now_application_guid={props.now_application_guid}

@@ -116,6 +116,7 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.ats_authorization_number = now_sub.atsauthorizationnumber
     now_app.ats_project_number = now_sub.atsprojectnumber
     now_app.original_start_date = now_sub.originalstartdate
+    now_app.other_information = now_sub.anyotherinformation
 
     return
 
