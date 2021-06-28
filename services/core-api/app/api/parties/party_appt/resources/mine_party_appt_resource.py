@@ -16,6 +16,7 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.mine_party_appt_type import MinePartyAppointmentType
+from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
 
 
@@ -109,6 +110,10 @@ class MinePartyApptResource(Resource, UserMixin):
             permit = Permit.find_by_permit_guid(related_guid)
             if permit is None:
                 raise NotFound('Permit not found')
+        elif mine_party_appt_type_code == 'EOR':
+            tsf = MineTailingsStorageFacility.find_by_tsf_guid(related_guid)
+            if tsf is None:
+                raise NotFound('TSF not found')
 
         if end_current:
             if mine_party_appt_type_code == 'EOR':
@@ -130,13 +135,14 @@ class MinePartyApptResource(Resource, UserMixin):
         new_mpa = MinePartyAppointment.create(
             mine=mine,
             permit=permit,
+            tsf=tsf,
             party_guid=party_guid,
             mine_party_appt_type_code=mine_party_appt_type_code,
             start_date=start_date,
             end_date=end_date,
             union_rep_company=union_rep_company,
             processed_by=self.get_user_info())
-        new_mpa.assign_related_guid(related_guid)
+        new_mpa.assign_related_guid(mine_party_appt_type_code, related_guid)
 
         try:
             new_mpa.save()
@@ -168,7 +174,7 @@ class MinePartyApptResource(Resource, UserMixin):
                 continue
             elif key == 'related_guid':
                 related_guid = data.get('related_guid', None)
-                mpa.assign_related_guid(related_guid)
+                mpa.assign_related_guid(mpa.mine_party_appt_type_code, related_guid)
             else:
                 setattr(mpa, key, value)
 

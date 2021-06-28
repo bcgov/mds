@@ -111,12 +111,13 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         if eor_party_guid is not None:
             new_eor = MinePartyAppointment.create(
                 mine=mine,
+                tsf=mine_tsf,
                 party_guid=eor_party_guid,
                 mine_party_appt_type_code='EOR',
                 processed_by=self.get_user_info(),
                 start_date=datetime.now(tz=timezone.utc))
             related_guid = mine_tsf.mine_tailings_storage_facility_guid
-            new_eor.assign_related_guid(related_guid)
+            new_eor.assign_related_guid('EOR', related_guid)
             new_eor.save()
 
         mine.save()

@@ -161,7 +161,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 start_date=permit_issue_date,
                 end_date=permittee_end_date,
                 permit=permit)
-            new_permittee.assign_related_guid(permit.permit_guid)
+            new_permittee.assign_related_guid('PMT', permit.permit_guid)
             new_permittee.save()
 
         permit_amendment_type_code = data.get('permit_amendment_type_code')
