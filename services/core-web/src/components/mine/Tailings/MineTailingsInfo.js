@@ -113,7 +113,7 @@ export class MineTailingsInfo extends Component {
         this.props.fetchPartyRelationships({
           mine_guid: this.props.mineGuid,
           relationships: "party",
-          include_permittees: "true",
+          include_permit_contacts: "true",
         });
       })
       .finally(() => {

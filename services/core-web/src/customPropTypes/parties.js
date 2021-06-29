@@ -21,6 +21,7 @@ export const partyRelationship = shape({
   permit_no: PropTypes.string,
   start_date: PropTypes.string,
   end_date: PropTypes.string,
+  union_rep_company: PropTypes.string,
 });
 
 export const partyRelationshipType = shape({
