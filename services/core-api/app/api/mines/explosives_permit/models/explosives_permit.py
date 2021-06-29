@@ -140,6 +140,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         # Check for application status changes.
         if application_status and application_status != 'REC':
+            # TODO: Generate both of the documents here.
             if application_status == 'APP':
                 self.permit_number = ExplosivesPermit.get_next_permit_number()
             self.application_status = application_status
