@@ -128,21 +128,23 @@ export class ExplosivesPermitForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <DocumentCategoryForm
-              documents={this.props.documents}
-              categories={this.props.documentTypeDropdownOptions}
-            />
-            <Form.Item label="Select Files/Upload files*">
-              <Field
-                id="DocumentFileUpload"
-                name="DocumentFileUpload"
-                onFileLoad={this.onFileLoad}
-                onRemoveFile={this.onRemoveFile}
-                mineGuid={this.props.mineGuid}
-                component={ExplosivesPermitFileUpload}
-                allowMultiple
-              />
-            </Form.Item>
+            <div className="document-container">
+              <Form.Item label="Select Files/Upload files*">
+                <DocumentCategoryForm
+                  documents={this.props.documents}
+                  categories={this.props.documentTypeDropdownOptions}
+                />
+                <Field
+                  id="DocumentFileUpload"
+                  name="DocumentFileUpload"
+                  onFileLoad={this.onFileLoad}
+                  onRemoveFile={this.onRemoveFile}
+                  mineGuid={this.props.mineGuid}
+                  component={ExplosivesPermitFileUpload}
+                  allowMultiple
+                />
+              </Form.Item>
+            </div>
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             <MagazineForm isApproved={this.props.isApproved} />

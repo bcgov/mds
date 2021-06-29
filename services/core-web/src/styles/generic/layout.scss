@@ -467,7 +467,7 @@ html {
   margin: 0;
 }
 
-.underline  {
+.underline {
   text-decoration: underline;
   color: $hover-blue;
   cursor: pointer;
@@ -499,4 +499,10 @@ img.lessOpacity {
 
 .lighter {
   font-weight: 300 !important;
+}
+
+.document-container {
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  padding: 5px;
 }

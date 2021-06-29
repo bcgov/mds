@@ -203,7 +203,7 @@ export class MineExplosivesPermitTable extends Component {
           className="underline"
           onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "EXP")}
         >
-          {text} Kgs
+          {text || "0"} Kgs
         </div>
       ),
       sorter: false,
