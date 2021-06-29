@@ -8,28 +8,28 @@ const reducerProps = {};
 
 const setupDispatchProps = () => {
   dispatchProps.fetchMineRecordById = jest.fn(() => Promise.resolve({}));
-  dispatchProps.updateMineRecord = jest.fn();
-  dispatchProps.fetchSubscribedMinesByUser = jest.fn();
-  dispatchProps.subscribe = jest.fn();
-  dispatchProps.unSubscribe = jest.fn();
-  dispatchProps.createVariance = jest.fn();
-  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn();
-  dispatchProps.fetchMineComplianceCodes = jest.fn();
-  dispatchProps.fetchVariancesByMine = jest.fn();
-  dispatchProps.fetchStatusOptions = jest.fn();
-  dispatchProps.fetchMineDisturbanceOptions = jest.fn();
-  dispatchProps.fetchRegionOptions = jest.fn();
-  dispatchProps.fetchMineTenureTypes = jest.fn();
-  dispatchProps.fetchMineCommodityOptions = jest.fn();
-  dispatchProps.fetchRelationshipTypes = jest.fn();
-  dispatchProps.fetchPartyRelationshipTypes = jest.fn();
+  dispatchProps.updateMineRecord = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchSubscribedMinesByUser = jest.fn(() => Promise.resolve());
+  dispatchProps.subscribe = jest.fn(() => Promise.resolve());
+  dispatchProps.unSubscribe = jest.fn(() => Promise.resolve());
+  dispatchProps.createVariance = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchVarianceDocumentCategoryOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineComplianceCodes = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchVariancesByMine = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchStatusOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineDisturbanceOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineTenureTypes = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineCommodityOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchRelationshipTypes = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchPartyRelationshipTypes = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPartyRelationships = jest.fn(() => Promise.resolve());
   dispatchProps.fetchPermitStatusOptions = jest.fn(() => Promise.resolve());
-  dispatchProps.fetchInspectors = jest.fn();
-  dispatchProps.updateVariance = jest.fn();
-  dispatchProps.fetchVarianceStatusOptions = jest.fn();
-  dispatchProps.fetchMineReportDefinitionOptions = jest.fn();
-  dispatchProps.fetchMineReportStatusOptions = jest.fn();
+  dispatchProps.fetchInspectors = jest.fn(() => Promise.resolve());
+  dispatchProps.updateVariance = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchVarianceStatusOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineReportDefinitionOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineReportStatusOptions = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
