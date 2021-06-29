@@ -22,9 +22,12 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  isApproved: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  isApproved: false,
+};
 
 export class MagazineForm extends Component {
   state = {
@@ -79,7 +82,8 @@ export class MagazineForm extends Component {
     </div>
   );
 
-  renderInputs = (field) => {
+  renderInputs = (field, type) => {
+    const unit = type === "EXP" ? "(Kg)" : "(Unit)";
     return (
       <>
         <Row gutter={16}>
@@ -91,6 +95,7 @@ export class MagazineForm extends Component {
                 name={`${field}type_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -102,6 +107,7 @@ export class MagazineForm extends Component {
                 name={`${field}tag_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -115,17 +121,19 @@ export class MagazineForm extends Component {
                 name={`${field}construction`}
                 component={renderConfig.FIELD}
                 validate={[required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item>
               <Field
-                label="Quantity *"
+                label={`Quantity ${unit}*`}
                 id={`${field}quantity`}
                 name={`${field}quantity`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -140,6 +148,7 @@ export class MagazineForm extends Component {
                 name={`${field}latitude`}
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10), lat, required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -151,6 +160,7 @@ export class MagazineForm extends Component {
                 name={`${field}longitude`}
                 validate={[number, maxLength(12), lon, required]}
                 component={renderConfig.FIELD}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -159,22 +169,24 @@ export class MagazineForm extends Component {
           <Col span={24}>
             <Form.Item>
               <Field
-                label="Distance from Road or Work Area *"
+                label="Distance from Road or Work Area (m)*"
                 id={`${field}distance_road`}
                 name={`${field}distance_road`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item>
               <Field
-                label="Distance from Dwelling or Flammable Material Storage Area *"
+                label="Distance from Dwelling or Flammable Material Storage Area (m)*"
                 id={`${field}distance_dwelling`}
                 name={`${field}distance_dwelling`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
+                disabled={this.props.isApproved}
               />
             </Form.Item>
           </Col>
@@ -182,29 +194,32 @@ export class MagazineForm extends Component {
         <Row gutter={16}>
           <Col span={8}>
             <Field
-              label="Length*"
+              label="Length (m)*"
               id={`${field}length`}
               name={`${field}length`}
               component={renderConfig.FIELD}
               validate={[number, required]}
+              disabled={this.props.isApproved}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Width*"
+              label="Width (m)*"
               id={`${field}width`}
               name={`${field}width`}
               component={renderConfig.FIELD}
               validate={[number, required]}
+              disabled={this.props.isApproved}
             />
           </Col>
           <Col span={8}>
             <Field
-              label="Height*"
+              label="Height (m)*"
               id={`${field}height`}
               name={`${field}height`}
               component={renderConfig.FIELD}
               validate={[number, required]}
+              disabled={this.props.isApproved}
             />
           </Col>
         </Row>
@@ -225,13 +240,14 @@ export class MagazineForm extends Component {
             >
               {fields.map((field, index) => (
                 <Collapse.Panel header={this.panelHeader(index, fields, "EXP")} key={index}>
-                  {this.renderInputs(field)}
+                  {this.renderInputs(field, "EXP")}
                 </Collapse.Panel>
               ))}
             </Collapse>
             <Button
               className="btn--dropdown"
               onClick={(event) => this.addField(event, fields, "EXP")}
+              disabled={this.props.isApproved}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
@@ -255,13 +271,14 @@ export class MagazineForm extends Component {
             >
               {fields.map((field, index) => (
                 <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={field}>
-                  {this.renderInputs(field)}
+                  {this.renderInputs(field, "DET")}
                 </Collapse.Panel>
               ))}
             </Collapse>
             <Button
               className="btn--dropdown"
               onClick={(event) => this.addField(event, fields, "DET")}
+              disabled={this.props.isApproved}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
@@ -273,39 +290,13 @@ export class MagazineForm extends Component {
   };
 
   render() {
-    console.log("this.state.activeExplosiveKey", this.state.activeExplosiveKey);
-    console.log("this.state.activeDetonatorKey", this.state.activeDetonatorKey);
     return (
       <div>
         <Form.Item label="Explosive Magazines" />
         <FieldArray name="explosive_magazines" component={this.renderExplosive} />
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item>
-              <Field
-                id="total_explosive_quantity"
-                name="total_explosive_quantity"
-                label="Total Maximum Quantity*"
-                component={renderConfig.FIELD}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
         <Divider style={{ backgroundColor: COLOR.violet }} />
         <Form.Item label="Detonator Magazines" />
         <FieldArray name="detonator_magazines" component={this.renderDetonator} />
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item>
-              <Field
-                id="total_detonator_quantity"
-                name="total_detonator_quantity"
-                label="Total Maximum Quantity*"
-                component={renderConfig.FIELD}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
       </div>
     );
   }

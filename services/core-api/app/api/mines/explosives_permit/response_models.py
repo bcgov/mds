@@ -50,6 +50,8 @@ EXPLOSIVES_PERMIT_MODEL = api.model(
         'is_closed': fields.Boolean,
         'closed_timestamp': fields.DateTime,
         'closed_reason': fields.String,
+        'total_detonator_quantity': fields.Integer,
+        'total_explosive_quantity': fields.Integer,
         'explosive_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
         'detonator_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
         'documents': fields.List(fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_MODEL)),

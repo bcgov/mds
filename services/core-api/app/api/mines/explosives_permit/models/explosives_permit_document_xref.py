@@ -3,6 +3,7 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from app.api.utils.models_mixins import Base
+from app.api.mines.documents.models.mine_document import MineDocument
 from app.extensions import db
 
 
@@ -35,5 +36,5 @@ class ExplosivesPermitDocumentXref(Base):
 
     @classmethod
     def find_by_mine_document_guid(cls, mine_document_guid):
-        return cls.query.filter_by(
-            mine_document_guid=mine_document_guid, deleted_ind=False).one_or_none()
+        return cls.query.filter_by(mine_document_guid=mine_document_guid).filter(
+            MineDocument.deleted_ind == False).one_or_none()

@@ -3,6 +3,7 @@ from pytz import timezone
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import validates
 from sqlalchemy import and_
@@ -82,6 +83,20 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
+
+    @hybrid_property
+    def total_explosive_quantity(self):
+        if self.explosive_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.explosive_magazines)
+            return total if total else 0
+        return None
+
+    @hybrid_property
+    def total_detonator_quantity(self):
+        if self.detonator_magazines:
+            total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
+            return total if total else 0
+        return None
 
     # Add validation on application date for not being in the future.
 
@@ -179,7 +194,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             if mine_document_guid:
                 explosives_permit_doc = ExplosivesPermitDocumentXref.find_by_mine_document_guid(
                     mine_document_guid)
-                explosives_permit_doc.explosives_permit_document_type_code = doc.get('code')
+                explosives_permit_doc.explosives_permit_document_type_code = doc.get(
+                    'explosives_permit_document_type_code')
             else:
                 mine_doc = MineDocument(
                     mine_guid=self.mine_guid,
@@ -188,8 +204,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 # mine_doc.save(commit=False)
                 explosives_permit_doc = ExplosivesPermitDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
-                    mine_incident_id=self.explosives_permit_id,
-                    explosives_permit_document_type_code=doc.get('code'))
+                    explosives_permit_id=self.explosives_permit_id,
+                    explosives_permit_document_type_code=doc.get(
+                        'explosives_permit_document_type_code'))
                 explosives_permit_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_doc)
 
@@ -261,8 +278,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             # mine_doc.save(commit=False)
             explosives_permit_doc = ExplosivesPermitDocumentXref(
                 mine_document_guid=mine_doc.mine_document_guid,
-                mine_incident_id=explosives_permit.explosives_permit_id,
-                explosives_permit_document_type_code=doc.get('code'))
+                explosives_permit_id=explosives_permit.explosives_permit_id,
+                explosives_permit_document_type_code=doc.get(
+                    'explosives_permit_document_type_code'))
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
 

@@ -9,7 +9,11 @@ import {
   updateExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
-import { getExplosivesPermitStatusOptionsHash } from "@common/selectors/staticContentSelectors";
+import {
+  getExplosivesPermitStatusOptionsHash,
+  getExplosivesPermitDocumentTypeOptionsHash,
+  getExplosivesPermitDocumentTypeDropdownOptions,
+} from "@common/selectors/staticContentSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
@@ -50,6 +54,7 @@ export class ExplosivesPermit extends Component {
 
   handleOpenAddExplosivesPermitModal = (event, record = null) => {
     const initialValues = record ? record : {};
+    const isApproved = record?.application_status === "APP";
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -57,6 +62,8 @@ export class ExplosivesPermit extends Component {
         title: "Add Explosives Storage & Use Permit",
         initialValues,
         mineGuid: this.props.mineGuid,
+        isApproved,
+        documentTypeDropdownOptions: this.props.explosivesPermitDocumentTypeDropdownOptions,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
@@ -73,6 +80,20 @@ export class ExplosivesPermit extends Component {
         this.props.fetchExplosivesPermits(this.props.mineGuid);
         this.props.closeModal();
       });
+  };
+
+  handleOpenExplosivesPermitStatusModal = (event, record = null) => {
+    const initialValues = record ? record : {};
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleUpdatePermit,
+        title: "Update Explosives Permit Status",
+        initialValues,
+        mineGuid: this.props.mineGuid,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_STATUS_MODAL,
+    });
   };
 
   handleOpenViewMagazineModal = (event, record, type) => {
@@ -144,6 +165,10 @@ export class ExplosivesPermit extends Component {
           handleOpenAddExplosivesPermitModal={this.handleOpenAddExplosivesPermitModal}
           handleOpenViewMagazineModal={this.handleOpenViewMagazineModal}
           explosivesPermitStatusOptionsHash={this.props.explosivesPermitStatusOptionsHash}
+          explosivesPermitDocumentTypeOptionsHash={
+            this.props.explosivesPermitDocumentTypeOptionsHash
+          }
+          handleOpenExplosivesPermitStatusModal={this.handleOpenExplosivesPermitStatusModal}
         />
       </div>
     );
@@ -155,6 +180,10 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
+  explosivesPermitDocumentTypeOptionsHash: getExplosivesPermitDocumentTypeOptionsHash(state),
+  explosivesPermitDocumentTypeDropdownOptions: getExplosivesPermitDocumentTypeDropdownOptions(
+    state
+  ),
 });
 
 const mapDispatchToProps = (dispatch) =>

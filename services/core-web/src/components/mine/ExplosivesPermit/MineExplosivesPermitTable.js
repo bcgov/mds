@@ -30,6 +30,7 @@ const propTypes = {
   onExpand: PropTypes.func.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
+  handleOpenExplosivesPermitStatusModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -42,21 +43,16 @@ const transformRowData = (permits) => {
       ...permit,
       key: permit.esup_guid,
       documents: permit.documents,
-      det_quantity: permit.detonator_magazines.length,
-      exp_quantity: permit.explosive_magazines.length,
     };
   });
 };
 
 const transformExpandedRowData = (record) => ({
   ...record,
-  documents: record.documents
-    .filter((doc) => doc.now_application_document_type_code === "ADR")
-    .map((doc) => ({
-      mine_guid: doc.mine_document.mine_guid,
-      document_manager_guid: doc.mine_document.document_manager_guid,
-      document_name: doc.mine_document.document_name,
-    })),
+  documents: record.documents.map((doc) => ({
+    document_manager_guid: doc.document_manager_guid,
+    document_name: doc.document_name,
+  })),
 });
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
@@ -71,11 +67,11 @@ const RenderTableExpandIcon = (rowProps) => (
     tabIndex="0"
   >
     {rowProps.expanded ? (
-      <Tooltip title="Click to hide amendment details." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to hide document details." placement="right" mouseEnterDelay={1}>
         <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to hide amendment details." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to show amendment details." placement="right" mouseEnterDelay={1}>
         <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
@@ -131,6 +127,13 @@ export class MineExplosivesPermitTable extends Component {
           {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
+      sorter: false,
+    },
+    {
+      title: "Decision Reason",
+      dataIndex: "decision_reason",
+      sortField: "decision_reason",
+      render: (text) => <div title="Decision Reason">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
     {
@@ -192,30 +195,30 @@ export class MineExplosivesPermitTable extends Component {
     },
     {
       title: "Explosive Quantity",
-      dataIndex: "exp_quantity",
-      sortField: "exp_quantity",
+      dataIndex: "total_explosive_quantity",
+      sortField: "total_explosive_quantity",
       render: (text, record) => (
         <div
           title="Explosive Quantity"
           className="underline"
           onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "EXP")}
         >
-          {text}
+          {text} Kgs
         </div>
       ),
       sorter: false,
     },
     {
       title: "Detonator Quantity",
-      dataIndex: "det_quantity",
-      sortField: "det_quantity",
+      dataIndex: "total_detonator_quantity",
+      sortField: "total_detonator_quantity",
       render: (text, record) => (
         <div
           title="Detonator Quantity"
           className="underline"
           onClick={(event) => this.props.handleOpenViewMagazineModal(event, record, "DET")}
         >
-          {text}
+          {text || "0"} units
         </div>
       ),
       sorter: false,
@@ -226,6 +229,26 @@ export class MineExplosivesPermitTable extends Component {
       key: "addEditButton",
       align: "right",
       render: (text, record) => {
+        const isApproved = record.application_status === "APP";
+        const approvedMenu = (
+          <Menu>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) => this.props.handleOpenAddExplosivesPermitModal(event, record)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Update
+              </button>
+            </Menu.Item>
+          </Menu>
+        );
         const menu = (
           <Menu>
             <Menu.Item key="0">
@@ -247,6 +270,21 @@ export class MineExplosivesPermitTable extends Component {
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
+                onClick={(event) => this.props.handleOpenExplosivesPermitStatusModal(event, record)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Withdraw/Reject
+              </button>
+            </Menu.Item>
+            <Menu.Item key="0">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
                 onClick={(event) => this.props.handleOpenAddExplosivesPermitModal(event, record)}
               >
                 <img
@@ -260,11 +298,18 @@ export class MineExplosivesPermitTable extends Component {
             </Menu.Item>
           </Menu>
         );
+        const showActions =
+          (record.application_status !== "APP" && !this.props.isPermit) ||
+          (isApproved && this.props.isPermit);
         return (
           <div className="btn--middle flex">
-            {!this.props.isPermit && (
+            {showActions && (
               <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <Dropdown className="full-height full-mobile" overlay={menu} placement="bottomLeft">
+                <Dropdown
+                  className="full-height full-mobile"
+                  overlay={isApproved ? approvedMenu : menu}
+                  placement="bottomLeft"
+                >
                   <Button type="secondary" className="permit-table-button">
                     <div className="padding-sm">
                       <img
@@ -272,7 +317,7 @@ export class MineExplosivesPermitTable extends Component {
                         src={EDIT}
                         alt="Add/Edit"
                       />
-                      Process/Edit
+                      {isApproved ? "Edit Documents" : "Process/Edit"}
                       <img
                         className="padding-sm--right icon-svg-filter"
                         src={CARAT}
@@ -284,21 +329,23 @@ export class MineExplosivesPermitTable extends Component {
                 </Dropdown>
               </AuthorizationWrapper>
             )}
-            <AuthorizationWrapper permission={Permission.ADMIN}>
-              <Popconfirm
-                placement="topLeft"
-                title={`Are you sure you want to delete the Explosives Storage & Use ${
-                  this.props.isPermit ? "Permit" : "Permit Application"
-                }?`}
-                onConfirm={() => console.log("yes delete")}
-                okText="Delete"
-                cancelText="Cancel"
-              >
-                <Button ghost type="primary" size="small">
-                  <img name="remove" src={TRASHCAN} alt="Remove Permit" />
-                </Button>
-              </Popconfirm>
-            </AuthorizationWrapper>
+            {showActions && (
+              <AuthorizationWrapper permission={Permission.ADMIN}>
+                <Popconfirm
+                  placement="topLeft"
+                  title={`Are you sure you want to delete the Explosives Storage & Use ${
+                    this.props.isPermit ? "Permit" : "Permit Application"
+                  }?`}
+                  onConfirm={() => console.log("yes delete")}
+                  okText="Delete"
+                  cancelText="Cancel"
+                >
+                  <Button ghost type="primary" size="small">
+                    <img name="remove" src={TRASHCAN} alt="Remove Permit" />
+                  </Button>
+                </Popconfirm>
+              </AuthorizationWrapper>
+            )}
           </div>
         );
       },
@@ -309,34 +356,30 @@ export class MineExplosivesPermitTable extends Component {
     const expandedColumns = [
       {
         title: "Category",
-        dataIndex: "category",
-        key: "category",
+        dataIndex: "explosives_permit_document_type_code",
+        key: "explosives_permit_document_type_code",
+        render: (text) => (
+          <div title="Upload Date">
+            {this.props.explosivesPermitDocumentTypeOptionsHash[text] || Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
       {
         title: "Document Name",
-        dataIndex: "documents",
-        key: "documents",
-        render: (text) => (
-          <div className="cap-col-height">
-            {(text &&
-              text.length > 0 &&
-              text.map((file) => (
-                <>
-                  <DocumentLink
-                    documentManagerGuid={file.document_manager_guid}
-                    documentName={file.document_name}
-                  />
-                  <br />
-                </>
-              ))) ||
-              Strings.EMPTY_FIELD}
+        dataIndex: "document_name",
+        key: "document_name",
+        render: (text, record) => (
+          <div className="cap-col-height" title="Document Name">
+            <DocumentLink documentManagerGuid={record.document_manager_guid} documentName={text} />
+            <br />
           </div>
         ),
       },
       {
         title: "Date",
-        dataIndex: "date",
-        key: "date",
+        dataIndex: "upload_date",
+        key: "upload_date",
+        render: (text) => <div title="Upload Date">{formatDate(text) || Strings.EMPTY_FIELD}</div>,
       },
     ];
 
@@ -345,7 +388,7 @@ export class MineExplosivesPermitTable extends Component {
         align="left"
         pagination={false}
         columns={expandedColumns}
-        dataSource={[transformExpandedRowData(record)]}
+        dataSource={record.documents}
         locale={{ emptyText: "No Data Yet" }}
       />
     );

@@ -17,6 +17,10 @@ export const ViewMagazineModal = (props) => {
     props.type === explosiveCode
       ? props.explosivesPermit?.explosive_magazines
       : props.explosivesPermit?.detonator_magazines;
+  const total =
+    props.type === explosiveCode
+      ? `${props.explosivesPermit?.total_explosive_quantity || "0"} Kgs`
+      : `${props.explosivesPermit?.total_detonator_quantity || "0"} Units`;
   return (
     <div>
       <h4>{`${title} Magazine Detail`}</h4>
@@ -55,13 +59,13 @@ export const ViewMagazineModal = (props) => {
         </>
       ))}
 
+      {magazines.length === 0 && <p>No Data</p>}
+
       <br />
       <h4>Storage Detail</h4>
       <br />
       <Descriptions column={1}>
-        <Descriptions.Item label="Total Maximum Quantity">
-          {props.explosivesPermit.total_explosives_quantity}
-        </Descriptions.Item>
+        <Descriptions.Item label="Total Maximum Quantity">{total}</Descriptions.Item>
       </Descriptions>
       <Descriptions column={2}>
         <Descriptions.Item label="Latitude">{props.explosivesPermit.latitude}</Descriptions.Item>
