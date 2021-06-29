@@ -123,17 +123,23 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "application_status",
       sortField: "application_status",
       render: (text) => (
-        <div title="Status">
+        <div title="Status" className={hideColumn(this.props.isPermit)}>
           {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
+      className: hideColumn(this.props.isPermit),
       sorter: false,
     },
     {
       title: "Decision Reason",
       dataIndex: "decision_reason",
       sortField: "decision_reason",
-      render: (text) => <div title="Decision Reason">{text || Strings.EMPTY_FIELD}</div>,
+      render: (text) => (
+        <div title="Decision Reason" className={hideColumn(this.props.isPermit)}>
+          {text || Strings.EMPTY_FIELD}
+        </div>
+      ),
+      className: hideColumn(this.props.isPermit),
       sorter: false,
     },
     {
@@ -301,6 +307,9 @@ export class MineExplosivesPermitTable extends Component {
           </Menu>
         );
         const showActions =
+          (record.application_status === "REC" && !this.props.isPermit) ||
+          (isApproved && this.props.isPermit);
+        const showDelete =
           (record.application_status !== "APP" && !this.props.isPermit) ||
           (isApproved && this.props.isPermit);
         return (
@@ -331,7 +340,7 @@ export class MineExplosivesPermitTable extends Component {
                 </Dropdown>
               </AuthorizationWrapper>
             )}
-            {showActions && (
+            {showDelete && (
               <AuthorizationWrapper permission={Permission.ADMIN}>
                 <Popconfirm
                   placement="topLeft"

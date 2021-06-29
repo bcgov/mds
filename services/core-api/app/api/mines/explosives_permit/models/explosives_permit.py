@@ -262,7 +262,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             latitude=latitude,
             longitude=longitude,
             now_application_guid=now_application_guid)
-
+        mine.explosives_permits.append(explosives_permit)
+        explosives_permit.save(commit=False)
         for magazine_data in explosive_magazines:
             magazine = ExplosivesPermitMagazine.create_from_data('EXP', magazine_data)
             explosives_permit.explosive_magazines.append(magazine)
@@ -285,7 +286,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
 
-        mine.explosives_permits.append(explosives_permit)
 
         if add_to_session:
             explosives_permit.save(commit=False)

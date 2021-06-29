@@ -33,7 +33,7 @@ export const DocumentCategoryForm = (props) => {
                       name={`${field}document_name`}
                       label="Document Name*"
                       validate={[required]}
-                      disable
+                      disabled
                       component={renderConfig.FIELD}
                     />
                   </Form.Item>

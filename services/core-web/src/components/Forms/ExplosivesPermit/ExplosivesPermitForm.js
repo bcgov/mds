@@ -15,6 +15,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
+import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import { getPermits } from "@common/selectors/permitSelectors";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import ExplosivesPermitFileUpload from "@/components/Forms/ExplosivesPermit/ExplosivesPermitFileUpload";
@@ -65,6 +66,7 @@ export class ExplosivesPermitForm extends Component {
       "now_number",
       "now_application_guid"
     );
+    console.log(this.props.formValues);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
@@ -128,6 +130,7 @@ export class ExplosivesPermitForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
+            <ExplosivesPermitMap mine={this.props.initialValues} />
             <div className="document-container">
               <Form.Item label="Select Files/Upload files*">
                 <DocumentCategoryForm
@@ -183,6 +186,7 @@ const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
+  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
 });
 

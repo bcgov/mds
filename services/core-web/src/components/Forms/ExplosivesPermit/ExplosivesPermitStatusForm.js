@@ -34,6 +34,9 @@ const sourceOptions = [
 ];
 
 export const ExplosivesPermitStatusForm = (props) => {
+  const options = props.explosivesPermitStatusDropdownOptions.filter(
+    ({ value }) => value !== "APP"
+  );
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>
@@ -45,7 +48,7 @@ export const ExplosivesPermitStatusForm = (props) => {
               label="Application Status*"
               placeholder="Select an application status"
               component={RenderSelect}
-              data={props.explosivesPermitStatusDropdownOptions}
+              data={options}
               validate={[required]}
             />
           </Form.Item>

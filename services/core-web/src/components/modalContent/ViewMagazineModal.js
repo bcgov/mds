@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Button, Descriptions, Row, Col, Divider } from "antd";
 import * as Strings from "@common/constants/strings";
+import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -71,6 +72,7 @@ export const ViewMagazineModal = (props) => {
         <Descriptions.Item label="Latitude">{props.explosivesPermit.latitude}</Descriptions.Item>
         <Descriptions.Item label="Longitude">{props.explosivesPermit.longitude}</Descriptions.Item>
       </Descriptions>
+      <ExplosivesPermitMap mine={props.explosivesPermit} />
 
       <Descriptions column={3}>
         <Descriptions.Item label="Mine No.">{props.mine.mine_no} </Descriptions.Item>

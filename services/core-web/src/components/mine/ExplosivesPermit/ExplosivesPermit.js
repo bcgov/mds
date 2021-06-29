@@ -95,7 +95,7 @@ export class ExplosivesPermit extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
-        onSubmit: this.handleUpdatePermit,
+        onSubmit: this.handleUpdateExplosivesPermit,
         title: "Update Explosives Permit Status",
         initialValues,
         mineGuid: this.props.mineGuid,
