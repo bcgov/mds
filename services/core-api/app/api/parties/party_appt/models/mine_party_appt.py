@@ -251,6 +251,9 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         else:
             permit = None
 
+        if mine_party_appt_type_code != 'EOR':
+            tsf = None
+
         mpa = cls(
             mine=mine,
             permit=permit,
