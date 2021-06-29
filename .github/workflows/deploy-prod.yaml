@@ -67,7 +67,8 @@ jobs:
           -p KEYCLOAK_URL=https://oidc.gov.bc.ca/auth \
           -p KEYCLOAK_CLIENT_ID=mines-application-prod \
           -p KEYCLOAK_RESOURCE=mines-application-prod \
-          -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
+          -p MS_KEYCLOAK_CLIENT_ID=minespace-prod \
+          -p SITEMINDER_URL=https://logon.gov.bc.ca \
           -p MATOMO_URL=https://matomo-4c2ba9-prod.apps.silver.devops.gov.bc.ca/ \
           -p OBJECT_STORE_ENABLED=1 \
           | oc -n ${{secrets.NS_PROD}} apply -f -
