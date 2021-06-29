@@ -1694,9 +1694,9 @@ VALUES
     ('SIT', 'Site Security Plan', true, 90, NULL, 'system-mds', 'system-mds'),
     ('FIR', 'Fire Safety Plan', true, 100, NULL, 'system-mds', 'system-mds'),
     ('OPE', 'Operational Notification', true, 110, NULL, 'system-mds', 'system-mds'),
-    ('RIS', 'Risk Analysis', true, 110, NULL, 'system-mds', 'system-mds'),
-    ('WIR', 'Withdrawal Request', true, 120, NULL, 'system-mds', 'system-mds'),
-    ('CAN', 'Cancellation/Closure Request', true, 130, NULL, 'system-mds', 'system-mds')
+    ('RIS', 'Risk Analysis', true, 120, NULL, 'system-mds', 'system-mds'),
+    ('WIR', 'Withdrawal Request', true, 130, NULL, 'system-mds', 'system-mds'),
+    ('CAN', 'Cancellation/Closure Request', true, 140, NULL, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 -- TODO: Create template JSON for these two documents.
