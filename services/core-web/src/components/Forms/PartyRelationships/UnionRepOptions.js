@@ -13,7 +13,7 @@ export const UnionRepOptions = () => (
         <Field
           id="union_rep_company"
           name="union_rep_company"
-          label="Company *"
+          label="Company*"
           placeholder="Company"
           doNotPinDropdown
           component={renderConfig.FIELD}
