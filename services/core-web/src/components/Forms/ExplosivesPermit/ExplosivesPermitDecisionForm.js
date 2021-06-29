@@ -80,12 +80,11 @@ export class ExplosivesPermitDecisionForm extends Component {
               />
             </Form.Item>
 
-            {this.props.documentType.document_template.form_spec.filter(
-              (field) =>
-                !field["read-only"].map((field) => (
-                  <Form.Item key={field.id}>{getGenerateDocumentFormField(field)}</Form.Item>
-                ))
-            )}
+            {this.props.documentType.document_template.form_spec
+              .filter((field) => !field["read-only"])
+              .map((field) => (
+                <Form.Item key={field.id}>{getGenerateDocumentFormField(field)}</Form.Item>
+              ))}
           </Col>
         </Row>
         <div className="right center-mobile" style={{ paddingTop: "14px" }}>
