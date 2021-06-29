@@ -49,7 +49,6 @@ export class ExplosivesPermitForm extends Component {
     this.state.documents.push({
       document_name: fileName,
       document_manager_guid,
-      explosives_permit_document_type_code: "BLA",
     });
     this.props.change("documents", this.state.documents);
   };
@@ -110,7 +109,7 @@ export class ExplosivesPermitForm extends Component {
                     id="latitude"
                     name="latitude"
                     label="Latitude*"
-                    validate={[number, maxLength(10), lat]}
+                    validate={[number, maxLength(10), lat, required]}
                     component={renderConfig.FIELD}
                     disabled={this.props.isApproved}
                   />
@@ -122,17 +121,17 @@ export class ExplosivesPermitForm extends Component {
                     id="longitude"
                     name="longitude"
                     label="Longitude*"
-                    validate={[number, maxLength(12), lon]}
+                    validate={[number, maxLength(12), lon, required]}
                     component={renderConfig.FIELD}
                     disabled={this.props.isApproved}
                   />
                 </Form.Item>
               </Col>
             </Row>
-            {/* <DocumentCategoryForm
+            <DocumentCategoryForm
               documents={this.props.documents}
               categories={this.props.documentTypeDropdownOptions}
-            /> */}
+            />
             <Form.Item label="Select Files/Upload files*">
               <Field
                 id="DocumentFileUpload"

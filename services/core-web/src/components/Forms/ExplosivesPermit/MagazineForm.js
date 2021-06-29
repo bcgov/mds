@@ -270,7 +270,7 @@ export class MagazineForm extends Component {
               className="light-background"
             >
               {fields.map((field, index) => (
-                <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={field}>
+                <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={index}>
                   {this.renderInputs(field, "DET")}
                 </Collapse.Panel>
               ))}
