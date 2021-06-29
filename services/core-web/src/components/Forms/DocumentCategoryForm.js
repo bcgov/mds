@@ -22,7 +22,7 @@ export const DocumentCategoryForm = (props) => {
     return (
       <>
         {fields.map((field, index) => {
-          const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
+          // const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
           return (
             <div className="padding-sm margin-small" key={index}>
               <Row gutter={48}>
@@ -52,7 +52,7 @@ export const DocumentCategoryForm = (props) => {
                   </Form.Item>
                 </Col>
                 <Col span={4} className="right">
-                  {documentExists && (
+                  {true && (
                     <Popconfirm
                       placement="top"
                       title={[
