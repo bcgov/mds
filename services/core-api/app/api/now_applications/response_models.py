@@ -44,6 +44,7 @@ NOW_APPLICATION_ACTIVITY_DETAIL_BASE = api.model(
     'NOWApplicationActivityDetailBase', {
         'activity_detail_id': fields.Integer,
         'activity_type_description': fields.String,
+        'foo': fields.String,
         'disturbed_area': fields.Fixed,
         'timber_volume': fields.Fixed(decimals=2),
         'number_of_sites': fields.Integer,
