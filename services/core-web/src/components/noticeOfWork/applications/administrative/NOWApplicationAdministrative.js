@@ -72,6 +72,7 @@ export const NOWApplicationAdministrative = (props) => {
           allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
+          isGovernmentDocuments
         />
       </ScrollContentWrapper>
       {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (

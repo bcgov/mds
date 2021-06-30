@@ -65,6 +65,7 @@ const propTypes = {
   showDescription: PropTypes.bool,
   allowAfterProcess: PropTypes.bool,
   isFinalPackageTable: PropTypes.bool,
+  isAdminView: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -81,6 +82,7 @@ const defaultProps = {
   showDescription: false,
   allowAfterProcess: false,
   isFinalPackageTable: false,
+  isAdminView: false,
 };
 
 const transformDocuments = (
@@ -313,7 +315,7 @@ export const NOWSubmissionDocuments = (props) => {
     dataIndex: "isModificationAllowed",
     key: "isModificationAllowed",
     render: (isModificationAllowed, record) => {
-      if (!(props.noticeOfWork.now_application_status_code === "AIA")) {
+      if (props.noticeOfWork.now_application_status_code !== "AIA") {
         if (isModificationAllowed) {
           return (
             <NOWActionWrapper
@@ -385,7 +387,7 @@ export const NOWSubmissionDocuments = (props) => {
 
   const permitPackageColumn = {
     title: () => {
-      return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
         <div>
           Permit Package
           <PermitPackage isAdminView={props.isAdminView} isTableHeaderView />
@@ -401,7 +403,7 @@ export const NOWSubmissionDocuments = (props) => {
 
   const consultationPackageColumn = {
     title: () => {
-      return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
         <div>
           Consultation Package
           <ReferralConsultationPackage type="CON" isTableHeaderView />
@@ -417,7 +419,7 @@ export const NOWSubmissionDocuments = (props) => {
 
   const referralPackageColumn = {
     title: () => {
-      return !(props.noticeOfWork.now_application_status_code === "AIA") ? (
+      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
         <div>
           Referral Package
           <ReferralConsultationPackage type="REF" isTableHeaderView />
@@ -467,7 +469,7 @@ export const NOWSubmissionDocuments = (props) => {
     },
   };
 
-  let columns = [...fileMetadataColumns, categoryColumn, fileNameColumn];
+  let columns = [categoryColumn, fileNameColumn];
 
   columns = [
     ...columns,

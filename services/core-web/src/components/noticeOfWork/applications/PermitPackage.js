@@ -41,13 +41,13 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   setNoticeOfWorkApplicationDocumentDownloadState: PropTypes.func.isRequired,
-  adminView: PropTypes.bool,
+  isAdminView: PropTypes.bool,
   isTableHeaderView: PropTypes.bool,
 };
 
 const defaultProps = {
   isTableHeaderView: false,
-  adminView: false,
+  isAdminView: false,
   importNowSubmissionDocumentsJob: {},
 };
 
@@ -222,7 +222,7 @@ export class PermitPackage extends Component {
     return this.props.isTableHeaderView ? (
       <NOWActionWrapper
         permission={Permission.EDIT_PERMITS}
-        tab={this.props.adminView ? undefined : "REV"}
+        tab={this.props.isAdminView ? undefined : "REV"}
       >
         <Button ghost type="primary" size="small" onClick={this.openFinalDocumentPackageModal}>
           <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
@@ -240,7 +240,7 @@ export class PermitPackage extends Component {
         </Button>
         <NOWActionWrapper
           permission={Permission.EDIT_PERMITS}
-          tab={this.props.adminView ? undefined : "REV"}
+          tab={this.props.isAdminView ? undefined : "REV"}
         >
           <Button
             type="secondary"

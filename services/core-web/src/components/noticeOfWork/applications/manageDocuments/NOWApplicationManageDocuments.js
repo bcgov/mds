@@ -82,6 +82,7 @@ export const NOWApplicationManageDocuments = (props) => {
           displayTableDescription
           tableDescription={tableDescription}
           showDescription
+          isAdminView
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
