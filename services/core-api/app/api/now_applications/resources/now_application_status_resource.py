@@ -297,6 +297,9 @@ class NOWApplicationStatusResource(Resource, UserMixin):
                             start_date=permit_amendment.issue_date,
                             end_date=None,
                             processed_by=user_info)
+                        if contact.mine_party_appt_type_code in PERMIT_LINKED_CONTACT_TYPES:
+                            new_mpa.assign_related_guid(contact.mine_party_appt_type_code,
+                                                        permit.permit_guid)
                         db.session.add(new_mpa)
 
             db.session.commit()

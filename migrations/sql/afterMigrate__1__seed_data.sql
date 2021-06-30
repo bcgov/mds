@@ -726,7 +726,7 @@ VALUES
   ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
   ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
   ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
-  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Letter.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit'),
+  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit'),
   ('ESP', '', 'templates/explosives_permit/Explosives Storage and Use Permit.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit')
 ON CONFLICT DO NOTHING;
 
@@ -1694,7 +1694,6 @@ VALUES
     ('SIT', 'Site Security Plan', true, 90, NULL, 'system-mds', 'system-mds'),
     ('FIR', 'Fire Safety Plan', true, 100, NULL, 'system-mds', 'system-mds'),
     ('OPE', 'Operational Notification', true, 110, NULL, 'system-mds', 'system-mds'),
-    ('RIS', 'Risk Analysis', true, 110, NULL, 'system-mds', 'system-mds'),
     ('RIS', 'Risk Analysis', true, 120, NULL, 'system-mds', 'system-mds'),
     ('WIR', 'Withdrawal Request', true, 130, NULL, 'system-mds', 'system-mds'),
     ('CAN', 'Cancellation/Closure Request', true, 140, NULL, 'system-mds', 'system-mds')

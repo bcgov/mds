@@ -29,7 +29,7 @@ parameters:
   - name: KEYCLOAK_RESOURCE
     displayName: Resource ID
     description: Resource ID for keycloak
-    value: mines-application-dev
+    required: true
   - name: MS_KEYCLOAK_CLIENT_ID
     displayName: Client ID
     description: Client ID for keycloak

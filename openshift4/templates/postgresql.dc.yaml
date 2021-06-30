@@ -22,7 +22,7 @@ parameters:
   - description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Volume Capacity
     name: VOLUME_CAPACITY
-    value: 5Gi
+    value: 10Gi
   - name: CPU_LIMIT
     value: 500m
   - name: MEMORY_LIMIT
@@ -56,6 +56,22 @@ objects:
           targetPort: 5432
       selector:
         name: ${NAME}
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${NAME}-reporting
+    spec:
+      ports:
+        - name: postgresql-reporting
+          port: 5432
+          protocol: TCP
+          targetPort: 5432
+      selector:
+        name: ${NAME}-reporting
       sessionAffinity: None
       type: ClusterIP
     status:
