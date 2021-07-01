@@ -14,6 +14,6 @@ from .surface_bulk_sample_detail import *
 from .underground_exploration_detail import *
 from .underground_exploration_type import *
 from .water_supply_detail import *
+from .activity_summary_detail_xref import *
 from .activity_summary_building_detail_xref import *
 from .activity_summary_staging_area_detail_xref import *
-from .activity_summary_detail_xref import *
