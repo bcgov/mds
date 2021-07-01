@@ -29,7 +29,7 @@ import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineEx
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
-  isPermit: PropTypes.bool,
+  isPermitTab: PropTypes.bool,
   updateExplosivesPermit: PropTypes.func.isRequired,
   createExplosivesPermit: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -43,7 +43,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  isPermit: false,
+  isPermitTab: false,
 };
 
 export class ExplosivesPermit extends Component {
@@ -60,7 +60,7 @@ export class ExplosivesPermit extends Component {
     });
   };
 
-  handleOpenAddExplosivesPermitModal = (event, record = null) => {
+  handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
     const initialValues = record ? record : {};
     const isApproved = record?.application_status === "APP";
     event.preventDefault();
@@ -72,6 +72,7 @@ export class ExplosivesPermit extends Component {
         mineGuid: this.props.mineGuid,
         isApproved,
         documentTypeDropdownOptions: this.props.explosivesPermitDocumentTypeDropdownOptions,
+        isPermitTab,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
@@ -179,10 +180,10 @@ export class ExplosivesPermit extends Component {
   };
 
   render() {
-    const title = this.props.isPermit
+    const title = this.props.isPermitTab
       ? "Explosives Storage & Use Permits"
       : "Explosives Storage & Use Permit Applications";
-    const data = this.props.isPermit
+    const data = this.props.isPermitTab
       ? this.props.explosivesPermits.filter(
           ({ application_status }) => application_status === "APP"
         )
@@ -192,19 +193,21 @@ export class ExplosivesPermit extends Component {
         <br />
         <div className="inline-flex between">
           <h4 className="uppercase">{title}</h4>
-          {!this.props.isPermit && (
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <AddButton onClick={(e) => this.handleOpenAddExplosivesPermitModal(e)}>
-                Add Explosives Storage & Use Permit Application
-              </AddButton>
-            </AuthorizationWrapper>
-          )}
+          <AuthorizationWrapper
+            permission={this.props.isPermitTab ? Permission.EDIT_PERMITS : Permission.ADMIN}
+          >
+            <AddButton
+              onClick={(e) => this.handleOpenAddExplosivesPermitModal(e, this.props.isPermitTab)}
+            >
+              Add {title}
+            </AddButton>
+          </AuthorizationWrapper>
         </div>
         <br />
         <MineExplosivesPermitTable
           isLoaded
           data={data}
-          isPermit={this.props.isPermit}
+          isPermitTab={this.props.isPermitTab}
           handleOpenExplosivesPermitDecisionModal={this.handleOpenExplosivesPermitDecisionModal}
           handleOpenAddExplosivesPermitModal={this.handleOpenAddExplosivesPermitModal}
           handleOpenViewMagazineModal={this.handleOpenViewMagazineModal}

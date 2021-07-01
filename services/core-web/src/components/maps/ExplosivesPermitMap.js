@@ -10,20 +10,18 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 import * as Strings from "@common/constants/strings";
 import { Validate } from "@common/utils/Validate";
-import CustomPropTypes from "@/customPropTypes";
-import { SMALL_PIN, SMALL_PIN_SELECTED } from "@/constants/assets";
+import { SMALL_PIN_SELECTED } from "@/constants/assets";
 
 /**
  * @class ExplosivesPermitMap.js is a Leaflet Map component.
  */
 
 const propTypes = {
-  mine: CustomPropTypes.mine.isRequired,
-  additionalPin: PropTypes.arrayOf(PropTypes.string),
+  pin: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
-  additionalPin: [],
+  pin: [],
 };
 
 const leafletWMSTiledOptions = {
@@ -34,6 +32,11 @@ const leafletWMSTiledOptions = {
   identify: false,
 };
 
+const checkValidityOfCoordinateInput = (coordinates) =>
+  coordinates.length === 2 &&
+  Validate.checkLat(coordinates[0]) &&
+  Validate.checkLon(coordinates[1]);
+
 const getMajorMinePermittedAreas = () => {
   const majorMinesSource = LeafletWms.source(
     "https://openmaps.gov.bc.ca/geo/pub/WHSE_MINERAL_TENURE.HSP_MJR_MINES_PERMTTD_AREAS_SP/ows",
@@ -43,25 +46,19 @@ const getMajorMinePermittedAreas = () => {
 };
 
 class ExplosivesPermitMap extends Component {
-  state = { containsAdditionalPin: false };
+  state = { containsPin: false };
 
   // if mine does not have a location, set a default to center the map
-  latLong =
-    this.props.mine.latitude && this.props.mine.longitude
-      ? // only add mine Pin if location exists
-        [this.props.mine.latitude, this.props.mine.longitude]
-      : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
+  latLong = checkValidityOfCoordinateInput(this.props.pin)
+    ? // only add mine Pin if location exists
+      this.props.pin
+    : [Number(Strings.DEFAULT_LAT), Number(Strings.DEFAULT_LONG)];
 
   componentDidMount() {
     // Create the base map with layers
     this.createMap();
-
-    if (this.props.mine.latitude && this.props.mine.longitude) {
-      this.createPin();
-    }
-
-    if (this.checkValidityOfCoordinateInput(this.props.additionalPin)) {
-      this.createAdditionalPin(this.props.additionalPin);
+    if (checkValidityOfCoordinateInput(this.props.pin)) {
+      this.createPin(this.props.pin);
     }
 
     // Add MinePins to the top of LayerList and add the LayerList widget
@@ -69,16 +66,14 @@ class ExplosivesPermitMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.additionalPin !== this.props.additionalPin &&
-      this.checkValidityOfCoordinateInput(nextProps.additionalPin)
-    ) {
-      if (this.state.containsAdditionalPin) {
-        this.additionalPin.setLatLng(nextProps.additionalPin);
+    const locationChanged = nextProps.pin !== this.props.pin;
+    if (locationChanged && checkValidityOfCoordinateInput(nextProps.pin)) {
+      if (this.state.containsPin) {
+        this.pin.setLatLng(nextProps.pin);
         this.map.fitBounds(this.markerClusterGroup.getBounds());
       } else {
-        this.setState({ containsAdditionalPin: false });
-        this.createAdditionalPin(nextProps.additionalPin);
+        this.setState({ containsPin: false });
+        this.createPin(nextProps.pin);
       }
     }
   }
@@ -100,30 +95,16 @@ class ExplosivesPermitMap extends Component {
     };
   }
 
-  checkValidityOfCoordinateInput = (coordinates) =>
-    coordinates.length === 2 &&
-    Validate.checkLat(coordinates[0]) &&
-    Validate.checkLon(coordinates[1]);
-
-  createPin = () => {
-    const customIcon = L.icon({
-      iconUrl: SMALL_PIN,
-      iconSize: [60, 60],
-    });
-    const marker = L.marker(this.latLong, { icon: customIcon });
-    this.markerClusterGroup.addLayer(marker);
-  };
-
-  createAdditionalPin = (pin) => {
+  createPin = (pin) => {
     const customIcon = L.icon({
       iconUrl: SMALL_PIN_SELECTED,
       iconSize: [60, 60],
     });
-    this.additionalPin = L.marker(pin, { icon: customIcon });
-    this.markerClusterGroup.addLayer(this.additionalPin);
+    this.pin = L.marker(pin, { icon: customIcon });
+    this.markerClusterGroup.addLayer(this.pin);
     this.map.fitBounds(this.markerClusterGroup.getBounds());
-    this.markerClusterGroup.zoomToShowLayer(this.additionalPin);
-    this.setState({ containsAdditionalPin: true });
+    this.markerClusterGroup.zoomToShowLayer(this.pin);
+    this.setState({ containsPin: true });
   };
 
   createMap() {

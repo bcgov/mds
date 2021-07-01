@@ -130,7 +130,9 @@ export class ExplosivesPermitForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <ExplosivesPermitMap mine={this.props.initialValues} />
+            <ExplosivesPermitMap
+              pin={[this.props.formValues?.latitude, this.props.formValues?.longitude]}
+            />
             <div className="document-container">
               <Form.Item label="Select Files/Upload files*">
                 <DocumentCategoryForm

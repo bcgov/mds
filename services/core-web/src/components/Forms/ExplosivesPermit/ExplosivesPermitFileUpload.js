@@ -14,7 +14,6 @@ const propTypes = {
 };
 
 export const ExplosivesPermitFileUpload = (props) => {
-  console.log(props.mineGuid);
   return (
     <Form.Item>
       <Field

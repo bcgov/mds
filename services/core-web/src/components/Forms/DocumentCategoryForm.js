@@ -17,7 +17,6 @@ const propTypes = {
 };
 
 export const DocumentCategoryForm = (props) => {
-  console.log(props.categories);
   const DocumentCategories = ({ fields }) => {
     return (
       <>

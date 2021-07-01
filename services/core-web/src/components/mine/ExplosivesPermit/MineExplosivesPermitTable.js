@@ -85,24 +85,24 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "permit_no",
       sortField: "permit_no",
       render: (text) => (
-        <div title="Permit #" className={hideColumn(!this.props.isPermit)}>
+        <div title="Permit #" className={hideColumn(!this.props.isPermitTab)}>
           {text}
         </div>
       ),
       sorter: false,
-      className: hideColumn(!this.props.isPermit),
+      className: hideColumn(!this.props.isPermitTab),
     },
     {
       title: "Application #",
       dataIndex: "application_number",
       sortField: "application_number",
       render: (text) => (
-        <div title="Application #" className={hideColumn(this.props.isPermit)}>
+        <div title="Application #" className={hideColumn(this.props.isPermitTab)}>
           {text}
         </div>
       ),
       sorter: false,
-      className: hideColumn(this.props.isPermit),
+      className: hideColumn(this.props.isPermitTab),
     },
     {
       title: "Mines Act Permit #",
@@ -123,11 +123,11 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "application_status",
       sortField: "application_status",
       render: (text) => (
-        <div title="Status" className={hideColumn(this.props.isPermit)}>
+        <div title="Status" className={hideColumn(this.props.isPermitTab)}>
           {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
-      className: hideColumn(this.props.isPermit),
+      className: hideColumn(this.props.isPermitTab),
       sorter: false,
     },
     {
@@ -135,23 +135,23 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "decision_reason",
       sortField: "decision_reason",
       render: (text) => (
-        <div title="Decision Reason" className={hideColumn(this.props.isPermit)}>
+        <div title="Decision Reason" className={hideColumn(this.props.isPermitTab)}>
           {text || Strings.EMPTY_FIELD}
         </div>
       ),
-      className: hideColumn(this.props.isPermit),
+      className: hideColumn(this.props.isPermitTab),
       sorter: false,
     },
     {
       title: "Issuing Inspector",
       dataIndex: "issuing_inspector_name",
       render: (text) => (
-        <div title="Issuing Inspector" className={hideColumn(!this.props.isPermit)}>
+        <div title="Issuing Inspector" className={hideColumn(!this.props.isPermitTab)}>
           {text || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: false,
-      className: hideColumn(!this.props.isPermit),
+      className: hideColumn(!this.props.isPermitTab),
     },
     {
       title: "Source",
@@ -180,24 +180,24 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "issue_date",
       sortField: "issue_date",
       render: (text) => (
-        <div title="Issue Date" className={hideColumn(!this.props.isPermit)}>
+        <div title="Issue Date" className={hideColumn(!this.props.isPermitTab)}>
           {formatDate(text) || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: dateSorter("issue_date"),
-      className: hideColumn(!this.props.isPermit),
+      className: hideColumn(!this.props.isPermitTab),
     },
     {
       title: "Expiry Date",
       dataIndex: "expiry_date",
       sortField: "expiry_date",
       render: (text) => (
-        <div title="Expiry Date" className={hideColumn(!this.props.isPermit)}>
+        <div title="Expiry Date" className={hideColumn(!this.props.isPermitTab)}>
           {formatDate(text) || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: dateSorter("expiry_date"),
-      className: hideColumn(!this.props.isPermit),
+      className: hideColumn(!this.props.isPermitTab),
     },
     {
       title: "Explosive Quantity",
@@ -307,11 +307,11 @@ export class MineExplosivesPermitTable extends Component {
           </Menu>
         );
         const showActions =
-          (record.application_status === "REC" && !this.props.isPermit) ||
-          (isApproved && this.props.isPermit);
+          (record.application_status === "REC" && !this.props.isPermitTab) ||
+          (isApproved && this.props.isPermitTab);
         const showDelete =
-          (record.application_status !== "APP" && !this.props.isPermit) ||
-          (isApproved && this.props.isPermit);
+          (record.application_status !== "APP" && !this.props.isPermitTab) ||
+          (isApproved && this.props.isPermitTab);
         return (
           <div className="btn--middle flex">
             {showActions && (
@@ -345,7 +345,7 @@ export class MineExplosivesPermitTable extends Component {
                 <Popconfirm
                   placement="topLeft"
                   title={`Are you sure you want to delete the Explosives Storage & Use ${
-                    this.props.isPermit ? "Permit" : "Permit Application"
+                    this.props.isPermitTab ? "Permit" : "Permit Application"
                   }?`}
                   onConfirm={() => console.log("yes delete")}
                   okText="Delete"
