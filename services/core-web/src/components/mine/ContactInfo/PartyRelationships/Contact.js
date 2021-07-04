@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
-
 import { DefaultContact } from "@/components/mine/ContactInfo/PartyRelationships/DefaultContact";
 import { EngineerOfRecord } from "@/components/mine/ContactInfo/PartyRelationships/EngineerOfRecord";
 import { Permittee } from "@/components/mine/ContactInfo/PartyRelationships/Permittee";
+import { UnionRep } from "@/components/mine/ContactInfo/PartyRelationships/UnionRep";
 
 const propTypes = {
   partyRelationship: CustomPropTypes.partyRelationship.isRequired,
@@ -45,6 +45,9 @@ export const Contact = (props) => {
   switch (props.partyRelationship.mine_party_appt_type_code) {
     case "EOR":
       component = <EngineerOfRecord {...props} />;
+      break;
+    case "URP":
+      component = <UnionRep {...props} />;
       break;
     case "PMT":
     case "THD":

@@ -13,6 +13,7 @@ import { renderConfig } from "@/components/common/config";
 import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import { EngineerOfRecordOptions } from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import { UnionRepOptions } from "@/components/Forms/PartyRelationships/UnionRepOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
 import PartyRelationshipFileUpload from "./PartyRelationshipFileUpload";
@@ -190,6 +191,9 @@ export class AddPartyRelationshipForm extends Component {
     switch (this.props.partyRelationshipType.mine_party_appt_type_code) {
       case "EOR":
         options = <EngineerOfRecordOptions mine={this.props.mine} />;
+        break;
+      case "URP":
+        options = <UnionRepOptions />;
         break;
       case "PMT":
       case "THD":

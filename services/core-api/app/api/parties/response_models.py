@@ -44,7 +44,8 @@ MINE_PARTY_APPT = api.model(
         'mine_party_appt_type_code': fields.String,
         'start_date': fields.Date,
         'end_date': fields.Date,
-        'documents': fields.Nested(MINE_DOCUMENT)
+        'documents': fields.Nested(MINE_DOCUMENT),
+        'union_rep_company': fields.String
     })
 
 NOW_APPLICATION_MODEL = api.model('NOWApplication', {
