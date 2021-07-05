@@ -6,7 +6,7 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.string).isRequired,
   documentType: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  preview: PropTypes.func.isRequired,
+  previewDocument: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
 
@@ -15,7 +15,7 @@ export const ExplosivesPermitApplicationDecisionModal = (props) => (
     initialValues={props.initialValues}
     documentType={props.documentType}
     onSubmit={props.onSubmit}
-    preview={props.preview}
+    previewDocument={props.previewDocument}
     closeModal={props.closeModal}
   />
 );

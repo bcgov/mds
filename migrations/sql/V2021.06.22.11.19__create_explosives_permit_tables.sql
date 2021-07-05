@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS explosives_permit_status (
 ALTER TABLE explosives_permit_status OWNER TO mds;
 
 CREATE TABLE IF NOT EXISTS explosives_permit (
-    explosives_permit_id serial PRIMARY KEY,
-    explosives_permit_guid uuid UNIQUE DEFAULT gen_random_uuid() NOT NULL,
+    explosives_permit_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    explosives_permit_id serial UNIQUE NOT NULL,
     mine_guid uuid NOT NULL,
     permit_guid uuid NOT NULL,
     now_application_guid uuid,

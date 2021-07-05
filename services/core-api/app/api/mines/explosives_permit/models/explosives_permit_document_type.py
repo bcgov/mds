@@ -36,6 +36,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, explosives_permit):
+        is_draft = template_data.get('is_draft', True)
+
         def create_image(source, width=None, height=None):
             return {'source': source, 'width': width, 'height': height}
 
@@ -48,11 +50,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         # Transform template data for "Explosives Storage and Use Permit" (PER)
         # TODO: Implement properly
         def transform_permit(template_data, explosives_permit):
-            is_draft = False
-
-            validate_issuing_inspector(explosives_permit)
-
             if not is_draft:
+                validate_issuing_inspector(explosives_permit)
                 template_data['images'] = {
                     'issuing_inspector_signature':
                     create_image(
@@ -60,7 +59,6 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                         height=SIGNATURE_IMAGE_HEIGHT_INCHES)
                 }
 
-            template_data['is_draft'] = is_draft
             # template_data['latitude'] = str(now_application.latitude)
             # template_data['longitude'] = str(now_application.longitude)
             # template_data['mine_name'] = now_application.mine_name
@@ -69,14 +67,14 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         # Transform template data for "Explosives Storage and Use Permit Letter" (LET)
         def transform_letter(template_data, explosives_permit):
-            validate_issuing_inspector(explosives_permit)
-
-            template_data['images'] = {
-                'issuing_inspector_signature':
-                create_image(
-                    explosives_permit.issuing_inspector.signature,
-                    height=SIGNATURE_IMAGE_HEIGHT_INCHES)
-            }
+            if not is_draft:
+                validate_issuing_inspector(explosives_permit)
+                template_data['images'] = {
+                    'issuing_inspector_signature':
+                    create_image(
+                        explosives_permit.issuing_inspector.signature,
+                        height=SIGNATURE_IMAGE_HEIGHT_INCHES)
+                }
 
             return template_data
 
@@ -90,9 +88,9 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
     # TODO: Implement properly, if needed
     def after_template_generated(self, template_data, explosives_permit_doc, explosives_permit):
-        def after_permit_generated(template_data, explosives_permit_doc, explosives_permit):
+        is_draft = template_data.get('is_draft', True)
 
-            is_draft = template_data.get('is_draft', True)
+        def after_permit_generated(template_data, explosives_permit_doc, explosives_permit):
             if is_draft:
                 return
 

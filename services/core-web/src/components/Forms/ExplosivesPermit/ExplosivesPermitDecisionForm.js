@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, formValueSelector } from "redux-form";
+import { Field, reduxForm, change, formValueSelector, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -20,13 +20,12 @@ import { getGenerateDocumentFormField } from "@/components/common/GenerateDocume
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  previewDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  mine_guid: PropTypes.string.isRequired,
-  permit_guid: PropTypes.string.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
+  formValues: PropTypes.objectOf(PropTypes.any),
   change: PropTypes.func,
-  noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
 };
 
 const defaultProps = {
@@ -100,6 +99,20 @@ export class ExplosivesPermitDecisionForm extends Component {
             </Button>
           </Popconfirm>
           <Button
+            className="full-mobile"
+            type="secondary"
+            onClick={() => this.props.previewDocument("LET", this.props.formValues)}
+          >
+            Preview Letter
+          </Button>
+          <Button
+            className="full-mobile"
+            type="secondary"
+            onClick={() => this.props.previewDocument("PER", this.props.formValues)}
+          >
+            Preview Permit
+          </Button>
+          <Button
             type="primary"
             className="full-mobile"
             htmlType="submit"
@@ -117,9 +130,11 @@ ExplosivesPermitDecisionForm.propTypes = propTypes;
 ExplosivesPermitDecisionForm.defaultProps = defaultProps;
 
 const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_DECISION);
+
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
+  formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_DECISION)(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

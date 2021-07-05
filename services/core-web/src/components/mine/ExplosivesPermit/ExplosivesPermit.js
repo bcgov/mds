@@ -120,36 +120,26 @@ export class ExplosivesPermit extends Component {
     });
   };
 
-  handleIssueExplosivesPermit = (explosivesPermitGuid, values) => {
-    const payload = {
-      application_status: "APP",
-      ...values,
-    };
+  handleIssueExplosivesPermit = (values, record) => {
+    const payload = { ...record, ...values, application_status: "APP" };
     return this.props
-      .updateExplosivesPermit(this.props.mineGuid, explosivesPermitGuid, payload)
+      .updateExplosivesPermit(this.props.mineGuid, record.explosives_permit_guid, payload)
       .then(() => {
         this.props.closeModal();
       });
   };
 
-  handleDocumentPreview = (documentType, values) => {
-    const documentTypeCode = documentType.now_application_document_type_code;
-    const newValues = values;
-    documentType.document_template.form_spec
-      .filter((field) => field.type === "DATE")
-      .forEach((field) => {
-        newValues[field.id] = formatDate(newValues[field.id]);
-      });
+  handleDocumentPreview = (documentTypeCode, values, record) => {
+    console.log(documentTypeCode, values, record);
     const payload = {
-      now_application_guid: this.props.noticeOfWork.now_application_guid,
-      template_data: newValues,
+      explosives_permit_guid: record.explosives_permit_guid,
+      template_data: values,
     };
-    return this.props.generateNoticeOfWorkApplicationDocument(
+    return this.props.generateExplosivesPermitDocument(
       documentTypeCode,
       payload,
-      "Successfully created the preview document",
-      true,
-      () => {}
+      "Successfully generated preview of Explosives Permit document",
+      true
     );
   };
 
@@ -167,9 +157,9 @@ export class ExplosivesPermit extends Component {
           props: {
             initialValues,
             documentType: this.props.documentContextTemplate,
-            onSubmit: (values) =>
-              this.handleIssueExplosivesPermit(record.explosives_permit_guid, values),
-            preview: this.handleDocumentPreview,
+            onSubmit: (values) => this.handleIssueExplosivesPermit(values, record),
+            previewDocument: (documentTypeCode, values) =>
+              this.handleDocumentPreview(documentTypeCode, values, record),
             title: "Issue Explosives Storage & Use Permit",
           },
           width: "75vw",

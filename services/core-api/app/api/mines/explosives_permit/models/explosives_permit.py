@@ -21,9 +21,10 @@ ORIGINATING_SYSTEMS = ['Core', 'MineSpace']
 class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'explosives_permit'
 
-    explosives_permit_id = db.Column(db.Integer, primary_key=True, server_default=FetchedValue())
     explosives_permit_guid = db.Column(
-        UUID(as_uuid=True), server_default=FetchedValue(), nullable=False, unique=True)
+        UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    explosives_permit_id = db.Column(
+        db.Integer, server_default=FetchedValue(), nullable=False, unique=True)
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'), nullable=False)
     permit_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('permit.permit_guid'), nullable=False)
     now_application_guid = db.Column(
@@ -285,7 +286,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     'explosives_permit_document_type_code'))
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
-
 
         if add_to_session:
             explosives_permit.save(commit=False)

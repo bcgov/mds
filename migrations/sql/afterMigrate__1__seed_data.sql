@@ -1699,6 +1699,23 @@ VALUES
     ('CAN', 'Cancellation/Closure Request', true, 140, NULL, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
--- TODO: Create template JSON for these two documents.
-UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESL';
 UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESP';
+UPDATE document_template SET form_spec_json = '[
+    {
+      "id": "letter_body_label_0",
+      "type": "LABEL",
+      "context-value": "Enclosed please find new Explosives Storage and Use Permit <Permit Number> made out to <Mine Operator> for the storage of explosives/detonators at the <Mine Name> mine site.  "
+    },
+    {
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Please ensure these copies of the permit and the magazine rules are posted in the magazines.  When the permit is no longer required, if the site conditions under which the permit was issued are no longer valid or upon closure of mining operations, please return the permit to this office for cancellation.",
+      "required": true
+    },
+    {
+      "id": "letter_body_label_1",
+      "type": "LABEL",
+      "context-value": "Thank you.\n\nYours truly,"
+    }
+]' WHERE document_template_code = 'ESL';
