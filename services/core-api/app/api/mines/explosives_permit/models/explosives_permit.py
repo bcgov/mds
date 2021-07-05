@@ -82,6 +82,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         'Party',
         lazy='select',
         primaryjoin="Party.party_guid == ExplosivesPermit.issuing_inspector_party_guid")
+    mine_operator = db.relationship(
+        'Party',
+        lazy='select',
+        primaryjoin="Party.party_guid == ExplosivesPermit.mine_operator_party_guid")
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'

@@ -139,5 +139,6 @@ class ExplosivesPermitResource(Resource, UserMixin):
         if explosives_permit is None:
             raise NotFound('Explosives Permit not found')
 
+        # TODO: Finish implementing delete
         explosives_permit.delete()
         return None, 204

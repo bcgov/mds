@@ -1701,6 +1701,14 @@ ON CONFLICT DO NOTHING;
 
 UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESP';
 UPDATE document_template SET form_spec_json = '[
+      {
+      "id": "letter_date",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
     {
       "id": "letter_body_label_0",
       "type": "LABEL",
@@ -1717,5 +1725,30 @@ UPDATE document_template SET form_spec_json = '[
       "id": "letter_body_label_1",
       "type": "LABEL",
       "context-value": "Thank you.\n\nYours truly,"
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
     }
 ]' WHERE document_template_code = 'ESL';

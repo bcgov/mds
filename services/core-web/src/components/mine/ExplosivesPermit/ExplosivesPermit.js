@@ -14,6 +14,7 @@ import {
   generateExplosivesPermitDocument,
 } from "@/actionCreators/documentActionCreator";
 import { getDocumentContextTemplate } from "@/reducers/documentReducer";
+import { getDropdownInspectors } from "@common/selectors/partiesSelectors";
 import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import {
   getExplosivesPermitStatusOptionsHash,
@@ -143,7 +144,6 @@ export class ExplosivesPermit extends Component {
   };
 
   handleDocumentPreview = (documentTypeCode, values, record) => {
-    console.log(documentTypeCode, values, record);
     const payload = {
       explosives_permit_guid: record.explosives_permit_guid,
       template_data: values,
@@ -170,6 +170,7 @@ export class ExplosivesPermit extends Component {
           props: {
             initialValues,
             documentType: this.props.documentContextTemplate,
+            inspectors: this.props.inspectors,
             onSubmit: (values) => this.handleIssueExplosivesPermit(values, record),
             previewDocument: (documentTypeCode, values) =>
               this.handleDocumentPreview(documentTypeCode, values, record),
@@ -228,6 +229,7 @@ export class ExplosivesPermit extends Component {
 const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   mines: getMines(state),
+  inspectors: getDropdownInspectors(state),
   explosivesPermits: getExplosivesPermits(state),
   explosivesPermitStatusOptionsHash: getExplosivesPermitStatusOptionsHash(state),
   explosivesPermitDocumentTypeOptionsHash: getExplosivesPermitDocumentTypeOptionsHash(state),
