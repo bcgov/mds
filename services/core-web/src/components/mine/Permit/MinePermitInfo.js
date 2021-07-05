@@ -425,7 +425,7 @@ export class MinePermitInfo extends Component {
             key="2"
           >
             <>
-              <ExplosivesPermit isPermit />
+              <ExplosivesPermit isPermitTab />
             </>
           </Tabs.TabPane>
         </Tabs>

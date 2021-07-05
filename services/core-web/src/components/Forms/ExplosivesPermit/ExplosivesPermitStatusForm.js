@@ -28,11 +28,6 @@ const propTypes = {
   initialValues: CustomPropTypes.permit.isRequired,
 };
 
-const sourceOptions = [
-  { value: "Core", label: "Core" },
-  { value: "MMS", label: "MMS" },
-];
-
 export const ExplosivesPermitStatusForm = (props) => {
   const options = props.explosivesPermitStatusDropdownOptions.filter(
     ({ value }) => value !== "APP"
