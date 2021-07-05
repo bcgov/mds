@@ -40,25 +40,12 @@ const defaultProps = {
   isApproved: false,
 };
 
+const sourceOptions = [
+  { value: "Core", label: "Core" },
+  { value: "MMS", label: "MMS" },
+];
+
 export class ExplosivesPermitForm extends Component {
-  state = {
-    documents: [],
-  };
-
-  // File upload handlers
-  onFileLoad = (fileName, document_manager_guid) => {
-    this.state.documents.push({
-      document_name: fileName,
-      document_manager_guid,
-    });
-    this.props.change("documents", this.state.documents);
-  };
-
-  onRemoveFile = (err, fileItem) => {
-    remove(this.state.documents, { document_manager_guid: fileItem.serverId });
-    this.props.change("documents", this.state.documents);
-  };
-
   render() {
     const permitDropdown = createDropDownList(this.props.permits, "permit_no", "permit_guid");
     const nowDropdown = createDropDownList(
@@ -66,11 +53,38 @@ export class ExplosivesPermitForm extends Component {
       "now_number",
       "now_application_guid"
     );
-    console.log(this.props.formValues);
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col md={12} sm={24}>
+            {this.props.isPermitTab && (
+              <>
+                <h4>Explosives Permit Details</h4>
+                <Form.Item>
+                  <Field
+                    id="permit_no"
+                    name="permit_no"
+                    placeholder="Explosives Permit Number"
+                    label="Explosives Permit Number*"
+                    component={renderConfig.FIELD}
+                    validate={[required]}
+                    disabled={this.props.isApproved}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Field
+                    id="originating_system"
+                    name="originating_system"
+                    placeholder="Select an Originating System"
+                    label="Originating System*"
+                    component={renderConfig.SELECT}
+                    data={sourceOptions}
+                    validate={[required]}
+                    disabled={this.props.isApproved}
+                  />
+                </Form.Item>
+              </>
+            )}
             <Form.Item>
               <Field
                 id="permit_guid"
@@ -113,6 +127,7 @@ export class ExplosivesPermitForm extends Component {
                 disabled={this.props.isApproved}
               />
             </Form.Item>
+            <h4>Storage Details</h4>
             <Row gutter={6}>
               <Col span={12}>
                 <Form.Item>
@@ -143,23 +158,10 @@ export class ExplosivesPermitForm extends Component {
               pin={[this.props.formValues?.latitude, this.props.formValues?.longitude]}
             />
             <br />
-            <div className="document-container">
-              <Form.Item label="Select Files/Upload files*">
-                <DocumentCategoryForm
-                  documents={this.props.documents}
-                  categories={this.props.documentTypeDropdownOptions}
-                />
-                <Field
-                  id="DocumentFileUpload"
-                  name="DocumentFileUpload"
-                  onFileLoad={this.onFileLoad}
-                  onRemoveFile={this.onRemoveFile}
-                  mineGuid={this.props.mineGuid}
-                  component={ExplosivesPermitFileUpload}
-                  allowMultiple
-                />
-              </Form.Item>
-            </div>
+            <DocumentCategoryForm
+              categories={this.props.documentTypeDropdownOptions}
+              mineGuid={this.props.mineGuid}
+            />
           </Col>
           <Col md={12} sm={24} className="border--left--layout">
             <MagazineForm isApproved={this.props.isApproved} />
