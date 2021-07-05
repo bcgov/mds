@@ -18,7 +18,8 @@ EXPLOSIVES_PERMIT_MAGAZINE_MODEL = api.model(
         'height': fields.Fixed,
         'quantity': fields.Integer,
         'distance_road': fields.Fixed,
-        'distance_dwelling': fields.Fixed
+        'distance_dwelling': fields.Fixed,
+        'detonator_type': fields.String
     })
 
 EXPLOSIVES_PERMIT_DOCUMENT_MODEL = api.inherit('ExplosivesPermitDocument', MINE_DOCUMENT_MODEL, {
@@ -52,6 +53,7 @@ EXPLOSIVES_PERMIT_MODEL = api.model(
         'closed_reason': fields.String,
         'total_detonator_quantity': fields.Integer,
         'total_explosive_quantity': fields.Integer,
+        'description': fields.String,
         'explosive_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
         'detonator_magazines': fields.List(fields.Nested(EXPLOSIVES_PERMIT_MAGAZINE_MODEL)),
         'documents': fields.List(fields.Nested(EXPLOSIVES_PERMIT_DOCUMENT_MODEL)),

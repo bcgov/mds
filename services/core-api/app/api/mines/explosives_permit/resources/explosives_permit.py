@@ -50,6 +50,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
         store_missing=False,
         required=True,
         help='')
+    parser.add_argument('description', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
         'application_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
@@ -116,6 +117,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
             data.get('latitude'),
             data.get('longitude'),
             data.get('application_date'),
+            data.get('description'),
             data.get('explosive_magazines', []),
             data.get('detonator_magazines', []),
             data.get('documents', []),

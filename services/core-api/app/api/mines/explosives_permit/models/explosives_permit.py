@@ -44,6 +44,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     received_timestamp = db.Column(db.DateTime, server_default=FetchedValue(), nullable=False)
     decision_timestamp = db.Column(db.DateTime)
     decision_reason = db.Column(db.String)
+    description = db.Column(db.String)
 
     latitude = db.Column(db.Numeric(9, 7), nullable=False)
     longitude = db.Column(db.Numeric(11, 7), nullable=False)
@@ -123,6 +124,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                latitude,
                longitude,
                application_date,
+               description,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
@@ -134,6 +136,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         self.issuing_inspector_party_guid = issuing_inspector_party_guid
         self.mine_operator_party_guid = mine_operator_party_guid
         self.application_date = application_date
+        self.description = description
         self.issue_date = issue_date
         self.expiry_date = expiry_date
         self.latitude = latitude
@@ -243,6 +246,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                originating_system,
                latitude,
                longitude,
+               description,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
@@ -262,6 +266,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             originating_system=originating_system,
             latitude=latitude,
             longitude=longitude,
+            description=description,
             now_application_guid=now_application_guid)
         mine.explosives_permits.append(explosives_permit)
         explosives_permit.save(commit=False)

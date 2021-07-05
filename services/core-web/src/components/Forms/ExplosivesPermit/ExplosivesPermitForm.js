@@ -104,6 +104,15 @@ export class ExplosivesPermitForm extends Component {
                 disabled={this.props.isApproved}
               />
             </Form.Item>
+            <Form.Item>
+              <Field
+                id="description"
+                name="description"
+                label="Other Information"
+                component={renderConfig.FIELD}
+                disabled={this.props.isApproved}
+              />
+            </Form.Item>
             <Row gutter={6}>
               <Col span={12}>
                 <Form.Item>
@@ -130,7 +139,10 @@ export class ExplosivesPermitForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <ExplosivesPermitMap mine={this.props.initialValues} />
+            <ExplosivesPermitMap
+              pin={[this.props.formValues?.latitude, this.props.formValues?.longitude]}
+            />
+            <br />
             <div className="document-container">
               <Form.Item label="Select Files/Upload files*">
                 <DocumentCategoryForm
