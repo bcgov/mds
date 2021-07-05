@@ -15,7 +15,7 @@ from app.api.mines.explosives_permit.models.explosives_permit_document_xref impo
 from app.api.mines.documents.models.mine_document import MineDocument
 
 # NOTE: MMS is also a valid originating system, but not via our API.
-ORIGINATING_SYSTEMS = ['Core', 'MineSpace']
+ORIGINATING_SYSTEMS = ['Core', 'MineSpace', "MMS"]
 
 
 class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
@@ -192,6 +192,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         for doc in self.documents:
             if doc.mine_document_guid not in updated_document_guids:
                 doc.mine_document.delete(commit=False)
+                doc.save(commit=False)
 
         # Create or update existing documents.
         for doc in documents:

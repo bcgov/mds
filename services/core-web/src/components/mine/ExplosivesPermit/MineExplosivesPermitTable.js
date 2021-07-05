@@ -132,6 +132,18 @@ export class MineExplosivesPermitTable extends Component {
       sorter: false,
     },
     {
+      title: "Status",
+      dataIndex: "is_closed",
+      sortField: "is_closed",
+      render: (text) => (
+        <div title="Status" className={hideColumn(!this.props.isPermitTab)}>
+          {text ? "Closed" : "Open" || Strings.EMPTY_FIELD}
+        </div>
+      ),
+      className: hideColumn(!this.props.isPermitTab),
+      sorter: false,
+    },
+    {
       title: "Decision Reason",
       dataIndex: "decision_reason",
       sortField: "decision_reason",
@@ -257,7 +269,22 @@ export class MineExplosivesPermitTable extends Component {
                   src={EDIT_OUTLINE_VIOLET}
                   style={{ paddingRight: "15px" }}
                 />
-                Update
+                Update Documents
+              </button>
+            </Menu.Item>
+            <Menu.Item key="edit">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) => this.props.handleOpenExplosivesPermitCloseModal(event, record)}
+              >
+                <img
+                  alt="document"
+                  className="padding-sm"
+                  src={EDIT_OUTLINE_VIOLET}
+                  style={{ paddingRight: "15px" }}
+                />
+                Close Explosives Permit
               </button>
             </Menu.Item>
           </Menu>

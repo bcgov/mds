@@ -107,6 +107,20 @@ export class ExplosivesPermit extends Component {
     });
   };
 
+  handleOpenExplosivesPermitCloseModal = (event, record = null) => {
+    const initialValues = record ? record : {};
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        onSubmit: this.handleUpdateExplosivesPermit,
+        title: "Update Explosives Permit Status",
+        initialValues,
+        mineGuid: this.props.mineGuid,
+      },
+      content: modalConfig.EXPLOSIVES_PERMIT_CLOSE_MODAL,
+    });
+  };
+
   handleOpenViewMagazineModal = (event, record, type) => {
     const mine = this.props.mines[this.props.mineGuid];
     const title = type === "EXP" ? "Explosive Magazine" : "Detonator Magazine";
@@ -219,6 +233,7 @@ export class ExplosivesPermit extends Component {
           }
           handleOpenExplosivesPermitStatusModal={this.handleOpenExplosivesPermitStatusModal}
           handleDeleteExplosivesPermit={this.handleDeleteExplosivesPermit}
+          handleOpenExplosivesPermitCloseModal={this.handleOpenExplosivesPermitCloseModal}
         />
       </div>
     );

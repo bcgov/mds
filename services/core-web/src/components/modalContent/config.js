@@ -45,6 +45,7 @@ import AddExplosivesPermitModal from "./AddExplosivesPermitModal";
 import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicationDecisionModal";
 import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
+import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -94,6 +95,7 @@ export const modalConfig = {
   EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
   VIEW_MAGAZINE_MODAL: ViewMagazineModal,
   EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
+  EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
 };
 
 export default modalConfig;
