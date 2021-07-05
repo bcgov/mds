@@ -7,6 +7,7 @@ import {
   fetchExplosivesPermits,
   createExplosivesPermit,
   updateExplosivesPermit,
+  deleteExplosivesPermit,
 } from "@common/actionCreators/explosivesPermitActionCreator";
 import {
   fetchExplosivesPermitDocumentContextTemplate,
@@ -36,6 +37,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
   updateExplosivesPermit: PropTypes.func.isRequired,
+  deleteExplosivesPermit: PropTypes.func.isRequired,
   fetchExplosivesPermitDocumentContextTemplate: PropTypes.func.isRequired,
   generateExplosivesPermitDocument: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
@@ -126,7 +128,17 @@ export class ExplosivesPermit extends Component {
     return this.props
       .updateExplosivesPermit(this.props.mineGuid, record.explosives_permit_guid, payload)
       .then(() => {
+        this.props.fetchExplosivesPermits(this.props.mineGuid);
         this.props.closeModal();
+      });
+  };
+
+  handleDeleteExplosivesPermit = (event, record) => {
+    event.preventDefault();
+    return this.props
+      .deleteExplosivesPermit(this.props.mineGuid, record.explosives_permit_guid)
+      .then(() => {
+        this.props.fetchExplosivesPermits(this.props.mineGuid);
       });
   };
 
@@ -206,6 +218,7 @@ export class ExplosivesPermit extends Component {
             this.props.explosivesPermitDocumentTypeOptionsHash
           }
           handleOpenExplosivesPermitStatusModal={this.handleOpenExplosivesPermitStatusModal}
+          handleDeleteExplosivesPermit={this.handleDeleteExplosivesPermit}
         />
       </div>
     );
@@ -234,6 +247,7 @@ const mapDispatchToProps = (dispatch) =>
       updateExplosivesPermit,
       fetchExplosivesPermitDocumentContextTemplate,
       generateExplosivesPermitDocument,
+      deleteExplosivesPermit,
     },
     dispatch
   );

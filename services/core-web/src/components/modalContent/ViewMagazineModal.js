@@ -82,7 +82,12 @@ export const ViewMagazineModal = (props) => {
       <ExplosivesPermitMap
         pin={[props.explosivesPermit.latitude, props.explosivesPermit.longitude]}
       />
-
+      <br />
+      <Descriptions column={1}>
+        <Descriptions.Item label="Other Information">
+          {props.explosivesPermit.description}
+        </Descriptions.Item>
+      </Descriptions>
       <Descriptions column={3}>
         <Descriptions.Item label="Mine No.">{props.mine.mine_no}</Descriptions.Item>
         <Descriptions.Item label="Mine Name">{props.mine.mine_name}</Descriptions.Item>

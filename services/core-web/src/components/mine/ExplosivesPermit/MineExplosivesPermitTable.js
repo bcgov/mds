@@ -31,6 +31,7 @@ const propTypes = {
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
   handleOpenExplosivesPermitStatusModal: PropTypes.func.isRequired,
+  handleDeleteExplosivesPermit: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -359,7 +360,7 @@ export class MineExplosivesPermitTable extends Component {
                   title={`Are you sure you want to delete the Explosives Storage & Use ${
                     this.props.isPermitTab ? "Permit" : "Permit Application"
                   }?`}
-                  onConfirm={() => console.log("yes delete")}
+                  onConfirm={(event) => this.props.handleDeleteExplosivesPermit(event, record)}
                   okText="Delete"
                   cancelText="Cancel"
                 >
