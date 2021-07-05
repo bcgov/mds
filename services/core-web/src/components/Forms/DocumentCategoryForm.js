@@ -7,7 +7,7 @@ import { compose, bindActionCreators } from "redux";
 import { Col, Row, Popconfirm, Button } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Field, FieldArray, change, formValueSelector, getFormValues } from "redux-form";
+import { Field, FieldArray, change, formValueSelector, getFormValues, arrayPush } from "redux-form";
 import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
@@ -22,22 +22,17 @@ const propTypes = {
 };
 
 export class DocumentCategoryForm extends Component {
-  state = {
-    documents: [],
-  };
-
   // File upload handlers
   onFileLoad = (fileName, document_manager_guid) => {
-    this.state.documents.push({
+    this.props.arrayPush(FORM.EXPLOSIVES_PERMIT, "documents", {
       document_name: fileName,
       document_manager_guid,
     });
-    return this.props.change(FORM.EXPLOSIVES_PERMIT, "documents", this.state.documents);
   };
 
   onRemoveFile = (err, fileItem) => {
-    remove(this.state.documents, { document_manager_guid: fileItem.serverId });
-    return this.props.change(FORM.EXPLOSIVES_PERMIT, "documents", this.state.documents);
+    remove(this.props.documents, { document_manager_guid: fileItem.serverId });
+    return this.props.change(FORM.EXPLOSIVES_PERMIT, "documents", this.props.documents);
   };
 
   DocumentCategories = ({ fields }) => {
@@ -47,7 +42,7 @@ export class DocumentCategoryForm extends Component {
           const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
           return (
             <div className="padding-sm margin-small" key={index}>
-              <Row gutter={48}>
+              <Row gutter={16}>
                 <Col span={10}>
                   <Form.Item>
                     <Field
@@ -102,7 +97,6 @@ export class DocumentCategoryForm extends Component {
   };
 
   render() {
-    console.log(this.props.documents);
     return (
       <div className="document-container">
         <Form.Item label="Select Files/Upload files*">
@@ -133,6 +127,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       change,
+      arrayPush,
     },
     dispatch
   );

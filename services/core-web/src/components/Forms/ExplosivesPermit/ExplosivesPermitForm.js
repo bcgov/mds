@@ -183,7 +183,7 @@ export class ExplosivesPermitForm extends Component {
             type="primary"
             className="full-mobile"
             htmlType="submit"
-            loading={this.state.submitting}
+            loading={this.props.submitting}
           >
             Submit
           </Button>
