@@ -242,7 +242,13 @@ export class MineExplosivesPermitTable extends Component {
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) => this.props.handleOpenAddExplosivesPermitModal(event, record)}
+                onClick={(event) =>
+                  this.props.handleOpenAddExplosivesPermitModal(
+                    event,
+                    this.props.isPermitTab,
+                    record
+                  )
+                }
               >
                 <img
                   alt="document"
@@ -293,7 +299,13 @@ export class MineExplosivesPermitTable extends Component {
               <button
                 type="button"
                 className="full add-permit-dropdown-button"
-                onClick={(event) => this.props.handleOpenAddExplosivesPermitModal(event, record)}
+                onClick={(event) =>
+                  this.props.handleOpenAddExplosivesPermitModal(
+                    event,
+                    this.props.isPermitTab,
+                    record
+                  )
+                }
               >
                 <img
                   alt="document"

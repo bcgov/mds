@@ -27,6 +27,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
     quantity = db.Column(db.Integer)
     distance_road = db.Column(db.Numeric)
     distance_dwelling = db.Column(db.Numeric)
+    detonator_type = db.Column(db.String)
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_magazine_id}>'
@@ -44,7 +45,8 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
             height=data.get('height'),
             quantity=data.get('quantity'),
             distance_road=data.get('distance_road'),
-            distance_dwelling=data.get('distance_dwelling'))
+            distance_dwelling=data.get('distance_dwelling'),
+            detonator_type=data.get('detonator_type') )
 
     def update(self,
                explosives_permit_magazine_type_code,
@@ -59,6 +61,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
                quantity,
                distance_road,
                distance_dwelling,
+               detonator_type,
                add_to_session=True):
         self.explosives_permit_magazine_type_code = explosives_permit_magazine_type_code
         self.type_no = type_no
@@ -72,6 +75,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
         self.quantity = quantity
         self.distance_road = distance_road
         self.distance_dwelling = distance_dwelling
+        self.detonator_type = detonator_type
         if add_to_session:
             self.save(commit=False)
 
@@ -89,7 +93,8 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
             height=data.get('height'),
             quantity=data.get('quantity'),
             distance_road=data.get('distance_road'),
-            distance_dwelling=data.get('distance_dwelling'))
+            distance_dwelling=data.get('distance_dwelling'),
+            detonator_type=data.get('detonator_type'))
 
     @classmethod
     def create(cls,
@@ -105,6 +110,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
                quantity,
                distance_road,
                distance_dwelling,
+               detonator_type,
                add_to_session=True):
         explosives_permit_magazine = cls(
             explosives_permit_magazine_type_code=explosives_permit_magazine_type_code,
@@ -118,7 +124,8 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
             height=height,
             quantity=quantity,
             distance_road=distance_road,
-            distance_dwelling=distance_dwelling)
+            distance_dwelling=distance_dwelling,
+            detonator_type=detonator_type)
         if add_to_session:
             explosives_permit_magazine.save(commit=False)
         return explosives_permit_magazine

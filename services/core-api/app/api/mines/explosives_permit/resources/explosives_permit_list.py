@@ -43,6 +43,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         store_missing=False,
         required=False,
         help='')
+    parser.add_argument('description', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
         'detonator_magazines',
         type=list,
@@ -82,6 +83,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('application_date'),
                                                     data.get('originating_system'),
                                                     data.get('latitude'), data.get('longitude'),
+                                                    data.get('description'),
                                                     data.get('explosive_magazines', []),
                                                     data.get('detonator_magazines', []),
                                                     data.get('documents', []),

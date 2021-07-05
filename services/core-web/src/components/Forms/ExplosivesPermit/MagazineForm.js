@@ -84,6 +84,7 @@ export class MagazineForm extends Component {
 
   renderInputs = (field, type) => {
     const unit = type === "EXP" ? "(Kg)" : "(Unit)";
+    const showDetonatorType = type === "DET";
     return (
       <>
         <Row gutter={16}>
@@ -165,6 +166,22 @@ export class MagazineForm extends Component {
             </Form.Item>
           </Col>
         </Row>
+        {showDetonatorType && (
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  label="Type of Detonator*"
+                  id={`${field}detonator_type`}
+                  name={`${field}detonator_type`}
+                  component={renderConfig.AUTO_SIZE_FIELD}
+                  validate={[required]}
+                  disabled={this.props.isApproved}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>

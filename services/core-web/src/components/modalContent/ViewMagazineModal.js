@@ -46,6 +46,13 @@ export const ViewMagazineModal = (props) => {
                 <Descriptions.Item label="Width(m)">{magazine.width}</Descriptions.Item>
                 <Descriptions.Item label="Height(m)">{magazine.height}</Descriptions.Item>
               </Descriptions>
+              {props.type !== explosiveCode && (
+                <Descriptions column={1}>
+                  <Descriptions.Item label="Type of Detonator">
+                    {magazine.detonator_type}
+                  </Descriptions.Item>
+                </Descriptions>
+              )}
               <Descriptions column={1}>
                 <Descriptions.Item label="Distance from Road or Work Area">
                   {magazine.distance_road}
