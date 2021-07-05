@@ -219,6 +219,15 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             self.save(commit=False)
         return self
 
+    def delete(self, commit=True):
+        for magazine in self.explosive_magazines:
+            magazine.delete(False)
+        for magazine in self.detonator_magazines:
+            magazine.delete(False)
+        for doc in self.documents:
+            doc.mine_document.delete(False)
+        super(ExplosivesPermit, self).delete(commit)
+
     @classmethod
     def get_next_application_number(cls):
         now = datetime.now(timezone('US/Pacific'))
