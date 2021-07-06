@@ -205,6 +205,7 @@ export class PermitPackage extends Component {
       props: {
         mineGuid: this.props.noticeOfWork.mine_guid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
+        noticeOfWork: this.props.noticeOfWork,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
         documents: this.props.noticeOfWork.documents,

@@ -347,6 +347,7 @@ export const GeneratePermitForm = (props) => {
           disclaimerText="In this table, you can see all the map-related Notice of Work documents."
           categoriesToShow={["MDO"]}
           addDescriptionColumn={false}
+          isStandardDocuments
         />
       </ScrollContentWrapper>
     </Form>

@@ -79,7 +79,6 @@ export class FinalPermitDocuments extends Component {
         isViewMode
         showPreambleFileMetadata={this.props.showPreambleFileMetadata}
         editPreambleFileMetadata={this.props.editPreambleFileMetadata}
-        showPartOfPermitColumn
         isFinalPackageTable
         isAdminView={this.props.adminView}
       />
@@ -110,7 +109,6 @@ export class FinalPermitDocuments extends Component {
           disableCategoryFilter={this.props.disableCategoryFilter}
           showPreambleFileMetadata={this.props.showPreambleFileMetadata}
           editPreambleFileMetadata={this.props.editPreambleFileMetadata}
-          showPartOfPermitColumn
           isFinalPackageTable
           isAdminView={this.props.adminView}
         />
@@ -140,7 +138,7 @@ export class FinalPermitDocuments extends Component {
       <div>
         <div className="inline-flex between">
           <div>
-            {!this.props.adminView && <h4>Final Application Package</h4>}
+            {!this.props.adminView && <h4>Permit Package</h4>}
             <p>All files in this list will appear in the Preamble on the permit.</p>
           </div>
           <div>

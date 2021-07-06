@@ -8,6 +8,7 @@ import {
   ReloadOutlined,
   MinusSquareFilled,
   PlusSquareFilled,
+  FlagOutlined,
 } from "@ant-design/icons";
 import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
@@ -37,6 +38,7 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
+import moment from "moment-timezone";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
@@ -66,6 +68,7 @@ const propTypes = {
   allowAfterProcess: PropTypes.bool,
   isFinalPackageTable: PropTypes.bool,
   isAdminView: PropTypes.bool,
+  isPackageModal: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -83,6 +86,7 @@ const defaultProps = {
   allowAfterProcess: false,
   isFinalPackageTable: false,
   isAdminView: false,
+  isPackageModal: false,
 };
 
 const transformDocuments = (
@@ -127,6 +131,7 @@ const transformDocuments = (
         !document.is_final_package &&
         !document.is_referral_package &&
         !document.is_consultation_package,
+      upload_date: document?.mine_document?.upload_date,
       ...document,
     };
   });
@@ -147,6 +152,11 @@ export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
 
 export const NOWSubmissionDocuments = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
+  const isInCompleteStatus =
+    props.noticeOfWork.now_application_status_code === "AIA" ||
+    props.noticeOfWork.now_application_status_code === "WDN" ||
+    props.noticeOfWork.now_application_status_code === "REJ" ||
+    props.noticeOfWork.now_application_status_code === "NPR";
 
   const handleAddDocument = (values) => {
     const documents = values.uploadedFiles.map((file) => {
@@ -203,6 +213,7 @@ export const NOWSubmissionDocuments = (props) => {
         title: "Add Notice of Work document",
         categoriesToShow: props.categoriesToShow,
         isEditMode: false,
+        isInCompleteStatus,
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
     });
@@ -217,6 +228,7 @@ export const NOWSubmissionDocuments = (props) => {
         title: "Edit Notice of Work document",
         categoriesToShow: props.categoriesToShow,
         isEditMode: true,
+        isInCompleteStatus,
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
     });
@@ -314,8 +326,9 @@ export const NOWSubmissionDocuments = (props) => {
     title: "",
     dataIndex: "isModificationAllowed",
     key: "isModificationAllowed",
+    width: 170,
     render: (isModificationAllowed, record) => {
-      if (props.noticeOfWork.now_application_status_code !== "AIA") {
+      if (!isInCompleteStatus) {
         if (isModificationAllowed) {
           return (
             <NOWActionWrapper
@@ -332,7 +345,7 @@ export const NOWSubmissionDocuments = (props) => {
                     handleDeleteDocument(record.now_application_guid, record.mine_document_guid);
                   }}
                 >
-                  <Button ghost type="primary" size="small">
+                  <Button className="no-margin" ghost type="primary" size="small">
                     <img name="remove" src={TRASHCAN} alt="Remove document" />
                   </Button>
                 </Popconfirm>
@@ -341,6 +354,7 @@ export const NOWSubmissionDocuments = (props) => {
                 ghost
                 type="primary"
                 size="small"
+                className="no-margin"
                 onClick={() => openEditDocumentModal(record)}
               >
                 <img name="remove" src={EDIT_OUTLINE_VIOLET} alt="Edit document" />
@@ -359,8 +373,9 @@ export const NOWSubmissionDocuments = (props) => {
                 title="You cannot remove a document that is a part of the Final Application, Referral, or Consultation Package."
                 placement="right"
                 mouseEnterDelay={0.3}
+                className="no-margin"
               >
-                <Button ghost type="primary" disabled size="small">
+                <Button className="no-margin" ghost type="primary" size="small">
                   <img className="lessOpacity" name="remove" src={TRASHCAN} alt="Remove document" />
                 </Button>
               </Tooltip>
@@ -368,8 +383,9 @@ export const NOWSubmissionDocuments = (props) => {
                 title="You cannot edit a document that is a part of the Final Application, Referral, or Consultation Package."
                 placement="right"
                 mouseEnterDelay={0.3}
+                className="no-margin"
               >
-                <Button ghost type="primary" disabled size="small">
+                <Button className="no-margin" ghost type="primary" size="small">
                   <img
                     className="lessOpacity"
                     name="remove"
@@ -386,14 +402,21 @@ export const NOWSubmissionDocuments = (props) => {
   };
 
   const permitPackageColumn = {
+    width: 150,
     title: () => {
-      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
-        <div>
-          Permit Package
+      return !isInCompleteStatus ? (
+        <div className="inline-flex between">
+          <div className="grid">
+            <span>Permit</span>
+            <span>Package</span>
+          </div>
           <PermitPackage isAdminView={props.isAdminView} isTableHeaderView />
         </div>
       ) : (
-        <div>Permit Package</div>
+        <div className="grid">
+          <span>Permit</span>
+          <span>Package</span>
+        </div>
       );
     },
     dataIndex: "is_final_package",
@@ -402,14 +425,21 @@ export const NOWSubmissionDocuments = (props) => {
   };
 
   const consultationPackageColumn = {
+    width: 150,
     title: () => {
-      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
-        <div>
-          Consultation Package
+      return !isInCompleteStatus ? (
+        <div className="inline-flex between">
+          <div className="grid">
+            <span>Consultation</span>
+            <span>Package</span>
+          </div>
           <ReferralConsultationPackage type="CON" isTableHeaderView />
         </div>
       ) : (
-        <div>Consultation Package</div>
+        <div className="grid">
+          <span>Consultation</span>
+          <span>Package</span>
+        </div>
       );
     },
     dataIndex: "is_consultation_package",
@@ -418,14 +448,21 @@ export const NOWSubmissionDocuments = (props) => {
   };
 
   const referralPackageColumn = {
+    width: 150,
     title: () => {
-      return props.noticeOfWork.now_application_status_code !== "AIA" ? (
-        <div>
-          Referral Package
+      return !isInCompleteStatus ? (
+        <div className="inline-flex between">
+          <div className="grid">
+            <span>Referral</span>
+            <span>Package</span>
+          </div>
           <ReferralConsultationPackage type="REF" isTableHeaderView />
         </div>
       ) : (
-        <div>Referral Package</div>
+        <div className="grid">
+          <span>Referral</span>
+          <span>Package</span>
+        </div>
       );
     },
     dataIndex: "is_referral_package",
@@ -469,7 +506,37 @@ export const NOWSubmissionDocuments = (props) => {
     },
   };
 
+  const postApprovalDocumentColumn = {
+    title: "",
+    key: "post_approval_document",
+    render: (text, record) => {
+      let isPostDecision = false;
+      if (
+        isInCompleteStatus &&
+        moment(record.upload_date, "YYYY-MM-DD") >
+          moment(props.noticeOfWork.status_updated_date, "YYYY-MM-DD")
+      ) {
+        isPostDecision = true;
+      }
+      return (
+        isPostDecision && (
+          <Tooltip
+            title="This is a post decision document."
+            placement="right"
+            mouseEnterDelay={0.3}
+          >
+            <FlagOutlined />
+          </Tooltip>
+        )
+      );
+    },
+  };
+
   let columns = [categoryColumn, fileNameColumn];
+
+  if (isInCompleteStatus) {
+    columns = [...columns, postApprovalDocumentColumn];
+  }
 
   columns = [
     ...columns,
@@ -481,6 +548,10 @@ export const NOWSubmissionDocuments = (props) => {
 
   if (!props.hideImportStatusColumn) {
     columns = [...columns, importStatusColumn];
+  }
+
+  if (props.isPackageModal) {
+    columns = [fileNameColumn, categoryColumn, descriptionColumn, uploadDateColumn];
   }
 
   const dataSource = transformDocuments(
@@ -603,11 +674,11 @@ export const NOWSubmissionDocuments = (props) => {
 
   return (
     <div>
-      {!props.hideJobStatusColumn && renderImportJobStatus()}
+      {!props.hideJobStatusColumn && !props.isPackageModal && renderImportJobStatus()}
       <Row className="inline-flex between">
         <Col span={16}>{props.displayTableDescription && <p>{props.tableDescription}</p>}</Col>
         <Col span={6}>
-          {!props.selectedRows && !props.isViewMode && (
+          {!props.selectedRows && !props.isViewMode && !props.isPackageModal && (
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}

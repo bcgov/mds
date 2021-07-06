@@ -127,12 +127,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "application-files",
         title: "Application Files",
         alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "additional-application-files",
-        title: "Additional Application Files",
-        alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
     ],

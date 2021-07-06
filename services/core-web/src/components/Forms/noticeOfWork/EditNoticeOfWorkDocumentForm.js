@@ -28,11 +28,13 @@ const propTypes = {
     CustomPropTypes.dropdownListItem
   ).isRequired,
   change: PropTypes.func.isRequired,
+  isInCompleteStatus: PropTypes.Bool,
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
 };
 
 const defaultProps = {
   categoriesToShow: [],
+  isInCompleteStatus: false,
 };
 
 export class EditNoticeOfWorkDocumentForm extends Component {
@@ -109,15 +111,17 @@ export class EditNoticeOfWorkDocumentForm extends Component {
                 validate={[maxLength(280)]}
               />
             </Form.Item>
-            <Form.Item>
-              <Field
-                id="is_final_package"
-                name="is_final_package"
-                label="Part of final application package"
-                type="checkbox"
-                component={renderConfig.CHECKBOX}
-              />
-            </Form.Item>
+            {!this.props.isInCompleteStatus && (
+              <Form.Item>
+                <Field
+                  id="is_final_package"
+                  name="is_final_package"
+                  label="Part of permit package"
+                  type="checkbox"
+                  component={renderConfig.CHECKBOX}
+                />
+              </Form.Item>
+            )}
             {this.props.isFinalAppPackage && (
               <>
                 <Row gutter={16}>
