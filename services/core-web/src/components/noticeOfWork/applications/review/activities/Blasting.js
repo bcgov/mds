@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { Field, getFormValues } from "redux-form";
-import { Row, Col } from "antd";
+import { Row, Col, Alert, Button } from "antd";
 import { requiredRadioButton, required } from "@common/utils/Validate";
 import { connect } from "react-redux";
 
@@ -23,6 +23,7 @@ const propTypes = {
 };
 
 export const Blasting = (props) => {
+  const [expanded, setExpanded] = useState(false);
   return (
     <div>
       <Row gutter={16}>
@@ -338,6 +339,32 @@ export const Blasting = (props) => {
           )}
         </>
       )}
+      {props.blastingFormValues.has_storage_explosive_on_site &&
+        !props.blastingFormValues.explosive_permit_issued && (
+          <Alert
+            message="Explosives Storage & Use Permit"
+            description={
+              <>
+                An Explosives Magazine Storage & Use Permit is required as indicated by the
+                information provided.
+                <div className={expanded ? "block" : "hidden"}>
+                  <ol>
+                    <li>Navigate to the Mine Record</li>
+                    <li>Click On Permits and Approvals</li>
+                    <li>Click on Applications</li>
+                    <li>Select Explosives Storage & Use Permit Applications</li>
+                    <li>Click `Add Explosives Storage & Use Permit Application`</li>
+                  </ol>
+                </div>
+                <Button className="btn--expand" onClick={() => setExpanded(!expanded)}>
+                  {expanded ? "  Read less" : "  ...Read more"}
+                </Button>
+              </>
+            }
+            type="info"
+            showIcon
+          />
+        )}
     </div>
   );
 };

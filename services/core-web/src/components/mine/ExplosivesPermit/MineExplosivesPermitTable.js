@@ -17,6 +17,7 @@ import {
   getExplosivesPermitBadgeStatusType,
   getExplosivesPermitClosedBadgeStatusType,
 } from "@/constants/theme";
+import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
@@ -76,7 +77,7 @@ const RenderTableExpandIcon = (rowProps) => (
         <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to show amendment details." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to show document details." placement="right" mouseEnterDelay={1}>
         <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
@@ -227,7 +228,12 @@ export class MineExplosivesPermitTable extends Component {
       className: hideColumn(!this.props.isPermitTab),
     },
     {
-      title: "Explosive Quantity",
+      title: (
+        <span>
+          Explosive Quantity
+          <CoreTooltip title="Total Explosive Quantity: This is the total quantity stored on site. Click to view more details" />
+        </span>
+      ),
       dataIndex: "total_explosive_quantity",
       sortField: "total_explosive_quantity",
       render: (text, record) => (
@@ -242,7 +248,12 @@ export class MineExplosivesPermitTable extends Component {
       sorter: false,
     },
     {
-      title: "Detonator Quantity",
+      title: (
+        <span>
+          Detonator Quantity
+          <CoreTooltip title="Total Detonator Quantity: This is the total quantity stored on site. Click to view more details" />
+        </span>
+      ),
       dataIndex: "total_detonator_quantity",
       sortField: "total_detonator_quantity",
       render: (text, record) => (
@@ -405,7 +416,7 @@ export class MineExplosivesPermitTable extends Component {
                   okText="Delete"
                   cancelText="Cancel"
                 >
-                  <Button ghost type="primary" size="small">
+                  <Button ghost type="primary" size="small" disabled>
                     <img name="remove" src={TRASHCAN} alt="Remove Permit" />
                   </Button>
                 </Popconfirm>

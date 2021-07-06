@@ -53,8 +53,10 @@ export class ExplosivesPermit extends Component {
   state = { isLoaded: false, params: {} };
 
   handleAddExplosivesPermit = (values) => {
+    console.log(values);
+    const system = values.permit_tab ? "MMS" : "Core";
     const payload = {
-      originating_system: "Core",
+      originating_system: system,
       ...values,
     };
     return this.props.createExplosivesPermit(this.props.mineGuid, payload).then(() => {
@@ -64,7 +66,7 @@ export class ExplosivesPermit extends Component {
   };
 
   handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
-    const initialValues = record ? record : {};
+    const initialValues = record ? record : { permit_tab: isPermitTab };
     const isApproved = record?.application_status === "APP";
     event.preventDefault();
     this.props.openModal({
@@ -76,6 +78,7 @@ export class ExplosivesPermit extends Component {
         isApproved,
         documentTypeDropdownOptions: this.props.explosivesPermitDocumentTypeDropdownOptions,
         isPermitTab,
+        inspectors: this.props.inspectors,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",

@@ -45,6 +45,19 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         help='')
     parser.add_argument('description', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
+        'issue_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=True,
+        help='')
+    parser.add_argument(
+        'expiry_date',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=True,
+        help='')
+    parser.add_argument('permit_number', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
         'detonator_magazines',
         type=list,
         location='json',
@@ -83,7 +96,9 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('application_date'),
                                                     data.get('originating_system'),
                                                     data.get('latitude'), data.get('longitude'),
-                                                    data.get('description'),
+                                                    data.get('description'), data.get('issue_date'),
+                                                    data.get('expiry_date'),
+                                                    data.get('permit_number'),
                                                     data.get('explosive_magazines', []),
                                                     data.get('detonator_magazines', []),
                                                     data.get('documents', []),
