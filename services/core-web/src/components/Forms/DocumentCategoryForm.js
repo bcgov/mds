@@ -19,6 +19,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
   categories: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
+  isApproved: PropTypes.bool.isRequired,
 };
 
 export class DocumentCategoryForm extends Component {
@@ -65,11 +66,12 @@ export class DocumentCategoryForm extends Component {
                       component={renderConfig.SELECT}
                       data={this.props.categories}
                       validate={[required]}
+                      disabled={documentExists && this.props.isApproved}
                     />
                   </Form.Item>
                 </Col>
                 <Col span={4} className="right">
-                  {documentExists && (
+                  {documentExists && !this.props.isApproved && (
                     <Popconfirm
                       placement="top"
                       title={[

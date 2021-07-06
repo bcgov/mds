@@ -67,7 +67,7 @@ export class ExplosivesPermitForm extends Component {
                     placeholder="Explosives Permit Number"
                     label="Explosives Permit Number*"
                     component={renderConfig.FIELD}
-                    validate={[required]}
+                    // validate={[required]}
                     disabled={this.props.isApproved}
                   />
                 </Form.Item>
@@ -161,6 +161,7 @@ export class ExplosivesPermitForm extends Component {
             <DocumentCategoryForm
               categories={this.props.documentTypeDropdownOptions}
               mineGuid={this.props.mineGuid}
+              isApproved={this.props.isApproved}
             />
           </Col>
           <Col md={12} sm={24} className="border--left--layout">

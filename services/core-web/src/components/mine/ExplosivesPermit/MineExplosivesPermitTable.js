@@ -283,7 +283,7 @@ export class MineExplosivesPermitTable extends Component {
                   src={EDIT_OUTLINE_VIOLET}
                   style={{ paddingRight: "15px" }}
                 />
-                Update Documents
+                Edit Documents
               </button>
             </Menu.Item>
             <Menu.Item key="edit">
@@ -382,7 +382,7 @@ export class MineExplosivesPermitTable extends Component {
                         src={EDIT}
                         alt="Add/Edit"
                       />
-                      {isApproved ? "Edit Documents" : "Process/Edit"}
+                      {isApproved ? "Edit" : "Process/Edit"}
                       <img
                         className="padding-sm--right icon-svg-filter"
                         src={CARAT}
