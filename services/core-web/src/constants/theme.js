@@ -45,6 +45,8 @@ const badgeStatusTypes = {
   closedStatus: {
     true: "error",
     false: "success",
+    null: "success",
+    undefined: "success",
   },
 };
 

@@ -308,10 +308,10 @@ export class MagazineForm extends Component {
   render() {
     return (
       <div>
-        <Form.Item label="Explosive Magazines" />
+        <h4>Explosives Magazines</h4>
         <FieldArray name="explosive_magazines" component={this.renderExplosive} />
         <Divider style={{ backgroundColor: COLOR.violet }} />
-        <Form.Item label="Detonator Magazines" />
+        <h4>Detonator Magazines</h4>
         <FieldArray name="detonator_magazines" component={this.renderDetonator} />
       </div>
     );

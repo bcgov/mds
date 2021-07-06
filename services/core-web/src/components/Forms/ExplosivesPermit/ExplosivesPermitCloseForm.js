@@ -28,14 +28,15 @@ const propTypes = {
 
 const options = [
   {
-    value: true,
-    label: "Closed",
-  },
-  {
     value: false,
     label: "Open",
   },
+  {
+    value: true,
+    label: "Closed",
+  },
 ];
+
 export const ExplosivesPermitCloseForm = (props) => {
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>

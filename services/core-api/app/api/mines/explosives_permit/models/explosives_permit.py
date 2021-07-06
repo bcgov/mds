@@ -260,13 +260,19 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                latitude,
                longitude,
                description,
+               issue_date,
+               expiry_date,
+               permit_number,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
                now_application_guid=None,
                add_to_session=True):
 
-        application_status = 'REC'
+        if originating_system == 'MMS':
+            application_status = 'APP'
+        else:
+            application_status = 'REC'
         application_number = ExplosivesPermit.get_next_application_number()
         received_timestamp = datetime.utcnow()
 
@@ -280,6 +286,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             latitude=latitude,
             longitude=longitude,
             description=description,
+            issue_date=issue_date,
+            expiry_date=expiry_date,
+            permit_number=permit_number,
             now_application_guid=now_application_guid)
         mine.explosives_permits.append(explosives_permit)
         explosives_permit.save(commit=False)
