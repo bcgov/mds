@@ -1,6 +1,7 @@
 import json, os, docx, io, base64
 
 from flask import current_app
+from flask_restplus import inputs
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
@@ -8,6 +9,11 @@ from datetime import datetime
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
+
+
+def format_letter_date(datetime_string):
+    datetime_object = datetime.strptime(datetime_string, '%Y-%m-%d')
+    return datetime_object.strftime('%b %d %Y')
 
 
 def get_model_by_model_name(model_name):

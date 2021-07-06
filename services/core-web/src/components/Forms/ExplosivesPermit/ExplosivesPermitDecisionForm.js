@@ -22,6 +22,7 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   previewDocument: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   submitting: PropTypes.bool.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any),
   formValues: PropTypes.objectOf(PropTypes.any),
@@ -44,22 +45,23 @@ export class ExplosivesPermitDecisionForm extends Component {
                 id="mine_operator_party_guid"
                 name="mine_operator_party_guid"
                 label="Mine Operator*"
-                partyLabel="permittee"
+                placeholder="Start typing the Mine Operator's name"
+                partyLabel="Mine Operator"
                 validate={[required]}
                 allowAddingParties
               />
             </Form.Item>
             <Form.Item>
-              <PartySelectField
+              <Field
                 id="issuing_inspector_party_guid"
                 name="issuing_inspector_party_guid"
-                label="Issuing Inspector"
-                partyLabel="permittee"
+                label="Issuing Inspector*"
+                component={renderConfig.GROUPED_SELECT}
+                placeholder="Start typing the Issuing Inspector's name"
                 validate={[required]}
-                allowAddingParties
+                data={this.props.inspectors}
               />
             </Form.Item>
-
             <Form.Item>
               <Field
                 id="issue_date"
