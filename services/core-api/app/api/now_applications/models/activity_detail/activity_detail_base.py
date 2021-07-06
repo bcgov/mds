@@ -1,22 +1,19 @@
-import uuid, datetime
 from marshmallow import fields
-from sqlalchemy import and_, select, or_
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import and_, func
 from sqlalchemy.schema import FetchedValue
 from app.extensions import db
-from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.utils.models_mixins import AuditMixin, Base
 
-from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import *
-from app.api.now_applications.models.activity_detail.activity_summary_staging_area_detail_xref import *
+from app.api.now_applications.models.activity_detail.activity_summary_detail_xref import ActivitySummaryDetailXref
+from app.api.now_applications.models.activity_detail.activity_summary_staging_area_detail_xref import ActivitySummaryStagingAreaDetailXref
+from app.api.now_applications.models.activity_detail.activity_summary_building_detail_xref import ActivitySummaryBuildingDetailXref
 from app.api.now_applications.models.activity_summary.activity_summary_base import ActivitySummaryBase
-from app.api.constants import *
+from app.api.constants import NOW_APPLICATION_EDIT_GROUP
 
 
 class ActivityDetailBase(AuditMixin, Base):
     __tablename__ = 'activity_detail'
+
     _edit_groups = [NOW_APPLICATION_EDIT_GROUP]
 
     class _ModelSchema(Base._ModelSchema):
@@ -49,17 +46,25 @@ class ActivityDetailBase(AuditMixin, Base):
     _etl_activity_details = db.relationship('ETLActivityDetail', load_on_pending=True)
 
     activity_type_code = db.column_property(
-        db.select([ActivitySummaryBase.activity_type_code],
-                  or_(
-                      and_(
-                          ActivitySummaryDetailXref.activity_summary_id ==
-                          ActivitySummaryBase.activity_summary_id,
-                          ActivitySummaryDetailXref.activity_detail_id == activity_detail_id),
-                      and_(
-                          ActivitySummaryStagingAreaDetailXref.activity_summary_id ==
-                          ActivitySummaryBase.activity_summary_id,
-                          ActivitySummaryStagingAreaDetailXref.activity_detail_id ==
-                          activity_detail_id))).limit(1).as_scalar())
+        func.coalesce(
+            db.select([ActivitySummaryBase.activity_type_code]).where(
+                and_(
+                    ActivitySummaryDetailXref.activity_summary_id ==
+                    ActivitySummaryBase.activity_summary_id,
+                    ActivitySummaryDetailXref.activity_detail_id == activity_detail_id)).limit(
+                        1).as_scalar(),
+            db.select([ActivitySummaryBase.activity_type_code]).where(
+                and_(
+                    ActivitySummaryStagingAreaDetailXref.activity_summary_id ==
+                    ActivitySummaryBase.activity_summary_id,
+                    ActivitySummaryStagingAreaDetailXref.activity_detail_id == activity_detail_id,
+                    ActivitySummaryBase.activity_type_code == 'camp')).limit(1).as_scalar(),
+            db.select([ActivitySummaryBase.activity_type_code]).where(
+                and_(
+                    ActivitySummaryBuildingDetailXref.activity_summary_id ==
+                    ActivitySummaryBase.activity_summary_id,
+                    ActivitySummaryBuildingDetailXref.activity_detail_id == activity_detail_id,
+                    ActivitySummaryBase.activity_type_code == 'camp')).limit(1).as_scalar()))
 
     __mapper_args__ = {'polymorphic_on': activity_type_code}
 
