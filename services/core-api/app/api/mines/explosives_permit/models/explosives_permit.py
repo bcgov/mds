@@ -14,7 +14,6 @@ from app.api.mines.explosives_permit.models.explosives_permit_magazine import Ex
 from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
 
-# NOTE: MMS is also a valid originating system, but not via our API.
 ORIGINATING_SYSTEMS = ['Core', 'MineSpace', "MMS"]
 
 
