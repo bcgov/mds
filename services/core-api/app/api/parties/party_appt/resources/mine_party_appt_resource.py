@@ -67,8 +67,9 @@ class MinePartyApptResource(Resource, UserMixin):
         else:
             mine_guid = request.args.get('mine_guid')
             party_guid = request.args.get('party_guid')
-            include_permit_contacts = request.args.get('include_permit_contacts',
-                                                       'false').lower() == 'true'
+            include_permit_contacts = request.args.get(
+                'include_permit_contacts', 'false').lower() == 'true' or request.args.get(
+                    'include_permittees', 'false').lower() == 'true'
             act_only = request.args.get('active_only', 'true').lower() == 'true'
             types = request.args.getlist('types')
             mpas = MinePartyAppointment.find_by(
