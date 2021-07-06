@@ -416,7 +416,7 @@ export class MineExplosivesPermitTable extends Component {
                   okText="Delete"
                   cancelText="Cancel"
                 >
-                  <Button ghost type="primary" size="small" disabled>
+                  <Button ghost type="primary" size="small">
                     <img name="remove" src={TRASHCAN} alt="Remove Permit" />
                   </Button>
                 </Popconfirm>
