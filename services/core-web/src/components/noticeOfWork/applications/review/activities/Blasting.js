@@ -345,8 +345,8 @@ export const Blasting = (props) => {
             message="Explosives Storage & Use Permit"
             description={
               <>
-                An Explosives Magazine Storage & Use Permit is required as indicated by the
-                information provided.
+                An Explosives Storage & Use Permit is required as indicated by the information
+                provided.
                 <div className={expanded ? "block" : "hidden"}>
                   <ol>
                     <li>Navigate to the Mine Record</li>
