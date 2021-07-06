@@ -45,6 +45,19 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         help='')
     parser.add_argument('description', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
+        'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'mine_operator_party_guid', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
+    parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'closed_timestamp',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument(
         'issue_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
@@ -99,6 +112,11 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('description'), data.get('issue_date'),
                                                     data.get('expiry_date'),
                                                     data.get('permit_number'),
+                                                    data.get('issuing_inspector_party_guid'),
+                                                    data.get('mine_operator_party_guid'),
+                                                    data.get('is_closed'),
+                                                    data.get('closed_reason'),
+                                                    data.get('closed_timestamp'),
                                                     data.get('explosive_magazines', []),
                                                     data.get('detonator_magazines', []),
                                                     data.get('documents', []),
