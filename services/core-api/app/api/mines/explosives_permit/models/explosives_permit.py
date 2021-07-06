@@ -15,7 +15,7 @@ from app.api.mines.explosives_permit.models.explosives_permit_document_xref impo
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.parties.party.models.party import Party
 
-ORIGINATING_SYSTEMS = ['Core', 'MineSpace', "MMS"]
+ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
 
 class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
@@ -261,7 +261,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         prefix = 'BC-'
         base = 10000
         total = cls.query.filter(
-            and_(cls.originating_system.in_(ORIGINATING_SYSTEMS)),
+            and_(cls.originating_system.in_(['Core', 'MineSpace'])),
             cls.application_status == 'APP').count()
         return f'{prefix}{base + total}'
 
