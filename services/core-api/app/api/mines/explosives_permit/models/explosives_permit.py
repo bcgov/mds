@@ -13,6 +13,7 @@ from app.extensions import db
 from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
 from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
+from app.api.parties.party.models.party import Party
 
 ORIGINATING_SYSTEMS = ['Core', 'MineSpace', 'MMS']
 
@@ -100,6 +101,20 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         if self.detonator_magazines:
             total = sum(item.quantity if item.quantity else 0 for item in self.detonator_magazines)
             return total if total else 0
+        return None
+
+    @hybrid_property
+    def mine_operator_name(self):
+        if self.mine_operator_party_guid:
+            party = Party.find_by_party_guid(self.mine_operator_party_guid)
+            return party.name
+        return None
+
+    @hybrid_property
+    def issuing_inspector_name(self):
+        if self.issuing_inspector_party_guid:
+            party = Party.find_by_party_guid(self.issuing_inspector_party_guid)
+            return party.name
         return None
 
     # Add validation on application date for not being in the future.
@@ -262,6 +277,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                issue_date,
                expiry_date,
                permit_number,
+               issuing_inspector_party_guid,
+               mine_operator_party_guid,
+               is_closed,
+               closed_reason,
+               closed_timestamp,
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
@@ -274,6 +294,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             application_status = 'REC'
         application_number = ExplosivesPermit.get_next_application_number()
         received_timestamp = datetime.utcnow()
+
+        # Check for permit closed changes.
+        if is_closed and closed_timestamp is None:
+            closed_timestamp = datetime.utcnow()
 
         explosives_permit = cls(
             permit_guid=permit_guid,
@@ -288,6 +312,11 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             issue_date=issue_date,
             expiry_date=expiry_date,
             permit_number=permit_number,
+            issuing_inspector_party_guid=issuing_inspector_party_guid,
+            mine_operator_party_guid=mine_operator_party_guid,
+            is_closed=is_closed,
+            closed_reason=closed_reason,
+            closed_timestamp=closed_timestamp,
             now_application_guid=now_application_guid)
         mine.explosives_permits.append(explosives_permit)
         explosives_permit.save(commit=False)
