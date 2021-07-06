@@ -13,6 +13,10 @@ import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrap
 import * as Permission from "@/constants/permissions";
 import DocumentLink from "@/components/common/DocumentLink";
 import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
+import {
+  getExplosivesPermitBadgeStatusType,
+  getExplosivesPermitClosedBadgeStatusType,
+} from "@/constants/theme";
 
 /**
  * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
@@ -125,6 +129,12 @@ export class MineExplosivesPermitTable extends Component {
       sortField: "application_status",
       render: (text) => (
         <div title="Status" className={hideColumn(this.props.isPermitTab)}>
+          <Badge
+            status={getExplosivesPermitBadgeStatusType(
+              this.props.explosivesPermitStatusOptionsHash[text]
+            )}
+            style={{ marginRight: 5 }}
+          />
           {this.props.explosivesPermitStatusOptionsHash[text] || Strings.EMPTY_FIELD}
         </div>
       ),
@@ -137,6 +147,10 @@ export class MineExplosivesPermitTable extends Component {
       sortField: "is_closed",
       render: (text) => (
         <div title="Status" className={hideColumn(!this.props.isPermitTab)}>
+          <Badge
+            status={getExplosivesPermitClosedBadgeStatusType(text)}
+            style={{ marginRight: 5 }}
+          />
           {text ? "Closed" : "Open" || Strings.EMPTY_FIELD}
         </div>
       ),

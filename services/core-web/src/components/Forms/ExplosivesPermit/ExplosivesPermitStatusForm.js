@@ -1,9 +1,9 @@
 /* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
+import { compose } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -27,9 +27,9 @@ const propTypes = {
 };
 
 export const ExplosivesPermitStatusForm = (props) => {
-  const options = props.explosivesPermitStatusDropdownOptions.filter(
-    ({ value }) => value !== "APP"
-  );
+  const options = props.explosivesPermitStatusDropdownOptions.filter(({ value }) => {
+    return value === "REJ" || value === "WIT";
+  });
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       <Row gutter={16}>

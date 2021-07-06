@@ -95,6 +95,7 @@ export class ExplosivesPermit extends Component {
 
   handleOpenExplosivesPermitStatusModal = (event, record = null) => {
     const initialValues = record ? record : {};
+    delete initialValues.application_status;
     event.preventDefault();
     this.props.openModal({
       props: {

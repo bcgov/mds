@@ -36,6 +36,16 @@ const badgeStatusTypes = {
     Working: "success",
     "Not Working": "warning",
   },
+  explosivesPermit: {
+    Approved: "success",
+    Received: "processing",
+    Rejected: "error",
+    Withdrawn: "warning",
+  },
+  closedStatus: {
+    true: "error",
+    false: "success",
+  },
 };
 
 export const getApplicationStatusType = (status) =>
@@ -49,3 +59,9 @@ export const getReportSubmissionBadgeStatusType = (status) =>
 
 export const getWorkInformationBadgeStatusType = (status) =>
   badgeStatusTypes.workInformation[status] || undefinedStatusStyleType;
+
+export const getExplosivesPermitBadgeStatusType = (status) =>
+  badgeStatusTypes.explosivesPermit[status] || undefinedStatusStyleType;
+
+export const getExplosivesPermitClosedBadgeStatusType = (status) =>
+  badgeStatusTypes.closedStatus[status] || undefinedStatusStyleType;
