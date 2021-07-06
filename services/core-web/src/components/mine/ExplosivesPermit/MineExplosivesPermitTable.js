@@ -88,8 +88,8 @@ export class MineExplosivesPermitTable extends Component {
   columns = () => [
     {
       title: "Permit #",
-      dataIndex: "permit_no",
-      sortField: "permit_no",
+      dataIndex: "permit_number",
+      sortField: "permit_number",
       render: (text) => (
         <div title="Permit #" className={hideColumn(!this.props.isPermitTab)}>
           {text}
