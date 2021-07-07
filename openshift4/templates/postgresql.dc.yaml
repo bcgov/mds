@@ -22,7 +22,7 @@ parameters:
   - description: Volume space available for data, e.g. 512Mi, 2Gi.
     displayName: Volume Capacity
     name: VOLUME_CAPACITY
-    value: 10Gi
+    value: 20Gi
   - name: CPU_LIMIT
     value: 500m
   - name: MEMORY_LIMIT
