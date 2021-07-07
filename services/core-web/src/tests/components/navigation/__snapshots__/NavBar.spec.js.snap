@@ -146,7 +146,7 @@ exports[`NavBar renders properly 1`] = `
             </button>
           </Dropdown>
           <a
-            href="https://mdsfider.pathfinder.gov.bc.ca/"
+            href="https://fider.apps.silver.devops.gov.bc.ca/"
             rel="noopener noreferrer"
             target="_blank"
           >
