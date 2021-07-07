@@ -163,20 +163,16 @@ objects:
   - apiVersion: route.openshift.io/v1
     kind: Route
     metadata:
-      creationTimestamp: "2020-05-04T23:21:26Z"
       labels:
         app: fider
       name: fider
     spec:
-      host: fider.apps.silver.devops.gov.bc.ca
-      port:
-        targetPort: web
-      tls:
-        termination: edge
       to:
         kind: Service
         name: fider
         weight: 100
+      port:
+        targetPort: web
       wildcardPolicy: None
 
   - apiVersion: apps.openshift.io/v1
