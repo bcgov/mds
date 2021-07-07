@@ -25,6 +25,8 @@ import {
 } from "@common/selectors/noticeOfWorkSelectors";
 import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -226,9 +228,11 @@ export class ReferralConsultationPackage extends Component {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
     const disabled = !this.props.progress[this.props.type];
     return this.props.isTableHeaderView ? (
-      <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
-        <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
-      </Button>
+      <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={this.props.type}>
+        <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
+          <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
+        </Button>
+      </NOWActionWrapper>
     ) : (
       <Button
         type="secondary"
