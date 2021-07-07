@@ -38,7 +38,6 @@ jobs:
           - name: filesystem-provider
           - name: nris
           - name: minespace
-          - name: fider
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
