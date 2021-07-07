@@ -38,6 +38,7 @@ jobs:
           - name: filesystem-provider
           - name: nris
           - name: minespace
+          - name: fider
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
