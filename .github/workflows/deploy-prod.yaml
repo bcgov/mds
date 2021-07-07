@@ -41,6 +41,7 @@ jobs:
           - config: nris
           - config: nris-etl
           - config: minespace
+          - config: fider
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
