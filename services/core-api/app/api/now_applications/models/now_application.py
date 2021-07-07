@@ -87,6 +87,7 @@ class NOWApplication(Base, AuditMixin):
     longitude = db.Column(db.Numeric(11, 7))
     property_name = db.Column(db.String)
     tenure_number = db.Column(db.String)
+    other_information = db.Column(db.String)
     description_of_land = db.Column(db.String)
     application_permit_type_code = db.Column(
         db.String, db.ForeignKey('now_application_permit_type.now_application_permit_type_code'))

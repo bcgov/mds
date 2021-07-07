@@ -51,7 +51,7 @@ export class MineDashboard extends Component {
     this.props.fetchPartyRelationships({
       mine_guid: id,
       relationships: "party",
-      include_permittees: "true",
+      include_permit_contacts: "true",
     });
     if (activeTab) {
       this.setState({ activeTab });
