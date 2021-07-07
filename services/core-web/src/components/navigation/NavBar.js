@@ -108,7 +108,7 @@ export class NavBar extends Component {
           <DownOutlined />
         </button>
       </Dropdown>
-      <a href="https://mdsfider.pathfinder.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+      <a href="https://fider.apps.silver.devops.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
         <Tooltip title="Feedback" placement="bottom">
           <Button type="link" className="menu__btn--link">
             <MessageOutlined className="icon-sm" />
@@ -288,7 +288,7 @@ export class NavBar extends Component {
           <Row>
             <Col span={24}>
               <a
-                href="https://mdsfider.pathfinder.gov.bc.ca/"
+                href="https://fider.apps.silver.devops.gov.bc.ca/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
