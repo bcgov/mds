@@ -61,13 +61,13 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         'issue_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
-        required=True,
+        required=False,
         help='')
     parser.add_argument(
         'expiry_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
-        required=True,
+        required=False,
         help='')
     parser.add_argument('permit_number', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
