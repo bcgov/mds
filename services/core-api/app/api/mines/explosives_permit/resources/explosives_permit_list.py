@@ -5,7 +5,7 @@ from decimal import Decimal
 from app.extensions import api
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
-from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINE_EDIT, MINESPACE_PROPONENT, requires_role_edit_explosives_permit
+from app.api.utils.access_decorators import requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, requires_role_edit_explosives_permit
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.explosives_permit.response_models import EXPLOSIVES_PERMIT_MODEL
 from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit
