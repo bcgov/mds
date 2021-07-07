@@ -124,12 +124,30 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             template_data['expiry_date'] = expiry_date
 
             # TODO: Finish implementing
-            # def transform_magazines(magazines):
-            #     return magazines
+            def transform_magazines(magazines):
+                def get_type_label(magazine):
+                    return 'Explosive Magazine Type' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Type'
 
-            # magazines = explosives_permit.explosive_magazines or []
-            # magazines = magazines.append(explosives_permit.detonator_magazines or [])
-            # template_data['magazines'] = transform_magazines(magazines)
+                def get_quantity_label(magazine):
+                    label = 'Explosive Magazine Capacity' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Capacity'
+                    unit = 'kgs' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'units'
+                    return f'{label} {magazine.quantity} {unit}'
+
+                transformed_magazines = []
+                for magazine in magazines:
+                    transformed_magazine = {
+                        'type_label': get_type_label(magazine),
+                        'type_no': magazine.type_no,
+                        'tag_no': magazine.tag_no,
+                        'quantity_label': get_quantity_label(magazine),
+                    }
+                    transformed_magazines.append(transformed_magazine)
+                return transformed_magazines
+
+            explosive_magazines = transform_magazines(explosives_permit.explosive_magazines or [])
+            detonator_magazines = transform_magazines(explosives_permit.detonator_magazines or [])
+            magazines = explosive_magazines + detonator_magazines
+            template_data['magazines'] = magazines
 
             return template_data
 
