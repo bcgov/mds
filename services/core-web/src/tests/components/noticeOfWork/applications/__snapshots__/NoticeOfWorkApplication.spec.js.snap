@@ -854,6 +854,7 @@ exports[`NoticeOfWorkApplication renders properly 1`] = `
     <TabPane
       disabled={true}
       key="manage-documents"
+      tab="Manage Documents"
     />
   </Tabs>
 </div>
