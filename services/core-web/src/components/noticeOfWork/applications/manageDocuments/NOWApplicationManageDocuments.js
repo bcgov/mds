@@ -15,12 +15,11 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   isLoaded: PropTypes.bool.isRequired,
-  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   isViewMode: PropTypes.bool,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
 };
 
-const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: true };
+const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
@@ -44,7 +43,7 @@ export const NOWApplicationManageDocuments = (props) => {
         isLoaded={props.isLoaded}
       >
         <NOWSubmissionDocuments
-          now_application_guid={props.now_application_guid}
+          now_application_guid={props.noticeOfWork.now_application_guid}
           documents={props.noticeOfWork.filtered_submission_documents.concat(
             props.noticeOfWork.documents
               ?.filter(
@@ -83,6 +82,7 @@ export const NOWApplicationManageDocuments = (props) => {
           tableDescription={tableDescription}
           showDescription
           isAdminView
+          isViewMode={props.isViewMode}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -95,7 +95,7 @@ export const NOWApplicationManageDocuments = (props) => {
             ({ now_application_document_sub_type_code }) =>
               now_application_document_sub_type_code === "GDO"
           )}
-          isViewMode={false}
+          isViewMode={props.isViewMode}
           isAdminView
           allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
@@ -112,7 +112,7 @@ export const NOWApplicationManageDocuments = (props) => {
       >
         <NOWDocuments
           documents={props.noticeOfWorkReviews.map((r) => r.documents).flat()}
-          isViewMode={false}
+          isViewMode={props.isViewMode}
           isAdminView
           allowAfterProcess
           disableCategoryFilter

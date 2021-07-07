@@ -8,7 +8,6 @@ import {
   fetchImportedNoticeOfWorkApplication,
   fetchNoticeOfWorkApplicationReviews,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
-import { getDraftPermitAmendmentForNOW } from "@common/selectors/permitSelectors";
 import {
   getNoticeOfWork,
   getImportNowSubmissionDocumentsJob,
@@ -35,7 +34,6 @@ const propTypes = {
   importNowSubmissionDocumentsJob: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,
-  draftPermitAmendment: CustomPropTypes.permitAmendment.isRequired,
   noticeOfWorkReviews: PropTypes.arrayOf(CustomPropTypes.NOWApplicationReview).isRequired,
 };
 
@@ -103,7 +101,6 @@ export class ManageDocumentsTab extends Component {
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
-            draftPermitAmendment={this.props.draftPermitAmendment}
             noticeOfWorkReviews={this.props.noticeOfWorkReviews}
           />
         </div>
@@ -118,7 +115,6 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EDIT_NOTICE_OF_WORK)(state),
   importNowSubmissionDocumentsJob: getImportNowSubmissionDocumentsJob(state),
   generatableApplicationDocuments: getGeneratableNoticeOfWorkApplicationDocumentTypeOptions(state),
-  draftPermitAmendment: getDraftPermitAmendmentForNOW(state),
   noticeOfWorkReviews: getNoticeOfWorkReviews(state),
 });
 

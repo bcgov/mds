@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { PropTypes } from "prop-types";
-import { Table, Badge, Tooltip, Button, Popconfirm, Row, Col } from "antd";
+import { Table, Badge, Tooltip, Button, Popconfirm, Row, Col, Descriptions } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
@@ -14,7 +15,6 @@ import { formatDateTime } from "@common/utils/helpers";
 import { isEmpty } from "lodash";
 import CustomPropTypes from "@/customPropTypes";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
-import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Strings from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
@@ -38,13 +38,11 @@ import { EDIT_OUTLINE_VIOLET, TRASHCAN } from "@/constants/assets";
 import AddButton from "@/components/common/AddButton";
 import ReferralConsultationPackage from "@/components/noticeOfWork/applications/referals/ReferralConsultationPackage";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
-import moment from "moment-timezone";
 
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   now_application_guid: PropTypes.string.isRequired,
-  openDocument: PropTypes.func.isRequired,
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob: PropTypes.func.isRequired,
   fetchImportNoticeOfWorkSubmissionDocumentsJob: PropTypes.func.isRequired,
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
@@ -54,6 +52,7 @@ const propTypes = {
   editNoticeOfWorkDocument: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
   documents: PropTypes.arrayOf(PropTypes.any),
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   selectedRows: PropTypes.objectOf(PropTypes.any),
@@ -61,9 +60,8 @@ const propTypes = {
   displayTableDescription: PropTypes.bool,
   tableDescription: PropTypes.string,
   hideImportStatusColumn: PropTypes.bool,
+  disableCategoryFilter: PropTypes.bool,
   hideJobStatusColumn: PropTypes.bool,
-  showPreambleFileMetadata: PropTypes.bool,
-  editPreambleFileMetadata: PropTypes.bool,
   showDescription: PropTypes.bool,
   allowAfterProcess: PropTypes.bool,
   isFinalPackageTable: PropTypes.bool,
@@ -79,9 +77,8 @@ const defaultProps = {
   tableDescription: null,
   displayTableDescription: false,
   hideImportStatusColumn: false,
+  disableCategoryFilter: false,
   hideJobStatusColumn: false,
-  showPreambleFileMetadata: false,
-  editPreambleFileMetadata: false,
   showDescription: false,
   allowAfterProcess: false,
   isFinalPackageTable: false,
@@ -186,7 +183,6 @@ export const NOWSubmissionDocuments = (props) => {
   };
 
   const handleEditDocument = (values) => {
-    console.log(values);
     return props
       .editNoticeOfWorkDocument(
         props.noticeOfWork.now_application_guid,
@@ -280,27 +276,6 @@ export const NOWSubmissionDocuments = (props) => {
     sorter: (a, b) => (a.description > b.description ? -1 : 1),
     render: (text) => <div title="Proponent Description">{text}</div>,
   };
-
-  const fileMetadataColumns = [
-    {
-      title: "Title",
-      dataIndex: "preamble_title",
-      key: "preamble_title",
-      render: (text, record) => <div title="Title">{record.preamble_title}</div>,
-    },
-    {
-      title: "Author",
-      dataIndex: "preamble_author",
-      key: "preamble_author",
-      render: (text, record) => <div title="Author">{record.preamble_author}</div>,
-    },
-    {
-      title: "Date",
-      dataIndex: "preamble_date",
-      key: "preamble_date",
-      render: (text, record) => <div title="Date">{record.preamble_date || "N/A"}</div>,
-    },
-  ];
 
   const categoryColumn = {
     title: "Category",
@@ -398,6 +373,7 @@ export const NOWSubmissionDocuments = (props) => {
           </div>
         );
       }
+      return <div />;
     },
   };
 
@@ -562,7 +538,11 @@ export const NOWSubmissionDocuments = (props) => {
   );
 
   const docDescription = (record) => {
-    return <p>{record.description || Strings.EMPTY_FIELD}</p>;
+    return (
+      <Descriptions column={1}>
+        <Descriptions.Item label="Description">{record.description}</Descriptions.Item>
+      </Descriptions>
+    );
   };
 
   const renderImportJobStatus = () => {
@@ -747,7 +727,6 @@ const mapDispatchToProps = (dispatch) =>
       editNoticeOfWorkDocument,
       createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
       fetchImportNoticeOfWorkSubmissionDocumentsJob,
-      openDocument,
     },
     dispatch
   );

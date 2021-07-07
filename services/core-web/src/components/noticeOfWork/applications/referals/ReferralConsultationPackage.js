@@ -169,7 +169,6 @@ export class ReferralConsultationPackage extends Component {
       width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
         noticeOfWork: this.props.noticeOfWork,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,

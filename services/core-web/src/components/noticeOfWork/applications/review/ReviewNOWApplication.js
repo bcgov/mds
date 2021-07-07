@@ -33,7 +33,6 @@ import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
 import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollContentWrapper";
 import ReviewActivities from "@/components/noticeOfWork/applications/review/ReviewActivities";
-import NOWDocuments from "@/components/noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as Strings from "@common/constants/strings";
@@ -1378,6 +1377,7 @@ export const ReviewNOWApplication = (props) => {
             displayTableDescription
             tableDescription={applicationFileTableDescription}
             showDescription
+            isViewMode={props.isViewMode}
           />
         </ScrollContentWrapper>
       </Form>

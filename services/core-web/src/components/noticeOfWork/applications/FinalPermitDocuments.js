@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
 import { FormSection } from "redux-form";
 import { connect } from "react-redux";
 import { Button, Progress } from "antd";
@@ -67,6 +66,7 @@ export class FinalPermitDocuments extends Component {
         showPreambleFileMetadata={this.props.showPreambleFileMetadata}
         editPreambleFileMetadata={this.props.editPreambleFileMetadata}
         isFinalPackageTable
+        isViewMode
         isAdminView={this.props.adminView}
       />
     );

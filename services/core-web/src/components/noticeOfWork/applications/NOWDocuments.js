@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
-import { Table, Button, Popconfirm, Tooltip, Row, Col } from "antd";
+import { Table, Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
 import { MinusSquareFilled, PlusSquareFilled, FlagOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
@@ -41,12 +41,8 @@ const propTypes = {
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
   disclaimerText: PropTypes.string,
   isAdminView: PropTypes.bool,
-  addDescriptionColumn: PropTypes.bool,
-  showPreambleFileMetadata: PropTypes.bool,
-  editPreambleFileMetadata: PropTypes.bool,
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   editNoticeOfWorkDocument: PropTypes.func.isRequired,
-  openFinalDocumentPackageModal: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   deleteNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   allowAfterProcess: PropTypes.bool,
@@ -63,9 +59,6 @@ const defaultProps = {
   categoriesToShow: [],
   disclaimerText: "",
   isAdminView: false,
-  addDescriptionColumn: true,
-  showPreambleFileMetadata: false,
-  editPreambleFileMetadata: false,
   allowAfterProcess: false,
   disableCategoryFilter: false,
   isFinalPackageTable: false,
@@ -124,7 +117,6 @@ export const NOWDocuments = (props) => {
   };
 
   const handleEditDocument = (values) => {
-    console.log(values);
     return props
       .editNoticeOfWorkDocument(
         props.noticeOfWork.now_application_guid,
@@ -172,7 +164,7 @@ export const NOWDocuments = (props) => {
     });
   };
 
-  const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow, isViewMode) => {
+  const columns = (noticeOfWorkApplicationDocumentTypeOptions, categoriesToShow) => {
     let tableColumns = [];
     const filtered = noticeOfWorkApplicationDocumentTypeOptions.filter(({ subType, value }) => {
       if (subType && categoriesToShow.length > 0) {
@@ -343,6 +335,7 @@ export const NOWDocuments = (props) => {
             </div>
           );
         }
+        return <div />;
       },
     };
 
@@ -415,6 +408,32 @@ export const NOWDocuments = (props) => {
       render: (text) => <div title="Referral Package">{text ? "Yes" : "No"}</div>,
     };
 
+    const postApprovalDocumentColumn = {
+      title: "",
+      key: "post_approval_document",
+      render: (text, record) => {
+        let isPostDecision = false;
+        if (
+          isInCompleteStatus &&
+          moment(record.upload_date, "YYYY-MM-DD") >
+            moment(props.noticeOfWork.status_updated_date, "YYYY-MM-DD")
+        ) {
+          isPostDecision = true;
+        }
+        return (
+          isPostDecision && (
+            <Tooltip
+              title="This is a post decision document."
+              placement="right"
+              mouseEnterDelay={0.3}
+            >
+              <FlagOutlined />
+            </Tooltip>
+          )
+        );
+      },
+    };
+
     if (props.isFinalPackageTable) {
       tableColumns = [
         ...fileMetadataColumns,
@@ -424,18 +443,23 @@ export const NOWDocuments = (props) => {
         deleteAndEditButtonColumn,
       ];
     } else if (props.isStandardDocuments) {
+      tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
+      if (isInCompleteStatus) {
+        tableColumns = [...tableColumns, postApprovalDocumentColumn];
+      }
       tableColumns = [
-        categoryColumn,
-        fileNameColumn,
-        uploadDateColumn,
+        ...tableColumns,
         deleteAndEditButtonColumn,
         referralPackageColumn,
         consultationPackageColumn,
         permitPackageColumn,
       ];
     } else if (props.isRefConDocuments) {
-      // TODO:need to add the permit package back to the column list after this table is managed better.
-      tableColumns = [categoryColumn, fileNameColumn, uploadDateColumn];
+      tableColumns = [categoryColumn, fileNameColumn];
+      if (isInCompleteStatus) {
+        tableColumns = [...tableColumns, postApprovalDocumentColumn];
+      }
+      tableColumns = [...tableColumns, uploadDateColumn];
     } else if (props.isPackageModal) {
       tableColumns = [fileNameColumn, categoryColumn, descriptionColumn, uploadDateColumn];
     } else {
@@ -446,7 +470,11 @@ export const NOWDocuments = (props) => {
   };
 
   const docDescription = (record) => {
-    return <p>{record.description}</p>;
+    return (
+      <Descriptions column={1}>
+        <Descriptions.Item label="Description">{record.description}</Descriptions.Item>
+      </Descriptions>
+    );
   };
 
   const transformDocuments = (
@@ -489,7 +517,7 @@ export const NOWDocuments = (props) => {
           <p>{props.disclaimerText}</p>
         </Col>
         <Col span={6}>
-          {!props.selectedRows && !props.isViewMode && (
+          {!props.selectedRows && !props.isViewMode && !props.isRefConDocuments && (
             <NOWActionWrapper
               permission={Permission.EDIT_PERMITS}
               tab={props.isAdminView ? "" : "REV"}
@@ -511,11 +539,7 @@ export const NOWDocuments = (props) => {
       <Table
         align="left"
         pagination={false}
-        columns={columns(
-          props.noticeOfWorkApplicationDocumentTypeOptions,
-          props.categoriesToShow,
-          props.isViewMode
-        )}
+        columns={columns(props.noticeOfWorkApplicationDocumentTypeOptions, props.categoriesToShow)}
         dataSource={transformDocuments(
           props.documents,
           props.noticeOfWork.now_application_guid,

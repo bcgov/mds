@@ -15,13 +15,10 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  submissionDocuments: PropTypes.arrayOf(PropTypes.strings),
-  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
-  submissionDocuments: [],
 };
 
 export const EditFinalPermitDocumentPackage = (props) => {
@@ -71,6 +68,7 @@ export const EditFinalPermitDocumentPackage = (props) => {
         selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
         isPackageModal
         isAdminView
+        isViewMode
       />
       <br />
       <h4>Government Documents</h4>

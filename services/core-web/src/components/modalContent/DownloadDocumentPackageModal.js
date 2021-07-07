@@ -12,7 +12,6 @@ import * as Permission from "@/constants/permissions";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 
 const propTypes = {
-  submissionDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   coreDocuments: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   noticeOfWorkGuid: PropTypes.string.isRequired,
@@ -25,7 +24,6 @@ const propTypes = {
   coreDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
   submissionDocumentsInPackage: PropTypes.arrayOf(PropTypes.string).isRequired,
   type: PropTypes.string.isRequired,
-  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -95,6 +93,7 @@ export const DownloadDocumentPackageModal = (props) => {
           selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
           isAdminView
           isPackageModal
+          isViewMode
         />
         <br />
         <h4>Government Documents</h4>
