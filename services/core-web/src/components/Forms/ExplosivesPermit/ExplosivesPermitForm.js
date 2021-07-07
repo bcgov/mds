@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { remove, isEmpty } from "lodash";
 import { connect } from "react-redux";
 import { compose, bindActionCreators } from "redux";
 import { Field, reduxForm, change, formValueSelector, getFormValues } from "redux-form";
@@ -66,7 +65,7 @@ export class ExplosivesPermitForm extends Component {
       "now_number",
       "now_application_guid"
     );
-    console.log(this.props.initialValues);
+
     const isHistoric = !this.props.initialValues?.explosives_permit_id && this.props.isPermitTab;
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -119,9 +118,10 @@ export class ExplosivesPermitForm extends Component {
                         label="Mine Operator*"
                         placeholder="Start typing the Mine Operator's name"
                         partyLabel="Mine Operator"
-                        // validate={[required]}
+                        validate={[required]}
                         allowAddingParties
                         disabled={this.props.isApproved}
+                        initialValues={this.props.initialMineOperatorValue}
                       />
                     </Form.Item>
                   </Col>
@@ -133,7 +133,7 @@ export class ExplosivesPermitForm extends Component {
                         label="Issuing Inspector*"
                         component={renderConfig.GROUPED_SELECT}
                         placeholder="Start typing the Issuing Inspector's name"
-                        // validate={[required]}
+                        validate={[required]}
                         data={this.props.inspectors}
                         disabled={this.props.isApproved}
                       />
@@ -152,7 +152,7 @@ export class ExplosivesPermitForm extends Component {
                       placeholder="Explosives Permit Number"
                       label="Explosives Permit Number*"
                       component={renderConfig.FIELD}
-                      // validate={[required]}
+                      validate={[required]}
                       disabled={this.props.isApproved}
                     />
                   </Form.Item>
@@ -264,7 +264,6 @@ export class ExplosivesPermitForm extends Component {
                         name="closed_timestamp"
                         label="Date Permit was Closed"
                         component={renderConfig.DATE}
-                        validate={[required]}
                         disabled={this.props.isApproved}
                       />
                     </Form.Item>
