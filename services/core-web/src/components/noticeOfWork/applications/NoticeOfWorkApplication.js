@@ -220,7 +220,7 @@ export class NoticeOfWorkApplication extends Component {
             )}
           </Tabs.TabPane>
           <Tabs.TabPane
-            tab={this.props.renderTabTitle("Manage Documents", "MND")}
+            tab="Manage Documents"
             key="manage-documents"
             disabled={!verificationComplete}
           >

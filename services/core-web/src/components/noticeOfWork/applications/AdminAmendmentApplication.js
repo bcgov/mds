@@ -149,7 +149,7 @@ export class AdminAmendmentApplication extends Component {
             </LoadingWrapper>
           </Tabs.TabPane>
           <Tabs.TabPane
-            tab={this.props.renderTabTitle("Manage Documents", "MND")}
+            tab="Manage Documents"
             key="manage-documents"
             disabled={!this.props.noticeOfWork.lead_inspector_party_guid}
           >
