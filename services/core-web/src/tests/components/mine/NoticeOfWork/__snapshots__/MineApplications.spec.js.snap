@@ -71,6 +71,7 @@ exports[`MineApplications renders properly 1`] = `
       </div>
       <withRouter(MineAdministrativeAmendmentTable)
         administrativeAmendmentApplications={Array []}
+        expandedRowKeys={Array []}
         handleSearch={[Function]}
         isLoaded={false}
         mineRegionHash={
