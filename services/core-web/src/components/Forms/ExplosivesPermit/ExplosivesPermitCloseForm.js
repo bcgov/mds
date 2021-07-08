@@ -12,6 +12,7 @@ import { resetForm } from "@common/utils/helpers";
 import { getExplosivesPermitStatusDropdownOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
+import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 
 import CustomPropTypes from "@/customPropTypes";
@@ -50,6 +51,18 @@ export const ExplosivesPermitCloseForm = (props) => {
               component={RenderRadioButtons}
               customOptions={options}
               validate={[requiredRadioButton]}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item>
+            <Field
+              id="closed_timestamp"
+              name="closed_timestamp"
+              label="Date Permit was Closed"
+              component={RenderDate}
             />
           </Form.Item>
         </Col>

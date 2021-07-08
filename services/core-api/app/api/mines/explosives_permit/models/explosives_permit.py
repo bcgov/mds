@@ -138,6 +138,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                decision_reason,
                is_closed,
                closed_reason,
+               closed_timestamp,
                latitude,
                longitude,
                application_date,
@@ -162,7 +163,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         # Check for application status changes.
         if application_status and application_status != 'REC':
             # TODO: Generate both of the documents here.
-            if application_status == 'APP':
+            if self.application_status == 'REV' and application_status == 'APP':
                 self.permit_number = ExplosivesPermit.get_next_permit_number()
             self.application_status = application_status
             self.decision_timestamp = datetime.utcnow()
@@ -172,7 +173,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         self.is_closed = is_closed
         if is_closed:
             self.closed_reason = closed_reason
-            self.closed_timestamp = datetime.utcnow()
+            self.closed_timestamp = closed_timestamp if closed_timestamp else datetime.utcnow()
         else:
             self.closed_reason = None
             self.closed_timestamp = None

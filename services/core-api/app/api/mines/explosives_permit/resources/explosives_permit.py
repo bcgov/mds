@@ -39,6 +39,12 @@ class ExplosivesPermitResource(Resource, UserMixin):
         'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
     parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
+        'closed_timestamp',
+        type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
+        store_missing=False,
+        required=False,
+        help='')
+    parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         store_missing=False,
@@ -114,6 +120,7 @@ class ExplosivesPermitResource(Resource, UserMixin):
             data.get('decision_reason'),
             data.get('is_closed'),
             data.get('closed_reason'),
+            data.get('closed_timestamp'),
             data.get('latitude'),
             data.get('longitude'),
             data.get('application_date'),
