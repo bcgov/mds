@@ -2046,6 +2046,7 @@ exports[`ReviewNOWApplication renders properly 1`] = `
         disableCategoryFilter={true}
         displayTableDescription={true}
         documents={Array []}
+        isViewMode={true}
         showDescription={true}
         tableDescription="In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
       />

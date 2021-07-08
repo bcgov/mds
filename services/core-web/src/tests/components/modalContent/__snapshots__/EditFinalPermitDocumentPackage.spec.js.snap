@@ -14,6 +14,7 @@ exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
     importNowSubmissionDocumentsJob={Object {}}
     isAdminView={true}
     isPackageModal={true}
+    isViewMode={true}
     now_application_guid=""
     selectedRows={
       Object {
