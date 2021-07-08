@@ -50,6 +50,7 @@ const transformRowData = (permits) => {
       ...permit,
       key: permit.explosives_permit_guid,
       documents: permit.documents,
+      isExpired: permit.expiry_date && Date.parse(permit.expiry_date) < new Date(),
     };
   });
 };
@@ -223,9 +224,14 @@ export class MineExplosivesPermitTable extends Component {
       title: "Expiry Date",
       dataIndex: "expiry_date",
       sortField: "expiry_date",
-      render: (text) => (
+      render: (text, record) => (
         <div title="Expiry Date" className={hideColumn(!this.props.isPermitTab)}>
-          <WarningOutlined className="icon-lg red" /> {formatDate(text) || Strings.EMPTY_FIELD}
+          {record.isExpired && (
+            <Tooltip placement="topLeft" title="Permit has Expired.">
+              <WarningOutlined className="icon-lg red" />
+            </Tooltip>
+          )}{" "}
+          {formatDate(text) || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: dateSorter("expiry_date"),
