@@ -66,21 +66,27 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
 
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
 
-        if not mine_document or not mine_document.now_application_document_xref or not mine_document.now_application_document_xref.now_application or application_guid != str(
-                mine_document.now_application_document_xref.now_application.now_application_guid):
+        if not mine_document:
             raise NotFound('No mine_document found for this application guid.')
 
         new_description = data.get('description', None)
+
+        if mine_document.now_application_document_xref:
+            xref = mine_document.now_application_document_xref
+
+        if mine_document.now_application_document_identity_xref:
+            xref = mine_document.now_application_document_identity_xref
+
         if new_description:
-            mine_document.now_application_document_xref.description = new_description
+            xref.description = new_description
 
-        if mine_document.now_application_document_xref.is_final_package:
+        if xref.is_final_package:
 
-            mine_document.now_application_document_xref.preamble_title = data.get('preamble_title')
-            mine_document.now_application_document_xref.preamble_author = data.get(
-                'preamble_author')
-            mine_document.now_application_document_xref.preamble_date = data.get('preamble_date')
+            xref.preamble_title = data.get('preamble_title')
+            xref.preamble_author = data.get('preamble_author')
+            xref.preamble_date = data.get('preamble_date')
 
+        xref.save()
         mine_document.save()
 
         return mine_document, requests.codes.ok
