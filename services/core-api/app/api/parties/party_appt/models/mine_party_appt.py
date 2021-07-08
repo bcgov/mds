@@ -134,6 +134,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         except ValueError:
             return None
 
+    @classmethod
+    def find_by_mine_party_appt_id(cls, mine_party_appt_id):
+        return cls.query.filter_by(mine_party_appt_id=mine_party_appt_id).filter_by(
+            deleted_ind=False).one_or_none()
+
     # FIXME: This is only being used in one test, and is broken by permittee changes. Remove?
     @classmethod
     def find_by_mine_guid(cls, _id):
