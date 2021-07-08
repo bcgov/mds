@@ -380,7 +380,7 @@ export class MineExplosivesPermitTable extends Component {
         return (
           <div className="btn--middle flex">
             {showActions && (
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <AuthorizationWrapper permission={Permission.EDIT_EXPLOSIVES_PERMITS}>
                 <Dropdown
                   className="full-height full-mobile"
                   overlay={isApproved ? approvedMenu : menu}

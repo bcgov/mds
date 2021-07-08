@@ -53,7 +53,6 @@ export class ExplosivesPermit extends Component {
   state = { isLoaded: false, params: {} };
 
   handleAddExplosivesPermit = (values) => {
-    console.log(values);
     const system = values.permit_tab ? "MMS" : "Core";
     const payload = {
       originating_system: system,
@@ -222,7 +221,9 @@ export class ExplosivesPermit extends Component {
         <div className="inline-flex between">
           <h4 className="uppercase">{title}</h4>
           <AuthorizationWrapper
-            permission={this.props.isPermitTab ? Permission.EDIT_PERMITS : Permission.ADMIN}
+            permission={
+              this.props.isPermitTab ? Permission.EDIT_EXPLOSIVES_PERMITS : Permission.ADMIN
+            }
           >
             <AddButton
               onClick={(e) => this.handleOpenAddExplosivesPermitModal(e, this.props.isPermitTab)}
