@@ -22,9 +22,11 @@ const propTypes = {
 const defaultProps = { importNowSubmissionDocumentsJob: {}, isViewMode: false };
 
 export const NOWApplicationManageDocuments = (props) => {
+  const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
-  const tableDescription =
-    "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
+  const tableDescription = isNoWApplication
+    ? "In this table, you can see all documents submitted during initial application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified."
+    : "In this table, you can see all documents uploaded to the application, revision and new files requested from the proponent. Documents added in this section will not show up in the permit package unless otherwise specified.";
   return (
     <div>
       <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
@@ -83,6 +85,7 @@ export const NOWApplicationManageDocuments = (props) => {
           showDescription
           isAdminView
           isViewMode={props.isViewMode}
+          hideJobStatusColumn={!isNoWApplication}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -107,7 +110,11 @@ export const NOWApplicationManageDocuments = (props) => {
       </ScrollContentWrapper>
       <ScrollContentWrapper
         id="referral-consultation-public-comment-documents"
-        title="Referral, Consultation and Public Comment Documents"
+        title={
+          isNoWApplication
+            ? "Referral, Consultation and Public Comment Documents"
+            : "Referral and Consultation Documents"
+        }
         isLoaded={props.isLoaded}
       >
         <NOWDocuments
@@ -116,7 +123,11 @@ export const NOWApplicationManageDocuments = (props) => {
           isAdminView
           allowAfterProcess
           disableCategoryFilter
-          disclaimerText="In this table, you can see all Referral, Consultation and Public Comment related documents. Documents added to this section will not show up unless otherwise specified."
+          disclaimerText={
+            isNoWApplication
+              ? "In this table, you can see all Referral, Consultation and Public Comment related documents. Documents added to this section will not show up unless otherwise specified."
+              : "In this table, you can see all Referral and Consultation related documents. Documents added to this section will not show up unless otherwise specified."
+          }
           isRefConDocuments
         />
       </ScrollContentWrapper>
