@@ -235,7 +235,9 @@ export const NOWDocuments = (props) => {
         title: "Date",
         dataIndex: "preamble_date",
         key: "preamble_date",
-        render: (text, record) => <div title="Date">{record.preamble_date || "N/A"}</div>,
+        render: (text, record) => (
+          <div title="Date">{formatDateTime(record.preamble_date) || "N/A"}</div>
+        ),
       },
     ];
 

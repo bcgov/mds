@@ -148,6 +148,19 @@ export class EditNoticeOfWorkDocumentForm extends Component {
                     </Form.Item>
                   </Col>
                 </Row>
+                <Row gutter={16}>
+                  <Col md={12} xs={24}>
+                    <Form.Item>
+                      <Field
+                        id="preamble_date"
+                        name="preamble_date"
+                        label="Date"
+                        placeholder="Date"
+                        component={renderConfig.DATE}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </>
             )}
             {!this.props.isEditMode && (

@@ -86,6 +86,7 @@ export const NOWApplicationManageDocuments = (props) => {
           isAdminView
           isViewMode={props.isViewMode}
           hideJobStatusColumn={!isNoWApplication}
+          hideImportStatusColumn={!isNoWApplication}
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
