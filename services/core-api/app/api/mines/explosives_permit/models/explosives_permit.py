@@ -146,7 +146,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                permit_guid,
                now_application_guid,
                issuing_inspector_party_guid,
-               mine_operator_party_guid,
+               mine_manager_mine_party_appt_id,
+               permittee_mine_party_appt_id,
                application_status,
                issue_date,
                expiry_date,
@@ -167,7 +168,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         self.permit_guid = permit_guid
         self.now_application_guid = now_application_guid
         self.issuing_inspector_party_guid = issuing_inspector_party_guid
-        self.mine_operator_party_guid = mine_operator_party_guid
+        self.mine_manager_mine_party_appt_id = mine_manager_mine_party_appt_id
+        self.permittee_mine_party_appt_id = permittee_mine_party_appt_id
         self.application_date = application_date
         self.description = description
         self.issue_date = issue_date
