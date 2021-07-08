@@ -201,6 +201,7 @@ export class MineApplications extends Component {
                 searchParams={this.state.params}
                 onExpand={this.onExpand}
                 mineRegionHash={this.props.mineRegionHash}
+                expandedRowKeys={this.state.expandedRowKeys}
               />
             </>
           </Tabs.TabPane>

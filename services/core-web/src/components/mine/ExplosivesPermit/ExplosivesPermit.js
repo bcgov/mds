@@ -50,7 +50,15 @@ const defaultProps = {
 };
 
 export class ExplosivesPermit extends Component {
-  state = { isLoaded: false, params: {} };
+  state = { isLoaded: false, expandedRowKeys: [] };
+
+  onExpand = (expanded, record) =>
+    this.setState((prevState) => {
+      const expandedRowKeys = expanded
+        ? prevState.expandedRowKeys.concat(record.key)
+        : prevState.expandedRowKeys.filter((key) => key !== record.key);
+      return { expandedRowKeys };
+    });
 
   handleAddExplosivesPermit = (values) => {
     const system = values.permit_tab ? "MMS" : "Core";
@@ -234,6 +242,8 @@ export class ExplosivesPermit extends Component {
         </div>
         <br />
         <MineExplosivesPermitTable
+          onExpand={this.onExpand}
+          expandedRowKeys={this.state.expandedRowKeys}
           isLoaded
           data={data}
           isPermitTab={this.props.isPermitTab}

@@ -47,7 +47,7 @@ const transformRowData = (permits) => {
   return permits.map((permit) => {
     return {
       ...permit,
-      key: permit.esup_guid,
+      key: permit.explosives_permit_guid,
       documents: permit.documents,
     };
   });
@@ -63,26 +63,29 @@ const transformExpandedRowData = (record) => ({
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
-const RenderTableExpandIcon = (rowProps) => (
-  <a
-    role="link"
-    className="expand-row-icon"
-    onClick={(e) => rowProps.onExpand(rowProps.record, e)}
-    onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
-    style={{ cursor: "pointer" }}
-    tabIndex="0"
-  >
-    {rowProps.expanded ? (
-      <Tooltip title="Click to hide document details." placement="right" mouseEnterDelay={1}>
-        <MinusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Click to show document details." placement="right" mouseEnterDelay={1}>
-        <PlusSquareFilled className="icon-lg--lightgrey" />
-      </Tooltip>
-    )}
-  </a>
-);
+const RenderTableExpandIcon = (rowProps) => {
+  console.log(rowProps);
+  return (
+    <a
+      role="link"
+      className="expand-row-icon"
+      onClick={(e) => rowProps.onExpand(rowProps.record, e)}
+      onKeyPress={(e) => rowProps.onExpand(rowProps.record, e)}
+      style={{ cursor: "pointer" }}
+      tabIndex="0"
+    >
+      {rowProps.expanded ? (
+        <Tooltip title="Click to hide document details." placement="right" mouseEnterDelay={1}>
+          <MinusSquareFilled className="icon-lg--lightgrey" />
+        </Tooltip>
+      ) : (
+        <Tooltip title="Click to show document details." placement="right" mouseEnterDelay={1}>
+          <PlusSquareFilled className="icon-lg--lightgrey" />
+        </Tooltip>
+      )}
+    </a>
+  );
+};
 
 export class MineExplosivesPermitTable extends Component {
   columns = () => [
@@ -483,6 +486,7 @@ export class MineExplosivesPermitTable extends Component {
           expandRowByClick: true,
           expandedRowRender: this.documentDetail,
           expandedRowKeys: this.props.expandedRowKeys,
+          onExpand: this.props.onExpand,
         }}
       />
     );
