@@ -201,7 +201,6 @@ export class PermitPackage extends Component {
       .map(({ mine_document_guid }) => mine_document_guid);
 
     this.props.openModal({
-      width: 910,
       props: {
         mineGuid: this.props.noticeOfWork.mine_guid,
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
@@ -216,6 +215,7 @@ export class PermitPackage extends Component {
         isNoWApplication,
       },
       content: modalConfig.EDIT_FINAL_PERMIT_DOC_PACKAGE,
+      width: "75vw",
     });
   };
 

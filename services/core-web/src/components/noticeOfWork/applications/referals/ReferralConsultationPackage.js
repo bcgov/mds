@@ -168,7 +168,6 @@ export class ReferralConsultationPackage extends Component {
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
 
     this.props.openModal({
-      width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
         noticeOfWork: this.props.noticeOfWork,
@@ -184,6 +183,7 @@ export class ReferralConsultationPackage extends Component {
         isNoWApplication,
       },
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
+      width: "75vw",
     });
   };
 

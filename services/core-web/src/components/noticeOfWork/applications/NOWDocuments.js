@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table, Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
@@ -12,7 +13,7 @@ import {
   getNoticeOfWorkApplicationDocumentTypeOptionsHash,
   getDropdownNoticeOfWorkApplicationDocumentTypeOptions,
 } from "@common/selectors/staticContentSelectors";
-import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
+import { getNoticeOfWork, getApplicationDelay } from "@common/selectors/noticeOfWorkSelectors";
 import {
   fetchImportedNoticeOfWorkApplication,
   updateNoticeOfWorkApplication,
@@ -52,6 +53,7 @@ const propTypes = {
   isRefConDocuments: PropTypes.bool,
   isPackageModal: PropTypes.bool,
   showDescription: PropTypes.bool,
+  applicationDelay: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -83,11 +85,13 @@ export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
 );
 
 export const NOWDocuments = (props) => {
+  const isApplicationDelayed = !isEmpty(props.applicationDelay);
   const isInCompleteStatus =
     props.noticeOfWork.now_application_status_code === "AIA" ||
     props.noticeOfWork.now_application_status_code === "WDN" ||
     props.noticeOfWork.now_application_status_code === "REJ" ||
-    props.noticeOfWork.now_application_status_code === "NPR";
+    props.noticeOfWork.now_application_status_code === "NPR" ||
+    isApplicationDelayed;
 
   const handleAddDocument = (values) => {
     const documents = values.uploadedFiles.map((file) => {
@@ -161,6 +165,7 @@ export const NOWDocuments = (props) => {
         isInCompleteStatus,
       },
       content: modalConfig.EDIT_NOTICE_OF_WORK_DOCUMENT,
+      width: "75vw",
     });
   };
 
@@ -574,6 +579,7 @@ const mapStateToProps = (state) => ({
     state
   ),
   noticeOfWork: getNoticeOfWork(state),
+  applicationDelay: getApplicationDelay(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
