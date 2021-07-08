@@ -230,7 +230,7 @@ export class ExplosivesPermit extends Component {
           <h4 className="uppercase">{title}</h4>
           <AuthorizationWrapper
             permission={
-              this.props.isPermitTab ? Permission.EDIT_EXPLOSIVES_PERMITS : Permission.ADMIN
+              this.props.isPermitTab ? Permission.ADMIN : Permission.EDIT_EXPLOSIVES_PERMITS
             }
           >
             <AddButton
