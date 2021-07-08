@@ -314,7 +314,7 @@ export const NOWDocuments = (props) => {
                   mouseEnterDelay={0.3}
                   className="no-margin"
                 >
-                  <Button className="no-margin" ghost type="primary" disabled size="small">
+                  <Button className="no-margin" ghost type="primary" size="small">
                     <img
                       className="lessOpacity"
                       name="remove"
@@ -329,7 +329,7 @@ export const NOWDocuments = (props) => {
                   mouseEnterDelay={0.3}
                   className="no-margin"
                 >
-                  <Button className="no-margin" ghost type="primary" disabled size="small">
+                  <Button className="no-margin" ghost type="primary" size="small">
                     <img
                       className="lessOpacity"
                       name="remove"
