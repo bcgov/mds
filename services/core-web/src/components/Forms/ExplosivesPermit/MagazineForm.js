@@ -34,26 +34,13 @@ export class MagazineForm extends Component {
     activeDetonatorKey: null,
   };
 
-  addField = (event, fields, type) => {
+  addField = (event, fields) => {
     event.preventDefault();
     fields.push({});
-    if (type === "EXP") {
-      this.handleActiveExplosivePanelChange([fields.length]);
-    } else {
-      this.handleActiveDetonatorPanelChange([fields.length]);
-    }
   };
 
   removeField = (index, fields) => () => {
     fields.remove(index);
-  };
-
-  handleActiveDetonatorPanelChange = (key) => {
-    this.setState({ activeDetonatorKey: key });
-  };
-
-  handleActiveExplosivePanelChange = (key) => {
-    this.setState({ activeExplosiveKey: key });
   };
 
   panelHeader = (index, fields, type) => (
@@ -248,12 +235,7 @@ export class MagazineForm extends Component {
       <div>
         <Row gutter={48}>
           <Col md={24}>
-            <Collapse
-              accordion
-              activeKey={[this.state.activeExplosiveKey]}
-              onChange={this.handleActiveExplosivePanelChange}
-              className="light-background"
-            >
+            <Collapse accordion className="light-background">
               {fields.map((field, index) => (
                 <Collapse.Panel header={this.panelHeader(index, fields, "EXP")} key={index}>
                   {this.renderInputs(field, "EXP")}
@@ -262,7 +244,7 @@ export class MagazineForm extends Component {
             </Collapse>
             <Button
               className="btn--dropdown"
-              onClick={(event) => this.addField(event, fields, "EXP")}
+              onClick={(event) => this.addField(event, fields)}
               disabled={this.props.isApproved}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />
@@ -279,12 +261,7 @@ export class MagazineForm extends Component {
       <div>
         <Row gutter={48}>
           <Col md={24}>
-            <Collapse
-              accordion
-              activeKey={[this.state.activeDetonatorKey]}
-              onChange={this.handleActiveDetonatorPanelChange}
-              className="light-background"
-            >
+            <Collapse accordion className="light-background">
               {fields.map((field, index) => (
                 <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={index}>
                   {this.renderInputs(field, "DET")}
@@ -293,7 +270,7 @@ export class MagazineForm extends Component {
             </Collapse>
             <Button
               className="btn--dropdown"
-              onClick={(event) => this.addField(event, fields, "DET")}
+              onClick={(event) => this.addField(event, fields)}
               disabled={this.props.isApproved}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />

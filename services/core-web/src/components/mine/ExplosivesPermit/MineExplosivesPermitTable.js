@@ -66,7 +66,6 @@ const transformExpandedRowData = (record) => ({
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
 const RenderTableExpandIcon = (rowProps) => {
-  console.log(rowProps);
   return (
     <a
       role="link"

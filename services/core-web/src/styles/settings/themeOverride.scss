@@ -351,8 +351,10 @@
   background-color: $pure-white;
 }
 
-.ant-collapse-content > .ant-collapse-content-box {
-  background-color: #908e8e17;
+.light-background {
+  .ant-collapse-content > .ant-collapse-content-box {
+    background-color: #908e8e17;
+  }
 }
 
 //  MENU
