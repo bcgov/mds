@@ -243,7 +243,6 @@ export class ExplosivesPermitForm extends Component {
           <Col md={12} sm={24} className="border--left--layout">
             {isHistoric && (
               <>
-                <h4>Historic Permit Closed?</h4>
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item>

@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { Badge, Tooltip, Table, Button, Menu, Popconfirm, Dropdown } from "antd";
 import { withRouter, Link } from "react-router-dom";
+import { WarningOutlined } from "@ant-design/icons";
 import * as router from "@/constants/routes";
 import PropTypes from "prop-types";
 import { formatDate, dateSorter } from "@common/utils/helpers";
@@ -224,7 +225,7 @@ export class MineExplosivesPermitTable extends Component {
       sortField: "expiry_date",
       render: (text) => (
         <div title="Expiry Date" className={hideColumn(!this.props.isPermitTab)}>
-          {formatDate(text) || Strings.EMPTY_FIELD}
+          <WarningOutlined className="icon-lg red" /> {formatDate(text) || Strings.EMPTY_FIELD}
         </div>
       ),
       sorter: dateSorter("expiry_date"),
@@ -333,7 +334,7 @@ export class MineExplosivesPermitTable extends Component {
                   src={EDIT_OUTLINE_VIOLET}
                   style={{ paddingRight: "15px" }}
                 />
-                Process
+                Approve
               </button>
             </Menu.Item>
             <Menu.Item key="edit">

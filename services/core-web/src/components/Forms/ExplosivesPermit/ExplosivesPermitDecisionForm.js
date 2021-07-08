@@ -112,7 +112,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             type="secondary"
             onClick={() => this.props.previewDocument("PER", this.props.formValues)}
           >
-            Preview Permit
+            Preview Permit Certificate
           </Button>
           <Button
             type="primary"
@@ -120,7 +120,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             htmlType="submit"
             // loading={this.state.submitting}
           >
-            Submit
+            Issue Permit
           </Button>
         </div>
       </Form>
