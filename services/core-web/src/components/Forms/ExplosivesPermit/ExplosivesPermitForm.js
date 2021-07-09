@@ -16,7 +16,7 @@ import {
   lon,
   requiredRadioButton,
 } from "@common/utils/Validate";
-import { resetForm, createDropDownList } from "@common/utils/helpers";
+import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import { getPartyRelationships } from "@common/selectors/partiesSelectors";
@@ -81,10 +81,13 @@ export const ExplosivesPermitForm = (props) => {
 
   const dropdown = (array) =>
     array.length > 0
-      ? array.map((item) => ({
-          value: item.mine_party_appt_id,
-          label: item.party.name,
-        }))
+      ? array.map((item) => {
+          const endDate = formatDate(item.end_date) || "Present";
+          return {
+            value: item.mine_party_appt_id,
+            label: `${item.party.name} (${formatDate(item.start_date)} - ${endDate})`,
+          };
+        })
       : [];
   const mineManagersDropdown = dropdown(mineManagers);
   const permitteeDropdown = dropdown(permittee);
