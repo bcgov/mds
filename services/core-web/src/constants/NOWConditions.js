@@ -127,12 +127,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "application-files",
         title: "Application Files",
         alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "additional-application-files",
-        title: "Additional Application Files",
-        alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
     ],
@@ -229,8 +223,8 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
     ],
     administrative: [
       {
-        href: "final-application-package",
-        title: "Final Application Package",
+        href: "permit-package",
+        title: "Permit Package",
         alwaysVisible: true,
         children: [],
         applicationType: ["NOW", "ADA"],
@@ -268,6 +262,34 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         title: "Application Progress Tracking",
         alwaysVisible: true,
         children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+    ],
+    "manage-documents": [
+      {
+        href: "permit-package",
+        title: "Permit Package",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "application-documents",
+        title: "Application Documents",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "government-documents",
+        title: "Government Documents",
+        alwaysVisible: true,
+        children: [],
+        applicationType: ["NOW", , "ADA"],
+      },
+      {
+        href: "referral-consultation-public-comment-documents",
+        title: "Referral, Consultation and Public Comment Documents",
+        alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
     ],
@@ -309,6 +331,7 @@ export const TAB_DISCLAIMERS = {
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
+  MND: "Some description for Manage Documents tab.",
 };
 
 export const APPLICATION_PROGRESS_TRACKING = {

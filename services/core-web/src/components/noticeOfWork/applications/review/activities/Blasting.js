@@ -11,7 +11,6 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderCheckbox from "@/components/common/RenderCheckbox";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -235,33 +234,27 @@ export const Blasting = (props) => {
         {!props.blastingFormValues.has_storage_explosive_on_site &&
           props.blastingFormValues.has_storage_explosive_on_site !== undefined && (
             <Col md={12} sm={24}>
-              <AuthorizationWrapper inTesting>
-                <>
-                  <div className="field-title">
-                    Describe how the explosives will get to the site
-                    {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                    <NOWOriginalValueTooltip
-                      originalValue={
-                        props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
-                          .value
-                      }
-                      isVisible={
-                        props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
-                          .edited
-                      }
-                    />
-                  </div>
-                  <Field
-                    id="describe_explosives_to_site"
-                    name="describe_explosives_to_site"
-                    component={RenderAutoSizeField}
-                    disabled={props.isViewMode}
-                    validate={
-                      !props.blastingFormValues.has_storage_explosive_on_site ? [required] : []
-                    }
-                  />
-                </>
-              </AuthorizationWrapper>
+              <div className="field-title">
+                Describe how the explosives will get to the site
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
+                      .value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
+                      .edited
+                  }
+                />
+              </div>
+              <Field
+                id="describe_explosives_to_site"
+                name="describe_explosives_to_site"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={!props.blastingFormValues.has_storage_explosive_on_site ? [required] : []}
+              />
             </Col>
           )}
       </Row>

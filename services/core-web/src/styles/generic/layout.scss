@@ -77,6 +77,10 @@ html {
   display: inline-block;
 }
 
+.grid {
+  display: grid;
+}
+
 .full {
   width: 100%;
   height: 100%;
@@ -495,6 +499,7 @@ img.lessOpacity {
   opacity: 0.4;
   filter: alpha(opacity=40);
   zoom: 1;
+  cursor: not-allowed;
 }
 
 .lighter {
