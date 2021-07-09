@@ -19,7 +19,9 @@ class ExplosivesPermitResource(Resource, UserMixin):
     parser.add_argument(
         'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
-        'mine_operator_party_guid', type=str, store_missing=False, required=False, help='')
+        'mine_manager_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'permittee_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
     parser.add_argument(
         'application_status', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
