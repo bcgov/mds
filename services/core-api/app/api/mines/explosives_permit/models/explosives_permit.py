@@ -320,9 +320,12 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             issue_date = None
             expiry_date = None
 
-        # Check for permit closed changes.
-        if is_closed and closed_timestamp is None:
-            closed_timestamp = datetime.utcnow()
+        if is_closed:
+            if closed_timestamp is None:
+                closed_timestamp = datetime.utcnow()
+        else:
+            closed_reason = None
+            closed_timestamp = None
 
         explosives_permit = cls(
             permit_guid=permit_guid,
