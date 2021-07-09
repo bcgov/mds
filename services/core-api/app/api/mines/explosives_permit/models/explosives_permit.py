@@ -260,6 +260,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         for magazine in self.detonator_magazines:
             magazine.delete(False)
         for doc in self.documents:
+            self.mine_documents.remove(doc.mine_document)
             doc.mine_document.delete(False)
         super(ExplosivesPermit, self).delete(commit)
 
