@@ -316,6 +316,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             application_status = 'REC'
             application_number = ExplosivesPermit.get_next_application_number()
             received_timestamp = datetime.utcnow()
+            is_closed = False
             permit_number = None
             issue_date = None
             expiry_date = None
