@@ -7,7 +7,7 @@ import ScrollContentWrapper from "@/components/noticeOfWork/applications/ScrollC
 import NOWSubmissionDocuments from "@/components/noticeOfWork/applications//NOWSubmissionDocuments";
 
 /**
- * @class NOWApplicationManageDocuments- contains all information relating to the Administrative work on a Notice of Work Application
+ * @class NOWApplicationManageDocuments- contains all information relating to the documents on a Notice of Work Application
  */
 
 const propTypes = {

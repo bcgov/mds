@@ -10,11 +10,6 @@ import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import {
-  createNoticeOfWorkApplicationReview,
-  fetchNoticeOfWorkApplicationReviews,
-  deleteNoticeOfWorkApplicationReview,
-  updateNoticeOfWorkApplicationReview,
-  deleteNoticeOfWorkApplicationDocument,
   setNoticeOfWorkApplicationDocumentDownloadState,
   updateNoticeOfWorkApplication,
   fetchImportedNoticeOfWorkApplication,
@@ -30,7 +25,7 @@ import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/sel
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 
 /**
- * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
+ * @constant PermitPackage renders edit/view for the Permit Package review step
  */
 
 const propTypes = {
@@ -269,11 +264,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       openModal,
       closeModal,
-      fetchNoticeOfWorkApplicationReviews,
-      createNoticeOfWorkApplicationReview,
-      deleteNoticeOfWorkApplicationReview,
-      updateNoticeOfWorkApplicationReview,
-      deleteNoticeOfWorkApplicationDocument,
       setNoticeOfWorkApplicationDocumentDownloadState,
       updateNoticeOfWorkApplication,
       fetchImportedNoticeOfWorkApplication,

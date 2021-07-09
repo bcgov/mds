@@ -22,7 +22,7 @@ import NOWTabHeader from "@/components/noticeOfWork/applications/NOWTabHeader";
 import NOWApplicationManageDocuments from "@/components/noticeOfWork/applications/manageDocuments/NOWApplicationManageDocuments";
 
 /**
- * @class ManageDocumentsTab- contains all information relating to the Securities/Bond tracking on a Notice of Work Application.
+ * @class ManageDocumentsTab- contains all information relating to the documents on a Notice of Work Application.
  */
 
 const propTypes = {
@@ -44,24 +44,6 @@ export class ManageDocumentsTab extends Component {
 
   componentDidMount = () =>
     this.props.fetchNoticeOfWorkApplicationReviews(this.props.noticeOfWork.now_application_guid);
-
-  handleUpdateInspectors = (values, finalAction) => {
-    this.setState({ isInspectorsLoaded: false });
-    return this.props
-      .updateNoticeOfWorkApplication(
-        values,
-        this.props.noticeOfWork.now_application_guid,
-        "Successfully updated the assigned inspectors"
-      )
-      .then(() => {
-        this.props
-          .fetchImportedNoticeOfWorkApplication(this.props.noticeOfWork.now_application_guid)
-          .then(() => {
-            this.setState({ isInspectorsLoaded: true });
-            finalAction();
-          });
-      });
-  };
 
   handleSaveNOWEdit = () => {
     return this.props
@@ -97,7 +79,6 @@ export class ManageDocumentsTab extends Component {
             mineGuid={this.props.noticeOfWork.mine_guid}
             noticeOfWork={this.props.noticeOfWork}
             inspectors={this.props.inspectors}
-            handleUpdateInspectors={this.handleUpdateInspectors}
             importNowSubmissionDocumentsJob={this.props.importNowSubmissionDocumentsJob}
             handleSaveNOWEdit={this.handleSaveNOWEdit}
             isLoaded={this.state.isInspectorsLoaded}
