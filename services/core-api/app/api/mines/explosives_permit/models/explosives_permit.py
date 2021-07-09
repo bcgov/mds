@@ -254,12 +254,21 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
 
                 def create_permit_enclosed_letter():
+                    mine = self.mine
                     template_data = {
                         'letter_date': letter_date,
                         'letter_body': letter_body,
+                        'rc_office_email': mine.region.regional_contact_office.email,
+                        'rc_office_phone_number': mine.region.regional_contact_office.phone_number,
+                        'rc_office_fax_number': mine.region.regional_contact_office.fax_number,
+                        'rc_office_mailing_address_line_1':
+                        mine.region.regional_contact_office.mailing_address_line_1,
+                        'rc_office_mailing_address_line_2':
+                        mine.region.regional_contact_office.mailing_address_line_2,
                         'is_draft': False
                     }
-                    explosives_permit_document_type = ExplosivesPermitDocumentType.query.get('LET')
+                    explosives_permit_document_type = ExplosivesPermitDocumentType.get_with_context(
+                        'LET', self.explosives_permit_guid)
                     template_data = explosives_permit_document_type.transform_template_data(
                         template_data, self)
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
@@ -270,7 +279,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
                 def create_issued_permit():
                     template_data = {'is_draft': False}
-                    explosives_permit_document_type = ExplosivesPermitDocumentType.query.get('PER')
+                    explosives_permit_document_type = ExplosivesPermitDocumentType.get_with_context(
+                        'PER', self.explosives_permit_guid)
                     template_data = explosives_permit_document_type.transform_template_data(
                         template_data, self)
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(

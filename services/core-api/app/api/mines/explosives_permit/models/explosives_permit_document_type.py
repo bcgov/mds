@@ -67,30 +67,18 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             issuing_inspector = explosives_permit.issuing_inspector
         template_data['issuing_inspector_name'] = issuing_inspector.name
 
-        mine_manager = None
-        if is_draft:
-            mine_manager_mine_party_appt_id = template_data['mine_manager_mine_party_appt_id']
-            mine_manager = MinePartyAppointment.find_by_mine_party_appt_id(
-                mine_manager_mine_party_appt_id)
-            if mine_manager is None:
-                raise Exception('Appointment for Mine Manager not found')
-        else:
-            mine_manager = explosives_permit.mine_manager
+        mine_manager = explosives_permit.mine_manager
+        if mine_manager is None:
+            raise Exception('Appointment for Mine Manager not found')
 
         if mine_manager.party.first_address is None:
             raise Exception('Address for Mine Operator not found')
         template_data['mine_manager_address'] = mine_manager.party.first_address.full
         template_data['mine_manager_name'] = mine_manager.party.name
 
-        permittee = None
-        if is_draft:
-            permittee_mine_party_appt_id = template_data['permittee_mine_party_appt_id']
-            permittee = MinePartyAppointment.find_by_mine_party_appt_id(
-                permittee_mine_party_appt_id)
-            if permittee is None:
-                raise Exception('Appointment for Permittee not found')
-        else:
-            permittee = explosives_permit.permittee
+        permittee = explosives_permit.permittee
+        if permittee is None:
+            raise Exception('Appointment for Permittee not found')
 
         if permittee.party.first_address is None:
             raise Exception('Address for Permittee not found')
