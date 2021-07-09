@@ -1,30 +1,21 @@
-/* eslint-disable */
 import React from "react";
-import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { Field, reduxForm, change } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { required, requiredRadioButton } from "@common/utils/Validate";
+import { requiredRadioButton } from "@common/utils/Validate";
 import { resetForm } from "@common/utils/helpers";
-import { getExplosivesPermitStatusDropdownOptions } from "@common/selectors/staticContentSelectors";
 import * as FORM from "@/constants/forms";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderDate from "@/components/common/RenderDate";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 
-import CustomPropTypes from "@/customPropTypes";
-
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  explosivesPermitStatusDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
-    .isRequired,
-  title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.permit.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 const options = [
@@ -102,16 +93,9 @@ export const ExplosivesPermitCloseForm = (props) => {
 
 ExplosivesPermitCloseForm.propTypes = propTypes;
 
-const mapStateToProps = (state) => ({
-  explosivesPermitStatusDropdownOptions: getExplosivesPermitStatusDropdownOptions(state),
-});
-
-export default compose(
-  connect(mapStateToProps),
-  reduxForm({
-    form: FORM.EXPLOSIVES_PERMIT_CLOSE,
-    touchOnBlur: false,
-    enableReinitialize: true,
-    onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
-  })
-)(ExplosivesPermitCloseForm);
+export default reduxForm({
+  form: FORM.EXPLOSIVES_PERMIT_CLOSE,
+  touchOnBlur: false,
+  enableReinitialize: true,
+  onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT_CLOSE),
+})(ExplosivesPermitCloseForm);

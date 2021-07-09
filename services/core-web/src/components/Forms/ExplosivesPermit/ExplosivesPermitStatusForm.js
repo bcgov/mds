@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -23,7 +22,6 @@ const propTypes = {
     .isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.permit.isRequired,
 };
 
 export const ExplosivesPermitStatusForm = (props) => {

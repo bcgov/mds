@@ -1,39 +1,23 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { submit, reset, change, FieldArray, Field } from "redux-form";
+import { FieldArray, Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
-import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
-import * as FORM from "@/constants/forms";
+import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
 
 import "@ant-design/compatible/assets/index.css";
 import { Collapse, Button, Popconfirm, Col, Row, Divider } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
 import { COLOR } from "@/constants/styles";
 
 const propTypes = {
-  fetchData: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  change: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  isApproved: PropTypes.bool,
+  isApproved: PropTypes.bool.isRequired,
 };
 
-const defaultProps = {
-  isApproved: false,
-};
+const defaultProps = {};
 
 export class MagazineForm extends Component {
-  state = {
-    activeExplosiveKey: null,
-    activeDetonatorKey: null,
-  };
-
   addField = (event, fields) => {
     event.preventDefault();
     fields.push({});
@@ -237,6 +221,7 @@ export class MagazineForm extends Component {
           <Col md={24}>
             <Collapse accordion className="light-background">
               {fields.map((field, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <Collapse.Panel header={this.panelHeader(index, fields, "EXP")} key={index}>
                   {this.renderInputs(field, "EXP")}
                 </Collapse.Panel>
@@ -263,6 +248,7 @@ export class MagazineForm extends Component {
           <Col md={24}>
             <Collapse accordion className="light-background">
               {fields.map((field, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <Collapse.Panel header={this.panelHeader(index, fields, "DET")} key={index}>
                   {this.renderInputs(field, "DET")}
                 </Collapse.Panel>
@@ -295,19 +281,7 @@ export class MagazineForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      submit,
-      reset,
-      change,
-    },
-    dispatch
-  );
-
 MagazineForm.propTypes = propTypes;
 MagazineForm.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MagazineForm);
+export default MagazineForm;

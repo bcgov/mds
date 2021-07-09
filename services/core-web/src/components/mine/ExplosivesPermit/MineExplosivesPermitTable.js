@@ -1,33 +1,28 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { Badge, Tooltip, Table, Button, Menu, Popconfirm, Dropdown } from "antd";
-import { withRouter, Link } from "react-router-dom";
-import { WarningOutlined } from "@ant-design/icons";
-import * as router from "@/constants/routes";
+import { withRouter } from "react-router-dom";
+import { WarningOutlined, MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { formatDate, dateSorter } from "@common/utils/helpers";
 import * as Strings from "@common/constants/strings";
-import { MinusSquareFilled, PlusSquareFilled } from "@ant-design/icons";
+import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
-import { getApplicationStatusType } from "@/constants/theme";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
-import * as Permission from "@/constants/permissions";
-import DocumentLink from "@/components/common/DocumentLink";
-import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import {
   getExplosivesPermitBadgeStatusType,
   getExplosivesPermitClosedBadgeStatusType,
 } from "@/constants/theme";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import DocumentLink from "@/components/common/DocumentLink";
+import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
+
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 
 /**
  * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
  */
 const propTypes = {
-  handleSearch: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)),
-  sortField: PropTypes.string,
-  sortDir: PropTypes.string,
+  data: PropTypes.arrayOf(CustomPropTypes.explosivesPermit),
   isLoaded: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
@@ -38,10 +33,17 @@ const propTypes = {
   handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
   handleOpenExplosivesPermitStatusModal: PropTypes.func.isRequired,
   handleDeleteExplosivesPermit: PropTypes.func.isRequired,
+  isPermitTab: PropTypes.bool,
+  explosivesPermitDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  explosivesPermitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  handleOpenAddExplosivesPermitModal: PropTypes.func.isRequired,
+  handleOpenViewMagazineModal: PropTypes.func.isRequired,
+  handleOpenExplosivesPermitCloseModal: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   data: [],
+  isPermitTab: false,
 };
 
 const transformRowData = (permits) => {
@@ -54,14 +56,6 @@ const transformRowData = (permits) => {
     };
   });
 };
-
-const transformExpandedRowData = (record) => ({
-  ...record,
-  documents: record.documents.map((doc) => ({
-    document_manager_guid: doc.document_manager_guid,
-    document_name: doc.document_name,
-  })),
-});
 
 const hideColumn = (condition) => (condition ? "column-hide" : "");
 
@@ -246,6 +240,7 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "total_explosive_quantity",
       sortField: "total_explosive_quantity",
       render: (text, record) => (
+        /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
         <div
           title="Explosive Quantity"
           className="underline"
@@ -266,6 +261,7 @@ export class MineExplosivesPermitTable extends Component {
       dataIndex: "total_detonator_quantity",
       sortField: "total_detonator_quantity",
       render: (text, record) => (
+        /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
         <div
           title="Detonator Quantity"
           className="underline"
@@ -437,7 +433,7 @@ export class MineExplosivesPermitTable extends Component {
     },
   ];
 
-  documentDetail = (record) => {
+  documentDetail = (permit) => {
     const expandedColumns = [
       {
         title: "Category",
@@ -473,7 +469,7 @@ export class MineExplosivesPermitTable extends Component {
         align="left"
         pagination={false}
         columns={expandedColumns}
-        dataSource={record.documents}
+        dataSource={permit.documents}
         locale={{ emptyText: "No Data Yet" }}
       />
     );

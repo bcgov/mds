@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -32,17 +31,23 @@ import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   isPermitTab: PropTypes.bool,
+  mineGuid: PropTypes.string.isRequired,
+  inspectors: CustomPropTypes.groupOptions.isRequired,
   updateExplosivesPermit: PropTypes.func.isRequired,
   createExplosivesPermit: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
-  updateExplosivesPermit: PropTypes.func.isRequired,
   deleteExplosivesPermit: PropTypes.func.isRequired,
   fetchExplosivesPermitDocumentContextTemplate: PropTypes.func.isRequired,
   generateExplosivesPermitDocument: PropTypes.func.isRequired,
   mines: PropTypes.arrayOf(CustomPropTypes.mine).isRequired,
   documentContextTemplate: PropTypes.objectOf(PropTypes.string).isRequired,
+  explosivesPermits: PropTypes.arrayOf(CustomPropTypes.explosivesPermit).isRequired,
+  explosivesPermitStatusOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  explosivesPermitDocumentTypeDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
+    .isRequired,
+  explosivesPermitDocumentTypeOptionsHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -50,7 +55,7 @@ const defaultProps = {
 };
 
 export class ExplosivesPermit extends Component {
-  state = { isLoaded: false, expandedRowKeys: [] };
+  state = { expandedRowKeys: [] };
 
   onExpand = (expanded, record) =>
     this.setState((prevState) => {
@@ -73,7 +78,7 @@ export class ExplosivesPermit extends Component {
   };
 
   handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
-    const initialValues = record ? record : { permit_tab: isPermitTab };
+    const initialValues = record || { permit_tab: isPermitTab };
     const isApproved = record?.application_status === "APP";
     const initialMineOperatorValue = record?.mine_operator_party_guid
       ? {
@@ -112,7 +117,7 @@ export class ExplosivesPermit extends Component {
   };
 
   handleOpenExplosivesPermitStatusModal = (event, record = null) => {
-    const initialValues = record ? record : {};
+    const initialValues = record || {};
     delete initialValues.application_status;
     event.preventDefault();
     this.props.openModal({
@@ -127,7 +132,7 @@ export class ExplosivesPermit extends Component {
   };
 
   handleOpenExplosivesPermitCloseModal = (event, record = null) => {
-    const initialValues = record ? record : {};
+    const initialValues = record || {};
     event.preventDefault();
     this.props.openModal({
       props: {
