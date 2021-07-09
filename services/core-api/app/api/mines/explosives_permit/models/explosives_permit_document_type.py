@@ -4,6 +4,7 @@ from sqlalchemy.schema import FetchedValue
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.parties.party.models.party import Party
+from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.document_generation.models.document_template import format_letter_date
 
 SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
@@ -65,19 +66,35 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             issuing_inspector = explosives_permit.issuing_inspector
         template_data['issuing_inspector_name'] = issuing_inspector.name
 
-        mine_operator = None
+        mine_manager = None
         if is_draft:
-            mine_operator_party_guid = template_data['mine_operator_party_guid']
-            mine_operator = Party.find_by_party_guid(mine_operator_party_guid)
-            if mine_operator is None:
-                raise Exception('Party for Mine Operator not found')
+            mine_manager_mine_party_appt_id = template_data['mine_manager_mine_party_appt_id']
+            mine_manager = MinePartyAppointment.find_by_mine_party_appt_id(
+                mine_manager_mine_party_appt_id)
+            if mine_manager is None:
+                raise Exception('Appointment for Mine Manager not found')
         else:
-            mine_operator = explosives_permit.mine_operator
+            mine_manager = explosives_permit.mine_manager
 
-        if mine_operator.first_address is None:
+        if mine_manager.party.first_address is None:
             raise Exception('Address for Mine Operator not found')
-        template_data['mine_operator_address'] = mine_operator.first_address.full
-        template_data['mine_operator_name'] = mine_operator.name
+        template_data['mine_manager_address'] = mine_manager.party.first_address.full
+        template_data['mine_manager_name'] = mine_manager.party.name
+
+        permittee = None
+        if is_draft:
+            permittee_mine_party_appt_id = template_data['permittee_mine_party_appt_id']
+            permittee = MinePartyAppointment.find_by_mine_party_appt_id(
+                permittee_mine_party_appt_id)
+            if permittee is None:
+                raise Exception('Appointment for Permittee not found')
+        else:
+            permittee = explosives_permit.permittee
+
+        if permittee.party.first_address is None:
+            raise Exception('Address for Permittee not found')
+        template_data['permittee_address'] = permittee.party.first_address.full
+        template_data['permittee_name'] = permittee.party.name
 
         if not is_draft:
             template_data['images'] = {
@@ -104,8 +121,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                     cardinal_direction = 'W'
                 return f'{str(abs(longitude)).rstrip("0").rstrip(".")} {cardinal_direction}'
 
-            mine_operator_address = template_data['mine_operator_address'].replace('\n', ' ')
-            template_data['mine_operator_address'] = mine_operator_address
+            permittee_address = template_data['permittee_address'].replace('\n', ' ')
+            template_data['permittee_address'] = permittee_address
 
             template_data['latitude'] = format_latitude(explosives_permit.latitude)
             template_data['longitude'] = format_longitude(explosives_permit.longitude)
@@ -123,14 +140,13 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             template_data['issue_date'] = issue_date
             template_data['expiry_date'] = expiry_date
 
-            # TODO: Finish implementing
             def transform_magazines(magazines):
                 def get_type_label(magazine):
                     return 'Explosive Magazine Type' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Type'
 
                 def get_quantity_label(magazine):
                     label = 'Explosive Magazine Capacity' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonator Magazine Capacity'
-                    unit = 'kgs' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'units'
+                    unit = 'kg' if magazine.explosives_permit_magazine_type_code == 'EXP' else 'Detonators'
                     return f'{label} {magazine.quantity} {unit}'
 
                 transformed_magazines = []
@@ -154,12 +170,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         # Transform template data for "Explosives Storage and Use Permit Letter" (LET)
         def transform_letter(template_data, explosives_permit):
 
+            # TODO: Format dates
             # template_data['letter_date'] = format_letter_date(template_data['letter_date'])
-
-            mine_manager = explosives_permit.mine.mine_manager
-            if mine_manager is None:
-                raise Exception('No Mine Manager has been assigned to this mine')
-            template_data['mine_manager_name'] = mine_manager.party.name
 
             return template_data
 

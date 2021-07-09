@@ -47,7 +47,9 @@ class ExplosivesPermitListResource(Resource, UserMixin):
     parser.add_argument(
         'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
-        'mine_operator_party_guid', type=str, store_missing=False, required=False, help='')
+        'mine_manager_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+    parser.add_argument(
+        'permittee_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
     parser.add_argument(
         'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
     parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
@@ -113,7 +115,8 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('expiry_date'),
                                                     data.get('permit_number'),
                                                     data.get('issuing_inspector_party_guid'),
-                                                    data.get('mine_operator_party_guid'),
+                                                    data.get('mine_manager_mine_party_appt_id'),
+                                                    data.get('permittee_mine_party_appt_id'),
                                                     data.get('is_closed'),
                                                     data.get('closed_reason'),
                                                     data.get('closed_timestamp'),

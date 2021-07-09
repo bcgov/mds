@@ -30,7 +30,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     now_application_guid = db.Column(
         UUID(as_uuid=True), db.ForeignKey('now_application_identity.now_application_guid'))
     issuing_inspector_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
-    mine_operator_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    mine_manager_mine_party_appt_id = db.Column(db.Integer,
+                                                db.ForeignKey('mine_party_appt.mine_party_appt_id'))
+    permittee_mine_party_appt_id = db.Column(db.Integer,
+                                             db.ForeignKey('mine_party_appt.mine_party_appt_id'))
     application_status = db.Column(
         db.String, db.ForeignKey('explosives_permit_status.explosives_permit_status_code'))
 
@@ -57,13 +60,13 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         'ExplosivesPermitMagazine',
         lazy='select',
         primaryjoin=
-        "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'EXP', ExplosivesPermitMagazine.deleted_ind == False)"
+        'and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "EXP", ExplosivesPermitMagazine.deleted_ind == False)'
     )
     detonator_magazines = db.relationship(
         'ExplosivesPermitMagazine',
         lazy='select',
         primaryjoin=
-        "and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == 'DET', ExplosivesPermitMagazine.deleted_ind == False)"
+        'and_(ExplosivesPermitMagazine.explosives_permit_id == ExplosivesPermit.explosives_permit_id, ExplosivesPermitMagazine.explosives_permit_magazine_type_code == "DET", ExplosivesPermitMagazine.deleted_ind == False)'
     )
 
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
@@ -80,11 +83,18 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     issuing_inspector = db.relationship(
         'Party',
         lazy='select',
-        primaryjoin="Party.party_guid == ExplosivesPermit.issuing_inspector_party_guid")
-    mine_operator = db.relationship(
-        'Party',
+        primaryjoin='Party.party_guid == ExplosivesPermit.issuing_inspector_party_guid')
+    mine_manager = db.relationship(
+        'MinePartyAppointment',
         lazy='select',
-        primaryjoin="Party.party_guid == ExplosivesPermit.mine_operator_party_guid")
+        primaryjoin=
+        'MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.mine_manager_mine_party_appt_id'
+    )
+    permittee = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin=
+        'MinePartyAppointment.mine_party_appt_id == ExplosivesPermit.permittee_mine_party_appt_id')
 
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.explosives_permit_id}>'
@@ -104,10 +114,15 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         return None
 
     @hybrid_property
-    def mine_operator_name(self):
-        if self.mine_operator_party_guid:
-            party = Party.find_by_party_guid(self.mine_operator_party_guid)
-            return party.name
+    def mine_manager_name(self):
+        if self.mine_manager:
+            return self.mine_manager.party.name
+        return None
+
+    @hybrid_property
+    def permittee_name(self):
+        if self.permittee:
+            return self.permittee.party.name
         return None
 
     @hybrid_property
@@ -117,7 +132,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             return party.name
         return None
 
-    # Add validation on application date for not being in the future.
+    # TODO: Add validation on application date for not being in the future.
 
     @validates('originating_system')
     def validate_originating_system(self, key, val):
@@ -131,7 +146,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                permit_guid,
                now_application_guid,
                issuing_inspector_party_guid,
-               mine_operator_party_guid,
+               mine_manager_mine_party_appt_id,
+               permittee_mine_party_appt_id,
                application_status,
                issue_date,
                expiry_date,
@@ -152,7 +168,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         self.permit_guid = permit_guid
         self.now_application_guid = now_application_guid
         self.issuing_inspector_party_guid = issuing_inspector_party_guid
-        self.mine_operator_party_guid = mine_operator_party_guid
+        self.mine_manager_mine_party_appt_id = mine_manager_mine_party_appt_id
+        self.permittee_mine_party_appt_id = permittee_mine_party_appt_id
         self.application_date = application_date
         self.description = description
         self.issue_date = issue_date
@@ -291,12 +308,13 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         if originating_system == 'MMS':
             application_status = 'APP'
-            #TODO ensure permit_no does not conflict with the autogenerated permit_numbers
+            # TODO: ensure permit_number does not conflict with the auto-generated permit numbers.
         else:
             application_status = 'REC'
             permit_number = None
             issue_date = None
             expiry_date = None
+
         application_number = ExplosivesPermit.get_next_application_number()
         received_timestamp = datetime.utcnow()
 
