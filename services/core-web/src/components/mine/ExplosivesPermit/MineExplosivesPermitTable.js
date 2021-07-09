@@ -187,9 +187,9 @@ export class MineExplosivesPermitTable extends Component {
       sorter: false,
     },
     {
-      title: "Mine Operator",
-      dataIndex: "mine_operator_name",
-      render: (text) => <div title="Mine Operator">{text || Strings.EMPTY_FIELD}</div>,
+      title: "Permittee",
+      dataIndex: "permittee_name",
+      render: (text) => <div title="Permittee">{text || Strings.EMPTY_FIELD}</div>,
       sorter: false,
     },
     {

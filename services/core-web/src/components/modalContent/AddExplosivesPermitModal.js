@@ -12,7 +12,6 @@ const propTypes = {
   documentTypeDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   isPermitTab: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  initialMineOperatorValue: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export const AddExplosivesPermitModal = (props) => (

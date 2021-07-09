@@ -106,6 +106,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
+            'mine_party_appt_id': self.mine_party_appt_id,
             'mine_guid': str(self.mine_guid) if self.mine_guid else None,
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),

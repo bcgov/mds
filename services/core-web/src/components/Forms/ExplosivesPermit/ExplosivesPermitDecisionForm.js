@@ -2,16 +2,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { compose } from "redux";
-import { Field, reduxForm, getFormValues } from "redux-form";
+import { compose, bindActionCreators } from "redux";
+import { Field, reduxForm, change, formValueSelector, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { required } from "@common/utils/Validate";
-import { resetForm } from "@common/utils/helpers";
+import { resetForm, createDropDownList } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
+import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
@@ -23,8 +24,14 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   submitting: PropTypes.bool.isRequired,
-  formValues: CustomPropTypes.explosivesPermit.isRequired,
   initialValues: CustomPropTypes.explosivesPermit.isRequired,
+  formValues: CustomPropTypes.explosivesPermit.isRequired,
+  change: PropTypes.func,
+};
+
+const defaultProps = {
+  initialValues: {},
+  change,
 };
 
 export class ExplosivesPermitDecisionForm extends Component {
@@ -33,6 +40,17 @@ export class ExplosivesPermitDecisionForm extends Component {
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
         <Row gutter={48}>
           <Col span={24}>
+            <Form.Item>
+              <PartySelectField
+                id="mine_operator_party_guid"
+                name="mine_operator_party_guid"
+                label="Mine Operator*"
+                placeholder="Start typing the Mine Operator's name"
+                partyLabel="Mine Operator"
+                validate={[required]}
+                allowAddingParties
+              />
+            </Form.Item>
             <Form.Item>
               <Field
                 id="issuing_inspector_party_guid"
@@ -111,6 +129,9 @@ export class ExplosivesPermitDecisionForm extends Component {
 }
 
 ExplosivesPermitDecisionForm.propTypes = propTypes;
+ExplosivesPermitDecisionForm.defaultProps = defaultProps;
+
+const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_DECISION);
 
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
@@ -118,8 +139,16 @@ const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_DECISION)(state),
 });
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      change,
+    },
+    dispatch
+  );
+
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
     form: FORM.EXPLOSIVES_PERMIT_DECISION,
     touchOnBlur: true,

@@ -19,7 +19,7 @@ import {
 import { resetForm, createDropDownList } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import PartySelectField from "@/components/common/PartySelectField";
+import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import { getPermits } from "@common/selectors/permitSelectors";
@@ -35,15 +35,17 @@ const propTypes = {
   documentTypeDropdownOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   isPermitTab: PropTypes.bool.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
-  initialMineOperatorValue: PropTypes.objectOf(PropTypes.string).isRequired,
   submitting: PropTypes.bool.isRequired,
   noticeOfWorkApplications: PropTypes.arrayOf(CustomPropTypes.importedNOWApplication).isRequired,
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   formValues: CustomPropTypes.explosivesPermit.isRequired,
+  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
+  mines_permit_guid: PropTypes.string,
 };
 
 const defaultProps = {
   initialValues: {},
+  mines_permit_guid: null,
 };
 
 const closedOptions = [
@@ -57,7 +59,35 @@ const closedOptions = [
   },
 ];
 
+const validateBusinessRules = (values) => {
+  const errors = {};
+  if (!values.mine_manager_mine_party_appt_id) {
+    errors.mine_manager_mine_party_appt_id = "The Site must have a Mine Manager on record.";
+  }
+  if (!values.permittee_mine_party_appt_id) {
+    errors.permittee_mine_party_appt_id = "The Permit must have a Permittee on record.";
+  }
+  return errors;
+};
+
 export const ExplosivesPermitForm = (props) => {
+  const mineManagers = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "MMG"
+  );
+  const permittee = props.partyRelationships.filter(
+    ({ mine_party_appt_type_code, related_guid }) =>
+      mine_party_appt_type_code === "PMT" && related_guid === props.mines_permit_guid
+  );
+
+  const dropdown = (array) =>
+    array.length > 0
+      ? array.map((item) => ({
+          value: item.mine_party_appt_id,
+          label: item.party.name,
+        }))
+      : [];
+  const mineManagersDropdown = dropdown(mineManagers);
+  const permitteeDropdown = dropdown(permittee);
   const permitDropdown = createDropDownList(props.permits, "permit_no", "permit_guid");
   const nowDropdown = createDropDownList(
     props.noticeOfWorkApplications,
@@ -109,22 +139,7 @@ export const ExplosivesPermitForm = (props) => {
                 </Col>
               </Row>
               <Row gutter={6}>
-                <Col span={12}>
-                  <Form.Item>
-                    <PartySelectField
-                      id="mine_operator_party_guid"
-                      name="mine_operator_party_guid"
-                      label="Mine Operator*"
-                      placeholder="Start typing the Mine Operator's name"
-                      partyLabel="Mine Operator"
-                      validate={[required]}
-                      allowAddingParties
-                      disabled={props.isApproved}
-                      initialValues={props.initialMineOperatorValue}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
+                <Col span={24}>
                   <Form.Item>
                     <Field
                       id="issuing_inspector_party_guid"
@@ -183,6 +198,37 @@ export const ExplosivesPermitForm = (props) => {
               disabled={props.isApproved}
             />
           </Form.Item>
+          <Row gutter={6}>
+            <Col span={12}>
+              <Form.Item>
+                <Field
+                  id="mine_manager_mine_party_appt_id"
+                  name="mine_manager_mine_party_appt_id"
+                  label={props.isPermitTab ? "Mine Manager" : "Mine Manager*"}
+                  placeholder="Select Mine Manager"
+                  partyLabel="Mine Manager"
+                  validate={props.isPermitTab ? [] : [required]}
+                  component={renderConfig.SELECT}
+                  data={mineManagersDropdown}
+                  disabled={props.isApproved}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item>
+                <Field
+                  id="permittee_mine_party_appt_id"
+                  name="permittee_mine_party_appt_id"
+                  label="Permittee*"
+                  component={renderConfig.SELECT}
+                  placeholder="Select Permittee"
+                  validate={[required]}
+                  data={permitteeDropdown}
+                  disabled={props.isApproved || !props.mines_permit_guid}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
           <Form.Item>
             <Field
               id="application_date"
@@ -310,7 +356,9 @@ const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT);
 const mapStateToProps = (state) => ({
   permits: getPermits(state),
   documents: selector(state, "documents"),
+  mines_permit_guid: selector(state, "permit_guid"),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
+  partyRelationships: getPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
 });
 
@@ -327,6 +375,7 @@ export default compose(
   reduxForm({
     form: FORM.EXPLOSIVES_PERMIT,
     touchOnBlur: true,
+    validate: validateBusinessRules,
     onSubmitSuccess: resetForm(FORM.EXPLOSIVES_PERMIT),
   })
 )(ExplosivesPermitForm);

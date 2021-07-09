@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button, Descriptions, Row, Col, Divider } from "antd";
-import * as Strings from "@common/constants/strings";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -92,9 +91,6 @@ export const ViewMagazineModal = (props) => {
       <Descriptions column={3}>
         <Descriptions.Item label="Mine No.">{props.mine.mine_no}</Descriptions.Item>
         <Descriptions.Item label="Mine Name">{props.mine.mine_name}</Descriptions.Item>
-        <Descriptions.Item label="Mine Operator">
-          {props.explosivesPermit.mine_operator_name || Strings.EMPTY_FIELD}
-        </Descriptions.Item>
       </Descriptions>
       <div className="right center-mobile">
         <Button className="full-mobile" type="primary" onClick={props.closeModal}>

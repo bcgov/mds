@@ -80,12 +80,6 @@ export class ExplosivesPermit extends Component {
   handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
     const initialValues = record || { permit_tab: isPermitTab };
     const isApproved = record?.application_status === "APP";
-    const initialMineOperatorValue = record?.mine_operator_party_guid
-      ? {
-          value: record.mine_operator_party_guid,
-          label: record.mine_operator_name,
-        }
-      : {};
     event.preventDefault();
     this.props.openModal({
       props: {
@@ -97,7 +91,6 @@ export class ExplosivesPermit extends Component {
         documentTypeDropdownOptions: this.props.explosivesPermitDocumentTypeDropdownOptions,
         isPermitTab,
         inspectors: this.props.inspectors,
-        initialMineOperatorValue,
       },
       content: modalConfig.EXPLOSIVES_PERMIT_MODAL,
       width: "75vw",
