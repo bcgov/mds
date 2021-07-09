@@ -70,6 +70,14 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
         for enforced_item in enforced_data:
             template_data[enforced_item['id']] = enforced_item['context-value']
 
+        token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
+            document_type_code, explosives_permit_guid, template_data)
+
+        return {'token': token}
+
+    @classmethod
+    def get_explosives_document_generate_token(cls, document_type_code, explosives_permit_guid,
+                                               template_data):
         token = uuid.uuid4()
         cache.set(
             EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token), {
@@ -79,5 +87,4 @@ class ExplosivesPermitDocumentGenerateResource(Resource, UserMixin):
                 'username': User().get_user_username(),
                 'authorization_header': request.headers['Authorization']
             }, TIMEOUT_5_MINUTES)
-
-        return {'token': token}
+        return token

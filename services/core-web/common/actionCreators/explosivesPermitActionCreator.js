@@ -16,7 +16,7 @@ export const createExplosivesPermit = (mineGuid, payload) => (dispatch) => {
     .post(ENVIRONMENT.apiUrl + API.EXPLOSIVES_PERMITS(mineGuid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
-        message: "Successfully created a new permit",
+        message: "Successfully created Explosives Permit",
         duration: 10,
       });
       dispatch(success(reducerTypes.CREATE_EXPLOSIVES_PERMIT));
@@ -57,7 +57,7 @@ export const updateExplosivesPermit = (mineGuid, explosivesPermitGuid, payload) 
     )
     .then((response) => {
       notification.success({
-        message: "Successfully updated",
+        message: "Successfully updated Explosives Permit",
         duration: 10,
       });
       dispatch(success(reducerTypes.UPDATE_EXPLOSIVES_PERMIT));
@@ -80,8 +80,7 @@ export const deleteExplosivesPermit = (mineGuid, explosivesPermitGuid) => (dispa
     )
     .then((response) => {
       notification.success({
-        message:
-          "Successfully deleted explosives permit and all related magazine data and documents.",
+        message: "Successfully deleted Explosives Permit",
         duration: 10,
       });
       dispatch(success(reducerTypes.DELETE_EXPLOSIVES_PERMIT));

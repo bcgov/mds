@@ -1712,7 +1712,7 @@ UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_body_label_0",
       "type": "LABEL",
-      "context-value": "Enclosed please find new Explosives Storage and Use Permit <Permit Number> made out to <Mine Operator> for the storage of explosives/detonators at the <Mine Name> mine site.  "
+      "context-value": "Enclosed please find new Explosives Storage and Use Permit <Permit Number> made out to <Permittee> for the storage of explosives/detonators at the <Mine Name> mine site.  "
     },
     {
       "id": "letter_body",
@@ -1724,7 +1724,7 @@ UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_body_label_1",
       "type": "LABEL",
-      "context-value": "Thank you.\n\nYours truly,"
+      "context-value": "Thank you.\n\nSincerely,"
     },
     {
       "id": "rc_office_email",
