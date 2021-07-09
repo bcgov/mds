@@ -1,7 +1,5 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { Button, Descriptions, Row, Col, Divider } from "antd";
 import * as Strings from "@common/constants/strings";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
@@ -9,6 +7,9 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   closeModal: PropTypes.func.isRequired,
+  explosivesPermit: CustomPropTypes.explosivesPermit.isRequired,
+  type: PropTypes.string.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
 };
 
 const explosiveCode = "EXP";
@@ -106,6 +107,4 @@ export const ViewMagazineModal = (props) => {
 
 ViewMagazineModal.propTypes = propTypes;
 
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps)(ViewMagazineModal);
+export default ViewMagazineModal;

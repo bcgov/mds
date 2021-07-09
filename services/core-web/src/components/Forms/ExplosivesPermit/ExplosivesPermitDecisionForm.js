@@ -24,8 +24,8 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   submitting: PropTypes.bool.isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any),
-  formValues: PropTypes.objectOf(PropTypes.any),
+  initialValues: CustomPropTypes.explosivesPermit.isRequired,
+  formValues: CustomPropTypes.explosivesPermit.isRequired,
   change: PropTypes.func,
 };
 
@@ -118,7 +118,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             type="primary"
             className="full-mobile"
             htmlType="submit"
-            // loading={this.state.submitting}
+            disabled={this.state.submitting}
           >
             Issue Permit
           </Button>

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -63,6 +62,7 @@ const propTypes = {
   deletePermitAmendment: PropTypes.func.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   createMineTypes: PropTypes.func.isRequired,
+  explosivesPermits: PropTypes.arrayOf(CustomPropTypes.explosivesPermit).isRequired,
 };
 
 const defaultProps = {

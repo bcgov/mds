@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { notification } from "antd";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
