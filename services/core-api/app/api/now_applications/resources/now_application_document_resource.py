@@ -35,6 +35,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     parser.add_argument('preamble_title', type=str, required=False)
     parser.add_argument('preamble_author', type=str, required=False)
     parser.add_argument('preamble_date', type=str, required=False)
+    parser.add_argument('is_final_package', type=bool, required=False)
     parser.add_argument('description', type=str, required=False)
 
     @api.response(204, 'Successfully deleted.')
@@ -70,6 +71,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             raise NotFound('No mine_document found for this application guid.')
 
         new_description = data.get('description', None)
+        is_final_package = data.get('is_final_package', None)
 
         if mine_document.now_application_document_xref:
             xref = mine_document.now_application_document_xref
@@ -80,8 +82,10 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         if new_description:
             xref.description = new_description
 
-        if xref.is_final_package:
+        if is_final_package:
+            xref.is_final_package = is_final_package
 
+        if xref.is_final_package:
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
