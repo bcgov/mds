@@ -40,10 +40,10 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     issue_date = db.Column(db.Date)
     expiry_date = db.Column(db.Date)
 
-    application_number = db.Column(db.String, nullable=False, unique=True)
+    application_number = db.Column(db.String)
     application_date = db.Column(db.Date, nullable=False)
     originating_system = db.Column(db.String, nullable=False)
-    received_timestamp = db.Column(db.DateTime, server_default=FetchedValue(), nullable=False)
+    received_timestamp = db.Column(db.DateTime)
     decision_timestamp = db.Column(db.DateTime)
     decision_reason = db.Column(db.String)
     description = db.Column(db.String)
@@ -307,17 +307,18 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                now_application_guid=None,
                add_to_session=True):
 
+        application_number = None
+        received_timestamp = None
         if originating_system == 'MMS':
             application_status = 'APP'
             # TODO: ensure permit_number does not conflict with the auto-generated permit numbers.
         else:
             application_status = 'REC'
+            application_number = ExplosivesPermit.get_next_application_number()
+            received_timestamp = datetime.utcnow()
             permit_number = None
             issue_date = None
             expiry_date = None
-
-        application_number = ExplosivesPermit.get_next_application_number()
-        received_timestamp = datetime.utcnow()
 
         # Check for permit closed changes.
         if is_closed and closed_timestamp is None:

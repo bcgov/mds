@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS explosives_permit (
     issue_date date,
     expiry_date date,
 
-    application_number varchar UNIQUE NOT NULL,
+    application_number varchar UNIQUE,
     application_date date NOT NULL,
     originating_system varchar NOT NULL,
-    received_timestamp timestamptz DEFAULT now() NOT NULL,
+    received_timestamp timestamptz,
     decision_timestamp timestamptz,
     decision_reason varchar,
 
