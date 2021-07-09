@@ -118,7 +118,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             type="primary"
             className="full-mobile"
             htmlType="submit"
-            disabled={this.state.submitting}
+            // disabled={this.state.submitting}
           >
             Issue Permit
           </Button>
