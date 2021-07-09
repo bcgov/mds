@@ -41,10 +41,6 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, explosives_permit):
-        # TODO: Remove, this is for testing only!
-        template_data['mine_manager_mine_party_appt_id'] = 4147517
-        template_data['permittee_mine_party_appt_id'] = 4147512
-
         def validate_issuing_inspector(explosives_permit):
             if not explosives_permit.issuing_inspector:
                 raise Exception('No Issuing Inspector has been assigned')
