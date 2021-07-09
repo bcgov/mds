@@ -342,8 +342,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             closed_reason=closed_reason,
             closed_timestamp=closed_timestamp,
             now_application_guid=now_application_guid)
+
         mine.explosives_permits.append(explosives_permit)
-        explosives_permit.save(commit=False)
+
         for magazine_data in explosive_magazines:
             magazine = ExplosivesPermitMagazine.create_from_data('EXP', magazine_data)
             explosives_permit.explosive_magazines.append(magazine)
@@ -353,16 +354,15 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             explosives_permit.detonator_magazines.append(magazine)
 
         for doc in documents:
+            explosives_permit_document_type_code = doc.get('explosives_permit_document_type_code')
             mine_doc = MineDocument(
                 mine_guid=mine.mine_guid,
                 document_name=doc.get('document_name'),
                 document_manager_guid=doc.get('document_manager_guid'))
-            # mine_doc.save(commit=False)
             explosives_permit_doc = ExplosivesPermitDocumentXref(
                 mine_document_guid=mine_doc.mine_document_guid,
                 explosives_permit_id=explosives_permit.explosives_permit_id,
-                explosives_permit_document_type_code=doc.get(
-                    'explosives_permit_document_type_code'))
+                explosives_permit_document_type_code=explosives_permit_document_type_code)
             explosives_permit_doc.mine_document = mine_doc
             explosives_permit.documents.append(explosives_permit_doc)
 

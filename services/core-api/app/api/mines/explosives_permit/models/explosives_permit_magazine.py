@@ -46,7 +46,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
             quantity=data.get('quantity'),
             distance_road=data.get('distance_road'),
             distance_dwelling=data.get('distance_dwelling'),
-            detonator_type=data.get('detonator_type') )
+            detonator_type=data.get('detonator_type'))
 
     def update(self,
                explosives_permit_magazine_type_code,
@@ -76,6 +76,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
         self.distance_road = distance_road
         self.distance_dwelling = distance_dwelling
         self.detonator_type = detonator_type
+
         if add_to_session:
             self.save(commit=False)
 
@@ -126,6 +127,7 @@ class ExplosivesPermitMagazine(SoftDeleteMixin, AuditMixin, Base):
             distance_road=distance_road,
             distance_dwelling=distance_dwelling,
             detonator_type=detonator_type)
+
         if add_to_session:
             explosives_permit_magazine.save(commit=False)
         return explosives_permit_magazine
