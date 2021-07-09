@@ -21,7 +21,7 @@ export const ViewMagazineModal = (props) => {
       : props.explosivesPermit?.detonator_magazines;
   const total =
     props.type === explosiveCode
-      ? `${props.explosivesPermit?.total_explosive_quantity || "0"} Kgs`
+      ? `${props.explosivesPermit?.total_explosive_quantity || "0"} kg`
       : `${props.explosivesPermit?.total_detonator_quantity || "0"} Units`;
   return (
     <div>
