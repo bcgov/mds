@@ -9,6 +9,7 @@ from sqlalchemy import and_
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.extensions import db
+from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
 from app.api.mines.explosives_permit.models.explosives_permit_magazine import ExplosivesPermitMagazine
 from app.api.mines.explosives_permit.models.explosives_permit_document_xref import ExplosivesPermitDocumentXref
 from app.api.mines.documents.models.mine_document import MineDocument
@@ -161,6 +162,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                explosive_magazines=[],
                detonator_magazines=[],
                documents=[],
+               letter_date=None,
+               letter_body=None,
                add_to_session=True):
 
         # Update simple properties.
@@ -175,15 +178,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         self.expiry_date = expiry_date
         self.latitude = latitude
         self.longitude = longitude
-
-        # Check for application status changes.
-        if application_status and application_status != 'REC':
-            # TODO: Generate both of the documents here.
-            if self.application_status == 'REC' and application_status == 'APP':
-                self.permit_number = ExplosivesPermit.get_next_permit_number()
-            self.application_status = application_status
-            self.decision_timestamp = datetime.utcnow()
-            self.decision_reason = decision_reason
 
         # Check for permit closed changes.
         self.is_closed = is_closed
@@ -247,6 +241,49 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     explosives_permit_document_type_code=explosives_permit_document_type_code)
                 explosives_permit_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_doc)
+
+        # Check for application status changes.
+        if application_status and self.application_status != application_status:
+
+            if application_status != 'REC':
+                self.decision_timestamp = datetime.utcnow()
+                self.decision_reason = decision_reason
+
+            if self.application_status == 'REC' and application_status == 'APP':
+                from app.api.document_generation.resources.explosives_permit_document import ExplosivesPermitDocumentResource
+                from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
+
+                def create_permit_enclosed_letter():
+                    template_data = {
+                        'letter_date': letter_date,
+                        'letter_body': letter_body,
+                        'is_draft': False
+                    }
+                    explosives_permit_document_type = ExplosivesPermitDocumentType.query.get('LET')
+                    template_data = explosives_permit_document_type.transform_template_data(
+                        template_data, self)
+                    token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
+                        explosives_permit_document_type.explosives_permit_document_type_code,
+                        self.explosives_permit_guid, template_data)
+                    letter_doc = ExplosivesPermitDocumentResource.generate_explosives_permit_document(
+                        token, True)
+
+                def create_issued_permit():
+                    template_data = {'is_draft': False}
+                    explosives_permit_document_type = ExplosivesPermitDocumentType.query.get('PER')
+                    template_data = explosives_permit_document_type.transform_template_data(
+                        template_data, self)
+                    token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
+                        explosives_permit_document_type.explosives_permit_document_type_code,
+                        self.explosives_permit_guid, template_data)
+                    permit_doc = ExplosivesPermitDocumentResource.generate_explosives_permit_document(
+                        token, True)
+
+                self.permit_number = ExplosivesPermit.get_next_permit_number()
+                create_permit_enclosed_letter()
+                create_issued_permit()
+
+            self.application_status = application_status
 
         if add_to_session:
             self.save(commit=False)

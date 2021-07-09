@@ -41,17 +41,6 @@ export class ExplosivesPermitDecisionForm extends Component {
         <Row gutter={48}>
           <Col span={24}>
             <Form.Item>
-              <PartySelectField
-                id="mine_operator_party_guid"
-                name="mine_operator_party_guid"
-                label="Mine Operator*"
-                placeholder="Start typing the Mine Operator's name"
-                partyLabel="Mine Operator"
-                validate={[required]}
-                allowAddingParties
-              />
-            </Form.Item>
-            <Form.Item>
               <Field
                 id="issuing_inspector_party_guid"
                 name="issuing_inspector_party_guid"

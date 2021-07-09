@@ -165,7 +165,7 @@ class DocumentTemplate(Base, AuditMixin):
                         break
 
         doc = None
-        if self.document_template_code in ('PMT', 'PMA', 'NPE', 'NCL', 'NWL', 'NRL'):
+        if self.document_template_code in ('PMT', 'PMA', 'NPE', 'NCL', 'NWL', 'NRL', 'ESP', 'ESL'):
             doc = docx.Document(self.os_template_file_path)
             insert_images(doc, template_data)
         elif self.document_template_code == 'NTR':

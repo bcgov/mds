@@ -54,6 +54,7 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
         explosives_permit_guid = token_data['explosives_permit_guid']
         explosives_permit = ExplosivesPermit.query.unbound_unsafe().get(explosives_permit_guid)
         template_data = token_data['template_data']
+
         # TODO: What do we want to prefix ESUP document names with?
         template_data['document_name_start_extra'] = explosives_permit.application_number
         docgen_resp = DocumentGeneratorService.generate_document(
@@ -68,7 +69,7 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
                 file_content=docgen_resp.content,
                 filename=filename,
                 mine=explosives_permit.mine,
-                document_category='explosives_permit',
+                document_category='explosives_permits',
                 authorization_header=token_data['authorization_header'])
 
             if not document_manager_guid:
@@ -84,11 +85,10 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
                 update_user=username)
             doc = ExplosivesPermitDocumentXref(
                 mine_document=mine_doc,
-                explosives_permit_document_type=explosives_permit_document_type,
-                explosives_permit_id=explosives_permit.explosives_permit_id,
-                create_user=username,
-                update_user=username)
+                explosives_permit_document_type_code=document_type_code,
+                explosives_permit_id=explosives_permit.explosives_permit_id)
             explosives_permit.documents.append(doc)
+            # TODO: This should be passed a "commit" param and be set accordingly depending on where this method is called.
             explosives_permit.save()
 
             explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(
