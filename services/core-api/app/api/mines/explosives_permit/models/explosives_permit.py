@@ -1,7 +1,6 @@
 from datetime import datetime
 from pytz import timezone
 
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.schema import FetchedValue
@@ -72,7 +71,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
     documents = db.relationship('ExplosivesPermitDocumentXref', lazy='select')
     mine_documents = db.relationship(
         'MineDocument',
-        lazy='joined',
+        lazy='select',
         secondary='explosives_permit_document_xref',
         secondaryjoin=
         'and_(foreign(ExplosivesPermitDocumentXref.mine_document_guid) == remote(MineDocument.mine_document_guid), MineDocument.deleted_ind == False)'
@@ -225,9 +224,9 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         # Delete deleted documents.
         for doc in self.documents:
-            if doc.mine_document_guid not in updated_document_guids:
+            if str(doc.mine_document_guid) not in updated_document_guids:
+                self.mine_documents.remove(doc.mine_document)
                 doc.mine_document.delete(commit=False)
-                doc.save(commit=False)
 
         # Create or update existing documents.
         for doc in documents:
