@@ -179,7 +179,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         # Check for application status changes.
         if application_status and application_status != 'REC':
             # TODO: Generate both of the documents here.
-            if self.application_status == 'REV' and application_status == 'APP':
+            if self.application_status == 'REC' and application_status == 'APP':
                 self.permit_number = ExplosivesPermit.get_next_permit_number()
             self.application_status = application_status
             self.decision_timestamp = datetime.utcnow()
@@ -230,23 +230,21 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
         # Create or update existing documents.
         for doc in documents:
+            explosives_permit_document_type_code = doc.get('explosives_permit_document_type_code')
             mine_document_guid = doc.get('mine_document_guid')
             if mine_document_guid:
                 explosives_permit_doc = ExplosivesPermitDocumentXref.find_by_mine_document_guid(
                     mine_document_guid)
-                explosives_permit_doc.explosives_permit_document_type_code = doc.get(
-                    'explosives_permit_document_type_code')
+                explosives_permit_doc.explosives_permit_document_type_code = explosives_permit_document_type_code
             else:
                 mine_doc = MineDocument(
                     mine_guid=self.mine_guid,
                     document_name=doc.get('document_name'),
                     document_manager_guid=doc.get('document_manager_guid'))
-                # mine_doc.save(commit=False)
                 explosives_permit_doc = ExplosivesPermitDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     explosives_permit_id=self.explosives_permit_id,
-                    explosives_permit_document_type_code=doc.get(
-                        'explosives_permit_document_type_code'))
+                    explosives_permit_document_type_code=explosives_permit_document_type_code)
                 explosives_permit_doc.mine_document = mine_doc
                 self.documents.append(explosives_permit_doc)
 
