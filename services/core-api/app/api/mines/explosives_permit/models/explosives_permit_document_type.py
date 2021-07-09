@@ -136,9 +136,8 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                 issue_date = explosives_permit.issue_date
                 expiry_date = explosives_permit.expiry_date
 
-            # TODO: Format dates
-            template_data['issue_date'] = issue_date
-            template_data['expiry_date'] = expiry_date
+            template_data['issue_date'] = format_letter_date(issue_date)
+            template_data['expiry_date'] = format_letter_date(expiry_date)
 
             def transform_magazines(magazines):
                 def get_type_label(magazine):
@@ -169,9 +168,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
 
         # Transform template data for "Explosives Storage and Use Permit Letter" (LET)
         def transform_letter(template_data, explosives_permit):
-
-            # TODO: Format dates
-            # template_data['letter_date'] = format_letter_date(template_data['letter_date'])
+            template_data['letter_date'] = format_letter_date(template_data['letter_date'])
 
             return template_data
 

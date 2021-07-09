@@ -6,13 +6,14 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
 from datetime import datetime
+import dateutil.parser
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 
 
 def format_letter_date(datetime_string):
-    datetime_object = datetime.strptime(datetime_string, '%Y-%m-%d')
+    datetime_object = dateutil.parser.isoparse(datetime_string)
     return datetime_object.strftime('%b %d %Y')
 
 
