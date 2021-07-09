@@ -82,7 +82,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
         if new_description:
             xref.description = new_description
 
-        if is_final_package:
+        if is_final_package is not None:
             xref.is_final_package = is_final_package
 
         if xref.is_final_package:
