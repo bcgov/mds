@@ -16,7 +16,10 @@ import {
   setMineVerifiedStatus,
   fetchMineVerifiedStatuses,
 } from "@common/actionCreators/mineActionCreator";
-import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
+import {
+  fetchPartyRelationships,
+  fetchAllPartyRelationships,
+} from "@common/actionCreators/partiesActionCreator";
 import { fetchVariancesByMine } from "@common/actionCreators/varianceActionCreator";
 import { fetchMineComplianceInfo } from "@common/actionCreators/complianceActionCreator";
 import { getUserInfo } from "@common/selectors/authenticationSelectors";
@@ -62,6 +65,7 @@ const propTypes = {
   subscribe: PropTypes.func.isRequired,
   unSubscribe: PropTypes.func.isRequired,
   fetchPartyRelationships: PropTypes.func.isRequired,
+  fetchAllPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
@@ -161,6 +165,12 @@ export class MineDashboard extends Component {
       this.props.fetchPermits(mine.mine_guid);
       this.props.fetchExplosivesPermits(mine.mine_guid);
       this.props.fetchMineComplianceInfo(mine.mine_no, true);
+      this.props.fetchAllPartyRelationships({
+        mine_guid: id,
+        relationships: "party",
+        include_permit_contacts: "true",
+        active_only: "false",
+      });
       this.props
         .fetchPartyRelationships({
           mine_guid: id,
@@ -381,6 +391,7 @@ const mapDispatchToProps = (dispatch) =>
       createTailingsStorageFacility,
       removeMineType,
       fetchPartyRelationships,
+      fetchAllPartyRelationships,
       fetchMineComplianceInfo,
       fetchSubscribedMinesByUser,
       unSubscribe,

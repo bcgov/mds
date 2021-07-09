@@ -19,7 +19,10 @@ import {
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
+import {
+  getPartyRelationships,
+  getAllPartyRelationships,
+} from "@common/selectors/partiesSelectors";
 import * as FORM from "@/constants/forms";
 import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import { getPermits } from "@common/selectors/permitSelectors";
@@ -40,6 +43,7 @@ const propTypes = {
   permits: PropTypes.arrayOf(CustomPropTypes.permit).isRequired,
   formValues: CustomPropTypes.explosivesPermit.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
+  allPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   mines_permit_guid: PropTypes.string,
 };
 
@@ -71,10 +75,11 @@ const validateBusinessRules = (values) => {
 };
 
 export const ExplosivesPermitForm = (props) => {
-  const mineManagers = props.partyRelationships.filter(
+  const partiesData = props.isPermitTab ? props.allPartyRelationships : props.partyRelationships;
+  const mineManagers = partiesData.filter(
     ({ mine_party_appt_type_code }) => mine_party_appt_type_code === "MMG"
   );
-  const permittee = props.partyRelationships.filter(
+  const permittee = partiesData.filter(
     ({ mine_party_appt_type_code, related_guid }) =>
       mine_party_appt_type_code === "PMT" && related_guid === props.mines_permit_guid
   );
@@ -362,6 +367,7 @@ const mapStateToProps = (state) => ({
   mines_permit_guid: selector(state, "permit_guid"),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT)(state),
   partyRelationships: getPartyRelationships(state),
+  allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
 });
 
