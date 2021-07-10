@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { Field, getFormValues } from "redux-form";
+import { Link } from "react-router-dom";
 import { Row, Col, Alert, Button } from "antd";
 import { requiredRadioButton, required } from "@common/utils/Validate";
 import { connect } from "react-redux";
@@ -13,12 +14,15 @@ import RenderCheckbox from "@/components/common/RenderCheckbox";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
   blastingFormValues: PropTypes.objectOf(CustomPropTypes.blasting).isRequired,
+  isNewPermit: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 export const Blasting = (props) => {
@@ -333,18 +337,29 @@ export const Blasting = (props) => {
         </>
       )}
       {props.blastingFormValues.has_storage_explosive_on_site &&
-        !props.blastingFormValues.explosive_permit_issued && (
+        !props.blastingFormValues.explosive_permit_issued &&
+        props.blastingFormValues.explosive_permit_issued !== undefined && (
           <Alert
             message="Explosives Storage & Use Permit"
             description={
               <>
                 An Explosives Storage & Use Permit is required as indicated by the information
                 provided.
+                {props.isNewPermit &&
+                  " A Mines Act Permit must be issued before creating an Explosives Storage and Use Permit Application."}
                 <div className={expanded ? "block" : "hidden"}>
                   <ol>
-                    <li>Navigate to the Mine Record</li>
-                    <li>Click On Permits and Approvals</li>
-                    <li>Click on Applications</li>
+                    <li>
+                      Navigate to the `Permits & Approvals` tab on the{" "}
+                      <Link
+                        to={router.MINE_NOW_APPLICATIONS.dynamicRoute(props.mineGuid)}
+                        title="Mine"
+                      >
+                        Mine Record
+                      </Link>
+                    </li>
+                    {/* <li>Click On Permits and Approvals</li>
+                    <li>Click on Applications</li> */}
                     <li>Select Explosives Storage & Use Permit Applications</li>
                     <li>Click `Add Explosives Storage & Use Permit Application`</li>
                   </ol>
