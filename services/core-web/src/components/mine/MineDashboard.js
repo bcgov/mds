@@ -34,6 +34,7 @@ import MineNavigation from "@/components/mine/MineNavigation";
 import Loading from "@/components/common/Loading";
 import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
+import { fetchMineNoticeOfWorkApplications } from "@common/actionCreators/noticeOfWorkActionCreator";
 import { fetchExplosivesPermits } from "@common/actionCreators/explosivesPermitActionCreator";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import MineDashboardRoutes from "@/routes/MineDashboardRoutes";
@@ -68,6 +69,7 @@ const propTypes = {
   fetchAllPartyRelationships: PropTypes.func.isRequired,
   fetchMineComplianceInfo: PropTypes.func.isRequired,
   fetchVariancesByMine: PropTypes.func.isRequired,
+  fetchMineNoticeOfWorkApplications: PropTypes.func.isRequired,
   setMineVerifiedStatus: PropTypes.func.isRequired,
   fetchMineVerifiedStatuses: PropTypes.func.isRequired,
   fetchExplosivesPermits: PropTypes.func.isRequired,
@@ -87,6 +89,7 @@ export class MineDashboard extends Component {
     this.handleActiveButton(this.props.location.pathname);
     this.loadMineData(id);
     this.props.fetchSubscribedMinesByUser();
+    this.props.fetchMineNoticeOfWorkApplications({ mine_guid: id });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -394,6 +397,7 @@ const mapDispatchToProps = (dispatch) =>
       fetchAllPartyRelationships,
       fetchMineComplianceInfo,
       fetchSubscribedMinesByUser,
+      fetchMineNoticeOfWorkApplications,
       unSubscribe,
       subscribe,
       fetchPermits,
