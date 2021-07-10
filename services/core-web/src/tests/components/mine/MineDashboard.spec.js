@@ -30,6 +30,8 @@ const setupDispatchProps = () => {
   dispatchProps.fetchVarianceStatusOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineReportDefinitionOptions = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineReportStatusOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchAllPartyRelationships = jest.fn(() => Promise.resolve());
 };
 
 const setupReducerProps = () => {
