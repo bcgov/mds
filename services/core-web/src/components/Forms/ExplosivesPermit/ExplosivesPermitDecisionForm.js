@@ -31,6 +31,7 @@ const defaultProps = {
 };
 
 export class ExplosivesPermitDecisionForm extends Component {
+  state = { isPreviewingLetter: false, isPreviewingPermit: false };
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
@@ -88,16 +89,28 @@ export class ExplosivesPermitDecisionForm extends Component {
           <Button
             className="full-mobile"
             type="secondary"
-            onClick={() => this.props.previewDocument("LET", this.props.formValues)}
+            onClick={() => {
+              this.setState({ isPreviewingLetter: true });
+              this.props
+                .previewDocument("LET", this.props.formValues)
+                .finally(() => this.setState({ isPreviewingLetter: false }));
+            }}
             disabled={this.props.submitting}
+            loading={this.state.isPreviewingLetter}
           >
             Preview Letter
           </Button>
           <Button
             className="full-mobile"
             type="secondary"
-            onClick={() => this.props.previewDocument("PER", this.props.formValues)}
+            onClick={() => {
+              this.setState({ isPreviewingPermit: true });
+              this.props
+                .previewDocument("PER", this.props.formValues)
+                .finally(() => this.setState({ isPreviewingPermit: false }));
+            }}
             disabled={this.props.submitting}
+            loading={this.state.isPreviewingPermit}
           >
             Preview Permit Certificate
           </Button>
