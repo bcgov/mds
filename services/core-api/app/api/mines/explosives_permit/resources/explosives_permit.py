@@ -14,76 +14,135 @@ from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesP
 
 class ExplosivesPermitResource(Resource, UserMixin):
     parser = CustomReqparser()
-    parser.add_argument('permit_guid', type=str, store_missing=False, required=False, help='')
     parser.add_argument(
-        'now_application_guid', type=str, store_missing=False, required=False, help='')
+        'permit_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
+        'now_application_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'mine_manager_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+        'issuing_inspector_party_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'permittee_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+        'mine_manager_mine_party_appt_id',
+        type=int,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'application_status', type=str, store_missing=False, required=False, help='')
+        'permittee_mine_party_appt_id',
+        type=int,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'application_status',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
         'issue_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'expiry_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
-    parser.add_argument('decision_reason', type=str, store_missing=False, required=False, help='')
+    )
     parser.add_argument(
-        'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
-    parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
+        'decision_reason',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'is_closed',
+        type=inputs.boolean,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'closed_reason',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
         'closed_timestamp',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
-    parser.add_argument('description', type=str, store_missing=False, required=False, help='')
+    )
+    parser.add_argument(
+        'description',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
         'application_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'explosive_magazines',
         type=list,
         location='json',
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'detonator_magazines',
         type=list,
         location='json',
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
-        'documents', type=list, location='json', store_missing=False, required=False, help='')
-    parser.add_argument('letter_date', type=str, store_missing=False, required=False, help='')
-    parser.add_argument('letter_body', type=str, store_missing=False, required=False, help='')
+        'documents',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'letter_date',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'letter_body',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get an Explosives Permit.',
@@ -141,6 +200,5 @@ class ExplosivesPermitResource(Resource, UserMixin):
         if explosives_permit is None:
             raise NotFound('Explosives Permit not found')
 
-        # TODO: Finish implementing delete
         explosives_permit.delete()
         return None, 204

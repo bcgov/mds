@@ -14,73 +14,123 @@ from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesP
 class ExplosivesPermitListResource(Resource, UserMixin):
 
     parser = CustomReqparser()
-    parser.add_argument('permit_guid', type=str, store_missing=False, required=True, help='')
     parser.add_argument(
-        'now_application_guid', type=str, store_missing=False, required=False, help='')
-    parser.add_argument('originating_system', type=str, store_missing=False, required=True, help='')
+        'permit_guid',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
+    parser.add_argument(
+        'now_application_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'originating_system',
+        type=str,
+        store_missing=False,
+        required=True,
+    )
     parser.add_argument(
         'latitude',
         type=lambda x: Decimal(x) if x else None,
         store_missing=False,
         required=True,
-        help='')
+    )
     parser.add_argument(
         'longitude',
         type=lambda x: Decimal(x) if x else None,
         store_missing=False,
         required=True,
-        help='')
+    )
     parser.add_argument(
         'application_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=True,
-        help='')
+    )
     parser.add_argument(
         'explosive_magazines',
         type=list,
         location='json',
         store_missing=False,
         required=False,
-        help='')
-    parser.add_argument('description', type=str, store_missing=False, required=False, help='')
+    )
     parser.add_argument(
-        'issuing_inspector_party_guid', type=str, store_missing=False, required=False, help='')
+        'description',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'mine_manager_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+        'issuing_inspector_party_guid',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'permittee_mine_party_appt_id', type=int, store_missing=False, required=False, help='')
+        'mine_manager_mine_party_appt_id',
+        type=int,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
-        'is_closed', type=inputs.boolean, store_missing=False, required=False, help='')
-    parser.add_argument('closed_reason', type=str, store_missing=False, required=False, help='')
+        'permittee_mine_party_appt_id',
+        type=int,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'is_closed',
+        type=inputs.boolean,
+        store_missing=False,
+        required=False,
+    )
+    parser.add_argument(
+        'closed_reason',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
         'closed_timestamp',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'issue_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
         'expiry_date',
         type=lambda x: inputs.datetime_from_iso8601(x) if x else None,
         store_missing=False,
         required=False,
-        help='')
-    parser.add_argument('permit_number', type=str, store_missing=False, required=False, help='')
+    )
+    parser.add_argument(
+        'permit_number',
+        type=str,
+        store_missing=False,
+        required=False,
+    )
     parser.add_argument(
         'detonator_magazines',
         type=list,
         location='json',
         store_missing=False,
         required=False,
-        help='')
+    )
     parser.add_argument(
-        'documents', type=list, location='json', store_missing=False, required=False, help='')
+        'documents',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
 
     @api.doc(
         description='Get a list of all Explosives Permits for a given mine.',
@@ -100,7 +150,7 @@ class ExplosivesPermitListResource(Resource, UserMixin):
         params={'mine_guid': 'The GUID of the mine to create the Explosives Permit for.'})
     @api.expect(parser)
     @requires_role_edit_explosives_permit
-    @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=200)
+    @api.marshal_with(EXPLOSIVES_PERMIT_MODEL, code=201)
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if mine is None:
@@ -126,4 +176,4 @@ class ExplosivesPermitListResource(Resource, UserMixin):
                                                     data.get('now_application_guid'))
         explosives_permit.save()
 
-        return explosives_permit
+        return explosives_permit, 201
