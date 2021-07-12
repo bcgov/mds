@@ -57,6 +57,9 @@ import {
   getTSFOperatingStatusCodeDropdownOptions,
   getConsequenceClassificationStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeDropdownOptions,
+  getExplosivesPermitDocumentType,
+  getExplosivesPermitStatus,
+  getExplosivesPermitMagazineType,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -367,5 +370,23 @@ describe("staticContentSelectors", () => {
 
   it("`getTSFOperatingStatusCodeOptionsHash` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
     expect(getTSFOperatingStatusCodeOptionsHash(mockState)).toEqual(Mock.TSF_OPERATING_STATUS_HASH);
+  });
+
+  it("`getExplosivesPermitDocumentType` calls `staticContentReducer.getExplosivesPermitDocumentType`", () => {
+    expect(getExplosivesPermitDocumentType(mockState)).toEqual(
+      mockState[STATIC_CONTENT].explosivesPermitDocumentType
+    );
+  });
+
+  it("`getExplosivesPermitStatus` calls `staticContentReducer.getExplosivesPermitStatus`", () => {
+    expect(getExplosivesPermitStatus(mockState)).toEqual(
+      mockState[STATIC_CONTENT].explosivesPermitStatus
+    );
+  });
+
+  it("`getExplosivesPermitMagazineType` calls `staticContentReducer.getExplosivesPermitMagazineType`", () => {
+    expect(getExplosivesPermitMagazineType(mockState)).toEqual(
+      mockState[STATIC_CONTENT].explosivesPermitMagazineType
+    );
   });
 });
