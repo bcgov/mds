@@ -16,6 +16,7 @@ This file describes how to run the project and develop against it.
 - On Windows, note the following:
   - If containers are not working, they may not be enabled, enabling them in docker settings and restarting the machine fixes this
   - Drive sharing is disabled by default, make sure to share your local drive in docker settings
+  - The make commands have to be run through powershell or cmd. Bash on Windows will not function as expected
 
 ### Setting up local development
 
@@ -47,6 +48,7 @@ execute the following commands:
 
 ```
 $ make clean
+$ chmod +x settings/keycloak/keycloak-local-user.sh
 $ make keycloak
 $ make backend
 $ make keycloak-user
@@ -54,7 +56,7 @@ $ make generate-rand100
 ```
 
 The backend is now running and seeded with random data. Run the following
-commands from within the `/frontend` directory to initialize the frontend:
+commands from within the `/services/core-web` directory to initialize the frontend:
 
 ```
 $ npm ci
