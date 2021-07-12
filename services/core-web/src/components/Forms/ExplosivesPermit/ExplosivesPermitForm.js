@@ -104,7 +104,6 @@ export const ExplosivesPermitForm = (props) => {
   );
 
   const isHistoric = !props.initialValues?.explosives_permit_id && props.isPermitTab;
-  console.log(props.isProcessed);
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {isHistoric && (
