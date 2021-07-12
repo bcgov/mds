@@ -2,19 +2,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { compose, bindActionCreators } from "redux";
-import { Field, reduxForm, change, formValueSelector, getFormValues } from "redux-form";
+import { compose } from "redux";
+import { Field, reduxForm, getFormValues, isSubmitting } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
-import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { required } from "@common/utils/Validate";
-import { resetForm, createDropDownList } from "@common/utils/helpers";
+import { resetForm } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
-import PartySelectField from "@/components/common/PartySelectField";
 import * as FORM from "@/constants/forms";
-import { getPermits } from "@common/selectors/permitSelectors";
 import { getGenerateDocumentFormField } from "@/components/common/GenerateDocumentFormField";
 
 const propTypes = {
@@ -26,12 +23,11 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   initialValues: CustomPropTypes.explosivesPermit.isRequired,
   formValues: CustomPropTypes.explosivesPermit.isRequired,
-  change: PropTypes.func,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   initialValues: {},
-  change,
 };
 
 export class ExplosivesPermitDecisionForm extends Component {
@@ -69,7 +65,6 @@ export class ExplosivesPermitDecisionForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
-
             {this.props.documentType.document_template.form_spec
               .filter((field) => !field["read-only"])
               .map((field) => (
@@ -84,8 +79,9 @@ export class ExplosivesPermitDecisionForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button className="full-mobile" type="secondary">
+            <Button className="full-mobile" type="secondary" disabled={this.props.submitting}>
               Cancel
             </Button>
           </Popconfirm>
@@ -93,6 +89,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             className="full-mobile"
             type="secondary"
             onClick={() => this.props.previewDocument("LET", this.props.formValues)}
+            disabled={this.props.submitting}
           >
             Preview Letter
           </Button>
@@ -100,6 +97,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             className="full-mobile"
             type="secondary"
             onClick={() => this.props.previewDocument("PER", this.props.formValues)}
+            disabled={this.props.submitting}
           >
             Preview Permit Certificate
           </Button>
@@ -107,7 +105,7 @@ export class ExplosivesPermitDecisionForm extends Component {
             type="primary"
             className="full-mobile"
             htmlType="submit"
-            // disabled={this.state.submitting}
+            loading={this.props.submitting}
           >
             Issue Permit
           </Button>
@@ -120,24 +118,13 @@ export class ExplosivesPermitDecisionForm extends Component {
 ExplosivesPermitDecisionForm.propTypes = propTypes;
 ExplosivesPermitDecisionForm.defaultProps = defaultProps;
 
-const selector = formValueSelector(FORM.EXPLOSIVES_PERMIT_DECISION);
-
 const mapStateToProps = (state) => ({
-  permits: getPermits(state),
-  noticeOfWorkApplications: getNoticeOfWorkList(state),
+  submitting: isSubmitting(FORM.EXPLOSIVES_PERMIT_DECISION)(state),
   formValues: getFormValues(FORM.EXPLOSIVES_PERMIT_DECISION)(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      change,
-    },
-    dispatch
-  );
-
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps),
   reduxForm({
     form: FORM.EXPLOSIVES_PERMIT_DECISION,
     touchOnBlur: true,

@@ -38,7 +38,11 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
             token, return_record, is_preview)
 
     @classmethod
-    def generate_explosives_permit_document(cls, token, return_record, is_preview=False):
+    def generate_explosives_permit_document(cls,
+                                            token,
+                                            return_record,
+                                            is_preview=False,
+                                            commit=True):
         # Ensure that the token is valid
         token_data = cache.get(EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token))
         cache.delete(EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token))
@@ -55,7 +59,6 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
         explosives_permit = ExplosivesPermit.query.unbound_unsafe().get(explosives_permit_guid)
         template_data = token_data['template_data']
 
-        # TODO: What do we want to prefix ESUP document names with?
         template_data['document_name_start_extra'] = explosives_permit.application_number
         docgen_resp = DocumentGeneratorService.generate_document(
             explosives_permit_document_type.document_template, template_data)
@@ -88,11 +91,8 @@ class ExplosivesPermitDocumentResource(Resource, UserMixin):
                 explosives_permit_document_type_code=document_type_code,
                 explosives_permit_id=explosives_permit.explosives_permit_id)
             explosives_permit.documents.append(doc)
-            # TODO: This should be passed a "commit" param and be set accordingly depending on where this method is called.
-            explosives_permit.save()
+            explosives_permit.save(commit)
 
-            explosives_permit = ExplosivesPermit.find_by_explosives_permit_guid(
-                explosives_permit_guid)
             explosives_permit_document_type.after_template_generated(template_data, doc,
                                                                      explosives_permit)
 

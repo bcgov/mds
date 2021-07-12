@@ -132,8 +132,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             return party.name
         return None
 
-    # TODO: Add validation on application date for not being in the future.
-
     @validates('originating_system')
     def validate_originating_system(self, key, val):
         if val not in ORIGINATING_SYSTEMS:
@@ -141,7 +139,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 f'Originating system must be one of: {"".join(ORIGINATING_SYSTEMS, ", ")}')
         return val
 
-    # TODO: Ensure that this method is transactional with its created/updated/deleted relationships.
     def update(self,
                permit_guid,
                now_application_guid,
@@ -255,6 +252,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
 
                 def create_permit_enclosed_letter():
                     mine = self.mine
+                    # TODO: Implement a method in the document type to automatically get all read-only context values.
                     template_data = {
                         'letter_date': letter_date,
                         'letter_body': letter_body,
@@ -274,8 +272,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_guid, template_data)
-                    letter_doc = ExplosivesPermitDocumentResource.generate_explosives_permit_document(
-                        token, True)
+                    return ExplosivesPermitDocumentResource.generate_explosives_permit_document(
+                        token, True, False, False)
 
                 def create_issued_permit():
                     template_data = {'is_draft': False}
@@ -286,8 +284,8 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                     token = ExplosivesPermitDocumentGenerateResource.get_explosives_document_generate_token(
                         explosives_permit_document_type.explosives_permit_document_type_code,
                         self.explosives_permit_guid, template_data)
-                    permit_doc = ExplosivesPermitDocumentResource.generate_explosives_permit_document(
-                        token, True)
+                    return ExplosivesPermitDocumentResource.generate_explosives_permit_document(
+                        token, True, False, False)
 
                 self.permit_number = ExplosivesPermit.get_next_permit_number()
                 create_permit_enclosed_letter()
@@ -327,7 +325,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
             cls.application_status == 'APP').count()
         return f'{prefix}{base + total}'
 
-    # TODO: Ensure that this method is transactional with its created relationships.
     @classmethod
     def create(cls,
                mine,
@@ -356,7 +353,6 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
         received_timestamp = None
         if originating_system == 'MMS':
             application_status = 'APP'
-            # TODO: ensure permit_number does not conflict with the auto-generated permit numbers.
         else:
             application_status = 'REC'
             application_number = ExplosivesPermit.get_next_application_number()
