@@ -60,6 +60,12 @@ import {
   getExplosivesPermitDocumentType,
   getExplosivesPermitStatus,
   getExplosivesPermitMagazineType,
+  getExplosivesPermitDocumentTypeOptionsHash,
+  getExplosivesPermitDocumentTypeDropdownOptions,
+  getExplosivesPermitStatusDropdownOptions,
+  getExplosivesPermitStatusOptionsHash,
+  getExplosivesPermitMagazineTypeDropdownOptions,
+  getExplosivesPermitMagazineTypeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { STATIC_CONTENT } from "@common/constants/reducerTypes";
 import * as Mock from "@/tests/mocks/dataMocks";
@@ -387,6 +393,42 @@ describe("staticContentSelectors", () => {
   it("`getExplosivesPermitMagazineType` calls `staticContentReducer.getExplosivesPermitMagazineType`", () => {
     expect(getExplosivesPermitMagazineType(mockState)).toEqual(
       mockState[STATIC_CONTENT].explosivesPermitMagazineType
+    );
+  });
+
+  it("`getExplosivesPermitDocumentTypeDropdownOptions` calls `staticContentReducer.getExplosivesPermitDocumentTypeDropdownOptions`", () => {
+    expect(getExplosivesPermitDocumentTypeDropdownOptions(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS
+    );
+  });
+
+  it("`getExplosivesPermitDocumentTypeOptionsHash` calls `staticContentReducer.getExplosivesPermitDocumentTypeOptionsHash`", () => {
+    expect(getExplosivesPermitDocumentTypeOptionsHash(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS_HASH
+    );
+  });
+
+  it("`getExplosivesPermitStatusDropdownOptions` calls `staticContentReducer.getExplosivesPermitStatusDropdownOptions`", () => {
+    expect(getExplosivesPermitStatusDropdownOptions(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_STATUS_OPTIONS
+    );
+  });
+
+  it("`getExplosivesPermitStatusOptionsHash` calls `staticContentReducer.getExplosivesPermitStatusOptionsHash`", () => {
+    expect(getExplosivesPermitStatusOptionsHash(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_STATUS_OPTIONS_HASH
+    );
+  });
+
+  it("`getExplosivesPermitMagazineTypeDropdownOptions` calls `staticContentReducer.getExplosivesPermitMagazineTypeDropdownOptions`", () => {
+    expect(getExplosivesPermitMagazineTypeDropdownOptions(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS
+    );
+  });
+
+  it("`getExplosivesPermitMagazineTypeOptionsHash` calls `staticContentReducer.getExplosivesPermitMagazineTypeOptionsHash`", () => {
+    expect(getExplosivesPermitMagazineTypeOptionsHash(mockState)).toEqual(
+      Mock.EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS_HASH
     );
   });
 });
