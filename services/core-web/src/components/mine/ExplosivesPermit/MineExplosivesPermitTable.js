@@ -24,10 +24,6 @@ import { CoreTooltip } from "@/components/common/CoreTooltip";
 const propTypes = {
   data: PropTypes.arrayOf(CustomPropTypes.explosivesPermit),
   isLoaded: PropTypes.bool.isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string,
-    search: PropTypes.string,
-  }).isRequired,
   onExpand: PropTypes.func.isRequired,
   expandedRowKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   handleOpenExplosivesPermitDecisionModal: PropTypes.func.isRequired,
