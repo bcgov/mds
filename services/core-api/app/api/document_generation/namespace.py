@@ -1,6 +1,6 @@
 from flask_restplus import Namespace
-from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
-from app.api.document_generation.resources.explosives_permit_document import ExplosivesPermitDocumentResource
+from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
+from app.api.document_generation.resources.explosives_permit_document_resource import ExplosivesPermitDocumentResource
 
 api = Namespace('documents', description='Generate documents for business objects.')
 

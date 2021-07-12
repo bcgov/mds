@@ -247,7 +247,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 self.decision_reason = decision_reason
 
             if self.application_status == 'REC' and application_status == 'APP':
-                from app.api.document_generation.resources.explosives_permit_document import ExplosivesPermitDocumentResource
+                from app.api.document_generation.resources.explosives_permit_document_resource import ExplosivesPermitDocumentResource
                 from app.api.mines.explosives_permit.resources.explosives_permit_document_type import ExplosivesPermitDocumentGenerateResource
 
                 def create_permit_enclosed_letter():
