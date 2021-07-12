@@ -25,7 +25,6 @@ class MineVarianceUploadedDocumentsResource(Resource, UserMixin):
         if mine_document not in variance.mine_documents:
             raise NotFound('Mine document not found on variance.')
 
-        # TODO: This removes the xref record but does NOT set the deleted_ind to True for the mine_document, when it probably should.
         variance.mine_documents.remove(mine_document)
         variance.save()
 
