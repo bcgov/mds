@@ -199,7 +199,7 @@ class ExplosivesPermit(SoftDeleteMixin, AuditMixin, Base):
                 if magazine.explosives_permit_magazine_id not in updated_magazines_ids:
                     magazine.delete(commit=False)
 
-            # Create or update existing explosive magazines.
+            # Create or update existing magazines.
             for magazine_data in updated_magazines:
                 explosives_permit_magazine_id = magazine_data.get('explosives_permit_magazine_id')
                 if explosives_permit_magazine_id:

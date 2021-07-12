@@ -13,8 +13,6 @@ CREATE TABLE IF NOT EXISTS explosives_permit_status (
 
 ALTER TABLE explosives_permit_status OWNER TO mds;
 
--- ALTER TABLE mine_party_appt ADD CONSTRAINT mine_party_appt_mine_party_appt_guid_key UNIQUE (mine_party_appt_guid);
-
 CREATE TABLE IF NOT EXISTS explosives_permit (
     explosives_permit_guid uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     explosives_permit_id serial UNIQUE NOT NULL,
