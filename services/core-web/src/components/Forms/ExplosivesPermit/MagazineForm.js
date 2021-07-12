@@ -44,8 +44,13 @@ export class MagazineForm extends Component {
           okText="Yes"
           cancelText="No"
         >
-          <Button ghost>
-            <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+          <Button ghost disabled={this.props.isApproved}>
+            <img
+              name="remove"
+              className={this.props.isApproved ? "disabled-icon" : ""}
+              src={TRASHCAN}
+              alt="Remove Activity"
+            />
           </Button>
         </Popconfirm>
       </div>
