@@ -5029,17 +5029,17 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
   ],
   explosivesPermitDocumentType: [
     {
-      explosives_permit_ducument_type_code: "PER",
+      explosives_permit_document_type_code: "PER",
       description: "Explosives Storage and Use Permit",
       active_ind: true,
     },
     {
-      explosives_permit_ducument_type_code: "LET",
+      explosives_permit_document_type_code: "LET",
       description: "Explosives Storage and Use Permit Letter",
       active_ind: true,
     },
     {
-      explosives_permit_ducument_type_code: "BLA",
+      explosives_permit_document_type_code: "BLA",
       description: "Blasting Plan",
       active_ind: true,
     },
@@ -5958,6 +5958,62 @@ export const TSF_OPERATING_STATUS_HASH = {
   OPT: "Operating",
   CLO: "Closed",
   CAM: "Inactive (C&M)",
+};
+
+export const EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS = [
+  { value: "BLA", label: "Blasting Plan", subType: null, isActive: true },
+  { value: "PER", label: "Explosives Storage and Use Permit", subType: null, isActive: true },
+  {
+    value: "LET",
+    label: "Explosives Storage and Use Permit Letter",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS_HASH = {
+  PER: "Explosives Storage and Use Permit",
+  LET: "Explosives Storage and Use Permit Letter",
+  BLA: "Blasting Plan",
+};
+
+export const EXPLOSIVES_PERMIT_STATUS_OPTIONS = [
+  { value: "APP", label: "Approved", subType: null, isActive: true },
+  {
+    value: "REC",
+    label: "Received",
+    subType: null,
+    isActive: true,
+  },
+  { value: "REJ", label: "Rejected", subType: null, isActive: true },
+  {
+    value: "WIT",
+    label: "Withdrawn",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const EXPLOSIVES_PERMIT_STATUS_OPTIONS_HASH = {
+  APP: "Approved",
+  REJ: "Rejected",
+  WIT: "Withdrawn",
+  REC: "Received",
+};
+
+export const EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS = [
+  {
+    value: "DET",
+    label: "Detonator Magazine",
+    subType: null,
+    isActive: true,
+  },
+  { value: "EXP", label: "Explosives Magazine", subType: null, isActive: true },
+];
+
+export const EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS_HASH = {
+  EXP: "Explosives Magazine",
+  DET: "Detonator Magazine",
 };
 
 export const EXPLOSIVES_PERMITS = {

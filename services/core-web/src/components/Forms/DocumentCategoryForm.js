@@ -1,14 +1,13 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { remove } from "lodash";
-import { compose, bindActionCreators } from "redux";
-import { Col, Row, Popconfirm, Button } from "antd";
+import { bindActionCreators } from "redux";
+import { Col, Row, Popconfirm } from "antd";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Field, FieldArray, change, formValueSelector, getFormValues, arrayPush } from "redux-form";
-import { required, maxLength, dateNotInFuture, number, lat, lon } from "@common/utils/Validate";
+import { Field, FieldArray, change, formValueSelector, arrayPush } from "redux-form";
+import { required } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import { TRASHCAN } from "@/constants/assets";
 import * as FORM from "@/constants/forms";
@@ -20,6 +19,9 @@ const propTypes = {
   documents: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
   categories: PropTypes.arrayOf(CustomPropTypes.options).isRequired,
   isApproved: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
+  change: PropTypes.func.isRequired,
+  arrayPush: PropTypes.func.isRequired,
 };
 
 export class DocumentCategoryForm extends Component {
@@ -42,6 +44,7 @@ export class DocumentCategoryForm extends Component {
         {fields.map((field, index) => {
           const documentExists = fields.get(index) && fields.get(index).mine_document_guid;
           return (
+            // eslint-disable-next-line react/no-array-index-key
             <div className="padding-sm margin-small" key={index}>
               <Row gutter={16}>
                 <Col span={10}>
@@ -84,7 +87,7 @@ export class DocumentCategoryForm extends Component {
                         fields.remove(index);
                       }}
                     >
-                      <button ghost>
+                      <button ghost type="button">
                         <img name="remove" src={TRASHCAN} alt="Remove Document" />
                       </button>
                     </Popconfirm>
