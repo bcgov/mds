@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -18,20 +17,17 @@ const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   previewDocument: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   submitting: PropTypes.bool.isRequired,
-  initialValues: CustomPropTypes.explosivesPermit.isRequired,
   formValues: CustomPropTypes.explosivesPermit.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  documentType: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-const defaultProps = {
-  initialValues: {},
-};
+const defaultProps = {};
 
 export class ExplosivesPermitDecisionForm extends Component {
   state = { isPreviewingLetter: false, isPreviewingPermit: false };
+
   render() {
     return (
       <Form layout="vertical" onSubmit={this.props.handleSubmit}>
