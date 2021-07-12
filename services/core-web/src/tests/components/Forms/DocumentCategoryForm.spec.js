@@ -7,7 +7,7 @@ const props = {};
 const setupProps = () => {
   props.documents = [];
   props.categories = [];
-  props.isApproved = false;
+  props.isProcessed = false;
   props.mineGuid = "52783475";
   props.change = jest.fn();
   props.arrayPush = jest.fn();

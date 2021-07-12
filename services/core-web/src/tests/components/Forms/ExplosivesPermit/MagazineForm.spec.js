@@ -5,7 +5,7 @@ import { MagazineForm } from "@/components/Forms/ExplosivesPermit/MagazineForm";
 const props = {};
 
 const setupProps = () => {
-  props.isApproved = false;
+  props.isProcessed = false;
 };
 
 beforeEach(() => {

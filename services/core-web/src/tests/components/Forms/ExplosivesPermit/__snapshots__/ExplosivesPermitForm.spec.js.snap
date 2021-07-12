@@ -198,7 +198,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
       <br />
       <Connect(DocumentCategoryForm)
         categories={Array []}
-        isApproved={false}
+        isProcessed={false}
         mineGuid="523642546"
       />
     </Col>
@@ -209,7 +209,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
     >
       <br />
       <MagazineForm
-        isApproved={false}
+        isProcessed={false}
       />
     </Col>
   </Row>

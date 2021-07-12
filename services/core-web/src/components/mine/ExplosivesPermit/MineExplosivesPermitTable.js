@@ -275,6 +275,7 @@ export class MineExplosivesPermitTable extends Component {
       align: "right",
       render: (text, record) => {
         const isApproved = record.application_status === "APP";
+        const isProcessed = record.application_status !== "REC";
         const approvedMenu = (
           <Menu>
             <Menu.Item key="0">
@@ -317,38 +318,44 @@ export class MineExplosivesPermitTable extends Component {
         );
         const menu = (
           <Menu>
-            <Menu.Item key="process">
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) =>
-                  this.props.handleOpenExplosivesPermitDecisionModal(event, record)
-                }
-              >
-                <img
-                  alt="document"
-                  className="padding-sm"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Approve
-              </button>
-            </Menu.Item>
-            <Menu.Item key="edit">
-              <button
-                type="button"
-                className="full add-permit-dropdown-button"
-                onClick={(event) => this.props.handleOpenExplosivesPermitStatusModal(event, record)}
-              >
-                <img
-                  alt="document"
-                  className="padding-sm"
-                  src={EDIT_OUTLINE_VIOLET}
-                  style={{ paddingRight: "15px" }}
-                />
-                Withdraw/Reject
-              </button>
-            </Menu.Item>
+            {!isProcessed && (
+              <Menu.Item key="process">
+                <button
+                  type="button"
+                  className="full add-permit-dropdown-button"
+                  onClick={(event) =>
+                    this.props.handleOpenExplosivesPermitDecisionModal(event, record)
+                  }
+                >
+                  <img
+                    alt="document"
+                    className="padding-sm"
+                    src={EDIT_OUTLINE_VIOLET}
+                    style={{ paddingRight: "15px" }}
+                  />
+                  Approve
+                </button>
+              </Menu.Item>
+            )}
+            {!isProcessed && (
+              <Menu.Item key="edit">
+                <button
+                  type="button"
+                  className="full add-permit-dropdown-button"
+                  onClick={(event) =>
+                    this.props.handleOpenExplosivesPermitStatusModal(event, record)
+                  }
+                >
+                  <img
+                    alt="document"
+                    className="padding-sm"
+                    src={EDIT_OUTLINE_VIOLET}
+                    style={{ paddingRight: "15px" }}
+                  />
+                  Withdraw/Reject
+                </button>
+              </Menu.Item>
+            )}
             <Menu.Item key="0">
               <button
                 type="button"
@@ -372,9 +379,7 @@ export class MineExplosivesPermitTable extends Component {
             </Menu.Item>
           </Menu>
         );
-        const showActions =
-          (record.application_status === "REC" && !this.props.isPermitTab) ||
-          (isApproved && this.props.isPermitTab);
+        const showActions = !isApproved || (isApproved && this.props.isPermitTab);
         const showDelete =
           (record.application_status !== "APP" && !this.props.isPermitTab) ||
           (isApproved && this.props.isPermitTab);
