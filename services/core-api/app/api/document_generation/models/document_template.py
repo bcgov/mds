@@ -1,7 +1,6 @@
 import json, os, docx, io, base64
 
 from flask import current_app
-from flask_restplus import inputs
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
@@ -54,13 +53,13 @@ class DocumentTemplate(Base, AuditMixin):
         source_obj_instance = source_model.query.get(primary_key)
         current_app.logger.debug(f'source_obj_instance -> {source_obj_instance}')
         if not source_obj_instance:
-            current_app.logger.warning(f'Context Object not found')
+            raise Exception('Context Object not found')
 
         for item in spec:
 
             # Handle "relative data path"
             relative_data_path = item.get('relative-data-path')
-            if source_obj_instance and relative_data_path:
+            if relative_data_path:
                 current_object = source_obj_instance
                 for x in relative_data_path.split('.'):
                     current_app.logger.debug(f'getting {current_object}.{x}')
