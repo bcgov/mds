@@ -48,11 +48,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         help='Operating Status of the storage facility',
         required=True)
     parser.add_argument(
-        'has_itrb',
-        type=bool,
-        trim=True,
-        help='Risk Severity Classification',
-        required=True)
+        'has_itrb', type=bool, trim=True, help='Risk Severity Classification', required=True)
     parser.add_argument(
         'eor_party_guid',
         type=str,
@@ -84,9 +80,14 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         is_mine_first_tsf = len(mine_tsf_list) == 0
 
         mine_tsf = MineTailingsStorageFacility.create(
-            mine, mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'], latitude=data['latitude'], longitude=data['longitude'], consequence_classification_status_code=data['consequence_classification_status_code'], has_itrb=data['has_itrb'], tsf_operating_status_code=data['tsf_operating_status_code'])
+            mine,
+            mine_tailings_storage_facility_name=data['mine_tailings_storage_facility_name'],
+            latitude=data['latitude'],
+            longitude=data['longitude'],
+            consequence_classification_status_code=data['consequence_classification_status_code'],
+            has_itrb=data['has_itrb'],
+            tsf_operating_status_code=data['tsf_operating_status_code'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
-
 
         if is_mine_first_tsf:
             try:
@@ -106,19 +107,18 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
                 current_app.logger.error(str(e))
                 raise InternalServerError(str(e) + ", tsf not created")
 
-        mine.save()
         eor_party_guid = data.get('eor_party_guid')
         if eor_party_guid is not None:
             new_eor = MinePartyAppointment.create(
-                    mine=mine,
-                    party_guid=eor_party_guid,
-                    mine_party_appt_type_code='EOR',
-                    processed_by=self.get_user_info(),
-                    start_date=datetime.now(tz=timezone.utc))
-
+                mine=mine,
+                tsf=mine_tsf,
+                party_guid=eor_party_guid,
+                mine_party_appt_type_code='EOR',
+                processed_by=self.get_user_info(),
+                start_date=datetime.now(tz=timezone.utc))
             related_guid = mine_tsf.mine_tailings_storage_facility_guid
-            new_eor.assign_related_guid(related_guid)
+            new_eor.assign_related_guid('EOR', related_guid)
             new_eor.save()
-        mine.save()
 
+        mine.save()
         return mine_tsf, 201

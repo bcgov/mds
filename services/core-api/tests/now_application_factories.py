@@ -36,6 +36,11 @@ class StateOfLandFactory(BaseFactory):
     now_application_id = factory.SelfAttribute('now_application.now_application_id')
     has_community_water_shed = factory.Faker('boolean', chance_of_getting_true=50)
     has_archaeology_sites_affected = factory.Faker('boolean', chance_of_getting_true=50)
+    authorization_details = factory.Faker('sentence', nb_words=100)
+    has_licence_of_occupation = factory.Faker('boolean', chance_of_getting_true=50)
+    licence_of_occupation = factory.Faker('sentence', nb_words=100)
+    applied_for_licence_of_occupation = factory.Faker('boolean', chance_of_getting_true=50)
+    notice_served_to_private = factory.Faker('boolean', chance_of_getting_true=50)
 
 
 class EquipmentFactory(BaseFactory):
@@ -101,9 +106,8 @@ class CampFactory(ActivitySummaryBaseFactory):
     class Meta:
         model = app_models.Camp
 
-    camp_name = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
-    camp_number_people = factory.Faker('pyint', min_value=1, max_value=500)
-    camp_number_structures = factory.Faker('pyint', min_value=1, max_value=50)
+    health_authority_notified = factory.Faker('boolean', chance_of_getting_true=50)
+    health_authority_consent = factory.Faker('boolean', chance_of_getting_true=50)
     has_fuel_stored = factory.Faker('boolean', chance_of_getting_true=50)
     has_fuel_stored_in_bulk = factory.Faker('boolean', chance_of_getting_true=50)
     has_fuel_stored_in_barrels = factory.Faker('boolean', chance_of_getting_true=50)
@@ -409,7 +413,7 @@ class NOWApplicationFactory(BaseFactory):
     unreclaimed_disturbance_previous_year = factory.fuzzy.FuzzyInteger(1, 10000)
     disturbance_planned_reclamation = factory.fuzzy.FuzzyInteger(1, 10000)
     ats_project_number = factory.fuzzy.FuzzyInteger(1, 10000)
-    file_number_of_app = factory.Sequence(lambda n: str(n))
+    other_information = factory.Faker('sentence', nb_words=250, variable_nb_words=True)
     original_start_date = factory.Faker('past_datetime')
     type_of_application = factory.LazyFunction(RandomApplicationType)
     notice_of_work_type_code = factory.LazyFunction(RandomNOWTypeCode)

@@ -1,4 +1,3 @@
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.inspection import inspect
 
 from app.api.utils.models_mixins import Base
@@ -12,6 +11,8 @@ class NowApplicationGisExport(Base):
     # Notice of Work General
     now_application_guid = db.Column(db.String, primary_key=True)
     now_number = db.Column(db.String, nullable=False)
+    messageid = db.Column(db.String)
+    mms_cid = db.Column(db.String)
     now_application_status_code = db.Column(db.String)
     now_application_status_description = db.Column(db.String)
     type_of_application = db.Column(db.String)
@@ -35,6 +36,19 @@ class NowApplicationGisExport(Base):
     is_access_gated = db.Column(db.String)
     has_key_for_inspector = db.Column(db.String)
 
+    # Notice of Work Activity Disturbance Data
+    now_total_disturbed_area = db.Column(db.String)
+    now_activity_cut_lines_polarization_survey_total_disturbed_area = db.Column(db.String)
+    now_activity_settling_pond_total_disturbed_area = db.Column(db.String)
+    now_activity_exploration_surface_drilling_total_disturbed_area = db.Column(db.String)
+    now_activity_sand_gravel_quarry_operation_total_disturbed_area = db.Column(db.String)
+    now_activity_exploration_access_total_disturbed_area = db.Column(db.String)
+    now_activity_underground_exploration_total_disturbed_area = db.Column(db.String)
+    now_activity_camp_total_disturbed_area = db.Column(db.String)
+    now_activity_mechanical_trenching_total_disturbed_area = db.Column(db.String)
+    now_activity_surface_bulk_sample_total_disturbed_area = db.Column(db.String)
+    now_activity_placer_operation_total_disturbed_area = db.Column(db.String)
+
     # Notice of Work Progress
     now_progress_consultation_start_date = db.Column(db.String)
     now_progress_consultation_end_date = db.Column(db.String)
@@ -46,6 +60,9 @@ class NowApplicationGisExport(Base):
     now_progress_review_end_date = db.Column(db.String)
     now_progress_referral_start_date = db.Column(db.String)
     now_progress_referral_end_date = db.Column(db.String)
+
+    # Notice of Work Client Delay
+    now_application_client_delay_days = db.Column(db.String)
 
     # Permit
     permit_guid = db.Column(db.String)
@@ -90,6 +107,15 @@ class NowApplicationGisExport(Base):
     mine_operation_status_sub_reason_description = db.Column(db.String)
     operation_status_code = db.Column(db.String)
     operation_status_description = db.Column(db.String)
+
+    # Mine Work Status
+    mine_work_start_date = db.Column(db.String)
+    mine_work_stop_date = db.Column(db.String)
+    mine_work_comments = db.Column(db.String)
+
+    # Mine Inspection Data
+    last_inspection_date = db.Column(db.String)
+    last_inspection_type = db.Column(db.String)
 
     # Bonds
     bond_guids = db.Column(db.String)

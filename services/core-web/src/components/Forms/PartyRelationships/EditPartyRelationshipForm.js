@@ -10,6 +10,7 @@ import { validateDateRanges } from "@common/utils/Validate";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import EngineerOfRecordOptions from "@/components/Forms/PartyRelationships/EngineerOfRecordOptions";
+import UnionRepOptions from "@/components/Forms/PartyRelationships/UnionRepOptions";
 import { PermitteeOptions } from "@/components/Forms/PartyRelationships/PermitteeOptions";
 import CustomPropTypes from "@/customPropTypes";
 
@@ -81,6 +82,9 @@ export const EditPartyRelationshipForm = (props) => {
   switch (props.partyRelationship.mine_party_appt_type_code) {
     case "EOR":
       options = <EngineerOfRecordOptions mine={props.mine} />;
+      break;
+    case "URP":
+      options = <UnionRepOptions />;
       break;
     case "THD":
     case "LDO":

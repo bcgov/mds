@@ -23,7 +23,10 @@ import {
   getNoticeOfWork,
   getNOWProgress,
 } from "@common/selectors/noticeOfWorkSelectors";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
+import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -39,10 +42,12 @@ const propTypes = {
   updateNoticeOfWorkApplication: PropTypes.func.isRequired,
   fetchImportedNoticeOfWorkApplication: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
+  isTableHeaderView: PropTypes.bool,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
+  isTableHeaderView: false,
 };
 
 export class ReferralConsultationPackage extends Component {
@@ -163,10 +168,9 @@ export class ReferralConsultationPackage extends Component {
     const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
 
     this.props.openModal({
-      width: 910,
       props: {
         noticeOfWorkGuid: this.props.noticeOfWork.now_application_guid,
-        submissionDocuments: this.props.noticeOfWork.filtered_submission_documents,
+        noticeOfWork: this.props.noticeOfWork,
         importNowSubmissionDocumentsJob: this.props.importNowSubmissionDocumentsJob,
         coreDocuments: this.props.noticeOfWork.documents,
         onSubmit: this.downloadDocumentPackage,
@@ -179,6 +183,7 @@ export class ReferralConsultationPackage extends Component {
         isNoWApplication,
       },
       content: modalConfig.DOWNLOAD_DOC_PACKAGE,
+      width: "75vw",
     });
   };
 
@@ -221,7 +226,13 @@ export class ReferralConsultationPackage extends Component {
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
     const disabled = !this.props.progress[this.props.type];
-    return (
+    return this.props.isTableHeaderView ? (
+      <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={this.props.type}>
+        <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
+          <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
+        </Button>
+      </NOWActionWrapper>
+    ) : (
       <Button
         type="secondary"
         className="full-mobile"

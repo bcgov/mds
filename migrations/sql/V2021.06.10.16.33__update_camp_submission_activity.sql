@@ -1,0 +1,44 @@
+CREATE TABLE NOW_Submissions.camps (
+  ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	NAME varchar,
+  PEOPLEINCAMP numeric,
+  NUMBEROFSTRUCTURES numeric,
+  DESCRIPTIONOFSTRUCTURES varchar,
+  WASTEDISPOSAL varchar,
+  SANITARYFACILITIES varchar,
+  WATERSUPPLY varchar,
+  QUANTITYOFWATER numeric,
+	DISTURBEDAREA numeric,
+	TIMBERVOLUME numeric,
+
+  FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE NOW_Submissions.camps OWNER TO mds;
+
+CREATE TABLE NOW_Submissions.stagingareas (
+  ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	NAME varchar,
+	DISTURBEDAREA numeric,
+	TIMBERVOLUME numeric,
+
+  FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE NOW_Submissions.stagingareas OWNER TO mds;
+
+CREATE TABLE NOW_Submissions.buildings (
+  ID serial PRIMARY KEY,
+	MESSAGEID integer,
+	NAME varchar,
+  PURPOSE varchar,
+  STRUCTURE varchar,
+	DISTURBEDAREA numeric(14,2),
+	TIMBERVOLUME numeric(14,2),
+
+  FOREIGN KEY (MESSAGEID) REFERENCES NOW_Submissions.application(MESSAGEID) DEFERRABLE INITIALLY DEFERRED
+);
+
+ALTER TABLE NOW_Submissions.buildings OWNER TO mds;

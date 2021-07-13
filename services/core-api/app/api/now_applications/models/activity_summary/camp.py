@@ -17,21 +17,42 @@ class Camp(ActivitySummaryBase):
     activity_summary_id = db.Column(
         db.Integer, db.ForeignKey('activity_summary.activity_summary_id'), primary_key=True)
 
-    camp_name = db.Column(db.String)
-    camp_number_people = db.Column(db.String)
-    camp_number_structures = db.Column(db.String)
-    has_fuel_stored = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_bulk = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
-    has_fuel_stored_in_barrels = db.Column(
-        db.Boolean, nullable=False, server_default=FetchedValue())
+    health_authority_notified = db.Column(db.Boolean)
+    health_authority_consent = db.Column(db.Boolean)
+    has_fuel_stored = db.Column(db.Boolean)
+    has_fuel_stored_in_bulk = db.Column(db.Boolean)
+    has_fuel_stored_in_barrels = db.Column(db.Boolean)
     volume_fuel_stored = db.Column(db.Numeric(14, 2))
 
     details = db.relationship(
         'CampDetail', secondary='activity_summary_detail_xref', load_on_pending=True)
+    staging_area_details = db.relationship(
+        'StagingAreaDetail',
+        secondary='activity_summary_staging_area_detail_xref',
+        load_on_pending=True)
+    building_details = db.relationship(
+        'BuildingDetail', secondary='activity_summary_building_detail_xref', load_on_pending=True)
+
+    @hybrid_property
+    def calculated_total_disturbance_camp(self):
+        return self.calculate_total_disturbance_area(self.details)
+
+    @hybrid_property
+    def calculated_total_disturbance_staging_area(self):
+        return self.calculate_total_disturbance_area(self.staging_area_details)
+
+    @hybrid_property
+    def calculated_total_disturbance_building(self):
+        return self.calculate_total_disturbance_area(self.building_details)
+
+
+# The UI displays the disturbance for Camps/Building/stagingAreas as one value. The data is stored in different details tables.
 
     @hybrid_property
     def calculated_total_disturbance(self):
-        return self.calculate_total_disturbance_area(self.details)
+        return (self.calculated_total_disturbance_camp
+                or 0) + (self.calculated_total_disturbance_staging_area or 0) + (
+                    self.calculated_total_disturbance_building or 0)
 
     def __repr__(self):
         return '<Camp %r>' % self.activity_summary_id

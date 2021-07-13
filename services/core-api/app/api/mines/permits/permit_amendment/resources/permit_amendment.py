@@ -83,7 +83,10 @@ class PermitAmendmentListResource(Resource, UserMixin):
     parser.add_argument(
         'is_historical_amendment', type=bool, location='json', help='Is it a historical amendment')
     parser.add_argument(
-        'populate_with_conditions', type=bool, location='json', help='Determines if the Permit should be generated through Core with conditions.')
+        'populate_with_conditions',
+        type=bool,
+        location='json',
+        help='Determines if the Permit should be generated through Core with conditions.')
 
     @api.doc(params={
         'permit_amendment_guid': 'Permit amendment guid.',
@@ -158,7 +161,7 @@ class PermitAmendmentListResource(Resource, UserMixin):
                 start_date=permit_issue_date,
                 end_date=permittee_end_date,
                 permit=permit)
-
+            new_permittee.assign_related_guid('PMT', permit.permit_guid)
             new_permittee.save()
 
         permit_amendment_type_code = data.get('permit_amendment_type_code')

@@ -19,6 +19,7 @@ import AdministrativeTab from "@/components/noticeOfWork/applications/administra
 import ProcessPermit from "@/components/noticeOfWork/applications/process/ProcessPermit";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
 import { getDraftPermitForNOW } from "@common/selectors/permitSelectors";
+import ManageDocumentsTab from "@/components/noticeOfWork/applications/manageDocuments/ManageDocumentsTab";
 
 /**
  * @class NoticeOfWorkApplication- contains all tabs needed for a CORE notice of work application.
@@ -215,6 +216,17 @@ export class NoticeOfWorkApplication extends Component {
             {verificationComplete && (
               <LoadingWrapper condition={this.state.isTabLoaded}>
                 <AdministrativeTab fixedTop={this.props.fixedTop} />
+              </LoadingWrapper>
+            )}
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab="Manage Documents"
+            key="manage-documents"
+            disabled={!verificationComplete}
+          >
+            {verificationComplete && (
+              <LoadingWrapper condition={this.state.isTabLoaded}>
+                <ManageDocumentsTab fixedTop={this.props.fixedTop} />
               </LoadingWrapper>
             )}
           </Tabs.TabPane>

@@ -115,8 +115,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.is_first_year_of_multi = get_boolean_value(now_sub.firstyearofmulti)
     now_app.ats_authorization_number = now_sub.atsauthorizationnumber
     now_app.ats_project_number = now_sub.atsprojectnumber
-    now_app.file_number_of_app = now_sub.filenumberofappl
     now_app.original_start_date = now_sub.originalstartdate
+    now_app.other_information = now_sub.anyotherinformation
 
     return
 
@@ -139,6 +139,12 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     has_fn_cultural_heritage_sites_in_area = get_boolean_value(now_sub.hasculturalheritageresources)
     fn_engagement_activities = now_sub.firstnationsactivities
     cultural_heritage_description = now_sub.curturalheritageresources
+    havelicenceofoccupation = now_sub.havelicenceofoccupation
+    appliedforlicenceofoccupation = now_sub.appliedforlicenceofoccupation
+    authorizationdetail = now_sub.authorizationdetail
+    licenceofoccupation = now_sub.licenceofoccupation
+    noticeservedtoprivate = now_sub.noticeservedtoprivate
+    file_number_of_app = now_sub.filenumberofappl
 
     if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
@@ -158,7 +164,13 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_shared_info_with_fn=has_shared_info_with_fn,
             has_fn_cultural_heritage_sites_in_area=has_fn_cultural_heritage_sites_in_area,
             fn_engagement_activities=fn_engagement_activities,
-            cultural_heritage_description=cultural_heritage_description)
+            cultural_heritage_description=cultural_heritage_description,
+            authorization_details=authorizationdetail,
+            has_licence_of_occupation=get_boolean_value(havelicenceofoccupation),
+            licence_of_occupation=licenceofoccupation,
+            file_number_of_app=file_number_of_app,
+            applied_for_licence_of_occupation=get_boolean_value(appliedforlicenceofoccupation),
+            notice_served_to_private=get_boolean_value(noticeservedtoprivate))
 
     return
 
@@ -211,7 +223,7 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
             post_code = c.mailingaddresspostalzip.replace(
                 " ", "") if c.mailingaddresspostalzip and validPostalCode.match(
                     c.mailingaddresspostalzip.replace(" ", "")) else None
-            if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate:
+            if c.mailingaddressline1 or c.mailingaddresscity or c.mailingaddressprovstate:
                 now_address = Address(
                     address_line_1=c.mailingaddressline1,
                     address_line_2=c.mailingaddressline2,
@@ -286,6 +298,8 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
     fuellubstoremethodbulk = now_sub.fuellubstoremethodbulk
     fuellubstoremethodbarrel = now_sub.fuellubstoremethodbarrel
     fuellubstored = now_sub.fuellubstored
+    camphealthauthority = now_sub.camphealthauthority
+    camphealthconsent = now_sub.camphealthconsent
 
     fuellubstoreonsite = mms_now_sub.fuellubstoreonsite or now_sub.fuellubstoreonsite
     if cbsfreclamation or cbsfreclamationcost or campbuildstgetotaldistarea or fuellubstoreonsite:
@@ -295,6 +309,8 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             reclamation_cost=cbsfreclamationcost,
             total_disturbed_area=campbuildstgetotaldistarea,
             total_disturbed_area_unit_type_code='HA',
+            health_authority_consent=get_boolean_value(camphealthconsent),
+            health_authority_notified=get_boolean_value(camphealthauthority),
             has_fuel_stored=get_boolean_value(fuellubstoreonsite),
             has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
             volume_fuel_stored=fuellubstored,
@@ -303,30 +319,39 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
 
         campdisturbedarea = mms_now_sub.campdisturbedarea or now_sub.campdisturbedarea
         camptimbervolume = mms_now_sub.camptimbervolume or now_sub.camptimbervolume
-        if campdisturbedarea or camptimbervolume:
+        for detail in now_sub.camps:
             camp_detail = app_models.CampDetail(
-                activity_type_description='Camps',
-                disturbed_area=campdisturbedarea,
-                timber_volume=camptimbervolume)
+                activity_type_description=detail.name,
+                number_people=detail.peopleincamp,
+                number_structures=detail.numberofstructures,
+                description_of_structures=detail.descriptionofstructures,
+                waste_disposal=detail.wastedisposal,
+                sanitary_facilities=detail.sanitaryfacilities,
+                water_supply=detail.watersupply,
+                quantity=detail.quantityofwater,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
             camp.details.append(camp_detail)
 
         bldgdisturbedarea = mms_now_sub.bldgdisturbedarea or now_sub.bldgdisturbedarea
         bldgtimbervolume = mms_now_sub.bldgtimbervolume or now_sub.bldgtimbervolume
-        if bldgdisturbedarea or bldgtimbervolume:
-            camp_detail = app_models.CampDetail(
-                activity_type_description='Buildings',
-                disturbed_area=bldgdisturbedarea,
-                timber_volume=bldgtimbervolume)
-            camp.details.append(camp_detail)
+        for detail in now_sub.buildings:
+            building_detail = app_models.BuildingDetail(
+                activity_type_description=detail.name,
+                purpose=detail.purpose,
+                structure=detail.structure,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
+            camp.building_details.append(building_detail)
 
         stgedisturbedarea = mms_now_sub.stgedisturbedarea or now_sub.stgedisturbedarea
         stgetimbervolume = mms_now_sub.stgetimbervolume or now_sub.stgetimbervolume
-        if stgedisturbedarea or stgetimbervolume:
-            camp_detail = app_models.CampDetail(
-                activity_type_description='Staging Area',
-                disturbed_area=stgedisturbedarea,
-                timber_volume=stgetimbervolume)
-            camp.details.append(camp_detail)
+        for detail in now_sub.stagingareas:
+            staging_area_detail = app_models.StagingAreaDetail(
+                activity_type_description=detail.name,
+                disturbed_area=detail.disturbedarea,
+                timber_volume=detail.timbervolume)
+            camp.staging_area_details.append(staging_area_detail)
 
         now_app.camp = camp
 

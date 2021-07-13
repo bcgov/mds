@@ -26,7 +26,8 @@ const propTypes = {
   mineNameList: PropTypes.arrayOf(CustomPropTypes.mineName).isRequired,
 };
 
-const complexRelationships = ["EOR", "PMT", "AGT"];
+const complexRelationships = ["EOR", "PMT", "AGT", "URP"];
+
 const simpleRelationships = (typesList) =>
   typesList.filter(({ value }) => !complexRelationships.includes(value));
 

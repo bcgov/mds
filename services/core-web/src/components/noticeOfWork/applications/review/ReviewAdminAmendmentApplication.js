@@ -189,10 +189,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             noticeOfWork={props.noticeOfWork}
           />
         </ScrollContentWrapper>
-        <ScrollContentWrapper
-          id="additional-application-files"
-          title="Additional Application Files"
-        >
+        <ScrollContentWrapper id="application-files" title="Application Files">
           <NOWDocuments
             documents={props.documents?.filter(
               ({ now_application_document_sub_type_code }) =>
@@ -202,6 +199,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
             isViewMode={!props.isViewMode}
             disclaimerText="Attach any file revisions or new files requested from the proponent here."
             categoriesToShow={["AAF", "MDO"]}
+            isStandardDocuments
           />
         </ScrollContentWrapper>
       </Form>

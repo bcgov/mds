@@ -116,7 +116,8 @@ export class NoticeOfWorkTable extends Component {
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
       originating_system: application.originating_system || Strings.EMPTY_FIELD,
-      document: application.application_documents?.[0] || {},
+      document:
+        application.application_documents?.length > 0 ? application.application_documents[0] : {},
       is_historic: application.is_historic,
     }));
 

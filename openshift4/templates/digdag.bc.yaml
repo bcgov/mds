@@ -1,0 +1,82 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: digdag-bc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: digdag
+  - name: TAG
+    displayName: Name
+    description: The output/built ImageStream tag names
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: services/digdag
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: openjdk
+      creationTimestamp: null
+      labels:
+        shared: "true"
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - name: 8-jdk-alpine
+          annotations: null
+          from:
+            kind: DockerImage
+            name: openjdk:8-jdk-alpine
+          importPolicy: {}
+          referencePolicy:
+            type: Local
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels:
+        shared: "true"
+      annotations:
+        description: Keeps track of changes in the application image
+    spec:
+      lookupPolicy:
+        local: false
+      tags: []
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        app: ${NAME}
+        buildconfig: ${NAME}
+    spec:
+      source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        contextDir: ${SOURCE_CONTEXT_DIR}
+      strategy:
+        type: Docker
+        dockerStrategy:
+          from:
+            kind: ImageStreamTag
+            name: openjdk:8-jdk-alpine
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:${TAG}
+      completionDeadlineSeconds: 600
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange

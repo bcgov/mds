@@ -33,7 +33,8 @@ const propTypes = {
 const defaultProps = { showProgress: true };
 
 export const NOWProgressStatus = (props) => {
-  const showStatus = props.tab !== "ADMIN" && props.tab !== "PRO" && props.showProgress;
+  const showStatus =
+    props.tab !== "ADMIN" && props.tab !== "PRO" && props.tab !== "MND" && props.showProgress;
   return (
     <div>
       {isEmpty(props.progress[props.tab]) && showStatus && (

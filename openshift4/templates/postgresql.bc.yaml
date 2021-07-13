@@ -1,0 +1,105 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: postgresql
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: postgresql
+  - name: TAG
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: openshift/docker-images/postgres
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        shared: "true"
+      annotations: {}
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - name: ${TAG}
+          annotations: null
+          from:
+            kind: ImageStreamTag
+            name: rhscl-postgres-10-rhel7:latest
+            namespace: 4c2ba9-tools
+          importPolicy: {}
+          referencePolicy:
+            type: Local
+
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}96
+      labels:
+        shared: "true"
+      annotations: {}
+    spec:
+      lookupPolicy:
+        local: false
+
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}96
+      creationTimestamp: null
+      labels: {}
+      annotations: {}
+    spec:
+      successfulBuildsHistoryLimit: 5
+      failedBuildsHistoryLimit: 5
+      completionDeadlineSeconds: 3600
+      triggers:
+        - type: ImageChange
+      runPolicy: SerialLatestOnly
+      source:
+        secrets:
+          - secret:
+              name: platform-services-controlled-etc-pki-entitlement
+            destinationDir: etc-pki-entitlement
+        configMaps:
+          - configMap:
+              name: platform-services-controlled-rhsm-conf
+            destinationDir: rhsm-conf
+          - configMap:
+              name: platform-services-controlled-rhsm-ca
+            destinationDir: rhsm-ca
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+      strategy:
+        type: Docker
+        dockerStrategy:
+          noCache: true
+          imageOptimizationPolicy: SkipLayers
+          dockerfilePath: openshift/docker-images/postgres96/Dockerfile
+          from:
+            kind: DockerImage
+            name: registry.access.redhat.com/rhel7:latest
+          env: []
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}96:${TAG}
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 4Gi
+        requests:
+          cpu: 1000m
+          memory: 2Gi
+      postCommit: {}
+      nodeSelector: null

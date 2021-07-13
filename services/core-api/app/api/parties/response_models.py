@@ -44,7 +44,8 @@ MINE_PARTY_APPT = api.model(
         'mine_party_appt_type_code': fields.String,
         'start_date': fields.Date,
         'end_date': fields.Date,
-        'documents': fields.Nested(MINE_DOCUMENT)
+        'documents': fields.Nested(MINE_DOCUMENT),
+        'union_rep_company': fields.String
     })
 
 NOW_APPLICATION_MODEL = api.model('NOWApplication', {
@@ -95,6 +96,7 @@ PARTY_BUSINESS_ROLE_APPT = api.model(
         'end_date': fields.DateTime,
     })
 
+# NOTE: Including the signature could impact performance if it is not required for every party request (and just inspector requests).
 PARTY = api.model(
     'Party', {
         'party_guid': fields.String,

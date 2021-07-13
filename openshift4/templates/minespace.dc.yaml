@@ -1,0 +1,197 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: mds-frontend-dc
+  annotations:
+    template.openshift.io/bindable: "false"
+parameters:
+  - name: NAME
+    displayName: Name
+    description: The name assigned to all of the frontend objects defined in this template.
+    value: minespace
+  - name: TAG
+    displayName: Name
+    description: The name assigned to all of the frontend objects defined in this template.
+    required: true
+  - name: APPLICATION_DOMAIN
+    displayName: Application Hostname
+    description: The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.
+    value: ""
+  - name: BASE_PATH
+    required: false
+    value: ""
+  - name: PORT
+    value: "3020"
+  - name: NODE_ENV
+    displayName: Node Environment
+    description: Environment for running node
+    value: production
+  - name: KEYCLOAK_RESOURCE
+    displayName: Resource ID
+    description: Resource ID for keycloak
+    required: true
+  - name: MS_KEYCLOAK_CLIENT_ID
+    displayName: Client ID
+    description: Client ID for keycloak
+    value: minespace-dev
+  - name: KEYCLOAK_URL
+    displayName: Keycloak URL
+    description: URL of the keycloak server
+    value: https://test.oidc.gov.bc.ca/auth
+  - name: SITEMINDER_URL
+    value: https://logontest7.gov.bc.ca
+  - name: CORE_API_URL
+    displayName: API Url
+    description: URL for the backend API
+    required: true
+  - name: MATOMO_URL
+    displayName: Matomo Url
+    description: URL for the tracking component
+    value: https://matomo-4c2ba9-test.pathfinder.gov.bc.ca/
+  - name: TUSD_URL
+    value: http://tusd:1080/files/
+  - name: FN_LAYER_URL
+    value: https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov
+  - name: CPU_LIMIT
+    value: 100m
+  - name: MEMORY_LIMIT
+    value: 128Mi
+  - name: CPU_REQUEST
+    value: 20m
+  - name: MEMORY_REQUEST
+    value: 80Mi
+  - name: REPLICA_MIN
+    value: "3"
+  - name: REPLICA_MAX
+    value: "4"
+  - name: IMAGE_NAMESPACE
+    value: 4c2ba9-tools
+  - name: DOCMAN_API_URL
+    required: true
+  - name: FILESYSTEM_PROVIDER_URL
+    value: "http://host/file-api/AmazonS3Provider/"
+  - name: FN_LAYER_URL
+    value: "https://delivery.apps.gov.bc.ca/ext/sgw/geo.allgov"
+  - name: BASE_PATH
+  - name: ASSET_PATH
+    value: /
+  - name: KEYCLOAK_IDP_HINT
+    value: bceid
+
+objects:
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        description: Exposes and load balances the application pods
+    spec:
+      ports:
+        - name: web
+          port: ${{PORT}}
+          targetPort: ${{PORT}}
+      selector:
+        name: ${NAME}
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        description: Defines how to deploy the application server
+        template.alpha.openshift.io/wait-for-ready: "true"
+      labels:
+        component: ${NAME}
+    spec:
+      strategy:
+        type: Rolling
+        maxSurge: 50%
+        maxUnavailable: 0
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - app
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+        - type: ConfigChange
+      replicas: ${{REPLICA_MIN}}
+      selector:
+        name: ${NAME}
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            name: ${NAME}
+        spec:
+          containers:
+            - name: app
+              image: " "
+              env:
+                - name: API_URL
+                  value: ${CORE_API_URL}
+                - name: MATOMO_URL
+                  value: ${MATOMO_URL}
+                - name: TUSD_URL
+                  value: ${TUSD_URL}
+                - name: FN_LAYER_URL
+                  value: ${FN_LAYER_URL}
+                - name: NODE_ENV
+                  value: ${NODE_ENV}
+                - name: BASE_PATH
+                  value: ${BASE_PATH}
+                - name: ASSET_PATH
+                  value: ${BASE_PATH}/
+                - name: KEYCLOAK_RESOURCE
+                  value: ${KEYCLOAK_RESOURCE}
+                - name: KEYCLOAK_CLIENT_ID
+                  value: ${MS_KEYCLOAK_CLIENT_ID}
+                - name: KEYCLOAK_URL
+                  value: ${KEYCLOAK_URL}
+                - name: KEYCLOAK_IDP_HINT
+                  value: ${KEYCLOAK_IDP_HINT}
+                - name: SITEMINDER_URL
+                  value: ${SITEMINDER_URL}
+              resources:
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+              ports:
+                - containerPort: ${{PORT}}
+              livenessProbe:
+                failureThreshold: 30
+                httpGet:
+                  path: /health
+                  port: ${{PORT}}
+                  scheme: HTTP
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 3
+              readinessProbe:
+                failureThreshold: 30
+                httpGet:
+                  path: /health
+                  port: ${{PORT}}
+                  scheme: HTTP
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 3
+  - apiVersion: autoscaling/v1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+    spec:
+      maxReplicas: ${{REPLICA_MAX}}
+      minReplicas: ${{REPLICA_MIN}}
+      scaleTargetRef:
+        apiVersion: v1
+        kind: DeploymentConfig
+        name: ${NAME}
+      targetCPUUtilizationPercentage: 95

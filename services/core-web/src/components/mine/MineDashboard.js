@@ -162,7 +162,7 @@ export class MineDashboard extends Component {
         .fetchPartyRelationships({
           mine_guid: id,
           relationships: "party",
-          include_permittees: "true",
+          include_permit_contacts: "true",
         })
         .then(() => {
           this.setState({ isLoaded: true });

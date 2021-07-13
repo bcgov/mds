@@ -188,6 +188,35 @@ EQUIPMENT = api.model('EQUIPMENT', {
     "quantity": fields.Integer
 })
 
+CAMP_ACTIVITY = api.model(
+    'CAMP_ACTIVITY', {
+        'name': fields.String,
+        'peopleincamp': fields.Arbitrary,
+        'numberofstructures': fields.Arbitrary,
+        'wastedisposal': fields.String,
+        'sanitaryfacilities': fields.String,
+        'watersupply': fields.String,
+        'quantityofwater': fields.Integer,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
+BUILDING_ACTIVITY = api.model(
+    'BUILDING_ACTIVITY', {
+        'name': fields.String,
+        'purpose': fields.String,
+        'structure': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
+STAGING_AREA_ACTIVITY = api.model(
+    'STAGING_AREA_ACTIVITY', {
+        'name': fields.String,
+        'disturbedarea': fields.Arbitrary,
+        'timbervolume': fields.Arbitrary,
+    })
+
 APPLICATION = api.model(
     'Application', {
         'messageid': fields.Integer,
@@ -407,6 +436,9 @@ APPLICATION = api.model(
         'under_exp_surface_activity': fields.List(fields.Nested(UNDER_EXP_SURFACE_ACTIVITY)),
         'water_source_activity': fields.List(fields.Nested(WATER_SOURCE_ACTIVITY)),
         'mech_trenching_activity': fields.List(fields.Nested(MECH_TRENCHING_ACTIVITY)),
+        'camps': fields.List(fields.Nested(CAMP_ACTIVITY)),
+        'buildings': fields.List(fields.Nested(BUILDING_ACTIVITY)),
+        'stagingareas': fields.List(fields.Nested(STAGING_AREA_ACTIVITY)),
         'equipment': fields.List(fields.Nested(EQUIPMENT))
     })
 

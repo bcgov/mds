@@ -1,0 +1,33 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: docgen
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: docgen
+  - name: TAG
+    value: dev
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        shared: "true"
+      annotations: {}
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+        - name: ${TAG}
+          annotations: null
+          from:
+            kind: DockerImage
+            name: docker.io/bcgovimages/doc-gen-api:v2.1.3
+          generation: 1
+          importPolicy: {}
+          referencePolicy:
+            type: Local

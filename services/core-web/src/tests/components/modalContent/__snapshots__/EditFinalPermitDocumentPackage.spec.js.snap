@@ -3,10 +3,38 @@
 exports[`EditFinalPermitDocumentPackage renders properly 1`] = `
 <div>
   <h4>
-    Additional Documents
+    Application Documents
+  </h4>
+  <Connect(NOWSubmissionDocuments)
+    documents={
+      Array [
+        undefined,
+      ]
+    }
+    importNowSubmissionDocumentsJob={Object {}}
+    isAdminView={true}
+    isPackageModal={true}
+    isViewMode={true}
+    now_application_guid=""
+    selectedRows={
+      Object {
+        "selectedSubmissionRows": undefined,
+        "setSelectedSubmissionRows": [Function],
+      }
+    }
+  />
+  <br />
+  <h4>
+    Government Documents
   </h4>
   <Connect(NOWDocuments)
+    categoriesToShow={
+      Array [
+        "GDO",
+      ]
+    }
     documents={Array []}
+    isPackageModal={true}
     isViewMode={true}
     selectedRows={
       Object {

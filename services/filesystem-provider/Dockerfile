@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:3.1
 
+USER 0
+
 COPY ej2-amazon-s3-aspcore-file-provider ${APP_ROOT}/src
 
 COPY init.sh .
@@ -15,3 +17,5 @@ RUN apt-get update \
     procps     
 
 ENTRYPOINT [ "./init.sh" ]
+
+USER 1001

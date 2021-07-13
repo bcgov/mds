@@ -14,6 +14,8 @@ from app.api.now_applications.models.now_application_identity import NOWApplicat
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.mines.documents.models.mine_document import MineDocument
 from app.api.now_applications.models.now_application_document_identity_xref import NOWApplicationDocumentIdentityXref
+from app.api.utils.custom_reqparser import CustomReqparser
+from app.api.mines.response_models import MINE_DOCUMENT_MODEL
 
 
 class NOWApplicationDocumentUploadResource(Resource, UserMixin):
@@ -29,6 +31,13 @@ class NOWApplicationDocumentUploadResource(Resource, UserMixin):
 
 
 class NOWApplicationDocumentResource(Resource, UserMixin):
+    parser = CustomReqparser()
+    parser.add_argument('preamble_title', type=str, required=False)
+    parser.add_argument('preamble_author', type=str, required=False)
+    parser.add_argument('preamble_date', type=str, required=False)
+    parser.add_argument('is_final_package', type=bool, required=False)
+    parser.add_argument('description', type=str, required=False)
+
     @api.response(204, 'Successfully deleted.')
     @requires_role_edit_permit
     def delete(self, application_guid, mine_document_guid):
@@ -48,6 +57,43 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
 
         mine_document.now_application_document_xref.delete()
         return None, 204
+
+    @api.response(requests.codes.ok, 'Successfully updated document details.')
+    @requires_role_edit_permit
+    @api.marshal_with(MINE_DOCUMENT_MODEL, code=requests.codes.ok)
+    def put(self, application_guid, mine_document_guid):
+        data = self.parser.parse_args()
+        current_app.logger.debug(data)
+
+        mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+
+        if not mine_document:
+            raise NotFound('No mine_document found for this application guid.')
+
+        new_description = data.get('description', None)
+        is_final_package = data.get('is_final_package', None)
+
+        if mine_document.now_application_document_xref:
+            xref = mine_document.now_application_document_xref
+
+        if mine_document.now_application_document_identity_xref:
+            xref = mine_document.now_application_document_identity_xref
+
+        if new_description:
+            xref.description = new_description
+
+        if is_final_package is not None:
+            xref.is_final_package = is_final_package
+
+        if xref.is_final_package:
+            xref.preamble_title = data.get('preamble_title')
+            xref.preamble_author = data.get('preamble_author')
+            xref.preamble_date = data.get('preamble_date')
+
+        xref.save()
+        mine_document.save()
+
+        return mine_document, requests.codes.ok
 
 
 class NOWApplicationDocumentIdentityResource(Resource, UserMixin):

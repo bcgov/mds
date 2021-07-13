@@ -136,6 +136,7 @@ const ProgressRouteFor = (code, now_application_guid, application_type_code) => 
     CON: applicationRoute.dynamicRoute(now_application_guid, "consultation"),
     PUB: applicationRoute.dynamicRoute(now_application_guid, "public-comment"),
     DFT: applicationRoute.dynamicRoute(now_application_guid, "draft-permit"),
+    MND: applicationRoute.dynamicRoute(now_application_guid, "manage-documents"),
   }[code];
 };
 

@@ -35,10 +35,10 @@ class MineWorkInformation(SoftDeleteMixin, AuditMixin, Base):
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.mine_work_information_id}>'
 
-    def save(self):
+    def save(self, commit=True):
         self.updated_by = User().get_user_username()
         self.updated_timestamp = datetime.utcnow()
-        super(MineWorkInformation, self).save()
+        super(MineWorkInformation, self).save(commit)
 
     @hybrid_property
     def work_status(self):

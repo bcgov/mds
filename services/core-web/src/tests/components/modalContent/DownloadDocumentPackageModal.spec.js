@@ -16,6 +16,7 @@ const setupProps = () => {
   props.mineGuid = "";
   props.noticeOfWorkGuid = "";
   props.documentDownloadState = { downloading: false, currentFile: 1, totalFiles: 1 };
+  props.noticeOfWork = { filtered_submission_documents: [] };
 };
 
 beforeEach(() => {

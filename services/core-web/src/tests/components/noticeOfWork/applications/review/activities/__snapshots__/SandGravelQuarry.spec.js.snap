@@ -531,11 +531,6 @@ exports[`SandGravelQuarry renders properly 1`] = `
         disabled={true}
         id="progressive_reclamation"
         name="progressive_reclamation"
-        validate={
-          Array [
-            [Function],
-          ]
-        }
       />
     </Col>
     <Col

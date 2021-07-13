@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Popconfirm } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
+import CustomPropTypes from "@/customPropTypes";
 import NOWDocuments from "../noticeOfWork/applications/NOWDocuments";
 import NOWSubmissionDocuments from "../noticeOfWork/applications/NOWSubmissionDocuments";
 
@@ -11,15 +12,13 @@ const propTypes = {
   finalSubmissionDocuments: PropTypes.arrayOf(PropTypes.strings).isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   noticeOfWorkGuid: PropTypes.string.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  submissionDocuments: PropTypes.arrayOf(PropTypes.strings),
-  isNoWApplication: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   importNowSubmissionDocumentsJob: {},
-  submissionDocuments: [],
 };
 
 export const EditFinalPermitDocumentPackage = (props) => {
@@ -27,26 +26,58 @@ export const EditFinalPermitDocumentPackage = (props) => {
   const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
     props.finalSubmissionDocuments
   );
+  const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
 
   return (
     <div>
-      {props.isNoWApplication && (
-        <>
-          <h4>vFCBC/NROS Application Files</h4>
-          <NOWSubmissionDocuments
-            now_application_guid={props.noticeOfWorkGuid}
-            documents={props.submissionDocuments}
-            importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
-            selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
-          />
-          <br />
-        </>
-      )}
-      <h4>Additional Documents</h4>
+      <h4>Application Documents</h4>
+      <NOWSubmissionDocuments
+        now_application_guid={props.noticeOfWorkGuid}
+        documents={props.noticeOfWork.filtered_submission_documents.concat(
+          props.noticeOfWork.documents
+            ?.filter(
+              ({
+                now_application_document_sub_type_code,
+                now_application_document_type_code,
+                mine_document,
+              }) =>
+                applicationFilesTypes.includes(now_application_document_sub_type_code) &&
+                (now_application_document_type_code !== "PMT" ||
+                  now_application_document_type_code !== "PMA" ||
+                  mine_document.document_name.includes("DRAFT"))
+            )
+            .map((doc) => {
+              return {
+                preamble_author: doc.preamble_author,
+                preamble_date: doc.preamble_date,
+                preamble_title: doc.preamble_title,
+                now_application_document_xref_guid: doc.now_application_document_xref_guid,
+                is_referral_package: doc.is_referral_package,
+                is_final_package: doc.is_final_package,
+                is_consultation_package: doc.is_consultation_package,
+                description: doc.description,
+                mine_document_guid: doc.mine_document.mine_document_guid,
+                filename: doc.mine_document.document_name,
+                document_manager_guid: doc.mine_document.document_manager_guid,
+                notForImport: true,
+                ...doc,
+              };
+            })
+        )}
+        importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
+        selectedRows={{ selectedSubmissionRows, setSelectedSubmissionRows }}
+        isPackageModal
+        isAdminView
+        isViewMode
+      />
+      <br />
+      <h4>Government Documents</h4>
       <NOWDocuments
         documents={props.documents}
         isViewMode
         selectedRows={{ selectedCoreRows, setSelectedCoreRows }}
+        categoriesToShow={["GDO"]}
+        isPackageModal
       />
       <br />
       <div className="right center-mobile padding-md--top">

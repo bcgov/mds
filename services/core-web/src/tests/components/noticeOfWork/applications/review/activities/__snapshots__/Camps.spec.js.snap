@@ -3,7 +3,7 @@
 exports[`Camps renders properly 1`] = `
 <div>
   <h4>
-    Activities
+    Camps
   </h4>
   <Connect(CoreEditableTable)
     fieldID="activity_detail_id"
@@ -22,8 +22,74 @@ exports[`Camps renders properly 1`] = `
         },
         Object {
           "component": [Function],
+          "minRows": 1,
+          "title": "People in Camp",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "number_people",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Number of Sructures",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "number_structures",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Description of Structures",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "description_of_structures",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Waste Disposal",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "waste_disposal",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Sanitary Facilities",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "sanitary_facilities",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Water Supply",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "water_supply",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Quantity of Water",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "quantity",
+        },
+        Object {
+          "component": [Function],
           "title": "Disturbed Area (ha)",
           "validate": Array [
+            [Function],
             [Function],
           ],
           "value": "disturbed_area",
@@ -33,6 +99,118 @@ exports[`Camps renders properly 1`] = `
           "title": "Merchantable timber volume (m³)",
           "validate": Array [
             [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
+        },
+      ]
+    }
+  />
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      md={24}
+    >
+      <div
+        className="field-title"
+      >
+        Notified the local Health Authority as you have a camp for more than 5 people planned?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={
+            Object {
+              "marginLeft": "5px",
+            }
+          }
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="health_authority_notified"
+        name="health_authority_notified"
+      />
+    </Col>
+    <Col
+      md={24}
+    >
+      <div
+        className="field-title"
+      >
+        Consent given to share name, address and contact information with the local Health Authority?
+        <NOWOriginalValueTooltip
+          isVisible={true}
+          originalValue="N/A"
+          style={
+            Object {
+              "marginLeft": "5px",
+            }
+          }
+        />
+      </div>
+      <Field
+        component={[Function]}
+        disabled={true}
+        id="health_authority_consent"
+        name="health_authority_consent"
+      />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Buildings
+  </h4>
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="building_details"
+    isViewMode={true}
+    tableContent={
+      Array [
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Name",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Purpose",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "purpose",
+        },
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Structure",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "structure",
+        },
+        Object {
+          "component": [Function],
+          "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
+        },
+        Object {
+          "component": [Function],
+          "title": "Merchantable timber volume (m³)",
+          "validate": Array [
+            [Function],
+            [Function],
           ],
           "value": "timber_volume",
         },
@@ -41,7 +219,47 @@ exports[`Camps renders properly 1`] = `
   />
   <br />
   <h4>
-    Fuel
+    Staging Areas
+  </h4>
+  <Connect(CoreEditableTable)
+    fieldID="activity_detail_id"
+    fieldName="staging_area_details"
+    isViewMode={true}
+    tableContent={
+      Array [
+        Object {
+          "component": [Function],
+          "minRows": 1,
+          "title": "Name",
+          "validate": Array [
+            [Function],
+          ],
+          "value": "activity_type_description",
+        },
+        Object {
+          "component": [Function],
+          "title": "Disturbed Area (ha)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "disturbed_area",
+        },
+        Object {
+          "component": [Function],
+          "title": "Merchantable timber volume (m³)",
+          "validate": Array [
+            [Function],
+            [Function],
+          ],
+          "value": "timber_volume",
+        },
+      ]
+    }
+  />
+  <br />
+  <h4>
+    Fuel / Lubricant Storage
   </h4>
   <Row
     gutter={16}
