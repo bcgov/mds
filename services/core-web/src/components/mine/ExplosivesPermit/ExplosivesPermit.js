@@ -79,7 +79,7 @@ export class ExplosivesPermit extends Component {
 
   handleOpenAddExplosivesPermitModal = (event, isPermitTab, record = null) => {
     const initialValues = record || { permit_tab: isPermitTab };
-    const isProcessed = record?.application_status !== "REC";
+    const isProcessed = record && record?.application_status !== "REC";
     event.preventDefault();
     this.props.openModal({
       props: {
