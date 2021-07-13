@@ -1,4 +1,5 @@
-import uuid
+import json
+
 from flask import request, current_app
 from flask_restplus import Resource, marshal
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
@@ -90,11 +91,16 @@ class PartyListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        if dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS:
+        get_inspectors = dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS
+
+        if get_inspectors:
+            current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
+
+        if get_inspectors:
             result = cache.get(GET_ALL_INSPECTORS_KEY)
             if result:
                 current_app.logger.debug(f'CACHE HIT - {GET_ALL_INSPECTORS_KEY}')
-                return result
+                return json.loads(result)
             else:
                 current_app.logger.debug(f'CACHE MISS - {GET_ALL_INSPECTORS_KEY}')
 
@@ -102,6 +108,7 @@ class PartyListResource(Resource, UserMixin):
         if not paginated_parties:
             raise BadRequest('Unable to fetch parties')
 
+        # TODO: Consider marshalling with a response model that does NOT include the signature for parties when it is a "get inspectors" request.
         result = marshal(
             {
                 'records': paginated_parties.all(),
@@ -111,10 +118,14 @@ class PartyListResource(Resource, UserMixin):
                 'total': pagination_details.total_results,
             }, PAGINATED_PARTY_LIST)
 
-        if dict(request.args
-                ) == ALL_INSPECTORS_QUERY_PARAMS and pagination_details.total_results > 0:
+        if get_inspectors:
+            current_app.logger.debug(f'result:\n{result}')
+            current_app.logger.debug(f'pagination_details:\n{pagination_details}')
+
+        if get_inspectors and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
-            cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_12_HOURS)
+            cache.set(GET_ALL_INSPECTORS_KEY, json.dumps(result), timeout=TIMEOUT_12_HOURS)
+
         return result
 
     @api.expect(parser)
@@ -159,7 +170,6 @@ class PartyListResource(Resource, UserMixin):
             'party_name': 'Party',
         }
 
-        # Handle ListView request
         items_per_page = args.get('per_page', 25)
         if items_per_page == 'all':
             items_per_page = None
@@ -167,7 +177,6 @@ class PartyListResource(Resource, UserMixin):
             items_per_page = int(items_per_page)
 
         page = args.get('page', 1, type=int)
-        # parse the filter terms
         first_name_filter_term = args.get('first_name', None, type=str)
         last_name_filter_term = args.get('last_name', None, type=str)
         party_name_filter_term = args.get('party_name', None, type=str)
@@ -182,31 +191,45 @@ class PartyListResource(Resource, UserMixin):
         sort_model = sort_models.get(sort_field)
 
         conditions = [Party.deleted_ind == False]
+
         if first_name_filter_term:
             conditions.append(Party.first_name.ilike('%{}%'.format(first_name_filter_term)))
+
         if last_name_filter_term:
             conditions.append(Party.party_name.ilike('%{}%'.format(last_name_filter_term)))
+
         if party_name_filter_term:
             conditions.append(Party.party_name.ilike('%{}%'.format(party_name_filter_term)))
+
         if email_filter_term:
             conditions.append(Party.email.ilike('%{}%'.format(email_filter_term)))
+
         if type_filter_term:
             conditions.append(Party.party_type_code.like(type_filter_term))
+
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
+
+        # TODO: Determine if this NONE check is valid.
         if role_filter_term == "NONE":
             conditions.append(Party.mine_party_appt == None)
+
         if name_search_filter_term:
             name_search_conditions = []
             for name_part in name_search_filter_term.strip().split(" "):
                 name_search_conditions.append(Party.first_name.ilike('%{}%'.format(name_part)))
                 name_search_conditions.append(Party.party_name.ilike('%{}%'.format(name_part)))
             conditions.append(or_(*name_search_conditions))
+
         contact_query = Party.query.filter(and_(*conditions))
+
         if role_filter_term and not role_filter_term == "NONE":
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
             role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
             contact_query = contact_query.intersect(role_query) if contact_query else role_query
+
+        # NOTE: I question the performance of individually querying the party table AGAIN and then intersecting it with the original query as opposed to just joining and filtering the original query.
+        # (Same goes for the role_filter_term query above)
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
@@ -215,8 +238,8 @@ class PartyListResource(Resource, UserMixin):
             contact_query = contact_query.intersect(
                 business_role_query) if contact_query else business_role_query
 
-        # Apply sorting
         if sort_model and sort_field and sort_dir:
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
             contact_query = apply_sort(contact_query, sort_criteria)
+
         return apply_pagination(contact_query, page, items_per_page)
