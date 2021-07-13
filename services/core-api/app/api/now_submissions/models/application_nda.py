@@ -8,6 +8,7 @@ from app.extensions import db
 from app.api.now_submissions.models.client import Client
 from app.api.now_submissions.models.document_nda import DocumentNDA
 from app.api.utils.field_template import FieldTemplate
+from app.api.constants import NOW_SUBMISSION_NDA_STATUS
 
 
 class ApplicationNDA(Base):
@@ -17,7 +18,8 @@ class ApplicationNDA(Base):
     class _ModelSchema(Base._ModelSchema):
         application_nda_guid = fields.String(dump_only=True)
         mine_guid = fields.String(dump_only=True)
-        status = FieldTemplate(field=fields.String, one_of='NOWApplicationStatus_description')
+        status = fields.String(
+            validate=validate.OneOf(choices=NOW_SUBMISSION_NDA_STATUS), allow_none=True)
 
     messageid = db.Column(db.Integer, primary_key=True)
     application_nda_guid = db.Column(
