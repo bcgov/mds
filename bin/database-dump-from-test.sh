@@ -49,7 +49,7 @@ fi
 
 # # Identify database and take a backup
 #
-POD_DB=$( oc get pods -n ${PROJECT} -o name | grep -Eo "mds-postgresql-test-[[:digit:]]+-[[:alnum:]]+" )
+POD_DB=$( oc get pods -n ${PROJECT} -o name | grep -v fider | grep -Eo "postgresql-[[:digit:]]+-[[:alnum:]]+" | grep -v deploy )
 SAVE_FILE=$( basename ${SAVE_TO} )
 SAVE_PATH=$( dirname ${SAVE_TO} )
 mkdir -p ${SAVE_PATH}
