@@ -136,3 +136,5 @@ CREATE TABLE IF NOT EXISTS explosives_permit_document_xref (
 );
 
 ALTER TABLE explosives_permit_document_xref OWNER TO mds;
+
+ALTER TABLE document_template ALTER COLUMN source_model_name DROP DEFAULT; 
