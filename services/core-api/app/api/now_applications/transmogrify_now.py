@@ -170,7 +170,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             licence_of_occupation=licenceofoccupation,
             file_number_of_app=file_number_of_app,
             applied_for_licence_of_occupation=get_boolean_value(appliedforlicenceofoccupation),
-            notice_served_to_private=noticeservedtoprivate)
+            notice_served_to_private=get_boolean_value(noticeservedtoprivate))
 
     return
 
