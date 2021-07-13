@@ -57,9 +57,6 @@ class ExplosivesPermitMap extends Component {
   componentDidMount() {
     // Create the base map with layers
     this.createMap();
-    if (checkValidityOfCoordinateInput(this.props.pin)) {
-      this.createPin(this.props.pin);
-    }
 
     // Add MinePins to the top of LayerList and add the LayerList widget
     L.control.layers(this.getBaseMaps(), {}, { position: "topright" }).addTo(this.map);
