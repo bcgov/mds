@@ -17,16 +17,15 @@ class MineDocument(SoftDeleteMixin, AuditMixin, Base):
         document_class = fields.String(dump_only=True)
         upload_date = fields.Date(dump_only=True)
 
-    mine_document_id = db.Column(
-        db.Integer, nullable=False, unique=True, server_default=FetchedValue())
     mine_document_guid = db.Column(
         UUID(as_uuid=True), primary_key=True, server_default=FetchedValue())
+    mine_document_id = db.Column(
+        db.Integer, nullable=False, unique=True, server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     document_manager_guid = db.Column(UUID(as_uuid=True))
     document_name = db.Column(db.String(255), nullable=False)
     document_date = db.Column(db.DateTime)
     document_class = db.Column(db.String)
-
     upload_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
 
     mine_name = association_proxy('mine', 'mine_name')

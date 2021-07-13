@@ -5005,6 +5005,55 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
+  explosivesPermitStatus: [
+    {
+      explosives_permit_status_code: "APP",
+      description: "Approved",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "REJ",
+      description: "Rejected",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "WIT",
+      description: "Withdrawn",
+      active_ind: true,
+    },
+    {
+      explosives_permit_status_code: "REC",
+      description: "Received",
+      active_ind: true,
+    },
+  ],
+  explosivesPermitDocumentType: [
+    {
+      explosives_permit_document_type_code: "PER",
+      description: "Explosives Storage and Use Permit",
+      active_ind: true,
+    },
+    {
+      explosives_permit_document_type_code: "LET",
+      description: "Explosives Storage and Use Permit Letter",
+      active_ind: true,
+    },
+    {
+      explosives_permit_document_type_code: "BLA",
+      description: "Blasting Plan",
+      active_ind: true,
+    },
+  ],
+  explosivesPermitMagazineType: [
+    {
+      explosives_permit_magazine_type_code: "EXP",
+      description: "Explosives Magazine",
+    },
+    {
+      explosives_permit_magazine_type_code: "DET",
+      description: "Detonator Magazine",
+    },
+  ],
 };
 
 export const MINE_REPORT_DEFINITION_HASH = {
@@ -5909,4 +5958,211 @@ export const TSF_OPERATING_STATUS_HASH = {
   OPT: "Operating",
   CLO: "Closed",
   CAM: "Inactive (C&M)",
+};
+
+export const EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS = [
+  { value: "BLA", label: "Blasting Plan", subType: null, isActive: true },
+  { value: "PER", label: "Explosives Storage and Use Permit", subType: null, isActive: true },
+  {
+    value: "LET",
+    label: "Explosives Storage and Use Permit Letter",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const EXPLOSIVES_PERMIT_DOCUMENT_OPTIONS_HASH = {
+  PER: "Explosives Storage and Use Permit",
+  LET: "Explosives Storage and Use Permit Letter",
+  BLA: "Blasting Plan",
+};
+
+export const EXPLOSIVES_PERMIT_STATUS_OPTIONS = [
+  { value: "APP", label: "Approved", subType: null, isActive: true },
+  {
+    value: "REC",
+    label: "Received",
+    subType: null,
+    isActive: true,
+  },
+  { value: "REJ", label: "Rejected", subType: null, isActive: true },
+  {
+    value: "WIT",
+    label: "Withdrawn",
+    subType: null,
+    isActive: true,
+  },
+];
+
+export const EXPLOSIVES_PERMIT_STATUS_OPTIONS_HASH = {
+  APP: "Approved",
+  REJ: "Rejected",
+  WIT: "Withdrawn",
+  REC: "Received",
+};
+
+export const EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS = [
+  {
+    value: "DET",
+    label: "Detonator Magazine",
+    subType: null,
+    isActive: true,
+  },
+  { value: "EXP", label: "Explosives Magazine", subType: null, isActive: true },
+];
+
+export const EXPLOSIVES_PERMIT_MAGAZINE_OPTIONS_HASH = {
+  EXP: "Explosives Magazine",
+  DET: "Detonator Magazine",
+};
+
+export const EXPLOSIVES_PERMITS = {
+  data: {
+    records: [
+      {
+        explosives_permit_guid: "816459817365978135",
+        permit_number: "BC-11111",
+        mines_permit_number: "P-39039404",
+        now_number: "1500615-2021-12",
+        issuing_inspector_name: "John",
+        issuing_inspector_party_guid: null,
+        source: "Core",
+        mine_operator_name: "Mike",
+        application_number: 52135425,
+        mine_operator_guid: null,
+        application_date: "2007-12-04",
+        issue_date: "2007-12-04",
+        expiry_date: "2007-12-04",
+        latitude: null,
+        longitude: null,
+        application_status: "APP",
+        documents: [],
+        detonator_magazines: [
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+        explosive_magazines: [
+          {
+            type: "EXP",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+      },
+      {
+        explosives_permit_guid: "81324623978135",
+        permit_number: "BC-145411",
+        mines_permit_number: "P-39039404",
+        now_number: "1500615-2021-12",
+        application_number: 12351235,
+        issuing_inspector_name: "John",
+        issuing_inspector_party_guid: null,
+        source: "Core",
+        mine_operator_name: "Mike",
+        mine_operator_guid: null,
+        application_date: "2007-12-04",
+        issue_date: "2007-12-04",
+        expiry_date: "2007-12-04",
+        latitude: null,
+        longitude: null,
+        application_status: "REC",
+        documents: [],
+        detonator_magazines: [
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+          {
+            type: "DET",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+        explosive_magazines: [
+          {
+            type: "EXP",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+          {
+            type: "EXP",
+            type_no: "1",
+            tag_no: "1",
+            construction: "string",
+            latitude: null,
+            longitude: null,
+            length: 1,
+            width: 2,
+            height: 2,
+            quantity: 12,
+            distance_road: 70,
+            distance_dwelling: 60,
+          },
+        ],
+      },
+    ],
+  },
 };

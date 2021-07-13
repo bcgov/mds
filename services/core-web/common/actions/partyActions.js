@@ -16,6 +16,11 @@ export const storePartyRelationships = (payload) => ({
   payload,
 });
 
+export const storeAllPartyRelationships = (payload) => ({
+  type: ActionTypes.STORE_ALL_PARTY_RELATIONSHIPS,
+  payload,
+});
+
 export const storeAddPartyFormState = (payload) => ({
   type: ActionTypes.STORE_ADD_PARTY_FORM_STATE,
   payload,

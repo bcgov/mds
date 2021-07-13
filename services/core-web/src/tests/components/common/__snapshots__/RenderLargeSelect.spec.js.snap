@@ -12,6 +12,7 @@ exports[`RenderLargeSelect renders properly 1`] = `
     bordered={true}
     choiceTransitionName=""
     defaultActiveFirstOption={false}
+    disabled={false}
     dropdownMatchSelectWidth={true}
     filterOption={[Function]}
     id="parties"

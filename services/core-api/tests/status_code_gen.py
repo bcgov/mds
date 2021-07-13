@@ -13,6 +13,8 @@ from app.api.securities.models.bond_status import BondStatus
 from app.api.securities.models.bond_type import BondType
 from app.api.mines.mine.models.mine_tenure_type_code import MineTenureTypeCode
 from app.api.mines.mine.models.mine_commodity_code import MineCommodityCode
+from app.api.mines.explosives_permit.models.explosives_permit_document_type import ExplosivesPermitDocumentType
+from app.api.mines.explosives_permit.models.explosives_permit_magazine_type import ExplosivesPermitMagazineType
 from app.api.mines.mine.models.mine_disturbance_code import MineDisturbanceCode
 from app.api.mines.status.models.mine_status_xref import MineStatusXref
 from app.api.compliance.models.compliance_article import ComplianceArticle
@@ -143,6 +145,16 @@ def RandomMineReportSubmissionStatusCode():
 def RandomVarianceDocumentCategoryCode():
     return random.choice(
         [x.variance_document_category_code for x in VarianceDocumentCategoryCode.get_all()])
+
+
+def RandomExplosivesPermitMagazineTypeCode():
+    return random.choice(
+        [x.explosives_permit_magazine_type_code for x in ExplosivesPermitMagazineType.get_all()])
+
+
+def RandomExplosivesPermitDocumentTypeCode():
+    return random.choice(
+        [x.explosives_permit_document_type_code for x in ExplosivesPermitDocumentType.get_all()])
 
 
 def SampleDangerousOccurrenceSubparagraphs(num):

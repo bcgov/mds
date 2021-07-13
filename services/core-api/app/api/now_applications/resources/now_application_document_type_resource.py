@@ -19,7 +19,7 @@ NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken
 
 
 class NOWApplicationDocumentTypeListResource(Resource, UserMixin):
-    @api.doc(description='Get a list of all Notice of Work document types', params={})
+    @api.doc(description='Get a list of all Notice of Work document types.')
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200, envelope='records')
     def get(self):
@@ -27,12 +27,14 @@ class NOWApplicationDocumentTypeListResource(Resource, UserMixin):
 
 
 class NOWApplicationDocumentTypeResource(Resource, UserMixin):
-    @api.doc(description='Get a list of all Notice of Work document types', params={})
+    @api.doc(
+        description='Get a Notice of Work document type with context values in the document template.'
+    )
     @requires_role_view_all
     @api.marshal_with(NOW_APPLICATION_DOCUMENT_TYPE_MODEL, code=200)
     def get(self, document_type_code):
-        return NOWApplicationDocumentType.get_with_context(document_type_code,
-                                                           request.args.get('context_guid'))
+        context_guid = request.args.get('context_guid')
+        return NOWApplicationDocumentType.get_with_context(document_type_code, context_guid)
 
 
 class NOWApplicationDocumentGenerateResource(Resource, UserMixin):

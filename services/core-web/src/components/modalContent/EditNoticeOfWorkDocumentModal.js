@@ -8,15 +8,16 @@ const propTypes = {
   title: PropTypes.string,
   now_application_guid: PropTypes.string.isRequired,
   categoriesToShow: PropTypes.arrayOf(PropTypes.string),
+  initialValues: PropTypes.objectOf(PropTypes.any),
 };
 
 const defaultProps = {
   title: "",
   categoriesToShow: [],
+  initialValues: {},
 };
 
 export const EditNoticeOfWorkDocumentModal = (props) => {
-  console.log(props.initialValues);
   return (
     <div>
       <EditNoticeOfWorkDocumentForm

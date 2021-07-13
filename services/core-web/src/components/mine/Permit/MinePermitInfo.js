@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Divider } from "antd";
+import { Divider, Tabs } from "antd";
 import PropTypes from "prop-types";
 import {
   fetchPermits,
@@ -20,12 +20,14 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { getPermits } from "@common/selectors/permitSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
 import MinePermitTable from "@/components/mine/Permit/MinePermitTable";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
+import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getUserAccessData } from "@common/selectors/authenticationSelectors";
 /**
  * @class  MinePermitInfo - contains all permit information
@@ -60,6 +62,7 @@ const propTypes = {
   deletePermitAmendment: PropTypes.func.isRequired,
   userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
   createMineTypes: PropTypes.func.isRequired,
+  explosivesPermits: PropTypes.arrayOf(CustomPropTypes.explosivesPermit).isRequired,
 };
 
 const defaultProps = {
@@ -372,44 +375,60 @@ export class MinePermitInfo extends Component {
           <h2>Permits</h2>
           <Divider />
         </div>
-        <div>
-          <div className="inline-flex between">
-            <div />
-            <div className="inline-flex between">
-              <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-                <AddButton
-                  onClick={(event) =>
-                    this.openAddPermitModal(
-                      event,
-                      this.handleAddPermit,
-                      `${ModalContent.ADD_PERMIT} to ${mine.mine_name}`
-                    )
-                  }
-                >
-                  Add a New Permit
-                </AddButton>
-              </AuthorizationWrapper>
-            </div>
-          </div>
-        </div>
-        <br />
-        <MinePermitTable
-          isLoaded={this.state.isLoaded}
-          permits={this.props.permits}
-          partyRelationships={this.props.partyRelationships}
-          major_mine_ind={mine.major_mine_ind}
-          openEditPermitModal={this.openEditPermitModal}
-          openEditAmendmentModal={this.openEditAmendmentModal}
-          openEditSitePropertiesModal={this.openEditSitePropertiesModal}
-          openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
-          openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
-          openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
-          handlePermitAmendmentIssueVC={this.handlePermitAmendmentIssueVC}
-          expandedRowKeys={this.state.expandedRowKeys}
-          onExpand={this.onExpand}
-          handleDeletePermit={this.handleDeletePermit}
-          handleDeletePermitAmendment={this.handleDeletePermitAmendment}
-        />
+        <Tabs type="card" style={{ textAlign: "left !important" }}>
+          <Tabs.TabPane tab={`Mines Act Permits (${this.props.permits.length})`} key="1">
+            <>
+              <br />
+              <div>
+                <div className="inline-flex between">
+                  <h4 className="uppercase">Mines Act Permits</h4>
+                  <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+                    <AddButton
+                      onClick={(event) =>
+                        this.openAddPermitModal(
+                          event,
+                          this.handleAddPermit,
+                          `${ModalContent.ADD_PERMIT} to ${mine.mine_name}`
+                        )
+                      }
+                    >
+                      Add a New Permit
+                    </AddButton>
+                  </AuthorizationWrapper>
+                </div>
+              </div>
+              <MinePermitTable
+                isLoaded={this.state.isLoaded}
+                permits={this.props.permits}
+                partyRelationships={this.props.partyRelationships}
+                major_mine_ind={mine.major_mine_ind}
+                openEditPermitModal={this.openEditPermitModal}
+                openEditAmendmentModal={this.openEditAmendmentModal}
+                openEditSitePropertiesModal={this.openEditSitePropertiesModal}
+                openAddPermitAmendmentModal={this.openAddPermitAmendmentModal}
+                openAddPermitHistoricalAmendmentModal={this.openAddPermitHistoricalAmendmentModal}
+                openAddAmalgamatedPermitModal={this.openAddAmalgamatedPermitModal}
+                handlePermitAmendmentIssueVC={this.handlePermitAmendmentIssueVC}
+                expandedRowKeys={this.state.expandedRowKeys}
+                onExpand={this.onExpand}
+                handleDeletePermit={this.handleDeletePermit}
+                handleDeletePermitAmendment={this.handleDeletePermitAmendment}
+              />
+            </>
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={`Explosives Storage & Use Permits (${
+              this.props.explosivesPermits.filter(
+                ({ application_status }) => application_status === "APP"
+              ).length
+            })`}
+            key="2"
+          >
+            <>
+              <ExplosivesPermit isPermitTab />
+            </>
+          </Tabs.TabPane>
+        </Tabs>
       </div>
     );
   }
@@ -420,6 +439,7 @@ const mapStateToProps = (state) => ({
   mines: getMines(state),
   mineGuid: getMineGuid(state),
   userRoles: getUserAccessData(state),
+  explosivesPermits: getExplosivesPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

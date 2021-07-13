@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExplosivesPermitStatusModal renders properly 1`] = `
+<div>
+  <Connect(ReduxForm)
+    closeModal={[MockFunction]}
+    onSubmit={[MockFunction]}
+  />
+</div>
+`;

@@ -41,6 +41,11 @@ import AddAdministrativeAmendmentModal from "./AddAdministrativeAmendmentModal";
 import EditSitePropertiesModal from "./EditSitePropertiesModal";
 import UploadPermitDocumentModal from "./UploadPermitDocumentModal";
 import NoPermitRequiredSelectionModal from "./NoPermitRequiredSelectionModal";
+import AddExplosivesPermitModal from "./AddExplosivesPermitModal";
+import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicationDecisionModal";
+import ViewMagazineModal from "./ViewMagazineModal";
+import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
+import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
@@ -86,6 +91,11 @@ export const modalConfig = {
   UPLOAD_PERMIT_DOCUMENT_MODAL: UploadPermitDocumentModal,
   DELETE_DRAFT_PERMIT_MODAL: DeleteDraftPermitModal,
   NO_PERMIT_REQUIRED_SELECTION_MODAL: NoPermitRequiredSelectionModal,
+  EXPLOSIVES_PERMIT_MODAL: AddExplosivesPermitModal,
+  EXPLOSIVES_PERMIT_DECISION_MODAL: ExplosivesPermitApplicationDecisionModal,
+  VIEW_MAGAZINE_MODAL: ViewMagazineModal,
+  EXPLOSIVES_PERMIT_STATUS_MODAL: ExplosivesPermitStatusModal,
+  EXPLOSIVES_PERMIT_CLOSE_MODAL: ExplosivesPermitCloseModal,
 };
 
 export default modalConfig;

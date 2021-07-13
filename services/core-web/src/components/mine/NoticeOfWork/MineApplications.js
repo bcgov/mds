@@ -9,6 +9,7 @@ import {
   fetchMineNoticeOfWorkApplications,
   createAdminAmendmentApplication,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
+import { getExplosivesPermits } from "@common/selectors/explosivesPermitSelectors";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid } from "@common/selectors/mineSelectors";
@@ -20,6 +21,7 @@ import AddButton from "@/components/common/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineNoticeOfWorkTable from "@/components/mine/NoticeOfWork/MineNoticeOfWorkTable";
 import MineAdministrativeAmendmentTable from "@/components/mine/AdministrativeAmendment/MineAdministrativeAmendmentTable";
+import ExplosivesPermit from "@/components/mine/ExplosivesPermit/ExplosivesPermit";
 import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
@@ -32,6 +34,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createAdminAmendmentApplication: PropTypes.func.isRequired,
+  explosivesPermits: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export class MineApplications extends Component {
@@ -198,7 +201,16 @@ export class MineApplications extends Component {
                 searchParams={this.state.params}
                 onExpand={this.onExpand}
                 mineRegionHash={this.props.mineRegionHash}
+                expandedRowKeys={this.state.expandedRowKeys}
               />
+            </>
+          </Tabs.TabPane>
+          <Tabs.TabPane
+            tab={`Explosives Storage & Use Permit Applications (${this.props.explosivesPermits.length})`}
+            key="3"
+          >
+            <>
+              <ExplosivesPermit />
             </>
           </Tabs.TabPane>
         </Tabs>
@@ -211,6 +223,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
   mineRegionHash: getMineRegionHash(state),
+  explosivesPermits: getExplosivesPermits(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

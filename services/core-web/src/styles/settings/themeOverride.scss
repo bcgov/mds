@@ -351,6 +351,12 @@
   background-color: $pure-white;
 }
 
+.light-background {
+  .ant-collapse-content > .ant-collapse-content-box {
+    background-color: #908e8e17;
+  }
+}
+
 //  MENU
 .ant-menu {
   padding: 0;

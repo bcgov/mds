@@ -7,6 +7,8 @@ const reducerProps = {};
 
 const setupReducerProps = () => {
   reducerProps.isViewMode = true;
+  reducerProps.isNewPermit = false;
+  reducerProps.mineGuid = "123514251";
   reducerProps.initialValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.blasting_operation;
   reducerProps.blastingFormValues = NOW_MOCK.IMPORTED_NOTICE_OF_WORK.blasting_operation;
   reducerProps.editRecord = jest.fn();

@@ -315,7 +315,7 @@ class SoftDeleteMixin(object):
                     else:
                         related.delete(commit=commit)
 
-        #TODO, handle children, or let model override this.
+        #TODO: Handle children, or let model override this.
         self.deleted_ind = True
 
         if commit == True:

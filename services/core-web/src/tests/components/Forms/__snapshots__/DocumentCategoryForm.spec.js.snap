@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentCategoryForm renders properly 1`] = `
+<div
+  className="document-container"
+>
+  <FormItem
+    hasFeedback={false}
+    label="Select Files/Upload files*"
+  >
+    <div
+      className="inputs"
+    >
+      <FieldArray
+        component={[Function]}
+        name="documents"
+      />
+    </div>
+    <Field
+      allowMultiple={true}
+      component={[Function]}
+      id="DocumentFileUpload"
+      mineGuid="52783475"
+      name="DocumentFileUpload"
+      onFileLoad={[Function]}
+      onRemoveFile={[Function]}
+    />
+  </FormItem>
+</div>
+`;

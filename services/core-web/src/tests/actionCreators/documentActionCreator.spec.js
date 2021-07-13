@@ -3,9 +3,13 @@ import axios from "axios";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
 import * as COMMON_API from "@common/constants/API";
+import * as API from "@/constants/API";
 import * as MOCK from "@/tests/mocks/dataMocks";
 import * as NOW_MOCK from "@/tests/mocks/noticeOfWorkMocks";
-import { exportNoticeOfWorkApplicationDocument } from "@/actionCreators/documentActionCreator";
+import {
+  exportNoticeOfWorkApplicationDocument,
+  fetchExplosivesPermitDocumentContextTemplate,
+} from "@/actionCreators/documentActionCreator";
 
 const dispatch = jest.fn();
 const requestSpy = jest.spyOn(genericActions, "request");
@@ -48,6 +52,38 @@ describe("`documentActionCreator` action creator: exported Notice of Work ", () 
     return exportNoticeOfWorkApplicationDocument(
       null,
       null
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`fetchExplosivesPermitDocumentContextTemplate` action creator", () => {
+  const documentTypeCode = "LET";
+  const explosives_permit_guid = "12345-6789";
+  const url =
+    ENVIRONMENT.apiUrl +
+    API.GET_EXPLOSIVES_PERMIT_DOCUMENT_CONTEXT_TEMPLATE(documentTypeCode, explosives_permit_guid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchExplosivesPermitDocumentContextTemplate(
+      documentTypeCode,
+      explosives_permit_guid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchExplosivesPermitDocumentContextTemplate(
+      documentTypeCode,
+      explosives_permit_guid
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);

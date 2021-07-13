@@ -26,7 +26,9 @@ class NoticeOfWorkDocumentResource(Resource, UserMixin):
             'token':
             'The UUID4 token used to generate the document. Must be retrieved from the Notice of Work Document Type POST endpoint.',
             'return_record':
-            'If true, returns the created document record, otherwise, returns the generated file content.'
+            'If true, returns the created document record, otherwise, returns the generated file content.',
+            'is_preview':
+            'If true, returns the generated document without creating the document record.'
         })
     def get(self):
         token = request.args.get('token', '')

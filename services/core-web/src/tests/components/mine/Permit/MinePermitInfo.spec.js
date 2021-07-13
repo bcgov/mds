@@ -16,6 +16,7 @@ const setupProps = () => {
   props.mineGuid = "18145c75-49ad-0101-85f3-a43e45ae989a";
   props.match = { params: { id: "18145c75-49ad-0101-85f3-a43e45ae989a" } };
   props.mines = MOCK.MINES.mines;
+  props.explosivesPermits = [];
 };
 
 beforeEach(() => {

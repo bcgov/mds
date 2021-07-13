@@ -717,16 +717,19 @@ ON CONFLICT DO NOTHING;
 -- V2019.09.28.14.16
 
 INSERT INTO document_template
-(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user)
+(document_template_code, form_spec_json, template_file_path, active_ind, create_user, update_user, source_model_name)
 VALUES
-  ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds'),
-  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds'),
-  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds'),
-  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds')
+  ('NRL', '' , 'templates/now/Rejection Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NWL', '' , 'templates/now/Withdrawal Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NCL', '', 'templates/now/Acknowledgment Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NPE', '', 'templates/now/Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('NTR', '[]', 'templates/now/Notice of Work Form.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('PMT', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('PMA', '[]', 'templates/permit/Permit.docx', true, 'system-mds', 'system-mds', 'NOWApplicationIdentity'),
+  ('ESL', '', 'templates/explosives_permit/Explosives Storage and Use Permit Enclosed Letter.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit'),
+  ('ESP', '', 'templates/explosives_permit/Explosives Storage and Use Permit.docx', true, 'system-mds', 'system-mds', 'ExplosivesPermit')
 ON CONFLICT DO NOTHING;
+
 UPDATE document_template SET form_spec_json = '[
     {
       "id": "letter_dt",
@@ -1643,3 +1646,109 @@ VALUES
     ('CLO', 'Closed', 10, 'system-mds', 'system-mds'),
     ('CAM', 'Inactive (C&M)', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_status (
+    explosives_permit_status_code,
+    description,
+    display_order,
+    create_user,
+    update_user
+)
+VALUES
+    ('APP', 'Approved', 10, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejected', 20, 'system-mds', 'system-mds'),
+    ('WIT', 'Withdrawn', 30, 'system-mds', 'system-mds'),
+    ('REC', 'Received', 40, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_magazine_type (
+    explosives_permit_magazine_type_code,
+    description,
+    create_user,
+    update_user
+)
+VALUES
+    ('EXP', 'Explosive Magazine', 'system-mds', 'system-mds'),
+    ('DET', 'Detonator Magazine', 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO explosives_permit_document_type (
+    explosives_permit_document_type_code,
+    description,
+    active_ind,
+    display_order,
+    document_template_code,
+    create_user,
+    update_user
+)
+VALUES
+    ('PER', 'Explosives Storage and Use Permit', true, 0, 'ESP', 'system-mds', 'system-mds'),
+    ('LET', 'Permit Enclosed Letter', true, 10, 'ESL', 'system-mds', 'system-mds'),
+    ('APP', 'Approval Letter', true, 20, NULL, 'system-mds', 'system-mds'),
+    ('REJ', 'Rejection Letter', true, 30, NULL, 'system-mds', 'system-mds'),
+    ('WIT', 'Withdrawal Confirmation', true, 40, NULL, 'system-mds', 'system-mds'),
+    ('COR', 'Correspondence', true, 50, NULL, 'system-mds', 'system-mds'),
+    ('FOR', 'Application Form', true, 60, NULL, 'system-mds', 'system-mds'),
+    ('BLA', 'Blasting Plan', true, 70, NULL, 'system-mds', 'system-mds'),
+    ('MAP', 'Maps (Site Plan)', true, 80, NULL, 'system-mds', 'system-mds'),
+    ('SIT', 'Site Security Plan', true, 90, NULL, 'system-mds', 'system-mds'),
+    ('FIR', 'Fire Safety Plan', true, 100, NULL, 'system-mds', 'system-mds'),
+    ('OPE', 'Operational Notification', true, 110, NULL, 'system-mds', 'system-mds'),
+    ('RIS', 'Risk Analysis', true, 120, NULL, 'system-mds', 'system-mds'),
+    ('WIR', 'Withdrawal Request', true, 130, NULL, 'system-mds', 'system-mds'),
+    ('CAN', 'Cancellation/Closure Request', true, 140, NULL, 'system-mds', 'system-mds')
+ON CONFLICT DO NOTHING;
+
+UPDATE document_template SET form_spec_json = '[]' WHERE document_template_code = 'ESP';
+UPDATE document_template SET form_spec_json = '[
+      {
+      "id": "letter_date",
+      "label": "Letter Date",
+      "type": "DATE",
+      "placeholder": "YYYY-MM-DD",
+      "context-value": "{DATETIME.UTCNOW}",
+      "required": true
+    },
+    {
+      "id": "letter_body_label_0",
+      "type": "LABEL",
+      "context-value": "Enclosed please find new Explosives Storage and Use Permit <Permit Number> made out to <Permittee> for the storage of explosives/detonators at the <Mine Name> mine site.  "
+    },
+    {
+      "id": "letter_body",
+      "label": "Letter Body",
+      "type": "AUTO_SIZE_FIELD",
+      "context-value": "Please ensure these copies of the permit and the magazine rules are posted in the magazines.  When the permit is no longer required, if the site conditions under which the permit was issued are no longer valid or upon closure of mining operations, please return the permit to this office for cancellation.",
+      "required": true
+    },
+    {
+      "id": "letter_body_label_1",
+      "type": "LABEL",
+      "context-value": "Thank you.\n\nSincerely,"
+    },
+    {
+      "id": "rc_office_email",
+      "relative-data-path": "mine.region.regional_contact_office.email",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_phone_number",
+      "relative-data-path": "mine.region.regional_contact_office.phone_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_fax_number",
+      "relative-data-path": "mine.region.regional_contact_office.fax_number",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_1",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_1",
+      "read-only": true
+    },
+    {
+      "id": "rc_office_mailing_address_line_2",
+      "relative-data-path": "mine.region.regional_contact_office.mailing_address_line_2",
+      "read-only": true
+    }
+]' WHERE document_template_code = 'ESL';
