@@ -223,7 +223,7 @@ def _transmogrify_contacts(now_app, now_sub, mms_now_sub):
             post_code = c.mailingaddresspostalzip.replace(
                 " ", "") if c.mailingaddresspostalzip and validPostalCode.match(
                     c.mailingaddresspostalzip.replace(" ", "")) else None
-            if c.mailingaddressline1 and c.mailingaddresscity and c.mailingaddressprovstate:
+            if c.mailingaddressline1 or c.mailingaddresscity or c.mailingaddressprovstate:
                 now_address = Address(
                     address_line_1=c.mailingaddressline1,
                     address_line_2=c.mailingaddressline2,
