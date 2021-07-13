@@ -6,7 +6,7 @@ const props = {};
 
 const setupProps = () => {
   props.submitting = false;
-  props.isApproved = false;
+  props.isProcessed = false;
   props.isPermitTab = false;
   props.title = "Close Permit";
   props.mineGuid = "523642546";

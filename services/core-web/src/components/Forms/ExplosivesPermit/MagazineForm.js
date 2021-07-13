@@ -12,7 +12,7 @@ import { renderConfig } from "@/components/common/config";
 import { COLOR } from "@/constants/styles";
 
 const propTypes = {
-  isApproved: PropTypes.bool.isRequired,
+  isProcessed: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -44,10 +44,10 @@ export class MagazineForm extends Component {
           okText="Yes"
           cancelText="No"
         >
-          <Button ghost disabled={this.props.isApproved}>
+          <Button ghost disabled={this.props.isProcessed}>
             <img
               name="remove"
-              className={this.props.isApproved ? "disabled-icon" : ""}
+              className={this.props.isProcessed ? "disabled-icon" : ""}
               src={TRASHCAN}
               alt="Remove Activity"
             />
@@ -71,7 +71,7 @@ export class MagazineForm extends Component {
                 name={`${field}type_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -83,7 +83,7 @@ export class MagazineForm extends Component {
                 name={`${field}tag_no`}
                 component={renderConfig.FIELD}
                 validate={[required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -97,7 +97,7 @@ export class MagazineForm extends Component {
                 name={`${field}construction`}
                 component={renderConfig.FIELD}
                 validate={[required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -109,7 +109,7 @@ export class MagazineForm extends Component {
                 name={`${field}quantity`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -124,7 +124,7 @@ export class MagazineForm extends Component {
                 name={`${field}latitude`}
                 component={renderConfig.FIELD}
                 validate={[number, maxLength(10), lat, required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -136,7 +136,7 @@ export class MagazineForm extends Component {
                 name={`${field}longitude`}
                 validate={[number, maxLength(12), lon, required]}
                 component={renderConfig.FIELD}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -151,7 +151,7 @@ export class MagazineForm extends Component {
                   name={`${field}detonator_type`}
                   component={renderConfig.AUTO_SIZE_FIELD}
                   validate={[required]}
-                  disabled={this.props.isApproved}
+                  disabled={this.props.isProcessed}
                 />
               </Form.Item>
             </Col>
@@ -166,7 +166,7 @@ export class MagazineForm extends Component {
                 name={`${field}distance_road`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -178,7 +178,7 @@ export class MagazineForm extends Component {
                 name={`${field}distance_dwelling`}
                 component={renderConfig.FIELD}
                 validate={[number, required]}
-                disabled={this.props.isApproved}
+                disabled={this.props.isProcessed}
               />
             </Form.Item>
           </Col>
@@ -191,7 +191,7 @@ export class MagazineForm extends Component {
               name={`${field}length`}
               component={renderConfig.FIELD}
               validate={[number, required]}
-              disabled={this.props.isApproved}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
@@ -201,7 +201,7 @@ export class MagazineForm extends Component {
               name={`${field}width`}
               component={renderConfig.FIELD}
               validate={[number, required]}
-              disabled={this.props.isApproved}
+              disabled={this.props.isProcessed}
             />
           </Col>
           <Col span={8}>
@@ -211,7 +211,7 @@ export class MagazineForm extends Component {
               name={`${field}height`}
               component={renderConfig.FIELD}
               validate={[number, required]}
-              disabled={this.props.isApproved}
+              disabled={this.props.isProcessed}
             />
           </Col>
         </Row>
@@ -235,7 +235,7 @@ export class MagazineForm extends Component {
             <Button
               className="btn--dropdown"
               onClick={(event) => this.addField(event, fields)}
-              disabled={this.props.isApproved}
+              disabled={this.props.isProcessed}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
@@ -262,7 +262,7 @@ export class MagazineForm extends Component {
             <Button
               className="btn--dropdown"
               onClick={(event) => this.addField(event, fields)}
-              disabled={this.props.isApproved}
+              disabled={this.props.isProcessed}
             >
               <PlusOutlined style={{ color: COLOR.mediumGrey }} />
               {fields.length > 0 ? "Add Another Magazine" : "Add Magazine"}
