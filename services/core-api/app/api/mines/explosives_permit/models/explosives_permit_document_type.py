@@ -136,7 +136,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
                     transformed_magazine = {
                         'type_label': get_type_label(magazine),
                         'type_no': magazine.type_no,
-                        'tag_no': magazine.tag_no,
+                        'tag_no': f'Tag #{magazine.tag_no}',
                         'quantity_label': get_quantity_label(magazine),
                     }
                     transformed_magazines.append(transformed_magazine)
