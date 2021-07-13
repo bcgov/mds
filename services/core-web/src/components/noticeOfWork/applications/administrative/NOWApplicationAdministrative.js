@@ -28,16 +28,13 @@ export const NOWApplicationAdministrative = (props) => {
   const isNoWApplication = props.noticeOfWork.application_type_code === "NOW";
   return (
     <div>
-      <ScrollContentWrapper
-        id="final-application-package"
-        title="Final Application Package"
-        isLoaded={props.isLoaded}
-      >
+      <ScrollContentWrapper id="permit-package" title="Permit Package" isLoaded={props.isLoaded}>
         <FinalPermitDocuments
           mineGuid={props.mineGuid}
           noticeOfWork={props.noticeOfWork}
           importNowSubmissionDocumentsJob={props.importNowSubmissionDocumentsJob}
           adminView
+          showInUnifiedView
         />
       </ScrollContentWrapper>
       <ScrollContentWrapper
@@ -56,6 +53,7 @@ export const NOWApplicationAdministrative = (props) => {
           isViewMode={false}
           isAdminView
           allowAfterProcess
+          isStandardDocuments
           disclaimerText="Upload securities-related files here."
           categoriesToShow={["SDO"]}
         />
@@ -75,6 +73,7 @@ export const NOWApplicationAdministrative = (props) => {
           allowAfterProcess
           disclaimerText="In this table, add all transitory and internal documents that may be related to the Notice of Work. All documents added to this section will not show up in the final application package unless otherwise specified."
           categoriesToShow={["GDO"]}
+          isStandardDocuments
         />
       </ScrollContentWrapper>
       {(isNoWApplication || props.draftPermitAmendment?.has_permit_conditions) && (
@@ -105,6 +104,7 @@ export const NOWApplicationAdministrative = (props) => {
             }
             categoriesToShow={["AEF"]}
             addDescriptionColumn={false}
+            isStandardDocuments
           />
         </ScrollContentWrapper>
       )}
