@@ -87,6 +87,10 @@ def NOW_DOCUMENT_DOWNLOAD_TOKEN(token_guid):
     return f'document-generation-now:download-token:{token_guid}'
 
 
+def EXPLOSIVES_PERMIT_DOCUMENT_DOWNLOAD_TOKEN(token_guid):
+    return f'document-generation-explosives-permit:download-token:{token_guid}'
+
+
 #Deep Update Special Flag
 STATE_MODIFIED_DELETE_ON_PUT = "delete"
 

@@ -71,6 +71,7 @@ exports[`MineApplications renders properly 1`] = `
       </div>
       <withRouter(MineAdministrativeAmendmentTable)
         administrativeAmendmentApplications={Array []}
+        expandedRowKeys={Array []}
         handleSearch={[Function]}
         isLoaded={false}
         mineRegionHash={
@@ -85,6 +86,12 @@ exports[`MineApplications renders properly 1`] = `
         onExpand={[Function]}
         searchParams={Object {}}
       />
+    </TabPane>
+    <TabPane
+      key="3"
+      tab="Explosives Storage & Use Permit Applications (0)"
+    >
+      <Connect(ExplosivesPermit) />
     </TabPane>
   </Tabs>
 </div>

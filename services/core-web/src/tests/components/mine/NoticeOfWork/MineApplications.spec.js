@@ -13,10 +13,12 @@ const setupProps = () => {
   props.location = { search: "" };
   props.noticeOfWorkApplications = MOCK.NOW.applications;
   props.mineRegionHash = MOCK.REGION_HASH;
+  props.explosivesPermits = [];
 };
 
 const setupDispatchProps = () => {
   dispatchProps.fetchRegionOptions = jest.fn(() => Promise.resolve());
+  dispatchProps.fetchExplosivesPermits = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMineNoticeOfWorkApplications = jest.fn(() => Promise.resolve());
 };
 
