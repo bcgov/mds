@@ -1182,17 +1182,17 @@ def ETL_MMS_NOW_schema(connection, tables):
 
         applications = etl.leftjoin(applications, timber_cutting, key='mms_cid')
 
-        EXPLOSIVES_PERMITS = etl.fromdb(
+        explosives_permits = etl.fromdb(
             connection,
             f'SELECT b.cid as mms_cid, perm_ind, perm_no as bcexplosivespermitnumber, expry_dt as bcexplosivespermitexpiry from mms.mmsscc_n a inner join mms.mmsnow b on a.cid = b.cid'
         )
 
         # Convert the columns back to the NROS/vFCBC form.
-        EXPLOSIVES_PERMITS = etl.addfield(EXPLOSIVES_PERMITS, 'bcexplosivespermitissued',
+        explosives_permits = etl.addfield(explosives_permits, 'bcexplosivespermitissued',
                                          lambda v: 'Yes' if v['perm_ind'] == 1 else 'No')
-        EXPLOSIVES_PERMITS = etl.cutout(EXPLOSIVES_PERMITS, 'perm_ind')
+        explosives_permits = etl.cutout(explosives_permits, 'perm_ind')
 
-        applications = etl.leftjoin(applications, EXPLOSIVES_PERMITS, key='mms_cid')
+        applications = etl.leftjoin(applications, explosives_permits, key='mms_cid')
 
         #Existing Placer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         proposed_placer_activity = etl.fromdb(
