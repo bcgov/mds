@@ -199,7 +199,6 @@ class PartyListResource(Resource, UserMixin):
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
 
-        # TODO: Determine if this NONE check is valid.
         if role_filter_term == "NONE":
             conditions.append(Party.mine_party_appt == None)
 
@@ -210,22 +209,21 @@ class PartyListResource(Resource, UserMixin):
                 name_search_conditions.append(Party.party_name.ilike('%{}%'.format(name_part)))
             conditions.append(or_(*name_search_conditions))
 
-        contact_query = Party.query.filter(and_(*conditions))
+        contact_query = Party.query
 
-        if role_filter_term and not role_filter_term == "NONE":
+        if role_filter_term and role_filter_term != "NONE":
+
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
-            role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
-            contact_query = contact_query.intersect(role_query) if contact_query else role_query
+            conditions.append(role_filter)
+            contact_query = contact_query.join(MinePartyAppointment)
 
-        # NOTE: I question the performance of individually querying the party table AGAIN and then intersecting it with the original query as opposed to just joining and filtering the original query.
-        # (Same goes for the role_filter_term query above)
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
-            business_role_query = Party.query.join(PartyBusinessRoleAppointment).filter(
-                business_role_filter)
-            contact_query = contact_query.intersect(
-                business_role_query) if contact_query else business_role_query
+            conditions.append(business_role_filter)
+            contact_query = contact_query.join(PartyBusinessRoleAppointment)
+
+        contact_query = contact_query.filter(and_(*conditions))
 
         if sort_model and sort_field and sort_dir:
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
