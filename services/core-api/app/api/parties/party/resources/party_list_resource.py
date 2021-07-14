@@ -89,16 +89,7 @@ class PartyListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
-
         get_inspectors = request.args.to_dict() == ALL_INSPECTORS_QUERY_PARAMS
-
-        current_app.logger.debug(f'request.args: {request.args}')
-        current_app.logger.debug(f'dict(request.args): {dict(request.args)}')
-        current_app.logger.debug(f'request.args.to_dict() : {request.args.to_dict()}')
-        current_app.logger.debug(f'ALL_INSPECTORS_QUERY_PARAMS: {ALL_INSPECTORS_QUERY_PARAMS}')
-        current_app.logger.debug(f'get_inspectors: {get_inspectors}')
-
         if get_inspectors:
             result = cache.get(GET_ALL_INSPECTORS_KEY)
             if result:
@@ -119,10 +110,6 @@ class PartyListResource(Resource, UserMixin):
                 'items_per_page': pagination_details.page_size,
                 'total': pagination_details.total_results,
             }, PAGINATED_PARTY_LIST)
-
-        if get_inspectors:
-            current_app.logger.debug(f'result:\n{result}')
-            current_app.logger.debug(f'pagination_details:\n{pagination_details}')
 
         if get_inspectors and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
