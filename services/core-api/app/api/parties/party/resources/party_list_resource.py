@@ -93,10 +93,11 @@ class PartyListResource(Resource, UserMixin):
     def get(self):
         current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
 
-        get_inspectors = dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS
+        get_inspectors = request.args.to_dict() == ALL_INSPECTORS_QUERY_PARAMS
 
         current_app.logger.debug(f'request.args: {request.args}')
         current_app.logger.debug(f'dict(request.args): {dict(request.args)}')
+        current_app.logger.debug(f'request.args.to_dict() : {request.args.to_dict()}')
         current_app.logger.debug(f'ALL_INSPECTORS_QUERY_PARAMS: {ALL_INSPECTORS_QUERY_PARAMS}')
         current_app.logger.debug(f'get_inspectors: {get_inspectors}')
 
@@ -112,7 +113,6 @@ class PartyListResource(Resource, UserMixin):
         if not paginated_parties:
             raise BadRequest('Unable to fetch parties')
 
-        # TODO: Consider marshalling with a response model that does NOT include the signature for parties when it is a "get inspectors" request.
         result = marshal(
             {
                 'records': paginated_parties.all(),
