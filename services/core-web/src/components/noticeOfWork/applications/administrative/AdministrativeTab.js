@@ -46,7 +46,7 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   fixedTop: PropTypes.bool.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.bool.isRequired,
-  documentContextTemplate: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  documentContextTemplate: PropTypes.objectOf(PropTypes.string).isRequired,
   generateNoticeOfWorkApplicationDocument: PropTypes.func.isRequired,
   inspectors: CustomPropTypes.groupOptions.isRequired,
   formValues: CustomPropTypes.importedNOWApplication.isRequired,

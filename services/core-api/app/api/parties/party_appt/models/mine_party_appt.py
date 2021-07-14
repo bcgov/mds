@@ -106,6 +106,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     def json(self, relationships=[]):
         result = {
             'mine_party_appt_guid': str(self.mine_party_appt_guid),
+            'mine_party_appt_id': self.mine_party_appt_id,
             'mine_guid': str(self.mine_guid) if self.mine_guid else None,
             'party_guid': str(self.party_guid),
             'mine_party_appt_type_code': str(self.mine_party_appt_type_code),
@@ -133,6 +134,11 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
                 deleted_ind=False).first()
         except ValueError:
             return None
+
+    @classmethod
+    def find_by_mine_party_appt_id(cls, mine_party_appt_id):
+        return cls.query.filter_by(mine_party_appt_id=mine_party_appt_id).filter_by(
+            deleted_ind=False).one_or_none()
 
     # FIXME: This is only being used in one test, and is broken by permittee changes. Remove?
     @classmethod

@@ -33,6 +33,7 @@ const propTypes = {
   lastCreatedParty: CustomPropTypes.party.isRequired,
   initialValues: PropTypes.objectOf(PropTypes.string),
   allowNull: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -47,6 +48,7 @@ const defaultProps = {
   searchResults: [],
   initialValues: {},
   allowNull: false,
+  disabled: false,
 };
 
 const renderAddPartyFooter = (showAddParty, partyLabel) => (
@@ -198,6 +200,7 @@ export class PartySelectField extends Component {
   render = () => {
     return (
       <Field
+        disabled={this.props.disabled}
         {...this.props}
         component={RenderLargeSelect}
         handleSearch={this.handleSearch}

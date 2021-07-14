@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExplosivesPermitDecisionForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={48}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          data={Array []}
+          id="issuing_inspector_party_guid"
+          label="Issuing Inspector*"
+          name="issuing_inspector_party_guid"
+          placeholder="Start typing the Issuing Inspector's name"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="issue_date"
+          label="Issue Date*"
+          name="issue_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          id="expiry_date"
+          label="Expiry Date*"
+          name="expiry_date"
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+    style={
+      Object {
+        "paddingTop": "14px",
+      }
+    }
+  >
+    <ForwardRef
+      cancelText="No"
+      disabled={false}
+      icon={<ForwardRef(ExclamationCircleFilled) />}
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </ForwardRef>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="secondary"
+    >
+      Preview Letter
+    </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      disabled={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="secondary"
+    >
+      Preview Permit Certificate
+    </Button>
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      Issue Permit
+    </Button>
+  </div>
+</Form>
+`;
