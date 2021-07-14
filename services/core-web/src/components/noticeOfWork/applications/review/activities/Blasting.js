@@ -358,8 +358,6 @@ export const Blasting = (props) => {
                         Mine Record
                       </Link>
                     </li>
-                    {/* <li>Click On Permits and Approvals</li>
-                    <li>Click on Applications</li> */}
                     <li>Select Explosives Storage & Use Permit Applications</li>
                     <li>Click `Add Explosives Storage & Use Permit Application`</li>
                   </ol>
