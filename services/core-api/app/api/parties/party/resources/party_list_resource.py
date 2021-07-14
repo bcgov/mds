@@ -91,10 +91,14 @@ class PartyListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
+        current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
+
         get_inspectors = dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS
 
-        if get_inspectors:
-            current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
+        current_app.logger.debug(f'request.args: {request.args}')
+        current_app.logger.debug(f'dict(request.args): {dict(request.args)}')
+        current_app.logger.debug(f'ALL_INSPECTORS_QUERY_PARAMS: {ALL_INSPECTORS_QUERY_PARAMS}')
+        current_app.logger.debug(f'get_inspectors: {get_inspectors}')
 
         if get_inspectors:
             result = cache.get(GET_ALL_INSPECTORS_KEY)
