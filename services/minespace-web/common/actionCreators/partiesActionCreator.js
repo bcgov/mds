@@ -145,6 +145,22 @@ export const fetchPartyRelationships = (params) => (dispatch) => {
     .finally(() => dispatch(hideLoading()));
 };
 
+export const fetchAllPartyRelationships = (params) => (dispatch) => {
+  dispatch(request(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl + API.PARTY_RELATIONSHIP}?${queryString.stringify(params)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.FETCH_PARTY_RELATIONSHIPS));
+      dispatch(partyActions.storeAllPartyRelationships(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.FETCH_PARTY_RELATIONSHIPS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const removePartyRelationship = (mine_party_appt_guid) => (dispatch) => {
   dispatch(request(reducerTypes.REMOVE_PARTY_RELATIONSHIP));
   dispatch(showLoading());

@@ -79,17 +79,34 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'MineDocument',
         backref='mine',
         primaryjoin=
-        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind==False)',
+        'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
         lazy='select')
 
-    mine_party_appt = db.relationship('MinePartyAppointment', backref='mine', lazy='select')
+    mine_party_appt = db.relationship(
+        'MinePartyAppointment',
+        backref='mine',
+        lazy='select',
+        primaryjoin=
+        'and_(MinePartyAppointment.mine_guid == Mine.mine_guid, MinePartyAppointment.deleted_ind == False)',
+        order_by=
+        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+    )
+
     mine_incidents = db.relationship(
         'MineIncident',
         backref='mine',
         lazy='select',
-        primaryjoin='and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind==False)'
-    )
+        primaryjoin=
+        'and_(MineIncident.mine_guid == Mine.mine_guid, MineIncident.deleted_ind == False)')
+
     mine_reports = db.relationship('MineReport', lazy='select')
+
+    explosives_permits = db.relationship(
+        'ExplosivesPermit',
+        backref='mine',
+        lazy='select',
+        primaryjoin=
+        'and_(ExplosivesPermit.mine_guid == Mine.mine_guid, ExplosivesPermit.deleted_ind == False)')
 
     mine_work_informations = db.relationship(
         'MineWorkInformation',
@@ -102,7 +119,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     comments = db.relationship(
         'MineComment',
         order_by='MineComment.comment_datetime',
-        primaryjoin='and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind==False)',
+        primaryjoin=
+        'and_(MineComment.mine_guid == Mine.mine_guid, MineComment.deleted_ind == False)',
         lazy='joined')
 
     region = db.relationship('MineRegionCode', lazy='select')
@@ -148,6 +166,14 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
             'utm_zone_letter': self.utm_zone_letter,
             'mine_location_description': self.mine_location_description
         }
+
+    @hybrid_property
+    def mine_manager(self):
+        if self.mine_party_appt:
+            return next(
+                (mpa for mpa in self.mine_party_appt if mpa.mine_party_appt_type_code == 'MMG'),
+                None)
+        return None
 
     @hybrid_property
     def mine_permit(self):

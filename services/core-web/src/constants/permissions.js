@@ -4,6 +4,7 @@ export const CONTACT_ADMIN = "role_contact_admin";
 export const EDIT_PARTIES = "role_edit_parties";
 export const EDIT_MINES = "role_edit_mines";
 export const EDIT_PERMITS = "role_edit_permits";
+export const EDIT_EXPLOSIVES_PERMITS = "role_edit_explosives_permits";
 export const EDIT_REPORTS = "role_edit_reports";
 export const EDIT_DO = "role_edit_do";
 export const EDIT_VARIANCES = "role_edit_variances";
