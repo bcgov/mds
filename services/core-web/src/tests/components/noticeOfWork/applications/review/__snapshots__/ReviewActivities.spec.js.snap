@@ -31,7 +31,9 @@ exports[`ReviewActivities renders properly 1`] = `
       name="blasting_operation"
     >
       <Connect(Blasting)
+        isNewPermit={false}
         isViewMode={true}
+        mineGuid=""
         renderOriginalValues={[MockFunction]}
       />
     </FormSection>

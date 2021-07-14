@@ -13,6 +13,7 @@ const initialState = {
   partyIds: [],
   partyRelationshipTypes: [],
   partyRelationships: [],
+  allPartyRelationships: [],
   partyPageData: {},
   addPartyFormState: {},
   lastCreatedParty: {},
@@ -40,6 +41,11 @@ export const partiesReducer = (state = initialState, action) => {
       return {
         ...state,
         partyRelationships: action.payload,
+      };
+    case actionTypes.STORE_ALL_PARTY_RELATIONSHIPS:
+      return {
+        ...state,
+        allPartyRelationships: action.payload,
       };
     case actionTypes.STORE_ADD_PARTY_FORM_STATE:
       return {
@@ -71,6 +77,7 @@ export const getRawParties = (state) => state[PARTIES].rawParties;
 export const getPartyIds = (state) => state[PARTIES].partyIds;
 
 export const getPartyRelationships = (state) => state[PARTIES].partyRelationships;
+export const getAllPartyRelationships = (state) => state[PARTIES].allPartyRelationships;
 export const getPartyPageData = (state) => state[PARTIES].partyPageData;
 export const getAddPartyFormState = (state) => state[PARTIES].addPartyFormState;
 export const getLastCreatedParty = (state) => state[PARTIES].lastCreatedParty;
