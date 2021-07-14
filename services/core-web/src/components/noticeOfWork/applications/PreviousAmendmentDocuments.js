@@ -7,13 +7,11 @@ import { renderConfig } from "@/components/common/config";
 
 const propTypes = {
   previousAmendmentDocuments: PropTypes.arrayOf(PropTypes.any),
-  showPreambleFileMetadata: PropTypes.bool,
   editPreambleFileMetadata: PropTypes.bool,
 };
 
 const defaultProps = {
   previousAmendmentDocuments: [],
-  showPreambleFileMetadata: false,
   editPreambleFileMetadata: false,
 };
 
@@ -85,8 +83,10 @@ export const PreviousAmendmentDocuments = (props) => {
 
   return (
     <>
+      <br />
       <h4>Previous Amendment Documents</h4>
       <p>These documents came from the previous permit amendment.</p>
+      <br />
       <FormSection name="previous_amendment_documents_metadata">
         <Table
           align="left"

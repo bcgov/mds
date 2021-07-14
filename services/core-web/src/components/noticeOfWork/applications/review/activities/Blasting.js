@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 import { Field, getFormValues } from "redux-form";
-import { Row, Col } from "antd";
+import { Link } from "react-router-dom";
+import { Row, Col, Alert, Button } from "antd";
 import { requiredRadioButton, required } from "@common/utils/Validate";
 import { connect } from "react-redux";
 
@@ -11,18 +12,21 @@ import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import RenderCheckbox from "@/components/common/RenderCheckbox";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+import * as router from "@/constants/routes";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
   blastingFormValues: PropTypes.objectOf(CustomPropTypes.blasting).isRequired,
+  isNewPermit: PropTypes.bool.isRequired,
+  mineGuid: PropTypes.string.isRequired,
 };
 
 export const Blasting = (props) => {
+  const [expanded, setExpanded] = useState(false);
   return (
     <div>
       <Row gutter={16}>
@@ -234,33 +238,27 @@ export const Blasting = (props) => {
         {!props.blastingFormValues.has_storage_explosive_on_site &&
           props.blastingFormValues.has_storage_explosive_on_site !== undefined && (
             <Col md={12} sm={24}>
-              <AuthorizationWrapper inTesting>
-                <>
-                  <div className="field-title">
-                    Describe how the explosives will get to the site
-                    {props.isPreLaunch && <NOWFieldOriginTooltip />}
-                    <NOWOriginalValueTooltip
-                      originalValue={
-                        props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
-                          .value
-                      }
-                      isVisible={
-                        props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
-                          .edited
-                      }
-                    />
-                  </div>
-                  <Field
-                    id="describe_explosives_to_site"
-                    name="describe_explosives_to_site"
-                    component={RenderAutoSizeField}
-                    disabled={props.isViewMode}
-                    validate={
-                      !props.blastingFormValues.has_storage_explosive_on_site ? [required] : []
-                    }
-                  />
-                </>
-              </AuthorizationWrapper>
+              <div className="field-title">
+                Describe how the explosives will get to the site
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
+                      .value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("blasting_operation.describe_explosives_to_site")
+                      .edited
+                  }
+                />
+              </div>
+              <Field
+                id="describe_explosives_to_site"
+                name="describe_explosives_to_site"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={!props.blastingFormValues.has_storage_explosive_on_site ? [required] : []}
+              />
             </Col>
           )}
       </Row>
@@ -338,6 +336,41 @@ export const Blasting = (props) => {
           )}
         </>
       )}
+      {props.blastingFormValues.has_storage_explosive_on_site &&
+        !props.blastingFormValues.explosive_permit_issued &&
+        props.blastingFormValues.explosive_permit_issued !== undefined && (
+          <Alert
+            message="Explosives Storage & Use Permit"
+            description={
+              <>
+                An Explosives Storage & Use Permit is required as indicated by the information
+                provided.
+                {props.isNewPermit &&
+                  " A Mines Act Permit must be issued before creating an Explosives Storage and Use Permit Application."}
+                <div className={expanded ? "block" : "hidden"}>
+                  <ol>
+                    <li>
+                      Navigate to the `Permits & Approvals` tab on the{" "}
+                      <Link
+                        to={router.MINE_NOW_APPLICATIONS.dynamicRoute(props.mineGuid)}
+                        title="Mine"
+                      >
+                        Mine Record
+                      </Link>
+                    </li>
+                    <li>Select Explosives Storage & Use Permit Applications</li>
+                    <li>Click `Add Explosives Storage & Use Permit Application`</li>
+                  </ol>
+                </div>
+                <Button className="btn--expand" onClick={() => setExpanded(!expanded)}>
+                  {expanded ? "  Read less" : "  ...Read more"}
+                </Button>
+              </>
+            }
+            type="info"
+            showIcon
+          />
+        )}
     </div>
   );
 };

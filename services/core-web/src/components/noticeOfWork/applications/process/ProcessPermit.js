@@ -136,6 +136,7 @@ const ProgressRouteFor = (code, now_application_guid, application_type_code) => 
     CON: applicationRoute.dynamicRoute(now_application_guid, "consultation"),
     PUB: applicationRoute.dynamicRoute(now_application_guid, "public-comment"),
     DFT: applicationRoute.dynamicRoute(now_application_guid, "draft-permit"),
+    MND: applicationRoute.dynamicRoute(now_application_guid, "manage-documents"),
   }[code];
 };
 
@@ -810,6 +811,15 @@ export class ProcessPermit extends Component {
       });
     }
 
+    if (
+      this.props.noticeOfWork.blasting_operation.has_storage_explosive_on_site &&
+      !this.props.noticeOfWork.blasting_operation.explosive_permit_issued
+    ) {
+      validationMessages.push({
+        message: `An Explosives Storage & Use Permit is required as indicated by the information provided.`,
+        route: route.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.noticeOfWork.mine_guid),
+      });
+    }
     // TO DO: re-add logic when the Orgbook functionality is in prod.
     // Permittee
     // if (

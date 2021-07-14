@@ -3,23 +3,7 @@ from flask_restplus import fields
 
 from app.api.parties.response_models import PARTY
 from app.api.mines.response_models import MINE_DOCUMENT_MODEL, PERMIT_AMENDMENT_SHORT_MODEL, MINE_TYPE_MODEL
-
-DOCUMENT_TEMPLATE_FIELD_MODE = api.model(
-    'DocumentTemplateFieldModel', {
-        "id": fields.String,
-        "label": fields.String,
-        "type": fields.String,
-        "placeholder": fields.String,
-        "required": fields.Boolean(default=False),
-        "context-value": fields.String,
-        "read-only": fields.Boolean(default=False),
-    })
-
-DOCUMENT_TEMPLATE_MODEL = api.model(
-    'DocumentTemplateModel', {
-        'document_template_code': fields.String,
-        'form_spec': fields.List(fields.Nested(DOCUMENT_TEMPLATE_FIELD_MODE, skip_none=True))
-    })
+from app.api.document_generation.response_models import DOCUMENT_TEMPLATE_MODEL
 
 
 class DateTime(fields.Raw):
@@ -75,17 +59,48 @@ NOW_APPLICATION_ACTIVITY_SUMMARY_BASE = api.model(
         'equipment': fields.List(fields.Nested(NOW_APPLICATION_EQUIPMENT))
     })
 
+NOW_APPLICATION_CAMP_DETAIL = api.inherit(
+    'NOWApplicationCampDetail', NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+        'number_people': fields.Fixed,
+        'number_structures': fields.Fixed,
+        'description_of_structures': fields.String,
+        'waste_disposal': fields.String,
+        'sanitary_facilities': fields.String,
+        'water_supply': fields.String,
+    })
+
+NOW_APPLICATION_STAGING_AREA_DETAIL = api.inherit('NOWApplicationBuildingDetail',
+                                                  NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                                      'name': fields.String,
+                                                  })
+
+NOW_APPLICATION_BUILDING_DETAIL = api.inherit('NOWApplicationBuildingDetail',
+                                              NOW_APPLICATION_ACTIVITY_DETAIL_BASE, {
+                                                  'purpose': fields.String,
+                                                  'structure': fields.String,
+                                              })
 NOW_APPLICATION_CAMP = api.inherit(
     'NOWApplicationCamp', NOW_APPLICATION_ACTIVITY_SUMMARY_BASE, {
-        'camp_name': fields.String,
-        'camp_number_people': fields.String,
-        'camp_number_structures': fields.String,
-        'has_fuel_stored': fields.Boolean,
-        'has_fuel_stored_in_bulk': fields.Boolean,
-        'has_fuel_stored_in_barrels': fields.Boolean,
-        'volume_fuel_stored': fields.Fixed(decimals=2),
-        'calculated_total_disturbance': fields.Fixed(decimals=5),
-        'details': fields.List(fields.Nested(NOW_APPLICATION_ACTIVITY_DETAIL_BASE, skip_none=True))
+        'health_authority_consent':
+        fields.Boolean,
+        'health_authority_notified':
+        fields.Boolean,
+        'has_fuel_stored':
+        fields.Boolean,
+        'has_fuel_stored_in_bulk':
+        fields.Boolean,
+        'has_fuel_stored_in_barrels':
+        fields.Boolean,
+        'volume_fuel_stored':
+        fields.Fixed(decimals=2),
+        'calculated_total_disturbance':
+        fields.Fixed(decimals=5),
+        'details':
+        fields.List(fields.Nested(NOW_APPLICATION_CAMP_DETAIL, skip_none=True)),
+        'building_details':
+        fields.List(fields.Nested(NOW_APPLICATION_BUILDING_DETAIL, skip_none=True)),
+        'staging_area_details':
+        fields.List(fields.Nested(NOW_APPLICATION_STAGING_AREA_DETAIL, skip_none=True)),
     })
 
 NOW_APPLICATION_BLASTING_OPERATION = api.inherit(
@@ -235,13 +250,20 @@ NOW_APPLICATION_UNDERGROUND_EXPLORATION = api.inherit(
         fields.Fixed(decimals=2),
         'total_waste_unit_type_code':
         fields.String,
-        'proposed_bulk_sample': fields.Boolean,
-        'proposed_de_watering': fields.Boolean,
-        'proposed_diamond_drilling': fields.Boolean,
-        'proposed_mapping_chip_sampling':fields.Boolean,
-        'proposed_new_development':fields.Boolean,
-        'proposed_rehab':fields.Boolean,
-        'proposed_underground_fuel_storage': fields.Boolean,
+        'proposed_bulk_sample':
+        fields.Boolean,
+        'proposed_de_watering':
+        fields.Boolean,
+        'proposed_diamond_drilling':
+        fields.Boolean,
+        'proposed_mapping_chip_sampling':
+        fields.Boolean,
+        'proposed_new_development':
+        fields.Boolean,
+        'proposed_rehab':
+        fields.Boolean,
+        'proposed_underground_fuel_storage':
+        fields.Boolean,
         'surface_total_ore_amount':
         fields.Fixed(decimals=2),
         'surface_total_ore_unit_type_code':
@@ -292,6 +314,12 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'is_on_private_land': fields.Boolean,
         'is_on_crown_land': fields.Boolean,
         'has_auth_lieutenant_gov_council': fields.Boolean,
+        'authorization_details': fields.String,
+        'has_licence_of_occupation': fields.Boolean,
+        'licence_of_occupation': fields.String,
+        'file_number_of_app': fields.String,
+        'applied_for_licence_of_occupation': fields.Boolean,
+        'notice_served_to_private': fields.Boolean,
     })
 
 NOW_APPLICATION_DOCUMENT = api.model(
@@ -563,15 +591,24 @@ NOW_APPLICATION_MODEL = api.model(
         fields.String,
         'has_source_conditions':
         fields.Boolean,
-        'proponent_submitted_permit_number': fields.String,
-        'annual_summary_submitted': fields.Boolean,
-        'is_first_year_of_multi': fields.Boolean,
-        'ats_authorization_number': fields.Integer,
-        'ats_project_number': fields.Integer,
-        'file_number_of_app': fields.String,
-        'unreclaimed_disturbance_previous_year': fields.Integer,
-        'disturbance_planned_reclamation': fields.Integer,
-        'original_start_date': Date,
+        'proponent_submitted_permit_number':
+        fields.String,
+        'annual_summary_submitted':
+        fields.Boolean,
+        'is_first_year_of_multi':
+        fields.Boolean,
+        'ats_authorization_number':
+        fields.Integer,
+        'ats_project_number':
+        fields.Integer,
+        'other_information':
+        fields.String,
+        'unreclaimed_disturbance_previous_year':
+        fields.Integer,
+        'disturbance_planned_reclamation':
+        fields.Integer,
+        'original_start_date':
+        Date,
         'site_property':
         fields.Nested(MINE_TYPE_MODEL),
         'equipment':

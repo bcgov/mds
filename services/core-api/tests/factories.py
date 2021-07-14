@@ -38,6 +38,8 @@ from app.api.mines.reports.models.mine_report import MineReport
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_comment import MineReportComment
 from app.api.mines.comments.models.mine_comment import MineComment
+from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
+from app.api.mines.explosives_permit.models.explosives_permit import ExplosivesPermit, ExplosivesPermitMagazine
 
 GUID = factory.LazyFunction(uuid.uuid4)
 TODAY = factory.LazyFunction(datetime.utcnow)
@@ -161,8 +163,8 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
 
     mine_tailings_storage_facility_guid = GUID
     mine_tailings_storage_facility_name = factory.Faker('last_name')
-    latitude = factory.Faker('latitude')  
-    longitude = factory.Faker('longitude')   
+    latitude = factory.Faker('latitude')
+    longitude = factory.Faker('longitude')
     consequence_classification_status_code = 'LOW'
     tsf_operating_status_code = 'OPT'
     has_itrb = factory.Faker('boolean', chance_of_getting_true=50)
@@ -475,19 +477,23 @@ class MinePartyAppointmentFactory(BaseFactory):
         model = MinePartyAppointment
 
     class Params:
+        mine = factory.SubFactory('tests.factories.MineFactory')
         permittee = factory.Trait(mine_guid=None, mine_party_appt_type_code='PMT')
 
     mine_party_appt_guid = GUID
-    mine = factory.SubFactory('tests.factories.MineFactory')
-    mine_guid = factory.SelfAttribute('mine.mine_guid')
-    party = factory.SubFactory(PartyFactory, person=True)
     mine_party_appt_type_code = factory.LazyFunction(RandomMinePartyAppointmentTypeCode)
+
+    mine_guid = factory.LazyAttribute(lambda o: o.mine.mine_guid if o.mine_party_appt_type_code
+                                      not in PERMIT_LINKED_CONTACT_TYPES else None)
+
+    party = factory.SubFactory(PartyFactory, person=True)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
     processed_by = factory.Faker('first_name')
     processed_on = TODAY
-    permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[
-        0].permit_id if o.mine.mine_permit and o.mine_party_appt_type_code == 'PMT' else None)
+    permit_id = factory.LazyAttribute(lambda o: o.mine.mine_permit[0].permit_id
+                                      if o.mine.mine_permit and o.mine_party_appt_type_code in
+                                      PERMIT_LINKED_CONTACT_TYPES else None)
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
@@ -776,7 +782,6 @@ class PermitConditionsFactory(BaseFactory):
         permit_amendment = factory.SubFactory(PermitAmendmentFactory)
 
     permit_condition_guid = GUID
-    permit_condition_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
@@ -817,3 +822,91 @@ class ReclamationInvoiceFactory(BaseFactory):
     amount = factory.Faker(
         'pydecimal', right_digits=2, positive=True, min_value=50, max_value=500000)
     vendor = factory.Faker('company')
+
+
+class ExplosivesPermitFactory(BaseFactory):
+    class Meta:
+        model = ExplosivesPermit
+
+    class Params:
+        mine = factory.SubFactory(MineFactory, minimal=True)
+        mines_act_permit = factory.SubFactory(PermitFactory)
+        issuing_inspector = factory.SubFactory(PartyBusinessRoleFactory)
+        mine_manager = factory.SubFactory(MinePartyAppointmentFactory)
+        permittee = factory.SubFactory(MinePartyAppointmentFactory)
+
+    explosives_permit_guid = GUID
+
+    mine_guid = factory.SelfAttribute('mine.mine_guid')
+    permit_guid = factory.SelfAttribute('mines_act_permit.permit_guid')
+    issuing_inspector_party_guid = factory.SelfAttribute('issuing_inspector.party_guid')
+    mine_manager_mine_party_appt_id = factory.SelfAttribute('mine_manager.mine_party_appt_id')
+    permittee_mine_party_appt_id = factory.SelfAttribute('permittee.mine_party_appt_id')
+
+    originating_system = 'Core'
+    application_number = factory.Faker('sentence', nb_words=1)
+    received_timestamp = TODAY
+    application_status = 'REC'
+    application_date = TODAY
+    description = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    latitude = factory.Faker('latitude')
+    longitude = factory.Faker('longitude')
+
+    permit_number = None
+    issue_date = None
+    expiry_date = None
+    is_closed = False
+    closed_reason = None
+    closed_timestamp = None
+
+    deleted_ind = False
+
+    explosive_magazines = []
+    detonator_magazines = []
+    documents = []
+
+    @factory.post_generation
+    def explosive_magazines(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ExplosivesPermitMagazineFactory.create_batch(
+            size=extracted, explosives_permit=obj, **kwargs)
+
+    @factory.post_generation
+    def detonator_magazines(obj, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if not isinstance(extracted, int):
+            extracted = 1
+
+        ExplosivesPermitMagazineFactory.create_batch(
+            size=extracted, explosives_permit=obj, **kwargs)
+
+
+class ExplosivesPermitMagazineFactory(BaseFactory):
+    class Meta:
+        model = ExplosivesPermitMagazine
+
+    class Params:
+        explosives_permit = factory.SubFactory('tests.factories.ExplosivesPermitFactory')
+
+    explosives_permit_id = factory.SelfAttribute('explosives_permit.explosives_permit_id')
+    explosives_permit_magazine_type_code = factory.LazyFunction(
+        RandomExplosivesPermitMagazineTypeCode)
+    type_no = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    tag_no = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    construction = factory.Faker('sentence', nb_words=1, variable_nb_words=True)
+    latitude = factory.Faker('latitude')
+    longitude = factory.Faker('longitude')
+    length = factory.Faker('pyint', min_value=1, max_value=10)
+    width = factory.Faker('pyint', min_value=1, max_value=10)
+    height = factory.Faker('pyint', min_value=1, max_value=10)
+    quantity = factory.Faker('pyint', min_value=1, max_value=10)
+    distance_road = factory.Faker('pyint', min_value=10, max_value=100)
+    distance_dwelling = factory.Faker('pyint', min_value=10, max_value=100)
+    detonator_type = factory.Faker('sentence', nb_words=1, variable_nb_words=True)

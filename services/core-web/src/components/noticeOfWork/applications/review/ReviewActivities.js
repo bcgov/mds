@@ -55,9 +55,11 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="blasting_operation">
           <Blasting
+            isNewPermit={props.noticeOfWork.type_of_application === "New Permit"}
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}
+            mineGuid={props.noticeOfWork.mine_guid}
           />
         </FormSection>
       </ScrollContentWrapper>

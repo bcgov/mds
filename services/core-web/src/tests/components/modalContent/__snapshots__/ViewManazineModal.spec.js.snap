@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewMagazineModal renders properly 1`] = `
+<div>
+  <h4>
+    Explosive Magazine Detail
+  </h4>
+  <br />
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={2}
+    >
+      <h4>
+        1
+        .
+      </h4>
+    </Col>
+    <Col
+      span={22}
+    >
+      <Descriptions
+        column={3}
+      >
+        <DescriptionsItem
+          label="Type No."
+        >
+          1
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Tag No."
+        >
+          1
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Construction"
+        >
+          string
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Quantity"
+        >
+          12
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Latitude"
+        />
+        <DescriptionsItem
+          label="Longitude"
+        />
+      </Descriptions>
+      <Descriptions
+        column={3}
+      >
+        <DescriptionsItem
+          label="Length(m)"
+        >
+          1
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Width(m)"
+        >
+          2
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Height(m)"
+        >
+          2
+        </DescriptionsItem>
+      </Descriptions>
+      <Descriptions
+        column={1}
+      >
+        <DescriptionsItem
+          label="Distance from Road or Work Area"
+        >
+          70
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Distance from Dwelling or Flammable Material Storage Area"
+        >
+          60
+        </DescriptionsItem>
+      </Descriptions>
+      <Divider />
+    </Col>
+  </Row>
+  <br />
+  <h4>
+    Storage Detail
+  </h4>
+  <br />
+  <Descriptions
+    column={1}
+  >
+    <DescriptionsItem
+      label="Total Maximum Quantity"
+    >
+      0 kg
+    </DescriptionsItem>
+  </Descriptions>
+  <Descriptions
+    column={2}
+  >
+    <DescriptionsItem
+      label="Latitude"
+    />
+    <DescriptionsItem
+      label="Longitude"
+    />
+  </Descriptions>
+  <ExplosivesPermitMap
+    pin={
+      Array [
+        null,
+        null,
+      ]
+    }
+  />
+  <br />
+  <Descriptions
+    column={1}
+  >
+    <DescriptionsItem
+      label="Other Information"
+    />
+  </Descriptions>
+  <Descriptions
+    column={3}
+  >
+    <DescriptionsItem
+      label="Mine No."
+    />
+    <DescriptionsItem
+      label="Mine Name"
+    />
+  </Descriptions>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      type="primary"
+    >
+      OK
+    </Button>
+  </div>
+</div>
+`;

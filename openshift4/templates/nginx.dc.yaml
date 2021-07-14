@@ -1,0 +1,228 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: mds-nginx-dc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name for all objects
+    value: nginx
+  - name: TAG
+    required: true
+  - name: LOG_PVC_SIZE
+    value: 1Gi
+  - name: ROUTE
+    value: /
+  - name: PATH_PREFIX
+    value: ""
+  - name: CORE_SERVICE_URL
+    value: http://frontend:3000
+  - name: TUSD_SERVICE_URL
+    value: http://tusd:1080/files/
+  - name: API_SERVICE_URL
+    value: http://backend:5000
+  - name: NRIS_API_SERVICE_URL
+    value: "http://nris:5500"
+  - name: FILE_API_SERVICE_URL
+    value: "http://filesystem-provider:8080"
+  - name: DOCUMENT_MANAGER_SERVICE_URL
+    value: "http://docman:5001"
+  - name: MINESPACE_SERVICE_URL
+    value: "http://minespace:3020"
+  - name: MINESPACE_DOMAIN
+    required: true
+  - name: CORE_DOMAIN
+    required: true
+  - name: CPU_LIMIT
+    value: 128m
+  - name: MEMORY_LIMIT
+    value: 256Mi
+  - name: CPU_REQUEST
+    value: 64m
+  - name: MEMORY_REQUEST
+    value: 128Mi
+  - name: REPLICA_MIN
+    value: "3"
+  - name: REPLICA_MAX
+    value: "4"
+  - name: IMAGE_NAMESPACE
+    value: 4c2ba9-tools
+  - name: ENVIRONMENT
+    value: dev
+objects:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: mds-access-logs
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: ${LOG_PVC_SIZE}
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels: null
+      annotations:
+        description: Defines how to deploy the application server
+    spec:
+      strategy:
+        type: Rolling
+        maxSurge: 50%
+        maxUnavailable: 0
+      triggers:
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - nginx
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG}
+              namespace: ${IMAGE_NAMESPACE}
+        - type: ConfigChange
+      replicas: ${{REPLICA_MIN}}
+      selector:
+        name: ${NAME}
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            name: ${NAME}
+        spec:
+          containers:
+            - name: nginx
+              image: " "
+              env:
+                - name: PATH_PREFIX
+                  value: ${PATH_PREFIX}
+                - name: CORE_SERVICE_URL
+                  value: ${CORE_SERVICE_URL}
+                - name: TUSD_SERVICE_URL
+                  value: ${TUSD_SERVICE_URL}
+                - name: API_SERVICE_URL
+                  value: ${API_SERVICE_URL}
+                - name: NRIS_API_SERVICE_URL
+                  value: ${NRIS_API_SERVICE_URL}
+                - name: FILE_API_SERVICE_URL
+                  value: ${FILE_API_SERVICE_URL}
+                - name: DOCUMENT_MANAGER_SERVICE_URL
+                  value: ${DOCUMENT_MANAGER_SERVICE_URL}
+                - name: MINESPACE_SERVICE_URL
+                  value: ${MINESPACE_SERVICE_URL}
+                - name: MINESPACE_DOMAIN
+                  value: ${MINESPACE_DOMAIN}
+                - name: CORE_DOMAIN
+                  value: ${CORE_DOMAIN}
+              resources:
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+              volumeMounts:
+                - mountPath: /var/log/nginx
+                  name: ${NAME}-log
+              ports:
+                - containerPort: 8080
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /health
+                  port: 8081
+                  scheme: HTTP
+                initialDelaySeconds: 25
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /health
+                  port: 8081
+                  scheme: HTTP
+                initialDelaySeconds: 25
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+          volumes:
+            - name: ${NAME}-log
+              persistentVolumeClaim:
+                claimName: mds-access-logs
+  - apiVersion: autoscaling/v1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+    spec:
+      maxReplicas: ${{REPLICA_MAX}}
+      minReplicas: ${{REPLICA_MIN}}
+      scaleTargetRef:
+        apiVersion: v1
+        kind: DeploymentConfig
+        name: ${NAME}
+      targetCPUUtilizationPercentage: 95
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels: null
+      annotations:
+        description: Exposes and load balances the application pods
+    spec:
+      ports:
+        - name: web
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
+      selector:
+        name: ${NAME}
+      type: ClusterIP
+      sessionAffinity: None
+  # - kind: Route
+  #   apiVersion: v1
+  #   metadata:
+  #     name: minespace-${ENVIRONMENT}
+  #     creationTimestamp: null
+  #     labels:
+  #       service: ${NAME}
+  #   spec:
+  #     path: ${ROUTE}
+  #     # host: minespace-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+  #     to:
+  #       kind: Service
+  #       name: ${NAME}
+  #       weight: 100
+  #     port:
+  #       targetPort: web
+  #     tls:
+  #       termination: edge
+  #       insecureEdgeTerminationPolicy: Redirect
+  #     wildcardPolicy: None
+  # - kind: Route
+  #   apiVersion: v1
+  #   metadata:
+  #     name: mds-${ENVIRONMENT}
+  #     creationTimestamp: null
+  #     labels:
+  #       service: ${NAME}
+  #   spec:
+  #     path: ${ROUTE}
+  #     # host: mds-${ENVIRONMENT}.apps.silver.devops.gov.bc.ca
+  #     to:
+  #       kind: Service
+  #       name: ${NAME}
+  #       weight: 100
+  #     port:
+  #       targetPort: web
+  #     tls:
+  #       termination: edge
+  #       insecureEdgeTerminationPolicy: Redirect
+  #     wildcardPolicy: None

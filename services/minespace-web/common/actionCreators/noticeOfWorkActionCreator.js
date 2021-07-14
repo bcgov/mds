@@ -378,12 +378,15 @@ export const deleteNoticeOfWorkApplicationReview = (applicationGuid, application
     .finally(() => dispatch(hideLoading()));
 };
 
-export const addDocumentToNoticeOfWork = (now_application_guid, payload) => (dispatch) => {
+export const editNoticeOfWorkDocument = (now_application_guid, mineDocumentGuid, payload) => (
+  dispatch
+) => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.ADD_DOCUMENT_TO_NOTICE_OF_WORK));
   return CustomAxios()
     .put(
-      ENVIRONMENT.apiUrl + API.NOTICE_OF_WORK_DOCUMENT(now_application_guid),
+      `${ENVIRONMENT.apiUrl +
+        API.NOTICE_OF_WORK_DOCUMENT(now_application_guid)}/${mineDocumentGuid}`,
       payload,
       createRequestHeader()
     )

@@ -104,7 +104,7 @@ const RenderTableExpandIcon = (rowProps) => (
         <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to hide amendment details." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to show amendment details." placement="right" mouseEnterDelay={1}>
         <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
