@@ -1,5 +1,3 @@
-import json
-
 from flask import request, current_app
 from flask_restplus import Resource, marshal
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
@@ -105,7 +103,7 @@ class PartyListResource(Resource, UserMixin):
             result = cache.get(GET_ALL_INSPECTORS_KEY)
             if result:
                 current_app.logger.debug(f'CACHE HIT - {GET_ALL_INSPECTORS_KEY}')
-                return json.loads(result)
+                return result
             else:
                 current_app.logger.debug(f'CACHE MISS - {GET_ALL_INSPECTORS_KEY}')
 
@@ -128,7 +126,7 @@ class PartyListResource(Resource, UserMixin):
 
         if get_inspectors and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
-            cache.set(GET_ALL_INSPECTORS_KEY, json.dumps(result), timeout=TIMEOUT_12_HOURS)
+            cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_12_HOURS)
 
         return result
 
