@@ -245,6 +245,10 @@ class NOWApplication(Base, AuditMixin):
             permit_amendment_status_code='RMT').one_or_none()
 
     @hybrid_property
+    def permit(self):
+        return self.active_permit or self.draft_permit or self.remitted_permit
+
+    @hybrid_property
     def related_permit_guid(self):
         permit_amendment = PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid, deleted_ind=False).first()
@@ -314,7 +318,7 @@ class NOWApplication(Base, AuditMixin):
     def add_now_form_to_fap(self, description):
         from app.api.now_applications.models.now_application_document_xref import NOWApplicationDocumentXref
         from app.api.now_applications.resources.now_application_export_resource import NOWApplicationExportResource
-        from app.api.document_generation.resources.now_document import NoticeOfWorkDocumentResource
+        from app.api.document_generation.resources.now_document_resource import NoticeOfWorkDocumentResource
 
         # Generate the Notice of Work Form document
         token = NOWApplicationExportResource.get_now_form_generate_token(self.now_application_guid)

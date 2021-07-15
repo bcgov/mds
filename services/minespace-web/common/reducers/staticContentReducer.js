@@ -46,6 +46,9 @@ const initialState = {
   applicationSourceTypeCodeOptions: [],
   consequenceClassificationStatusCodeOptions: [],
   TSFOperatingStatusCodeOptions: [],
+  explosivesPermitStatus: [],
+  explosivesPermitDocumentType: [],
+  explosivesPermitMagazineType: [],
 };
 
 export const staticContentReducer = (state = initialState, action) => {
@@ -131,6 +134,11 @@ export const getConsequenceClassificationStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].consequenceClassificationStatusCodeOptions;
 export const getTSFOperatingStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].TSFOperatingStatusCodeOptions;
+export const getExplosivesPermitDocumentType = (state) =>
+  state[STATIC_CONTENT].explosivesPermitDocumentType;
+export const getExplosivesPermitStatus = (state) => state[STATIC_CONTENT].explosivesPermitStatus;
+export const getExplosivesPermitMagazineType = (state) =>
+  state[STATIC_CONTENT].explosivesPermitMagazineType;
 
 const isStaticContentLoaded = (state) =>
   Object.keys(state)

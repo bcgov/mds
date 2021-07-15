@@ -31,6 +31,7 @@ const propTypes = {
   handleSearch: PropTypes.func,
   handleSelect: PropTypes.func,
   handleFocus: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 const doNothing = () => {};
@@ -40,6 +41,7 @@ const defaultProps = {
   handleSelect: doNothing,
   handleSearch: doNothing,
   handleFocus: doNothing,
+  disabled: false,
 };
 
 const RenderLargeSelect = (props) => (
@@ -75,6 +77,7 @@ const RenderLargeSelect = (props) => (
         props.handleFocus();
         props.input.onFocus(event);
       }}
+      disabled={props.disabled}
     />
   </Form.Item>
 );

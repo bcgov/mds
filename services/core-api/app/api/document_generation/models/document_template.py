@@ -2,13 +2,18 @@ import json, os, docx, io, base64
 
 from flask import current_app
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from docx.shared import Inches
 from datetime import datetime
+import dateutil.parser
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
+
+
+def format_letter_date(datetime_string):
+    datetime_object = dateutil.parser.isoparse(datetime_string)
+    return datetime_object.strftime('%b %d %Y')
 
 
 def get_model_by_model_name(model_name):
@@ -29,7 +34,7 @@ class DocumentTemplate(Base, AuditMixin):
     context_primary_key = None
 
     def __repr__(self):
-        return '<DocumentTemplate %r>' % self.document_template_code
+        return f'{self.__class__.__name__} {self.document_template_code}'
 
     @hybrid_property
     def form_spec(self):
@@ -159,7 +164,8 @@ class DocumentTemplate(Base, AuditMixin):
                         break
 
         doc = None
-        if self.document_template_code in ('PMT', 'PMA', 'NPE', 'NCL', 'NWL', 'NRL'):
+        images = template_data.get('images')
+        if images:
             doc = docx.Document(self.os_template_file_path)
             insert_images(doc, template_data)
         elif self.document_template_code == 'NTR':

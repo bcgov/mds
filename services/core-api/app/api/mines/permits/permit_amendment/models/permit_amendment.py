@@ -42,6 +42,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
+    permit_no = association_proxy('permit', 'permit_no')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
     #liability_adjustment is the change of work assessed for the new amendment,
@@ -116,7 +117,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         if self.now_application_identity:
             _imported_now_app_docs = self.now_application_identity.now_application.imported_submission_documents
         return _imported_now_app_docs
-    
+
     @hybrid_property
     def has_permit_conditions(self):
         permit_conditions = PermitConditions.query.filter_by(
@@ -140,14 +141,13 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
         # If deleting a draft permit, remove the now_guid so a new permit can be created and associated with that now
         elif self.now_application_guid and self.permit_amendment_status_code == "DFT":
             self.now_application_guid = None
-            self.save();
+            self.save()
 
         if self.conditions and self.permit_amendment_status_code != "DFT":
-            raise Exception(
-                'The permit amendment has permit conditions and cannot be deleted.')
+            raise Exception('The permit amendment has permit conditions and cannot be deleted.')
         elif self.conditions and self.permit_amendment_status_code == "DFT":
             PermitConditions.delete_all_by_permit_amendment_id(self.permit_amendment_id)
-            self.save();
+            self.save()
 
         permit_amendment_documents = PermitAmendmentDocument.query.filter_by(
             permit_amendment_id=self.permit_amendment_id, deleted_ind=False).all()
@@ -172,7 +172,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
                regional_office=None,
                now_application_guid=None,
                security_received_date=None,
-               security_not_required =None,
+               security_not_required=None,
                security_not_required_reason=None,
                add_to_session=True):
         new_pa = cls(
