@@ -811,6 +811,15 @@ export class ProcessPermit extends Component {
       });
     }
 
+    if (
+      this.props.noticeOfWork.blasting_operation.has_storage_explosive_on_site &&
+      !this.props.noticeOfWork.blasting_operation.explosive_permit_issued
+    ) {
+      validationMessages.push({
+        message: `An Explosives Storage & Use Permit is required as indicated by the information provided.`,
+        route: route.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.noticeOfWork.mine_guid),
+      });
+    }
     // TO DO: re-add logic when the Orgbook functionality is in prod.
     // Permittee
     // if (

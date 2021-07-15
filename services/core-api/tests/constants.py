@@ -34,7 +34,7 @@ FULL_AUTH_CLAIMS = {
             "core_close_permits", "core_edit_all", "core_edit_do", "core_edit_investigations",
             "core_edit_parties", "core_edit_permits", "core_edit_reports", "core_edit_securities",
             "core_edit_variances", "core_environmental_reports", "core_geospatial", "idir",
-            "core_edit_submissions", "core_edit_securities"
+            "core_edit_submissions", "core_edit_explosives_permits"
         ]
     }
 }

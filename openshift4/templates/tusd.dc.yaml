@@ -21,6 +21,8 @@ parameters:
     value: 256Mi
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: DOCUMENT_MANAGER_URL
+    value: http://docman:5001/document-manager
 objects:
   - kind: Service
     apiVersion: v1
@@ -124,6 +126,8 @@ objects:
                       key: endpoint
                 - name: S3_PREFIX
                   value: mds-files-${TAG}/
+                - name: DOCUMENT_MANAGER_URL
+                  value: ${DOCUMENT_MANAGER_URL}
               resources:
                 requests:
                   cpu: ${CPU_REQUEST}

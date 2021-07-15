@@ -96,6 +96,7 @@ PARTY_BUSINESS_ROLE_APPT = api.model(
         'end_date': fields.DateTime,
     })
 
+# NOTE: Including the signature could impact performance if it is not required for every party request (and just inspector requests).
 PARTY = api.model(
     'Party', {
         'party_guid': fields.String,

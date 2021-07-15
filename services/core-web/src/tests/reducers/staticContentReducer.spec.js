@@ -46,6 +46,9 @@ const baseExpectedValue = {
   applicationSourceTypeCodeOptions: [],
   consequenceClassificationStatusCodeOptions: [],
   TSFOperatingStatusCodeOptions: [],
+  explosivesPermitStatus: [],
+  explosivesPermitDocumentType: [],
+  explosivesPermitMagazineType: [],
 };
 
 // Creates deep copy of javascript object instead of setting a reference
