@@ -1094,6 +1094,11 @@ UPDATE document_template SET form_spec_json = '[
       "id": "application_type_code",
       "relative-data-path": "now_application.application_type_code",
       "read-only": true
+    },
+    {
+      "id": "permit_no",
+      "relative-data-path": "now_application.permit.permit_no",
+      "read-only": true
     }
   ]' WHERE document_template_code ='NPE';
   
