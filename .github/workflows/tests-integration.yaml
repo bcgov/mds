@@ -23,4 +23,4 @@ jobs:
 
       - name: Exec integration commands
         run: |
-          docker-compose -f docker-compose.ci.yaml exec backend pytest tests/auth/test_user_auth.py
+          docker-compose -f docker-compose.ci.yaml exec -T backend pytest tests/auth/test_user_auth.py
