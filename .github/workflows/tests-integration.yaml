@@ -1,11 +1,11 @@
 name: Integration Tests
 
 on:
-  push:
+  pull_request:
     paths:
       - ".github/workflows/tests-integration.yaml"
       - "services/core-api/**"
-      - "services/migrations/**"
+      - "migrations/**"
       - "!**/README.md"
       - "docker-compose.ci.yaml"
 
