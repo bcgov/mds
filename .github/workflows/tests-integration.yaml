@@ -7,6 +7,7 @@ on:
       - "services/core-api/**"
       - "services/migrations/**"
       - "!**/README.md"
+      - "docker-compose.ci.yaml"
 
 jobs:
   tests-integration-backend:
