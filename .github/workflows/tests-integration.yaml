@@ -17,13 +17,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
+      # TODO: cache images
       - name: Create containers for integration tests
         run: |
           docker-compose -f docker-compose.ci.yaml up -d backend
-
-      - name: debug
-        run: |
-          docker-compose -f docker-compose.ci.yaml exec -T postgres psql -U mds mds_test -c '\dt+'
 
       - name: Exec integration commands
         run: |
