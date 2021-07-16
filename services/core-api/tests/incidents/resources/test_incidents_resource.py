@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import time
 import random
 
@@ -79,10 +80,9 @@ class TestGetIncidents:
         """Should respect incidents year query param"""
         batch_size = 5
         MineIncidentFactory.create_batch(size=batch_size)
-        random_time_past = random.uniform(-time.time(), time.time())
-        random_date_time = datetime.fromtimestamp(random_time_past)
-        MineIncidentFactory(incident_timestamp=random_date_time)
-        incident_year = str(random_date_time.year)
+        date_time = datetime.fromtimestamp(time.time()) + relativedelta(years=1)
+        MineIncidentFactory(incident_timestamp=date_time)
+        incident_year = str(date_time.year)
         get_resp = test_client.get(
             f"/incidents?year={incident_year}", headers=auth_headers['full_auth_header'])
         get_data = json.loads(get_resp.data.decode())
