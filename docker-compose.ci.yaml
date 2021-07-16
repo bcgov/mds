@@ -70,9 +70,7 @@ services:
       - ./services/core-web/src/:/app/src/
     ports:
       - 3000:3000
-    depends_on:
-      - backend
-    env_file: ./services/core-web/.env
+    env_file: ./services/core-web/.env-example
 
 ####################### Networks Definition ######################
 networks:
