@@ -11,11 +11,16 @@ services:
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
-      - POSTGRES_DB=mds
+      - POSTGRES_DB=mds_test
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   ####################### Flyway Migration Definition #######################
   flyway:
@@ -24,16 +29,17 @@ services:
       context: migrations
       dockerfile: Dockerfile.flyway.dev
     environment:
-      - FLYWAY_USER=mds
+      - FLYWAY_USER=mds_test
       - FLYWAY_HOME=/flyway
       - FLYWAY_PASSWORD=test
-      - FLYWAY_DB_NAME=mds
+      - FLYWAY_DB_NAME=mds_test
       - FLYWAY_DB_HOST=postgres
-      - FLYWAY_URL=jdbc:postgresql://postgres/mds
+      - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   ####################### Backend Definition #######################
   backend:
