@@ -24,7 +24,6 @@ jobs:
       - name: debug
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T postgres psql -U mds mds_test -c '\dt+'
-          docker-compose -f docker-compose.ci.yaml exec -T postgres psql -U mds mds -c '\dt+'
 
       - name: Exec integration commands
         run: |

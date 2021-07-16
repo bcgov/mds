@@ -29,7 +29,7 @@ services:
       context: migrations
       dockerfile: Dockerfile.flyway.dev
     environment:
-      - FLYWAY_USER=mds_test
+      - FLYWAY_USER=mds
       - FLYWAY_HOME=/flyway
       - FLYWAY_PASSWORD=test
       - FLYWAY_DB_NAME=mds_test
