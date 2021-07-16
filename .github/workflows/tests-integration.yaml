@@ -1,0 +1,25 @@
+name: Integration Tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/tests-integration.yaml"
+      - "services/core-api/**"
+      - "services/migrations/**"
+      - "!**/README.md"
+
+jobs:
+  tests-integration-backend:
+    name: tests-integration-backend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Create containers for integration tests
+        run: |
+          docker-compose -f docker-compose.ci.yaml up -d backend
+
+      - name: Exec integration commands
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec backend pytest tests/auth/test_user_auth.py
