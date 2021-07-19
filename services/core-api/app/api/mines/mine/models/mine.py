@@ -82,15 +82,7 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
         'and_(MineDocument.mine_guid == Mine.mine_guid, MineDocument.deleted_ind == False)',
         lazy='select')
 
-    mine_party_appt = db.relationship(
-        'MinePartyAppointment',
-        backref='mine',
-        lazy='select',
-        primaryjoin=
-        'and_(MinePartyAppointment.mine_guid == Mine.mine_guid, MinePartyAppointment.deleted_ind == False)',
-        order_by=
-        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
-    )
+    mine_party_appt = db.relationship('MinePartyAppointment', backref="mine", lazy='select')
 
     mine_incidents = db.relationship(
         'MineIncident',
