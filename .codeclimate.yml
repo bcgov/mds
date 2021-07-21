@@ -20,10 +20,10 @@ checks:
       threshold: 150
   nested-control-flow:
     config:
-      threshold: 5
+      threshold: 7
   return-statements:
     config:
-      threshold: 5
+      threshold: 6
   similar-code:
     enabled: false
   identical-code:
