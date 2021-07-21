@@ -1,5 +1,3 @@
-import json
-
 from flask import request, current_app
 from flask_restplus import Resource, marshal
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
@@ -91,20 +89,12 @@ class PartyListResource(Resource, UserMixin):
         })
     @requires_any_of([VIEW_ALL, MINESPACE_PROPONENT])
     def get(self):
-        current_app.logger.debug(f'*********** INSPECTORS DEBUGGING ***********')
-
-        get_inspectors = dict(request.args) == ALL_INSPECTORS_QUERY_PARAMS
-
-        current_app.logger.debug(f'request.args: {request.args}')
-        current_app.logger.debug(f'dict(request.args): {dict(request.args)}')
-        current_app.logger.debug(f'ALL_INSPECTORS_QUERY_PARAMS: {ALL_INSPECTORS_QUERY_PARAMS}')
-        current_app.logger.debug(f'get_inspectors: {get_inspectors}')
-
+        get_inspectors = request.args.to_dict() == ALL_INSPECTORS_QUERY_PARAMS
         if get_inspectors:
             result = cache.get(GET_ALL_INSPECTORS_KEY)
             if result:
                 current_app.logger.debug(f'CACHE HIT - {GET_ALL_INSPECTORS_KEY}')
-                return json.loads(result)
+                return result
             else:
                 current_app.logger.debug(f'CACHE MISS - {GET_ALL_INSPECTORS_KEY}')
 
@@ -112,7 +102,6 @@ class PartyListResource(Resource, UserMixin):
         if not paginated_parties:
             raise BadRequest('Unable to fetch parties')
 
-        # TODO: Consider marshalling with a response model that does NOT include the signature for parties when it is a "get inspectors" request.
         result = marshal(
             {
                 'records': paginated_parties.all(),
@@ -122,13 +111,9 @@ class PartyListResource(Resource, UserMixin):
                 'total': pagination_details.total_results,
             }, PAGINATED_PARTY_LIST)
 
-        if get_inspectors:
-            current_app.logger.debug(f'result:\n{result}')
-            current_app.logger.debug(f'pagination_details:\n{pagination_details}')
-
         if get_inspectors and pagination_details.total_results > 0:
             current_app.logger.debug(f'SET CACHE - {GET_ALL_INSPECTORS_KEY}')
-            cache.set(GET_ALL_INSPECTORS_KEY, json.dumps(result), timeout=TIMEOUT_12_HOURS)
+            cache.set(GET_ALL_INSPECTORS_KEY, result, timeout=TIMEOUT_12_HOURS)
 
         return result
 
@@ -214,7 +199,6 @@ class PartyListResource(Resource, UserMixin):
         if phone_filter_term:
             conditions.append(Party.phone_no.ilike('%{}%'.format(phone_filter_term)))
 
-        # TODO: Determine if this NONE check is valid.
         if role_filter_term == "NONE":
             conditions.append(Party.mine_party_appt == None)
 
@@ -225,22 +209,21 @@ class PartyListResource(Resource, UserMixin):
                 name_search_conditions.append(Party.party_name.ilike('%{}%'.format(name_part)))
             conditions.append(or_(*name_search_conditions))
 
-        contact_query = Party.query.filter(and_(*conditions))
+        contact_query = Party.query
 
-        if role_filter_term and not role_filter_term == "NONE":
+        if role_filter_term and role_filter_term != "NONE":
+
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
-            role_query = Party.query.join(MinePartyAppointment).filter(role_filter)
-            contact_query = contact_query.intersect(role_query) if contact_query else role_query
+            conditions.append(role_filter)
+            contact_query = contact_query.join(MinePartyAppointment)
 
-        # NOTE: I question the performance of individually querying the party table AGAIN and then intersecting it with the original query as opposed to just joining and filtering the original query.
-        # (Same goes for the role_filter_term query above)
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
-            business_role_query = Party.query.join(PartyBusinessRoleAppointment).filter(
-                business_role_filter)
-            contact_query = contact_query.intersect(
-                business_role_query) if contact_query else business_role_query
+            conditions.append(business_role_filter)
+            contact_query = contact_query.join(PartyBusinessRoleAppointment)
+
+        contact_query = contact_query.filter(and_(*conditions))
 
         if sort_model and sort_field and sort_dir:
             sort_criteria = [{'model': sort_model, 'field': sort_field, 'direction': sort_dir}]
