@@ -210,6 +210,10 @@ export class NOWPermitGeneration extends Component {
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
     const permitGenObject = {
       permit_number: "",
+      formatted_original_issue_date:
+        draftPermit.permit_status_code === "D"
+          ? formatDate(draftPermit.issue_date)
+          : formatDate(amendment.issue_date),
       formatted_issue_date: formatDate(amendment.issue_date),
       issue_date: amendment.issue_date,
       formatted_auth_end_date: formatDate(amendment.authorization_end_date),
