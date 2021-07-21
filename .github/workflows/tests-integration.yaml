@@ -8,6 +8,9 @@ on:
       - "migrations/**"
       - "!**/README.md"
       - "docker-compose.ci.yaml"
+  push:
+    branches:
+      - develop
 
 jobs:
   tests-integration-backend:

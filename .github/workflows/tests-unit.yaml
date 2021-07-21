@@ -6,6 +6,9 @@ on:
       - ".github/workflows/tests-unit.yaml"
       - "services/core-web/**"
       - "!**/README.md"
+  push:
+    branches:
+      - develop
 
 jobs:
   tests-frontend:
