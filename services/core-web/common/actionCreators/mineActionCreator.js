@@ -95,7 +95,7 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
   dispatch(request(reducerTypes.CREATE_TSF));
   dispatch(showLoading("modal"));
   return CustomAxios()
-    .post(ENVIRONMENT.apiUrl + API.MINE_TSF(mine_guid), payload, createRequestHeader())
+    .post(ENVIRONMENT.apiUrl + API.MINE_TSFS(mine_guid), payload, createRequestHeader())
     .then((response) => {
       notification.success({
         message: "Successfully added a new Tailings Storage Facility.",
@@ -106,6 +106,26 @@ export const createTailingsStorageFacility = (mine_guid, payload) => (dispatch) 
     })
     .catch((err) => {
       dispatch(error(reducerTypes.CREATE_TSF));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const updateTailingsStorageFacility = (mineGuid, TSFGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_TSF));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .put(`${ENVIRONMENT.apiUrl}${API.MINE_TSF(mineGuid, TSFGuid)}`, payload, createRequestHeader())
+    .then((response) => {
+      notification.success({
+        message: "Successfully updated Tailing Storage Facility.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_TSF));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.UPDATE_TSF));
       throw new Error(err);
     })
     .finally(() => dispatch(hideLoading("modal")));
