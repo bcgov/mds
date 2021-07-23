@@ -473,6 +473,7 @@ export const ReviewNOWApplication = (props) => {
             Access presently gated
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={props.renderOriginalValues("is_access_gated").value}
               isVisible={props.renderOriginalValues("is_access_gated").edited}
             />
@@ -489,6 +490,7 @@ export const ReviewNOWApplication = (props) => {
             Key provided to the inspector
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={props.renderOriginalValues("has_key_for_inspector").value}
               isVisible={props.renderOriginalValues("has_key_for_inspector").edited}
             />
@@ -532,6 +534,7 @@ export const ReviewNOWApplication = (props) => {
                 Do you have the required access authorizations in place?
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
+                  style={{ marginLeft: "5%" }}
                   originalValue={props.renderOriginalValues("has_req_access_authorizations").value}
                   isVisible={props.renderOriginalValues("has_req_access_authorizations").edited}
                 />
@@ -710,6 +713,7 @@ export const ReviewNOWApplication = (props) => {
             <div className="field-title">
               Application in a community watershed
               <NOWOriginalValueTooltip
+                style={{ marginLeft: "5%" }}
                 originalValue={
                   props.renderOriginalValues("state_of_land.has_community_water_shed").value
                 }
@@ -733,6 +737,7 @@ export const ReviewNOWApplication = (props) => {
               Proposed activities on private land
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
+                style={{ marginLeft: "5%" }}
                 originalValue={props.renderOriginalValues("state_of_land.is_on_private_land").value}
                 isVisible={props.renderOriginalValues("state_of_land.is_on_private_land").edited}
               />
@@ -752,6 +757,7 @@ export const ReviewNOWApplication = (props) => {
                 Has notice been served to all parties on private lands?
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
+                  style={{ marginLeft: "5%" }}
                   originalValue={
                     props.renderOriginalValues("state_of_land.notice_served_to_private").value
                   }
@@ -792,6 +798,7 @@ export const ReviewNOWApplication = (props) => {
               Proposed activities on crown land
               {props.isPreLaunch && <NOWFieldOriginTooltip />}
               <NOWOriginalValueTooltip
+                style={{ marginLeft: "5%" }}
                 originalValue={props.renderOriginalValues("state_of_land.is_on_crown_land").value}
                 isVisible={props.renderOriginalValues("state_of_land.is_on_crown_land").edited}
               />
@@ -812,6 +819,7 @@ export const ReviewNOWApplication = (props) => {
                   Do you have licence of Occupation?
                   {props.isPreLaunch && <NOWFieldOriginTooltip />}
                   <NOWOriginalValueTooltip
+                    style={{ marginLeft: "5%" }}
                     originalValue={
                       props.renderOriginalValues("state_of_land.has_licence_of_occupation").value
                     }
@@ -936,6 +944,7 @@ export const ReviewNOWApplication = (props) => {
                 Do you have authorization by the Lieutenant Governor in Council?
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
+                  style={{ marginLeft: "5%" }}
                   originalValue={
                     props.renderOriginalValues("state_of_land.has_auth_lieutenant_gov_council")
                       .value
