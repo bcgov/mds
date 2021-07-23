@@ -99,7 +99,7 @@ def RandomSubDivisionCode():
 def RandomMinePartyAppointmentTypeCode():
     return random.choice([
         x.mine_party_appt_type_code for x in db.session.query(MinePartyAppointmentType).filter(
-            MinePartyAppointmentType.mine_party_appt_type_code.notin_(['PMT', 'EOR'])).all()
+            MinePartyAppointmentType.mine_party_appt_type_code.notin_(['PMT', 'EOR', 'URP'])).all()
     ])
 
 
