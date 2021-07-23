@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { reduxForm, Field } from "redux-form";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { reduxForm, Field, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm } from "antd";
@@ -14,6 +16,8 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export const ChangeNOWMineForm = (props) => (
@@ -37,12 +41,19 @@ export const ChangeNOWMineForm = (props) => (
         onConfirm={props.closeModal}
         okText="Yes"
         cancelText="No"
+        disabled={props.submitting}
       >
-        <Button className="full-mobile" type="secondary">
+        <Button className="full-mobile" type="secondary" disabled={props.submitting}>
           Cancel
         </Button>
       </Popconfirm>
-      <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
+      <Button
+        className="full-mobile"
+        type="primary"
+        htmlType="submit"
+        disabled={props.initialValues?.mine_guid === props.formValues?.mine_guid}
+        loading={props.submitting}
+      >
         {props.title}
       </Button>
     </div>
@@ -51,8 +62,15 @@ export const ChangeNOWMineForm = (props) => (
 
 ChangeNOWMineForm.propTypes = propTypes;
 
-export default reduxForm({
-  form: FORM.CHANGE_NOW_MINE,
-  touchOnBlur: false,
-  onSubmitSuccess: resetForm(FORM.CHANGE_NOW_MINE),
-})(ChangeNOWMineForm);
+const mapStateToProps = (state) => ({
+  formValues: getFormValues(FORM.CHANGE_NOW_MINE)(state),
+});
+
+export default compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: FORM.CHANGE_NOW_MINE,
+    touchOnBlur: false,
+    onSubmitSuccess: resetForm(FORM.CHANGE_NOW_MINE),
+  })
+)(ChangeNOWMineForm);

@@ -127,7 +127,7 @@ frontend-run:
 
 database-dump-from-test:
 	@echo "+\n++ Getting database dump from test environment...\n+"
-	@sh ./bin/database-dump-from-test.sh empr-mds-test pgDump-test.sql
+	@sh ./bin/database-dump-from-test.sh 4c2ba9-test pgDump-test.sql
 
 database-dump-seed:
 	@echo "+\n++ Seeding docker database...\n+"

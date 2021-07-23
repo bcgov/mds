@@ -42,6 +42,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
     permit_amendment_status_description = association_proxy('permit_amendment_status',
                                                             'description')
     permit_guid = association_proxy('permit', 'permit_guid')
+    permit_no = association_proxy('permit', 'permit_no')
     permit_amendment_type = db.relationship('PermitAmendmentTypeCode')
     permit_amendment_type_description = association_proxy('permit_amendment_type', 'description')
     #liability_adjustment is the change of work assessed for the new amendment,
