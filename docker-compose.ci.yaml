@@ -1,0 +1,106 @@
+version: "3"
+
+services:
+  ####################### Postgres Definition #######################
+  postgres:
+    restart: always
+    container_name: mds_postgres
+    build:
+      context: migrations
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_USER=mds
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=mds_test
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ####################### Flyway Migration Definition #######################
+  flyway:
+    container_name: mds_flyway
+    build:
+      context: migrations
+      dockerfile: Dockerfile.flyway.dev
+    environment:
+      - FLYWAY_USER=mds
+      - FLYWAY_HOME=/flyway
+      - FLYWAY_PASSWORD=test
+      - FLYWAY_DB_NAME=mds_test
+      - FLYWAY_DB_HOST=postgres
+      - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
+      - FLYWAY_OUT_OF_ORDER=true
+      - FLYWAY_CONNECT_RETRIES=60
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ####################### Backend Definition #######################
+  backend:
+    restart: always
+    container_name: mds_backend
+    build:
+      context: services/core-api
+    env_file: services/core-api/.env-example
+    ports:
+      - 5000:5000
+    volumes:
+      - ./services/core-api/:/app/
+      - core_api_logs:/var/log/core-api/
+    depends_on:
+      - flyway
+      - docgen-api
+
+  ####################### Redis Definition #######################
+  redis:
+    image: redis:3.2-alpine
+    container_name: mds_cache
+    restart: always
+    command: redis-server --requirepass redis-password
+    ports:
+      - "6379:6379"
+
+  ####################### Frontend Definition #######################
+  frontend:
+    restart: always
+    container_name: mds_frontend
+    build:
+      context: services/core-web
+    command: ["npm", "run", "serve"]
+    volumes:
+      - ./services/core-web/src/:/app/src/
+    ports:
+      - 3000:3000
+    env_file: ./services/core-web/.env-example
+
+  ####################### DOCUMENT_GENERATION Definition #######################
+  docgen-api:
+    restart: always
+    container_name: docgen_api
+    image: bcgovimages/doc-gen-api:v2.1.3
+    command: ["npm", "run", "start"]
+    environment:
+      - APP_PORT=3030
+      - CACHE_DIR=/tmp/tmp-reports
+      - NODE_ENV=development
+    ports:
+      - 3030:3030
+
+####################### Networks Definition ######################
+networks:
+  default:
+    driver: "bridge"
+
+####################### Volumes Definition #######################
+volumes:
+  postgres_data: {}
+  prometheus_data: {}
+  grafana_storage: {}
+  core_api_logs: {}
+  core_web_logs: {}

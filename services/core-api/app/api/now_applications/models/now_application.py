@@ -245,6 +245,10 @@ class NOWApplication(Base, AuditMixin):
             permit_amendment_status_code='RMT').one_or_none()
 
     @hybrid_property
+    def permit(self):
+        return self.active_permit or self.draft_permit or self.remitted_permit
+
+    @hybrid_property
     def related_permit_guid(self):
         permit_amendment = PermitAmendment.query.filter_by(
             now_application_guid=self.now_application_guid, deleted_ind=False).first()

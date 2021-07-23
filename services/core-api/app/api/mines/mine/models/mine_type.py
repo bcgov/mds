@@ -180,7 +180,10 @@ class MineType(AuditMixin, Base):
 
         if not site_property:
             mine_type = MineType.create(
-                mine_guid, mine_tenure_type_code, now_application_guid=now_application_guid)
+                mine_guid,
+                mine_tenure_type_code,
+                permit_guid=permit_guid,
+                now_application_guid=now_application_guid)
 
             for d_code in mine_disturbance_codes:
                 MineTypeDetail.create(mine_type, mine_disturbance_code=d_code)
