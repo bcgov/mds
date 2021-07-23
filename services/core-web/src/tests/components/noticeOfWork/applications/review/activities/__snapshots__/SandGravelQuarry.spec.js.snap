@@ -766,12 +766,12 @@ exports[`SandGravelQuarry renders properly 1`] = `
       <Fields
         component={[Function]}
         disabled={true}
-        dropdownID="nearest_water_source_distance_unit_type_code"
+        dropdownID="nearest_residence_distance_unit_type_code"
         id="nearest_residence_distance"
         names={
           Array [
             "nearest_residence_distance",
-            "nearest_water_source_distance_unit_type_code",
+            "nearest_residence_distance_unit_type_code",
           ]
         }
         validate={

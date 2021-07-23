@@ -58,9 +58,10 @@ export const SurfaceDrilling = (props) => {
       <Row gutter={16}>
         <Col md={18} sm={24}>
           <div className="field-title">
-            The Drilling program will be
+            The drilling program will be
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "20%" }}
               originalValue={
                 props.renderOriginalValues("exploration_surface_drilling.drill_program").value
               }

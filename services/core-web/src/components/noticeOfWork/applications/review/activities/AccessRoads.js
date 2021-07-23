@@ -66,6 +66,7 @@ export const AccessRoads = (props) => {
             Are you proposing any bridges, culverts, and crossings?
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={
                 props.renderOriginalValues("exploration_access.has_proposed_bridges_or_culverts")
                   .value
