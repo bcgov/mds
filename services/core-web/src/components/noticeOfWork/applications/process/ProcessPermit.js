@@ -288,8 +288,17 @@ export class ProcessPermit extends Component {
   };
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
+    const OGPIssueDate =
+      draftPermit.permit_status_code === "D"
+        ? formatDate(amendment.issue_date)
+        : formatDate(
+            draftPermit.permit_amendments
+              .filter((amend) => amend.permit_amendment_type_code === "OGP")
+              .map((a) => a.issue_date)[0]
+          );
     const permitGenObject = {
       permit_number: "",
+      formatted_original_issue_date: OGPIssueDate,
       formatted_issue_date: formatDate(amendment.issue_date),
       issue_date: amendment.issue_date,
       formatted_auth_end_date: formatDate(amendment.authorization_end_date),
