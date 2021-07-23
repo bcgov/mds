@@ -638,10 +638,16 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'status_reason': fields.String,
         'submitted_date': Date,
         'received_date': Date,
+        'is_first_year_of_multi':
+        fields.Boolean,
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
         'property_name': fields.String,
         'tenure_number': fields.String,
+        'unreclaimed_disturbance_previous_year':
+        fields.Integer,
+        'disturbance_planned_reclamation':
+        fields.Integer,
         'description_of_land': fields.String,
         'application_permit_type_code': fields.String,
         'proposed_start_date': Date,
