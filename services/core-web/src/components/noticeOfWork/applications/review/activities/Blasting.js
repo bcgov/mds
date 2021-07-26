@@ -218,6 +218,7 @@ export const Blasting = (props) => {
           <div className="field-title">
             Proposing to store explosives on site?
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={
                 props.renderOriginalValues("blasting_operation.has_storage_explosive_on_site").value
               }
@@ -270,6 +271,7 @@ export const Blasting = (props) => {
               <div className="field-title">
                 Has BC Explosive Magazine Storage and Use Permit been issued?
                 <NOWOriginalValueTooltip
+                  style={{ marginLeft: "5%" }}
                   originalValue={
                     props.renderOriginalValues("blasting_operation.explosive_permit_issued").value
                   }

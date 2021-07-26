@@ -2,10 +2,6 @@ name: Unit Tests
 
 on:
   pull_request:
-    paths:
-      - ".github/workflows/tests-unit.yaml"
-      - "services/core-web/**"
-      - "!**/README.md"
   push:
     branches:
       - develop

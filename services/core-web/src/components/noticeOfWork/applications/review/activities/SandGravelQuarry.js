@@ -684,9 +684,9 @@ export const SandGravelQuarry = (props) => {
             />
           </div>
           <Fields
-            names={["nearest_residence_distance", "nearest_water_source_distance_unit_type_code"]}
+            names={["nearest_residence_distance", "nearest_residence_distance_unit_type_code"]}
             id="nearest_residence_distance"
-            dropdownID="nearest_water_source_distance_unit_type_code"
+            dropdownID="nearest_residence_distance_unit_type_code"
             component={RenderFieldWithDropdown}
             disabled={props.isViewMode}
             validate={[numberWithUnitCode]}
