@@ -110,7 +110,7 @@ export class FinalPermitDocuments extends Component {
           showPreambleFileMetadata={this.props.showPreambleFileMetadata}
           editPreambleFileMetadata={this.props.editPreambleFileMetadata}
           isFinalPackageTable
-          isAdminView={true}
+          isAdminView
         />
       );
     }
