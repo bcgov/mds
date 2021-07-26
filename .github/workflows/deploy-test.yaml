@@ -56,6 +56,7 @@ jobs:
           -p CORE_API_URL=https://mds-test.apps.silver.devops.gov.bc.ca/api \
           -p URL=https://mds-test.apps.silver.devops.gov.bc.ca/ \
           -p ENVIRONMENT_NAME=test \
+          -p NODE_ENV=test \
           -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
           -p MINESPACE_DOMAIN=${{env.MINESPACE_DOMAIN}} \
           -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \

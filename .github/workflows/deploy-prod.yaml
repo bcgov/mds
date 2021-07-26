@@ -63,6 +63,7 @@ jobs:
           -p CORE_API_URL=https://mds-prod.apps.silver.devops.gov.bc.ca/api \
           -p URL=https://mds-prod.apps.silver.devops.gov.bc.ca/ \
           -p ENVIRONMENT_NAME=prod \
+          -p NODE_ENV=production \
           -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
           -p MINESPACE_DOMAIN=${{env.MINESPACE_DOMAIN}} \
           -p KEYCLOAK_URL=https://oidc.gov.bc.ca/auth \
