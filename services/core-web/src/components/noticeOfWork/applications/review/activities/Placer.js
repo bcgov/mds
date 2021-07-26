@@ -29,6 +29,7 @@ export const Placer = (props) => {
           <div className="field-title">
             Is this an application for Underground Placer Operations?
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={props.renderOriginalValues("placer_operation.is_underground").value}
               isVisible={props.renderOriginalValues("placer_operation.is_underground").edited}
             />
@@ -44,6 +45,7 @@ export const Placer = (props) => {
           <div className="field-title">
             Is this an application for Hand Operations?
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={props.renderOriginalValues("placer_operation.is_hand_operation").value}
               isVisible={props.renderOriginalValues("placer_operation.is_hand_operation").edited}
             />
@@ -157,6 +159,7 @@ export const Placer = (props) => {
             Are you proposing a stream diversion into a different channel?
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={
                 props.renderOriginalValues("placer_operation.has_stream_diversion").value
               }

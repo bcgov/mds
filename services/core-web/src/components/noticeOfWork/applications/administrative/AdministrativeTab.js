@@ -152,14 +152,14 @@ export class AdministrativeTab extends Component {
     const message = values.latitude
       ? "Successfully updated Notice of Work location"
       : "Successfully transferred Notice of Work";
-    this.props
+    return this.props
       .updateNoticeOfWorkApplication(values, this.props.noticeOfWork.now_application_guid, message)
-      .then(() => {
+      .then(() =>
         this.props.fetchImportedNoticeOfWorkApplication(
           this.props.noticeOfWork.now_application_guid
-        );
-      });
-    this.props.closeModal();
+        )
+      )
+      .then(() => this.props.closeModal());
   };
 
   openChangeNOWMineModal = (noticeOfWork) => {

@@ -1,0 +1,26 @@
+name: Integration Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+jobs:
+  tests-integration-backend:
+    name: tests-integration-backend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      # TODO: cache images
+      - name: Create containers for integration tests
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker-compose -f docker-compose.ci.yaml up -d backend
+
+      - name: Run integration tests
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --branch --source=app -m pytest

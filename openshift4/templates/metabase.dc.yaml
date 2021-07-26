@@ -4,11 +4,11 @@ metadata:
   name: mds-metabase-dc
 parameters:
   - name: CPU_LIMIT
-    value: 500m
+    value: 1000m
   - name: MEMORY_LIMIT
     value: 2Gi
   - name: CPU_REQUEST
-    value: 200m
+    value: 500m
   - name: MEMORY_REQUEST
     value: 1Gi
   - name: ENVIRONMENT_NAME
@@ -79,7 +79,7 @@ objects:
               kind: ImageStreamTag
               name: ${NAME}:${TAG}
               namespace: ${IMAGE_NAMESPACE}
-      replicas: 1
+      replicas: 3
       selector:
         name: ${NAME}
       template:

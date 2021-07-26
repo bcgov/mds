@@ -73,7 +73,11 @@ exports[`AccessRoads renders properly 1`] = `
         <NOWOriginalValueTooltip
           isVisible={true}
           originalValue="N/A"
-          style={Object {}}
+          style={
+            Object {
+              "marginLeft": "5%",
+            }
+          }
         />
       </div>
       <Field

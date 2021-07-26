@@ -84,6 +84,7 @@ export const SurfaceBulkSamples = (props) => {
             Proposing bedrock excavation that will be 1,000 tonnes or more?
             {props.isPreLaunch && <NOWFieldOriginTooltip />}
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={
                 props.renderOriginalValues("surface_bulk_sample.has_bedrock_excavation").value
               }

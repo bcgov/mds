@@ -225,6 +225,7 @@ export const Camps = (props) => {
           <div className="field-title">
             Do you propose to store fuel?
             <NOWOriginalValueTooltip
+              style={{ marginLeft: "5%" }}
               originalValue={props.renderOriginalValues("camp.has_fuel_stored").value}
               isVisible={props.renderOriginalValues("camp.has_fuel_stored").edited}
             />

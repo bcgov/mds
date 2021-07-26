@@ -2,15 +2,9 @@
 
 exports[`ChangeNOWMineModal renders properly 1`] = `
 <div>
-  <ReduxForm
-    destroyOnUnmount={true}
-    enableReinitialize={false}
+  <Connect(ReduxForm)
     fetchMineNameList={[MockFunction]}
     fetchMineRecordById={[MockFunction]}
-    forceUnregisterOnUnmount={false}
-    form="CHANGE_NOW_MINE"
-    getFormState={[Function]}
-    keepDirtyOnReinitialize={false}
     mineNameList={
       Array [
         Object {
@@ -51,20 +45,9 @@ exports[`ChangeNOWMineModal renders properly 1`] = `
       }
     }
     onSubmit={[MockFunction]}
-    onSubmitSuccess={[Function]}
-    persistentSubmitErrors={false}
-    pure={true}
     setMineGuid={[MockFunction]}
-    shouldAsyncValidate={[Function]}
-    shouldError={[Function]}
-    shouldValidate={[Function]}
-    shouldWarn={[Function]}
     submit={[MockFunction]}
-    submitAsSideEffect={false}
     title="mockTitle"
-    touchOnBlur={false}
-    touchOnChange={false}
-    updateUnregisteredFields={false}
   />
 </div>
 `;

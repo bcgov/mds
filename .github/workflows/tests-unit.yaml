@@ -1,0 +1,20 @@
+name: Unit Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+jobs:
+  tests-frontend:
+    name: tests-frontend
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Run frontend tests
+        id: results
+        run: |
+          cd services/core-web/ && npm ci && npm run test:updateAll

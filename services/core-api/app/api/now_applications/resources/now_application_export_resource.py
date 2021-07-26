@@ -42,6 +42,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'notice_of_work_type_code',
     'application_permit_type_code',
     'proposed_start_date',
+    'is_first_year_of_multi',
     'crown_grant_or_district_lot_numbers',
     'proposed_end_date',
     'tenure_number',
@@ -50,7 +51,12 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'has_surface_disturbance_outside_tenure',
     'req_access_authorization_numbers',
     'is_access_gated',
+    'other_information',
     'has_key_for_inspector',
+    'unreclaimed_disturbance_previous_year',
+    'disturbance_planned_reclamation',
+    'proponent_submitted_permit_number',
+    'state_of_land.notice_served_to_private',
     'state_of_land.present_land_condition_description',
     'state_of_land.means_of_access_description',
     'state_of_land.physiography_description',
@@ -67,8 +73,15 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.recreational_trail_use_description',
     'state_of_land.has_shared_info_with_fn',
     'state_of_land.has_archaeology_sites_affected',
+    'state_of_land.has_licence_of_occupation',
+    'state_of_land.licence_of_occupation',
+    'state_of_land.authorization_details',
+    'state_of_land.file_number_of_app',
+    'state_of_land.applied_for_licence_of_occupation',
     'first_aid_equipment_on_site',
     'first_aid_cert_level',
+    'exploration_access.has_proposed_bridges_or_culverts',
+    'exploration_access.bridge_culvert_crossing_description',
     'exploration_access.reclamation_description',
     'exploration_access.reclamation_cost',
     'blasting_operation.has_storage_explosive_on_site',
@@ -90,6 +103,8 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'camp.has_fuel_stored_in_barrels',
     'camp.reclamation_description',
     'camp.reclamation_cost',
+    'camp.health_authority_notified',
+    'camp.health_authority_consent',
     'cut_lines_polarization_survey.reclamation_description',
     'cut_lines_polarization_survey.reclamation_cost',
     'mechanical_trenching.reclamation_description',
@@ -109,23 +124,61 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'sand_gravel_quarry_operation.proposed_land_use',
     'sand_gravel_quarry_operation.community_plan',
     'sand_gravel_quarry_operation.has_local_soil_removal_bylaw',
+    'sand_gravel_quarry_operation.work_year_info',
+    'sand_gravel_quarry_operation.proposed_activity_description',
     'sand_gravel_quarry_operation.total_mineable_reserves',
     'sand_gravel_quarry_operation.total_annual_extraction',
     'sand_gravel_quarry_operation.reclamation_description',
     'sand_gravel_quarry_operation.reclamation_cost',
+    'sand_gravel_quarry_operation.reclamation_backfill_detail',
+    'sand_gravel_quarry_operation.progressive_reclamation',
+    'sand_gravel_quarry_operation.max_unreclaimed',
+    'sand_gravel_quarry_operation.average_groundwater_depth',
+    'sand_gravel_quarry_operation.has_groundwater_from_test_wells',
+    'sand_gravel_quarry_operation.has_groundwater_from_test_pits',
+    'sand_gravel_quarry_operation.has_groundwater_from_existing_area',
+    'sand_gravel_quarry_operation.groundwater_from_other_description',
+    'sand_gravel_quarry_operation.groundwater_protection_plan',
+    'sand_gravel_quarry_operation.nearest_residence_distance',
+    'sand_gravel_quarry_operation.nearest_water_source_distance',
+    'sand_gravel_quarry_operation.secure_access_plan',
+    'sand_gravel_quarry_operation.noise_impact_plan',
+    'sand_gravel_quarry_operation.dust_impact_plan',
+    'sand_gravel_quarry_operation.visual_impact_plan',
+    'settling_pond.wastewater_facility_description',
     'settling_pond.is_ponds_recycled',
+    'settling_pond.disposal_from_clean_out',
     'settling_pond.is_ponds_exfiltrated',
     'settling_pond.is_ponds_discharged',
     'settling_pond.reclamation_description',
     'settling_pond.reclamation_cost',
+    'settling_pond.spillway_design_description',
+    'settling_pond.water_discharged_description',
+    'settling_pond.decant_structure_description',
+    'settling_pond.sediment_control_structure_description',
     'surface_bulk_sample.processing_method_description',
+    'surface_bulk_sample.drainage_mitigation_description',
     'surface_bulk_sample.reclamation_description',
     'surface_bulk_sample.reclamation_cost',
+    'surface_bulk_sample.handling_instructions',
+    'surface_bulk_sample.has_bedrock_excavation',
     'exploration_surface_drilling.reclamation_core_storage',
     'exploration_surface_drilling.reclamation_description',
     'exploration_surface_drilling.reclamation_cost',
+    'exploration_surface_drilling.drill_program',
     'underground_exploration.total_ore_amount',
     'underground_exploration.total_waste_amount',
+    'underground_exploration.surface_total_ore_amount',
+    'underground_exploration.surface_total_waste_amount',
+    'underground_exploration.reclamation_description',
+    'underground_exploration.reclamation_cost',
+    'underground_exploration.proposed_bulk_sample',
+    'underground_exploration.proposed_de_watering',
+    'underground_exploration.proposed_diamond_drilling',
+    'underground_exploration.proposed_mapping_chip_sampling',
+    'underground_exploration.proposed_new_development',
+    'underground_exploration.proposed_rehab',
+    'underground_exploration.proposed_underground_fuel_storage',
 ]
 
 UNIT_TYPE_CODE_FIELDS = [
@@ -133,7 +186,16 @@ UNIT_TYPE_CODE_FIELDS = [
     'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code',
     'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
     'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
-    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code', 'surface_total_waste_unit_type_code'
+    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code',
+    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code'
+]
+
+CHECKBOX_FIELDS = [
+   'show_access_roads', 'show_camps', 'show_surface_drilling', 'show_mech_trench', 'show_seismic', 'show_bulk', 
+   'show_underground_exploration', 'show_sand_gravel_quarry', 'has_groundwater_from_existing_area', 'has_groundwater_from_test_pits', 
+   'has_groundwater_from_test_wells', 'has_ground_water_from_other', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
+   'proposed_bulk_sample', 'proposed_de_watering', 'proposed_diamond_drilling', 'proposed_mapping_chip_sampling', 'proposed_new_development', 'proposed_rehab',
+   'proposed_underground_fuel_storage', 'has_fuel_stored_in_bulk', 'has_fuel_stored_in_barrels',
 ]
 
 
@@ -231,6 +293,11 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def format_boolean(value):
             return 'Yes' if value else 'No'
+        
+        def format_checkbox(value):
+            if value and value is not None: 
+                return '☑'
+            return '☐' 
 
         def get_reclamation_summary(now_application, render):
             summary = []
@@ -312,6 +379,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
         def transform_documents(now_application):
             included_docs = []
             docs = now_application.get('documents', [])
+            submission_docs = now_application.get('imported_submission_documents', [])
             for doc in docs:
                 if doc['now_application_document_type_code'] in EXCLUDED_APPLICATION_DOCUMENT_TYPES:
                     continue
@@ -320,7 +388,20 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     doc['now_application_document_type_code'])
                 doc['now_application_document_type_description'] = get_description(
                     document_type, doc['now_application_document_type_code'])
-                included_docs.append(doc)
+                if doc['is_final_package']:
+                    included_docs.append(doc)
+            
+            for submission_doc in submission_docs:
+                if submission_doc['is_final_package']:
+                    new_doc = {
+                        'now_application_document_type_description': submission_doc['documenttype'],
+                        'description': submission_doc['description'],
+                        'mine_document': {
+                            'document_name': submission_doc['filename'],
+                            'upload_date': now_application.get('submitted_date', None),
+                        }
+                    }
+                    included_docs.append(new_doc)
             return included_docs
 
         def transform_data(obj):
@@ -330,7 +411,10 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if key in ignore_keys or (not obj[key] and key in ignore_empty_fields):
                     continue
                 if obj[key] is None:
-                    obj[key] = EMPTY_FIELD
+                    if key in CHECKBOX_FIELDS:
+                        obj[key] = format_checkbox(obj[key])
+                    else: 
+                        obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
                 elif key in UNIT_TYPE_CODE_FIELDS:
@@ -341,7 +425,10 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     obj[key] = code_object[0].short_description if code_object and len(
                         code_object) > 0 else "N/A"
                 elif isinstance(obj[key], bool):
-                    obj[key] = format_boolean(obj[key])
+                    if key in CHECKBOX_FIELDS:
+                        obj[key] = format_checkbox(obj[key])
+                    else: 
+                        obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
                     transform_data(obj[key])
                 elif isinstance(obj[key], list):
@@ -359,6 +446,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
         for contact in now_application_json.get('contacts', []):
             contact = transform_contact(contact)
         now_application_json['documents'] = transform_documents(now_application_json)
+        # now_application_json['filtered_submission_documents'] = transform_documents(now_application_json)
 
         # Remove signature images from parties
         for contact in now_application_json.get('contacts', []):

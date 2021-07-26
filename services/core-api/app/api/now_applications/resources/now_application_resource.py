@@ -65,7 +65,9 @@ class NOWApplicationResource(Resource, UserMixin):
             raise NotImplemented(
                 'This application has not been imported. Please import an application before making changes.'
             )
+
         data = request.json
+
         lead_inspector_party_guid = data.get('lead_inspector_party_guid', None)
         if lead_inspector_party_guid:
             now_application_identity.now_application.lead_inspector_party_guid = lead_inspector_party_guid
@@ -77,12 +79,13 @@ class NOWApplicationResource(Resource, UserMixin):
         if now_application_status_code is not None and now_application_identity.now_application.now_application_status_code != now_application_status_code:
             raise AssertionError("now_application_status_code must not be modified")
 
-        if data.get('mine_guid', None):
-            mine = Mine.find_by_mine_guid(data['mine_guid'])
+        mine_guid = data.get('mine_guid')
+        if mine_guid and str(now_application_identity.mine.mine_guid) != mine_guid:
+            mine = Mine.find_by_mine_guid(mine_guid)
             if not mine:
-                raise BadRequest('mine not found')
-            current_app.logger.info(f'Assigning {now_application_identity} to {mine}')
-            now_application_identity.mine = mine
+                raise BadRequest('Mine not found')
+            current_app.logger.info(f'Transferring {now_application_identity} to {mine}')
+            now_application_identity.transfer(mine)
         now_application_identity.save()
 
         # If not already requested, create the job to import this NoW's submission documents.

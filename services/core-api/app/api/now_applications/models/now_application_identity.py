@@ -1,16 +1,17 @@
-import uuid
+import sqlalchemy
+
 from datetime import datetime
+from sqlalchemy import func, and_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.sql.expression import and_, cast
 
 from app.api.utils.models_mixins import Base, AuditMixin
 from app.extensions import db
 
 from app.api.now_submissions.models.application import Application
 from app.api.mms_now_submissions.models.application import MMSApplication
-from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.constants import *
 
 
@@ -50,7 +51,16 @@ class NOWApplicationIdentity(Base, AuditMixin):
         order_by='desc(NOWApplicationDelay.start_date)')
 
     def __repr__(self):
-        return '<NOWApplicationIdentity %r>' % self.now_application_guid
+        return f'{self.__class__.__name__} {self.now_application_guid}'
+
+    def transfer(self, mine):
+        self.now_number = NOWApplicationIdentity.create_now_number(mine, self.now_number_year)
+        self.mine = mine
+
+    @hybrid_property
+    def now_number_year(self):
+        if self.now_number:
+            return self.now_number.split('-')[1]
 
     @property
     def now_submission(self):
@@ -77,12 +87,17 @@ class NOWApplicationIdentity(Base, AuditMixin):
         return cls.query.filter_by(now_number=now_number).one_or_none()
 
     @classmethod
-    def submission_count_ytd(cls, _mine_guid, _sub_year):
-        return cls.query.filter_by(mine_guid=_mine_guid).filter(
-            cls.now_number.ilike(f'%-{_sub_year}-%')).count()
+    def get_max_now_number_suffix(cls, mine_guid, year):
+        suffix = cls.query.with_entities(
+            func.max(cast(func.split_part(cls.now_number, '-', 3), sqlalchemy.Integer))).filter(
+                and_(cls.mine_guid == mine_guid, cls.now_number.ilike(f'%-{year}-%'))).scalar()
+        if suffix is None:
+            suffix = 0
+        return suffix
 
     @classmethod
-    def create_now_number(cls, mine):
-        current_year = datetime.now().strftime("%Y")
-        number_of_now = cls.submission_count_ytd(mine.mine_guid, current_year)
-        return f'{mine.mine_no}-{current_year}-{str(number_of_now + 1).zfill(2)}'
+    def create_now_number(cls, mine, year=None):
+        if year == None:
+            year = datetime.now().strftime('%Y')
+        suffix = cls.get_max_now_number_suffix(mine.mine_guid, year)
+        return f'{mine.mine_no}-{year}-{str(suffix + 1).zfill(2)}'

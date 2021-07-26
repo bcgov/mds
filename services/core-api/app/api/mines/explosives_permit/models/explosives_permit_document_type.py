@@ -72,7 +72,7 @@ class ExplosivesPermitDocumentType(AuditMixin, Base):
             raise Exception('Appointment for Mine Manager not found')
 
         if mine_manager.party.first_address is None:
-            raise Exception('Address for Mine Operator not found')
+            raise Exception('Address for Mine Manager not found')
         template_data['mine_manager_address'] = mine_manager.party.first_address.full
         template_data['mine_manager_name'] = mine_manager.party.name
 
