@@ -9,6 +9,8 @@ const dispatchProps = {};
 const setupProps = () => {
   props.mines = MOCK.MINES.mines;
   [props.mineGuid] = MOCK.MINES.mineIds;
+  props.mineReports = [];
+
   props.TSFOperatingStatusCodeHash = {};
   props.consequenceClassificationStatusCodeHash = {};
 };
@@ -24,6 +26,7 @@ const setupDispatchProps = () => {
   dispatchProps.closeModal = jest.fn();
   dispatchProps.fetchMineRecordById = jest.fn();
   dispatchProps.fetchPartyRelationships = jest.fn();
+  dispatchProps.updateTailingsStorageFacility = jest.fn();
 };
 
 beforeEach(() => {
