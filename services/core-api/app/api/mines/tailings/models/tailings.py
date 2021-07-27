@@ -1,9 +1,7 @@
-from datetime import datetime
-import uuid
-
 from sqlalchemy.orm import validates
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
@@ -20,6 +18,19 @@ class MineTailingsStorageFacility(AuditMixin, Base):
     consequence_classification_status_code = db.Column(db.String)
     has_itrb = db.Column(db.Boolean)
     tsf_operating_status_code = db.Column(db.String)
+    engineer_of_records = db.relationship(
+        'MinePartyAppointment',
+        lazy='select',
+        primaryjoin=
+        'and_(MinePartyAppointment.mine_tailings_storage_facility_guid == MineTailingsStorageFacility.mine_tailings_storage_facility_guid, MinePartyAppointment.mine_party_appt_type_code == "EOR", MinePartyAppointment.deleted_ind == False)',
+        order_by=
+        'nullsfirst(desc(MinePartyAppointment.start_date)), nullsfirst(desc(MinePartyAppointment.end_date))'
+    )
+
+    @hybrid_property
+    def engineer_of_record(self):
+        if self.engineer_of_records:
+            return self.engineer_of_records[0]
 
     def __repr__(self):
         return '<MineTailingsStorageFacility %r>' % self.mine_guid
@@ -50,7 +61,7 @@ class MineTailingsStorageFacility(AuditMixin, Base):
             tsf_operating_status_code=tsf_operating_status_code)
         mine.mine_tailings_storage_facilities.append(new_tsf)
         if add_to_session:
-            new_tsf.save(commit=False)
+            new_tsf.save()
         return new_tsf
 
     @classmethod
@@ -68,9 +79,11 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         if len(mine_tailings_storage_facility_name) > 60:
             raise AssertionError('Mine name must not exceed 60 characters.')
         #no duplicate TSF names on the same mine
-        if (MineTailingsStorageFacility.query.filter_by(mine_guid=self.mine_guid).filter_by(
-                mine_tailings_storage_facility_name=mine_tailings_storage_facility_name).first()
-                is not None):
+        if (MineTailingsStorageFacility.query.filter_by(mine_guid=self.mine_guid).filter(
+                MineTailingsStorageFacility.mine_tailings_storage_facility_guid !=
+                self.mine_tailings_storage_facility_guid).filter_by(
+                    mine_tailings_storage_facility_name=mine_tailings_storage_facility_name).first(
+                    ) is not None):
             raise AssertionError(
                 f'this mine already has a tailings storage facility named: "{mine_tailings_storage_facility_name}"'
             )

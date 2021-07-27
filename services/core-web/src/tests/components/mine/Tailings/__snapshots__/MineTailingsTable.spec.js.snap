@@ -25,7 +25,7 @@ exports[`MineTailingsTable renders properly 1`] = `
         "title": "Independent Tailings Review Board",
       },
       Object {
-        "dataIndex": "eor_party",
+        "dataIndex": "engineer_of_record",
         "render": [Function],
         "title": "Engineer of Record",
       },
@@ -39,6 +39,10 @@ exports[`MineTailingsTable renders properly 1`] = `
         "render": [Function],
         "title": "Longitude",
       },
+      Object {
+        "key": "operations",
+        "render": [Function],
+      },
     ]
   }
   condition={true}
@@ -46,7 +50,6 @@ exports[`MineTailingsTable renders properly 1`] = `
     Array [
       Object {
         "consequence_classification_status_code": "LOW",
-        "eor_party": undefined,
         "has_itrb": true,
         "key": "e2629897-053e-4218-9299-479375e47f78",
         "latitude": null,

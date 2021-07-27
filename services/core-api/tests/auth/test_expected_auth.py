@@ -17,7 +17,7 @@ from app.api.mines.variances.resources.variance_document_upload import MineVaria
 from app.api.mines.variances.resources.variance_uploaded_documents import MineVarianceUploadedDocumentsResource
 from app.api.mines.region.resources.region import MineRegionResource
 from app.api.mines.status.resources.status import MineStatusXrefListResource
-from app.api.mines.tailings.resources.tailings import MineTailingsStorageFacilityListResource
+from app.api.mines.tailings.resources.tailings_list import MineTailingsStorageFacilityListResource
 from app.api.parties.party_appt.resources.mine_party_appt_resource import MinePartyApptResource
 from app.api.parties.party_appt.resources.mine_party_appt_type_resource import MinePartyApptTypeResource
 from app.api.parties.party.resources.party_resource import PartyResource
