@@ -145,7 +145,7 @@ class BondTransferResource(Resource, UserMixin):
         permit = Permit.find_by_permit_guid(permit_guid)
         # Set mine context
         if not permit._all_mines:
-            raise NotFound('No mine was found to set the context of this permit.')
+            raise BadRequest('No mine was found to set the context of this permit.')
         Permit._context_mine = permit._all_mines[0]
 
         if not permit:
