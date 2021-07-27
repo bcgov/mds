@@ -143,6 +143,9 @@ class BondTransferResource(Resource, UserMixin):
         if not permit_guid:
             raise BadRequest('permit_guid is required.')
         permit = Permit.find_by_permit_guid(permit_guid)
+        # Set mine context
+        Permit._context_mine = permit._all_mines[0]
+
         if not permit:
             raise BadRequest('No permit was found with the permit_guid provided.')
         if permit.permit_id in [ma.permit_id for ma in bond.permit._mine_associations]:
