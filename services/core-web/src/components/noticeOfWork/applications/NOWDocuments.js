@@ -134,9 +134,11 @@ export const NOWDocuments = (props) => {
   };
 
   const handleDeleteDocument = (applicationGuid, mineDocumentGuid) => {
-    props.deleteNoticeOfWorkApplicationDocument(applicationGuid, mineDocumentGuid).then(() => {
-      props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
-    });
+    return props
+      .deleteNoticeOfWorkApplicationDocument(applicationGuid, mineDocumentGuid)
+      .then(() => {
+        props.fetchImportedNoticeOfWorkApplication(props.noticeOfWork.now_application_guid);
+      });
   };
 
   const openAddDocumentModal = () => {
@@ -430,7 +432,7 @@ export const NOWDocuments = (props) => {
         return (
           isPostDecision && (
             <Tooltip
-              title="This is a post decision document."
+              title="This is a post-decision document."
               placement="right"
               mouseEnterDelay={0.3}
             >

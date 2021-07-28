@@ -60,6 +60,14 @@ def create_mine_and_permit(mine_kwargs={},
     return mine, permit
 
 
+def create_mine_and_tailing_storage_facility(mine_kwargs={}, tsf_kwargs={}, num_tsf=1):
+    mine = MineFactory(**mine_kwargs)
+    for x in range(num_tsf):
+        tsf = MineTailingsStorageFacilityFactory(**tsf_kwargs)
+
+    return mine, tsf
+
+
 class FactoryRegistry:
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)

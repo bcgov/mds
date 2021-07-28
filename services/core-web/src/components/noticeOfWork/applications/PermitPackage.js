@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, notification } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
-
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { modalConfig } from "@/components/modalContent/config";
@@ -74,7 +73,7 @@ export class PermitPackage extends Component {
 
     const message = "Successfully updated the final application package.";
 
-    this.props
+    return this.props
       .updateNoticeOfWorkApplication(payload, this.props.noticeOfWork.now_application_guid, message)
       .then(() => {
         this.props
