@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { Row, Col, Tabs } from "antd";
 import { compose, bindActionCreators } from "redux";
@@ -8,6 +9,8 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import { AdminVerifiedMinesList } from "@/components/admin/AdminVerifiedMinesList";
+import AdminNavigation from "@/components/admin/AdminNavigation";
+import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
@@ -25,10 +28,13 @@ export class AdminDashboard extends Component {
       isLoaded: false,
       verifiedMines: [],
       unverifiedMines: [],
+      activeNavButton: "permit-conditions",
+      openSubMenuKey: ["SAG"],
     };
   }
 
   componentWillMount() {
+    this.handleActiveButton(this.props.location.pathname);
     this.props.fetchMineVerifiedStatuses().then((response) => {
       this.setState({
         isLoaded: true,
@@ -42,6 +48,17 @@ export class AdminDashboard extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location !== nextProps.location) {
+      this.handleActiveButton(nextProps.location.pathname);
+    }
+  }
+
+  handleActiveButton = (path) => {
+    const lastPath = path.split("/").pop();
+    this.setState({ activeNavButton: path, openSubMenuKey: [lastPath] });
+  };
+
   handleTabChange = (activeTab) => {
     this.setState({
       activeTab,
@@ -52,16 +69,16 @@ export class AdminDashboard extends Component {
 
   render() {
     return (
-      <div className="landing-page">
+      <div>
         <div className="landing-page__header">
           <Row>
             <Col sm={22} md={14} lg={12}>
-              <h1>Admin View</h1>
+              <h1>Administrative Dashboard</h1>
             </Col>
           </Row>
         </div>
-        <div className="landing-page__content">
-          <Tabs
+        {/* <div className="landing-page__content"> */}
+        {/* <Tabs
             activeKey={this.state.activeTab}
             defaultActiveKey="summary"
             onChange={this.handleTabChange}
@@ -101,7 +118,13 @@ export class AdminDashboard extends Component {
               </div>
             </Tabs.TabPane>
           </Tabs>
-        </div>
+        </div> */}
+        <AdminNavigation
+          activeButton={this.state.activeNavButton}
+          openSubMenuKey={this.state.openSubMenuKey}
+        />
+        {/* </div> */}
+        <AdminDashboardRoutes />
       </div>
     );
   }

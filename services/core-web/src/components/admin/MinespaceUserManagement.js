@@ -3,6 +3,7 @@ import { flatMap, uniq } from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { getMinespaceUsers, getMinespaceUserEmailHash } from "@common/selectors/minespaceSelector";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
@@ -60,8 +61,9 @@ export class MinespaceUserManagement extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tab__content">
         <h2>MineSpace User Management</h2>
+        <Divider />
         <br />
         <NewMinespaceUser
           refreshData={this.refreshUserData}
