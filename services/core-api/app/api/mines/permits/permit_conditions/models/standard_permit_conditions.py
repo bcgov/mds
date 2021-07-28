@@ -32,6 +32,10 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         lazy='joined',
         backref=backref('parent', remote_side=[standard_permit_condition_id]))
 
+    def __repr__(self):
+        return '<StandardPermitConditions %r, %r>' % (self.standard_permit_condition_id,
+                                                      self.standard_permit_condition_guid)
+
     @classmethod
     def find_by_notice_of_work_type_code(cls, notice_of_work_type):
         condition_code = notice_of_work_type
@@ -44,6 +48,9 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
             parent_standard_permit_condition_id=None,
             deleted_ind=False).order_by(cls.display_order).all()
 
-    def __repr__(self):
-        return '<StandardPermitConditions %r, %r>' % (self.standard_permit_condition_id,
-                                                      self.standard_permit_condition_guid)
+    @classmethod
+    def find_by_standard_permit_condition_guid(cls, standard_permit_condition_guid):
+        return cls.query.filter_by(
+            standard_permit_condition_guid=standard_permit_condition_guid, deleted_ind=False).first()
+
+    
