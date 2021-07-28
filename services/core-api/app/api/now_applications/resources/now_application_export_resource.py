@@ -187,13 +187,13 @@ UNIT_TYPE_CODE_FIELDS = [
     'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
     'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
     'total_waste_unit_type_code', 'surface_total_ore_unit_type_code',
-    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code'
+    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
 ]
 
 CHECKBOX_FIELDS = [
    'show_access_roads', 'show_camps', 'show_surface_drilling', 'show_mech_trench', 'show_seismic', 'show_bulk', 
    'show_underground_exploration', 'show_sand_gravel_quarry', 'has_groundwater_from_existing_area', 'has_groundwater_from_test_pits', 
-   'has_groundwater_from_test_wells', 'has_ground_water_from_other', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
+   'has_groundwater_from_test_wells', 'has_ground_water_from_other',
    'proposed_bulk_sample', 'proposed_de_watering', 'proposed_diamond_drilling', 'proposed_mapping_chip_sampling', 'proposed_new_development', 'proposed_rehab',
    'proposed_underground_fuel_storage', 'has_fuel_stored_in_bulk', 'has_fuel_stored_in_barrels',
 ]
