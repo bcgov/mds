@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { isEmpty } from "lodash";
 import { getNoticeOfWorkUnitTypeOptionsHash } from "@common/selectors/staticContentSelectors";
 import { Field, FieldArray } from "redux-form";
 import { Button } from "antd";
@@ -63,6 +64,9 @@ const renderActivities = ({ fields, isViewMode, tableContent, type, fieldID, uni
         ? unitTypeHash[activityObj[`${content.value}_unit_type_code`]]
         : Strings.EMPTY_FIELD;
       return value ? `${value} ${unit}` : "";
+    }
+    if (content.dataHash && !isEmpty(content.dataHash)) {
+      return content.dataHash[value];
     }
     return value;
   };

@@ -320,6 +320,7 @@ NOW_APPLICATION_STATE_OF_LAND = api.model(
         'file_number_of_app': fields.String,
         'applied_for_licence_of_occupation': fields.Boolean,
         'notice_served_to_private': fields.Boolean,
+        'legal_description_land': fields.String,
     })
 
 NOW_APPLICATION_DOCUMENT = api.model(
