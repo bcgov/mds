@@ -1,6 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { Field } from "redux-form";
+import { Field, formValueSelector } from "redux-form";
+import { connect } from "react-redux";
 import { Row, Col } from "antd";
 import { currencyMask } from "@common/utils/helpers";
 import { requiredRadioButton, maxLength, number, required } from "@common/utils/Validate";
@@ -9,11 +10,13 @@ import RenderField from "@/components/common/RenderField";
 import RenderAutoSizeField from "@/components/common/RenderAutoSizeField";
 import RenderRadioButtons from "@/components/common/RenderRadioButtons";
 import { NOWOriginalValueTooltip, NOWFieldOriginTooltip } from "@/components/common/CoreTooltip";
+import * as FORM from "@/constants/forms";
 
 const propTypes = {
   isViewMode: PropTypes.bool.isRequired,
   renderOriginalValues: PropTypes.func.isRequired,
   isPreLaunch: PropTypes.bool.isRequired,
+  isPondDischarged: PropTypes.bool.isRequired,
 };
 
 export const SettlingPonds = (props) => {
@@ -188,97 +191,103 @@ export const SettlingPonds = (props) => {
         </Col>
       </Row>
       <br />
-      <h4>Discharge to the Environment</h4>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Describe the type of sediment control structures
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("settling_pond.sediment_control_structure_description")
-                  .value
-              }
-              isVisible={
-                props.renderOriginalValues("settling_pond.sediment_control_structure_description")
-                  .edited
-              }
-            />
-          </div>
-          <Field
-            id="sediment_control_structure_description"
-            name="sediment_control_structure_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Describe the type and construction of the decant structure
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("settling_pond.decant_structure_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("settling_pond.decant_structure_description").edited
-              }
-            />
-          </div>
-          <Field
-            id="decant_structure_description"
-            name="decant_structure_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Describe the area into which the water is discharged
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("settling_pond.water_discharged_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("settling_pond.water_discharged_description").edited
-              }
-            />
-          </div>
-          <Field
-            id="water_discharged_description"
-            name="water_discharged_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Describe spillway design
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              originalValue={
-                props.renderOriginalValues("settling_pond.spillway_design_description").value
-              }
-              isVisible={
-                props.renderOriginalValues("settling_pond.spillway_design_description").edited
-              }
-            />
-          </div>
-          <Field
-            id="spillway_design_description"
-            name="spillway_design_description"
-            component={RenderAutoSizeField}
-            disabled={props.isViewMode}
-            validate={[maxLength(4000)]}
-          />
-        </Col>
-      </Row>
+      {props.isPondDischarged && (
+        <>
+          <h4>Discharge to the Environment</h4>
+          <Row gutter={16}>
+            <Col md={12} sm={24}>
+              <div className="field-title">
+                Describe the type of sediment control structures
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues(
+                      "settling_pond.sediment_control_structure_description"
+                    ).value
+                  }
+                  isVisible={
+                    props.renderOriginalValues(
+                      "settling_pond.sediment_control_structure_description"
+                    ).edited
+                  }
+                />
+              </div>
+              <Field
+                id="sediment_control_structure_description"
+                name="sediment_control_structure_description"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={[maxLength(4000)]}
+              />
+            </Col>
+            <Col md={12} sm={24}>
+              <div className="field-title">
+                Describe the type and construction of the decant structure
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.decant_structure_description").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("settling_pond.decant_structure_description").edited
+                  }
+                />
+              </div>
+              <Field
+                id="decant_structure_description"
+                name="decant_structure_description"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={[maxLength(4000)]}
+              />
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col md={12} sm={24}>
+              <div className="field-title">
+                Describe the area into which the water is discharged
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.water_discharged_description").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("settling_pond.water_discharged_description").edited
+                  }
+                />
+              </div>
+              <Field
+                id="water_discharged_description"
+                name="water_discharged_description"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={[maxLength(4000)]}
+              />
+            </Col>
+            <Col md={12} sm={24}>
+              <div className="field-title">
+                Describe spillway design
+                {props.isPreLaunch && <NOWFieldOriginTooltip />}
+                <NOWOriginalValueTooltip
+                  originalValue={
+                    props.renderOriginalValues("settling_pond.spillway_design_description").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("settling_pond.spillway_design_description").edited
+                  }
+                />
+              </div>
+              <Field
+                id="spillway_design_description"
+                name="spillway_design_description"
+                component={RenderAutoSizeField}
+                disabled={props.isViewMode}
+                validate={[maxLength(4000)]}
+              />
+            </Col>
+          </Row>
+        </>
+      )}
       <br />
       <h4>Reclamation Program</h4>
       <Row gutter={16}>
@@ -324,4 +333,10 @@ export const SettlingPonds = (props) => {
 
 SettlingPonds.propTypes = propTypes;
 
-export default SettlingPonds;
+const selector = formValueSelector(FORM.EDIT_NOTICE_OF_WORK);
+export default connect(
+  (state) => ({
+    isPondDischarged: selector(state, "settling_pond.is_ponds_discharged"),
+  }),
+  null
+)(SettlingPonds);
