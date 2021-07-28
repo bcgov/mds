@@ -781,13 +781,17 @@ export const ReviewNOWApplication = (props) => {
                 Legal Description of the land
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
-                  originalValue={props.renderOriginalValues("description_of_land").value}
-                  isVisible={props.renderOriginalValues("description_of_land").edited}
+                  originalValue={
+                    props.renderOriginalValues("state_of_land.legal_description_land").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("state_of_land.legal_description_land").edited
+                  }
                 />
               </div>
               <Field
-                id="description_of_land"
-                name="description_of_land"
+                id="legal_description_land"
+                name="legal_description_land"
                 component={RenderAutoSizeField}
                 disabled={props.isViewMode}
                 validate={[maxLength(4000)]}

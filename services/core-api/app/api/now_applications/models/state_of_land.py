@@ -33,6 +33,7 @@ class StateOfLand(Base):
     arch_site_protection_plan = db.Column(db.String)
     fn_engagement_activities = db.Column(db.String)
     cultural_heritage_description = db.Column(db.String)
+    legal_description_land = db.Column(db.String)
 
     has_shared_info_with_fn = db.Column(db.Boolean)
     has_fn_cultural_heritage_sites_in_area = db.Column(db.Boolean)
