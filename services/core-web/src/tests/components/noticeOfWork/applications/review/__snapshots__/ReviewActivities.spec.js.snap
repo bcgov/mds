@@ -128,7 +128,7 @@ exports[`ReviewActivities renders properly 1`] = `
     <FormSection
       name="settling_pond"
     >
-      <SettlingPonds
+      <Connect(SettlingPonds)
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />

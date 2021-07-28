@@ -618,31 +618,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               name="is_access_gated"
             />
           </Col>
-          <Col
-            md={12}
-            sm={24}
-          >
-            <div
-              className="field-title"
-            >
-              Key provided to the inspector
-              <NOWOriginalValueTooltip
-                isVisible={true}
-                originalValue="N/A"
-                style={
-                  Object {
-                    "marginLeft": "5%",
-                  }
-                }
-              />
-            </div>
-            <Field
-              component={[Function]}
-              disabled={true}
-              id="has_key_for_inspector"
-              name="has_key_for_inspector"
-            />
-          </Col>
         </Row>
         <br />
         <h4>
@@ -1334,12 +1309,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
               "is_access_gated",
             ],
             Array [
-              "has_key_for_inspector",
-            ],
-            Array [
-              "has_key_for_inspector",
-            ],
-            Array [
               "has_surface_disturbance_outside_tenure",
             ],
             Array [
@@ -1463,20 +1432,6 @@ exports[`ReviewNOWApplication renders properly 1`] = `
             ],
           ],
           "results": Array [
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
-            Object {
-              "type": "return",
-              "value": Object {
-                "edited": true,
-                "value": "N/A",
-              },
-            },
             Object {
               "type": "return",
               "value": Object {

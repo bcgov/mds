@@ -12,6 +12,7 @@ from app.api.now_applications.models.now_application_permit_type import NOWAppli
 from app.api.now_applications.models.activity_summary.activity_type import ActivityType
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.unit_type import UnitType
+from app.api.now_applications.models.activity_detail.underground_exploration_type import UndergroundExplorationType
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.include.user_info import User
 from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_permit
@@ -25,6 +26,7 @@ NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken
                                               {'token': fields.String})
 
 EMPTY_FIELD = '-'
+NOT_APPLICABLE_FIELD = 'N/A'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
@@ -78,6 +80,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'state_of_land.authorization_details',
     'state_of_land.file_number_of_app',
     'state_of_land.applied_for_licence_of_occupation',
+    'state_of_land.legal_description_land',
     'first_aid_equipment_on_site',
     'first_aid_cert_level',
     'exploration_access.has_proposed_bridges_or_culverts',
@@ -186,16 +189,20 @@ UNIT_TYPE_CODE_FIELDS = [
     'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code',
     'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
     'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
-    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code',
-    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code'
+    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code', 'incline_unit_type_code',
+    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
 ]
 
 CHECKBOX_FIELDS = [
    'show_access_roads', 'show_camps', 'show_surface_drilling', 'show_mech_trench', 'show_seismic', 'show_bulk', 
    'show_underground_exploration', 'show_sand_gravel_quarry', 'has_groundwater_from_existing_area', 'has_groundwater_from_test_pits', 
-   'has_groundwater_from_test_wells', 'has_ground_water_from_other', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
+   'has_groundwater_from_test_wells', 'has_ground_water_from_other',
    'proposed_bulk_sample', 'proposed_de_watering', 'proposed_diamond_drilling', 'proposed_mapping_chip_sampling', 'proposed_new_development', 'proposed_rehab',
    'proposed_underground_fuel_storage', 'has_fuel_stored_in_bulk', 'has_fuel_stored_in_barrels',
+]
+
+UNDERGROUND_EXPLORATION_CODE_FIELDS = [
+    'underground_exploration_type_code',
 ]
 
 
@@ -423,7 +430,14 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         code for code in unit_type_codes if code.unit_type_code == obj[key]
                     ]
                     obj[key] = code_object[0].short_description if code_object and len(
-                        code_object) > 0 else "N/A"
+                        code_object) > 0 else NOT_APPLICABLE_FIELD
+                elif key in UNDERGROUND_EXPLORATION_CODE_FIELDS:
+                    type_codes = UndergroundExplorationType.get_all()
+                    code_object = [
+                        code for code in type_codes if code.underground_exploration_type_code == obj[key]
+                    ]
+                    obj[key] = code_object[0].description if code_object and len(
+                        code_object) > 0 else NOT_APPLICABLE_FIELD
                 elif isinstance(obj[key], bool):
                     if key in CHECKBOX_FIELDS:
                         obj[key] = format_checkbox(obj[key])

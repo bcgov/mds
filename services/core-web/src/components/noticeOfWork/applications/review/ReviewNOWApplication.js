@@ -85,6 +85,7 @@ const propTypes = {
   appliedLicenceOccupation: PropTypes.bool.isRequired,
   isOnCrownLand: PropTypes.bool.isRequired,
   hasLicenceOfOccupation: PropTypes.bool.isRequired,
+  isAccessGated: PropTypes.bool.isRequired,
 };
 
 export const ReviewNOWApplication = (props) => {
@@ -485,23 +486,25 @@ export const ReviewNOWApplication = (props) => {
             disabled={props.isViewMode}
           />
         </Col>
-        <Col md={12} sm={24}>
-          <div className="field-title">
-            Key provided to the inspector
-            {props.isPreLaunch && <NOWFieldOriginTooltip />}
-            <NOWOriginalValueTooltip
-              style={{ marginLeft: "5%" }}
-              originalValue={props.renderOriginalValues("has_key_for_inspector").value}
-              isVisible={props.renderOriginalValues("has_key_for_inspector").edited}
+        {props.isAccessGated && (
+          <Col md={12} sm={24}>
+            <div className="field-title">
+              Key provided to the inspector
+              {props.isPreLaunch && <NOWFieldOriginTooltip />}
+              <NOWOriginalValueTooltip
+                style={{ marginLeft: "5%" }}
+                originalValue={props.renderOriginalValues("has_key_for_inspector").value}
+                isVisible={props.renderOriginalValues("has_key_for_inspector").edited}
+              />
+            </div>
+            <Field
+              id="has_key_for_inspector"
+              name="has_key_for_inspector"
+              component={RenderRadioButtons}
+              disabled={props.isViewMode}
             />
-          </div>
-          <Field
-            id="has_key_for_inspector"
-            name="has_key_for_inspector"
-            component={RenderRadioButtons}
-            disabled={props.isViewMode}
-          />
-        </Col>
+          </Col>
+        )}
       </Row>
       <br />
       <h4>Access to Tenure</h4>
@@ -778,13 +781,17 @@ export const ReviewNOWApplication = (props) => {
                 Legal Description of the land
                 {props.isPreLaunch && <NOWFieldOriginTooltip />}
                 <NOWOriginalValueTooltip
-                  originalValue={props.renderOriginalValues("description_of_land").value}
-                  isVisible={props.renderOriginalValues("description_of_land").edited}
+                  originalValue={
+                    props.renderOriginalValues("state_of_land.legal_description_land").value
+                  }
+                  isVisible={
+                    props.renderOriginalValues("state_of_land.legal_description_land").edited
+                  }
                 />
               </div>
               <Field
-                id="description_of_land"
-                name="description_of_land"
+                id="legal_description_land"
+                name="legal_description_land"
                 component={RenderAutoSizeField}
                 disabled={props.isViewMode}
                 validate={[maxLength(4000)]}
@@ -1424,6 +1431,7 @@ export default compose(
     isOnCrownLand: selector(state, "state_of_land.is_on_crown_land"),
     hasLicenceOfOccupation: selector(state, "state_of_land.has_licence_of_occupation"),
     appliedLicenceOccupation: selector(state, "state_of_land.applied_for_licence_of_occupation"),
+    isAccessGated: selector(state, "is_access_gated"),
     regionDropdownOptions: getMineRegionDropdownOptions(state),
     applicationTypeOptions: getDropdownNoticeOfWorkApplicationTypeOptions(state),
     applicationProgressStatusCodes: getNoticeOfWorkApplicationProgressStatusCodeOptions(state),
