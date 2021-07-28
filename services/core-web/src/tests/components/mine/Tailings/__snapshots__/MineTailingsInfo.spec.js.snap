@@ -43,7 +43,9 @@ exports[`MineTailingsInfo renders properly 1`] = `
           </Connect(AuthorizationWrapper)>
         </div>
         <Connect(MineTailingsTable)
+          handleEditTailings={[Function]}
           isLoaded={false}
+          openEditTailingsModal={[Function]}
           tailings={
             Array [
               Object {
@@ -79,6 +81,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
           handleTableChange={[Function]}
           isLoaded={false}
           mineReportType="CRR"
+          mineReports={Array []}
           openEditReportModal={[Function]}
           sortDir="desc"
           sortField="received_date"

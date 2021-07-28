@@ -136,11 +136,11 @@ const transformDocuments = (
 export const RenderNowDocumentsTableExpandIcon = (rowProps) => (
   <div>
     {rowProps.expanded ? (
-      <Tooltip title="Click to hide amendment history." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to hide document description." placement="right" mouseEnterDelay={1}>
         <MinusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     ) : (
-      <Tooltip title="Click to view amendment history." placement="right" mouseEnterDelay={1}>
+      <Tooltip title="Click to view document description." placement="right" mouseEnterDelay={1}>
         <PlusSquareFilled className="icon-lg--lightgrey" />
       </Tooltip>
     )}
@@ -497,7 +497,7 @@ export const NOWSubmissionDocuments = (props) => {
       return (
         isPostDecision && (
           <Tooltip
-            title="This is a post decision document."
+            title="This is a post-decision document."
             placement="right"
             mouseEnterDelay={0.3}
           >
