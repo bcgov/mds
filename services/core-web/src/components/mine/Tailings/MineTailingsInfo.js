@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
+import { isNil } from "lodash";
 import PropTypes from "prop-types";
 import { Divider, Tabs } from "antd";
 import {
@@ -115,8 +115,8 @@ export class MineTailingsInfo extends Component {
       value: record.engineer_of_record?.party_guid,
       label: record.engineer_of_record?.party.name,
     };
-
-    const newRecord = { ...record, has_itrb: record.has_itrb.toString() };
+    const itrb = !isNil(record.has_itrb) ? record.has_itrb.toString() : record.has_itrb;
+    const newRecord = { ...record, has_itrb: itrb };
 
     event.preventDefault();
     this.props.openModal({
