@@ -26,6 +26,7 @@ NOW_DOCUMENT_DOWNLOAD_TOKEN_MODEL = api.model('NoticeOfWorkDocumentDownloadToken
                                               {'token': fields.String})
 
 EMPTY_FIELD = '-'
+NOT_APPLICABLE_FIELD = 'N/A'
 
 CURRENCY_FIELDS = ['reclamation_cost']
 
@@ -429,14 +430,14 @@ class NOWApplicationExportResource(Resource, UserMixin):
                         code for code in unit_type_codes if code.unit_type_code == obj[key]
                     ]
                     obj[key] = code_object[0].short_description if code_object and len(
-                        code_object) > 0 else "N/A"
+                        code_object) > 0 else NOT_APPLICABLE_FIELD
                 elif key in UNDERGROUND_EXPLORATION_CODE_FIELDS:
                     type_codes = UndergroundExplorationType.get_all()
                     code_object = [
                         code for code in type_codes if code.underground_exploration_type_code == obj[key]
                     ]
                     obj[key] = code_object[0].description if code_object and len(
-                        code_object) > 0 else "N/A"
+                        code_object) > 0 else NOT_APPLICABLE_FIELD
                 elif isinstance(obj[key], bool):
                     if key in CHECKBOX_FIELDS:
                         obj[key] = format_checkbox(obj[key])
