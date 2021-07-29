@@ -147,6 +147,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
     licenceofoccupation = now_sub.licenceofoccupation
     noticeservedtoprivate = now_sub.noticeservedtoprivate
     file_number_of_app = now_sub.filenumberofappl
+    landlegaldesc = now_sub.landlegaldesc
 
     if landcommunitywatershed or archsitesaffected or present_land_condition_description or means_of_access_description or physiography_description or old_equipment_description or type_of_vegetation_description or recreational_trail_use_description or has_activity_in_park or has_auth_lieutenant_gov_council or arch_site_protection_plan or has_shared_info_with_fn or has_fn_cultural_heritage_sites_in_area or fn_engagement_activities or cultural_heritage_description or is_on_private_land:
         now_app.state_of_land = app_models.StateOfLand(
@@ -171,6 +172,7 @@ def _transmogrify_state_of_land(now_app, now_sub, mms_now_sub):
             has_licence_of_occupation=get_boolean_value(havelicenceofoccupation),
             licence_of_occupation=licenceofoccupation,
             file_number_of_app=file_number_of_app,
+            legal_description_land=landlegaldesc,
             applied_for_licence_of_occupation=get_boolean_value(appliedforlicenceofoccupation),
             notice_served_to_private=get_boolean_value(noticeservedtoprivate))
 
