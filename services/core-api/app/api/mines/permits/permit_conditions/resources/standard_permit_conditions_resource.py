@@ -49,7 +49,8 @@ class StandardPermitConditionsResource(Resource, UserMixin):
                 cond.save(commit=False)
 
         db.session.commit()
-        return condition
+
+        return ('', 204)
 
     @api.doc(description='delete a standard permit condition')
     @requires_role_edit_standard_permit_conditions
