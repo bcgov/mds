@@ -17,34 +17,42 @@ import { APPLICATION_PROGRESS_TRACKING } from "@/constants/NOWConditions";
  */
 
 const propTypes = {
-  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element.isRequired),
     PropTypes.element.isRequired,
   ]).isRequired,
-  progress: PropTypes.objectOf(PropTypes.string).isRequired,
+  progress: PropTypes.objectOf(PropTypes.string),
   applicationDelay: PropTypes.objectOf(PropTypes.string),
   tab: PropTypes.string,
   allowAfterProcess: PropTypes.bool,
+  isAdminControl: PropTypes.bool,
 };
 
 const defaultProps = {
   tab: null,
   applicationDelay: {},
   allowAfterProcess: false,
+  isAdminControl: true,
+  noticeOfWork: {},
+  progress: {},
 };
 
 export class NOWActionWrapper extends Component {
   state = { disableTab: false };
 
   componentDidMount() {
-    const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
-      this.props.noticeOfWork.application_type_code
-    ].includes(this.props.tab);
-    if (tabShouldIncludeProgress) {
-      this.handleDisableTab(this.props.tab, this.props.progress);
-    } else {
+    if (this.props.isAdminControl) {
       this.setState({ disableTab: false });
+    } else {
+      const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
+        this.props.noticeOfWork.application_type_code
+      ].includes(this.props.tab);
+      if (tabShouldIncludeProgress) {
+        this.handleDisableTab(this.props.tab, this.props.progress);
+      } else {
+        this.setState({ disableTab: false });
+      }
     }
   }
 
@@ -88,7 +96,7 @@ export class NOWActionWrapper extends Component {
       this.props.noticeOfWork.now_application_status_code === "REJ" ||
       this.props.noticeOfWork.now_application_status_code === "NPR";
     const disabled = isApplicationDelayed || isApplicationComplete || this.state.disableTab;
-    return !disabled || this.props.allowAfterProcess ? (
+    return !disabled || this.props.allowAfterProcess || this.props.isAdminControl ? (
       <AuthorizationWrapper {...this.props}>
         {React.createElement("span", null, this.props.children)}
       </AuthorizationWrapper>

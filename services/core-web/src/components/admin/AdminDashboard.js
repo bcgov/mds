@@ -4,7 +4,7 @@ import { Row, Col, Tabs } from "antd";
 import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
+// import { fetchMineVerifiedStatuses } from "@common/actionCreators/mineActionCreator";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
@@ -21,31 +21,28 @@ const propTypes = {
 };
 
 export class AdminDashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTab: "verifiedMines",
-      isLoaded: false,
-      verifiedMines: [],
-      unverifiedMines: [],
-      activeNavButton: "permit-conditions",
-      openSubMenuKey: ["SAG"],
-    };
-  }
+  state = {
+    // activeTab: "verifiedMines",
+    // isLoaded: false,
+    // verifiedMines: [],
+    // unverifiedMines: [],
+    activeNavButton: "permit-conditions",
+    openSubMenuKey: ["SAG"],
+  };
 
   componentWillMount() {
     this.handleActiveButton(this.props.location.pathname);
-    this.props.fetchMineVerifiedStatuses().then((response) => {
-      this.setState({
-        isLoaded: true,
-        verifiedMines: response.data
-          .filter((vm) => vm.healthy_ind === true)
-          .sort(this.compareMineName),
-        unverifiedMines: response.data
-          .filter((vm) => vm.healthy_ind === false)
-          .sort(this.compareMineName),
-      });
-    });
+    // this.props.fetchMineVerifiedStatuses().then((response) => {
+    //   this.setState({
+    //     isLoaded: true,
+    //     verifiedMines: response.data
+    //       .filter((vm) => vm.healthy_ind === true)
+    //       .sort(this.compareMineName),
+    //     unverifiedMines: response.data
+    //       .filter((vm) => vm.healthy_ind === false)
+    //       .sort(this.compareMineName),
+    //   });
+    // });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,11 +56,11 @@ export class AdminDashboard extends Component {
     this.setState({ activeNavButton: path, openSubMenuKey: [lastPath] });
   };
 
-  handleTabChange = (activeTab) => {
-    this.setState({
-      activeTab,
-    });
-  };
+  // handleTabChange = (activeTab) => {
+  //   this.setState({
+  //     activeTab,
+  //   });
+  // };
 
   compareMineName = (a, b) => a.mine_name.localeCompare(b.mine_name);
 
@@ -133,7 +130,7 @@ export class AdminDashboard extends Component {
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineVerifiedStatuses,
+      // fetchMineVerifiedStatuses,
     },
     dispatch
   );

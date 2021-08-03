@@ -355,3 +355,82 @@ export const patchPermitNumber = (permitGuid, mineGuid, payload) => (dispatch) =
     .catch(() => dispatch(error(reducerTypes.PATCH_PERMIT)))
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+// standard permit conditions
+export const fetchStandardPermitConditions = (noticeOfWorkType) => (dispatch) => {
+  dispatch(request(reducerTypes.GET_PERMIT_CONDITIONS));
+  dispatch(showLoading());
+  return CustomAxios()
+    .get(
+      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITIONS(noticeOfWorkType)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.GET_PERMIT_CONDITIONS));
+      dispatch(permitActions.storeStandardPermitConditions(response.data));
+    })
+    .catch(() => dispatch(error(reducerTypes.GET_PERMIT_CONDITIONS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
+export const createStandardPermitCondition = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(
+      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITIONS()}`,
+      { permit_condition: payload },
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully created a new condition",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.CREATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const deleteStandardPermitCondition = (permitConditionGuid) => (dispatch) => {
+  dispatch(request(reducerTypes.DELETE_PERMIT_CONDITION));
+  dispatch(showLoading("modal"));
+  return CustomAxios()
+    .delete(
+      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: "Successfully deleted permit condition.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.DELETE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.DELETE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading("modal")));
+};
+
+export const updateStandardPermitCondition = (permitConditionGuid, payload) => (dispatch) => {
+  dispatch(request(reducerTypes.UPDATE_PERMIT_CONDITION));
+  dispatch(showLoading());
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      notification.success({
+        message: `Successfully updated permit condition`,
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.UPDATE_PERMIT_CONDITION));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
+    .finally(() => dispatch(hideLoading()));
+};

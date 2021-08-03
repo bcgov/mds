@@ -6,6 +6,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import validates, backref
 from app.extensions import db
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.ext.hybrid import hybrid_property
+from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 
@@ -36,6 +38,21 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         return '<StandardPermitConditions %r, %r>' % (self.standard_permit_condition_id,
                                                       self.standard_permit_condition_guid)
 
+    @hybrid_property
+    def step(self):
+        depth = 0
+        condition = self
+        while condition.parent_standard_permit_condition_id is not None:
+            condition = condition.parent
+            depth += 1
+        step_format = depth % 3
+        if step_format == 0:
+            return str(self.display_order) + '.'
+        elif step_format == 1:
+            return num_to_letter(self.display_order) + '.'
+        elif step_format == 2:
+            return num_to_roman(self.display_order) + '.'
+
     @classmethod
     def find_by_notice_of_work_type_code(cls, notice_of_work_type):
         condition_code = notice_of_work_type
@@ -51,6 +68,5 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_standard_permit_condition_guid(cls, standard_permit_condition_guid):
         return cls.query.filter_by(
-            standard_permit_condition_guid=standard_permit_condition_guid, deleted_ind=False).first()
-
-    
+            standard_permit_condition_guid=standard_permit_condition_guid,
+            deleted_ind=False).first()

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -6,7 +5,6 @@ import { Menu } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { includes } from "lodash";
 import * as routes from "@/constants/routes";
-import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   activeButton: PropTypes.string.isRequired,
@@ -56,10 +54,12 @@ export class AdminNavigation extends Component {
         >
           <Menu className="sub-menu">
             <Menu.Item key="permits">
-              <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")}>Verified Mines</Link>
+              <Link to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("verified")}>Verified Mines</Link>
             </Menu.Item>
             <Menu.Item key="securities">
-              <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")}>UnVerified Mines</Link>
+              <Link to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("unverified")}>
+                UnVerified Mines
+              </Link>
             </Menu.Item>
           </Menu>
         </Menu.SubMenu>
