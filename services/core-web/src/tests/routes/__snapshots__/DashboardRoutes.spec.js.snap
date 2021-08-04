@@ -30,7 +30,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
+        "displayName": "Connect(authorizationGuard)",
         "type": [Function],
       }
     }
@@ -364,7 +364,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(Connect(authorizationGuard))",
+        "displayName": "Connect(authorizationGuard)",
         "type": [Function],
       }
     }
