@@ -20,6 +20,23 @@ exports[`DashboardRoutes  renders properly 1`] = `
     path="/mine-dashboard/:id/"
   />
   <Route
+    exact={true}
+    path="/admin/dashboard"
+    render={[Function]}
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    path="/admin/dashboard"
+  />
+  <Route
     component={
       Object {
         "$$typeof": Symbol(react.memo),
@@ -353,6 +370,37 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/admin/dashboard"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    path="/admin/dashboard/permit-conditions/:type"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(authorizationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard/mine-verification/:type"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(MinespaceUserManagement)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/dashboard/manage-minespace/users"
   />
   <Route
     component={

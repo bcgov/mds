@@ -5,7 +5,7 @@ exports[`NOWSecurities renders properly 1`] = `
   <div
     className="right"
   >
-    <Connect(NOWActionWrapper)
+    <withRouter(Connect(NOWActionWrapper))
       permission="role_edit_permits"
     >
       <Button
@@ -28,7 +28,7 @@ exports[`NOWSecurities renders properly 1`] = `
         />
         Edit
       </Button>
-    </Connect(NOWActionWrapper)>
+    </withRouter(Connect(NOWActionWrapper))>
   </div>
   <LoadingWrapper
     condition={true}
