@@ -25,6 +25,11 @@ export const permitReducer = (state = initialState, action) => {
         ...state,
         permitConditions: action.payload.records,
       };
+    case actionTypes.STORE_STANDARD_PERMIT_CONDITIONS:
+      return {
+        ...state,
+        standardPermitConditions: action.payload.records,
+      };
     case actionTypes.STORE_EDITING_CONDITION_FLAG:
       return {
         ...state,
@@ -42,5 +47,6 @@ const permitReducerObject = {
 export const getUnformattedPermits = (state) => state[PERMITS].permits;
 export const getDraftPermits = (state) => state[PERMITS].draftPermits;
 export const getPermitConditions = (state) => state[PERMITS].permitConditions;
+export const getStandardPermitConditions = (state) => state[PERMITS].standardPermitConditions;
 export const getEditingConditionFlag = (state) => state[PERMITS].editingConditionFlag;
 export default permitReducerObject;

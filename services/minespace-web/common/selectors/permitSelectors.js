@@ -9,6 +9,7 @@ export const {
   getUnformattedPermits,
   getDraftPermits,
   getPermitConditions,
+  getStandardPermitConditions,
   getEditingConditionFlag,
 } = permitReducer;
 

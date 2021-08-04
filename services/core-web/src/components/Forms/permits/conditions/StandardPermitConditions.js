@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -36,10 +35,10 @@ const propTypes = {
   conditions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   permitConditionCategoryOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   editingConditionFlag: PropTypes.bool.isRequired,
-  fetchPermitConditions: PropTypes.func.isRequired,
+  fetchStandardPermitConditions: PropTypes.func.isRequired,
   setEditingConditionFlag: PropTypes.func.isRequired,
-  deletePermitCondition: PropTypes.func.isRequired,
-  updatePermitCondition: PropTypes.func.isRequired,
+  deleteStandardPermitCondition: PropTypes.func.isRequired,
+  updateStandardPermitCondition: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: {
       type: PropTypes.string,
@@ -141,87 +140,82 @@ export class StandardPermitConditions extends Component {
       SAG: "Sand & Gravel",
     };
     return (
-      <>
-        {this.state.isLoaded && (
-          <LoadingWrapper condition={this.state.isLoaded}>
-            <>
-              <h4>{templateType[this.state.type]} Template Permit Conditions</h4>
-              <br />
-              <Collapse>
-                {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
-                  const conditions = this.props.conditions.filter(
-                    (condition) =>
-                      condition.condition_category_code ===
-                      conditionCategory.condition_category_code
-                  );
-                  return (
-                    <Collapse.Panel
-                      style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
-                      header={
-                        <span>
-                          {`${conditionCategory.step} ${conditionCategory.description} (${
-                            Object.values(flattenObject({ conditions })).filter(
-                              (value) => value === "CON"
-                            ).length
-                          } conditions)`}
-                          <span onClick={(event) => event.stopPropagation()}>
-                            <Button
-                              ghost
-                              onClick={(event) =>
-                                this.openViewConditionModal(
-                                  event,
-                                  this.props.conditions.filter(
-                                    (condition) =>
-                                      condition.condition_category_code ===
-                                      conditionCategory.condition_category_code
-                                  ),
-                                  conditionCategory.description
-                                )
-                              }
-                            >
-                              <ReadOutlined className="padding-sm--right icon-sm violet" />
-                            </Button>
-                          </span>
-                        </span>
-                      }
-                      key={conditionCategory.condition_category_code}
-                      id={conditionCategory.condition_category_code}
-                    >
-                      {conditions.map((condition) => (
-                        <ConditionLayerOne
-                          condition={condition}
-                          reorderConditions={this.reorderConditions}
-                          handleSubmit={this.handleEdit}
-                          handleDelete={this.openDeleteConditionModal}
-                          setConditionEditingFlag={this.setConditionEditingFlag}
-                          editingConditionFlag={this.props.editingConditionFlag}
-                        />
-                      ))}
-                      <Divider />
-                      <AddCondition
-                        initialValues={{
-                          condition_category_code: conditionCategory.condition_category_code,
-                          condition_type_code: "SEC",
-                          display_order:
-                            conditions.length === 0
-                              ? 1
-                              : maxBy(conditions, "display_order").display_order + 1,
-                          parent_permit_condition_id: null,
-                          permit_amendment_id: null,
-                          parent_condition_type_code: "SEC",
-                          sibling_condition_type_code:
-                            conditions.length === 0 ? null : conditions[0].condition_type_code,
-                        }}
-                        layer={0}
-                      />
-                    </Collapse.Panel>
-                  );
-                })}
-              </Collapse>
-            </>
-          </LoadingWrapper>
-        )}
-      </>
+      <LoadingWrapper condition={this.state.isLoaded}>
+        <>
+          <h4>{templateType[this.state.type]} Template Permit Conditions</h4>
+          <br />
+          <Collapse>
+            {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
+              const conditions = this.props.conditions.filter(
+                (condition) =>
+                  condition.condition_category_code === conditionCategory.condition_category_code
+              );
+              return (
+                <Collapse.Panel
+                  style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
+                  header={
+                    <span>
+                      {`${conditionCategory.step} ${conditionCategory.description} (${
+                        Object.values(flattenObject({ conditions })).filter(
+                          (value) => value === "CON"
+                        ).length
+                      } conditions)`}
+                      <span onClick={(event) => event.stopPropagation()}>
+                        <Button
+                          ghost
+                          onClick={(event) =>
+                            this.openViewConditionModal(
+                              event,
+                              this.props.conditions.filter(
+                                (condition) =>
+                                  condition.condition_category_code ===
+                                  conditionCategory.condition_category_code
+                              ),
+                              conditionCategory.description
+                            )
+                          }
+                        >
+                          <ReadOutlined className="padding-sm--right icon-sm violet" />
+                        </Button>
+                      </span>
+                    </span>
+                  }
+                  key={conditionCategory.condition_category_code}
+                  id={conditionCategory.condition_category_code}
+                >
+                  {conditions.map((condition) => (
+                    <ConditionLayerOne
+                      condition={condition}
+                      reorderConditions={this.reorderConditions}
+                      handleSubmit={this.handleEdit}
+                      handleDelete={this.openDeleteConditionModal}
+                      setConditionEditingFlag={this.setConditionEditingFlag}
+                      editingConditionFlag={this.props.editingConditionFlag}
+                    />
+                  ))}
+                  <Divider />
+                  <AddCondition
+                    initialValues={{
+                      condition_category_code: conditionCategory.condition_category_code,
+                      condition_type_code: "SEC",
+                      display_order:
+                        conditions.length === 0
+                          ? 1
+                          : maxBy(conditions, "display_order").display_order + 1,
+                      parent_permit_condition_id: null,
+                      permit_amendment_id: null,
+                      parent_condition_type_code: "SEC",
+                      sibling_condition_type_code:
+                        conditions.length === 0 ? null : conditions[0].condition_type_code,
+                    }}
+                    layer={0}
+                  />
+                </Collapse.Panel>
+              );
+            })}
+          </Collapse>
+        </>
+      </LoadingWrapper>
     );
   };
 }
