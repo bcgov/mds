@@ -1,4 +1,4 @@
-name: Deploy to test
+name: Update test infra
 
 on:
   workflow_run:

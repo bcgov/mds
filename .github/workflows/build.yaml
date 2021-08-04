@@ -144,3 +144,79 @@ jobs:
           oc -n ${{secrets.NS_TOOLS}} tag \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.INITIAL_TAG }} \
           ${{ secrets.NS_TOOLS }}/${{ matrix.name }}:${{ env.TAG }}
+
+  github-build:
+    name: github-build
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - context: services/core-web/
+            image: github-testing-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login
+        run: |
+          docker login -u ${{ secrets.CLUSTER_REGISTRY_USER }} -p ${{ secrets.BUILD_TOKEN }} ${{ secrets.CLUSTER_REGISTRY }}
+      - name: Build n Tag
+        run: |
+          cd ${{ matrix.context }}
+          docker build -t ${{ matrix.image }}:latest . -f Dockerfile.ci
+          docker tag ${{ matrix.image }}:latest ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:latest
+          docker tag ${{ matrix.image }}:latest ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:dev
+      - name: Push
+        run: |
+          docker push --all-tags ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}
+
+  grace-period:
+    name: grace-period
+    runs-on: ubuntu-20.04
+    needs:
+      - tag
+      - github-build
+    steps:
+      - name: Waiting grace period
+        run: |
+          echo "Grace period..."
+          sleep 10
+          echo "Waiting for following deployments to succeed:"
+          echo "$(oc get dc --no-headers=false -o name)"
+
+  watch-rollout:
+    name: watch-rollout
+    runs-on: ubuntu-20.04
+    needs:
+      - grace-period
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        include:
+          - name: nginx
+          - name: frontend
+          - name: backend
+          - name: flyway
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: minespace
+    steps:
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Watch rollout
+        run: |
+          until [ "$(oc get dc ${{ matrix.name }} -o=jsonpath="{$.status.conditions[*].message}" --no-headers=false | grep -i 'successfully rolled out')" != "" ]; do
+              echo "Waiting on: $(oc get dc ${{ matrix.name }} -o name --no-headers=false) ..."
+              sleep 10
+          done
+          echo "Deployment complete"

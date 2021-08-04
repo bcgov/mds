@@ -1,4 +1,4 @@
-name: Deploy to dev
+name: Update dev infra
 
 on:
   push:
