@@ -49,8 +49,7 @@ jobs:
   grace-period:
     name: grace-period
     runs-on: ubuntu-20.04
-    needs:
-      - promote-to-test
+    needs: promote-to-test
     steps:
       - name: Waiting grace period
         run: |
@@ -62,8 +61,7 @@ jobs:
   watch-rollout:
     name: watch-rollout
     runs-on: ubuntu-20.04
-    needs:
-      - grace-period
+    needs: grace-period
     timeout-minutes: 15
     strategy:
       matrix:
