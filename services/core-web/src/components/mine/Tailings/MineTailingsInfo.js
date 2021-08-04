@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-
+import { isNil } from "lodash";
 import PropTypes from "prop-types";
 import { Divider, Tabs } from "antd";
 import {
@@ -9,10 +9,10 @@ import {
   updateMineReport,
   deleteMineReport,
 } from "@common/actionCreators/reportActionCreator";
-import { fetchPartyRelationships } from "@common/actionCreators/partiesActionCreator";
 import {
   fetchMineRecordById,
   createTailingsStorageFacility,
+  updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
 import {
   getTSFOperatingStatusCodeOptionsHash,
@@ -49,8 +49,8 @@ const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   createTailingsStorageFacility: PropTypes.func.isRequired,
+  updateTailingsStorageFacility: PropTypes.func.isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
-  fetchPartyRelationships: PropTypes.func.isRequired,
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -76,6 +76,20 @@ export class MineTailingsInfo extends Component {
       .then(() => this.props.fetchMineReports(report.mine_guid, defaultParams.mineReportType));
   };
 
+  handleEditTailings = (values) => {
+    return this.props
+      .updateTailingsStorageFacility(
+        values.mine_guid,
+        values.mine_tailings_storage_facility_guid,
+        values
+      )
+      .then(() => {
+        this.props.fetchMineRecordById(this.props.mineGuid);
+        this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType);
+      })
+      .then(() => this.props.closeModal());
+  };
+
   handleRemoveReport = (report) => {
     return this.props
       .deleteMineReport(report.mine_guid, report.mine_report_guid)
@@ -96,6 +110,26 @@ export class MineTailingsInfo extends Component {
     });
   };
 
+  openEditTailingsModal = (event, onSubmit, record) => {
+    const initialPartyValue = {
+      value: record.engineer_of_record?.party_guid,
+      label: record.engineer_of_record?.party.name,
+    };
+    const itrb = !isNil(record.has_itrb) ? record.has_itrb.toString() : record.has_itrb;
+    const newRecord = { ...record, has_itrb: itrb };
+
+    event.preventDefault();
+    this.props.openModal({
+      props: {
+        initialValues: newRecord,
+        initialPartyValue,
+        onSubmit,
+        title: `Edit ${record.mine_tailings_storage_facility_name}`,
+      },
+      content: modalConfig.ADD_TAILINGS,
+    });
+  };
+
   handleReportFilterSubmit = (params) => {
     this.setState({ params: { sort_field: params.sort_field, sort_dir: params.sort_dir } });
   };
@@ -110,11 +144,6 @@ export class MineTailingsInfo extends Component {
       .then(() => {
         this.props.fetchMineRecordById(this.props.mineGuid);
         this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType);
-        this.props.fetchPartyRelationships({
-          mine_guid: this.props.mineGuid,
-          relationships: "party",
-          include_permit_contacts: "true",
-        });
       })
       .finally(() => {
         this.props.closeModal();
@@ -125,7 +154,7 @@ export class MineTailingsInfo extends Component {
   openTailingsModal(event, onSubmit, title) {
     event.preventDefault();
     this.props.openModal({
-      props: { onSubmit, title },
+      props: { onSubmit, title, initialPartyValue: {} },
       content: modalConfig.ADD_TAILINGS,
     });
   }
@@ -177,6 +206,8 @@ export class MineTailingsInfo extends Component {
               <MineTailingsTable
                 tailings={mine.mine_tailings_storage_facilities}
                 isLoaded={this.state.isLoaded}
+                openEditTailingsModal={this.openEditTailingsModal}
+                handleEditTailings={this.handleEditTailings}
               />
             </div>
           </Tabs.TabPane>
@@ -256,8 +287,8 @@ const mapDispatchToProps = (dispatch) =>
       updateMineReport,
       deleteMineReport,
       createTailingsStorageFacility,
+      updateTailingsStorageFacility,
       fetchMineRecordById,
-      fetchPartyRelationships,
       openModal,
       closeModal,
     },

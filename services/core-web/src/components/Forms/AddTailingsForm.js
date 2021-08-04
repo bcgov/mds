@@ -22,6 +22,7 @@ import CustomPropTypes from "@/customPropTypes";
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  initialPartyValue: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   consequenceClassificationStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
@@ -102,6 +103,7 @@ export const AddTailingsForm = (props) => (
             name="eor_party_guid"
             label="Engineer of Record"
             partyLabel="EoR"
+            initialValues={props.initialPartyValue}
             allowNull
             allowAddingParties
           />

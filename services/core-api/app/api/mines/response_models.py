@@ -2,6 +2,7 @@ from app.extensions import api
 from flask_restplus import fields, marshal
 
 from app.api.compliance.response_models import COMPLIANCE_ARTICLE_MODEL
+from app.api.parties.response_models import PARTY
 
 
 class DateTime(fields.Raw):
@@ -271,16 +272,28 @@ MINE_REPORT_SUBMISSION_STATUS = api.model(
         'active_ind': fields.Boolean
     })
 
+MINE_PARTY_APPT_PARTY = api.model(
+    'MinePartyAppointment', {
+        'mine_party_appt_guid': fields.String,
+        'mine_guid': fields.String,
+        'party_guid': fields.String,
+        'mine_party_appt_type_code': fields.String,
+        'start_date': fields.Date,
+        'end_date': fields.Date,
+        'party': fields.Nested(PARTY)
+    })
+
 MINE_TSF_MODEL = api.model(
     'MineTailingsStorageFacility', {
         'mine_tailings_storage_facility_guid': fields.String,
         'mine_guid': fields.String,
         'mine_tailings_storage_facility_name': fields.String,
-        'latitude': fields.String,
-        'longitude': fields.String,
+        'latitude': fields.Fixed(decimals=7),
+        'longitude': fields.Fixed(decimals=7),
         'consequence_classification_status_code': fields.String,
         'has_itrb': fields.Boolean,
         'tsf_operating_status_code': fields.String,
+        'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
 
 MINE_WORK_INFORMATION_MODEL = api.model(

@@ -5,35 +5,34 @@ import {
   getTSFOperatingStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
-import { getPartyRelationships } from "@common/selectors/partiesSelectors";
 import * as Strings from "@common/constants/strings";
-import CustomPropTypes from "@/customPropTypes";
 import CoreTable from "@/components/common/CoreTable";
 import { BOOLEAN_OPTIONS_HASH } from "@common/constants/strings";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
+import { Button } from "antd";
+import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 
 const propTypes = {
-  partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
+  openEditTailingsModal: PropTypes.func.isRequired,
+  handleEditTailings: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
 
 export class MineTailingsTable extends Component {
-  transformRowData = (tailings) =>
-    tailings.map((tailing) => ({
-      key: tailing.mine_tailings_storage_facility_guid,
-      eor_party: this.props.partyRelationships
-        .filter(
-          (pr) =>
-            pr.related_guid === tailing.mine_tailings_storage_facility_guid &&
-            pr.mine_party_appt_type_code === "EOR"
-        )
-        .sort((a, b) => Date.parse(a.start_date) < Date.parse(b.start_date))[0],
-      ...tailing,
-    }));
+  transformRowData = (tailings) => {
+    return tailings.map((tailing) => {
+      return {
+        key: tailing.mine_tailings_storage_facility_guid,
+        ...tailing,
+      };
+    });
+  };
 
   render() {
     const columns = [
@@ -69,7 +68,7 @@ export class MineTailingsTable extends Component {
       },
       {
         title: "Engineer of Record",
-        dataIndex: "eor_party",
+        dataIndex: "engineer_of_record",
         render: (text) => (
           <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>
         ),
@@ -83,6 +82,27 @@ export class MineTailingsTable extends Component {
         title: "Longitude",
         dataIndex: "longitude",
         render: (text) => <div title="Longitude">{text || Strings.EMPTY_FIELD}</div>,
+      },
+      {
+        key: "operations",
+        render: (text, record) => {
+          return (
+            <div align="right">
+              <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
+                <Button
+                  type="primary"
+                  size="small"
+                  ghost
+                  onClick={(event) =>
+                    this.props.openEditTailingsModal(event, this.props.handleEditTailings, record)
+                  }
+                >
+                  <img src={EDIT_OUTLINE_VIOLET} alt="Edit Report" />
+                </Button>
+              </AuthorizationWrapper>
+            </div>
+          );
+        },
       },
     ];
 
@@ -104,7 +124,6 @@ MineTailingsTable.propTypes = propTypes;
 MineTailingsTable.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
-  partyRelationships: getPartyRelationships(state),
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
   consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
 });

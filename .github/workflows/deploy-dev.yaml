@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - openshift4/templates/**.dc.yaml
+      - .github/workflows/deploy-dev.yaml
 
 env:
   TAG: dev

@@ -14,5 +14,6 @@ class UndergroundExplorationTypeResource(Resource, UserMixin):
         params={})
     @requires_role_view_all
     @api.marshal_with(UNDERGROUND_EXPLORATION_TYPES, code=200, envelope='records')
+    
     def get(self):
         return UndergroundExplorationType.get_all()

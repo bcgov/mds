@@ -98,6 +98,7 @@ export const reducerObject = {
   [reducerTypes.ADD_MINE_MANAGER]: createReducer(networkReducer, reducerTypes.ADD_MINE_MANAGER),
   [reducerTypes.ADD_PERMITTEE]: createReducer(networkReducer, reducerTypes.ADD_PERMITTEE),
   [reducerTypes.CREATE_TSF]: createReducer(networkReducer, reducerTypes.CREATE_TSF),
+  [reducerTypes.UPDATE_TSF]: createReducer(networkReducer, reducerTypes.UPDATE_TSF),
   [reducerTypes.GET_MINE_COMPLIANCE_INFO]: createReducer(
     networkReducer,
     reducerTypes.GET_MINE_COMPLIANCE_INFO
