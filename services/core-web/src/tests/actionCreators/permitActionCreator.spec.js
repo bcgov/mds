@@ -11,6 +11,14 @@ import {
   deletePermit,
   fetchDraftPermitByNOW,
   patchPermitNumber,
+  fetchStandardPermitConditions,
+  deleteStandardPermitCondition,
+  updateStandardPermitCondition,
+  createStandardPermitCondition,
+  fetchPermitConditions,
+  createPermitCondition,
+  deletePermitCondition,
+  updatePermitCondition,
 } from "@common/actionCreators/permitActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -368,6 +376,242 @@ describe("`patchPermitNumber` action creator", () => {
       permit_guid,
       mine_guid,
       mockPayload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+// standard permit conditions
+describe("`fetchStandardPermitConditions` action creator", () => {
+  const noticeOfWorkType = "SAG";
+  const url = ENVIRONMENT.apiUrl + API.STANDARD_PERMIT_CONDITIONS(noticeOfWorkType);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchStandardPermitConditions(noticeOfWorkType)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchStandardPermitConditions(noticeOfWorkType)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deleteStandardPermitCondition` action creator", () => {
+  const permitConditionGuid = "123432";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return deleteStandardPermitCondition(permitConditionGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return deleteStandardPermitCondition(permitConditionGuid)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updateStandardPermitCondition` action creator", () => {
+  const permitConditionGuid = "12345-6789";
+  const payload = {};
+  const url = `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITION(permitConditionGuid)}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return updateStandardPermitCondition(
+      permitConditionGuid,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updateStandardPermitCondition(
+      permitConditionGuid,
+      payload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createStandardPermitCondition` action creator", () => {
+  const type = "SAG";
+  const payload = {};
+  const url = ENVIRONMENT.apiUrl + API.STANDARD_PERMIT_CONDITIONS(type);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, { standard_permit_condition: payload }).reply(200, mockResponse);
+    return createStandardPermitCondition(
+      type,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createStandardPermitCondition(
+      type,
+      payload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+// permit conditions
+describe("`fetchPermitConditions` action creator", () => {
+  const permitAmdendmentGuid = "768787";
+  const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onGet(url).reply(200, mockResponse);
+    return fetchPermitConditions(permitAmdendmentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(5);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onGet(url, MOCK.createMockHeader()).reply(418, MOCK.ERROR);
+    return fetchPermitConditions(permitAmdendmentGuid)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`deletePermitCondition` action creator", () => {
+  const permitConditionGuid = "12345-6789";
+  const permitAmdendmentGuid = "1324812345";
+
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+    null,
+    null,
+    permitAmdendmentGuid,
+    permitConditionGuid
+  )}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onDelete(url).reply(204, mockResponse);
+    return deletePermitCondition(
+      permitAmdendmentGuid,
+      permitConditionGuid
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return deletePermitCondition(
+      permitAmdendmentGuid,
+      permitConditionGuid
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`updatePermitCondition` action creator", () => {
+  const permitConditionGuid = "12345-6789";
+  const permitAmdendmentGuid = "1324812345";
+  const payload = {};
+  const url = `${ENVIRONMENT.apiUrl}${API.PERMIT_CONDITION(
+    null,
+    null,
+    permitAmdendmentGuid,
+    permitConditionGuid
+  )}`;
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return updatePermitCondition(
+      permitConditionGuid,
+      permitAmdendmentGuid,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return updatePermitCondition(
+      permitConditionGuid,
+      permitAmdendmentGuid,
+      payload
+    )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`createPermitCondition` action creator", () => {
+  const permitAmdendmentGuid = "8765875687";
+  const payload = {};
+  const url = ENVIRONMENT.apiUrl + API.PERMIT_CONDITIONS(null, null, permitAmdendmentGuid);
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, { permit_condition: payload }).reply(200, mockResponse);
+    return createPermitCondition(
+      permitAmdendmentGuid,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return createPermitCondition(
+      permitAmdendmentGuid,
+      payload
     )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
