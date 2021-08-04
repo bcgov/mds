@@ -21,12 +21,10 @@ const propTypes = {
   initialValues: PropTypes.objectOf(PropTypes.any),
   editingConditionFlag: PropTypes.bool.isRequired,
   isViewOnly: PropTypes.bool,
-  isAdminControl: PropTypes.bool,
 };
 
 const defaultProps = {
   condition: undefined,
-  isAdminControl: false,
   new: false,
   handleSubmit: () => {},
   handleCancel: () => {},
@@ -62,11 +60,7 @@ const ConditionLayerOne = (props) => {
         <Col span={4} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab="DFT"
-                isAdminControl={props.isAdminControl}
-              >
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   className="no-margin"
                   ghost
@@ -80,11 +74,7 @@ const ConditionLayerOne = (props) => {
                   <UpOutlined />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab="DFT"
-                isAdminControl={props.isAdminControl}
-              >
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -98,11 +88,7 @@ const ConditionLayerOne = (props) => {
                   <DownOutlined />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab="DFT"
-                isAdminControl={props.isAdminControl}
-              >
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   ghost
                   className="no-margin"
@@ -122,11 +108,7 @@ const ConditionLayerOne = (props) => {
                   />
                 </Button>
               </NOWActionWrapper>
-              <NOWActionWrapper
-                permission={Permission.EDIT_PERMITS}
-                tab="DFT"
-                isAdminControl={props.isAdminControl}
-              >
+              <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                 <Button
                   className="no-margin"
                   ghost
@@ -162,7 +144,6 @@ const ConditionLayerOne = (props) => {
       {props.condition &&
         props.condition.sub_conditions.map((condition) => (
           <ConditionLayerTwo
-            isAdminControl={props.isAdminControl}
             condition={condition}
             reorderConditions={props.reorderConditions}
             handleSubmit={props.handleSubmit}

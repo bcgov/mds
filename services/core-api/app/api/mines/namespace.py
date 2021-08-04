@@ -121,8 +121,10 @@ api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
 api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
 api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
 
-api.add_resource(StandardPermitConditionsListResource,'/permits/standard-conditions/<string:notice_of_work_type>')
-api.add_resource(StandardPermitConditionsResource,'/permits/standard-conditions/<string:standard_permit_condition_guid>')
+api.add_resource(StandardPermitConditionsListResource,
+                 '/permits/standard-conditions/<string:notice_of_work_type>')
+api.add_resource(StandardPermitConditionsResource,
+                 '/permits/standard-conditions/<string:standard_permit_condition_guid>')
 
 api.add_resource(PermitAmendmentListResource,
                  '/<string:mine_guid>/permits/<string:permit_guid>/amendments')

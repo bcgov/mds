@@ -373,13 +373,18 @@ export const fetchStandardPermitConditions = (noticeOfWorkType) => (dispatch) =>
     .finally(() => dispatch(hideLoading()));
 };
 
-export const createStandardPermitCondition = (payload) => (dispatch) => {
+export const createStandardPermitCondition = (type, payload) => (dispatch) => {
+  const newPayload = {
+    notice_of_work_type: type,
+    ...payload,
+    parent_standard_permit_condition_id: payload.parent_permit_condition_id,
+  };
   dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
   dispatch(showLoading());
   return CustomAxios()
     .post(
-      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITIONS()}`,
-      { permit_condition: payload },
+      `${ENVIRONMENT.apiUrl}${API.STANDARD_PERMIT_CONDITIONS(type)}`,
+      { standard_permit_condition: newPayload },
       createRequestHeader()
     )
     .then((response) => {
