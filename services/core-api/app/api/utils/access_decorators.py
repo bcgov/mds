@@ -9,6 +9,7 @@ MINE_ADMIN = "core_admin"
 EDIT_PARTY = "core_edit_parties"
 EDIT_PERMIT = "core_edit_permits"
 EDIT_EXPLOSIVES_PERMIT = "core_edit_explosives_permits"
+EDIT_STANDARD_PERMIT_CONDITIONS = "core_edit_template_conditions"
 EDIT_REPORT = "core_edit_reports"
 CLOSE_PERMIT = "core_close_permits"
 EDIT_DO = "core_edit_do"
@@ -42,6 +43,10 @@ def requires_role_edit_permit(func):
 
 def requires_role_edit_explosives_permit(func):
     return _inner_wrapper(func, EDIT_EXPLOSIVES_PERMIT)
+
+
+def requires_role_edit_standard_permit_conditions(func):
+    return _inner_wrapper(func, EDIT_STANDARD_PERMIT_CONDITIONS)
 
 
 def requires_role_edit_report(func):
