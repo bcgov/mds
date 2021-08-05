@@ -213,7 +213,15 @@ export class StandardPermitConditions extends Component {
                             sibling_condition_type_code:
                               conditions.length === 0 ? null : conditions[0].condition_type_code,
                           }
-                        : {}
+                        : {
+                            condition_category_code: conditionCategory.condition_category_code,
+                            condition_type_code: "SEC",
+                            display_order: 1,
+                            parent_permit_condition_id: null,
+                            permit_amendment_id: null,
+                            parent_condition_type_code: "SEC",
+                            sibling_condition_type_code: null,
+                          }
                     }
                     layer={0}
                   />
