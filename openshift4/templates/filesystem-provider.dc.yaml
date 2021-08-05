@@ -7,7 +7,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: Service
     apiVersion: v1

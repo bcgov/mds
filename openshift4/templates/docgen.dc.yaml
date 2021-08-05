@@ -40,7 +40,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: Service
     apiVersion: v1
@@ -49,7 +48,7 @@ objects:
       annotations:
         description: Exposes and load balances the application pods
       labels:
-        app.kubernetes.io/part-of: ${APPNAME}      
+        app.kubernetes.io/part-of: ${APPNAME}
     spec:
       ports:
         - name: web
@@ -67,7 +66,7 @@ objects:
       labels:
         component: ${NAME}
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: nodejs        
+        app.openshift.io/runtime: nodejs
     spec:
       strategy:
         type: Rolling
