@@ -10,6 +10,7 @@ const setupDispatchProps = () => {};
 const setupProps = () => {
   props.activeButton = "permit-conditions";
   props.openSubMenuKey = [];
+  props.userRoles = [];
 };
 
 beforeEach(() => {
