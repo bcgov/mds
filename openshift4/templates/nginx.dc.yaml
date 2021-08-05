@@ -54,7 +54,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Stand-Alone
-    required: true
 objects:
   - apiVersion: v1
     kind: PersistentVolumeClaim
