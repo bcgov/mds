@@ -208,14 +208,17 @@ export class NOWPermitGeneration extends Component {
       });
 
   createPermitGenObject = (noticeOfWork, draftPermit, amendment = {}) => {
-    const OGPIssueDate =
-      draftPermit.permit_status_code === "D"
-        ? formatDate(amendment.issue_date)
-        : formatDate(
-            draftPermit.permit_amendments
-              .filter((amend) => amend.permit_amendment_type_code === "OGP")
-              .map((a) => a.issue_date)[0]
-          );
+    let OGPIssueDate = null;
+    if (draftPermit.permit_status_code) {
+      OGPIssueDate =
+        draftPermit.permit_status_code === "D"
+          ? formatDate(amendment.issue_date)
+          : formatDate(
+              draftPermit.permit_amendments
+                .filter((amend) => amend.permit_amendment_type_code === "OGP")
+                .map((a) => a.issue_date)[0]
+            );
+    }
     const permitGenObject = {
       permit_number: "",
       formatted_original_issue_date: OGPIssueDate,
