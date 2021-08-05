@@ -72,7 +72,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: DeploymentConfig
     apiVersion: v1

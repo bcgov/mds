@@ -43,7 +43,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
@@ -83,7 +82,7 @@ objects:
         description: Defines how to deploy the ${NAME} server
       labels:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: postgresql      
+        app.openshift.io/runtime: postgresql
     spec:
       strategy:
         type: Recreate

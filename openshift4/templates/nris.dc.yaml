@@ -56,7 +56,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
@@ -65,7 +64,7 @@ objects:
       creationTimestamp: null
       labels:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: nodejs      
+        app.openshift.io/runtime: nodejs
       annotations:
         description: Defines how to deploy the application server
     spec:
