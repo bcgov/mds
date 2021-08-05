@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Conditions renders properly 1`] = `
+<Fragment>
+  <div
+    style={
+      Object {
+        "backgroundColor": "#f4f0f0",
+        "borderRadius": 5,
+        "display": "inline-block",
+        "marginBottom": 20,
+        "minWidth": 345,
+        "padding": 16,
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "marginLeft": 24,
+        }
+      }
+    >
+      <p>
+        <b>
+          Updated at: 
+        </b>
+        N/A
+        <br />
+        <b>
+          Updated by: 
+        </b>
+        N/A
+        <br />
+      </p>
+    </div>
+  </div>
+  <Collapse
+    bordered={true}
+  />
+</Fragment>
+`;

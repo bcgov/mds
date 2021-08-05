@@ -3,7 +3,15 @@
 exports[`AdminDashboardRoutes  renders properly 1`] = `
 <Switch>
   <Route
-    component={[Function]}
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
     exact={true}
     path="/admin/dashboard/permit-conditions/:type"
   />
@@ -13,7 +21,7 @@ exports[`AdminDashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
-        "displayName": "Connect(MinespaceUserManagement)",
+        "displayName": "Connect(Connect(authorizationGuard))",
         "type": [Function],
       }
     }

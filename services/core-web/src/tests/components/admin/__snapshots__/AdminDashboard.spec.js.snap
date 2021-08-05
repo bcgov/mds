@@ -17,7 +17,7 @@ exports[`AdminDashboard renders properly 1`] = `
       </Col>
     </Row>
   </div>
-  <AdminNavigation
+  <Connect(AdminNavigation)
     activeButton=""
     openSubMenuKey={
       Array [
