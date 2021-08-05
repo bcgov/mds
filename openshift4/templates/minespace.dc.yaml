@@ -77,7 +77,11 @@ parameters:
     value: /
   - name: KEYCLOAK_IDP_HINT
     value: bceid
-
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Stand-Alone
+    required: true
 objects:
   - kind: Service
     apiVersion: v1
@@ -85,6 +89,9 @@ objects:
       name: ${NAME}
       annotations:
         description: Exposes and load balances the application pods
+      Labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs      
     spec:
       ports:
         - name: web
