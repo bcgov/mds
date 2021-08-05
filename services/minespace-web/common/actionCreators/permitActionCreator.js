@@ -275,7 +275,7 @@ export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatc
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
@@ -396,7 +396,7 @@ export const createStandardPermitCondition = (type, payload) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const deleteStandardPermitCondition = (permitConditionGuid) => (dispatch) => {

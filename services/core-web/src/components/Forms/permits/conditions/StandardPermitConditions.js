@@ -69,7 +69,7 @@ export class StandardPermitConditions extends Component {
 
   fetchStandardPermitConditions = (type) => {
     this.props.fetchStandardPermitConditions(type).then(() => {
-      this.setState({ isLoaded: true, type });
+      this.setState({ type, isLoaded: true });
     });
   };
 
@@ -146,10 +146,12 @@ export class StandardPermitConditions extends Component {
           <br />
           <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
-              const conditions = this.props.conditions.filter(
-                (condition) =>
-                  condition.condition_category_code === conditionCategory.condition_category_code
-              );
+              const conditions =
+                this.props.conditions &&
+                this.props.conditions.filter(
+                  (condition) =>
+                    condition.condition_category_code === conditionCategory.condition_category_code
+                );
               return (
                 <Collapse.Panel
                   style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
@@ -183,31 +185,36 @@ export class StandardPermitConditions extends Component {
                   key={conditionCategory.condition_category_code}
                   id={conditionCategory.condition_category_code}
                 >
-                  {conditions.map((condition) => (
-                    <ConditionLayerOne
-                      condition={condition}
-                      reorderConditions={this.reorderConditions}
-                      handleSubmit={this.handleEdit}
-                      handleDelete={this.openDeleteConditionModal}
-                      setConditionEditingFlag={this.setConditionEditingFlag}
-                      editingConditionFlag={this.props.editingConditionFlag}
-                    />
-                  ))}
+                  {conditions &&
+                    conditions.map((condition) => (
+                      <ConditionLayerOne
+                        condition={condition}
+                        reorderConditions={this.reorderConditions}
+                        handleSubmit={this.handleEdit}
+                        handleDelete={this.openDeleteConditionModal}
+                        setConditionEditingFlag={this.setConditionEditingFlag}
+                        editingConditionFlag={this.props.editingConditionFlag}
+                      />
+                    ))}
                   <Divider />
                   <AddCondition
-                    initialValues={{
-                      condition_category_code: conditionCategory.condition_category_code,
-                      condition_type_code: "SEC",
-                      display_order:
-                        conditions.length === 0
-                          ? 1
-                          : maxBy(conditions, "display_order").display_order + 1,
-                      parent_permit_condition_id: null,
-                      permit_amendment_id: null,
-                      parent_condition_type_code: "SEC",
-                      sibling_condition_type_code:
-                        conditions.length === 0 ? null : conditions[0].condition_type_code,
-                    }}
+                    initialValues={
+                      conditions && conditions.length !== 0
+                        ? {
+                            condition_category_code: conditionCategory.condition_category_code,
+                            condition_type_code: "SEC",
+                            display_order:
+                              conditions.length === 0
+                                ? 1
+                                : maxBy(conditions, "display_order").display_order + 1,
+                            parent_permit_condition_id: null,
+                            permit_amendment_id: null,
+                            parent_condition_type_code: "SEC",
+                            sibling_condition_type_code:
+                              conditions.length === 0 ? null : conditions[0].condition_type_code,
+                          }
+                        : {}
+                    }
                     layer={0}
                   />
                 </Collapse.Panel>

@@ -275,7 +275,7 @@ export const createPermitCondition = (permitAmdendmentGuid, payload) => (dispatc
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const deletePermitCondition = (permitAmdendmentGuid, permitConditionGuid) => (dispatch) => {
@@ -375,8 +375,8 @@ export const fetchStandardPermitConditions = (noticeOfWorkType) => (dispatch) =>
 
 export const createStandardPermitCondition = (type, payload) => (dispatch) => {
   const newPayload = {
-    notice_of_work_type: type,
     ...payload,
+    notice_of_work_type: type,
     parent_standard_permit_condition_id: payload.parent_permit_condition_id,
   };
   dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
@@ -396,7 +396,7 @@ export const createStandardPermitCondition = (type, payload) => (dispatch) => {
       return response;
     })
     .catch(() => dispatch(error(reducerTypes.CREATE_PERMIT_CONDITION)))
-    .finally(() => dispatch(hideLoading("modal")));
+    .finally(() => dispatch(hideLoading()));
 };
 
 export const deleteStandardPermitCondition = (permitConditionGuid) => (dispatch) => {
