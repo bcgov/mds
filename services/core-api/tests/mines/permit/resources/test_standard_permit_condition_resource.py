@@ -92,5 +92,5 @@ def test_delete_not_found_standard_permit(test_client, db_session, auth_headers)
 
     del_data = json.loads(del_resp.data.decode())
 
-    assert 'No standard permit condition found with that guid.' in get_data['message']
+    assert 'No standard permit condition found with that guid.' in del_data['message']
     assert del_resp.status_code == 400
