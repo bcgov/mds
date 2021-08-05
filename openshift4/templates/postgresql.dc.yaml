@@ -33,6 +33,11 @@ parameters:
     value: 1.5Gi
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
+    required: true
 objects:
   - apiVersion: v1
     kind: Secret
@@ -47,6 +52,8 @@ objects:
       annotations:
         template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
       name: ${NAME}
+      lables:
+        app.kubernetes.io/part-of: ${APPNAME}      
     spec:
       ports:
         - name: postgresql
@@ -64,6 +71,8 @@ objects:
     kind: Service
     metadata:
       name: ${NAME}-reporting
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}      
     spec:
       ports:
         - name: postgresql-reporting
@@ -92,6 +101,9 @@ objects:
       annotations:
         template.alpha.openshift.io/wait-for-ready: "true"
       name: ${NAME}
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: postgresql        
     spec:
       replicas: 1
       selector:
@@ -233,6 +245,9 @@ objects:
       annotations:
         template.alpha.openshift.io/wait-for-ready: "true"
       name: ${NAME}-reporting
+      lables:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: postgresql      
     spec:
       replicas: 1
       selector:

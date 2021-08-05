@@ -39,6 +39,11 @@ parameters:
     value: "0"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
+    required: true
 objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
@@ -76,6 +81,9 @@ objects:
       name: ${NAME}
       annotations:
         description: Defines how to deploy the ${NAME} server
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: postgresql      
     spec:
       strategy:
         type: Recreate
