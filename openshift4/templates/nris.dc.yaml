@@ -52,13 +52,20 @@ parameters:
     value: redis
   - name: ENVIRONMENT_NAME
     required: true
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
+    required: true
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
       name: ${NAME}
       creationTimestamp: null
-      labels: null
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs      
       annotations:
         description: Defines how to deploy the application server
     spec:
