@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import * as routes from "@/constants/routes";
@@ -15,7 +14,7 @@ const DashboardRoutes = () => (
     <Route
       exact
       path={routes.ADMIN_DASHBOARD.route}
-      render={({ match }) => <Redirect to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")} />}
+      render={() => <Redirect to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")} />}
     />
     <Route path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
     {Object.values(routes).map((route) => (

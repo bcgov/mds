@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { AdminNavigation } from "@/components/admin/AdminNavigation";
 
 const dispatchProps = {};
 const props = {};
@@ -8,7 +8,8 @@ const props = {};
 const setupDispatchProps = () => {};
 
 const setupProps = () => {
-  props.location = { pathname: "" };
+  props.activeButton = "permit-conditions";
+  props.openSubMenuKey = [];
 };
 
 beforeEach(() => {
@@ -16,9 +17,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AdminDashboard", () => {
+describe("AdminNavigation", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminDashboard {...dispatchProps} {...props} />);
+    const component = shallow(<AdminNavigation {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
