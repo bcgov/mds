@@ -6,6 +6,8 @@ import { Field, reduxForm, change, formValueSelector, getFormValues } from "redu
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import { getUserAccessData } from "@common/selectors/authenticationSelectors";
+import { USER_ROLES } from "@common/constants/environment";
 import { getNoticeOfWorkList } from "@common/selectors/noticeOfWorkSelectors";
 import {
   required,
@@ -15,6 +17,7 @@ import {
   lat,
   lon,
   requiredRadioButton,
+  lonNegative,
 } from "@common/utils/Validate";
 import { resetForm, createDropDownList, formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
@@ -28,6 +31,7 @@ import ExplosivesPermitMap from "@/components/maps/ExplosivesPermitMap";
 import { getPermits } from "@common/selectors/permitSelectors";
 import DocumentCategoryForm from "@/components/Forms/DocumentCategoryForm";
 import MagazineForm from "@/components/Forms/ExplosivesPermit/MagazineForm";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -45,6 +49,7 @@ const propTypes = {
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   allPartyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
   mines_permit_guid: PropTypes.string,
+  userRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const defaultProps = {
@@ -104,12 +109,22 @@ export const ExplosivesPermitForm = (props) => {
   );
 
   const isHistoric = !props.initialValues?.explosives_permit_id && props.isPermitTab;
+  const isAdmin = props.userRoles.includes(USER_ROLES[Permission.ADMIN]);
+  const disabled = props.isProcessed && !isAdmin;
   return (
     <Form layout="vertical" onSubmit={props.handleSubmit}>
       {isHistoric && (
         <Alert
           message="Adding a Historic Explosives Storage & Use Permit"
           description="By creating an Explosives Permit on the Permit Tab, the permit will be created with a status of Approved and an Originating System of MMS. If you would like to create an Explosives Permit Application, navigate to the Application Tab."
+          type="info"
+          showIcon
+        />
+      )}
+      {props.isProcessed && (
+        <Alert
+          message="Editing Disabled"
+          description="If details of this permit need to be cleaned up for data quality purposes, contact the MDS administrators at mds@gov.bc.ca"
           type="info"
           showIcon
         />
@@ -129,7 +144,7 @@ export const ExplosivesPermitForm = (props) => {
                       label="Issue Date*"
                       component={renderConfig.DATE}
                       validate={[required, dateNotInFuture]}
-                      disabled={props.isProcessed}
+                      disabled={disabled}
                     />
                   </Form.Item>
                 </Col>
@@ -141,7 +156,7 @@ export const ExplosivesPermitForm = (props) => {
                       label="Expiry Date*"
                       component={renderConfig.DATE}
                       validate={[required]}
-                      disabled={props.isProcessed}
+                      disabled={disabled}
                     />
                   </Form.Item>
                 </Col>
@@ -157,7 +172,7 @@ export const ExplosivesPermitForm = (props) => {
                       placeholder="Start typing the Issuing Inspector's name"
                       validate={[required]}
                       data={props.inspectors}
-                      disabled={props.isProcessed}
+                      disabled={disabled}
                     />
                   </Form.Item>
                 </Col>
@@ -175,7 +190,7 @@ export const ExplosivesPermitForm = (props) => {
                     label="Explosives Permit Number*"
                     component={renderConfig.FIELD}
                     validate={[required]}
-                    disabled={props.isProcessed}
+                    disabled={disabled}
                   />
                 </Form.Item>
               </Col>
@@ -190,7 +205,7 @@ export const ExplosivesPermitForm = (props) => {
                   component={renderConfig.SELECT}
                   data={permitDropdown}
                   validate={[required]}
-                  disabled={props.isProcessed}
+                  disabled={disabled}
                 />
               </Form.Item>
             </Col>
@@ -203,7 +218,7 @@ export const ExplosivesPermitForm = (props) => {
               label="Notice of Work Number"
               component={renderConfig.SELECT}
               data={nowDropdown}
-              disabled={props.isProcessed}
+              disabled={disabled}
             />
           </Form.Item>
           <Row gutter={6}>
@@ -218,7 +233,7 @@ export const ExplosivesPermitForm = (props) => {
                   validate={props.isPermitTab ? [] : [required]}
                   component={renderConfig.SELECT}
                   data={mineManagersDropdown}
-                  disabled={props.isProcessed}
+                  disabled={disabled}
                 />
               </Form.Item>
             </Col>
@@ -232,7 +247,7 @@ export const ExplosivesPermitForm = (props) => {
                   placeholder="Select Permittee"
                   validate={[required]}
                   data={permitteeDropdown}
-                  disabled={props.isProcessed || !props.mines_permit_guid}
+                  disabled={disabled || !props.mines_permit_guid}
                 />
               </Form.Item>
             </Col>
@@ -244,7 +259,7 @@ export const ExplosivesPermitForm = (props) => {
               label="Application Date*"
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture]}
-              disabled={props.isProcessed}
+              disabled={disabled}
             />
           </Form.Item>
           <Form.Item>
@@ -253,7 +268,7 @@ export const ExplosivesPermitForm = (props) => {
               name="description"
               label="Other Information"
               component={renderConfig.AUTO_SIZE_FIELD}
-              disabled={props.isProcessed}
+              disabled={disabled}
             />
           </Form.Item>
           <h4>Storage Details</h4>
@@ -266,7 +281,7 @@ export const ExplosivesPermitForm = (props) => {
                   label="Latitude*"
                   validate={[number, maxLength(10), lat, required]}
                   component={renderConfig.FIELD}
-                  disabled={props.isProcessed}
+                  disabled={disabled}
                 />
               </Form.Item>
             </Col>
@@ -276,9 +291,9 @@ export const ExplosivesPermitForm = (props) => {
                   id="longitude"
                   name="longitude"
                   label="Longitude*"
-                  validate={[number, maxLength(12), lon, required]}
+                  validate={[number, maxLength(12), lon, required, lonNegative]}
                   component={renderConfig.FIELD}
-                  disabled={props.isProcessed}
+                  disabled={disabled}
                 />
               </Form.Item>
             </Col>
@@ -288,7 +303,7 @@ export const ExplosivesPermitForm = (props) => {
           <DocumentCategoryForm
             categories={props.documentTypeDropdownOptions}
             mineGuid={props.mineGuid}
-            isProcessed={props.isProcessed}
+            isProcessed={disabled}
           />
         </Col>
         <Col md={12} sm={24} className="border--left--layout">
@@ -314,7 +329,7 @@ export const ExplosivesPermitForm = (props) => {
                       name="closed_timestamp"
                       label="Date Permit was Closed"
                       component={renderConfig.DATE}
-                      disabled={props.isProcessed}
+                      disabled={disabled}
                     />
                   </Form.Item>
                 </Col>
@@ -334,7 +349,7 @@ export const ExplosivesPermitForm = (props) => {
             </>
           )}
           <br />
-          <MagazineForm isProcessed={props.isProcessed} />
+          <MagazineForm isProcessed={disabled} />
         </Col>
       </Row>
       <div className="right center-mobile" style={{ paddingTop: "14px" }}>
@@ -369,6 +384,7 @@ const mapStateToProps = (state) => ({
   partyRelationships: getPartyRelationships(state),
   allPartyRelationships: getAllPartyRelationships(state),
   noticeOfWorkApplications: getNoticeOfWorkList(state),
+  userRoles: getUserAccessData(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
