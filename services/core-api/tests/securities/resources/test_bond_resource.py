@@ -264,7 +264,7 @@ class TestBondsResource:
             json=data,
             headers=auth_headers['full_auth_header'])
 
-        assert post_resp.status_code == 400, post_resp.response
+        assert post_resp.status_code == 404, post_resp.response
 
     def test_transfer_bond_only_allow_within_mine(self, test_client, db_session, auth_headers):
         """Should return the edited bond with a 200 response code and the permit project id should be changed"""
@@ -272,8 +272,7 @@ class TestBondsResource:
         bond = permit.bonds[0]
         bond.bond_status_code = "ACT"
 
-        permit2 = PermitFactory()
-        #permit2._all_mines.append(mine)
+        mine2, permit2 = create_mine_and_permit()
 
         data = {
             "permit_guid": permit2.permit_guid,
