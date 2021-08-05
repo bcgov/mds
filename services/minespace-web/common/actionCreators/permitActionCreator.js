@@ -375,8 +375,8 @@ export const fetchStandardPermitConditions = (noticeOfWorkType) => (dispatch) =>
 
 export const createStandardPermitCondition = (type, payload) => (dispatch) => {
   const newPayload = {
-    notice_of_work_type: type,
     ...payload,
+    notice_of_work_type: type,
     parent_standard_permit_condition_id: payload.parent_permit_condition_id,
   };
   dispatch(request(reducerTypes.CREATE_PERMIT_CONDITION));
