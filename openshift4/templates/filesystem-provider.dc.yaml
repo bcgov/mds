@@ -2,11 +2,6 @@ kind: Template
 apiVersion: v1
 metadata:
   name: mds-filesystem-provider-dc
-parameters:
-  - name: APPNAME
-    displayName: AppName
-    description: Application name for grouping pods in Openshift
-    value: Core
 objects:
   - kind: Service
     apiVersion: v1
@@ -15,7 +10,7 @@ objects:
       annotations:
         description: Exposes and load balances the application pods
       labels:
-        app.kubernetes.io/part-of: ${APPNAME}          
+        app.kubernetes.io/part-of: ${APPNAME}
     spec:
       ports:
         - name: 8080-tcp
@@ -32,7 +27,7 @@ objects:
       name: ${NAME}
       labels:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: redis      
+        app.openshift.io/runtime: redis
     spec:
       strategy:
         type: Recreate
@@ -152,3 +147,7 @@ parameters:
   - name: JWT_OIDC_AUTHORITY
     displayName: Token issuer
     required: true
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core

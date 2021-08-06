@@ -14,11 +14,6 @@ metadata:
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/documentation-url: https://github.com/sclorg/redis-container/tree/master/3.2
     openshift.io/support-url: https://access.redhat.com
-parameters:
-  - name: APPNAME
-    displayName: AppName
-    description: Application name for grouping pods in Openshift
-    value: Core
 objects:
   - kind: Service
     apiVersion: v1
@@ -28,7 +23,7 @@ objects:
         template.openshift.io/expose-uri: redis://{.spec.clusterIP}:{.spec.ports[?(.name=="redis")].port}
       labels:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: redis      
+        app.openshift.io/runtime: redis
     spec:
       ports:
         - name: redis
@@ -128,3 +123,7 @@ parameters:
     displayName: Version of Redis Image
     description: Version of Redis image to be used (3.2 or latest).
     value: "5"
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
