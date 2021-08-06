@@ -68,13 +68,19 @@ parameters:
     value: object-store-credentials
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
       name: ${NAME}
       creationTimestamp: null
-      labels: null
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: python
       annotations:
         description: Defines how to deploy the application server
     spec:
@@ -425,7 +431,8 @@ objects:
     metadata:
       name: ${NAME}
       creationTimestamp: null
-      labels: null
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
       annotations:
         description: Exposes and load balances the application pods
     spec:

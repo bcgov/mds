@@ -50,6 +50,10 @@ parameters:
     value: 4c2ba9-tools
   - name: ENVIRONMENT
     value: dev
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Stand-Alone
 objects:
   - apiVersion: v1
     kind: PersistentVolumeClaim

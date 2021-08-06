@@ -181,6 +181,7 @@ exports[`ExplosivesPermitForm renders properly 1`] = `
                   [Function],
                   [Function],
                   [Function],
+                  [Function],
                 ]
               }
             />
