@@ -88,7 +88,7 @@ objects:
       name: ${NAME}
       annotations:
         description: Exposes and load balances the application pods
-      Labels:
+      labels:
         app.kubernetes.io/part-of: ${APPNAME}
         app.openshift.io/runtime: nodejs
     spec:
