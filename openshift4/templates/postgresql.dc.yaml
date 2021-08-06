@@ -37,7 +37,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - apiVersion: v1
     kind: Secret
@@ -53,7 +52,7 @@ objects:
         template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
       name: ${NAME}
       lables:
-        app.kubernetes.io/part-of: ${APPNAME}      
+        app.kubernetes.io/part-of: ${APPNAME}
     spec:
       ports:
         - name: postgresql
@@ -72,7 +71,7 @@ objects:
     metadata:
       name: ${NAME}-reporting
       labels:
-        app.kubernetes.io/part-of: ${APPNAME}      
+        app.kubernetes.io/part-of: ${APPNAME}
     spec:
       ports:
         - name: postgresql-reporting
@@ -103,7 +102,7 @@ objects:
       name: ${NAME}
       labels:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: postgresql        
+        app.openshift.io/runtime: postgresql
     spec:
       replicas: 1
       selector:
@@ -247,7 +246,7 @@ objects:
       name: ${NAME}-reporting
       lables:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: postgresql      
+        app.openshift.io/runtime: postgresql
     spec:
       replicas: 1
       selector:

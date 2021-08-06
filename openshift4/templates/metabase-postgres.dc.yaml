@@ -28,7 +28,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Metabase
-    required: true
 objects:
   - apiVersion: v1
     kind: Service
@@ -38,7 +37,7 @@ objects:
       name: ${NAME}
       lables:
         app.kubernetes.io/part-of: ${APPNAME}
-        app.openshift.io/runtime: postgresql 
+        app.openshift.io/runtime: postgresql
     spec:
       ports:
         - name: postgresql

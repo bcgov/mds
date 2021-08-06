@@ -48,7 +48,6 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
-    required: true
 objects:
   - kind: CronJob
     apiVersion: batch/v1beta1
