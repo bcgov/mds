@@ -56,7 +56,7 @@ export class AdminNavigation extends Component {
         )}
         {isAdmin && (
           <Menu.SubMenu
-            id={this.ifActiveButton("permits-and-approvals")}
+            id={this.ifActiveButton("mine-verification")}
             title={
               <span>
                 Mine Verification
