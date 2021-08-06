@@ -32,6 +32,12 @@ class StandardPermitConditionsResource(Resource, UserMixin):
         conditions=[]
         if condition.parent_standard_permit_condition_id is not None:
             conditions = condition.parent.sub_conditions
+        else:
+            conditions = [
+                x for x in StandardPermitConditions.find_by_notice_of_work_type_code(
+                    condition.notice_of_work_type)
+                if x.condition_category_code == condition.condition_category_code
+            ]
 
         if conditions and old_display_order:
             if condition.display_order > old_display_order:
@@ -69,6 +75,12 @@ class StandardPermitConditionsResource(Resource, UserMixin):
         conditions = []
         if standard_permit_condition.parent_standard_permit_condition_id is not None:
             conditions = standard_permit_condition.parent.sub_conditions
+        else:
+            conditions = [
+                x for x in StandardPermitConditions.find_by_notice_of_work_type_code(
+                    standard_permit_condition.notice_of_work_type)
+                if x.condition_category_code == standard_permit_condition.condition_category_code
+            ]
 
         if conditions:
             for i, condition in enumerate(sorted(conditions, key=lambda x: x.display_order)):
