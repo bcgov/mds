@@ -25,6 +25,7 @@ from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.permits.permit.models.mine_permit_xref import MinePermitXref
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_conditions.models.permit_conditions import PermitConditions
+from app.api.mines.permits.permit_conditions.models.standard_permit_conditions import StandardPermitConditions
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
 from app.api.securities.models.bond import Bond
 from app.api.securities.models.bond_permit_xref import BondPermitXref
@@ -791,6 +792,18 @@ class PermitConditionsFactory(BaseFactory):
 
     permit_condition_guid = GUID
     permit_amendment_id = factory.SelfAttribute('permit_amendment.permit_amendment_id')
+    condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
+    condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
+    condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)
+    display_order = factory.Sequence(lambda n: n + 1)
+
+
+class StandardPermitConditionsFactory(BaseFactory):
+    class Meta:
+        model = StandardPermitConditions
+
+    standard_permit_condition_guid = GUID
+    notice_of_work_type = factory.LazyFunction(RandomNOWTypeCode)
     condition_category_code = factory.LazyFunction(RandomConditionCategoryCode)
     condition_type_code = factory.LazyFunction(RandomConditionTypeCode)
     condition = factory.Faker('sentence', nb_words=6, variable_nb_words=True)

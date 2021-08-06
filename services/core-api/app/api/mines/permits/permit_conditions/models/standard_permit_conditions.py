@@ -1,3 +1,4 @@
+from typing import Sequence
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref
@@ -11,7 +12,7 @@ from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'standard_permit_conditions'
 
-    standard_permit_condition_id = db.Column(db.Integer, primary_key=True)
+    standard_permit_condition_id = db.Column(db.Integer, primary_key=True,server_default=FetchedValue())
     standard_permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     condition = db.Column(db.String, nullable=False)
     condition_category_code = db.Column(
@@ -81,10 +82,11 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     @classmethod
     def find_by_standard_permit_condition_guid(cls, standard_permit_condition_guid):
         return cls.query.filter_by(
-            standard_permit_condition_guid=standard_permit_condition_guid,
-            deleted_ind=False).first()
+            standard_permit_condition_guid=standard_permit_condition_guid, deleted_ind=False).first()
+
 
     @classmethod
     def find_by_standard_permit_condition_id(cls, standard_permit_condition_id):
         return cls.query.filter_by(
             standard_permit_condition_id=standard_permit_condition_id, deleted_ind=False).first()
+    
