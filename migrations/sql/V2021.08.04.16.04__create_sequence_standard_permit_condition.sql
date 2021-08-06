@@ -1,7 +1,7 @@
 CREATE SEQUENCE IF NOT EXISTS public.permit_conditions_standard_permit_condition_id_seq
     INCREMENT 1
-    START 1
-    MINVALUE 1
+    START 900
+    MINVALUE 900
     NO MAXVALUE
     CACHE 1;
 
