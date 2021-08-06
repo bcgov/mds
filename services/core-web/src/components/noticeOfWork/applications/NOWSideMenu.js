@@ -84,9 +84,12 @@ export class NOWSideMenu extends Component {
 
   updateUrlRoute = (route) => {
     const nowGuid = this.props.match.params.id;
+    const nowRoute = this.props.noticeOfWork.is_historic
+      ? routes.HISTORIC_NOTICE_OF_WORK_APPLICATION
+      : routes.NOTICE_OF_WORK_APPLICATION;
     const applicationRoute =
       this.props.noticeOfWork.application_type_code === "NOW"
-        ? routes.NOTICE_OF_WORK_APPLICATION
+        ? nowRoute
         : routes.ADMIN_AMENDMENT_APPLICATION;
     this.urlRoute = applicationRoute.hashRoute(nowGuid, this.props.tabSection, route);
 

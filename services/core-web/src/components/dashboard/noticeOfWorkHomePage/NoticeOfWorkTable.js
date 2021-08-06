@@ -301,10 +301,14 @@ export class NoticeOfWorkTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
-              <Button type="primary" disabled={record.is_historic}>
-                Open
-              </Button>
+            <Link
+              to={
+                record.is_historic
+                  ? this.createLinkTo(router.HISTORIC_NOTICE_OF_WORK_APPLICATION, record)
+                  : this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)
+              }
+            >
+              <Button type="primary">{record.is_historic ? "Open Historic" : "Open"}</Button>
             </Link>
           </div>
         ),
