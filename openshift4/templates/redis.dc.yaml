@@ -6,7 +6,6 @@ metadata:
     openshift.io/display-name: Redis
     description: |-
       Redis in-memory data structure store, with persistent storage. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/redis-container/blob/master/3.2.
-
       NOTE: You must have persistent volumes available in your cluster to use this template.
     iconClass: icon-redis
     tags: database,redis
@@ -123,10 +122,6 @@ parameters:
     displayName: Version of Redis Image
     description: Version of Redis image to be used (3.2 or latest).
     value: "5"
-  - name: APPNAME
-    displayName: AppName
-    description: Application name for grouping pods in Openshift
-    value: Core
   - name: APPNAME
     displayName: AppName
     description: Application name for grouping pods in Openshift
