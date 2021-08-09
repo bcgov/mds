@@ -105,59 +105,64 @@ const transformDocuments = (
   isFinalPackageTable
 ) =>
   documents &&
-  documents.map((document, index) => ({
-    key: document.now_application_document_xref_guid,
-    now_application_document_xref_guid: document.now_application_document_xref_guid,
-    mine_document_guid: document.mine_document.mine_document_guid,
-    now_application_guid,
-    filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
-    document_manager_guid: document.mine_document.document_manager_guid,
-    upload_date: document.mine_document.upload_date,
-    category:
-      (noticeOfWorkApplicationDocumentTypeOptionsHash &&
-        noticeOfWorkApplicationDocumentTypeOptionsHash[
-          document.now_application_document_type_code
-        ]) ||
-      document.documenttype ||
-      Strings.EMPTY_FIELD,
-    description: document.description || Strings.EMPTY_FIELD,
-    is_final_package: document.is_final_package || false,
-    is_referral_package: document.is_referral_package || false,
-    is_consultation_package: document.is_consultation_package || false,
-    isModificationAllowed:
-      (!document.is_final_package &&
-        !document.is_referral_package &&
-        !document.is_consultation_package) ||
-      isFinalPackageTable,
-    index: document.final_package_order ?? index,
-    ...document,
-  }));
+  documents
+    .sort((a, b) => a.final_package_order - b.final_package_order)
+    .map((document, index) => ({
+      key: document.now_application_document_xref_guid,
+      now_application_document_xref_guid: document.now_application_document_xref_guid,
+      mine_document_guid: document.mine_document.mine_document_guid,
+      now_application_guid,
+      filename: document.mine_document.document_name || Strings.EMPTY_FIELD,
+      document_manager_guid: document.mine_document.document_manager_guid,
+      upload_date: document.mine_document.upload_date,
+      category:
+        (noticeOfWorkApplicationDocumentTypeOptionsHash &&
+          noticeOfWorkApplicationDocumentTypeOptionsHash[
+            document.now_application_document_type_code
+          ]) ||
+        document.documenttype ||
+        Strings.EMPTY_FIELD,
+      description: document.description || Strings.EMPTY_FIELD,
+      is_final_package: document.is_final_package || false,
+      is_referral_package: document.is_referral_package || false,
+      is_consultation_package: document.is_consultation_package || false,
+      isModificationAllowed:
+        (!document.is_final_package &&
+          !document.is_referral_package &&
+          !document.is_consultation_package) ||
+        isFinalPackageTable,
+      index: index,
+      ...document,
+    }));
 
-const SortableItem = sortableElement((props, foo, bar) => {
-  console.log(props, foo, bar);
-  return <tr {...props} />;
-});
+const SortableItem = sortableElement((props, foo, bar) => <tr {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
 export class NOWDocuments extends Component {
-  state = {
-    dataSource: transformDocuments(
+  getDataSource = () =>
+    transformDocuments(
       this.props.documents,
       this.props.noticeOfWork.now_application_guid,
       this.props.noticeOfWorkApplicationDocumentTypeOptionsHash,
       this.props.isFinalPackageTable
-    ).sort((a, b) => a.index - b.index),
+    );
+
+  state = {
+    dataSource: this.getDataSource(),
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.documents !== this.props.documents) {
+      this.setState({
+        dataSource: this.getDataSource(),
+      });
+    }
   };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex !== newIndex) {
       const newData = arrayMove([].concat(this.state.dataSource), oldIndex, newIndex);
-      const newDataWithFilter = arrayMove(
-        [].concat(this.state.dataSource),
-        oldIndex,
-        newIndex
-      ).filter((el) => !!el);
-      newData.map((doc, index) => (doc.index = index));
+      newData.map((doc, index) => ((doc.index = index), (doc.final_package_order = index)));
       this.setState({ dataSource: newData });
       this.handleSortDocument(newData);
     }
@@ -174,9 +179,7 @@ export class NOWDocuments extends Component {
   );
 
   DraggableBodyRow = ({ className, style, ...restProps }) => {
-    const { dataSource } = this.state;
-    // function findIndex base on Table rowKey props and should always be a right array index
-    const index = dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
+    const index = this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
     return <SortableItem index={index} {...restProps} />;
   };
 
@@ -310,7 +313,8 @@ export class NOWDocuments extends Component {
       render: (text) => (
         <>
           <DragHandle />
-          &nbsp; 1.{text + 1}
+          {/* NOTE: We are adding 2 here because "1.1" in the issued permits is currently always the application form document. */}
+          &nbsp; 1.{text + 2}
         </>
       ),
     };
