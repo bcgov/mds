@@ -2,12 +2,6 @@ kind: Template
 apiVersion: v1
 metadata:
   name: mds-filesystem-provider-dc
-parameters:
-  - name: APPNAME
-    displayName: AppName
-    description: Application name for grouping pods in Openshift
-    value: Core
-    required: true
 objects:
   - kind: Service
     apiVersion: v1
