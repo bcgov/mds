@@ -49,7 +49,7 @@ export class AdminNavigation extends Component {
                 <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("QCA")}>Quarry</Link>
               </Menu.Item>
               <Menu.Item key="PLA">
-                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("PLA")}>Placer </Link>
+                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("PLA")}>Placer</Link>
               </Menu.Item>
             </Menu>
           </Menu.SubMenu>
