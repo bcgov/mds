@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
 import { isEmpty } from "lodash";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined , EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { EyeOutlined } from "@ant-design/icons";
+
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
