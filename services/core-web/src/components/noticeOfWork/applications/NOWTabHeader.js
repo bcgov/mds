@@ -22,6 +22,7 @@ const propTypes = {
   tabName: PropTypes.string.isRequired,
   showProgressButton: PropTypes.bool,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
+  showActionsAndProgress: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -31,6 +32,7 @@ const defaultProps = {
   tabEditActions: "",
   showProgressButton: true,
   isNoticeOfWorkTypeDisabled: true,
+  showActionsAndProgress: true,
 };
 
 export const NOWTabHeader = (props) => (
@@ -44,19 +46,21 @@ export const NOWTabHeader = (props) => (
             </Popover>
           </h2>
           <div className="view--header--content--actions">
-            {props.showProgressButton && (
+            {props.showProgressButton && props.showActionsAndProgress && (
               <NOWProgressActions
                 tab={props.tab}
                 handleDraftPermit={props.handleDraftPermit}
                 isNoticeOfWorkTypeDisabled={props.isNoticeOfWorkTypeDisabled}
               />
             )}
-            <>{props.tabActions}</>
+            {props.showActionsAndProgress && <>{props.tabActions}</>}
           </div>
         </div>
-        <div>
-          <NOWProgressStatus tab={props.tab} showProgress={props.showProgressButton} />
-        </div>
+        {props.showActionsAndProgress && (
+          <div>
+            <NOWProgressStatus tab={props.tab} showProgress={props.showProgressButton} />
+          </div>
+        )}
       </div>
     ) : (
       <div className="inline-flex flex-center view--header--content">{props.tabEditActions}</div>

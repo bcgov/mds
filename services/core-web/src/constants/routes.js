@@ -32,7 +32,7 @@ import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
-import HistoricNoticeOfWorkApplication from "@/components/noticeOfWork/applications/HistoricNoticeOfWorkApplication";
+import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -272,14 +272,14 @@ export const ADMIN_AMENDMENT_APPLICATION = {
   component: AdminAmendmentApplication,
 };
 
-export const HISTORIC_NOTICE_OF_WORK_APPLICATION = {
-  route: "/dashboard/historic-notice-of-work/app/:id/:tab",
+export const VIEW_NOTICE_OF_WORK_APPLICATION = {
+  route: "/dashboard/view-notice-of-work/app/:id/:tab",
   dynamicRoute: (guid, tab) =>
     tab
-      ? `/dashboard/historic-notice-of-work/app/${guid}/${tab}`
-      : `/dashboard/historic-notice-of-work/app/${guid}/application`,
-  hashRoute: (guid, tab, link) => `/dashboard/historic-notice-of-work/app/${guid}/${tab}/${link}`,
-  component: HistoricNoticeOfWorkApplication,
+      ? `/dashboard/view-notice-of-work/app/${guid}/${tab}`
+      : `/dashboard/view-notice-of-work/app/${guid}/application`,
+  hashRoute: (guid, tab, link) => `/dashboard/view-notice-of-work/app/${guid}/${tab}/${link}`,
+  component: ViewNoticeOfWorkApplication,
 };
 
 const MINESPACE_URL = "https://minespace.gov.bc.ca/";

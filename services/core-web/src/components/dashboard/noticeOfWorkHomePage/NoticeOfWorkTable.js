@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { Input, Button, Badge } from "antd";
 import { isEmpty } from "lodash";
-import { SearchOutlined , EyeOutlined } from "@ant-design/icons";
+import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
-import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
 import {
@@ -37,7 +33,6 @@ const propTypes = {
   applicationStatusOptions: CustomPropTypes.options.isRequired,
   applicationTypeOptions: CustomPropTypes.options.isRequired,
   isLoaded: PropTypes.bool.isRequired,
-  openDocument: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
     search: PropTypes.string,
@@ -302,20 +297,14 @@ export class NoticeOfWorkTable extends Component {
       render: (text, record) =>
         record.key && (
           <div className="btn--middle flex">
-            <Link
-              to={
-                record.is_historic
-                  ? this.createLinkTo(router.HISTORIC_NOTICE_OF_WORK_APPLICATION, record)
-                  : this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)
-              }
-            >
+            <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
               <Button type="primary" disabled={record.is_historic}>
                 Open
               </Button>
             </Link>
-            <Link to={this.createLinkTo(router.HISTORIC_NOTICE_OF_WORK_APPLICATION, record)}>
+            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
               <Button type="primary" size="small" ghost>
-                {record.is_historic ? <EyeOutlined className="icon-lg icon-svg-filter" /> : "View"}
+                <EyeOutlined className="icon-lg icon-svg-filter" />
               </Button>
             </Link>
           </div>
@@ -346,12 +335,4 @@ export class NoticeOfWorkTable extends Component {
 NoticeOfWorkTable.propTypes = propTypes;
 NoticeOfWorkTable.defaultProps = defaultProps;
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openDocument,
-    },
-    dispatch
-  );
-
-export default withRouter(connect(null, mapDispatchToProps)(NoticeOfWorkTable));
+export default withRouter(NoticeOfWorkTable);
