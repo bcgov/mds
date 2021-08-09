@@ -16,6 +16,7 @@ from app.api.mines.mine.models.mine import Mine
 from app.api.now_applications.models.now_application import NOWApplication
 from app.api.now_applications.models.now_application_identity import NOWApplicationIdentity
 from app.api.now_applications.models.now_application_status import NOWApplicationStatus
+from app.api.now_applications.models.applications_view import ApplicationsView
 from app.api.now_applications.transmogrify_now import transmogrify_now
 from app.api.now_applications.response_models import NOW_APPLICATION_MODEL, IMPORTED_NOW_SUBMISSION_DOCUMENT, APPLICATION_REASON_CODE_XREF
 from app.api.services.nros_now_status_service import NROSNOWStatusService
@@ -42,9 +43,13 @@ class NOWApplicationResource(Resource, UserMixin):
         if now_application_identity.now_application_id and not original:
             application = now_application_identity.now_application
             application.imported_to_core = True
+            application.is_historic = ApplicationsView.query.filter_by(
+                now_application_guid=application.now_application_guid).one().is_historic
         else:
             application = transmogrify_now(now_application_identity, include_contacts=original)
             application.imported_to_core = False
+            application.is_historic = ApplicationsView.query.filter_by(
+                now_application_guid=application.now_application_guid).one().is_historic
 
         application.filtered_submission_documents = NOWApplication.get_filtered_submissions_documents(
             now_application=application)
