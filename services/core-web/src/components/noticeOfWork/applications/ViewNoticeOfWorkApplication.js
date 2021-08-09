@@ -6,7 +6,6 @@ import { getNoticeOfWork } from "@common/selectors/noticeOfWorkSelectors";
 import ApplicationTab from "@/components/noticeOfWork/applications/review/ApplicationTab";
 import CustomPropTypes from "@/customPropTypes";
 import NoticeOfWorkPageHeader from "@/components/noticeOfWork/applications/NoticeOfWorkPageHeader";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import ApplicationGuard from "@/HOC/ApplicationGuard";
 
 /**
@@ -32,7 +31,6 @@ const defaultProps = { applicationPageFromRoute: "" };
 
 export class ViewNoticeOfWorkApplication extends Component {
   state = {
-    isTabLoaded: false,
     activeTab: "application",
   };
 
@@ -53,9 +51,7 @@ export class ViewNoticeOfWorkApplication extends Component {
           centered
         >
           <Tabs.TabPane tab="Application" key="application">
-            <LoadingWrapper condition={this.state.isTabLoaded}>
-              <ApplicationTab fixedTop={this.props.fixedTop} showActionsAndProgress={false} />
-            </LoadingWrapper>
+            <ApplicationTab fixedTop={this.props.fixedTop} showActionsAndProgress={false} />
           </Tabs.TabPane>
         </Tabs>
       </div>
