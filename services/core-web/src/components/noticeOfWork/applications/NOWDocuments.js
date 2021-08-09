@@ -222,7 +222,7 @@ export class NOWDocuments extends Component {
   handleSortDocument = (newData) => {
     const sortedDocuments = newData.map((document, index) => ({
       mine_document_guid: document.mine_document_guid,
-      final_package_order: index,
+      final_package_order: index + 1,
     }));
     const values = { sorted_documents: sortedDocuments };
     return this.props
