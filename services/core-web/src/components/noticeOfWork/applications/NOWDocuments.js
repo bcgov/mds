@@ -135,7 +135,7 @@ const transformDocuments = (
       ...document,
     }));
 
-const SortableItem = sortableElement((props, foo, bar) => <tr {...props} />);
+const SortableItem = sortableElement((props) => <tr {...props} />);
 const SortableContainer = sortableContainer((props) => <tbody {...props} />);
 
 export class NOWDocuments extends Component {
