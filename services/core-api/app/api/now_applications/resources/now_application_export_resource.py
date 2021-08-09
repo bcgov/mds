@@ -185,20 +185,47 @@ ORIGINAL_NOW_FIELD_PATHS = [
 ]
 
 UNIT_TYPE_CODE_FIELDS = [
-    'estimate_rate_unit_type_code', 'length_unit_type_code', 'proposed_production_unit_type_code',
-    'reclamation_unit_type_code', 'average_overburden_depth_unit_type_code',
-    'average_top_soil_depth_unit_type_code', 'total_mineable_reserves_unit_type_code',
-    'total_annual_extraction_unit_type_code', 'total_ore_unit_type_code',
-    'total_waste_unit_type_code', 'surface_total_ore_unit_type_code', 'incline_unit_type_code',
-    'surface_total_waste_unit_type_code', 'max_unreclaimed_unit_type_code', 'average_groundwater_depth_unit_type_code', 'nearest_residence_distance_unit_type_code', 'nearest_water_source_distance_unit_type_code',
+    'estimate_rate_unit_type_code',
+    'length_unit_type_code',
+    'proposed_production_unit_type_code',
+    'reclamation_unit_type_code',
+    'average_overburden_depth_unit_type_code',
+    'average_top_soil_depth_unit_type_code',
+    'total_mineable_reserves_unit_type_code',
+    'total_annual_extraction_unit_type_code',
+    'total_ore_unit_type_code',
+    'total_waste_unit_type_code',
+    'surface_total_ore_unit_type_code',
+    'incline_unit_type_code',
+    'surface_total_waste_unit_type_code',
+    'max_unreclaimed_unit_type_code',
+    'average_groundwater_depth_unit_type_code',
+    'nearest_residence_distance_unit_type_code',
+    'nearest_water_source_distance_unit_type_code',
 ]
 
 CHECKBOX_FIELDS = [
-   'show_access_roads', 'show_camps', 'show_surface_drilling', 'show_mech_trench', 'show_seismic', 'show_bulk', 
-   'show_underground_exploration', 'show_sand_gravel_quarry', 'has_groundwater_from_existing_area', 'has_groundwater_from_test_pits', 
-   'has_groundwater_from_test_wells', 'has_ground_water_from_other',
-   'proposed_bulk_sample', 'proposed_de_watering', 'proposed_diamond_drilling', 'proposed_mapping_chip_sampling', 'proposed_new_development', 'proposed_rehab',
-   'proposed_underground_fuel_storage', 'has_fuel_stored_in_bulk', 'has_fuel_stored_in_barrels',
+    'show_access_roads',
+    'show_camps',
+    'show_surface_drilling',
+    'show_mech_trench',
+    'show_seismic',
+    'show_bulk',
+    'show_underground_exploration',
+    'show_sand_gravel_quarry',
+    'has_groundwater_from_existing_area',
+    'has_groundwater_from_test_pits',
+    'has_groundwater_from_test_wells',
+    'has_ground_water_from_other',
+    'proposed_bulk_sample',
+    'proposed_de_watering',
+    'proposed_diamond_drilling',
+    'proposed_mapping_chip_sampling',
+    'proposed_new_development',
+    'proposed_rehab',
+    'proposed_underground_fuel_storage',
+    'has_fuel_stored_in_bulk',
+    'has_fuel_stored_in_barrels',
 ]
 
 UNDERGROUND_EXPLORATION_CODE_FIELDS = [
@@ -300,11 +327,11 @@ class NOWApplicationExportResource(Resource, UserMixin):
 
         def format_boolean(value):
             return 'Yes' if value else 'No'
-        
+
         def format_checkbox(value):
-            if value and value is not None: 
+            if value and value is not None:
                 return '☑'
-            return '☐' 
+            return '☐'
 
         def get_reclamation_summary(now_application, render):
             summary = []
@@ -397,18 +424,22 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     document_type, doc['now_application_document_type_code'])
                 if doc['is_final_package']:
                     included_docs.append(doc)
-            
+
             for submission_doc in submission_docs:
                 if submission_doc['is_final_package']:
                     new_doc = {
                         'now_application_document_type_description': submission_doc['documenttype'],
                         'description': submission_doc['description'],
+                        'final_package_order': submission_doc['final_package_order'],
                         'mine_document': {
                             'document_name': submission_doc['filename'],
                             'upload_date': now_application.get('submitted_date', None),
                         }
                     }
                     included_docs.append(new_doc)
+
+            included_docs.sort(key=lambda doc: doc['final_package_order'])
+
             return included_docs
 
         def transform_data(obj):
@@ -420,7 +451,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 if obj[key] is None:
                     if key in CHECKBOX_FIELDS:
                         obj[key] = format_checkbox(obj[key])
-                    else: 
+                    else:
                         obj[key] = EMPTY_FIELD
                 elif key in CURRENCY_FIELDS:
                     obj[key] = format_currency(obj[key])
@@ -434,14 +465,15 @@ class NOWApplicationExportResource(Resource, UserMixin):
                 elif key in UNDERGROUND_EXPLORATION_CODE_FIELDS:
                     type_codes = UndergroundExplorationType.get_all()
                     code_object = [
-                        code for code in type_codes if code.underground_exploration_type_code == obj[key]
+                        code for code in type_codes
+                        if code.underground_exploration_type_code == obj[key]
                     ]
                     obj[key] = code_object[0].description if code_object and len(
                         code_object) > 0 else NOT_APPLICABLE_FIELD
                 elif isinstance(obj[key], bool):
                     if key in CHECKBOX_FIELDS:
                         obj[key] = format_checkbox(obj[key])
-                    else: 
+                    else:
                         obj[key] = format_boolean(obj[key])
                 elif isinstance(obj[key], dict):
                     transform_data(obj[key])
