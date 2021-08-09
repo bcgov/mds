@@ -23,6 +23,10 @@ parameters:
     value: 4c2ba9-tools
   - name: DOCUMENT_MANAGER_URL
     value: http://docman:5001/document-manager
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
 objects:
   - kind: Service
     apiVersion: v1
@@ -30,6 +34,8 @@ objects:
       name: ${NAME}
       annotations:
         description: Exposes and load balances the application pods
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
     spec:
       ports:
         - name: 1080-tcp

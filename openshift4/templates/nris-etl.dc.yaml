@@ -44,6 +44,10 @@ parameters:
     value: redis
   - name: ENVIRONMENT_NAME
     required: true
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
 objects:
   - kind: CronJob
     apiVersion: batch/v1beta1
