@@ -214,15 +214,20 @@ class NOWApplication(Base, AuditMixin):
 
     @hybrid_property
     def next_document_final_package_order(self):
-        max_documents_order = max(doc.final_package_order for doc in self.documents
-                                  if doc.final_package_order is not None)
-        max_imported_submission_documents_order = max(doc.final_package_order
-                                                      for doc in self.imported_submission_documents
-                                                      if doc.final_package_order is not None)
+        documents_order = [
+            doc.final_package_order for doc in self.documents if doc.final_package_order is not None
+        ]
+        max_documents_order = max(documents_order) if documents_order else -1
+
+        imported_submission_documents_order = [
+            doc.final_package_order for doc in self.imported_submission_documents
+            if doc.final_package_order is not None
+        ]
+        max_imported_submission_documents_order = max(
+            imported_submission_documents_order) if imported_submission_documents_order else -1
+
         max_order = max(max_documents_order, max_imported_submission_documents_order)
-        if max_order != None:
-            return max_order + 1
-        return 0
+        return max_order + 1
 
     @hybrid_property
     def total_merchantable_timber_volume(self):
