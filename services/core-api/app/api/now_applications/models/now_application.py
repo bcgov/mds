@@ -347,12 +347,14 @@ class NOWApplication(Base, AuditMixin):
         ]
         for doc in now_form_docs:
             doc.is_final_package = False
+            doc.final_package_order = None
             doc.save()
 
         # Add the newly generated Notice of Work Form document to the final application package
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
+        now_doc.final_package_order = self.next_document_final_package_order
         now_doc.description = description
         now_doc.save()
 
