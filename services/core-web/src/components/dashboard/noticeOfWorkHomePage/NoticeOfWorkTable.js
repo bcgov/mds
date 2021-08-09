@@ -5,6 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { EyeOutlined } from "@ant-design/icons";
 import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import { downloadNowDocument } from "@common/utils/actionlessNetworkCalls";
 import PropTypes from "prop-types";
@@ -308,7 +309,14 @@ export class NoticeOfWorkTable extends Component {
                   : this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)
               }
             >
-              <Button type="primary">{record.is_historic ? "Open Historic" : "Open"}</Button>
+              <Button type="primary" disabled={record.is_historic}>
+                Open
+              </Button>
+            </Link>
+            <Link to={this.createLinkTo(router.HISTORIC_NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary" size="small" ghost>
+                {record.is_historic ? <EyeOutlined className="icon-lg icon-svg-filter" /> : "View"}
+              </Button>
             </Link>
           </div>
         ),

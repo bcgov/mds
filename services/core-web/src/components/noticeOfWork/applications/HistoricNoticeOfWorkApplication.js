@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Tabs } from "antd";
 import PropTypes from "prop-types";
-import { kebabCase, isEmpty } from "lodash";
+import { kebabCase } from "lodash";
 import { bindActionCreators } from "redux";
 import {
   fetchImportedNoticeOfWorkApplication,
@@ -109,12 +109,6 @@ export class HistoricNoticeOfWorkApplication extends Component {
   };
 
   render() {
-    const isImported = this.props.noticeOfWork.imported_to_core;
-
-    const isNoticeOfWorkTypeDisabled =
-      (this.props.draftPermit && !isEmpty(this.props.draftPermit.permit_guid)) ||
-      !["SAG", "QIM", "QCA"].includes(this.props.noticeOfWork.notice_of_work_type_code);
-
     return (
       <div className="page">
         <NoticeOfWorkPageHeader
@@ -132,18 +126,8 @@ export class HistoricNoticeOfWorkApplication extends Component {
           centered
         >
           <Tabs.TabPane tab="Application" key="application">
-            {/* {isImported && ( */}
             <LoadingWrapper condition={this.state.isTabLoaded}>
-              <ApplicationTab
-                fixedTop={this.props.fixedTop}
-                isNoticeOfWorkTypeDisabled={isNoticeOfWorkTypeDisabled}
-              />
-            </LoadingWrapper>
-            {/* )} */}
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Manage Documents" key="manage-documents">
-            <LoadingWrapper condition={this.state.isTabLoaded}>
-              <ManageDocumentsTab fixedTop={this.props.fixedTop} />
+              <ApplicationTab fixedTop={this.props.fixedTop} />
             </LoadingWrapper>
           </Tabs.TabPane>
         </Tabs>
