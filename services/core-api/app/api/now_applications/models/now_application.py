@@ -217,14 +217,14 @@ class NOWApplication(Base, AuditMixin):
         documents_order = [
             doc.final_package_order for doc in self.documents if doc.final_package_order is not None
         ]
-        max_documents_order = max(documents_order) if documents_order else -1
+        max_documents_order = max(documents_order) if documents_order else 0
 
         imported_submission_documents_order = [
             doc.final_package_order for doc in self.imported_submission_documents
             if doc.final_package_order is not None
         ]
         max_imported_submission_documents_order = max(
-            imported_submission_documents_order) if imported_submission_documents_order else -1
+            imported_submission_documents_order) if imported_submission_documents_order else 0
 
         max_order = max(max_documents_order, max_imported_submission_documents_order)
         return max_order + 1
