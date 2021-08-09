@@ -38,18 +38,18 @@ export class AdminNavigation extends Component {
           >
             <Menu className="sub-menu">
               <Menu.Item key="SAG">
-                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")}>
-                  Sand & Gravel Permit
-                </Link>
+                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")}>Sand & Gravel</Link>
               </Menu.Item>
               <Menu.Item key="MIN">
-                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("MIN")}>MX/CX Permit</Link>
+                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("MIN")}>
+                  Exploration (MX/CX)
+                </Link>
               </Menu.Item>
               <Menu.Item key="QCA">
-                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("QCA")}>Quarry Permit</Link>
+                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("QCA")}>Quarry</Link>
               </Menu.Item>
               <Menu.Item key="PLA">
-                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("PLA")}>Placer Permit</Link>
+                <Link to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("PLA")}>Placer </Link>
               </Menu.Item>
             </Menu>
           </Menu.SubMenu>
