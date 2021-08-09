@@ -128,6 +128,13 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
 
+            now_application = NOWApplication.find_by_application_guid(application_guid)
+            if not now_application:
+                raise NotFound('Notice of Work not found.')
+            xref.final_package_order = now_application.next_document_final_package_order
+        else:
+            xref.final_package_order = None
+
         xref.save()
         mine_document.save()
 
