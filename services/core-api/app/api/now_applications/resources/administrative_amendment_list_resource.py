@@ -50,7 +50,8 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
         has_existing_administrative_amendments = ApplicationsView.query.filter_by(
             source_permit_amendment_guid=permit_amendment.permit_amendment_guid,
             application_type_code='ADA').filter(
-                ApplicationsView.now_application_status_code.notin_(['AIA', 'REJ', 'WDN'])).count() > 0
+                ApplicationsView.now_application_status_code.notin_(['AIA', 'REJ', 'WDN'
+                                                                     ])).count() > 0
 
         application = None
         if permit_amendment.now_application_guid:
@@ -139,6 +140,7 @@ class AdministrativeAmendmentListResource(Resource, UserMixin):
                         mine_document=mine_doc,
                         now_application_id=new_app.now_application_id,
                         is_final_package=doc.is_final_package,
+                        final_package_order=doc.final_package_order,
                         preamble_title=doc.preamble_title,
                         preamble_author=doc.preamble_author,
                         preamble_date=doc.preamble_date,
