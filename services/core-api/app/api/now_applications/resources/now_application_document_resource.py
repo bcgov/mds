@@ -76,6 +76,7 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     parser.add_argument('preamble_author', type=str, required=False)
     parser.add_argument('preamble_date', type=str, required=False)
     parser.add_argument('is_final_package', type=bool, required=False)
+    parser.add_argument('final_package_order', type=int, required=False)
     parser.add_argument('description', type=str, required=False)
 
     @api.response(204, 'Successfully deleted.')
@@ -131,7 +132,11 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             now_application = NOWApplication.find_by_application_guid(application_guid)
             if not now_application:
                 raise NotFound('Notice of Work not found.')
-            xref.final_package_order = now_application.next_document_final_package_order
+
+            final_package_order = data.get('final_package_order')
+            if final_package_order is None:
+                final_package_order = now_application.next_document_final_package_order
+            xref.final_package_order = final_package_order
         else:
             xref.final_package_order = None
 
