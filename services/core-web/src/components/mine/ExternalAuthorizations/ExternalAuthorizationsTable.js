@@ -103,7 +103,7 @@ export class ExternalAuthorizationsTable extends Component {
         <div>
           <h4>Summary</h4>
           <LoadingWrapper condition={this.props.isLoaded}>
-            {this.props.data.mine_info.summary !== null ? (
+            {this.props.data?.mine_info && this.props.data?.mine_info.summary !== null ? (
               <span>{this.props.data?.mine_info?.summary}</span>
             ) : (
               <NullScreen type="epic-authorizations" />
