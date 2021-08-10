@@ -41,6 +41,8 @@ from app.api.mines.variances.resources.variance_uploaded_documents import MineVa
 from app.api.parties.party_appt.resources.mine_party_appt_document_upload_resource import MinePartyApptDocumentUploadResource
 from app.api.mines.comments.resources.mine_comment import MineCommentListResource, MineCommentResource
 from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import StandardPermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_list_resource import StandardPermitConditionsListResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_category_resource import PermitConditionCategoryResource
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
 from app.api.mines.work_information.resources.work_information_list import MineWorkInformationListResource
@@ -118,6 +120,11 @@ api.add_resource(PermitListResource, '/<string:mine_guid>/permits')
 api.add_resource(PermitStatusCodeResource, '/permits/status-codes')
 api.add_resource(PermitConditionCategoryResource, '/permits/condition-category-codes')
 api.add_resource(PermitConditionTypeResource, '/permits/condition-type-codes')
+
+api.add_resource(StandardPermitConditionsListResource,
+                 '/permits/standard-conditions/<string:notice_of_work_type>')
+api.add_resource(StandardPermitConditionsResource,
+                 '/permits/standard-conditions/<string:standard_permit_condition_guid>')
 
 api.add_resource(PermitAmendmentListResource,
                  '/<string:mine_guid>/permits/<string:permit_guid>/amendments')

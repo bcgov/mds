@@ -69,6 +69,11 @@ export const PERMIT_CONDITIONS = (mineGuid, permitGuid, permitAmendmentGuid) =>
 export const PERMIT_CONDITION = (mineGuid, permitGuid, permitAmendmentGuid, permitConditionGuid) =>
   `/mines/${mineGuid}/permits/${permitGuid}/amendments/${permitAmendmentGuid}/conditions/${permitConditionGuid}`;
 
+export const STANDARD_PERMIT_CONDITIONS = (noticeOfWorkType) =>
+  `/mines/permits/standard-conditions/${noticeOfWorkType}`;
+export const STANDARD_PERMIT_CONDITION = (permitConditionGuid) =>
+  `/mines/permits/standard-conditions/${permitConditionGuid}`;
+
 // Explosive Storage & Use Permits
 export const EXPLOSIVES_PERMITS = (mineGuid) => `/mines/${mineGuid}/explosives-permits`;
 export const EXPLOSIVES_PERMIT = (mineGuid, explosivesPermitGuid) =>
