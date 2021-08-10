@@ -65,12 +65,12 @@ export class Conditions extends Component {
     }
   };
 
-  handleDelete = (permitConditionGuid) => {
+  handleDelete = (condition) => {
     this.setState({ submitting: true });
     this.props
       .deletePermitCondition(
         this.props.draftPermitAmendment.permit_amendment_guid,
-        permitConditionGuid
+        condition.permit_condition_guid
       )
       .then(() => {
         this.setState({ submitting: false });

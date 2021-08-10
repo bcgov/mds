@@ -1,10 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MinespaceUserManagement renders properly 1`] = `
-<div>
+<div
+  className="tab__content"
+>
   <h2>
     MineSpace User Management
   </h2>
+  <Divider />
   <br />
   <Connect(NewMinespaceUser)
     minespaceUserEmailHash={Object {}}

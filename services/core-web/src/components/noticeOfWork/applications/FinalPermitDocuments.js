@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FormSection } from "redux-form";
 import { connect } from "react-redux";
 import { Button, Progress } from "antd";
-import { getDocumentDownloadState } from "@common/selectors/noticeOfWorkSelectors";
+import { getDocumentDownloadState, getNOWProgress } from "@common/selectors/noticeOfWorkSelectors";
 import { COLOR } from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import PermitPackage from "@/components/noticeOfWork/applications/PermitPackage";
@@ -19,6 +19,7 @@ const propTypes = {
   noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   importNowSubmissionDocumentsJob: PropTypes.objectOf(PropTypes.any),
   documentDownloadState: CustomPropTypes.documentDownloadState.isRequired,
+  progress: PropTypes.objectOf(PropTypes.string).isRequired,
   adminView: PropTypes.bool,
   showPreambleFileMetadata: PropTypes.bool,
   editPreambleFileMetadata: PropTypes.bool,
@@ -84,6 +85,11 @@ export class FinalPermitDocuments extends Component {
       />
     );
 
+    const draftInProgress =
+      this.props.progress.DFT &&
+      this.props.progress.DFT.start_date &&
+      !this.props.progress.DFT.end_date;
+
     let unifiedDocumentsView = [];
     if (this.props.showInUnifiedView) {
       unifiedDocumentsView = (
@@ -111,6 +117,7 @@ export class FinalPermitDocuments extends Component {
           editPreambleFileMetadata={this.props.editPreambleFileMetadata}
           isFinalPackageTable
           isAdminView
+          isSortingAllowed={!this.props.adminView && draftInProgress}
         />
       );
     }
@@ -187,6 +194,7 @@ export class FinalPermitDocuments extends Component {
 
 const mapStateToProps = (state) => ({
   documentDownloadState: getDocumentDownloadState(state),
+  progress: getNOWProgress(state),
 });
 
 FinalPermitDocuments.propTypes = propTypes;

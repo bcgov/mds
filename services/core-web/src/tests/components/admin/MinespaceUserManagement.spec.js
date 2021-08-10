@@ -15,6 +15,7 @@ const setupDispatchProps = () => {
   dispatchProps.fetchMineNameList = jest.fn(() => Promise.resolve());
   dispatchProps.fetchMinespaceUsers = jest.fn(() => Promise.resolve());
   dispatchProps.deleteMinespaceUser = jest.fn(() => Promise.resolve());
+  dispatchProps.closeModal = jest.fn();
 };
 
 beforeEach(() => {

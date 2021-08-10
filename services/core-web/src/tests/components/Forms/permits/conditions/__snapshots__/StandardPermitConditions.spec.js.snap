@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StandardPermitConditions renders properly 1`] = `
+<LoadingWrapper
+  condition={false}
+>
+  <h4>
+    Sand & Gravel
+     Template Permit Conditions
+  </h4>
+  <br />
+  <Collapse
+    bordered={true}
+  />
+</LoadingWrapper>
+`;

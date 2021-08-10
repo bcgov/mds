@@ -30,12 +30,18 @@ class Validator {
 
   PROTOCOL_REGEX = /^https?:\/\/(.*)$/;
 
+  LON_NEGATIVE = /^-\d*\.?\d+$/;
+
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
   }
 
   checkLon(lon) {
     return this.LON_REGEX.test(lon);
+  }
+
+  checkLonNegative(lon) {
+    return this.LON_NEGATIVE.test(lon);
   }
 
   checkPhone(number) {
@@ -101,6 +107,11 @@ export const lat = (value) =>
 
 export const lon = (value) =>
   value && !Validate.checkLon(value) ? "Invalid longitude coordinate e.g. -127.6476000" : undefined;
+
+export const lonNegative = (value) =>
+  value && !Validate.checkLonNegative(value)
+    ? "Invalid longitude - must be a negative number"
+    : undefined;
 
 export const phoneNumber = (value) =>
   value && !Validate.checkPhone(value) ? "Invalid phone number e.g. xxx-xxx-xxxx" : undefined;

@@ -15,7 +15,7 @@ exports[`NOWDocuments renders properly 1`] = `
     <Col
       span={6}
     >
-      <Connect(NOWActionWrapper)
+      <withRouter(Connect(NOWActionWrapper))
         allowAfterProcess={false}
         permission="role_edit_permits"
         tab="REV"
@@ -28,7 +28,7 @@ exports[`NOWDocuments renders properly 1`] = `
         >
           Add Document
         </AddButton>
-      </Connect(NOWActionWrapper)>
+      </withRouter(Connect(NOWActionWrapper))>
     </Col>
   </Row>
   <br />

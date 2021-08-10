@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminNavigation renders properly 1`] = `
+<Menu
+  mode="horizontal"
+  selectedKeys={Array []}
+/>
+`;

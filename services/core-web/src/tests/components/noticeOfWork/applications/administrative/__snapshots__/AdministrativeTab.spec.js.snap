@@ -10,7 +10,7 @@ exports[`AdministrativeTab renders properly 1`] = `
     showProgressButton={true}
     tab="ADMIN"
     tabActions={
-      <UNDEFINED
+      <withRouter(Connect(NOWActionWrapper))
         permission="role_edit_permits"
       >
         <Dropdown
@@ -19,7 +19,7 @@ exports[`AdministrativeTab renders properly 1`] = `
           onVisibleChange={[Function]}
           overlay={
             <Menu>
-              <UNDEFINED
+              <withRouter(Connect(NOWActionWrapper))
                 permission="role_edit_permits"
               >
                 <MenuItem
@@ -28,7 +28,7 @@ exports[`AdministrativeTab renders properly 1`] = `
                 >
                   Edit Application Lat/Long
                 </MenuItem>
-              </UNDEFINED>
+              </withRouter(Connect(NOWActionWrapper))>
             </Menu>
           }
           placement="bottomLeft"
@@ -46,7 +46,7 @@ exports[`AdministrativeTab renders properly 1`] = `
             <ForwardRef(DownOutlined) />
           </ForwardRef(InternalButton)>
         </Dropdown>
-      </UNDEFINED>
+      </withRouter(Connect(NOWActionWrapper))>
     }
     tabEditActions=""
     tabName="Administrative"

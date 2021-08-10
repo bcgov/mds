@@ -24,6 +24,10 @@ parameters:
     value: template.metabase-key
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Metabase
 objects:
   - apiVersion: v1
     kind: Service
@@ -31,6 +35,9 @@ objects:
       annotations:
         template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
       name: ${NAME}
+      lables:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: postgresql
     spec:
       ports:
         - name: postgresql

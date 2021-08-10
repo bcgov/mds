@@ -26,6 +26,7 @@ class NOWApplicationDocumentXref(AuditMixin, Base):
         db.ForeignKey('now_application_document_type.now_application_document_type_code'))
 
     description = db.Column(db.String)
+    final_package_order = db.Column(db.Integer)
     is_final_package = db.Column(db.Boolean)
     is_referral_package = db.Column(db.Boolean, server_default=FetchedValue())
     is_consultation_package = db.Column(db.Boolean, server_default=FetchedValue())

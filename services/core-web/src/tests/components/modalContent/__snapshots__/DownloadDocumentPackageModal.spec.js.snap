@@ -83,7 +83,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
         />
         Download Referral Package
       </Button>
-      <Connect(NOWActionWrapper)
+      <withRouter(Connect(NOWActionWrapper))
         permission="role_edit_permits"
       >
         <Button
@@ -97,7 +97,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
         >
           Save and Exit
         </Button>
-      </Connect(NOWActionWrapper)>
+      </withRouter(Connect(NOWActionWrapper))>
     </div>
   </div>
 </Fragment>
