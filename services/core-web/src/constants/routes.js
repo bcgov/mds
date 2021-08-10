@@ -28,6 +28,7 @@ import MineReportInfo from "@/components/mine/Reports/MineReportInfo";
 import MineDocuments from "@/components/mine/Documents/MineDocuments";
 import PermitRequiredReports from "@/components/mine/Reports/PermitRequiredReports";
 import MineApplications from "@/components/mine/NoticeOfWork/MineApplications";
+import ExternalAuthorizations from "@/components/mine/ExternalAuthorizations/ExternalAuthorizations";
 import HomePage from "@/components/dashboard/HomePage";
 import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/NoticeOfWorkHomePage";
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
@@ -147,6 +148,12 @@ export const MINE_NOW_APPLICATIONS = {
   dynamicRoute: (id, params) =>
     `/mine-dashboard/${id}/permits-and-approvals/applications?${queryString.stringify(params)}`,
   component: MineApplications,
+};
+
+export const MINE_EXTERNAL_AUTHORIZATIONS = {
+  route: "/mine-dashboard/:id/external-authorizations",
+  dynamicRoute: (id) => `/mine-dashboard/${id}/external-authorizations`,
+  component: ExternalAuthorizations,
 };
 
 export const MINE_INCIDENTS = {

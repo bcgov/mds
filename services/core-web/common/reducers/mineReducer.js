@@ -69,6 +69,12 @@ export const mineReducer = (state = initialState, action) => {
         ...state,
         mineComments: action.payload.records,
       };
+    case actionTypes.STORE_MINE_EPIC_INFO:
+      return {
+        ...state,
+        mineEpicInfo: action.payload.records,
+      };
+
     default:
       return state;
   }
@@ -90,5 +96,6 @@ export const getCurrentUserVerifiedMines = (state) => state[MINES].currentUserVe
 export const getCurrentUserUnverifiedMines = (state) =>
   state[MINES].currentUserUnverifiedMinesMines;
 export const getMineComments = (state) => state[MINES].mineComments;
+export const getMineEpicInfo = (state) => state[MINES].mineEpicInfo;
 
 export default mineReducerObject;
