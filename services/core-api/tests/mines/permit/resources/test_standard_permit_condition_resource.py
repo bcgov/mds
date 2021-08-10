@@ -23,7 +23,7 @@ def test_get_standard_permit_not_found(test_client, db_session, auth_headers):
         headers=auth_headers['full_auth_header'])
     get_data = json.loads(get_resp.data.decode())
     assert 'No standard permit conditions found' in get_data['message']
-    assert get_resp.status_code == 400
+    assert get_resp.status_code == 404
 
 
 def test_get_standard_permit_by_notice_of_work_type(test_client, db_session, auth_headers):
