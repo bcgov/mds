@@ -61,6 +61,14 @@ exports[`NOWDocuments renders properly 1`] = `
         },
       ]
     }
+    components={
+      Object {
+        "body": Object {
+          "row": [Function],
+          "wrapper": [Function],
+        },
+      }
+    }
     dataSource={Array []}
     expandRowByClick={false}
     locale={
@@ -69,7 +77,7 @@ exports[`NOWDocuments renders properly 1`] = `
       }
     }
     pagination={false}
-    rowKey="key"
+    rowKey="index"
     rowSelection={null}
   />
 </div>
