@@ -423,14 +423,10 @@ exports[`ViewNoticeOfWorkApplication renders properly 1`] = `
       key="application"
       tab="Application"
     >
-      <LoadingWrapper
-        condition={false}
-      >
-        <withRouter(Connect(ApplicationTab))
-          fixedTop={false}
-          showActionsAndProgress={false}
-        />
-      </LoadingWrapper>
+      <withRouter(Connect(ApplicationTab))
+        fixedTop={false}
+        showActionsAndProgress={false}
+      />
     </TabPane>
   </Tabs>
 </div>
