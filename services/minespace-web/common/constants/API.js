@@ -169,6 +169,8 @@ export const NOW_APPLICATION_PROGRESS_STATUS_CODES =
   "/now-applications/application-progress-status-codes";
 export const NOTICE_OF_WORK_DOCUMENT = (now_document_guid) =>
   `/now-applications/${now_document_guid}/document`;
+export const SORT_NOTICE_OF_WORK_DOCUMENTS = (now_document_guid) =>
+  `/now-applications/${now_document_guid}/sort-documents`;
 export const NOW_APPLICATION_PERMIT_TYPES = "/now-applications/application-permit-types";
 export const IMPORT_NOTICE_OF_WORK_SUBMISSION_DOCUMENTS_JOB = (applicationGuid) =>
   `/import-now-submission-documents?now_application_guid=${applicationGuid}&most_recent_only=true`;

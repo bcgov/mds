@@ -97,6 +97,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'documenttype': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -107,6 +108,7 @@ PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 

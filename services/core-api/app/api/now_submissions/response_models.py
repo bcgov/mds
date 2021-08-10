@@ -68,6 +68,7 @@ DOCUMENT = api.model(
         'description': fields.String,
         'document_manager_document_guid': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean
     })
@@ -210,12 +211,11 @@ BUILDING_ACTIVITY = api.model(
         'timbervolume': fields.Arbitrary,
     })
 
-STAGING_AREA_ACTIVITY = api.model(
-    'STAGING_AREA_ACTIVITY', {
-        'name': fields.String,
-        'disturbedarea': fields.Arbitrary,
-        'timbervolume': fields.Arbitrary,
-    })
+STAGING_AREA_ACTIVITY = api.model('STAGING_AREA_ACTIVITY', {
+    'name': fields.String,
+    'disturbedarea': fields.Arbitrary,
+    'timbervolume': fields.Arbitrary,
+})
 
 APPLICATION = api.model(
     'Application', {
