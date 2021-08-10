@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { flatMap, uniq } from "lodash";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Divider } from "antd";
 import { getMineNames } from "@common/selectors/mineSelectors";
 import { getMinespaceUsers, getMinespaceUserEmailHash } from "@common/selectors/minespaceSelector";
 import { fetchMineNameList } from "@common/actionCreators/mineActionCreator";
@@ -15,6 +16,8 @@ import { getMinespaceUserMines } from "@common/reducers/minespaceReducer";
 import CustomPropTypes from "@/customPropTypes";
 import NewMinespaceUser from "@/components/admin/NewMinespaceUser";
 import MinespaceUserList from "@/components/admin/MinespaceUserList";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
+import * as Permission from "@/constants/permissions";
 
 /**
  * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
@@ -60,8 +63,9 @@ export class MinespaceUserManagement extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tab__content">
         <h2>MineSpace User Management</h2>
+        <Divider />
         <br />
         <NewMinespaceUser
           refreshData={this.refreshUserData}
@@ -100,4 +104,7 @@ const mapDispatchToProps = (dispatch) =>
 MinespaceUserManagement.propTypes = propTypes;
 MinespaceUserManagement.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MinespaceUserManagement);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  AuthorizationGuard(Permission.ADMIN)
+)(MinespaceUserManagement);

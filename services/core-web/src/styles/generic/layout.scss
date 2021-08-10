@@ -521,3 +521,18 @@ img.lessOpacity {
   visibility: hidden;
   display: none;
 }
+
+// Styling for react-sortable-hoc
+
+.row-dragging {
+  background: white;
+  border: 1px solid #f0f0f0;
+}
+
+.row-dragging td {
+  padding: 16px;
+}
+
+.row-dragging .drag-visible {
+  visibility: visible;
+}

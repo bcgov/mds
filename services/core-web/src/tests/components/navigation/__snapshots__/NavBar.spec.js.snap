@@ -108,7 +108,7 @@ exports[`NavBar renders properly 1`] = `
             </Button>
           </Link>
           <Connect(AuthorizationWrapper)
-            permission="role_admin"
+            permission="role_view_admin_route"
           >
             <Link
               to="/admin/dashboard"

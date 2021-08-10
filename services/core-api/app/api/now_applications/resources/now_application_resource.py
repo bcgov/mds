@@ -123,6 +123,11 @@ class NOWApplicationResource(Resource, UserMixin):
                     doc.is_final_package = filtered_doc['is_final_package']
                     doc.is_consultation_package = filtered_doc['is_consultation_package']
                     doc.is_referral_package = filtered_doc['is_referral_package']
+                    if doc.is_final_package:
+                        if doc.final_package_order is None:
+                            doc.final_package_order = now_application_identity.now_application.next_document_final_package_order
+                    else:
+                        doc.final_package_order = None
 
             data['imported_submission_documents'] = marshal(imported_documents,
                                                             IMPORTED_NOW_SUBMISSION_DOCUMENT)

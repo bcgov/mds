@@ -20,6 +20,11 @@ class PermitConditionTemplate(fields.Raw):
         return marshal(value, PERMIT_CONDITION_TEMPLATE_MODEL)
 
 
+class StandardPermitCondition(fields.Raw):
+    def format(self, value):
+        return marshal(value, STANDARD_PERMIT_CONDITION_MODEL)
+
+
 BASIC_MINE_LOCATION_MODEL = api.model(
     'BasicMineLocation', {
         'latitude': fields.String,
@@ -97,6 +102,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'documenttype': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -107,6 +113,7 @@ PERMIT_AMENDMENT_NOW_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'mine_document': fields.Nested(MINE_DOCUMENT_MODEL),
     })
 
@@ -646,6 +653,25 @@ PERMIT_CONDITION_TYPE_MODEL = api.model('PermitConditionType', {
     'description': fields.String,
     'display_order': fields.Integer
 })
+
+
+STANDARD_PERMIT_CONDITION_MODEL = api.model(
+    'StandardPermitCondition', {
+        'standard_permit_condition_id': fields.Integer,
+        'permit_condition_id': fields.Integer,
+        'notice_of_work_type': fields.String,
+        'standard_permit_condition_guid': fields.String,
+        'condition': fields.String,
+        'condition_type_code': fields.String,
+        'condition_category_code': fields.String,
+        'parent_standard_permit_condition_id': fields.Integer,
+        'parent_permit_condition_id': fields.Integer,
+        'condition_type_code': fields.String,
+        'sub_conditions': fields.List(StandardPermitCondition),
+        'step': fields.String,
+        'display_order': fields.Integer
+    })
+
 
 GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
     'GovernmentAgencyType', {

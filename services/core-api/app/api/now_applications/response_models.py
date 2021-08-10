@@ -330,6 +330,7 @@ NOW_APPLICATION_DOCUMENT = api.model(
         'now_application_document_sub_type_code': fields.String,
         'description': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
@@ -400,6 +401,7 @@ IMPORTED_NOW_SUBMISSION_DOCUMENT = api.model(
         'mine_document_guid': fields.String,
         'document_manager_guid': fields.String,
         'is_final_package': fields.Boolean,
+        'final_package_order': fields.Integer,
         'is_referral_package': fields.Boolean,
         'is_consultation_package': fields.Boolean,
         'preamble_title': fields.String,
@@ -622,14 +624,12 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
     'NOW_APPLICATION_MODEL_EXPORT', {
         'now_application_guid': fields.String,
         'now_number': fields.String,
-        'now_tracking_number':
-        fields.Integer,
+        'now_tracking_number': fields.Integer,
         'mine_guid': fields.String,
         'mine_name': fields.String,
         'mine_no': fields.String,
         'mine_region': fields.String,
-        'proponent_submitted_permit_number':
-        fields.String,
+        'proponent_submitted_permit_number': fields.String,
         'lead_inspector_party_guid': fields.String,
         'lead_inspector': fields.Nested(PARTY),
         'issuing_inspector_party_guid': fields.String,
@@ -641,16 +641,13 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'status_reason': fields.String,
         'submitted_date': Date,
         'received_date': Date,
-        'is_first_year_of_multi':
-        fields.Boolean,
+        'is_first_year_of_multi': fields.Boolean,
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
         'property_name': fields.String,
         'tenure_number': fields.String,
-        'unreclaimed_disturbance_previous_year':
-        fields.Integer,
-        'disturbance_planned_reclamation':
-        fields.Integer,
+        'unreclaimed_disturbance_previous_year': fields.Integer,
+        'disturbance_planned_reclamation': fields.Integer,
         'description_of_land': fields.String,
         'application_permit_type_code': fields.String,
         'proposed_start_date': Date,
@@ -689,8 +686,8 @@ NOW_APPLICATION_MODEL_EXPORT = api.model(
         'water_supply': fields.Nested(NOW_APPLICATION_WATER_SUPPLY),
         'documents': fields.List(fields.Nested(NOW_APPLICATION_DOCUMENT)),
         'submission_documents': fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
-        'imported_submission_documents':
-        fields.List(fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
+        'imported_submission_documents': fields.List(
+            fields.Nested(IMPORTED_NOW_SUBMISSION_DOCUMENT)),
         'contacts': fields.List(fields.Nested(NOW_PARTY_APPOINTMENT)),
         'liability_adjustment': fields.Fixed(decimals=2),
         'security_received_date': Date,

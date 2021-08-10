@@ -914,3 +914,5 @@ VALUES
   (858, 'MIN', 834, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds'),
   (859, 'QCA', 835, '[At least 90 days] prior to the commencement of work under this Permit, a(n) [Plan Name] must be developed to the satisfaction of the Chief Permitting Officer. The [Plan Name] must be implemented upon commencement of work.', 'RCC', 'CON', 1, 'system-mds', 'system-mds')
 on conflict do nothing;
+
+SELECT setval('permit_conditions_standard_permit_condition_id_seq', (SELECT COALESCE ((SELECT MAX(standard_permit_condition_id)FROM standard_permit_conditions),0)));
