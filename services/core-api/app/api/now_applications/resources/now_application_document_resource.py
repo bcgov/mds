@@ -30,12 +30,53 @@ class NOWApplicationDocumentUploadResource(Resource, UserMixin):
             request, now_application_identity.mine, 'noticeofwork')
 
 
+class NOWApplicationDocumentSortResource(Resource, UserMixin):
+
+    parser = CustomReqparser()
+    parser.add_argument(
+        'sorted_documents',
+        type=list,
+        location='json',
+        store_missing=False,
+        required=False,
+    )
+
+    @api.doc(description='Modify the order of documents in the permit package.')
+    @api.response(200, 'Successfully modified permit package order.')
+    @requires_role_edit_permit
+    def put(self, application_guid):
+        now_application_identity = NOWApplicationIdentity.find_by_guid(application_guid)
+        if not now_application_identity:
+            raise NotFound('No identity record for this application guid.')
+
+        data = self.parser.parse_args()
+
+        sorted_documents = data.get('sorted_documents', [])
+        for doc in sorted_documents:
+            mine_document_guid = doc.get('mine_document_guid')
+            mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
+            if not mine_document:
+                raise NotFound('Mine Document not found.')
+
+            if mine_document.now_application_document_xref:
+                xref = mine_document.now_application_document_xref
+            if mine_document.now_application_document_identity_xref:
+                xref = mine_document.now_application_document_identity_xref
+
+            final_package_order = doc.get('final_package_order')
+            xref.final_package_order = final_package_order
+            xref.save()
+
+        return None, 200
+
+
 class NOWApplicationDocumentResource(Resource, UserMixin):
     parser = CustomReqparser()
     parser.add_argument('preamble_title', type=str, required=False)
     parser.add_argument('preamble_author', type=str, required=False)
     parser.add_argument('preamble_date', type=str, required=False)
     parser.add_argument('is_final_package', type=bool, required=False)
+    parser.add_argument('final_package_order', type=int, required=False)
     parser.add_argument('description', type=str, required=False)
 
     @api.response(204, 'Successfully deleted.')
@@ -63,10 +104,8 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
     @api.marshal_with(MINE_DOCUMENT_MODEL, code=requests.codes.ok)
     def put(self, application_guid, mine_document_guid):
         data = self.parser.parse_args()
-        current_app.logger.debug(data)
 
         mine_document = MineDocument.find_by_mine_document_guid(mine_document_guid)
-
         if not mine_document:
             raise NotFound('No mine_document found for this application guid.')
 
@@ -89,6 +128,17 @@ class NOWApplicationDocumentResource(Resource, UserMixin):
             xref.preamble_title = data.get('preamble_title')
             xref.preamble_author = data.get('preamble_author')
             xref.preamble_date = data.get('preamble_date')
+
+            now_application = NOWApplication.find_by_application_guid(application_guid)
+            if not now_application:
+                raise NotFound('Notice of Work not found.')
+
+            final_package_order = data.get('final_package_order')
+            if final_package_order is None:
+                final_package_order = now_application.next_document_final_package_order
+            xref.final_package_order = final_package_order
+        else:
+            xref.final_package_order = None
 
         xref.save()
         mine_document.save()

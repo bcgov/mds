@@ -398,6 +398,23 @@ export const editNoticeOfWorkDocument = (now_application_guid, mineDocumentGuid,
     .finally(() => dispatch(hideLoading("modal")));
 };
 
+export const sortNoticeOfWorkDocuments = (now_application_guid, payload) => (dispatch) => {
+  dispatch(showLoading());
+  dispatch(request(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
+  return CustomAxios()
+    .put(
+      `${ENVIRONMENT.apiUrl}${API.SORT_NOTICE_OF_WORK_DOCUMENTS(now_application_guid)}`,
+      payload,
+      createRequestHeader()
+    )
+    .then((response) => {
+      dispatch(success(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS));
+      return response;
+    })
+    .catch(() => dispatch(error(reducerTypes.SORT_NOTICE_OF_WORK_DOCUMENTS)))
+    .finally(() => dispatch(hideLoading()));
+};
+
 export const updateNoticeOfWorkStatus = (now_application_guid, payload) => (dispatch) => {
   dispatch(showLoading("modal"));
   dispatch(request(reducerTypes.UPDATE_NOTICE_OF_WORK_STATUS));
