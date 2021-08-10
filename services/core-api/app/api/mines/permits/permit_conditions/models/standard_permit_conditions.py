@@ -12,7 +12,9 @@ from app.api.utils.list_lettering_helpers import num_to_letter, num_to_roman
 class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     __tablename__ = 'standard_permit_conditions'
 
-    standard_permit_condition_id = db.Column(db.Integer, primary_key=True,server_default=FetchedValue())
+    standard_permit_condition_id = db.Column(db.Integer,
+                                             primary_key=True,
+                                             server_default=FetchedValue())
     standard_permit_condition_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     condition = db.Column(db.String, nullable=False)
     condition_category_code = db.Column(
@@ -33,17 +35,15 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
         backref=backref('parent', remote_side=[standard_permit_condition_id]))
 
     def __repr__(self):
-        return '<StandardPermitConditions %r, %r>' % (self.standard_permit_condition_id,
-                                                      self.standard_permit_condition_guid)
+        return f'{self.__class__.__name__} {self.self.standard_permit_condition_id}, {self.standard_permit_condition_guid}'
 
     def __str__(self):
-        return f'<StandardPermitConditions> standard_permit_condition_id: {self.standard_permit_condition_id}, standard_permit_condition_guid: {self.standard_permit_condition_guid}, condition: {self.condition}, condition_category_code: {self.condition_category_code}, condition_type_code: {self.condition_type_code}, notice_of_work_type: {self.notice_of_work_type}, parent_standard_permit_condition_id: {self.parent_standard_permit_condition_id}, display_order: {self.display_order}, all_sub_conditions: {self.all_sub_conditions}'
+        return f'{self.__class__.__name__} standard_permit_condition_id: {self.standard_permit_condition_id}, standard_permit_condition_guid: {self.standard_permit_condition_guid}, condition: {self.condition}, condition_category_code: {self.condition_category_code}, condition_type_code: {self.condition_type_code}, notice_of_work_type: {self.notice_of_work_type}, parent_standard_permit_condition_id: {self.parent_standard_permit_condition_id}, display_order: {self.display_order}, all_sub_conditions: {self.all_sub_conditions}'
 
     @hybrid_property
     def sub_conditions(self):
         return [x for x in self.all_sub_conditions if x.deleted_ind == False]
 
-    # The FE is expecting the same keys are permitConditions
     @hybrid_property
     def permit_condition_id(self):
         return self.standard_permit_condition_id
@@ -89,4 +89,3 @@ class StandardPermitConditions(SoftDeleteMixin, AuditMixin, Base):
     def find_by_standard_permit_condition_id(cls, standard_permit_condition_id):
         return cls.query.filter_by(
             standard_permit_condition_id=standard_permit_condition_id, deleted_ind=False).first()
-    

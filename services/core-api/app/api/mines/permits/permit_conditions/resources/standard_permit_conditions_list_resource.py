@@ -1,6 +1,6 @@
 from flask_restplus import Resource, marshal
 from flask import request
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 from marshmallow.exceptions import MarshmallowError
 
 from app.extensions import api, jwt, db
@@ -18,7 +18,7 @@ class StandardPermitConditionsListResource(Resource, UserMixin):
         standard_permit_condition = StandardPermitConditions.find_by_notice_of_work_type_code(
             notice_of_work_type)
         if not standard_permit_condition:
-            raise BadRequest(
+            raise NotFound(
                 'No standard permit conditions found with that notice of work type code.')
 
         return standard_permit_condition
