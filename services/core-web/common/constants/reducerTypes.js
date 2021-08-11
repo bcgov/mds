@@ -228,3 +228,4 @@ export const DELETE_MINE_COMMENT = "DELETE_MINE_COMMENT";
 
 // EPIC Information
 export const GET_MINE_EPIC_INFO = "GET_MINE_EPIC_INFO";
+export const EXTERNAL_AUTHS = "EXTERNAL_AUTHS";
