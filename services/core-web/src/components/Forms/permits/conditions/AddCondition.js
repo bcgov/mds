@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Menu, Dropdown } from "antd";
+import { withRouter } from "react-router-dom";
 import {
   getEditingConditionFlag,
   getDraftPermitAmendmentForNOW,
@@ -12,6 +13,8 @@ import {
   createPermitCondition,
   fetchPermitConditions,
   fetchDraftPermitByNOW,
+  createStandardPermitCondition,
+  fetchStandardPermitConditions,
 } from "@common/actionCreators/permitActionCreator";
 import CustomPropTypes from "@/customPropTypes";
 import AddButton from "@/components/common/AddButton";
@@ -26,7 +29,17 @@ const propTypes = {
   createPermitCondition: PropTypes.func.isRequired,
   fetchPermitConditions: PropTypes.func.isRequired,
   fetchDraftPermitByNOW: PropTypes.func.isRequired,
+  fetchStandardPermitConditions: PropTypes.func.isRequired,
+  createStandardPermitCondition: PropTypes.func.isRequired,
   draftPermitAmendment: CustomPropTypes.permit.isRequired,
+  match: PropTypes.shape({
+    params: {
+      type: PropTypes.string,
+    },
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
 };
 
 const defaultProps = {};
@@ -35,7 +48,19 @@ export class AddCondition extends Component {
   state = { isEditing: false, conditionType: "SEC" };
 
   handleSubmit = (values) => {
+    const isAdminDashboard = this.props.location.pathname.includes(
+      "admin/dashboard/permit-conditions"
+    );
     const payload = { ...values, condition_type_code: this.state.conditionType };
+    if (isAdminDashboard) {
+      return this.props
+        .createStandardPermitCondition(this.props.match.params.type, payload)
+        .then(() => {
+          this.setState({ isEditing: false });
+          this.props.fetchStandardPermitConditions(this.props.match.params.type);
+          this.props.setEditingConditionFlag(false);
+        });
+    }
     return this.props
       .createPermitCondition(this.props.draftPermitAmendment.permit_amendment_guid, payload)
       .then(() => {
@@ -178,6 +203,8 @@ const mapDispatchToProps = (dispatch) =>
       fetchPermitConditions,
       createPermitCondition,
       fetchDraftPermitByNOW,
+      createStandardPermitCondition,
+      fetchStandardPermitConditions,
     },
     dispatch
   );
@@ -185,4 +212,4 @@ const mapDispatchToProps = (dispatch) =>
 AddCondition.propTypes = propTypes;
 AddCondition.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCondition);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddCondition));

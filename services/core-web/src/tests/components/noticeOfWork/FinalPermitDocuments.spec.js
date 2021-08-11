@@ -20,6 +20,7 @@ const setupProps = () => {
   [props.mineGuid] = MOCK.MINES.mineIds;
   props.noticeOfWork = IMPORTED_NOTICE_OF_WORK;
   props.documentDownloadState = { downloading: false, currentFile: 1, totalFiles: 1 };
+  props.progress = {};
 };
 
 beforeEach(() => {

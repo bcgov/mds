@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminPermitConditionManagement renders properly 1`] = `
+<div
+  className="tab__content"
+>
+  <h2>
+    Permit Conditions
+  </h2>
+  <Divider />
+  <br />
+  <withRouter(Connect(StandardPermitConditions)) />
+</div>
+`;

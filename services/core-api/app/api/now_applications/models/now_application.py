@@ -213,6 +213,23 @@ class NOWApplication(Base, AuditMixin):
         return activities
 
     @hybrid_property
+    def next_document_final_package_order(self):
+        documents_order = [
+            doc.final_package_order for doc in self.documents if doc.final_package_order is not None
+        ]
+        max_documents_order = max(documents_order) if documents_order else 0
+
+        imported_submission_documents_order = [
+            doc.final_package_order for doc in self.imported_submission_documents
+            if doc.final_package_order is not None
+        ]
+        max_imported_submission_documents_order = max(
+            imported_submission_documents_order) if imported_submission_documents_order else 0
+
+        max_order = max(max_documents_order, max_imported_submission_documents_order)
+        return max_order + 1
+
+    @hybrid_property
     def total_merchantable_timber_volume(self):
         total = 0
         for activity in self.get_activities():
@@ -330,12 +347,14 @@ class NOWApplication(Base, AuditMixin):
         ]
         for doc in now_form_docs:
             doc.is_final_package = False
+            doc.final_package_order = None
             doc.save()
 
         # Add the newly generated Notice of Work Form document to the final application package
         now_application_document_xref_guid = now_doc_dict['now_application_document_xref_guid']
         now_doc = NOWApplicationDocumentXref.find_by_guid(now_application_document_xref_guid)
         now_doc.is_final_package = True
+        now_doc.final_package_order = self.next_document_final_package_order
         now_doc.description = description
         now_doc.save()
 
@@ -359,6 +378,8 @@ class NOWApplication(Base, AuditMixin):
                 doc.description,
                 'is_final_package':
                 doc.is_final_package,
+                'final_package_order':
+                doc.final_package_order,
                 'is_consultation_package':
                 doc.is_consultation_package,
                 'is_referral_package':
@@ -395,6 +416,7 @@ class NOWApplication(Base, AuditMixin):
                     'documenttype': doc.documenttype,
                     'description': doc.description,
                     'is_final_package': False,
+                    'final_package_order': None,
                     'is_referral_package': False,
                     'is_consultation_package': False,
                     'filename': doc.filename,

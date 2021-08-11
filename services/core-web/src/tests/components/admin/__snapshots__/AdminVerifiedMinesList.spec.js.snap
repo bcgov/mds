@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminVerifiedMinesList renders properly 1`] = `
+<div
+  className="tab__content"
+>
+  <h2>
+    Mine Verification
+  </h2>
+  <Divider />
+  <br />
+  <h4>
+    0
+     
+    Mine(s) needing re-verification
+  </h4>
+  <CoreTable
+    columns={
+      Array [
+        Object {
+          "dataIndex": "mine_name",
+          "render": [Function],
+          "title": "Mine Name",
+          "width": 150,
+        },
+        Object {
+          "dataIndex": "verifying_user",
+          "render": [Function],
+          "title": "Last Verified By",
+          "width": 150,
+        },
+        Object {
+          "dataIndex": "formatted_timestamp",
+          "render": [Function],
+          "title": "Last Verified On",
+          "width": 150,
+        },
+      ]
+    }
+    condition={false}
+    dataSource={Array []}
+    tableProps={
+      Object {
+        "align": "center",
+        "pagination": false,
+        "scroll": Object {
+          "y": 500,
+        },
+      }
+    }
+  />
+</div>
+`;

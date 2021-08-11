@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdminDashboard renders properly 1`] = `
-<div
-  className="landing-page"
->
+<div>
   <div
     className="landing-page__header"
   >
@@ -14,80 +12,19 @@ exports[`AdminDashboard renders properly 1`] = `
         sm={22}
       >
         <h1>
-          Admin View
+          Administrative Dashboard
         </h1>
       </Col>
     </Row>
   </div>
-  <div
-    className="landing-page__content"
-  >
-    <Tabs
-      activeKey="verifiedMines"
-      animated={
-        Object {
-          "inkBar": true,
-          "tabPane": false,
-        }
-      }
-      centered={true}
-      defaultActiveKey="summary"
-      onChange={[Function]}
-      size="large"
-    >
-      <TabPane
-        key="verifiedMines"
-        tab="Verified Mines"
-      >
-        <div
-          className="tab__content"
-        >
-          <div>
-            <h4>
-              0
-               Verified Mines
-            </h4>
-            <div>
-              <AdminVerifiedMinesList
-                isLoaded={false}
-                minesVerifiedStatusList={Array []}
-              />
-            </div>
-          </div>
-        </div>
-      </TabPane>
-      <TabPane
-        key="unverifiedMines"
-        tab="Unverified Mines"
-      >
-        <div
-          className="tab__content"
-        >
-          <div>
-            <h4>
-              0
-               Mines Needing Re-Verification
-            </h4>
-            <div>
-              <AdminVerifiedMinesList
-                isLoaded={false}
-                minesVerifiedStatusList={Array []}
-              />
-            </div>
-          </div>
-        </div>
-      </TabPane>
-      <TabPane
-        key="managerMinespaceUsers"
-        tab="Manage MineSpace Users"
-      >
-        <div
-          className="tab__content"
-        >
-          <Connect(MinespaceUserManagement) />
-        </div>
-      </TabPane>
-    </Tabs>
-  </div>
+  <Connect(AdminNavigation)
+    activeButton=""
+    openSubMenuKey={
+      Array [
+        "",
+      ]
+    }
+  />
+  <AdminDashboardRoutes />
 </div>
 `;

@@ -45,6 +45,8 @@ export const USER_ROLES = {
   role_edit_parties: "core_edit_parties",
   role_edit_permits: "core_edit_permits",
   role_edit_explosives_permits: "core_edit_explosives_permits",
+  role_edit_template_conditions: "core_edit_template_conditions",
+  role_view_admin_route: "core_view_admin_route",
   role_edit_reports: "core_edit_reports",
   role_edit_do: "core_edit_do",
   role_edit_variances: "core_edit_variances",
