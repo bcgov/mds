@@ -180,8 +180,6 @@ jobs:
         run: |
           echo "Grace period..."
           sleep 10
-          echo "Waiting for following deployments to succeed:"
-          echo "$(oc get dc --no-headers=false -o name)"
 
   watch-rollout:
     name: watch-rollout
