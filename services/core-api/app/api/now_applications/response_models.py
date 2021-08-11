@@ -458,6 +458,8 @@ NOW_APPLICATION_MODEL = api.model(
         fields.Nested(PARTY),
         'imported_to_core':
         fields.Boolean,
+        'is_historic':
+        fields.Boolean,
         'imported_date':
         Date,
         'imported_by':

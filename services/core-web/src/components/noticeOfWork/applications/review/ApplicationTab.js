@@ -67,9 +67,11 @@ const propTypes = {
     }),
   }).isRequired,
   isNoticeOfWorkTypeDisabled: PropTypes.bool,
+  showActionsAndProgress: PropTypes.bool,
 };
 const defaultProps = {
   isNoticeOfWorkTypeDisabled: true,
+  showActionsAndProgress: true,
 };
 
 export class ApplicationTab extends Component {
@@ -249,6 +251,7 @@ export class ApplicationTab extends Component {
       <NOWTabHeader
         showProgressButton={this.props.noticeOfWork.lead_inspector_party_guid && isNoWApplication}
         tab="REV"
+        showActionsAndProgress={this.props.showActionsAndProgress}
         tabActions={
           this.props.noticeOfWork.lead_inspector_party_guid && (
             <>
