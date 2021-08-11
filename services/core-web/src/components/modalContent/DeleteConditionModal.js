@@ -8,6 +8,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
   submitting: PropTypes.bool.isRequired,
   condition: PropTypes.objectOf(PropTypes.any).isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const label = {
@@ -36,7 +37,7 @@ export const DeleteConditionModal = (props) => {
           className="full-mobile"
           type="primary"
           htmlType="submit"
-          onClick={() => props.handleDelete(props.condition.permit_condition_guid)}
+          onClick={() => props.handleDelete(props.condition)}
           loading={props.submitting}
         >
           {props.title}

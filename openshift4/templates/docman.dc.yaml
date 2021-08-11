@@ -81,6 +81,10 @@ parameters:
     value: 1Gi
   - name: TUSD_URL
     value: http://tusd:1080/files/
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Core
 objects:
   - apiVersion: v1
     kind: PersistentVolumeClaim
@@ -97,7 +101,9 @@ objects:
     metadata:
       name: ${NAME}
       creationTimestamp: null
-      labels: null
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs
       annotations:
         description: Defines how to deploy the application server
     spec:
@@ -289,7 +295,9 @@ objects:
     metadata:
       name: ${NAME}-worker
       creationTimestamp: null
-      labels: null
+      labels:
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs
       annotations:
         description: Defines how to deploy the celery task worker
     spec:

@@ -1,5 +1,5 @@
 import pytest
-from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS
+from app.api.utils.access_decorators import VIEW_ALL, MINE_EDIT, MINE_ADMIN, MINESPACE_PROPONENT, EDIT_PARTY, EDIT_PERMIT, EDIT_STANDARD_PERMIT_CONDITIONS, EDIT_DO, EDIT_VARIANCE, EDIT_REPORT, EDIT_SUBMISSIONS, EDIT_SECURITIES, GIS
 
 from app.api.download_token.resources.download_token import DownloadTokenResource
 from app.api.mines.documents.resources.mine_document_resource import MineDocumentListResource
@@ -36,7 +36,8 @@ from app.api.now_submissions.resources.application_nda_list_resource import Appl
 from app.api.securities.resources.bond import BondResource, BondListResource, BondTransferResource
 from app.api.mines.comments.resources.mine_comment import MineCommentResource, MineCommentListResource
 from app.api.mines.permits.permit_conditions.resources.permit_conditions_resource import PermitConditionsListResource, PermitConditionsResource
-
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_resource import StandardPermitConditionsResource
+from app.api.mines.permits.permit_conditions.resources.standard_permit_conditions_list_resource import StandardPermitConditionsListResource
 from app.api.now_applications.resources.now_activity_type_resource import NOWActivityTypeResource
 from app.api.now_applications.resources.now_application_import_resource import NOWApplicationImportResource
 from app.api.now_applications.resources.now_application_document_type_resource import NOWApplicationDocumentTypeListResource, NOWApplicationDocumentTypeResource, NOWApplicationDocumentGenerateResource
@@ -130,6 +131,10 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (PermitConditionsResource, 'get', [EDIT_PERMIT]),
     (PermitConditionsResource, 'put', [EDIT_PERMIT]),
     (PermitConditionsResource, 'delete', [EDIT_PERMIT]),
+    (StandardPermitConditionsListResource, 'post', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+    (StandardPermitConditionsListResource, 'get', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+    (StandardPermitConditionsResource, 'put', [EDIT_STANDARD_PERMIT_CONDITIONS]),
+    (StandardPermitConditionsResource, 'delete', [EDIT_STANDARD_PERMIT_CONDITIONS])
 ])
 def test_endpoint_auth(resource, method, expected_roles):
     endpoint = getattr(resource, method, None)

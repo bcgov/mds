@@ -12,6 +12,10 @@ parameters:
     required: true
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: Fider
 objects:
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
@@ -19,6 +23,9 @@ objects:
       labels:
         app: fider
       name: fider-postgresql
+    labels:
+      app.kubernetes.io/part-of: ${APPNAME}
+      app.openshift.io/runtime: postgresql
     spec:
       replicas: 1
       revisionHistoryLimit: 10
@@ -126,6 +133,8 @@ objects:
     metadata:
       labels:
         app: fider
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs
       name: fider-postgresql
     spec:
       ports:
@@ -145,6 +154,8 @@ objects:
     metadata:
       labels:
         app: fider
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs
       name: fider
     spec:
       ports:
@@ -184,6 +195,8 @@ objects:
       generation: 10
       labels:
         app: fider
+        app.kubernetes.io/part-of: ${APPNAME}
+        app.openshift.io/runtime: nodejs
       name: fider-app
     spec:
       replicas: 1

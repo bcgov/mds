@@ -357,6 +357,7 @@ export class NOWPermitGeneration extends Component {
         ?.filter(({ is_final_package }) => is_final_package)
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
+          final_package_order: doc.final_package_order,
         }));
       documents = filteredSubmissionDocuments;
     }
@@ -365,9 +366,11 @@ export class NOWPermitGeneration extends Component {
         ?.filter(({ is_final_package }) => is_final_package)
         .map((doc) => ({
           document_info: getDocumentInfo(doc),
+          final_package_order: doc.final_package_order,
         }));
       documents = [...documents, ...requestedDocuments];
     }
+    documents.sort((a, b) => a.final_package_order - b.final_package_order);
     return documents;
   };
 

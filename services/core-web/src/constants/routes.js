@@ -12,6 +12,9 @@ import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import AdminPermitConditionManagement from "@/components/admin/AdminPermitConditionManagement";
+import AdminVerifiedMinesList from "@/components/admin/AdminVerifiedMinesList";
+import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashboard";
 import ExecutiveReportingDashboard from "@/components/dashboard/reporting/ExecutiveReportingDashboard";
 import SearchResults from "@/components/search/SearchResults";
@@ -234,9 +237,27 @@ export const EXECUTIVE_REPORTING_DASHBOARD = {
   component: ExecutiveReportingDashboard,
 };
 
+// Admin Dashboard Routes
 export const ADMIN_DASHBOARD = {
   route: "/admin/dashboard",
   component: AdminDashboard,
+};
+
+export const ADMIN_PERMIT_CONDITION = {
+  route: "/admin/dashboard/permit-conditions/:type",
+  dynamicRoute: (type) => `/admin/dashboard/permit-conditions/${type}`,
+  component: AdminPermitConditionManagement,
+};
+
+export const ADMIN_VERIFIED_MINES = {
+  route: "/admin/dashboard/mine-verification/:type",
+  dynamicRoute: (type) => `/admin/dashboard/mine-verification/${type}`,
+  component: AdminVerifiedMinesList,
+};
+
+export const ADMIN_MANAGE_MINESPACE_USERS = {
+  route: "/admin/dashboard/manage-minespace/users",
+  component: MinespaceUserManagement,
 };
 
 export const SEARCH_RESULTS = {

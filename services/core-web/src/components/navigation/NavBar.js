@@ -91,7 +91,7 @@ export class NavBar extends Component {
           Contacts
         </Button>
       </Link>
-      <AuthorizationWrapper permission={Permission.ADMIN}>
+      <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
         <Link to={router.ADMIN_DASHBOARD.route}>
           <Button
             id={this.ifActiveButton(router.ADMIN_DASHBOARD.route)}
@@ -108,7 +108,11 @@ export class NavBar extends Component {
           <DownOutlined />
         </button>
       </Dropdown>
-      <a href="https://fider.apps.silver.devops.gov.bc.ca/" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://fider.apps.silver.devops.gov.bc.ca/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Tooltip title="Feedback" placement="bottom">
           <Button type="link" className="menu__btn--link">
             <MessageOutlined className="icon-sm" />

@@ -15,6 +15,7 @@ import {
   deleteNoticeOfWorkApplicationDocument,
   createAdminAmendmentApplication,
   createNoticeOfWorkApplicationImportSubmissionDocumentsJob,
+  sortNoticeOfWorkDocuments,
 } from "@common/actionCreators/noticeOfWorkActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -404,6 +405,37 @@ describe("`createAdminAmendmentApplication` action creator", () => {
   it("Request failure, dispatches `error` with correct response", () => {
     mockAxios.onPost(url).reply(418, MOCK.ERROR);
     return createAdminAmendmentApplication(payload)(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`sortNoticeOfWorkDocuments` action creator", () => {
+  const payload = {};
+  const applicationGuid = NOW_MOCK.NOTICE_OF_WORK.application_guid;
+  const url = `${ENVIRONMENT.apiUrl}${API.SORT_NOTICE_OF_WORK_DOCUMENTS(applicationGuid)}`;
+
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPut(url, payload).reply(200, mockResponse);
+    return sortNoticeOfWorkDocuments(
+      applicationGuid,
+      payload
+    )(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPut(url).reply(418, MOCK.ERROR);
+    return sortNoticeOfWorkDocuments(
+      applicationGuid,
+      payload
+    )(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);
