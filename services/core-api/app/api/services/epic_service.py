@@ -6,7 +6,7 @@ from app.api.utils.helpers import clean_HTML_string
 from app.api.services.nrpti_service import NRPTIService
 
 
-class EPICEAOService():
+class EPICService():
   
     def get_for_mine(mine_guid):
         mine = NRPTIService.get_all().get(mine_guid)
