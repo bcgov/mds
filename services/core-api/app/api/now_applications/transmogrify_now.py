@@ -11,9 +11,11 @@ from flask import current_app
 
 vfcbc_status_code_mapping = {
     "Accepted": "AIA",
+    "Approved": "AIA",
     "Withdrawn": "WDN",
     "Rejected": "RJN",
     "Under Review": "PEV",
+    "Pending Verification": "PEV",
     None: "PEV",
 }
 
@@ -78,7 +80,10 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
         app_models.NOWApplicationType, mms_now_sub.noticeofworktype or now_sub.noticeofworktype,
         'notice_of_work_type_code')
     # TODO: Determine if we should always set the code the PEV (Pending Verifiation) here.
-    now_app.now_application_status_code = vfcbc_status_code_mapping[now_sub.status]
+    status = mms_now_sub.status or now_sub.status
+    now_app.now_application_status_code = vfcbc_status_code_mapping[status]
+
+
     now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
 
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
