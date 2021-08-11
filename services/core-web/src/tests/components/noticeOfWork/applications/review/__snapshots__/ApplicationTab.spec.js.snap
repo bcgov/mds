@@ -16,6 +16,7 @@ exports[`ApplicationTab renders properly 1`] = `
     handleDraftPermit={null}
     isEditMode={false}
     isNoticeOfWorkTypeDisabled={true}
+    showActionsAndProgress={true}
     showProgressButton={true}
     tab="REV"
     tabActions=""
