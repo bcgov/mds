@@ -7,6 +7,19 @@ on:
       - develop
 
 jobs:
+  tests-verify-migrations:
+    name: tests-verify-migrations
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Check migrations successful
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker-compose -f docker-compose.ci.yaml up --exit-code-from flyway flyway
+
   tests-integration-backend:
     name: tests-integration-backend
     runs-on: ubuntu-20.04
@@ -14,7 +27,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      # TODO: cache images
       - name: Create containers for integration tests
         env:
           DOCKER_BUILDKIT: 1
@@ -23,4 +35,4 @@ jobs:
 
       - name: Run integration tests
         run: |
-          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --branch --source=app -m pytest
+          docker-compose -f docker-compose.ci.yaml exec -T backend pytest
