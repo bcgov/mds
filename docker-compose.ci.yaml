@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_USER=mds
       - POSTGRES_PASSWORD=test
-      - POSTGRES_DB=mds
+      - POSTGRES_DB=mds_test
     ports:
       - "5432:5432"
     volumes:
@@ -32,9 +32,9 @@ services:
       - FLYWAY_USER=mds
       - FLYWAY_HOME=/flyway
       - FLYWAY_PASSWORD=test
-      - FLYWAY_DB_NAME=mds
+      - FLYWAY_DB_NAME=mds_test
       - FLYWAY_DB_HOST=postgres
-      - FLYWAY_URL=jdbc:postgresql://postgres/mds
+      - FLYWAY_URL=jdbc:postgresql://postgres/mds_test
       - FLYWAY_OUT_OF_ORDER=true
       - FLYWAY_CONNECT_RETRIES=60
     depends_on:
