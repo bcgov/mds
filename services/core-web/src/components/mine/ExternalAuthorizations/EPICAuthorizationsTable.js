@@ -8,7 +8,7 @@ import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import NullScreen from "@/components/common/NullScreen";
 
 /**
- * @class MineExplosivesPermitTable - list of mine explosives storage and use permits
+ * @class EPICAuthorizationsTable - list of the external authorizations on a mine
  */
 const propTypes = {
   data: PropTypes.objectOf(CustomPropTypes.mineInfo),
@@ -31,7 +31,7 @@ const transformRowData = (projectInfo) => {
   );
 };
 
-export class ExternalAuthorizationsTable extends Component {
+export class EPICAuthorizationsTable extends Component {
   columns = () => [
     {
       title: "Legislation Year",
@@ -125,7 +125,7 @@ export class ExternalAuthorizationsTable extends Component {
   }
 }
 
-ExternalAuthorizationsTable.propTypes = propTypes;
-ExternalAuthorizationsTable.defaultProps = defaultProps;
+EPICAuthorizationsTable.propTypes = propTypes;
+EPICAuthorizationsTable.defaultProps = defaultProps;
 
-export default withRouter(ExternalAuthorizationsTable);
+export default withRouter(EPICAuthorizationsTable);

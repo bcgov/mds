@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ExternalAuthorizationsTable } from "@/components/mine/ExternalAuthorizations/ExternalAuthorizationsTable";
+import { EPICAuthorizationsTable } from "@/components/mine/ExternalAuthorizations/EPICAuthorizationsTable";
 import * as MOCK from "@/tests/mocks/dataMocks";
 
 const props = {};
@@ -14,9 +14,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("ExternalAuthorizationsTable", () => {
+describe("EPICAuthorizationsTable", () => {
   it("renders properly", () => {
-    const component = shallow(<ExternalAuthorizationsTable {...props} />);
+    const component = shallow(<EPICAuthorizationsTable {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

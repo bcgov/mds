@@ -8,7 +8,7 @@ import CustomPropTypes from "@/customPropTypes";
 import { getMineGuid } from "@common/selectors/mineSelectors";
 import { getMineEpicInfo } from "@common/selectors/externalAuthorizationSelectors";
 import { fetchMineEpicInformation } from "@common/actionCreators/externalAuthorizationActionCreator";
-import ExternalAuthorizationsTable from "@/components/mine/ExternalAuthorizations/ExternalAuthorizationsTable";
+import EPICAuthorizationsTable from "@/components/mine/ExternalAuthorizations/EPICAuthorizationsTable";
 
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
@@ -47,7 +47,7 @@ export class ExternalAuthorizations extends Component {
                 <h3 className="uppercase">EPIC Authorizations</h3>
               </div>
               <br />
-              <ExternalAuthorizationsTable
+              <EPICAuthorizationsTable
                 isLoaded={this.state.isLoaded}
                 data={this.props.mineEpicInfo}
               />

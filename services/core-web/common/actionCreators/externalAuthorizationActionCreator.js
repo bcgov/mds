@@ -1,7 +1,7 @@
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { request, success, error } from "../actions/genericActions";
 import * as reducerTypes from "../constants/reducerTypes";
-import * as mineActions from "../actions/mineActions";
+import * as externalAuthActions from "../actions/externalAuthorizationActions";
 import * as API from "../constants/API";
 import { ENVIRONMENT } from "../constants/environment";
 import { createRequestHeader } from "../utils/RequestHeaders";
@@ -15,7 +15,7 @@ export const fetchMineEpicInformation = (mineGuid) => (dispatch) => {
     .get(`${ENVIRONMENT.apiUrl + API.EPIC_INFO(mineGuid)}`, createRequestHeader())
     .then((response) => {
       dispatch(success(reducerTypes.GET_MINE_EPIC_INFO));
-      dispatch(mineActions.storeEpicInfo(response.data, mineGuid));
+      dispatch(externalAuthActions.storeEpicInfo(response.data, mineGuid));
       return response;
     })
     .catch((err) => {
