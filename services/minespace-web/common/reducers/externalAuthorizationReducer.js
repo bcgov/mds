@@ -2,8 +2,8 @@ import * as actionTypes from "../constants/actionTypes";
 import { EXTERNAL_AUTHS } from "../constants/reducerTypes";
 
 /**
- * @file mineReducer.js
- * all data associated with new mine/existing mine records is handled witnin this reducer.
+ * @file externalAuthorizationReducer.js
+ * All data associated with authorizations and applications from other ministries or sources outside of EMLI.
  */
 
 const initialState = {
