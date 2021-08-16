@@ -23,6 +23,7 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     mine_party_appt_guid = db.Column(UUID(as_uuid=True), server_default=FetchedValue())
     mine_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('mine.mine_guid'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    merged_from_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
     mine_party_appt_type_code = db.Column(
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     start_date = db.Column(db.DateTime)
@@ -39,7 +40,8 @@ class MinePartyAppointment(SoftDeleteMixin, AuditMixin, Base):
     union_rep_company = db.Column(db.String)
 
     # Relationships
-    party = db.relationship('Party', lazy='joined')
+    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid)
+    merged_from_party = db.relationship('Party', lazy='joined', foreign_keys=merged_from_party_guid)
     mine_tailings_storage_facility = db.relationship('MineTailingsStorageFacility', lazy='joined')
     mine_party_appt_type = db.relationship(
         'MinePartyAppointmentType',

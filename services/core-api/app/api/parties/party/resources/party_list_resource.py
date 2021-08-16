@@ -1,20 +1,20 @@
 from flask import request, current_app
 from flask_restplus import Resource, marshal
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from sqlalchemy_filters import apply_sort, apply_pagination
 from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_
 
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_12_HOURS
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
-from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
+from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.parties.response_models import PARTY, PAGINATED_PARTY_LIST
 
 ALL_INSPECTORS_QUERY_PARAMS = {'business_role': 'INS', 'per_page': 'all'}
@@ -121,13 +121,8 @@ class PartyListResource(Resource, UserMixin):
     @api.doc(description='Create a party.')
     @requires_role_edit_party
     @api.marshal_with(PARTY, code=200)
-    def post(self, party_guid=None):
-        if party_guid:
-            raise BadRequest('Unexpected party id in Url.')
+    def post(self):
         data = PartyListResource.parser.parse_args()
-
-        Party.validate_phone_no(data.get('phone_no', None))
-
         party = Party.create(
             data.get('party_name'),
             data.get('phone_no'),

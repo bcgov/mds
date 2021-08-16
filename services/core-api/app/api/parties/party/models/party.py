@@ -30,8 +30,15 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     postnominal_letters = db.Column(db.String)
     idir_username = db.Column(db.String)
     signature = db.Column(db.String)
+    merged_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
-    mine_party_appt = db.relationship('MinePartyAppointment', lazy='joined')
+    # TODO: Should we modify the primary join to ignore deleted records?
+    mine_party_appt = db.relationship(
+        'MinePartyAppointment',
+        lazy='joined',
+        primaryjoin=
+        'and_(MinePartyAppointment.party_guid == Party.party_guid, MinePartyAppointment.deleted_ind==False)'
+    )
 
     now_party_appt = db.relationship(
         'NOWPartyAppointment',
@@ -44,7 +51,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyBusinessRoleAppointment',
         lazy='dynamic',
         primaryjoin=
-        'and_(Party.party_guid == PartyBusinessRoleAppointment.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
+        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
     )
 
     party_orgbook_entity = db.relationship(
@@ -146,6 +153,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                first_name=None,
                phone_ext=None,
                add_to_session=True):
+        Party.validate_phone_no(phone_no)
         party = cls(
             party_name=party_name,
             phone_no=phone_no,
@@ -157,6 +165,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party.save(commit=False)
         return party
 
+    # TODO: Why isn't this an @validates method like the others?
     @classmethod
     def validate_phone_no(cls, phone_no):
         if not phone_no:
