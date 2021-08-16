@@ -114,7 +114,7 @@ class MergeResource(Resource, UserMixin):
             for address in party.address:
                 address.delete(False)
 
-        # Create the new appointment records.
+        # Update the merged appointment records.
         for party in parties:
 
             # Handle NoW Party Appointments.
