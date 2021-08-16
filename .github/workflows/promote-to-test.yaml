@@ -87,7 +87,7 @@ jobs:
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
       - name: Watch rollout
         run: |
-          until [ "$(oc get dc ${{ matrix.name }} -o=jsonpath="{$.status.conditions[*].message}" --no-headers=false | grep -i 'successfully rolled out')" != "" ]; do
+          until [ "$(oc -n ${{ secrets.NS_TEST }} get dc ${{ matrix.name }} -o=jsonpath="{$.status.conditions[*].message}" --no-headers=false | grep -i 'successfully rolled out')" != "" ]; do
               echo "Waiting on: $(oc get dc ${{ matrix.name }} -o name --no-headers=false) ..."
               sleep 10
           done
