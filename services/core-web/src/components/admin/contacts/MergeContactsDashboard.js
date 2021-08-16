@@ -34,7 +34,6 @@ export class MergeContactsDashboard extends Component {
               <h1>Merge Contacts</h1>
             </Col>
           </Row>
-
           <Tabs
             activeKey={this.state.activeTab}
             size="large"
