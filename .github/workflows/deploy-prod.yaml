@@ -1,4 +1,4 @@
-name: Deploy to prod
+name: Update prod infra
 
 on:
   workflow_dispatch:
