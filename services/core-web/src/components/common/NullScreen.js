@@ -41,6 +41,12 @@ const NullScreen = (props) => (
         <h3>{String.NO_NRIS_INSPECTIONS}</h3>
       </div>
     )}
+    {props.type === "epic-authorizations" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>{String.NO_EPIC_INFORMATION}</h3>
+      </div>
+    )}
     {props.type === "unauthorized" && (
       <div className="no-nav-bar">
         <img alt="mine_img" src={NO_MINE} />

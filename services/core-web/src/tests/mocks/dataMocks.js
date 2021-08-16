@@ -6166,3 +6166,37 @@ export const EXPLOSIVES_PERMITS = {
     ],
   },
 };
+
+export const MINE_EPIC_INFO = {
+  records: {
+    mine_info: {
+      mine_guid: "a157accf-7a61-40ea-a78c-6d23a6bb944b",
+      summary:
+        "<p>Located about 25 km north of the town of Sparwood, Line Creek Operations is one of Teck's five metallurgical coal mines in southeast British Columbia's Elk Valley.\n<p>Line Creek Operations opened in 1981 and currently employs about 490 workers. Proven and probable reserves are projected to support mining at Line Creek at currently planned production rates for another 23 years.\n<p>The West Line Creek Active Water Treatment Facility began full operations in March 2016. This is the first of the water treatment facilities planned for Teck's Elk Valley mines, as outlined in the Elk Valley Water Quality Plan. The goal of the Elk Valley Water Quality Plan is to stabilize and reverse the increasing trend of selenium and other substances to maintain the health of the Elk Valley watershed, while at the same time allowing for mining in the region to continue. Selenium concentrations in water treated at the West Line Creek Active Water Treatment Facility are reduced by about 96%, and nitrate concentrations in treated water are reduced by over 99%.</p>",
+      projects: [
+        {
+          project_id: "58851185aaecd9001b821677",
+          project_legislation_year: 2002,
+          project_lead: "Karen Christie",
+          project_lead_email: "test@test.ca",
+          project_lead_phone: "123-456-7890",
+          responsible_EPD: "Karen Christie",
+          responsible_EPD_email: "test@test.ca",
+          responsible_EPD_phone: "778 698-9347",
+          link: "https://projects.eao.gov.bc.ca/p/58851185aaecd9001b821677/project-details",
+        },
+        {
+          project_id: "58851079aaecd9001b810cb5",
+          project_legislation_year: 1996,
+          project_lead: "Karen Christie",
+          project_lead_email: "test@test.ca",
+          project_lead_phone: "123-456-7890",
+          responsible_EPD: "Karen Christie",
+          responsible_EPD_email: "test@test.ca",
+          responsible_EPD_phone: "123-456-7890",
+          link: "https://projects.eao.gov.bc.ca/p/58851079aaecd9001b810cb5/project-details",
+        },
+      ],
+    },
+  },
+};

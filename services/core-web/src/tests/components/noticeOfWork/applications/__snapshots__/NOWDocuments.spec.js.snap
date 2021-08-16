@@ -77,7 +77,7 @@ exports[`NOWDocuments renders properly 1`] = `
       }
     }
     pagination={false}
-    rowKey="index"
+    rowKey="key"
     rowSelection={null}
   />
 </div>
