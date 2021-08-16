@@ -192,7 +192,6 @@ jobs:
           - name: nginx
           - name: frontend
           - name: backend
-          - name: flyway
           - name: tusd
           - name: docgen
           - name: dbbackup
@@ -213,7 +212,7 @@ jobs:
       - name: Watch rollout
         run: |
           until [ "$(oc -n ${{ secrets.NS_DEV }} get dc ${{ matrix.name }} -o=jsonpath="{$.status.conditions[*].message}" --no-headers=false | grep -i 'successfully rolled out')" != "" ]; do
-              echo "Waiting on: $(oc get dc ${{ matrix.name }} -o name --no-headers=false) ..."
+              echo "Waiting on: $(oc -n ${{ secrets.NS_DEV }} get dc ${{ matrix.name }} -o name --no-headers=false) ..."
               sleep 10
           done
           echo "Deployment complete"
