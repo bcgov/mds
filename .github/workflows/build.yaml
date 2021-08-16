@@ -163,11 +163,11 @@ jobs:
         run: |
           cd ${{ matrix.context }}
           docker build -t ${{ matrix.image }}:latest . -f Dockerfile.ci
-          docker tag ${{ matrix.image }}:latest ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:latest
-          docker tag ${{ matrix.image }}:latest ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:dev
+          docker tag ${{ matrix.image }}:latest ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:latest
+          docker tag ${{ matrix.image }}:latest ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}:dev
       - name: Push
         run: |
-          docker push --all-tags ${{ secrets.REGISTRY_HOST }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}
+          docker push --all-tags ${{ secrets.CLUSTER_REGISTRY }}/${{ secrets.NS_TOOLS }}/${{ matrix.image }}
 
   grace-period:
     name: grace-period
