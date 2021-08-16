@@ -13,6 +13,7 @@ import * as NoticeOfWorkTypes from "@/customPropTypes/noticeOfWork";
 import * as ApplicationPageFromRoute from "@/customPropTypes/applicationPageFromRoute";
 import * as Securities from "@/customPropTypes/securities";
 import * as ExplosivePermits from "@/customPropTypes/explosivesPermit";
+import * as ExternalAuthorizations from "@/customPropTypes/externalAuthorizations";
 
 export default {
   ...CommonTypes,
@@ -29,4 +30,5 @@ export default {
   ...ApplicationPageFromRoute,
   ...Securities,
   ...ExplosivePermits,
+  ...ExternalAuthorizations,
 };

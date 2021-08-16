@@ -47,6 +47,7 @@ from app.api.mines.permits.permit_conditions.resources.permit_condition_category
 from app.api.mines.permits.permit_conditions.resources.permit_condition_type_resource import PermitConditionTypeResource
 from app.api.mines.work_information.resources.work_information_list import MineWorkInformationListResource
 from app.api.mines.work_information.resources.work_information import MineWorkInformationResource
+from app.api.mines.external_authorizations.resources.epic_resource import EPICResource
 
 api = Namespace('mines', description='Mine related operations')
 
@@ -177,3 +178,7 @@ api.add_resource(MinePartyApptDocumentUploadResource,
 
 api.add_resource(MineCommentListResource, '/<string:mine_guid>/comments')
 api.add_resource(MineCommentResource, '/<string:mine_guid>/comments/<string:mine_comment_guid>')
+
+api.add_resource(
+    EPICResource,
+    '/<string:mine_guid>/epic')

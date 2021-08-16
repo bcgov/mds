@@ -72,6 +72,13 @@ export class MineNavigation extends Component {
                 Applications
               </Link>
             </Menu.Item>
+            <Menu.Item key="external-authorizations">
+              <Link
+                to={routes.MINE_EXTERNAL_AUTHORIZATIONS.dynamicRoute(this.props.mine.mine_guid)}
+              >
+                Other Ministry Applications and Authorizations
+              </Link>
+            </Menu.Item>
           </Menu>
         </Menu.SubMenu>
         <Menu.SubMenu
