@@ -36,6 +36,7 @@ import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/No
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
+import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -259,6 +260,11 @@ export const ADMIN_VERIFIED_MINES = {
 export const ADMIN_MANAGE_MINESPACE_USERS = {
   route: "/admin/dashboard/manage-minespace/users",
   component: MinespaceUserManagement,
+};
+
+export const CONTACT_MANAGEMENT = {
+  route: "/contact-management",
+  component: MergeContactsDashboard,
 };
 
 export const SEARCH_RESULTS = {
