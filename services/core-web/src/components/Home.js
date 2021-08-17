@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Layout, BackTop, Button } from "antd";
-import { ArrowUpOutlined, TrophyOutlined } from "@ant-design/icons";
-import { Alert, Row, Col, Typography } from "antd";
+import { ArrowUpOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
 import LoadingBar from "react-redux-loading-bar";
@@ -11,7 +10,6 @@ import {
   detectIE,
   detectTestEnvironment,
   detectDevelopmentEnvironment,
-  detectProdEnvironment,
 } from "@common/utils/environmentUtils";
 import { getStaticContentLoadingIsComplete } from "@common/selectors/staticContentSelectors";
 import {
@@ -45,7 +43,6 @@ export class Home extends Component {
     isMobile: true,
     activeNavButton: "",
     isMenuOpen: false,
-    isProd: false,
   };
 
   componentDidMount() {
@@ -53,7 +50,6 @@ export class Home extends Component {
       isIE: detectIE(),
       isTest: detectTestEnvironment(),
       isDev: detectDevelopmentEnvironment(),
-      isProd: detectProdEnvironment(),
     });
     this.handleActiveButton(this.props.location.pathname);
     this.loadStaticContent();
@@ -77,10 +73,6 @@ export class Home extends Component {
 
   handleMobileWarningClose = () => {
     this.setState({ isMobile: false });
-  };
-
-  handleProdClose = () => {
-    this.setState({ isProd: false });
   };
 
   toggleHamburgerMenu = () => {
@@ -117,38 +109,6 @@ export class Home extends Component {
         </div>
         {this.state.isTest && <WarningBanner type={WARNING_TYPES.TEST} />}
         {this.state.isIE && <WarningBanner type={WARNING_TYPES.IE} onClose={this.handleIEClose} />}
-        {this.state.isProd && (
-          <Row>
-            <Col span={24}>
-              <Alert
-                className="goodbye-banner"
-                message={
-                  <Typography.Text strong bold>
-                    Best Wishes, Warm Regards Brian!
-                  </Typography.Text>
-                }
-                description={
-                  <Typography.Text>
-                    <span>
-                      Friday August 13th is Brian Finns last day with the MDS team. He's been a huge
-                      part of the team since the software was nothing more than a concept.
-                      <br />
-                      If you've ever had a meaningful conversation with Brian or enjoyed his
-                      company, let him know how you feel by clicking{" "}
-                      <a href={`mailto:brian.finn@gov.bc.ca`}>here</a> and sending him an email to
-                      wish him well in his new role
-                    </span>
-                  </Typography.Text>
-                }
-                type="warning"
-                closable
-                onClose={this.handleProdClose}
-                showIcon
-                icon={<TrophyOutlined />}
-              />
-            </Col>
-          </Row>
-        )}
         <MediaQuery maxWidth={500}>
           {this.state.isMobile && !this.state.isDev && (
             <WarningBanner type={WARNING_TYPES.MOBILE} onClose={this.handleMobileWarningClose} />
