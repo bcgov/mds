@@ -84,39 +84,3 @@
     }
   }
 }
-
-.goodbye-banner {
-  background-color: #003366;
-  border-radius: 0;
-  border: none;
-  text-align: center;
-  z-index: 999;
-
-  .ant-typography {
-    color: white;
-  }
-
-  a {
-    color: white;
-    text-decoration: underline;
-  }
-
-  .ant-alert-icon {
-    color: white;
-    font-size: 80px;
-  }
-
-  &.ant-alert-with-description {
-    // Original left-padding is 64px with an original icon size of 24px. The new icon size is 48px, so
-    // add 24px to maintain the original layout proportions.
-    padding-left: 64px + 24px;
-    color: white;
-  }
-
-  .anticon-close {
-    color: white;
-    &:hover {
-      color: white;
-    }
-  }
-}
