@@ -1,13 +1,9 @@
 from datetime import datetime, timezone
-import re
-import uuid
-import requests
-
 from sqlalchemy import or_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
-from app.extensions import db
 
+from app.extensions import db
 from app.api.parties.party_appt.models.party_business_role import PartyBusinessRole
 from app.api.parties.party.models.party import Party
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base

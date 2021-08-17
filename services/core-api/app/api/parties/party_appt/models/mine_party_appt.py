@@ -1,16 +1,9 @@
 from datetime import datetime
-import re, sys, uuid, requests
-
-from flask import request, current_app
-from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
 from sqlalchemy.schema import FetchedValue
+
 from app.extensions import db
-
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
-
 from app.api.parties.party.models.party import Party
 from app.api.parties.party_appt.models.mine_party_appt_document_xref import MinePartyApptDocumentXref
 from app.api.constants import PERMIT_LINKED_CONTACT_TYPES
