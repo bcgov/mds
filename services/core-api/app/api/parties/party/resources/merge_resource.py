@@ -3,7 +3,7 @@ from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_edit_party
+from app.api.utils.access_decorators import requires_role_mds_administrative_users
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.parties.party.models.party import Party
@@ -34,8 +34,7 @@ class MergeResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description='Merge data from multiple parties into a single new record.')
-    # TODO: What permission is required here?
-    # @requires_role_edit_party
+    @requires_role_mds_administrative_users
     @api.marshal_with(PARTY, code=200)
     def post(self):
         data = self.parser.parse_args()
@@ -120,19 +119,19 @@ class MergeResource(Resource, UserMixin):
             # Handle NoW Party Appointments.
             for npa in party.now_party_appt:
                 npa.merged_from_party_guid = npa.party_guid
-                npa.party_guid = merged_party.party_guid
+                npa.party = merged_party
                 npa.save(False)
 
             # Handle Mine Party Appointments.
             for mpa in party.mine_party_appt:
                 mpa.merged_from_party_guid = mpa.party_guid
-                mpa.party_guid = merged_party.party_guid
+                mpa.party = merged_party
                 mpa.save(False)
 
             # Handle Business Role Appointments.
             for bra in party.business_role_appts:
                 bra.merged_from_party_guid = bra.party_guid
-                bra.party_guid = merged_party.party_guid
+                bra.party = merged_party
                 bra.save(False)
 
         # Update all foreign key relationships.

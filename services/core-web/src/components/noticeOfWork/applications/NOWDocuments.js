@@ -657,7 +657,8 @@ export class NOWDocuments extends Component {
             this.props.noticeOfWorkApplicationDocumentTypeOptions,
             this.props.categoriesToShow
           )}
-          rowKey="index"
+          // The key must be set to "undefined" to allow the key set in the "transform documents" function to be applied in order to edit documents.
+          rowKey={this.props.isSortingAllowed ? "index" : undefined}
           dataSource={this.state.dataSource}
           locale={{
             emptyText: "No Data Yet",

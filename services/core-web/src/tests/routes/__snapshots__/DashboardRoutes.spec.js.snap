@@ -216,6 +216,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(ExternalAuthorizations)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/external-authorizations"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineIncidents)",
         "type": [Function],
       }

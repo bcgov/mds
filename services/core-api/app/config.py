@@ -125,6 +125,14 @@ class Config(object):
     # OrgBook
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
+    #NRPTI
+    NRPTI_API_URL = os.environ.get(
+        'NRPTI_API_URL', 'https://nrpti-api-f00029-prod.apps.silver.devops.gov.bc.ca/api/public/')
+
+    #EPIC
+    EPIC_API_URL = os.environ.get('EPIC_API_URL', 'https://projects.eao.gov.bc.ca/api/v2/')
+    EPIC_LINK_URL = os.environ.get('EPIC_LINK_URL', 'https://projects.eao.gov.bc.ca/p/')
+
     # MDT-Issuer-Controller
     VCR_ISSUER_URL = os.environ.get(
         'VCR_ISSUER_URL',
