@@ -3,7 +3,7 @@ from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
 from app.extensions import api
-from app.api.utils.access_decorators import requires_role_edit_party
+from app.api.utils.access_decorators import requires_role_mds_administrative_users
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.parties.party.models.party import Party
@@ -34,8 +34,7 @@ class MergeResource(Resource, UserMixin):
 
     @api.expect(parser)
     @api.doc(description='Merge data from multiple parties into a single new record.')
-    # TODO: What permission is required here?
-    # @requires_role_edit_party
+    @requires_role_mds_administrative_users
     @api.marshal_with(PARTY, code=200)
     def post(self):
         data = self.parser.parse_args()
