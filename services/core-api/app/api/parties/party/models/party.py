@@ -32,7 +32,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     signature = db.Column(db.String)
     merged_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
-    # TODO: Should we modify the primary join to ignore deleted records?
     mine_party_appt = db.relationship(
         'MinePartyAppointment',
         lazy='joined',
