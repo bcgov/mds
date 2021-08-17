@@ -126,6 +126,7 @@ export const ApplicationGuard = (WrappedComponent) => {
     handleCorrectRouteByApplicationType = (data) => {
       const onNoWApp = this.props.location.pathname.includes("notice-of-work");
       const onAApp = this.props.location.pathname.includes("administrative-amendment");
+
       if (data.application_type_code === "NOW" && onAApp) {
         this.props.history.replace(
           routes.NOTICE_OF_WORK_APPLICATION.dynamicRoute(
@@ -138,6 +139,13 @@ export const ApplicationGuard = (WrappedComponent) => {
           routes.ADMIN_AMENDMENT_APPLICATION.dynamicRoute(
             this.props.match.params.id,
             this.props.match.params.tab
+          )
+        );
+      } else if (data.is_historic && (onNoWApp || onAApp)) {
+        this.props.history.replace(
+          routes.VIEW_NOTICE_OF_WORK_APPLICATION.dynamicRoute(
+            this.props.match.params.id,
+            "application"
           )
         );
       } else {

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { Badge, Button } from "antd";
 import { Link, withRouter } from "react-router-dom";
+import { EyeOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { formatDate } from "@common/utils/helpers";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { openDocument } from "@/components/syncfusion/DocumentViewer";
 import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
@@ -24,7 +22,6 @@ const propTypes = {
   sortField: PropTypes.string,
   sortDir: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
-  openDocument: PropTypes.func.isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string,
     search: PropTypes.string,
@@ -152,6 +149,11 @@ export class MineNoticeOfWorkTable extends Component {
                 Open
               </Button>
             </Link>
+            <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>
+              <Button type="primary" size="small" ghost>
+                <EyeOutlined className="icon-lg icon-svg-filter" />
+              </Button>
+            </Link>
           </div>
         ),
     },
@@ -180,12 +182,4 @@ export class MineNoticeOfWorkTable extends Component {
 MineNoticeOfWorkTable.propTypes = propTypes;
 MineNoticeOfWorkTable.defaultProps = defaultProps;
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      openDocument,
-    },
-    dispatch
-  );
-
-export default withRouter(connect(null, mapDispatchToProps)(MineNoticeOfWorkTable));
+export default withRouter(MineNoticeOfWorkTable);

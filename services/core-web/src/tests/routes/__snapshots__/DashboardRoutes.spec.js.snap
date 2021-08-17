@@ -216,6 +216,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
         "$$typeof": Symbol(react.memo),
         "WrappedComponent": [Function],
         "compare": null,
+        "displayName": "Connect(ExternalAuthorizations)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/mine-dashboard/:id/external-authorizations"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
         "displayName": "Connect(MineIncidents)",
         "type": [Function],
       }
@@ -461,6 +474,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/dashboard/administrative-amendment/app/:id/:tab"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(Connect(applicationGuard))",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/dashboard/view-notice-of-work/app/:id/:tab"
   />
   <Route
     exact={true}

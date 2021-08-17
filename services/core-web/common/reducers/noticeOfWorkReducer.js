@@ -34,6 +34,8 @@ export const noticeOfWorkReducer = (state = initialState, action) => {
       return {
         ...state,
         noticeOfWork: {},
+        originalNoticeOfWork: {},
+        importNowSubmissionDocumentsJob: {},
       };
     case actionTypes.STORE_ORIGINAL_NOTICE_OF_WORK_APPLICATION:
       return {

@@ -26,7 +26,15 @@ export const EditFinalPermitDocumentPackage = (props) => {
   const [selectedSubmissionRows, setSelectedSubmissionRows] = useState(
     props.finalSubmissionDocuments
   );
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const applicationFilesTypes = ["AAF", "AEF", "MDO", "SDO"];
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    return props
+      .onSubmit(selectedCoreRows, selectedSubmissionRows)
+      .finally(() => setIsSubmitting(false));
+  };
 
   return (
     <div>
@@ -87,13 +95,17 @@ export const EditFinalPermitDocumentPackage = (props) => {
           onConfirm={props.closeModal}
           okText="Yes"
           cancelText="No"
+          disabled={isSubmitting}
         >
-          <Button className="full-mobile">Cancel</Button>
+          <Button className="full-mobile" disabled={isSubmitting}>
+            Cancel
+          </Button>
         </Popconfirm>
         <Button
           className="full-mobile"
           type="primary"
-          onClick={() => props.onSubmit(selectedCoreRows, selectedSubmissionRows)}
+          onClick={() => handleSubmit()}
+          loading={isSubmitting}
         >
           <DownloadOutlined className="padding-sm--right icon-sm" />
           Save Application Package

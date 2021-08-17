@@ -61,6 +61,14 @@ exports[`NOWDocuments renders properly 1`] = `
         },
       ]
     }
+    components={
+      Object {
+        "body": Object {
+          "row": [Function],
+          "wrapper": [Function],
+        },
+      }
+    }
     dataSource={Array []}
     expandRowByClick={false}
     locale={
