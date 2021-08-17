@@ -123,6 +123,7 @@ exports[`ViewBondModal renders properly 1`] = `
             "sub_division_code": null,
           }
         }
+        showIcon={true}
       />
     </div>
     <div
