@@ -210,13 +210,16 @@ class PartyListResource(Resource, UserMixin):
 
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
             conditions.append(role_filter)
-            contact_query = contact_query.join(MinePartyAppointment)
+            contact_query = contact_query.join(MinePartyAppointment,
+                                               MinePartyAppointment.party_guid == Party.party_guid)
 
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
             conditions.append(business_role_filter)
-            contact_query = contact_query.join(PartyBusinessRoleAppointment)
+            contact_query = contact_query.join(
+                PartyBusinessRoleAppointment,
+                PartyBusinessRoleAppointment.party_guid == Party.party_guid)
 
         contact_query = contact_query.filter(and_(*conditions))
 
