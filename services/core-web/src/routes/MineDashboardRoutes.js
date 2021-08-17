@@ -30,7 +30,11 @@ const MineDashboardRoutes = () => (
     />
     <Route exact path={routes.MINE_TAILINGS.route} component={routes.MINE_TAILINGS.component} />
     <Route exact path={routes.MINE_DOCUMENTS.route} component={routes.MINE_DOCUMENTS.component} />
-
+    <Route
+      exact
+      path={routes.MINE_EXTERNAL_AUTHORIZATIONS.route}
+      component={routes.MINE_EXTERNAL_AUTHORIZATIONS.component}
+    />
     <Route component={PageNotFound} />
   </Switch>
 );

@@ -146,7 +146,7 @@ export class MineNoticeOfWorkTable extends Component {
           <div className="btn--middle flex">
             <Link to={this.createLinkTo(router.NOTICE_OF_WORK_APPLICATION, record)}>
               <Button type="primary" disabled={record.is_historic}>
-                open
+                Open
               </Button>
             </Link>
             <Link to={this.createLinkTo(router.VIEW_NOTICE_OF_WORK_APPLICATION, record)}>

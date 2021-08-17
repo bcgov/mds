@@ -105,8 +105,8 @@ const columns = [
   },
   {
     title: "Order Status",
-    key: "status",
-    dataIndex: "status",
+    key: "order_status",
+    dataIndex: "order_status",
     render: (text, record) => <div title="Order Status">{record.order_status || "-"}</div>,
     sorter: (a, b) => (a.order_status > b.order_status ? -1 : 1),
   },

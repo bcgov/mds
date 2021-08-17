@@ -40,3 +40,8 @@ export const storeMineComments = (payload) => ({
   type: ActionTypes.STORE_MINE_COMMENTS,
   payload,
 });
+
+export const storeEpicInfo = (payload) => ({
+  type: ActionTypes.STORE_MINE_EPIC_INFO,
+  payload,
+});
