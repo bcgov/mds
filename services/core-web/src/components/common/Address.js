@@ -6,6 +6,11 @@ import * as Strings from "@common/constants/strings";
 
 const propTypes = {
   address: PropTypes.objectOf(PropTypes.string).isRequired,
+  showIcon: PropTypes.bool,
+};
+
+const defaultProps = {
+  showIcon: true,
 };
 
 /**
@@ -26,7 +31,7 @@ export class Address extends Component {
 
   renderRowOne = (itemArr) => (
     <div className="inline-flex">
-      <ContactsOutlined className="icon-sm padding-sm--right" />
+      {this.props.showIcon && <ContactsOutlined className="icon-sm padding-sm--right" />}
       <p>{this.formatRowContent(itemArr)}</p>
     </div>
   );
@@ -73,5 +78,6 @@ export class Address extends Component {
 }
 
 Address.propTypes = propTypes;
+Address.defaultProps = defaultProps;
 
 export default Address;

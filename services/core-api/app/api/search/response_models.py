@@ -56,12 +56,14 @@ PARTY_SEARCH_MODEL = api.model(
     'Party', {
         'party_guid': fields.String,
         'name': fields.String,
+        'first_name': fields.String,
+        'party_name': fields.String,
+        'party_type_code': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
         'mine_party_appt': fields.List(fields.Nested(MINE_PARTY_APPT_MODEL)),
         'address': fields.List(fields.Nested(PARTY_ADDRESS)),
     })
-
 
 MINE_DOCUMENT_SEARCH_MODEL = api.model(
     'MineDocument', {

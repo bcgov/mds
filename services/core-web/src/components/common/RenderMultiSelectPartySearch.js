@@ -53,14 +53,20 @@ const RenderMultiSelectPartySearch = (props) => {
     return props.fetchSearchResults(value, "party").then(
       (response) =>
         response &&
-        response.data.search_results.party.map((party) => ({
-          party: party.result,
-          label: party.result.name,
-          value: party.result.party_guid,
-        }))
+        response.data.search_results.party
+          // .filter(({ mine_party_appt }) => {
+          //   mine_party_appt &&
+          //     mine_party_appt.length > 0 &&
+          //     mine_party_appt.map(({ mine_party_appt_type_code }) => mine_party_appt_type_code !== PMT
+          //     );
+          // })
+          .map((party) => ({
+            label: party.result.name,
+            value: party.result.party_guid,
+          }))
     );
   };
-  const [value, setValue] = React.useState([]);
+
   return (
     <DebounceSelect
       mode="multiple"
@@ -69,7 +75,6 @@ const RenderMultiSelectPartySearch = (props) => {
       fetchOptions={fetchUserList}
       search={props.fetchSearchResults}
       onChange={(newValue) => {
-        console.log(newValue);
         props.storeSubsetSearchResults(newValue);
       }}
       style={{

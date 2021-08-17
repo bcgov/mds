@@ -2,24 +2,27 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Row, Col, Card, Popconfirm, Button } from "antd";
+import { isEmpty } from "lodash";
+import { Row, Col, Card, Popconfirm, Button, Radio } from "antd";
 import PropTypes from "prop-types";
 import {
   fetchSearchResults,
   clearAllSearchResults,
 } from "@common/actionCreators/searchActionCreator";
-import LoadingWrapper from "@/components/common/wrappers/LoadingWrapper";
 import RenderMultiSelectPartySearch from "@/components/common/RenderMultiSelectPartySearch";
 import { storeSubsetSearchResults } from "@common/actions/searchActions";
 import { getSearchResults, getSearchSubsetResults } from "@common/selectors/searchSelectors";
 import { mergeParties } from "@common/actionCreators/partiesActionCreator";
 import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
-import { TRASHCAN, PROFILE_NOCIRCLE } from "@/constants/assets";
 import Address from "@/components/common/Address";
 import * as Strings from "@common/constants/strings";
+import { openModal, closeModal } from "@common/actions/modalActions";
+import { modalConfig } from "@/components/modalContent/config";
 
 const propTypes = {
   partyType: PropTypes.bool.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 const partyTypeLabel = {
@@ -27,33 +30,19 @@ const partyTypeLabel = {
   ORG: "Company",
 };
 
-const transformData = (results) =>
-  results &&
-  results.map(({ result }) => {
-    return {
-      key: result.party_guid,
-      name: result.name,
-      ...result,
-    };
-  });
-
-const columns = [
-  {
-    title: "Select All",
-    dataIndex: "name",
-    key: "name",
-    render: (text, record) => (
-      <div>
-        {text}
-        <br />
-        {record.email && record.email !== "Unknown" ? record.email : ""}
-      </div>
-    ),
-  },
-];
-
 export class MergeContainer extends Component {
-  state = { isLoading: false, submitting: false };
+  state = {
+    isLoading: false,
+    submitting: false,
+    contactsForMerge: [],
+    selectedName: "",
+    values: {
+      first_name: "",
+      party_name: "",
+      email: "",
+      address: {},
+    },
+  };
 
   handleSimpleSearch = (searchTerm) => {
     this.setState({ isLoading: true });
@@ -62,41 +51,134 @@ export class MergeContainer extends Component {
     });
   };
 
-  handleMergeContacts = () => {
-    console.log("MERGING");
-    const payload = {};
+  confirmMergeModal = () => {
+    this.props.openModal({
+      props: {
+        title: "Confirm Merge",
+        closeModal: this.props.closeModal,
+        initialValues: this.state.values,
+        onSubmit: this.handleMergeContacts,
+        isPerson: this.props.partyType === "PER",
+      },
+      content: modalConfig.MERGE_PARTY_CONFIRMATION,
+    });
+  };
+
+  handleMergeContacts = (values) => {
+    const guids = this.state.contactsForMerge.map(({ party_guid }) => party_guid);
+    const payload = {
+      party_guids: guids,
+      party: { ...values, party_type_code: this.props.partyType },
+    };
     this.setState({ isSubmitting: true, isLoading: true });
     this.props
-      .mergeParties(paylod)
+      .mergeParties(payload)
       .then(() => {
         this.setState({ isSubmitting: false, isLoading: false });
         this.props.clearAllSearchResults();
       })
       .catch(() => {
         this.setState({ isSubmitting: false, isLoading: false });
+      })
+      .finally(() => {
+        this.props.closeModal();
       });
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    const searchSubsetChanged = this.props.searchSubsetResults !== nextProps.searchSubsetResults;
+
+    if (searchSubsetChanged) {
+      const contacts = [];
+      nextProps.searchResults?.party.map(({ result }) => {
+        nextProps.searchSubsetResults?.map(({ value }) => {
+          if (result.party_guid === value) {
+            contacts.push(result);
+          }
+        });
+      });
+      this.setState({ contactsForMerge: contacts });
+    }
+  };
+
+  handleContactSelect = (event, field) => {
+    this.setState((prevState) => ({
+      values: { ...prevState.values, [field]: event.target.value },
+    }));
   };
 
   renderContactCard = () => {
     return (
       <div className="contact-container flex-4">
-        {this.props.searchSubsetResults && this.props.searchSubsetResults.length > 0 ? (
+        {this.state.contactsForMerge && this.state.contactsForMerge.length > 0 ? (
           <Row gutter={16}>
-            {this.props.searchSubsetResults.map((data) => {
+            {this.state.contactsForMerge.map((data) => {
               return (
-                <Col span={6} key={data.value}>
+                <Col span={6} key={data.party_guid}>
                   <Card className="no-header inherit-height" bordered={false}>
                     <Row>
                       <Col span={24}>
-                        <div className="inline-flex">
-                          <img
-                            className="icon-sm padding-sm--right"
-                            src={PROFILE_NOCIRCLE}
-                            alt="user"
-                            height={25}
-                          />
-                          <h4>{data.label}</h4>
-                        </div>
+                        <Radio.Group
+                          name="first_name"
+                          onChange={(event) => this.handleContactSelect(event, "first_name")}
+                          value={this.state.values.first_name}
+                        >
+                          <Radio value={data.first_name} disabled={!data.first_name}>
+                            {data.first_name || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24}>
+                        <Radio.Group
+                          name="party_name"
+                          onChange={(event) => this.handleContactSelect(event, "party_name")}
+                          value={this.state.values.party_name}
+                        >
+                          <Radio value={data.party_name} disabled={!data.party_name}>
+                            {data.party_name || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24}>
+                        <Radio.Group
+                          name="phone_no"
+                          onChange={(event) => this.handleContactSelect(event, "phone_no")}
+                          value={this.state.values.phone_no}
+                        >
+                          <Radio value={data.phone_no} disabled={!data.phone_no}>
+                            {data.phone_no || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24}>
+                        <Radio.Group
+                          name="email"
+                          onChange={(event) => this.handleContactSelect(event, "email")}
+                          value={this.state.values.email}
+                        >
+                          <Radio value={data.email} disabled={!data.email}>
+                            {data.email || Strings.EMPTY_FIELD}
+                          </Radio>
+                        </Radio.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={24}>
+                        <Radio.Group
+                          name="email"
+                          onChange={(event) => this.handleContactSelect(event, "address")}
+                          value={this.state.values.address}
+                        >
+                          <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
+                            <Address address={data.address[0] || {}} showIcon={false} />
+                          </Radio>
+                        </Radio.Group>
                       </Col>
                     </Row>
                   </Card>
@@ -114,6 +196,7 @@ export class MergeContainer extends Component {
   };
 
   render() {
+    console.log(this.state.values);
     return (
       <div className="merge-dashboard">
         <h4>Merge {partyTypeLabel[this.props.partyType]}</h4>
@@ -153,10 +236,10 @@ export class MergeContainer extends Component {
               className="full-mobile"
               type="primary"
               htmlType="submit"
-              onClick={() => this.handleMergeContacts()}
-              loading={this.state.submitting}
+              onClick={() => this.confirmMergeModal()}
+              // loading={this.state.submitting}
             >
-              Merge Contacts
+              Proceed to Merge
             </Button>
           </div>
         </div>
@@ -180,6 +263,8 @@ const mapDispatchToProps = (dispatch) =>
       clearAllSearchResults,
       storeSubsetSearchResults,
       mergeParties,
+      openModal,
+      closeModal,
     },
     dispatch
   );
