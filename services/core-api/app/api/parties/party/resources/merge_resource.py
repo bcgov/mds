@@ -119,19 +119,19 @@ class MergeResource(Resource, UserMixin):
             # Handle NoW Party Appointments.
             for npa in party.now_party_appt:
                 npa.merged_from_party_guid = npa.party_guid
-                npa.party_guid = merged_party.party_guid
+                npa.party = merged_party
                 npa.save(False)
 
             # Handle Mine Party Appointments.
             for mpa in party.mine_party_appt:
                 mpa.merged_from_party_guid = mpa.party_guid
-                mpa.party_guid = merged_party.party_guid
+                mpa.party = merged_party
                 mpa.save(False)
 
             # Handle Business Role Appointments.
             for bra in party.business_role_appts:
                 bra.merged_from_party_guid = bra.party_guid
-                bra.party_guid = merged_party.party_guid
+                bra.party = merged_party
                 bra.save(False)
 
         # Update all foreign key relationships.
