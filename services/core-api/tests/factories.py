@@ -458,9 +458,6 @@ class PartyFactory(BaseFactory):
     email = None
     party_type_code = None
 
-    mine_party_appt = []
-    address = []
-
     @factory.post_generation
     def address(obj, create, extracted, **kwargs):
         if not create:
