@@ -13,7 +13,7 @@ jobs:
   tests-coverage-report:
     # Dont allow test coverage reports to impact other jobs (non-blocking)
     continue-on-error: true
-    name: tests-integration-backend
+    name: tests-coverage-report
     runs-on: ubuntu-20.04
     steps:
       - name: Check out the repo
@@ -48,7 +48,7 @@ jobs:
       - name: Generate coverage reports
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest
-          coverage xml
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
 
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
