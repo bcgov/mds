@@ -65,23 +65,19 @@ export class MergeContainer extends Component {
   };
 
   handleMergeContacts = (values) => {
-    const guids = this.state.contactsForMerge.map(({ party_guid }) => party_guid);
     const payload = {
-      party_guids: guids,
+      party_guids: this.state.contactsForMerge.map(({ party_guid }) => party_guid),
       party: { ...values, party_type_code: this.props.partyType },
     };
     this.setState({ isSubmitting: true, isLoading: true });
     this.props
       .mergeParties(payload)
       .then(() => {
-        this.setState({ isSubmitting: false, isLoading: false });
         this.props.clearAllSearchResults();
-      })
-      .catch(() => {
-        this.setState({ isSubmitting: false, isLoading: false });
       })
       .finally(() => {
         this.props.closeModal();
+        this.setState({ isSubmitting: false, isLoading: false });
       });
   };
 
@@ -236,6 +232,7 @@ export class MergeContainer extends Component {
               className="full-mobile"
               type="primary"
               htmlType="submit"
+              disabled={this.state.contactsForMerge.length === 0}
               onClick={() => this.confirmMergeModal()}
               // loading={this.state.submitting}
             >
