@@ -43,7 +43,7 @@ export class MergeContainer extends Component {
       phone_no: "",
       address: {},
     },
-    valuesOnView: {
+    valuesSelected: {
       first_name: "",
       party_name: "",
       email: "",
@@ -82,6 +82,7 @@ export class MergeContainer extends Component {
       .mergeParties(payload)
       .then(() => {
         this.props.clearAllSearchResults();
+        this.setState({ contactsForMerge: [] });
       })
       .finally(() => {
         this.props.closeModal();
@@ -91,18 +92,18 @@ export class MergeContainer extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const searchSubsetChanged = this.props.searchSubsetResults !== nextProps.searchSubsetResults;
+    const searchCleared =
+      nextProps.searchSubsetResults.length === 0 && nextProps.searchResults.length === 0;
 
-    if (searchSubsetChanged) {
+    if (searchSubsetChanged && !searchCleared) {
       const contacts = [];
-      nextProps.searchResults &&
-        nextProps.searchResults?.party.map(({ result }) => {
-          nextProps.searchSubsetResults &&
-            nextProps.searchSubsetResults?.map(({ value }) => {
-              if (result.party_guid === value) {
-                contacts.push(result);
-              }
-            });
+      nextProps.searchResults?.party.map(({ result }) => {
+        nextProps.searchSubsetResults?.map(({ value }) => {
+          if (result.party_guid === value) {
+            contacts.push(result);
+          }
         });
+      });
       this.setState({ contactsForMerge: contacts });
     }
   };
@@ -110,7 +111,7 @@ export class MergeContainer extends Component {
   handleContactSelect = (event, field) => {
     this.setState((prevState) => ({
       values: { ...prevState.values, [field]: event.target.name },
-      valuesOnView: { ...prevState.valuesOnView, [field]: event.target.value },
+      valuesSelected: { ...prevState.valuesSelected, [field]: event.target.value },
     }));
   };
 
@@ -128,7 +129,7 @@ export class MergeContainer extends Component {
                         <Radio.Group
                           name={data.first_name}
                           onChange={(event) => this.handleContactSelect(event, "first_name")}
-                          value={this.state.valuesOnView.first_name}
+                          value={this.state.valuesSelected.first_name}
                         >
                           <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
                             {data.first_name || Strings.EMPTY_FIELD}
@@ -141,7 +142,7 @@ export class MergeContainer extends Component {
                         <Radio.Group
                           name={data.party_name}
                           onChange={(event) => this.handleContactSelect(event, "party_name")}
-                          value={this.state.valuesOnView.party_name}
+                          value={this.state.valuesSelected.party_name}
                         >
                           <Radio value={`${data.party_name}${i}`} disabled={!data.party_name}>
                             {data.party_name || Strings.EMPTY_FIELD}
@@ -154,7 +155,7 @@ export class MergeContainer extends Component {
                         <Radio.Group
                           name={data.phone_no}
                           onChange={(event) => this.handleContactSelect(event, "phone_no")}
-                          value={this.state.valuesOnView.phone_no}
+                          value={this.state.valuesSelected.phone_no}
                         >
                           <Radio value={`${data.phone_no}${i}`} disabled={!data.phone_no}>
                             {data.phone_no || Strings.EMPTY_FIELD}
@@ -167,7 +168,7 @@ export class MergeContainer extends Component {
                         <Radio.Group
                           name={data.email}
                           onChange={(event) => this.handleContactSelect(event, "email")}
-                          value={this.state.valuesOnView.email}
+                          value={this.state.valuesSelected.email}
                         >
                           <Radio value={`${data.email}${i}`} disabled={!data.email}>
                             {data.email || Strings.EMPTY_FIELD}
@@ -180,7 +181,7 @@ export class MergeContainer extends Component {
                         <Radio.Group
                           name={data.address[0]}
                           onChange={(event) => this.handleContactSelect(event, "address")}
-                          value={this.state.valuesOnView.address}
+                          value={this.state.valuesSelected.address}
                         >
                           <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
                             <Address address={data.address[0] || {}} showIcon={false} />
