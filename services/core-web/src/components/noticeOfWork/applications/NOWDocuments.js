@@ -131,7 +131,7 @@ const transformDocuments = (
           !document.is_referral_package &&
           !document.is_consultation_package) ||
         isFinalPackageTable,
-      index: index,
+      index,
       ...document,
     }));
 
