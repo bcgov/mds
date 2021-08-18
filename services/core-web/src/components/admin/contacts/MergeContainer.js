@@ -232,7 +232,7 @@ export class MergeContainer extends Component {
               className="full-mobile"
               type="primary"
               htmlType="submit"
-              disabled={this.state.contactsForMerge.length === 0}
+              disabled={this.state.contactsForMerge.length < 2}
               onClick={() => this.confirmMergeModal()}
               // loading={this.state.submitting}
             >
