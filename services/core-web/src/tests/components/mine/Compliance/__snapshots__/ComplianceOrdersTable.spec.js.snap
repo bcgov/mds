@@ -39,8 +39,8 @@ exports[`ComplianceOrdersTable renders properly 1`] = `
         "title": "Inspector",
       },
       Object {
-        "dataIndex": "status",
-        "key": "status",
+        "dataIndex": "order_status",
+        "key": "order_status",
         "render": [Function],
         "sorter": [Function],
         "title": "Order Status",
