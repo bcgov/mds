@@ -493,7 +493,7 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_guid = factory.LazyAttribute(lambda o: o.mine.mine_guid if o.mine_party_appt_type_code
                                       not in PERMIT_LINKED_CONTACT_TYPES else None)
 
-    party = factory.SubFactory(PartyFactory, person=True)
+    party = factory.SubFactory(PartyFactory, person=True, address=1)
     start_date = factory.LazyFunction(datetime.utcnow().date)
     end_date = None
     processed_by = factory.Faker('first_name')
