@@ -19,6 +19,7 @@ from app.api.mines.status.models.mine_status import MineStatus
 from app.api.mines.subscription.models.subscription import Subscription
 from app.api.mines.tailings.models.tailings import MineTailingsStorageFacility
 from app.api.parties.party.models.party import Party
+from app.api.parties.party.models.party_orgbook_entity import PartyOrgBookEntity
 from app.api.parties.party.models.address import Address
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.mines.permits.permit.models.permit import Permit
@@ -506,6 +507,21 @@ class MinePartyAppointmentFactory(BaseFactory):
     mine_tailings_storage_facility_guid = factory.LazyAttribute(
         lambda o: o.mine.mine_tailings_storage_facilities[0].mine_tailings_storage_facility_guid
         if o.mine_party_appt_type_code == 'EOR' else None)
+
+
+class PartyOrgBookEntityFactory(BaseFactory):
+    class Meta:
+        model = PartyOrgBookEntity
+
+    party = factory.SubFactory(PartyFactory, company=True)
+    registration_id = factory.Faker('pyint')
+    registration_status = factory.Faker('boolean', chance_of_getting_true=50)
+    registration_date = factory.Faker('date_between', start_date='-100d', end_date='-25d')
+    name_id = factory.Faker('pyint')
+    name_text = factory.Faker('company')
+    credential_id = factory.Faker('pyint')
+    association_user = factory.Faker('first_name')
+    association_timestamp = datetime.utcnow().date()
 
 
 class CoreUserFactory(BaseFactory):
