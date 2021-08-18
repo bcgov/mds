@@ -1,4 +1,3 @@
-from flask import current_app
 from flask_restplus import Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -8,9 +7,6 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
-from app.api.now_applications.models.now_party_appointment import NOWPartyAppointment
-from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
-from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
 from app.api.securities.models.bond import Bond
 from app.api.parties.response_models import PARTY
 

@@ -6,7 +6,6 @@ from sqlalchemy.schema import FetchedValue
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
-from werkzeug.exceptions import BadRequest
 
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
@@ -50,7 +49,7 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
         'PartyBusinessRoleAppointment',
         lazy='dynamic',
         primaryjoin=
-        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)',
+        'and_(PartyBusinessRoleAppointment.party_guid == Party.party_guid, PartyBusinessRoleAppointment.deleted_ind==False)'
     )
 
     party_orgbook_entity = db.relationship(
