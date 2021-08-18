@@ -13,10 +13,13 @@ SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
 
 MINE_MODEL = api.model('Mine_simple ', {'mine_name': fields.String, 'mine_guid': fields.String})
 
-MINE_PARTY_APPT_MODEL = api.model('MinePartyAppointment', {
-    'mine_party_appt_type_code': fields.String,
-    'mine': fields.Nested(MINE_MODEL)
-})
+MINE_PARTY_APPT_MODEL = api.model(
+    'MinePartyAppointment', {
+        'mine_party_appt_type_code': fields.String,
+        'start_date': fields.Date,
+        'end_date': fields.Date,
+        'mine': fields.Nested(MINE_MODEL)
+    })
 
 MINE_STATUS_MODEL = api.model('MineStatus', {
     'status_labels': fields.List(fields.String),

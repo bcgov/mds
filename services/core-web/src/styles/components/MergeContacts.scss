@@ -26,4 +26,9 @@
   padding: $default-padding-md;
   border-radius: 20px;
   height: 98%;
+  overflow: scroll;
+}
+
+.proposed-roles {
+  overflow: scroll;
 }
