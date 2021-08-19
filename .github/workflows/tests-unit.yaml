@@ -7,14 +7,24 @@ on:
       - develop
 
 jobs:
-  tests-frontend:
-    name: tests-frontend
+  tests-unit-frontend:
+    name: tests-unit-frontend
     runs-on: ubuntu-20.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
       - name: Run frontend tests
-        id: results
         run: |
-          cd services/core-web/ && npm ci && npm run test:updateAll
+          cd services/core-web/ && npm ci && npm run test:coverage
+
+  tests-unit-minespace:
+    name: tests-unit-minespace
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Run minespace tests
+        run: |
+          cd services/minespace/ && npm ci && npm run test:coverage
