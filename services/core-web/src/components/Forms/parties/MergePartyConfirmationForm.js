@@ -19,6 +19,8 @@ import { resetForm, normalizePhone, upperCase } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -250,9 +252,16 @@ export const MergePartyConfirmationForm = (props) => (
             Cancel
           </Button>
         </Popconfirm>
-        <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          {props.title}
-        </Button>
+        <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
+          <Button
+            className="full-mobile"
+            type="primary"
+            htmlType="submit"
+            loading={props.submitting}
+          >
+            {props.title}
+          </Button>
+        </AuthorizationWrapper>
       </div>
     </Form>
   </div>

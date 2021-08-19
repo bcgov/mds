@@ -22,6 +22,8 @@ import Address from "@/components/common/Address";
 import * as Strings from "@common/constants/strings";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
+import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 const propTypes = {
   partyType: PropTypes.bool.isRequired,
@@ -353,28 +355,30 @@ export class MergeContainer extends Component {
             </div>
             {this.renderContactCards()}
           </div>
-          <div className="right center-mobile">
-            <Popconfirm
-              placement="topRight"
-              title="Are you sure you want to cancel?"
-              onConfirm={() => this.props.clearAllSearchResults()}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button className="full-mobile" type="secondary">
-                Clear All
+          <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
+            <div className="right center-mobile">
+              <Popconfirm
+                placement="topRight"
+                title="Are you sure you want to cancel?"
+                onConfirm={() => this.props.clearAllSearchResults()}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className="full-mobile" type="secondary">
+                  Clear All
+                </Button>
+              </Popconfirm>
+              <Button
+                className="full-mobile"
+                type="primary"
+                htmlType="submit"
+                disabled={this.state.contactsForMerge.length < 2}
+                onClick={() => this.confirmMergeModal()}
+              >
+                Proceed to Merge
               </Button>
-            </Popconfirm>
-            <Button
-              className="full-mobile"
-              type="primary"
-              htmlType="submit"
-              disabled={this.state.contactsForMerge.length < 2}
-              onClick={() => this.confirmMergeModal()}
-            >
-              Proceed to Merge
-            </Button>
-          </div>
+            </div>
+          </AuthorizationWrapper>
         </div>
       </div>
     );

@@ -17,9 +17,9 @@ import * as Strings from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 import * as router from "@/constants/routes";
 import * as Permission from "@/constants/permissions";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import SearchBar from "@/components/search/SearchBar";
 import { LOGO, HAMBURGER, CLOSE, SUCCESS_CHECKMARK, YELLOW_HAZARD } from "@/constants/assets";
-import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 /**
  * @class NavBar - fixed and responsive navigation
@@ -92,6 +92,14 @@ export class NavBar extends Component {
         </Button>
       </Link>
       <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
+        <Dropdown overlay={this.adminDropdown} placement="bottomLeft">
+          <button id={this.ifActiveButton("admin")} type="button" className="menu__btn">
+            <span className="padding-sm--right">Admin</span>
+            <DownOutlined />
+          </button>
+        </Dropdown>
+      </AuthorizationWrapper>
+      {/* <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
         <Link to={router.ADMIN_DASHBOARD.route}>
           <Button
             id={this.ifActiveButton(router.ADMIN_DASHBOARD.route)}
@@ -100,7 +108,7 @@ export class NavBar extends Component {
             Admin
           </Button>
         </Link>
-      </AuthorizationWrapper>
+      </AuthorizationWrapper> */}
       <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <UserOutlined className="padding-sm--right icon-sm" />
@@ -372,6 +380,32 @@ export class NavBar extends Component {
           <button type="button">Notices of Work</button>
         </Link>
       </Menu.Item>
+    </Menu>
+  );
+
+  adminDropdown = () => (
+    <Menu id="menu__dropdown" className="navbar-dropdown-menu">
+      <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
+        <Menu.Item key="admin/dashboard" className="navbar-dropdown-menu-item">
+          <Link to={router.ADMIN_DASHBOARD.route}>
+            <button type="button">Core Administrator</button>
+          </Link>
+        </Menu.Item>
+      </AuthorizationWrapper>
+      {/* <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+        <Menu.Item key="executive-dashboard" className="navbar-dropdown-menu-item">
+          <Link to={router.PERMIT_CONDITION_MANAGEMENT.dynamicRoute("SAG")}>
+            <button type="button">Permit Condition Management</button>
+          </Link>
+        </Menu.Item>
+      </AuthorizationWrapper> */}
+      <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
+        <Menu.Item key="contact-management" className="navbar-dropdown-menu-item">
+          <Link to={router.CONTACT_MANAGEMENT.route}>
+            <button type="button">Contact Management</button>
+          </Link>
+        </Menu.Item>
+      </AuthorizationWrapper>
     </Menu>
   );
 

@@ -269,8 +269,14 @@ export const ADMIN_MANAGE_MINESPACE_USERS = {
   component: MinespaceUserManagement,
 };
 
+export const PERMIT_CONDITION_MANAGEMENT = {
+  route: "/admin/permit-conditions/:type",
+  dynamicRoute: (type) => `/admin/permit-conditions/${type}`,
+  component: AdminPermitConditionManagement,
+};
+
 export const CONTACT_MANAGEMENT = {
-  route: "/contact-management",
+  route: "/admin/contact-management",
   component: MergeContactsDashboard,
 };
 

@@ -60,4 +60,4 @@ export class MergeContactsDashboard extends Component {
 
 MergeContactsDashboard.propTypes = propTypes;
 
-export default AuthorizationGuard(Permission.VIEW_ADMIN_ROUTE)(MergeContactsDashboard);
+export default AuthorizationGuard(Permission.ADMINISTRATIVE_USERS)(MergeContactsDashboard);
