@@ -16,7 +16,7 @@ jobs:
 
       - name: Run frontend tests
         run: |
-          cd services/core-web/ && npm ci && npm run test:coverage
+          cd services/core-web/ && npm ci && npm run test
 
   tests-unit-minespace:
     name: tests-unit-minespace
@@ -27,4 +27,4 @@ jobs:
 
       - name: Run minespace tests
         run: |
-          cd services/minespace-web/ && npm ci && npm run test:coverage
+          cd services/minespace-web/ && npm ci && npm run test
