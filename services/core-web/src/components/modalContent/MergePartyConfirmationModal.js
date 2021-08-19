@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -11,6 +12,7 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  roles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 
 const defaultProps = {};
@@ -24,6 +26,8 @@ export const MergePartyConfirmationModal = (props) => {
         provinceOptions={props.provinceOptions}
         closeModal={props.closeModal}
         title={props.title}
+        roles={props.roles}
+        partyRelationshipTypesHash={props.partyRelationshipTypesHash}
         {...props}
       />
     </div>

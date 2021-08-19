@@ -71,8 +71,11 @@ export class MergeContainer extends Component {
         initialValues: this.state.values,
         onSubmit: this.handleMergeContacts,
         isPerson: this.props.partyType === "PER",
+        roles: this.state.rolesForMerge,
+        partyRelationshipTypesHash: this.props.partyRelationshipTypesHash,
       },
       content: modalConfig.MERGE_PARTY_CONFIRMATION,
+      width: "75vw",
     });
   };
 
