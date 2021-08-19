@@ -140,7 +140,7 @@ def test_merge_failure_inspectors(test_client, db_session, auth_headers):
     assert post_resp.status_code == 400
 
 
-def test_merge_failure_orgbook_signature(test_client, db_session, auth_headers):
+def test_merge_failure_signature(test_client, db_session, auth_headers):
     batch_size = 5
     parties = PartyFactory.create_batch(size=batch_size, person=True)
     parties[0].signature = 'data:image/png;base64,'

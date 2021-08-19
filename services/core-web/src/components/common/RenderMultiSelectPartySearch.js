@@ -1,7 +1,8 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Select, Spin } from "antd";
 import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import debounce from "lodash/debounce";
 import {
@@ -9,15 +10,11 @@ import {
   clearAllSearchResults,
 } from "@common/actionCreators/searchActionCreator";
 
-import { storeSubsetSearchResults } from "@common/actions/searchActions";
-import { getSearchResults, getSearchSubsetResults } from "@common/selectors/searchSelectors";
-import { getPartyRelationshipTypesList } from "@common/selectors/staticContentSelectors";
-
 function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props }) {
-  const [fetching, setFetching] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
-  const fetchRef = React.useRef(0);
-  const debounceFetcher = React.useMemo(() => {
+  const [fetching, setFetching] = useState(false);
+  const [options, setOptions] = useState([]);
+  const fetchRef = useRef(0);
+  const debounceFetcher = useMemo(() => {
     const loadOptions = (value) => {
       fetchRef.current += 1;
       const fetchId = fetchRef.current;
@@ -25,10 +22,8 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
       setFetching(true);
       fetchOptions(value).then((newOptions) => {
         if (fetchId !== fetchRef.current) {
-          // for fetch callback order
           return;
         }
-
         setOptions(newOptions);
         setFetching(false);
       });
@@ -36,6 +31,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
 
     return debounce(loadOptions, debounceTimeout);
   }, [fetchOptions, debounceTimeout]);
+
   return (
     <Select
       labelInValue
@@ -46,37 +42,80 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
       options={options}
     />
   );
-} // Usage of DebounceSelect
+}
 
+const propTypes = {
+  onSelectedPartySearchResultsChanged: PropTypes.func.isRequired,
+  onSearchResultsChanged: PropTypes.func,
+  onSearchSubsetResultsChanged: PropTypes.func,
+};
+
+const defaultProps = {
+  onSearchResultsChanged: () => {},
+  onSearchSubsetResultsChanged: () => {},
+};
+
+// TODO: Implement ability to "clear search results".
 const RenderMultiSelectPartySearch = (props) => {
-  const fetchUserList = (value) => {
-    return props.fetchSearchResults(value, "party").then(
-      (response) =>
-        response &&
-        response.data.search_results.party
-          // .filter(({ mine_party_appt }) => {
-          //   mine_party_appt &&
-          //     mine_party_appt.length > 0 &&
-          //     mine_party_appt.map(({ mine_party_appt_type_code }) => mine_party_appt_type_code !== PMT
-          //     );
-          // })
-          .map((party) => ({
-            label: party.result.name,
-            value: party.result.party_guid,
-          }))
-    );
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchSubsetResults, setSearchSubsetResults] = useState([]);
+  const [selectedPartySearchResults, setSelectedPartySearchResults] = useState([]);
+
+  const getFetchOptions = (value) =>
+    props.fetchSearchResults(value, "party").then((response) => {
+      const results = response?.data?.search_results || [];
+      props.onSearchResultsChanged(results);
+      setSearchResults(results);
+      return results?.party?.map((party) => ({
+        label: party.result.name,
+        value: party.result.party_guid,
+      }));
+    });
+
+  // TODO: I don't think this is needed (see below).
+  // const handleSearch = (value) => {
+  //   return props.fetchSearchResults(value, "party").then((response) => {
+  //     const results = response?.data?.search_results;
+  //     props.onSearchResultsChanged(results);
+  //     setSearchResults(results);
+  //   });
+  // };
+
+  const handleChange = (value) => {
+    props.onSearchSubsetResultsChanged(value);
+    setSearchSubsetResults(value);
+
+    const selectedPartyGuids = value.map((option) => option.value);
+
+    let newSelectedPartySearchResults =
+      selectedPartySearchResults?.filter((p) => selectedPartyGuids.includes(p.party_guid)) || [];
+
+    const currentPartyGuids = selectedPartySearchResults?.map((result) => result.party_guid) || [];
+
+    const newParties = [];
+    selectedPartyGuids?.forEach((partyGuid) => {
+      if (!currentPartyGuids.includes(partyGuid)) {
+        const party = searchResults?.party?.find((p) => p?.result?.party_guid == partyGuid)?.result;
+        if (!party) {
+          throw new Error(`Party with GUID ${partyGuid} should be present in the search results!`);
+        }
+        newParties.push(party);
+      }
+    });
+    newSelectedPartySearchResults = [...newSelectedPartySearchResults, ...newParties];
+    props.onSelectedPartySearchResultsChanged(newSelectedPartySearchResults);
+    setSelectedPartySearchResults(newSelectedPartySearchResults);
   };
 
   return (
     <DebounceSelect
       mode="multiple"
-      value={props.searchSubsetResults}
-      placeholder="Select users"
-      fetchOptions={fetchUserList}
-      search={props.fetchSearchResults}
-      onChange={(newValue) => {
-        props.storeSubsetSearchResults(newValue);
-      }}
+      value={searchSubsetResults}
+      placeholder="Search for contacts"
+      fetchOptions={getFetchOptions}
+      // TODO: I don't think this is being used...
+      // search={(value) => handleSearch(value)}
+      onChange={(value) => handleChange(value)}
       style={{
         width: "100%",
       }}
@@ -84,20 +123,16 @@ const RenderMultiSelectPartySearch = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  partyRelationshipTypesList: getPartyRelationshipTypesList(state),
-  searchResults: getSearchResults(state),
-  searchSubsetResults: getSearchSubsetResults(state),
-});
+RenderMultiSelectPartySearch.propTypes = propTypes;
+RenderMultiSelectPartySearch.defaultProps = defaultProps;
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchSearchResults,
       clearAllSearchResults,
-      storeSubsetSearchResults,
     },
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(RenderMultiSelectPartySearch);
+export default connect(null, mapDispatchToProps)(RenderMultiSelectPartySearch);
