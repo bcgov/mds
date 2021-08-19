@@ -434,7 +434,20 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/contact-management"
+    path="/admin/permit-conditions/:type"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/contact-management"
   />
   <Route
     component={
