@@ -27,4 +27,4 @@ jobs:
 
       - name: Run minespace tests
         run: |
-          cd services/minespace/ && npm ci && npm run test:coverage
+          cd services/minespace-web/ && npm ci && npm run test:coverage
