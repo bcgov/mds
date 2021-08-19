@@ -3,3 +3,4 @@ export const ADD_REPORT = "ADD_REPORT";
 export const EDIT_REPORT = "EDIT_REPORT";
 export const ADD_VARIANCE = "ADD_VARIANCE";
 export const EDIT_VARIANCE = "EDIT_VARIANCE";
+export const EDIT_EMPLOYEE_COUNT = "EDIT_EMPLOYEE_COUNT_FORM";
