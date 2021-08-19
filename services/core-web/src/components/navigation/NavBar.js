@@ -401,7 +401,7 @@ export class NavBar extends Component {
       </AuthorizationWrapper> */}
       <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
         <Menu.Item key="contact-management" className="navbar-dropdown-menu-item">
-          <Link to={router.CONTACT_MANAGEMENT.route}>
+          <Link to={router.ADMIN_CONTACT_MANAGEMENT.dynamicRoute("PER")}>
             <button type="button">Contact Management</button>
           </Link>
         </Menu.Item>

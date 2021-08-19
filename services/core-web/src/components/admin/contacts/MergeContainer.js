@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
-import { Row, Col, Card, Popconfirm, Button, Radio } from "antd";
-import { PhoneOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import { Prompt } from "react-router-dom";
+import { Row, Col, Card, Popconfirm, Button, Radio, Tabs } from "antd";
+import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import {
   fetchSearchResults,
@@ -20,13 +21,14 @@ import {
 import { mergeParties } from "@common/actionCreators/partiesActionCreator";
 import Address from "@/components/common/Address";
 import * as Strings from "@common/constants/strings";
+import * as routes from "@/constants/routes";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import { modalConfig } from "@/components/modalContent/config";
 import * as Permission from "@/constants/permissions";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 
 const propTypes = {
-  partyType: PropTypes.bool.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
@@ -38,6 +40,7 @@ const partyType = {
 
 export class MergeContainer extends Component {
   state = {
+    activeTab: "PER",
     isLoading: false,
     submitting: false,
     contactsForMerge: [],
@@ -58,6 +61,17 @@ export class MergeContainer extends Component {
     },
   };
 
+  componentDidMount() {
+    const { tab } = this.props.match.params;
+    this.setState({
+      activeTab: tab,
+    });
+  }
+
+  handleTabChange = (key) => {
+    this.props.history.replace(routes.ADMIN_CONTACT_MANAGEMENT.dynamicRoute(key));
+  };
+
   handleSimpleSearch = (searchTerm) => {
     this.setState({ isLoading: true });
     return this.props.fetchSearchResults(searchTerm, "party").then(() => {
@@ -72,7 +86,7 @@ export class MergeContainer extends Component {
         closeModal: this.props.closeModal,
         initialValues: this.state.values,
         onSubmit: this.handleMergeContacts,
-        isPerson: this.props.partyType === "PER",
+        isPerson: this.state.activeTab === "PER",
         roles: this.state.rolesForMerge,
         partyRelationshipTypesHash: this.props.partyRelationshipTypesHash,
       },
@@ -81,17 +95,21 @@ export class MergeContainer extends Component {
     });
   };
 
+  handleClearState = () => {
+    this.props.clearAllSearchResults();
+    this.setState({ contactsForMerge: [], values: {}, valuesSelected: {}, rolesForMerge: [] });
+  };
+
   handleMergeContacts = (values) => {
     const payload = {
       party_guids: this.state.contactsForMerge.map(({ party_guid }) => party_guid),
-      party: { ...values, party_type_code: this.props.partyType },
+      party: { ...values, party_type_code: this.state.activeTab },
     };
     this.setState({ isSubmitting: true, isLoading: true });
     this.props
       .mergeParties(payload)
       .then(() => {
-        this.props.clearAllSearchResults();
-        this.setState({ contactsForMerge: [] });
+        this.handleClearState();
       })
       .finally(() => {
         this.props.closeModal();
@@ -116,6 +134,15 @@ export class MergeContainer extends Component {
         });
       });
       this.setState({ contactsForMerge: contacts, rolesForMerge: roles });
+    }
+
+    const tabChanged = this.props.match.params.tab !== nextProps.match.params.tab;
+    console.log("this.props.match.params.tab", this.props.match.params.tab);
+    console.log("nextProps.match.params.tab", nextProps.match.params.tab);
+    if (tabChanged) {
+      this.setState({
+        activeTab: nextProps.match.params.tab,
+      });
     }
   };
 
@@ -328,10 +355,10 @@ export class MergeContainer extends Component {
     </Col>
   );
 
-  render() {
-    return (
+  renderMergeContainer = () => (
+    <>
       <div className="merge-dashboard">
-        <h4>Merge {partyType[this.props.partyType]}</h4>
+        <h4>Merge {partyType[this.state.activeTab]}</h4>
         <br />
         <div className="search-contents inline-flex between">
           <div className="flex-1">
@@ -360,7 +387,7 @@ export class MergeContainer extends Component {
               <Popconfirm
                 placement="topRight"
                 title="Are you sure you want to cancel?"
-                onConfirm={() => this.props.clearAllSearchResults()}
+                onConfirm={() => this.handleClearState()}
                 okText="Yes"
                 cancelText="No"
               >
@@ -379,6 +406,48 @@ export class MergeContainer extends Component {
               </Button>
             </div>
           </AuthorizationWrapper>
+        </div>
+      </div>
+    </>
+  );
+
+  render() {
+    return (
+      <div>
+        <Prompt
+          when={this.state.contactsForMerge.length > 0}
+          message={(location, action) => {
+            // handle user navigating away from technical review/draft permit while in editMode
+            if (action === "REPLACE") {
+              this.handleClearState();
+            }
+            // if the pathname changes while still on the technicalReview tab (via side navigation), don't prompt user
+            return this.props.location.pathname === location.pathname ||
+              this.props.match.params.tab !== this.props.match.params.tab
+              ? true
+              : "Merge in progress. Are you sure you want to leave without saving? All progress will be lost.";
+          }}
+        />
+        <div className="landing-page__header">
+          <Row>
+            <Col sm={22} md={14} lg={12}>
+              <h1>Merge Contacts</h1>
+            </Col>
+          </Row>
+          <Tabs
+            activeKey={this.state.activeTab}
+            size="large"
+            animated={{ inkBar: false, tabPane: false }}
+            onTabClick={this.handleTabChange}
+            centered
+          >
+            <Tabs.TabPane tab="Merge Person" key="PER">
+              <div className="tab__content">{this.renderMergeContainer()}</div>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Merge Companies" key="ORG">
+              <div className="tab__content">{this.renderMergeContainer()}</div>
+            </Tabs.TabPane>
+          </Tabs>
         </div>
       </div>
     );
@@ -407,4 +476,6 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(MergeContainer);
+export default AuthorizationGuard(Permission.ADMINISTRATIVE_USERS)(
+  connect(mapStateToProps, mapDispatchToProps)(MergeContainer)
+);
