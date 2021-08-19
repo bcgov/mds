@@ -137,8 +137,6 @@ export class MergeContainer extends Component {
     }
 
     const tabChanged = this.props.match.params.tab !== nextProps.match.params.tab;
-    console.log("this.props.match.params.tab", this.props.match.params.tab);
-    console.log("nextProps.match.params.tab", nextProps.match.params.tab);
     if (tabChanged) {
       this.setState({
         activeTab: nextProps.match.params.tab,
@@ -159,7 +157,6 @@ export class MergeContainer extends Component {
         {this.state.contactsForMerge && this.state.contactsForMerge.length > 0 ? (
           <Row gutter={6}>
             {this.state.contactsForMerge.map((data, i) => {
-              console.log(data);
               return (
                 <Col span={6} key={data.party_guid}>
                   <Card className="no-header inherit-height" bordered={false}>
