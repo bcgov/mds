@@ -19,5 +19,41 @@ exports[`FinalPermitDocuments renders properly 1`] = `
       />
     </div>
   </div>
+  <h4>
+    Original Documents
+  </h4>
+  <p>
+    These documents came in with the original application.
+  </p>
+  <Connect(NOWSubmissionDocuments)
+    documents={Array []}
+    editPreambleFileMetadata={false}
+    hideImportStatusColumn={true}
+    hideJobStatusColumn={true}
+    importNowSubmissionDocumentsJob={Object {}}
+    isAdminView={false}
+    isFinalPackageTable={true}
+    isViewMode={true}
+    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    now_application_guid="1346wesrt22"
+    showPreambleFileMetadata={false}
+  />
+  <br />
+  <h4>
+    Requested Documents
+  </h4>
+  <p>
+    These documents were added after the original application but were provided by the proponent.
+  </p>
+  <Connect(NOWDocuments)
+    documents={Array []}
+    editPreambleFileMetadata={false}
+    isAdminView={false}
+    isFinalPackageTable={true}
+    isViewMode={true}
+    mine_guid="18133c75-49ad-4101-85f3-a43e35ae989a"
+    now_application_guid="1346wesrt22"
+    showPreambleFileMetadata={false}
+  />
 </div>
 `;

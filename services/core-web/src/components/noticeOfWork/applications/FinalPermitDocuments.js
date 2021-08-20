@@ -122,8 +122,6 @@ export class FinalPermitDocuments extends Component {
       );
     }
 
-    const isNoWApplication = this.props.noticeOfWork.application_type_code === "NOW";
-
     return this.props.documentDownloadState.downloading ? (
       <div className="inline-flex flex-flow-column horizontal-center">
         <h4>Downloading Selected Files...</h4>
@@ -152,39 +150,33 @@ export class FinalPermitDocuments extends Component {
             <PermitPackage isAdminView={this.props.adminView} />
           </div>
         </div>
-        {isNoWApplication && (
+        {(this.props.showPreambleFileMetadata && this.props.showInUnifiedView && (
+          <FormSection name="final_requested_documents_metadata">
+            {unifiedDocumentsView}
+          </FormSection>
+        )) ||
+          unifiedDocumentsView}
+        {!this.props.showInUnifiedView && (
           <>
-            {(this.props.showPreambleFileMetadata && this.props.showInUnifiedView && (
-              <FormSection name="final_requested_documents_metadata">
-                {unifiedDocumentsView}
+            <h4>Original Documents</h4>
+            <p>These documents came in with the original application.</p>
+            {(this.props.showPreambleFileMetadata && (
+              <FormSection name="final_original_documents_metadata">
+                {nowSubmissionDocuments}
               </FormSection>
             )) ||
-              unifiedDocumentsView}
-            {!this.props.showInUnifiedView && (
-              <>
-                <h4>Original Documents</h4>
-                <p>These documents came in with the original application.</p>
-                {(this.props.showPreambleFileMetadata && (
-                  <FormSection name="final_original_documents_metadata">
-                    {nowSubmissionDocuments}
-                  </FormSection>
-                )) ||
-                  nowSubmissionDocuments}
-                <br />
+              nowSubmissionDocuments}
+            <br />
 
-                <h4>Requested Documents</h4>
-                <p>
-                  These documents were added after the original application but were provided by the
-                  proponent.
-                </p>
-                {(this.props.showPreambleFileMetadata && (
-                  <FormSection name="final_requested_documents_metadata">
-                    {nowDocuments}
-                  </FormSection>
-                )) ||
-                  nowDocuments}
-              </>
-            )}
+            <h4>Requested Documents</h4>
+            <p>
+              These documents were added after the original application but were provided by the
+              proponent.
+            </p>
+            {(this.props.showPreambleFileMetadata && (
+              <FormSection name="final_requested_documents_metadata">{nowDocuments}</FormSection>
+            )) ||
+              nowDocuments}
           </>
         )}
       </div>

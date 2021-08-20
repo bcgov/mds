@@ -1,6 +1,48 @@
 version: "3"
 
 services:
+  ####################### Flyway Migration Verification Definition #######################
+  # Used to verify return code of migrations
+  # TODO: replace these by setting up pipeline ENV for assign perm template migration
+  flyway-verify:
+    container_name: mds_flyway_verify
+    build:
+      context: migrations
+      dockerfile: Dockerfile.flyway.dev
+    environment:
+      - FLYWAY_USER=mds
+      - FLYWAY_HOME=/flyway
+      - FLYWAY_PASSWORD=test
+      - FLYWAY_DB_NAME=mds
+      - FLYWAY_DB_HOST=postgres-verify
+      - FLYWAY_URL=jdbc:postgresql://postgres-verify/mds
+      - FLYWAY_OUT_OF_ORDER=true
+      - FLYWAY_CONNECT_RETRIES=60
+    depends_on:
+      postgres-verify:
+        condition: service_healthy
+
+  ####################### Postgres Verification Definition #######################
+  postgres-verify:
+    restart: always
+    container_name: mds_postgres_verify
+    build:
+      context: migrations
+      dockerfile: Dockerfile.dev
+    environment:
+      - POSTGRES_USER=mds
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=mds
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   ####################### Postgres Definition #######################
   postgres:
     restart: always
