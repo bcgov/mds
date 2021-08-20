@@ -4,16 +4,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { isEmpty } from "lodash";
 import { Prompt } from "react-router-dom";
-import { Row, Col, Card, Popconfirm, Button, Radio, Tabs } from "antd";
+import { Row, Col, Card, Popconfirm, Button, Radio, Tabs, Alert } from "antd";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import {
-  fetchSearchResults,
-  clearAllSearchResults,
-} from "@common/actionCreators/searchActionCreator";
+import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
 import RenderMultiSelectPartySearch from "@/components/common/RenderMultiSelectPartySearch";
-import { storeSubsetSearchResults } from "@common/actions/searchActions";
-import { getSearchResults, getSearchSubsetResults } from "@common/selectors/searchSelectors";
 import {
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
@@ -33,14 +28,21 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
 
+// TODO: We can get these instead by using a static content selector?
 const partyType = {
   PER: "Person",
   ORG: "Company",
 };
 
+const codeFromURL = {
+  Person: "PER",
+  Company: "ORG",
+};
+
 export class MergeContainer extends Component {
   state = {
     activeTab: "PER",
+    selectedPartySearchResults: [],
     isLoading: false,
     submitting: false,
     contactsForMerge: [],
@@ -64,19 +66,12 @@ export class MergeContainer extends Component {
   componentDidMount() {
     const { tab } = this.props.match.params;
     this.setState({
-      activeTab: tab,
+      activeTab: codeFromURL[tab],
     });
   }
 
   handleTabChange = (key) => {
-    this.props.history.replace(routes.ADMIN_CONTACT_MANAGEMENT.dynamicRoute(key));
-  };
-
-  handleSimpleSearch = (searchTerm) => {
-    this.setState({ isLoading: true });
-    return this.props.fetchSearchResults(searchTerm, "party").then(() => {
-      this.setState({ isLoading: false });
-    });
+    this.props.history.replace(routes.ADMIN_CONTACT_MANAGEMENT.dynamicRoute(partyType[key]));
   };
 
   confirmMergeModal = () => {
@@ -96,9 +91,17 @@ export class MergeContainer extends Component {
   };
 
   handleClearState = () => {
-    this.props.clearAllSearchResults();
-    this.setState({ contactsForMerge: [], values: {}, valuesSelected: {}, rolesForMerge: [] });
+    this.setState({
+      contactsForMerge: [],
+      values: {},
+      valuesSelected: {},
+      rolesForMerge: [],
+      selectedPartySearchResults: [],
+    });
   };
+
+  onSelectedPartySearchResultsChanged = (selectedPartySearchResults) =>
+    this.setState({ selectedPartySearchResults });
 
   handleMergeContacts = (values) => {
     const payload = {
@@ -117,31 +120,29 @@ export class MergeContainer extends Component {
       });
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    const searchSubsetChanged = this.props.searchSubsetResults !== nextProps.searchSubsetResults;
-    const searchCleared =
-      nextProps.searchSubsetResults.length === 0 && nextProps.searchResults.length === 0;
-
-    if (searchSubsetChanged && !searchCleared) {
-      const contacts = [];
-      const roles = [];
-      nextProps.searchResults?.party.map(({ result }) => {
-        nextProps.searchSubsetResults?.map(({ value }) => {
-          if (result.party_guid === value) {
-            contacts.push(result);
-            roles.push(...result.mine_party_appt);
-          }
-        });
-      });
-      this.setState({ contactsForMerge: contacts, rolesForMerge: roles });
-    }
+  shouldComponentUpdate = (nextProps, nextState) => {
+    const searchSubsetChanged =
+      this.state.selectedPartySearchResults !== nextState.selectedPartySearchResults;
 
     const tabChanged = this.props.match.params.tab !== nextProps.match.params.tab;
     if (tabChanged) {
       this.setState({
-        activeTab: nextProps.match.params.tab,
+        activeTab: codeFromURL[nextProps.match.params.tab],
       });
+      this.handleClearState();
     }
+
+    if (searchSubsetChanged) {
+      const contacts = [];
+      const roles = [];
+      nextState.selectedPartySearchResults?.map((party) => {
+        contacts.push(party);
+        roles.push(...party?.mine_party_appt);
+      });
+      this.setState({ contactsForMerge: contacts, rolesForMerge: roles });
+    }
+
+    return true;
   };
 
   handleContactSelect = (event, field) => {
@@ -152,9 +153,10 @@ export class MergeContainer extends Component {
   };
 
   renderContactCards = () => {
+    console.log(this.state.selectedPartySearchResults);
     return (
       <div className="contact-container flex-4">
-        {this.state.contactsForMerge && this.state.contactsForMerge.length > 0 ? (
+        {this.state.contactsForMerge?.length > 0 ? (
           <Row gutter={6}>
             {this.state.contactsForMerge.map((data, i) => {
               return (
@@ -233,9 +235,8 @@ export class MergeContainer extends Component {
                     <Row>
                       <Col span={24} className="grid padding-sm">
                         <h6>Active Roles</h6>
-                        {data.mine_party_appt &&
-                        data.mine_party_appt.filter(({ end_date }) => !end_date).length > 0 ? (
-                          data.mine_party_appt.length > 0 &&
+                        {data?.mine_party_appt?.filter(({ end_date }) => !end_date)?.length > 0 ? (
+                          data.mine_party_appt?.length > 0 &&
                           data.mine_party_appt
                             .filter(({ end_date }) => !end_date)
                             .map((appt) => (
@@ -260,7 +261,7 @@ export class MergeContainer extends Component {
           </Row>
         ) : (
           <Col span={24}>
-            <p className="null">No Contact selected to merge</p>
+            <p className="null">No contacts have been selected</p>
           </Col>
         )}
       </div>
@@ -310,9 +311,8 @@ export class MergeContainer extends Component {
           <Col span={24} className="grid padding-sm">
             <h6>Active Roles</h6>
             <p>
-              {this.state.rolesForMerge &&
-              this.state.rolesForMerge.filter(({ end_date }) => !end_date).length > 0 ? (
-                this.state.rolesForMerge.length > 0 &&
+              {this.state.rolesForMerge?.filter(({ end_date }) => !end_date)?.length > 0 ? (
+                this.state.rolesForMerge?.length > 0 &&
                 this.state.rolesForMerge
                   .filter(({ end_date }) => !end_date)
                   .map((appt) => (
@@ -331,9 +331,8 @@ export class MergeContainer extends Component {
           <Col span={24} className="grid padding-sm">
             <h6>In-active Roles</h6>
             <p>
-              {this.state.rolesForMerge &&
-              this.state.rolesForMerge.filter(({ end_date }) => end_date).length > 0 ? (
-                this.state.rolesForMerge.length > 0 &&
+              {this.state.rolesForMerge?.filter(({ end_date }) => end_date)?.length > 0 ? (
+                this.state.rolesForMerge?.length > 0 &&
                 this.state.rolesForMerge
                   .filter(({ end_date }) => end_date)
                   .map((appt) => (
@@ -356,6 +355,21 @@ export class MergeContainer extends Component {
     <>
       <div className="merge-dashboard">
         <h4>Merge {partyType[this.state.activeTab]}</h4>
+        <Alert
+          message="The following parties cannot be merged at this time:"
+          description={
+            <>
+              <ol>
+                <li>Parties with the role Permittee.</li>
+                <li>Parties with the role of Inspector.</li>
+                <li>Organizations connected to Orgbook</li>
+              </ol>
+              These parties will be disabled in the dropdown list.
+            </>
+          }
+          type="info"
+          showIcon
+        />
         <br />
         <div className="search-contents inline-flex between">
           <div className="flex-1">
@@ -363,9 +377,9 @@ export class MergeContainer extends Component {
           </div>
           <div className="flex-4">
             <RenderMultiSelectPartySearch
-              onSearch={this.handleSimpleSearch}
-              options={this.props.searchResults.party}
+              onSelectedPartySearchResultsChanged={this.onSelectedPartySearchResultsChanged}
               isLoading={this.state.isLoading}
+              partyType={this.state.activeTab}
             />
           </div>
           <br />
@@ -396,7 +410,7 @@ export class MergeContainer extends Component {
                 className="full-mobile"
                 type="primary"
                 htmlType="submit"
-                disabled={this.state.contactsForMerge.length < 2}
+                disabled={this.state.contactsForMerge?.length < 2}
                 onClick={() => this.confirmMergeModal()}
               >
                 Proceed to Merge
@@ -414,13 +428,7 @@ export class MergeContainer extends Component {
         <Prompt
           when={this.state.contactsForMerge.length > 0}
           message={(location, action) => {
-            // handle user navigating away from technical review/draft permit while in editMode
-            if (action === "REPLACE") {
-              this.handleClearState();
-            }
-            // if the pathname changes while still on the technicalReview tab (via side navigation), don't prompt user
-            return this.props.location.pathname === location.pathname ||
-              this.props.match.params.tab !== this.props.match.params.tab
+            return this.props.location.pathname === location.pathname
               ? true
               : "Merge in progress. Are you sure you want to leave without saving? All progress will be lost.";
           }}
@@ -455,17 +463,13 @@ MergeContainer.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
-  searchResults: getSearchResults(state),
-  searchSubsetResults: getSearchSubsetResults(state),
   partyRelationshipTypesHash: getPartyRelationshipTypeHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchSearchResults,
       clearAllSearchResults,
-      storeSubsetSearchResults,
       mergeParties,
       openModal,
       closeModal,

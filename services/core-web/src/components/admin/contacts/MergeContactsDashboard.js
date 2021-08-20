@@ -17,8 +17,6 @@ const propTypes = {
 export class MergeContactsDashboard extends Component {
   state = { activeTab: "PER" };
 
-  componentWillMount() {}
-
   handleTabChange = (key) => {
     this.setState({
       activeTab: key,
