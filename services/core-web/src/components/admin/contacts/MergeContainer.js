@@ -360,7 +360,7 @@ export class MergeContainer extends Component {
   renderMergeContainer = () => (
     <>
       <div className="merge-dashboard">
-        <h4>Merge {partyType[this.state.activeTab]}</h4>
+        <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
         <Alert
           message="The following parties cannot be merged at this time:"
           description={
@@ -383,7 +383,7 @@ export class MergeContainer extends Component {
         />
         <br />
         <div className="search-contents inline-flex between">
-          <div className="flex-1">
+          <div className="flex-1 padding-sm">
             <p>Search and select contacts to merge</p>
           </div>
           <div className="flex-4">
@@ -399,7 +399,7 @@ export class MergeContainer extends Component {
         <div className="merge-container">
           <div className="merge-container--tall inline-flex between">
             <div className="flex-1">
-              <h4>Proposed Merged Contact</h4>
+              <h4 className="padding-sm">Proposed Merged Contact</h4>
               {this.renderContactCard(this.state.values)}
             </div>
             {this.renderContactCards()}
