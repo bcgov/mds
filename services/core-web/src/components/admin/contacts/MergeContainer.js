@@ -9,6 +9,7 @@ import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
 import RenderMultiSelectPartySearch from "@/components/common/RenderMultiSelectPartySearch";
+import NullScreen from "@/components/common/NullScreen";
 import {
   getPartyRelationshipTypeHash,
   getPartyRelationshipTypesList,
@@ -42,6 +43,7 @@ const codeFromURL = {
 export class MergeContainer extends Component {
   state = {
     activeTab: "PER",
+    expanded: false,
     selectedPartySearchResults: [],
     isLoading: false,
     submitting: false,
@@ -88,6 +90,12 @@ export class MergeContainer extends Component {
       content: modalConfig.MERGE_PARTY_CONFIRMATION,
       width: "75vw",
     });
+  };
+
+  setExpanded = () => {
+    this.setState((prevState) => ({
+      expanded: !prevState.expanded,
+    }));
   };
 
   handleClearState = () => {
@@ -260,9 +268,7 @@ export class MergeContainer extends Component {
             })}
           </Row>
         ) : (
-          <Col span={24}>
-            <p className="null">No contacts have been selected</p>
-          </Col>
+          <NullScreen type="merged-contacts" />
         )}
       </div>
     );
@@ -359,12 +365,17 @@ export class MergeContainer extends Component {
           message="The following parties cannot be merged at this time:"
           description={
             <>
-              <ol>
-                <li>Parties with the role Permittee.</li>
-                <li>Parties with the role of Inspector.</li>
-                <li>Organizations connected to Orgbook</li>
-              </ol>
               These parties will be disabled in the dropdown list.
+              <div className={this.state.expanded ? "block" : "hidden"}>
+                <ol>
+                  <li>Parties with the role Permittee.</li>
+                  <li>Parties with the role of Inspector.</li>
+                  <li>Organizations connected to Orgbook</li>
+                </ol>
+              </div>
+              <Button className="btn--expand" onClick={() => this.setExpanded()}>
+                {this.state.expanded ? "  Read less" : "  ...Read more"}
+              </Button>
             </>
           }
           type="info"
