@@ -161,7 +161,6 @@ export class MergeContainer extends Component {
   };
 
   renderContactCards = () => {
-    console.log(this.state.selectedPartySearchResults);
     return (
       <div className="contact-container flex-4">
         {this.state.contactsForMerge?.length > 0 ? (

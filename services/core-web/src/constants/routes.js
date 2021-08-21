@@ -12,7 +12,7 @@ import MineDashboard from "@/components/mine/MineDashboard";
 import PartyProfile from "@/components/parties/PartyProfile";
 import RelationshipProfile from "@/components/parties/RelationshipProfile";
 import AdminDashboard from "@/components/admin/AdminDashboard";
-import AdminPermitConditionManagement from "@/components/admin/AdminPermitConditionManagement";
+import AdminPermitConditionManagement from "@/components/admin/permitConditions/AdminPermitConditionManagement";
 import AdminVerifiedMinesList from "@/components/admin/AdminVerifiedMinesList";
 import MinespaceUserManagement from "@/components/admin/MinespaceUserManagement";
 import ReportingDashboard from "@/components/dashboard/reporting/ReportingDashboard";
@@ -252,9 +252,9 @@ export const ADMIN_DASHBOARD = {
   component: AdminDashboard,
 };
 
-export const ADMIN_PERMIT_CONDITION = {
-  route: "/admin/dashboard/permit-conditions/:type",
-  dynamicRoute: (type) => `/admin/dashboard/permit-conditions/${type}`,
+export const ADMIN_PERMIT_CONDITION_MANAGEMENT = {
+  route: "/admin/permit-condition-management/:type",
+  dynamicRoute: (type) => `/admin/permit-condition-management/${type}`,
   component: AdminPermitConditionManagement,
 };
 

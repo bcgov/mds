@@ -395,7 +395,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/admin/dashboard/permit-conditions/:type"
+    path="/admin/permit-condition-management/:type"
   />
   <Route
     component={

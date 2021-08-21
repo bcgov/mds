@@ -1,13 +1,17 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AdminPermitConditionManagement } from "@/components/admin/AdminPermitConditionManagement";
+import { AdminPermitConditionManagement } from "@/components/admin/permitConditions/AdminPermitConditionManagement";
 
 const dispatchProps = {};
 const props = {};
 
 const setupDispatchProps = () => {};
 
-const setupProps = () => {};
+const setupProps = () => {
+  props.location = {
+    pathname: "",
+  };
+};
 
 beforeEach(() => {
   setupDispatchProps();

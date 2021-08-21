@@ -11,44 +11,41 @@ const propTypes = {
   openSubMenuKey: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export class AdminNavigation extends Component {
+export class PermitConditionsNavigation extends Component {
   ifActiveButton = (route) => (includes(this.props.activeButton, route) ? "active-menu-btn" : "");
 
   render() {
     return (
       <Menu mode="horizontal" selectedKeys={this.props.openSubMenuKey}>
         <Menu.SubMenu
-          id={this.ifActiveButton("mine-verification")}
+          id={this.ifActiveButton("permit-condition-management")}
           title={
             <span>
-              Mine Verification
+              Permit Conditions
               <DownOutlined className="padding-sm--left" />
             </span>
           }
         >
           <Menu className="sub-menu">
-            <Menu.Item key="verified">
-              <Link to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("verified")}>Verified Mines</Link>
-            </Menu.Item>
-            <Menu.Item key="unverified">
-              <Link to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("unverified")}>
-                UnVerified Mines
+            <Menu.Item key="SAG">
+              <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("sand-and-gravel")}>
+                Sand & Gravel
               </Link>
             </Menu.Item>
-          </Menu>
-        </Menu.SubMenu>
-        <Menu.SubMenu
-          id={this.ifActiveButton("manage-minespace")}
-          title={
-            <span>
-              MineSpace Management
-              <DownOutlined className="padding-sm--left" />
-            </span>
-          }
-        >
-          <Menu className="sub-menu">
-            <Menu.Item key="users">
-              <Link to={routes.ADMIN_MANAGE_MINESPACE_USERS.route}>Users</Link>
+            <Menu.Item key="MIN">
+              <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("exploration")}>
+                Exploration (MX/CX)
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="QCA">
+              <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("quarry")}>
+                Quarry
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="PLA">
+              <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("placer")}>
+                Placer
+              </Link>
             </Menu.Item>
           </Menu>
         </Menu.SubMenu>
@@ -57,5 +54,6 @@ export class AdminNavigation extends Component {
   }
 }
 
-AdminNavigation.propTypes = propTypes;
-export default AdminNavigation;
+PermitConditionsNavigation.propTypes = propTypes;
+
+export default PermitConditionsNavigation;

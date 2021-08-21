@@ -385,20 +385,20 @@ export class NavBar extends Component {
 
   adminDropdown = () => (
     <Menu id="menu__dropdown" className="navbar-dropdown-menu">
-      <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
+      <AuthorizationWrapper permission={Permission.ADMIN}>
         <Menu.Item key="admin/dashboard" className="navbar-dropdown-menu-item">
           <Link to={router.ADMIN_DASHBOARD.route}>
             <button type="button">Core Administrator</button>
           </Link>
         </Menu.Item>
       </AuthorizationWrapper>
-      {/* <AuthorizationWrapper permission={Permission.EXECUTIVE}>
+      <AuthorizationWrapper permission={Permission.EDIT_TEMPLATE_PERMIT_CONDITIONS}>
         <Menu.Item key="executive-dashboard" className="navbar-dropdown-menu-item">
-          <Link to={router.PERMIT_CONDITION_MANAGEMENT.dynamicRoute("SAG")}>
+          <Link to={router.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("sand-and-gravel")}>
             <button type="button">Permit Condition Management</button>
           </Link>
         </Menu.Item>
-      </AuthorizationWrapper> */}
+      </AuthorizationWrapper>
       <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
         <Menu.Item key="contact-management" className="navbar-dropdown-menu-item">
           <Link to={router.ADMIN_CONTACT_MANAGEMENT.dynamicRoute("Person")}>

@@ -1,20 +1,18 @@
 import React, { Component } from "react";
 import { Row, Col } from "antd";
 import PropTypes from "prop-types";
+import StandardPermitConditions from "@/components/Forms/permits/conditions/StandardPermitConditions";
 import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 import * as Permission from "@/constants/permissions";
-import AdminNavigation from "@/components/admin/AdminNavigation";
-import AdminDashboardRoutes from "@/routes/AdminDashboardRoutes";
-
-/**
- * @class AdminDashboard houses everything related to admin tasks, this is a permission-based route.
- */
+import PermitConditionsNavigation from "@/components/admin/permitConditions/PermitConditionsNavigation";
 
 const propTypes = {
   location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
 };
 
-export class AdminDashboard extends Component {
+const defaultProps = {};
+
+export class AdminPermitConditionManagement extends Component {
   state = {
     activeNavButton: "permit-conditions",
     openSubMenuKey: ["SAG"],
@@ -41,20 +39,25 @@ export class AdminDashboard extends Component {
         <div className="landing-page__header">
           <Row>
             <Col sm={22} md={14} lg={12}>
-              <h1>Administrative Dashboard</h1>
+              <h1>Permit Conditions</h1>
             </Col>
           </Row>
         </div>
-        <AdminNavigation
+        <PermitConditionsNavigation
           activeButton={this.state.activeNavButton}
           openSubMenuKey={this.state.openSubMenuKey}
         />
-        <AdminDashboardRoutes />
+        <div className="tab__content">
+          <StandardPermitConditions />
+        </div>
       </div>
     );
   }
 }
 
-AdminDashboard.propTypes = propTypes;
+AdminPermitConditionManagement.propTypes = propTypes;
+AdminPermitConditionManagement.defaultProps = defaultProps;
 
-export default AuthorizationGuard(Permission.ADMIN)(AdminDashboard);
+export default AuthorizationGuard(Permission.EDIT_TEMPLATE_PERMIT_CONDITIONS)(
+  AdminPermitConditionManagement
+);
