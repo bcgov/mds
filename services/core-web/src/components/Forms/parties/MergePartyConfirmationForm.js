@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import { Field, reduxForm, FormSection } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
+import { Button, Col, Row, Popconfirm, Alert } from "antd";
+import CoreTable from "@/components/common/CoreTable";
+import { formatDate } from "@common/utils/helpers";
+
 import * as Strings from "@common/constants/strings";
 import {
   required,
@@ -30,10 +33,51 @@ const propTypes = {
   closeModal: PropTypes.func.isRequired,
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
+const columns = (props) => [
+  {
+    title: "Mine Name",
+    width: 150,
+    dataIndex: "mine_name",
+    render: (text, record) => (
+      <div key={record.key} title="Mine Name">
+        {text} ({record.mine.mine_no})
+      </div>
+    ),
+  },
+  {
+    title: "Role",
+    width: 150,
+    dataIndex: "mine_party_appt_type_code",
+    render: (text) => <div title="Role">{props.partyRelationshipTypesHash[text]}</div>,
+  },
+  {
+    title: "Start Date - End Date",
+    width: 150,
+    dataIndex: "dates",
+    render: (text) => <div title="Start Date - End Date">{text}</div>,
+  },
+];
+
+const transformRowData = (roles) =>
+  roles.map((role) => ({
+    key: role.party_guid,
+    mine_name: role.mine.mine_name,
+    dates: role.end_date
+      ? `${formatDate(role.start_date)} - ${formatDate(role.end_date)}`
+      : `${formatDate(role.start_date)} - Present`,
+    ...role,
+  }));
 
 export const MergePartyConfirmationForm = (props) => (
   <div>
     <Form layout="vertical" onSubmit={props.handleSubmit}>
+      <Alert
+        message="Ensure that information is correct."
+        description="Once merge is complete a new contact will be created and all previous contacts selected will be deleted. The following Roles will be copied over to the new contact."
+        type="info"
+        showIcon
+      />
+      <br />
       <Row gutter={24}>
         <Col span={12} className="border--right--layout">
           <>
@@ -197,46 +241,16 @@ export const MergePartyConfirmationForm = (props) => (
           </>
         </Col>
         <Col span={12}>
-          <Row>
-            <Col span={24} className="grid padding-sm">
-              <h6>Active Roles</h6>
-              <p>
-                {props.roles && props.roles.filter(({ end_date }) => !end_date).length > 0 ? (
-                  props.roles.length > 0 &&
-                  props.roles
-                    .filter(({ end_date }) => !end_date)
-                    .map((appt) => (
-                      <p>
-                        {props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
-                        {appt.mine.mine_name}
-                      </p>
-                    ))
-                ) : (
-                  <p>{Strings.EMPTY_FIELD}</p>
-                )}
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24} className="grid padding-sm">
-              <h6>In-active Roles</h6>
-              <p>
-                {props.roles && props.roles.filter(({ end_date }) => end_date).length > 0 ? (
-                  props.roles.length > 0 &&
-                  props.roles
-                    .filter(({ end_date }) => end_date)
-                    .map((appt) => (
-                      <p>
-                        {props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
-                        {appt.mine.mine_name}
-                      </p>
-                    ))
-                ) : (
-                  <p>{Strings.EMPTY_FIELD}</p>
-                )}
-              </p>
-            </Col>
-          </Row>
+          <CoreTable
+            condition={true}
+            dataSource={transformRowData(props.roles)}
+            columns={columns(props)}
+            tableProps={{
+              align: "center",
+              pagination: false,
+              scroll: { y: 500 },
+            }}
+          />
         </Col>
       </Row>
       <div className="right center-mobile">

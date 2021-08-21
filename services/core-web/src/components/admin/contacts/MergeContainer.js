@@ -362,15 +362,15 @@ export class MergeContainer extends Component {
       <div className="merge-dashboard">
         <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
         <Alert
-          message="The following parties cannot be merged at this time:"
+          message="The following contacts cannot be merged at this time:"
           description={
             <>
-              These parties will be disabled in the dropdown list.
+              These contacts will be disabled in the dropdown list.
               <div className={this.state.expanded ? "block" : "hidden"}>
                 <ol>
-                  <li>Parties with the role Permittee.</li>
-                  <li>Parties with the role of Inspector.</li>
-                  <li>Organizations connected to Orgbook</li>
+                  <li>Contacts with the role Permittee.</li>
+                  <li>Contacts with the role of Inspector.</li>
+                  <li>Organizations connected to Orgbook.</li>
                 </ol>
               </div>
               <Button className="btn--expand" onClick={() => this.setExpanded()}>
