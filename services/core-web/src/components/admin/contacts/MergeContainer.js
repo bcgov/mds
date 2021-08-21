@@ -385,6 +385,7 @@ export class MergeContainer extends Component {
         <div className="search-contents inline-flex between">
           <div className="flex-1 padding-sm">
             <p>Search and select contacts to merge</p>
+            <p>All contacts selected will be deleted when merge is complete.</p>
           </div>
           <div className="flex-4">
             <RenderMultiSelectPartySearch
