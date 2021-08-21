@@ -170,23 +170,25 @@ export class MergeContainer extends Component {
               return (
                 <Col span={6} key={data.party_guid}>
                   <Card className="no-header inherit-height" bordered={false}>
+                    {this.state.activeTab === "PER" && (
+                      <Row>
+                        <Col span={24} className="grid padding-sm">
+                          <h6>First Name</h6>
+                          <Radio.Group
+                            name={data.first_name}
+                            onChange={(event) => this.handleContactSelect(event, "first_name")}
+                            value={this.state.valuesSelected.first_name}
+                          >
+                            <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
+                              {data.first_name || Strings.EMPTY_FIELD}
+                            </Radio>
+                          </Radio.Group>
+                        </Col>
+                      </Row>
+                    )}
                     <Row>
                       <Col span={24} className="grid padding-sm">
-                        <h6>First Name</h6>
-                        <Radio.Group
-                          name={data.first_name}
-                          onChange={(event) => this.handleContactSelect(event, "first_name")}
-                          value={this.state.valuesSelected.first_name}
-                        >
-                          <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
-                            {data.first_name || Strings.EMPTY_FIELD}
-                          </Radio>
-                        </Radio.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>Last Name</h6>
+                        <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
                         <Radio.Group
                           name={data.party_name}
                           onChange={(event) => this.handleContactSelect(event, "party_name")}
@@ -277,15 +279,17 @@ export class MergeContainer extends Component {
   renderContactCard = (data) => (
     <Col span={24} key={data.party_guid}>
       <Card className="no-header inherit-height" bordered={false}>
+        {this.state.activeTab === "PER" && (
+          <Row>
+            <Col span={24} className="grid padding-sm">
+              <h6>First Name</h6>
+              <p>{data.first_name || Strings.EMPTY_FIELD}</p>
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col span={24} className="grid padding-sm">
-            <h6>First Name</h6>
-            <p>{data.first_name || Strings.EMPTY_FIELD}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24} className="grid padding-sm">
-            <h6>Last Name</h6>
+            <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
             <p>{data.party_name || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
