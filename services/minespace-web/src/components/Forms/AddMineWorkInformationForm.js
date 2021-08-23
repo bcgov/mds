@@ -11,6 +11,7 @@ import { resetForm } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import { getWorkInformationBadgeStatusType } from "@/constants/theme";
+import * as STRINGS from "@/constants/strings";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -56,7 +57,7 @@ export const AddMineWorkInformationForm = (props) => {
                     placement="right"
                     mouseEnterDelay={0.3}
                   >
-                    <Icon type="info-circle" />
+                    <Icon type="info-circle" className="padding-sm" />
                   </Tooltip>
                   Work Start Date
                 </>
@@ -75,10 +76,10 @@ export const AddMineWorkInformationForm = (props) => {
               </Form.Item>
             </Descriptions.Item>
             <Descriptions.Item
-              overlayClassName="minespace-tooltip"
               label={
                 <>
                   <Tooltip
+                    overlayClassName="minespace-tooltip"
                     title={
                       <>
                         <Typography.Text strong>
@@ -98,7 +99,7 @@ export const AddMineWorkInformationForm = (props) => {
                     placement="right"
                     mouseEnterDelay={0.3}
                   >
-                    <Icon type="info-circle" />
+                    <Icon type="info-circle" className="padding-sm" />
                   </Tooltip>
                   Work Stop Date
                 </>
@@ -120,7 +121,7 @@ export const AddMineWorkInformationForm = (props) => {
             <Descriptions.Item label="Work Status">
               <Badge
                 status={getWorkInformationBadgeStatusType(props.initialValues.work_status)}
-                text={props.initialValues.work_status}
+                text={props.initialValues.work_status || STRINGS.NOT_APPLICABLE}
               />
             </Descriptions.Item>
           </Descriptions>
@@ -134,6 +135,7 @@ export const AddMineWorkInformationForm = (props) => {
               name="work_comments"
               label="Comments"
               placeholder="Enter Comments"
+              minRows={3}
               disabled={!props.isEditMode}
               component={renderConfig.AUTO_SIZE_FIELD}
             />

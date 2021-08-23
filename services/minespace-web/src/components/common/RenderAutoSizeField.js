@@ -12,6 +12,7 @@ const propTypes = {
   label: PropTypes.string,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
+  minRows: PropTypes.number,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
@@ -19,6 +20,7 @@ const defaultProps = {
   disabled: false,
   placeholder: "",
   label: "",
+  minRows: 3,
 };
 
 const { TextArea } = Input;
@@ -35,7 +37,12 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea id={props.id} {...props.input} disabled={props.disabled} autoSize />
+    <TextArea
+      id={props.id}
+      {...props.input}
+      disabled={props.disabled}
+      autoSize={{ minRows: props.minRows }}
+    />
   </Form.Item>
 );
 
