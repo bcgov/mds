@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -12,6 +11,7 @@ const propTypes = {
   provinceOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   title: PropTypes.string.isRequired,
   isPerson: PropTypes.bool.isRequired,
+  partyRelationshipTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
   roles: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
 };
 

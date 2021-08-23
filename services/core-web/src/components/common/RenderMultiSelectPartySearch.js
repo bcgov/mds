@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { Select, Spin } from "antd";
 import { bindActionCreators } from "redux";
@@ -11,7 +10,12 @@ import {
   clearAllSearchResults,
 } from "@common/actionCreators/searchActionCreator";
 
-function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props }) {
+const debouncePropTypes = {
+  fetchOptions: PropTypes.func.isRequired,
+  debounceTimeout: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};
+
+function DebounceSelect(props) {
   const [fetching, setFetching] = useState(false);
   const [options, setOptions] = useState([]);
   const fetchRef = useRef(0);
@@ -21,7 +25,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
       const fetchId = fetchRef.current;
       setOptions([]);
       setFetching(true);
-      fetchOptions(value).then((newOptions) => {
+      props.fetchOptions(value).then((newOptions) => {
         if (fetchId !== fetchRef.current) {
           return;
         }
@@ -30,8 +34,8 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
       });
     };
 
-    return debounce(loadOptions, debounceTimeout);
-  }, [fetchOptions, debounceTimeout]);
+    return debounce(loadOptions, props.debounceTimeout);
+  }, [props.fetchOptions, props.debounceTimeout]);
 
   return (
     <Select
@@ -45,11 +49,15 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
   );
 }
 
+DebounceSelect.propTypes = debouncePropTypes;
+
 const propTypes = {
   onSelectedPartySearchResultsChanged: PropTypes.func.isRequired,
   onSearchResultsChanged: PropTypes.func,
   onSearchSubsetResultsChanged: PropTypes.func,
   partyType: PropTypes.string.isRequired,
+  fetchSearchResults: PropTypes.func.isRequired,
+  triggerSelectReset: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
@@ -106,9 +114,11 @@ const RenderMultiSelectPartySearch = (props) => {
     const currentPartyGuids = selectedPartySearchResults?.map((result) => result.party_guid) || [];
 
     const newParties = [];
+    // eslint-disable-next-line no-unused-expressions
     selectedPartyGuids?.forEach((partyGuid) => {
       if (!currentPartyGuids.includes(partyGuid)) {
-        const party = searchResults?.party?.find((p) => p?.result?.party_guid == partyGuid)?.result;
+        const party = searchResults?.party?.find((p) => p?.result?.party_guid === partyGuid)
+          ?.result;
         if (!party) {
           throw new Error(`Party with GUID ${partyGuid} should be present in the search results!`);
         }
@@ -123,6 +133,7 @@ const RenderMultiSelectPartySearch = (props) => {
   return (
     <DebounceSelect
       mode="multiple"
+      debounceTimeout={800}
       value={searchSubsetResults}
       placeholder="Search for contacts"
       fetchOptions={getFetchOptions}
