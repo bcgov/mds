@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { Select, Spin } from "antd";
 import { bindActionCreators } from "redux";
+import { LoadingOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -42,7 +43,9 @@ function DebounceSelect(props) {
       labelInValue
       filterOption={false}
       onSearch={debounceFetcher}
-      notFoundContent={fetching ? <Spin size="small" /> : "No contacts found"}
+      notFoundContent={
+        fetching ? <Spin size="small" indicator={<LoadingOutlined />} /> : "No contacts found"
+      }
       {...props}
       options={options}
     />

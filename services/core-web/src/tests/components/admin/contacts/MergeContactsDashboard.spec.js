@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { MergeContactsDashboard } from "@/components/admin/contacts/MergeContactsDashboard";
+import { MergeContainer } from "@/components/admin/contacts/MergeContainer";
 
 const dispatchProps = {};
 const props = {};
@@ -24,7 +24,7 @@ beforeEach(() => {
 
 describe("MergeContactDashboard", () => {
   it("renders properly", () => {
-    const component = shallow(<MergeContactsDashboard {...dispatchProps} {...props} />);
+    const component = shallow(<MergeContainer {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

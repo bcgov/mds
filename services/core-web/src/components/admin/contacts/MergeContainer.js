@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -6,6 +7,7 @@ import { Prompt } from "react-router-dom";
 import { Row, Col, Card, Popconfirm, Button, Radio, Tabs, Alert } from "antd";
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
+import { clearAllSearchResults } from "@common/actionCreators/searchActionCreator";
 import RenderMultiSelectPartySearch from "@/components/common/RenderMultiSelectPartySearch";
 import NullScreen from "@/components/common/NullScreen";
 import {
@@ -25,15 +27,6 @@ import { AuthorizationGuard } from "@/HOC/AuthorizationGuard";
 const propTypes = {
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  mergeParties: PropTypes.func.isRequired,
-  partyRelationshipTypesHash: PropTypes.objectOf(PropTypes.string).isRequired,
-  history: PropTypes.shape({ replace: PropTypes.func }).isRequired,
-  location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
-  match: PropTypes.shape({
-    params: {
-      tab: PropTypes.string,
-    },
-  }).isRequired,
 };
 
 // TODO: We can get these instead by using a static content selector?
@@ -53,6 +46,7 @@ export class MergeContainer extends Component {
     expanded: false,
     selectedPartySearchResults: [],
     isLoading: false,
+    submitting: false,
     contactsForMerge: [],
     rolesForMerge: [],
     triggerSelectReset: false,
@@ -123,7 +117,7 @@ export class MergeContainer extends Component {
       party_guids: this.state.contactsForMerge.map(({ party_guid }) => party_guid),
       party: { ...values, party_type_code: this.state.activeTab },
     };
-    this.setState({ isLoading: true });
+    this.setState({ isSubmitting: true, isLoading: true });
     this.props
       .mergeParties(payload)
       .then(() => {
@@ -131,7 +125,7 @@ export class MergeContainer extends Component {
       })
       .finally(() => {
         this.props.closeModal();
-        this.setState({ isLoading: false });
+        this.setState({ isSubmitting: false, isLoading: false });
       });
   };
 
@@ -150,7 +144,6 @@ export class MergeContainer extends Component {
     if (searchSubsetChanged) {
       const contacts = [];
       const roles = [];
-      // eslint-disable-next-line  array-callback-return, no-unused-expressions
       nextState.selectedPartySearchResults?.map((party) => {
         contacts.push(party);
         roles.push(...party?.mine_party_appt);
@@ -391,11 +384,11 @@ export class MergeContainer extends Component {
                 className={this.state.expanded ? "block" : "hidden"}
                 style={{ marginLeft: "40px" }}
               >
-                <ol>
-                  <li>Contacts with the role Permittee.</li>
+                <ul>
+                  <li>Contacts with the role of Permittee.</li>
                   <li>Contacts with the role of Inspector.</li>
-                  <li>Organizations connected to Orgbook.</li>
-                </ol>
+                  <li>Organizations that are connected to OrgBook.</li>
+                </ul>
               </div>
               <Button className="btn--expand" onClick={() => this.setExpanded()}>
                 {this.state.expanded ? "  Read less" : "  ...Read more"}
@@ -431,7 +424,7 @@ export class MergeContainer extends Component {
             </div>
             <div className="flex-4">
               <Alert
-                description="All contacts selected will be deleted when merge is complete and the proposed
+                description="All contacts selected will be deleted when the merge is complete and the proposed
           contact will be created."
                 type="info"
                 showIcon
@@ -476,7 +469,7 @@ export class MergeContainer extends Component {
       <div>
         <Prompt
           when={this.state.contactsForMerge.length > 0}
-          message={(location) => {
+          message={(location, action) => {
             return this.props.location.pathname === location.pathname
               ? true
               : "Merge in progress. Are you sure you want to leave without saving? All progress will be lost.";
@@ -518,6 +511,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
+      clearAllSearchResults,
       mergeParties,
       openModal,
       closeModal,
