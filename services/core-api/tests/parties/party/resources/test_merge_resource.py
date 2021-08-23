@@ -1,8 +1,9 @@
 import json
 
-from tests.factories import PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory, create_mine_and_permit
+from tests.factories import BondFactory, PartyFactory, MinePartyAppointmentFactory, PartyOrgBookEntityFactory, create_mine_and_permit
 from tests.now_application_factories import NOWApplicationFactory
 from app.api.parties.party.models.party import Party
+from app.api.securities.models.bond import Bond
 
 PARTY = {
     'first_name': 'John',
@@ -22,11 +23,10 @@ PARTY = {
 }
 
 
-def test_merge_success(test_client, db_session, auth_headers):
+def test_merge_success_person(test_client, db_session, auth_headers):
     batch_size = 5
     mpas = MinePartyAppointmentFactory.create_batch(
         size=batch_size, mine_party_appt_type_code='MMG')
-
     parties = [mpa.party for mpa in mpas]
     party_guids = [str(party.party_guid) for party in parties]
     party = PARTY
@@ -70,6 +70,32 @@ def test_merge_success(test_client, db_session, auth_headers):
     for bra in merged_party.business_role_appts:
         assert str(bra.party_guid) == merged_party_guid
         assert bra.merged_from_party_guid
+
+
+def test_merge_success_organization(test_client, db_session, auth_headers):
+    party = PartyFactory(company=True)
+    bond = BondFactory()
+    parties = [party, bond.payer]
+    party_guids = [str(party.party_guid) for party in parties]
+    party = PARTY
+    party['party_type_code'] = 'ORG'
+    payload = {'party_guids': party_guids, 'party': party}
+
+    post_resp = test_client.post(
+        '/parties/merge',
+        data=json.dumps(payload),
+        content_type='application/json',
+        headers=auth_headers['full_auth_header'])
+    assert post_resp.status_code == 200
+
+    post_data = json.loads(post_resp.data.decode())
+
+    merged_party_guid = post_data['party_guid']
+    merged_party = Party.find_by_party_guid(merged_party_guid)
+    assert merged_party
+
+    bond = Bond.find_by_payer_party_guid(merged_party_guid)
+    assert bond is not None
 
 
 def test_merge_failure_different_types(test_client, db_session, auth_headers):

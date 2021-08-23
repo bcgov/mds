@@ -49,6 +49,7 @@ export class MergeContainer extends Component {
     submitting: false,
     contactsForMerge: [],
     rolesForMerge: [],
+    triggerSelectReset: false,
     values: {
       first_name: "",
       party_name: "",
@@ -72,11 +73,10 @@ export class MergeContainer extends Component {
     });
   }
 
-  handleTabChange = (key) => {
+  handleTabChange = (key) =>
     this.props.history.replace(routes.ADMIN_CONTACT_MANAGEMENT.dynamicRoute(partyType[key]));
-  };
 
-  confirmMergeModal = () => {
+  confirmMergeModal = () =>
     this.props.openModal({
       props: {
         title: "Confirm Merge",
@@ -90,23 +90,24 @@ export class MergeContainer extends Component {
       content: modalConfig.MERGE_PARTY_CONFIRMATION,
       width: "75vw",
     });
-  };
 
-  setExpanded = () => {
+  setExpanded = () =>
     this.setState((prevState) => ({
       expanded: !prevState.expanded,
     }));
-  };
 
-  handleClearState = () => {
-    this.setState({
-      contactsForMerge: [],
-      values: {},
-      valuesSelected: {},
-      rolesForMerge: [],
-      selectedPartySearchResults: [],
-    });
-  };
+  handleClearState = () =>
+    this.setState(
+      {
+        contactsForMerge: [],
+        values: {},
+        valuesSelected: {},
+        rolesForMerge: [],
+        selectedPartySearchResults: [],
+        triggerSelectReset: true,
+      },
+      () => this.setState({ triggerSelectReset: false })
+    );
 
   onSelectedPartySearchResultsChanged = (selectedPartySearchResults) =>
     this.setState({ selectedPartySearchResults });
@@ -405,6 +406,7 @@ export class MergeContainer extends Component {
               onSelectedPartySearchResultsChanged={this.onSelectedPartySearchResultsChanged}
               isLoading={this.state.isLoading}
               partyType={this.state.activeTab}
+              triggerSelectReset={this.state.triggerSelectReset}
             />
           </div>
           <br />
