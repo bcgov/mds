@@ -114,7 +114,7 @@ export const MergePartyConfirmationForm = (props) => (
                     <Field
                       id="party_name"
                       name="party_name"
-                      label="Company Name*"
+                      label="Organization Name*"
                       component={renderConfig.FIELD}
                       validate={[required]}
                     />

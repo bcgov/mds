@@ -32,12 +32,12 @@ const propTypes = {
 // TODO: We can get these instead by using a static content selector?
 const partyType = {
   PER: "Person",
-  ORG: "Company",
+  ORG: "Organization",
 };
 
 const codeFromURL = {
   Person: "PER",
-  Company: "ORG",
+  Organization: "ORG",
 };
 
 export class MergeContainer extends Component {
@@ -187,7 +187,9 @@ export class MergeContainer extends Component {
                     )}
                     <Row>
                       <Col span={24} className="grid padding-sm">
-                        <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
+                        <h6>
+                          {this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}
+                        </h6>
                         <Radio.Group
                           name={data.party_name}
                           onChange={(event) => this.handleContactSelect(event, "party_name")}
@@ -288,7 +290,7 @@ export class MergeContainer extends Component {
         )}
         <Row>
           <Col span={24} className="grid padding-sm">
-            <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
+            <h6>{this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}</h6>
             <p>{data.party_name || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
@@ -387,8 +389,13 @@ export class MergeContainer extends Component {
         <br />
         <div className="search-contents inline-flex between">
           <div className="flex-1 padding-sm">
-            <p>Search and select contacts to merge</p>
-            <p>All contacts selected will be deleted when merge is complete.</p>
+            <p>
+              <b>Search and select contacts to merge</b>
+            </p>
+            <p>
+              All contacts selected will be deleted when merge is complete and the proposed contact
+              will be created.
+            </p>
           </div>
           <div className="flex-4">
             <RenderMultiSelectPartySearch
@@ -464,7 +471,7 @@ export class MergeContainer extends Component {
             <Tabs.TabPane tab="Merge Person" key="PER">
               <div className="tab__content">{this.renderMergeContainer()}</div>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Merge Companies" key="ORG">
+            <Tabs.TabPane tab="Merge Organization" key="ORG">
               <div className="tab__content">{this.renderMergeContainer()}</div>
             </Tabs.TabPane>
           </Tabs>
