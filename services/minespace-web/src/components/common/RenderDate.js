@@ -12,6 +12,7 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
   onChange: PropTypes.func,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   showTime: PropTypes.bool,
@@ -20,6 +21,7 @@ const propTypes = {
 const defaultProps = {
   showTime: false,
   placeholder: "yyyy-mm-dd",
+  disabled: false,
   onChange: () => {},
 };
 
@@ -38,6 +40,7 @@ const RenderDate = (props) => (
     <DatePicker
       id={props.id}
       {...props.input}
+      disabled={props.disabled}
       placeholder={props.placeholder}
       onChange={(date, dateString) => props.input.onChange(dateString)}
       value={props.input.value ? moment(props.input.value) : null}
