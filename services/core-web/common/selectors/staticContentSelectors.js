@@ -702,7 +702,7 @@ export const getApplicationSourceTypeCodeOptionsHash = createSelector(
 export const getConsequenceClassificationStatusCodeDropdownOptions = createSelectorWrapper(
   getConsequenceClassificationStatusCodeOptions,
   createDropDownList,
-  ["description", "consequence_classification_status_code", "active_ind"]
+  ["display_order", "description", "consequence_classification_status_code", "active_ind"]
 );
 
 export const getConsequenceClassificationStatusCodeOptionsHash = createSelector(
