@@ -36,6 +36,7 @@ jobs:
           - config: nris-etl
           - config: minespace
           - config: fider
+          - config: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
