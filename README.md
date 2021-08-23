@@ -8,6 +8,8 @@ The Mines Digital Services (MDS) will have a number of interconnections and rela
 [![Unit Tests](https://github.com/bcgov/mds/actions/workflows/tests-unit.yaml/badge.svg)](https://github.com/bcgov/mds/actions/workflows/tests-unit.yaml)
 [![Integration Tests](https://github.com/bcgov/mds/actions/workflows/tests-integration.yaml/badge.svg)](https://github.com/bcgov/mds/actions/workflows/tests-integration.yaml)
 [![Build](https://github.com/bcgov/mds/actions/workflows/build.yaml/badge.svg)](https://github.com/bcgov/mds/actions/workflows/build.yaml)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/383b986cb973e1d0187f/maintainability)](https://codeclimate.com/github/bcgov/mds/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/383b986cb973e1d0187f/test_coverage)](https://codeclimate.com/github/bcgov/mds/test_coverage)
 
 ## Features
