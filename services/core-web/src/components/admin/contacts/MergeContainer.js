@@ -166,11 +166,15 @@ export class MergeContainer extends Component {
       <>
         <div className="contact-container">
           {this.state.contactsForMerge?.length > 0 ? (
-            <Row gutter={6}>
+            <Row gutter={[8, 8]} type="flex" justify="start">
               {this.state.contactsForMerge.map((data, i) => {
                 return (
-                  <Col span={6} key={data.party_guid}>
-                    <Card className="no-header inherit-height" bordered={false}>
+                  <Col span={6} flex={4} key={data.party_guid}>
+                    <Card
+                      className="no-header"
+                      style={{ height: "100%", overflowX: "auto" }}
+                      bordered={false}
+                    >
                       {this.state.activeTab === "PER" && (
                         <Row>
                           <Col span={24} className="grid padding-sm">
