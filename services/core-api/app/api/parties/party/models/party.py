@@ -163,7 +163,6 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party.save(commit=False)
         return party
 
-    # TODO: Why isn't this an @validates method like the others?
     @classmethod
     def validate_phone_no(cls, phone_no):
         if not phone_no:
