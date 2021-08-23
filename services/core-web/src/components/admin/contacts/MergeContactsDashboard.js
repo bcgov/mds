@@ -437,17 +437,7 @@ export class MergeContactsDashboard extends Component {
               <h4 className="padding-sm">Proposed Merged Contact</h4>
               {this.renderContactCard(this.state.values)}
             </div>
-            <div className="flex-4">
-              {/* <Alert
-                description="All contacts selected will be deleted when the merge is complete and the proposed
-          contact will be created."
-                type="info"
-                showIcon
-                closable
-              />
-              <br /> */}
-              {this.renderContactCards()}
-            </div>
+            <div className="flex-4">{this.renderContactCards()}</div>
           </div>
           <br />
           <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
