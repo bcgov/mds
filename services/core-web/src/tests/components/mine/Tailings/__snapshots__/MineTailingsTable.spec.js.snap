@@ -20,7 +20,7 @@ exports[`MineTailingsTable renders properly 1`] = `
         "title": "Consequence Classification",
       },
       Object {
-        "dataIndex": "has_itrb",
+        "dataIndex": "itrb_exemption_status_code",
         "render": [Function],
         "title": "Independent Tailings Review Board",
       },
@@ -50,7 +50,7 @@ exports[`MineTailingsTable renders properly 1`] = `
     Array [
       Object {
         "consequence_classification_status_code": "LOW",
-        "has_itrb": true,
+        "itrb_exemption_status_code": "YES",
         "key": "e2629897-053e-4218-9299-479375e47f78",
         "latitude": null,
         "longitude": null,

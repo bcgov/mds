@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import {
   getTSFOperatingStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeOptionsHash,
+  getITRBExemptionStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import * as Strings from "@common/constants/strings";
 import CoreTable from "@/components/common/CoreTable";
-import { BOOLEAN_OPTIONS_HASH } from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import { Button } from "antd";
@@ -16,6 +16,7 @@ import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 const propTypes = {
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  itrmExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   tailings: PropTypes.arrayOf(PropTypes.any).isRequired,
   openEditTailingsModal: PropTypes.func.isRequired,
   handleEditTailings: PropTypes.func.isRequired,
@@ -60,10 +61,12 @@ export class MineTailingsTable extends Component {
         ),
       },
       {
-        title: "Independent Tailings Review Board",
-        dataIndex: "has_itrb",
+        title: "Independent Tailings Review Board Exemption",
+        dataIndex: "itrb_exemption_status_code",
         render: (text) => (
-          <div title="Independent Tailings Review Board">{BOOLEAN_OPTIONS_HASH[text]}</div>
+          <div title="Independent Tailings Review Board Exemption">
+            {this.props.itrmExemptionStatusCodeHash[text] || Strings.EMPTY_FIELD}
+          </div>
         ),
       },
       {
@@ -126,6 +129,7 @@ MineTailingsTable.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
   consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
+  itrmExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
 export default connect(mapStateToProps)(MineTailingsTable);

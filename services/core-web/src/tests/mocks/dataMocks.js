@@ -33,7 +33,7 @@ export const MINE_RESPONSE = {
           longitude: null,
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
-          has_itrb: true,
+          itrb_exemption_status_code: "YES",
         },
       ],
       mine_type: [
@@ -74,7 +74,7 @@ export const MINE_RESPONSE = {
           longitude: null,
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
-          has_itrb: true,
+          itrb_exemption_status_code: "YES",
         },
       ],
       mine_type: [
@@ -110,7 +110,7 @@ export const SUBSCRIBED_MINES = {
           longitude: null,
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
-          has_itrb: true,
+          itrb_exemption_status_code: "YES",
         },
       ],
       mine_type: [{ mine_tenure_type_code: "PLR" }, { mine_tenure_type_code: "MIN" }],
@@ -143,7 +143,7 @@ export const MINES = {
           longitude: null,
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
-          has_itrb: true,
+          itrb_exemption_status_code: "YES",
         },
       ],
       mine_type: [
@@ -190,7 +190,7 @@ export const MINES = {
           longitude: null,
           consequence_classification_status_code: "LOW",
           tsf_operating_status_code: "OPT",
-          has_itrb: true,
+          itrb_exemption_status_code: "YES",
         },
       ],
       mine_type: [
@@ -312,7 +312,7 @@ export const MINE_BASIC_INFO = [
         longitude: null,
         consequence_classification_status_code: "LOW",
         tsf_operating_status_code: "OPT",
-        has_itrb: true,
+        itrb_exemption_status_code: "YES",
       },
     ],
     mine_type: [

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { isNil } from "lodash";
 import PropTypes from "prop-types";
 import { Divider, Tabs } from "antd";
 import {
@@ -17,6 +16,7 @@ import {
 import {
   getTSFOperatingStatusCodeOptionsHash,
   getConsequenceClassificationStatusCodeOptionsHash,
+  getITRBExemptionStatusCodeOptionsHash,
 } from "@common/selectors/staticContentSelectors";
 import { getMineReports } from "@common/selectors/reportSelectors";
 import { getMines, getMineGuid } from "@common/selectors/mineSelectors";
@@ -53,6 +53,7 @@ const propTypes = {
   fetchMineRecordById: PropTypes.func.isRequired,
   TSFOperatingStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
   consequenceClassificationStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
+  itrbExemptionStatusCodeHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const defaultParams = {
@@ -115,8 +116,7 @@ export class MineTailingsInfo extends Component {
       value: record.engineer_of_record?.party_guid,
       label: record.engineer_of_record?.party.name,
     };
-    const itrb = !isNil(record.has_itrb) ? record.has_itrb.toString() : record.has_itrb;
-    const newRecord = { ...record, has_itrb: itrb };
+    const newRecord = { ...record };
 
     event.preventDefault();
     this.props.openModal({
@@ -137,7 +137,6 @@ export class MineTailingsInfo extends Component {
   handleAddTailings = (values) => {
     const payload = {
       ...values,
-      has_itrb: values.has_itrb === "true",
     };
     return this.props
       .createTailingsStorageFacility(this.props.mineGuid, payload)
@@ -261,6 +260,7 @@ export class MineTailingsInfo extends Component {
                   consequenceClassificationStatusCodeHash={
                     this.props.consequenceClassificationStatusCodeHash
                   }
+                  itrbExemptionStatusCodeHash={this.props.itrbExemptionStatusCodeHash}
                 />
               </LoadingWrapper>
             </div>
@@ -278,6 +278,7 @@ const mapStateToProps = (state) => ({
   mineGuid: getMineGuid(state),
   TSFOperatingStatusCodeHash: getTSFOperatingStatusCodeOptionsHash(state),
   consequenceClassificationStatusCodeHash: getConsequenceClassificationStatusCodeOptionsHash(state),
+  itrbExemptionStatusCodeHash: getITRBExemptionStatusCodeOptionsHash(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

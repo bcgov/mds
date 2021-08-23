@@ -1634,8 +1634,9 @@ VALUES
     ('LOW', 'Low', 10, 'system-mds', 'system-mds'),
     ('SIG', 'Significant', 20, 'system-mds', 'system-mds'),
     ('HIG', 'High', 30, 'system-mds', 'system-mds'),
-    ('EXT', 'Extreme', 40, 'system-mds', 'system-mds'),
-    ('NOD', 'N/A (No Dam)', 50, 'system-mds', 'system-mds')
+    ('VHIG', 'Very High', 40, 'system-mds', 'system-mds'),
+    ('EXT', 'Extreme', 50, 'system-mds', 'system-mds'),
+    ('NOD', 'N/A (No Dam)', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO tsf_operating_status

@@ -167,9 +167,9 @@ exports[`AddTailingsForm renders properly 1`] = `
               },
             ]
           }
-          id="has_itrb"
-          label="Independent Tailings Review Board*"
-          name="has_itrb"
+          id="itrb_exemption_status_code"
+          label="Independent Tailings Review Board Exemption*"
+          name="itrb_exemption_status_code"
           validate={
             Array [
               [Function],

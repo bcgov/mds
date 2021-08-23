@@ -9,6 +9,7 @@ import { Button, Col, Row, Popconfirm } from "antd";
 import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
+  getITRBExemptionStatusCodeDropdownOptions,
   getTSFOperatingStatusCodeDropdownOptions,
 } from "@common/selectors/staticContentSelectors";
 import { resetForm } from "@common/utils/helpers";
@@ -16,7 +17,6 @@ import RenderField from "@/components/common/RenderField";
 import PartySelectField from "@/components/common/PartySelectField";
 import RenderSelect from "@/components/common/RenderSelect";
 import * as FORM from "@/constants/forms";
-import { BOOLEAN_DROPDOWN_OPTIONS } from "@common/constants/strings";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
@@ -27,6 +27,7 @@ const propTypes = {
   submitting: PropTypes.bool.isRequired,
   consequenceClassificationStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem)
     .isRequired,
+  itrbExemptionStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
   TSFOperatingStatusCodeOptions: PropTypes.arrayOf(CustomPropTypes.dropdownListItem).isRequired,
 };
 
@@ -112,11 +113,11 @@ export const AddTailingsForm = (props) => (
       <Col md={12} xs={24}>
         <Form.Item>
           <Field
-            id="has_itrb"
-            name="has_itrb"
-            label="Independent Tailings Review Board*"
+            id="itrb_exemption_status_code"
+            name="itrb_exemption_status_code"
+            label="Independent Tailings Review Board Exemption*"
             component={RenderSelect}
-            data={BOOLEAN_DROPDOWN_OPTIONS}
+            data={props.itrbExemptionStatusCodeOptions}
             validate={[required]}
           />
         </Form.Item>
@@ -149,6 +150,7 @@ export default compose(
     consequenceClassificationStatusCodeOptions: getConsequenceClassificationStatusCodeDropdownOptions(
       state
     ),
+    itrbExemptionStatusCodeOptions: getITRBExemptionStatusCodeDropdownOptions(state),
     TSFOperatingStatusCodeOptions: getTSFOperatingStatusCodeDropdownOptions(state),
   })),
   reduxForm({
