@@ -52,6 +52,9 @@ import {
   getApplicationReasonCodeDropdownOptions,
   getApplicationSourceTypeCodeDropdownOptions,
   getConsequenceClassificationStatusCodeOptions,
+  getITRBExemptionStatusCodeOptions,
+  getITRBExemptionStatusCodeOptionsHash,
+  getITRBExemptionStatusCodeDropdownOptions,
   getTSFOperatingStatusCodeOptions,
   getTSFOperatingStatusCodeOptionsHash,
   getTSFOperatingStatusCodeDropdownOptions,
@@ -350,6 +353,12 @@ describe("staticContentSelectors", () => {
     );
   });
 
+  it("`getITRBExemptionStatusCodeOptions` calls `staticContentReducer.getITRBExemptionStatusCodeOptions`", () => {
+    expect(getITRBExemptionStatusCodeOptions(mockState)).toEqual(
+      mockState[STATIC_CONTENT].itrbExemptionStatusCodeOptions
+    );
+  });
+
   it("`getTSFOperatingStatusCodeOptions` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
     expect(getTSFOperatingStatusCodeOptions(mockState)).toEqual(
       mockState[STATIC_CONTENT].TSFOperatingStatusCodeOptions
@@ -362,6 +371,12 @@ describe("staticContentSelectors", () => {
     );
   });
 
+  it("`getITRBExemptionStatusCodeDropdownOptions` calls `staticContentReducer.getITRBExemptionStatusCodeOptions`", () => {
+    expect(getITRBExemptionStatusCodeDropdownOptions(mockState)).toEqual(
+      Mock.ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS
+    );
+  });
+
   it("`getTSFOperatingStatusCodeDropdownOptions` calls `staticContentReducer.getTSFOperatingStatusCodeOptions`", () => {
     expect(getTSFOperatingStatusCodeDropdownOptions(mockState)).toEqual(
       Mock.TSF_OPERATING_STATUS_DROPDOWN_OPTIONS
@@ -371,6 +386,12 @@ describe("staticContentSelectors", () => {
   it("`getConsequenceClassificationStatusCodeOptionsHash` calls `staticContentReducer.getConsequenceClassificationStatusCodeOptions`", () => {
     expect(getConsequenceClassificationStatusCodeOptionsHash(mockState)).toEqual(
       Mock.CONSEQUENCE_CLASSIFICATION_STATUS_HASH
+    );
+  });
+
+  it("`getITRBExemptionStatusCodeOptionsHash` calls `staticContentReducer.getITRBExemptionStatusCodeOptions`", () => {
+    expect(getITRBExemptionStatusCodeOptionsHash(mockState)).toEqual(
+      Mock.ITRB_EXEMPTION_STATUS_HASH
     );
   });
 

@@ -22,7 +22,7 @@ exports[`MineTailingsTable renders properly 1`] = `
       Object {
         "dataIndex": "itrb_exemption_status_code",
         "render": [Function],
-        "title": "Independent Tailings Review Board",
+        "title": "Independent Tailings Review Board Exemption",
       },
       Object {
         "dataIndex": "engineer_of_record",

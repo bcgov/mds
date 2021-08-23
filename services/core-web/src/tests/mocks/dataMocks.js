@@ -4988,6 +4988,23 @@ export const BULK_STATIC_CONTENT_RESPONSE = {
       active_ind: true,
     },
   ],
+  itrbExemptionStatusCodeOptions: [
+    {
+      itrb_exemption_status_code: "YES",
+      description: "Yes",
+      active_ind: true,
+    },
+    {
+      itrb_exemption_status_code: "NO",
+      description: "No",
+      active_ind: true,
+    },
+    {
+      itrb_exemption_status_code: "EXEM",
+      description: "Exemption",
+      active_ind: true,
+    },
+  ],
   TSFOperatingStatusCodeOptions: [
     {
       tsf_operating_status_code: "CLO",
@@ -5940,12 +5957,24 @@ export const CONSEQUENCE_CLASSIFICATION_STATUS_DROPDOWN_OPTIONS = [
   { value: "SIG", label: "Significant", subType: null, isActive: true },
 ];
 
+export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
+  { value: "EXEM", label: "Exemption", subType: null, isActive: true },
+  { value: "NO", label: "No", subType: null, isActive: true },
+  { value: "YES", label: "Yes", subType: null, isActive: true },
+];
+
 export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
   LOW: "Low",
   SIG: "Significant",
   HIG: "High",
   EXT: "Extreme",
   NOD: "N/A (No Dam)",
+};
+
+export const ITRB_EXEMPTION_STATUS_HASH = {
+  YES: "Yes",
+  NO: "No",
+  EXEM: "Exemption",
 };
 
 export const TSF_OPERATING_STATUS_DROPDOWN_OPTIONS = [
