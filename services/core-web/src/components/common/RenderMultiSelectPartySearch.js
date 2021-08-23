@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { Select, Spin } from "antd";
 import { bindActionCreators } from "redux";
 import { isEmpty } from "lodash";
@@ -57,11 +57,16 @@ const defaultProps = {
   onSearchSubsetResultsChanged: () => {},
 };
 
-// TODO: Implement ability to "clear search results".
 const RenderMultiSelectPartySearch = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchSubsetResults, setSearchSubsetResults] = useState([]);
   const [selectedPartySearchResults, setSelectedPartySearchResults] = useState([]);
+
+  useEffect(() => {
+    if (props.triggerSelectReset) {
+      setSearchSubsetResults([]);
+    }
+  }, [props.triggerSelectReset]);
 
   const getFetchOptions = (value) =>
     props.fetchSearchResults(value, "party").then((response) => {
@@ -88,15 +93,6 @@ const RenderMultiSelectPartySearch = (props) => {
           };
         });
     });
-
-  // TODO: I don't think this is needed (see below).
-  // const handleSearch = (value) => {
-  //   return props.fetchSearchResults(value, "party").then((response) => {
-  //     const results = response?.data?.search_results;
-  //     props.onSearchResultsChanged(results);
-  //     setSearchResults(results);
-  //   });
-  // };
 
   const handleChange = (value) => {
     props.onSearchSubsetResultsChanged(value);
@@ -130,8 +126,6 @@ const RenderMultiSelectPartySearch = (props) => {
       value={searchSubsetResults}
       placeholder="Search for contacts"
       fetchOptions={getFetchOptions}
-      // TODO: I don't think this is being used...
-      // search={(value) => handleSearch(value)}
       onChange={(value) => handleChange(value)}
       style={{
         width: "100%",
