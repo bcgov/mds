@@ -14,7 +14,7 @@ const setupDispatchProps = () => {
 const setupProps = () => {
   props.history = { replace: jest.fn() };
   props.location = { pathname: "" };
-  props.userRoles = [];
+  props.match = { params: { tab: "" } };
 };
 
 beforeEach(() => {
