@@ -380,11 +380,11 @@ export class MergeContainer extends Component {
                 className={this.state.expanded ? "block" : "hidden"}
                 style={{ marginLeft: "40px" }}
               >
-                <ol>
-                  <li>Contacts with the role Permittee.</li>
+                <ul>
+                  <li>Contacts with the role of Permittee.</li>
                   <li>Contacts with the role of Inspector.</li>
-                  <li>Organizations connected to Orgbook.</li>
-                </ol>
+                  <li>Organizations that are connected to OrgBook.</li>
+                </ul>
               </div>
               <Button className="btn--expand" onClick={() => this.setExpanded()}>
                 {this.state.expanded ? "  Read less" : "  ...Read more"}
@@ -420,7 +420,7 @@ export class MergeContainer extends Component {
             </div>
             <div className="flex-4">
               <Alert
-                description="All contacts selected will be deleted when merge is complete and the proposed
+                description="All contacts selected will be deleted when the merge is complete and the proposed
           contact will be created."
                 type="info"
                 showIcon
