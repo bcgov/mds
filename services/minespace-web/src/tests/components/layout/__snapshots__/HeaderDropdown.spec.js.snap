@@ -59,7 +59,7 @@ exports[`HeaderDropdown renders properly 1`] = `
         <Menu
           className="header-dropdown-menu"
         >
-          <Memo(ConnectFunction)>
+          <UNDEFINED>
             <MenuItem>
               <Button
                 block={false}
@@ -75,7 +75,7 @@ exports[`HeaderDropdown renders properly 1`] = `
                 </ForwardRef>
               </Button>
             </MenuItem>
-          </Memo(ConnectFunction)>
+          </UNDEFINED>
           <Divider
             className="bg-color-table-seperator"
             style={

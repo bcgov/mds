@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MineWorkInformation renders properly 1`] = `
+<div
+  className="work-information-container "
+>
+  <Row
+    gutter={5}
+  >
+    <div
+      className="inline-flex between"
+    >
+      <Title
+        level={4}
+      >
+        Work Information
+      </Title>
+      <span
+        style={
+          Object {
+            "float": "right",
+          }
+        }
+      >
+        <Button
+          block={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          onClick={[Function]}
+          type="link"
+        >
+          <img
+            alt="Edit"
+            src={
+              Object {
+                "process": [Function],
+              }
+            }
+          />
+        </Button>
+      </span>
+    </div>
+  </Row>
+  <Row
+    gutter={5}
+  >
+    <Paragraph>
+      Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health, Safety & Reclamation Code apply to any person doing any work (mining activity) at, on, or about the mine site.
+    </Paragraph>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <div>
+        <Row
+          gutter={0}
+        >
+          <div>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={22}
+              >
+                <Descriptions
+                  colon={false}
+                  column={5}
+                  size="default"
+                >
+                  <DescriptionsItem
+                    label={
+                      <React.Fragment>
+                        <Tooltip
+                          arrowPointAtCenter={false}
+                          autoAdjustOverflow={true}
+                          mouseEnterDelay={0.3}
+                          mouseLeaveDelay={0.1}
+                          overlayClassName="minespace-tooltip"
+                          placement="right"
+                          title={
+                            <React.Fragment>
+                              <Text
+                                strong={true}
+                              >
+                                Health, Safety and Reclamation Code for Mines in British Columbia
+                              </Text>
+                              <br />
+                              <Text
+                                underline={true}
+                              >
+                                Notice To Start Work
+                              </Text>
+                              <br />
+                              <Text>
+                                6.2.1 The manager shall give 10 days’ notice to an inspector of intention to start [any mining activity] in, at, or about a mine, including seasonal reactivation.
+                              </Text>
+                            </React.Fragment>
+                          }
+                          transitionName="zoom-big-fast"
+                        >
+                          <Icon
+                            className="padding-sm"
+                            type="info-circle"
+                          />
+                        </Tooltip>
+                        Work Start Date
+                      </React.Fragment>
+                    }
+                  >
+                    Aug 24 2021
+                  </DescriptionsItem>
+                  <DescriptionsItem
+                    label={
+                      <React.Fragment>
+                        <Tooltip
+                          arrowPointAtCenter={false}
+                          autoAdjustOverflow={true}
+                          mouseEnterDelay={0.3}
+                          mouseLeaveDelay={0.1}
+                          overlayClassName="minespace-tooltip"
+                          placement="right"
+                          title={
+                            <React.Fragment>
+                              <Text
+                                strong={true}
+                              >
+                                Health, Safety and Reclamation Code for Mines in British Columbia
+                              </Text>
+                              <br />
+                              <Text
+                                underline={true}
+                              >
+                                Notice to Stop Work
+                              </Text>
+                              <br />
+                              <Text>
+                                6.2.2 The manager shall give notice to an inspector of intention to stop [any mining activity] in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.
+                              </Text>
+                            </React.Fragment>
+                          }
+                          transitionName="zoom-big-fast"
+                        >
+                          <Icon
+                            className="padding-sm"
+                            type="info-circle"
+                          />
+                        </Tooltip>
+                        Work Stop Date
+                      </React.Fragment>
+                    }
+                  >
+                    Aug 03 2023
+                  </DescriptionsItem>
+                  <DescriptionsItem
+                    label="Work Status"
+                  >
+                    <Badge
+                      count={null}
+                      dot={false}
+                      overflowCount={99}
+                      showZero={false}
+                      status="warning"
+                      text="Not Working"
+                    />
+                  </DescriptionsItem>
+                </Descriptions>
+              </Col>
+            </Row>
+            <Row
+              gutter={16}
+            >
+              <Col
+                span={24}
+              />
+            </Row>
+          </div>
+        </Row>
+        <Row
+          gutter={0}
+        >
+          <Col
+            span={22}
+          >
+            <span
+              className="inline-flex between"
+              style={
+                Object {
+                  "float": "right",
+                }
+              }
+            >
+              <div
+                className="padding-sm"
+              >
+                <span
+                  className="field-title"
+                >
+                  Updated By: 
+                </span>
+                <span>
+                  test
+                </span>
+              </div>
+              <div
+                className="padding-sm"
+              >
+                <span
+                  className="field-title"
+                >
+                  Last Updated: 
+                </span>
+                <span>
+                  Aug 23, 2021 2:48 PM
+                </span>
+              </div>
+            </span>
+          </Col>
+        </Row>
+      </div>
+    </Col>
+  </Row>
+</div>
+`;
