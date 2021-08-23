@@ -37,7 +37,7 @@ import NoticeOfWorkHomePage from "@/components/dashboard/noticeOfWorkHomePage/No
 import NoticeOfWorkApplication from "@/components/noticeOfWork/applications/NoticeOfWorkApplication";
 import AdminAmendmentApplication from "@/components/noticeOfWork/applications/AdminAmendmentApplication";
 import ViewNoticeOfWorkApplication from "@/components/noticeOfWork/applications/ViewNoticeOfWorkApplication";
-import MergeContainer from "@/components/admin/contacts/MergeContainer";
+import MergeContactsDashboard from "@/components/admin/contacts/MergeContactsDashboard";
 
 const withoutDefaultParams = (params, defaults) => {
   const newParams = JSON.parse(JSON.stringify(params));
@@ -272,7 +272,7 @@ export const ADMIN_MANAGE_MINESPACE_USERS = {
 export const ADMIN_CONTACT_MANAGEMENT = {
   route: "/admin/contact-management/:tab",
   dynamicRoute: (tab) => `/admin/contact-management/${tab}`,
-  component: MergeContainer,
+  component: MergeContactsDashboard,
 };
 
 export const SEARCH_RESULTS = {

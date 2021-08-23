@@ -47,7 +47,7 @@ const codeFromURL = {
   Organization: "ORG",
 };
 
-export class MergeContainer extends Component {
+export class MergeContactsDashboard extends Component {
   state = {
     activeTab: "PER",
     expanded: false,
@@ -172,6 +172,14 @@ export class MergeContainer extends Component {
     return (
       <>
         <div className="contact-container">
+          <Alert
+            description="All contacts selected will be deleted when the merge is complete and the proposed
+          contact will be created."
+            type="info"
+            showIcon
+            closable
+          />
+          <br />
           {this.state.contactsForMerge?.length > 0 ? (
             <Row gutter={[8, 8]} type="flex" justify="start">
               {this.state.contactsForMerge.map((data, i) => {
@@ -377,7 +385,7 @@ export class MergeContainer extends Component {
     </Col>
   );
 
-  renderMergeContainer = () => (
+  renderMergeContactsDashboard = () => (
     <>
       <div className="merge-dashboard">
         <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
@@ -391,11 +399,11 @@ export class MergeContainer extends Component {
                 className={this.state.expanded ? "block" : "hidden"}
                 style={{ marginLeft: "40px" }}
               >
-                <ol>
-                  <li>Contacts with the role Permittee.</li>
+                <ul>
+                  <li>Contacts with the role of Permittee.</li>
                   <li>Contacts with the role of Inspector.</li>
-                  <li>Organizations connected to Orgbook.</li>
-                </ol>
+                  <li>Organizations connected to OrgBook.</li>
+                </ul>
               </div>
               <Button className="btn--expand" onClick={() => this.setExpanded()}>
                 {this.state.expanded ? "  Read less" : "  ...Read more"}
@@ -430,14 +438,14 @@ export class MergeContainer extends Component {
               {this.renderContactCard(this.state.values)}
             </div>
             <div className="flex-4">
-              <Alert
-                description="All contacts selected will be deleted when merge is complete and the proposed
+              {/* <Alert
+                description="All contacts selected will be deleted when the merge is complete and the proposed
           contact will be created."
                 type="info"
                 showIcon
                 closable
               />
-              <br />
+              <br /> */}
               {this.renderContactCards()}
             </div>
           </div>
@@ -496,10 +504,10 @@ export class MergeContainer extends Component {
             centered
           >
             <Tabs.TabPane tab="Merge Person" key="PER">
-              <div className="tab__content">{this.renderMergeContainer()}</div>
+              <div className="tab__content">{this.renderMergeContactsDashboard()}</div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Merge Organization" key="ORG">
-              <div className="tab__content">{this.renderMergeContainer()}</div>
+              <div className="tab__content">{this.renderMergeContactsDashboard()}</div>
             </Tabs.TabPane>
           </Tabs>
         </div>
@@ -508,7 +516,7 @@ export class MergeContainer extends Component {
   }
 }
 
-MergeContainer.propTypes = propTypes;
+MergeContactsDashboard.propTypes = propTypes;
 
 const mapStateToProps = (state) => ({
   partyRelationshipTypesList: getPartyRelationshipTypesList(state),
@@ -526,5 +534,5 @@ const mapDispatchToProps = (dispatch) =>
   );
 
 export default AuthorizationGuard(Permission.ADMINISTRATIVE_USERS)(
-  connect(mapStateToProps, mapDispatchToProps)(MergeContainer)
+  connect(mapStateToProps, mapDispatchToProps)(MergeContactsDashboard)
 );

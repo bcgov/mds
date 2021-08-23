@@ -76,8 +76,8 @@ export const MergePartyConfirmationForm = (props) => {
     <div>
       <Form layout="vertical" onSubmit={props.handleSubmit}>
         <Alert
-          message="Ensure that information is correct."
-          description="Once merge is complete a new contact will be created and all previous contacts selected will be deleted. All Roles listed will be copied over to the new contact."
+          message="Ensure the information is correct"
+          description="Once the merge is complete a new contact will be created and all previous contacts selected will be deleted. All roles listed will be copied over to the new contact."
           type="info"
           showIcon
         />
