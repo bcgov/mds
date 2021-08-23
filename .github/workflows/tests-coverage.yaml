@@ -1,0 +1,68 @@
+name: Coverage Test Reports
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+env:
+  CC_TEST_REPORTER_ID: 50e476c4bbdd07bb0a379f1dfb6bf70e2d9102f25ebd429b3e38efd301d13eeb
+
+jobs:
+  tests-coverage-report:
+    # Dont allow test coverage reports to impact other jobs (non-blocking)
+    continue-on-error: true
+    name: tests-coverage-report
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Check if push event
+        if: github.event_name == 'push'
+        run: |
+          echo "GIT_BRANCH=$GITHUB_REF" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
+      - name: Check if pr sync event
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+          echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+      - name: Setup reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+          mkdir coverage
+
+      #### Adjust container topology as needed for future coverage reports ####
+      - name: Create containers to generate reports
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker-compose -f docker-compose.ci.yaml up -d backend
+
+      #### Group generation ####
+      - name: Generate coverage reports
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest
+          docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
+
+      #### Group formatting ####
+      # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
+      - name: Format reports
+        run: |
+          cd services/core-api/
+          ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
+
+      #### Group collection ####
+      - name: Collect coverage reports
+        run: |
+          ./cc-test-reporter sum-coverage coverage/*-codeclimate.json -o coverage/total-codeclimate.json
+
+      #### Submit total coverage ####
+      - name: Submit coverage reports
+        run: |
+          ./cc-test-reporter upload-coverage -d -i coverage/total-codeclimate.json
