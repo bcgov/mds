@@ -38,7 +38,7 @@ function DebounceSelect({ fetchOptions, debounceTimeout = 800, search, ...props 
       labelInValue
       filterOption={false}
       onSearch={debounceFetcher}
-      notFoundContent={fetching ? <Spin size="small" /> : null}
+      notFoundContent={fetching ? <Spin size="small" /> : "No contacts found"}
       {...props}
       options={options}
     />
