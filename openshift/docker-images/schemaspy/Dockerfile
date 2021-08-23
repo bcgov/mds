@@ -20,7 +20,7 @@ RUN apk update && \
     tar
 
 # Install Caddy Server, and All Middleware
-RUN curl -L "https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
+RUN curl -L "https://github.com/caddyserver/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
     | tar --no-same-owner -C /usr/bin/ -xz caddy
 
 # Remove build devs
