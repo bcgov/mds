@@ -1,9 +1,9 @@
-CREATE TABLE itrb_exemption_status (
+CREATE TABLE IF NOT EXISTS itrb_exemption_status (
     itrb_exemption_status_code       varchar                                NOT NULL PRIMARY KEY,
     description                      varchar                                NOT NULL            ,
     active_ind                       boolean                  DEFAULT true  NOT NULL            ,
     create_user                      varchar                                NOT NULL            ,
-    display_order					           smallint                               NOT NULL            ,
+    display_order					 smallint                               NOT NULL            ,
     create_timestamp                 timestamp with time zone DEFAULT now() NOT NULL            ,
     update_user                      varchar                                NOT NULL            ,
     update_timestamp                 timestamp with time zone DEFAULT now() NOT NULL
@@ -32,4 +32,4 @@ UPDATE mine_tailings_storage_facility SET itrb_exemption_status_code = 'YES' WHE
 
 UPDATE mine_tailings_storage_facility SET itrb_exemption_status_code = 'NO' WHERE has_itrb = 'false';
 
-ALTER TABLE mine_tailings_storage_facility DROP COLUMN has_itrb;
+ALTER TABLE mine_tailings_storage_facility DROP COLUMN IF EXISTS has_itrb;
