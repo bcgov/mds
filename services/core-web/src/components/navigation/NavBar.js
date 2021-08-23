@@ -99,16 +99,6 @@ export class NavBar extends Component {
           </button>
         </Dropdown>
       </AuthorizationWrapper>
-      {/* <AuthorizationWrapper permission={Permission.VIEW_ADMIN_ROUTE}>
-        <Link to={router.ADMIN_DASHBOARD.route}>
-          <Button
-            id={this.ifActiveButton(router.ADMIN_DASHBOARD.route)}
-            className="menu__btn--link"
-          >
-            Admin
-          </Button>
-        </Link>
-      </AuthorizationWrapper> */}
       <Dropdown overlay={this.userMenu} placement="bottomLeft">
         <button type="button" className="menu__btn" id={this.ifActiveButton("my-dashboard")}>
           <UserOutlined className="padding-sm--right icon-sm" />
@@ -202,6 +192,34 @@ export class NavBar extends Component {
                     className="menu--hamburger__btn--link"
                   >
                     Admin
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.EDIT_TEMPLATE_PERMIT_CONDITIONS}>
+            <Row>
+              <Col span={24}>
+                <Link to={router.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("sand-and-gravel")}>
+                  <Button
+                    id={this.ifActiveButton(router.ADMIN_PERMIT_CONDITION_MANAGEMENT.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Permit Condition Management
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </AuthorizationWrapper>
+          <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
+            <Row>
+              <Col span={24}>
+                <Link to={router.ADMIN_CONTACT_MANAGEMENT.dynamicRoute("Person")}>
+                  <Button
+                    id={this.ifActiveButton(router.ADMIN_CONTACT_MANAGEMENT.route)}
+                    className="menu--hamburger__btn--link"
+                  >
+                    Contact Management
                   </Button>
                 </Link>
               </Col>
