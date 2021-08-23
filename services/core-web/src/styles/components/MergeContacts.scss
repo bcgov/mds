@@ -11,7 +11,7 @@
   border-radius: 20px;
 
   &--tall {
-    height: 95%;
+    height: 90%;
   }
 }
 
@@ -25,7 +25,7 @@
   background-color: white;
   padding: $default-padding-md;
   border-radius: 20px;
-  height: 98%;
+  height: stretch;
   overflow: scroll;
 }
 

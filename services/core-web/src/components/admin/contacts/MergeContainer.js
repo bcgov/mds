@@ -32,12 +32,12 @@ const propTypes = {
 // TODO: We can get these instead by using a static content selector?
 const partyType = {
   PER: "Person",
-  ORG: "Company",
+  ORG: "Organization",
 };
 
 const codeFromURL = {
   Person: "PER",
-  Company: "ORG",
+  Organization: "ORG",
 };
 
 export class MergeContainer extends Component {
@@ -162,116 +162,121 @@ export class MergeContainer extends Component {
 
   renderContactCards = () => {
     return (
-      <div className="contact-container flex-4">
-        {this.state.contactsForMerge?.length > 0 ? (
-          <Row gutter={6}>
-            {this.state.contactsForMerge.map((data, i) => {
-              return (
-                <Col span={6} key={data.party_guid}>
-                  <Card className="no-header inherit-height" bordered={false}>
-                    {this.state.activeTab === "PER" && (
+      <>
+        <div className="contact-container">
+          {this.state.contactsForMerge?.length > 0 ? (
+            <Row gutter={6}>
+              {this.state.contactsForMerge.map((data, i) => {
+                return (
+                  <Col span={6} key={data.party_guid}>
+                    <Card className="no-header inherit-height" bordered={false}>
+                      {this.state.activeTab === "PER" && (
+                        <Row>
+                          <Col span={24} className="grid padding-sm">
+                            <h6>First Name</h6>
+                            <Radio.Group
+                              name={data.first_name}
+                              onChange={(event) => this.handleContactSelect(event, "first_name")}
+                              value={this.state.valuesSelected.first_name}
+                            >
+                              <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
+                                {data.first_name || Strings.EMPTY_FIELD}
+                              </Radio>
+                            </Radio.Group>
+                          </Col>
+                        </Row>
+                      )}
                       <Row>
                         <Col span={24} className="grid padding-sm">
-                          <h6>First Name</h6>
+                          <h6>
+                            {this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}
+                          </h6>
                           <Radio.Group
-                            name={data.first_name}
-                            onChange={(event) => this.handleContactSelect(event, "first_name")}
-                            value={this.state.valuesSelected.first_name}
+                            name={data.party_name}
+                            onChange={(event) => this.handleContactSelect(event, "party_name")}
+                            value={this.state.valuesSelected.party_name}
                           >
-                            <Radio value={`${data.first_name}${i}`} disabled={!data.first_name}>
-                              {data.first_name || Strings.EMPTY_FIELD}
+                            <Radio value={`${data.party_name}${i}`} disabled={!data.party_name}>
+                              {data.party_name || Strings.EMPTY_FIELD}
                             </Radio>
                           </Radio.Group>
                         </Col>
                       </Row>
-                    )}
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
-                        <Radio.Group
-                          name={data.party_name}
-                          onChange={(event) => this.handleContactSelect(event, "party_name")}
-                          value={this.state.valuesSelected.party_name}
-                        >
-                          <Radio value={`${data.party_name}${i}`} disabled={!data.party_name}>
-                            {data.party_name || Strings.EMPTY_FIELD}
-                          </Radio>
-                        </Radio.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>Phone Number</h6>
-                        <Radio.Group
-                          name={data.phone_no}
-                          onChange={(event) => this.handleContactSelect(event, "phone_no")}
-                          value={this.state.valuesSelected.phone_no}
-                        >
-                          <Radio value={`${data.phone_no}${i}`} disabled={!data.phone_no}>
-                            {data.phone_no || Strings.EMPTY_FIELD}
-                          </Radio>
-                        </Radio.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>Email</h6>
-                        <Radio.Group
-                          name={data.email}
-                          onChange={(event) => this.handleContactSelect(event, "email")}
-                          value={this.state.valuesSelected.email}
-                        >
-                          <Radio value={`${data.email}${i}`} disabled={!data.email}>
-                            {data.email || Strings.EMPTY_FIELD}
-                          </Radio>
-                        </Radio.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>Address</h6>
-                        <Radio.Group
-                          name={data.address[0]}
-                          onChange={(event) => this.handleContactSelect(event, "address")}
-                          value={this.state.valuesSelected.address}
-                        >
-                          <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
-                            <Address address={data.address[0] || {}} showIcon={false} />
-                          </Radio>
-                        </Radio.Group>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24} className="grid padding-sm">
-                        <h6>Active Roles</h6>
-                        {data?.mine_party_appt?.filter(({ end_date }) => !end_date)?.length > 0 ? (
-                          data.mine_party_appt?.length > 0 &&
-                          data.mine_party_appt
-                            .filter(({ end_date }) => !end_date)
-                            .map((appt) => (
-                              <p>
-                                {
-                                  this.props.partyRelationshipTypesHash[
-                                    appt.mine_party_appt_type_code
-                                  ]
-                                }{" "}
-                                - {appt.mine.mine_name}
-                              </p>
-                            ))
-                        ) : (
-                          <p>{Strings.EMPTY_FIELD}</p>
-                        )}
-                      </Col>
-                    </Row>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
-        ) : (
-          <NullScreen type="merged-contacts" />
-        )}
-      </div>
+                      <Row>
+                        <Col span={24} className="grid padding-sm">
+                          <h6>Phone Number</h6>
+                          <Radio.Group
+                            name={data.phone_no}
+                            onChange={(event) => this.handleContactSelect(event, "phone_no")}
+                            value={this.state.valuesSelected.phone_no}
+                          >
+                            <Radio value={`${data.phone_no}${i}`} disabled={!data.phone_no}>
+                              {data.phone_no || Strings.EMPTY_FIELD}
+                            </Radio>
+                          </Radio.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24} className="grid padding-sm">
+                          <h6>Email</h6>
+                          <Radio.Group
+                            name={data.email}
+                            onChange={(event) => this.handleContactSelect(event, "email")}
+                            value={this.state.valuesSelected.email}
+                          >
+                            <Radio value={`${data.email}${i}`} disabled={!data.email}>
+                              {data.email || Strings.EMPTY_FIELD}
+                            </Radio>
+                          </Radio.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24} className="grid padding-sm">
+                          <h6>Address</h6>
+                          <Radio.Group
+                            name={data.address[0]}
+                            onChange={(event) => this.handleContactSelect(event, "address")}
+                            value={this.state.valuesSelected.address}
+                          >
+                            <Radio value={data.address[0]} disabled={isEmpty(data.address[0])}>
+                              <Address address={data.address[0] || {}} showIcon={false} />
+                            </Radio>
+                          </Radio.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col span={24} className="grid padding-sm">
+                          <h6>Active Roles</h6>
+                          {data?.mine_party_appt?.filter(({ end_date }) => !end_date)?.length >
+                          0 ? (
+                            data.mine_party_appt?.length > 0 &&
+                            data.mine_party_appt
+                              .filter(({ end_date }) => !end_date)
+                              .map((appt) => (
+                                <p>
+                                  {
+                                    this.props.partyRelationshipTypesHash[
+                                      appt.mine_party_appt_type_code
+                                    ]
+                                  }{" "}
+                                  - {appt.mine.mine_name}
+                                </p>
+                              ))
+                          ) : (
+                            <p>{Strings.EMPTY_FIELD}</p>
+                          )}
+                        </Col>
+                      </Row>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          ) : (
+            <NullScreen type="merged-contacts" />
+          )}
+        </div>
+      </>
     );
   };
 
@@ -288,7 +293,7 @@ export class MergeContainer extends Component {
         )}
         <Row>
           <Col span={24} className="grid padding-sm">
-            <h6>{this.state.activeTab === "PER" ? "Last Name" : "Company Name"}</h6>
+            <h6>{this.state.activeTab === "PER" ? "Last Name" : "Organization Name"}</h6>
             <p>{data.party_name || Strings.EMPTY_FIELD}</p>
           </Col>
         </Row>
@@ -365,11 +370,15 @@ export class MergeContainer extends Component {
       <div className="merge-dashboard">
         <h4 className="padding-sm">Merge {partyType[this.state.activeTab]}</h4>
         <Alert
-          message="The following contacts cannot be merged at this time:"
+          message="Not all contacts can be merged at this time"
+          closable
           description={
             <>
-              These contacts will be disabled in the dropdown list.
-              <div className={this.state.expanded ? "block" : "hidden"}>
+              The following contacts will be disabled in the dropdown list:
+              <div
+                className={this.state.expanded ? "block" : "hidden"}
+                style={{ marginLeft: "40px" }}
+              >
                 <ol>
                   <li>Contacts with the role Permittee.</li>
                   <li>Contacts with the role of Inspector.</li>
@@ -387,8 +396,9 @@ export class MergeContainer extends Component {
         <br />
         <div className="search-contents inline-flex between">
           <div className="flex-1 padding-sm">
-            <p>Search and select contacts to merge</p>
-            <p>All contacts selected will be deleted when merge is complete.</p>
+            <p>
+              <b>Search and select contacts to merge</b>
+            </p>
           </div>
           <div className="flex-4">
             <RenderMultiSelectPartySearch
@@ -406,8 +416,19 @@ export class MergeContainer extends Component {
               <h4 className="padding-sm">Proposed Merged Contact</h4>
               {this.renderContactCard(this.state.values)}
             </div>
-            {this.renderContactCards()}
+            <div className="flex-4">
+              <Alert
+                description="All contacts selected will be deleted when merge is complete and the proposed
+          contact will be created."
+                type="info"
+                showIcon
+                closable
+              />
+              <br />
+              {this.renderContactCards()}
+            </div>
           </div>
+          <br />
           <AuthorizationWrapper permission={Permission.ADMINISTRATIVE_USERS}>
             <div className="right center-mobile">
               <Popconfirm
@@ -464,7 +485,7 @@ export class MergeContainer extends Component {
             <Tabs.TabPane tab="Merge Person" key="PER">
               <div className="tab__content">{this.renderMergeContainer()}</div>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Merge Companies" key="ORG">
+            <Tabs.TabPane tab="Merge Organization" key="ORG">
               <div className="tab__content">{this.renderMergeContainer()}</div>
             </Tabs.TabPane>
           </Tabs>

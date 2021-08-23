@@ -251,3 +251,25 @@ export const createPartyOrgBookEntity = (partyGuid, payload) => (dispatch) => {
     })
     .finally(() => dispatch(hideLoading("modal")));
 };
+
+export const mergeParties = (payload) => (dispatch) => {
+  dispatch(request(reducerTypes.MERGE_PARTIES));
+  dispatch(showLoading());
+  return CustomAxios()
+    .post(ENVIRONMENT.apiUrl + API.MERGE_PARTIES(), payload, createRequestHeader())
+    .then((response) => {
+      dispatch(hideLoading());
+      notification.success({
+        message: "Successfully merged.",
+        duration: 10,
+      });
+      dispatch(success(reducerTypes.MERGE_PARTIES));
+      dispatch(partyActions.storeLastCreatedParty(response.data));
+      return response;
+    })
+    .catch((err) => {
+      dispatch(error(reducerTypes.MERGE_PARTIES));
+      throw new Error(err);
+    })
+    .finally(() => dispatch(hideLoading()));
+};
