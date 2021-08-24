@@ -192,36 +192,40 @@ exports[`MergeContactDashboard renders properly 1`] = `
                           />
                         </Col>
                       </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Active Roles
-                          </h6>
-                          <p>
+                      <div
+                        className="roles-container"
+                      >
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              Active Roles
+                            </h6>
                             <p>
-                              N/A
+                              <p>
+                                N/A
+                              </p>
                             </p>
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            In-active Roles
-                          </h6>
-                          <p>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              In-active Roles
+                            </h6>
                             <p>
-                              N/A
+                              <p>
+                                N/A
+                              </p>
                             </p>
-                          </p>
-                        </Col>
-                      </Row>
+                          </Col>
+                        </Row>
+                      </div>
                     </Card>
                   </Col>
                 </div>
@@ -454,36 +458,40 @@ exports[`MergeContactDashboard renders properly 1`] = `
                           />
                         </Col>
                       </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            Active Roles
-                          </h6>
-                          <p>
+                      <div
+                        className="roles-container"
+                      >
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              Active Roles
+                            </h6>
                             <p>
-                              N/A
+                              <p>
+                                N/A
+                              </p>
                             </p>
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          className="grid padding-sm"
-                          span={24}
-                        >
-                          <h6>
-                            In-active Roles
-                          </h6>
-                          <p>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              In-active Roles
+                            </h6>
                             <p>
-                              N/A
+                              <p>
+                                N/A
+                              </p>
                             </p>
-                          </p>
-                        </Col>
-                      </Row>
+                          </Col>
+                        </Row>
+                      </div>
                     </Card>
                   </Col>
                 </div>
