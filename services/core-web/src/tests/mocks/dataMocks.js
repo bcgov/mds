@@ -5950,11 +5950,11 @@ export const ORGBOOK_CREDENTIAL = {
 };
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_DROPDOWN_OPTIONS = [
-  { value: "EXT", label: "Extreme", subType: null, isActive: true },
-  { value: "HIG", label: "High", subType: null, isActive: true },
   { value: "LOW", label: "Low", subType: null, isActive: true },
-  { value: "NOD", label: "N/A (No Dam)", subType: null, isActive: true },
   { value: "SIG", label: "Significant", subType: null, isActive: true },
+  { value: "HIG", label: "High", subType: null, isActive: true },
+  { value: "EXT", label: "Extreme", subType: null, isActive: true },
+  { value: "NOD", label: "N/A (No Dam)", subType: null, isActive: true },
 ];
 
 export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
@@ -5964,11 +5964,12 @@ export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
 ];
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
-  LOW: "Low",
-  SIG: "Significant",
-  HIG: "High",
   EXT: "Extreme",
+  VHIG: "Very High",
+  HIG: "High",
+  LOW: "Low",
   NOD: "N/A (No Dam)",
+  SIG: "Significant",
 };
 
 export const ITRB_EXEMPTION_STATUS_HASH = {
