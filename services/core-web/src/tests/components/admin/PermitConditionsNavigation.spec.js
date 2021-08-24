@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { AdminNavigation } from "@/components/admin/AdminNavigation";
+import { PermitConditionsNavigation } from "@/components/admin/permitConditions/PermitConditionsNavigation";
 
 const dispatchProps = {};
 const props = {};
@@ -8,7 +8,7 @@ const props = {};
 const setupDispatchProps = () => {};
 
 const setupProps = () => {
-  props.activeButton = "verified";
+  props.activeButton = "sand-and-gravel";
   props.openSubMenuKey = [];
   props.userRoles = [];
 };
@@ -18,9 +18,9 @@ beforeEach(() => {
   setupProps();
 });
 
-describe("AdminNavigation", () => {
+describe("PermitConditionsNavigation", () => {
   it("renders properly", () => {
-    const component = shallow(<AdminNavigation {...dispatchProps} {...props} />);
+    const component = shallow(<PermitConditionsNavigation {...dispatchProps} {...props} />);
     expect(component).toMatchSnapshot();
   });
 });
