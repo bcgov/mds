@@ -131,7 +131,7 @@ const transformDocuments = (
           !document.is_referral_package &&
           !document.is_consultation_package) ||
         isFinalPackageTable,
-      index: index,
+      index,
       ...document,
     }));
 
@@ -179,7 +179,9 @@ export class NOWDocuments extends Component {
   );
 
   DraggableBodyRow = ({ className, style, ...restProps }) => {
-    const index = this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
+    const index =
+      this.state.dataSource &&
+      this.state.dataSource.findIndex((x) => x.index === restProps["data-row-key"]);
     return <SortableItem index={index} {...restProps} />;
   };
 

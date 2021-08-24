@@ -14,8 +14,13 @@ vfcbc_status_code_mapping = {
     "Approved": "AIA",
     "Withdrawn": "WDN",
     "Rejected": "RJN",
+    "Rejected-Initial": "RJN",
     "Under Review": "PEV",
     "Pending Verification": "PEV",
+    "Client Delayed": "PEV",
+    "Govt. Action Required": "PEV",
+    "Referral Complete": "PEV",
+    "Referred": "PEV",
     None: "PEV",
 }
 
