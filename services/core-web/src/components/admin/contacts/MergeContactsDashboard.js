@@ -341,46 +341,48 @@ export class MergeContactsDashboard extends Component {
             <Address address={data.address || {}} />
           </Col>
         </Row>
-        <Row>
-          <Col span={24} className="grid padding-sm">
-            <h6>Active Roles</h6>
-            <p>
-              {this.state.rolesForMerge?.filter(({ end_date }) => !end_date)?.length > 0 ? (
-                this.state.rolesForMerge?.length > 0 &&
-                this.state.rolesForMerge
-                  .filter(({ end_date }) => !end_date)
-                  .map((appt) => (
-                    <p>
-                      {this.props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
-                      {appt.mine.mine_name}
-                    </p>
-                  ))
-              ) : (
-                <p>{Strings.EMPTY_FIELD}</p>
-              )}
-            </p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24} className="grid padding-sm">
-            <h6>In-active Roles</h6>
-            <p>
-              {this.state.rolesForMerge?.filter(({ end_date }) => end_date)?.length > 0 ? (
-                this.state.rolesForMerge?.length > 0 &&
-                this.state.rolesForMerge
-                  .filter(({ end_date }) => end_date)
-                  .map((appt) => (
-                    <p>
-                      {this.props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
-                      {appt.mine.mine_name}
-                    </p>
-                  ))
-              ) : (
-                <p>{Strings.EMPTY_FIELD}</p>
-              )}
-            </p>
-          </Col>
-        </Row>
+        <div className="roles-container">
+          <Row>
+            <Col span={24} className="grid padding-sm">
+              <h6>Active Roles</h6>
+              <p>
+                {this.state.rolesForMerge?.filter(({ end_date }) => !end_date)?.length > 0 ? (
+                  this.state.rolesForMerge?.length > 0 &&
+                  this.state.rolesForMerge
+                    .filter(({ end_date }) => !end_date)
+                    .map((appt) => (
+                      <p>
+                        {this.props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
+                        {appt.mine.mine_name}
+                      </p>
+                    ))
+                ) : (
+                  <p>{Strings.EMPTY_FIELD}</p>
+                )}
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24} className="grid padding-sm">
+              <h6>In-active Roles</h6>
+              <p>
+                {this.state.rolesForMerge?.filter(({ end_date }) => end_date)?.length > 0 ? (
+                  this.state.rolesForMerge?.length > 0 &&
+                  this.state.rolesForMerge
+                    .filter(({ end_date }) => end_date)
+                    .map((appt) => (
+                      <p>
+                        {this.props.partyRelationshipTypesHash[appt.mine_party_appt_type_code]} -{" "}
+                        {appt.mine.mine_name}
+                      </p>
+                    ))
+                ) : (
+                  <p>{Strings.EMPTY_FIELD}</p>
+                )}
+              </p>
+            </Col>
+          </Row>
+        </div>
       </Card>
     </Col>
   );
