@@ -1,0 +1,10 @@
+apiVersion: ops.gov.bc.ca/v1alpha1
+kind: SysdigTeam
+metadata:
+  name: 4c2ba9-sysdigteam
+spec:
+  team:
+    description: The Sysdig Team for the MDS Namespaces
+    users:
+      - name: johnthomasfunk@gmail.com
+        role: ROLE_TEAM_MANAGER
