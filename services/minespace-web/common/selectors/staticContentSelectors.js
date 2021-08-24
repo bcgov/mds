@@ -45,6 +45,7 @@ export const {
   getApplicationSourceTypeCodeOptions,
   getGovernmentAgencyTypeOptions,
   getConsequenceClassificationStatusCodeOptions,
+  getITRBExemptionStatusCodeOptions,
   getTSFOperatingStatusCodeOptions,
   getExplosivesPermitDocumentType,
   getExplosivesPermitStatus,
@@ -706,6 +707,17 @@ export const getConsequenceClassificationStatusCodeDropdownOptions = createSelec
 
 export const getConsequenceClassificationStatusCodeOptionsHash = createSelector(
   [getConsequenceClassificationStatusCodeDropdownOptions],
+  createLabelHash
+);
+
+export const getITRBExemptionStatusCodeDropdownOptions = createSelectorWrapper(
+  getITRBExemptionStatusCodeOptions,
+  createDropDownList,
+  ["description", "itrb_exemption_status_code", "active_ind"]
+);
+
+export const getITRBExemptionStatusCodeOptionsHash = createSelector(
+  [getITRBExemptionStatusCodeDropdownOptions],
   createLabelHash
 );
 
