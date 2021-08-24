@@ -47,7 +47,11 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
         help='Operating Status of the storage facility',
         required=True)
     parser.add_argument(
-        'has_itrb', type=bool, trim=True, help='Risk Severity Classification', required=True)
+        'itrb_exemption_status_code', 
+        type=str, 
+        trim=True, 
+        help='Risk Severity Classification', 
+        required=True)
     parser.add_argument(
         'eor_party_guid',
         type=str,
@@ -84,7 +88,7 @@ class MineTailingsStorageFacilityListResource(Resource, UserMixin):
             latitude=data['latitude'],
             longitude=data['longitude'],
             consequence_classification_status_code=data['consequence_classification_status_code'],
-            has_itrb=data['has_itrb'],
+            itrb_exemption_status_code=data['itrb_exemption_status_code'],
             tsf_operating_status_code=data['tsf_operating_status_code'])
         mine.mine_tailings_storage_facilities.append(mine_tsf)
 

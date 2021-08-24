@@ -155,21 +155,10 @@ exports[`AddTailingsForm renders properly 1`] = `
       >
         <Field
           component={[Function]}
-          data={
-            Array [
-              Object {
-                "label": "No",
-                "value": "false",
-              },
-              Object {
-                "label": "Yes",
-                "value": "true",
-              },
-            ]
-          }
-          id="has_itrb"
-          label="Independent Tailings Review Board*"
-          name="has_itrb"
+          data={Array []}
+          id="itrb_exemption_status_code"
+          label="Has Independent Tailings Review Board?*"
+          name="itrb_exemption_status_code"
           validate={
             Array [
               [Function],
