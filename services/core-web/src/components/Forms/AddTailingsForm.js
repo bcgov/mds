@@ -115,7 +115,7 @@ export const AddTailingsForm = (props) => (
           <Field
             id="itrb_exemption_status_code"
             name="itrb_exemption_status_code"
-            label="Independent Tailings Review Board Exemption*"
+            label="Has Independent Tailings Review Board?*"
             component={RenderSelect}
             data={props.itrbExemptionStatusCodeOptions}
             validate={[required]}

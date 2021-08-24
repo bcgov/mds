@@ -61,10 +61,10 @@ export class MineTailingsTable extends Component {
         ),
       },
       {
-        title: "Independent Tailings Review Board Exemption",
+        title: "Has Independent Tailings Review Board",
         dataIndex: "itrb_exemption_status_code",
         render: (text) => (
-          <div title="Independent Tailings Review Board Exemption">
+          <div title="Has Independent Tailings Review Board?">
             {this.props.itrmExemptionStatusCodeHash[text] || Strings.EMPTY_FIELD}
           </div>
         ),

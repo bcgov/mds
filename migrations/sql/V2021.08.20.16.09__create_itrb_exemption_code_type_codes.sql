@@ -28,8 +28,4 @@ ON CONFLICT DO NOTHING;
 
 ALTER TABLE mine_tailings_storage_facility ADD COLUMN IF NOT EXISTS itrb_exemption_status_code varchar REFERENCES itrb_exemption_status(itrb_exemption_status_code);
 
-UPDATE mine_tailings_storage_facility SET itrb_exemption_status_code = 'YES' WHERE has_itrb = 'true';
-
-UPDATE mine_tailings_storage_facility SET itrb_exemption_status_code = 'NO' WHERE has_itrb = 'false';
-
 ALTER TABLE mine_tailings_storage_facility DROP COLUMN IF EXISTS has_itrb;
