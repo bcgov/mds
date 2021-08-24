@@ -39,6 +39,7 @@ jobs:
           - name: nris
           - name: minespace
           - name: fider
+          - name: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -99,6 +100,7 @@ jobs:
           - name: filesystem-provider
           - name: nris
           - name: minespace
+          - name: schemaspy
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
@@ -131,6 +133,7 @@ jobs:
           - name: filesystem-provider
           - name: nris
           - name: minespace
+          - name: schemaspy
     steps:
       - name: Install oc
         uses: redhat-actions/oc-installer@v1
