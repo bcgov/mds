@@ -44,7 +44,8 @@ export const createDropDownList = (
   valueField,
   isActiveField = false,
   subType = null,
-  labelFormatter = null
+  labelFormatter = null,
+  orderByAlphabetically = true
 ) => {
   const options = array.map((item) => ({
     value: item[valueField],
@@ -55,7 +56,7 @@ export const createDropDownList = (
 
   return sortBy(options, [
     (o) => {
-      return o.label;
+      return orderByAlphabetically ? o.label : options;
     },
   ]);
 };

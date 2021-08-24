@@ -44,8 +44,8 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         help='Operating Status of the storage facility',
         required=True)
     parser.add_argument(
-        'has_itrb',
-        type=lambda x: True if x.lower() in ("true") else False,
+        'itrb_exemption_status_code',
+        type=str,
         trim=True,
         help='Risk Severity Classification',
         required=True)

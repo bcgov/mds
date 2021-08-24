@@ -14,6 +14,7 @@ const setupProps = () => {
   props.title = "mockTitle";
   props.submitting = false;
   props.consequenceClassificationStatusCodeOptions = [];
+  props.itrbExemptionStatusCodeOptions = [];
   props.TSFOperatingStatusCodeOptions = [];
 };
 

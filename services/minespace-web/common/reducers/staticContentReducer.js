@@ -45,6 +45,7 @@ const initialState = {
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
   consequenceClassificationStatusCodeOptions: [],
+  itrbExemptionStatusCodeOptions: [],
   TSFOperatingStatusCodeOptions: [],
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],
@@ -132,6 +133,8 @@ export const getApplicationSourceTypeCodeOptions = (state) =>
   state[STATIC_CONTENT].applicationSourceTypeCodeOptions;
 export const getConsequenceClassificationStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].consequenceClassificationStatusCodeOptions;
+export const getITRBExemptionStatusCodeOptions = (state) =>
+  state[STATIC_CONTENT].itrbExemptionStatusCodeOptions;
 export const getTSFOperatingStatusCodeOptions = (state) =>
   state[STATIC_CONTENT].TSFOperatingStatusCodeOptions;
 export const getExplosivesPermitDocumentType = (state) =>
