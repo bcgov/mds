@@ -5965,7 +5965,6 @@ export const ITRB_EXEMPTION_STATUS_DROPDOWN_OPTIONS = [
 
 export const CONSEQUENCE_CLASSIFICATION_STATUS_HASH = {
   EXT: "Extreme",
-  VHIG: "Very High",
   HIG: "High",
   LOW: "Low",
   NOD: "N/A (No Dam)",
