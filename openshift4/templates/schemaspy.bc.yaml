@@ -1,0 +1,67 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: schemaspy-bc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A suffix appended to all objects
+    value: schemaspy
+  - name: TAG
+    value: dev
+  - name: DOCKER_IMAGE_DIRECTORY
+    value: openshift/docker-images/schemaspy
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: develop
+objects:
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      creationTimestamp: null
+      labels:
+        shared: "true"
+      name: ${NAME}
+    spec:
+      lookupPolicy:
+        local: false
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      creationTimestamp: null
+      name: ${NAME}
+    spec:
+      completionDeadlineSeconds: 600
+      failedBuildsHistoryLimit: 5
+      nodeSelector: null
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:${TAG}
+          namespace: 4c2ba9-tools
+      postCommit: {}
+      resources: {}
+      runPolicy: Serial
+      source:
+        contextDir: ${DOCKER_IMAGE_DIRECTORY}
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+      strategy:
+        dockerStrategy:
+          env:
+            - name: OPENSHIFT_BUILD_CONFIG_HASH
+              value: b2943a9aaa3c1fd5ebe9ccfd16ac5a68543f4130
+            - name: OPENSHIFT_BUILD_TREE_HASH
+              value: d83866d3f5a5a8e68e0f0398f1fd3b4883096aae
+          from:
+            kind: ImageStreamTag
+            name: openjdk:8-jdk-alpine
+            namespace: 4c2ba9-tools
+        type: Docker
+      successfulBuildsHistoryLimit: 5
+      triggers: []
