@@ -30,6 +30,13 @@ jobs:
           echo "GIT_BRANCH=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
           echo "GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
 
+      # Trimming the ref full name in order to publish correct report (paambaati)
+      # CodeClimate only publishes the value if the name matches the default branch (develop)
+      - name: Set refs/heads/develop to develop
+        if: env.GIT_BRANCH == 'refs/heads/develop'
+        run: |
+          echo "GIT_BRANCH=develop" >> $GITHUB_ENV
+
       - name: Setup reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
