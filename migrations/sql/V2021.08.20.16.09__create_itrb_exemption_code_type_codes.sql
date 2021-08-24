@@ -23,7 +23,7 @@ INSERT INTO itrb_exemption_status
 VALUES
     ('NO', 'No', 10, 'system-mds', 'system-mds'),
     ('YES', 'Yes', 20, 'system-mds', 'system-mds'),
-    ('EXEM', 'Exemption', 30, 'system-mds', 'system-mds')
+    ('EXEM', 'No - With Exemption', 30, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
 
 ALTER TABLE mine_tailings_storage_facility ADD COLUMN IF NOT EXISTS itrb_exemption_status_code varchar REFERENCES itrb_exemption_status(itrb_exemption_status_code);
