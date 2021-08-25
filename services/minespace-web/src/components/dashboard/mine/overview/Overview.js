@@ -103,6 +103,8 @@ export const Overview = (props) => (
       </Descriptions>
       <div className="padding-md--top padding-md--bottom">
         <MineWorkInformation mineGuid={props.mine.mine_guid} />
+      </div>
+      <div className="padding-md--top padding-md--bottom">
         <WorkerInfoEmployee mine={props.mine} />
       </div>
       <Row gutter={[16, 16]}>
