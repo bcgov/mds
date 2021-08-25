@@ -19,10 +19,12 @@ AS SELECT
     na.property_name AS property_name,
     na.latitude::varchar AS now_latitude,
     na.longitude::varchar AS now_longitude,
+    na.imported_date::varchar AS verified_date,
 
     -- Notice of Work Details
     na.is_applicant_individual_or_company::varchar AS is_applicant_individual_or_company,
     na.relationship_to_applicant::varchar AS relationship_to_applicant,
+    na.tenure_number AS tenure_number,
     na.description_of_land AS description_of_land,
     na.term_of_application::varchar AS term_of_application,
     na.proposed_start_date AS proposed_start_date,
@@ -72,6 +74,7 @@ AS SELECT
     -- Permittee
     pt.first_name AS permittee_first_name,
     pt.party_name AS permittee_name,
+    pt.phone_no AS permittee_phone_number,
     pt.party_guid AS permittee_party_guid,
 
     -- Mine General
@@ -82,6 +85,7 @@ AS SELECT
     mrc.description AS mine_region_description,
     m.latitude::varchar AS mine_latitude,
     m.longitude::varchar AS mine_longitude,
+    concat_ws(' '::text, pt2.first_name, pt2.party_name) AS mine_manager_name,
     m.create_timestamp ::varchar AS mine_date,
     ms.effective_date::varchar AS status_date,
     m.major_mine_ind::varchar AS major_mine_ind,
@@ -133,11 +137,13 @@ AS SELECT
     LEFT JOIN permit_amendment pa on nai.now_application_guid = pa.now_application_guid AND pa.permit_amendment_status_code != 'DFT' -- Do not include permit details until the NoW is approved!
     LEFT JOIN permit p ON pa.permit_id = p.permit_id
     LEFT JOIN permit_status_code psc ON p.permit_status_code = psc.permit_status_code
-    LEFT JOIN mine_party_appt mpa ON p.permit_id = mpa.permit_id AND mpa.mine_party_appt_id = (SELECT DISTINCT ON(end_date) mine_party_appt_id FROM mine_party_appt where permit_id=p.permit_id ORDER BY end_date DESC NULLS FIRST LIMIT 1)
+    LEFT JOIN mine_party_appt mpa ON p.permit_id = mpa.permit_id AND mpa.mine_party_appt_id = (SELECT DISTINCT ON(end_date) mine_party_appt_id FROM mine_party_appt where permit_id=p.permit_id AND mine_party_appt_type_code = 'PMT' ORDER BY end_date DESC NULLS FIRST LIMIT 1)
+    LEFT JOIN mine_party_appt mpa2 ON m.mine_guid = mpa2.mine_guid AND mpa2.mine_party_appt_id = (SELECT DISTINCT ON(end_date) mine_party_appt_id FROM mine_party_appt where mine_guid=m.mine_guid AND mine_party_appt_type_code = 'MMG' ORDER BY end_date DESC NULLS FIRST LIMIT 1)
     LEFT JOIN bond_permit_xref bpx on p.permit_id = bpx.permit_id
     LEFT JOIN bond b on bpx.bond_id = b.bond_id
     LEFT JOIN bond_status bs on b.bond_status_code = bs.bond_status_code
     LEFT JOIN party pt ON mpa.party_guid = pt.party_guid
+    LEFT JOIN party pt2 ON mpa2.party_guid = pt2.party_guid
     LEFT JOIN (
         SELECT DISTINCT ON (mine_status.mine_guid)
             mine_status.mine_guid,
@@ -249,10 +255,12 @@ AS SELECT
     property_name,
     now_latitude,
     now_longitude,
+    verified_date,
     
     -- Notice of Work Details
     is_applicant_individual_or_company,
     relationship_to_applicant,
+    tenure_number,
     description_of_land,
     term_of_application,
     proposed_start_date,
@@ -302,6 +310,7 @@ AS SELECT
     -- Permittee
     permittee_first_name,
     permittee_name,
+    permittee_phone_number,
     permittee_party_guid,
 
     -- Mine General
@@ -312,6 +321,7 @@ AS SELECT
     mine_region_description,
     mine_latitude,
     mine_longitude,
+    mine_manager_name,
     mine_date,
     status_date,
     major_mine_ind,
