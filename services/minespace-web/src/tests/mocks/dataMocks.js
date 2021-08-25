@@ -1008,12 +1008,12 @@ export const VARIANCE = {
 export const MINE_WORK_INFORMATIONS = [
   {
     created_by: "test",
-    created_timestamp: "2021-08-23T21:48:43.289829+00:00",
+    created_timestamp: "2021-08-23",
     mine_guid: "18133c75-49ad-4101-85f3-a43e35ae989a",
     mine_work_information_guid: "c3cf9330-1b4c-4da2-a0f4-47b2aa834c3d",
     mine_work_information_id: 4,
     updated_by: "test",
-    updated_timestamp: "2021-08-23T21:48:58.763158+00:00",
+    updated_timestamp: "2021-08-23",
     work_comments: "test 2",
     work_start_date: "2021-08-24",
     work_status: "Not Working",
