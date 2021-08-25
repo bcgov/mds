@@ -17,6 +17,7 @@ import {
   lat,
   lon,
   validateSelectOptions,
+  integer,
 } from "@common/utils/Validate";
 import { getCurrentMineTypes } from "@common/selectors/mineSelectors";
 import {
@@ -37,6 +38,7 @@ import * as Styles from "@/constants/styles";
 import CustomPropTypes from "@/customPropTypes";
 import { TRASHCAN } from "@/constants/assets";
 import { renderConfig } from "@/components/common/config";
+import { wholeNumberMask } from "@common/utils/helpers";
 
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
@@ -506,6 +508,32 @@ export class MineRecordForm extends Component {
             <FieldArray name="mine_types" component={renderTypeSelect} />
           </>
         )}
+        <Row gutter={16}>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="number_of_mine_employees"
+                name="number_of_mine_employees"
+                label="Number of Mine Employees"
+                component={renderConfig.FIELD}
+                {...wholeNumberMask}
+                validate={[integer]}
+              />
+            </Form.Item>
+          </Col>
+          <Col md={12} xs={24}>
+            <Form.Item>
+              <Field
+                id="number_of_contractors"
+                name="number_of_contractors"
+                label="Number of Contractors"
+                component={renderConfig.FIELD}
+                {...wholeNumberMask}
+                validate={[integer]}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item>

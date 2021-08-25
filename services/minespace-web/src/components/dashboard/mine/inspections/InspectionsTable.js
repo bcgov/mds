@@ -82,13 +82,13 @@ const columns = [
     defaultSortOrder: "ascend",
   },
   {
-    title: "Due",
-    dataIndex: "due",
-    key: "due",
+    title: "Due Date",
+    dataIndex: "due_date",
+    key: "due_date",
     render: (text, record) => (
       <div title="Due Date">{formatDate(record.due_date) || STRINGS.EMPTY_FIELD}</div>
     ),
-    sorter: dateSorter("due"),
+    sorter: dateSorter("due_date"),
     defaultSortOrder: "descend",
   },
 ];

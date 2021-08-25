@@ -72,6 +72,8 @@ parameters:
     displayName: AppName
     description: Application name for grouping pods in Openshift
     value: Core
+  - name: VCR_ISSUER_URL
+    value: https://mines-permitting-issuer-a3e512-test.apps.silver.devops.gov.bc.ca/
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
@@ -287,8 +289,7 @@ objects:
                       key: password
                       name: template.vfcbc-client-service
                 - name: VCR_ISSUER_URL
-                  value: >-
-                    https://mines-permitting-issuer-a3e512-test.apps.silver.devops.gov.bc.ca/
+                  value: ${VCR_ISSUER_URL}
                 - name: VCR_ISSUER_SECRET_KEY
                   valueFrom:
                     secretKeyRef:

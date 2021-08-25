@@ -45,6 +45,7 @@ const baseExpectedValue = {
   applicationReasonCodeOptions: [],
   applicationSourceTypeCodeOptions: [],
   consequenceClassificationStatusCodeOptions: [],
+  itrbExemptionStatusCodeOptions: [],
   TSFOperatingStatusCodeOptions: [],
   explosivesPermitStatus: [],
   explosivesPermitDocumentType: [],

@@ -298,7 +298,7 @@ MINE_TSF_MODEL = api.model(
         'latitude': fields.Fixed(decimals=7),
         'longitude': fields.Fixed(decimals=7),
         'consequence_classification_status_code': fields.String,
-        'has_itrb': fields.Boolean,
+        'itrb_exemption_status_code': fields.String,
         'tsf_operating_status_code': fields.String,
         'engineer_of_record': fields.Nested(MINE_PARTY_APPT_PARTY)
     })
@@ -358,7 +358,9 @@ MINE_MODEL = api.inherit(
         'mine_location': fields.Nested(MINE_LOCATION_MODEL),
         'exemption_fee_status_code': fields.String,
         'exemption_fee_status_note': fields.String,
-        'government_agency_type_code': fields.String
+        'government_agency_type_code': fields.String,
+        'number_of_contractors': fields.Integer,
+        'number_of_mine_employees': fields.Integer,
     })
 
 MINE_LIST_MODEL = api.model(
@@ -683,6 +685,13 @@ GOVERNMENT_AGENCY_TYPE_MODEL = api.model(
 CONSEQUENCE_CLASSIFICATION_STATUS_MODEL = api.model(
     'ConsequenceClassificationStatusCode', {
         'consequence_classification_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
+
+ITRB_EXEMPTION_STATUS_MODEL = api.model(
+    'ITRBExemptionStatusCode', {
+        'itrb_exemption_status_code': fields.String,
         'description': fields.String,
         'active_ind': fields.Boolean
     })

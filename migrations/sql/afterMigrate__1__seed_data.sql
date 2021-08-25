@@ -1634,9 +1634,17 @@ VALUES
     ('LOW', 'Low', 10, 'system-mds', 'system-mds'),
     ('SIG', 'Significant', 20, 'system-mds', 'system-mds'),
     ('HIG', 'High', 30, 'system-mds', 'system-mds'),
-    ('EXT', 'Extreme', 40, 'system-mds', 'system-mds'),
-    ('NOD', 'N/A (No Dam)', 50, 'system-mds', 'system-mds')
+    ('VHIG', 'Very High', 35, 'system-mds', 'system-mds'),
+    ('EXT', 'Extreme', 50, 'system-mds', 'system-mds'),
+    ('NOD', 'N/A (No Dam)', 60, 'system-mds', 'system-mds')
 ON CONFLICT DO NOTHING;
+
+UPDATE consequence_classification_status SET display_order = 60 WHERE consequence_classification_status_code = 'SIG';
+UPDATE consequence_classification_status SET display_order = 50 WHERE consequence_classification_status_code = 'NOD';
+UPDATE consequence_classification_status SET display_order = 40 WHERE consequence_classification_status_code = 'LOW';
+UPDATE consequence_classification_status SET display_order = 30 WHERE consequence_classification_status_code = 'HIG';
+UPDATE consequence_classification_status SET display_order = 20 WHERE consequence_classification_status_code = 'VHIG';
+UPDATE consequence_classification_status SET display_order = 10 WHERE consequence_classification_status_code = 'EXT';
 
 INSERT INTO tsf_operating_status
     (

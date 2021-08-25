@@ -1,9 +1,9 @@
-name: Deploy to test
+name: Update test infra
 
 on:
   workflow_run:
     workflows:
-      - Deploy to dev
+      - Update dev infra
     types:
       - completed
 
@@ -35,6 +35,7 @@ jobs:
           - config: nris-etl
           - config: minespace
           - config: fider
+          - config: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2

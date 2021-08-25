@@ -176,7 +176,7 @@ class MineTailingsStorageFacilityFactory(BaseFactory):
     longitude = factory.Faker('longitude')
     consequence_classification_status_code = 'LOW'
     tsf_operating_status_code = 'OPT'
-    has_itrb = factory.Faker('boolean', chance_of_getting_true=50)
+    itrb_exemption_status_code = 'YES'
     mine = factory.SubFactory('tests.factories.MineFactory', minimal=True)
 
 

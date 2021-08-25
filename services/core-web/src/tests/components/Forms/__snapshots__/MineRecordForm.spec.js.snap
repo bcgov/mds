@@ -222,6 +222,60 @@ exports[`MineRecordForm renders properly 1`] = `
     gutter={16}
   >
     <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="number_of_mine_employees"
+          label="Number of Mine Employees"
+          name="number_of_mine_employees"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+    <Col
+      md={12}
+      xs={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          autoComplete="off"
+          component={[Function]}
+          format={[Function]}
+          id="number_of_contractors"
+          label="Number of Contractors"
+          name="number_of_contractors"
+          normalize={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          validate={
+            Array [
+              [Function],
+            ]
+          }
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
       span={24}
     >
       <FormItem
