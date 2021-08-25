@@ -17,7 +17,7 @@ import {
   lat,
   lon,
   validateSelectOptions,
-  integer,
+  wholeNumber,
 } from "@common/utils/Validate";
 import { getCurrentMineTypes } from "@common/selectors/mineSelectors";
 import {
@@ -517,7 +517,7 @@ export class MineRecordForm extends Component {
                 label="Number of Mine Employees"
                 component={renderConfig.FIELD}
                 {...wholeNumberMask}
-                validate={[integer]}
+                validate={[wholeNumber]}
               />
             </Form.Item>
           </Col>
@@ -529,7 +529,7 @@ export class MineRecordForm extends Component {
                 label="Number of Contractors"
                 component={renderConfig.FIELD}
                 {...wholeNumberMask}
-                validate={[integer]}
+                validate={[wholeNumber]}
               />
             </Form.Item>
           </Col>

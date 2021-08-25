@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Form, Button, Col, Icon, Popconfirm, Row, Tooltip, Typography, Descriptions } from "antd";
 
 import { Field, reduxForm } from "redux-form";
-import { integer } from "@common/utils/Validate";
+import { wholeNumber } from "@common/utils/Validate";
 import { wholeNumberMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
@@ -40,7 +40,7 @@ export const EditWorkerInformationForm = (props) => (
                   name="number_of_mine_employees"
                   component={renderConfig.FIELD}
                   {...wholeNumberMask}
-                  validate={[integer]}
+                  validate={[wholeNumber]}
                 />
               </Form.Item>
             </Descriptions.Item>
@@ -51,7 +51,7 @@ export const EditWorkerInformationForm = (props) => (
                   name="number_of_contractors"
                   component={renderConfig.FIELD}
                   {...wholeNumberMask}
-                  validate={[integer]}
+                  validate={[wholeNumber]}
                 />
               </Form.Item>
             </Descriptions.Item>

@@ -32,7 +32,7 @@ class Validator {
 
   LON_NEGATIVE = /^-\d*\.?\d+$/;
 
-  INTEGER_REGEX = /^\d*$/;
+  WHOLE_NUMBER_REGEX = /^\d*$/;
 
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
@@ -67,7 +67,7 @@ class Validator {
   }
 
   checkWholeNumber(url) {
-    return this.INTEGER_REGEX.test(url);
+    return this.WHOLE_NUMBER_REGEX.test(url);
   }
 }
 
@@ -176,7 +176,7 @@ export const validateSelectOptions = memoize((data) => (value) => {
   }
 });
 
-export const integer = (value) =>
+export const wholeNumber = (value) =>
   value && !Validate.checkWholeNumber(value)
     ? "Invalid. The number must be a whole number, decimals not allowed."
     : undefined;
