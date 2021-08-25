@@ -37,6 +37,8 @@ class Mine(SoftDeleteMixin, AuditMixin, Base):
     union_ind = db.Column(db.Boolean, nullable=False, server_default=FetchedValue())
     latitude = db.Column(db.Numeric(9, 7))
     longitude = db.Column(db.Numeric(11, 7))
+    number_of_contractors = db.Column(db.Integer)
+    number_of_mine_employees = db.Column(db.Integer)
     geom = db.Column(Geometry('POINT', 3005))
     mine_location_description = db.Column(db.String)
     exemption_fee_status_code = db.Column(

@@ -10,6 +10,7 @@ import {
   getCommodityOptionHash,
 } from "@common/selectors/staticContentSelectors";
 import { getTransformedMineTypes } from "@common/selectors/mineSelectors";
+import WorkerInfoEmployee from "@/components/dashboard/mine/overview/WorkerInfoEmployee";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import ContactCard from "@/components/common/ContactCard";
@@ -99,6 +100,9 @@ export const Overview = (props) => (
             : Strings.NONE}
         </Descriptions.Item>
       </Descriptions>
+      <div className="padding-md--top padding-md--bottom">
+        <WorkerInfoEmployee mine={props.mine} />
+      </div>
       <Row gutter={[16, 16]}>
         <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
           <ContactCard
