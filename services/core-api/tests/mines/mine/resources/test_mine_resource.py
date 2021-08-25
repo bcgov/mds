@@ -291,3 +291,15 @@ def test_put_mine_region(test_client, db_session, auth_headers):
     assert put_resp.status_code == 200
     put_data = json.loads(put_resp.data.decode())
     assert put_data['mine_region'] == test_mine_data['mine_region']
+
+
+def test_put_mine_number_of_contractors_and_mine_employees(test_client, db_session, auth_headers):
+    mine_guid = MineFactory().mine_guid
+
+    test_mine_data = {"number_of_contractors": 1, "number_of_mine_employees": 1}
+    put_resp = test_client.put(
+        f'/mines/{mine_guid}', json=test_mine_data, headers=auth_headers['full_auth_header'])
+    assert put_resp.status_code == 200
+    put_data = json.loads(put_resp.data.decode())
+    assert put_data["number_of_contractors"] == test_mine_data["number_of_contractors"]
+    assert put_data["number_of_mine_employees"] == test_mine_data["number_of_mine_employees"]
