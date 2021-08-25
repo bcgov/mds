@@ -40,12 +40,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "exploration-access",
-        title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
         href: "blasting-operation",
         title: "Blasting",
         alwaysVisible: true,
@@ -58,6 +52,18 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
+        href: "mechanical-trenching",
+        title: "Mechanical Trenching / Test Pits",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "exploration-access",
+        title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
         href: "cut-lines-polarization-survey",
         title: "Cut Lines and Induced Polarization Survey",
         alwaysVisible: false,
@@ -66,12 +72,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       {
         href: "exploration-surface-drilling",
         title: "Exploration Surface Drilling",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "mechanical-trenching",
-        title: "Mechanical Trenching / Test Pits",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },

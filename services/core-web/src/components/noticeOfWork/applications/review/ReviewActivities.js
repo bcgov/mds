@@ -34,20 +34,6 @@ export const ReviewActivities = (props) => {
   return (
     <div>
       <ScrollContentWrapper
-        id="exploration-access"
-        title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
-        data={props.noticeOfWork.exploration_access}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="exploration_access">
-          <AccessRoads
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
         id="blasting-operation"
         title="Blasting"
         data={props.noticeOfWork.blasting_operation}
@@ -78,6 +64,34 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
+        id="mechanical-trenching"
+        title="Mechanical Trenching / Test Pits"
+        data={props.noticeOfWork.mechanical_trenching}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="mechanical_trenching">
+          <MechanicalTrenching
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="exploration-access"
+        title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+        data={props.noticeOfWork.exploration_access}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="exploration_access">
+          <AccessRoads
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
         id="cut-lines-polarization-survey"
         title="Cut Lines and Induced Polarization Survey"
         data={props.noticeOfWork.cut_lines_polarization_survey}
@@ -100,20 +114,6 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="exploration_surface_drilling">
           <SurfaceDrilling
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
-        id="mechanical-trenching"
-        title="Mechanical Trenching / Test Pits"
-        data={props.noticeOfWork.mechanical_trenching}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="mechanical_trenching">
-          <MechanicalTrenching
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}
