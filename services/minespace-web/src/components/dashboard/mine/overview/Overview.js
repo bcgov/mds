@@ -18,6 +18,7 @@ import MinistryContactItem from "@/components/dashboard/mine/overview/MinistryCo
 import * as Strings from "@/constants/strings";
 import * as Contacts from "@/constants/contacts";
 import Map from "@/components/common/Map";
+import MineWorkInformation from "./MineWorkInformation";
 
 const { Paragraph, Title } = Typography;
 
@@ -100,6 +101,9 @@ export const Overview = (props) => (
             : Strings.NONE}
         </Descriptions.Item>
       </Descriptions>
+      <div className="padding-md--top padding-md--bottom">
+        <MineWorkInformation mineGuid={props.mine.mine_guid} />
+      </div>
       <div className="padding-md--top padding-md--bottom">
         <WorkerInfoEmployee mine={props.mine} />
       </div>
