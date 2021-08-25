@@ -27,7 +27,7 @@ class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined', foreign_keys=party_guid)
-    merged_from_party = db.relationship('Party', lazy='joined', foreign_keys=merged_from_party_guid)
+    merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_party_appt_type = db.relationship('MinePartyAppointmentType', lazy='joined')
     now_application = db.relationship('NOWApplication', lazy='selectin')
 

@@ -23,7 +23,7 @@ class PartyBusinessRoleAppointment(SoftDeleteMixin, AuditMixin, Base):
 
     # Relationships
     party = db.relationship('Party', lazy='joined', foreign_keys=party_guid)
-    merged_from_party = db.relationship('Party', lazy='joined', foreign_keys=merged_from_party_guid)
+    merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     party_business_role = db.relationship(
         'PartyBusinessRole', backref='party_business_role_appt', lazy='joined')
 
