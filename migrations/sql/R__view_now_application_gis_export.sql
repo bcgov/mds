@@ -1,7 +1,6 @@
 -- This migration is commented out and the SQL must be run manually because this view relies on data from
 -- the NRIS schema which does not exist until the NRIS migrations have run.
 /*
-
 DROP VIEW IF EXISTS public.now_application_gis_export_view;
 
 CREATE OR REPLACE VIEW public.now_application_gis_export_view
