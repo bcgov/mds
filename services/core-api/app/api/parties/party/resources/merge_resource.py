@@ -37,6 +37,9 @@ class MergeResource(Resource, UserMixin):
 
         # Get the parties to be merged.
         party_guids = data.get('party_guids', [])
+        if not party_guids:
+            raise BadRequest('At least one party GUID must be provided to merge!')
+
         parties = []
         for party_guid in party_guids:
             party = Party.find_by_party_guid(party_guid)
