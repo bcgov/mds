@@ -70,18 +70,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "cut-lines-polarization-survey",
-        title: "Cut Lines and Induced Polarization Survey",
-        alwaysVisible: false,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "settling-pond",
-        title: "Settling Ponds",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
         href: "surface-bulk-sample",
         title: "Surface Bulk Sample",
         alwaysVisible: false,
@@ -94,6 +82,24 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
+        href: "water-supply",
+        title: "Water Supply",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "cut-lines-polarization-survey",
+        title: "Cut Lines and Induced Polarization Survey",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "settling-pond",
+        title: "Settling Ponds",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
         href: "sand-and-gravel",
         title: "Sand and Gravel / Quarry Operations",
         alwaysVisible: false,
@@ -103,12 +109,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "placer-operation",
         title: "Placer Operations",
         alwaysVisible: false,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "water-supply",
-        title: "Water Supply",
-        alwaysVisible: true,
         applicationType: ["NOW"],
       },
       {

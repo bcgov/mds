@@ -106,35 +106,6 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
-        id="cut-lines-polarization-survey"
-        title="Cut Lines and Induced Polarization Survey"
-        data={props.noticeOfWork.cut_lines_polarization_survey}
-        showContent={renderActivities(props.noticeOfWorkType, "cut-lines-polarization-survey")}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="cut_lines_polarization_survey">
-          <CutLines
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
-        id="settling-pond"
-        title="Settling Ponds"
-        data={props.noticeOfWork.settling_pond}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="settling_pond">
-          <SettlingPonds
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
         id="surface-bulk-sample"
         title="Surface Bulk Sample"
         data={props.noticeOfWork.surface_bulk_sample}
@@ -158,6 +129,45 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="underground_exploration">
           <UndergroundExploration
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="water-supply"
+        title="Water Supply"
+        data={props.noticeOfWork.water_supply}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="water_supply">
+          <WaterSupply isViewMode={props.isViewMode} />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="cut-lines-polarization-survey"
+        title="Cut Lines and Induced Polarization Survey"
+        data={props.noticeOfWork.cut_lines_polarization_survey}
+        showContent={renderActivities(props.noticeOfWorkType, "cut-lines-polarization-survey")}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="cut_lines_polarization_survey">
+          <CutLines
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="settling-pond"
+        title="Settling Ponds"
+        data={props.noticeOfWork.settling_pond}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="settling_pond">
+          <SettlingPonds
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}
@@ -192,16 +202,6 @@ export const ReviewActivities = (props) => {
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}
           />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
-        id="water-supply"
-        title="Water Supply"
-        data={props.noticeOfWork.water_supply}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="water_supply">
-          <WaterSupply isViewMode={props.isViewMode} />
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
