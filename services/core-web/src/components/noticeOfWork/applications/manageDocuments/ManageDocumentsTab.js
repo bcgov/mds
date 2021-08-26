@@ -65,6 +65,7 @@ export class ManageDocumentsTab extends Component {
           tab="MND"
           tabName="Manage Documents"
           fixedTop={this.props.fixedTop}
+          noticeOfWork={this.props.noticeOfWork}
           showProgressButton={false}
         />
         <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>

@@ -224,6 +224,7 @@ export class ReferralTabs extends Component {
                   tabActions={<ReferralConsultationPackage type="REF" />}
                   tabName="Referral"
                   fixedTop={this.props.fixedTop}
+                  noticeOfWork={this.props.noticeOfWork}
                 />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
                   <NOWSideMenu tabSection="referral" />
@@ -258,6 +259,7 @@ export class ReferralTabs extends Component {
                   tabActions={<ReferralConsultationPackage type="CON" />}
                   tabName="Consultation"
                   fixedTop={this.props.fixedTop}
+                  noticeOfWork={this.props.noticeOfWork}
                 />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
                   <NOWSideMenu tabSection="consultation" />
@@ -279,7 +281,12 @@ export class ReferralTabs extends Component {
             )}
             {this.props.type === PUBLIC_COMMENT && (
               <>
-                <NOWTabHeader tab="PUB" tabName="Public Comment" fixedTop={this.props.fixedTop} />
+                <NOWTabHeader
+                  tab="PUB"
+                  tabName="Public Comment"
+                  fixedTop={this.props.fixedTop}
+                  noticeOfWork={this.props.noticeOfWork}
+                />
                 <div className={this.props.fixedTop ? "side-menu--fixed" : "side-menu"}>
                   <NOWSideMenu tabSection="public-comment" />
                 </div>

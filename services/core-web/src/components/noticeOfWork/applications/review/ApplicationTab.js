@@ -332,6 +332,7 @@ export class ApplicationTab extends Component {
         }
         tabName="Application"
         fixedTop={this.props.fixedTop}
+        noticeOfWork={this.props.noticeOfWork}
         isEditMode={!this.state.isViewMode}
       />
     );
