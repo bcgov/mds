@@ -78,6 +78,20 @@ export const ReviewActivities = (props) => {
         </FormSection>
       </ScrollContentWrapper>
       <ScrollContentWrapper
+        id="exploration-surface-drilling"
+        title="Exploration Surface Drilling"
+        data={props.noticeOfWork.exploration_surface_drilling}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="exploration_surface_drilling">
+          <SurfaceDrilling
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
         id="exploration-access"
         title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
         data={props.noticeOfWork.exploration_access}
@@ -100,20 +114,6 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="cut_lines_polarization_survey">
           <CutLines
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
-        id="exploration-surface-drilling"
-        title="Exploration Surface Drilling"
-        data={props.noticeOfWork.exploration_surface_drilling}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="exploration_surface_drilling">
-          <SurfaceDrilling
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}

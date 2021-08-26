@@ -58,6 +58,12 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
+        href: "exploration-surface-drilling",
+        title: "Exploration Surface Drilling",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
         href: "exploration-access",
         title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
         alwaysVisible: true,
@@ -67,12 +73,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "cut-lines-polarization-survey",
         title: "Cut Lines and Induced Polarization Survey",
         alwaysVisible: false,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "exploration-surface-drilling",
-        title: "Exploration Surface Drilling",
-        alwaysVisible: true,
         applicationType: ["NOW"],
       },
       {
