@@ -88,6 +88,14 @@ export const currencyMask = createNumberMask({
   allowNegative: true,
 });
 
+export const wholeNumberMask = createNumberMask({
+  decimalPlaces: 0,
+  locale: "en-CA",
+  allowEmpty: true,
+  stringValue: false,
+  allowNegative: false,
+});
+
 export const isDateRangeValid = (start, end) => {
   const duration = moment.duration(moment(end).diff(moment(start)));
   // eslint-disable-next-line no-underscore-dangle

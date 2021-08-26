@@ -5,13 +5,7 @@ import { isEmpty } from "lodash";
 import { PropTypes } from "prop-types";
 import { Table, Button, Popconfirm, Tooltip, Row, Col, Descriptions } from "antd";
 import moment from "moment";
-import {
-  MinusSquareFilled,
-  PlusSquareFilled,
-  FlagOutlined,
-  MenuOutlined,
-  PropertySafetyFilled,
-} from "@ant-design/icons";
+import { MinusSquareFilled, PlusSquareFilled, FlagOutlined, MenuOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { formatDateTime } from "@common/utils/helpers";
 import { openModal, closeModal } from "@common/actions/modalActions";

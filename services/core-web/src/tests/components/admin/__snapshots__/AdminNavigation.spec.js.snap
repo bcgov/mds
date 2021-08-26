@@ -4,5 +4,65 @@ exports[`AdminNavigation renders properly 1`] = `
 <Menu
   mode="horizontal"
   selectedKeys={Array []}
-/>
+>
+  <SubMenu
+    id=""
+    title={
+      <span>
+        Mine Verification
+        <ForwardRef(DownOutlined)
+          className="padding-sm--left"
+        />
+      </span>
+    }
+  >
+    <Menu
+      className="sub-menu"
+    >
+      <MenuItem
+        key="verified"
+      >
+        <Link
+          to="/admin/dashboard/mine-verification/verified"
+        >
+          Verified Mines
+        </Link>
+      </MenuItem>
+      <MenuItem
+        key="unverified"
+      >
+        <Link
+          to="/admin/dashboard/mine-verification/unverified"
+        >
+          UnVerified Mines
+        </Link>
+      </MenuItem>
+    </Menu>
+  </SubMenu>
+  <SubMenu
+    id=""
+    title={
+      <span>
+        MineSpace Management
+        <ForwardRef(DownOutlined)
+          className="padding-sm--left"
+        />
+      </span>
+    }
+  >
+    <Menu
+      className="sub-menu"
+    >
+      <MenuItem
+        key="users"
+      >
+        <Link
+          to="/admin/dashboard/manage-minespace/users"
+        >
+          Users
+        </Link>
+      </MenuItem>
+    </Menu>
+  </SubMenu>
+</Menu>
 `;

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { uniqBy } from "lodash";
 import PropTypes from "prop-types";
-import { Menu, Divider, Button, Dropdown, Tag, Popover } from "antd";
+import { Menu, Col, Divider, Button, Dropdown, Row, Tag, Popover } from "antd";
 import { openModal, closeModal } from "@common/actions/modalActions";
 import {
   updateMineRecord,
@@ -119,6 +119,8 @@ export class MineHeader extends Component {
       exemption_fee_status_code: mine.exemption_fee_status_code,
       exemption_fee_status_note: mine.exemption_fee_status_note,
       government_agency_type_code: mine.government_agency_type_code,
+      number_of_mine_employees: mine.number_of_mine_employees ?? null,
+      number_of_contractors: mine.number_of_contractors ?? null,
     };
     this.props.openModal({
       props: {
@@ -311,6 +313,16 @@ export class MineHeader extends Component {
               </div>
             </>
           )}
+          <div className="inline-flex padding-sm wrap">
+            <div className="field-title">Number of Mine Employees</div>
+            <div>{this.props.mine.number_of_mine_employees || String.EMPTY_FIELD}</div>
+            <CoreTooltip title="Approximate number of mine employees on site" />
+          </div>
+          <div className="inline-flex padding-sm wrap">
+            <div className="field-title">Number of Contractors</div>
+            <div>{this.props.mine.number_of_contractors || String.EMPTY_FIELD}</div>
+            <CoreTooltip title="Approximate number of contractors on site" />
+          </div>
         </div>
         <div className="dashboard__header--card__map">
           <MineHeaderMapLeaflet mine={this.props.mine} />

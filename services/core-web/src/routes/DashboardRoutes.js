@@ -14,7 +14,7 @@ const DashboardRoutes = () => (
     <Route
       exact
       path={routes.ADMIN_DASHBOARD.route}
-      render={() => <Redirect to={routes.ADMIN_PERMIT_CONDITION.dynamicRoute("SAG")} />}
+      render={() => <Redirect to={routes.ADMIN_VERIFIED_MINES.dynamicRoute("verified")} />}
     />
     <Route path={routes.ADMIN_DASHBOARD.route} component={routes.ADMIN_DASHBOARD.component} />
     {Object.values(routes).map((route) => (

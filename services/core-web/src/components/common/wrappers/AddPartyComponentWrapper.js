@@ -112,7 +112,7 @@ export class AddPartyComponentWrapper extends Component {
             style={{ paddingBottom: "20px" }}
           >
             <Radio.Button value>Person</Radio.Button>
-            <Radio.Button value={false}>Company</Radio.Button>
+            <Radio.Button value={false}>Organization</Radio.Button>
           </Radio.Group>
         )}
         <AddQuickPartyForm

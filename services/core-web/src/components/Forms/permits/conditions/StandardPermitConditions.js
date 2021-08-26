@@ -46,6 +46,12 @@ const propTypes = {
   }).isRequired,
 };
 
+const typeFromURL = {
+  "sand-and-gravel": "SAG",
+  quarry: "QCA",
+  exploration: "MIN",
+  placer: "PLA",
+};
 export class StandardPermitConditions extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +61,7 @@ export class StandardPermitConditions extends Component {
 
   componentDidMount() {
     const { type } = this.props.match.params;
-    this.fetchStandardPermitConditions(type);
+    this.fetchStandardPermitConditions(typeFromURL[type]);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,7 +69,7 @@ export class StandardPermitConditions extends Component {
     if (locationChanged) {
       const { type } = nextProps.match.params;
       this.setState({ isLoaded: false });
-      this.fetchStandardPermitConditions(type);
+      this.fetchStandardPermitConditions(typeFromURL[type]);
     }
   }
 
@@ -142,8 +148,8 @@ export class StandardPermitConditions extends Component {
     return (
       <LoadingWrapper condition={this.state.isLoaded}>
         <>
-          <h4>{templateType[this.state.type]} Template Permit Conditions</h4>
-          <br />
+          <h2>{templateType[this.state.type]} Template Permit Conditions</h2>
+          <Divider />
           <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
               const conditions =

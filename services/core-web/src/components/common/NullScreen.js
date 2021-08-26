@@ -18,6 +18,7 @@ const propTypes = {
     "add-now-activity",
     "no-permittee",
     "draft-permit",
+    "merged-contact",
   ]),
   message: PropTypes.string,
 };
@@ -78,6 +79,13 @@ const NullScreen = (props) => (
       <div>
         <img alt="mine_img" src={GROUP_MINERS} />
         <h3>No contacts associated with this Application</h3>
+      </div>
+    )}
+    {props.type === "merged-contacts" && (
+      <div>
+        <img alt="mine_img" src={GROUP_MINERS} />
+        <h3>No contacts selected</h3>
+        <p>Search and select contacts to begin merge.</p>
       </div>
     )}
     {props.type === "add-now-activity" && (

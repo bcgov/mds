@@ -1,6 +1,8 @@
 from flask_restplus import fields
 from app.extensions import api
 
+from app.api.parties.response_models import PARTY_ORGBOOK_ENTITY, PARTY_BUSINESS_ROLE_APPT
+
 SEARCH_RESULT_MODEL = api.model('SearchResult', {
     'score': fields.Integer,
     'type': fields.String,
@@ -11,12 +13,19 @@ SIMPLE_SEARCH_MODEL = api.model('SimpleSearchResult', {
     'value': fields.String,
 })
 
-MINE_MODEL = api.model('Mine_simple ', {'mine_name': fields.String, 'mine_guid': fields.String})
-
-MINE_PARTY_APPT_MODEL = api.model('MinePartyAppointment', {
-    'mine_party_appt_type_code': fields.String,
-    'mine': fields.Nested(MINE_MODEL)
+MINE_MODEL = api.model('Mine_simple ', {
+    'mine_name': fields.String,
+    'mine_guid': fields.String,
+    'mine_no': fields.String,
 })
+
+MINE_PARTY_APPT_MODEL = api.model(
+    'MinePartyAppointment', {
+        'mine_party_appt_type_code': fields.String,
+        'start_date': fields.Date,
+        'end_date': fields.Date,
+        'mine': fields.Nested(MINE_MODEL)
+    })
 
 MINE_STATUS_MODEL = api.model('MineStatus', {
     'status_labels': fields.List(fields.String),
@@ -56,12 +65,16 @@ PARTY_SEARCH_MODEL = api.model(
     'Party', {
         'party_guid': fields.String,
         'name': fields.String,
+        'first_name': fields.String,
+        'party_name': fields.String,
+        'party_type_code': fields.String,
         'email': fields.String,
         'phone_no': fields.String,
+        'party_orgbook_entity': fields.Nested(PARTY_ORGBOOK_ENTITY, skip_none=True),
+        'business_role_appts': fields.List(fields.Nested(PARTY_BUSINESS_ROLE_APPT, skip_none=True)),
         'mine_party_appt': fields.List(fields.Nested(MINE_PARTY_APPT_MODEL)),
         'address': fields.List(fields.Nested(PARTY_ADDRESS)),
     })
-
 
 MINE_DOCUMENT_SEARCH_MODEL = api.model(
     'MineDocument', {

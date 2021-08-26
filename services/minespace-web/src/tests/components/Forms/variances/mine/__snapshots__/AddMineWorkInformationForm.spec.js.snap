@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddMineWorkInformationForm renders properly 1`] = `
+<Form
+  colon={true}
+  hideRequiredMark={false}
+  layout="vertical"
+  onSubmit={[MockFunction]}
+>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={22}
+    >
+      <Descriptions
+        colon={false}
+        column={5}
+        size="default"
+      >
+        <DescriptionsItem
+          label={
+            <React.Fragment>
+              <Tooltip
+                arrowPointAtCenter={false}
+                autoAdjustOverflow={true}
+                mouseEnterDelay={0.3}
+                mouseLeaveDelay={0.1}
+                overlayClassName="minespace-tooltip"
+                placement="right"
+                title={
+                  <React.Fragment>
+                    <Text
+                      strong={true}
+                    >
+                      Health, Safety and Reclamation Code for Mines in British Columbia
+                    </Text>
+                    <br />
+                    <Text
+                      underline={true}
+                    >
+                      Notice To Start Work
+                    </Text>
+                    <br />
+                    <Text>
+                      6.2.1 The manager shall give 10 days’ notice to an inspector of intention to start [any mining activity] in, at, or about a mine, including seasonal reactivation.
+                    </Text>
+                  </React.Fragment>
+                }
+                transitionName="zoom-big-fast"
+              >
+                <Icon
+                  className="padding-sm"
+                  type="info-circle"
+                />
+              </Tooltip>
+              Work Start Date
+            </React.Fragment>
+          }
+        >
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              format={null}
+              id="work_start_date"
+              name="work_start_date"
+              placeholder="Select Work Start Date"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </DescriptionsItem>
+        <DescriptionsItem
+          label={
+            <React.Fragment>
+              <Tooltip
+                arrowPointAtCenter={false}
+                autoAdjustOverflow={true}
+                mouseEnterDelay={0.3}
+                mouseLeaveDelay={0.1}
+                overlayClassName="minespace-tooltip"
+                placement="right"
+                title={
+                  <React.Fragment>
+                    <Text
+                      strong={true}
+                    >
+                      Health, Safety and Reclamation Code for Mines in British Columbia
+                    </Text>
+                    <br />
+                    <Text
+                      underline={true}
+                    >
+                      Notice to Stop Work
+                    </Text>
+                    <br />
+                    <Text>
+                      6.2.2 The manager shall give notice to an inspector of intention to stop [any mining activity] in, at, or about a mine, permanently, indefinitely, or for a definite period exceeding 30 days, and except in an emergency, the notice shall be not less than seven days.
+                    </Text>
+                  </React.Fragment>
+                }
+                transitionName="zoom-big-fast"
+              >
+                <Icon
+                  className="padding-sm"
+                  type="info-circle"
+                />
+              </Tooltip>
+              Work Stop Date
+            </React.Fragment>
+          }
+        >
+          <FormItem
+            hasFeedback={false}
+          >
+            <Field
+              component={[Function]}
+              disabled={false}
+              format={null}
+              id="work_stop_date"
+              name="work_stop_date"
+              placeholder="Select Work Stop Date"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </FormItem>
+        </DescriptionsItem>
+        <DescriptionsItem
+          label="Work Status"
+        >
+          <Badge
+            count={null}
+            dot={false}
+            overflowCount={99}
+            showZero={false}
+            status="default"
+            text="N/A"
+          />
+        </DescriptionsItem>
+      </Descriptions>
+    </Col>
+  </Row>
+  <Row
+    gutter={16}
+  >
+    <Col
+      span={24}
+    >
+      <FormItem
+        hasFeedback={false}
+      >
+        <Field
+          component={[Function]}
+          disabled={false}
+          id="work_comments"
+          label="Comments"
+          minRows={3}
+          name="work_comments"
+          placeholder="Enter Comments"
+        />
+      </FormItem>
+    </Col>
+  </Row>
+  <div
+    className="right center-mobile"
+  >
+    <Popconfirm
+      cancelText="No"
+      disabled={false}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
+      okText="Yes"
+      okType="primary"
+      onConfirm={[MockFunction]}
+      placement="topRight"
+      title="Are you sure you want to cancel?"
+      transitionName="zoom-big"
+      trigger="click"
+    >
+      <Button
+        block={false}
+        className="full-mobile margin-small"
+        disabled={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        type="secondary"
+      >
+        Cancel
+      </Button>
+    </Popconfirm>
+    <Button
+      block={false}
+      className="full-mobile margin-small"
+      ghost={false}
+      htmlType="submit"
+      loading={false}
+      type="primary"
+    >
+      testing title
+    </Button>
+  </div>
+</Form>
+`;

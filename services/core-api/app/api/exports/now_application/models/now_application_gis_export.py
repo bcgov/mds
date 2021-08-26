@@ -22,10 +22,12 @@ class NowApplicationGisExport(Base):
     property_name = db.Column(db.String)
     now_latitude = db.Column(db.String)
     now_longitude = db.Column(db.String)
+    verified_date = db.Column(db.String)
 
     # Notice of Work Details
     is_applicant_individual_or_company = db.Column(db.String)
     relationship_to_applicant = db.Column(db.String)
+    tenure_number = db.Column(db.String)
     description_of_land = db.Column(db.String)
     term_of_application = db.Column(db.String)
     proposed_start_date = db.Column(db.String)
@@ -75,6 +77,7 @@ class NowApplicationGisExport(Base):
     # Permittee
     permittee_first_name = db.Column(db.String)
     permittee_name = db.Column(db.String)
+    permittee_phone_number = db.Column(db.String)
     permittee_party_guid = db.Column(db.String)
 
     # Mine General
@@ -85,6 +88,7 @@ class NowApplicationGisExport(Base):
     mine_region_description = db.Column(db.String)
     mine_latitude = db.Column(db.String)
     mine_longitude = db.Column(db.String)
+    mine_manager_name = db.Column(db.String)
     mine_date = db.Column(db.String)
     status_date = db.Column(db.String)
     major_mine_ind = db.Column(db.String)

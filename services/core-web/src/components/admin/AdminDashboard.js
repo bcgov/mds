@@ -57,4 +57,4 @@ export class AdminDashboard extends Component {
 
 AdminDashboard.propTypes = propTypes;
 
-export default AuthorizationGuard(Permission.VIEW_ADMIN_ROUTE)(AdminDashboard);
+export default AuthorizationGuard(Permission.ADMIN)(AdminDashboard);

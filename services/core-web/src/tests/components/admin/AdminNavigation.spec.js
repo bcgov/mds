@@ -8,7 +8,7 @@ const props = {};
 const setupDispatchProps = () => {};
 
 const setupProps = () => {
-  props.activeButton = "permit-conditions";
+  props.activeButton = "verified";
   props.openSubMenuKey = [];
   props.userRoles = [];
 };

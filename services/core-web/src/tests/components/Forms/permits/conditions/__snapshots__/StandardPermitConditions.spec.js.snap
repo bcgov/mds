@@ -4,11 +4,11 @@ exports[`StandardPermitConditions renders properly 1`] = `
 <LoadingWrapper
   condition={false}
 >
-  <h4>
+  <h2>
     Sand & Gravel
      Template Permit Conditions
-  </h4>
-  <br />
+  </h2>
+  <Divider />
   <Collapse
     bordered={true}
   />

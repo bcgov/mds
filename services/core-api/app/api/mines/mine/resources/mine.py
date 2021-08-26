@@ -3,6 +3,7 @@ import uuid
 from decimal import Decimal
 from datetime import datetime
 from flask import request
+from sqlalchemy.sql.sqltypes import Integer
 from flask_restplus import Resource, reqparse, inputs
 from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
 from werkzeug.exceptions import BadRequest, NotFound
@@ -357,6 +358,16 @@ class MineResource(Resource, UserMixin):
         store_missing=False,
         trim=True,
         location='json')
+    parser.add_argument(
+        'number_of_contractors',
+        type=int,
+        help='Number of contractors.',
+        location='json')
+    parser.add_argument(
+        'number_of_mine_employees',
+        type=int,
+        help='Number of mine employees.',
+        location='json')
 
     @api.doc(description='Returns the specific mine from the mine_guid or mine_no provided.')
     @api.marshal_with(MINE_MODEL, code=200)
@@ -405,14 +416,21 @@ class MineResource(Resource, UserMixin):
             mine.latitude = data['latitude']
             mine.longitude = data['longitude']
             refresh_cache = True
-
-        mine.government_agency_type_code = data.get('government_agency_type_code')
-        mine.exemption_fee_status_code = data.get('exemption_fee_status_code')
-        mine.exemption_fee_status_note = data.get('exemption_fee_status_note')
+        if 'government_agency_type_code' in data:
+            mine.government_agency_type_code = data.get('government_agency_type_code')
+        if 'exemption_fee_status_code' in data:
+            mine.exemption_fee_status_code = data.get('exemption_fee_status_code')
+        if 'exemption_fee_status_note' in data:
+            mine.exemption_fee_status_note = data.get('exemption_fee_status_note')
+        if 'number_of_contractors' in data:
+            mine.number_of_contractors = data.get('number_of_contractors')
+        if 'number_of_mine_employees' in data:
+            mine.number_of_mine_employees = data.get('number_of_mine_employees')
 
         mine.save()
 
-        _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
+        if 'mine_status' in data:
+            _mine_status_processor(data.get('mine_status'), data.get('status_date'), mine)
 
         # refresh cache will need to be called for all supported fields, should more be added in the future
         if refresh_cache:
@@ -479,7 +497,6 @@ def _mine_status_processor(mine_status, status_date, mine):
         new_status.save()
         mine.save(commit=False)
         return new_status
-
     mine_status_xref = MineStatusXref.find_by_codes(
         _mine_operation_code_processor(mine_status, 0),
         _mine_operation_code_processor(mine_status, 1),
