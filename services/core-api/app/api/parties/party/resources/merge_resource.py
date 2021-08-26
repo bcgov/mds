@@ -65,9 +65,6 @@ class MergeResource(Resource, UserMixin):
                 raise BadRequest('Cannot merge parties that have already been merged.')
 
             # Cannot merge parties that are Permittees.
-            for npa in party.now_party_appt:
-                if npa.mine_party_appt_type_code == 'PMT':
-                    raise BadRequest('Cannot merge parties that are Permittees.')
             for mpa in party.mine_party_appt:
                 if mpa.mine_party_appt_type_code == 'PMT':
                     raise BadRequest('Cannot merge parties that are Permittees.')
