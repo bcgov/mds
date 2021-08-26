@@ -23,9 +23,11 @@ class NOWPartyAppointment(SoftDeleteMixin, AuditMixin, Base):
         db.String(3), db.ForeignKey('mine_party_appt_type_code.mine_party_appt_type_code'))
     now_application_id = db.Column(db.Integer, db.ForeignKey('now_application.now_application_id'))
     party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
+    merged_from_party_guid = db.Column(UUID(as_uuid=True), db.ForeignKey('party.party_guid'))
 
     # Relationships
-    party = db.relationship('Party', lazy='joined')
+    party = db.relationship('Party', lazy='joined', foreign_keys=party_guid)
+    merged_from_party = db.relationship('Party', foreign_keys=merged_from_party_guid)
     mine_party_appt_type = db.relationship('MinePartyAppointmentType', lazy='joined')
     now_application = db.relationship('NOWApplication', lazy='selectin')
 

@@ -32,7 +32,7 @@ export const AddFullPartyForm = (props) => (
           <div className="center margin-large">
             <Radio.Group defaultValue size="large" onChange={props.togglePartyChange}>
               <Radio.Button value>Person</Radio.Button>
-              <Radio.Button value={false}>Company</Radio.Button>
+              <Radio.Button value={false}>Organization</Radio.Button>
             </Radio.Group>
           </div>
           <Row gutter={16}>
@@ -73,7 +73,7 @@ export const AddFullPartyForm = (props) => (
                   <Field
                     id="party_name"
                     name="party_name"
-                    label="Company Name *"
+                    label="Organization Name *"
                     component={renderConfig.FIELD}
                     validate={[required]}
                   />

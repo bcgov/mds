@@ -44,20 +44,27 @@ const propTypes = {
 
 const defaultProps = {};
 
+const typeFromURL = {
+  "sand-and-gravel": "SAG",
+  quarry: "QCA",
+  exploration: "MIN",
+  placer: "PLA",
+};
+
 export class AddCondition extends Component {
   state = { isEditing: false, conditionType: "SEC" };
 
   handleSubmit = (values) => {
     const isAdminDashboard = this.props.location.pathname.includes(
-      "admin/dashboard/permit-conditions"
+      "admin/permit-condition-management"
     );
     const payload = { ...values, condition_type_code: this.state.conditionType };
     if (isAdminDashboard) {
       return this.props
-        .createStandardPermitCondition(this.props.match.params.type, payload)
+        .createStandardPermitCondition(typeFromURL[this.props.match.params.type], payload)
         .then(() => {
           this.setState({ isEditing: false });
-          this.props.fetchStandardPermitConditions(this.props.match.params.type);
+          this.props.fetchStandardPermitConditions(typeFromURL[this.props.match.params.type]);
           this.props.setEditingConditionFlag(false);
         });
     }

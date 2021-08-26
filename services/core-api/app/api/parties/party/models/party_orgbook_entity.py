@@ -22,8 +22,10 @@ class PartyOrgBookEntity(AuditMixin, Base):
     association_user = db.Column(db.DateTime, nullable=False, default=User().get_user_username)
     association_timestamp = db.Column(db.DateTime, nullable=False, server_default=FetchedValue())
 
+    party = db.relationship('Party')
+
     def __repr__(self):
-        return '<PartyOrgBookEntity %r>' % self.party_orgbook_entity_id
+        return f'{self.__class__.__name__} {self.party_orgbook_entity_id}'
 
     @classmethod
     def find_by_party_guid(cls, party_guid):

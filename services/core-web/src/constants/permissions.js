@@ -17,3 +17,4 @@ export const IN_TESTING = "inTesting";
 export const EXECUTIVE = "role_executive_view";
 export const EDIT_SECURITIES = "role_edit_securities";
 export const EDIT_HISTORICAL_AMENDMENTS = "role_edit_historical_amendments";
+export const ADMINISTRATIVE_USERS = "role_mds_administrative_users";
