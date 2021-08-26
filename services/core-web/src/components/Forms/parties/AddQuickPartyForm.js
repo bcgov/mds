@@ -61,7 +61,7 @@ export const AddQuickPartyForm = (props) => (
               <Field
                 id="party_name"
                 name="party_name"
-                label="Company Name*"
+                label="Organization Name*"
                 component={renderConfig.FIELD}
                 validate={[required]}
               />
@@ -183,7 +183,7 @@ export const AddQuickPartyForm = (props) => (
       </Row>
       <div className="right center-mobile">
         <Button className="full-mobile" type="primary" htmlType="submit" loading={props.submitting}>
-          {props.isPerson ? "Create Person" : "Create Company"}
+          {props.isPerson ? "Create Person" : "Create Organization"}
         </Button>
       </div>
     </Form>

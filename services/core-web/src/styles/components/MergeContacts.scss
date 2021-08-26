@@ -1,0 +1,35 @@
+.merge-dashboard {
+  padding: $default-padding-md;
+  border: 1px solid $lightest-grey;
+  border-radius: 20px;
+}
+
+.merge-container {
+  background-color: $lightest-grey;
+  padding: $default-padding-md;
+  height: 70vh;
+  border-radius: 20px;
+
+  &--tall {
+    height: 90%;
+  }
+}
+
+.search-contents {
+  background-color: $lightest-grey;
+  padding: $default-padding-md;
+  border-radius: 20px;
+}
+
+.contact-container {
+  background-color: white;
+  padding: $default-padding-md;
+  border-radius: 20px;
+  height: stretch;
+  overflow: scroll;
+}
+
+.roles-container {
+  overflow: scroll;
+  max-height: 370px;
+}

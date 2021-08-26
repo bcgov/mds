@@ -100,7 +100,7 @@ export class EditFullPartyForm extends Component {
                       <Field
                         id="party_name"
                         name="party_name"
-                        label="Company Name *"
+                        label="Organization Name *"
                         component={renderConfig.FIELD}
                         validate={[required]}
                         disabled={hasOrgBookEntity}
@@ -401,7 +401,7 @@ export class EditFullPartyForm extends Component {
               htmlType="submit"
               loading={this.props.submitting}
             >
-              {isPerson ? "Update Person" : "Update Company"}
+              {isPerson ? "Update Person" : "Update Organization"}
             </Button>
           </div>
         </Form>

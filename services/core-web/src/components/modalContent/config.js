@@ -46,12 +46,14 @@ import ExplosivesPermitApplicationDecisionModal from "./ExplosivesPermitApplicat
 import ViewMagazineModal from "./ViewMagazineModal";
 import ExplosivesPermitStatusModal from "./ExplosivesPermitStatusModal";
 import ExplosivesPermitCloseModal from "./ExplosivesPermitCloseModal";
+import MergePartyConfirmationModal from "./MergePartyConfirmationModal";
 
 export const modalConfig = {
   MINE_RECORD: MineRecordModal,
   ADD_TAILINGS: AddTailingsModal,
   ADD_PARTY_RELATIONSHIP: AddPartyRelationshipModal,
   ADD_QUICK_PARTY: AddQuickPartyModal,
+  MERGE_PARTY_CONFIRMATION: MergePartyConfirmationModal,
   EDIT_PARTY_RELATIONSHIP: EditPartyRelationshipModal,
   ADD_CONTACT: AddPartyModal,
   ADD_PERMIT: AddPermitModal,
