@@ -27,6 +27,7 @@ import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import { getDropdownNoticeOfWorkApplicationReviewTypeOptions } from "@common/selectors/staticContentSelectors";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
+import { isEmpty, isNil } from "lodash";
 
 /**
  * @constant ReviewNOWApplication renders edit/view for the NoW Application review step
@@ -225,9 +226,16 @@ export class ReferralConsultationPackage extends Component {
 
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
-    const disabled = !this.props.progress[this.props.type];
+    const disabled =
+      !isEmpty(this.props.progress[this.props.type]) &&
+      !isNil(this.props.progress[this.props.type].end_date);
+
     return this.props.isTableHeaderView ? (
-      <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab={this.props.type}>
+      <NOWActionWrapper
+        permission={Permission.EDIT_PERMITS}
+        tab={this.props.type}
+        isDisabledReviewButton={true}
+      >
         <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
           <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
         </Button>
