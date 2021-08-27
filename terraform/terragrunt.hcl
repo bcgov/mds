@@ -1,5 +1,5 @@
 locals {
-  common           = yamldecode(file(find_in_parent_folders("configs.yaml")))
+  common           = yamldecode(file("configs.yaml"))
   tfc_hostname     = local.common["tfc_hostname"]
   tfc_organization = local.common["tfc_organization"]
   project          = local.common["license_plate"]

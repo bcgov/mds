@@ -4,11 +4,11 @@ license_plate: bth36g
 service_name: minesdigitalservices
 storage_buckets:
   dev:
-    - placeholder
+    - mds-placeholder
   test:
-    - placeholder
+    - mds-placeholder
   prod:
-    - placeholder
+    - mds-placeholder
 
 configs:
   dev:
