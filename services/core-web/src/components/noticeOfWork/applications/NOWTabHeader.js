@@ -48,7 +48,7 @@ export const NOWTabHeader = (props) => (
             </Popover>
             {props.fixedTop && (
               <div className="view--header--sub">
-                {props.noticeOfWork?.application_type_code == "NOW"
+                {props.noticeOfWork?.application_type_code === "NOW"
                   ? "Notice of Work"
                   : "Administrative Amendment"}
                 :
