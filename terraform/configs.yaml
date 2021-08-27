@@ -1,0 +1,19 @@
+tfc_hostname: app.terraform.io
+tfc_organization: bcgov
+license_plate: bth36g
+service_name: minesdigitalservices
+storage_buckets:
+  dev:
+    - placeholder
+  test:
+    - placeholder
+  prod:
+    - placeholder
+
+configs:
+  dev:
+    - placeholder
+  test:
+    - placeholder
+  prod:
+    - placeholder
