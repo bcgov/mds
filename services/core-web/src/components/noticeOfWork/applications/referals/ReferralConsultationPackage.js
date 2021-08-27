@@ -226,15 +226,16 @@ export class ReferralConsultationPackage extends Component {
 
   render() {
     const label = this.props.type === "REF" ? "Referral Package" : "Consultation Package";
-    const disabled =
-      !isEmpty(this.props.progress[this.props.type]) &&
+    const complete = !isEmpty(this.props.progress[this.props.type]) &&
       !isNil(this.props.progress[this.props.type].end_date);
+
+    const disabled = complete;
 
     return this.props.isTableHeaderView ? (
       <NOWActionWrapper
         permission={Permission.EDIT_PERMITS}
         tab={this.props.type}
-        isDisabledReviewButton={true}
+        isDisabledReviewButton
       >
         <Button ghost type="primary" size="small" onClick={this.openDownloadPackageModal}>
           <img name="remove" src={EDIT_OUTLINE_VIOLET} alt={label} />
