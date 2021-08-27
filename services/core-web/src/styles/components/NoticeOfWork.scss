@@ -188,7 +188,6 @@
 }
 
 .now-menu-link {
-  padding: 10px;
   a:hover,
   a:active {
     text-decoration: none;
@@ -196,7 +195,7 @@
   }
 
   &.ant-anchor-link {
-    line-height: 1.75;
+    line-height: 1.2;
     border-bottom: none;
   }
 }

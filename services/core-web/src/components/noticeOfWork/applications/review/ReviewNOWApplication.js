@@ -1318,14 +1318,6 @@ export const ReviewNOWApplication = (props) => {
         <ScrollContentWrapper id="application-info" title="Application Info">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
-        <ScrollContentWrapper id="contacts" title="Contacts">
-          <ReviewNOWContacts
-            contacts={props.noticeOfWork.contacts}
-            isViewMode={props.isViewMode}
-            contactFormValues={props.contacts}
-            noticeOfWork={props.noticeOfWork}
-          />
-        </ScrollContentWrapper>
         <ScrollContentWrapper id="access" title="Access">
           {renderAccess()}
         </ScrollContentWrapper>
@@ -1340,9 +1332,6 @@ export const ReviewNOWApplication = (props) => {
         <Divider />
         {renderWorkPlan()}
         <br />
-        <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
-          {renderReclamation()}
-        </ScrollContentWrapper>
         <ReviewActivities
           isViewMode={props.isViewMode}
           noticeOfWorkType={props.noticeOfWorkType}
@@ -1350,7 +1339,18 @@ export const ReviewNOWApplication = (props) => {
           renderOriginalValues={props.renderOriginalValues}
           isPreLaunch={props.isPreLaunch}
         />
+        <ScrollContentWrapper id="reclamation" title="Summary of Reclamation">
+          {renderReclamation()}
+        </ScrollContentWrapper>
 
+        <ScrollContentWrapper id="contacts" title="Contacts">
+          <ReviewNOWContacts
+            contacts={props.noticeOfWork.contacts}
+            isViewMode={props.isViewMode}
+            contactFormValues={props.contacts}
+            noticeOfWork={props.noticeOfWork}
+          />
+        </ScrollContentWrapper>
         <ScrollContentWrapper id="other-information" title="Other Information">
           {renderOtherInformation()}
         </ScrollContentWrapper>

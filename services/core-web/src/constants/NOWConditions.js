@@ -24,7 +24,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
-      { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
       { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
       {
         href: "state-of-land",
@@ -34,9 +33,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       },
       { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
       {
-        href: "reclamation",
-        title: "Summary of Reclamation",
-        alwaysVisible: true,
+        href: "placer-operation",
+        title: "Placer Operations",
+        alwaysVisible: false,
         applicationType: ["NOW"],
       },
       {
@@ -106,17 +105,18 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "placer-operation",
-        title: "Placer Operations",
-        alwaysVisible: false,
-        applicationType: ["NOW"],
-      },
-      {
         href: "equipment",
         title: "Equipment",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
+      {
+        href: "reclamation",
+        title: "Summary of Reclamation",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
       {
         href: "other-information",
         title: "Other Information",
