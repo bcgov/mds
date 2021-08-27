@@ -6,6 +6,7 @@ import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import { TAB_DISCLAIMERS } from "@/constants/NOWConditions";
 import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @constant NOWTabHeader renders react children with an active indicator if the id is in the url.
@@ -52,7 +53,7 @@ export const NOWTabHeader = (props) => (
                   ? "Notice of Work"
                   : "Administrative Amendment"}
                 :
-                <br />#{props.noticeOfWork.now_number}
+                <br />#{props.noticeOfWork.now_number || Strings.NOT_APPLICABLE}
               </div>
             )}
           </h2>
