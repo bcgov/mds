@@ -40,6 +40,7 @@ class VerifyPermitNOWResource(Resource):
 
             for permit in permits:
                 for mine in permit._all_mines:
+                    permit._context_mine = mine
 
                     # Mine must be operating.
                     if not mine.mine_status or mine.mine_status[
@@ -55,10 +56,11 @@ class VerifyPermitNOWResource(Resource):
                             #only want permits that expire 30 days or further in the future
                             if permit_amendment.now_identity:
                                 now_info = now_info + str(
-                                    permit_amendment.now_identity.now_number
-                                ) + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                                    permit_amendment.now_identity.now_number) + " - " + str(
+                                        permit_amendment.authorization_end_date) + '\r'
                             else:
-                                now_info = now_info + " - " + str(permit_amendment.authorization_end_date) + '\r'
+                                now_info = now_info + " - " + str(
+                                    permit_amendment.authorization_end_date) + '\r'
                             break
 
             if now_info != "":

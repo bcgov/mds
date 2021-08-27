@@ -116,12 +116,11 @@ export class MineTailingsInfo extends Component {
       value: record.engineer_of_record?.party_guid,
       label: record.engineer_of_record?.party.name,
     };
-    const newRecord = { record };
 
     event.preventDefault();
     this.props.openModal({
       props: {
-        initialValues: newRecord,
+        initialValues: record,
         initialPartyValue,
         onSubmit,
         title: `Edit ${record.mine_tailings_storage_facility_name}`,
@@ -135,11 +134,8 @@ export class MineTailingsInfo extends Component {
   };
 
   handleAddTailings = (values) => {
-    const payload = {
-      values,
-    };
     return this.props
-      .createTailingsStorageFacility(this.props.mineGuid, payload)
+      .createTailingsStorageFacility(this.props.mineGuid, values)
       .then(() => {
         this.props.fetchMineRecordById(this.props.mineGuid);
         this.props.fetchMineReports(this.props.mineGuid, defaultParams.mineReportType);
