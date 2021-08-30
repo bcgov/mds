@@ -20,7 +20,7 @@ RUN apk update && \
     tar
 
 # Install Caddy Server, and All Middleware
-RUN curl -L "https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
+RUN curl -L "https://github.com/caddyserver/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz" \
     | tar --no-same-owner -C /usr/bin/ -xz caddy
 
 # Remove build devs
@@ -85,9 +85,9 @@ RUN apk update && \
     mkdir lib && \
     wget -nv -O lib/schemaspy-$SCHEMA_SPY_VERSION.jar https://github.com/schemaspy/schemaspy/releases/download/v$SCHEMA_SPY_VERSION/schemaspy-$SCHEMA_SPY_VERSION.jar && \
     cp lib/schemaspy-$SCHEMA_SPY_VERSION.jar lib/schemaspy.jar && \
-    wget -nv -O lib/pgsql-jdbc.jar http://central.maven.org/maven2/org/postgresql/postgresql/$POSTGRESQL_VERSION/postgresql-$POSTGRESQL_VERSION.jar && \
-    wget -nv -O lib/mysql-jdbc.jar http://central.maven.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
-    wget -nv -O lib/sqlite-jdbc.jar http://central.maven.org/maven2/org/xerial/sqlite-jdbc/$SQL_LITE_VERSION/sqlite-jdbc-$SQL_LITE_VERSION.jar && \
+    wget -nv -O lib/pgsql-jdbc.jar https://repo.maven.apache.org/maven2/org/postgresql/postgresql/$POSTGRESQL_VERSION/postgresql-$POSTGRESQL_VERSION.jar && \
+    wget -nv -O lib/mysql-jdbc.jar https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/$MYSQL_VERSION/mysql-connector-java-$MYSQL_VERSION.jar && \
+    wget -nv -O lib/sqlite-jdbc.jar https://repo.maven.apache.org/maven2/org/xerial/sqlite-jdbc/$SQL_LITE_VERSION/sqlite-jdbc-$SQL_LITE_VERSION.jar && \
     apk del \
     wget \
     ca-certificates
