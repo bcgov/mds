@@ -2,11 +2,11 @@ name: Update AWS test infra
 
 on:
   push:
-    # TODO: uncomment before merge
-    # branches:
-    #   - develop
-    # paths:
-    #   - terraform/**
+  workflow_run:
+    workflows:
+      - Update AWS dev infra
+    types:
+      - completed
   workflow_dispatch:
   # manual
 
