@@ -21,6 +21,7 @@ vfcbc_status_code_mapping = {
     "Govt. Action Required": "PEV",
     "Referral Complete": "PEV",
     "Referred": "PEV",
+    "No Permit Required": "PEV",
     None: "PEV",
 }
 
@@ -36,11 +37,13 @@ def code_lookup(model, description, code_column_name):
         result = None
     return result
 
+
 def get_boolean_value(field):
     result = field
-    if field is not None: 
+    if field is not None:
         result = field == 'Yes'
     return result
+
 
 def transmogrify_now(now_application_identity, include_contacts=False):
     now_sub = sub_models.Application.find_by_messageid(
@@ -88,7 +91,6 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     status = mms_now_sub.status or now_sub.status
     now_app.now_application_status_code = vfcbc_status_code_mapping[status]
 
-
     now_app.application_permit_type_code = type_of_permit_map[now_sub.typeofpermit]
 
     now_app.submitted_date = mms_now_sub.submitteddate or now_sub.submitteddate
@@ -117,7 +119,8 @@ def _transmogrify_now_details(now_app, now_sub, mms_now_sub):
     now_app.proposed_annual_maximum_tonnage = now_sub.maxannualtonnage
     now_app.adjusted_annual_maximum_tonnage = now_sub.maxannualtonnage
     now_app.is_access_gated = get_boolean_value(now_sub.isaccessgated)
-    now_app.has_surface_disturbance_outside_tenure = get_boolean_value(now_sub.hassurfacedisturbanceoutsidetenure)
+    now_app.has_surface_disturbance_outside_tenure = get_boolean_value(
+        now_sub.hassurfacedisturbanceoutsidetenure)
 
     now_app.is_pre_launch = now_sub.is_pre_launch
     now_app.proponent_submitted_permit_number = now_sub.permitnumber
@@ -328,8 +331,7 @@ def _transmogrify_camp_activities(now_app, now_sub, mms_now_sub):
             has_fuel_stored=get_boolean_value(fuellubstoreonsite),
             has_fuel_stored_in_bulk=get_boolean_value(fuellubstoremethodbulk),
             volume_fuel_stored=fuellubstored,
-            has_fuel_stored_in_barrels=get_boolean_value(fuellubstoremethodbarrel)
-        )
+            has_fuel_stored_in_barrels=get_boolean_value(fuellubstoremethodbarrel))
 
         campdisturbedarea = mms_now_sub.campdisturbedarea or now_sub.campdisturbedarea
         camptimbervolume = mms_now_sub.camptimbervolume or now_sub.camptimbervolume
@@ -533,9 +535,9 @@ def _transmogrify_placer_operations(now_app, now_sub, mms_now_sub):
             is_hand_operation=get_boolean_value(placerhandoperations),
             has_stream_diversion=get_boolean_value(placerstreamdiversion) or False,
             proposed_production=proposedproduction,
-            proposed_production_unit_type_code=code_lookup(
-                app_models.UnitType, unit_type_map[proposedproductionunit],
-                'unit_type_code'),
+            proposed_production_unit_type_code=code_lookup(app_models.UnitType,
+                                                           unit_type_map[proposedproductionunit],
+                                                           'unit_type_code'),
             reclamation_unit_type_code='HA',
             reclamation_area=placerreclamationarea)
 
@@ -624,8 +626,7 @@ def _transmogrify_settling_ponds(now_app, now_sub, mms_now_sub):
             sediment_control_structure_description=pondtypeofsediment,
             decant_structure_description=pondtypeconstruction,
             water_discharged_description=pondarea,
-            spillway_design_description=pondspillwaydesign
-)
+            spillway_design_description=pondspillwaydesign)
 
         proposed_settling_pond = now_sub.proposed_settling_pond
 
@@ -860,8 +861,8 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
     underexpsurftotalwaste = now_sub.underexpsurftotalwaste
     underexpsurftotaloreunits = now_sub.underexpsurftotaloreunits
     underexpsurftotalwasteunits = now_sub.underexpsurftotalwasteunits
-    if (underexptotalore or underexpreclamation or underexpreclamationcost
-            or underexptotalwaste or underexptotaldistarea or underexpsurftotalwaste):
+    if (underexptotalore or underexpreclamation or underexpreclamationcost or underexptotalwaste
+            or underexptotaldistarea or underexpsurftotalwaste):
         now_app.underground_exploration = app_models.UndergroundExploration(
             reclamation_description=underexpreclamation,
             reclamation_cost=underexpreclamationcost,
@@ -885,11 +886,10 @@ def _transmogrify_underground_exploration(now_app, now_sub, mms_now_sub):
             surface_total_ore_amount=underexpsurftotalore,
             surface_total_waste_amount=underexpsurftotalwaste,
             surface_total_ore_unit_type_code=code_lookup(app_models.UnitType,
-                                                   unit_type_map[underexpsurftotaloreunits],
-                                                   'unit_type_code'),
-            surface_total_waste_unit_type_code=code_lookup(app_models.UnitType,
-                                                   unit_type_map[underexpsurftotalwasteunits],
-                                                   'unit_type_code'))
+                                                         unit_type_map[underexpsurftotaloreunits],
+                                                         'unit_type_code'),
+            surface_total_waste_unit_type_code=code_lookup(
+                app_models.UnitType, unit_type_map[underexpsurftotalwasteunits], 'unit_type_code'))
 
         if (len(mms_now_sub.under_exp_new_activity) > 0):
             under_exp_new_activity = mms_now_sub.under_exp_new_activity

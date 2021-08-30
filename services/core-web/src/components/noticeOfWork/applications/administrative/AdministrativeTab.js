@@ -280,6 +280,7 @@ export class AdministrativeTab extends Component {
           tab="ADMIN"
           tabName="Administrative"
           fixedTop={this.props.fixedTop}
+          noticeOfWork={this.props.noticeOfWork}
           tabActions={
             <NOWActionWrapper permission={Permission.EDIT_PERMITS}>
               <Dropdown

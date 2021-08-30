@@ -555,6 +555,7 @@ export class NOWPermitGeneration extends Component {
           tabName={`Draft ${nowType}`}
           handleDraftPermit={this.handleDraftPermit}
           fixedTop={this.props.fixedTop}
+          noticeOfWork={this.props.noticeOfWork}
           tabEditActions={
             <>
               <Popconfirm

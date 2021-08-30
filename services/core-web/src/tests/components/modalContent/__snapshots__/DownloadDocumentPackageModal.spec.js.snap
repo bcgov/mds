@@ -84,6 +84,7 @@ exports[`DownloadDocumentPackageModal renders properly 1`] = `
         Download Referral Package
       </Button>
       <withRouter(Connect(NOWActionWrapper))
+        isDisabledReviewButton={true}
         permission="role_edit_permits"
       >
         <Button
