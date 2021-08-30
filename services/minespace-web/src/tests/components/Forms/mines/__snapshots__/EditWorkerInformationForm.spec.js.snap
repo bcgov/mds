@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditWorkerInformationForm renders properly 1`] = `
+<div
+  className="work-information-container "
+>
+  <Form
+    colon={true}
+    hideRequiredMark={false}
+    layout="vertical"
+    onSubmit={[MockFunction]}
+  >
+    <Title
+      level={4}
+    >
+      Worker Information
+      <Tooltip
+        arrowPointAtCenter={false}
+        autoAdjustOverflow={true}
+        mouseEnterDelay={0.3}
+        mouseLeaveDelay={0.1}
+        overlayClassName="minespace-tooltip"
+        placement="right"
+        title="Approximate number of workers on site that includes mine employees and contractors."
+        transitionName="zoom-big-fast"
+      >
+        <Icon
+          className="padding-sm"
+          type="info-circle"
+        />
+      </Tooltip>
+    </Title>
+    <Row
+      gutter={16}
+    >
+      <Col
+        span={22}
+      >
+        <Descriptions
+          colon={false}
+          column={5}
+          size="default"
+        >
+          <DescriptionsItem
+            label="Number of Mine Employees"
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                autoComplete="off"
+                component={[Function]}
+                format={[Function]}
+                id="number_of_mine_employees"
+                name="number_of_mine_employees"
+                normalize={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </DescriptionsItem>
+          <DescriptionsItem
+            label="Number of Contractors"
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                autoComplete="off"
+                component={[Function]}
+                format={[Function]}
+                id="number_of_contractors"
+                name="number_of_contractors"
+                normalize={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </DescriptionsItem>
+        </Descriptions>
+      </Col>
+    </Row>
+    <div
+      className="right center-mobile"
+    >
+      <Popconfirm
+        cancelText="No"
+        disabled={false}
+        icon={
+          <Icon
+            theme="filled"
+            type="exclamation-circle"
+          />
+        }
+        okText="Yes"
+        okType="primary"
+        onConfirm={[Function]}
+        placement="topRight"
+        title="Are you sure you want to cancel?"
+        transitionName="zoom-big"
+        trigger="click"
+      >
+        <Button
+          block={false}
+          className="full-mobile margin-small"
+          disabled={false}
+          ghost={false}
+          htmlType="button"
+          loading={false}
+          type="secondary"
+        >
+          Cancel
+        </Button>
+      </Popconfirm>
+      <Button
+        block={false}
+        className="full-mobile margin-small"
+        disabled={false}
+        ghost={false}
+        htmlType="submit"
+        loading={false}
+        type="primary"
+      >
+        Update Mine Worker Information
+      </Button>
+    </div>
+  </Form>
+</div>
+`;

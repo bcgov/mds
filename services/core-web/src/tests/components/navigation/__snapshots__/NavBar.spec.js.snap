@@ -110,20 +110,25 @@ exports[`NavBar renders properly 1`] = `
           <Connect(AuthorizationWrapper)
             permission="role_view_admin_route"
           >
-            <Link
-              to="/admin/dashboard"
+            <Dropdown
+              mouseEnterDelay={0.15}
+              mouseLeaveDelay={0.1}
+              overlay={[Function]}
+              placement="bottomLeft"
             >
-              <Button
-                block={false}
-                className="menu__btn--link"
-                ghost={false}
-                htmlType="button"
+              <button
+                className="menu__btn"
                 id=""
-                loading={false}
+                type="button"
               >
-                Admin
-              </Button>
-            </Link>
+                <span
+                  className="padding-sm--right"
+                >
+                  Admin
+                </span>
+                <ForwardRef(DownOutlined) />
+              </button>
+            </Dropdown>
           </Connect(AuthorizationWrapper)>
           <Dropdown
             mouseEnterDelay={0.15}

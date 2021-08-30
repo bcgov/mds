@@ -65,3 +65,7 @@ class Bond(Base, AuditMixin):
     @classmethod
     def find_by_bond_guid(cls, bond_guid):
         return cls.query.filter_by(bond_guid=bond_guid).first()
+
+    @classmethod
+    def find_by_payer_party_guid(cls, payer_party_guid):
+        return cls.query.filter_by(payer_party_guid=payer_party_guid).all()

@@ -9,6 +9,7 @@ import {
   deleteParty,
   addDocumentToRelationship,
   createPartyOrgBookEntity,
+  mergeParties,
 } from "@common/actionCreators/partiesActionCreator";
 import * as genericActions from "@common/actions/genericActions";
 import { ENVIRONMENT } from "@common/constants/environment";
@@ -249,6 +250,35 @@ describe("`createPartyOrgBookEntity` action creator", () => {
       partyGuid,
       mockPayload
     )(dispatch).catch(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(errorSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(4);
+    });
+  });
+});
+
+describe("`mergeParties` action creator", () => {
+  const mockPayload = {
+    party_guids: ["5234562346"],
+    party: {
+      first_name: "mockName",
+      party_name: "mockSurname",
+    },
+  };
+  const url = ENVIRONMENT.apiUrl + API.MERGE_PARTIES();
+  it("Request successful, dispatches `success` with correct response", () => {
+    const mockResponse = { data: { success: true } };
+    mockAxios.onPost(url, mockPayload).reply(200, mockResponse);
+    return mergeParties(mockPayload)(dispatch).then(() => {
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(successSpy).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(6);
+    });
+  });
+
+  it("Request failure, dispatches `error` with correct response", () => {
+    mockAxios.onPost(url).reply(418, MOCK.ERROR);
+    return mergeParties(mockPayload)(dispatch).catch(() => {
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(4);

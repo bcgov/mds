@@ -32,7 +32,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
             <ForwardRef(RadioButton)
               value={false}
             >
-              Company
+              Organization
             </ForwardRef(RadioButton)>
           </Memo(RadioGroup)>
         </div>
@@ -60,7 +60,7 @@ exports[`AddFullPartyForm renders properly 1`] = `
               <Field
                 component={[Function]}
                 id="party_name"
-                label="Company Name *"
+                label="Organization Name *"
                 name="party_name"
                 validate={
                   Array [

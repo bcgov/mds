@@ -32,6 +32,8 @@ class Validator {
 
   LON_NEGATIVE = /^-\d*\.?\d+$/;
 
+  WHOLE_NUMBER_REGEX = /^\d*$/;
+
   checkLat(lat) {
     return this.LAT_REGEX.test(lat);
   }
@@ -62,6 +64,10 @@ class Validator {
 
   checkProtocol(url) {
     return this.PROTOCOL_REGEX.test(url);
+  }
+
+  checkWholeNumber(url) {
+    return this.WHOLE_NUMBER_REGEX.test(url);
   }
 }
 
@@ -169,6 +175,11 @@ export const validateSelectOptions = memoize((data) => (value) => {
       : "Invalid. Select an option provided in the dropdown.";
   }
 });
+
+export const wholeNumber = (value) =>
+  value && !Validate.checkWholeNumber(value)
+    ? "Invalid. The number must be a whole number, decimals not allowed."
+    : undefined;
 
 export const validateDateRanges = (
   existingAppointments,

@@ -1,0 +1,569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MergeContactDashboard renders properly 1`] = `
+<div>
+  <Prompt
+    message={[Function]}
+    when={false}
+  />
+  <div
+    className="landing-page__header"
+  >
+    <Row>
+      <Col
+        lg={12}
+        md={14}
+        sm={22}
+      >
+        <h1>
+          Merge Contacts
+        </h1>
+      </Col>
+    </Row>
+    <Tabs
+      animated={
+        Object {
+          "inkBar": false,
+          "tabPane": false,
+        }
+      }
+      centered={true}
+      onTabClick={[Function]}
+      size="large"
+    >
+      <TabPane
+        key="PER"
+        tab="Merge Person"
+      >
+        <div
+          className="tab__content"
+        >
+          <div
+            className="merge-dashboard"
+          >
+            <h4
+              className="padding-sm"
+            >
+              Merge 
+            </h4>
+            <Alert
+              closable={true}
+              description={
+                <React.Fragment>
+                  The following contacts will be disabled in the dropdown list:
+                  <div
+                    className="hidden"
+                    style={
+                      Object {
+                        "marginLeft": "40px",
+                      }
+                    }
+                  >
+                    <ul>
+                      <li>
+                        Contacts with the role of Permittee.
+                      </li>
+                      <li>
+                        Contacts with the role of Inspector.
+                      </li>
+                      <li>
+                        Organizations connected to OrgBook.
+                      </li>
+                    </ul>
+                  </div>
+                  <ForwardRef(InternalButton)
+                    block={false}
+                    className="btn--expand"
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[Function]}
+                  >
+                      ...Read more
+                  </ForwardRef(InternalButton)>
+                </React.Fragment>
+              }
+              message="Not all contacts can be merged at this time"
+              showIcon={true}
+              type="info"
+            />
+            <br />
+            <div
+              className="search-contents inline-flex between"
+            >
+              <div
+                className="flex-1 padding-sm"
+              >
+                <p>
+                  <b>
+                    Search and select contacts to merge
+                  </b>
+                </p>
+              </div>
+              <div
+                className="flex-4"
+              >
+                <Connect(RenderMultiSelectPartySearch)
+                  isLoading={false}
+                  onSelectedPartySearchResultsChanged={[Function]}
+                  triggerSelectReset={false}
+                />
+              </div>
+              <br />
+            </div>
+            <br />
+            <div
+              className="merge-container"
+            >
+              <div
+                className="merge-container--tall inline-flex between"
+              >
+                <div
+                  className="flex-1"
+                >
+                  <h4
+                    className="padding-sm"
+                  >
+                    Proposed Merged Contact
+                  </h4>
+                  <Col
+                    span={24}
+                  >
+                    <Card
+                      bordered={false}
+                      className="no-header inherit-height"
+                    >
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Organization Name
+                          </h6>
+                          <p>
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Phone Number
+                          </h6>
+                          <p>
+                            <ForwardRef(PhoneOutlined)
+                              className="icon-sm padding-sm--right"
+                            />
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Email
+                          </h6>
+                          <p>
+                            <ForwardRef(MailOutlined)
+                              className="icon-sm padding-sm--right"
+                            />
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Address
+                          </h6>
+                          <Address
+                            address={Object {}}
+                            showIcon={true}
+                          />
+                        </Col>
+                      </Row>
+                      <div
+                        className="roles-container"
+                      >
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              Active Roles
+                            </h6>
+                            <p>
+                              <p>
+                                N/A
+                              </p>
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              In-active Roles
+                            </h6>
+                            <p>
+                              <p>
+                                N/A
+                              </p>
+                            </p>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Card>
+                  </Col>
+                </div>
+                <div
+                  className="flex-4"
+                >
+                  <div
+                    className="contact-container"
+                  >
+                    <Alert
+                      closable={true}
+                      description="All contacts selected will be deleted when the merge is complete and the proposed contact will be created."
+                      showIcon={true}
+                      type="info"
+                    />
+                    <br />
+                    <NullScreen
+                      message=""
+                      type="merged-contacts"
+                    />
+                  </div>
+                </div>
+              </div>
+              <br />
+              <Connect(AuthorizationWrapper)
+                permission="role_mds_administrative_users"
+              >
+                <div
+                  className="right center-mobile"
+                >
+                  <ForwardRef
+                    cancelText="No"
+                    disabled={false}
+                    icon={<ForwardRef(ExclamationCircleFilled) />}
+                    okText="Yes"
+                    okType="primary"
+                    onConfirm={[Function]}
+                    placement="topRight"
+                    title="Are you sure you want to cancel?"
+                    transitionName="zoom-big"
+                    trigger="click"
+                  >
+                    <Button
+                      block={false}
+                      className="full-mobile"
+                      ghost={false}
+                      htmlType="button"
+                      loading={false}
+                      type="secondary"
+                    >
+                      Clear All
+                    </Button>
+                  </ForwardRef>
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    disabled={true}
+                    ghost={false}
+                    htmlType="submit"
+                    loading={false}
+                    onClick={[Function]}
+                    type="primary"
+                  >
+                    Proceed to Merge
+                  </Button>
+                </div>
+              </Connect(AuthorizationWrapper)>
+            </div>
+          </div>
+        </div>
+      </TabPane>
+      <TabPane
+        key="ORG"
+        tab="Merge Organization"
+      >
+        <div
+          className="tab__content"
+        >
+          <div
+            className="merge-dashboard"
+          >
+            <h4
+              className="padding-sm"
+            >
+              Merge 
+            </h4>
+            <Alert
+              closable={true}
+              description={
+                <React.Fragment>
+                  The following contacts will be disabled in the dropdown list:
+                  <div
+                    className="hidden"
+                    style={
+                      Object {
+                        "marginLeft": "40px",
+                      }
+                    }
+                  >
+                    <ul>
+                      <li>
+                        Contacts with the role of Permittee.
+                      </li>
+                      <li>
+                        Contacts with the role of Inspector.
+                      </li>
+                      <li>
+                        Organizations connected to OrgBook.
+                      </li>
+                    </ul>
+                  </div>
+                  <ForwardRef(InternalButton)
+                    block={false}
+                    className="btn--expand"
+                    ghost={false}
+                    htmlType="button"
+                    loading={false}
+                    onClick={[Function]}
+                  >
+                      ...Read more
+                  </ForwardRef(InternalButton)>
+                </React.Fragment>
+              }
+              message="Not all contacts can be merged at this time"
+              showIcon={true}
+              type="info"
+            />
+            <br />
+            <div
+              className="search-contents inline-flex between"
+            >
+              <div
+                className="flex-1 padding-sm"
+              >
+                <p>
+                  <b>
+                    Search and select contacts to merge
+                  </b>
+                </p>
+              </div>
+              <div
+                className="flex-4"
+              >
+                <Connect(RenderMultiSelectPartySearch)
+                  isLoading={false}
+                  onSelectedPartySearchResultsChanged={[Function]}
+                  triggerSelectReset={false}
+                />
+              </div>
+              <br />
+            </div>
+            <br />
+            <div
+              className="merge-container"
+            >
+              <div
+                className="merge-container--tall inline-flex between"
+              >
+                <div
+                  className="flex-1"
+                >
+                  <h4
+                    className="padding-sm"
+                  >
+                    Proposed Merged Contact
+                  </h4>
+                  <Col
+                    span={24}
+                  >
+                    <Card
+                      bordered={false}
+                      className="no-header inherit-height"
+                    >
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Organization Name
+                          </h6>
+                          <p>
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Phone Number
+                          </h6>
+                          <p>
+                            <ForwardRef(PhoneOutlined)
+                              className="icon-sm padding-sm--right"
+                            />
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Email
+                          </h6>
+                          <p>
+                            <ForwardRef(MailOutlined)
+                              className="icon-sm padding-sm--right"
+                            />
+                            N/A
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          className="grid padding-sm"
+                          span={24}
+                        >
+                          <h6>
+                            Address
+                          </h6>
+                          <Address
+                            address={Object {}}
+                            showIcon={true}
+                          />
+                        </Col>
+                      </Row>
+                      <div
+                        className="roles-container"
+                      >
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              Active Roles
+                            </h6>
+                            <p>
+                              <p>
+                                N/A
+                              </p>
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            className="grid padding-sm"
+                            span={24}
+                          >
+                            <h6>
+                              In-active Roles
+                            </h6>
+                            <p>
+                              <p>
+                                N/A
+                              </p>
+                            </p>
+                          </Col>
+                        </Row>
+                      </div>
+                    </Card>
+                  </Col>
+                </div>
+                <div
+                  className="flex-4"
+                >
+                  <div
+                    className="contact-container"
+                  >
+                    <Alert
+                      closable={true}
+                      description="All contacts selected will be deleted when the merge is complete and the proposed contact will be created."
+                      showIcon={true}
+                      type="info"
+                    />
+                    <br />
+                    <NullScreen
+                      message=""
+                      type="merged-contacts"
+                    />
+                  </div>
+                </div>
+              </div>
+              <br />
+              <Connect(AuthorizationWrapper)
+                permission="role_mds_administrative_users"
+              >
+                <div
+                  className="right center-mobile"
+                >
+                  <ForwardRef
+                    cancelText="No"
+                    disabled={false}
+                    icon={<ForwardRef(ExclamationCircleFilled) />}
+                    okText="Yes"
+                    okType="primary"
+                    onConfirm={[Function]}
+                    placement="topRight"
+                    title="Are you sure you want to cancel?"
+                    transitionName="zoom-big"
+                    trigger="click"
+                  >
+                    <Button
+                      block={false}
+                      className="full-mobile"
+                      ghost={false}
+                      htmlType="button"
+                      loading={false}
+                      type="secondary"
+                    >
+                      Clear All
+                    </Button>
+                  </ForwardRef>
+                  <Button
+                    block={false}
+                    className="full-mobile"
+                    disabled={true}
+                    ghost={false}
+                    htmlType="submit"
+                    loading={false}
+                    onClick={[Function]}
+                    type="primary"
+                  >
+                    Proceed to Merge
+                  </Button>
+                </div>
+              </Connect(AuthorizationWrapper)>
+            </div>
+          </div>
+        </div>
+      </TabPane>
+    </Tabs>
+  </div>
+</div>
+`;

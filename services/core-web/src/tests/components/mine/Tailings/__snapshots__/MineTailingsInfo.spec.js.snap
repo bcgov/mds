@@ -50,7 +50,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
             Array [
               Object {
                 "consequence_classification_status_code": "LOW",
-                "has_itrb": true,
+                "itrb_exemption_status_code": "YES",
                 "latitude": null,
                 "longitude": null,
                 "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -170,7 +170,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
                 "mine_tailings_storage_facilities": Array [
                   Object {
                     "consequence_classification_status_code": "LOW",
-                    "has_itrb": true,
+                    "itrb_exemption_status_code": "YES",
                     "latitude": null,
                     "longitude": null,
                     "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
@@ -203,7 +203,7 @@ exports[`MineTailingsInfo renders properly 1`] = `
               Array [
                 Object {
                   "consequence_classification_status_code": "LOW",
-                  "has_itrb": true,
+                  "itrb_exemption_status_code": "YES",
                   "latitude": null,
                   "longitude": null,
                   "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",

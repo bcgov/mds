@@ -7,11 +7,6 @@ const AdminDashboardRoutes = () => (
   <Switch>
     <Route
       exact
-      path={routes.ADMIN_PERMIT_CONDITION.route}
-      component={routes.ADMIN_PERMIT_CONDITION.component}
-    />
-    <Route
-      exact
       path={routes.ADMIN_MANAGE_MINESPACE_USERS.route}
       component={routes.ADMIN_MANAGE_MINESPACE_USERS.component}
     />
