@@ -6,9 +6,11 @@ storage_buckets:
   dev:
     - mds-placeholder
   test:
-    - mds-placeholder
+    - mds-test-placeholder
+    - mds-env-test
   prod:
-    - mds-placeholder
+    - mds-prod-placeholder
+    - mds-env-prod
 
 configs:
   dev:
