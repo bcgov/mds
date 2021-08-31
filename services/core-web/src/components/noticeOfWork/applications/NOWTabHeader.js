@@ -5,6 +5,8 @@ import NOWStatusIndicator from "@/components/noticeOfWork/NOWStatusIndicator";
 import NOWProgressActions from "@/components/noticeOfWork/NOWProgressActions";
 import NOWProgressStatus from "@/components/noticeOfWork/NOWProgressStatus";
 import { TAB_DISCLAIMERS } from "@/constants/NOWConditions";
+import CustomPropTypes from "@/customPropTypes";
+import * as Strings from "@common/constants/strings";
 
 /**
  * @constant NOWTabHeader renders react children with an active indicator if the id is in the url.
@@ -13,6 +15,7 @@ import { TAB_DISCLAIMERS } from "@/constants/NOWConditions";
 const propTypes = {
   handleDraftPermit: PropTypes.func,
   fixedTop: PropTypes.bool.isRequired,
+  noticeOfWork: CustomPropTypes.importedNOWApplication.isRequired,
   isEditMode: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
   tabActions: PropTypes.any,
@@ -44,6 +47,15 @@ export const NOWTabHeader = (props) => (
             <Popover placement="topLeft" content={TAB_DISCLAIMERS[props.tab]}>
               {props.tabName}
             </Popover>
+            {props.fixedTop && (
+              <div className="view--header--sub">
+                {props.noticeOfWork?.application_type_code === "NOW"
+                  ? "Notice of Work"
+                  : "Administrative Amendment"}
+                :
+                <br />#{props.noticeOfWork.now_number || Strings.NOT_APPLICABLE}
+              </div>
+            )}
           </h2>
           <div className="view--header--content--actions">
             {props.showProgressButton && props.showActionsAndProgress && (

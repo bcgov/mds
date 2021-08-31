@@ -103,6 +103,10 @@
         padding-top: 10px;
       }
     }
+    &--sub {
+      font-size: $font-size-sm;
+      color: $non-textual-grey;
+    }
   }
 
   &--content {
