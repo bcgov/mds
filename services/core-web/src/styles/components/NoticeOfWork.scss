@@ -88,7 +88,7 @@
 .view {
   &--header {
     &.fixed-scroll {
-      top: 60px;
+      top: 55px;
       position: fixed;
       width: 100vw;
       background-color: $pure-white;
@@ -129,6 +129,7 @@
 }
 
 .side-menu {
+  overflow: scroll;
   margin-left: 15px;
   margin-top: 15px;
   width: 240px;
@@ -201,7 +202,7 @@
   &.ant-anchor-link {
     line-height: 1.2;
     border-bottom: none;
-    padding: 4px !important;
+    padding: 4px;
   }
 }
 
