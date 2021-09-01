@@ -1,6 +1,7 @@
 import json
 import uuid
 import pytest
+import re
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit.models.permit import Permit
@@ -107,6 +108,47 @@ def test_post_permit_with_duplicate_permit_no(test_client, db_session, auth_head
     post_resp = test_client.post(
         f'/mines/{mine_guid}/permits', headers=auth_headers['full_auth_header'], json=data)
     assert post_resp.status_code == 400
+
+
+def test_post_permit_now_application_draft_sufix_added(test_client, db_session, auth_headers):
+    mine, permit = create_mine_and_permit(permit_kwargs={"permit_status_code": 'D', "bonds": 0})
+    now_application_identity = NOWApplicationIdentityFactory(mine=mine)
+
+    data = {
+        'permittee_party_guid': None,
+        'permit_no': None,
+        'received_date': None,
+        'issue_date': None,
+        'authorization_end_date': None,
+        'permit_status_code': 'D',
+        'is_exploration': False,
+        'now_application_guid': now_application_identity.now_application_guid,
+    }
+
+    post_resp = test_client.post(
+        f'/mines/{mine.mine_guid}/permits', headers=auth_headers['full_auth_header'], json=data)
+    assert post_resp.status_code == 200
+    post_data = json.loads(post_resp.data.decode())
+    new_permit = Permit.find_by_now_application_guid(
+        str(now_application_identity.now_application_guid))
+
+    delete_resp = test_client.delete(
+        f'/mines/{mine.mine_guid}/permits/{new_permit.permit_guid}',
+        headers=auth_headers['full_auth_header'])
+    assert delete_resp.status_code == 204
+
+    post_resp = test_client.post(
+        f'/mines/{mine.mine_guid}/permits', headers=auth_headers['full_auth_header'], json=data)
+    post_data = json.loads(post_resp.data.decode())
+
+    new_permit = Permit.find_by_now_application_guid(
+        str(now_application_identity.now_application_guid))
+
+    assert post_resp.status_code == 200
+    #Validation of sufix double digit after permit_no
+    #M-DRAFT-0-01 , -01 is added to original permit_no: M-DRAFT-0
+    assert re.match('^[A-Z]{1,2}-DRAFT-[0-9]{1,2}-01$', new_permit.permit_no)
+    assert new_permit.permit_status_code == 'D'
 
 
 #Put
