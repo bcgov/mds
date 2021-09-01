@@ -34,21 +34,6 @@ export const ReviewActivities = (props) => {
   return (
     <div>
       <ScrollContentWrapper
-        id="placer-operation"
-        title="Placer Operations"
-        data={props.noticeOfWork.placer_operation}
-        showContent={renderActivities(props.noticeOfWorkType, "placer-operation")}
-        isViewMode={props.isViewMode}
-      >
-        <FormSection name="placer_operation">
-          <Placer
-            isViewMode={props.isViewMode}
-            renderOriginalValues={props.renderOriginalValues}
-            isPreLaunch={props.isPreLaunch}
-          />
-        </FormSection>
-      </ScrollContentWrapper>
-      <ScrollContentWrapper
         id="blasting-operation"
         title="Blasting"
         data={props.noticeOfWork.blasting_operation}
@@ -144,6 +129,21 @@ export const ReviewActivities = (props) => {
       >
         <FormSection name="underground_exploration">
           <UndergroundExploration
+            isViewMode={props.isViewMode}
+            renderOriginalValues={props.renderOriginalValues}
+            isPreLaunch={props.isPreLaunch}
+          />
+        </FormSection>
+      </ScrollContentWrapper>
+      <ScrollContentWrapper
+        id="placer-operation"
+        title="Placer Operations"
+        data={props.noticeOfWork.placer_operation}
+        showContent={renderActivities(props.noticeOfWorkType, "placer-operation")}
+        isViewMode={props.isViewMode}
+      >
+        <FormSection name="placer_operation">
+          <Placer
             isViewMode={props.isViewMode}
             renderOriginalValues={props.renderOriginalValues}
             isPreLaunch={props.isPreLaunch}

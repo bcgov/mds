@@ -19,23 +19,65 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
   const options = {
     application: [
       {
-        href: "application-info",
-        title: "Application Info",
-        alwaysVisible: true,
-        applicationType: ["NOW", "ADA"],
-      },
-      { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
-      {
-        href: "state-of-land",
-        title: "State of Land",
+        href: "applicant-info",
+        title: "Applicant Information",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
+      {
+        href: "application-info",
+        title: "Application Information",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "permit-type",
+        title: "One Year, Multi-Year or Multi-Year Area Based Permit",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
+      {
+        href: "mine-info",
+        title: "Mine Information",
+        alwaysVisible: true,
+        applicationType: ["NOW", "ADA"],
+      },
       { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
       {
-        href: "placer-operation",
-        title: "Placer Operations",
-        alwaysVisible: false,
+        href: "work-plan",
+        title: "Description of Work Program",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
+      {
+        href: "access-to-tenure",
+        title: "Access to Tenure",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "state-of-land",
+        title: "Present State of Land",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "land-ownership",
+        title: "Land Ownership",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "cultural-heritage-resources",
+        title: "Cultural Heritage Resources",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "first-nations-engagement",
+        title: "First Nations Engagement",
+        alwaysVisible: true,
         applicationType: ["NOW"],
       },
       {
@@ -77,6 +119,12 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
       {
         href: "underground-exploration",
         title: "Underground Exploration",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "placer-operation",
+        title: "Placer Operations",
         alwaysVisible: false,
         applicationType: ["NOW"],
       },
