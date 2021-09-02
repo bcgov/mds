@@ -128,13 +128,11 @@ class EmailService():
             raise Exception('Email priority is invalid')
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        if False and Config.ENVIRONMENT_NAME != 'prod':
+        if Config.ENVIRONMENT_NAME != 'prod':
             current_app.logger.info('Not sending email: Emails can only be sent in Production.')
             return
 
         EmailService.perform_health_check()
-
-        recipients = ['lukegamitchell@gmail.com', 'luke.mitchell@nttdata.com']
 
         # If the sender is the MDS no-reply email address, add the MDS no-reply signature to the email body.
         if sender == Config.MDS_NO_REPLY_EMAIL:
