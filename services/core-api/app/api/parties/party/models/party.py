@@ -22,7 +22,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
     party_name = db.Column(db.String, nullable=False)
     phone_no = db.Column(db.String)
     phone_ext = db.Column(db.String)
+    phone_no_sec = db.Column(db.String)
+    phone_sec_ext = db.Column(db.String)
+    phone_no_ter = db.Column(db.String)
+    phone_ter_ext = db.Column(db.String)
     email = db.Column(db.String)
+    email_sec = db.Column(db.String)
     party_type_code = db.Column(db.String, db.ForeignKey('party_type_code.party_type_code'))
     address = db.relationship('Address', lazy='joined')
     job_title = db.Column(db.String)
@@ -67,6 +72,20 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             return None
 
     @hybrid_property
+    def phone_sec(self):
+        if (self.phone_no_sec is not None):
+            return self.phone_no_sec + (f' x{self.phone_sec_ext}' if self.phone_sec_ext else '')
+        else:
+            return None
+
+    @hybrid_property
+    def phone_ter(self):
+        if (self.phone_no_ter is not None):
+            return self.phone_no_ter + (f' x{self.phone_ter_ext}' if self.phone_ter_ext else '')
+        else:
+            return None
+
+    @hybrid_property
     def first_address(self):
         return self.address[0] if self.address else None
 
@@ -87,7 +106,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             'party_type_code': self.party_type_code,
             'phone_no': self.phone_no,
             'phone_ext': self.phone_ext,
+            'phone_no_sec': self.phone_no_sec,
+            'phone_sec_ext': self.phone_sec_ext,
+            'phone_no_ter': self.phone_no_ter,
+            'phone_ter_ext': self.phone_ter_ext,
             'email': self.email,
+            'email_sec': self.email_sec,
             'party_name': self.party_name,
             'name': self.name,
             'address': self.address[0].json() if len(self.address) > 0 else [{}],
@@ -150,7 +174,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                email=None,
                first_name=None,
                phone_ext=None,
-               add_to_session=True):
+               add_to_session=True,
+               phone_no_sec=None,
+               phone_sec_ext=None,
+               phone_no_ter=None,
+               phone_ter_ext=None,
+               email_sec=None):
         Party.validate_phone_no(phone_no)
         party = cls(
             party_name=party_name,
@@ -158,7 +187,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
             party_type_code=party_type_code,
             email=email,
             first_name=first_name if party_type_code == 'PER' else None,
-            phone_ext=phone_ext)
+            phone_ext=phone_ext,
+            phone_no_sec=phone_no_sec,
+            phone_sec_ext=phone_sec_ext,
+            phone_no_ter=phone_no_ter,
+            phone_ter_ext=phone_ter_ext,
+            email_sec=email_sec)
         if add_to_session:
             party.save(commit=False)
         return party
