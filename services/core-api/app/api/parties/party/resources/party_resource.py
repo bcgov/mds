@@ -162,8 +162,8 @@ class PartyResource(Resource, UserMixin):
             setattr(existing_party, key, value)
 
         Party.validate_phone_no(existing_party.phone_no)
-        # Party.validate_phone_no(existing_party.phone_no_sec)
-        # Party.validate_phone_no(existing_party.phone_no_ter)
+        Party.validate_phone_no(existing_party.phone_no_sec)
+        Party.validate_phone_no(existing_party.phone_no_ter)
 
         # We are now allowing parties to be created without an address
         if (data.get('suite_no') or data.get('address_line_1') or data.get('address_line_2')
