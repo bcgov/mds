@@ -379,7 +379,7 @@ export const TAB_DISCLAIMERS = {
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
-  MND: "Some description for Manage Documents tab.",
+  MND: "This page contains all documents related to the application.",
 };
 
 export const APPLICATION_PROGRESS_TRACKING = {
