@@ -21,7 +21,7 @@ from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.response_models import PERMIT_MODEL
 from app.api.mines.mine.resources.mine_type import MineType
 from app.api.mines.mine.models.mine_type_detail import MineTypeDetail
-from app.api.utils.helpers import generate_permit_no_sufix
+from app.api.utils.helpers import generate_draft_permit_no_suffix
 
 
 class PermitListResource(Resource, UserMixin):
@@ -152,7 +152,7 @@ class PermitListResource(Resource, UserMixin):
 
             last_draft_permit = Permit.find_by_permit_no_deleted_in_draft(permit_no)
             if last_draft_permit:
-                permit_no = generate_permit_no_sufix(last_draft_permit.permit_no, permit_no)
+                permit_no = generate_draft_permit_no_suffix(last_draft_permit.permit_no, permit_no)
 
         permit = Permit.find_by_permit_no(permit_no)
         if permit:
