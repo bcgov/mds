@@ -22,6 +22,10 @@ EDIT_HISTORICAL_PERMIT_AMENDMENTS = "core_edit_historical_amendments"
 GIS = "core_gis"
 
 
+def is_minespace_user():
+    return jwt.validate_roles([MINESPACE_PROPONENT])
+
+
 def requires_role_view_all(func):
     return _inner_wrapper(func, VIEW_ALL)
 
