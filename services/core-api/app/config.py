@@ -2,6 +2,7 @@ import os
 
 from logging.handlers import SysLogHandler
 from dotenv import load_dotenv, find_dotenv
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -52,6 +53,10 @@ class Config(object):
     NRIS_USER_NAME = os.environ.get('NRIS_USER_NAME', None)
     NRIS_PASS = os.environ.get('NRIS_PASS', None)
     ENVIRONMENT_NAME = os.environ.get('ENVIRONMENT_NAME', 'dev')
+    CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
+                                         'https://minesdigitalservices.gov.bc.ca')
+    MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
+    MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
 
     # SqlAlchemy config
     SQLALCHEMY_DATABASE_URI = DB_URL
@@ -125,11 +130,11 @@ class Config(object):
     # OrgBook
     ORGBOOK_API_URL = os.environ.get('ORGBOOK_API_URL', 'https://orgbook.gov.bc.ca/api/v2/')
 
-    #NRPTI
+    # NRPTI
     NRPTI_API_URL = os.environ.get(
         'NRPTI_API_URL', 'https://nrpti-api-f00029-prod.apps.silver.devops.gov.bc.ca/api/public/')
 
-    #EPIC
+    # EPIC
     EPIC_API_URL = os.environ.get('EPIC_API_URL', 'https://projects.eao.gov.bc.ca/api/v2/')
     EPIC_LINK_URL = os.environ.get('EPIC_LINK_URL', 'https://projects.eao.gov.bc.ca/p/')
 
@@ -138,6 +143,12 @@ class Config(object):
         'VCR_ISSUER_URL',
         'https://mines-permitting-issuer-a3e512-dev.apps.silver.devops.gov.bc.ca/')
     VCR_ISSUER_SECRET_KEY = os.environ.get('VCR_ISSUER_SECRET_KEY', 'super-secret-key')
+
+    # Common Services
+    COMMON_SERVICES_CLIENT_ID = os.environ.get('COMMON_SERVICES_CLIENT_ID')
+    COMMON_SERVICES_CLIENT_SECRET = os.environ.get('COMMON_SERVICES_CLIENT_SECRET')
+    COMMON_SERVICES_AUTH_HOST = os.environ.get('COMMON_SERVICES_AUTH_HOST')
+    COMMON_SERVICES_EMAIL_HOST = os.environ.get('COMMON_SERVICES_EMAIL_HOST')
 
 
 class TestConfig(Config):
