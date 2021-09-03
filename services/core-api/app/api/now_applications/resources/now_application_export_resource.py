@@ -56,6 +56,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'other_information',
     'has_key_for_inspector',
     'unreclaimed_disturbance_previous_year',
+    'original_start_date',
     'disturbance_planned_reclamation',
     'proponent_submitted_permit_number',
     'state_of_land.notice_served_to_private',
@@ -438,7 +439,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     }
                     included_docs.append(new_doc)
 
-            included_docs.sort(key=lambda doc: (doc['final_package_order'] is None, doc['final_package_order']))
+            included_docs.sort(
+                key=lambda doc: (doc['final_package_order'] is None, doc['final_package_order']))
 
             return included_docs
 

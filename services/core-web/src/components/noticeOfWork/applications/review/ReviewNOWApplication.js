@@ -207,6 +207,17 @@ export const ReviewNOWApplication = (props) => {
             validate={[validateSelectOptions(props.regionDropdownOptions)]}
             disabled
           />
+          <div className="field-title">
+            Proposed Annual Maximum Tonnage
+            {props.isPreLaunch && <NOWFieldOriginTooltip />}
+          </div>
+          <Field
+            id="proposed_annual_maximum_tonnage"
+            name="proposed_annual_maximum_tonnage"
+            component={RenderField}
+            validate={[number]}
+            disabled
+          />
         </Col>
       </Row>
     </div>
