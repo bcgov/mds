@@ -57,7 +57,7 @@ export class Reports extends Component {
     if (values.mine_report_submissions && values.mine_report_submissions.length > 0) {
       formValues.received_date = moment().format("YYYY-MM-DD");
     }
-    this.props
+    return this.props
       .createMineReport(this.props.mine.mine_guid, formValues)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
@@ -87,7 +87,7 @@ export class Reports extends Component {
       payload = { ...payload, received_date: moment().format("YYYY-MM-DD") };
     }
 
-    this.props
+    return this.props
       .updateMineReport(this.props.mine.mine_guid, this.state.report.mine_report_guid, payload)
       .then(() => this.props.closeModal())
       .then(() => this.props.fetchMineReports(this.props.mine.mine_guid));
