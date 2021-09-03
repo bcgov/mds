@@ -6,7 +6,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL
+from app.api.utils.access_decorators import requires_role_view_all, requires_any_of, requires_role_edit_report, EDIT_REPORT, MINESPACE_PROPONENT, VIEW_ALL, is_minespace_user
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.reports.models.mine_report import MineReport
@@ -132,6 +132,9 @@ class MineReportListResource(Resource, UserMixin):
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 
+        if is_minespace_user():
+            mine_report.send_report_update_email(False)
+
         return mine_report, 201
 
 
@@ -237,6 +240,10 @@ class MineReportResource(Resource, UserMixin):
             mine_report.save()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
+
+        if is_minespace_user():
+            mine_report.send_report_update_email(True)
+
         return mine_report
 
     @requires_role_edit_report
