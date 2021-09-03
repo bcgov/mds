@@ -1,3 +1,5 @@
+from flask.globals import current_app
+from sqlalchemy import and_
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -138,8 +140,8 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
         if self.bonds:
             raise Exception('Unable to delete permit with attached bonds.')
 
-        if self.permit_amendments and any(amendment.now_application_guid is not None
-                                          for amendment in self.permit_amendments):
+        if self.permit_amendments and self.permit_status_code != 'D' and any(
+                amendment.now_application_guid is not None for amendment in self.permit_amendments):
             raise Exception(
                 'Unable to delete permit with linked NOW application in Core to one of its permit amendments.'
             )
@@ -168,6 +170,13 @@ class Permit(SoftDeleteMixin, AuditMixin, Base):
     def find_by_permit_no(cls, _permit_no):
         return cls.query.filter_by(
             permit_no=_permit_no, deleted_ind=False).filter(cls.permit_status_code != 'D').first()
+
+    @classmethod
+    def find_by_permit_no_deleted_in_draft(cls, _permit_no):
+        return cls.query.filter(
+            and_(
+                cls.permit_no.like(_permit_no + '%'), cls.deleted_ind == True,
+                cls.permit_status_code == 'D')).order_by(cls.permit_id.desc()).first()
 
     @classmethod
     def find_by_permit_no_all(cls, _permit_no):
