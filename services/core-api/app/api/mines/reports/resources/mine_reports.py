@@ -67,7 +67,6 @@ class MineReportListResource(Resource, UserMixin):
         permit_condition_type_code = data.get('permit_condition_category_code', None)
 
         is_code_required_report = permit_condition_type_code == None
-        current_app.logger.debug(is_code_required_report)
         permit_condition_category_code = None
         permit_guid = data['permit_guid']
 
