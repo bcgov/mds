@@ -128,9 +128,16 @@ class EmailService():
             raise Exception('Email priority is invalid')
 
         # NOTE: Be careful when enabling emails in local/dev/test. You could possibly be sending spam emails!
-        if Config.ENVIRONMENT_NAME != 'prod':
-            current_app.logger.info('Not sending email: Emails can only be sent in Production.')
+        if not Config.EMAIL_ENABLED:
+            current_app.logger.info('Not sending email: Emails are disabled.')
             return
+        elif Config.ENVIRONMENT_NAME != 'prod' and not Config.EMAIL_RECIPIENT_OVERRIDE:
+            current_app.logger.info(
+                'Not sending email: Recipient override must be set when not in prod environment!')
+            return
+
+        if Config.EMAIL_RECIPIENT_OVERRIDE:
+            recipients = [Config.EMAIL_RECIPIENT_OVERRIDE]
 
         EmailService.perform_health_check()
 
