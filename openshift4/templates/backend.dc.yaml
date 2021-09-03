@@ -250,7 +250,7 @@ objects:
                 - name: DOCUMENT_GENERATOR_URL
                   value: "http://docgen:3030"
                 - name: ENVIRONMENT_NAME
-                  value: test
+                  value: ${ENVIRONMENT_NAME}
                 - name: METABASE_EMBEDDING_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
