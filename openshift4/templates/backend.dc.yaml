@@ -295,6 +295,26 @@ objects:
                     secretKeyRef:
                       key: vcr-issuer-secret-key
                       name: template.issuer-api-secret
+                - name: COMMON_SERVICES_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: common-services-client-id
+                      name: common-services
+                - name: COMMON_SERVICES_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      key: common-services-client-secret
+                      name: common-services
+                - name: COMMON_SERVICES_AUTH_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      key: common-services-auth-host
+                      name: common-services
+                - name: COMMON_SERVICES_EMAIL_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      key: common-services-email-host
+                      name: common-services
               resources:
                 limits:
                   cpu: ${CPU_LIMIT}
@@ -386,26 +406,6 @@ objects:
                     secretKeyRef:
                       key: database-nris-password
                       name: postgresql-nris
-                - name: COMMON_SERVICES_CLIENT_ID
-                  valueFrom:
-                    secretKeyRef:
-                      key: common-services-client-id
-                      name: common-services
-                - name: COMMON_SERVICES_CLIENT_SECRET
-                  valueFrom:
-                    secretKeyRef:
-                      key: common-services-client-secret
-                      name: common-services
-                - name: COMMON_SERVICES_AUTH_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      key: common-services-auth-host
-                      name: common-services
-                - name: COMMON_SERVICES_EMAIL_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      key: common-services-email-host
-                      name: common-services
                 - name: FLYWAY_OUT_OF_ORDER
                   value: "true"
                 - name: FLYWAY_CONNECT_RETRIES
