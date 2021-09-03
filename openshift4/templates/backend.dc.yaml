@@ -323,7 +323,7 @@ objects:
                 - name: EMAIL_RECIPIENT_OVERRIDE
                   valueFrom:
                     secretKeyRef:
-                      key: email-recipient_override
+                      key: email-recipient-override
                       name: common-services
               resources:
                 limits:
