@@ -3,10 +3,10 @@ from flask import request
 from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 from marshmallow.exceptions import MarshmallowError
 
-from app.extensions import api, jwt
+from app.extensions import api
 from app.api.securities.response_models import BOND, BOND_MINESPACE
 from app.api.securities.models.bond import Bond
-from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_any_of, requires_role_view_all, requires_role_edit_securities
+from app.api.utils.access_decorators import MINESPACE_PROPONENT, VIEW_ALL, requires_any_of, requires_role_edit_securities, is_minespace_user
 from app.api.utils.resources_mixins import UserMixin
 from app.api.mines.permits.permit.models.permit import Permit
 from app.api.mines.mine.models.mine import Mine
@@ -35,7 +35,7 @@ class BondListResource(Resource, UserMixin):
 
         bonds = [bond for permit in permits for bond in permit.bonds]
 
-        if jwt.validate_roles([MINESPACE_PROPONENT]):
+        if is_minespace_user():
             bonds = marshal(bonds, BOND_MINESPACE)
 
         return bonds
@@ -85,7 +85,7 @@ class BondResource(Resource, UserMixin):
         if bond is None:
             raise NotFound('No bond was found with the guid provided.')
 
-        if jwt.validate_roles([MINESPACE_PROPONENT]):
+        if is_minespace_user():
             bond = marshal(bond, BOND_MINESPACE)
 
         return bond
