@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Row, Col, Card, Typography, Icon } from "antd";
+import { Icon as LegacyIcon } from "@ant-design/compatible";
+import { Row, Col, Card, Typography } from "antd";
 import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
@@ -10,7 +11,7 @@ const { Paragraph, Text } = Typography;
 const ContactCardRow = (data) => (
   <Row className="contact-card-row">
     <Col span={24}>
-      <Icon type={data.icon} className="contact-card-row-icon" />
+      <LegacyIcon type={data.icon} className="contact-card-row-icon" />
       <Paragraph className="contact-card-row-field">
         <Text strong className="contact-card-row-field-title">
           {data.label}

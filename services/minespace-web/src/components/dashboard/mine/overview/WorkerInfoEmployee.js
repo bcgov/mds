@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Col, Descriptions, Icon, Row, Tooltip, Typography } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Col, Descriptions, Row, Tooltip, Typography } from "antd";
 import { fetchMineRecordById, updateMineRecord } from "@common/actionCreators/mineActionCreator";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
@@ -71,7 +72,7 @@ export class WorkerInfoEmployee extends Component {
                           placement="right"
                           mouseEnterDelay={0.3}
                         >
-                          <Icon type="info-circle" className="padding-sm" />
+                          <InfoCircleOutlined className="padding-sm" />
                         </Tooltip>
                       </Title>
                     </Col>
