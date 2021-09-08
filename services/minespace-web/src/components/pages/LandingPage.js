@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, Button, Typography } from "antd";
+import { Row, Col, Card, Button, Typography, version } from "antd";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
@@ -10,6 +10,7 @@ import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
 
 const { Paragraph, Text, Title } = Typography;
+const REACT_VERSION = React.version;
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -53,6 +54,8 @@ export const LandingPage = (props) => (
     >
       <Col xl={{ span: 24 }} xxl={{ span: 20 }}>
         <Title>Welcome to MineSpace</Title>
+        <h4>React version: {REACT_VERSION}</h4>
+        <h4>antd version: {version}</h4>
         <Paragraph className="header-text">
           Manage applications, see inspection histories, submit reports, and more.
         </Paragraph>
