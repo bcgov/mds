@@ -3,7 +3,9 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, Select } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Select } from "antd";
 import CustomPropTypes from "@/customPropTypes";
 
 /**

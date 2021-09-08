@@ -3,7 +3,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
-import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip, Icon } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Row, Col, Button, Descriptions, Typography, Badge, Tooltip } from "antd";
 
 import {
   fetchMineWorkInformations,
@@ -125,7 +126,7 @@ export class MineWorkInformation extends Component {
                                       placement="right"
                                       mouseEnterDelay={0.3}
                                     >
-                                      <Icon type="info-circle" className="padding-sm" />
+                                      <InfoCircleOutlined className="padding-sm" />
                                     </Tooltip>
                                     Work Start Date
                                   </>
@@ -161,7 +162,7 @@ export class MineWorkInformation extends Component {
                                       placement="right"
                                       mouseEnterDelay={0.3}
                                     >
-                                      <Icon type="info-circle" className="padding-sm" />
+                                      <InfoCircleOutlined className="padding-sm" />
                                     </Tooltip>
                                     Work Stop Date
                                   </>
