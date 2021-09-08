@@ -140,12 +140,12 @@ class PartyListResource(Resource, UserMixin):
             email=data.get('email'),
             first_name=data.get('first_name'),
             phone_ext=data.get('phone_ext'),
-            add_to_session=True,
             phone_no_sec=data.get('phone_no_sec'),
             phone_sec_ext=data.get('phone_sec_ext'),
             phone_no_ter=data.get('phone_no_ter'),
             phone_ter_ext=data.get('phone_ter_ext'),
-            email_sec=data.get('email_sec'))
+            email_sec=data.get('email_sec'),
+            add_to_session=True)
 
         if not party:
             raise InternalServerError('Error: Failed to create party')

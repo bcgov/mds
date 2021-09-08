@@ -174,12 +174,12 @@ class Party(SoftDeleteMixin, AuditMixin, Base):
                email=None,
                first_name=None,
                phone_ext=None,
-               add_to_session=True,
                phone_no_sec=None,
                phone_sec_ext=None,
                phone_no_ter=None,
                phone_ter_ext=None,
-               email_sec=None):
+               email_sec=None,
+               add_to_session=True):
         Party.validate_phone_no(phone_no)
         party = cls(
             party_name=party_name,
