@@ -87,7 +87,20 @@ export const AddFullPartyForm = (props) => (
                 <Field
                   id="email"
                   name="email"
-                  label="Email"
+                  label="Primary Email"
+                  component={renderConfig.FIELD}
+                  validate={[email]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item>
+                <Field
+                  id="email_sec"
+                  name="email_sec"
+                  label="Secondary Email"
                   component={renderConfig.FIELD}
                   validate={[email]}
                 />
@@ -100,7 +113,7 @@ export const AddFullPartyForm = (props) => (
                 <Field
                   id="phone_no"
                   name="phone_no"
-                  label="Phone No. *"
+                  label="Primary Phone No. *"
                   placeholder="e.g. xxx-xxx-xxxx"
                   component={renderConfig.FIELD}
                   validate={[required, phoneNumber, maxLength(12)]}
@@ -113,6 +126,60 @@ export const AddFullPartyForm = (props) => (
                 <Field
                   id="phone_ext"
                   name="phone_ext"
+                  label="Ext"
+                  component={renderConfig.FIELD}
+                  validate={[number, maxLength(6)]}
+                  normalize={normalizeExt}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={18}>
+              <Form.Item>
+                <Field
+                  id="phone_no_sec"
+                  name="phone_no_sec"
+                  label="Secondary Phone No."
+                  placeholder="e.g. xxx-xxx-xxxx"
+                  component={renderConfig.FIELD}
+                  validate={[phoneNumber, maxLength(12)]}
+                  normalize={normalizePhone}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item>
+                <Field
+                  id="phone_sec_ext"
+                  name="phone_sec_ext"
+                  label="Ext"
+                  component={renderConfig.FIELD}
+                  validate={[number, maxLength(6)]}
+                  normalize={normalizeExt}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={18}>
+              <Form.Item>
+                <Field
+                  id="phone_no_ter"
+                  name="phone_no_ter"
+                  label="Tertiary Phone No."
+                  placeholder="e.g. xxx-xxx-xxxx"
+                  component={renderConfig.FIELD}
+                  validate={[phoneNumber, maxLength(12)]}
+                  normalize={normalizePhone}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item>
+                <Field
+                  id="phone_ter_ext"
+                  name="phone_ter_ext"
                   label="Ext"
                   component={renderConfig.FIELD}
                   validate={[number, maxLength(6)]}

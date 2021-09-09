@@ -936,6 +936,7 @@ export class ProcessPermit extends Component {
           tab="PRO"
           tabName="Process Permit"
           fixedTop={this.props.fixedTop}
+          noticeOfWork={this.props.noticeOfWork}
           tabActions={
             <>
               {!isProcessed && (

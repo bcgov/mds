@@ -455,7 +455,12 @@ class PartyFactory(BaseFactory):
     party_name = None
     phone_no = factory.Faker('numerify', text='###-###-####')
     phone_ext = factory.Iterator([None, '123'])
+    phone_no_sec = factory.Faker('numerify', text='###-###-####')
+    phone_sec_ext = factory.Iterator([None, '123'])
+    phone_no_ter = factory.Faker('numerify', text='###-###-####')
+    phone_ter_ext = factory.Iterator([None, '123'])
     email = None
+    email_sec = None
     party_type_code = None
 
     @factory.post_generation
