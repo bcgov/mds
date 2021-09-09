@@ -8,3 +8,7 @@ spec:
     users:
       - name: johnthomasfunk@gmail.com
         role: ROLE_TEAM_MANAGER
+      - name: itchison@gmail.com
+        role: ROLE_TEAM_EDIT
+      - name: Jason.Aitchison@nttdata.com
+        role: ROLE_TEAM_EDIT
