@@ -1,12 +1,6 @@
 name: Update AWS prod infra
 
 on:
-  push:
-    # TODO: uncomment before merge
-    # branches:
-    #   - develop
-    # paths:
-    #   - terraform/**
   workflow_dispatch:
   # manual
 

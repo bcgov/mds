@@ -2,11 +2,10 @@ name: Update AWS dev infra
 
 on:
   push:
-    # TODO: uncomment before merge
-    # branches:
-    #   - develop
-    # paths:
-    #   - terraform/**
+    branches:
+      - develop
+    paths:
+      - terraform/**
   workflow_dispatch:
   # manual
 

@@ -1,7 +1,6 @@
 name: Update AWS test infra
 
 on:
-  push:
   workflow_run:
     workflows:
       - Update AWS dev infra
