@@ -34,13 +34,13 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         href: "permit-type",
         title: "One Year, Multi-Year or Multi-Year Area Based Permit",
         alwaysVisible: true,
-        applicationType: ["NOW", "ADA"],
+        applicationType: ["NOW"],
       },
       {
         href: "mine-info",
         title: "Mine Information",
         alwaysVisible: true,
-        applicationType: ["NOW", "ADA"],
+        applicationType: ["NOW"],
       },
       { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
       {
