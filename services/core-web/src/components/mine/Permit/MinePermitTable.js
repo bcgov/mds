@@ -366,18 +366,15 @@ const childColumns = [
     title: "Maps",
     dataIndex: "maps",
     key: "maps",
-    render: (text) => {
-      console.log(text);
-      return (
-        <div title="Maps">
-          <ul>
-            {text?.map((file) => (
-              <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    },
+    render: (text) => (
+      <div title="Maps">
+        <ul>
+          {text?.map((file) => (
+            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
+          ))}
+        </ul>
+      </div>
+    ),
   },
   {
     title: "Permit Package",

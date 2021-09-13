@@ -174,26 +174,23 @@ export const PermitsTable = (props) => {
         title: "Permit Files",
         dataIndex: "documents",
         key: "documents",
-        render: (text) => {
-          console.log(text);
-          return (
-            <div className="cap-col-height" title="Permit Files">
-              {(text &&
-                text.length > 0 &&
-                text.map((file) => (
-                  <LinkButton
-                    key={file.document_manager_guid}
-                    onClick={() => downloadFileFromDocumentManager(file)}
-                    title={file.document_name}
-                  >
-                    {truncateFilename(file.document_name)}
-                    <br />
-                  </LinkButton>
-                ))) ||
-                Strings.EMPTY_FIELD}
-            </div>
-          );
-        },
+        render: (text) => (
+          <div className="cap-col-height" title="Permit Files">
+            {(text &&
+              text.length > 0 &&
+              text.map((file) => (
+                <LinkButton
+                  key={file.document_manager_guid}
+                  onClick={() => downloadFileFromDocumentManager(file)}
+                  title={file.document_name}
+                >
+                  {truncateFilename(file.document_name)}
+                  <br />
+                </LinkButton>
+              ))) ||
+              Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
     ];
 
