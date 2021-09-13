@@ -50,7 +50,20 @@ const columns = [
   },
 ];
 
+const finalApplicationPackage = (amendment) => {
+  const finalAppPackageCore =
+    amendment?.now_application_documents?.length > 0
+      ? amendment.now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  const finalAppPackageImported =
+    amendment?.imported_now_application_documents?.length > 0
+      ? amendment.imported_now_application_documents.filter((doc) => doc.is_final_package)
+      : [];
+  return finalAppPackageCore.concat(finalAppPackageImported);
+};
+
 const transformRowData = (permit, permitStatusOptions) => {
+  console.log(permit);
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
   return {
@@ -73,8 +86,13 @@ const transformExpandedRowData = (amendment, amendmentNumber) => ({
   key: amendmentNumber,
   amendmentNumber,
   dateIssued: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
+  authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   documents: amendment.related_documents,
+  maps: amendment.now_application_documents?.filter(
+    (doc) => doc.now_application_document_sub_type_code === "MDO"
+  ),
+  permitPackage: finalApplicationPackage(amendment),
 });
 
 export const PermitsTable = (props) => {
@@ -97,28 +115,85 @@ export const PermitsTable = (props) => {
         width: 180,
       },
       { title: "Date Issued", dataIndex: "dateIssued", key: "dateIssued" },
+      {
+        title: "Authorization End Date",
+        dataIndex: "authorizationEndDate",
+        key: "authorizationEndDate",
+        width: "250px",
+        render: (text) => <div title="Authorization End Date">{text}</div>,
+      },
       { title: "Description", dataIndex: "description", key: "description" },
       {
-        title: "Documents",
-        dataIndex: "documents",
-        key: "documents",
+        title: "Map Files",
+        dataIndex: "maps",
+        key: "maps",
+        render: (text) => {
+          console.log(text);
+          return (
+            <div className="cap-col-height" title="Map Files">
+              {(text &&
+                text.length > 0 &&
+                text.map((file) => (
+                  <LinkButton
+                    key={file.mine_document.document_manager_guid}
+                    onClick={() => downloadFileFromDocumentManager(file.mine_document)}
+                    title={file.mine_document.document_name}
+                  >
+                    {truncateFilename(file.mine_document.document_name)}
+                    <br />
+                  </LinkButton>
+                ))) ||
+                Strings.EMPTY_FIELD}
+            </div>
+          );
+        },
+      },
+      {
+        title: "Permit Package",
+        dataIndex: "permitPackage",
+        key: "permitPackage",
         render: (text) => (
-          <div className="cap-col-height">
+          <div className="cap-col-height" title="Permit Package">
             {(text &&
               text.length > 0 &&
               text.map((file) => (
                 <LinkButton
-                  key={file.document_manager_guid}
-                  onClick={() => downloadFileFromDocumentManager(file)}
-                  title={file.document_name}
+                  key={file.mine_document.document_manager_guid}
+                  onClick={() => downloadFileFromDocumentManager(file.mine_document)}
+                  title={file.mine_document.document_name}
                 >
-                  {truncateFilename(file.document_name)}
+                  {truncateFilename(file.mine_document.document_name)}
                   <br />
                 </LinkButton>
               ))) ||
               Strings.EMPTY_FIELD}
           </div>
         ),
+      },
+      {
+        title: "Permit Files",
+        dataIndex: "documents",
+        key: "documents",
+        render: (text) => {
+          console.log(text);
+          return (
+            <div className="cap-col-height" title="Permit Files">
+              {(text &&
+                text.length > 0 &&
+                text.map((file) => (
+                  <LinkButton
+                    key={file.document_manager_guid}
+                    onClick={() => downloadFileFromDocumentManager(file)}
+                    title={file.document_name}
+                  >
+                    {truncateFilename(file.document_name)}
+                    <br />
+                  </LinkButton>
+                ))) ||
+                Strings.EMPTY_FIELD}
+            </div>
+          );
+        },
       },
     ];
 

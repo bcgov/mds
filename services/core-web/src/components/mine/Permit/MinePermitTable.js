@@ -366,22 +366,25 @@ const childColumns = [
     title: "Maps",
     dataIndex: "maps",
     key: "maps",
-    render: (text) => (
-      <div title="Maps">
-        <ul>
-          {text?.map((file) => (
-            <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
-          ))}
-        </ul>
-      </div>
-    ),
+    render: (text) => {
+      console.log(text);
+      return (
+        <div title="Maps">
+          <ul>
+            {text?.map((file) => (
+              <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    },
   },
   {
-    title: "Final Application Package",
+    title: "Permit Package",
     dataIndex: "finalApplicationPackage",
     key: "finalApplicationPackage",
     render: (text) => (
-      <div title="Final Application Package">
+      <div title="Permit Package">
         <ul>
           {text?.map((file) => (
             <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
