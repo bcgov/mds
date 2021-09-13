@@ -56,6 +56,7 @@ ORIGINAL_NOW_FIELD_PATHS = [
     'other_information',
     'has_key_for_inspector',
     'unreclaimed_disturbance_previous_year',
+    'original_start_date',
     'disturbance_planned_reclamation',
     'proponent_submitted_permit_number',
     'state_of_land.notice_served_to_private',
@@ -438,7 +439,8 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     }
                     included_docs.append(new_doc)
 
-            included_docs.sort(key=lambda doc: (doc['final_package_order'] is None, doc['final_package_order']))
+            included_docs.sort(
+                key=lambda doc: (doc['final_package_order'] is None, doc['final_package_order']))
 
             return included_docs
 
@@ -531,20 +533,21 @@ class NOWApplicationExportResource(Resource, UserMixin):
         # Determine what fields have changed from the original application
         original_now_application_json = transform_data(original_now_application_json)
         edited_fields = {}
-        for path in ORIGINAL_NOW_FIELD_PATHS:
-            if '.' in path:
-                paths = path.split('.')
-                if not edited_fields.get(paths[0]):
-                    edited_fields[paths[0]] = {}
-                current_value = now_application_json[paths[0]][paths[1]]
-                original_value = original_now_application_json[paths[0]][paths[1]]
-                if current_value != original_value:
-                    edited_fields[paths[0]][paths[1]] = True
-            else:
-                current_value = now_application_json[path]
-                original_value = original_now_application_json[path]
-                if current_value != original_value:
-                    edited_fields[path] = True
+        # Commenting out this block for the time being - users do not want to see the edited flags until the data within Core is better.
+        # for path in ORIGINAL_NOW_FIELD_PATHS:
+        #     if '.' in path:
+        #         paths = path.split('.')
+        #         if not edited_fields.get(paths[0]):
+        #             edited_fields[paths[0]] = {}
+        #         current_value = now_application_json[paths[0]][paths[1]]
+        #         original_value = original_now_application_json[paths[0]][paths[1]]
+        #         if current_value != original_value:
+        #             edited_fields[paths[0]][paths[1]] = True
+        # else:
+        #     current_value = now_application_json[path]
+        #     original_value = original_now_application_json[path]
+        #     if current_value != original_value:
+        #         edited_fields[path] = True
         now_application_json['edited_fields'] = edited_fields
 
         # Set "export" information

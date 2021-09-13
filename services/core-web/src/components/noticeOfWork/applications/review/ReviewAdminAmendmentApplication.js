@@ -178,7 +178,7 @@ export const ReviewAdminAmendmentApplication = (props) => {
   return (
     <div>
       <Form layout="vertical">
-        <ScrollContentWrapper id="application-info" title="Application Info">
+        <ScrollContentWrapper id="application-info" title="Application Information">
           {renderApplicationInfo()}
         </ScrollContentWrapper>
         <ScrollContentWrapper id="contacts" title="Contacts">
