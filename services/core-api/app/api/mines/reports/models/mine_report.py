@@ -4,15 +4,17 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import column_property, validates
-from sqlalchemy import select, and_, desc, asc
+from sqlalchemy.orm import validates
+from sqlalchemy import select, and_, desc
 from app.api.mines.reports.models.mine_report_submission import MineReportSubmission
 from app.api.mines.reports.models.mine_report_submission_status_code import MineReportSubmissionStatusCode
 from app.api.constants import MINE_REPORT_TYPE
-
 from app.extensions import db
 from app.api.utils.models_mixins import SoftDeleteMixin, AuditMixin, Base
 from app.api.utils.include.user_info import User
+from app.api.services.email_service import EmailService
+from app.config import Config
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 
 
 class MineReport(SoftDeleteMixin, AuditMixin, Base):
@@ -98,6 +100,21 @@ class MineReport(SoftDeleteMixin, AuditMixin, Base):
 
     def __repr__(self):
         return '<MineReport %r>' % self.mine_report_guid
+
+    def send_report_update_email(self, is_edit):
+        recipients = [self.mine.region.regional_contact_office.email]
+        if self.mine.major_mine_ind:
+            recipients = [MAJOR_MINES_OFFICE_EMAIL]
+
+        subject_verb = 'Updated' if is_edit else 'Submitted'
+        subject = f'Code Required Report {subject_verb} for {self.mine.mine_name}'
+
+        body_verb = 'uploaded document(s) to' if is_edit else 'submitted'
+        body = f'<p>{self.mine.mine_name} (Mine no: {self.mine.mine_no}) has {body_verb} a "{self.mine_report_definition_report_name}" report.</p>'
+
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/reports/code-required-reports'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
 
     @classmethod
     def create(cls,

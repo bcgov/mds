@@ -84,8 +84,31 @@ exports[`EditFullPartyForm renders properly 1`] = `
               <Field
                 component={[Function]}
                 id="email"
-                label="Email"
+                label="Primary Email"
                 name="email"
+                validate={
+                  Array [
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col
+            span={24}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="email_sec"
+                label="Secondary Email"
+                name="email_sec"
                 validate={
                   Array [
                     [Function],
@@ -107,7 +130,7 @@ exports[`EditFullPartyForm renders properly 1`] = `
               <Field
                 component={[Function]}
                 id="phone_no"
-                label="Phone No. *"
+                label="Primary Phone No. *"
                 name="phone_no"
                 normalize={[Function]}
                 placeholder="e.g. xxx-xxx-xxxx"
@@ -132,6 +155,98 @@ exports[`EditFullPartyForm renders properly 1`] = `
                 id="phone_ext"
                 label="Ext"
                 name="phone_ext"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col
+            span={18}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="phone_no_sec"
+                label="Secondary Phone No."
+                name="phone_no_sec"
+                normalize={[Function]}
+                placeholder="e.g. xxx-xxx-xxxx"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            span={6}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="phone_sec_ext"
+                label="Ext"
+                name="phone_sec_ext"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row
+          gutter={16}
+        >
+          <Col
+            span={18}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="phone_no_ter"
+                label="Tertiary Phone No."
+                name="phone_no_ter"
+                normalize={[Function]}
+                placeholder="e.g. xxx-xxx-xxxx"
+                validate={
+                  Array [
+                    [Function],
+                    [Function],
+                  ]
+                }
+              />
+            </FormItem>
+          </Col>
+          <Col
+            span={6}
+          >
+            <FormItem
+              hasFeedback={false}
+            >
+              <Field
+                component={[Function]}
+                id="phone_ter_ext"
+                label="Ext"
+                name="phone_ter_ext"
                 validate={
                   Array [
                     [Function],

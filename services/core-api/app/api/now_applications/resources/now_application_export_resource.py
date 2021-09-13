@@ -438,7 +438,7 @@ class NOWApplicationExportResource(Resource, UserMixin):
                     }
                     included_docs.append(new_doc)
 
-            included_docs.sort(key=lambda doc: doc['final_package_order'])
+            included_docs.sort(key=lambda doc: (doc['final_package_order'] is None, doc['final_package_order']))
 
             return included_docs
 

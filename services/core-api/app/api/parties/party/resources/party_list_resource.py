@@ -34,13 +34,20 @@ class PartyListResource(Resource, UserMixin):
         required=True)
     parser.add_argument('name_search', type=str, help='Name or partial name of the party.')
     parser.add_argument(
-        'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234', required=True)
+        'phone_no', type=str, help='The primary phone number of the party. Ex: 123-123-1234', required=True)
+    parser.add_argument(
+        'phone_no_sec', type=str, help='The secondary phone number of the party. Ex: 123-123-1234')
+    parser.add_argument(
+        'phone_no_ter', type=str, help='The tertiary phone number of the party. Ex: 123-123-1234')
     parser.add_argument(
         'last_name', type=str, help='Last name of the party, if the party is a person.')
     parser.add_argument(
         'first_name', type=str, help='First name of the party, if the party is a person.')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
-    parser.add_argument('email', type=str, help='The email of the party.')
+    parser.add_argument('phone_ext', type=str, help='The extension of the primary phone number. Ex: 1234')
+    parser.add_argument('phone_sec_ext', type=str, help='The extension of the secondary phone number. Ex: 1234')
+    parser.add_argument('phone_ter_ext', type=str, help='The extension of the tertiary phone number. Ex: 1234')
+    parser.add_argument('email', type=str, help='The primary email of the party.')
+    parser.add_argument('email_sec', type=str, help='The secondary email of the party.')
     parser.add_argument(
         'suite_no',
         type=str,
@@ -79,8 +86,11 @@ class PartyListResource(Resource, UserMixin):
         params={
             'first_name': 'First name of party or contact',
             'party_name': 'Last name or party name of person or organisation',
-            'phone_no': 'phone number',
-            'email': 'email of person or organisation',
+            'phone_no': 'primary phone number',
+            'phone_no_sec': 'secondary phone number',
+            'phone_no_ter': 'tertiary phone number',
+            'email': 'primary email of person or organisation',
+            'email_sec': 'secondary email of person or organisation',
             'type': 'A person (PER) or organisation (ORG)',
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field': 'enum[party_name] Default: party_name',
@@ -129,7 +139,13 @@ class PartyListResource(Resource, UserMixin):
             data.get('party_type_code'),
             email=data.get('email'),
             first_name=data.get('first_name'),
-            phone_ext=data.get('phone_ext'))
+            phone_ext=data.get('phone_ext'),
+            phone_no_sec=data.get('phone_no_sec'),
+            phone_sec_ext=data.get('phone_sec_ext'),
+            phone_no_ter=data.get('phone_no_ter'),
+            phone_ter_ext=data.get('phone_ter_ext'),
+            email_sec=data.get('email_sec'),
+            add_to_session=True)
 
         if not party:
             raise InternalServerError('Error: Failed to create party')
