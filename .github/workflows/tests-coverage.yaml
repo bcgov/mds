@@ -58,11 +58,12 @@ jobs:
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
 
+      # During this, rewrite frontend report from docker context path to runner paths
       - name: Generate frontend coverage reports
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
           docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
-          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE|g" services/core-web/clover.xml
+          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web/|g" services/core-web/clover.xml
 
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
