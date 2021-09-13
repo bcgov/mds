@@ -50,19 +50,30 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           docker-compose -f docker-compose.ci.yaml up -d backend
+          docker-compose -f docker-compose.ci.yaml up -d frontend
 
       #### Group generation ####
-      - name: Generate coverage reports
+      - name: Generate backend coverage reports
         run: |
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage run --source=app --branch -m pytest
           docker-compose -f docker-compose.ci.yaml exec -T backend coverage xml
 
+      - name: Generate frontend coverage reports
+        run: |
+          docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
+          docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
+
       #### Group formatting ####
       # Strange relative paths were done to work with paths created in docker context but coverage format is not in docker context
-      - name: Format reports
+      - name: Format backend reports
         run: |
           cd services/core-api/
           ./../../cc-test-reporter format-coverage -t coverage.py --add-prefix services/core-api/ -o ../../coverage/backend-codeclimate.json coverage.xml
+
+      - name: Format frontend reports
+        run: |
+          cd services/core-web/
+          ./../../cc-test-reporter format-coverage -t clover --add-prefix services/core-web/ -o ../../coverage/frontend-codeclimate.json clover.xml
 
       #### Group collection ####
       - name: Collect coverage reports
