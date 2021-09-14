@@ -439,3 +439,7 @@ export const updateStandardPermitCondition = (permitConditionGuid, payload) => (
     .catch(() => dispatch(error(reducerTypes.UPDATE_PERMIT_CONDITION)))
     .finally(() => dispatch(hideLoading()));
 };
+
+export const setPermitAmendmentDownloadState = (payload) => (dispatch) => {
+  dispatch(mineReportActions.storePermitAmendmentActionsDownloadState(payload));
+};
