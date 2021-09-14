@@ -100,13 +100,42 @@ export class MinePermitTable extends Component {
             isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
           }
         >
-          <Button className="permit-table-button" type="ghost">
+          <Button ghost className="full" type="primary">
             <div>
               <img
-                className="padding-sm--right icon-svg-filter"
+                className="padding-sm"
                 src={TRASHCAN}
                 alt="Remove Permit Amendment"
+                style={{ paddingRight: "15px" }}
               />
+              Delete
+            </div>
+          </Button>
+        </Popconfirm>
+      </AuthorizationWrapper>
+    );
+  };
+
+  renderVerifyCredentials = (minePermitText, minePermitRecord) => {
+    return (
+      <AuthorizationWrapper permission={Permission.ADMIN}>
+        <Popconfirm
+          placement="topLeft"
+          title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${minePermitRecord.permit.current_permittee}?`}
+          onConfirm={(event) =>
+            record.handlePermitAmendmentIssueVC(
+              event,
+              minePermitText.amendment,
+              minePermitRecord.permit
+            )
+          }
+          okText="Issue"
+          cancelText="Cancel"
+        >
+          <Button ghost className="full" type="primary">
+            <div>
+              <SafetyCertificateOutlined className="padding-sm" style={{ paddingRight: "15px" }} />
+              Verify
             </div>
           </Button>
         </Popconfirm>
@@ -418,28 +447,18 @@ export class MinePermitTable extends Component {
       align: "right",
       render: (text, record) => (
         <div>
-          <AuthorizationWrapper permission={Permission.ADMIN}>
-            <Popconfirm
-              placement="topLeft"
-              title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
-              onConfirm={(event) =>
-                record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
-              }
-              okText="Issue"
-              cancelText="Cancel"
-            >
-              <SafetyCertificateOutlined className="icon-sm" />
-            </Popconfirm>
-          </AuthorizationWrapper>
           <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <MinePermitActions
               permitAmendment={text.amendment}
               permit={record.permit}
               openEditAmendmentModal={record.openEditAmendmentModal}
-              setPermitAmendmentDownloadState = {record.setPermitAmendmentDownloadState}
+              setPermitAmendmentDownloadState={record.setPermitAmendmentDownloadState}
+              minePermitRecord={record}
+              minePermitText={text}
+              renderDeleteButtonForPermitAmendments={this.renderDeleteButtonForPermitAmendments}
+              renderVerifyCredentials={this.renderVerifyCredentials}
             />
           </AuthorizationWrapper>
-          {this.renderDeleteButtonForPermitAmendments(record)}
         </div>
       ),
     },

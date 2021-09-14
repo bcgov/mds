@@ -174,6 +174,7 @@ export const MineReportTable = (props) => {
                 handleEditReport={record.handleEditReport}
                 handleRemoveReport={record.handleRemoveReport}
                 setMineReportDownloadState={record.setMineReportDownloadState}
+                minePermitRecord={record}
               />
             </AuthorizationWrapper>
           </div>

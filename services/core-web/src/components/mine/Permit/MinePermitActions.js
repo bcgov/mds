@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dropdown, Menu, Button } from "antd";
 import PropTypes from "prop-types";
-import { EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
@@ -14,6 +14,9 @@ const propTypes = {
   permit: CustomPropTypes.permit.isRequired,
   openEditAmendmentModal: PropTypes.func.isRequired,
   setPermitAmendmentDownloadState: PropTypes.func.isRequired,
+  minePermitRecord: PropTypes.func.isRequired,
+  minePermitText: PropTypes.func.isRequired,
+  renderDeleteButtonForPermitAmendments: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -21,10 +24,6 @@ const defaultProps = {};
 export class MinePermitActions extends Component {
   state = {
     cancelDownload: false,
-  };
-
-  cancelDownload = () => {
-    this.setState({ cancelDownload: true });
   };
 
   downloadDocument = (url) => {
@@ -56,16 +55,11 @@ export class MinePermitActions extends Component {
         filename: doc.document_name,
       })
     );
-    console.log("this.props.permit", this.props.permit);
-    console.log("this.props.permitAmendment", this.props.permitAmendment);
 
     const totalFiles = permitAmendmentSubmissions.length;
     if (totalFiles === 0) {
       return;
     }
-
-    console.log("permitAmendmentSubmissions", permitAmendmentSubmissions);
-    console.log("totalFiles", totalFiles);
 
     permitAmendmentSubmissions.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
@@ -112,7 +106,6 @@ export class MinePermitActions extends Component {
   };
 
   render() {
-    console.log("this.props.permitAmendment", this.props.permitAmendment);
     const menu = (
       <Menu>
         <Menu.Item key="0">
@@ -128,9 +121,13 @@ export class MinePermitActions extends Component {
               )
             }
           >
-            <div>
-              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Report" />
-            </div>
+            <img
+              src={EDIT_OUTLINE_VIOLET}
+              alt="Edit"
+              className="padding-sm"
+              style={{ paddingRight: "15px" }}
+            />
+            Edit
           </Button>
         </Menu.Item>
         <Menu.Item key="1">
@@ -140,15 +137,33 @@ export class MinePermitActions extends Component {
             className="full"
             onClick={() => this.downloadDocumentPackage()}
           >
-            <DownloadOutlined className="padding-sm--right icon-sm" />
+            <DownloadOutlined className="padding-sm" style={{ paddingRight: "15px" }} />
+            Download All
           </Button>
+        </Menu.Item>
+        <Menu.Item key="2">
+          {this.props.renderDeleteButtonForPermitAmendments(this.props.minePermitRecord)}
+        </Menu.Item>
+        <Menu.Item key="3">
+          {this.props.renderVerifyCredentials(
+            this.props.minePermitText,
+            this.props.minePermitRecord
+          )}
         </Menu.Item>
       </Menu>
     );
 
     return (
       <Dropdown overlay={menu} placement="bottomLeft">
-        <Button type="secondary">Actions</Button>
+        <Button type="secondary" className="permit-table-button">
+          Actions
+          <img
+            className="padding-sm--right icon-svg-filter"
+            src={CARAT}
+            alt="Menu"
+            style={{ paddingLeft: "5px" }}
+          />
+        </Button>
       </Dropdown>
     );
   }

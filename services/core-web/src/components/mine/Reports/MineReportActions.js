@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Dropdown, Menu, Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
-import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
+import { TRASHCAN, EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
@@ -13,8 +13,8 @@ const propTypes = {
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
   setMineReportDownloadState: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  handleRemoveReport: PropTypes.func.isRequired,
+  mineReportRecord: PropTypes.func.isRequired,
+  renderDeleteButtonForPermitAmendments: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -22,10 +22,6 @@ const defaultProps = {};
 export class MineReportActions extends Component {
   state = {
     cancelDownload: false,
-  };
-
-  cancelDownload = () => {
-    this.setState({ cancelDownload: true });
   };
 
   downloadDocument = (url) => {
@@ -118,7 +114,16 @@ export class MineReportActions extends Component {
           cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
-            <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+            <div>
+              <img
+                name="remove"
+                className="padding-sm"
+                src={TRASHCAN}
+                alt="Remove Activity"
+                style={{ paddingRight: "15px" }}
+              />
+              Delete
+            </div>
           </Button>
         </Popconfirm>
       ),
@@ -131,7 +136,16 @@ export class MineReportActions extends Component {
           cancelText="Cancel"
         >
           <Button ghost type="primary" size="small">
-            <img name="remove" src={TRASHCAN} alt="Remove Activity" />
+            <div>
+              <img
+                name="remove"
+                className="padding-sm"
+                src={TRASHCAN}
+                alt="Remove Activity"
+                style={{ paddingRight: "15px" }}
+              />
+              Delete
+            </div>
           </Button>
         </Popconfirm>
       ),
@@ -163,33 +177,41 @@ export class MineReportActions extends Component {
               )
             }
           >
-            <div>
-              <img src={EDIT_OUTLINE_VIOLET} alt="Edit Report" />
-            </div>
+            <img
+              src={EDIT_OUTLINE_VIOLET}
+              alt="Edit Report"
+              className="padding-sm"
+              style={{ paddingRight: "15px" }}
+            />
+            Edit
           </Button>
         </Menu.Item>
-        <Menu.Item key="1">{this.renderDeleteButton(this.props)}</Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="1">
           <Button
             ghost
             type="primary"
             className="full"
             onClick={() => this.downloadDocumentPackage()}
           >
-            <DownloadOutlined className="padding-sm--right icon-sm" />
+            <DownloadOutlined className="padding-sm" style={{ paddingRight: "15px" }} />
+            Download All
           </Button>
         </Menu.Item>
+        <Menu.Item key="2">{this.renderDeleteButton(this.props)}</Menu.Item>
       </Menu>
     );
 
     return (
-      <Dropdown
-        overlay={menu}
-        placement="bottomLeft"
-        // onVisibleChange={this.handleVisibleChange}
-        // visible={this.state.menuVisible}
-      >
-        <Button type="secondary">Actions</Button>
+      <Dropdown overlay={menu} placement="bottomLeft">
+        <Button className="permit-table-button" type="secondary">
+          Actions
+          <img
+            className="padding-sm--right icon-svg-filter"
+            src={CARAT}
+            alt="Menu"
+            style={{ paddingLeft: "5px" }}
+          />
+        </Button>
       </Dropdown>
     );
   }
