@@ -11,23 +11,23 @@ exports[`NOWSideMenu renders properly 1`] = `
   >
     <AnchorLink
       className="now-menu-link"
+      href="#applicant-info"
+      title="Applicant Information"
+    />
+    <AnchorLink
+      className="now-menu-link"
       href="#application-info"
-      title="Application Info"
+      title="Application Information"
     />
     <AnchorLink
       className="now-menu-link"
-      href="#contacts"
-      title="Contacts"
+      href="#permit-type"
+      title="One Year, Multi-Year or Multi-Year Area Based Permit"
     />
     <AnchorLink
       className="now-menu-link"
-      href="#access"
-      title="Access"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#state-of-land"
-      title="State of Land"
+      href="#mine-info"
+      title="Mine Information"
     />
     <AnchorLink
       className="now-menu-link"
@@ -36,13 +36,38 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
-      href="#reclamation"
-      title="Summary of Reclamation"
+      href="#work-plan"
+      title="Description of Work Program"
     />
     <AnchorLink
       className="now-menu-link"
-      href="#exploration-access"
-      title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
+      href="#access"
+      title="Access"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#access-to-tenure"
+      title="Access to Tenure"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#state-of-land"
+      title="Present State of Land"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#land-ownership"
+      title="Land Ownership"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#cultural-heritage-resources"
+      title="Cultural Heritage Resources"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#first-nations-engagement"
+      title="First Nations Engagement"
     />
     <AnchorLink
       className="now-menu-link"
@@ -56,8 +81,8 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
-      href="#cut-lines-polarization-survey"
-      title="Cut Lines and Induced Polarization Survey"
+      href="#mechanical-trenching"
+      title="Mechanical Trenching / Test Pits"
     />
     <AnchorLink
       className="now-menu-link"
@@ -66,13 +91,8 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
-      href="#mechanical-trenching"
-      title="Mechanical Trenching / Test Pits"
-    />
-    <AnchorLink
-      className="now-menu-link"
-      href="#settling-pond"
-      title="Settling Ponds"
+      href="#exploration-access"
+      title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
     />
     <AnchorLink
       className="now-menu-link"
@@ -91,8 +111,28 @@ exports[`NOWSideMenu renders properly 1`] = `
     />
     <AnchorLink
       className="now-menu-link"
+      href="#cut-lines-polarization-survey"
+      title="Cut Lines and Induced Polarization Survey"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#settling-pond"
+      title="Settling Ponds"
+    />
+    <AnchorLink
+      className="now-menu-link"
       href="#equipment"
       title="Equipment"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#reclamation"
+      title="Summary of Reclamation"
+    />
+    <AnchorLink
+      className="now-menu-link"
+      href="#contacts"
+      title="Contacts"
     />
     <AnchorLink
       className="now-menu-link"

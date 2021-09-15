@@ -35,15 +35,35 @@ class PartyResource(Resource, UserMixin):
     parser.add_argument(
         'phone_no',
         type=str,
-        help='The phone number of the party. Ex: 123-123-1234',
+        help='The primary phone number of the party. Ex: 123-123-1234',
         store_missing=False)
     parser.add_argument(
         'phone_ext',
         type=str,
-        help='The extension of the phone number. Ex: 1234',
+        help='The extension of the primary phone number. Ex: 1234',
         store_missing=False)
-    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
-    parser.add_argument('email', type=str, help='The email of the party.', store_missing=False)
+    parser.add_argument(
+        'phone_no_sec',
+        type=str,
+        help='The second phone number of the party. Ex: 123-123-1234',
+        store_missing=False)
+    parser.add_argument(
+        'phone_sec_ext',
+        type=str,
+        help='The extension of the second phone number. Ex: 1234',
+        store_missing=False)
+    parser.add_argument(
+        'phone_no_ter',
+        type=str,
+        help='The tertiary phone number of the party. Ex: 123-123-1234',
+        store_missing=False)
+    parser.add_argument(
+        'phone_ter_ext',
+        type=str,
+        help='The extension of the tertiary phone number. Ex: 1234',
+        store_missing=False)
+    parser.add_argument('email', type=str, help='The primary email of the party.', store_missing=False)
+    parser.add_argument('email_sec', type=str, help='The secondary email of the party.', store_missing=False)
     parser.add_argument(
         'party_type_code', type=str, help='The type of the party. Ex: PER', store_missing=False)
     parser.add_argument(

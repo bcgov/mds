@@ -19,29 +19,64 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
   const options = {
     application: [
       {
+        href: "applicant-info",
+        title: "Applicant Information",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
         href: "application-info",
-        title: "Application Info",
+        title: "Application Information",
         alwaysVisible: true,
         applicationType: ["NOW", "ADA"],
       },
-      { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
-      { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
       {
-        href: "state-of-land",
-        title: "State of Land",
+        href: "permit-type",
+        title: "One Year, Multi-Year or Multi-Year Area Based Permit",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "mine-info",
+        title: "Mine Information",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
       { href: "first-aid", title: "First Aid", alwaysVisible: true, applicationType: ["NOW"] },
       {
-        href: "reclamation",
-        title: "Summary of Reclamation",
+        href: "work-plan",
+        title: "Description of Work Program",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      { href: "access", title: "Access", alwaysVisible: true, applicationType: ["NOW"] },
+      {
+        href: "access-to-tenure",
+        title: "Access to Tenure",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
       {
-        href: "exploration-access",
-        title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
+        href: "state-of-land",
+        title: "Present State of Land",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "land-ownership",
+        title: "Land Ownership",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "cultural-heritage-resources",
+        title: "Cultural Heritage Resources",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "first-nations-engagement",
+        title: "First Nations Engagement",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
@@ -58,9 +93,9 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "cut-lines-polarization-survey",
-        title: "Cut Lines and Induced Polarization Survey",
-        alwaysVisible: false,
+        href: "mechanical-trenching",
+        title: "Mechanical Trenching / Test Pits",
+        alwaysVisible: true,
         applicationType: ["NOW"],
       },
       {
@@ -70,14 +105,8 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "mechanical-trenching",
-        title: "Mechanical Trenching / Test Pits",
-        alwaysVisible: true,
-        applicationType: ["NOW"],
-      },
-      {
-        href: "settling-pond",
-        title: "Settling Ponds",
+        href: "exploration-access",
+        title: "Access Roads, Trails, Helipads, Air Strips, Boat Ramps",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
@@ -94,12 +123,6 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
-        href: "sand-and-gravel",
-        title: "Sand and Gravel / Quarry Operations",
-        alwaysVisible: false,
-        applicationType: ["NOW"],
-      },
-      {
         href: "placer-operation",
         title: "Placer Operations",
         alwaysVisible: false,
@@ -112,11 +135,36 @@ export const sideMenuOptions = (tab, hasPermitConditionsFlow = true) => {
         applicationType: ["NOW"],
       },
       {
+        href: "cut-lines-polarization-survey",
+        title: "Cut Lines and Induced Polarization Survey",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "settling-pond",
+        title: "Settling Ponds",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      {
+        href: "sand-and-gravel",
+        title: "Sand and Gravel / Quarry Operations",
+        alwaysVisible: false,
+        applicationType: ["NOW"],
+      },
+      {
         href: "equipment",
         title: "Equipment",
         alwaysVisible: true,
         applicationType: ["NOW"],
       },
+      {
+        href: "reclamation",
+        title: "Summary of Reclamation",
+        alwaysVisible: true,
+        applicationType: ["NOW"],
+      },
+      { href: "contacts", title: "Contacts", alwaysVisible: true, applicationType: ["NOW", "ADA"] },
       {
         href: "other-information",
         title: "Other Information",
@@ -331,7 +379,7 @@ export const TAB_DISCLAIMERS = {
   PRO: "This page allows you to review the progress of the application and record decisions.",
   ADMIN:
     "This page contains information about securities, inspectors, progress tracking, and any internal files relevant to processing the application.",
-  MND: "Some description for Manage Documents tab.",
+  MND: "This page allows you to work with all documents related to this application.",
 };
 
 export const APPLICATION_PROGRESS_TRACKING = {

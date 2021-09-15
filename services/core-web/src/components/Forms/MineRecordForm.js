@@ -16,6 +16,7 @@ import {
   number,
   lat,
   lon,
+  lonNegative,
   validateSelectOptions,
   wholeNumber,
 } from "@common/utils/Validate";
@@ -441,7 +442,7 @@ export class MineRecordForm extends Component {
                 name="longitude"
                 label="Longitude"
                 component={renderConfig.FIELD}
-                validate={[number, maxLength(12), lon]}
+                validate={[number, maxLength(12), lon, lonNegative]}
               />
             </Form.Item>
           </Col>
