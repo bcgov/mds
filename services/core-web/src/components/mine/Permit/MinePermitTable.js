@@ -134,7 +134,10 @@ export class MinePermitTable extends Component {
         >
           <Button ghost className="full" type="primary">
             <div>
-              <SafetyCertificateOutlined className="padding-sm" style={{ paddingRight: "15px" }} />
+              <SafetyCertificateOutlined
+                className="padding-sm"
+                style={{ paddingLeft: "10px", paddingRight: "20px" }}
+              />
               Verify
             </div>
           </Button>
