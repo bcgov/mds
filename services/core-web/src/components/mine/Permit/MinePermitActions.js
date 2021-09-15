@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu, Button, notification } from "antd";
 import PropTypes from "prop-types";
 import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import { DownloadOutlined } from "@ant-design/icons";
