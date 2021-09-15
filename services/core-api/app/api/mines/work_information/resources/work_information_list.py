@@ -44,7 +44,7 @@ class MineWorkInformationListResource(Resource, UserMixin):
         description='Create a new mine work information.',
         params={'mine_guid': 'The GUID of the mine to create the work information for.'})
     @api.expect(parser)
-    @requires_any_of([MINE_EDIT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_WORK_INFORMATION_MODEL, code=200)
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
