@@ -186,19 +186,12 @@ export class MineWorkInformation extends Component {
                   </Row>
                   <Row>
                     {info && (
-                      <Col span={22}>
-                        {/* NOTE: Ant Design has no easy way to right-align "Descriptions" so plain HTML tags are used here. */}
-                        <span className="inline-flex between" style={{ float: "right" }}>
-                          <div className="padding-sm">
-                            <span className="field-title">Updated By: </span>
-                            <span>{info.updated_by}</span>
-                          </div>
-                          <div className="padding-sm">
-                            <span className="field-title">Last Updated: </span>
-                            <span>{formatDateTime(info.updated_timestamp)}</span>
-                          </div>
-                        </span>
-                      </Col>
+                      <Descriptions size="small">
+                        <Descriptions.Item label="Updated By">{info.updated_by}</Descriptions.Item>
+                        <Descriptions.Item label="Updated Date">
+                          {formatDateTime(info.updated_timestamp)}
+                        </Descriptions.Item>
+                      </Descriptions>
                     )}
                   </Row>
                 </div>
