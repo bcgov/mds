@@ -441,5 +441,5 @@ export const updateStandardPermitCondition = (permitConditionGuid, payload) => (
 };
 
 export const setPermitAmendmentDownloadState = (payload) => (dispatch) => {
-  dispatch(mineReportActions.storePermitAmendmentActionsDownloadState(payload));
+  dispatch(permitActions.storePermitAmendmentActionsDownloadState(payload));
 };

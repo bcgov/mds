@@ -24,3 +24,8 @@ export const storeStandardPermitConditions = (payload) => ({
   type: actionTypes.STORE_STANDARD_PERMIT_CONDITIONS,
   payload,
 });
+
+export const storePermitAmendmentActionsDownloadState = (payload) => ({
+  type: actionTypes.STORE_PERMIT_AMENDMENT_DOWNLOAD_STATE,
+  payload,
+});
