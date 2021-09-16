@@ -10,7 +10,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 #app imports
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_mine_edit, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT, is_minespace_user, MINE_EDIT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.constants import MINE_MAP_CACHE
 
@@ -383,7 +383,7 @@ class MineResource(Resource, UserMixin):
     @api.expect(parser)
     @api.marshal_with(MINE_MODEL, code=200)
     @api.doc(description='Updates the specified mine.')
-    @requires_role_mine_edit
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     def put(self, mine_no_or_guid):
         mine = Mine.find_by_mine_no_or_guid(mine_no_or_guid)
         refresh_cache = False
@@ -392,36 +392,37 @@ class MineResource(Resource, UserMixin):
 
         data = self.parser.parse_args()
 
-        lat = data.get('latitude')
-        lon = data.get('longitude')
-        if (lat and not lon) or (not lat and lon):
-            raise BadRequest('latitude and longitude must both be empty, or both provided')
+        if is_minespace_user() is not True: 
+            lat = data.get('latitude')
+            lon = data.get('longitude')
+            if (lat and not lon) or (not lat and lon):
+                raise BadRequest('latitude and longitude must both be empty, or both provided')
 
-        # Mine Detail
-        if 'mine_name' in data and mine.mine_name != data['mine_name']:
-            _throw_error_if_mine_exists(data['mine_name'])
-            mine.mine_name = data['mine_name']
-            refresh_cache = True
-        if 'mine_note' in data:
-            mine.mine_note = data['mine_note']
-        if 'major_mine_ind' in data:
-            mine.major_mine_ind = data['major_mine_ind']
-        if 'mine_region' in data:
-            mine.mine_region = data['mine_region']
-        if 'ohsc_ind' in data:
-            mine.ohsc_ind = data['ohsc_ind']
-        if 'union_ind' in data:
-            mine.union_ind = data['union_ind']
-        if 'latitude' in data and 'longitude' in data:
-            mine.latitude = data['latitude']
-            mine.longitude = data['longitude']
-            refresh_cache = True
-        if 'government_agency_type_code' in data:
-            mine.government_agency_type_code = data.get('government_agency_type_code')
-        if 'exemption_fee_status_code' in data:
-            mine.exemption_fee_status_code = data.get('exemption_fee_status_code')
-        if 'exemption_fee_status_note' in data:
-            mine.exemption_fee_status_note = data.get('exemption_fee_status_note')
+            # Mine Detail
+            if 'mine_name' in data and mine.mine_name != data['mine_name']:
+                _throw_error_if_mine_exists(data['mine_name'])
+                mine.mine_name = data['mine_name']
+                refresh_cache = True
+            if 'mine_note' in data:
+                mine.mine_note = data['mine_note']
+            if 'major_mine_ind' in data:
+                mine.major_mine_ind = data['major_mine_ind']
+            if 'mine_region' in data:
+                mine.mine_region = data['mine_region']
+            if 'ohsc_ind' in data:
+                mine.ohsc_ind = data['ohsc_ind']
+            if 'union_ind' in data:
+                mine.union_ind = data['union_ind']
+            if 'latitude' in data and 'longitude' in data:
+                mine.latitude = data['latitude']
+                mine.longitude = data['longitude']
+                refresh_cache = True
+            if 'government_agency_type_code' in data:
+                mine.government_agency_type_code = data.get('government_agency_type_code')
+            if 'exemption_fee_status_code' in data:
+                mine.exemption_fee_status_code = data.get('exemption_fee_status_code')
+            if 'exemption_fee_status_note' in data:
+                mine.exemption_fee_status_note = data.get('exemption_fee_status_note')
         if 'number_of_contractors' in data:
             mine.number_of_contractors = data.get('number_of_contractors')
         if 'number_of_mine_employees' in data:
