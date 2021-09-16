@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Dropdown, Menu, Popconfirm, Button, notification } from "antd";
 import PropTypes from "prop-types";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
-import { setMineReportDownloadState } from "@common/actionCreators/reportActionCreator";
 
 const propTypes = {
   mineReport: CustomPropTypes.mineReport.isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
-  setMineReportDownloadState: PropTypes.func.isRequired,
   mineReportRecord: PropTypes.func.isRequired,
   renderDeleteButtonForPermitAmendments: PropTypes.func.isRequired,
 };
@@ -20,10 +17,6 @@ const propTypes = {
 const defaultProps = {};
 
 export class MineReportActions extends Component {
-  state = {
-    cancelDownload: false,
-  };
-
   downloadDocument = (url) => {
     const a = document.createElement("a");
     a.href = url.url;
@@ -67,38 +60,16 @@ export class MineReportActions extends Component {
     this.waitFor(() => docURLS.length === reportSubmissions.length).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
-          setMineReportDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
-          });
-          notification.success({
-            message: "Cancelled file downloads.",
-            duration: 10,
-          });
-          return;
-        }
         currentFile += 1;
-        setMineReportDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
-        });
+
         this.downloadDocument(url);
+
         // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000)); //3000
       }
       notification.success({
         message: `Successfully Downloaded: ${totalFiles} files.`,
         duration: 10,
-      });
-
-      setMineReportDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
       });
     });
   };
@@ -217,15 +188,7 @@ export class MineReportActions extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      setMineReportDownloadState,
-    },
-    dispatch
-  );
-
 MineReportActions.propTypes = propTypes;
 MineReportActions.defaultProps = defaultProps;
 
-export default connect(null, mapDispatchToProps)(MineReportActions);
+export default MineReportActions;

@@ -455,7 +455,6 @@ export class MinePermitTable extends Component {
               permitAmendment={text.amendment}
               permit={record.permit}
               openEditAmendmentModal={record.openEditAmendmentModal}
-              setPermitAmendmentDownloadState={record.setPermitAmendmentDownloadState}
               minePermitRecord={record}
               minePermitText={text}
               renderDeleteButtonForPermitAmendments={this.renderDeleteButtonForPermitAmendments}

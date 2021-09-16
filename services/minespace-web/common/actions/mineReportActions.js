@@ -14,8 +14,3 @@ export const storeMineReportComments = (payload) => ({
   type: ActionTypes.STORE_MINE_REPORT_COMMENTS,
   payload,
 });
-
-export const storeMineReportActionsDownloadState = (payload) => ({
-  type: ActionTypes.STORE_MINE_REPORT_DOWNLOAD_STATE,
-  payload,
-});

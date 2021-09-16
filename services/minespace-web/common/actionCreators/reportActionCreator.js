@@ -99,7 +99,3 @@ export const updateMineReport = (mineGuid, mineReportGuid, payload) => (dispatch
       throw new Error(err);
     });
 };
-
-export const setMineReportDownloadState = (payload) => (dispatch) => {
-  dispatch(mineReportActions.storeMineReportActionsDownloadState(payload));
-};

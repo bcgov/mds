@@ -1,19 +1,15 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Dropdown, Menu, Button, notification } from "antd";
 import PropTypes from "prop-types";
 import { EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
-import { setPermitAmendmentDownloadState } from "@common/actionCreators/permitActionCreator";
-import { bindActionCreators } from "redux";
 
 const propTypes = {
   permitAmendment: CustomPropTypes.permitAmendment.isRequired,
   permit: CustomPropTypes.permit.isRequired,
   openEditAmendmentModal: PropTypes.func.isRequired,
-  setPermitAmendmentDownloadState: PropTypes.func.isRequired,
   minePermitRecord: PropTypes.func.isRequired,
   minePermitText: PropTypes.func.isRequired,
   renderDeleteButtonForPermitAmendments: PropTypes.func.isRequired,
@@ -22,10 +18,6 @@ const propTypes = {
 const defaultProps = {};
 
 export class MinePermitActions extends Component {
-  state = {
-    cancelDownload: false,
-  };
-
   downloadDocument = (url) => {
     const a = document.createElement("a");
     a.href = url.url;
@@ -69,38 +61,16 @@ export class MinePermitActions extends Component {
     this.waitFor(() => docURLS.length === permitAmendmentSubmissions.length).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
-        if (this.state.cancelDownload) {
-          this.setState({ cancelDownload: false });
-          setPermitAmendmentDownloadState({
-            downloading: false,
-            currentFile: 0,
-            totalFiles: 1,
-          });
-          notification.success({
-            message: "Cancelled file downloads.",
-            duration: 10,
-          });
-          return;
-        }
         currentFile += 1;
-        setPermitAmendmentDownloadState({
-          downloading: true,
-          currentFile,
-          totalFiles,
-        });
+
         this.downloadDocument(url);
+
         // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
       notification.success({
         message: `Successfully Downloaded: ${totalFiles} files.`,
         duration: 10,
-      });
-
-      setPermitAmendmentDownloadState({
-        downloading: false,
-        currentFile: 1,
-        totalFiles: 1,
       });
     });
   };
@@ -169,12 +139,7 @@ export class MinePermitActions extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(
-    {
-      setPermitAmendmentDownloadState,
-    },
-    dispatch
-  );
+MinePermitActions.propTypes = propTypes;
+MinePermitActions.defaultProps = defaultProps;
 
-export default connect(null, mapDispatchToProps)(MinePermitActions);
+export default MinePermitActions;
