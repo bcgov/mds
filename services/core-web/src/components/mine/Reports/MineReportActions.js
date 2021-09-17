@@ -79,13 +79,16 @@ export class MineReportActions extends Component {
   };
 
   reportDocuments = () => {
-    return this.props.mineReport.mine_report_submissions[
-      this.props.mineReport.mine_report_submissions.length - 1
-    ].documents.map((doc) => ({
-      key: doc.mine_document_guid,
-      documentManagerGuid: doc.document_manager_guid,
-      filename: doc.document_name,
-    }));
+    if (this.props.mineReport.mine_report_submissions) {
+      return this.props.mineReport.mine_report_submissions[
+        this.props.mineReport.mine_report_submissions.length - 1
+      ].documents.map((doc) => ({
+        key: doc.mine_document_guid,
+        documentManagerGuid: doc.document_manager_guid,
+        filename: doc.document_name,
+      }));
+    }
+    return;
   };
 
   render() {

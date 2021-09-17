@@ -81,7 +81,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
-  const isLinkedToNowApplication = !isEmpty(record.operations.amendment.now_application_guid);
+  const isLinkedToNowApplication = !isEmpty(record.now_application_guid);
 
   // eslint-disable-next-line consistent-return
   return (
@@ -116,13 +116,11 @@ const renderDeleteButtonForPermitAmendments = (record) => {
 
 const renderVerifyCredentials = (text, record) => {
   return (
-    <AuthorizationWrapper permission={Permission.ADMIN}>
+    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
       <Popconfirm
         placement="topLeft"
         title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
-        onConfirm={(event) =>
-          record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
-        }
+        onConfirm={(event) => record.handlePermitAmendmentIssueVC(event, record, record.permit)}
         okText="Issue"
         cancelText="Cancel"
       >
@@ -443,9 +441,7 @@ const childColumns = [
                 <button
                   type="button"
                   className="full add-permit-dropdown-button"
-                  onClick={(event) =>
-                    props.openEditAmendmentModal(event, props.permitAmendment, props.permit)
-                  }
+                  onClick={(event) => record.openEditAmendmentModal(event, record, record.permit)}
                 >
                   <img
                     src={EDIT_OUTLINE_VIOLET}
@@ -543,17 +539,12 @@ const transformChildRowData = (
   permitAmendmentTypeOptionsHash
 ) => ({
   amendmentNumber,
-  // amendmentType: amendment.permit_amendment_type_code,
   isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
   receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   isAssociatedWithNOWApplicationImportedToCore: "",
-  operations: {
-    major_mine_ind,
-    amendment,
-  },
   openEditAmendmentModal,
   permit: record.permit,
   documents: amendment.related_documents,
