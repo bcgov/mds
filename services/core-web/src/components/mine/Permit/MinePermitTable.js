@@ -23,7 +23,7 @@ import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
-import MinePermitActions from "./MinePermitActions";
+import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -100,47 +100,43 @@ export class MinePermitTable extends Component {
             isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
           }
         >
-          <Button ghost className="full" type="primary">
-            <div>
+          <div className="custom-menu-item">
+            <button type="button" className="full">
               <img
-                className="padding-sm"
                 src={TRASHCAN}
                 alt="Remove Permit Amendment"
+                className="padding-sm"
                 style={{ paddingRight: "15px" }}
               />
               Delete
-            </div>
-          </Button>
+            </button>
+          </div>
         </Popconfirm>
       </AuthorizationWrapper>
     );
   };
 
-  renderVerifyCredentials = (minePermitText, minePermitRecord) => {
+  renderVerifyCredentials = (text, record) => {
     return (
       <AuthorizationWrapper permission={Permission.ADMIN}>
         <Popconfirm
           placement="topLeft"
-          title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${minePermitRecord.permit.current_permittee}?`}
+          title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
           onConfirm={(event) =>
-            record.handlePermitAmendmentIssueVC(
-              event,
-              minePermitText.amendment,
-              minePermitRecord.permit
-            )
+            record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
           }
           okText="Issue"
           cancelText="Cancel"
         >
-          <Button ghost className="full" type="primary">
-            <div>
+          <div className="custom-menu-item">
+            <button type="primary" className="full add-permit-dropdown-button">
               <SafetyCertificateOutlined
-                className="padding-sm"
-                style={{ paddingLeft: "10px", paddingRight: "20px" }}
+                className="padding-sm add-permit-dropdown-button-icon"
+                style={{ color: "#5e46a1" }}
               />
               Verify
-            </div>
-          </Button>
+            </button>
+          </div>
         </Popconfirm>
       </AuthorizationWrapper>
     );
@@ -448,21 +444,64 @@ export class MinePermitTable extends Component {
       dataIndex: "operations",
       key: "operations",
       align: "right",
-      render: (text, record) => (
-        <div>
-          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-            <MinePermitActions
-              permitAmendment={text.amendment}
-              permit={record.permit}
-              openEditAmendmentModal={record.openEditAmendmentModal}
-              minePermitRecord={record}
-              minePermitText={text}
-              renderDeleteButtonForPermitAmendments={this.renderDeleteButtonForPermitAmendments}
-              renderVerifyCredentials={this.renderVerifyCredentials}
-            />
-          </AuthorizationWrapper>
-        </div>
-      ),
+      render: (text, record) => {
+        const permitAmendmentSubmissions = record.permit.permit_amendments[0].related_documents.map(
+          (doc) => ({
+            key: doc.mine_report_submission_guid,
+            documentManagerGuid: doc.document_manager_guid,
+            filename: doc.document_name,
+          })
+        );
+        const menu = (
+          <Menu>
+            <Menu.Item key="0">
+              <div className="custom-menu-item">
+                <button
+                  type="button"
+                  className="full"
+                  onClick={(event) =>
+                    this.props.openEditAmendmentModal(
+                      event,
+                      this.props.permitAmendment,
+                      this.props.permit
+                    )
+                  }
+                >
+                  <img
+                    src={EDIT_OUTLINE_VIOLET}
+                    alt="Edit"
+                    className="padding-sm"
+                    style={{ paddingRight: "15px" }}
+                  />
+                  Edit
+                </button>
+              </div>
+            </Menu.Item>
+            <Menu.Item key="1">
+              <DownloadAllDocuments submissions={permitAmendmentSubmissions} />
+            </Menu.Item>
+            <Menu.Item key="2">{this.renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
+            <Menu.Item key="3">{this.renderVerifyCredentials(text, record)}</Menu.Item>
+          </Menu>
+        );
+        return (
+          <div>
+            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+              <Dropdown overlay={menu} placement="bottomLeft">
+                <Button type="secondary" className="permit-table-button">
+                  Actions
+                  <img
+                    className="padding-sm--right icon-svg-filter"
+                    src={CARAT}
+                    alt="Menu"
+                    style={{ paddingLeft: "5px" }}
+                  />
+                </Button>
+              </Dropdown>
+            </AuthorizationWrapper>
+          </div>
+        );
+      },
     },
   ];
 

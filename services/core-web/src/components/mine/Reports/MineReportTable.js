@@ -173,7 +173,6 @@ export const MineReportTable = (props) => {
                 openEditReportModal={record.openEditReportModal}
                 handleEditReport={record.handleEditReport}
                 handleRemoveReport={record.handleRemoveReport}
-                minePermitRecord={record}
               />
             </AuthorizationWrapper>
           </div>

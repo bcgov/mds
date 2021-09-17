@@ -1,79 +1,20 @@
 import React, { Component } from "react";
-import { Dropdown, Menu, Popconfirm, Button, notification } from "antd";
+import { Dropdown, Menu, Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
-import { DownloadOutlined } from "@ant-design/icons";
 import CustomPropTypes from "@/customPropTypes";
-import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
+import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
 
 const propTypes = {
   mineReport: CustomPropTypes.mineReport.isRequired,
   openEditReportModal: PropTypes.func.isRequired,
   handleEditReport: PropTypes.func.isRequired,
-  mineReportRecord: PropTypes.func.isRequired,
   renderDeleteButtonForPermitAmendments: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 export class MineReportActions extends Component {
-  downloadDocument = (url) => {
-    const a = document.createElement("a");
-    a.href = url.url;
-    a.download = url.filename;
-    a.style.display = "none";
-    document.body.append(a);
-    a.click();
-    a.remove();
-  };
-
-  waitFor = (conditionFunction) => {
-    const poll = (resolve) => {
-      if (conditionFunction()) resolve();
-      else setTimeout(() => poll(resolve), 400);
-    };
-
-    return new Promise(poll);
-  };
-
-  downloadDocumentPackage = () => {
-    const docURLS = [];
-
-    const reportSubmissions = this.props.mineReport.mine_report_submissions[
-      this.props.mineReport.mine_report_submissions.length - 1
-    ].documents.map((doc) => ({
-      key: doc.mine_document_guid,
-      documentManagerGuid: doc.document_manager_guid,
-      filename: doc.document_name,
-    }));
-
-    const totalFiles = reportSubmissions.length;
-    if (totalFiles === 0) {
-      return;
-    }
-
-    reportSubmissions.forEach((doc) =>
-      getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
-    );
-
-    let currentFile = 0;
-    this.waitFor(() => docURLS.length === reportSubmissions.length).then(async () => {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const url of docURLS) {
-        currentFile += 1;
-
-        this.downloadDocument(url);
-
-        // eslint-disable-next-line
-        await new Promise((resolve) => setTimeout(resolve, 3000)); //3000
-      }
-      notification.success({
-        message: `Successfully Downloaded: ${totalFiles} files.`,
-        duration: 10,
-      });
-    });
-  };
-
   DeleteButton = (state, props) =>
     ({
       hasFiles: (
@@ -84,8 +25,8 @@ export class MineReportActions extends Component {
           okText="Delete"
           cancelText="Cancel"
         >
-          <Button ghost type="primary" size="small">
-            <div>
+          <div className="custom-menu-item">
+            <button type="button" className="full">
               <img
                 name="remove"
                 className="padding-sm"
@@ -94,8 +35,8 @@ export class MineReportActions extends Component {
                 style={{ paddingRight: "15px" }}
               />
               Delete
-            </div>
-          </Button>
+            </button>
+          </div>
         </Popconfirm>
       ),
       noFiles: (
@@ -133,12 +74,18 @@ export class MineReportActions extends Component {
   };
 
   render() {
+    const reportSubmissions = this.props.mineReport.mine_report_submissions[
+      this.props.mineReport.mine_report_submissions.length - 1
+    ].documents.map((doc) => ({
+      key: doc.mine_document_guid,
+      documentManagerGuid: doc.document_manager_guid,
+      filename: doc.document_name,
+    }));
     const menu = (
       <Menu>
         <Menu.Item key="0">
-          <Button
-            ghost
-            type="primary"
+          <button
+            type="button"
             className="full"
             onClick={(event) =>
               this.props.openEditReportModal(
@@ -155,18 +102,10 @@ export class MineReportActions extends Component {
               style={{ paddingRight: "15px" }}
             />
             Edit
-          </Button>
+          </button>
         </Menu.Item>
         <Menu.Item key="1">
-          <Button
-            ghost
-            type="primary"
-            className="full"
-            onClick={() => this.downloadDocumentPackage()}
-          >
-            <DownloadOutlined className="padding-sm" style={{ paddingRight: "15px" }} />
-            Download All
-          </Button>
+          <DownloadAllDocuments submissions={reportSubmissions} />
         </Menu.Item>
         <Menu.Item key="2">{this.renderDeleteButton(this.props)}</Menu.Item>
       </Menu>
