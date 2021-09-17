@@ -454,29 +454,31 @@ export class MinePermitTable extends Component {
         );
         const menu = (
           <Menu>
-            <Menu.Item key="0">
-              <div className="custom-menu-item">
-                <button
-                  type="button"
-                  className="full"
-                  onClick={(event) =>
-                    this.props.openEditAmendmentModal(
-                      event,
-                      this.props.permitAmendment,
-                      this.props.permit
-                    )
-                  }
-                >
-                  <img
-                    src={EDIT_OUTLINE_VIOLET}
-                    alt="Edit"
-                    className="padding-sm"
-                    style={{ paddingRight: "15px" }}
-                  />
-                  Edit
-                </button>
-              </div>
-            </Menu.Item>
+            <AuthorizationWrapper permission={Permission.ADMIN}>
+              <Menu.Item key="0">
+                <div className="custom-menu-item">
+                  <button
+                    type="button"
+                    className="full"
+                    onClick={(event) =>
+                      this.props.openEditAmendmentModal(
+                        event,
+                        this.props.permitAmendment,
+                        this.props.permit
+                      )
+                    }
+                  >
+                    <img
+                      src={EDIT_OUTLINE_VIOLET}
+                      alt="Edit"
+                      className="padding-sm"
+                      style={{ paddingRight: "15px" }}
+                    />
+                    Edit
+                  </button>
+                </div>
+              </Menu.Item>
+            </AuthorizationWrapper>
             <Menu.Item key="1">
               <DownloadAllDocuments submissions={permitAmendmentSubmissions} />
             </Menu.Item>
@@ -486,19 +488,17 @@ export class MinePermitTable extends Component {
         );
         return (
           <div>
-            <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-              <Dropdown overlay={menu} placement="bottomLeft">
-                <Button type="secondary" className="permit-table-button">
-                  Actions
-                  <img
-                    className="padding-sm--right icon-svg-filter"
-                    src={CARAT}
-                    alt="Menu"
-                    style={{ paddingLeft: "5px" }}
-                  />
-                </Button>
-              </Dropdown>
-            </AuthorizationWrapper>
+            <Dropdown overlay={menu} placement="bottomLeft">
+              <Button type="secondary" className="permit-table-button">
+                Actions
+                <img
+                  className="padding-sm--right icon-svg-filter"
+                  src={CARAT}
+                  alt="Menu"
+                  style={{ paddingLeft: "5px" }}
+                />
+              </Button>
+            </Dropdown>
           </div>
         );
       },

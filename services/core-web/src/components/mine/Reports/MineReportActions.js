@@ -18,48 +18,52 @@ export class MineReportActions extends Component {
   DeleteButton = (state, props) =>
     ({
       hasFiles: (
-        <Popconfirm
-          placement="topLeft"
-          title={`Are you sure you want to delete the ${this.props.mineReport.submission_year} ${this.props.mineReport.report_name}?`}
-          onConfirm={() => this.props.handleRemoveReport(this.props.mineReport)}
-          okText="Delete"
-          cancelText="Cancel"
-        >
-          <div className="custom-menu-item">
-            <button type="button" className="full">
-              <img
-                name="remove"
-                className="padding-sm"
-                src={TRASHCAN}
-                alt="Remove Activity"
-                style={{ paddingRight: "15px" }}
-              />
-              Delete
-            </button>
-          </div>
-        </Popconfirm>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Popconfirm
+            placement="topLeft"
+            title={`Are you sure you want to delete the ${this.props.mineReport.submission_year} ${this.props.mineReport.report_name}?`}
+            onConfirm={() => this.props.handleRemoveReport(this.props.mineReport)}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <div className="custom-menu-item">
+              <button type="button" className="full">
+                <img
+                  name="remove"
+                  className="padding-sm"
+                  src={TRASHCAN}
+                  alt="Remove Activity"
+                  style={{ paddingRight: "15px" }}
+                />
+                Delete
+              </button>
+            </div>
+          </Popconfirm>
+        </AuthorizationWrapper>
       ),
       noFiles: (
-        <Popconfirm
-          placement="topLeft"
-          title={`Are you sure you want to delete the ${this.props.mineReport.submission_year} ${this.props.mineReport.report_name}?`}
-          onConfirm={() => this.props.handleRemoveReport(this.props.mineReport)}
-          okText="Delete"
-          cancelText="Cancel"
-        >
-          <Button ghost type="primary" size="small">
-            <div>
-              <img
-                name="remove"
-                className="padding-sm"
-                src={TRASHCAN}
-                alt="Remove Activity"
-                style={{ paddingRight: "15px" }}
-              />
-              Delete
-            </div>
-          </Button>
-        </Popconfirm>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Popconfirm
+            placement="topLeft"
+            title={`Are you sure you want to delete the ${this.props.mineReport.submission_year} ${this.props.mineReport.report_name}?`}
+            onConfirm={() => this.props.handleRemoveReport(this.props.mineReport)}
+            okText="Delete"
+            cancelText="Cancel"
+          >
+            <Button ghost type="primary" size="small">
+              <div>
+                <img
+                  name="remove"
+                  className="padding-sm"
+                  src={TRASHCAN}
+                  alt="Remove Activity"
+                  style={{ paddingRight: "15px" }}
+                />
+                Delete
+              </div>
+            </Button>
+          </Popconfirm>
+        </AuthorizationWrapper>
       ),
     }[state]);
 
@@ -83,27 +87,29 @@ export class MineReportActions extends Component {
     }));
     const menu = (
       <Menu>
-        <Menu.Item key="0">
-          <button
-            type="button"
-            className="full"
-            onClick={(event) =>
-              this.props.openEditReportModal(
-                event,
-                this.props.handleEditReport,
-                this.props.mineReport
-              )
-            }
-          >
-            <img
-              src={EDIT_OUTLINE_VIOLET}
-              alt="Edit Report"
-              className="padding-sm"
-              style={{ paddingRight: "15px" }}
-            />
-            Edit
-          </button>
-        </Menu.Item>
+        <AuthorizationWrapper permission={Permission.ADMIN}>
+          <Menu.Item key="0">
+            <button
+              type="button"
+              className="full"
+              onClick={(event) =>
+                this.props.openEditReportModal(
+                  event,
+                  this.props.handleEditReport,
+                  this.props.mineReport
+                )
+              }
+            >
+              <img
+                src={EDIT_OUTLINE_VIOLET}
+                alt="Edit Report"
+                className="padding-sm"
+                style={{ paddingRight: "15px" }}
+              />
+              Edit
+            </button>
+          </Menu.Item>
+        </AuthorizationWrapper>
         <Menu.Item key="1">
           <DownloadAllDocuments submissions={reportSubmissions} />
         </Menu.Item>
