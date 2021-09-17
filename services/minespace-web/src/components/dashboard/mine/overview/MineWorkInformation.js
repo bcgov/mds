@@ -58,18 +58,16 @@ export class MineWorkInformation extends Component {
     const title = info ? "Update Mine Work Information" : "Add Mine Work Information";
     return (
       <div className="work-information-container ">
-        <Row gutter={5}>
-          <div className="inline-flex between">
-            <Title level={4}>Work Information</Title>
-            {!this.state.isEditMode && (
-              <span style={{ float: "right" }}>
-                <Button type="link" onClick={() => this.editWorkInformation()}>
-                  <img src={EDIT_PENCIL} alt="Edit" />
-                </Button>
-              </span>
-            )}
-          </div>
-        </Row>
+        <div className="inline-flex between">
+          <Title level={4}>Work Information</Title>
+          {!this.state.isEditMode && (
+            <span>
+              <Button type="link" onClick={() => this.editWorkInformation()}>
+                <img src={EDIT_PENCIL} alt="Edit" />
+              </Button>
+            </span>
+          )}
+        </div>
         <Row gutter={5}>
           <Paragraph>
             Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health,
