@@ -122,6 +122,6 @@ class MineVarianceListResource(Resource, UserMixin):
 
         variance.save()
 
-        if is_minespace_user:
+        if is_minespace_user():
             variance.send_variance_application_email()
         return variance
