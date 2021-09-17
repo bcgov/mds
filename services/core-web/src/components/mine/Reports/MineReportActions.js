@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
+import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
+import * as Permission from "@/constants/permissions";
 
 const propTypes = {
   mineReport: CustomPropTypes.mineReport.isRequired,
@@ -27,13 +29,12 @@ export class MineReportActions extends Component {
             cancelText="Cancel"
           >
             <div className="custom-menu-item">
-              <button type="button" className="full">
+              <button type="button" className="full add-permit-dropdown-button">
                 <img
                   name="remove"
-                  className="padding-sm"
+                  className="icon-sm padding-sm--right violet"
                   src={TRASHCAN}
                   alt="Remove Activity"
-                  style={{ paddingRight: "15px" }}
                 />
                 Delete
               </button>
@@ -50,70 +51,75 @@ export class MineReportActions extends Component {
             okText="Delete"
             cancelText="Cancel"
           >
-            <Button ghost type="primary" size="small">
-              <div>
+            <div className="custom-menu-item">
+              <button type="button" className="full add-permit-dropdown-button">
                 <img
                   name="remove"
-                  className="padding-sm"
+                  className="icon-sm padding-sm--right violet"
                   src={TRASHCAN}
                   alt="Remove Activity"
-                  style={{ paddingRight: "15px" }}
                 />
                 Delete
-              </div>
-            </Button>
+              </button>
+            </div>
           </Popconfirm>
         </AuthorizationWrapper>
       ),
     }[state]);
 
-  renderDeleteButton = (props) => {
+  renderDeleteButton = () => {
     const hasFiles =
-      props.mineReport.mine_report_submissions &&
-      props.mineReport.mine_report_submissions.length > 0 &&
-      props.mineReport.mine_report_submissions[props.mineReport.mine_report_submissions.length - 1]
-        .documents.length > 0;
-    if (hasFiles) return this.DeleteButton("hasFiles", props);
-    return this.DeleteButton("noFiles", props);
+      this.props.mineReport.mine_report_submissions &&
+      this.props.mineReport.mine_report_submissions.length > 0 &&
+      this.props.mineReport.mine_report_submissions[
+        this.props.mineReport.mine_report_submissions.length - 1
+      ].documents.length > 0;
+    if (hasFiles) return this.DeleteButton("hasFiles", this.props);
+    return this.DeleteButton("noFiles", this.props);
   };
 
-  render() {
-    const reportSubmissions = this.props.mineReport.mine_report_submissions[
+  reportDocuments = () => {
+    return this.props.mineReport.mine_report_submissions[
       this.props.mineReport.mine_report_submissions.length - 1
     ].documents.map((doc) => ({
       key: doc.mine_document_guid,
       documentManagerGuid: doc.document_manager_guid,
       filename: doc.document_name,
     }));
+  };
+
+  render() {
     const menu = (
       <Menu>
         <AuthorizationWrapper permission={Permission.ADMIN}>
           <Menu.Item key="0">
-            <button
-              type="button"
-              className="full"
-              onClick={(event) =>
-                this.props.openEditReportModal(
-                  event,
-                  this.props.handleEditReport,
-                  this.props.mineReport
-                )
-              }
-            >
-              <img
-                src={EDIT_OUTLINE_VIOLET}
-                alt="Edit Report"
-                className="padding-sm"
-                style={{ paddingRight: "15px" }}
-              />
-              Edit
-            </button>
+            <div className="custom-menu-item">
+              <button
+                type="button"
+                className="full add-permit-dropdown-button"
+                onClick={(event) =>
+                  this.props.openEditReportModal(
+                    event,
+                    this.props.handleEditReport,
+                    this.props.mineReport
+                  )
+                }
+              >
+                <img
+                  src={EDIT_OUTLINE_VIOLET}
+                  alt="Edit Report"
+                  className="icon-sm padding-sm--right violet"
+                  style={{ paddingLeft: "13px" }}
+                />
+                Edit
+              </button>
+            </div>
           </Menu.Item>
         </AuthorizationWrapper>
         <Menu.Item key="1">
-          <DownloadAllDocuments submissions={reportSubmissions} />
+          <DownloadAllDocuments documents={this.reportDocuments()} />
         </Menu.Item>
-        <Menu.Item key="2">{this.renderDeleteButton(this.props)}</Menu.Item>
+        <Menu.Item key="2">{this.renderDeleteButton()}</Menu.Item>
       </Menu>
     );
 

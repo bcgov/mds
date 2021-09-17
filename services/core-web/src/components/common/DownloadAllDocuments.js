@@ -1,11 +1,12 @@
 import React from "react";
 import { notification } from "antd";
 import PropTypes from "prop-types";
+import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
 import { DownloadOutlined } from "@ant-design/icons";
 
 const propTypes = {
-  submissions: PropTypes.arrayOf(PropTypes.any).isRequired,
+  documents: PropTypes.arrayOf(CustomPropTypes.mineDocument).isRequired,
 };
 
 const downloadDocument = (url) => {
@@ -31,17 +32,17 @@ export const DownloadAllDocuments = (props) => {
   const handleDownloadAll = () => {
     const docURLS = [];
 
-    const totalFiles = props.submissions.length;
+    const totalFiles = props.documents.length;
     if (totalFiles === 0) {
       return;
     }
 
-    props.submissions.forEach((doc) =>
+    props.documents.forEach((doc) =>
       getDocumentDownloadToken(doc.documentManagerGuid, doc.filename, docURLS)
     );
 
     let currentFile = 0;
-    waitFor(() => docURLS.length === props.submissions.length).then(async () => {
+    waitFor(() => docURLS.length === props.documents.length).then(async () => {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of docURLS) {
         currentFile += 1;
@@ -59,8 +60,12 @@ export const DownloadAllDocuments = (props) => {
   };
   return (
     <div className="custom-menu-item">
-      <button type="button" className="full" onClick={() => handleDownloadAll()}>
-        <DownloadOutlined style={{ color: "#5e46a1", paddingLeft: "8px", paddingRight: "22px" }} />
+      <button
+        type="button"
+        className="full add-permit-dropdown-button"
+        onClick={() => handleDownloadAll()}
+      >
+        <DownloadOutlined className="icon-sm padding-md--right violet" />
         Download All
       </button>
     </div>
