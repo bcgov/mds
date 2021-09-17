@@ -835,7 +835,7 @@ export class ProcessPermit extends Component {
         route: route.MINE_NOW_APPLICATIONS.dynamicRoute(this.props.noticeOfWork.mine_guid),
       });
     }
-    // TO DO: re-add logic when the Orgbook functionality is in prod.
+    // TO DO: re-add logic when the OrgBook functionality is in prod.
     // Permittee
     // if (
     //   this.props.noticeOfWork.contacts &&
@@ -936,6 +936,7 @@ export class ProcessPermit extends Component {
           tab="PRO"
           tabName="Process Permit"
           fixedTop={this.props.fixedTop}
+          noticeOfWork={this.props.noticeOfWork}
           tabActions={
             <>
               {!isProcessed && (

@@ -196,10 +196,11 @@ export class AddReportForm extends Component {
             onConfirm={this.props.closeModal}
             okText="Yes"
             cancelText="No"
+            disabled={this.props.submitting}
           >
-            <Button>Cancel</Button>
+            <Button disabled={this.props.submitting}>Cancel</Button>
           </Popconfirm>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={this.props.submitting}>
             {this.props.title}
           </Button>
         </div>

@@ -1,20 +1,14 @@
-import re, uuid
-
-from datetime import datetime
-from sqlalchemy import func, desc
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import validates
+from sqlalchemy import desc
 from sqlalchemy.schema import FetchedValue
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
-
 from app.api.parties.party.models.party import Party
 
 
 class MinePartyAppointmentType(AuditMixin, Base):
-    __tablename__ = "mine_party_appt_type_code"
+    __tablename__ = 'mine_party_appt_type_code'
+
     mine_party_appt_type_code = db.Column(db.String(3), primary_key=True)
     description = db.Column(db.String(100), nullable=False)
     display_order = db.Column(db.Integer)

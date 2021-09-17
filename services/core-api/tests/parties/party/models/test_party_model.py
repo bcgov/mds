@@ -34,7 +34,11 @@ def test_party_model_validate_first_name():
             first_name='e' * (MAX_NAME_LENGTH + 1),
             party_type_code='PER',
             phone_no='123-123-1234',
-            phone_ext='1234')
+            phone_ext='1234',
+            phone_no_sec='123-123-1234',
+            phone_sec_ext='1234',
+            phone_no_ter='123-123-1234',
+            phone_ter_ext='1234')
     assert f'First name must not exceed {MAX_NAME_LENGTH} characters.' in str(e.value)
 
 
@@ -45,7 +49,11 @@ def test_party_model_validate_party_name_not_provided():
             first_name='fail_name',
             party_type_code='PER',
             phone_no='123-123-1234',
-            phone_ext='1234')
+            phone_ext='1234',
+            phone_no_sec='123-123-1234',
+            phone_sec_ext='1234',
+            phone_no_ter='123-123-1234',
+            phone_ter_ext='1234')
     assert 'Party name is not provided.' in str(e.value)
 
 
@@ -56,5 +64,9 @@ def test_party_model_validate_party_name_exceeds_char_limit():
             first_name='test_first_name_fail',
             party_type_code='PER',
             phone_no='123-123-1234',
-            phone_ext='1234')
+            phone_ext='1234',
+            phone_no_sec='123-123-1234',
+            phone_sec_ext='1234',
+            phone_no_ter='123-123-1234',
+            phone_ter_ext='1234')
     assert f'Party name must not exceed {MAX_NAME_LENGTH} characters.' in str(e.value)

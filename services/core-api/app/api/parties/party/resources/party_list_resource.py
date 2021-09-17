@@ -1,20 +1,20 @@
 from flask import request, current_app
 from flask_restplus import Resource, marshal
-from sqlalchemy_filters import apply_sort, apply_pagination, apply_filters
+from sqlalchemy_filters import apply_sort, apply_pagination
 from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy import and_, or_
 
 from app.extensions import api, cache
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
+from app.api.utils.access_decorators import requires_role_edit_party, requires_any_of, VIEW_ALL, MINESPACE_PROPONENT
 from app.api.utils.resources_mixins import UserMixin
 from app.api.utils.custom_reqparser import CustomReqparser
 from app.api.constants import GET_ALL_INSPECTORS_KEY, TIMEOUT_12_HOURS
 
 from app.api.parties.party.models.party import Party
 from app.api.parties.party.models.address import Address
-from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.parties.party_appt.models.mine_party_appt import MinePartyAppointment
 from app.api.parties.party_appt.models.party_business_role_appt import PartyBusinessRoleAppointment
+from app.api.parties.party.models.party_type_code import PartyTypeCode
 from app.api.parties.response_models import PARTY, PAGINATED_PARTY_LIST
 
 ALL_INSPECTORS_QUERY_PARAMS = {'business_role': 'INS', 'per_page': 'all'}
@@ -34,13 +34,20 @@ class PartyListResource(Resource, UserMixin):
         required=True)
     parser.add_argument('name_search', type=str, help='Name or partial name of the party.')
     parser.add_argument(
-        'phone_no', type=str, help='The phone number of the party. Ex: 123-123-1234', required=True)
+        'phone_no', type=str, help='The primary phone number of the party. Ex: 123-123-1234', required=True)
+    parser.add_argument(
+        'phone_no_sec', type=str, help='The secondary phone number of the party. Ex: 123-123-1234')
+    parser.add_argument(
+        'phone_no_ter', type=str, help='The tertiary phone number of the party. Ex: 123-123-1234')
     parser.add_argument(
         'last_name', type=str, help='Last name of the party, if the party is a person.')
     parser.add_argument(
         'first_name', type=str, help='First name of the party, if the party is a person.')
-    parser.add_argument('phone_ext', type=str, help='The extension of the phone number. Ex: 1234')
-    parser.add_argument('email', type=str, help='The email of the party.')
+    parser.add_argument('phone_ext', type=str, help='The extension of the primary phone number. Ex: 1234')
+    parser.add_argument('phone_sec_ext', type=str, help='The extension of the secondary phone number. Ex: 1234')
+    parser.add_argument('phone_ter_ext', type=str, help='The extension of the tertiary phone number. Ex: 1234')
+    parser.add_argument('email', type=str, help='The primary email of the party.')
+    parser.add_argument('email_sec', type=str, help='The secondary email of the party.')
     parser.add_argument(
         'suite_no',
         type=str,
@@ -79,8 +86,11 @@ class PartyListResource(Resource, UserMixin):
         params={
             'first_name': 'First name of party or contact',
             'party_name': 'Last name or party name of person or organisation',
-            'phone_no': 'phone number',
-            'email': 'email of person or organisation',
+            'phone_no': 'primary phone number',
+            'phone_no_sec': 'secondary phone number',
+            'phone_no_ter': 'tertiary phone number',
+            'email': 'primary email of person or organisation',
+            'email_sec': 'secondary email of person or organisation',
             'type': 'A person (PER) or organisation (ORG)',
             'role': 'A comma separated list of roles to be filtered by',
             'sort_field': 'enum[party_name] Default: party_name',
@@ -121,20 +131,21 @@ class PartyListResource(Resource, UserMixin):
     @api.doc(description='Create a party.')
     @requires_role_edit_party
     @api.marshal_with(PARTY, code=200)
-    def post(self, party_guid=None):
-        if party_guid:
-            raise BadRequest('Unexpected party id in Url.')
+    def post(self):
         data = PartyListResource.parser.parse_args()
-
-        Party.validate_phone_no(data.get('phone_no', None))
-
         party = Party.create(
             data.get('party_name'),
             data.get('phone_no'),
             data.get('party_type_code'),
             email=data.get('email'),
             first_name=data.get('first_name'),
-            phone_ext=data.get('phone_ext'))
+            phone_ext=data.get('phone_ext'),
+            phone_no_sec=data.get('phone_no_sec'),
+            phone_sec_ext=data.get('phone_sec_ext'),
+            phone_no_ter=data.get('phone_no_ter'),
+            phone_ter_ext=data.get('phone_ter_ext'),
+            email_sec=data.get('email_sec'),
+            add_to_session=True)
 
         if not party:
             raise InternalServerError('Error: Failed to create party')
@@ -215,13 +226,16 @@ class PartyListResource(Resource, UserMixin):
 
             role_filter = MinePartyAppointment.mine_party_appt_type_code.like(role_filter_term)
             conditions.append(role_filter)
-            contact_query = contact_query.join(MinePartyAppointment)
+            contact_query = contact_query.join(MinePartyAppointment,
+                                               MinePartyAppointment.party_guid == Party.party_guid)
 
         if business_roles and len(business_roles) > 0:
             business_role_filter = PartyBusinessRoleAppointment.party_business_role_code.in_(
                 business_roles)
             conditions.append(business_role_filter)
-            contact_query = contact_query.join(PartyBusinessRoleAppointment)
+            contact_query = contact_query.join(
+                PartyBusinessRoleAppointment,
+                PartyBusinessRoleAppointment.party_guid == Party.party_guid)
 
         contact_query = contact_query.filter(and_(*conditions))
 

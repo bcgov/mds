@@ -64,7 +64,7 @@ from app.api.now_applications.resources.now_application_resource import NOWAppli
     (MinePartyApptTypeResource, "get", [VIEW_ALL]),
     (MineRegionResource, "get", [VIEW_ALL]),
     (MineResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
-    (MineResource, "put", [MINE_EDIT]),
+    (MineResource, "put", [MINE_EDIT, MINESPACE_PROPONENT]),
     (MineReportResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),
     (MineReportResource, "put", [EDIT_REPORT, MINESPACE_PROPONENT]),
     (MineReportListResource, "get", [VIEW_ALL, MINESPACE_PROPONENT]),

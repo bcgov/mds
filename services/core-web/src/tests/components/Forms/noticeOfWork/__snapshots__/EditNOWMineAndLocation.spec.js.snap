@@ -47,6 +47,7 @@ exports[`EditNOWMineAndLocation renders properly 1`] = `
           validate={
             Array [
               [Function],
+              [Function],
             ]
           }
         />

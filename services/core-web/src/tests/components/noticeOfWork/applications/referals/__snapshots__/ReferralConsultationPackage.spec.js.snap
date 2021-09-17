@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReferralConsultationPackage renders properly 1`] = `
+<Button
+  block={false}
+  className="full-mobile"
+  disabled={false}
+  ghost={false}
+  htmlType="button"
+  loading={false}
+  onClick={[Function]}
+  type="secondary"
+>
+  Referral Package
+</Button>
+`;

@@ -57,7 +57,7 @@ export const ContactResultsTable = (props) => {
                 <p>
                   {props.partyRelationshipTypeHash[pr.mine_party_appt_type_code]}
                   <span className="padding-sm--left" style={{ fontStyle: "italic" }}>
-                    ({pr.mine.mine_name})
+                    ({pr.mine_party_appt_type_code === "PMT" ? pr.permit_no : pr.mine.mine_name})
                   </span>
                 </p>
               ))}

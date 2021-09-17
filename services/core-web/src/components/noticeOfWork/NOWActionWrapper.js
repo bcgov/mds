@@ -30,6 +30,7 @@ const propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
+  isDisabledReviewButton: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -38,6 +39,7 @@ const defaultProps = {
   allowAfterProcess: false,
   noticeOfWork: {},
   progress: {},
+  isDisabledReviewButton: false,
 };
 
 export class NOWActionWrapper extends Component {
@@ -46,7 +48,7 @@ export class NOWActionWrapper extends Component {
   componentDidMount() {
     // allow all actions if component is being used on the Admin Dashboard (ie Standard PErmit Condition Management)
     const isAdminDashboard = this.props.location.pathname.includes(
-      "admin/dashboard/permit-conditions"
+      "admin/permit-condition-management"
     );
     if (isAdminDashboard) {
       this.setState({ disableTab: false, isAdminDashboard });
@@ -55,7 +57,11 @@ export class NOWActionWrapper extends Component {
         this.props.noticeOfWork.application_type_code
       ].includes(this.props.tab);
       if (tabShouldIncludeProgress) {
-        this.handleDisableTab(this.props.tab, this.props.progress);
+        this.handleDisableTab(
+          this.props.tab,
+          this.props.progress,
+          this.props.isDisabledReviewButton
+        );
       } else {
         this.setState({ disableTab: false });
       }
@@ -71,7 +77,7 @@ export class NOWActionWrapper extends Component {
       this.props.progress[this.props.tab]
     );
     const isAdminDashboard = nextProps.location.pathname.includes(
-      "admin/dashboard/permit-conditions"
+      "admin/permit-condition-management"
     );
     if (!isAdminDashboard) {
       const tabShouldIncludeProgress = APPLICATION_PROGRESS_TRACKING[
@@ -79,18 +85,25 @@ export class NOWActionWrapper extends Component {
       ].includes(nextProps.tab);
 
       if ((tabChanged || progressNoWExists || progressChanged) && tabShouldIncludeProgress) {
-        this.handleDisableTab(nextProps.tab, nextProps.progress);
+        this.handleDisableTab(nextProps.tab, nextProps.progress, nextProps.isDisabledReviewButton);
       }
     }
   };
 
-  handleDisableTab = (tab, progress) => {
+  handleDisableTab = (tab, progress, isDisabledReviewButton) => {
     if (tab) {
+      //application_progress_status_code does not have end_date. Status:In Progress
       if (!isEmpty(progress[tab]) && !progress[tab].end_date) {
         this.setState({ disableTab: false });
-      } else if (isEmpty(progress[tab])) {
+      }
+      //DisabledReviewButton applies for CON/REF to show CON/REF package buttons in not started state.
+      //Otherwise, if not CON/REF tab, do not show buttons.
+      //application_progress_status_code does not exist. Status:Not started
+      else if (!isDisabledReviewButton && isEmpty(progress[tab])) {
         this.setState({ disableTab: true });
-      } else if (!isEmpty(progress[tab]) && progress[tab].end_date) {
+      }
+      //application_progress_status_code has end date. Status: Complete
+      else if (!isEmpty(progress[tab]) && progress[tab].end_date) {
         this.setState({ disableTab: true });
       }
     } else {

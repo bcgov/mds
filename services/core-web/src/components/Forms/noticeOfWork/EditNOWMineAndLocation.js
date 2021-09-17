@@ -4,7 +4,7 @@ import { Field } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Badge } from "antd";
-import { required, lat, lon } from "@common/utils/Validate";
+import { required, lat, lon, lonNegative } from "@common/utils/Validate";
 import RenderMineSelect from "@/components/common/RenderMineSelect";
 import RenderField from "@/components/common/RenderField";
 import * as Styles from "@/constants/styles";
@@ -44,7 +44,12 @@ export const EditNOWMineAndLocation = (props) => {
         </Col>
         <Col md={span} s={12}>
           <Form.Item label="NoW Longitude">
-            <Field id="longitude" name="longitude" component={RenderField} validate={[lon]} />
+            <Field
+              id="longitude"
+              name="longitude"
+              component={RenderField}
+              validate={[lon, lonNegative]}
+            />
           </Form.Item>
         </Col>
       </Row>

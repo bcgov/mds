@@ -126,6 +126,7 @@ export const DownloadDocumentPackageModal = (props) => {
           <NOWActionWrapper
             permission={Permission.EDIT_PERMITS}
             tab={props.type === "FNC" ? "CON" : props.type}
+            isDisabledReviewButton
           >
             <Button
               type="primary"

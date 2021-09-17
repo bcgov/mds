@@ -1,14 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdminPermitConditionManagement renders properly 1`] = `
-<div
-  className="tab__content"
->
-  <h2>
-    Permit Conditions
-  </h2>
-  <Divider />
-  <br />
-  <withRouter(Connect(StandardPermitConditions)) />
+<div>
+  <div
+    className="landing-page__header"
+  >
+    <Row>
+      <Col
+        lg={12}
+        md={14}
+        sm={22}
+      >
+        <h1>
+          Permit Conditions
+        </h1>
+      </Col>
+    </Row>
+  </div>
+  <PermitConditionsNavigation
+    activeButton=""
+    openSubMenuKey={
+      Array [
+        "",
+      ]
+    }
+  />
+  <div
+    className="tab__content"
+  >
+    <withRouter(Connect(StandardPermitConditions)) />
+  </div>
 </div>
 `;

@@ -395,7 +395,7 @@ exports[`DashboardRoutes  renders properly 1`] = `
       }
     }
     exact={true}
-    path="/admin/dashboard/permit-conditions/:type"
+    path="/admin/permit-condition-management/:type"
   />
   <Route
     component={
@@ -422,6 +422,19 @@ exports[`DashboardRoutes  renders properly 1`] = `
     }
     exact={true}
     path="/admin/dashboard/manage-minespace/users"
+  />
+  <Route
+    component={
+      Object {
+        "$$typeof": Symbol(react.memo),
+        "WrappedComponent": [Function],
+        "compare": null,
+        "displayName": "Connect(authorizationGuard)",
+        "type": [Function],
+      }
+    }
+    exact={true}
+    path="/admin/contact-management/:tab"
   />
   <Route
     component={

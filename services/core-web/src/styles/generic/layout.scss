@@ -127,6 +127,9 @@ html {
 .flex-start {
   justify-content: flex-start;
 }
+.grid {
+  display: grid;
+}
 
 .block {
   &-mobile {
@@ -158,6 +161,10 @@ html {
 
 .flex-4 {
   flex: 4;
+}
+
+.flex-1 {
+  flex: 1;
 }
 
 .wrap {

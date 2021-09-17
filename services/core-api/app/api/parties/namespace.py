@@ -1,6 +1,7 @@
 from flask_restplus import Namespace
 
 from app.api.parties.party.resources.party_resource import PartyResource
+from app.api.parties.party.resources.merge_resource import MergeResource
 from app.api.parties.party.resources.sub_division_code_resource import SubDivisionCodeResource
 from app.api.parties.party.resources.party_list_resource import PartyListResource
 from app.api.parties.party.resources.party_orgbook_entity_list_resource import PartyOrgBookEntityListResource
@@ -11,6 +12,8 @@ api = Namespace('parties', description='Party related operations')
 
 api.add_resource(PartyListResource, '')
 api.add_resource(PartyResource, '/<string:party_guid>')
+
+api.add_resource(MergeResource, '/merge')
 
 api.add_resource(SubDivisionCodeResource, '/sub-division-codes')
 

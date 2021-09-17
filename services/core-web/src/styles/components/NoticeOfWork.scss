@@ -71,7 +71,7 @@
 
   &--title {
     border-bottom: 1px solid $non-textual-grey;
-    width: 60vw;
+    width: 70vw;
 
     h3 {
       margin-left: 20px;
@@ -88,7 +88,7 @@
 .view {
   &--header {
     &.fixed-scroll {
-      top: 60px;
+      top: 55px;
       position: fixed;
       width: 100vw;
       background-color: $pure-white;
@@ -102,6 +102,10 @@
         display: inline-flex;
         padding-top: 10px;
       }
+    }
+    &--sub {
+      font-size: $font-size-sm;
+      color: $non-textual-grey;
     }
   }
 
@@ -125,6 +129,7 @@
 }
 
 .side-menu {
+  overflow: scroll;
   margin-left: 15px;
   margin-top: 15px;
   width: 240px;
@@ -188,7 +193,6 @@
 }
 
 .now-menu-link {
-  padding: 10px;
   a:hover,
   a:active {
     text-decoration: none;
@@ -196,8 +200,9 @@
   }
 
   &.ant-anchor-link {
-    line-height: 1.75;
+    line-height: 1.2;
     border-bottom: none;
+    padding: 4px;
   }
 }
 
@@ -265,8 +270,8 @@
 .tab-title {
   color: $violet;
   min-width: 255px;
-  max-width: 255px;
-  margin-top: 10px;
+  max-width: 280px;
+  margin-top: 5px;
   text-align: end;
 }
 
