@@ -41,7 +41,7 @@ LABEL summary=$SUMMARY \
 
 EXPOSE 5432
 
-COPY openshift/docker-images/postgres96/root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
+COPY openshift4/docker-images/postgres96/root/usr/libexec/fix-permissions /usr/libexec/fix-permissions
 
 # Copy entitlements and subscription manager configurations
 # https://github.com/BCDevOps/OpenShift4-Migration/issues/15
@@ -112,7 +112,7 @@ RUN mkdir -p /tmp/oraclelibs && cd /tmp/oraclelibs && \
     rpm -Uvh oracle-instantclient-basic-21.1.0.0.0-1.x86_64.rpm && \
     rpm -Uvh oracle-instantclient-devel-21.1.0.0.0-1.x86_64.rpm
 
-COPY openshift/docker-images/postgres96/root /
+COPY openshift4/docker-images/postgres96/root /
 
 ENV PGCONFIG /opt/rh/rh-postgresql96/root/usr/bin
 ENV ORACLE_HOME /usr/lib/oracle/21/client64/lib

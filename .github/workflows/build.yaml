@@ -8,7 +8,7 @@ on:
       - services/**
       - migrations/**
       - openshift4/templates/**.bc.yaml
-      - openshift/docker-images/**
+      - openshift4/docker-images/**
       - .github/workflows/build.yaml
 
 env:
