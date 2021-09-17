@@ -64,7 +64,7 @@ jobs:
           docker-compose -f docker-compose.ci.yaml exec -T frontend npm run test:coverage
           docker cp mds_frontend:/app/coverage/clover.xml services/core-web/clover.xml
           echo "debug: sed string: s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web/|g"
-          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web/|g" services/core-web/clover.xml
+          sed -i "s|path=\"/app|path=\"$GITHUB_WORKSPACE/services/core-web|g" services/core-web/clover.xml
           head services/core-web/clover.xml
 
       #### Group formatting ####
