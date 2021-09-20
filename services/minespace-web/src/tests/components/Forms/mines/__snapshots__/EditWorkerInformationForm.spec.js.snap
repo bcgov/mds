@@ -24,9 +24,8 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         title="Approximate number of workers on site that includes mine employees and contractors."
         transitionName="zoom-big-fast"
       >
-        <Icon
+        <ForwardRef(InfoCircleOutlined)
           className="padding-sm"
-          type="info-circle"
         />
       </Tooltip>
     </Title>

@@ -31,6 +31,14 @@ exports[`LandingPage renders properly 1`] = `
       <Title>
         Welcome to MineSpace
       </Title>
+      <h4>
+        React version: 
+        16.14.0
+      </h4>
+      <h4>
+        antd version: 
+        3.26.20
+      </h4>
       <Paragraph
         className="header-text"
       >

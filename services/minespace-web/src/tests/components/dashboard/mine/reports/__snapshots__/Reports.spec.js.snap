@@ -67,10 +67,7 @@ exports[`Reports renders properly 1`] = `
             }
             type="primary"
           >
-            <Icon
-              theme="filled"
-              type="plus-circle"
-            />
+            <ForwardRef(PlusCircleFilled) />
             Submit Report
           </Button>
         </Connect(AuthorizationWrapper)>

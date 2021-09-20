@@ -28,7 +28,6 @@ exports[`PrivateRoutes  renders properly 1`] = `
     exact={true}
     path="/return-page"
   />
-   */}
   <Route
     component={
       Object {

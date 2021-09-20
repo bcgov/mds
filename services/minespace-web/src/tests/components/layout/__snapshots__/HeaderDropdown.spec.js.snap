@@ -43,9 +43,7 @@ exports[`HeaderDropdown renders properly 1`] = `
         htmlType="button"
         loading={false}
       >
-        <Icon
-          type="caret-down"
-        />
+        <ForwardRef(CaretDownOutlined) />
       </Button>
     </Dropdown>
   </MediaQueryContextConsumer>

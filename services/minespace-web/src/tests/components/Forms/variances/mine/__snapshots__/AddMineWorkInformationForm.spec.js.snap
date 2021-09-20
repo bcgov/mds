@@ -49,9 +49,8 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 }
                 transitionName="zoom-big-fast"
               >
-                <Icon
+                <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
-                  type="info-circle"
                 />
               </Tooltip>
               Work Start Date
@@ -108,9 +107,8 @@ exports[`AddMineWorkInformationForm renders properly 1`] = `
                 }
                 transitionName="zoom-big-fast"
               >
-                <Icon
+                <ForwardRef(InfoCircleOutlined)
                   className="padding-sm"
-                  type="info-circle"
                 />
               </Tooltip>
               Work Stop Date
