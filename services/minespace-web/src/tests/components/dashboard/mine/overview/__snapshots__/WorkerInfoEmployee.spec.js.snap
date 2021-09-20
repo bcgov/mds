@@ -11,73 +11,52 @@ exports[`WorkerInfoEmployee renders properly 1`] = `
       <Col
         span={24}
       >
-        <Row
-          gutter={0}
+        <div
+          className="inline-flex between"
         >
-          <div
-            className="inline-flex between"
+          <Title
+            level={4}
           >
-            <Col
-              span={21}
+            Worker Information
+            <Tooltip
+              arrowPointAtCenter={false}
+              autoAdjustOverflow={true}
+              mouseEnterDelay={0.3}
+              mouseLeaveDelay={0.1}
+              overlayClassName="minespace-tooltip"
+              placement="right"
+              title="Approximate number of workers on site that includes mine employees and contractors."
+              transitionName="zoom-big-fast"
             >
-              <Title
-                level={4}
-              >
-                Worker Information
-                <Tooltip
-                  arrowPointAtCenter={false}
-                  autoAdjustOverflow={true}
-                  mouseEnterDelay={0.3}
-                  mouseLeaveDelay={0.1}
-                  overlayClassName="minespace-tooltip"
-                  placement="right"
-                  title="Approximate number of workers on site that includes mine employees and contractors."
-                  transitionName="zoom-big-fast"
-                >
-                  <Icon
-                    className="padding-sm"
-                    type="info-circle"
-                  />
-                </Tooltip>
-              </Title>
-            </Col>
-            <Col
-              span={3}
-            >
-              <span
-                style={
-                  Object {
-                    "float": "right",
-                  }
+              <ForwardRef(InfoCircleOutlined)
+                className="padding-sm"
+              />
+            </Tooltip>
+          </Title>
+          <Button
+            block={false}
+            ghost={true}
+            htmlType="button"
+            loading={false}
+            onClick={[Function]}
+            size="small"
+            style={
+              Object {
+                "border": 0,
+              }
+            }
+            type="primary"
+          >
+            <img
+              alt="Edit Worker Info"
+              src={
+                Object {
+                  "process": [Function],
                 }
-              >
-                <Button
-                  block={false}
-                  ghost={true}
-                  htmlType="button"
-                  loading={false}
-                  onClick={[Function]}
-                  size="small"
-                  style={
-                    Object {
-                      "border": 0,
-                    }
-                  }
-                  type="primary"
-                >
-                  <img
-                    alt="Edit Worker Info"
-                    src={
-                      Object {
-                        "process": [Function],
-                      }
-                    }
-                  />
-                </Button>
-              </span>
-            </Col>
-          </div>
-        </Row>
+              }
+            />
+          </Button>
+        </div>
         <Descriptions
           column={
             Object {

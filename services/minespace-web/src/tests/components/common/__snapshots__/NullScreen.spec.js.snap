@@ -19,11 +19,7 @@ exports[`NullScreen renders properly 1`] = `
            for assistance.
         </Paragraph>
       }
-      icon={
-        <Icon
-          type="stop"
-        />
-      }
+      icon={<ForwardRef(StopOutlined) />}
       status="error"
       subTitle={
         <Text>

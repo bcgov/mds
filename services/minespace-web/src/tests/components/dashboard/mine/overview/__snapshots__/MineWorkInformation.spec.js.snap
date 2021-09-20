@@ -4,44 +4,34 @@ exports[`MineWorkInformation renders properly 1`] = `
 <div
   className="work-information-container "
 >
-  <Row
-    gutter={5}
+  <div
+    className="inline-flex between"
   >
-    <div
-      className="inline-flex between"
+    <Title
+      level={4}
     >
-      <Title
-        level={4}
+      Work Information
+    </Title>
+    <span>
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="link"
       >
-        Work Information
-      </Title>
-      <span
-        style={
-          Object {
-            "float": "right",
-          }
-        }
-      >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          type="link"
-        >
-          <img
-            alt="Edit"
-            src={
-              Object {
-                "process": [Function],
-              }
+        <img
+          alt="Edit"
+          src={
+            Object {
+              "process": [Function],
             }
-          />
-        </Button>
-      </span>
-    </div>
-  </Row>
+          }
+        />
+      </Button>
+    </span>
+  </div>
   <Row
     gutter={5}
   >
@@ -108,9 +98,8 @@ exports[`MineWorkInformation renders properly 1`] = `
                             }
                             transitionName="zoom-big-fast"
                           >
-                            <Icon
+                            <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
-                              type="info-circle"
                             />
                           </Tooltip>
                           Work Start Date
@@ -150,9 +139,8 @@ exports[`MineWorkInformation renders properly 1`] = `
                             }
                             transitionName="zoom-big-fast"
                           >
-                            <Icon
+                            <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
-                              type="info-circle"
                             />
                           </Tooltip>
                           Work Stop Date
