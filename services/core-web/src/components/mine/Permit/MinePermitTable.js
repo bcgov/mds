@@ -116,7 +116,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
 
 const renderVerifyCredentials = (text, record) => {
   return (
-    <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+    <AuthorizationWrapper permission={Permission.ADMIN}>
       <Popconfirm
         placement="topLeft"
         title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
@@ -435,7 +435,7 @@ const childColumns = [
     render: (text, record) => {
       const menu = (
         <Menu>
-          <AuthorizationWrapper permission={Permission.ADMIN}>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
             <Menu.Item key="0">
               <div className="custom-menu-item">
                 <button

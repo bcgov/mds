@@ -94,7 +94,7 @@ export class MineReportActions extends Component {
   render() {
     const menu = (
       <Menu>
-        <AuthorizationWrapper permission={Permission.ADMIN}>
+        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
           <Menu.Item key="0">
             <div className="custom-menu-item">
               <button

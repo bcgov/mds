@@ -1,5 +1,5 @@
 import React from "react";
-import { notification } from "antd";
+import { notification, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import { getDocumentDownloadToken } from "@common/utils/actionlessNetworkCalls";
@@ -29,6 +29,8 @@ const waitFor = (conditionFunction) => {
 };
 
 export const DownloadAllDocuments = (props) => {
+  const hasDocuments = props.documents.length > 0;
+
   const handleDownloadAll = () => {
     const docURLS = [];
 
@@ -60,14 +62,25 @@ export const DownloadAllDocuments = (props) => {
   };
   return (
     <div className="custom-menu-item">
-      <button
-        type="button"
-        className="full add-permit-dropdown-button"
-        onClick={() => handleDownloadAll()}
+      <Tooltip
+        title="The permit must have at least 1 document uploaded"
+        placement="right"
+        visible={!hasDocuments}
+        trigger={["hover"]}
+        mouseEnterDelay={0.3}
+        mouseLeaveDelay={0}
+        destroyTooltipOnHide
       >
-        <DownloadOutlined className="icon-sm padding-md--right violet" />
-        Download All
-      </button>
+        <button
+          type="button"
+          className="full add-permit-dropdown-button"
+          disabled={!hasDocuments}
+          onClick={() => handleDownloadAll()}
+        >
+          <DownloadOutlined className="icon-sm padding-md--right violet" />
+          Download All
+        </button>
+      </Tooltip>
     </div>
   );
 };
