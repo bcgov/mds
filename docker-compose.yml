@@ -225,62 +225,6 @@ services:
     ports:
       - 3030:3030
 
-  ####################### Logging and Monitoring #######################
-
-  loki:
-    image: grafana/loki:latest
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/loki.local.yaml
-    volumes:
-      - ./monitoring/loki/loki.local.yaml:/etc/loki/loki.local.yaml
-
-  promtail:
-    image: grafana/promtail:latest
-    volumes:
-      - ./monitoring/promtail/promtail.local.yaml:/etc/promtail/promtail.local.yaml
-      - core_api_logs:/mnt/core-api
-      - core_web_logs:/mnt/core-web
-    command: -config.file=/etc/promtail/promtail.local.yaml
-    expose:
-      - 1514
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    volumes:
-      - ./monitoring/prometheus/prometheus.local.yaml:/etc/prometheus/prometheus.local.yaml
-      - prometheus_data:/prometheus
-    command:
-      - "--config.file=/etc/prometheus/prometheus.local.yaml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
-      - "--web.console.templates=/usr/share/prometheus/consoles"
-    ports:
-      - "9090:9090"
-    restart: always
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    user: "104"
-    depends_on:
-      - prometheus
-    ports:
-      - 3010:3000
-    volumes:
-      - grafana_storage:/var/lib/grafana
-      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
-    env_file:
-      - ./monitoring/grafana/env
-    restart: always
-
-  # jaeger:
-  #   image: jaegertracing/all-in-one:latest
-  #   ports:
-  #     - "6831:6831/udp"
-  #     - "16686:16686"
-
   ############################# Container metrics ###########################
   # https://github.com/maheshmahadevan/docker-monitoring-windows
   node-exporter:
@@ -340,7 +284,5 @@ networks:
 ####################### Volumes Definition #######################
 volumes:
   postgres_data: {}
-  prometheus_data: {}
-  grafana_storage: {}
   core_api_logs: {}
   core_web_logs: {}
