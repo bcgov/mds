@@ -29,7 +29,7 @@ const waitFor = (conditionFunction) => {
 };
 
 export const DownloadAllDocuments = (props) => {
-  const hasDocuments = props.documents.length > 0;
+  const hasDocuments = props.documents?.length > 0;
 
   const handleDownloadAll = () => {
     const docURLS = [];
@@ -62,25 +62,15 @@ export const DownloadAllDocuments = (props) => {
   };
   return (
     <div className="custom-menu-item">
-      <Tooltip
-        title="The permit must have at least 1 document uploaded"
-        placement="right"
-        visible={!hasDocuments}
-        trigger={["hover"]}
-        mouseEnterDelay={0.3}
-        mouseLeaveDelay={0}
-        destroyTooltipOnHide
+      <button
+        type="button"
+        className="full add-permit-dropdown-button"
+        disabled={!hasDocuments}
+        onClick={() => handleDownloadAll()}
       >
-        <button
-          type="button"
-          className="full add-permit-dropdown-button"
-          disabled={!hasDocuments}
-          onClick={() => handleDownloadAll()}
-        >
-          <DownloadOutlined className="icon-sm padding-md--right violet" />
-          Download All
-        </button>
-      </Tooltip>
+        <DownloadOutlined className="icon-sm padding-md--right violet" />
+        Download All
+      </button>
     </div>
   );
 };

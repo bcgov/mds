@@ -79,7 +79,7 @@ export class MineReportActions extends Component {
   };
 
   reportDocuments = () => {
-    if (this.props.mineReport.mine_report_submissions) {
+    if (this.props.mineReport.mine_report_submissions.length) {
       return this.props.mineReport.mine_report_submissions[
         this.props.mineReport.mine_report_submissions.length - 1
       ].documents.map((doc) => ({
