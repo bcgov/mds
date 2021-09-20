@@ -63,7 +63,6 @@ const finalApplicationPackage = (amendment) => {
 };
 
 const transformRowData = (permit, permitStatusOptions) => {
-  console.log(permit);
   const latestAmendment = permit.permit_amendments[0];
   const firstAmendment = permit.permit_amendments[permit.permit_amendments.length - 1];
   return {
@@ -127,26 +126,23 @@ export const PermitsTable = (props) => {
         title: "Map Files",
         dataIndex: "maps",
         key: "maps",
-        render: (text) => {
-          console.log(text);
-          return (
-            <div className="cap-col-height" title="Map Files">
-              {(text &&
-                text.length > 0 &&
-                text.map((file) => (
-                  <LinkButton
-                    key={file.mine_document.document_manager_guid}
-                    onClick={() => downloadFileFromDocumentManager(file.mine_document)}
-                    title={file.mine_document.document_name}
-                  >
-                    {truncateFilename(file.mine_document.document_name)}
-                    <br />
-                  </LinkButton>
-                ))) ||
-                Strings.EMPTY_FIELD}
-            </div>
-          );
-        },
+        render: (text) => (
+          <div className="cap-col-height" title="Map Files">
+            {(text &&
+              text.length > 0 &&
+              text.map((file) => (
+                <LinkButton
+                  key={file.mine_document.document_manager_guid}
+                  onClick={() => downloadFileFromDocumentManager(file.mine_document)}
+                  title={file.mine_document.document_name}
+                >
+                  {truncateFilename(file.mine_document.document_name)}
+                  <br />
+                </LinkButton>
+              ))) ||
+              Strings.EMPTY_FIELD}
+          </div>
+        ),
       },
       {
         title: "Permit Package",
