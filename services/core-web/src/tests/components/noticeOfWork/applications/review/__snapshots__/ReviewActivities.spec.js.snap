@@ -3,25 +3,6 @@
 exports[`ReviewActivities renders properly 1`] = `
 <div>
   <withRouter(Connect(ScrollContentWrapper))
-    data={
-      Object {
-        "details": Array [],
-      }
-    }
-    id="exploration-access"
-    isViewMode={true}
-    title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
-  >
-    <FormSection
-      name="exploration_access"
-    >
-      <AccessRoads
-        isViewMode={true}
-        renderOriginalValues={[MockFunction]}
-      />
-    </FormSection>
-  </withRouter(Connect(ScrollContentWrapper))>
-  <withRouter(Connect(ScrollContentWrapper))
     data={Object {}}
     id="blasting-operation"
     isViewMode={true}
@@ -63,15 +44,14 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
-    id="cut-lines-polarization-survey"
+    id="mechanical-trenching"
     isViewMode={true}
-    showContent={true}
-    title="Cut Lines and Induced Polarization Survey"
+    title="Mechanical Trenching / Test Pits"
   >
     <FormSection
-      name="cut_lines_polarization_survey"
+      name="mechanical_trenching"
     >
-      <CutLines
+      <MechanicalTrenching
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -102,33 +82,14 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
-    id="mechanical-trenching"
+    id="exploration-access"
     isViewMode={true}
-    title="Mechanical Trenching / Test Pits"
+    title="Access Roads, Trails, Helipads, Air Strips, Boat Ramps"
   >
     <FormSection
-      name="mechanical_trenching"
+      name="exploration_access"
     >
-      <MechanicalTrenching
-        isViewMode={true}
-        renderOriginalValues={[MockFunction]}
-      />
-    </FormSection>
-  </withRouter(Connect(ScrollContentWrapper))>
-  <withRouter(Connect(ScrollContentWrapper))
-    data={
-      Object {
-        "details": Array [],
-      }
-    }
-    id="settling-pond"
-    isViewMode={true}
-    title="Settling Ponds"
-  >
-    <FormSection
-      name="settling_pond"
-    >
-      <Connect(SettlingPonds)
+      <AccessRoads
         isViewMode={true}
         renderOriginalValues={[MockFunction]}
       />
@@ -180,26 +141,6 @@ exports[`ReviewActivities renders properly 1`] = `
         "details": Array [],
       }
     }
-    id="sand-and-gravel"
-    isViewMode={true}
-    showContent={false}
-    title="Sand and Gravel / Quarry Operations"
-  >
-    <FormSection
-      name="sand_gravel_quarry_operation"
-    >
-      <Connect(SandGravelQuarry)
-        isViewMode={true}
-        renderOriginalValues={[MockFunction]}
-      />
-    </FormSection>
-  </withRouter(Connect(ScrollContentWrapper))>
-  <withRouter(Connect(ScrollContentWrapper))
-    data={
-      Object {
-        "details": Array [],
-      }
-    }
     id="placer-operation"
     isViewMode={true}
     showContent={false}
@@ -229,6 +170,65 @@ exports[`ReviewActivities renders properly 1`] = `
     >
       <Connect(WaterSupply)
         isViewMode={true}
+      />
+    </FormSection>
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="cut-lines-polarization-survey"
+    isViewMode={true}
+    showContent={true}
+    title="Cut Lines and Induced Polarization Survey"
+  >
+    <FormSection
+      name="cut_lines_polarization_survey"
+    >
+      <CutLines
+        isViewMode={true}
+        renderOriginalValues={[MockFunction]}
+      />
+    </FormSection>
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="settling-pond"
+    isViewMode={true}
+    title="Settling Ponds"
+  >
+    <FormSection
+      name="settling_pond"
+    >
+      <Connect(SettlingPonds)
+        isViewMode={true}
+        renderOriginalValues={[MockFunction]}
+      />
+    </FormSection>
+  </withRouter(Connect(ScrollContentWrapper))>
+  <withRouter(Connect(ScrollContentWrapper))
+    data={
+      Object {
+        "details": Array [],
+      }
+    }
+    id="sand-and-gravel"
+    isViewMode={true}
+    showContent={false}
+    title="Sand and Gravel / Quarry Operations"
+  >
+    <FormSection
+      name="sand_gravel_quarry_operation"
+    >
+      <Connect(SandGravelQuarry)
+        isViewMode={true}
+        renderOriginalValues={[MockFunction]}
       />
     </FormSection>
   </withRouter(Connect(ScrollContentWrapper))>

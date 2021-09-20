@@ -51,7 +51,7 @@ class MineWorkInformationResource(Resource, UserMixin):
             'mine_guid': 'The GUID of the mine the work information belongs to.',
             'mine_work_information_guid': 'The GUID of the work information to update.'
         })
-    @requires_any_of([MINE_EDIT])
+    @requires_any_of([MINE_EDIT, MINESPACE_PROPONENT])
     @api.marshal_with(MINE_WORK_INFORMATION_MODEL, code=200)
     def put(self, mine_guid, mine_work_information_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
