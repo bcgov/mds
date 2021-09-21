@@ -2,7 +2,7 @@
 
 exports[`InspectionsTable renders properly 1`] = `
 <div>
-  <withStore(Table)
+  <Table
     columns={
       Array [
         Object {
@@ -98,6 +98,7 @@ exports[`InspectionsTable renders properly 1`] = `
       }
     }
     pagination={false}
+    rowKey="key"
     size="small"
   />
   <div

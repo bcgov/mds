@@ -52,9 +52,7 @@ exports[`MineWorkInformation renders properly 1`] = `
         tip=""
       >
         <div>
-          <Row
-            gutter={0}
-          >
+          <Row>
             <div>
               <Row
                 gutter={16}
@@ -65,12 +63,11 @@ exports[`MineWorkInformation renders properly 1`] = `
                   <Descriptions
                     colon={false}
                     column={5}
-                    size="default"
                   >
                     <DescriptionsItem
                       label={
                         <React.Fragment>
-                          <Tooltip
+                          <ForwardRef
                             arrowPointAtCenter={false}
                             autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
@@ -101,7 +98,7 @@ exports[`MineWorkInformation renders properly 1`] = `
                             <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
                             />
-                          </Tooltip>
+                          </ForwardRef>
                           Work Start Date
                         </React.Fragment>
                       }
@@ -111,7 +108,7 @@ exports[`MineWorkInformation renders properly 1`] = `
                     <DescriptionsItem
                       label={
                         <React.Fragment>
-                          <Tooltip
+                          <ForwardRef
                             arrowPointAtCenter={false}
                             autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
@@ -142,7 +139,7 @@ exports[`MineWorkInformation renders properly 1`] = `
                             <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
                             />
-                          </Tooltip>
+                          </ForwardRef>
                           Work Stop Date
                         </React.Fragment>
                       }
@@ -153,10 +150,6 @@ exports[`MineWorkInformation renders properly 1`] = `
                       label="Work Status"
                     >
                       <Badge
-                        count={null}
-                        dot={false}
-                        overflowCount={99}
-                        showZero={false}
                         status="warning"
                         text="Not Working"
                       />
@@ -173,9 +166,7 @@ exports[`MineWorkInformation renders properly 1`] = `
               </Row>
             </div>
           </Row>
-          <Row
-            gutter={0}
-          >
+          <Row>
             <Col
               span={22}
             >
