@@ -400,11 +400,11 @@ const childColumns = [
     ),
   },
   {
-    title: "Final Application Package",
+    title: "Permit Package",
     dataIndex: "finalApplicationPackage",
     key: "finalApplicationPackage",
     render: (text) => (
-      <div title="Final Application Package">
+      <div title="Permit Package">
         <ul>
           {text?.map((file) => (
             <li className="wrapped-text">{renderDocumentLink(file.mine_document)}</li>
