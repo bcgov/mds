@@ -18,11 +18,12 @@ import * as Strings from "@common/constants/strings";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 import CustomPropTypes from "@/customPropTypes";
-import { EDIT_OUTLINE, EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
+import { EDIT_OUTLINE_VIOLET, EDIT, CARAT, TRASHCAN } from "@/constants/assets";
 import CoreTable from "@/components/common/CoreTable";
 import { isEmpty } from "lodash";
 import { PERMIT_AMENDMENT_TYPES } from "@common/constants/strings";
 import DocumentLink from "@/components/common/DocumentLink";
+import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
 
 /**
  * @class  MinePermitTable - displays a table of permits and permit amendments
@@ -80,7 +81,7 @@ const renderDeleteButtonForPermitAmendments = (record) => {
     return;
   }
 
-  const isLinkedToNowApplication = !isEmpty(record.amendmentEdit.amendment.now_application_guid);
+  const isLinkedToNowApplication = !isEmpty(record.now_application_guid);
 
   // eslint-disable-next-line consistent-return
   return (
@@ -98,15 +99,37 @@ const renderDeleteButtonForPermitAmendments = (record) => {
           isLinkedToNowApplication ? () => {} : () => record.handleDeletePermitAmendment(record)
         }
       >
-        <Button className="permit-table-button" type="ghost">
-          <div>
+        <div className="custom-menu-item">
+          <button type="button" className="full add-permit-dropdown-button">
             <img
-              className="padding-sm--right icon-svg-filter"
               src={TRASHCAN}
               alt="Remove Permit Amendment"
+              className="icon-sm padding-sm--right violet"
             />
-          </div>
-        </Button>
+            Delete
+          </button>
+        </div>
+      </Popconfirm>
+    </AuthorizationWrapper>
+  );
+};
+
+const renderVerifyCredentials = (text, record) => {
+  return (
+    <AuthorizationWrapper permission={Permission.ADMIN}>
+      <Popconfirm
+        placement="topLeft"
+        title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
+        onConfirm={(event) => record.handlePermitAmendmentIssueVC(event, record, record.permit)}
+        okText="Issue"
+        cancelText="Cancel"
+      >
+        <div className="custom-menu-item">
+          <button type="button" className="full add-permit-dropdown-button">
+            <SafetyCertificateOutlined className="icon-sm padding-md--right violet" />
+            Verify
+          </button>
+        </div>
       </Popconfirm>
     </AuthorizationWrapper>
   );
@@ -331,8 +354,8 @@ const childColumns = [
   },
   {
     title: "Type",
-    dataIndex: "amendmentType",
-    key: "amendmentType",
+    dataIndex: "permit_amendment_type_code",
+    key: "permit_amendment_type_code",
     width: "130px",
     render: (text, record) => <div title="Type">{record.permitAmendmentTypeOptionsHash[text]}</div>,
   },
@@ -406,38 +429,54 @@ const childColumns = [
   },
   {
     title: "",
-    dataIndex: "amendmentEdit",
-    key: "amendmentEdit",
+    dataIndex: "operations",
+    key: "operations",
     align: "right",
-    render: (text, record) => (
-      <div>
-        <AuthorizationWrapper permission={Permission.ADMIN}>
-          <Popconfirm
-            placement="topLeft"
-            title={`Are you sure you want to Issue this permit as a Verifiable Credential to OrgBook entity: ${record.permit.current_permittee}?`}
-            onConfirm={(event) =>
-              record.handlePermitAmendmentIssueVC(event, text.amendment, record.permit)
-            }
-            okText="Issue"
-            cancelText="Cancel"
-          >
-            <SafetyCertificateOutlined className="icon-sm" />
-          </Popconfirm>
-        </AuthorizationWrapper>
-        <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
-          <Button
-            className="permit-table-button"
-            type="ghost"
-            onClick={(event) => record.openEditAmendmentModal(event, text.amendment, record.permit)}
-          >
-            <div>
-              <img className="padding-sm--right icon-svg-filter" src={EDIT_OUTLINE} alt="Edit" />
-            </div>
-          </Button>
-        </AuthorizationWrapper>
-        {renderDeleteButtonForPermitAmendments(record)}
-      </div>
-    ),
+    render: (text, record) => {
+      const menu = (
+        <Menu>
+          <AuthorizationWrapper permission={Permission.EDIT_PERMITS}>
+            <Menu.Item key="0">
+              <div className="custom-menu-item">
+                <button
+                  type="button"
+                  className="full add-permit-dropdown-button"
+                  onClick={(event) => record.openEditAmendmentModal(event, record, record.permit)}
+                >
+                  <img
+                    src={EDIT_OUTLINE_VIOLET}
+                    alt="Edit"
+                    className="icon-sm padding-sm--right violet"
+                    style={{ paddingLeft: "13px" }}
+                  />
+                  Edit
+                </button>
+              </div>
+            </Menu.Item>
+          </AuthorizationWrapper>
+          <Menu.Item key="1">
+            <DownloadAllDocuments documents={record.permitAmendmentDocuments} />
+          </Menu.Item>
+          <Menu.Item key="2">{renderDeleteButtonForPermitAmendments(record)}</Menu.Item>
+          <Menu.Item key="3">{renderVerifyCredentials(text, record)}</Menu.Item>
+        </Menu>
+      );
+      return (
+        <div>
+          <Dropdown overlay={menu} placement="bottomLeft">
+            <Button type="secondary" className="permit-table-button">
+              Actions
+              <img
+                className="padding-sm--right icon-svg-filter"
+                src={CARAT}
+                alt="Menu"
+                style={{ paddingLeft: "5px" }}
+              />
+            </Button>
+          </Dropdown>
+        </div>
+      );
+    },
   },
 ];
 
@@ -500,17 +539,12 @@ const transformChildRowData = (
   permitAmendmentTypeOptionsHash
 ) => ({
   amendmentNumber,
-  amendmentType: amendment.permit_amendment_type_code,
   isAmalgamated: amendment.permit_amendment_type_code === PERMIT_AMENDMENT_TYPES.amalgamated,
   receivedDate: formatDate(amendment.received_date) || Strings.EMPTY_FIELD,
   issueDate: formatDate(amendment.issue_date) || Strings.EMPTY_FIELD,
   authorizationEndDate: formatDate(amendment.authorization_end_date) || Strings.EMPTY_FIELD,
   description: amendment.description || Strings.EMPTY_FIELD,
   isAssociatedWithNOWApplicationImportedToCore: "",
-  amendmentEdit: {
-    major_mine_ind,
-    amendment,
-  },
   openEditAmendmentModal,
   permit: record.permit,
   documents: amendment.related_documents,
@@ -521,6 +555,12 @@ const transformChildRowData = (
     (doc) => doc.now_application_document_sub_type_code === "MDO"
   ),
   permitAmendmentTypeOptionsHash,
+  permitAmendmentDocuments: amendment.related_documents.map((doc) => ({
+    key: doc.mine_report_submission_guid,
+    documentManagerGuid: doc.document_manager_guid,
+    filename: doc.document_name,
+  })),
+  ...amendment,
 });
 
 export const RenderPermitTableExpandIcon = (rowProps) => (
@@ -558,6 +598,7 @@ export const MinePermitTable = (props) => {
         props.permitAmendmentTypeOptionsHash
       )
     );
+
     return (
       <Table align="left" pagination={false} columns={childColumns} dataSource={childRowData} />
     );
