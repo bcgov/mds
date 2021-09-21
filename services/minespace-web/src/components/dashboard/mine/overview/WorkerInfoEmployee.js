@@ -10,8 +10,6 @@ import CustomPropTypes from "@/customPropTypes";
 import EditWorkerInformationForm from "@/components/Forms/mines/EditWorkerInformationForm";
 import * as Strings from "@/constants/strings";
 
-const { Title } = Typography;
-
 const propTypes = {
   mine: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
   fetchMineRecordById: PropTypes.func.isRequired,
@@ -62,7 +60,7 @@ export class WorkerInfoEmployee extends Component {
             <Row gutter={16}>
               <Col span={24}>
                 <div className="inline-flex between">
-                  <Title level={4}>
+                  <Typography.Title level={4}>
                     Worker Information
                     <Tooltip
                       overlayClassName="minespace-tooltip"
@@ -72,7 +70,7 @@ export class WorkerInfoEmployee extends Component {
                     >
                       <InfoCircleOutlined className="padding-sm" />
                     </Tooltip>
-                  </Title>
+                  </Typography.Title>
                   <Button
                     style={{ border: 0 }}
                     type="primary"

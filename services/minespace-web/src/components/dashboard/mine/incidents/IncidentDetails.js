@@ -26,46 +26,43 @@ const propTypes = {
   complianceCodesHash: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-const { TabPane } = Tabs;
-const { Paragraph, Title, Text } = Typography;
-
 export const IncidentDetails = (props) => (
   <div>
     <Tabs type="card" tabPosition="left" defaultActiveKey="initial">
-      <TabPane tab="Initial Report" key="initial">
+      <Tabs.TabPane tab="Initial Report" key="initial">
         <InitialReport {...props} />
-      </TabPane>
-      <TabPane tab="Incident Details" key="details">
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Incident Details" key="details">
         <Details {...props} />
-      </TabPane>
-      <TabPane tab="Initial Documents" key="initialdocs">
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Initial Documents" key="initialdocs">
         <InitialDocuments {...props} />
-      </TabPane>
-      <TabPane tab="Follow-up Information" key="followup">
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Follow-up Information" key="followup">
         <FollowupInformation {...props} />
-      </TabPane>
-      <TabPane tab="Final Documents" key="finaldocs">
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="Final Documents" key="finaldocs">
         <FinalDocuments {...props} />
-      </TabPane>
+      </Tabs.TabPane>
     </Tabs>
   </div>
 );
 
 const IncidentField = (props) => (
   <Col sm={24} md={12}>
-    <Paragraph>
-      <Text className="color-primary" strong>
+    <Typography.Paragraph>
+      <Typography.Text className="color-primary" strong>
         {props.title}
-      </Text>
+      </Typography.Text>
       <br />
-      <Text>{props.content || Strings.EMPTY_FIELD}</Text>
-    </Paragraph>
+      <Typography.Text>{props.content || Strings.EMPTY_FIELD}</Typography.Text>
+    </Typography.Paragraph>
   </Col>
 );
 const InitialReport = (props) => (
   <Row>
     <Col span={24}>
-      <Title level={4}>Initial Report</Title>
+      <Typography.Title level={4}>Initial Report</Typography.Title>
       <IncidentField
         title="Incident type(s)"
         content={
@@ -121,7 +118,7 @@ const Details = (props) => (
   <React.Fragment>
     <Row>
       <Col span={24}>
-        <Title level={4}>Incident Details</Title>
+        <Typography.Title level={4}>Incident Details</Typography.Title>
 
         <IncidentField
           title="Incident date"
@@ -151,7 +148,7 @@ const Details = (props) => (
 
     <Row>
       <Col span={24}>
-        <Title level={4}>Dangerous Occurrence Determination</Title>
+        <Typography.Title level={4}>Dangerous Occurrence Determination</Typography.Title>
         <IncidentField
           title="Inspector's determination"
           content={
@@ -204,7 +201,7 @@ const Details = (props) => (
 const InitialDocuments = (props) => (
   <Row>
     <Col span={24}>
-      <Title level={4}>Preliminary Documents</Title>
+      <Typography.Title level={4}>Preliminary Documents</Typography.Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(
           (doc) => doc.mine_incident_document_type_code === "INI"
@@ -220,7 +217,7 @@ const FollowupInformation = (props) => {
   return (
     <Row>
       <Col span={24}>
-        <Title level={4}>Follow-up Information</Title>
+        <Typography.Title level={4}>Follow-up Information</Typography.Title>
         <IncidentField
           title="Was there a follow-up inspection?"
           content={props.incident.followup_inspection ? "Yes" : "No"}
@@ -273,7 +270,7 @@ const FollowupInformation = (props) => {
 const FinalDocuments = (props) => (
   <Row>
     <Col span={24}>
-      <Title level={4}>Final Documents</Title>
+      <Typography.Title level={4}>Final Documents</Typography.Title>
       <UploadedDocumentsTable
         files={props.incident.documents.filter(
           (doc) => doc.mine_incident_document_type_code === "FIN"

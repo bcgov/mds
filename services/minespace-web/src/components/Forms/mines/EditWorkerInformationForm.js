@@ -11,8 +11,6 @@ import { wholeNumberMask } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 
-const { Title } = Typography;
-
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -22,7 +20,7 @@ const propTypes = {
 export const EditWorkerInformationForm = (props) => (
   <div className="work-information-container ">
     <Form layout="vertical" onSubmit={props.handleSubmit}>
-      <Title level={4}>
+      <Typography.Title level={4}>
         Worker Information
         <Tooltip
           overlayClassName="minespace-tooltip"
@@ -32,7 +30,7 @@ export const EditWorkerInformationForm = (props) => (
         >
           <InfoCircleOutlined className="padding-sm" />
         </Tooltip>
-      </Title>
+      </Typography.Title>
       <Row gutter={16}>
         <Col span={22}>
           <Descriptions column={5} colon={false}>

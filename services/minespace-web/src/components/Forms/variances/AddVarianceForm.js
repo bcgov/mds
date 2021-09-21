@@ -12,8 +12,6 @@ import { renderConfig } from "@/components/common/config";
 import CustomPropTypes from "@/customPropTypes";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 
-const { Paragraph } = Typography;
-
 const propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
@@ -69,7 +67,7 @@ export class AddVarianceForm extends Component {
           validate={[maxLength(300)]}
         />
         <Form.Item label="Attached Files">
-          <Paragraph>Please upload all of the required documents.</Paragraph>
+          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"

@@ -16,8 +16,6 @@ import Map from "@/components/common/Map";
 import UnauthenticatedNotice from "../common/UnauthenticatedNotice";
 import { detectDevelopmentEnvironment } from "@/utils/environmentUtils";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchUserMineInfo: PropTypes.func.isRequired,
@@ -41,15 +39,17 @@ export class MinesPage extends Component {
       (this.state.isLoaded && (
         <Row>
           <Col span={24}>
-            <Title>My Mines</Title>
+            <Typography.Title>My Mines</Typography.Title>
             <Divider />
-            <Title level={4}>Welcome, {this.props.userInfo.preferred_username}.</Title>
+            <Typography.Title level={4}>
+              Welcome, {this.props.userInfo.preferred_username}.
+            </Typography.Title>
             {(mines && mines.length > 0 && (
               <Row gutter={32}>
                 <Col xl={12} lg={14} sm={24}>
-                  <Paragraph>
+                  <Typography.Paragraph>
                     You are authorized to submit information for the following mines:
-                  </Paragraph>
+                  </Typography.Paragraph>
                   <div className="link-card">
                     <ul>
                       {mines
@@ -57,11 +57,13 @@ export class MinesPage extends Component {
                         .map((mine) => (
                           <li key={mine.mine_guid}>
                             <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
-                              <Title level={4}>
+                              <Typography.Title level={4}>
                                 <EnvironmentOutlined style={{ paddingRight: "5px" }} />
                                 {mine.mine_name}{" "}
-                              </Title>
-                              <Text>Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}</Text>
+                              </Typography.Title>
+                              <Typography.Text>
+                                Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}
+                              </Typography.Text>
                             </Link>
                           </li>
                         ))}
@@ -75,23 +77,23 @@ export class MinesPage extends Component {
                       additionalPins={mines.map((mine) => [mine.latitude, mine.longitude])}
                     />
                   </div>
-                  <Paragraph style={{ paddingTop: "16px" }}>
+                  <Typography.Paragraph style={{ paddingTop: "16px" }}>
                     Don&apos;t see the mine you&apos;re looking for? Contact&nbsp;
                     <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
                     &nbsp;for assistance.
-                  </Paragraph>
+                  </Typography.Paragraph>
                 </Col>
               </Row>
             )) || (
               <Row>
                 <Col span={24}>
-                  <Paragraph>
+                  <Typography.Paragraph>
                     You are not authorized to manage information for any mines. Please contact&nbsp;
                     <a className="underline" href={Strings.MDS_EMAIL}>
                       {Strings.MDS_EMAIL}
                     </a>
                     &nbsp;for assistance.
-                  </Paragraph>
+                  </Typography.Paragraph>
                 </Col>
               </Row>
             )}
