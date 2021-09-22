@@ -81,7 +81,7 @@ objects:
         - type: ImageChange
       runPolicy: SerialLatestOnly
       source:
-        contextDir: openshift/docker-images/python-36-oracle
+        contextDir: openshift4/docker-images/python-36-oracle
         type: Git
         git:
           uri: ${SOURCE_REPOSITORY_URL}

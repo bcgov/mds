@@ -79,9 +79,7 @@ export class WorkerInfoEmployee extends Component {
                       <span style={{ float: "right" }}>
                         <Button
                           style={{ border: 0 }}
-                          type="primary"
-                          size="small"
-                          ghost
+                          type="link"
                           onClick={(event) => {
                             this.handleToggleEdit(event);
                           }}

@@ -7,6 +7,26 @@ exports[`Variances renders properly 1`] = `
   <Col
     span={24}
   >
+    <Button
+      block={false}
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      style={
+        Object {
+          "display": "inline",
+          "float": "right",
+        }
+      }
+      type="primary"
+    >
+      <Icon
+        theme="filled"
+        type="plus-circle"
+      />
+      Apply for a Variance
+    </Button>
     <Title
       level={4}
     >

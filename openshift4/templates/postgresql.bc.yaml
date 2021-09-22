@@ -11,7 +11,7 @@ parameters:
   - name: TAG
     value: dev
   - name: SOURCE_CONTEXT_DIR
-    value: openshift/docker-images/postgres
+    value: openshift4/docker-images/postgres
   - name: SOURCE_REPOSITORY_URL
     required: true
   - name: SOURCE_REPOSITORY_REF
@@ -85,7 +85,7 @@ objects:
         dockerStrategy:
           noCache: true
           imageOptimizationPolicy: SkipLayers
-          dockerfilePath: openshift/docker-images/postgres96/Dockerfile
+          dockerfilePath: openshift4/docker-images/postgres96/Dockerfile
           from:
             kind: DockerImage
             name: registry.access.redhat.com/rhel7:latest

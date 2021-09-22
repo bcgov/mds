@@ -79,7 +79,7 @@ objects:
         - type: ImageChange
       runPolicy: SerialLatestOnly
       source:
-        contextDir: openshift/docker-images/python-36
+        contextDir: openshift4/docker-images/python-36
         type: Git
         git:
           uri: ${SOURCE_REPOSITORY_URL}

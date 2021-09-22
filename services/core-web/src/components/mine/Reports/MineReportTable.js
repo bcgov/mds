@@ -167,14 +167,12 @@ export const MineReportTable = (props) => {
       render: (text, record) => {
         return (
           <div align="right">
-            <AuthorizationWrapper permission={Permission.EDIT_REPORTS}>
-              <MineReportActions
-                mineReport={record.report}
-                openEditReportModal={record.openEditReportModal}
-                handleEditReport={record.handleEditReport}
-                handleRemoveReport={record.handleRemoveReport}
-              />
-            </AuthorizationWrapper>
+            <MineReportActions
+              mineReport={record.report}
+              openEditReportModal={record.openEditReportModal}
+              handleEditReport={record.handleEditReport}
+              handleRemoveReport={record.handleRemoveReport}
+            />
           </div>
         );
       },

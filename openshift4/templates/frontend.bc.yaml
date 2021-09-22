@@ -14,7 +14,7 @@ parameters:
     required: false
     value: ""
   - name: DOCKER_IMAGE_DIRECTORY
-    value: openshift/docker-images/nodejs-10
+    value: openshift4/docker-images/nodejs-10
   - name: SOURCE_CONTEXT_DIR
     value: services/core-web
   - name: SOURCE_REPOSITORY_URL
