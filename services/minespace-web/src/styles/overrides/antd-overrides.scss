@@ -193,6 +193,13 @@ tr.ant-table-expanded-row {
   font-weight: 600;
 }
 
+.ant-descriptions.ant-descriptions-small {
+  .ant-descriptions-item-content,
+  .ant-descriptions-item-label {
+    font-size: 14px !important;
+  }
+}
+
 .ant-descriptions-item {
   margin-right: $padding-lg;
 }

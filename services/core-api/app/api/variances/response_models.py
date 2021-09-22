@@ -9,13 +9,10 @@ MINE_DOCUMENT_MODEL = api.model(
         'document_name': fields.String,
     })
 
-VARIANCE_DOCUMENT = api.inherit(
-    'VarianceDocumentModel',
-    MINE_DOCUMENT_MODEL,
-    {
-        'created_at': fields.Date,
-        'variance_document_category_code': fields.String
-    })
+VARIANCE_DOCUMENT = api.inherit('VarianceDocumentModel', MINE_DOCUMENT_MODEL, {
+    'created_at': fields.Date,
+    'variance_document_category_code': fields.String
+})
 
 VARIANCE = api.model(
     'Variance', {
@@ -32,6 +29,10 @@ VARIANCE = api.model(
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,
+        'created_by': fields.String,
+        'created_timestamp': fields.DateTime,
+        'updated_by': fields.String,
+        'updated_timestamp': fields.DateTime,
         'documents': fields.Nested(VARIANCE_DOCUMENT)
     })
 
@@ -47,14 +48,16 @@ PAGINATED_VARIANCE_LIST = api.inherit('VarianceList', PAGINATED_LIST, {
     'records': fields.List(fields.Nested(VARIANCE)),
 })
 
-VARIANCE_APPLICATION_STATUS_CODE = api.model('VarianceApplicationStatusCode', {
-    'variance_application_status_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+VARIANCE_APPLICATION_STATUS_CODE = api.model(
+    'VarianceApplicationStatusCode', {
+        'variance_application_status_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })
 
-VARIANCE_DOCUMENT_CATEGORY_CODE = api.model('VarianceDocumentCategoryCode', {
-    'variance_document_category_code': fields.String,
-    'description': fields.String,
-    'active_ind': fields.Boolean
-})
+VARIANCE_DOCUMENT_CATEGORY_CODE = api.model(
+    'VarianceDocumentCategoryCode', {
+        'variance_document_category_code': fields.String,
+        'description': fields.String,
+        'active_ind': fields.Boolean
+    })

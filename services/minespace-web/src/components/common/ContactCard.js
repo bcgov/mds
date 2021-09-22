@@ -59,9 +59,7 @@ export const ContactCard = (props) => (
       icon="calendar"
       label={props.dateLabel}
       value={
-        props.partyRelationship
-          ? formatDate(props.partyRelationship.effective_date)
-          : Strings.UNKNOWN
+        props.partyRelationship ? formatDate(props.partyRelationship.start_date) : Strings.UNKNOWN
       }
     />
   </Card>
