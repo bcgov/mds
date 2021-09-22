@@ -83,7 +83,7 @@ objects:
         git:
           uri: ${SOURCE_REPOSITORY_URL}
           ref: ${SOURCE_REPOSITORY_REF}
-        contextDir: openshift/docker-images/python-36-docman
+        contextDir: openshift4/docker-images/python-36-docman
       strategy:
         type: Docker
         dockerStrategy:
