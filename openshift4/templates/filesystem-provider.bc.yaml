@@ -100,7 +100,7 @@ objects:
         dockerStrategy:
           noCache: true
           imageOptimizationPolicy: SkipLayers
-          dockerfilePath: openshift/docker-images/dotnet-31/Dockerfile
+          dockerfilePath: openshift4/docker-images/dotnet-31/Dockerfile
           from:
             kind: ImageStreamTag
             name: dotnet:3.1
