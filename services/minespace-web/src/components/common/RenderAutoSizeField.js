@@ -25,7 +25,6 @@ const defaultProps = {
   minRows: 3,
 };
 
-const { TextArea } = Input;
 const RenderAutoSizeField = (props) => (
   <Form.Item
     label={props.label}
@@ -39,7 +38,7 @@ const RenderAutoSizeField = (props) => (
         (props.meta.warning && <span>{props.meta.warning}</span>))
     }
   >
-    <TextArea
+    <Input.TextArea
       id={props.id}
       {...props.input}
       disabled={props.disabled}

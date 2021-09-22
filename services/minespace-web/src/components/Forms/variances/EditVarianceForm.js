@@ -11,8 +11,6 @@ import CustomPropTypes from "@/customPropTypes";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
 
-const { Paragraph } = Typography;
-
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -70,7 +68,7 @@ export class EditVarianceForm extends Component {
           complianceCodesHash={this.props.complianceCodesHash}
         />
         <Form.Item label="Attached Files">
-          <Paragraph>Please upload all of the required documents.</Paragraph>
+          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Row, Col, Card, Button, Typography, version } from "antd";
+import { Row, Col, Card, Button, Typography } from "antd";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
@@ -8,9 +8,6 @@ import * as COMMON_ENV from "@common/constants/environment";
 // import { MAP_LOGO } from "@/constants/assets";
 import * as MINESPACE_ENV from "@/constants/environment";
 import { isAuthenticated } from "@/selectors/authenticationSelectors";
-
-const { Paragraph, Text, Title } = Typography;
-const REACT_VERSION = React.version;
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -31,10 +28,10 @@ export const LandingPage = (props) => (
         <img src={MAP_LOGO} />
       </Col>
       <Col sm={22} xl={10}>
-        <Title>Welcome to MineSpace</Title>
-        <Paragraph className="header-text">
+        <Typography.Title>Welcome to MineSpace</Typography.Title>
+        <Typography.Paragraph className="header-text">
           Manage applications, see inspection histories, submit reports, and more.
-        </Paragraph>
+        </Typography.Paragraph>
         <Button type="primary" size="large" className="login">
           <a
             href={`${COMMON_ENV.KEYCLOAK.loginURL}${MINESPACE_ENV.BCEID_LOGIN_REDIRECT_URI}&kc_idp_hint=${COMMON_ENV.KEYCLOAK.idpHint}`}
@@ -53,12 +50,10 @@ export const LandingPage = (props) => (
       gutter={[{ sm: 0, xl: 64 }]}
     >
       <Col xl={{ span: 24 }} xxl={{ span: 20 }}>
-        <Title>Welcome to MineSpace</Title>
-        <h4>React version: {REACT_VERSION}</h4>
-        <h4>antd version: {version}</h4>
-        <Paragraph className="header-text">
+        <Typography.Title>Welcome to MineSpace</Typography.Title>
+        <Typography.Paragraph className="header-text">
           Manage applications, see inspection histories, submit reports, and more.
-        </Paragraph>
+        </Typography.Paragraph>
         {!props.isAuthenticated && (
           <Button type="primary" size="large" className="login">
             <a
@@ -78,24 +73,28 @@ export const LandingPage = (props) => (
       className="landing-section"
     >
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
-        <Title level={4}>What is MineSpace?</Title>
-        <Paragraph>
-          The <Text strong>Ministry of Energy, Mines and Low Carbon Innovation</Text> is developing
-          a system to make it easier for the public, industry and government to see what&apos;s
-          happening in the mining industry across British Columbia. The system is called&nbsp;
-          <Text strong>Mines Digital Services (MDS)</Text>.
-        </Paragraph>
-        <Paragraph>
-          <Text strong>MineSpace</Text> is part of the MDS system, developed specifically for
-          industry. It is intended to make it easier for businesses to manage applications, see
-          their inspection history and submit reports.
-        </Paragraph>
-        <Paragraph>
+        <Typography.Title level={4}>What is MineSpace?</Typography.Title>
+        <Typography.Paragraph>
+          The{" "}
+          <Typography.Text strong>
+            Ministry of Energy, Mines and Low Carbon Innovation
+          </Typography.Text>{" "}
+          is developing a system to make it easier for the public, industry and government to see
+          what&apos;s happening in the mining industry across British Columbia. The system is
+          called&nbsp;
+          <Typography.Text strong>Mines Digital Services (MDS)</Typography.Text>.
+        </Typography.Paragraph>
+        <Typography.Paragraph>
+          <Typography.Text strong>MineSpace</Typography.Text> is part of the MDS system, developed
+          specifically for industry. It is intended to make it easier for businesses to manage
+          applications, see their inspection history and submit reports.
+        </Typography.Paragraph>
+        <Typography.Paragraph>
           This system is being developed iteratively and with input from people who operate mines
           across B.C.
-        </Paragraph>
+        </Typography.Paragraph>
 
-        <Title level={4}>What can I do in MineSpace?</Title>
+        <Typography.Title level={4}>What can I do in MineSpace?</Typography.Title>
         <ul className="landing-list">
           <li>Upload any report specified in the Health, Safety and Reclamation Code</li>
           <li>View all code variances granted to and incidents reported by your mine</li>
@@ -103,36 +102,40 @@ export const LandingPage = (props) => (
           <li>See all the contacts the Ministry has on file for your mine</li>
           <li>Find important Ministry contacts</li>
         </ul>
-        <Paragraph />
+        <Typography.Paragraph />
       </Col>
       <Col sm={{ span: 24 }} xl={{ span: 12 }} xxl={{ span: 10 }}>
-        <Title level={4}>How do I get access?</Title>
-        <Paragraph>
-          You must have a <Text strong>Business or Personal BCeID</Text> and then contact us to
-          request access to MineSpace.
-        </Paragraph>
-        <Paragraph strong>If you have a BCeID:</Paragraph>
-        <Paragraph>
+        <Typography.Title level={4}>How do I get access?</Typography.Title>
+        <Typography.Paragraph>
+          You must have a <Typography.Text strong>Business or Personal BCeID</Typography.Text> and
+          then contact us to request access to MineSpace.
+        </Typography.Paragraph>
+        <Typography.Paragraph strong>If you have a BCeID:</Typography.Paragraph>
+        <Typography.Paragraph>
           Contact us at&nbsp;
           <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>
           &nbsp;to request access to MineSpace.
-        </Paragraph>
-        <Paragraph strong>If you have multiple employees who need to use MineSpace:</Paragraph>
+        </Typography.Paragraph>
+        <Typography.Paragraph strong>
+          If you have multiple employees who need to use MineSpace:
+        </Typography.Paragraph>
 
-        <Paragraph>
-          <Text>Add them to your Business BCeID</Text>
-          <Text>Let us know you want them to be able to access MineSpace</Text>
-        </Paragraph>
+        <Typography.Paragraph>
+          <Typography.Text>Add them to your Business BCeID</Typography.Text>
+          <Typography.Text>
+            Let us know you want them to be able to access MineSpace
+          </Typography.Text>
+        </Typography.Paragraph>
 
-        <Title level={4}>Don&apos;t have a BCeID?</Title>
-        <Paragraph>
+        <Typography.Title level={4}>Don&apos;t have a BCeID?</Typography.Title>
+        <Typography.Paragraph>
           In order to access MineSpace, you need to register for a Business or Personal BCeID. It
           can take several weeks to process the request, so give yourself plenty of lead time.
-        </Paragraph>
-        <Paragraph>
+        </Typography.Paragraph>
+        <Typography.Paragraph>
           Once you have your BCeID, you can add employees and delegates. You can request that anyone
           added to your Business BCeID account be given access to MineSpace.
-        </Paragraph>
+        </Typography.Paragraph>
         <Row type="flex" justify="center">
           <Col span={24}>
             <a
@@ -159,14 +162,14 @@ export const LandingPage = (props) => (
         <Card title="Questions?">
           <Row>
             <Col span={24}>
-              <Paragraph>
+              <Typography.Paragraph>
                 Please let us know about any questions or comments you have regarding your
                 experience using MineSpace.
-              </Paragraph>
-              <Paragraph>
+              </Typography.Paragraph>
+              <Typography.Paragraph>
                 Email us at&nbsp;
                 <a href={`mailto:${Strings.MDS_EMAIL}`}>{Strings.MDS_EMAIL}</a>.
-              </Paragraph>
+              </Typography.Paragraph>
             </Col>
           </Row>
         </Card>

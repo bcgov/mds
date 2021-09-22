@@ -19,8 +19,6 @@ import TableSummaryCard from "@/components/common/TableSummaryCard";
 import { modalConfig } from "@/components/modalContent/config";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   mineReports: PropTypes.arrayOf(CustomPropTypes.mineReport).isRequired,
@@ -128,24 +126,24 @@ export class Reports extends Component {
         <Col span={24}>
           <Row>
             <Col span={24}>
-              <Title level={4}>Reports</Title>
-              <Paragraph>
+              <Typography.Title level={4}>Reports</Typography.Title>
+              <Typography.Paragraph>
                 This table shows&nbsp;
-                <Text className="color-primary" strong>
+                <Typography.Text className="color-primary" strong>
                   reports
-                </Text>
+                </Typography.Text>
                 &nbsp;from the Health, Safety and Reclamation code that your mine has submitted to
                 the Ministry. It also shows reports the Ministry has requested from your mine.
                 <br />
                 If you do not see an HSRC report that your mine must submit, click Submit Report,
                 choose the report you need to send and then attach the file or files.
                 <br />
-                <Text className="color-primary" strong>
+                <Typography.Text className="color-primary" strong>
                   Note
-                </Text>
+                </Typography.Text>
                 : Do not use this page to submit reports specified in your permit. Continue to email
                 these reports to the Ministry.
-              </Paragraph>
+              </Typography.Paragraph>
               <br />
             </Col>
           </Row>

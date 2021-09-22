@@ -6,18 +6,16 @@ import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
 import * as Strings from "@/constants/strings";
 
-const { Paragraph, Text } = Typography;
-
 const ContactCardRow = (data) => (
   <Row className="contact-card-row">
     <Col span={24}>
       <LegacyIcon type={data.icon} className="contact-card-row-icon" />
-      <Paragraph className="contact-card-row-field">
-        <Text strong className="contact-card-row-field-title">
+      <Typography.Paragraph className="contact-card-row-field">
+        <Typography.Text strong className="contact-card-row-field-title">
           {data.label}
-        </Text>
-        <Text>{data.value}</Text>
-      </Paragraph>
+        </Typography.Text>
+        <Typography.Text>{data.value}</Typography.Text>
+      </Typography.Paragraph>
     </Col>
   </Row>
 );

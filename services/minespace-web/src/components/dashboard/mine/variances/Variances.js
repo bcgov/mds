@@ -25,8 +25,6 @@ import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine),
   match: PropTypes.shape({
@@ -163,14 +161,14 @@ export class Variances extends Component {
           <Icon type="plus-circle" theme="filled" />
             Create Variance
           </Button> */}
-          <Title level={4}>Variances</Title>
-          <Paragraph>
+          <Typography.Title level={4}>Variances</Typography.Title>
+          <Typography.Paragraph>
             This table shows your mine&apos;s&nbsp;
-            <Text className="color-primary" strong>
+            <Typography.Text className="color-primary" strong>
               variance history
-            </Text>
+            </Typography.Text>
             , including applications in progress and variances you may need to renew.
-          </Paragraph>
+          </Typography.Paragraph>
           <VariancesTable
             variances={this.props.variances}
             mine={this.state.mine}

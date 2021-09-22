@@ -37,7 +37,6 @@ class App extends Component {
   };
 
   render() {
-    const { Content } = Layout;
     const xs = 24;
     const lg = 22;
     const xl = 20;
@@ -49,7 +48,7 @@ class App extends Component {
           <Layout>
             <Header xs={xs} lg={lg} xl={xl} xxl={xxl} />
             <Layout>
-              <Content>
+              <Layout.Content>
                 {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
                 <MediaQuery maxWidth={500}>
                   {this.state.isMobile && (
@@ -63,7 +62,7 @@ class App extends Component {
                 </Row>
                 <ModalWrapper />
                 <BackTop />
-              </Content>
+              </Layout.Content>
             </Layout>
             <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
           </Layout>

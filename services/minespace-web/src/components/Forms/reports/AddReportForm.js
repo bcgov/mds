@@ -25,8 +25,6 @@ import {
 import CustomPropTypes from "@/customPropTypes";
 import { ReportSubmissions } from "@/components/Forms/reports/ReportSubmissions";
 
-const { Paragraph, Text } = Typography;
-
 const propTypes = {
   mineGuid: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -165,7 +163,9 @@ export class AddReportForm extends Component {
               ))}
             </List>
           ) : (
-            <Paragraph>Select the report type and name to view the required codes.</Paragraph>
+            <Typography.Paragraph>
+              Select the report type and name to view the required codes.
+            </Typography.Paragraph>
           )}
         </Form.Item>
         <Field
@@ -174,10 +174,10 @@ export class AddReportForm extends Component {
           label={
             <span>
               <div style={{ paddingBottom: 8 }}>Report Compliance Year/Period*</div>
-              <Text>
+              <Typography.Text>
                 Select the year for which the report is being submitted. Depending on the report,
                 this may not be the current calendar year.
-              </Text>
+              </Typography.Text>
             </span>
           }
           component={renderConfig.YEAR}

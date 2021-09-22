@@ -355,7 +355,7 @@ export class MinePermitInfo extends Component {
       .deletePermitAmendment(
         this.props.mineGuid,
         record.permit.permit_guid,
-        record.amendmentEdit.amendment.permit_amendment_guid
+        record.permit_amendment_guid
       )
       .then(() => this.closePermitModal());
 

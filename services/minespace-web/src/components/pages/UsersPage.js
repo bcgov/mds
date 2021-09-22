@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 import { getUserInfo } from "@/selectors/authenticationSelectors";
 import Loading from "@/components/common/Loading";
 
-const { Paragraph, Title } = Typography;
-
 const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
 };
@@ -15,17 +13,19 @@ const propTypes = {
 export class UsersPage extends Component {
   state = { isLoaded: true };
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     return (
       (this.state.isLoaded && (
         <Row>
           <Col span={24}>
-            <Title>My Users</Title>
+            <Typography.Title>My Users</Typography.Title>
             <Divider />
-            <Title level={2}>Welcome, {this.props.userInfo.preferred_username}.</Title>
-            <Paragraph>This page is under construction.</Paragraph>
+            <Typography.Title level={2}>
+              Welcome, {this.props.userInfo.preferred_username}.
+            </Typography.Title>
+            <Typography.Paragraph>This page is under construction.</Typography.Paragraph>
           </Col>
         </Row>
       )) || <Loading />

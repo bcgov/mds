@@ -29,8 +29,6 @@ const propTypes = {
 
 const defaultProps = {};
 
-const { Paragraph, Title } = Typography;
-
 export class MineWorkInformation extends Component {
   state = { isEditMode: false, isLoaded: true };
 
@@ -59,7 +57,7 @@ export class MineWorkInformation extends Component {
     return (
       <div className="work-information-container ">
         <div className="inline-flex between">
-          <Title level={4}>Work Information</Title>
+          <Typography.Title level={4}>Work Information</Typography.Title>
           {!this.state.isEditMode && (
             <span>
               <Button type="link" onClick={() => this.editWorkInformation()}>
@@ -69,11 +67,11 @@ export class MineWorkInformation extends Component {
           )}
         </div>
         <Row gutter={5}>
-          <Paragraph>
+          <Typography.Paragraph>
             Keep your start and stop work dates current. Sections 6.1.2 and 6.2.2 of the Health,
             Safety & Reclamation Code apply to any person doing any work (mining activity) at, on,
             or about the mine site.
-          </Paragraph>
+          </Typography.Paragraph>
         </Row>
         <Row gutter={16}>
           <Col span={24}>
