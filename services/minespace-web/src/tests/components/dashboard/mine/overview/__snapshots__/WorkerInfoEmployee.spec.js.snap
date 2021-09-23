@@ -11,52 +11,69 @@ exports[`WorkerInfoEmployee renders properly 1`] = `
       <Col
         span={24}
       >
-        <div
-          className="inline-flex between"
-        >
-          <Title
-            level={4}
+        <Row>
+          <div
+            className="inline-flex between"
           >
-            Worker Information
-            <Tooltip
-              arrowPointAtCenter={false}
-              autoAdjustOverflow={true}
-              mouseEnterDelay={0.3}
-              mouseLeaveDelay={0.1}
-              overlayClassName="minespace-tooltip"
-              placement="right"
-              title="Approximate number of workers on site that includes mine employees and contractors."
-              transitionName="zoom-big-fast"
+            <Col
+              span={21}
             >
-              <ForwardRef(InfoCircleOutlined)
-                className="padding-sm"
-              />
-            </Tooltip>
-          </Title>
-          <Button
-            block={false}
-            ghost={true}
-            htmlType="button"
-            loading={false}
-            onClick={[Function]}
-            size="small"
-            style={
-              Object {
-                "border": 0,
-              }
-            }
-            type="primary"
-          >
-            <img
-              alt="Edit Worker Info"
-              src={
-                Object {
-                  "process": [Function],
+              <Title
+                level={4}
+              >
+                Worker Information
+                <Tooltip
+                  arrowPointAtCenter={false}
+                  autoAdjustOverflow={true}
+                  mouseEnterDelay={0.3}
+                  mouseLeaveDelay={0.1}
+                  overlayClassName="minespace-tooltip"
+                  placement="right"
+                  title="Approximate number of workers on site that includes mine employees and contractors."
+                  transitionName="zoom-big-fast"
+                >
+                  <ForwardRef(InfoCircleOutlined)
+                    className="padding-sm"
+                  />
+                </Tooltip>
+              </Title>
+            </Col>
+            <Col
+              span={3}
+            >
+              <span
+                style={
+                  Object {
+                    "float": "right",
+                  }
                 }
-              }
-            />
-          </Button>
-        </div>
+              >
+                <Button
+                  block={false}
+                  ghost={false}
+                  htmlType="button"
+                  loading={false}
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "border": 0,
+                    }
+                  }
+                  type="link"
+                >
+                  <img
+                    alt="Edit Worker Info"
+                    src={
+                      Object {
+                        "process": [Function],
+                      }
+                    }
+                  />
+                </Button>
+              </span>
+            </Col>
+          </div>
+        </Row>
         <Descriptions>
           <DescriptionsItem
             label="Number of Mine Employees"

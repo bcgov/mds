@@ -449,6 +449,10 @@ VARIANCE_MODEL = api.model(
         'issue_date': fields.Date,
         'received_date': fields.Date,
         'expiry_date': fields.Date,
+        'created_by': fields.String,
+        'created_timestamp': fields.DateTime,
+        'updated_by': fields.String,
+        'updated_timestamp': fields.DateTime,
         'documents': fields.Nested(VARIANCE_DOCUMENT_MODEL)
     })
 

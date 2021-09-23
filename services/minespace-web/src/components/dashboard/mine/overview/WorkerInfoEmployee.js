@@ -59,30 +59,36 @@ export class WorkerInfoEmployee extends Component {
           <div className="work-information-container">
             <Row gutter={16}>
               <Col span={24}>
-                <div className="inline-flex between">
-                  <Typography.Title level={4}>
-                    Worker Information
-                    <Tooltip
-                      overlayClassName="minespace-tooltip"
-                      title="Approximate number of workers on site that includes mine employees and contractors."
-                      placement="right"
-                      mouseEnterDelay={0.3}
-                    >
-                      <InfoCircleOutlined className="padding-sm" />
-                    </Tooltip>
-                  </Typography.Title>
-                  <Button
-                    style={{ border: 0 }}
-                    type="primary"
-                    size="small"
-                    ghost
-                    onClick={(event) => {
-                      this.handleToggleEdit(event);
-                    }}
-                  >
-                    <img src={EDIT_PENCIL} alt="Edit Worker Info" />
-                  </Button>
-                </div>
+                <Row>
+                  <div className="inline-flex between">
+                    <Col span={21}>
+                      <Typography.Title level={4}>
+                        Worker Information
+                        <Tooltip
+                          overlayClassName="minespace-tooltip"
+                          title="Approximate number of workers on site that includes mine employees and contractors."
+                          placement="right"
+                          mouseEnterDelay={0.3}
+                        >
+                         <InfoCircleOutlined className="padding-sm" />
+                        </Tooltip>
+                      </Typography.Title>
+                    </Col>
+                    <Col span={3}>
+                      <span style={{ float: "right" }}>
+                        <Button
+                          style={{ border: 0 }}
+                          type="link"
+                          onClick={(event) => {
+                            this.handleToggleEdit(event);
+                          }}
+                        >
+                          <img src={EDIT_PENCIL} alt="Edit Worker Info" />
+                        </Button>
+                      </span>
+                    </Col>
+                  </div>
+                </Row>
 
                 <Descriptions>
                   <Descriptions.Item span={2} label="Number of Mine Employees">

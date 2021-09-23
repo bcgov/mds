@@ -167,43 +167,20 @@ exports[`MineWorkInformation renders properly 1`] = `
             </div>
           </Row>
           <Row>
-            <Col
-              span={22}
+            <Descriptions
+              size="small"
             >
-              <span
-                className="inline-flex between"
-                style={
-                  Object {
-                    "float": "right",
-                  }
-                }
+              <DescriptionsItem
+                label="Updated By"
               >
-                <div
-                  className="padding-sm"
-                >
-                  <span
-                    className="field-title"
-                  >
-                    Updated By: 
-                  </span>
-                  <span>
-                    test
-                  </span>
-                </div>
-                <div
-                  className="padding-sm"
-                >
-                  <span
-                    className="field-title"
-                  >
-                    Last Updated: 
-                  </span>
-                  <span>
-                    Aug 23, 2021 12:00 AM
-                  </span>
-                </div>
-              </span>
-            </Col>
+                test
+              </DescriptionsItem>
+              <DescriptionsItem
+                label="Updated Date"
+              >
+                Aug 23, 2021 12:00 AM
+              </DescriptionsItem>
+            </Descriptions>
           </Row>
         </div>
       </LoadingWrapper>

@@ -1,4 +1,0 @@
-python-dotenv==0.10.3
-click==7.0
-petl==1.6.8
-psycopg2-binary==2.8.3

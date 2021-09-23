@@ -10,11 +10,6 @@ exports[`VarianceDetails renders properly 1`] = `
       label="Application Status"
     />
     <DescriptionsItem
-      label="Approval Status"
-    >
-      Expired
-    </DescriptionsItem>
-    <DescriptionsItem
       label="Submission Date"
     >
       Mar 01 2019
@@ -46,6 +41,26 @@ exports[`VarianceDetails renders properly 1`] = `
           ]
         }
       />
+    </DescriptionsItem>
+  </Descriptions>
+  <Descriptions
+    size="small"
+  >
+    <DescriptionsItem
+      label="Created By"
+      size="small"
+    >
+      -
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Updated By"
+    >
+      -
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Updated Date"
+    >
+      -
     </DescriptionsItem>
   </Descriptions>
 </div>

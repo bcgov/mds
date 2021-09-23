@@ -14,7 +14,7 @@ parameters:
     required: false
     value: ""
   - name: DOCKER_IMAGE_DIRECTORY
-    value: openshift/docker-images/nodejs-10-public
+    value: openshift4/docker-images/nodejs-10-public
   - name: SOURCE_CONTEXT_DIR
     value: services/minespace-web
   - name: SOURCE_REPOSITORY_URL
