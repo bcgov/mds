@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Descriptions } from "antd";
+import { formatDate } from "@common/utils/helpers";
 import CustomPropTypes from "@/customPropTypes";
-import { formatDate } from "@/utils/helpers";
 import DocumentTable from "@/components/common/DocumentTable";
 import * as Strings from "@/constants/strings";
 
@@ -15,8 +15,15 @@ const propTypes = {
 };
 
 export const VarianceDetails = (props) => {
-  const isOverdue =
-    props.variance.expiry_date && Date.parse(props.variance.expiry_date) < new Date();
+  const getActiveStatus = () => {
+    if (props.variance.expiry_date) {
+      if (Date.parse(props.variance.expiry_date) < new Date()) {
+        return "Expired";
+      }
+      return "Active";
+    }
+    return Strings.EMPTY_FIELD;
+  };
 
   return (
     <div>
@@ -24,12 +31,20 @@ export const VarianceDetails = (props) => {
         <Descriptions.Item label="Application Status">
           {props.varianceStatusOptionsHash[props.variance.variance_application_status_code]}
         </Descriptions.Item>
-        <Descriptions.Item label="Approval Status">
-          {isOverdue ? "Expired" : "Active"}
-        </Descriptions.Item>
         <Descriptions.Item label="Submission Date">
           {formatDate(props.variance.received_date) || Strings.EMPTY_FIELD}
         </Descriptions.Item>
+        {props.variance.variance_application_status_code === Strings.VARIANCE_APPROVED_CODE && (
+          <>
+            <Descriptions.Item label="Issue Date">
+              {formatDate(props.variance.issue_date) || Strings.EMPTY_FIELD}
+            </Descriptions.Item>
+            <Descriptions.Item label="Expiry Date">
+              {formatDate(props.variance.expiry_date) || Strings.EMPTY_FIELD}
+            </Descriptions.Item>
+            <Descriptions.Item label="Approval Status">{getActiveStatus()}</Descriptions.Item>
+          </>
+        )}
         <Descriptions.Item label="Mine">{props.mineName || Strings.EMPTY_FIELD}</Descriptions.Item>
         <Descriptions.Item label="Code Section">
           {props.variance.compliance_article_id
@@ -44,6 +59,17 @@ export const VarianceDetails = (props) => {
             documents={props.variance.documents}
             documentCategoryOptionsHash={props.documentCategoryOptionsHash}
           />
+        </Descriptions.Item>
+      </Descriptions>
+      <Descriptions size="small">
+        <Descriptions.Item label="Created By" size="small">
+          {props.variance.created_by || Strings.EMPTY_FIELD}
+        </Descriptions.Item>
+        <Descriptions.Item label="Updated By">
+          {props.variance.updated_by || Strings.EMPTY_FIELD}
+        </Descriptions.Item>
+        <Descriptions.Item label="Updated Date">
+          {formatDate(props.variance.updated_timestamp) || Strings.EMPTY_FIELD}
         </Descriptions.Item>
       </Descriptions>
     </div>

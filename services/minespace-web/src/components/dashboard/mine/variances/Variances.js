@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Button, Icon } from "antd";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -71,6 +71,7 @@ export class Variances extends Component {
         this.props.addDocumentToVariance(
           { mineGuid: this.state.mine.mine_guid, varianceGuid },
           {
+            variance_document_category_code: "REQ",
             document_manager_guid,
             document_name,
           }
@@ -80,7 +81,7 @@ export class Variances extends Component {
 
   handleCreateVariances = (files) => (values) => {
     const received_date = moment().format("YYYY-MM-DD");
-    const payload = { received_date, ...values };
+    const payload = { received_date, variance_application_status_code: "REV", ...values };
     return this.props
       .createVariance(
         {
@@ -109,7 +110,7 @@ export class Variances extends Component {
     this.props.openModal({
       props: {
         onSubmit: this.handleUpdateVariance,
-        title: "Edit Variance Application",
+        title: "Edit Variance",
         mineGuid: this.state.mine.mine_guid,
         mineName: this.state.mine.mine_name,
         varianceGuid: variance.variance_guid,
@@ -126,7 +127,7 @@ export class Variances extends Component {
     this.props.openModal({
       props: {
         variance,
-        title: "View Variance Application",
+        title: "View Variance",
         mineName: this.state.mine.mine_name,
         varianceStatusOptionsHash: this.props.varianceStatusOptionsHash,
         complianceCodesHash: this.props.complianceCodesHash,
@@ -142,7 +143,7 @@ export class Variances extends Component {
     this.props.openModal({
       props: {
         onSubmit: this.handleCreateVariances,
-        title: "Create Variance Application",
+        title: "Apply for a Variance",
         mineGuid: this.state.mine.mine_guid,
         complianceCodes: this.props.complianceCodes,
       },
@@ -154,15 +155,14 @@ export class Variances extends Component {
     return (
       <Row>
         <Col span={24}>
-          {/* Disabled for now, until we want variance creation enabled. */}
-          {/* <Button
+          <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
             onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
           >
-          <Icon type="plus-circle" theme="filled" />
-            Create Variance
-          </Button> */}
+            <Icon type="plus-circle" theme="filled" />
+            Apply for a Variance
+          </Button>
           <Title level={4}>Variances</Title>
           <Paragraph>
             This table shows your mine&apos;s&nbsp;

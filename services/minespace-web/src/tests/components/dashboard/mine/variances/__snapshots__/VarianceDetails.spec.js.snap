@@ -11,11 +11,6 @@ exports[`VarianceDetails renders properly 1`] = `
       label="Application Status"
     />
     <DescriptionsItem
-      label="Approval Status"
-    >
-      Expired
-    </DescriptionsItem>
-    <DescriptionsItem
       label="Submission Date"
     >
       Mar 01 2019
@@ -47,6 +42,36 @@ exports[`VarianceDetails renders properly 1`] = `
           ]
         }
       />
+    </DescriptionsItem>
+  </Descriptions>
+  <Descriptions
+    column={
+      Object {
+        "lg": 3,
+        "md": 3,
+        "sm": 2,
+        "xl": 3,
+        "xs": 1,
+        "xxl": 3,
+      }
+    }
+    size="small"
+  >
+    <DescriptionsItem
+      label="Created By"
+      size="small"
+    >
+      -
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Updated By"
+    >
+      -
+    </DescriptionsItem>
+    <DescriptionsItem
+      label="Updated Date"
+    >
+      -
     </DescriptionsItem>
   </Descriptions>
 </div>
