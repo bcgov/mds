@@ -211,10 +211,16 @@ class PermitAmendmentListResource(Resource, UserMixin):
             populate_with_conditions = data.get('populate_with_conditions', True)
             if application_identity.now_application:
                 if populate_with_conditions:
-                    if application_identity.application_type_code == "ADA":
+                    if application_identity.application_type_code in ("ADA", "NOW"):
+                        permit_amendment_id = None
+                        if application_identity.application_type_code == 'NOW':
+                            permit_amendment = PermitAmendment.find_last_by_permit_id(permit.permit_id)
+                            permit_amendment_id = permit_amendment.permit_amendment_id
+                        else:
+                            permit_amendment_id = application_identity.source_permit_amendment_id
 
                         conditions = PermitConditions.find_all_by_permit_amendment_id(
-                            application_identity.source_permit_amendment_id)
+                            permit_amendment_id)
                         if conditions:
                             for condition in conditions:
                                 PermitConditions.create(condition.condition_category_code,
