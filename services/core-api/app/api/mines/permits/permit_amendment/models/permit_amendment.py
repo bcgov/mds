@@ -211,7 +211,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             cls.permit_amendment_status_code != 'DFT').all()
 
     @classmethod
-    def find_last_by_permit_id(cls, _id):
+    def find_last_amendment_by_permit_id(cls, _id):
         return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(
             cls.permit_amendment_status_code != 'DFT').order_by(
                 cls.permit_amendment_id.desc()).first()
