@@ -19,7 +19,7 @@ exports[`Variances renders properly 1`] = `
       }
       type="primary"
     >
-      <ForwardRef(PlusOutlined) />
+      <ForwardRef(PlusCircleFilled) />
       Apply for a Variance
     </Button>
     <Title

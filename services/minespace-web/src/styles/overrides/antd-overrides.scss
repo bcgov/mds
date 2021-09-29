@@ -85,9 +85,11 @@ h4.ant-typography,
 }
 
 // Tabs
-
-.ant-tabs-tab {
-  padding: 0 $padding-lg 0 $padding-lg !important;
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+  margin-right: 12px;
 }
 .vertical.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
 .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
