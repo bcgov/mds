@@ -28,7 +28,7 @@ const propTypes = {
 
 export const IncidentDetails = (props) => (
   <div>
-    <Tabs type="card" tabPosition="left" defaultActiveKey="initial">
+    <Tabs type="card" tabPosition="left" defaultActiveKey="initial" className="vertical">
       <Tabs.TabPane tab="Initial Report" key="initial">
         <InitialReport {...props} />
       </Tabs.TabPane>
