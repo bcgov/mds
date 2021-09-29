@@ -20,6 +20,7 @@ const propTypes = {
   userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
   fetchUserMineInfo: PropTypes.func.isRequired,
   userMineInfo: CustomPropTypes.userMines.isRequired,
+  isProponent: PropTypes.bool.isRequired,
 };
 
 export class MinesPage extends Component {
@@ -59,7 +60,7 @@ export class MinesPage extends Component {
                             <Link to={routes.MINE_DASHBOARD.dynamicRoute(mine.mine_guid)}>
                               <Typography.Title level={4}>
                                 <EnvironmentOutlined style={{ paddingRight: "5px" }} />
-                                {mine.mine_name}{" "}
+                                {mine.mine_name}
                               </Typography.Title>
                               <Typography.Text>
                                 Mine Number: {mine.mine_no || Strings.EMPTY_FIELD}
