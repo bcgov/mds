@@ -66,7 +66,7 @@ export const IncidentsTable = (props) => {
       key: "categories",
       sorter: false,
       render: (categories) => (
-        <div title="Incident No.">
+        <div title="Incident Type">
           {(categories.length > 0 &&
             categories.map((cat) => [<span>{cat.description}</span>, <br />])) ||
             Strings.EMPTY_FIELD}

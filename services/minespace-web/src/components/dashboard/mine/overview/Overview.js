@@ -106,7 +106,7 @@ export const Overview = (props) => (
         <WorkerInfoEmployee mine={props.mine} />
       </div>
       <Row gutter={[16, 16]}>
-        <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
+        <Col xl={11} xxl={11} md={24}>
           <ContactCard
             title="Mine Manager"
             partyRelationship={getMineManager(props.partyRelationships)}
@@ -115,7 +115,7 @@ export const Overview = (props) => (
         </Col>
       </Row>
     </Col>
-    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
+    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
       <Row gutter={[0, 16]}>
         <Col span={24}>
           <div style={{ height: "200px" }}>
