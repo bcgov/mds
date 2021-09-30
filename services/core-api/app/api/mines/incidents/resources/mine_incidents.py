@@ -144,8 +144,10 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
+        current_app.logger.debug(f'updated_documents: {updated_documents}')
         if updated_documents is not None:
             for updated_file in updated_documents:
+                current_app.logger.debug(f'updated_file: {updated_file}')
                 mine_doc = MineDocument(
                     mine_guid=mine.mine_guid,
                     document_name=updated_file['document_name'],
@@ -155,6 +157,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     raise BadRequest('Unable to register uploaded file as document')
 
                 mine_doc.save()
+                current_app.logger.debug(f'updated_file (mine_incident_document_type_code): {updated_file}')
                 mine_incident_doc = MineIncidentDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     mine_incident_id=incident.mine_incident_id,
