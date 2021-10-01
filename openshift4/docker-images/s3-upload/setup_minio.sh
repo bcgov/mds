@@ -1,0 +1,1 @@
+mc alias set s3 $S3_HOST $S3_ACCESS_KEY $S3_SECRET

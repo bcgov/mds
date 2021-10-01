@@ -1,0 +1,59 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: s3-upload-cronjob-template
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name for all objects
+    value: s3-upload
+  - name: APPNAME
+    displayName: AppName
+    description: Application name for grouping pods in Openshift
+    value: PowerBI
+objects:
+  - kind: CronJob
+    apiVersion: batch/v1beta1
+    metadata:
+      name: cj-${NAME}
+      namespace: 4c2ba9-${TAG}
+    spec:
+      schedule: 00 03 * * *
+      concurrencyPolicy: Replace
+      suspend: false
+      jobTemplate:
+        metadata:
+          name: ${NAME}-job
+          creationTimestamp: null
+        spec:
+          parallelism: 1
+          completions: 1
+          template:
+            metadata:
+              creationTimestamp: null
+              labels:
+                parent: cj-${NAME}
+            spec:
+              containers:
+                - name: ${NAME}-job
+                  image: >-
+                    image-registry.apps.silver.devops.gov.bc.ca/4c2ba9-tools/s3-upload:${TAG}
+                  resources:
+                    limits:
+                      cpu: 512m
+                      memory: 2Gi
+                    requests:
+                      cpu: 256m
+                      memory: 1Gi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  imagePullPolicy: IfNotPresent
+              restartPolicy: Never
+              terminationGracePeriodSeconds: 30
+              activeDeadlineSeconds: 4200
+              dnsPolicy: ClusterFirst
+              securityContext: {}
+              schedulerName: default-scheduler
+      successfulJobsHistoryLimit: 5
+      failedJobsHistoryLimit: 5

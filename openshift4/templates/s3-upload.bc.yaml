@@ -1,0 +1,69 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: s3-upload-bc
+  creationTimestamp: null
+parameters:
+  - name: NAME
+    displayName: Name
+    description: A name used for all objects
+    value: s3-upload
+  - name: TAG
+    displayName: Name
+    description: The output/built ImageStream tag names
+    value: dev
+  - name: SOURCE_CONTEXT_DIR
+    value: openshift4/docker-images/s3-upload
+  - name: SOURCE_REPOSITORY_URL
+    required: true
+  - name: SOURCE_REPOSITORY_REF
+    required: false
+    value: master
+objects:
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      labels:
+        shared: "true"
+      annotations:
+        description: Keeps track of changes in the application image
+    spec:
+      lookupPolicy:
+        local: false
+      tags: []
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      creationTimestamp: null
+      annotations:
+        description: Defines how to build the application
+    spec:
+      completionDeadlineSeconds: 600
+      triggers:
+        - type: ImageChange
+      runPolicy: SerialLatestOnly
+      source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        contextDir: ${SOURCE_CONTEXT_DIR}
+      strategy:
+        type: Docker
+        dockerStrategy:
+          dockerfilePath: ${SOURCE_CONTEXT_DIR}
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${NAME}:${TAG}
+      resources:
+        limits:
+          cpu: 1024m
+          memory: 2Gi
+        requests:
+          cpu: 512m
+          memory: 1Gi
+      nodeSelector: null
