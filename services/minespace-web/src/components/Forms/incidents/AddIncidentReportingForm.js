@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { Form, Col, Row } from "antd";
+import { Divider, Form, Col, Row, Typography } from "antd";
 import {
   required,
   requiredList,
@@ -14,6 +14,8 @@ import { normalizePhone } from "@common/utils/helpers";
 import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
+
+const { Text } = Typography;
 
 const propTypes = {
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
@@ -35,7 +37,10 @@ export const AddIncidentReportingForm = (props) => (
           data={props.incidentCategoryCodeOptions}
         />
       </Form.Item>
-      Reporter Details
+      <Divider />
+      <Text>
+        <h4>Reporter details</h4>
+      </Text>
       <Form.Item>
         <Field
           id="reported_by_name"
@@ -89,7 +94,7 @@ export const AddIncidentReportingForm = (props) => (
             <Field
               id="reported_date"
               name="reported_date"
-              label="Reported date*"
+              label="Reported date"
               placeholder="Please select date"
               component={renderConfig.DATE}
               validate={[required, dateNotInFuture]}

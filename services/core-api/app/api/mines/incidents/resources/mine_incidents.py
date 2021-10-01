@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin, is_minespace_user
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
@@ -157,7 +157,7 @@ class MineIncidentListResource(Resource, UserMixin):
                     raise BadRequest('Unable to register uploaded file as document')
 
                 mine_doc.save()
-                current_app.logger.debug(f'updated_file (mine_incident_document_type_code): {updated_file}')
+
                 mine_incident_doc = MineIncidentDocumentXref(
                     mine_document_guid=mine_doc.mine_document_guid,
                     mine_incident_id=incident.mine_incident_id,
@@ -185,6 +185,8 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
+            # if is_minespace_user():
+            #     incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

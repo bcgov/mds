@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
-import { Col, Row } from "antd";
+import { Col, Row, Typography } from "antd";
 import {
   required,
   maxLength,
@@ -15,6 +15,8 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import IncidentFileUpload from "./IncidentFileUpload";
+
+const { Text } = Typography;
 
 const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
@@ -32,7 +34,9 @@ class AddIncidentDetailForm extends Component {
       <Form layout="vertical">
         <Row gutter={48}>
           <Col span={24}>
-            <h4>Incident Details</h4>
+            <Text>
+              <h4>Incident Details</h4>
+            </Text>
             <Row gutter={16}>
               <Col md={12} xs={24}>
                 <Form.Item>
@@ -112,7 +116,9 @@ class AddIncidentDetailForm extends Component {
                 validate={[required]}
               />
             </Form.Item>
-            <h4>Dangerous Occurrence Determination</h4>
+            <Text>
+              <h4>Dangerous Occurrence Determination</h4>
+            </Text>
             <Form.Item>
               <Field
                 id="mine_determination_type_code"

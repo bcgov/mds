@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
-import { Steps, Button, Popconfirm } from "antd";
+import { Col, Steps, Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -38,18 +38,8 @@ const invalidReportingPayload = (values) =>
     values.categories.length > 0
   );
 
-// const invalidDetailPayload = (values) =>
-//   !(
-//     values.incident_date &&
-//     values.incident_time &&
-//     values.incident_description &&
-//     values.determination_type_code
-//   );
-
-// const actionVerb = (newIncident) => {
-//   if (newIncident) return <span>Save&nbsp;</span>;
-//   return <span>Edit&nbsp;</span>;
-// };
+const invalidDetailPayload = (values) =>
+  !(values.incident_date && values.incident_time && values.incident_description);
 
 const StepForms = (
   props,
@@ -64,19 +54,21 @@ const StepForms = (
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm incidentCategoryCodeOptions={props.incidentCategoryCodeOptions} />
+      <AddIncidentReportingForm
+        incidentCategoryCodeOptions={props.incidentCategoryCodeOptions.sort()}
+      />
     ),
-    buttons: (
+    buttons: [
+      null,
       <Button
         id="step1-next"
-        type="tertiary"
-        className="full-mobile"
+        type="primary"
         onClick={() => next()}
         disabled={state.submitting || invalidReportingPayload(props.addIncidentFormValues)}
       >
         Next
-      </Button>
-    ),
+      </Button>,
+    ],
   },
   {
     title: "Add Details",
@@ -94,20 +86,22 @@ const StepForms = (
       />
     ),
     buttons: [
-      <Button
-        id="step-back"
-        type="tertiary"
-        className="full-mobile"
-        onClick={() => prev()}
-        disabled={state.submitting}
-      >
-        Back
-      </Button>,
+      <Col lg={{ span: 6 }} md={{ span: 8 }} sm={{ span: 10 }} style={{ textAlign: "left" }}>
+        <Button
+          id="step-back"
+          type="tertiary"
+          className="full-mobile"
+          onClick={() => prev()}
+          disabled={state.submitting}
+        >
+          Previous
+        </Button>
+      </Col>,
       <Button
         type="primary"
-        className="full-mobile"
+        htmlType="submit"
         onClick={(event) => handleIncidentSubmit(event)}
-        loading={state.submitting}
+        disabled={state.submitting || invalidDetailPayload(props.addIncidentFormValues)}
       >
         Submit
       </Button>,
@@ -127,6 +121,7 @@ export class AddIncidentModal extends Component {
     dateString && momentInstance && `${dateString} ${momentInstance.format("HH:mm")}`;
 
   parseFormDataIntoPayload = ({
+    categories,
     reported_date,
     reported_time,
     incident_date,
@@ -134,6 +129,7 @@ export class AddIncidentModal extends Component {
     ...remainingValues
   }) => ({
     ...remainingValues,
+    categories: categories.sort(),
     reported_timestamp: this.formatTimestamp(reported_date, reported_time),
     incident_timestamp: this.formatTimestamp(incident_date, incident_time),
   });
@@ -153,7 +149,6 @@ export class AddIncidentModal extends Component {
       ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
       updated_documents: this.state.uploadedFiles,
     });
-    // console.log("this.props.addIncidentFormValues: ", this.props.addIncidentFormValues);
   };
 
   onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) => {
@@ -164,7 +159,6 @@ export class AddIncidentModal extends Component {
         mine_incident_document_type_code,
       }),
     }));
-    // console.log("mine_incident_document_type_code:", mine_incident_document_type_code);
   };
 
   onRemoveFile = (file) => {
@@ -201,7 +195,8 @@ export class AddIncidentModal extends Component {
 
             <div>{Forms[this.state.current].content}</div>
 
-            <div className="right center-mobile">
+            <div className="ant-modal-footer">
+              {Forms[this.state.current].buttons[0]}
               <Popconfirm
                 placement="top"
                 title="Are you sure you want to cancel?"
@@ -210,12 +205,10 @@ export class AddIncidentModal extends Component {
                 onConfirm={this.close}
                 disabled={this.state.submitting}
               >
-                <Button type="secondary" className="full-mobile" disabled={this.state.submitting}>
-                  Cancel
-                </Button>
+                <Button disabled={this.state.submitting}>Cancel</Button>
               </Popconfirm>
 
-              {Forms[this.state.current].buttons}
+              {Forms[this.state.current].buttons[1]}
             </div>
           </div>
         </div>

@@ -271,6 +271,18 @@ tr.ant-table-expanded-row {
   }
 }
 
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0;
+}
+
+.ant-form-item {
+  margin-bottom: 8px;
+}
+
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
+  color: #036;
+}
+
 // Cards
 
 .ant-card {

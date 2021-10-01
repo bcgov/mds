@@ -4,12 +4,10 @@ import { destroy } from "redux-form";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
+import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import {
-  fetchMineIncidents,
-  createMineIncident,
-} from "@common/actionCreators/incidentActionCreator";
+import { fetchIncidents, createMineIncident } from "@common/actionCreators/incidentActionCreator";
 import {
   getDropdownIncidentDeterminationOptions,
   getDropdownIncidentStatusCodeOptions,
@@ -22,9 +20,10 @@ import CustomPropTypes from "@/customPropTypes";
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const propTypes = {
+  fetchIncidents: PropTypes.func.isRequired,
   fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
-  mineGuid: PropTypes.string.isRequired,
+  mine: CustomPropTypes.mine.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
@@ -38,17 +37,22 @@ export class Incidents extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
-    this.props.fetchMineIncidents(this.props.mineGuid).then(() => {
-      this.setState({ isLoaded: true });
-    });
+    this.props
+      .fetchIncidents({
+        mine_guid: this.props.mine.mine_guid,
+        per_page: Strings.MAX_PER_PAGE,
+        sort_dir: "asc",
+        sort_field: "mine_incident_report_no",
+      })
+      .then(() => {
+        this.setState({ isLoaded: true });
+      });
   }
 
   handleCreateIncident = (values) => {
-    console.log("handleCreateIncident values: ", values);
-    console.log("this.props.mine.mine_guid: ", this.props.mineGuid);
-    return this.props.createMineIncident(this.props.mineGuid, values).then(() => {
+    return this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
       this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mineGuid);
+      this.props.fetchMineIncidents(this.props.mine.mine_guid);
     });
   };
 
@@ -58,7 +62,7 @@ export class Incidents extends Component {
       props: {
         onSubmit: this.handleCreateIncident,
         title: "Record a mine incident",
-        mineGuid: this.props.mineGuid,
+        mineGuid: this.props.mine.mine_guid,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
       },
@@ -104,7 +108,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchMineIncidents,
+      fetchIncidents,
       createMineIncident,
       destroy,
       openModal,
