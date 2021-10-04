@@ -211,20 +211,23 @@ class PermitAmendmentListResource(Resource, UserMixin):
             populate_with_conditions = data.get('populate_with_conditions', True)
             if application_identity.now_application:
                 if populate_with_conditions:
-                    if application_identity.application_type_code == "ADA":
+                    permit_amendment_id = None
+                    if application_identity.application_type_code == 'NOW':
+                        permit_amendment = PermitAmendment.find_last_amendment_by_permit_id(permit.permit_id)
+                        permit_amendment_id = permit_amendment.permit_amendment_id
+                    else:
+                        permit_amendment_id = application_identity.source_permit_amendment_id
 
-                        conditions = PermitConditions.find_all_by_permit_amendment_id(
-                            application_identity.source_permit_amendment_id)
-                        if conditions:
-                            for condition in conditions:
-                                PermitConditions.create(condition.condition_category_code,
-                                                        condition.condition_type_code,
-                                                        new_pa.permit_amendment_id,
-                                                        condition.condition,
-                                                        condition.display_order,
-                                                        condition.sub_conditions)
-                        else:
-                            create_standard_conditions(application_identity)
+                    conditions = PermitConditions.find_all_by_permit_amendment_id(
+                        permit_amendment_id)
+                    if conditions:
+                        for condition in conditions:
+                            PermitConditions.create(condition.condition_category_code,
+                                                    condition.condition_type_code,
+                                                    new_pa.permit_amendment_id,
+                                                    condition.condition,
+                                                    condition.display_order,
+                                                    condition.sub_conditions)
                     else:
                         create_standard_conditions(application_identity)
 
