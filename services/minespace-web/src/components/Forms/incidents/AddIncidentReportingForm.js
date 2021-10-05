@@ -39,7 +39,7 @@ export const AddIncidentReportingForm = (props) => (
       </Form.Item>
       <Divider />
       <Text>
-        <h4>Reporter details</h4>
+        <h4>Reporter Details</h4>
       </Text>
       <Form.Item>
         <Field

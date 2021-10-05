@@ -185,8 +185,8 @@ class MineIncidentListResource(Resource, UserMixin):
 
         try:
             incident.save()
-            # if is_minespace_user():
-            #     incident.send_incidents_email()
+            if is_minespace_user():
+                incident.send_incidents_email()
         except Exception as e:
             raise InternalServerError(f'Error when saving: {e}')
 

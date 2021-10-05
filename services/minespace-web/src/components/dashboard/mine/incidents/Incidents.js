@@ -16,12 +16,12 @@ import {
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
+import * as FORM from "@/constants/forms";
 
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const propTypes = {
   fetchIncidents: PropTypes.func.isRequired,
-  fetchMineIncidents: PropTypes.func.isRequired,
   createMineIncident: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
@@ -29,6 +29,7 @@ const propTypes = {
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  destroy: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
@@ -52,8 +53,17 @@ export class Incidents extends Component {
   handleCreateIncident = (values) => {
     return this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
       this.props.closeModal();
-      this.props.fetchMineIncidents(this.props.mine.mine_guid);
+      this.props.fetchIncidents({
+        mine_guid: this.props.mine.mine_guid,
+        per_page: Strings.MAX_PER_PAGE,
+        sort_dir: "asc",
+        sort_field: "mine_incident_report_no",
+      });
     });
+  };
+
+  handleCancelMineIncident = () => {
+    this.props.destroy(FORM.ADD_INCIDENT);
   };
 
   openCreateIncidentModal = (event) => {
@@ -61,7 +71,8 @@ export class Incidents extends Component {
     this.props.openModal({
       props: {
         onSubmit: this.handleCreateIncident,
-        title: "Record a mine incident",
+        afterClose: this.handleCancelMineIncident,
+        title: "Submit a mine incident",
         mineGuid: this.props.mine.mine_guid,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,
