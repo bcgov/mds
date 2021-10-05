@@ -13,6 +13,7 @@ import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
@@ -136,7 +137,7 @@ export class AddIncidentModal extends Component {
 
   close = () => {
     this.props.closeModal();
-    // this.props.afterClose();
+    this.props.afterClose();
   };
 
   next = () => this.setState((prevState) => ({ current: prevState.current + 1 }));
@@ -145,10 +146,13 @@ export class AddIncidentModal extends Component {
 
   handleIncidentSubmit = () => {
     this.setState({ submitting: true });
-    this.props.onSubmit({
-      ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
-      updated_documents: this.state.uploadedFiles,
-    });
+    this.props
+      .onSubmit({
+        ...this.parseFormDataIntoPayload(this.props.addIncidentFormValues),
+        updated_documents: this.state.uploadedFiles,
+      })
+      .then(() => this.close())
+      .finally(() => this.setState({ submitting: false }));
   };
 
   onFileLoad = (document_name, document_manager_guid, mine_incident_document_type_code) => {
