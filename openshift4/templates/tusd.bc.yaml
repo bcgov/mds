@@ -83,6 +83,6 @@ objects:
         to:
           kind: ImageStreamTag
           name: ${NAME}:${TAG}
-      completionDeadlineSeconds: 600
+      completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange

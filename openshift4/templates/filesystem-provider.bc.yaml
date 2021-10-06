@@ -61,7 +61,7 @@ objects:
         to:
           kind: ImageStreamTag
           name: ${NAME}:${TAG}
-      completionDeadlineSeconds: 1200
+      completionDeadlineSeconds: 1440
       resources:
         limits:
           cpu: 2000m
