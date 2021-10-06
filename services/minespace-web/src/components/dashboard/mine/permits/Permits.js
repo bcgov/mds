@@ -8,8 +8,6 @@ import PropTypes from "prop-types";
 import CustomPropTypes from "@/customPropTypes";
 import PermitsTable from "@/components/dashboard/mine/permits/PermitsTable";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   fetchPermits: PropTypes.func.isRequired,
@@ -31,14 +29,14 @@ export class Permits extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Title level={4}>Permits</Title>
-          <Paragraph>
+          <Typography.Title level={4}>Permits</Typography.Title>
+          <Typography.Paragraph>
             The below table displays all of the&nbsp;
-            <Text className="color-primary" strong>
+            <Typography.Text className="color-primary" strong>
               permit applications
-            </Text>
+            </Typography.Text>
             &nbsp;associated with this mine.
-          </Paragraph>
+          </Typography.Paragraph>
           <PermitsTable isLoaded={this.state.isLoaded} permits={this.props.permits} />
         </Col>
       </Row>

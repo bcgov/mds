@@ -44,13 +44,25 @@ $black: #000;
 
 // Color used by default to control hover and active backgrounds and for
 // alert info backgrounds.
-$primary-1: tint($primary-color, 90%); //color(~`colorPalette('${primary-color}', 1) `); // replace tint($primary-color, 90%)
-$primary-2: tint($primary-color, 80%); //color(~`colorPalette('${primary-color}', 2) `); // replace tint($primary-color, 80%)
+$primary-1: tint(
+  $primary-color,
+  90%
+); //color(~`colorPalette('${primary-color}', 1) `); // replace tint($primary-color, 90%)
+$primary-2: tint(
+  $primary-color,
+  80%
+); //color(~`colorPalette('${primary-color}', 2) `); // replace tint($primary-color, 80%)
 $primary-3: tint($primary-color, 70%); //color(~`colorPalette('${primary-color}', 3) `); // unused
 $primary-4: tint($primary-color, 60%); //color(~`colorPalette('${primary-color}', 4) `); // unused
-$primary-5: tint($primary-color, 20%); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
+$primary-5: tint(
+  $primary-color,
+  20%
+); //color(~`colorPalette('${primary-color}', 5) `); // color used to control the text color in many active and hover states, replace tint($primary-color, 20%)
 $primary-6: $primary-color; // color used to control the text color of active buttons, don't use, use $primary-color
-$primary-7: shade($primary-color, 5%); //color(~`colorPalette('${primary-color}', 7) `); // replace shade($primary-color, 5%)
+$primary-7: shade(
+  $primary-color,
+  5%
+); //color(~`colorPalette('${primary-color}', 7) `); // replace shade($primary-color, 5%)
 //$primary-8: color(~`colorPalette('${primary-color}', 8) `); // unused
 //$primary-9: color(~`colorPalette('${primary-color}', 9) `); // unused
 //$primary-10: color(~`colorPalette('${primary-color}', 10) `); // unused
@@ -155,14 +167,19 @@ $disabled-bg: $gov-grey; //$background-color-base;
 $disabled-color-dark: fade(#fff, 35%);
 
 // Shadow
-$shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+$shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05);
 $shadow-color: rgba(0, 0, 0, 0.15);
 $shadow-color-inverse: $component-background;
 $box-shadow-base: $shadow-2;
-$shadow-1-up: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05), 0 -12px 48px 16px rgba(0, 0, 0, 0.03);
-$shadow-1-down: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05), 0 12px 48px 16px rgba(0, 0, 0, 0.03);
-$shadow-1-left: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05), -12px 0 48px 16px rgba(0, 0, 0, 0.03);
-$shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05), 12px 0 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-up: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
+  0 -12px 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-down: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05),
+  0 12px 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-left: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05),
+  -12px 0 48px 16px rgba(0, 0, 0, 0.03);
+$shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05),
+  12px 0 48px 16px rgba(0, 0, 0, 0.03);
 
 // Buttons
 $btn-font-weight: 400;
@@ -295,7 +312,7 @@ $layout-header-padding: 0 50px;
 $layout-footer-padding: 32px 0px;
 $layout-sider-background: $layout-header-background;
 $layout-trigger-height: 48px;
-$layout-trigger-background: $black ;//#002140;
+$layout-trigger-background: $black; //#002140;
 $layout-trigger-color: $white; //#fff;
 $layout-zero-trigger-width: 36px;
 $layout-zero-trigger-height: 42px;
@@ -344,9 +361,13 @@ $input-padding-horizontal: $control-padding-horizontal - 1px;
 $input-padding-horizontal-base: $input-padding-horizontal;
 $input-padding-horizontal-sm: $control-padding-horizontal-sm - 1px;
 $input-padding-horizontal-lg: $input-padding-horizontal;
-$input-padding-vertical-base: round( ($input-height-base - $font-size-base * $line-height-base) / 2 * 10 ) / 10 - $border-width-base;
-$input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) / 10 - $border-width-base;
-$input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) / 10 - $border-width-base;
+$input-padding-vertical-base: round(
+    ($input-height-base - $font-size-base * $line-height-base) / 2 * 10
+  ) / 10 - $border-width-base;
+$input-padding-vertical-sm: round(($input-height-sm - $font-size-base * $line-height-base) / 2 * 10) /
+  10 - $border-width-base;
+$input-padding-vertical-lg: round(($input-height-lg - $font-size-lg * $line-height-base) / 2 * 10) /
+  10 - $border-width-base;
 $input-color: $primary-color; //$text-color;
 $input-placeholder-color: fade($input-color, 25%); //#BFBFBF; //hsv(0, 0, 75%);
 $input-icon-color: $input-color;
@@ -589,7 +610,8 @@ $card-padding-base: 24px;
 $card-actions-background: $background-color-light;
 $card-skeleton-bg: #cfd8dc;
 $card-background: $card-bg; //$component-background;
-$card-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+$card-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12),
+  0 5px 12px 4px rgba(0, 0, 0, 0.09);
 $card-radius: 0; //$border-radius-base;
 
 // Comment

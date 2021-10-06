@@ -4,44 +4,34 @@ exports[`MineWorkInformation renders properly 1`] = `
 <div
   className="work-information-container "
 >
-  <Row
-    gutter={5}
+  <div
+    className="inline-flex between"
   >
-    <div
-      className="inline-flex between"
+    <Title
+      level={4}
     >
-      <Title
-        level={4}
+      Work Information
+    </Title>
+    <span>
+      <Button
+        block={false}
+        ghost={false}
+        htmlType="button"
+        loading={false}
+        onClick={[Function]}
+        type="link"
       >
-        Work Information
-      </Title>
-      <span
-        style={
-          Object {
-            "float": "right",
-          }
-        }
-      >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          loading={false}
-          onClick={[Function]}
-          type="link"
-        >
-          <img
-            alt="Edit"
-            src={
-              Object {
-                "process": [Function],
-              }
+        <img
+          alt="Edit"
+          src={
+            Object {
+              "process": [Function],
             }
-          />
-        </Button>
-      </span>
-    </div>
-  </Row>
+          }
+        />
+      </Button>
+    </span>
+  </div>
   <Row
     gutter={5}
   >
@@ -62,9 +52,7 @@ exports[`MineWorkInformation renders properly 1`] = `
         tip=""
       >
         <div>
-          <Row
-            gutter={0}
-          >
+          <Row>
             <div>
               <Row
                 gutter={16}
@@ -75,12 +63,11 @@ exports[`MineWorkInformation renders properly 1`] = `
                   <Descriptions
                     colon={false}
                     column={5}
-                    size="default"
                   >
                     <DescriptionsItem
                       label={
                         <React.Fragment>
-                          <Tooltip
+                          <ForwardRef
                             arrowPointAtCenter={false}
                             autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
@@ -108,11 +95,10 @@ exports[`MineWorkInformation renders properly 1`] = `
                             }
                             transitionName="zoom-big-fast"
                           >
-                            <Icon
+                            <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
-                              type="info-circle"
                             />
-                          </Tooltip>
+                          </ForwardRef>
                           Work Start Date
                         </React.Fragment>
                       }
@@ -122,7 +108,7 @@ exports[`MineWorkInformation renders properly 1`] = `
                     <DescriptionsItem
                       label={
                         <React.Fragment>
-                          <Tooltip
+                          <ForwardRef
                             arrowPointAtCenter={false}
                             autoAdjustOverflow={true}
                             mouseEnterDelay={0.3}
@@ -150,11 +136,10 @@ exports[`MineWorkInformation renders properly 1`] = `
                             }
                             transitionName="zoom-big-fast"
                           >
-                            <Icon
+                            <ForwardRef(InfoCircleOutlined)
                               className="padding-sm"
-                              type="info-circle"
                             />
-                          </Tooltip>
+                          </ForwardRef>
                           Work Stop Date
                         </React.Fragment>
                       }
@@ -165,10 +150,6 @@ exports[`MineWorkInformation renders properly 1`] = `
                       label="Work Status"
                     >
                       <Badge
-                        count={null}
-                        dot={false}
-                        overflowCount={99}
-                        showZero={false}
                         status="warning"
                         text="Not Working"
                       />
@@ -185,20 +166,8 @@ exports[`MineWorkInformation renders properly 1`] = `
               </Row>
             </div>
           </Row>
-          <Row
-            gutter={0}
-          >
+          <Row>
             <Descriptions
-              column={
-                Object {
-                  "lg": 3,
-                  "md": 3,
-                  "sm": 2,
-                  "xl": 3,
-                  "xs": 1,
-                  "xxl": 3,
-                }
-              }
               size="small"
             >
               <DescriptionsItem

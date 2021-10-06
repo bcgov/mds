@@ -3,7 +3,8 @@ import { compose } from "redux";
 import { BrowserRouter } from "react-router-dom";
 // eslint-disable-next-line
 import { hot } from "react-hot-loader";
-import { Layout, BackTop, Row, Col, Spin, Icon } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Layout, BackTop, Row, Col, Spin } from "antd";
 
 import MediaQuery from "react-responsive";
 import Routes from "./routes/Routes";
@@ -18,7 +19,7 @@ import { MatomoLinkTracing } from "../common/utils/trackers";
 
 export const store = configureStore();
 
-Spin.setDefaultIndicator(<Icon type="loading" style={{ fontSize: 40 }} />);
+Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 40 }} />);
 
 class App extends Component {
   state = { isIE: true, isMobile: true };
@@ -36,7 +37,6 @@ class App extends Component {
   };
 
   render() {
-    const { Content } = Layout;
     const xs = 24;
     const lg = 22;
     const xl = 20;
@@ -48,7 +48,7 @@ class App extends Component {
           <Layout>
             <Header xs={xs} lg={lg} xl={xl} xxl={xxl} />
             <Layout>
-              <Content>
+              <Layout.Content>
                 {this.state.isIE && <WarningBanner type="IE" onClose={this.handleBannerClose} />}
                 <MediaQuery maxWidth={500}>
                   {this.state.isMobile && (
@@ -62,7 +62,7 @@ class App extends Component {
                 </Row>
                 <ModalWrapper />
                 <BackTop />
-              </Content>
+              </Layout.Content>
             </Layout>
             <Footer xs={xs} lg={lg} xl={xl} xxl={xxl} />
           </Layout>

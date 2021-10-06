@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Row, Col, Typography, Button, Icon } from "antd";
+import { Row, Col, Typography, Button } from "antd";
+import { PlusCircleFilled } from "@ant-design/icons";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { getMines } from "@common/selectors/mineSelectors";
@@ -24,8 +25,6 @@ import { getInspectorsHash } from "@common/selectors/partiesSelectors";
 import { modalConfig } from "@/components/modalContent/config";
 import CustomPropTypes from "@/customPropTypes";
 import VariancesTable from "@/components/dashboard/mine/variances/VariancesTable";
-
-const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mines: PropTypes.objectOf(CustomPropTypes.mine),
@@ -160,17 +159,17 @@ export class Variances extends Component {
             type="primary"
             onClick={(event) => this.openCreateVarianceModal(event, this.state.mine.mine_name)}
           >
-            <Icon type="plus-circle" theme="filled" />
+            <PlusCircleFilled />
             Apply for a Variance
           </Button>
-          <Title level={4}>Variances</Title>
-          <Paragraph>
+          <Typography.Title level={4}>Variances</Typography.Title>
+          <Typography.Paragraph>
             This table shows your mine&apos;s&nbsp;
-            <Text className="color-primary" strong>
+            <Typography.Text className="color-primary" strong>
               variance history
-            </Text>
+            </Typography.Text>
             , including applications in progress and variances you may need to renew.
-          </Paragraph>
+          </Typography.Paragraph>
           <VariancesTable
             variances={this.props.variances}
             mine={this.state.mine}

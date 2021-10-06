@@ -8,8 +8,6 @@ import { getBonds } from "@common/selectors/securitiesSelectors";
 import CustomPropTypes from "@/customPropTypes";
 import BondsTable from "@/components/dashboard/mine/bonds/BondsTable";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   bonds: PropTypes.arrayOf(CustomPropTypes.bond).isRequired,
@@ -31,14 +29,14 @@ export class Bonds extends Component {
         <Col span={24}>
           <Row>
             <Col span={24}>
-              <Title level={4}>Bonds</Title>
-              <Paragraph>
+              <Typography.Title level={4}>Bonds</Typography.Title>
+              <Typography.Paragraph>
                 This table shows&nbsp;
-                <Text className="color-primary" strong>
+                <Typography.Text className="color-primary" strong>
                   bonds
-                </Text>
+                </Typography.Text>
                 &nbsp;for your mine.
-              </Paragraph>
+              </Typography.Paragraph>
               <br />
             </Col>
           </Row>

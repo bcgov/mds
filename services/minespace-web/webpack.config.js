@@ -105,9 +105,7 @@ const devConfig = merge([
     host: HOST,
     port: PORT,
   }),
-  parts.loadCSS({
-    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
-  }),
+  parts.loadCSS(),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),
   }),
@@ -126,7 +124,6 @@ const prodConfig = merge([
   parts.hardSourceWebPackPlugin(),
   parts.extractCSS({
     filename: BUILD_FILE_NAMES.css,
-    theme: path.join(PATHS.src, "styles", "settings", "theme.scss"),
   }),
   parts.loadImages({
     exclude: path.join(PATHS.src, "assets", "fonts"),

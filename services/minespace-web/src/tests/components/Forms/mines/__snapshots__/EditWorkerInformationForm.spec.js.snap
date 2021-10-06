@@ -24,9 +24,8 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         title="Approximate number of workers on site that includes mine employees and contractors."
         transitionName="zoom-big-fast"
       >
-        <Icon
+        <ForwardRef(InfoCircleOutlined)
           className="padding-sm"
-          type="info-circle"
         />
       </Tooltip>
     </Title>
@@ -39,7 +38,6 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         <Descriptions
           colon={false}
           column={5}
-          size="default"
         >
           <DescriptionsItem
             label="Number of Mine Employees"
@@ -93,15 +91,10 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
     <div
       className="right center-mobile"
     >
-      <Popconfirm
+      <ForwardRef
         cancelText="No"
         disabled={false}
-        icon={
-          <Icon
-            theme="filled"
-            type="exclamation-circle"
-          />
-        }
+        icon={<ForwardRef(ExclamationCircleFilled) />}
         okText="Yes"
         okType="primary"
         onConfirm={[Function]}
@@ -121,7 +114,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         >
           Cancel
         </Button>
-      </Popconfirm>
+      </ForwardRef>
       <Button
         block={false}
         className="full-mobile margin-small"

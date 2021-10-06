@@ -1,11 +1,11 @@
-import { uniq } from "lodash";
+import { uniq, concat, reject } from "lodash";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Form } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
 import { Field } from "redux-form";
-import { concat, reject } from "lodash";
-import FileUpload from "@/components/common/FileUpload";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
+import FileUpload from "@/components/common/FileUpload";
 import LinkButton from "@/components/common/LinkButton";
 import { MINE_REPORT_DOCUMENT } from "@/constants/API";
 import { DOCUMENT, EXCEL, IMAGE, SPATIAL } from "@/constants/fileTypes";

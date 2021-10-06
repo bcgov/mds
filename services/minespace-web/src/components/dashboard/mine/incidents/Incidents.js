@@ -10,8 +10,6 @@ import CustomPropTypes from "@/customPropTypes";
 
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
-const { Paragraph, Title, Text } = Typography;
-
 const propTypes = {
   fetchIncidents: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
@@ -38,14 +36,14 @@ export class Incidents extends Component {
     return (
       <Row>
         <Col span={24}>
-          <Title level={4}>Incidents</Title>
-          <Paragraph>
+          <Typography.Title level={4}>Incidents</Typography.Title>
+          <Typography.Paragraph>
             This table shows your mine&apos;s history of&nbsp;
-            <Text className="color-primary" strong>
+            <Typography.Text className="color-primary" strong>
               reported incidents
-            </Text>
+            </Typography.Text>
             .
-          </Paragraph>
+          </Typography.Paragraph>
           <IncidentsTable isLoaded={this.state.isLoaded} data={this.props.incidents} />
         </Col>
       </Row>

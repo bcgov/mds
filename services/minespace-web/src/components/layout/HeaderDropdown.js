@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import { Menu, Dropdown, Button, Divider, Icon } from "antd";
+import { CaretDownOutlined } from "@ant-design/icons";
+import { Menu, Dropdown, Button, Divider } from "antd";
 import MediaQuery from "react-responsive";
 import PropTypes from "prop-types";
 import * as COMMON_ENV from "@common/constants/environment";
@@ -90,7 +91,7 @@ export class HeaderDropdown extends Component {
           <Dropdown overlay={dropdownMenuDesktop}>
             <Button className="header-dropdown-button">
               {this.props.userInfo.email}
-              <Icon type="caret-down" />
+              <CaretDownOutlined />
             </Button>
           </Dropdown>
         </MediaQuery>
