@@ -112,7 +112,7 @@ objects:
       annotations:
         description: Defines how to build the application
     spec:
-      completionDeadlineSeconds: 600
+      completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange
       runPolicy: SerialLatestOnly
