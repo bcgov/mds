@@ -140,8 +140,10 @@ class AddIncidentDetailForm extends Component {
                 validate={[maxLength(255)]}
               />
             </Form.Item>
-            <h4>Initial Notification Documents</h4>
-            <Form.Item>
+            <Form.Item label="Initial Notification Documents">
+              <Typography.Paragraph>
+                Please upload all of the required documents.
+              </Typography.Paragraph>
               <Field
                 id="InitialIncidentFileUpload"
                 name="InitialIncidentFileUpload"

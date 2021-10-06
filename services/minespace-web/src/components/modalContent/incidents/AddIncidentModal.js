@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
-import { Col, Steps, Button, Popconfirm } from "antd";
+import { Steps, Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -79,19 +79,19 @@ const StepForms = (
       />
     ),
     buttons: [
-      <Col lg={{ span: 6 }} md={{ span: 8 }} sm={{ span: 10 }} style={{ textAlign: "left" }}>
-        <Button
-          id="step-back"
-          type="tertiary"
-          className="full-mobile"
-          onClick={() => prev()}
-          disabled={state.submitting}
-        >
-          Previous
-        </Button>
-      </Col>,
+      <Button
+        id="step-back"
+        style={{ display: "inline", float: "left" }}
+        type="tertiary"
+        className="full-mobile"
+        onClick={() => prev()}
+        disabled={state.submitting}
+      >
+        Previous
+      </Button>,
       <Button
         type="primary"
+        style={{ display: "inline", float: "right" }}
         htmlType="submit"
         onClick={(event) => handleIncidentSubmit(event)}
         disabled={state.submitting || invalidDetailPayload(props.addIncidentFormValues)}
