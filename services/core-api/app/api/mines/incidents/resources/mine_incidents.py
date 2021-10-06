@@ -39,7 +39,7 @@ class MineIncidentListResource(Resource, UserMixin):
     parser.add_argument(
         'reported_timestamp',
         type=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M') if x else None,
-        required=True,
+        required=False,
         location='json')
     parser.add_argument('reported_by_name', type=str, location='json')
     parser.add_argument('reported_by_email', type=str, location='json')
@@ -95,6 +95,9 @@ class MineIncidentListResource(Resource, UserMixin):
                 raise BadRequest(
                     'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
 
+        reported_timestamp_default = datetime.utcnow(
+        ) if not data['reported_timestamp'] else data['reported_timestamp']
+
         incident = MineIncident.create(
             mine,
             data['incident_timestamp'],
@@ -103,7 +106,7 @@ class MineIncidentListResource(Resource, UserMixin):
             mine_determination_type_code=data['mine_determination_type_code'],
             mine_determination_representative=data['mine_determination_representative'],
             followup_investigation_type_code=data['followup_investigation_type_code'],
-            reported_timestamp=data['reported_timestamp'],
+            reported_timestamp=reported_timestamp_default,
             reported_by_name=data['reported_by_name'],
         )
 

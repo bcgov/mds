@@ -10,7 +10,6 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { fetchIncidents, createMineIncident } from "@common/actionCreators/incidentActionCreator";
 import {
   getDropdownIncidentDeterminationOptions,
-  getDropdownIncidentStatusCodeOptions,
   getDropdownIncidentCategoryCodeOptions,
 } from "@common/selectors/staticContentSelectors";
 import { getIncidents, getIncidentPageData } from "@common/selectors/incidentSelectors";
@@ -42,7 +41,7 @@ export class Incidents extends Component {
       .fetchIncidents({
         mine_guid: this.props.mine.mine_guid,
         per_page: Strings.MAX_PER_PAGE,
-        sort_dir: "asc",
+        sort_dir: "desc",
         sort_field: "mine_incident_report_no",
       })
       .then(() => {
@@ -56,7 +55,7 @@ export class Incidents extends Component {
       this.props.fetchIncidents({
         mine_guid: this.props.mine.mine_guid,
         per_page: Strings.MAX_PER_PAGE,
-        sort_dir: "asc",
+        sort_dir: "desc",
         sort_field: "mine_incident_report_no",
       });
     });
@@ -112,7 +111,6 @@ const mapStateToProps = (state) => ({
   incidentPageData: getIncidentPageData(state),
   incidentCategoryCodeOptions: getDropdownIncidentCategoryCodeOptions(state),
   incidentDeterminationOptions: getDropdownIncidentDeterminationOptions(state),
-  incidentStatusCodeOptions: getDropdownIncidentStatusCodeOptions(state),
   incidents: getIncidents(state),
 });
 

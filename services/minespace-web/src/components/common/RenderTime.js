@@ -14,6 +14,7 @@ const propTypes = {
   input: PropTypes.objectOf(PropTypes.any).isRequired,
   label: PropTypes.string.isRequired,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
+  disabled: PropTypes.bool,
   placeholder: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
@@ -25,6 +26,7 @@ const propTypes = {
 const defaultProps = {
   placeholder: "Select a time",
   onBlur: () => {},
+  disabled: false,
   onChange: () => {},
   format: "HH:mm",
   defaultOpenValue: "00:00",
@@ -47,6 +49,7 @@ const RenderDate = (props) => (
       id={props.id}
       {...props.input}
       placeholder={props.placeholder}
+      disabled={props.disabled}
       onChange={props.input.onChange}
       onBlur={props.onBlur}
       value={props.input.value ? moment(props.input.value, props.format) : null}
