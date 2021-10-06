@@ -5,7 +5,6 @@ exports[`VarianceDetails renders properly 1`] = `
   <Descriptions
     colon={false}
     column={1}
-    size="default"
   >
     <DescriptionsItem
       label="Application Status"
@@ -28,33 +27,21 @@ exports[`VarianceDetails renders properly 1`] = `
     >
       notesss
     </DescriptionsItem>
-    <DescriptionsItem>
-      <DocumentTable
-        documents={
-          Array [
-            Object {
-              "created_at": "2019-05-02",
-              "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
-              "document_name": "test.pdf",
-              "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
-              "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
-            },
-          ]
-        }
-      />
-    </DescriptionsItem>
   </Descriptions>
-  <Descriptions
-    column={
-      Object {
-        "lg": 3,
-        "md": 3,
-        "sm": 2,
-        "xl": 3,
-        "xs": 1,
-        "xxl": 3,
-      }
+  <DocumentTable
+    documents={
+      Array [
+        Object {
+          "created_at": "2019-05-02",
+          "document_manager_guid": "d7f64a25-6eaf-4bed-97fe-fd63ac347c70",
+          "document_name": "test.pdf",
+          "mine_document_guid": "33e6b965-2402-4229-a213-23bbe7fd3e99",
+          "mine_guid": "59e73109-48f7-4ad2-977c-3005b5bff010",
+        },
+      ]
     }
+  />
+  <Descriptions
     size="small"
   >
     <DescriptionsItem

@@ -2,7 +2,7 @@
 
 exports[`DocumentTable renders properly 1`] = `
 <div>
-  <withStore(Table)
+  <Table
     align="left"
     columns={
       Array [

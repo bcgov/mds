@@ -4,7 +4,7 @@ exports[`LoadingWrapper renders properly 1`] = `
 <Spin
   delay={1000}
   indicator={
-    <Icon
+    <ForwardRef(LoadingOutlined)
       className="color-primary"
       style={
         Object {
@@ -13,7 +13,6 @@ exports[`LoadingWrapper renders properly 1`] = `
           "marginTop": 40,
         }
       }
-      type="loading"
     />
   }
   size="default"

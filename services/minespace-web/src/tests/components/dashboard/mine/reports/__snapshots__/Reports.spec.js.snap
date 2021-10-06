@@ -1,15 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Reports renders properly 1`] = `
-<Row
-  gutter={0}
->
+<Row>
   <Col
     span={24}
   >
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
@@ -67,10 +63,7 @@ exports[`Reports renders properly 1`] = `
             }
             type="primary"
           >
-            <Icon
-              theme="filled"
-              type="plus-circle"
-            />
+            <ForwardRef(PlusCircleFilled) />
             Submit Report
           </Button>
         </Connect(AuthorizationWrapper)>

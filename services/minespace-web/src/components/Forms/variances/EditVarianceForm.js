@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Field, reduxForm, change } from "redux-form";
 import { remove } from "lodash";
-import { Form, Button, Popconfirm, Typography } from "antd";
+import { Form } from "@ant-design/compatible";
+import "@ant-design/compatible/assets/index.css";
+import { Button, Popconfirm, Typography } from "antd";
+import { resetForm } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
-import { resetForm } from "@common/utils/helpers";
 import { VarianceDetails } from "@/components/dashboard/mine/variances/VarianceDetails";
 import VarianceFileUpload from "@/components/Forms/variances/VarianceFileUpload";
-
-const { Paragraph } = Typography;
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -68,7 +68,7 @@ export class EditVarianceForm extends Component {
           complianceCodesHash={this.props.complianceCodesHash}
         />
         <Form.Item label="Attached Files">
-          <Paragraph>Please upload all of the required documents.</Paragraph>
+          <Typography.Paragraph>Please upload all of the required documents.</Typography.Paragraph>
           <Field
             id="uploadedFiles"
             name="uploadedFiles"

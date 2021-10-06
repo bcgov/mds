@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Button, Col, Descriptions, Icon, Row, Tooltip, Typography } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Button, Col, Descriptions, Row, Tooltip, Typography } from "antd";
 import { fetchMineRecordById, updateMineRecord } from "@common/actionCreators/mineActionCreator";
 import { EDIT_PENCIL } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
 import EditWorkerInformationForm from "@/components/Forms/mines/EditWorkerInformationForm";
 import * as Strings from "@/constants/strings";
-
-const { Title } = Typography;
 
 const propTypes = {
   mine: PropTypes.objectOf(CustomPropTypes.mine).isRequired,
@@ -49,47 +48,38 @@ export class WorkerInfoEmployee extends Component {
     return (
       <div>
         {this.state.isEditable ? (
-          <div>
-            <EditWorkerInformationForm
-              initialValues={this.props.mine}
-              onSubmit={this.handleEditWorkerInfo}
-              handleToggleEdit={this.handleToggleEdit}
-            />
-          </div>
+          <EditWorkerInformationForm
+            initialValues={this.props.mine}
+            onSubmit={this.handleEditWorkerInfo}
+            handleToggleEdit={this.handleToggleEdit}
+          />
         ) : (
           <div className="work-information-container">
             <Row gutter={16}>
               <Col span={24}>
-                <Row>
-                  <div className="inline-flex between">
-                    <Col span={21}>
-                      <Title level={4}>
-                        Worker Information
-                        <Tooltip
-                          overlayClassName="minespace-tooltip"
-                          title="Approximate number of workers on site that includes mine employees and contractors."
-                          placement="right"
-                          mouseEnterDelay={0.3}
-                        >
-                          <Icon type="info-circle" className="padding-sm" />
-                        </Tooltip>
-                      </Title>
-                    </Col>
-                    <Col span={3}>
-                      <span style={{ float: "right" }}>
-                        <Button
-                          style={{ border: 0 }}
-                          type="link"
-                          onClick={(event) => {
-                            this.handleToggleEdit(event);
-                          }}
-                        >
-                          <img src={EDIT_PENCIL} alt="Edit Worker Info" />
-                        </Button>
-                      </span>
-                    </Col>
-                  </div>
-                </Row>
+                <div className="inline-flex between">
+                  <>
+                    <Typography.Title level={4}>
+                      Worker Information
+                      <Tooltip
+                        overlayClassName="minespace-tooltip"
+                        title="Approximate number of workers on site that includes mine employees and contractors."
+                        placement="right"
+                        mouseEnterDelay={0.3}
+                      >
+                        <InfoCircleOutlined className="padding-sm" />
+                      </Tooltip>
+                    </Typography.Title>
+                  </>
+                  <Button
+                    type="link"
+                    onClick={(event) => {
+                      this.handleToggleEdit(event);
+                    }}
+                  >
+                    <img src={EDIT_PENCIL} alt="Edit Worker Info" />
+                  </Button>
+                </div>
 
                 <Descriptions>
                   <Descriptions.Item span={2} label="Number of Mine Employees">
