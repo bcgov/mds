@@ -18,8 +18,6 @@ const propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  incidentStatusCodeOptions: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   // eslint-disable-next-line react/no-unused-prop-types
@@ -31,13 +29,7 @@ const defaultProps = {
 };
 
 const invalidReportingPayload = (values) =>
-  !(
-    values.reported_date &&
-    values.reported_time &&
-    values.reported_by_name &&
-    values.categories &&
-    values.categories.length > 0
-  );
+  !(values.reported_by_name && values.categories && values.categories.length > 0);
 
 const invalidDetailPayload = (values) =>
   !(values.incident_date && values.incident_time && values.incident_description);
@@ -77,7 +69,7 @@ const StepForms = (
       <AddIncidentDetailForm
         mineGuid={props.mineGuid}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
-        incidentStatusCodeOptions={props.incidentStatusCodeOptions}
+        // initialValues={props.initialValues}
         uploadedFiles={uploadedFiles.filter(
           (file) =>
             file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
@@ -123,15 +115,12 @@ export class AddIncidentModal extends Component {
 
   parseFormDataIntoPayload = ({
     categories,
-    reported_date,
-    reported_time,
     incident_date,
     incident_time,
     ...remainingValues
   }) => ({
     ...remainingValues,
     categories: categories.sort(),
-    reported_timestamp: this.formatTimestamp(reported_date, reported_time),
     incident_timestamp: this.formatTimestamp(incident_date, incident_time),
   });
 
