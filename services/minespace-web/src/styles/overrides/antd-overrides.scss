@@ -216,6 +216,24 @@ tr.ant-table-expanded-row {
   border: 1px solid $table-seperator;
 }
 
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #bfbfbf;
+}
+
+.ant-select-selection-item-content {
+  color: $black;
+}
+
+.ant-picker-time-panel-cell-inner {
+  background-color: #bfbfbf;
+}
+
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: #bfbfbf;
+}
+
 // Descriptions
 
 .ant-descriptions-item-label {
@@ -279,7 +297,10 @@ tr.ant-table-expanded-row {
   margin-bottom: 8px;
 }
 
-.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title {
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
   color: #036;
 }
 
