@@ -69,7 +69,6 @@ const StepForms = (
       <AddIncidentDetailForm
         mineGuid={props.mineGuid}
         incidentDeterminationOptions={props.incidentDeterminationOptions}
-        // initialValues={props.initialValues}
         uploadedFiles={uploadedFiles.filter(
           (file) =>
             file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial

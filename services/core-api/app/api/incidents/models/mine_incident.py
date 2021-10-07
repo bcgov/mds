@@ -1,5 +1,4 @@
 import uuid, datetime
-from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
