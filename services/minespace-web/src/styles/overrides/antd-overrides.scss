@@ -216,23 +216,6 @@ tr.ant-table-expanded-row {
   border: 1px solid $table-seperator;
 }
 
-.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  background-color: #bfbfbf;
-}
-
-.ant-select-selection-item-content {
-  color: $black;
-}
-
-.ant-picker-time-panel-cell-inner {
-  background-color: #bfbfbf;
-}
-
-.ant-picker-time-panel-column
-  > li.ant-picker-time-panel-cell-selected
-  .ant-picker-time-panel-cell-inner {
-  background: #bfbfbf;
-}
 
 // Descriptions
 
@@ -359,12 +342,6 @@ tr.ant-table-expanded-row {
   }
 }
 
-// Select
-
-.ant-select {
-  color: $primary-color;
-}
-
 // Alerts
 
 .ant-alert-info {
@@ -374,4 +351,26 @@ tr.ant-table-expanded-row {
 .header-link:hover,
 .header-link.active {
   background-color: #154878;
+}
+
+// Selector
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: $disabled-bg;
+}
+
+.ant-select-multiple.ant-select-show-arrow .ant-select-selector,
+.ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+  padding: 5px;
+}
+
+// Picker time
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: $white;
+}
+
+// Picker Input
+.ant-picker-input > input {
+  color: $black;
 }

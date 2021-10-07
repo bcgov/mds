@@ -71,7 +71,7 @@ export class Incidents extends Component {
       props: {
         onSubmit: this.handleCreateIncident,
         afterClose: this.handleCancelMineIncident,
-        title: "Submit a mine incident",
+        title: "Record a Mine Incident",
         mineGuid: this.props.mine.mine_guid,
         incidentDeterminationOptions: this.props.incidentDeterminationOptions,
         incidentCategoryCodeOptions: this.props.incidentCategoryCodeOptions,

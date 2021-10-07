@@ -39,11 +39,10 @@ class AddIncidentDetailForm extends Component {
             </Text>
             <Row gutter={16}>
               <Col md={12} xs={24}>
-                <Form.Item>
+                <Form.Item label="Incident date">
                   <Field
                     id="incident_date"
                     name="incident_date"
-                    label="Incident date"
                     placeholder="Please select date"
                     component={renderConfig.DATE}
                     validate={[required, dateNotInFuture]}
@@ -51,11 +50,10 @@ class AddIncidentDetailForm extends Component {
                 </Form.Item>
               </Col>
               <Col md={12} xs={24}>
-                <Form.Item>
+                <Form.Item label="Incident time">
                   <Field
                     id="incident_time"
                     name="incident_time"
-                    label="Incident time"
                     placeholder="Please select time"
                     component={renderConfig.TIME}
                     validate={[required]}
@@ -64,53 +62,48 @@ class AddIncidentDetailForm extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item>
+            <Form.Item label="Proponent incident number (optional)">
               <Field
                 id="proponent_incident_no"
                 name="proponent_incident_no"
-                label="Proponent incident number (optional)"
                 component={renderConfig.FIELD}
                 validate={[maxLength(20)]}
               />
             </Form.Item>
             <Row gutter={16}>
               <Col md={12} xs={24}>
-                <Form.Item>
+                <Form.Item label="Number of injuries (optional)">
                   <Field
                     id="number_of_injuries"
                     name="number_of_injuries"
-                    label="Number of injuries (optional)"
                     component={renderConfig.FIELD}
                     validate={[wholeNumber, maxLength(10)]}
                   />
                 </Form.Item>
               </Col>
               <Col md={12} xs={24}>
-                <Form.Item>
+                <Form.Item label="Number of fatalities (optional)">
                   <Field
                     id="number_of_fatalities"
                     name="number_of_fatalities"
-                    label="Number of fatalities (optional)"
                     component={renderConfig.FIELD}
                     validate={[wholeNumber, maxLength(10)]}
                   />
                 </Form.Item>
               </Col>
             </Row>
-            <Form.Item>
+            <Form.Item label="Were emergency services called? (optional)">
               <Field
                 id="emergency_services_called"
                 name="emergency_services_called"
-                label="Were emergency services called? (optional)"
                 placeholder="Please choose one"
                 component={renderConfig.RADIO}
               />
             </Form.Item>
-            <Form.Item>
+            <Form.Item label="Description of incident">
               <Field
                 id="incident_description"
                 name="incident_description"
-                label="Description of incident"
                 placeholder="Provide a detailed description of the incident"
                 component={renderConfig.SCROLL_FIELD}
                 validate={[required]}
@@ -119,11 +112,10 @@ class AddIncidentDetailForm extends Component {
             <Text>
               <h4>Dangerous Occurrence Determination</h4>
             </Text>
-            <Form.Item>
+            <Form.Item label="Is this a dangerous occurrence? (optional)">
               <Field
                 id="mine_determination_type_code"
                 name="mine_determination_type_code"
-                label="Mine's determination (optional)"
                 component={renderConfig.RADIO}
                 validate={[validateSelectOptions(this.props.incidentDeterminationOptions)]}
                 data={this.props.incidentDeterminationOptions.filter(
@@ -131,11 +123,10 @@ class AddIncidentDetailForm extends Component {
                 )}
               />
             </Form.Item>
-            <Form.Item>
+            <Form.Item label="Mine representative who made determination">
               <Field
                 id="mine_determination_representative"
                 name="mine_determination_representative"
-                label="Mine representative who made determination"
                 component={renderConfig.FIELD}
                 validate={[maxLength(255)]}
               />
