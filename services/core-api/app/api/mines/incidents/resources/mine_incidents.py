@@ -147,10 +147,8 @@ class MineIncidentListResource(Resource, UserMixin):
             incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
-        current_app.logger.debug(f'updated_documents: {updated_documents}')
         if updated_documents is not None:
             for updated_file in updated_documents:
-                current_app.logger.debug(f'updated_file: {updated_file}')
                 mine_doc = MineDocument(
                     mine_guid=mine.mine_guid,
                     document_name=updated_file['document_name'],
