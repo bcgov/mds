@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getFormValues } from "redux-form";
 import { concat, reject } from "lodash";
-import { Steps, Button, Popconfirm } from "antd";
+import { Alert, Checkbox, Steps, Button, Popconfirm } from "antd";
 import PropTypes from "prop-types";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
@@ -42,14 +42,13 @@ const StepForms = (
   handleIncidentSubmit,
   uploadedFiles,
   onFileLoad,
-  onRemoveFile
+  onRemoveFile,
+  handleCheckboxChange
 ) => [
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm
-        incidentCategoryCodeOptions={props.incidentCategoryCodeOptions.sort()}
-      />
+      <AddIncidentReportingForm incidentCategoryCodeOptions={props.incidentCategoryCodeOptions} />
     ),
     buttons: [
       null,
@@ -66,16 +65,37 @@ const StepForms = (
   {
     title: "Add Details",
     content: (
-      <AddIncidentDetailForm
-        mineGuid={props.mineGuid}
-        incidentDeterminationOptions={props.incidentDeterminationOptions}
-        uploadedFiles={uploadedFiles.filter(
-          (file) =>
-            file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
-        )}
-        onFileLoad={onFileLoad}
-        onRemoveFile={onRemoveFile}
-      />
+      <>
+        <AddIncidentDetailForm
+          mineGuid={props.mineGuid}
+          incidentDeterminationOptions={props.incidentDeterminationOptions}
+          uploadedFiles={uploadedFiles.filter(
+            (file) =>
+              file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
+          )}
+          onFileLoad={onFileLoad}
+          onRemoveFile={onRemoveFile}
+        />
+        <Alert
+          message="You are required to contact the EMLI on call inspector at (888)-348-0299 in addition to submitting this report."
+          // description="You are required to contact the EMLI on call inspector at (888)-348-0299 in addition to submitting this report."
+          description={
+            <>
+              <Checkbox
+                name="visible"
+                checked={state.hasConfirm}
+                onChange={(event) => handleCheckboxChange(event)}
+              >
+                Click here to acknowledge that you understand and have contacted the EMLI On Call
+                Inspector
+              </Checkbox>
+            </>
+          }
+          type="info"
+          showIcon
+        />
+        <br />
+      </>
     ),
     buttons: [
       <Button
@@ -93,7 +113,9 @@ const StepForms = (
         style={{ display: "inline", float: "right" }}
         htmlType="submit"
         onClick={(event) => handleIncidentSubmit(event)}
-        disabled={state.submitting || invalidDetailPayload(props.addIncidentFormValues)}
+        disabled={
+          !state.hasConfirm || state.submitting || invalidDetailPayload(props.addIncidentFormValues)
+        }
       >
         Submit
       </Button>,
@@ -107,6 +129,7 @@ export class AddIncidentModal extends Component {
     submitting: false,
     uploadedFiles: [],
     documentNameGuidMap: {},
+    hasConfirm: false,
   };
 
   formatTimestamp = (dateString, momentInstance) =>
@@ -162,6 +185,10 @@ export class AddIncidentModal extends Component {
     }));
   };
 
+  handleCheckboxChange = (event) => {
+    this.setState({ hasConfirm: event.target.checked });
+  };
+
   render = () => {
     const Forms = StepForms(
       this.props,
@@ -171,7 +198,8 @@ export class AddIncidentModal extends Component {
       this.handleIncidentSubmit,
       this.state.uploadedFiles,
       this.onFileLoad,
-      this.onRemoveFile
+      this.onRemoveFile,
+      this.handleCheckboxChange
     );
 
     return (

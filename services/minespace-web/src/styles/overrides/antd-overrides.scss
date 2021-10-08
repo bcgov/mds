@@ -216,7 +216,6 @@ tr.ant-table-expanded-row {
   border: 1px solid $table-seperator;
 }
 
-
 // Descriptions
 
 .ant-descriptions-item-label {
@@ -273,7 +272,7 @@ tr.ant-table-expanded-row {
 }
 
 .ant-form-vertical .ant-form-item {
-  padding-bottom: 0;
+  padding-bottom: 0px;
 }
 
 .ant-form-item {
@@ -285,6 +284,11 @@ tr.ant-table-expanded-row {
   > .ant-steps-item-content
   > .ant-steps-item-title {
   color: #036;
+}
+
+.ant-legacy-form-vertical .ant-legacy-form-item {
+  padding-bottom: 0px;
+  margin-bottom: 14px;
 }
 
 // Cards
