@@ -15,8 +15,6 @@ import { renderConfig } from "@/components/common/config";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 
-const { Text } = Typography;
-
 const propTypes = {
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
 };
@@ -37,9 +35,9 @@ export const AddIncidentReportingForm = (props) => (
         />
       </Form.Item>
       <Divider />
-      <Text>
+      <Typography.Text>
         <h4>Reporter Details</h4>
-      </Text>
+      </Typography.Text>
       <Form.Item label="Reported by">
         <Field
           id="reported_by_name"

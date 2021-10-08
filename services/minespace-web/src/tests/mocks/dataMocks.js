@@ -1020,3 +1020,66 @@ export const MINE_WORK_INFORMATIONS = [
     work_stop_date: "2023-08-03",
   },
 ];
+
+export const INCIDENT = {
+  dangerous_occurrence_subparagraph_ids: [1747],
+  determination_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  determination_type_code: "DO",
+  documents: [
+    {
+      document_manager_guid: "7b41c10c-4974-428d-a38a-ee3e8c4cee5a",
+      document_name: "Amazing_PDF.pdf",
+      mine_document_guid: "75855dd1-1f51-4fc1-835f-2dd99ea96f90",
+      mine_incident_document_type_code: "INI",
+    },
+  ],
+  emergency_services_called: false,
+  followup_inspection: false,
+  followup_inspection_date: null,
+  followup_investigation_type_code: "NO",
+  incident_description: "sHDJGFJAS",
+  incident_timestamp: "2019-07-04 14:05",
+  mine_guid: "59e73109-48f7-4ad2-977c-3005b5bff010",
+  mine_incident_guid: "036787af-51d0-4d9c-8f31-f6dc7e5b3cb3",
+  mine_incident_id_year: 2019,
+  mine_incident_no: null,
+  mine_incident_report_no: "2019-48",
+  mms_inspector_initials: null,
+  number_of_fatalities: 0,
+  number_of_injuries: 0,
+  proponent_incident_no: "",
+  recommendations: [],
+  reported_by_email: "jake.doe@gmail.com",
+  reported_by_name: "Jake Doe",
+  reported_by_phone_ext: null,
+  reported_by_phone_no: "250-360-9494",
+  reported_timestamp: "2019-07-04 14:05",
+  reported_to_inspector_party_guid: "c002cc91-555a-4edd-9a9c-fcfee8357b00",
+  responsible_inspector_party_guid: "eda69201-b283-44ed-92b9-bcbcb5b83e69",
+  status_code: "FIN",
+};
+
+export const INCIDENTS = {
+  records: [
+    {
+      mine_incident_guid: "dc101155-de3e-4f37-8303-eb6a6d2d5866",
+      mine_incident_report_no: "2019-70",
+      mine_incident_id_year: 2019,
+      mine_guid: "3cfba01f-f8f3-4948-b488-d9e7a915f5ec",
+      incident_timestamp: "2019-04-06T00:34:44+00:00",
+      incident_description:
+        "Paper others interview development military short design often town participant church road daughter.",
+      reported_timestamp: "2019-03-17T17:42:37+00:00",
+      reported_by: "Robert Bell",
+      reported_by_role: "Investment banker, operational",
+      followup_type_code: "NOA",
+      followup_inspection_no: "721814",
+      closing_report_summary:
+        "Parent south person form evidence receive tree wide memory but medical car himself benefit key really series sea enter money prove if lawyer seven ready religious shake.",
+    },
+  ],
+  current_page: 1,
+  items_per_page: 5,
+  total: 25,
+  total_pages: 5,
+};

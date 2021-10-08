@@ -20,12 +20,12 @@ import * as FORM from "@/constants/forms";
 import IncidentsTable from "@/components/dashboard/mine/incidents/IncidentsTable";
 
 const propTypes = {
-  fetchIncidents: PropTypes.func.isRequired,
-  createMineIncident: PropTypes.func.isRequired,
   mine: CustomPropTypes.mine.isRequired,
   incidents: PropTypes.arrayOf(CustomPropTypes.incident).isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   incidentDeterminationOptions: CustomPropTypes.options.isRequired,
+  fetchIncidents: PropTypes.func.isRequired,
+  createMineIncident: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   destroy: PropTypes.func.isRequired,
@@ -37,9 +37,13 @@ export class Incidents extends Component {
   state = { isLoaded: false };
 
   componentDidMount() {
+    this.handleFetchIncidents();
+  }
+
+  handleFetchIncidents = () => {
     this.props
       .fetchIncidents({
-        mine_guid: this.props.mine.mine_guid,
+        mine_guid: this.props.mine?.mine_guid,
         per_page: Strings.MAX_PER_PAGE,
         sort_dir: "desc",
         sort_field: "mine_incident_report_no",
@@ -47,17 +51,13 @@ export class Incidents extends Component {
       .then(() => {
         this.setState({ isLoaded: true });
       });
-  }
+  };
 
   handleCreateIncident = (values) => {
+    this.setState({ isLoaded: false });
     return this.props.createMineIncident(this.props.mine.mine_guid, values).then(() => {
       this.props.closeModal();
-      this.props.fetchIncidents({
-        mine_guid: this.props.mine.mine_guid,
-        per_page: Strings.MAX_PER_PAGE,
-        sort_dir: "desc",
-        sort_field: "mine_incident_report_no",
-      });
+      this.handleFetchIncidents();
     });
   };
 
