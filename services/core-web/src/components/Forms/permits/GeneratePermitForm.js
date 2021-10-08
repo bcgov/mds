@@ -9,7 +9,6 @@ import { Col, Row, Descriptions } from "antd";
 import {
   required,
   dateNotAfterOther,
-  dateNotInFuture,
   dateNotBeforeOther,
 } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
@@ -220,8 +219,6 @@ export const GeneratePermitForm = (props) => {
                 label="Issue Date*"
                 component={renderConfig.DATE}
                 validate={[
-                  required,
-                  dateNotInFuture,
                   dateNotAfterOther(props.formValues.auth_end_date),
                 ]}
                 disabled={props.isViewMode}
