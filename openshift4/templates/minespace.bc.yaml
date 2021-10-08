@@ -122,7 +122,7 @@ objects:
     spec:
       successfulBuildsHistoryLimit: 5
       failedBuildsHistoryLimit: 5
-      completionDeadlineSeconds: 900
+      completionDeadlineSeconds: 1440
       triggers:
         - type: ImageChange
       runPolicy: SerialLatestOnly

@@ -34,7 +34,7 @@ objects:
       creationTimestamp: null
       name: ${NAME}
     spec:
-      completionDeadlineSeconds: 600
+      completionDeadlineSeconds: 1440
       failedBuildsHistoryLimit: 5
       nodeSelector: null
       output:
