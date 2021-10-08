@@ -499,3 +499,10 @@ export const determineExemptionFeeStatus = (
   }
   return exemptionStatus;
 };
+
+export const highlightPermitConditionVariables = (input) => {
+  console.log(input);
+  const regEX = /{(.*?)}/;
+
+  return regEX;
+};

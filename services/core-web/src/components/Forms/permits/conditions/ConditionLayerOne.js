@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
 import { maxBy } from "lodash";
+import Highlight from "react-highlighter";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
 import ConditionLayerTwo from "@/components/Forms/permits/conditions/ConditionLayerTwo";
 import ConditionForm from "@/components/Forms/permits/conditions/ConditionForm";
 import AddCondition from "./AddCondition";
+import { highlightPermitConditionVariables } from "@common/utils/helpers";
 
 const propTypes = {
   condition: PropTypes.objectOf(PropTypes.any),
@@ -54,7 +56,9 @@ const ConditionLayerOne = (props) => {
             span={props.isViewOnly ? 17 : 18}
             className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
           >
-            {props.condition.condition}
+            <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
+              {props.condition.condition}
+            </Highlight>
           </Col>
         )}
         <Col span={4} className="float-right show-on-hover">

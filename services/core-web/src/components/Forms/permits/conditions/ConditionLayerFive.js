@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
+import Highlight from "react-highlighter";
+import { highlightPermitConditionVariables } from "@common/utils/helpers";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
@@ -40,7 +42,13 @@ const ConditionLayerFive = (props) => {
       <Row gutter={[8, 16]} className={isEditing || props.isViewOnly ? "" : "hover-row"}>
         {!isEditing && <Col span={4} />}
         <Col span={props.isViewOnly ? 2 : 1}>{!isEditing && props.condition.step}</Col>
-        <Col span={props.isViewOnly ? 14 : 15}>{!isEditing && props.condition.condition}</Col>
+        <Col span={props.isViewOnly ? 14 : 15}>
+          {!isEditing && (
+            <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
+              {props.condition.condition}
+            </Highlight>
+          )}
+        </Col>
         <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
             <div className="float-right">

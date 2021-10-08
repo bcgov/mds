@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.schema import FetchedValue
 from flask_restplus import marshal
 
@@ -92,8 +93,14 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['security_adjustment'] = '${:,.2f}'.format(
                 total_liability) if total_liability else '$0.00'
 
+            # injected_data = re.compile(r'[^@]+@[^@]+\.[^@]+')
+            # injected_data.match(section)
+
+            # obj = {proposed_start_date: now_appliaction.proposed_start_date}
+
             conditions = permit.conditions
             conditions_template_data = {}
+            # logic goes here
             for section in conditions:
                 category_code = section.condition_category_code
                 if not conditions_template_data.get(category_code):

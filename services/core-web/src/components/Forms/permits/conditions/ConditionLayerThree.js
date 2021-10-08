@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Col, Row, Button } from "antd";
 import { maxBy } from "lodash";
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
+import Highlight from "react-highlighter";
+import { highlightPermitConditionVariables } from "@common/utils/helpers";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET } from "@/constants/assets";
 import NOWActionWrapper from "@/components/noticeOfWork/NOWActionWrapper";
 import * as Permission from "@/constants/permissions";
@@ -47,7 +49,11 @@ const ConditionLayerThree = (props) => {
           span={props.isViewOnly ? 16 : 17}
           className={props.condition.condition_type_code === "SEC" ? "field-title" : ""}
         >
-          {!isEditing && props.condition.condition}
+          {!isEditing && (
+            <Highlight className="injectable-string" search={highlightPermitConditionVariables()}>
+              {props.condition.condition}
+            </Highlight>
+          )}
         </Col>
         <Col span={3} className="float-right show-on-hover">
           {!isEditing && !props.isViewOnly && (
