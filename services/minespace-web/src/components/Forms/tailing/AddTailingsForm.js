@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
-import { Button, Col, Row, Popconfirm } from "antd";
-import { required, maxLength, number, lat, lon } from "@common/utils/Validate";
+import { Button, Popconfirm } from "antd";
+import { required, maxLength, number, lat, lonNegative, lon } from "@common/utils/Validate";
 import {
   getConsequenceClassificationStatusCodeDropdownOptions,
   getITRBExemptionStatusCodeDropdownOptions,
@@ -35,35 +35,35 @@ export const AddTailingsForm = (props) => (
     <Field
       id="mine_tailings_storage_facility_name"
       name="mine_tailings_storage_facility_name"
-      label="Tailings Storage Facility Name*"
+      label="Tailings Storage Facility Name"
       component={RenderField}
       validate={[required]}
     />
     <Field
       id="latitude"
       name="latitude"
-      label="Latitude*"
+      label="Latitude"
       component={RenderField}
       validate={[number, maxLength(10), lat, required]}
     />
     <Field
       id="longitude"
       name="longitude"
-      label="Longitude*"
+      label="Longitude"
       component={RenderField}
-      validate={[number, maxLength(12), lon, required]}
+      validate={[number, maxLength(12), lon, lonNegative, required]}
     />
     <Field
       id="consequence_classification_status_code"
       name="consequence_classification_status_code"
-      label="Consequence Classification*"
+      label="Consequence Classification"
       component={RenderSelect}
       data={props.consequenceClassificationStatusCodeOptions}
       validate={[required]}
     />
     <Field
       id="tsf_operating_status_code"
-      label="Operating Status*"
+      label="Operating Status"
       name="tsf_operating_status_code"
       component={RenderSelect}
       data={props.TSFOperatingStatusCodeOptions}
@@ -72,7 +72,7 @@ export const AddTailingsForm = (props) => (
     <Field
       id="itrb_exemption_status_code"
       name="itrb_exemption_status_code"
-      label="Has Independent Tailings Review Board?*"
+      label="Has Independent Tailings Review Board?"
       component={RenderSelect}
       data={props.itrbExemptionStatusCodeOptions}
       validate={[required]}
