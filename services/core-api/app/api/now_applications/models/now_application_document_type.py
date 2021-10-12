@@ -95,14 +95,25 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 total_liability) if total_liability else '$0.00'
 
             # Replace variables in conditions with  NoW data or Permit data
-            l = {'crown_grant_or_district_lot_numbers': now_application.crown_grant_or_district_lot_numbers}
+            l = {
+                'proposed_annual_maximum_tonnage': now_application.proposed_annual_maximum_tonnage,
+                'issue_date': permit.issue_date,
+                'authorization_end_date': permit.authorization_end_date,
+                'permit_no': permit.permit_no,
+                'liability_adjustment': now_application.liability_adjustment
+            }
             pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in l)))
 
             conditions = permit.conditions
             conditions_template_data = {}
             for section in conditions:
                 # replace section title with data
-                section.condition = re.sub(pattern, lambda m: l.get(m.group(0)), section.condition, flags=re.IGNORECASE).translate({ord('{'):None, ord('}'):None})
+                section.condition = re.sub(
+                    pattern, lambda m: l.get(m.group(0)), section.condition,
+                    flags=re.IGNORECASE).translate({
+                        ord('{'): None,
+                        ord('}'): None
+                    })
                 category_code = section.condition_category_code
                 if not conditions_template_data.get(category_code):
                     conditions_template_data[category_code] = []
