@@ -56,6 +56,9 @@ class Config(object):
     CORE_PRODUCTION_URL = os.environ.get('CORE_PRODUCTION_URL',
                                          'https://minesdigitalservices.gov.bc.ca')
     MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
+    MINESPACE_PRODUCTION_URL = os.environ.get('MINESPACE_PRODUCTION_URL',
+                                         'https://minespace.gov.bc.ca/')
+    MDS_NO_REPLY_EMAIL = os.environ.get('MDS_NO_REPLY_EMAIL', 'noreply-mds@gov.bc.ca')
     MDS_EMAIL = os.environ.get('MDS_EMAIL', 'mds@gov.bc.ca')
 
     # SqlAlchemy config

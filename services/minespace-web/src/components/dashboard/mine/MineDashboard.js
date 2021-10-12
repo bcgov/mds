@@ -17,6 +17,7 @@ import Inspections from "@/components/dashboard/mine/inspections/Inspections";
 import Incidents from "@/components/dashboard/mine/incidents/Incidents";
 import Reports from "@/components/dashboard/mine/reports/Reports";
 import Bonds from "@/components/dashboard/mine/bonds/Bonds";
+import Tailings from "@/components/dashboard/mine/tailings/Tailings";
 import * as router from "@/constants/routes";
 import * as Strings from "@/constants/strings";
 import NotFoundNotice from "@/components/common/NotFoundNotice";
@@ -139,6 +140,9 @@ export class MineDashboard extends Component {
                   </TabPane>
                   <TabPane tab="Bonds" key="bonds">
                     <Bonds mine={mine} match={this.props.match} />
+                  </TabPane>
+                  <TabPane tab="Tailings" key="tailings">
+                    <Tailings mine={mine} match={this.props.match} />
                   </TabPane>
                 </Tabs>
               </Col>
