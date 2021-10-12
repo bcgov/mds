@@ -16,8 +16,6 @@ const propTypes = {
   afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  incidentDeterminationOptions: CustomPropTypes.options.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
   addIncidentFormValues: PropTypes.objectOf(PropTypes.any),
   // eslint-disable-next-line react/no-unused-prop-types
@@ -68,7 +66,6 @@ const StepForms = (
       <>
         <AddIncidentDetailForm
           mineGuid={props.mineGuid}
-          incidentDeterminationOptions={props.incidentDeterminationOptions}
           uploadedFiles={uploadedFiles.filter(
             (file) =>
               file.mine_incident_document_type_code === Strings.INCIDENT_DOCUMENT_TYPES.initial
@@ -78,7 +75,6 @@ const StepForms = (
         />
         <Alert
           message="You are required to contact the EMLI on call inspector at (888)-348-0299 in addition to submitting this report."
-          // description="You are required to contact the EMLI on call inspector at (888)-348-0299 in addition to submitting this report."
           description={
             <>
               <Checkbox
@@ -139,11 +135,13 @@ export class AddIncidentModal extends Component {
     categories,
     incident_date,
     incident_time,
+    mine_determination_type_code,
     ...remainingValues
   }) => ({
     ...remainingValues,
     categories: categories.sort(),
     incident_timestamp: this.formatTimestamp(incident_date, incident_time),
+    mine_determination_type_code: mine_determination_type_code ? "DO" : "NDO",
   });
 
   close = () => {

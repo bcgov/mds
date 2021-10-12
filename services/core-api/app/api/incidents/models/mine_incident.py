@@ -1,4 +1,5 @@
 import uuid, datetime
+from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -208,7 +209,7 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
 
         subject = f'Incident Notification for {self.mine_table.mine_name}'
         body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
-        body += f'<p>Incident type(s): {self.categories}'
+        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
         body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
 
         link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/oversight/incidents-and-investigations'

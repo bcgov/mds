@@ -3,21 +3,13 @@ import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import { Col, Divider, Row, Typography } from "antd";
-import {
-  required,
-  maxLength,
-  wholeNumber,
-  dateNotInFuture,
-  validateSelectOptions,
-} from "@common/utils/Validate";
+import { required, maxLength, wholeNumber, dateNotInFuture } from "@common/utils/Validate";
 import * as Strings from "@common/constants/strings";
 import * as FORM from "@/constants/forms";
-import CustomPropTypes from "@/customPropTypes";
 import { renderConfig } from "@/components/common/config";
 import IncidentFileUpload from "./IncidentFileUpload";
 
 const propTypes = {
-  incidentDeterminationOptions: CustomPropTypes.options.isRequired,
   mineGuid: PropTypes.string.isRequired,
   onFileLoad: PropTypes.func.isRequired,
   onRemoveFile: PropTypes.func.isRequired,
@@ -114,10 +106,6 @@ export const AddIncidentDetailForm = (props) => {
               id="mine_determination_type_code"
               name="mine_determination_type_code"
               component={renderConfig.RADIO}
-              validate={[validateSelectOptions(props.incidentDeterminationOptions)]}
-              data={props.incidentDeterminationOptions.filter(
-                ({ value }) => value !== Strings.INCIDENT_DETERMINATION_TYPES.pending
-              )}
             />
           </Form.Item>
           <Form.Item label="Mine representative who made determination">
