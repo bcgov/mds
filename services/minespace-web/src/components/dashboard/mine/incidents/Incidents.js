@@ -88,14 +88,14 @@ export class Incidents extends Component {
       <Row>
         <Col span={24}>
           {/* Disabled new Incident button, until getting confirmation to enable it. */}
-          <Button
+          {/* <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
             onClick={(event) => this.openCreateIncidentModal(event)}
           >
             <PlusCircleFilled />
             Record a mine incident
-          </Button>
+          </Button> */}
           <Typography.Title level={4}>Incidents</Typography.Title>
           <Typography.Paragraph>
             This table shows your mine&apos;s history of&nbsp;
