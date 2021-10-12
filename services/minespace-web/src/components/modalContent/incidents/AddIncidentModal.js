@@ -12,6 +12,8 @@ import AddIncidentDetailForm from "@/components/Forms/incidents/AddIncidentDetai
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   onSubmit: PropTypes.func.isRequired,
   afterClose: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
@@ -46,7 +48,10 @@ const StepForms = (
   {
     title: "Initial Report",
     content: (
-      <AddIncidentReportingForm incidentCategoryCodeOptions={props.incidentCategoryCodeOptions} />
+      <AddIncidentReportingForm
+        initialValues={props.initialValues}
+        incidentCategoryCodeOptions={props.incidentCategoryCodeOptions}
+      />
     ),
     buttons: [
       null,

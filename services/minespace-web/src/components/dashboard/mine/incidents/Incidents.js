@@ -69,6 +69,9 @@ export class Incidents extends Component {
     event.preventDefault();
     this.props.openModal({
       props: {
+        initialValues: {
+          status_code: "PRE",
+        },
         onSubmit: this.handleCreateIncident,
         afterClose: this.handleCancelMineIncident,
         title: "Record a Mine Incident",

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Field, reduxForm } from "redux-form";
 import { Divider, Col, Row, Typography } from "antd";
 import { Form } from "@ant-design/compatible";
@@ -16,6 +17,8 @@ import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
 
 const propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   incidentCategoryCodeOptions: CustomPropTypes.options.isRequired,
 };
 

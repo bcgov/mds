@@ -121,11 +121,11 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.emergency_services_called = data.get('emergency_services_called')
 
         incident.proponent_incident_no = data.get('proponent_incident_no')
+        incident.status_code = data.get('status_code')
 
         if is_minespace_user() is not True:
             incident.followup_inspection = data.get('followup_inspection')
             incident.followup_inspection_date = data.get('followup_inspection_date')
-            incident.status_code = data.get('status_code')
 
             # lookup and validated inspector party relationships
             tmp_party = Party.query.filter_by(
