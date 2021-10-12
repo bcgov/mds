@@ -767,4 +767,3 @@ export const getExplosivesPermitMagazineTypeOptionsHash = createSelector(
 
 export const getDropdownNoticeOfWorkApplicationStatusCodes = (...params) =>
   getNoticeOfWorkApplicationProgressStatusCodeOptions(...params);
-  
