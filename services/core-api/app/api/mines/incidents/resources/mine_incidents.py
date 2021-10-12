@@ -5,7 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound, InternalServerError
 
 from app.extensions import api, db
 from app.api.utils.resources_mixins import UserMixin
-from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin, is_minespace_user
+from app.api.utils.access_decorators import requires_role_view_all, requires_role_edit_do, requires_role_mine_admin, is_minespace_user, requires_any_of, EDIT_DO, MINESPACE_PROPONENT
 
 from app.api.mines.mine.models.mine import Mine
 from app.api.mines.incidents.models.mine_incident_document_xref import MineIncidentDocumentXref
@@ -80,32 +80,35 @@ class MineIncidentListResource(Resource, UserMixin):
     @api.expect(MINE_INCIDENT_MODEL)
     @api.doc(description='creates a new incident for the mine')
     @api.marshal_with(MINE_INCIDENT_MODEL, code=201)
-    @requires_role_edit_do
+    @requires_any_of([EDIT_DO, MINESPACE_PROPONENT])
     def post(self, mine_guid):
         mine = Mine.find_by_mine_guid(mine_guid)
         if not mine:
             raise NotFound('Mine not found')
 
         data = self.parser.parse_args()
-
-        do_sub_codes = []
-        if data['determination_type_code'] == 'DO':
-            do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
-            if not do_sub_codes:
-                raise BadRequest(
-                    'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3')
+        if is_minespace_user() is not True:
+            do_sub_codes = []
+            if data['determination_type_code'] == 'DO':
+                do_sub_codes = data['dangerous_occurrence_subparagraph_ids']
+                if not do_sub_codes:
+                    raise BadRequest(
+                        'Dangerous occurrences require one or more cited sections of HSRC code 1.7.3'
+                    )
 
         reported_timestamp_default = datetime.utcnow(
-        ) if not data['reported_timestamp'] else data['reported_timestamp']
+        ) if not data['reported_timestamp'] and is_minespace_user() else data['reported_timestamp']
 
         incident = MineIncident.create(
             mine,
             data['incident_timestamp'],
             data['incident_description'],
-            determination_type_code=data['determination_type_code'],
-            mine_determination_type_code=data['mine_determination_type_code'],
+            data['determination_type_code'],
+            mine_determination_type_code=data['mine_determination_type_code']
+            if is_minespace_user() is not True else None,
             mine_determination_representative=data['mine_determination_representative'],
-            followup_investigation_type_code=data['followup_investigation_type_code'],
+            followup_investigation_type_code=data['followup_investigation_type_code']
+            if is_minespace_user() is not True else None,
             reported_timestamp=reported_timestamp_default,
             reported_by_name=data['reported_by_name'],
         )
@@ -116,35 +119,38 @@ class MineIncidentListResource(Resource, UserMixin):
         incident.number_of_fatalities = data.get('number_of_fatalities')
         incident.number_of_injuries = data.get('number_of_injuries')
         incident.emergency_services_called = data.get('emergency_services_called')
-        incident.followup_inspection = data.get('followup_inspection')
-        incident.followup_inspection_date = data.get('followup_inspection_date')
-        incident.status_code = data.get('status_code')
+
         incident.proponent_incident_no = data.get('proponent_incident_no')
 
-        # lookup and validated inspector party relationships
-        tmp_party = Party.query.filter_by(
-            party_guid=data.get('reported_to_inspector_party_guid')).first()
-        if tmp_party and 'INS' in tmp_party.business_roles_codes:
-            incident.reported_to_inspector_party_guid = tmp_party.party_guid
-        tmp_party = Party.query.filter_by(
-            party_guid=data.get('responsible_inspector_party_guid')).first()
-        if tmp_party and 'INS' in tmp_party.business_roles_codes:
-            incident.responsible_inspector_party_guid = tmp_party.party_guid
-        tmp_party = Party.query.filter_by(
-            party_guid=data.get('determination_inspector_party_guid')).first()
-        if tmp_party and 'INS' in tmp_party.business_roles_codes:
-            incident.determination_inspector_party_guid = tmp_party.party_guid
+        if is_minespace_user() is not True:
+            incident.followup_inspection = data.get('followup_inspection')
+            incident.followup_inspection_date = data.get('followup_inspection_date')
+            incident.status_code = data.get('status_code')
 
-        incident.determination_type_code = data.get('determination_type_code')
-        incident.followup_investigation_type_code = data.get('followup_investigation_type_code')
+            # lookup and validated inspector party relationships
+            tmp_party = Party.query.filter_by(
+                party_guid=data.get('reported_to_inspector_party_guid')).first()
+            if tmp_party and 'INS' in tmp_party.business_roles_codes:
+                incident.reported_to_inspector_party_guid = tmp_party.party_guid
+            tmp_party = Party.query.filter_by(
+                party_guid=data.get('responsible_inspector_party_guid')).first()
+            if tmp_party and 'INS' in tmp_party.business_roles_codes:
+                incident.responsible_inspector_party_guid = tmp_party.party_guid
+            tmp_party = Party.query.filter_by(
+                party_guid=data.get('determination_inspector_party_guid')).first()
+            if tmp_party and 'INS' in tmp_party.business_roles_codes:
+                incident.determination_inspector_party_guid = tmp_party.party_guid
 
-        for id in do_sub_codes:
-            sub = ComplianceArticle.find_by_compliance_article_id(id)
-            if not _compliance_article_is_do_subparagraph(sub):
-                raise BadRequest(
-                    'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
-                )
-            incident.dangerous_occurrence_subparagraphs.append(sub)
+            incident.determination_type_code = data.get('determination_type_code')
+            incident.followup_investigation_type_code = data.get('followup_investigation_type_code')
+
+            for id in do_sub_codes:
+                sub = ComplianceArticle.find_by_compliance_article_id(id)
+                if not _compliance_article_is_do_subparagraph(sub):
+                    raise BadRequest(
+                        'One of the provided compliance articles is not a sub-paragraph of section 1.7.3 (dangerous occurrences)'
+                    )
+                incident.dangerous_occurrence_subparagraphs.append(sub)
 
         updated_documents = data.get('updated_documents')
         if updated_documents is not None:
@@ -167,15 +173,16 @@ class MineIncidentListResource(Resource, UserMixin):
 
                 incident.documents.append(mine_incident_doc)
 
-        recommendations = data.get('recommendations')
-        if recommendations is not None:
-            for recommendation in recommendations:
-                rec_string = recommendation.get('recommendation')
-                if rec_string is None:
-                    continue
-                new_recommendation = MineIncidentRecommendation.create(
-                    rec_string, mine_incident_id=incident.mine_incident_id)
-                new_recommendation.save()
+        if is_minespace_user() is not True:
+            recommendations = data.get('recommendations')
+            if recommendations is not None:
+                for recommendation in recommendations:
+                    rec_string = recommendation.get('recommendation')
+                    if rec_string is None:
+                        continue
+                    new_recommendation = MineIncidentRecommendation.create(
+                        rec_string, mine_incident_id=incident.mine_incident_id)
+                    new_recommendation.save()
 
         categories = data.get('categories', [])
         for category in categories:
