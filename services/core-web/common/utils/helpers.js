@@ -500,8 +500,7 @@ export const determineExemptionFeeStatus = (
   return exemptionStatus;
 };
 
-export const highlightPermitConditionVariables = (input) => {
-  console.log(input);
+export const highlightPermitConditionVariables = () => {
   const regEX = /{(.*?)}/;
 
   return regEX;

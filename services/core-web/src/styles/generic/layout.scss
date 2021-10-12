@@ -543,3 +543,15 @@ img.lessOpacity {
 .row-dragging .drag-visible {
   visibility: visible;
 }
+.menu-div {
+  // position: relative;
+  background-color: #f4f0f0;
+  padding: 5px;
+  position: fixed;
+  top: 30px;
+  left: 20px;
+  z-index: 1001;
+  box-shadow: $default-box-shadow !important;
+}
+.contextMenu {
+}

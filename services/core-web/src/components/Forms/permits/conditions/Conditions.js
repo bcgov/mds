@@ -25,6 +25,7 @@ import {
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
+import VariableContextMenu from "@/components/Forms/permits/conditions/VariableContextMenu";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
@@ -193,76 +194,79 @@ export class Conditions extends Component {
             </p>
           </div>
         </div>
-        <Collapse>
-          {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
-            const conditions = this.props.conditions.filter(
-              (condition) =>
-                condition.condition_category_code === conditionCategory.condition_category_code
-            );
-            return (
-              <Collapse.Panel
-                style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
-                header={
-                  <span>
-                    {`${conditionCategory.step} ${conditionCategory.description} (${
-                      Object.values(flattenObject({ conditions })).filter(
-                        (value) => value === "CON"
-                      ).length
-                    } conditions)`}
-                    <span onClick={(event) => event.stopPropagation()}>
-                      <Button
-                        ghost
-                        onClick={(event) =>
-                          this.openViewConditionModal(
-                            event,
-                            this.props.conditions.filter(
-                              (condition) =>
-                                condition.condition_category_code ===
-                                conditionCategory.condition_category_code
-                            ),
-                            conditionCategory.description
-                          )
-                        }
-                      >
-                        <ReadOutlined className="padding-sm--right icon-sm violet" />
-                      </Button>
+        <div className="condition-div">
+          {this.props.editingConditionFlag && <VariableContextMenu />}
+          <Collapse>
+            {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
+              const conditions = this.props.conditions.filter(
+                (condition) =>
+                  condition.condition_category_code === conditionCategory.condition_category_code
+              );
+              return (
+                <Collapse.Panel
+                  style={{ padding: "18px 16px", backgroundColor: COLOR.lightGrey }}
+                  header={
+                    <span>
+                      {`${conditionCategory.step} ${conditionCategory.description} (${
+                        Object.values(flattenObject({ conditions })).filter(
+                          (value) => value === "CON"
+                        ).length
+                      } conditions)`}
+                      <span onClick={(event) => event.stopPropagation()}>
+                        <Button
+                          ghost
+                          onClick={(event) =>
+                            this.openViewConditionModal(
+                              event,
+                              this.props.conditions.filter(
+                                (condition) =>
+                                  condition.condition_category_code ===
+                                  conditionCategory.condition_category_code
+                              ),
+                              conditionCategory.description
+                            )
+                          }
+                        >
+                          <ReadOutlined className="padding-sm--right icon-sm violet" />
+                        </Button>
+                      </span>
                     </span>
-                  </span>
-                }
-                key={conditionCategory.condition_category_code}
-                id={conditionCategory.condition_category_code}
-              >
-                {conditions.map((condition) => (
-                  <ConditionLayerOne
-                    condition={condition}
-                    reorderConditions={this.reorderConditions}
-                    handleSubmit={this.handleEdit}
-                    handleDelete={this.openDeleteConditionModal}
-                    setConditionEditingFlag={this.setConditionEditingFlag}
-                    editingConditionFlag={this.props.editingConditionFlag}
+                  }
+                  key={conditionCategory.condition_category_code}
+                  id={conditionCategory.condition_category_code}
+                >
+                  {conditions.map((condition) => (
+                    <ConditionLayerOne
+                      condition={condition}
+                      reorderConditions={this.reorderConditions}
+                      handleSubmit={this.handleEdit}
+                      handleDelete={this.openDeleteConditionModal}
+                      setConditionEditingFlag={this.setConditionEditingFlag}
+                      editingConditionFlag={this.props.editingConditionFlag}
+                    />
+                  ))}
+                  <Divider />
+                  <AddCondition
+                    initialValues={{
+                      condition_category_code: conditionCategory.condition_category_code,
+                      condition_type_code: "SEC",
+                      display_order:
+                        conditions.length === 0
+                          ? 1
+                          : maxBy(conditions, "display_order").display_order + 1,
+                      parent_permit_condition_id: null,
+                      permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id,
+                      parent_condition_type_code: "SEC",
+                      sibling_condition_type_code:
+                        conditions.length === 0 ? null : conditions[0].condition_type_code,
+                    }}
+                    layer={0}
                   />
-                ))}
-                <Divider />
-                <AddCondition
-                  initialValues={{
-                    condition_category_code: conditionCategory.condition_category_code,
-                    condition_type_code: "SEC",
-                    display_order:
-                      conditions.length === 0
-                        ? 1
-                        : maxBy(conditions, "display_order").display_order + 1,
-                    parent_permit_condition_id: null,
-                    permit_amendment_id: this.props.draftPermitAmendment.permit_amendment_id,
-                    parent_condition_type_code: "SEC",
-                    sibling_condition_type_code:
-                      conditions.length === 0 ? null : conditions[0].condition_type_code,
-                  }}
-                  layer={0}
-                />
-              </Collapse.Panel>
-            );
-          })}
-        </Collapse>
+                </Collapse.Panel>
+              );
+            })}
+          </Collapse>
+        </div>
       </>
     );
   };

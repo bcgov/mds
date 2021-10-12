@@ -1,6 +1,7 @@
 import re
 from sqlalchemy.schema import FetchedValue
 from flask_restplus import marshal
+from flask import current_app
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
@@ -93,19 +94,20 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['security_adjustment'] = '${:,.2f}'.format(
                 total_liability) if total_liability else '$0.00'
 
-            # injected_data = re.compile(r'[^@]+@[^@]+\.[^@]+')
-            # injected_data.match(section)
-
-            # obj = {proposed_start_date: now_appliaction.proposed_start_date}
+            # Replace variables in conditions with  NoW data or Permit data
+            l = {'crown_grant_or_district_lot_numbers': now_application.crown_grant_or_district_lot_numbers}
+            pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in l)))
 
             conditions = permit.conditions
             conditions_template_data = {}
-            # logic goes here
             for section in conditions:
+                # replace section title with data
+                section.condition = re.sub(pattern, lambda m: l.get(m.group(0)), section.condition, flags=re.IGNORECASE).translate({ord('{'):None, ord('}'):None})
                 category_code = section.condition_category_code
                 if not conditions_template_data.get(category_code):
                     conditions_template_data[category_code] = []
                 section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
+
                 conditions_template_data[category_code].append(section_data)
             template_data['conditions'] = conditions_template_data
 
