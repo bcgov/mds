@@ -7,6 +7,8 @@ from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
 from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
+from app.api.services.email_service import EmailService
+from app.config import Config
 
 class MineTailingsStorageFacility(AuditMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"

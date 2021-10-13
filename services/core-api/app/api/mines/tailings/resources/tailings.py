@@ -97,4 +97,5 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
 
         if is_minespace_user():
             mine_tsf.send_email_tsf_update()
+            
         return mine_tsf
