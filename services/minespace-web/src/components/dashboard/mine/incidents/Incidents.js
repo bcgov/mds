@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { destroy } from "redux-form";
 import { bindActionCreators } from "redux";
-import { Button, Row, Col, Typography } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
+import { Row, Col, Typography } from "antd";
 import * as Strings from "@common/constants/strings";
 import PropTypes from "prop-types";
 import { openModal, closeModal } from "@common/actions/modalActions";
@@ -89,14 +88,14 @@ export class Incidents extends Component {
       <Row>
         <Col span={24}>
           {/* Disabled new Incident button, until getting confirmation to enable it. */}
-          <Button
+          {/* <Button
             style={{ display: "inline", float: "right" }}
             type="primary"
             onClick={(event) => this.openCreateIncidentModal(event)}
           >
             <PlusCircleFilled />
             Record a mine incident
-          </Button>
+          </Button> */}
           <Typography.Title level={4}>Incidents</Typography.Title>
           <Typography.Paragraph>
             This table shows your mine&apos;s history of&nbsp;
