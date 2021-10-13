@@ -56,6 +56,11 @@ export const TailingsTable = (props) => {
       ),
     },
     {
+      title: "Engineer of Record",
+      dataIndex: "engineer_of_record",
+      render: (text) => <div title="Engineer of Record">{text ? text.party.name : Strings.EMPTY_FIELD}</div>,  
+    },
+    {
       title: "Latitude",
       dataIndex: "latitude",
       render: (text) => <div title="Latitude">{text || Strings.EMPTY_FIELD}</div>,
