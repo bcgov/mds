@@ -104,8 +104,7 @@ class MineIncidentListResource(Resource, UserMixin):
             data['incident_timestamp'],
             data['incident_description'],
             data['determination_type_code'],
-            mine_determination_type_code=data['mine_determination_type_code']
-            if is_minespace_user() is not True else None,
+            mine_determination_type_code=data['mine_determination_type_code'],
             mine_determination_representative=data['mine_determination_representative'],
             followup_investigation_type_code=data['followup_investigation_type_code']
             if is_minespace_user() is not True else None,
