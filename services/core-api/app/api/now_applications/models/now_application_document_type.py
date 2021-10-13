@@ -47,6 +47,15 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             if not now_application.issuing_inspector.signature:
                 raise Exception('No signature for the Issuing Inspector has been provided')
 
+        def replace_condition_value_with_data(condition, condition_var):
+            pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in condition_var)))
+            return re.sub(
+                pattern, lambda m: condition_var.get(m.group(0)), condition,
+                flags=re.IGNORECASE).translate({
+                    ord('{'): None,
+                    ord('}'): None
+                })
+
         # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
         def transform_permit(template_data, now_application):
             is_draft = False
@@ -95,29 +104,46 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 total_liability) if total_liability else '$0.00'
 
             # Replace variables in conditions with  NoW data or Permit data
-            l = {
-                'proposed_annual_maximum_tonnage': now_application.proposed_annual_maximum_tonnage,
-                'issue_date': permit.issue_date,
-                'authorization_end_date': permit.authorization_end_date,
-                'permit_no': permit.permit_no,
-                'liability_adjustment': now_application.liability_adjustment
+            # condition_variables = function_vriables(permit, now);
+            condition_variables = {
+                                                                                    # 'crown_grant_or_district_lot_numbers':
+                                                                                    # now_application.crown_grant_or_district_lot_numbers,
+                                                                                    # 'proposed_annual_maximum_tonnage': now_application.proposed_annual_maximum_tonnage,
+                                                                                    # 'issue_date': permit.issue_date,
+                                                                                    # 'authorization_end_date': permit.authorization_end_date,
+                'permit_no':
+                permit.permit_no,
+                'liability_adjustment':
+                '${:,.2f}'.format(float(now_application.liability_adjustment or 0))
+                if now_application.liability_adjustment else '$0.00',
+                                                                                    # 'total_liability':
+                                                                                    # template_data['security_adjustment']
             }
-            pattern = r'\b({})\b'.format('|'.join(sorted(re.escape(k) for k in l)))
 
             conditions = permit.conditions
             conditions_template_data = {}
             for section in conditions:
-                # replace section title with data
-                section.condition = re.sub(
-                    pattern, lambda m: l.get(m.group(0)), section.condition,
-                    flags=re.IGNORECASE).translate({
-                        ord('{'): None,
-                        ord('}'): None
-                    })
+                # replace section title variables with data
+                section.condition = replace_condition_value_with_data(section.condition,
+                                                                      condition_variables)
                 category_code = section.condition_category_code
                 if not conditions_template_data.get(category_code):
                     conditions_template_data[category_code] = []
                 section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
+
+                # Replace condition variables with data - The FE limits conditions to 5 layers
+                for layer_two in section_data['sub_conditions']:
+                    layer_two['condition'] = replace_condition_value_with_data(
+                        layer_two['condition'], condition_variables)
+                    for layer_three in layer_two['sub_conditions']:
+                        layer_three['condition'] = replace_condition_value_with_data(
+                            layer_three['condition'], condition_variables)
+                        for layer_four in layer_three['sub_conditions']:
+                            layer_four['condition'] = replace_condition_value_with_data(
+                                layer_four['condition'], condition_variables)
+                            for layer_five in layer_four['sub_conditions']:
+                                layer_five['condition'] = replace_condition_value_with_data(
+                                    layer_five['condition'], condition_variables)
 
                 conditions_template_data[category_code].append(section_data)
             template_data['conditions'] = conditions_template_data

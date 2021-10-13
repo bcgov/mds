@@ -34,12 +34,14 @@ export class VariableContextMenu extends Component {
           style={{ width: 256 }}
           className="contextMenu"
           mode="vertical"
-          ref={(ref) => {
-            this.root = ref;
-          }}
         >
+          <Menu.SubMenu key="mine" title="Mine">
+            <Menu.Item key="{mine_name}">Mine Name</Menu.Item>
+            <Menu.Item key="{mine_no}">Mine Number</Menu.Item>
+          </Menu.SubMenu>
           <Menu.SubMenu key="now" title="Notice of Work">
             <Menu.Item key="{proposed_annual_maximum_tonnage}">Proposed Annual Tonnage</Menu.Item>
+            {/* <Menu.Item key="{crown_grant_or_district_lot_numbers}">Crown Lot Numbers</Menu.Item> */}
             {this.props.reclamationSummary.length > 0 && (
               <Menu.SubMenu key="rec" title="Reclamation">
                 {this.props.reclamationSummary?.map((activity, i) => (
@@ -58,6 +60,7 @@ export class VariableContextMenu extends Component {
           </Menu.SubMenu>
           <Menu.SubMenu key="sec" title="Security">
             <Menu.Item key="{liability_adjustment}">Assessed Liability Adjustment</Menu.Item>
+            {/* <Menu.Item key="{total_liability}">Total Liability</Menu.Item> */}
           </Menu.SubMenu>
         </Menu>
       </div>
