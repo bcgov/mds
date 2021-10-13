@@ -503,7 +503,7 @@ export const determineExemptionFeeStatus = (
 export const formatBooleanToString = (value, defaultValue) => {
   let response;
   if (isNil(value)) {
-    return defaultValue;
+    response = defaultValue;
   } else {
     response = value ? "Yes" : "No";
   }
