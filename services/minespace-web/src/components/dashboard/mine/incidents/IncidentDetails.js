@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Typography, Tag, Tabs, Button, List } from "antd";
-import { formatTime, formatDate } from "@common/utils/helpers";
+import { formatTime, formatDate , formatBooleanToString } from "@common/utils/helpers";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,
@@ -220,7 +220,7 @@ const FollowupInformation = (props) => {
         <Typography.Title level={4}>Follow-up Information</Typography.Title>
         <IncidentField
           title="Was there a follow-up inspection?"
-          content={props.incident.followup_inspection ? "Yes" : "No"}
+          content={formatBooleanToString(props.incident.followup_inspection, String.EMPTY)}
         />
 
         <IncidentField
