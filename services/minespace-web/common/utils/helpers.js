@@ -501,6 +501,7 @@ export const determineExemptionFeeStatus = (
 };
 
 export const formatBooleanToString = (value, defaultValue) => {
+  let response;
   if (isNil(value)) {
     return defaultValue;
   } else {
