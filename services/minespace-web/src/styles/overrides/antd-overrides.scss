@@ -271,6 +271,26 @@ tr.ant-table-expanded-row {
   }
 }
 
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0px;
+}
+
+.ant-form-item {
+  margin-bottom: 8px;
+}
+
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
+  color: #036;
+}
+
+.ant-legacy-form-vertical .ant-legacy-form-item {
+  padding-bottom: 0px;
+  margin-bottom: 14px;
+}
+
 // Cards
 
 .ant-card {
@@ -326,12 +346,6 @@ tr.ant-table-expanded-row {
   }
 }
 
-// Select
-
-.ant-select {
-  color: $primary-color;
-}
-
 // Alerts
 
 .ant-alert-info {
@@ -341,4 +355,26 @@ tr.ant-table-expanded-row {
 .header-link:hover,
 .header-link.active {
   background-color: #154878;
+}
+
+// Selector
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: $disabled-bg;
+}
+
+.ant-select-multiple.ant-select-show-arrow .ant-select-selector,
+.ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+  padding: 5px;
+}
+
+// Picker time
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: $white;
+}
+
+// Picker Input
+.ant-picker-input > input {
+  color: $black;
 }
