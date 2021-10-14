@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Reports renders properly 1`] = `
-<Row>
+<Row
+  gutter={0}
+>
   <Col
     span={24}
   >
-    <Row>
+    <Row
+      gutter={0}
+    >
       <Col
         span={24}
       >

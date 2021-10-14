@@ -51,7 +51,19 @@ exports[`WorkerInfoEmployee renders properly 1`] = `
             />
           </Button>
         </div>
-        <Descriptions>
+        <Descriptions
+          column={
+            Object {
+              "lg": 3,
+              "md": 3,
+              "sm": 2,
+              "xl": 3,
+              "xs": 1,
+              "xxl": 3,
+            }
+          }
+          size="default"
+        >
           <DescriptionsItem
             label="Number of Mine Employees"
             span={2}

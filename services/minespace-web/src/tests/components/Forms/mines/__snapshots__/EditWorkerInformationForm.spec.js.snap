@@ -38,6 +38,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         <Descriptions
           colon={false}
           column={5}
+          size="default"
         >
           <DescriptionsItem
             label="Number of Mine Employees"
@@ -91,10 +92,15 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
     <div
       className="right center-mobile"
     >
-      <ForwardRef
+      <Popconfirm
         cancelText="No"
         disabled={false}
-        icon={<ForwardRef(ExclamationCircleFilled) />}
+        icon={
+          <Icon
+            theme="filled"
+            type="exclamation-circle"
+          />
+        }
         okText="Yes"
         okType="primary"
         onConfirm={[Function]}
@@ -114,7 +120,7 @@ exports[`EditWorkerInformationForm renders properly 1`] = `
         >
           Cancel
         </Button>
-      </ForwardRef>
+      </Popconfirm>
       <Button
         block={false}
         className="full-mobile margin-small"

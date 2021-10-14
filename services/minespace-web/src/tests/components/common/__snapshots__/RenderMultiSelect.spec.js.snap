@@ -9,8 +9,7 @@ exports[`RenderMultiSelect renders properly 1`] = `
     validateStatus=""
   >
     <Select
-      bordered={true}
-      choiceTransitionName=""
+      choiceTransitionName="zoom"
       disabled={false}
       filterOption={[Function]}
       getPopupContainer={[Function]}
@@ -20,6 +19,7 @@ exports[`RenderMultiSelect renders properly 1`] = `
       placeholder=""
       placement="bottomCenter"
       showArrow={true}
+      showSearch={false}
       size="small"
       transitionName="slide-up"
       virtual={false}

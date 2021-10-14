@@ -63,10 +63,15 @@ exports[`EditVarianceForm renders properly 1`] = `
   <div
     className="ant-modal-footer"
   >
-    <ForwardRef
+    <Popconfirm
       cancelText="No"
       disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
+      icon={
+        <Icon
+          theme="filled"
+          type="exclamation-circle"
+        />
+      }
       okText="Yes"
       okType="primary"
       onConfirm={[MockFunction]}
@@ -83,7 +88,7 @@ exports[`EditVarianceForm renders properly 1`] = `
       >
         Cancel
       </Button>
-    </ForwardRef>
+    </Popconfirm>
     <Button
       block={false}
       ghost={false}

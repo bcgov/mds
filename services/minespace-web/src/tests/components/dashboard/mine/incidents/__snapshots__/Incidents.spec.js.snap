@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MineIncidents renders properly 1`] = `
-<Row>
+<Row
+  gutter={0}
+>
   <Col
     span={24}
   >

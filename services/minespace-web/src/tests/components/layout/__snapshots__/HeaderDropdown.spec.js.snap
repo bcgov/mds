@@ -21,7 +21,7 @@ exports[`HeaderDropdown renders properly 1`] = `
           className="header-dropdown-menu"
         >
           <MenuItem>
-            <ForwardRef(InternalButton)
+            <Button
               block={false}
               className="header-dropdown-item-button"
               ghost={false}
@@ -30,10 +30,11 @@ exports[`HeaderDropdown renders properly 1`] = `
               onClick={[Function]}
             >
               Log out
-            </ForwardRef(InternalButton)>
+            </Button>
           </MenuItem>
         </Menu>
       }
+      placement="bottomLeft"
     >
       <Button
         block={false}
@@ -58,7 +59,7 @@ exports[`HeaderDropdown renders properly 1`] = `
         >
           <UNDEFINED>
             <MenuItem>
-              <ForwardRef(InternalButton)
+              <Button
                 block={false}
                 className="header-dropdown-item-button"
                 ghost={false}
@@ -70,7 +71,7 @@ exports[`HeaderDropdown renders properly 1`] = `
                 >
                   My Mines
                 </ForwardRef>
-              </ForwardRef(InternalButton)>
+              </Button>
             </MenuItem>
           </UNDEFINED>
           <Divider
@@ -82,7 +83,7 @@ exports[`HeaderDropdown renders properly 1`] = `
             }
           />
           <MenuItem>
-            <ForwardRef(InternalButton)
+            <Button
               block={false}
               className="header-dropdown-item-button"
               ghost={false}
@@ -91,7 +92,7 @@ exports[`HeaderDropdown renders properly 1`] = `
               onClick={[Function]}
             >
               Log out
-            </ForwardRef(InternalButton)>
+            </Button>
           </MenuItem>
         </Menu>
       }
