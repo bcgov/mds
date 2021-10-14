@@ -1,4 +1,5 @@
 import uuid, datetime
+from flask.globals import current_app
 
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
@@ -15,6 +16,9 @@ from app.api.incidents.models.mine_incident_determination_type import MineIncide
 from app.api.incidents.models.mine_incident_do_subparagraph import MineIncidentDoSubparagraph
 from app.api.incidents.models.mine_incident_recommendation import MineIncidentRecommendation
 from app.api.compliance.models.compliance_article import ComplianceArticle
+from app.api.services.email_service import EmailService
+from app.config import Config
+from app.api.constants import INCIDENTS_EMAIL
 
 
 def getYear():
@@ -199,3 +203,15 @@ class MineIncident(SoftDeleteMixin, AuditMixin, Base):
             if reported_timestamp > datetime.datetime.utcnow():
                 raise AssertionError('reported_timestamp must not be in the future')
         return reported_timestamp
+
+    def send_incidents_email(self):
+        recipients = [INCIDENTS_EMAIL]
+
+        subject = f'Incident Notification for {self.mine_table.mine_name}'
+        body = f'<p>{self.mine_table.mine_name} (Mine no: {self.mine_table.mine_no}) has reported an incident in MineSpace.</p>'
+        body += f'<p>Incident type(s): {", ".join(element.description for element in self.categories)}'
+        body += f'<p><b>Incident information: </b>{self.incident_description}</p>'
+
+        link = f'{Config.CORE_PRODUCTION_URL}/mine-dashboard/{self.mine.mine_guid}/oversight/incidents-and-investigations'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)

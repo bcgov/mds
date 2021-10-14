@@ -2,7 +2,7 @@
 import moment from "moment";
 import { reset } from "redux-form";
 import { createNumberMask } from "redux-form-input-masks";
-import { get, sortBy, isEmpty } from "lodash";
+import { get, sortBy, isEmpty, isNil } from "lodash";
 
 /**
  * Helper function to clear redux form after submission
@@ -504,4 +504,14 @@ export const highlightPermitConditionVariables = () => {
   const regEX = /{(.*?)}/;
 
   return regEX;
+};
+
+export const formatBooleanToString = (value, defaultValue) => {
+  let response;
+  if (isNil(value)) {
+    response = defaultValue;
+  } else {
+    response = value ? "Yes" : "No";
+  }
+  return response;
 };
