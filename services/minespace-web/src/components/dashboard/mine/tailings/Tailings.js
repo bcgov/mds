@@ -16,7 +16,6 @@ const { Paragraph, Title, Text } = Typography;
 
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
-  tailings: PropTypes.arrayOf(PropTypes.any),
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   updateTailingsStorageFacility: PropTypes.func.isRequired
