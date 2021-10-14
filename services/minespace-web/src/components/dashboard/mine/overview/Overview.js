@@ -20,8 +20,6 @@ import * as Contacts from "@/constants/contacts";
 import Map from "@/components/common/Map";
 import MineWorkInformation from "./MineWorkInformation";
 
-const { Paragraph, Title } = Typography;
-
 const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   partyRelationships: PropTypes.arrayOf(CustomPropTypes.partyRelationship).isRequired,
@@ -55,12 +53,12 @@ const getMajorMineRegionalContacts = (region) =>
 export const Overview = (props) => (
   <Row gutter={[0, 16]}>
     <Col lg={{ span: 14 }} xl={{ span: 16 }}>
-      <Title level={4}>Overview</Title>
-      <Paragraph>
+      <Typography.Title level={4}>Overview</Typography.Title>
+      <Typography.Paragraph>
         This tab contains general information about your mine and important contacts at EMLI. The
         information is pulled from current Ministry resources. If anything is incorrect, please
         notify one of the Ministry contacts.
-      </Paragraph>
+      </Typography.Paragraph>
       <Descriptions column={2} colon={false}>
         <Descriptions.Item span={2} label="Region">
           {props.mineRegionHash[props.mine.mine_region] || Strings.UNKNOWN}
@@ -108,7 +106,7 @@ export const Overview = (props) => (
         <WorkerInfoEmployee mine={props.mine} />
       </div>
       <Row gutter={[16, 16]}>
-        <Col xl={{ span: 11 }} xxl={{ span: 10 }}>
+        <Col xl={11} xxl={11} md={24}>
           <ContactCard
             title="Mine Manager"
             partyRelationship={getMineManager(props.partyRelationships)}
@@ -117,7 +115,7 @@ export const Overview = (props) => (
         </Col>
       </Row>
     </Col>
-    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }}>
+    <Col lg={{ span: 9, offset: 1 }} xl={{ offset: 1, span: 7 }} md={24}>
       <Row gutter={[0, 16]}>
         <Col span={24}>
           <div style={{ height: "200px" }}>

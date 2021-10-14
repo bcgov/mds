@@ -11,6 +11,9 @@
   top: 0;
   padding-left: 0;
   padding-right: 0;
+  color: $primary-color;
+  background: $primary-color;
+  height: 80px;
 }
 
 .ant-layout-footer {
@@ -45,7 +48,6 @@
 }
 
 // Buttons
-
 .ant-btn {
   // TODO: When associated bug is fixed, remove this line and change applicable var in theme.scss.
   padding: 0 $padding-lg;
@@ -69,7 +71,13 @@
 
 h1.ant-typography,
 .ant-typography h1 {
+  color: $primary-color;
   margin-top: 0.5em;
+}
+
+h4.ant-typography,
+.ant-typography h1 {
+  color: $primary-color;
 }
 
 .ant-typography a {
@@ -77,40 +85,55 @@ h1.ant-typography,
 }
 
 // Tabs
-.ant-tabs-bar {
-  border-bottom: 4px solid $primary-color;
-  // NOTE: Ant Design has a bug in their UI? This makes the bottom border not overlap the tabs.
-  padding-bottom: 1px;
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+  margin-right: 12px;
+}
+.vertical.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: none !important;
 }
 
-.ant-tabs-tab {
-  padding: 0 $padding-lg 0 $padding-lg !important;
-}
-
-.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  color: $white;
+.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+.ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+  border-bottom: 4px solid #124673 !important;
+  color: $white !important;
   border: 2px solid transparent;
   font-weight: bold;
 }
 
-.ant-tabs-tab:not(.ant-tabs-tab-active) {
-  &:hover {
-    background-color: $gov-grey-dark !important;
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active,
+.ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+  background-color: $primary-color !important;
+  color: $white !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: $white !important;
+  font-weight: bold;
+}
+
+.ant-tabs-tab-btn:focus,
+.ant-tabs-tab-remove:focus,
+.ant-tabs-tab-btn:active,
+.ant-tabs-tab-remove:active {
+  color: $white !important;
+}
+
+.ant-tabs {
+  .ant-tabs-tab {
+    color: $white;
+    background-color: #bbb !important;
   }
 }
 
-.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
-  background-color: $primary-color;
-}
-
-.ant-tabs-tab-prev-icon > .anticon {
-  color: $primary-color;
-  font-size: 24px;
-}
-
-.ant-tabs-tab-next-icon > .anticon {
-  color: $primary-color;
-  font-size: 24px;
+.ant-tabs-tab:not(.ant-tabs-tab-active) {
+  &:hover {
+    color: $white !important;
+    background-color: #999 !important;
+  }
 }
 
 // Tables
@@ -129,23 +152,29 @@ h1.ant-typography,
   box-shadow: none !important;
 }
 
-.ant-table-thead > tr:first-child > th:first-child {
-  border-top-left-radius: 0;
-}
-
-.ant-table-thead > tr:first-child > th:last-child {
+.ant-table-container table > thead > tr:first-child th:first-child,
+.ant-table-container table > thead > tr:last-child th:last-child {
   border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .ant-table-thead > tr > th {
   border-top: 2px solid $primary-color;
   border-bottom: 2px solid $primary-color;
   border-radius: 0;
+  color: $primary-color;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .ant-table-header-column {
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.ant-table-column-sorters {
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .ant-table-row-expand-icon {
@@ -190,6 +219,7 @@ tr.ant-table-expanded-row {
 // Descriptions
 
 .ant-descriptions-item-label {
+  color: $primary-color;
   font-weight: 600;
 }
 
@@ -241,11 +271,33 @@ tr.ant-table-expanded-row {
   }
 }
 
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0px;
+}
+
+.ant-form-item {
+  margin-bottom: 8px;
+}
+
+.ant-steps-item-finish
+  > .ant-steps-item-container
+  > .ant-steps-item-content
+  > .ant-steps-item-title {
+  color: #036;
+}
+
+.ant-legacy-form-vertical .ant-legacy-form-item {
+  padding-bottom: 0px;
+  margin-bottom: 14px;
+}
+
 // Cards
 
 .ant-card {
   &-head {
     border-bottom: none;
+    background: $primary-color;
+    color: $white;
     &-title {
       text-align: center;
     }
@@ -294,20 +346,35 @@ tr.ant-table-expanded-row {
   }
 }
 
-// Select
-
-.ant-select {
-  color: $primary-color;
-}
-
-// TimePicker
-
-// .ant-time-picker-icon .ant-time-picker-clock-icon, .ant-time-picker-clear .ant-time-picker-clock-icon {
-//   color: $input-color;
-// }
-
 // Alerts
 
 .ant-alert-info {
   background-color: $card-bg;
+}
+
+.header-link:hover,
+.header-link.active {
+  background-color: #154878;
+}
+
+// Selector
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: $disabled-bg;
+}
+
+.ant-select-multiple.ant-select-show-arrow .ant-select-selector,
+.ant-select-multiple.ant-select-allow-clear .ant-select-selector {
+  padding: 5px;
+}
+
+// Picker time
+.ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background: $white;
+}
+
+// Picker Input
+.ant-picker-input > input {
+  color: $black;
 }

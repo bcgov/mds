@@ -211,6 +211,12 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             cls.permit_amendment_status_code != 'DFT').all()
 
     @classmethod
+    def find_last_amendment_by_permit_id(cls, _id):
+        return cls.query.filter_by(permit_id=_id).filter_by(deleted_ind=False).filter(
+            cls.permit_amendment_status_code != 'DFT').order_by(
+                cls.permit_amendment_id.desc()).first()
+
+    @classmethod
     def find_by_now_application_guid(cls, _id):
         return cls.query.filter_by(now_application_guid=_id).first()
 
@@ -253,7 +259,7 @@ class PermitAmendment(SoftDeleteMixin, AuditMixin, Base):
             if issue_date.isoformat() == '9999-12-31':
                 raise AssertionError(
                     'Permit amendment issue date should be set to null if not known.')
-            if issue_date > datetime.today():
+            if self.permit_amendment_status_code != 'DFT' and issue_date > datetime.today():
                 raise AssertionError('Permit amendment issue date cannot be set to the future.')
         return issue_date
 

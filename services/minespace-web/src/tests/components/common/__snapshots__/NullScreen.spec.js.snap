@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NullScreen renders properly 1`] = `
-<Row
-  gutter={0}
->
+<Row>
   <Col
     span={24}
   >
@@ -19,11 +17,7 @@ exports[`NullScreen renders properly 1`] = `
            for assistance.
         </Paragraph>
       }
-      icon={
-        <Icon
-          type="stop"
-        />
-      }
+      icon={<ForwardRef(StopOutlined) />}
       status="error"
       subTitle={
         <Text>

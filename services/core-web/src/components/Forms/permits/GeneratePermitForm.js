@@ -6,12 +6,7 @@ import { Field, reduxForm, getFormValues } from "redux-form";
 import { Form } from "@ant-design/compatible";
 import "@ant-design/compatible/assets/index.css";
 import { Col, Row, Descriptions } from "antd";
-import {
-  required,
-  dateNotAfterOther,
-  dateNotInFuture,
-  dateNotBeforeOther,
-} from "@common/utils/Validate";
+import { required, dateNotAfterOther, dateNotBeforeOther } from "@common/utils/Validate";
 import { resetForm, formatDate } from "@common/utils/helpers";
 import * as FORM from "@/constants/forms";
 import CustomPropTypes from "@/customPropTypes";
@@ -219,11 +214,7 @@ export const GeneratePermitForm = (props) => {
                 name="issue_date"
                 label="Issue Date*"
                 component={renderConfig.DATE}
-                validate={[
-                  required,
-                  dateNotInFuture,
-                  dateNotAfterOther(props.formValues.auth_end_date),
-                ]}
+                validate={[dateNotAfterOther(props.formValues.auth_end_date)]}
                 disabled={props.isViewMode}
               />
             </Col>
@@ -233,7 +224,7 @@ export const GeneratePermitForm = (props) => {
                 name="auth_end_date"
                 label="Authorization End Date*"
                 component={renderConfig.DATE}
-                validate={[required, dateNotBeforeOther(props.formValues.issue_date)]}
+                validate={[dateNotBeforeOther(props.formValues.issue_date)]}
                 disabled={props.isViewMode}
               />
             </Col>
