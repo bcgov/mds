@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TailingsTable renders properly 1`] = `
+<withStore(Table)
+  columns={
+    Array [
+      Object {
+        "dataIndex": "mine_tailings_storage_facility_name",
+        "render": [Function],
+        "title": "Name",
+      },
+      Object {
+        "dataIndex": "tsf_operating_status_code",
+        "render": [Function],
+        "title": "Operating Status",
+      },
+      Object {
+        "dataIndex": "consequence_classification_status_code",
+        "render": [Function],
+        "title": "Consequence Classification",
+      },
+      Object {
+        "dataIndex": "itrb_exemption_status_code",
+        "render": [Function],
+        "title": "Has Independent Tailings Review Board",
+      },
+      Object {
+        "dataIndex": "engineer_of_record",
+        "render": [Function],
+        "title": "Engineer of Record",
+      },
+      Object {
+        "dataIndex": "latitude",
+        "render": [Function],
+        "title": "Latitude",
+      },
+      Object {
+        "dataIndex": "longitude",
+        "render": [Function],
+        "title": "Longitude",
+      },
+      Object {
+        "dataIndex": "edit",
+        "render": [Function],
+        "title": "",
+      },
+    ]
+  }
+  dataSource={
+    Array [
+      Object {
+        "mine_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
+        "mine_tailings_storage_facility_guid": "e2629897-053e-4218-9299-479375e47f78",
+        "mine_tailings_storage_facility_name": "MockTSF",
+      },
+    ]
+  }
+  locale={
+    Object {
+      "emptyText": "This mine has no tailing storage facilities data.",
+    }
+  }
+  pagination={false}
+  rowKey={[Function]}
+  size="small"
+/>
+`;
