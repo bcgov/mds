@@ -1,15 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Tailings renders properly 1`] = `
-<Row
-  gutter={0}
->
+<Row>
   <Col
     span={24}
   >
-    <Row
-      gutter={0}
-    >
+    <Row>
       <Col
         span={24}
       >
