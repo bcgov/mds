@@ -58,7 +58,7 @@ class MineTailingsStorageFacilityResource(Resource, UserMixin):
         store_missing=False)
 
     @api.doc(description='Updates an existing tailing storage facility for the given mine')
-    @requires_any_of ([MINESPACE_PROPONENT, MINE_EDIT])
+    @requires_any_of([MINESPACE_PROPONENT, MINE_EDIT])
     @api.marshal_with(MINE_TSF_MODEL) 
     def put(self, mine_guid, mine_tailings_storage_facility_guid):
         mine = Mine.find_by_mine_guid(mine_guid)

@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Row, Col, Typography } from "antd";
 import PropTypes from "prop-types";
-import CustomPropTypes from "@/customPropTypes";
-import TailingsTable from "./TailingsTable";
 import { openModal, closeModal } from "@common/actions/modalActions";
-import { modalConfig } from "@/components/modalContent/config";
 import {
   fetchMineRecordById,
   updateTailingsStorageFacility,
 } from "@common/actionCreators/mineActionCreator";
+import CustomPropTypes from "@/customPropTypes";
+import TailingsTable from "./TailingsTable";
+import { modalConfig } from "@/components/modalContent/config";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -18,11 +18,11 @@ const propTypes = {
   mine: CustomPropTypes.mine.isRequired,
   openModal: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  updateTailingsStorageFacility: PropTypes.func.isRequired
+  updateTailingsStorageFacility: PropTypes.func.isRequired,
+  fetchMineRecordById: PropTypes.func.isRequired,
 };
 
 export const Tailings = (props) => {
-  
   const handleEditTailings = (values) => {
     return props
       .updateTailingsStorageFacility(
@@ -35,15 +35,10 @@ export const Tailings = (props) => {
   };
 
   const openEditTailingsModal = (event, onSubmit, record) => {
-    const initialPartyValue = {
-      value: record.engineer_of_record?.party_guid,
-      label: record.engineer_of_record?.party.name,
-    };
     event.preventDefault();
     props.openModal({
       props: {
         initialValues: record,
-        initialPartyValue,
         onSubmit,
         title: `Edit ${record.mine_tailings_storage_facility_name}`,
       },
@@ -69,7 +64,7 @@ export const Tailings = (props) => {
         </Row>
         <Row gutter={[16, 32]}>
           <Col span={24}>
-            <TailingsTable 
+            <TailingsTable
               tailings={props.mine.mine_tailings_storage_facilities}
               openEditTailingsModal={openEditTailingsModal}
               handleEditTailings={handleEditTailings}
@@ -79,7 +74,7 @@ export const Tailings = (props) => {
       </Col>
     </Row>
   );
-}
+};
 
 Tailings.propTypes = propTypes;
 
@@ -89,7 +84,7 @@ const mapDispatchToProps = (dispatch) =>
       openModal,
       closeModal,
       updateTailingsStorageFacility,
-      fetchMineRecordById
+      fetchMineRecordById,
     },
     dispatch
   );

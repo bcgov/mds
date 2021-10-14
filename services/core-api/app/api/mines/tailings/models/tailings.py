@@ -93,9 +93,9 @@ class MineTailingsStorageFacility(AuditMixin, Base):
         return mine_tailings_storage_facility_name
 
     def send_email_tsf_update(self):
-        recipients = [MINESPACE_TSF_UPDATE_EMAIL]
+        recipients = MINESPACE_TSF_UPDATE_EMAIL
         subject = f'TSF Information Update for {self.mine.mine_name}'
         body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
-        link = f'{Config.MINESPACE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings'
-        body += f'<p>View updates in Minespace: <a href="{link}" target="_blank">{link}</a></p>'
+        link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
         EmailService.send_email(subject, recipients, body)
