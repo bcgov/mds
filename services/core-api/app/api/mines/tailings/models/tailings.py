@@ -6,6 +6,9 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.extensions import db
 
+from app.api.constants import MINESPACE_TSF_UPDATE_EMAIL
+from app.api.services.email_service import EmailService
+from app.config import Config
 
 class MineTailingsStorageFacility(AuditMixin, Base):
     __tablename__ = "mine_tailings_storage_facility"
@@ -88,3 +91,11 @@ class MineTailingsStorageFacility(AuditMixin, Base):
                 f'this mine already has a tailings storage facility named: "{mine_tailings_storage_facility_name}"'
             )
         return mine_tailings_storage_facility_name
+
+    def send_email_tsf_update(self):
+        recipients = MINESPACE_TSF_UPDATE_EMAIL
+        subject = f'TSF Information Update for {self.mine.mine_name}'
+        body = f'<p>{self.mine.mine_name} (Mine No.: {self.mine.mine_no}) has requested to update their TSF information.</p>'
+        link = f'{Config.CORE_PRODUCTION_URL}/mines/{self.mine.mine_guid}/tailings'
+        body += f'<p>View updates in Core: <a href="{link}" target="_blank">{link}</a></p>'
+        EmailService.send_email(subject, recipients, body)
