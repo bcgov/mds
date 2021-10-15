@@ -2,13 +2,16 @@ import re
 from sqlalchemy.schema import FetchedValue
 from flask_restplus import marshal
 from flask import current_app
+from app.api.utils.helpers import format_datetime_to_string, format_currency
 
 from app.extensions import db
 from app.api.utils.models_mixins import AuditMixin, Base
 from app.api.mines.response_models import PERMIT_CONDITION_TEMPLATE_MODEL
 from app.api.mines.permits.permit.models.permit import Permit
+from app.api.mines.mine.models.mine import Mine
 from app.api.mines.permits.permit_amendment.models.permit_amendment import PermitAmendment
 from app.api.mines.permits.permit_amendment.models.permit_amendment_document import PermitAmendmentDocument
+from app.api.constants import MAJOR_MINES_OFFICE_EMAIL
 
 SIGNATURE_IMAGE_HEIGHT_INCHES = 0.8
 
@@ -38,6 +41,74 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, now_application):
+        def transform_variables_to_data(now_application, draft_permit, mine, total_liability):
+            return {
+                'mine_name':
+                now_application.mine_name,
+                'mine_no':
+                now_application.mine_no,
+                'proposed_annual_maximum_tonnage':
+                now_application.proposed_annual_maximum_tonnage,
+                'issue_date':
+                format_datetime_to_string(draft_permit.issue_date),
+                'authorization_end_date':
+                format_datetime_to_string(draft_permit.authorization_end_date),
+                'permit_no':
+                draft_permit.permit_no,
+                'liability_adjustment':
+                format_currency(now_application.liability_adjustment),
+                'total_liability':
+                format_currency(total_liability),
+                'security_received_date':
+                format_datetime_to_string(now_application.security_received_date),
+                'regional_mine_inbox':
+                mine.region.regional_contact_office.email,
+                'major_mine_inbox':
+                MAJOR_MINES_OFFICE_EMAIL,
+                'hectare_unit':
+                'ha',
+                'cut_lines_polarization_survey.total':
+                str(now_application.cut_lines_polarization_survey.calculated_total_disturbance),
+                'cut_lines_polarization_survey.cost':
+                format_currency(now_application.cut_lines_polarization_survey.reclamation_cost),
+                'settling_pond.total':
+                str(now_application.settling_pond.calculated_total_disturbance),
+                'settling_pond.cost':
+                format_currency(now_application.settling_pond.reclamation_cost),
+                'sand_gravel_quarry_operation.total':
+                str(now_application.sand_gravel_quarry_operation.calculated_total_disturbance),
+                'sand_gravel_quarry_operation.cost':
+                format_currency(now_application.sand_gravel_quarry_operation.reclamation_cost),
+                'underground_exploration.total':
+                str(now_application.underground_exploration.calculated_total_disturbance),
+                'underground_exploration.cost':
+                format_currency(now_application.underground_exploration.reclamation_cost),
+                'camp.total':
+                str(now_application.camp.calculated_total_disturbance),
+                'exploration_surface_drilling.cost':
+                format_currency(now_application.exploration_surface_drilling.reclamation_cost),
+                'exploration_surface_drilling.total':
+                str(now_application.exploration_surface_drilling.calculated_total_disturbance),
+                'camp.cost':
+                format_currency(now_application.camp.reclamation_cost),
+                'mechanical_trenching.total':
+                str(now_application.mechanical_trenching.calculated_total_disturbance),
+                'mechanical_trenching.cost':
+                format_currency(now_application.mechanical_trenching.reclamation_cost),
+                'surface_bulk_sample.total':
+                str(now_application.surface_bulk_sample.calculated_total_disturbance),
+                'surface_bulk_sample.cost':
+                format_currency(now_application.surface_bulk_sample.reclamation_cost),
+                'placer_operation.total':
+                str(now_application.placer_operation.calculated_total_disturbance),
+                'placer_operation.cost':
+                format_currency(now_application.placer_operation.reclamation_cost),
+                'exploration_access.total':
+                str(now_application.exploration_access.calculated_total_disturbance),
+                'exploration_access.cost':
+                format_currency(now_application.exploration_access.reclamation_cost),
+            }
+
         def create_image(source, width=None, height=None):
             return {'source': source, 'width': width, 'height': height}
 
@@ -89,6 +160,10 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             template_data['longitude'] = str(now_application.longitude)
             template_data['mine_name'] = now_application.mine_name
 
+            mine = Mine.find_by_mine_no(now_application.mine_no)
+            if mine is None:
+                raise NotFound('Mine not found')
+
             # If amendment, get sum total security adjustment
             if not now_application.is_new_permit:
                 permit_amendment = PermitAmendment.find_by_now_application_guid(
@@ -100,25 +175,11 @@ class NOWApplicationDocumentType(AuditMixin, Base):
             else:
                 total_liability = float(now_application.liability_adjustment or 0)
 
-            template_data['security_adjustment'] = '${:,.2f}'.format(
-                total_liability) if total_liability else '$0.00'
+            template_data['security_adjustment'] = format_currency(total_liability)
 
             # Replace variables in conditions with  NoW data or Permit data
-            # condition_variables = function_vriables(permit, now);
-            condition_variables = {
-                                                                                    # 'crown_grant_or_district_lot_numbers':
-                                                                                    # now_application.crown_grant_or_district_lot_numbers,
-                                                                                    # 'proposed_annual_maximum_tonnage': now_application.proposed_annual_maximum_tonnage,
-                                                                                    # 'issue_date': permit.issue_date,
-                                                                                    # 'authorization_end_date': permit.authorization_end_date,
-                'permit_no':
-                permit.permit_no,
-                'liability_adjustment':
-                '${:,.2f}'.format(float(now_application.liability_adjustment or 0))
-                if now_application.liability_adjustment else '$0.00',
-                                                                                    # 'total_liability':
-                                                                                    # template_data['security_adjustment']
-            }
+            condition_variables = transform_variables_to_data(now_application, permit, mine,
+                                                              total_liability)
 
             conditions = permit.conditions
             conditions_template_data = {}

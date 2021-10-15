@@ -15,7 +15,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-export class VariableContextMenu extends Component {
+export class VariableConditionMenu extends Component {
   handleClick(value) {
     const condition = this.props.formValues.condition ? this.props.formValues.condition : "";
     const newValues = `${condition} ${value.key}`;
@@ -24,15 +24,17 @@ export class VariableContextMenu extends Component {
 
   render() {
     return (
-      <div className="menu-div">
+      <div className="condition-menu-container">
         <h4>
           Condition Data Variables
-          <CoreTooltip title="Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit." />
+          <CoreTooltip
+            title="Hover your mouse over the menus until you find the variable data you'd like to enter. Put it into your edited Permit Condition by clicking on it. This will populate the edited condition with a variable in the Draft permit screen. The Data from the Application tab will show up correctly in the PDF Draft permit in place of the variable. Please ensure all variable data fields you select have the correct information in the Application tab before adding these fields to your draft permit."
+            iconColor="white"
+          />
         </h4>
         <Menu
           onClick={(values) => this.handleClick(values)}
-          style={{ width: 256 }}
-          className="contextMenu"
+          className="variable-menu"
           mode="vertical"
         >
           <Menu.SubMenu key="mine" title="Mine">
@@ -41,12 +43,13 @@ export class VariableContextMenu extends Component {
           </Menu.SubMenu>
           <Menu.SubMenu key="now" title="Notice of Work">
             <Menu.Item key="{proposed_annual_maximum_tonnage}">Proposed Annual Tonnage</Menu.Item>
-            {/* <Menu.Item key="{crown_grant_or_district_lot_numbers}">Crown Lot Numbers</Menu.Item> */}
             {this.props.reclamationSummary.length > 0 && (
               <Menu.SubMenu key="rec" title="Reclamation">
                 {this.props.reclamationSummary?.map((activity, i) => (
                   <Menu.SubMenu key={i} title={activity.label}>
-                    <Menu.Item key={`{${activity.value}.total}`}>Total Disturbed Area</Menu.Item>
+                    <Menu.Item key={`{${activity.value}.total}{hectare_unit}`}>
+                      Total Disturbed Area
+                    </Menu.Item>
                     <Menu.Item key={`{${activity.value}.cost}`}>Total Cost</Menu.Item>
                   </Menu.SubMenu>
                 ))}
@@ -59,18 +62,25 @@ export class VariableContextMenu extends Component {
             <Menu.Item key="{permit_no}">Permit Number</Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="sec" title="Security">
+            <Menu.Item key="{total_liability}">Total Liability</Menu.Item>
             <Menu.Item key="{liability_adjustment}">Assessed Liability Adjustment</Menu.Item>
-            {/* <Menu.Item key="{total_liability}">Total Liability</Menu.Item> */}
+            <Menu.Item key="{security_received_date}">Security Received Date</Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="email" title="Emails">
+            <Menu.Item key="{major_mine_inbox}">Major Mine Inbox</Menu.Item>
+            <Menu.Item key="{regional_mine_inbox}">
+              Regional Mine Inbox
+              <CoreTooltip title="Defaults to the region associated with the Mine." />
+            </Menu.Item>
           </Menu.SubMenu>
         </Menu>
       </div>
     );
-    // );
   }
 }
 
-VariableContextMenu.propTypes = propTypes;
-VariableContextMenu.defaultProps = defaultProps;
+VariableConditionMenu.propTypes = propTypes;
+VariableConditionMenu.defaultProps = defaultProps;
 
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
@@ -85,4 +95,4 @@ const mapDispatchToProps = (dispatch) =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(VariableContextMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(VariableConditionMenu);

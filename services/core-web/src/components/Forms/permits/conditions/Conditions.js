@@ -25,7 +25,7 @@ import {
 import { maxBy } from "lodash";
 import AddCondition from "@/components/Forms/permits/conditions/AddCondition";
 import ConditionLayerOne from "@/components/Forms/permits/conditions/ConditionLayerOne";
-import VariableContextMenu from "@/components/Forms/permits/conditions/VariableContextMenu";
+import VariableConditionMenu from "@/components/Forms/permits/conditions/VariableConditionMenu";
 import CustomPropTypes from "@/customPropTypes";
 import { modalConfig } from "@/components/modalContent/config";
 import { COLOR } from "@/constants/styles";
@@ -194,8 +194,8 @@ export class Conditions extends Component {
             </p>
           </div>
         </div>
-        <div className="condition-div">
-          {this.props.editingConditionFlag && <VariableContextMenu />}
+        <div>
+          {this.props.editingConditionFlag && <VariableConditionMenu />}
           <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
               const conditions = this.props.conditions.filter(
