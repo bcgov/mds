@@ -108,6 +108,8 @@ export class NoticeOfWorkTable extends Component {
         application.notice_of_work_type_description || Strings.EMPTY_FIELD,
       lead_inspector_name: application.lead_inspector_name || Strings.EMPTY_FIELD,
       lead_inspector_party_guid: application.lead_inspector_party_guid,
+      issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
+      issuing_inspector_party_guid: application.issuing_inspector_party_guid,
       now_application_status_description:
         application.now_application_status_description || Strings.EMPTY_FIELD,
       received_date: formatDate(application.received_date) || Strings.EMPTY_FIELD,
@@ -230,6 +232,23 @@ export class NoticeOfWorkTable extends Component {
             {text}
           </Link>
         )) || <div title="Lead Inspector">{text}</div>,
+    },
+    {
+      title: "Issuing Inspector",
+      key: "issuing_inspector_name",
+      dataIndex: "issuing_inspector_name",
+      sortField: "issuing_inspector_name",
+      sorter: true,
+      ...this.filterProperties("Issuing Inspector", "issuing_inspector_name"),
+      render: (text, record) =>
+        (record.issuing_inspector_party_guid && (
+          <Link
+            to={router.PARTY_PROFILE.dynamicRoute(record.issuing_inspector_party_guid)}
+            title="Issuing Inspector"
+          >
+            {text}
+          </Link>
+        )) || <div title="Issuing Inspector">{text}</div>,
     },
     {
       title: "Status",

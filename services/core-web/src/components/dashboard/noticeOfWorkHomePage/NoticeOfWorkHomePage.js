@@ -45,6 +45,7 @@ const defaultParams = {
   application_type: "NOW",
   originating_system: [],
   lead_inspector_name: undefined,
+  issuing_inspector_name: undefined,
   now_application_status_description: [],
   notice_of_work_type_description: [],
   mine_region: [],
