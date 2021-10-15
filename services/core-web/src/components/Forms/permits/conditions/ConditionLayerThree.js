@@ -37,7 +37,7 @@ const defaultProps = {
   isViewOnly: false,
 };
 
-const ConditionLayerThree = (props) => {
+export const ConditionLayerThree = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
   return (

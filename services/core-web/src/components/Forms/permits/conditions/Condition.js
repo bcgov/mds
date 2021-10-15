@@ -22,7 +22,7 @@ const defaultProps = {
   layer: 0,
 };
 
-const Condition = (props) => {
+export const Condition = (props) => {
   const space = props.new ? props.layer + 1 : props.layer;
   // eslint-disable-next-line no-unused-vars
   const [isEditing, setIsEditing] = useState(props.new);
