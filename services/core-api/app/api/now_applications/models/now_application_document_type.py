@@ -1,7 +1,6 @@
 import re
 from sqlalchemy.schema import FetchedValue
 from flask_restplus import marshal
-from flask import current_app
 from app.api.utils.helpers import format_datetime_to_string, format_currency
 
 from app.extensions import db
