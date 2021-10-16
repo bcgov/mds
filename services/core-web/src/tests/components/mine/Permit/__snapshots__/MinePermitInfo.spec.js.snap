@@ -57,6 +57,7 @@ exports[`MinePermitInfo renders properly 1`] = `
         openEditAmendmentModal={[Function]}
         openEditPermitModal={[Function]}
         openEditSitePropertiesModal={[Function]}
+        openViewConditionModal={[Function]}
         partyRelationships={Array []}
         permits={Array []}
       />

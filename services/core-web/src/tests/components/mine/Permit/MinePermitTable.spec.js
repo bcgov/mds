@@ -6,7 +6,19 @@ import * as MOCK from "@/tests/mocks/dataMocks";
 const dispatchProps = {};
 const props = {};
 
-const setupDispatchProps = () => {};
+const setupDispatchProps = () => {
+  dispatchProps.openEditPermitModal = jest.fn();
+  dispatchProps.openAddPermitAmendmentModal = jest.fn();
+  dispatchProps.openAddAmalgamatedPermitModal = jest.fn();
+  dispatchProps.openAddPermitHistoricalAmendmentModal = jest.fn();
+  dispatchProps.openEditAmendmentModal = jest.fn();
+  dispatchProps.onExpand = jest.fn();
+  dispatchProps.handleDeletePermit = jest.fn();
+  dispatchProps.handleDeletePermitAmendment = jest.fn();
+  dispatchProps.handlePermitAmendmentIssueVC = jest.fn();
+  dispatchProps.openEditSitePropertiesModal = jest.fn();
+  dispatchProps.openViewConditionModal = jest.fn();
+};
 
 const setupProps = () => {
   props.mine = MOCK.MINES.mines[MOCK.MINES.mineIds[0]];

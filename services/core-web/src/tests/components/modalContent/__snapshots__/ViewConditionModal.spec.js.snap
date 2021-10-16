@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewConditionModal renders properly 1`] = `
+<div>
+  <p>
+    <NullScreen
+      message=""
+      type="generic"
+    />
+  </p>
+  <div
+    className="right center-mobile"
+  >
+    <Button
+      block={false}
+      className="full-mobile"
+      ghost={false}
+      htmlType="button"
+      loading={false}
+      onClick={[Function]}
+      type="secondary"
+    >
+      Close
+    </Button>
+  </div>
+</div>
+`;
