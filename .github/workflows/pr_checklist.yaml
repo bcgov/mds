@@ -1,0 +1,20 @@
+name: Decorate PR with Definition of Done
+on:
+  pull_request:
+
+jobs:
+  pr-checklist-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          msg: |
+            Definition of Done Reminders:
+            - [ ] Did you update associated documentation?
+            - [ ] If you encountered any technical debt during this PR, is there a ticket for it?
+            - [ ] Has the PO or business delegate signed off on these changes?
+            - [ ] If there are API changes, are they backwards compatible for consumers?
+            - [ ] If applicable frontend changes, have you reviewed the user flow with UX?
