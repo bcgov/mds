@@ -24,7 +24,7 @@ def generate_draft_permit_no_suffix(permit, separator, filling=2):
 
 
 def format_datetime_to_string(date):
-    return date.strftime("%b %d %Y")
+    return date.strftime("%b %d %Y") if date else ''
 
 
 def format_currency(value):

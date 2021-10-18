@@ -40,6 +40,16 @@ class NOWApplicationDocumentType(AuditMixin, Base):
         return document_type
 
     def transform_template_data(self, template_data, now_application):
+        def get_default_disturbance_or_cost(obj, field, currency=False):
+            if obj is not None:
+                data = getattr(obj, field)
+                if currency:
+                    return format_currency(data)
+                else:
+                    return str(data) if data is not None else '0'
+            else:
+                return ' '
+
         def transform_variables_to_data(now_application, draft_permit, mine, total_liability):
             return {
                 'mine_name':
@@ -66,46 +76,65 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 MAJOR_MINES_OFFICE_EMAIL,
                 'hectare_unit':
                 'ha',
-                'cut_lines_polarization_survey.total':
-                str(now_application.cut_lines_polarization_survey.calculated_total_disturbance),
                 'cut_lines_polarization_survey.cost':
-                format_currency(now_application.cut_lines_polarization_survey.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.cut_lines_polarization_survey,
+                                                'reclamation_cost', True),
+                'cut_lines_polarization_survey.total':
+                get_default_disturbance_or_cost(now_application.cut_lines_polarization_survey,
+                                                'calculated_total_disturbance'),
                 'settling_pond.total':
-                str(now_application.settling_pond.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.settling_pond,
+                                                'calculated_total_disturbance'),
                 'settling_pond.cost':
-                format_currency(now_application.settling_pond.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.settling_pond, 'reclamation_cost',
+                                                True),
                 'sand_gravel_quarry_operation.total':
-                str(now_application.sand_gravel_quarry_operation.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.sand_gravel_quarry_operation,
+                                                'calculated_total_disturbance'),
                 'sand_gravel_quarry_operation.cost':
-                format_currency(now_application.sand_gravel_quarry_operation.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.sand_gravel_quarry_operation,
+                                                'reclamation_cost', True),
                 'underground_exploration.total':
-                str(now_application.underground_exploration.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.underground_exploration,
+                                                'calculated_total_disturbance'),
                 'underground_exploration.cost':
-                format_currency(now_application.underground_exploration.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.underground_exploration,
+                                                'reclamation_cost', True),
                 'camp.total':
-                str(now_application.camp.calculated_total_disturbance),
-                'exploration_surface_drilling.cost':
-                format_currency(now_application.exploration_surface_drilling.reclamation_cost),
-                'exploration_surface_drilling.total':
-                str(now_application.exploration_surface_drilling.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.camp,
+                                                'calculated_total_disturbance'),
                 'camp.cost':
-                format_currency(now_application.camp.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.camp, 'reclamation_cost', True),
+                'exploration_surface_drilling.cost':
+                get_default_disturbance_or_cost(now_application.exploration_surface_drilling,
+                                                'reclamation_cost', True),
+                'exploration_surface_drilling.total':
+                get_default_disturbance_or_cost(now_application.exploration_surface_drilling,
+                                                'calculated_total_disturbance'),
                 'mechanical_trenching.total':
-                str(now_application.mechanical_trenching.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.mechanical_trenching,
+                                                'calculated_total_disturbance'),
                 'mechanical_trenching.cost':
-                format_currency(now_application.mechanical_trenching.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.mechanical_trenching,
+                                                'reclamation_cost', True),
                 'surface_bulk_sample.total':
-                str(now_application.surface_bulk_sample.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.surface_bulk_sample,
+                                                'calculated_total_disturbance'),
                 'surface_bulk_sample.cost':
-                format_currency(now_application.surface_bulk_sample.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.surface_bulk_sample,
+                                                'reclamation_cost', True),
                 'placer_operation.total':
-                str(now_application.placer_operation.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.placer_operation,
+                                                'calculated_total_disturbance'),
                 'placer_operation.cost':
-                format_currency(now_application.placer_operation.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.placer_operation,
+                                                'reclamation_cost', True),
                 'exploration_access.total':
-                str(now_application.exploration_access.calculated_total_disturbance),
+                get_default_disturbance_or_cost(now_application.exploration_access,
+                                                'calculated_total_disturbance'),
                 'exploration_access.cost':
-                format_currency(now_application.exploration_access.reclamation_cost),
+                get_default_disturbance_or_cost(now_application.exploration_access,
+                                                'reclamation_cost', True),
             }
 
         def create_image(source, width=None, height=None):
