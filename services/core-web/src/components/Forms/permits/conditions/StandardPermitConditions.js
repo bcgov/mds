@@ -151,7 +151,7 @@ export class StandardPermitConditions extends Component {
         <>
           <h2>{templateType[this.state.type]} Template Permit Conditions</h2>
           <Divider />
-          {this.props.editingConditionFlag && <VariableConditionMenu />}
+          {this.props.editingConditionFlag && <VariableConditionMenu isManagementView />}
           <Collapse>
             {this.props.permitConditionCategoryOptions.map((conditionCategory) => {
               const conditions =

@@ -3,17 +3,23 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PropTypes } from "prop-types";
 import { Menu } from "antd";
+import CustomPropTypes from "@/customPropTypes";
 import { change, getFormValues } from "redux-form";
 import { getNOWReclamationSummary } from "@common/selectors/noticeOfWorkSelectors";
+import { getDropdownNoticeOfWorkActivityTypeOptions } from "@common/selectors/staticContentSelectors";
 
 import { CoreTooltip } from "@/components/common/CoreTooltip";
 import * as FORM from "@/constants/forms";
 
 const propTypes = {
   reclamationSummary: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.strings)).isRequired,
+  isManagementView: PropTypes.bool,
+  activityTypeOptions: CustomPropTypes.options.isRequired,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  isManagementView: false,
+};
 
 export class VariableConditionMenu extends Component {
   handleClick(value) {
@@ -23,6 +29,15 @@ export class VariableConditionMenu extends Component {
   }
 
   render() {
+    const filteredActivityTypes = this.props.activityTypeOptions.filter(
+      ({ value }) =>
+        // filter out activities that do not have reclamation data
+        value !== "placer" && value !== "water_supply" && value !== "blasting_operation"
+    );
+    // The standard permit condition management can see all reclamation options, draft permit tab can only use reclamation activities related to the NoW.
+    const reclamationMenuOptions = this.props.isManagementView
+      ? filteredActivityTypes
+      : this.props.reclamationSummary;
     return (
       <div className="condition-menu-container">
         <h4>
@@ -43,9 +58,9 @@ export class VariableConditionMenu extends Component {
           </Menu.SubMenu>
           <Menu.SubMenu key="now" title="Notice of Work">
             <Menu.Item key="{proposed_annual_maximum_tonnage}">Proposed Annual Tonnage</Menu.Item>
-            {this.props.reclamationSummary.length > 0 && (
+            {reclamationMenuOptions.length > 0 && (
               <Menu.SubMenu key="rec" title="Reclamation">
-                {this.props.reclamationSummary?.map((activity, i) => (
+                {reclamationMenuOptions?.map((activity, i) => (
                   <Menu.SubMenu key={i} title={activity.label}>
                     <Menu.Item key={`{${activity.value}.total}{hectare_unit}`}>
                       Total Disturbed Area
@@ -85,6 +100,7 @@ VariableConditionMenu.defaultProps = defaultProps;
 const mapStateToProps = (state) => ({
   formValues: getFormValues(FORM.CONDITION_SECTION)(state) || {},
   reclamationSummary: getNOWReclamationSummary(state),
+  activityTypeOptions: getDropdownNoticeOfWorkActivityTypeOptions(state),
 });
 
 const mapDispatchToProps = (dispatch) =>

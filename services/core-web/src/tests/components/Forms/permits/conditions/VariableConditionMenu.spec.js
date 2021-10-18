@@ -9,6 +9,8 @@ const setupDispatchProps = () => {};
 
 const setupProps = () => {
   props.reclamationSummary = [];
+  props.activityTypeOptions = [];
+  props.isManagementView = false;
 };
 
 beforeEach(() => {
