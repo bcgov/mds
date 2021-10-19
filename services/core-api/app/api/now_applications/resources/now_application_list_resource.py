@@ -68,6 +68,7 @@ class NOWApplicationListResource(Resource, UserMixin):
             now_number=request.args.get('now_number', type=str),
             mine_search=request.args.get('mine_search', type=str),
             lead_inspector_name=request.args.get('lead_inspector_name', type=str),
+            issuing_inspector_name= request.args.get('issuing_inspector_name', type=str),
             submissions_only=request.args.get('submissions_only', type=str) in ['true', 'True'],
             import_timestamp_since=request.args.get(
                 'import_timestamp_since',
@@ -94,6 +95,7 @@ class NOWApplicationListResource(Resource, UserMixin):
                                       sort_dir=None,
                                       mine_guid=None,
                                       lead_inspector_name=None,
+                                      issuing_inspector_name=None,
                                       notice_of_work_type_description=[],
                                       mine_region=[],
                                       mine_name=None,
@@ -123,6 +125,11 @@ class NOWApplicationListResource(Resource, UserMixin):
             filters.append(
                 func.lower(ApplicationsView.lead_inspector_name).contains(
                     func.lower(lead_inspector_name)))
+
+        if issuing_inspector_name:
+            filters.append(
+                func.lower(ApplicationsView.issuing_inspector_name).contains(
+                    func.lower(issuing_inspector_name)))
 
         if notice_of_work_type_description:
             filters.append(
