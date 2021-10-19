@@ -57,7 +57,8 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                 'mine_no':
                 now_application.mine_no,
                 'proposed_annual_maximum_tonnage':
-                now_application.proposed_annual_maximum_tonnage,
+                str(now_application.proposed_annual_maximum_tonnage)
+                if now_application.proposed_annual_maximum_tonnage is not None else ' ',
                 'issue_date':
                 format_datetime_to_string(draft_permit.issue_date),
                 'authorization_end_date':

@@ -369,21 +369,13 @@
   h4 {
     color: $white;
   }
+
+  .ant-menu.ant-menu-vertical .ant-menu-item-selected {
+    background-color: $non-textual-grey !important;
+    color: $white !important;
+  }
 }
+
 .variable-menu {
   margin: 10px;
-
-  // .ant-menu-item-selected {
-  //   background-color: $white !important;
-  //   color: $violet;
-
-  //   a,
-  //   a:hover {
-  //     color: $pure-white;
-  //   }
-  // }
-
-  // // .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  // //   color: red !important;
-  // // }
 }
