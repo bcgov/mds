@@ -1,0 +1,114 @@
+name: Lint manifests
+
+on:
+  pull_request:
+    paths:
+      - openshift4/templates/**.yaml
+  push: # REMOVE AFTER TESTING
+
+env:
+  INITIAL_TAG: latest
+  TAG: dev
+  SOURCE_REPOSITORY_URL: https://github.com/bcgov/mds.git
+  SOURCE_REPOSITORY_REF: develop
+
+jobs:
+  tests-lint-deploy-manifests:
+    name: tests-lint-deploy-manifests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - config: frontend
+          - config: backend
+          - config: dbbackup
+          - config: docgen
+          - config: postgresql
+          - config: nginx
+          - config: redis
+          - config: tusd
+          - config: metabase
+          - config: metabase-postgres
+          - config: docman
+          - config: filesystem-provider
+          - config: nris
+          - config: nris-etl
+          - config: minespace
+          - config: fider
+          - config: schemaspy
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name:
+        run: |
+          oc -n ${{secrets.NS_DEV}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
+          -p TAG=${{env.TAG}} \
+          -p JWT_OIDC_WELL_KNOWN_CONFIG=https://test.oidc.gov.bc.ca/auth/realms/mds/.well-known/openid-configuration \
+          -p JWT_OIDC_AUDIENCE=mines-application-dev \
+          -p JWT_OIDC_AUTHORITY=https://test.oidc.gov.bc.ca/auth/realms/mds \
+          -p DOCMAN_API_URL=https://mds-dev.apps.silver.devops.gov.bc.ca/document-manager \
+          -p CORE_API_URL=https://mds-dev.apps.silver.devops.gov.bc.ca/api \
+          -p URL=https://mds-dev.apps.silver.devops.gov.bc.ca/ \
+          -p ENVIRONMENT_NAME=dev \
+          -p NODE_ENV=development \
+          -p CORE_DOMAIN=${{env.CORE_DOMAIN}} \
+          -p MINESPACE_DOMAIN=${{env.MINESPACE_DOMAIN}} \
+          -p KEYCLOAK_URL=https://test.oidc.gov.bc.ca/auth \
+          -p KEYCLOAK_CLIENT_ID=mines-application-dev \
+          -p KEYCLOAK_RESOURCE=mines-application-dev \
+          -p MS_KEYCLOAK_CLIENT_ID=minespace-dev \
+          -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
+          -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
+          -p OBJECT_STORE_ENABLED=1 \
+          | oc -n ${{secrets.NS_DEV}} apply -f - \
+          --dry-run=server \
+          --validate=true
+
+  tests-lint-build-manifests:
+    name: tests-lint-build-manifests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          # - name: nginx
+          # - name: postgresql
+          - name: frontend
+          # - name: backend
+          # - name: flyway
+          # - name: tusd
+          # - name: docgen
+          # - name: dbbackup
+          # - name: metabase
+          # - name: metabase-postgres
+          # - name: docman
+          # - name: filesystem-provider
+          # - name: nris
+          # - name: minespace
+          # - name: fider
+          # - name: schemaspy
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Template build config
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} process -f openshift4/templates/${{ matrix.name }}.bc.yaml --ignore-unknown-parameters=true \
+          -p SOURCE_REPOSITORY_URL=${{env.SOURCE_REPOSITORY_URL}} \
+          -p SOURCE_REPOSITORY_REF=${{env.SOURCE_REPOSITORY_REF}} \
+          -p TAG=${{env.INITIAL_TAG}} \
+          | oc -n ${{secrets.NS_TOOLS}} apply -f - \
+          --dry-run=server \
+          --validate=true
