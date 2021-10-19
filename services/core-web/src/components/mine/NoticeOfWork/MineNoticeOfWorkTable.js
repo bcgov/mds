@@ -64,6 +64,10 @@ const transformRowData = (applications) =>
     document:
       application.application_documents?.length > 0 ? application.application_documents[0] : {},
     is_historic: application.is_historic,
+    lead_inspector_name: application.lead_inspector_name || Strings.EMPTY_FIELD,
+    lead_inspector_party_guid: application.lead_inspector_party_guid,
+    issuing_inspector_name: application.issuing_inspector_name || Strings.EMPTY_FIELD,
+    issuing_inspector_party_guid: application.issuing_inspector_party_guid,
   }));
 
 export class MineNoticeOfWorkTable extends Component {
@@ -103,6 +107,36 @@ export class MineNoticeOfWorkTable extends Component {
           <Badge status={getApplicationStatusType(text)} text={text} />
         </div>
       ),
+      sorter: true,
+    },
+    {
+      title: "Lead Inspector",
+      dataIndex: "lead_inspector_name",
+      sortField: "lead_inspector_name",
+      render: (text, record) =>
+        (record.lead_inspector_party_guid && (
+          <Link
+            to={router.PARTY_PROFILE.dynamicRoute(record.lead_inspector_party_guid)}
+            title="Lead Inspector"
+          >
+            {text}
+          </Link>
+        )) || <div title="Lead Inspector">{text}</div>,
+      sorter: true,
+    },
+    {
+      title: "Issuing Inspector",
+      dataIndex: "issuing_inspector_name",
+      sortField: "issuing_inspector_name",
+      render: (text, record) =>
+        (record.issuing_inspector_party_guid && (
+          <Link
+            to={router.PARTY_PROFILE.dynamicRoute(record.issuing_inspector_party_guid)}
+            title="Issuing Inspector"
+          >
+            {text}
+          </Link>
+        )) || <div title="Issuing Inspector">{text}</div>,
       sorter: true,
     },
     {
