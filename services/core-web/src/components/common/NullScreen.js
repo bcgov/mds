@@ -19,6 +19,7 @@ const propTypes = {
     "no-permittee",
     "draft-permit",
     "merged-contact",
+    "permit-conditions",
   ]),
   message: PropTypes.string,
 };
@@ -102,6 +103,13 @@ const NullScreen = (props) => (
         <img alt="mine_img" src={PERMIT} />
         <h3>A draft permit has not been created.</h3>
         <p>{props.message}</p>
+      </div>
+    )}
+    {props.type === "permit-conditions" && (
+      <div>
+        <img alt="mine_img" src={PERMIT} />
+        <h3>No Permit Conditions</h3>
+        <p>This permit was not generated in Core, and does not contain any digital conditions.</p>
       </div>
     )}
   </div>

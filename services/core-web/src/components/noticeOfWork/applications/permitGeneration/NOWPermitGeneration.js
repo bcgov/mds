@@ -516,14 +516,11 @@ export class NOWPermitGeneration extends Component {
             isDraft && (
               <>
                 {" "}
-                  <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
-                    <Button
-                      type="danger"
-                      onClick={(event) => this.openDeleteDraftPermitModal(event)}
-                    >
-                      Delete Draft
-                    </Button>
-                  </NOWActionWrapper>
+                <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
+                  <Button type="danger" onClick={(event) => this.openDeleteDraftPermitModal(event)}>
+                    Delete Draft
+                  </Button>
+                </NOWActionWrapper>
                 <NOWActionWrapper permission={Permission.EDIT_PERMITS} tab="DFT">
                   <Button type="secondary" onClick={this.props.toggleEditMode}>
                     <img alt="EDIT_OUTLINE" className="padding-small--right" src={EDIT_OUTLINE} />
@@ -536,10 +533,14 @@ export class NOWPermitGeneration extends Component {
                     type="secondary"
                     onClick={this.handlePermitGenSubmit}
                     loading={this.state.downloadingDraft}
-                    disabled={isEmpty(this.state.permittee)}
+                    disabled={
+                      isEmpty(this.state.permittee) ||
+                      !this.props.noticeOfWork?.issuing_inspector?.signature
+                    }
                     title={
-                      isEmpty(this.state.permittee)
-                        ? "The application must have a permittee assigned before viewing the draft."
+                      isEmpty(this.state.permittee) ||
+                      !this.props.noticeOfWork?.issuing_inspector?.signature
+                        ? "The application must have a permittee assigned, and the issuing inspector must have a signature before viewing the draft."
                         : ""
                     }
                   >

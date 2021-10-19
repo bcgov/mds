@@ -52,7 +52,7 @@ exports[`MinePermitTable renders properly 1`] = `
       "expandRowByClick": true,
       "expandedRowKeys": undefined,
       "expandedRowRender": [Function],
-      "onExpand": undefined,
+      "onExpand": [MockFunction],
       "pagination": false,
       "rowClassName": "table-row-align-middle pointer fade-in",
     }
