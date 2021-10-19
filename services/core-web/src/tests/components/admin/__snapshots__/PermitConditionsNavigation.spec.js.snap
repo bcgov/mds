@@ -20,7 +20,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
       className="sub-menu"
     >
       <MenuItem
-        key="SAG"
+        key="sand-and-gravel"
       >
         <Link
           to="/admin/permit-condition-management/sand-and-gravel"
@@ -29,7 +29,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
         </Link>
       </MenuItem>
       <MenuItem
-        key="MIN"
+        key="exploration"
       >
         <Link
           to="/admin/permit-condition-management/exploration"
@@ -38,7 +38,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
         </Link>
       </MenuItem>
       <MenuItem
-        key="QCA"
+        key="quarry"
       >
         <Link
           to="/admin/permit-condition-management/quarry"
@@ -47,7 +47,7 @@ exports[`PermitConditionsNavigation renders properly 1`] = `
         </Link>
       </MenuItem>
       <MenuItem
-        key="PLA"
+        key="placer"
       >
         <Link
           to="/admin/permit-condition-management/placer"

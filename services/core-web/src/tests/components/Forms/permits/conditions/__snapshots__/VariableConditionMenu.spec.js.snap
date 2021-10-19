@@ -21,11 +21,13 @@ exports[`VariableConditionMenu renders properly 1`] = `
       title="Mine"
     >
       <MenuItem
+        className="variable-item"
         key="{mine_name}"
       >
         Mine Name
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{mine_no}"
       >
         Mine Number
@@ -36,6 +38,7 @@ exports[`VariableConditionMenu renders properly 1`] = `
       title="Notice of Work"
     >
       <MenuItem
+        className="variable-item"
         key="{proposed_annual_maximum_tonnage}"
       >
         Proposed Annual Tonnage
@@ -46,16 +49,19 @@ exports[`VariableConditionMenu renders properly 1`] = `
       title="Draft Permit"
     >
       <MenuItem
+        className="variable-item"
         key="{issue_date}"
       >
         Issue Date
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{authorization_end_date}"
       >
         Authorization End Date
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{permit_no}"
       >
         Permit Number
@@ -66,16 +72,19 @@ exports[`VariableConditionMenu renders properly 1`] = `
       title="Security"
     >
       <MenuItem
+        className="variable-item"
         key="{total_liability}"
       >
         Total Liability
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{liability_adjustment}"
       >
         Assessed Liability Adjustment
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{security_received_date}"
       >
         Security Received Date
@@ -86,11 +95,13 @@ exports[`VariableConditionMenu renders properly 1`] = `
       title="Emails"
     >
       <MenuItem
+        className="variable-item"
         key="{major_mine_inbox}"
       >
         Major Mine Inbox
       </MenuItem>
       <MenuItem
+        className="variable-item"
         key="{regional_mine_inbox}"
       >
         Regional Mine Inbox
