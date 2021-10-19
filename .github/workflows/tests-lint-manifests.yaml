@@ -11,6 +11,8 @@ env:
   TAG: dev
   SOURCE_REPOSITORY_URL: https://github.com/bcgov/mds.git
   SOURCE_REPOSITORY_REF: develop
+  CORE_DOMAIN: mds-dev.apps.silver.devops.gov.bc.ca
+  MINESPACE_DOMAIN: minespace-dev.apps.silver.devops.gov.bc.ca
 
 jobs:
   tests-lint-deploy-manifests:
