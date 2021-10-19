@@ -53,37 +53,62 @@ export class VariableConditionMenu extends Component {
           mode="vertical"
         >
           <Menu.SubMenu key="mine" title="Mine">
-            <Menu.Item key="{mine_name}">Mine Name</Menu.Item>
-            <Menu.Item key="{mine_no}">Mine Number</Menu.Item>
+            <Menu.Item key="{mine_name}" className="variable-item">
+              Mine Name
+            </Menu.Item>
+            <Menu.Item key="{mine_no}" className="variable-item">
+              Mine Number
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="now" title="Notice of Work">
-            <Menu.Item key="{proposed_annual_maximum_tonnage}">Proposed Annual Tonnage</Menu.Item>
+            <Menu.Item key="{proposed_annual_maximum_tonnage}" className="variable-item">
+              Proposed Annual Tonnage
+            </Menu.Item>
             {reclamationMenuOptions.length > 0 && (
               <Menu.SubMenu key="rec" title="Reclamation">
                 {reclamationMenuOptions?.map((activity, i) => (
                   <Menu.SubMenu key={i} title={activity.label}>
-                    <Menu.Item key={`{${activity.value}.total}{hectare_unit}`}>
+                    <Menu.Item
+                      key={`{${activity.value}.total}{hectare_unit}`}
+                      className="variable-item"
+                    >
                       Total Disturbed Area
                     </Menu.Item>
-                    <Menu.Item key={`{${activity.value}.cost}`}>Total Cost</Menu.Item>
+                    <Menu.Item key={`{${activity.value}.cost}`} className="variable-item">
+                      Total Cost
+                    </Menu.Item>
                   </Menu.SubMenu>
                 ))}
               </Menu.SubMenu>
             )}
           </Menu.SubMenu>
           <Menu.SubMenu key="draft" title="Draft Permit">
-            <Menu.Item key="{issue_date}">Issue Date</Menu.Item>
-            <Menu.Item key="{authorization_end_date}">Authorization End Date</Menu.Item>
-            <Menu.Item key="{permit_no}">Permit Number</Menu.Item>
+            <Menu.Item key="{issue_date}" className="variable-item">
+              Issue Date
+            </Menu.Item>
+            <Menu.Item key="{authorization_end_date}" className="variable-item">
+              Authorization End Date
+            </Menu.Item>
+            <Menu.Item key="{permit_no}" className="variable-item">
+              Permit Number
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="sec" title="Security">
-            <Menu.Item key="{total_liability}">Total Liability</Menu.Item>
-            <Menu.Item key="{liability_adjustment}">Assessed Liability Adjustment</Menu.Item>
-            <Menu.Item key="{security_received_date}">Security Received Date</Menu.Item>
+            <Menu.Item key="{total_liability}" className="variable-item">
+              Total Liability
+            </Menu.Item>
+            <Menu.Item key="{liability_adjustment}" className="variable-item">
+              Assessed Liability Adjustment
+            </Menu.Item>
+            <Menu.Item key="{security_received_date}" className="variable-item">
+              Security Received Date
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="email" title="Emails">
-            <Menu.Item key="{major_mine_inbox}">Major Mine Inbox</Menu.Item>
-            <Menu.Item key="{regional_mine_inbox}">
+            <Menu.Item key="{major_mine_inbox}" className="variable-item">
+              Major Mine Inbox
+            </Menu.Item>
+            <Menu.Item key="{regional_mine_inbox}" className="variable-item">
               Regional Mine Inbox
               <CoreTooltip title="Defaults to the region associated with the Mine." />
             </Menu.Item>

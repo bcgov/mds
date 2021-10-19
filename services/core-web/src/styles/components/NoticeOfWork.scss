@@ -369,13 +369,12 @@
   h4 {
     color: $white;
   }
-
-  .ant-menu.ant-menu-vertical .ant-menu-item-selected {
-    background-color: $non-textual-grey !important;
-    color: $white !important;
-  }
 }
 
 .variable-menu {
   margin: 10px;
+}
+
+.variable-item.ant-menu-item-selected {
+  background-color: white !important;
 }
