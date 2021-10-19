@@ -156,6 +156,12 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                     ord('}'): None
                 })
 
+        def replace_nested_conditions(section_data, condition_variables):
+            for sub_condition in section_data['sub_conditions']:
+                sub_condition['condition'] = replace_condition_value_with_data(
+                    sub_condition['condition'], condition_variables)
+                replace_nested_conditions(sub_condition, condition_variables)
+
         # Transform template data for "Working Permit" (PMT) or "Working Permit for Amendment" (PMA)
         def transform_permit(template_data, now_application):
             is_draft = False
@@ -221,20 +227,7 @@ class NOWApplicationDocumentType(AuditMixin, Base):
                     conditions_template_data[category_code] = []
                 section_data = marshal(section, PERMIT_CONDITION_TEMPLATE_MODEL)
 
-                # Replace condition variables with data - The FE limits conditions to 5 layers
-                for layer_two in section_data['sub_conditions']:
-                    layer_two['condition'] = replace_condition_value_with_data(
-                        layer_two['condition'], condition_variables)
-                    for layer_three in layer_two['sub_conditions']:
-                        layer_three['condition'] = replace_condition_value_with_data(
-                            layer_three['condition'], condition_variables)
-                        for layer_four in layer_three['sub_conditions']:
-                            layer_four['condition'] = replace_condition_value_with_data(
-                                layer_four['condition'], condition_variables)
-                            for layer_five in layer_four['sub_conditions']:
-                                layer_five['condition'] = replace_condition_value_with_data(
-                                    layer_five['condition'], condition_variables)
-
+                replace_nested_conditions(section_data, condition_variables)
                 conditions_template_data[category_code].append(section_data)
             template_data['conditions'] = conditions_template_data
 
