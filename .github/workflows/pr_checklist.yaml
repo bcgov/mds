@@ -11,10 +11,5 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          msg: |
-            Definition of Done Reminders:
-            - [ ] Did you update associated documentation?
-            - [ ] If you encountered any technical debt during this PR, is there a ticket for it?
-            - [ ] Has the PO or business delegate signed off on these changes?
-            - [ ] If there are API changes, are they backwards compatible for consumers?
-            - [ ] If applicable frontend changes, have you reviewed the user flow with UX?
+          # If block syntax is used, duplicate comment checks will fail
+          msg: "Definition of Done Reminders:\n- [ ] Did you update associated documentation?\n- [ ] If you encountered any technical debt during this PR, is there a ticket for it?\n- [ ] Has the PO or business delegate signed off on these changes?\n- [ ] If there are API changes, are they backwards compatible for consumers?\n- [ ] If applicable frontend changes, have you reviewed the user flow with UX?"
