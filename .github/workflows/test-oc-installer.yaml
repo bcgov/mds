@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: latest
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
