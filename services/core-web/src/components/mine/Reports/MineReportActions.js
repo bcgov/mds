@@ -3,7 +3,7 @@ import { Dropdown, Menu, Popconfirm, Button } from "antd";
 import PropTypes from "prop-types";
 import { TRASHCAN, EDIT_OUTLINE_VIOLET, CARAT } from "@/constants/assets";
 import CustomPropTypes from "@/customPropTypes";
-import DownloadAllDocuments from "@/components/common/DownloadAllDocuments";
+import DownloadAllDocumentsButton from "@/components/common/buttons/DownloadAllDocumentsButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
 
@@ -120,7 +120,7 @@ export class MineReportActions extends Component {
           </Menu.Item>
         </AuthorizationWrapper>
         <Menu.Item key="1">
-          <DownloadAllDocuments documents={this.reportDocuments()} />
+          <DownloadAllDocumentsButton documents={this.reportDocuments()} />
         </Menu.Item>
         <Menu.Item key="2">{this.renderDeleteButton()}</Menu.Item>
       </Menu>

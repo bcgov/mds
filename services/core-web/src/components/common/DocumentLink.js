@@ -24,7 +24,7 @@ const defaultProps = {
   truncateDocumentName: true,
 };
 
-const DocumentLink = (props) => {
+export const DocumentLink = (props) => {
   const linkTitle = props.linkTitleOverride
     ? props.linkTitleOverride
     : props.truncateDocumentName
