@@ -61,7 +61,7 @@ parameters:
   - name: CORE_DOMAIN
     required: true
   - name: CPU_LIMIT
-    value: 250m
+    value: 300m
   - name: MEMORY_LIMIT
     value: 512Mi
   - name: CPU_REQUEST
@@ -71,7 +71,7 @@ parameters:
   - name: REPLICA_MIN
     value: "3"
   - name: REPLICA_MAX
-    value: "4"
+    value: "5"
   - name: IMAGE_NAMESPACE
     value: 4c2ba9-tools
   - name: APPNAME
@@ -199,7 +199,7 @@ objects:
       maxReplicas: ${{REPLICA_MAX}}
       minReplicas: ${{REPLICA_MIN}}
       scaleTargetRef:
-        apiVersion: v1
+        apiVersion: apps.openshift.io/v1
         kind: DeploymentConfig
         name: ${NAME}
       targetCPUUtilizationPercentage: 95
