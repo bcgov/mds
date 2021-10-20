@@ -194,6 +194,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         N/A
       </div>
       <CoreTooltip
+        iconColor="#5e46a1"
         title="Approximate number of mine employees on site"
       />
     </div>
@@ -209,6 +210,7 @@ exports[`MineHeader renders dispatchProperly 1`] = `
         N/A
       </div>
       <CoreTooltip
+        iconColor="#5e46a1"
         title="Approximate number of contractors on site"
       />
     </div>
