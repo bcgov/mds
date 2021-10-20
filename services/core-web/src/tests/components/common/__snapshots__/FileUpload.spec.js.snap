@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileUpload renders properly 1`] = `
+<div
+  className="whirlpool-container"
+>
+  <Switch
+    checked={false}
+    checkedChildren={<ForwardRef(FunnelPlotOutlined) />}
+    className="ant-switch-overlay"
+    onChange={[Function]}
+    unCheckedChildren={<ForwardRef(FunnelPlotOutlined) />}
+  />
+  <FilePond
+    acceptedFileTypes={Array []}
+    allowFileTypeValidation={false}
+    allowMultiple={true}
+    allowRevert={false}
+    fileValidateTypeDetectType={[Function]}
+    fileValidateTypeLabelExpectedTypesMap={Object {}}
+    maxFileSize="750MB"
+    name="file"
+    onaddfilestart={[MockFunction]}
+    onremovefile={[MockFunction]}
+    server={
+      Object {
+        "process": [Function],
+      }
+    }
+  />
+</div>
+`;
