@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - openshift4/templates/**.yaml
-  push: # REMOVE AFTER TESTING
+      - .github/workflows/tests-lint-manifests.yaml
 
 env:
   INITIAL_TAG: latest
@@ -70,7 +70,7 @@ jobs:
           -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
           -p OBJECT_STORE_ENABLED=1 \
           | oc -n ${{secrets.NS_DEV}} apply -f - \
-          --dry-run=server \
+          --dry-run=client \
           --validate=true
 
   tests-lint-build-manifests:
@@ -79,22 +79,21 @@ jobs:
     strategy:
       matrix:
         include:
-          # - name: nginx
-          # - name: postgresql
+          - name: nginx
           - name: frontend
-          # - name: backend
-          # - name: flyway
-          # - name: tusd
-          # - name: docgen
-          # - name: dbbackup
-          # - name: metabase
-          # - name: metabase-postgres
-          # - name: docman
-          # - name: filesystem-provider
-          # - name: nris
-          # - name: minespace
-          # - name: fider
-          # - name: schemaspy
+          - name: backend
+          - name: flyway
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: minespace
+          - name: fider
+          - name: schemaspy
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -112,5 +111,5 @@ jobs:
           -p SOURCE_REPOSITORY_REF=${{env.SOURCE_REPOSITORY_REF}} \
           -p TAG=${{env.INITIAL_TAG}} \
           | oc -n ${{secrets.NS_TOOLS}} apply -f - \
-          --dry-run=server \
+          --dry-run=client \
           --validate=true
