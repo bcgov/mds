@@ -197,7 +197,7 @@ objects:
       maxReplicas: ${{REPLICA_MAX}}
       minReplicas: ${{REPLICA_MIN}}
       scaleTargetRef:
-        apiVersion: v1
+        apiVersion: apps.openshift.io/v1
         kind: DeploymentConfig
         name: ${NAME}
       targetCPUUtilizationPercentage: 95

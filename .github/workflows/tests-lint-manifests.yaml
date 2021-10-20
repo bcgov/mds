@@ -1,21 +1,22 @@
-name: Update dev infra
+name: Lint manifests
 
 on:
-  push:
-    branches:
-      - develop
+  pull_request:
     paths:
-      - openshift4/templates/**.dc.yaml
-      - .github/workflows/deploy-dev.yaml
+      - openshift4/templates/**.yaml
+      - .github/workflows/tests-lint-manifests.yaml
 
 env:
+  INITIAL_TAG: latest
   TAG: dev
+  SOURCE_REPOSITORY_URL: https://github.com/bcgov/mds.git
+  SOURCE_REPOSITORY_REF: develop
   CORE_DOMAIN: mds-dev.apps.silver.devops.gov.bc.ca
   MINESPACE_DOMAIN: minespace-dev.apps.silver.devops.gov.bc.ca
 
 jobs:
-  update-dev-deployments:
-    name: update-dev-deployments
+  tests-lint-deploy-manifests:
+    name: tests-lint-deploy-manifests
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -41,13 +42,13 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
+        uses: redhat-actions/oc-installer@v1
         with:
-          oc: "4.7"
+          oc_version: "4.6"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
-      - name: Update infrastructure in dev
+      - name:
         run: |
           oc -n ${{secrets.NS_DEV}} process -f openshift4/templates/${{ matrix.config }}.dc.yaml --ignore-unknown-parameters=true \
           -p TAG=${{env.TAG}} \
@@ -68,4 +69,47 @@ jobs:
           -p SITEMINDER_URL=https://logontest7.gov.bc.ca \
           -p MATOMO_URL=https://matomo-4c2ba9-test.apps.silver.devops.gov.bc.ca/ \
           -p OBJECT_STORE_ENABLED=1 \
-          | oc -n ${{secrets.NS_DEV}} apply -f -
+          | oc -n ${{secrets.NS_DEV}} apply -f - \
+          --dry-run=client \
+          --validate=true
+
+  tests-lint-build-manifests:
+    name: tests-lint-build-manifests
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        include:
+          - name: nginx
+          - name: frontend
+          - name: backend
+          - name: flyway
+          - name: tusd
+          - name: docgen
+          - name: dbbackup
+          - name: metabase
+          - name: metabase-postgres
+          - name: docman
+          - name: filesystem-provider
+          - name: nris
+          - name: minespace
+          - name: fider
+          - name: schemaspy
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1
+        with:
+          oc_version: "4.6"
+      - name: oc login
+        run: |
+          oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
+      - name: Template build config
+        run: |
+          oc -n ${{secrets.NS_TOOLS}} process -f openshift4/templates/${{ matrix.name }}.bc.yaml --ignore-unknown-parameters=true \
+          -p SOURCE_REPOSITORY_URL=${{env.SOURCE_REPOSITORY_URL}} \
+          -p SOURCE_REPOSITORY_REF=${{env.SOURCE_REPOSITORY_REF}} \
+          -p TAG=${{env.INITIAL_TAG}} \
+          | oc -n ${{secrets.NS_TOOLS}} apply -f - \
+          --dry-run=client \
+          --validate=true

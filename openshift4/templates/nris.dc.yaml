@@ -30,7 +30,7 @@ parameters:
     required: false
     value: template.nris-odb-credentials
   - name: CPU_LIMIT
-    value: 200m
+    value: 300m
   - name: MEMORY_LIMIT
     value: 1Gi
   - name: CPU_REQUEST
@@ -42,9 +42,9 @@ parameters:
   - name: UWSGI_THREADS
     value: "4"
   - name: REPLICA_MIN
-    value: "2"
+    value: "3"
   - name: REPLICA_MAX
-    value: "2"
+    value: "4"
   - name: REDIS_CONFIG_NAME
     required: false
     value: template.redis-secret
@@ -235,7 +235,7 @@ objects:
       maxReplicas: ${{REPLICA_MAX}}
       minReplicas: ${{REPLICA_MIN}}
       scaleTargetRef:
-        apiVersion: v1
+        apiVersion: apps.openshift.io/v1
         kind: DeploymentConfig
         name: ${NAME}
       targetCPUUtilizationPercentage: 95
