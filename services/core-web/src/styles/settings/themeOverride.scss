@@ -410,7 +410,6 @@
   color: $darkest-grey;
   background-color: $light-grey;
 }
-
 // -- SEE NavBar.css for .sub-menu - that interacts with this override
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: $violet;
@@ -427,6 +426,11 @@
   font-weight: 800;
   color: inherit;
 }
+
+.injectable-string .highlight {
+  background-color: yellow;
+}
+
 .carousel .slide {
   background: white;
   text-align: left;

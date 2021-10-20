@@ -36,11 +36,7 @@ export const ConditionForm = (props) => {
             name="condition"
             placeholder={placeHolderText(props.initialValues.condition_type_code)}
             required
-            component={
-              props.initialValues.condition_type_code === "SEC"
-                ? renderConfig.FIELD
-                : renderConfig.AUTO_SIZE_FIELD
-            }
+            component={renderConfig.AUTO_SIZE_FIELD}
             validate={[required]}
           />
           <div className="right center-mobile">

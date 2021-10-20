@@ -34,6 +34,7 @@ export const getNOWReclamationSummary = createSelector(
             !isNil(noticeOfWork[value].reclamation_cost))
         ) {
           reclamationList.push({
+            value,
             label,
             total: noticeOfWork[value].calculated_total_disturbance
               ? noticeOfWork[value].calculated_total_disturbance

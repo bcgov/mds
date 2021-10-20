@@ -500,6 +500,12 @@ export const determineExemptionFeeStatus = (
   return exemptionStatus;
 };
 
+export const highlightPermitConditionVariables = () => {
+  const regEX = /{(.*?)}/;
+
+  return regEX;
+};
+
 export const formatBooleanToString = (value, defaultValue) => {
   let response;
   if (isNil(value)) {
