@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col, Typography, Tag, Tabs, Button, List } from "antd";
-import { formatTime, formatDate , formatBooleanToString } from "@common/utils/helpers";
+import { formatTime, formatDate, formatBooleanToString } from "@common/utils/helpers";
 import {
   getIncidentDeterminationHash,
   getIncidentStatusCodeHash,

@@ -142,6 +142,20 @@ export class MinePermitInfo extends Component {
     });
   };
 
+  openViewConditionModal = (event, conditions, amendmentNumber, permitNo) => {
+    event.preventDefault();
+    return this.props.openModal({
+      props: {
+        title: `${permitNo} - Permit Conditions for Amendment #${amendmentNumber}`,
+        closeModal: this.props.closeModal,
+        conditions,
+      },
+      width: "50vw",
+      isViewOnly: true,
+      content: modalConfig.VIEW_ALL_CONDITION_MODAL,
+    });
+  };
+
   openEditPermitModal = (event, permit) => {
     event.preventDefault();
     this.props.openModal({
@@ -413,6 +427,7 @@ export class MinePermitInfo extends Component {
                 onExpand={this.onExpand}
                 handleDeletePermit={this.handleDeletePermit}
                 handleDeletePermitAmendment={this.handleDeletePermitAmendment}
+                openViewConditionModal={this.openViewConditionModal}
               />
             </>
           </Tabs.TabPane>

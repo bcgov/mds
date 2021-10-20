@@ -27,22 +27,22 @@ export class PermitConditionsNavigation extends Component {
           }
         >
           <Menu className="sub-menu">
-            <Menu.Item key="SAG">
+            <Menu.Item key="sand-and-gravel">
               <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("sand-and-gravel")}>
                 Sand & Gravel
               </Link>
             </Menu.Item>
-            <Menu.Item key="MIN">
+            <Menu.Item key="exploration">
               <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("exploration")}>
                 Exploration (MX/CX)
               </Link>
             </Menu.Item>
-            <Menu.Item key="QCA">
+            <Menu.Item key="quarry">
               <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("quarry")}>
                 Quarry
               </Link>
             </Menu.Item>
-            <Menu.Item key="PLA">
+            <Menu.Item key="placer">
               <Link to={routes.ADMIN_PERMIT_CONDITION_MANAGEMENT.dynamicRoute("placer")}>
                 Placer
               </Link>

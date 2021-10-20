@@ -214,6 +214,7 @@ PERMIT_AMENDMENT_MODEL = api.model(
         fields.DateTime,
         'has_permit_conditions':
         fields.Boolean,
+        'conditions': fields.List(PermitCondition),
     })
 
 BOND_MODEL = api.model('Bond_guid', {'bond_guid': fields.String})
