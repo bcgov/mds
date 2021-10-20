@@ -44,9 +44,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.6"
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
@@ -72,9 +72,9 @@ jobs:
           - name: minespace
     steps:
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.6"
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
@@ -103,9 +103,9 @@ jobs:
           - name: schemaspy
     steps:
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.6"
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
@@ -136,9 +136,9 @@ jobs:
           - name: schemaspy
     steps:
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.6"
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
@@ -206,9 +206,9 @@ jobs:
           - name: minespace
     steps:
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v1
         with:
-          oc_version: "4.6"
+          oc: "4.7"
       - name: oc login
         run: |
           oc login --token=${{ secrets.BUILD_TOKEN }} --server=${{ secrets.CLUSTER_API }}
