@@ -28,7 +28,7 @@ import CustomPropTypes from "@/customPropTypes";
 import * as Permission from "@/constants/permissions";
 import * as ModalContent from "@/constants/modalContent";
 import { modalConfig } from "@/components/modalContent/config";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 
 import MineIncidentTable from "./MineIncidentTable";

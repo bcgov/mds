@@ -24,7 +24,7 @@ import { openModal, closeModal } from "@common/actions/modalActions";
 import { getMineGuid, getMines } from "@common/selectors/mineSelectors";
 import AuthorizationWrapper from "@/components/common/wrappers/AuthorizationWrapper";
 import * as Permission from "@/constants/permissions";
-import AddButton from "@/components/common/AddButton";
+import AddButton from "@/components/common/buttons/AddButton";
 import CustomPropTypes from "@/customPropTypes";
 import MineExplosivesPermitTable from "@/components/mine/ExplosivesPermit/MineExplosivesPermitTable";
 import { modalConfig } from "@/components/modalContent/config";

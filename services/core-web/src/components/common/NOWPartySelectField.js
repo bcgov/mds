@@ -13,7 +13,7 @@ import { setAddPartyFormState } from "@common/actionCreators/partiesActionCreato
 import { createItemMap, createItemIdsArray } from "@common/utils/helpers";
 import { Validate } from "@common/utils/Validate";
 import { Select, Divider } from "antd";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 
 import CustomPropTypes from "@/customPropTypes";
 

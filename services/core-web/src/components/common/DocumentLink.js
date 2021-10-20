@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined, DownloadOutlined, FileOutlined } from "@ant-design/icons";
-import LinkButton from "@/components/common/LinkButton";
+import LinkButton from "@/components/common/buttons/LinkButton";
 import { truncateFilename } from "@common/utils/helpers";
 import { openDocument, isDocumentOpenable } from "@/components/syncfusion/DocumentViewer";
 import { downloadFileFromDocumentManager } from "@common/utils/actionlessNetworkCalls";
