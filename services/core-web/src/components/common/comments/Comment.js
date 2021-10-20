@@ -11,10 +11,10 @@ const propTypes = {
 };
 
 const defaultProps = {
-  actions: {},
+  actions: [],
 };
 
-const Comment = (props) => (
+export const Comment = (props) => (
   <React.Fragment>
     <div className="speech-bubble">
       {props.children}
