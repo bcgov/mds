@@ -36,8 +36,6 @@ beforeEach(() => {
 
 describe("RenderMineSelect", () => {
   it("renders properly", () => {
-    props.data = PARTY.partyIds;
-    props.option = PARTY.parties;
     const wrapper = shallow(<RenderMineSelect {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

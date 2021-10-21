@@ -24,32 +24,7 @@ exports[`RenderMineSelect renders properly 1`] = `
     mineNameList={Array []}
     name="field"
     onMineSelect={[MockFunction]}
-    option={
-      Object {
-        "18133c75-49ad-4101-85f3-a43e35ae989a": Object {
-          "address": Array [
-            Object {},
-          ],
-          "business_role_appts": Array [
-            Object {},
-          ],
-          "party_guid": "18133c75-49ad-4101-85f3-a43e35ae989a",
-          "party_name": "mock name",
-          "party_type_code": "PER",
-        },
-        "18145c75-49ad-0101-85f3-a43e45ae989a": Object {
-          "address": Array [
-            Object {},
-          ],
-          "business_role_appts": Array [
-            Object {},
-          ],
-          "party_guid": "18145c75-49ad-0101-85f3-a43e45ae989a",
-          "party_name": "mock Two",
-          "party_type_code": "PER",
-        },
-      }
-    }
+    option={Object {}}
     placeholder="Search for a mine by name"
     type=""
   />
