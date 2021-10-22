@@ -15,12 +15,14 @@ const propTypes = {
   placeholder: PropTypes.string,
   meta: PropTypes.objectOf(PropTypes.any).isRequired,
   rows: PropTypes.number,
+  disabled: PropTypes.bool,
 };
 
 const defaultProps = {
   placeholder: "",
   label: "",
   rows: 5,
+  disabled: false,
 };
 
 const RenderScrollField = (props) => (
@@ -40,6 +42,7 @@ const RenderScrollField = (props) => (
       id={props.id}
       {...props.input}
       rows={props.rows}
+      disabled={props.disabled}
       placeholder={props.placeholder}
     />
   </Form.Item>
