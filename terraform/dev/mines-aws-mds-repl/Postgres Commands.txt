@@ -1,0 +1,197 @@
+
+# Find database size in Postgres
+
+SELECT pg_size_pretty( pg_database_size('postgres') );
+SELECT pg_size_pretty( pg_database_size('mds') );
+
+# Show user privileges 
+
+\du or \du+
+
+# Show databases 
+
+\l
+
+# Deploying a Postgres Database
+
+oc new-app postgresql-persistent --name database --param
+DATABASE_SERVICE-NAME=database --param POSTGRESQL_DATABASE=sampledb --param
+POSTGRESQL_USER=username --param POSTGRESQL_PASSWORD=password
+
+# Monitor the database creation
+oc rollout status dc/database
+
+# Exit Postgres command line tool
+\q
+
+# Connect to contianer running in a Pod
+oc rsh database-1-9xv8n
+
+# Check that you are in the container
+ps x
+
+# Start Postgres command line for a specific Database
+psql mds 
+
+# Exit Postgres command line
+\q
+
+# Exit the pod interactive connection
+Exit
+
+# Setup port forwarding between a local machine and the database running on OpenShift
+# Port 15432 is used here for the local machine, rather than using 5432, in case an instance of PostgreSQL was also running on the local machine.
+oc port-forward <pod-name> <local-port>:<remote:port>
+oc port-forward database-1-9xv8n 15432:5432
+
+# If you do not know what ports may be available, you can instead use the following format for the command
+oc port-forward <pod-name> :<remote-port>
+
+# To run psql commands you need to explicitly instruct the command line to use local host IP address and local port
+psql sampledb username --host=127.0.0.1 --port=15432
+
+# To exit psql command line 
+\q
+
+# To close the port-forwarding
+^C
+
+# Edit pg_hba.conf to connect AWS DMS to Openshift Postgres Pod
+vi /var/lib/pgsql/data/userdata/pg_hba.conf
+
+# Add below entries
+
+# Replication Instance
+host all all 3.18.255.225/00 md5
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+host replication dms 3.18.255.225/00 md5
+
+# to Set change data capture (CDC) between AWS DMS and Openshift Postgres 
+# Add below values to postgresql.conf file
+vi /var/lib/pgsql/data/userdata/postgresql.conf
+wal_level = logical
+max_replication_slots = 3
+max_wal_senders = 3
+wal_sender_timeout = 0
+
+
+# Backup database from Openshift pod
+
+oc exec postgresql-12-nzzls -- bash -c 'pg_dump mds | gzip > /opt/app-root/src/mds.gz'
+
+# MDS backup files location
+backups/daily/2021-09-15/postgresql-mds_2021-09-15_02-00-00.sql.gz
+
+# This command copies the database backup file to /home/databasebackup
+oc rsync dbbackup-27-42lnj:/backups/daily/2021-09-15/postgresql-mds_2021-09-15_02-00-00.sql.gz ~/mdsbackups
+
+# Copy backup from Ubuntu to Windows using SSH, Net-Tools and PSCP
+# First install SSH Server and Net-Tools
+sudo apt install openssh-server
+sudo service ssh status
+sudo service ssh start
+sudo service ssh enable
+sudo apt install net-tools
+
+# Second find Ubuntu IP
+ifconfig
+172.31.160.1
+
+# working path of the Postgres backup
+/home/yasserhu/mdsbackups/postgresql-mds_2021-09-15_02-00-00.sql.gz
+
+# Copy the file from Ubuntu to current directory in windows
+c:\pscp yasserhu@172.31.160.1:/home/yasserhu/mdsbackups/postgresql-mds_2021-09-15_02-00-00.sql.gz .
+c:\pscp -P yasserhu@192.168.1.137:mdsbackups/postgresql-mds_2021-09-15_02-00-00.sql.gz .
+
+pscp -P 22 C:\Users\223119\Desktop\Ministry of Energy\Postgres Commands.txt yasserhu@192.168.1.137:/home/yasserhu/mdsbackups/pstgcommands.txt
+
+# Copy files using shared folder Samba
+ \\192.168.1.137\home\yasserhu\mdsbackups
+
+# Restore Postgres Data Dump
+gunzip -c C:\Users\223119\mdsbackups\postgresql-mds_2021-09-15_02-00-00.sql.gz | psql mds
+
+psql -U yasserhu -d mds -f postgresql-mds_2021-09-15_02-00-00.sql
+
+gunzip mdsbackup.gz && tar -cf mdsbackup.tar mdsbackup.gz
+
+# 
+
+# Add multiple rows to Postgres table
+
+INSERT INTO public.test("Name", "Dept")
+	VALUES ('Yasser Hussein', 'NTTData'),
+	('Jonathan Funk', 'NTTData'),
+	('Aaron Unger', 'Mines'),
+	('Katie Menke', 'Mines');
+
+# Delete multiple rows from Postgres Table and return the deleted data to the client
+
+DELETE FROM public.test
+WHERE id = (10,11)
+RETURNING *;
+
+
+# Find the number of replication slots running
+SELECT * FROM pg_replication_slots;
+
+# To resolve these errors, remove the used replication slots or increase the value of the max_replication_slots parameter
+# Drop old and used replication slots
+SELECT pg_drop_replication_slot('old_and_used_slot');
+
+
+# SSH into Postgres Azure VM
+ssh -i 'C:\Users\223119\Desktop\Ministry of Energy\postgresvmkey.pem' yasserhu@mdspostgres.eastus2.cloudapp.azure.com
+
+# Install Postgresql 9.6 on Ubuntu 20.04
+sudo apt-get update
+sudo apt-get -y upgrade
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/postgresql-pgdg.list > /dev/null
+sudo apt-get update
+sudo apt-get install postgresql-9.6
+dpkg -l | grep postgresql
+sudo netstat | grep 5432
+sudo netstat -naptu | grep postgres
+sudo ss -atnp | grep 5432
+sudo ss -atp | grep postgres
+ps -aux | grep postgres
+
+# Deploy Postgresql to Azure Ubuntu VM using template
+az group deployment create --resource-group mdspstgresvm-rg --template-uri https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/application-workloads/postgre/postgresql-standalone-server-ubuntu/azuredeploy.json
+
+
+# SSH to postgresVM in Azure
+ssh -i C:\Users\yasse\OneDrive\Desktop\NTTData\yasserhu.pem yasserhu@20.104.113.2
+
+# Connect to postgres server using Postgres superuser
+sudo -u postgres -i
+# Exit current user
+Ctrl + D or logout
+
+# To avoid typing sudo every time you execute a command 
+sudo -s
+
+# Create Postgres SuperUser
+CREATE USER yasserhu;
+ALTER USER yasserhu WITH SUPERUSER;
+
+# Remove superuser previliges
+ALTER USER yasserhu WITH NOSUPERUSER;
+
+# Add other previliges CREATEDB, CREATEROLE, CREATEUSER
+ALTER USER yasserhu WITH CREATEDB CREATEROLE CREATEUSER;
+
+# Connect to specific database using a user other than postgres
+psql -d mds -U yasserhu
+
+# Restor Postgres Data Dump through PSQL
+psql -h localhost -U mds -f postgresql-mds_2021-09-29_02-00-00.sql
+psql -h mdspostgres.canadacentral.cloudapp.azure.com -U yasserhu -f mdsrestore.sql -d mds
+
+# should be able to select the permit.permit_no after adding those
+LEFT JOIN "mine" ON "public"."mine"."mine_guid" = "public"."mine_report"."mine_guid"
+LEFT JOIN "mine_permit_xref" ON "mine"."mine_guid" = "mine_permit_xref"."mine_guid"
+LEFT JOIN "permit" ON "public"."mine_permit_xref"."permit_id" = "public"."permit"."permit_id"
