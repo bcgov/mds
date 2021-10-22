@@ -52,8 +52,6 @@ const selectAfter = (data, id, isDisabled, input) => {
 };
 
 const RenderFieldWithDropdown = (props) => {
-  console.log(props[props.id]);
-  console.log(props);
   return (
     <Form.Item
       label={props.label}

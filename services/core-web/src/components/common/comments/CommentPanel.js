@@ -38,7 +38,6 @@ export const CommentPanel = (props) => (
         dataSource={props.comments}
         locale={{ emptyText: "No Data Yet" }}
         renderItem={(item) => {
-          console.log(item);
           return (
             <li key={item.key}>
               <div className="inline-flex">
